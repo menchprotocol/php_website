@@ -762,19 +762,14 @@ function i_note_activate(){
 
         var note_type_id = parseInt($(this).attr('note_type_id'));
 
-        //LoadEmoji:
-        window.addEventListener('DOMContentLoaded', () => {
-            const picker = new EmojiButton();
-            const trigger = document.querySelector('#emojiPick'+note_type_id);
+        var trigger = document.querySelector('#emojiPick'+note_type_id);
 
-            picker.on('emoji', selection => {
-                document.querySelector('#x__message'+note_type_id).value += selection.emoji;
-            });
-
-
-            trigger.addEventListener('click', () => picker.togglePicker(trigger));
-
+        picker.on('emoji', selection => {
+            document.querySelector('#x__message'+note_type_id).value += selection.emoji;
         });
+
+
+        trigger.addEventListener('click', () => picker.togglePicker(trigger));
 
         //Initiate @ search for all idea text areas:
         i_note_e_search($(this));
