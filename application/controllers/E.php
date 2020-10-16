@@ -1673,6 +1673,10 @@ class E extends CI_Controller
         update_algolia(12274,  $added_e['new_e']['e__id']);
 
 
+        //Send Welcome Email:
+        email_template(14044, $added_e, $_POST['input_email']);
+
+
         //Assign session & log login transaction:
         $this->E_model->activate_session($added_e['new_e']);
 
