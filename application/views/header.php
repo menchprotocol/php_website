@@ -35,7 +35,6 @@ $current_mench = current_mench();
     }
     ?>
 
-    var EmojiButton;
     </script>
 
 
