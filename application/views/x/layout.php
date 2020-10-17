@@ -78,9 +78,9 @@ if($in_my_x){
     if(!$in_my_discoveries){
 
         //Find it:
-        $recursive_parents = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
+        $top_tree = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
 
-        foreach($recursive_parents as $grand_parent_ids) {
+        foreach($top_tree as $grand_parent_ids) {
             foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
                 foreach($grand_parent_ids as $count => $previous_i__id) {
 

@@ -8,8 +8,8 @@ foreach($active_i as $count=>$in){
 
     $recursive_children = $this->I_model->recursive_child_ids($in['i__id'], false);
     if(count($recursive_children) > 0){
-        $recursive_parents = $this->I_model->recursive_parents($in['i__id']);
-        foreach($recursive_parents as $grand_parent_ids) {
+        $top_tree = $this->I_model->recursive_parents($in['i__id']);
+        foreach($top_tree as $grand_parent_ids) {
             $crossovers = array_intersect($recursive_children, $grand_parent_ids);
             if(count($crossovers) > 0){
                 //Ooooopsi, this should not happen:

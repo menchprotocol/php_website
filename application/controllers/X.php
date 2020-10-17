@@ -514,8 +514,8 @@ class X extends CI_Controller
             $u_x_ids = $this->X_model->ids($user_e['e__id']);
             if(!in_array($next_i__id, $u_x_ids)){
                 //Search for it:
-                $recursive_parents = $this->I_model->recursive_parents($is[0]['i__id'], true, true);
-                foreach($recursive_parents as $grand_parent_ids) {
+                $top_tree = $this->I_model->recursive_parents($is[0]['i__id'], true, true);
+                foreach($top_tree as $grand_parent_ids) {
                     foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
                         foreach($grand_parent_ids as $count => $previous_i__id) {
                             if(in_array($previous_i__id, $u_x_ids)){
@@ -563,8 +563,8 @@ class X extends CI_Controller
             $u_x_ids = $this->X_model->ids($user_e['e__id']);
             if(!in_array($next_i__id, $u_x_ids)){
                 //Search for it:
-                $recursive_parents = $this->I_model->recursive_parents($is[0]['i__id'], true, true);
-                foreach($recursive_parents as $grand_parent_ids) {
+                $top_tree = $this->I_model->recursive_parents($is[0]['i__id'], true, true);
+                foreach($top_tree as $grand_parent_ids) {
                     foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
                         foreach($grand_parent_ids as $count => $previous_i__id) {
                             if(in_array($previous_i__id, $u_x_ids)){

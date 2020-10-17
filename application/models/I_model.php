@@ -411,8 +411,8 @@ class I_model extends CI_Model
                 $next_i = $is[0];
 
                 //Prevent parent duplicate:
-                $recursive_parents = $this->I_model->recursive_parents($previous_i['i__id']);
-                foreach($recursive_parents as $grand_parent_ids) {
+                $top_tree = $this->I_model->recursive_parents($previous_i['i__id']);
+                foreach($top_tree as $grand_parent_ids) {
                     if (in_array($next_i['i__id'], $grand_parent_ids)) {
                         return array(
                             'status' => 0,
@@ -593,13 +593,13 @@ class I_model extends CI_Model
 
 
             //Fetch parents of parents:
-            $recursive_parents = $this->I_model->recursive_parents($p_id, false);
+            $top_tree = $this->I_model->recursive_parents($p_id, false);
 
-            if (count($recursive_parents) > 0) {
+            if (count($top_tree) > 0) {
                 if ($first_level) {
-                    array_push($grand_parents, array_merge(array($p_id), $recursive_parents));
+                    array_push($grand_parents, array_merge(array($p_id), $top_tree));
                 } else {
-                    $grand_parents = array_merge($grand_parents, $recursive_parents);
+                    $grand_parents = array_merge($grand_parents, $top_tree);
                 }
             } elseif ($first_level) {
                 array_push($grand_parents, array($p_id));
@@ -612,7 +612,7 @@ class I_model extends CI_Model
 
             //Now we must break down the array:
             $duplicate_detectors = array();
-            $recursive_parents = array();
+            $top_tree = array();
             $index = 0;
             foreach($grand_parents as $grand_parent_ids) {
                 foreach($grand_parent_ids as $grand_parent_id) {
@@ -623,15 +623,15 @@ class I_model extends CI_Model
                         array_push($duplicate_detectors, intval($grand_parent_id));
                     }
 
-                    if (!isset($recursive_parents[$index])) {
-                        $recursive_parents[$index] = array();
+                    if (!isset($top_tree[$index])) {
+                        $top_tree[$index] = array();
                     }
-                    array_push($recursive_parents[$index], intval($grand_parent_id));
+                    array_push($top_tree[$index], intval($grand_parent_id));
                 }
             }
 
             //Only the first one for now:
-            return $recursive_parents;
+            return $top_tree;
 
         } else {
             return $grand_parents;
