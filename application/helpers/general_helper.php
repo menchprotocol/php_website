@@ -681,6 +681,12 @@ function redirect_message($url, $message = null)
     }
 }
 
+function session_delete(){
+    $CI =& get_instance();
+    $CI->session->sess_destroy();
+    cookie_delete();
+}
+
 function cookie_delete(){
     unset($_COOKIE['mench_auto_login']);
     setcookie('mench_auto_login', null, -1, '/');

@@ -1548,8 +1548,7 @@ class E extends CI_Controller
     function signout()
     {
         //Destroys Session
-        cookie_delete();
-        $this->session->sess_destroy();
+        session_delete();
 
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
@@ -1924,10 +1923,11 @@ class E extends CI_Controller
 
     function e_magic_sign($x__id){
 
+        //Remove Session:
+        session_delete();
+
         //Validate email:
-        if(superpower_assigned()){
-            return redirect_message(home_url());
-        } elseif(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
+        if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
             return redirect_message('/signin/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>');
         }
