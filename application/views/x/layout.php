@@ -649,7 +649,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             //NEXT IDEAS
             $focus_tab .= view_i_list(13542, $in_my_x, $i_focus, $is_next, $user_e);
-            $focus_tab .= ( $time_estimate ? '<div class="i_estimates">'.$time_estimate.'</div>' : '' );
+            $focus_tab .= ( $time_estimate && count($is_next) ? '<div class="i_estimates">'.$time_estimate.'</div>' : '' );
 
             //IDEA PREVIOUS
             /*
