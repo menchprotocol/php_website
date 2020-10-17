@@ -1436,6 +1436,8 @@ function view_x_progress($completion_rate, $i, $show_micro){
 function view_e_basic($e, $m = false)
 {
 
+    return view_e($e);
+
     $CI =& get_instance();
 
 
