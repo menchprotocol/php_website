@@ -104,7 +104,7 @@ function view_x__message($x__message, $x__type, $full_message = null)
 
     } elseif(strlen($x__message) > 0) {
 
-        return htmlentities($x__message);
+        return nl2br(htmlentities($x__message));
 
     } else {
 
