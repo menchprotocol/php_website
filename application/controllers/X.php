@@ -875,7 +875,7 @@ class X extends CI_Controller
         if(count($progress_x) > 0){
 
             //Yes they did have some:
-            $message = 'Removed '.count($progress_x).' idea'.view__s(count($progress_x)).' for @'.$u_id;
+            $message = 'Deleted all '.count($progress_x).' discoveries';
 
             //Log transaction:
             $clear_all_x = $this->X_model->create(array(
@@ -900,7 +900,7 @@ class X extends CI_Controller
         }
 
         //Show basic UI for now:
-        return redirect_message(home_url(), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+        return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
 
     }
 
