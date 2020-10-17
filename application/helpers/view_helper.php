@@ -1304,7 +1304,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 function view_shuffle_message($e__id){
     $CI =& get_instance();
     $e___12687 = $CI->config->item('e___12687');
-    $line_messages = explode(" | ", $e___12687[$e__id]['m__message']);
+    $line_messages = explode("\n", $e___12687[$e__id]['m__message']);
     return $line_messages[rand(0, (count($line_messages) - 1))];
 }
 

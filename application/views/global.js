@@ -146,7 +146,7 @@ function view_search_result(algolia_object){
 
 
 function js_view_shuffle_message(e__id){
-    var messages = js_e___12687[e__id]['m__message'].split(" | ");
+    var messages = js_e___12687[e__id]['m__message'].split("\n");
     if(messages.length == 1){
         //Return message:
         return messages[0];
