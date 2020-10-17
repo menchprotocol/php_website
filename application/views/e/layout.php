@@ -88,18 +88,6 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
     echo '<div class="doclear">&nbsp;</div>';
 
 
-
-    if($source_is_e && isset($_GET['reset'])){
-        //DISCOVER DELETE ALL (ACCESSIBLE VIA MAIN MENU)
-        echo '<div class="margin-top-down left-margin">';
-        echo '<p>'.$e___11035[6415]['m__message'].'</p>';
-        echo '<p style="padding-top:13px;"><a href="javascript:void(0);" onclick="x_reset_all()" class="btn btn-discover">'.$e___11035[6415]['m__icon'].' '.$e___11035[6415]['m__title'].'</a> or <a href="/" style="text-decoration: underline;">Cancel</a></p>';
-        echo '</div>';
-
-        echo '<div class="doclear">&nbsp;</div>';
-    }
-
-
     //Determine Focus Tab:
     $counter__e = view_coins_e(12274, $e['e__id'], 0, false);
     $counter__i = view_coins_e(12273, $e['e__id'], 0, false);

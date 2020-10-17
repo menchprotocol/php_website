@@ -1161,6 +1161,8 @@ function view_caret($e__id, $m, $s__id){
 
         if($e__id==13007){
             $href = 'href="javascript:void(0);" onclick="e_sort_reset()"';
+        } elseif($e__id==6415){
+            $href = 'href="javascript:void(0);" onclick="x_reset_all()"';
         } else {
             $href = 'href="' . $m2['m__message'] . $s__id . '"';
         }
