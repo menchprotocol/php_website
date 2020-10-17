@@ -1946,6 +1946,8 @@ class E extends CI_Controller
             return redirect_message('/signin?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic transaction has expired. Try again.</div>');
         }
 
+
+
         //Fetch source:
         $es = $this->E_model->fetch(array(
             'e__id' => $validate_x[0]['x__source'],
@@ -1954,11 +1956,21 @@ class E extends CI_Controller
             return redirect_message('/signin?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
         }
 
+
         //Log them in:
         $this->E_model->activate_session($es[0]);
 
+
+        //Did we have original intent?
+        if($validate_x[0]['x__left'] > 0){
+            //Continue there:
+            $sign_url = '/x/x_start/'.$validate_x[0]['x__left'];
+        } else {
+            $sign_url = home_url();
+        }
+
         //Take them to DISCOVER HOME
-        return redirect_message( home_url() , '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
+        return redirect_message($sign_url, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
 
     }
 
