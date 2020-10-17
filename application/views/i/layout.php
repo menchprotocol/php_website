@@ -157,7 +157,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     $counter = null; //Assume no counters
     $focus_tab = '';
-    $pre_fix = null;
+    $pre_fix_6169 = null;
 
 
     if($x__type==12274){
@@ -226,7 +226,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = ( count($is_next) > $counter_i ? count($is_next) : $i_stats['i___6170'] );
 
         if($counter > $i_stats['i___6169'] && $i_stats['i___6169'] > 0){
-            $pre_fix = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
+            $pre_fix_6169 = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
         }
 
 
@@ -405,7 +405,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = in_array($x__type, $this->config->item('n___12675'));
 
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;'.$pre_fix.'<span class="en-type-counter-'.$x__type.'">'.view_number($counter).( intval($counter) ? '&nbsp;' : '' ).'</span></a></li>';
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;<span class="'.superpower_active(12700).'">'.$pre_fix_6169.'</span><span class="en-type-counter-'.$x__type.'">'.view_number($counter).( intval($counter) ? '&nbsp;' : '' ).'</span></a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';

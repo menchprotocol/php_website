@@ -357,7 +357,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
-    $pre_fix = null;
+    $pre_fix_6169 = null;
     $counter = null; //Assume no counters
     $focus_tab = '';
     $href = 'href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')"';
@@ -376,7 +376,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = ( count($is_next) > $i_stats['i___6170'] ? count($is_next) : $i_stats['i___6170'] );
 
         if($counter > $i_stats['i___6169'] && $i_stats['i___6169'] > 0){
-            $pre_fix = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
+            $pre_fix_6169 = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
         }
 
         //Now we can make it look nice:
@@ -758,7 +758,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $tab_pill_count++;
 
 
-    $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;'.$pre_fix.( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>&nbsp;' ).'</a></li>';
+    $tab_pills .= '<li class="nav-item"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;<span class="'.superpower_active(12700).'">'.$pre_fix_6169.'</span>'.( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>&nbsp;' ).'</a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
