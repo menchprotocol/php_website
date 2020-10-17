@@ -1266,7 +1266,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
 
         //ADD
-        $ui .= '<td class="table-btn"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
+        $ui .= '<td class="table-btn"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-grey save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
 
         //EMOJI
         $ui .= '<td class="table-btn" style="padding-top: 5px !important; padding-left: 20px !important;"><span class="btn btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
