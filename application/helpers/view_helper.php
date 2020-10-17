@@ -1437,7 +1437,7 @@ function view_e_basic($e, $m = false)
     $CI =& get_instance();
 
 
-    $ui = '<div class="list-group-item no-side-padding '.(superpower_active(10939, true) ? ' itemsource ' : '').'">';
+    $ui = '<div class="list-group-item itemsource no-side-padding '.(superpower_active(10939, true) ? ' itemsource ' : '').'">';
 
 
 
