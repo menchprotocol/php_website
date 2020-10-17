@@ -290,7 +290,7 @@ function view_i_note($x__type, $x, $note_e = false)
 
 
         //SAVE
-        $ui .= '<td class="table-btn"><a class="btn btn-'.$color_code.'" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');" title="'.$e___11035[14039]['m__title'].'">'.$e___11035[14039]['m__icon'].'</a></td>';
+        $ui .= '<td class="table-btn"><a class="btn btn-grey" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');" title="'.$e___11035[14039]['m__title'].'">'.$e___11035[14039]['m__icon'].'</a></td>';
 
         //EMOJI
         $ui .= '<td class="table-btn emoji_edit hidden"><span class="btn btn-grey" id="emoji_pick_id'.$x['x__id'].'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
