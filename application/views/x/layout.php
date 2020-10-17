@@ -652,6 +652,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= ( $time_estimate ? '<div class="i_estimates">'.$time_estimate.'</div>' : '' );
 
             //IDEA PREVIOUS
+            /*
             $is_previous = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -664,8 +665,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 $focus_tab .= view_i_list(11019, $in_my_x, $i_focus, $is_previous, $user_e);
                 $focus_tab .= '</div>';
             }
+            */
 
-            $has_substance = count($is_next) || count($is_previous);
+            $has_substance = count($is_next);// || count($is_previous)
 
 
         }
