@@ -796,7 +796,7 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
 
 
     $ui .= '<div class="row">';
-        $ui .= '<div class="col-sm" title="'.$e___12467[$x_mode]['m__title'].' '.$completion_rate['completion_percentage'].'% COMPLETE">';
+        $ui .= '<div class="col-sm-10" title="'.$e___12467[$x_mode]['m__title'].' '.$completion_rate['completion_percentage'].'% COMPLETE">';
 
             $ui .= '<span class="icon-block">'.$e___12467[$x_mode]['m__icon'].'</span>';
             $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
