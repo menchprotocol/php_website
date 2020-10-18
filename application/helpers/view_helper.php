@@ -799,7 +799,7 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
     $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
     if($i_stats['i___6169'] > 0){
-        $ui .= '&nbsp;<span class="'.extract_icon_color($e___12467[12273]['m__icon']).' montserrat" title="'.$e___12467[12273]['m__title'].'" data-toggle="tooltip" data-placement="top">+'.view_number($i_stats['i___6170']).'</span>';
+        $ui .= '&nbsp;<span class="inline-block '.extract_icon_color($e___12467[12273]['m__icon']).' montserrat" title="'.$e___12467[12273]['m__title'].'" data-toggle="tooltip" data-placement="top">+'.view_number($i_stats['i___6170']).'</span>';
     }
 
 
