@@ -796,13 +796,13 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
 
 
     $ui .= '<div class="row">';
-        $ui .= '<div class="col-sm-10" title="'.$e___12467[$x_mode]['m__title'].' '.$completion_rate['completion_percentage'].'% COMPLETE">';
+        $ui .= '<div class="col-10" title="'.$e___12467[$x_mode]['m__title'].' '.$completion_rate['completion_percentage'].'% COMPLETE">';
 
             $ui .= '<span class="icon-block">'.$e___12467[$x_mode]['m__icon'].'</span>';
             $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
 
         $ui .= '</div>';
-        $ui .= '<div class="col-sm-2 col2nd">';
+        $ui .= '<div class="col-2 col2nd">';
 
             if($i_stats['i___6169'] > 0){
                 $ui .= '<span class="'.extract_icon_color($e___12467[12273]['m__icon']).' montserrat" title="'.$e___12467[12273]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block">'.$e___12467[12273]['m__icon'].'</span>'.view_number($i_stats['i___6170']).'</span>';
