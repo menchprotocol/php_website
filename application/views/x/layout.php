@@ -675,9 +675,19 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==12274){
 
         $counter = $i_stats['count_13207'];
-
-        //List Sources:
-        $focus_tab .= view_i_tree_e($i_focus);
+        if($counter){
+            $focus_tab .= '<div class="list-group" style="margin-bottom:41px;">';
+            foreach ($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__up IN (' . join(',', $this->config->item('n___13207')) . ')' => null, //LEADERBOARD Source
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__id IN (' . join(',', $i_stats['array_13207']) . ')' => null,
+            ), array('x__down'), 0, 0, array('e__weight' => 'DESC')) as $e) {
+                $focus_tab .= view_e($e);
+            }
+            $focus_tab .= '</div>';
+        }
 
     } elseif($x__type==6255){
 
