@@ -1030,7 +1030,7 @@ class X_model extends CI_Model
             } else {
 
                 //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<span class="'.superpower_active(10939).'"><span '.$tooltip_class.'><a class="montserrat '.extract_icon_color($es[0]['e__icon']).'" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__type'], $this->config->item('n___7357')) ? '<span class="icon-block-xs">'.$e___6177[$es[0]['e__type']]['m__icon'].'</span> ' : '' ).'<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></a></span></span>'.' ', $output_body_message);
+                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a class="montserrat '.extract_icon_color($es[0]['e__icon']).'" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__type'], $this->config->item('n___7357')) ? '<span class="icon-block-xs">'.$e___6177[$es[0]['e__type']]['m__icon'].'</span> ' : '' ).'<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></a></span>'.' ', $output_body_message);
 
             }
 

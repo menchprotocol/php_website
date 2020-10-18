@@ -255,7 +255,7 @@ function view_i_note($x__type, $x, $note_e = false)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $x['x__id'] . '">';
-    $ui .= $CI->X_model->message_send($x['x__message'], false, $user_e, $x['x__right']);
+    $ui .= $CI->X_model->message_send($x['x__message'], in_array($x__type, $CI->config->item('n___13291')), $user_e, $x['x__right']);
     $ui .= '</div>';
 
     //Editing menu:
