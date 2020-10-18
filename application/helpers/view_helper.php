@@ -805,7 +805,7 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
         $ui .= '<div class="col-md-2 show-max">';
 
             if($i_stats['i___6169'] > 0){
-                $ui .= '<span class="'.extract_icon_color($e___12467[12273]['m__icon']).'" title="'.$e___12467[12273]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block">'.$e___12467[12273]['m__icon'].'</span>'.view_number($i_stats['i___6170']).'</span>';
+                $ui .= '<span class="'.extract_icon_color($e___12467[12273]['m__icon']).' montserrat" title="'.$e___12467[12273]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block">'.$e___12467[12273]['m__icon'].'</span>'.view_number($i_stats['i___6170']).'</span>';
             }
 
         $ui .= '</div>';
