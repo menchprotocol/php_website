@@ -857,19 +857,10 @@ function i_stats($i__metadata){
     //Calculates average based on metadata:
     $metadata = unserialize($i__metadata);
 
+    $array_13207 = ( isset($metadata['i___13207']) ? $metadata['i___13207'] : array() );
     $array_7545 = ( isset($metadata['i___7545']) ? $metadata['i___7545'] : array() );
 
-
-    $array_13339 = ( isset($metadata['i___13339']) ? $metadata['i___13339'] : array() );
-    usort($array_13339, 'sortByWeight');
-
-    $array_13897 = ( isset($metadata['i___13897']) ? $metadata['i___13897'] : array() );
-    usort($array_13897, 'sortByWeight');
-
-    $array_4430 = ( isset($metadata['i___4430']) ? $metadata['i___4430'] : array() );
-    usort($array_4430, 'sortByWeight');
-
-    $e_count = count($array_4430) + count($array_13897) + count($array_13339);
+    $e_count = count($array_13207);
 
     //Return stats:
     return array(
@@ -882,14 +873,9 @@ function i_stats($i__metadata){
         'i___6162' => ( isset($metadata['i___6162']) ? $metadata['i___6162'] : view_memory(6404,12427) ),
         'i___13292' => ( isset($metadata['i___6162']) ? round(($metadata['i___6161']+$metadata['i___6162'])/2) : view_memory(6404,12427) ),
 
-        //SOURCES
-        'e_count' => ( $e_count>0 ? $e_count : 1 ),
-        'array_13339' => $array_13339,
-        'count_13339' => count($array_13339),
-        'array_13897' => $array_13897,
-        'count_13897' => count($array_13897),
-        'array_4430' => $array_4430,
-        'count_4430' => count($array_4430),
+        //LEADERBOARD SOURCES
+        'array_13207' => $array_13207,
+        'count_13207' => count($array_13207),
 
         //CERTIFICATES
         'count_7545' => count($array_7545),

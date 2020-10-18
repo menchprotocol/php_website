@@ -559,13 +559,12 @@ class E_model extends CI_Model
 
 
 
-    function metadata_experts($e, $level = 1){
+    function metadata_leaderboard($e, $level = 1){
 
         //Goes through $max_search_levels of sources to find expert channels, people & organizations
         $max_search_levels = 3;
         $metadata_this = array(
-            'p___13339' => array(),
-            'p___13897' => array(),
+            'p___13207' => array(),
         );
 
         //SOURCE PROFILE
@@ -573,39 +572,18 @@ class E_model extends CI_Model
             'x__down' => $e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')).')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        ), array('x__up'), 0) as $e__profile){
+        ), array(), 0) as $e__profile){
 
-
-            if($e__profile['e__id']==13897){
-                //EXPERT CONTENT
-                if (!isset($metadata_this['p___13897'][$e['e__id']])) {
-                    $metadata_this['p___13897'][$e['e__id']] = $e;
-                }
-            } elseif($e__profile['e__id']==13339) {
-                //EXPERT AUTHORS
-                $e['x__message'] = $e__profile['x__message']; //Update Description
-                if (!isset($metadata_this['p___13339'][$e['e__id']])) {
-                    $metadata_this['p___13339'][$e['e__id']] = $e;
-                }
+            if(in_array($e__profile['x__up'], $this->config->item('n___13207')) && !in_array($e['e__id'], $metadata_this['p___13207'])){
+                array_push($metadata_this['p___13207'], $e['e__id']);
             }
 
             //Go another level?
             if($level < $max_search_levels){
-
-                $metadata_recursion = $this->E_model->metadata_experts($e__profile, ($level + 1));
-
-                //CONTENT CHANNELS
-                foreach($metadata_recursion['p___13897'] as $e__id => $e_content) {
-                    if (!isset($metadata_this['p___13897'][$e__id])) {
-                        $metadata_this['p___13897'][$e__id] = $e_content;
-                    }
-                }
-
-                //EXPERT PEOPLE/ORGANIZATIONS
-                foreach($metadata_recursion['p___13339'] as $e__id => $e_expert) {
-                    if (!isset($metadata_this['p___13339'][$e__id])) {
-                        $metadata_this['p___13339'][$e__id] = $e_expert;
+                $metadata_recursion = $this->E_model->metadata_leaderboard($e__profile, ($level + 1));
+                foreach($metadata_recursion['p___13207'] as $e__id) {
+                    if (!in_array($e__id, $metadata_this['p___13207'])) {
+                        array_push($metadata_this['p___13207'], $e__id);
                     }
                 }
             }

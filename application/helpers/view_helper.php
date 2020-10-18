@@ -731,7 +731,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
 
         //SOURCES
         $i_stats = i_stats($i['i__metadata']);
-        $count_query = $i_stats['e_count'];
+        $count_query = $i_stats['count_13207'];
 
     } elseif($x__type==12273){
 
@@ -811,7 +811,6 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
     $ui .= '</div>';
 
 
-
     $ui .= ( $can_click ? '</a>' : '' );
 
 
@@ -835,18 +834,19 @@ function view_i_tree_e($i){
     $CI =& get_instance();
     $i_stats = i_stats($i['i__metadata']);
     $ui = '';
-    $ui .= '<div class="list-group" style="margin-bottom:41px;">';
-    foreach($CI->config->item('e___13207') as $e__id => $m2){
-        //$ui .= '<div class="headline"><span class="icon-block">'.$m2['m__icon'].'</span>'.$i_stats['count_'.$e__id].' '.$m2['m__title'].'</div>';
-        //$ui .= '<div class="list-group" style="margin-bottom:41px;">';
-        if(isset($i_stats['count_'.$e__id]) && $i_stats['count_'.$e__id]>0){
-            foreach ($i_stats['array_'.$e__id] as $e) {
-                $ui .= view_e_basic($e, $m2);
-            }
+    if($i_stats['count_13207']>0){
+        $ui .= '<div class="list-group" style="margin-bottom:41px;">';
+        foreach ($CI->X_model->fetch(array(
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__up IN (' . join(',', $CI->config->item('n___13207')) . ')' => null, //LEADERBOARD Source
+            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__id IN (' . join(',', $i_stats['array_13207']) . ')' => null,
+        ), array('x__down'), 0, 0, array('e__weight' => 'DESC')) as $e) {
+            $ui .= view_e($e);
         }
-        //$ui .= '</div>';
+        $ui .= '</div>';
     }
-    $ui .= '</div>';
     return $ui;
 }
 
@@ -1432,43 +1432,6 @@ function view_x_progress($completion_rate, $i, $show_micro){
     return $ui;
 
 }
-
-function view_e_basic($e, $m = false)
-{
-
-    if(isset($e['e__type'])){
-        return view_e($e);
-    }
-
-    $CI =& get_instance();
-
-
-    $ui = '<div class="list-group-item itemsource no-side-padding '.(superpower_active(10939, true) ? ' itemsource ' : '').'">';
-
-
-
-    if(!$m){
-        $e___13207 = $CI->config->item('e___13207');
-        $m = $e___13207[4430]; //Members
-    }
-
-    $ui .= '<span class="icon-block pull-right grey" title="'.$m['m__title'].(isset($e['x__message']) && strlen($e['x__message']) > 0 ? ' '.$e['x__message'] : '').'" data-toggle="tooltip" data-placement="top">' . view_e__icon($m['m__icon']) . '</span>';
-
-    if(1 || superpower_active(10939, true)){
-        $ui .= '<div class="inline-block pull-left width-icon-block">';
-        $ui .= '<span class="icon-block"><a href="/@'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</a></span>';
-        $ui .= '<a class="title-block title-no-right montserrat '.extract_icon_color($e['e__icon']).'" href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>';
-        $ui .= '</div>';
-    } else {
-        $ui .= '<span class="icon-block">' . view_e__icon($e['e__icon']) . '</span>';
-        $ui .= '<b class="title-block title-no-right">'.$e['e__title'].'</b>';
-    }
-
-
-    $ui .= '<div class="doclear">&nbsp;</div></div>';
-    return $ui;
-}
-
 
 
 

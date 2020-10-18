@@ -674,7 +674,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12274){
 
-        $counter = $i_stats['e_count'];
+        $counter = $i_stats['count_13207'];
 
         //List Sources:
         $focus_tab .= view_i_tree_e($i_focus);
@@ -695,21 +695,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__left' => $i_focus['i__id'],
             ), array('x__source'), view_memory(6404,11064), 0, array( 'x__id' => 'DESC' )) as $discover_e){
-                $focus_tab .= view_e_basic($discover_e);
+                $focus_tab .= view_e($discover_e);
             }
         }
-
-    } elseif($x__type==7545){
-
-        //CERTIFICATES
-        $counter = $i_stats['count_7545'];
-        $focus_tab .= '<div class="i_content padded"><div class="msg">Completion could earn you some of the following certificates:</div></div>';
-        $focus_tab .= '<div class="list-group" style="margin-bottom:41px;">';
-        foreach ($i_stats['array_7545'] as $e) {
-            $e['x__message'] = ''; //Remove for this
-            $focus_tab .= view_e_basic($e);
-        }
-        $focus_tab .= '</div>';
 
     } elseif( in_array($x__type, $this->config->item('n___4485')) ){
 

@@ -982,10 +982,8 @@ class I_model extends CI_Model
             'p___6170' => 1,
             'p___6161' => $i['i__duration'],
             'p___6162' => $i['i__duration'],
-            'p___4430' => array(),
-            'p___13339' => array(),
-            'p___13897' => array(),
-            'p___7545' => array(),
+            'p___13207' => array(), //Leaderboard Sources
+            'p___7545' => array(), //Certificates
             'p___ids' => array($i['i__id']), //Keeps Track of the IDs scanned here
         );
 
@@ -1006,37 +1004,21 @@ class I_model extends CI_Model
                         'e__id' => $fetched_e[$e_ref_field],
                     ));
 
-                    $e_metadata_experts = $this->E_model->metadata_experts($ref_e[0]);
+                    $e_metadata_leaderboard = $this->E_model->metadata_leaderboard($ref_e[0]);
 
-                    //CONTENT CHANNELS
-                    foreach($e_metadata_experts['p___13897'] as $e__id => $e_content) {
-                        if (!isset($metadata_this['p___13897'][$e__id])) {
-                            $metadata_this['p___13897'][$e__id] = $e_content;
+                    foreach($e_metadata_leaderboard['p___13207'] as $e__id) {
+                        if (!in_array($e__id, $metadata_this['p___13207'])) {
+                            array_push($metadata_this['p___13207'], intval($e__id));
                         }
                     }
 
-                    //EXPERT PEOPLE/ORGANIZATIONS
-                    foreach($e_metadata_experts['p___13339'] as $e__id => $e_expert) {
-                        if (!isset($metadata_this['p___13339'][$e__id])) {
-                            $metadata_this['p___13339'][$e__id] = $e_expert;
-                        }
-                    }
                 }
             }
 
             //USERS:
-            if (!isset($metadata_this['p___4430'][$fetched_e['x__source']])) {
-                //Fetch User:
-                foreach($this->X_model->fetch(array(
-                    'x__up' => 4430, //MENCH USERS
-                    'x__down' => $fetched_e['x__source'],
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array('x__down'), 1) as $u){
-                    $metadata_this['p___4430'][$fetched_e['x__source']] = $u;
-                }
+            if (!in_array($fetched_e['x__source'], $metadata_this['p___13207'])) {
+                array_push($metadata_this['p___13207'], intval($fetched_e['x__source']));
             }
-
         }
 
 
@@ -1047,8 +1029,8 @@ class I_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $e) {
-            if (!isset($metadata_this['p___7545'][$e['e__id']])) {
-                $metadata_this['p___7545'][$e['e__id']] = $e;
+            if (!in_array($e['e__id'], $metadata_this['p___7545'])) {
+                array_push($metadata_this['p___7545'], intval($e['e__id']));
             }
         }
 
@@ -1069,16 +1051,8 @@ class I_model extends CI_Model
         ), array('x__right'), 0) as $is_next){
 
             //Users
-            if (!isset($metadata_this['p___4430'][$is_next['x__source']])) {
-                //Fetch User:
-                foreach($this->X_model->fetch(array(
-                    'x__up' => 4430, //MENCH USERS
-                    'x__down' => $is_next['x__source'],
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array('x__down'), 1) as $u){
-                    $metadata_this['p___4430'][$is_next['x__source']] = $u;
-                }
+            if (!in_array($is_next['x__source'], $metadata_this['p___13207'])) {
+                array_push($metadata_this['p___13207'], intval($is_next['x__source']));
             }
 
             //RECURSION
@@ -1137,31 +1111,17 @@ class I_model extends CI_Model
             }
 
 
-            //USERS
-            foreach($metadata_recursion['p___4430'] as $e__id => $e) {
-                if (!isset($metadata_this['p___4430'][$e__id])) {
-                    $metadata_this['p___4430'][$e__id] = $e;
-                }
-            }
-
-            //EXPERT CONTENT
-            foreach($metadata_recursion['p___13897'] as $e__id => $e_content) {
-                if (!isset($metadata_this['p___13897'][$e__id])) {
-                    $metadata_this['p___13897'][$e__id] = $e_content;
-                }
-            }
-
-            //EXPERT SOURCES
-            foreach($metadata_recursion['p___13339'] as $e__id => $e_expert) {
-                if (!isset($metadata_this['p___13339'][$e__id])) {
-                    $metadata_this['p___13339'][$e__id] = $e_expert;
+            //LEADERBOARD SOURCES
+            foreach($metadata_recursion['p___13207'] as $e__id) {
+                if (!in_array($e__id, $metadata_this['p___13207'])) {
+                    array_push($metadata_this['p___13207'], intval($e__id));
                 }
             }
 
             //CERTIFICATES
-            foreach($metadata_recursion['p___7545'] as $e__id => $e_certificate) {
-                if (!isset($metadata_this['p___7545'][$e__id])) {
-                    $metadata_this['p___7545'][$e__id] = $e_certificate;
+            foreach($metadata_recursion['p___7545'] as $e__id) {
+                if (!in_array($e__id, $metadata_this['p___7545'])) {
+                    array_push($metadata_this['p___7545'], intval($e__id));
                 }
             }
 
@@ -1194,9 +1154,7 @@ class I_model extends CI_Model
             'i___6170' => intval($metadata_this['p___6170']),
             'i___6161' => intval($metadata_this['p___6161']),
             'i___6162' => intval($metadata_this['p___6162']),
-            'i___4430' => $metadata_this['p___4430'], //Mench Ideators
-            'i___13339' => $metadata_this['p___13339'], //Expert Authors
-            'i___13897' => $metadata_this['p___13897'], //Expert Content
+            'i___13207' => $metadata_this['p___13207'], //LEADERBOARD Sources
             'i___7545' => $metadata_this['p___7545'], //Certificates
         ));
 
