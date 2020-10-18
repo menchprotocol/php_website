@@ -929,14 +929,6 @@ class X_model extends CI_Model
                 );
             }
 
-            //Make sure not featured, or have superpower to do so:
-            if($referenced_e==12138 && !superpower_active(13994, true)){
-                return array(
-                    'status' => 0,
-                    'message' => view_unauthorized_message(13994),
-                );
-            }
-
             //Set as source reference:
             $e_reference_fields[$e_reference_keys[$referenced_key]] = intval($referenced_e);
 
