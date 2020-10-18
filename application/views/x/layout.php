@@ -701,6 +701,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = view_number($discovered[0]['totals']);
 
         if($counter > 0){
+            $focus_tab .= '<div class="list-group" style="margin-bottom:41px;">';
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
@@ -708,6 +709,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             ), array('x__source'), view_memory(6404,11064), 0, array( 'x__id' => 'DESC' )) as $discover_e){
                 $focus_tab .= view_e($discover_e);
             }
+            $focus_tab .= '</div>';
         }
 
     } elseif( in_array($x__type, $this->config->item('n___4485')) ){
