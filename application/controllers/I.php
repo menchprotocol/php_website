@@ -577,7 +577,7 @@ class I extends CI_Controller {
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->X_model->message_compile($_POST['x__message'], $user_e, $_POST['note_type_id'], $_POST['i__id']);
+        $msg_validation = $this->X_model->message_compile($_POST['x__message'], false, $user_e, $_POST['note_type_id'], $_POST['i__id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -822,7 +822,7 @@ class I extends CI_Controller {
         }
 
         //Validate new message:
-        $msg_validation = $this->X_model->message_compile($_POST['x__message'], $user_e, $messages[0]['x__type'], $_POST['i__id']);
+        $msg_validation = $this->X_model->message_compile($_POST['x__message'], false, $user_e, $messages[0]['x__type'], $_POST['i__id']);
         if (!$msg_validation['status']) {
 
             //There was some sort of an error:
@@ -850,7 +850,7 @@ class I extends CI_Controller {
         return view_json(array(
             'status' => 1,
             'delete_from_ui' => 0,
-            'message' => $this->X_model->message_send($msg_validation['input_message'], $user_e, $_POST['i__id']),
+            'message' => $this->X_model->message_send($msg_validation['input_message'], false, $user_e, $_POST['i__id']),
         ));
 
     }

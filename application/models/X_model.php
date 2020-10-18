@@ -681,7 +681,7 @@ class X_model extends CI_Model
     }
 
 
-    function message_send($message_input, $user_e = array(), $message_i__id = 0, $simple_version = false)
+    function message_send($message_input, $is_discovery_mode, $user_e = array(), $message_i__id = 0, $simple_version = false)
     {
 
         /*
@@ -711,7 +711,7 @@ class X_model extends CI_Model
         }
 
         //Validate message:
-        $msg_validation = $this->X_model->message_compile($message_input, $user_e, 0, $message_i__id, false, $simple_version);
+        $msg_validation = $this->X_model->message_compile($message_input, $is_discovery_mode, $user_e, 0, $message_i__id, false, $simple_version);
 
 
         //Did we have ane error in message validation?
@@ -742,7 +742,7 @@ class X_model extends CI_Model
     }
 
 
-    function message_compile($message_input, $user_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true, $simple_version = false)
+    function message_compile($message_input, $is_discovery_mode, $user_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true, $simple_version = false)
     {
 
         /*
@@ -998,7 +998,6 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $is_discovery_mode = !superpower_active(10939, true);
             $is_single_link = ( $is_discovery_mode && count($e_urls)==1 && $e_media_count==1 && $has_text );
             if(!$is_single_link){
                 //For single link it would be linked directly
@@ -1008,7 +1007,7 @@ class X_model extends CI_Model
             $tooltip_class = ( $tooltip_info ? ' class="inline-block underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="top"' : ' class="inline-block"' );
 
             //USER REFERENCE
-            if($is_discovery_mode || $is_current_e || $simple_version){ //( $is_discovery_mode && !superpower_active(10939, true)) ||
+            if($is_discovery_mode || $is_current_e || $simple_version){
 
                 //NO LINK so we can maintain focus...
                 if((!$has_text && $is_current_e) || (!$has_text && $is_discovery_mode && $e_count>0 && $e_media_count==$e_count /* All media */)){

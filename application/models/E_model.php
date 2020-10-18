@@ -562,7 +562,6 @@ class E_model extends CI_Model
     function metadata_leaderboard($e, $level = 1){
 
         //Goes through $max_search_levels of sources to find expert channels, people & organizations
-        $max_search_levels = 3;
         $metadata_this = array(
             'p___13207' => array(),
         );
@@ -574,16 +573,16 @@ class E_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $e__profile){
 
-            if(in_array($e__profile['x__up'], $this->config->item('n___13207')) && !in_array($e['e__id'], $metadata_this['p___13207'])){
-                array_push($metadata_this['p___13207'], $e['e__id']);
+            if(!in_array($e['e__id'], $metadata_this['p___13207']) && in_array($e__profile['x__up'], $this->config->item('n___13207'))){
+                array_push($metadata_this['p___13207'], intval($e['e__id']));
             }
 
             //Go another level?
-            if($level < $max_search_levels){
+            if($level < view_memory(6404,14051)){
                 $metadata_recursion = $this->E_model->metadata_leaderboard($e__profile, ($level + 1));
                 foreach($metadata_recursion['p___13207'] as $e__id) {
                     if (!in_array($e__id, $metadata_this['p___13207'])) {
-                        array_push($metadata_this['p___13207'], $e__id);
+                        array_push($metadata_this['p___13207'], intval($e__id));
                     }
                 }
             }

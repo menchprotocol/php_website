@@ -448,7 +448,7 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
                 $focus_tab .= '<div class="row top-margin" id="list_13550">';
                 foreach($list_i as $count => $item){
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-                    $focus_tab .= view_i_cover(12273, $item, false, ( $show_message ? $this->X_model->message_send($item['x__message']) : null), $e);
+                    $focus_tab .= view_i_cover(12273, $item, false, ( $show_message ? $this->X_model->message_send($item['x__message'], true) : null), $e);
                 }
                 $focus_tab .= '</div>';
 

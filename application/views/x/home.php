@@ -16,7 +16,7 @@
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i['i__id'],
     ), array(), 0, 0, array('x__sort' => 'ASC')) as $x) {
-        echo $this->X_model->message_send( $x['x__message'] );
+        echo $this->X_model->message_send( $x['x__message'], true);
     }
     echo '</div>';
 

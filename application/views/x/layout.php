@@ -261,6 +261,7 @@ echo '<div style="margin-bottom:41px;">';
 foreach($messages as $message_x) {
     echo $this->X_model->message_send(
         $message_x['x__message'],
+        true,
         $user_e
     );
 }
@@ -618,7 +619,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                     $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__icon'].'</span>'.$e___11035[13977]['m__title'].'</div>';
 
-                    $focus_tab .= '<div class="previous_answer">' . $this->X_model->message_send($x_completes[0]['x__message']) . '</div>';
+                    $focus_tab .= '<div class="previous_answer">' . $this->X_model->message_send($x_completes[0]['x__message'], true) . '</div>';
 
                     $focus_tab .= '</div>';
 

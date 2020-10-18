@@ -255,7 +255,7 @@ function view_i_note($x__type, $x, $note_e = false)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $x['x__id'] . '">';
-    $ui .= $CI->X_model->message_send($x['x__message'], $user_e, $x['x__right']);
+    $ui .= $CI->X_model->message_send($x['x__message'], false, $user_e, $x['x__right']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -885,7 +885,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         $ui .= '<div class="messages-'.$i_x['i__id'].' hidden">';
         foreach($messages as $msg) {
             $ui .= '<div class="tip_bubble">';
-            $ui .= $CI->X_model->message_send($msg['x__message']);
+            $ui .= $CI->X_model->message_send($msg['x__message'], false);
             $ui .= '</div>';
         }
         $ui .= '</div>';
@@ -1070,7 +1070,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
 
     if($message_input && trim($message_input)!=$CI->uri->segment(1)){
-        $ui .= '<div class="i-footer hideIfEmpty">' . $CI->X_model->message_send($message_input, $user_e) . '</div>';
+        $ui .= '<div class="i-footer hideIfEmpty">' . $CI->X_model->message_send($message_input, false, $user_e) . '</div>';
     }
 
 
@@ -1621,7 +1621,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
             //DISCOVER PROGRESS
             $ui .= '<div class="message_content paddingup" style="margin-left: 0;">';
-            $ui .= $CI->X_model->message_send($e['x__message']);
+            $ui .= $CI->X_model->message_send($e['x__message'], false);
             $ui .= '</div>';
 
         }

@@ -206,7 +206,7 @@ function current_mench(){
     $first_segment = $CI->uri->segment(1);
     $first_letter = substr($first_segment, 0, 1);
 
-    if($first_letter=='@' || $first_segment=='e' || $first_segment=='app' || $first_segment=='me'){
+    if($first_letter=='@' || $first_segment=='e' || $first_segment=='app' || $first_segment=='account' || $first_segment=='signin'){
 
         return array(
             'x_id' => 12274,
@@ -523,6 +523,7 @@ function i_fetch_description($i__id){
             //This is it, return:
             return $CI->X_model->message_send(
                 join(' ', array_slice(explode(' ', trim(preg_replace('/\s\s+/', ' ', $fetched_e['x__message']))), 0, view_memory(6404,13556))).( substr_count($fetched_e['x__message'], ' ') >= (view_memory(6404,13556) - 1) ? '...' : '' ), //Limit Length
+                true,
                 superpower_assigned(),
                 0,
                 true
