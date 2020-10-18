@@ -830,25 +830,6 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
 }
 
 
-function view_i_tree_e($i){
-    $CI =& get_instance();
-    $i_stats = i_stats($i['i__metadata']);
-    $ui = '';
-    if($i_stats['count_13207']>0){
-        $ui .= '<div class="list-group" style="margin-bottom:41px;">';
-        foreach ($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__up IN (' . join(',', $CI->config->item('n___13207')) . ')' => null, //LEADERBOARD Source
-            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-            'e__id IN (' . join(',', $i_stats['array_13207']) . ')' => null,
-        ), array('x__down'), 0, 0, array('e__weight' => 'DESC')) as $e) {
-            $ui .= view_e($e);
-        }
-        $ui .= '</div>';
-    }
-    return $ui;
-}
 
 function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $previous_i__type){
 
