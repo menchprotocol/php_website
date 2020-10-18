@@ -648,7 +648,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $time_estimate = view_i_tree_stats($i_stats, $show_nav, false);
 
             //NEXT IDEAS
-            $focus_tab .= view_i_list(13542, $in_my_x, $i_focus, $is_next, $user_e);
+            $focus_tab .= view_i_list(0, $in_my_x, $i_focus, $is_next, $user_e); //13542
             $focus_tab .= ( $time_estimate && count($is_next) ? '<div class="i_estimates">'.$time_estimate.'</div>' : '' );
 
             //IDEA PREVIOUS
@@ -683,7 +683,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__up IN (' . join(',', $this->config->item('n___13207')) . ')' => null, //LEADERBOARD Source
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'e__id IN (' . join(',', $i_stats['array_13207']) . ')' => null,
-            ), array('x__down'), 0, 0, array('e__weight' => 'DESC'), '*') as $e) {
+            ), array('x__down'), 0, 0, array('e__weight' => 'DESC')) as $e) {
                 $focus_tab .= view_e($e);
             }
             $focus_tab .= '</div>';

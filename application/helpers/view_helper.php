@@ -1171,8 +1171,10 @@ function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e){
     $common_prefix = '';
     $ui = '';
 
-    $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[$list_e__id]['m__icon'].'</span>'.$e___11035[$list_e__id]['m__title'].'</div>';
-    $ui .= '<div class="doclear">&nbsp;</div>';
+    if($list_e__id > 0){
+        $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[$list_e__id]['m__icon'].'</span>'.$e___11035[$list_e__id]['m__title'].'</div>';
+        $ui .= '<div class="doclear">&nbsp;</div>';
+    }
 
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
     $ui .= '<div class="pull-right right-adj i_x_stats"><a href="javascript:void(0);" onclick="$(\'.i_x_stats\').toggleClass(\'hidden\')" class="montserrat '.extract_icon_color($e___11035[13689]['m__icon']).'" title="'.$e___11035[13689]['m__title'].'">'.$e___11035[13689]['m__icon'].'</a></div>';
