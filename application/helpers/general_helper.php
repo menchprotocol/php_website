@@ -93,13 +93,13 @@ function extract_e_references($x__message)
     foreach(preg_split('/\s+/', $x__message) as $word) {
         if (filter_var($word, FILTER_VALIDATE_URL)) {
 
-            if(substr_count($word,':')==3){
+            if(substr_count($word,'|')==2){
                 //See if this is it:
-                $times = explode(':',$word);
-                if(is_numeric($times[2]) && is_numeric($times[3]) && $word==$times[0].':'.$times[1].':'.$times[2].':'.$times[3]){
+                $times = explode('|',$word);
+                if(is_numeric($times[1]) && is_numeric($times[2]) && $word==$times[0].'|'.$times[1].'|'.$times[2]){
                     $string_references['ref_time_found'] = true;
-                    $string_references['ref_time_start'] = intval($times[2]);
-                    $string_references['ref_time_end'] = intval($times[3]);
+                    $string_references['ref_time_start'] = intval($times[1]);
+                    $string_references['ref_time_end'] = intval($times[2]);
                     $word = $times[0].':'.$times[1];
                 }
             }
@@ -152,6 +152,22 @@ function second_calc($string){
         return (intval($parts[0]) * 60) + intval($parts[1]);
     } else {
         return intval($string);
+    }
+}
+
+function second_calc2($string){
+    $parts = explode(':',$string);
+    if(count($parts)==3 && $parts[0] < 60 && $parts[1] < 60 && $parts[2] < 60){
+        //HH:MM:SS
+        return (intval($parts[0]) * 3600) + (intval($parts[1]) * 60) + intval($parts[2]);
+    } elseif(count($parts)==2 && $parts[0] < 60 && $parts[1] < 60){
+        //MM:SS
+        return (intval($parts[0]) * 60) + intval($parts[1]);
+    } elseif(count($parts)==1 && $parts[0] < 60) {
+        //SS
+        return intval($parts[0]);
+    } else {
+        return 0;
     }
 }
 
