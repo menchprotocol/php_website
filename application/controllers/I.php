@@ -187,7 +187,7 @@ class I extends CI_Controller {
         ));
 
         //Go back to idea:
-        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY Joined & Notified other members of your arrival.</div>');
+        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY Joined & Notified relevant members of your intention to contribute.</div>');
 
     }
 
