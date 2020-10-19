@@ -51,7 +51,7 @@ function view_i_tree_stats($i_stats, $noshow_idea){
     }
 
 
-    return ( $ui ? '<span class="montserrat doupper" style="padding-right:8px;">'.$ui.'</span>' : $ui );
+    return ( $ui ? '<span class="montserrat doupper">'.$ui.'</span>' : $ui );
 }
 
 function view_db_field($field_name){
