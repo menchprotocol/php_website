@@ -804,7 +804,7 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
     $ui .= '<div class="row">';
 
 
-        $ui .= '<div class="col-9 col-sm-10">';
+        $ui .= '<div class="col-9 col-sm-10 col-md-8">';
             $ui .= ( $can_click ? '<a href="/' . $i['i__id'] .'" class="itemdiscover">' : '' );
             $ui .= '<span class="icon-block">'.$e___12467[$x_mode]['m__icon'].'</span>';
             $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
@@ -813,7 +813,7 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
 
 
         //MENCH COINS
-        $ui .= '<div class="col-3 col-sm-2">';
+        $ui .= '<div class="col-3 col-sm-2 col-md-4">';
             $ui .= '<div class="row">';
                 $ui .= '<div class="col-md-4 show-max">'.view_coins_i(12274, $i).'</div>';
                 $ui .= '<div class="col-md-4 col">'.view_coins_i(12273, $i).'</div>';
@@ -1511,7 +1511,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $ui .= '<div class="row">';
 
 
-        $ui .= '<div class="col-9 col-sm-10">';
+        $ui .= '<div class="col-9 col-sm-10 col-md-8">';
 
             //SOURCE ICON
             $ui .= '<a href="'.$e_url.'" '.( $is_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</span></a>';
@@ -1539,7 +1539,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
 
-        $ui .= '<div class="col-3 col-sm-2">';
+        $ui .= '<div class="col-3 col-sm-2 col-md-4">';
 
             //MENCH COINS
             $ui .= '<div class="row">';
