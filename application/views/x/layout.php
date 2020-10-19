@@ -67,7 +67,6 @@ $i_completion_rate = array();
 $in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
 $previous_level_id = 0; //The ID of the Idea one level up, if any
 $superpower_10939 = superpower_active(10939, true);
-$show_nav = $superpower_10939 || !$in_my_x || $in_my_discoveries || 1; //Showing at all times
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 
@@ -579,7 +578,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 $has_stats = false;
                 if (count($is_next) > 1) {
                     //NEXT IDEAS
-                    $has_stats = view_i_tree_stats($i_stats, $show_nav);
+                    $has_stats = view_i_tree_stats($i_stats, true);
                     $focus_tab .= '<div class="i_estimates hideIfEmpty">' . $has_stats . '</div>';
                     $has_substance = true;
                 }
@@ -646,7 +645,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         } else {
 
             //TIME ESTIMATE
-            $time_estimate = view_i_tree_stats($i_stats, $show_nav);
+            $time_estimate = view_i_tree_stats($i_stats, true);
 
             //NEXT IDEAS
             $focus_tab .= view_i_list(0, $in_my_x, $i_focus, $is_next, $user_e); //13542
@@ -774,7 +773,7 @@ $tab_pills .= '</ul>';
 
 
 
-if($tab_pill_count > 1 && $show_nav){
+if($tab_pill_count > 1){
     //DISCOVER TABS
     echo $tab_pills;
 }
