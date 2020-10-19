@@ -1531,7 +1531,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             //MENCH COINS
             $ui .= '<div class="row">';
                 $ui .= '<div class="col-4 show-max">'.view_coins_e(12274, $e['e__id']).'</div>';
-                $ui .= '<div class="col">'.view_coins_e(12273, $e['e__id']).'</div>';
+                $ui .= '<div class="col-4">'.view_coins_e(12273, $e['e__id']).'</div>';
                 $ui .= '<div class="col-4 show-max">'.view_coins_e(6255, $e['e__id']).'</div>';
             $ui .= '</div>';
 
