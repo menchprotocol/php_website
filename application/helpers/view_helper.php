@@ -1436,7 +1436,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     if($is_hidden && !superpower_active(12701, true)){
         //PRIVATE INFORMATION:
-        return '<div class="list-group-item no-side-padding itemsource"><span class="icon-block">'.$e___11035[4755]['m__icon'].'</span>'.$e___11035[4755]['m__title'].'</div>';
+        return '<div class="list-group-item no-side-padding itemsource '. $extra_class  . '"><span class="icon-block">'.$e___11035[4755]['m__icon'].'</span>'.$e___11035[4755]['m__title'].'</div>';
     }
 
 
