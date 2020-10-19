@@ -792,14 +792,6 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
     //Build View:
     $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' cover_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
 
-    $ui .= ( $can_click ? '<a href="/' . $i['i__id'] .'" class="itemdiscover">' : '' );
-
-    $ui .= '<span class="icon-block">'.$e___12467[$x_mode]['m__icon'].'</span>';
-    $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).($i_stats['i___6169'] > 0 ? '&nbsp;<span class="inline-block '.extract_icon_color($e___12467[12273]['m__icon']).' montserrat" title="'.$e___12467[12273]['m__title'].'" data-toggle="tooltip" data-placement="top">+'.view_number($i_stats['i___6170']).'</span>': '').'</b>';
-
-    $ui .= ( $can_click ? '</a>' : '' );
-
-
     //Give option to remove saved ideas:
     if($show_editor && $is_saved){
         $ui .= '<div class="note-editor edit-off">';
@@ -809,6 +801,27 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
         $ui .= '</div>';
     }
 
+    $ui .= '<div class="row">';
+
+
+        $ui .= '<div class="col-md-8 col-9">';
+            $ui .= ( $can_click ? '<a href="/' . $i['i__id'] .'" class="itemdiscover">' : '' );
+            $ui .= '<span class="icon-block">'.$e___12467[$x_mode]['m__icon'].'</span>';
+            $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
+            $ui .= ( $can_click ? '</a>' : '' );
+        $ui .= '</div>';
+
+
+        //MENCH COINS
+        $ui .= '<div class="col-md-4 col-3">';
+            $ui .= '<div class="row">';
+                $ui .= '<div class="col-md-4 show-max">'.view_coins_i(12274, $i).'</div>';
+                $ui .= '<div class="col-md-4 col">'.view_coins_i(12273, $i).'</div>';
+                $ui .= '<div class="col-md-4 show-max">'.view_coins_i(6255, $i).'</div>';
+            $ui .= '</div>';
+        $ui .= '</div>';
+
+    $ui .= '</div>';
 
     $ui .= '</div>';
 
@@ -1020,7 +1033,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
 
     $ui .= '<div class="row">';
-    $ui .= '<div class="col-md-8 col-9">';
+    $ui .= '<div class="col-sm col-md">';
 
         //IDEA Transaction:
         $href = '/~'.$i['i__id'].( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
@@ -1042,12 +1055,12 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
         }
     $ui .= '</div>';
-    $ui .= '<div class="col-md-4 col-3">';
+    $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
         //MENCH COINS
         $ui .= '<div class="row">';
-            $ui .= '<div class="col-md-4 show-max">'.view_coins_i(12274, $i).'</div>';
-            $ui .= '<div class="col-md-4 col">'.view_coins_i(12273, $i).'</div>';
-            $ui .= '<div class="col-md-4 show-max">'.view_coins_i(6255,  $i).'</div>';
+            $ui .= '<div class="col-4">'.view_coins_i(12274, $i).'</div>';
+            $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
+            $ui .= '<div class="col-4">'.view_coins_i(6255,  $i).'</div>';
         $ui .= '</div>';
 
     $ui .= '</div>';
