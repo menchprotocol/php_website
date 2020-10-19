@@ -1682,7 +1682,7 @@ class E extends CI_Controller
 
         if(intval($_POST['sign_i__id']) > 0){
 
-            $_POST['sign_i__id'] = '/x/x_start/'.$_POST['sign_i__id'];
+            $sign_url = '/x/x_start/'.$_POST['sign_i__id'];
 
         } elseif (strlen($_POST['referrer_url']) > 0) {
 
