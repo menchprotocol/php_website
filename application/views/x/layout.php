@@ -426,7 +426,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 }
 
                 //List Children if any:
-                $focus_tab .= view_i_list(13542, $in_my_x, $i_focus, $is_next, $user_e);
+                $focus_tab .= view_i_list(0,, $in_my_x, $i_focus, $is_next, $user_e);
                 $has_substance = count($is_next);
 
 
@@ -573,13 +573,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             } elseif ($i_focus['i__type'] == 6677) {
 
                 //DISCOVER ONLY
-                $focus_tab .= view_i_list(13542, $in_my_x, $i_focus, $is_next, $user_e);
+                $focus_tab .= view_i_list(0,, $in_my_x, $i_focus, $is_next, $user_e);
 
                 $has_substance = count($is_next);
                 $has_stats = false;
                 if (count($is_next) > 1) {
                     //NEXT IDEAS
-                    $has_stats = view_i_tree_stats($i_stats, $show_nav, false);
+                    $has_stats = view_i_tree_stats($i_stats, $show_nav);
                     $focus_tab .= '<div class="i_estimates hideIfEmpty">' . $has_stats . '</div>';
                     $has_substance = true;
                 }
@@ -596,7 +596,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 if (count($x_completes)) {
                     //Next Ideas:
-                    $focus_tab .= view_i_list(13542, $in_my_x, $i_focus, $is_next, $user_e);
+                    $focus_tab .= view_i_list(0,, $in_my_x, $i_focus, $is_next, $user_e);
                 }
 
                 $focus_tab .= '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
@@ -624,7 +624,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $focus_tab .= '</div>';
 
                     //Any child ideas?
-                    $focus_tab .= view_i_list(13542, $in_my_x, $i_focus, $is_next, $user_e);
+                    $focus_tab .= view_i_list(0,, $in_my_x, $i_focus, $is_next, $user_e);
 
                 } else {
 
@@ -646,7 +646,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         } else {
 
             //TIME ESTIMATE
-            $time_estimate = view_i_tree_stats($i_stats, $show_nav, false);
+            $time_estimate = view_i_tree_stats($i_stats, $show_nav);
 
             //NEXT IDEAS
             $focus_tab .= view_i_list(0, $in_my_x, $i_focus, $is_next, $user_e); //13542
