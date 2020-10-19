@@ -1434,15 +1434,9 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $e_url = '/@'.$e['e__id'];
 
 
-    if(!$user_e && (!$is_public || !$is_x_published)){
-        //Not logged in, so should only see published:
-        return false;
-    } elseif($is_hidden && !superpower_assigned(12701)){
-        //Cannot see this private discover:
-        return false;
-    } elseif($is_hidden && !superpower_active(12701, true)){
-        //They don't have the needed superpower:
-        return false;
+    if($is_hidden && !superpower_active(12701, true)){
+        //PRIVATE INFORMATION:
+        return '<div class="list-group-item no-side-padding itemsource"><span class="icon-block">'.$e___11035[4755]['m__icon'].'</span>'.$e___11035[4755]['m__title'].'</div>';
     }
 
 
