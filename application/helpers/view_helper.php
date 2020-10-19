@@ -1020,7 +1020,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
 
     $ui .= '<div class="row">';
-    $ui .= '<div class="col-sm col-md">';
+    $ui .= '<div class="col-md-8 col-9">';
 
         //IDEA Transaction:
         $href = '/~'.$i['i__id'].( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
@@ -1042,12 +1042,12 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
         }
     $ui .= '</div>';
-    $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
+    $ui .= '<div class="col-md-4 col-3">';
         //MENCH COINS
         $ui .= '<div class="row">';
-            $ui .= '<div class="col-4">'.view_coins_i(12274, $i).'</div>';
-            $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
-            $ui .= '<div class="col-4">'.view_coins_i(6255,  $i).'</div>';
+            $ui .= '<div class="col-md-4 show-max">'.view_coins_i(12274, $i).'</div>';
+            $ui .= '<div class="col-md-4 col">'.view_coins_i(12273, $i).'</div>';
+            $ui .= '<div class="col-md-4 show-max">'.view_coins_i(6255,  $i).'</div>';
         $ui .= '</div>';
 
     $ui .= '</div>';
