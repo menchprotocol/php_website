@@ -757,7 +757,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
-    $default_active = ( $counter && in_array($x__type, $this->config->item('n___13300')) );
+    $default_active = ( in_array($x__type, $this->config->item('n___13300')) );
     $tab_pill_count++;
 
 
