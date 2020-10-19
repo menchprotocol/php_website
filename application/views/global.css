@@ -415,6 +415,10 @@ img.no-radius {
     margin-left: 41px;
 }
 
+.modal-footer{
+    display: block;
+}
+
 .x-info{
     padding:21px 0 21px 41px;
     margin:0;
