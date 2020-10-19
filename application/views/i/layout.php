@@ -226,11 +226,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if($e_of_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {
             $focus_tab .= '<div class="list-group-item list-adder no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___11035[13914]['m__icon'] . '</span></span>
+                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___11035[14055]['m__icon'] . '</span></span>
                     <input type="text"
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"                          
-                           placeholder="' . $e___11035[13914]['m__title'] . '">
+                           placeholder="' . $e___11035[14055]['m__title'] . '">
                 </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">'.view_memory(6404,13912).'</div></div>';
         }
 

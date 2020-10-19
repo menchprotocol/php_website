@@ -341,12 +341,12 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
 
                 $focus_tab .= '<div id="new_11029" current-count="'.$counter.'" class="list-group-item list-adder no-side-padding '.superpower_active(10939).'">
                         <div class="input-group border">
-                            <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11029input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__icon'].'</span></a>
+                            <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11029input\').focus();"><span class="icon-block">'.$e___11035[14054]['m__icon'].'</span></a>
                             <input type="text"
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
                                    id="New11029input"
                                    maxlength="' . view_memory(6404,6197) . '"
-                                   placeholder="'.$e___11035[13914]['m__title'].'">
+                                   placeholder="'.$e___11035[14054]['m__title'].'">
                         </div><div class="algolia_pad_search hidden pad_expand">'.view_memory(6404,13914).'</div></div>';
 
             } else {
