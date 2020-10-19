@@ -1498,7 +1498,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $ui .= '<div class="row">';
 
 
-        $ui .= '<div class="col-sm col-md">';
+        $ui .= '<div class="col-sm-6 col-md-8 col-10">';
 
             //SOURCE ICON
             $ui .= '<a href="'.$e_url.'" '.( $is_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</span></a>';
@@ -1526,13 +1526,13 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
 
-        $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
+        $ui .= '<div class="col-sm-6 col-md-4 col-2">';
 
             //MENCH COINS
             $ui .= '<div class="row">';
-                $ui .= '<div class="col-4">'.view_coins_e(12274, $e['e__id']).'</div>';
-                $ui .= '<div class="col-4">'.view_coins_e(12273, $e['e__id']).'</div>';
-                $ui .= '<div class="col-4">'.view_coins_e(6255, $e['e__id']).'</div>';
+                $ui .= '<div class="col-4 show-max">'.view_coins_e(12274, $e['e__id']).'</div>';
+                $ui .= '<div class="col">'.view_coins_e(12273, $e['e__id']).'</div>';
+                $ui .= '<div class="col-4 show-max">'.view_coins_e(6255, $e['e__id']).'</div>';
             $ui .= '</div>';
 
         $ui .= '</div>';
