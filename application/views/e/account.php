@@ -55,7 +55,7 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
     } elseif ($acc_e__id == 10957 /* Superpowers */) {
 
-        if(count($this->session->userdata('session_superpowers_assigned')) >= 2){
+        if(count($this->session->userdata('session_superpowers_unlocked')) >= 2){
             //Mass Toggle Option:
             $focus_tab .= '<div class="btn-group pull-right" role="group" style="margin:0 0 10px 0;">
                   <a href="javascript:void(0)" onclick="account_toggle_all(1)" class="btn btn-far"><i class="fas fa-toggle-on"></i></a>
@@ -67,24 +67,24 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
         $focus_tab .= '<div class="list-group">';
         foreach($this->config->item('e___10957') as $superpower_e__id => $m3){
 
-            $is_assigned = in_array($superpower_e__id, $this->session->userdata('session_superpowers_assigned'));
+            $is_unlocked = in_array($superpower_e__id, $this->session->userdata('session_superpowers_unlocked'));
             $public_link = in_array($superpower_e__id, $this->config->item('n___6404'));
             $extract_icon_color = extract_icon_color($m3['m__icon']);
             $anchor = '<span class="icon-block '.$extract_icon_color.'">'.$m3['m__icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m__title'].'</b><span class="superpower-message">'.$m3['m__message'].'</span>';
 
-            if($is_assigned){
+            if($is_unlocked){
 
                 //SUPERPOWERS UNLOCKED
                 $progress_type_id=14008;
                 $focus_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( superpower_active($superpower_e__id, true) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
-            } elseif(!$is_assigned && $public_link){
+            } elseif(!$is_unlocked && $public_link){
 
                 //SUPERPOWERS AVAILABLE
                 $progress_type_id=14011;
                 $focus_tab .= '<a class="list-group-item no-side-padding" href="'.view_memory(6404,$superpower_e__id).'"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
-            } elseif(!$is_assigned && !$public_link){
+            } elseif(!$is_unlocked && !$public_link){
 
                 //SUPERPOWERS UNAVAILABLE
                 $progress_type_id=14009;

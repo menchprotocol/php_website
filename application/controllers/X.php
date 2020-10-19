@@ -16,7 +16,7 @@ class X extends CI_Controller
 
     function index(){
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if($user_e){
             redirect_message('/@'.$user_e['e__id']);
         }
@@ -71,7 +71,7 @@ class X extends CI_Controller
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
         $query_offset = (($page_num-1)*view_memory(6404,11064));
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
 
         $message = '';
 
@@ -199,7 +199,7 @@ class X extends CI_Controller
     function x_set_text(){
 
         //Authenticate User:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         $e___12112 = $this->config->item('e___12112');
 
         if (!$user_e) {
@@ -446,7 +446,7 @@ class X extends CI_Controller
 
         //Adds Idea to the Users Discovery
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
         //Check to see if added to Discovery for logged-in users:
@@ -474,7 +474,7 @@ class X extends CI_Controller
 
     function x_next($i__id){
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if(!$user_e){
             return redirect_message('/signin/');
         }
@@ -538,7 +538,7 @@ class X extends CI_Controller
 
     function i_next($i__id = 0){
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if(!$user_e){
             return redirect_message('/signin/');
         }
@@ -644,7 +644,7 @@ class X extends CI_Controller
 
         } elseif(!in_array($is[0]['i__type'], $this->config->item('n___7355') /* PUBLIC */)){
 
-            return redirect_message((superpower_assigned(10939) ? '/~' . $i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not published yet.</div>');
+            return redirect_message((superpower_unlocked(10939) ? '/~' . $i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not published yet.</div>');
 
         }
 
@@ -669,7 +669,7 @@ class X extends CI_Controller
         //TODO: MERGE WITH FUNCTION i_note_file()
 
         //Authenticate User:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if (!$user_e) {
 
             return view_json(array(
@@ -773,7 +773,7 @@ class X extends CI_Controller
 
     function x_reply(){
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if (!$user_e) {
             return view_json(array(
                 'status' => 0,
@@ -833,7 +833,7 @@ class X extends CI_Controller
 
     function x_select(){
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if (!$user_e) {
             return view_json(array(
                 'status' => 0,
@@ -862,7 +862,7 @@ class X extends CI_Controller
     function x_clear_coins($u_id = 0){
 
 
-        $user_e = superpower_assigned(null, true);
+        $user_e = superpower_unlocked(null, true);
         $u_id = ( $u_id > 0 ? $u_id : $user_e['e__id'] );
 
         //Fetch their current progress transactions:
@@ -907,7 +907,7 @@ class X extends CI_Controller
     function go_url($e__id){
 
         //Fetch parent URLs:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         $profiles = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -944,7 +944,7 @@ class X extends CI_Controller
 
         //See if we need to add or remove a highlight:
         //Authenticate User:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if (!$user_e) {
 
             return view_json(array(
@@ -1018,7 +1018,7 @@ class X extends CI_Controller
          *
          * */
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
 
         if (!$user_e) {
             return view_json(array(
@@ -1069,7 +1069,7 @@ class X extends CI_Controller
          *
          * */
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
 
         if (!$user_e) {
             return view_json(array(

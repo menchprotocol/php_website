@@ -75,7 +75,7 @@ function extract_e_references($x__message)
 
     //Analyzes a message text to extract Source References (Like @123) and URLs
     $CI =& get_instance();
-    $user_e = superpower_assigned();
+    $user_e = superpower_unlocked();
 
     //Replace non-ascii characters with space:
     $x__message = preg_replace('/[[:^print:]]/', ' ', $x__message);
@@ -524,7 +524,7 @@ function i_fetch_description($i__id){
             return $CI->X_model->message_send(
                 join(' ', array_slice(explode(' ', trim(preg_replace('/\s\s+/', ' ', $fetched_e['x__message']))), 0, view_memory(6404,13556))).( substr_count($fetched_e['x__message'], ' ') >= (view_memory(6404,13556) - 1) ? '...' : '' ), //Limit Length
                 true,
-                superpower_assigned(),
+                superpower_unlocked(),
                 0,
                 true
             );
@@ -698,7 +698,7 @@ function cookie_check()
 
     date_default_timezone_set(view_memory(6404,11079));
 
-    if(!substr_count($_SERVER['REQUEST_URI'], 'sign') && isset($_COOKIE['mench_auto_login']) && !superpower_assigned()) {
+    if(!substr_count($_SERVER['REQUEST_URI'], 'sign') && isset($_COOKIE['mench_auto_login']) && !superpower_unlocked()) {
         header("Location: " . '/signin?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
         exit;
     }
@@ -744,7 +744,7 @@ function superpower_active($superpower_e__id, $boolean_only = false){
     if( intval($superpower_e__id)>0 ){
 
         $CI =& get_instance();
-        $is_match = (superpower_assigned() ? in_array(intval($superpower_e__id), $CI->session->userdata('session_superpowers_activated')) : false);
+        $is_match = (superpower_unlocked() ? in_array(intval($superpower_e__id), $CI->session->userdata('session_superpowers_activated')) : false);
 
         if($boolean_only){
             return $is_match;
@@ -887,11 +887,11 @@ function i_stats($i__metadata){
 
 function home_url($came_from = null){
     $CI =& get_instance();
-    $user_e = superpower_assigned();
+    $user_e = superpower_unlocked();
     return ( $user_e ? '/@'.$user_e['e__id'] . ( $came_from==6255 ? '?came_from='.$came_from : '' ) : '/' );
 }
 
-function superpower_assigned($superpower_e__id = null, $force_redirect = 0)
+function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
 {
 
     //Authenticates logged-in users with their session information
@@ -1304,7 +1304,7 @@ function source_of_e($e__id, $user_e = array()){
 
     if(!$user_e){
         //Fetch from session:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
     }
 
     if(!$user_e || $e__id < 1){
@@ -1344,7 +1344,7 @@ function e_of_i($i__id, $user_e = array()){
 
     if(!$user_e){
         //Fetch from session:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
     }
 
     if(!$user_e || $i__id < 1){

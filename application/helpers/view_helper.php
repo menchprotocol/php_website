@@ -241,7 +241,7 @@ function view_i_note($x__type, $x, $note_e = false)
 
 
     $CI =& get_instance();
-    $user_e = superpower_assigned();
+    $user_e = superpower_unlocked();
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___11035 = $CI->config->item('e___11035');
@@ -385,7 +385,7 @@ function view_x($x, $is_parent_tr = false)
     $e___4593 = $CI->config->item('e___4593'); //Transaction Type
     $e___4341 = $CI->config->item('e___4341'); //Transaction Table
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
-    $user_e = superpower_assigned();
+    $user_e = superpower_unlocked();
     $superpower_css_12701 = superpower_active(12701); //SUPERPOWER OF DISCOVERY GLASSES
 
 
@@ -772,7 +772,7 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
 {
     //See if user is logged-in:
     $CI =& get_instance();
-    $user_session = superpower_assigned();
+    $user_session = superpower_unlocked();
     $user_e__id = ( (isset($_GET['load__e']) ? $_GET['load__e'] : ( $user_session ? $user_session['e__id'] : 0 ) ));
     $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
 
@@ -965,7 +965,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 {
 
     $CI =& get_instance();
-    $user_e = superpower_assigned();
+    $user_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
 
     //DISCOVER
@@ -1188,7 +1188,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
     $handles_url = (in_array($x__type, $CI->config->item('n___7551')) || in_array($x__type, $CI->config->item('n___4986')));
-    $user_e = superpower_assigned();
+    $user_e = superpower_unlocked();
     $ui = '';
 
     //Header:
@@ -1274,7 +1274,7 @@ function view_shuffle_message($e__id){
 
 function view_unauthorized_message($superpower_e__id = 0){
 
-    $user_e = superpower_assigned($superpower_e__id);
+    $user_e = superpower_unlocked($superpower_e__id);
 
     if(!$user_e){
         if(!$superpower_e__id){
@@ -1320,7 +1320,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $user_input = $focus_e;
-    $user_session = superpower_assigned();
+    $user_session = superpower_unlocked();
     $discovery_mode = $x__type==6255;
     $can_click = !strlen($message_input); //Otherwise top part would show content
 
@@ -1403,7 +1403,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 {
 
     $CI =& get_instance();
-    $user_e = superpower_assigned();
+    $user_e = superpower_unlocked();
     $e___6177 = $CI->config->item('e___6177'); //Source Status
     $e___4592 = $CI->config->item('e___4592');
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status

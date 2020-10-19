@@ -150,7 +150,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     //Have Needed Superpowers?
     $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
-    if(count($superpower_actives) && !superpower_assigned(end($superpower_actives))){
+    if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
         continue;
     }
 

@@ -17,7 +17,7 @@ class I extends CI_Controller {
     function i_create(){
 
         $e___6201 = $this->config->item('e___6201'); //Idea Table
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked(10939);
         if (!$user_e) {
 
             return view_json(array(
@@ -98,7 +98,7 @@ class I extends CI_Controller {
          * comes through /iID
          *
          * */
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked(10939);
         return redirect_message(( $user_e ? '/~' : '/' ) . $i__id . ( $user_e && isset($_GET['load__e']) ? '?load__e='.$_GET['load__e'] : '' ) );
     }
 
@@ -114,7 +114,7 @@ class I extends CI_Controller {
         }
 
 
-        $user_e = superpower_assigned(10939); //Idea Pen?
+        $user_e = superpower_unlocked(10939); //Idea Pen?
         $is_public = in_array($is[0]['i__type'], $this->config->item('n___7355'));
 
         if(!$user_e){
@@ -170,7 +170,7 @@ class I extends CI_Controller {
     function i_e_add($i__id){
 
         //Make sure it's a logged in user:
-        $user_e = superpower_assigned(10939, true);
+        $user_e = superpower_unlocked(10939, true);
 
         $this->X_model->create(array(
             'x__type' => 4983, //IDEA SOURCES
@@ -241,7 +241,7 @@ class I extends CI_Controller {
         $delete_element = null;
 
         //Authenticate User:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if (!$user_e) {
             return view_json(array(
                 'status' => 0,
@@ -379,7 +379,7 @@ class I extends CI_Controller {
     function i_remove(){
 
         //Authenticate User:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if (!$user_e) {
             return view_json(array(
                 'status' => 0,
@@ -422,7 +422,7 @@ class I extends CI_Controller {
          * */
 
         //Authenticate User:
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked(10939);
         if (!$user_e) {
             return view_json(array(
                 'status' => 0,
@@ -489,7 +489,7 @@ class I extends CI_Controller {
     {
 
         //Authenticate User:
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked(10939);
         if (!$user_e) {
             view_json(array(
                 'status' => 0,
@@ -538,7 +538,7 @@ class I extends CI_Controller {
     {
 
         //Authenticate User:
-        $user_e = superpower_assigned(); //Superpower not required as it may be just a comment
+        $user_e = superpower_unlocked(); //Superpower not required as it may be just a comment
 
         if (!$user_e) {
 
@@ -618,7 +618,7 @@ class I extends CI_Controller {
         //TODO: MERGE WITH FUNCTION x_upload()
 
         //Authenticate User:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if (!$user_e) {
 
             return view_json(array(
@@ -732,7 +732,7 @@ class I extends CI_Controller {
     {
 
         //Authenticate User:
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked(10939);
         if (!$user_e) {
 
             return view_json(array(
@@ -775,7 +775,7 @@ class I extends CI_Controller {
     {
 
         //Authenticate User:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if (!$user_e) {
             return view_json(array(
                 'status' => 0,
@@ -860,7 +860,7 @@ class I extends CI_Controller {
     function remove_13579(){
 
         //Authenticate User:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if (!$user_e) {
             return view_json(array(
                 'status' => 0,

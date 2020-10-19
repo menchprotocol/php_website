@@ -294,7 +294,7 @@ class X_model extends CI_Model
 
                     if($x_added>0 || $x_edited>0 || $x_deleted>0){
                         //See if Session needs to be updated:
-                        $user_e = superpower_assigned();
+                        $user_e = superpower_unlocked();
                         if($user_e && $user_e['e__id']==$add_fields['x__source']){
                             //Yes, update session:
                             $this->E_model->activate_session($user_e, true);
@@ -756,7 +756,7 @@ class X_model extends CI_Model
 
         //Try to fetch session if recipient not provided:
         if(!isset($user_e['e__id'])){
-            $user_e = superpower_assigned();
+            $user_e = superpower_unlocked();
         }
 
         $e___6177 = $this->config->item('e___6177');

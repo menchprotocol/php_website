@@ -18,7 +18,7 @@ class E extends CI_Controller
     function index()
     {
         //source:
-        $user_e = superpower_assigned(null);
+        $user_e = superpower_unlocked(null);
 
         //Log View:
         if($user_e){
@@ -53,13 +53,13 @@ class E extends CI_Controller
 
         //Make sure not a private discover:
         if(in_array($e__id, $this->config->item('n___4755'))){
-            $user_e = superpower_assigned(12701, true);
+            $user_e = superpower_unlocked(12701, true);
         } else {
-            $user_e = superpower_assigned();
+            $user_e = superpower_unlocked();
         }
 
         //Do we have any mass action to process here?
-        if (superpower_assigned(12703) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
+        if (superpower_unlocked(12703) && isset($_POST['mass_action_e__id']) && isset($_POST['mass_value1_'.$_POST['mass_action_e__id']]) && isset($_POST['mass_value2_'.$_POST['mass_action_e__id']])) {
 
             //Process mass action:
             $process_mass_action = $this->E_model->mass_update($e__id, intval($_POST['mass_action_e__id']), $_POST['mass_value1_'.$_POST['mass_action_e__id']], $_POST['mass_value2_'.$_POST['mass_action_e__id']], $user_e['e__id']);
@@ -111,7 +111,7 @@ class E extends CI_Controller
     {
 
         //Authenticate User:
-        $user_e = superpower_assigned(13422);
+        $user_e = superpower_unlocked(13422);
 
         //Validate Source:
         $es = $this->E_model->fetch(array(
@@ -156,7 +156,7 @@ class E extends CI_Controller
     {
 
         //Authenticate User:
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked(10939);
         if (!$user_e) {
             view_json(array(
                 'status' => 0,
@@ -226,7 +226,7 @@ class E extends CI_Controller
     {
 
         //Authenticate User:
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked(10939);
         if (!$user_e) {
             return view_json(array(
                 'status' => 0,
@@ -307,7 +307,7 @@ class E extends CI_Controller
     function remove_10673(){
 
         //Auth user and check required variables:
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked(10939);
 
         if (!$user_e) {
             return view_json(array(
@@ -334,7 +334,7 @@ class E extends CI_Controller
 
     function e_account(){
 
-        $user_e = superpower_assigned(null, 1);
+        $user_e = superpower_unlocked(null, 1);
 
         //Log View:
         $this->X_model->create(array(
@@ -357,7 +357,7 @@ class E extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked(10939);
 
         if (!$user_e) {
             return view_json(array(
@@ -482,7 +482,7 @@ class E extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked(10939);
 
         if (!$user_e) {
             return view_json(array(
@@ -705,7 +705,7 @@ class E extends CI_Controller
     function e_toggle_superpower($superpower_e__id){
 
         //Toggles the advance session variable for the user on/off for logged-in users:
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked();
         $superpower_e__id = intval($superpower_e__id);
         $e___10957 = $this->config->item('e___10957');
 
@@ -713,10 +713,10 @@ class E extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10939),
+                'message' => view_unauthorized_message(),
             ));
 
-        } elseif(!superpower_assigned($superpower_e__id)){
+        } elseif(!in_array($superpower_e__id, $this->session->userdata('session_superpowers_unlocked'))){
 
             //Access not authorized:
             return view_json(array(
@@ -766,7 +766,7 @@ class E extends CI_Controller
     {
 
         //Auth user and check required variables:
-        $user_e = superpower_assigned(10939);
+        $user_e = superpower_unlocked(10939);
         $success_message = 'Saved'; //Default, might change based on what we do...
         $is_valid_icon = is_valid_icon($_POST['e__icon']);
 
@@ -1052,7 +1052,7 @@ class E extends CI_Controller
     function e_fetch_canonical(){
 
         //Auth user and check required variables:
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
 
         if (!$user_e) {
             return view_json(array(
@@ -1096,7 +1096,7 @@ class E extends CI_Controller
          *
          * */
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
 
         if (!$user_e) {
             return view_json(array(
@@ -1201,7 +1201,7 @@ class E extends CI_Controller
     function e_avatar()
     {
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
 
         if (!$user_e) {
             return view_json(array(
@@ -1261,7 +1261,7 @@ class E extends CI_Controller
     function e_email()
     {
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
 
         if (!$user_e) {
             return view_json(array(
@@ -1389,7 +1389,7 @@ class E extends CI_Controller
     function e_password()
     {
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
 
         if (!$user_e) {
             return view_json(array(
@@ -1494,11 +1494,11 @@ class E extends CI_Controller
     function signin($i__id = 0){
 
         //Check to see if they are previously logged in?
-        if(superpower_assigned()) {
+        if(superpower_unlocked()) {
 
             //Lead user and above, go to console:
             if($i__id > 0){
-                return redirect_message(( superpower_assigned(10939) ? '/i/i_go/' : home_url() ) . $i__id);
+                return redirect_message(( superpower_unlocked(10939) ? '/i/i_go/' : home_url() ) . $i__id);
             } else {
                 return redirect_message(home_url());
             }
@@ -2066,7 +2066,7 @@ class E extends CI_Controller
 
             if($memory_detected && $is_u_request){
 
-                $user_e = superpower_assigned(12699, true);
+                $user_e = superpower_unlocked(12699, true);
 
                 //Needs extra superpowers?
                 $e___6287 = $this->config->item('e___6287'); //MENCH APP
@@ -2166,7 +2166,7 @@ class E extends CI_Controller
     function app_7264(){
 
         //Authenticate User:
-        $user_e = superpower_assigned(12700);
+        $user_e = superpower_unlocked(12700);
 
         if (!$user_e) {
             return view_json(array(

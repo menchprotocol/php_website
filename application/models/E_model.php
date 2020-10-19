@@ -24,7 +24,7 @@ class E_model extends CI_Model
         $session_data = array(
             'session_profile' => $e,
             'session_parent_ids' => array(),
-            'session_superpowers_assigned' => array(),
+            'session_superpowers_unlocked' => array(),
             'session_superpowers_activated' => array(),
         );
 
@@ -83,8 +83,8 @@ class E_model extends CI_Model
 
             if(in_array($e_profile['e__id'], $this->config->item('n___10957'))){
 
-                //It's assigned!
-                array_push($session_data['session_superpowers_assigned'], intval($e_profile['e__id']));
+                //It's unlocked!
+                array_push($session_data['session_superpowers_unlocked'], intval($e_profile['e__id']));
 
                 //Was the latest toggle to de-activate? If not, assume active:
                 $last_advance_settings = $this->X_model->fetch(array(
@@ -404,7 +404,7 @@ class E_model extends CI_Model
 
     function add_source($e__id){
 
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         if(!$user_e){
             return false;
         }
@@ -418,7 +418,7 @@ class E_model extends CI_Model
         ));
 
         //Review source later:
-        if(!superpower_assigned(13422)){
+        if(!superpower_unlocked(13422)){
 
             //Add Pending Review:
             $this->X_model->create(array(

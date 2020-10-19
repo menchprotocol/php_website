@@ -1,6 +1,6 @@
 <?php
 
-$user_e = superpower_assigned();
+$user_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
 $i__id = is_numeric($first_segment) && $first_segment!=view_memory(6404,14002) ? intval($first_segment) : 0;
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
@@ -204,8 +204,8 @@ if(!isset($hide_header)){
                         echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
                         foreach($this->config->item('e___12500') as $x__type => $m) {
 
-                            //Skip superpowers if not assigned
-                            if($x__type==10957 && !count($this->session->userdata('session_superpowers_assigned'))){
+                            //Skip superpowers if not unlocked
+                            if($x__type==10957 && !count($this->session->userdata('session_superpowers_unlocked'))){
                                 continue;
                             }
 

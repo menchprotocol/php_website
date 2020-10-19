@@ -59,7 +59,7 @@ if($is_u_request && !isset($_GET['send_email'])){
 
     //Should we limit the scope?
     if($is_u_request){
-        $user_e = superpower_assigned();
+        $user_e = superpower_unlocked();
         $subscriber_filters['x__down'] = $user_e['e__id'];
     }
 
