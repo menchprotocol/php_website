@@ -57,13 +57,13 @@ function e_toggle_superpower(superpower_id){
             $('.superpower-frame-'+superpower_id).toggleClass('active');
 
             //TOGGLE:
-            var index = js_session_superpowers_assigned.indexOf(superpower_id);
+            var index = js_session_superpowers_activated.indexOf(superpower_id);
             if (index > -1) {
                 //Delete it:
-                js_session_superpowers_assigned.splice(index, 1);
+                js_session_superpowers_activated.splice(index, 1);
             } else {
                 //Not there, add it:
-                js_session_superpowers_assigned.push(superpower_id);
+                js_session_superpowers_activated.push(superpower_id);
             }
         }
     });

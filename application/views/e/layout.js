@@ -254,7 +254,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            if(js_session_superpowers_assigned.includes(13422)){
+            if(js_session_superpowers_activated.includes(13422)){
                 e__add(0, is_e_parent);
             }
             return true;
@@ -272,7 +272,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 's__type=12274' + ( js_session_superpowers_assigned.includes(13422) ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
+                    filters: 's__type=12274' + ( js_session_superpowers_activated.includes(13422) ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
                     hitsPerPage: ( validURL(q) ? 1 : 21 ),
                 }, function (error, content) {
                     if (error) {
@@ -288,7 +288,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        if(js_session_superpowers_assigned.includes(13422)){
+                        if(js_session_superpowers_activated.includes(13422)){
                             return '<a href="javascript:void(0);" onclick="e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + '<b class="source montserrat">' + data.query.toUpperCase() + '</b>' + '</a>';
                         } else {
                             return '';
