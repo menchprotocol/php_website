@@ -50,7 +50,7 @@ foreach($this->X_model->fetch(array(
     echo view_i($previous_i, $i_focus['i__id'], true, e_of_i($previous_i['i__id']));
 }
 if($show_previous){
-    echo '<div class="list-group-item list-adder '.superpower_active(( $is_in_my_ideas ? 12700 : 10939 )).'">
+    echo '<div class="list-group-item list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[14014]['m__icon'].'</span></span>
                         <input type="text"

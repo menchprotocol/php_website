@@ -862,7 +862,7 @@ if($in_my_x){
         if(i_is_startable($i_focus)){
 
             //OPEN TO REGISTER
-            echo '<a class="btn btn-lrg btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__icon'].'</a>';
+            echo '<a class="btn btn-lrg btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m__icon'].' '.$e___11035[4235]['m__title'].'</a>';
 
         } else {
 
@@ -872,7 +872,7 @@ if($in_my_x){
 
                 foreach($top_startable as $start_i){
                     //Give link to go to top:
-                    echo '<div class="bottom-margin"><a class="btn btn-lrg btn-discover" href="/'.$start_i['i__id'].'">'.$start_i['i__title'].' '.$e___11035[14022]['m__icon'].'</a></div>';
+                    echo '<div class="bottom-margin"><a class="btn btn-lrg btn-discover" href="/'.$start_i['i__id'].'">'.$e___11035[14022]['m__icon'].' '.$start_i['i__title'].'</a></div>';
                 }
 
             } else {
