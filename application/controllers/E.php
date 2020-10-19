@@ -1867,7 +1867,8 @@ class E extends CI_Controller
 
         $has_i = ( intval($_POST['sign_i__id']) > 0 );
         if($has_i){
-
+            $is = $this->I_model->fetch(array('i__id' => $_POST['sign_i__id']));
+            $has_i = count($is);
         }
 
 
@@ -1898,13 +1899,13 @@ class E extends CI_Controller
 
         ##Email Subject
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-        $subject = ( $has_i ? '| MENCH' : 'MENCH '.$e___11035[11068]['m__title'] );
+        $subject = $e___11035[11068]['m__title'].' | MENCH';
 
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$u_emails[0]['e__title']).' 👋</div><br /><br />';
 
         $magic_x_expiry_hours = (view_memory(6404,11065)/3600);
-        $html_message .= '<div>Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).':</div>';
+        $html_message .= '<div>Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).( $has_i ? ' to '.$is[0]['i__title'] : '' ).':</div>';
         $magic_url = $this->config->item('base_url').'/e/e_magic_sign/' . $reset_x['x__id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
 
