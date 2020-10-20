@@ -7,6 +7,7 @@ echo '<div class="mini-header">Search String:</div>';
 echo '<input type="text" class="form-control border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
 
 
+
 $search_for_set = (isset($_GET['search_for']) && strlen($_GET['search_for'])>0);
 $replace_with_set = ((isset($_GET['replace_with']) && strlen($_GET['replace_with'])>0) || (isset($_GET['append_text']) && strlen($_GET['append_text'])>0));
 $replace_with_confirmed = false;
@@ -19,14 +20,7 @@ if($search_for_set){
     ));
 
     //List the matching search:
-    echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
-
-
-    echo '<tr class="panel-title down-border">';
-    echo '<td style="text-align: left;" colspan="4">'.count($matching_results).' Sources Found</td>';
-    echo '</tr>';
-
-
+    echo '<div>'.count($matching_results).' Sources Found</div>';
     if(count($matching_results) < 1){
 
         $replace_with_set = false;
@@ -38,13 +32,7 @@ if($search_for_set){
         $confirmation_keyword = 'Replace '.count($matching_results);
         $replace_with_confirmed = (isset($_GET['confirm_statement']) && strtolower($_GET['confirm_statement'])==strtolower($confirmation_keyword));
 
-        echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-        echo '<td style="text-align: left;">#</td>';
-        echo '<td style="text-align: left;">Matching Search</td>';
-        echo '<td style="text-align: left;">'.( $replace_with_set ? 'Replacement' : '' ).'</td>';
-        echo '<td style="text-align: left;">&nbsp;</td>';
-        echo '</tr>';
-
+        echo '<div class="list-group">';
         foreach($matching_results as $count=>$en){
 
             if($replace_with_set){
@@ -60,27 +48,12 @@ if($search_for_set){
                 }
             }
 
-            echo '<tr class="panel-title down-border">';
-            echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__type'], true, 'right').' <a href="/@'.$en['e__id'].'">'.$en['e__title'].'</a></td>';
-
-            if($replace_with_set){
-
-                echo '<td style="text-align: left;">'.$new_outcome.'</td>';
-                echo '<td style="text-align: left;">'.( $replace_with_confirmed ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '').'</td>';
-            } else {
-
-                echo '<td style="text-align: left;"></td>';
-                echo '<td style="text-align: left;"></td>';
-            }
-
-
-            echo '</tr>';
-
+            echo view_e($en, false, null, false, false, null, view_ordinal($count) . ( $replace_with_set ? $new_outcome . ( $replace_with_confirmed ? ' [UPDATED]' : '') : ''));
         }
+        echo '</div>';
+
     }
 
-    echo '</table>';
 }
 
 

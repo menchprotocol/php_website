@@ -152,21 +152,11 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
             if ($video_id) {
 
+                //See if we have start & end time
                 $string_references = extract_e_references($full_message);
-
                 if($string_references['ref_time_found']){
-
                     $start_time = $string_references['ref_time_start'];
                     $end_time = $string_references['ref_time_end'];
-
-                } elseif($is_embed){
-
-                    if(is_numeric(one_two_explode('start=','&',$url))){
-                        $start_time = intval(one_two_explode('start=','&',$url));
-                    }
-                    if(is_numeric(one_two_explode('end=','&',$url))){
-                        $end_time = intval(one_two_explode('end=','&',$url));
-                    }
                 }
 
                 //Set the Clean URL:
@@ -1412,7 +1402,7 @@ function view_x_progress($completion_rate, $i, $show_micro){
 
 
 
-function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = false, $source_of_e = false, $common_prefix = null)
+function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = false, $source_of_e = false, $common_prefix = null, $message_input = null)
 {
 
     $CI =& get_instance();
@@ -1616,8 +1606,9 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         }
     }
 
-
-
+    if($message_input){
+        $ui .= '<div class="message_content paddingup" style="margin-left: 0;">'.$message_input.'</div>';
+    }
 
 
     $ui .= '</div>';
