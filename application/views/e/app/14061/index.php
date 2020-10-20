@@ -10,7 +10,8 @@ echo '<div class="list-group list-grey">';
 foreach($custom_query as $x){
     echo view_x($x);
     $parts = explode(':',$x['x__message']);
-    if(count($parts)==3 && second_calc($parts[1])>0 && second_calc($parts[2])>0){
+    if(count($parts)==3 && second_calc($parts[1])>=0 && second_calc($parts[2])>0){
+
         if($parts[1]>=60){
             echo '<div class="discover montserrat">1 NEED ADJUSTMENT!!!!!!!!</div>';
             $x['x__message'] = str_replace(':'. $parts[1],':'.floor($parts[1]/60) .'.'. ( fmod($parts[1],60)<10 ? '0' : '' ) . fmod($parts[1],60),$x['x__message']);
