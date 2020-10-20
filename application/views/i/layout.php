@@ -121,7 +121,7 @@ echo '<div class="inline-block pull-left left-half-margin '.superpower_active(12
 
 //PREVIEW DISCOVERY
 if(!$is_north_star) {
-    echo '<div class="inline-block pull-right" style="margin-right:41px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;"><span class="show-max">'.$e___11035[13562]['m__title'].' </span>'.$e___11035[13562]['m__icon'].'</a></div>';
+    echo '<div class="inline-block pull-right" style="margin-right:41px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;" data-toggle="tooltip" data-placement="right" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__icon'].'</a></div>';
 }
 
 echo '<div class="doclear">&nbsp;</div>';
