@@ -1868,10 +1868,6 @@ i, .btn .show-max {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
-    .hideIfEmptymin:empty {
-        display: none !important;
-    }
-
     .superpower-message{
         display: block;
         padding:5px 41px;
