@@ -18,8 +18,9 @@ foreach($custom_query as $x){
         }
         if($parts[2]>=60){
             echo '<div class="discover montserrat">2 NEED ADJUSTMENT!!!!!!!!</div>';
-            $x['x__message'] = str_replace(':'. $parts[2],':'.floor($parts[2]/60) .'.'.fmod($parts[2],60),$x['x__message']);
+            $x['x__message'] = str_replace(':'. $parts[2],':'.floor($parts[2]/60) .'.'. ( fmod($parts[2],60)<10 ? '0' : '' ).fmod($parts[2],60),$x['x__message']);
         }
+
         $new_message = str_replace('.',':',str_replace(':','|',$x['x__message']));
         echo '<div class="idea montserrat">REPLACE WITH: '.$new_message.'</div>';
 
