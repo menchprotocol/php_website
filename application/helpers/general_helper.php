@@ -103,12 +103,13 @@ function extract_e_references($x__message)
                     $string_references['ref_time_start'] = second_calc($times[1]);
                     $string_references['ref_time_end'] = second_calc($times[2]);
                 }
-                die($string_references['ref_time_start'].'/'.$string_references['ref_time_end']);
             }
 
             array_push($string_references['ref_urls'], $word);
 
         } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1, 1))) {
+
+            echo 2;
 
             $e__id = intval(substr($word, 1));
             array_push($string_references['ref_e'], $e__id);
@@ -135,26 +136,29 @@ function extract_e_references($x__message)
         $string_references['ref_time_end'] = 0;
     }
 
+    print_r($string_references);
+    die();
 
     return $string_references;
 }
 
 
 function second_calc($string){
+    echo $string;
+    $seconds = -1; //Error
     $parts = explode(':',$string);
     if(count($parts)==3 && $parts[0] < 60 && $parts[1] < 60 && $parts[2] < 60){
         //HH:MM:SS
-        return (intval($parts[0]) * 3600) + (intval($parts[1]) * 60) + intval($parts[2]);
+        $seconds = (intval($parts[0]) * 3600) + (intval($parts[1]) * 60) + intval($parts[2]);
     } elseif(count($parts)==2 && $parts[0] < 60 && $parts[1] < 60){
         //MM:SS
-        return (intval($parts[0]) * 60) + intval($parts[1]);
+        $seconds = (intval($parts[0]) * 60) + intval($parts[1]);
     } elseif(count($parts)==1 && $parts[0] < 60) {
         //SS
-        return intval($parts[0]);
-    } else {
-        //Invalid Format:
-        return -1;
+        $seconds = intval($parts[0]);
     }
+    echo '->'.$seconds.'|||';
+    return $seconds;
 }
 
 
