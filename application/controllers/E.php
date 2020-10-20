@@ -2061,21 +2061,25 @@ class E extends CI_Controller
             }
 
             boost_power();
-            $user_e = false;
+            $user_e = superpower_unlocked();
             $is_u_request = isset($_SERVER['SERVER_NAME']);
 
             if($memory_detected && $is_u_request){
-
-                $user_e = superpower_unlocked(12699, true);
-
-                //Needs extra superpowers?
+                //Needs superpowers?
                 $e___6287 = $this->config->item('e___6287'); //MENCH APP
                 $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__profile']);
                 if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                     die(view_unauthorized_message(end($superpower_actives)));
                 }
-
             }
+
+
+            //Log Transaction
+            $this->X_model->create(array(
+                'x__source' => ( !$is_u_request ? 7274 : $user_e['e__id'] ),
+                'x__type' => 14067, //MENCH APP LOADED
+                'x__up' => $app_e__id,
+            ));
 
 
             //This is also duplicated in app_frame to pass-on to app file:
