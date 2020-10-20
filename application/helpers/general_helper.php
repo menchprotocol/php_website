@@ -89,6 +89,8 @@ function extract_e_references($x__message)
         'ref_time_end' => 0,
     );
 
+    print_r(preg_split('/\s+/', $x__message));
+    exit;
     //See what we can find:
     foreach(preg_split('/\s+/', $x__message) as $word) {
         if (filter_var($word, FILTER_VALIDATE_URL)) {
