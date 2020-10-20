@@ -25,6 +25,8 @@ foreach($custom_query as $x){
         echo '<div class="idea montserrat">REPLACE WITH: '.$new_message.'</div>';
 
 
+    } else if(count($parts)==4) {
+        echo '<div class="discover montserrat">4match</div>';
     } else {
         echo '<div class="discover montserrat">MISMATCH</div>';
     }
