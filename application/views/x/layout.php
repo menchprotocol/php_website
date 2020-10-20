@@ -89,7 +89,7 @@ if($in_my_x){
                     }
 
                     if($count==0){
-                        //Reuser the first parent for the back button:
+                        //Reuse the first parent for the back button:
                         $previous_level_id = $previous_i__id;
                     }
 

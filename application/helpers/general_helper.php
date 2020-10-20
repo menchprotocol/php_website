@@ -96,11 +96,10 @@ function extract_e_references($x__message)
             if(substr_count($word,'|')==2){
                 //See if this is it:
                 $times = explode('|',$word);
-                if(is_numeric($times[1]) && is_numeric($times[2]) && $word==$times[0].'|'.$times[1].'|'.$times[2]){
+                if(second_calc($times[1])>=0 && second_calc($times[2])>0 && $word==$times[0].'|'.$times[1].'|'.$times[2]){
                     $string_references['ref_time_found'] = true;
-                    $string_references['ref_time_start'] = intval($times[1]);
-                    $string_references['ref_time_end'] = intval($times[2]);
-                    $word = $times[0].':'.$times[1];
+                    $string_references['ref_time_start'] = second_calc($times[1]);
+                    $string_references['ref_time_end'] = second_calc($times[2]);
                 }
             }
 
@@ -111,25 +110,16 @@ function extract_e_references($x__message)
             $e__id = intval(substr($word, 1));
             array_push($string_references['ref_e'], $e__id);
 
-            if(substr_count($word,':')==2){
+            if(substr_count($word,'|')==2){
                 //See if this is it:
-                $times = explode(':',$word);
-                if(is_numeric($times[1]) && is_numeric($times[2]) && $word=='@'.$e__id.':'.$times[1].':'.$times[2]){
+                $times = explode('|',$word);
+                if(second_calc($times[1])>=0 && second_calc($times[2])>0 && $word=='@'.$e__id.'|'.$times[1].'|'.$times[2]){
                     $string_references['ref_time_found'] = true;
                     $string_references['ref_time_start'] = second_calc($times[1]);
                     $string_references['ref_time_end'] = second_calc($times[2]);
                 }
             }
 
-        } elseif (substr($word, 0, 1) == ':' && substr_count($word,':')==2) {
-
-            //See if this is it:
-            $times = explode(':',$word);
-            if(is_numeric($times[1]) && is_numeric($times[2]) && $word==':'.$times[1].':'.$times[2]){
-                $string_references['ref_time_found'] = true;
-                $string_references['ref_time_start'] = second_calc($times[1]);
-                $string_references['ref_time_end'] = second_calc($times[2]);
-            }
         }
     }
 
@@ -146,16 +136,8 @@ function extract_e_references($x__message)
     return $string_references;
 }
 
-function second_calc($string){
-    if(substr_count($string, '.')==1){
-        $parts = explode('.',$string,2);
-        return (intval($parts[0]) * 60) + intval($parts[1]);
-    } else {
-        return intval($string);
-    }
-}
 
-function second_calc2($string){
+function second_calc($string){
     $parts = explode(':',$string);
     if(count($parts)==3 && $parts[0] < 60 && $parts[1] < 60 && $parts[2] < 60){
         //HH:MM:SS
@@ -167,7 +149,8 @@ function second_calc2($string){
         //SS
         return intval($parts[0]);
     } else {
-        return 0;
+        //Invalid Format:
+        return -1;
     }
 }
 
@@ -984,16 +967,10 @@ function i_calc_common_prefix($child_list, $child_field){
 
         //Make sure this is the same word across all ideas:
         $all_the_same = true;
-        $add_colon = false;
         foreach($child_list as $child_item){
             $child_words = explode(' ', $child_item[$child_field]);
 
-            if(substr($word, 0, 1)==':'){
-                $add_colon = true;
-                $word = substr($word, 1);
-            }
-
-            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word || $add_colon || strlen($word)<2){
+            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word || strlen($word)<2){
                 //Not the same:
                 $all_the_same = false;
                 break;
@@ -1003,9 +980,6 @@ function i_calc_common_prefix($child_list, $child_field){
         if($all_the_same){
             $common_prefix .= $word.' ';
         } else {
-            if($add_colon){
-                $common_prefix .= ':';
-            }
             break;
         }
     }
