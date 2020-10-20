@@ -1992,7 +1992,7 @@ i, .btn .show-max {
     display: none !important;
 }
 .list-adder{
-    padding: 7px 0 3px !important;
+    padding: 7px 0 !important;
 }
 .icon-adder{
     margin-top: 3px;
