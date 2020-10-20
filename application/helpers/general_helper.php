@@ -136,9 +136,6 @@ function extract_e_references($x__message)
         $string_references['ref_time_end'] = 0;
     }
 
-    print_r($string_references);
-    die();
-
     return $string_references;
 }
 
