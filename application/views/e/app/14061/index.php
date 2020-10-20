@@ -1,6 +1,6 @@
 <?php
 
-//die('retired for now'); //No longer needed
+die('retired for now'); //No longer needed
 
 $custom_query = $this->X_model->fetch(array(
     "x__type IN (10679) AND x__status=6176 AND x__id>=1001502720" => null,
