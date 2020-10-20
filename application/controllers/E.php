@@ -2061,11 +2061,12 @@ class E extends CI_Controller
             }
 
             boost_power();
-            $user_e = superpower_unlocked();
+            $user_e = false;
             $is_u_request = isset($_SERVER['SERVER_NAME']);
 
             if($memory_detected && $is_u_request){
                 //Needs superpowers?
+                $user_e = superpower_unlocked();
                 $e___6287 = $this->config->item('e___6287'); //MENCH APP
                 $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__profile']);
                 if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
@@ -2073,11 +2074,11 @@ class E extends CI_Controller
                 }
             }
 
-
             //Log Transaction
             $this->X_model->create(array(
-                'x__source' => ( !$is_u_request ? 7274 : $user_e['e__id'] ),
+                'x__source' => $user_e['e__id'],
                 'x__type' => 14067, //MENCH APP LOADED
+                'x__up' => ( !$is_u_request ? 7274 : $user_e['e__id'] ),
                 'x__down' => $app_e__id,
             ));
 
