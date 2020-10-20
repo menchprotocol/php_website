@@ -796,7 +796,7 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
 
         $ui .= '<div class="col-9 col-sm-10 col-md-8">';
             $ui .= ( $can_click ? '<a href="/' . $i['i__id'] .'" class="itemdiscover">' : '' );
-            $ui .= '<span class="icon-block">'.( !$completion_rate['completion_percentage'] ? view_i_icon($i) : $e___12467[6255]['m__icon'] /* DISCOVERED */ ).'</span>';
+            $ui .= '<span class="icon-block">'.( !$completion_rate['completion_percentage'] ? view_i_icon($i) : str_replace('idea','discover',view_i_icon($i)) ).'</span>';
             $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
             $ui .= ( $can_click ? '</a>' : '' );
         $ui .= '</div>';
