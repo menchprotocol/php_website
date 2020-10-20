@@ -798,7 +798,7 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
     $ui .= '<div class="row">';
 
 
-        $ui .= '<div class="col-9 col-sm-10 col-md-8">';
+        $ui .= '<div class="col col-sm col-md">';
             $ui .= ( $can_click ? '<a href="/' . $i['i__id'] .'" class="itemdiscover">' : '' );
             $ui .= '<span class="icon-block">'.( !$completion_rate['completion_percentage'] ? view_i_icon($i) : str_replace('idea','discover',view_i_icon($i)) ).'</span>';
             $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
@@ -1510,7 +1510,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $ui .= '<div class="row">';
 
 
-        $ui .= '<div class="col-9 col-sm-10 col-md-8">';
+        $ui .= '<div class="col col-sm col-md">';
 
             //SOURCE ICON
             $ui .= '<a href="'.$e_url.'" '.( $is_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</span></a>';
