@@ -1874,7 +1874,10 @@ i, .btn .show-max {
     }
 
     .big-frame{
-        font-size: 2.3em;
+        font-size: 2.5em;
+    }
+    .extra-big{
+        font-size: 3.4em !important;
     }
 
     .social-footer li{
