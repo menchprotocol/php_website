@@ -141,7 +141,6 @@ function extract_e_references($x__message)
 
 
 function second_calc($string){
-    echo $string;
     $seconds = -1; //Error
     $parts = explode(':',$string);
     if(count($parts)==3 && $parts[0] < 60 && $parts[1] < 60 && $parts[2] < 60){
@@ -154,7 +153,6 @@ function second_calc($string){
         //SS
         $seconds = intval($parts[0]);
     }
-    echo '->'.$seconds.'|||';
     return $seconds;
 }
 
