@@ -93,15 +93,15 @@ function extract_e_references($x__message)
     foreach(preg_split('/\s+/', $x__message) as $word) {
         if (filter_var($word, FILTER_VALIDATE_URL)) {
 
-            echo 1;
-
             if(substr_count($word,'|')==2){
                 //See if this is it:
                 $times = explode('|',$word);
-                if(second_calc($times[1])>=0 && second_calc($times[2])>0 && $word==$times[0].'|'.$times[1].'|'.$times[2]){
+                $ref_time_start = second_calc($times[1]);
+                $ref_time_end = second_calc($times[2]);
+                if($ref_time_start>=0 && $ref_time_end>0 && $ref_time_start<$ref_time_end && $word==$times[0].'|'.$times[1].'|'.$times[2]){
                     $string_references['ref_time_found'] = true;
-                    $string_references['ref_time_start'] = second_calc($times[1]);
-                    $string_references['ref_time_end'] = second_calc($times[2]);
+                    $string_references['ref_time_start'] = $ref_time_start;
+                    $string_references['ref_time_end'] = $ref_time_end;
                 }
             }
 
@@ -109,18 +109,18 @@ function extract_e_references($x__message)
 
         } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1, 1))) {
 
-            echo 2;
-
             $e__id = intval(substr($word, 1));
             array_push($string_references['ref_e'], $e__id);
 
             if(substr_count($word,'|')==2){
                 //See if this is it:
                 $times = explode('|',$word);
-                if(second_calc($times[1])>=0 && second_calc($times[2])>0 && $word=='@'.$e__id.'|'.$times[1].'|'.$times[2]){
+                $ref_time_start = second_calc($times[1]);
+                $ref_time_end = second_calc($times[2]);
+                if($ref_time_start>=0 && $ref_time_end>0 && $ref_time_start<$ref_time_end && $word=='@'.$e__id.'|'.$times[1].'|'.$times[2]){
                     $string_references['ref_time_found'] = true;
-                    $string_references['ref_time_start'] = second_calc($times[1]);
-                    $string_references['ref_time_end'] = second_calc($times[2]);
+                    $string_references['ref_time_start'] = $ref_time_start;
+                    $string_references['ref_time_end'] = $ref_time_end;
                 }
             }
 
