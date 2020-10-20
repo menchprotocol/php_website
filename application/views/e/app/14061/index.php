@@ -15,7 +15,10 @@ foreach($custom_query as $x){
     echo view_x($x);
 
     $x__metadata = unserialize($x['x__metadata']);
-    echo $x__metadata['fields_changed'][0]['before'];
+    $this->X_model->update($x['x__reference'], array(
+        'x__message' => $x__metadata['fields_changed'][0]['before'],
+    ), 1, 10679);
+
     continue;
 
     $parts = explode(':',$x['x__message']);
