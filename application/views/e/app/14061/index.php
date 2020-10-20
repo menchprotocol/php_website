@@ -22,11 +22,12 @@ foreach($custom_query as $x){
         }
 
         $new_message = str_replace('.',':',str_replace(':','|',$x['x__message']));
-        echo '<div class="idea montserrat">REPLACE WITH: '.$new_message.'</div>';
+        $this->X_model->update($x['x__id'], array(
+            'x__message' => $new_message,
+        ), 1, 10679);
 
+        echo '<div class="idea montserrat">REPLACED WITH: '.$new_message.'</div>';
 
-    } else if(count($parts)==4) {
-        echo '<div class="discover montserrat">4match</div>';
     } else {
         echo '<div class="discover montserrat">MISMATCH</div>';
     }
