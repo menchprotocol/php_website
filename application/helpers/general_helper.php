@@ -102,6 +102,7 @@ function extract_e_references($x__message)
                     $string_references['ref_time_found'] = true;
                     $string_references['ref_time_start'] = $ref_time_start;
                     $string_references['ref_time_end'] = $ref_time_end;
+                    $word = $times[0];
                 }
             }
 
