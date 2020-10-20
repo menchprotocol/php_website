@@ -2078,7 +2078,7 @@ class E extends CI_Controller
             $this->X_model->create(array(
                 'x__source' => ( !$is_u_request ? 7274 : $user_e['e__id'] ),
                 'x__type' => 14067, //MENCH APP LOADED
-                'x__up' => $app_e__id,
+                'x__down' => $app_e__id,
             ));
 
 
