@@ -89,13 +89,14 @@ function extract_e_references($x__message)
         'ref_time_end' => 0,
     );
 
-    print_r(preg_split('/\s+/', $x__message));
-    exit;
     //See what we can find:
     foreach(preg_split('/\s+/', $x__message) as $word) {
         if (filter_var($word, FILTER_VALIDATE_URL)) {
 
+            echo 1;
+
             if(substr_count($word,'|')==2){
+                die('2');
                 //See if this is it:
                 $times = explode('|',$word);
                 if(second_calc($times[1])>=0 && second_calc($times[2])>0 && $word==$times[0].'|'.$times[1].'|'.$times[2]){
@@ -104,6 +105,7 @@ function extract_e_references($x__message)
                     $string_references['ref_time_end'] = second_calc($times[2]);
                 }
             }
+            die('3');
 
             array_push($string_references['ref_urls'], $word);
 
