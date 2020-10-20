@@ -237,6 +237,7 @@ function view_i_note($x__type, $x, $note_e = false)
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___11035 = $CI->config->item('e___11035');
     $color_code = trim(extract_icon_color($e___4485[$x__type]['m__icon']));
+    $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
 
 
     //Build the HTML UI:
@@ -260,7 +261,7 @@ function view_i_note($x__type, $x, $note_e = false)
             }
 
             //MODIFY NOTE
-            $ui .= '<span title="'.$e___11035[13574]['m__title'].'"><a href="javascript:void(0);" class="load_i_note_editor" x__id="' . $x['x__id'] . '" onclick="load_i_note_editor(' . $x['x__id'] . ');">'.$e___11035[13574]['m__icon'].'</a></span>';
+            $ui .= '<span title="'.$e___11035[13574]['m__title'].'"><a href="javascript:void(0);" class="load_i_note_editor '.( $supports_emoji ? 'load_emoji_editor' : '' ).'" x__id="' . $x['x__id'] . '" onclick="load_i_note_editor(' . $x['x__id'] . ');">'.$e___11035[13574]['m__icon'].'</a></span>';
 
             //REMOVE NOTE
             $ui .= '<span title="'.$e___11035[13579]['m__title'].'"><a href="javascript:void(0);" onclick="remove_13579(' . $x['x__id'] . ', '.$x['x__type'].')">'.$e___11035[13579]['m__icon'].'</a></span>';
@@ -283,11 +284,13 @@ function view_i_note($x__type, $x, $note_e = false)
         //SAVE
         $ui .= '<td class="table-btn"><a class="btn btn-'.$color_code.'" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');" title="'.$e___11035[14039]['m__title'].'">'.$e___11035[14039]['m__icon'].'</a></td>';
 
-        //EMOJI
-        $ui .= '<td class="table-btn emoji_edit hidden emoji_adjust"><span class="btn btn-grey" id="emoji_pick_id'.$x['x__id'].'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+        if($supports_emoji){
+            //EMOJI
+            $ui .= '<td class="table-btn emoji_edit hidden first_btn"><span class="btn btn-grey" id="emoji_pick_id'.$x['x__id'].'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+        }
 
         //CANCEL
-        $ui .= '<td class="table-btn"><a class="btn btn-grey" title="'.$e___11035[13502]['m__title'].'" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__icon'].'</a></td>';
+        $ui .= '<td class="table-btn '.( !$supports_emoji ? 'first_btn' : '' ).'"><a class="btn btn-grey" title="'.$e___11035[13502]['m__title'].'" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__icon'].'</a></td>';
 
         //TEXT COUNTER
         $ui .= '<td style="padding:10px 0 0 0;"><span id="NoteCounter' . $x['x__id'] . '" class="hidden some-text"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . view_memory(6404,4485) . ' CHARACTERS</span></td>';
@@ -802,11 +805,12 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
         $ui .= '</div>';
 
 
+
         //MENCH COINS
         $ui .= '<div class="col-3 col-sm-2 col-md-4">';
             $ui .= '<div class="row">';
                 $ui .= '<div class="col-md-4 show-max">'.view_coins_i(12274, $i).'</div>';
-                $ui .= '<div class="col-md-4 col">'.view_coins_i(12273, $i).'</div>';
+                $ui .= '<div class="col-md-4 col hideIfEmptymin">'.view_coins_i(12273, $i).'</div>';
                 $ui .= '<div class="col-md-4 show-max">'.view_coins_i(6255, $i).'</div>';
             $ui .= '</div>';
         $ui .= '</div>';
@@ -1189,6 +1193,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
+    $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
     $handles_url = (in_array($x__type, $CI->config->item('n___7551')) || in_array($x__type, $CI->config->item('n___4986')));
     $user_e = superpower_unlocked();
@@ -1224,7 +1229,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
 
 
-        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note input_note_'.$x__type.'" note_type_id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_uploads ? ', DROP FILE' : '' ).( $handles_url ? ', PASTE URL, @SOURCE' : '' ).'" style="margin-top:6px;"></textarea>';
+        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_uploads ? ', DROP FILE' : '' ).( $handles_url ? ', PASTE URL, @SOURCE' : '' ).'" style="margin-top:6px;"></textarea>';
 
 
         //Response result:
@@ -1237,12 +1242,14 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
         //ADD
         $ui .= '<td class="table-btn"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
 
-        //EMOJI
-        $ui .= '<td class="table-btn emoji_adjust"><span class="btn btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+        if($supports_emoji){
+            //EMOJI
+            $ui .= '<td class="table-btn first_btn"><span class="btn btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+        }
 
         //UPLOAD
         if($handles_uploads){
-            $ui .= '<td class="table-btn">';
+            $ui .= '<td class="table-btn '.( !$supports_emoji ? 'first_btn' : '' ).'">';
             $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
             $ui .= '<label class="btn btn-grey file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
             $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
@@ -1534,7 +1541,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             //MENCH COINS
             $ui .= '<div class="row">';
                 $ui .= '<div class="col-md-4 show-max">'.view_coins_e(12274, $e['e__id']).'</div>';
-                $ui .= '<div class="col-md-4 col">'.view_coins_e(12273, $e['e__id']).'</div>';
+                $ui .= '<div class="col-md-4 col hideIfEmptymin">'.view_coins_e(12273, $e['e__id']).'</div>';
                 $ui .= '<div class="col-md-4 show-max">'.view_coins_e(6255, $e['e__id']).'</div>';
             $ui .= '</div>';
 

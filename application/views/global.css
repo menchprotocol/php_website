@@ -1868,6 +1868,10 @@ i, .btn .show-max {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    .hideIfEmptymin:empty {
+        display: none !important;
+    }
+
     .superpower-message{
         display: block;
         padding:5px 41px;
@@ -2023,7 +2027,7 @@ i, .btn .show-max {
     border-radius: 13px;
 }
 
-.emoji_adjust{
+.first_btn{
     padding-top: 5px !important; padding-left: 20px !important;
 }
 

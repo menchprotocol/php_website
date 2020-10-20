@@ -47,7 +47,7 @@ $current_mench = current_mench();
     <script type="module">
         import { EmojiButton } from 'https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@latest/dist/index.min.js';
 
-        $(".new-note").each(function () {
+        $(".emoji-input").each(function () {
             var note_type_id = $(this).attr('note_type_id');
             const picker = new EmojiButton();
             const trigger = document.querySelector('#emoji_pick_type'+note_type_id);
@@ -58,7 +58,7 @@ $current_mench = current_mench();
         });
 
         $(".emoji_edit").removeClass('hidden');
-        $(".load_i_note_editor").click(function () {
+        $(".load_emoji_editor").click(function () {
             var x__id = $(this).attr('x__id');
             const picker = new EmojiButton();
             const trigger = document.querySelector('#emoji_pick_id'+x__id);
