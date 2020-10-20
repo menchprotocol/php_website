@@ -1607,7 +1607,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     }
 
     if($message_input){
-        $ui .= '<div class="message_content paddingup" style="margin-left: 0;">'.$message_input.'</div>';
+        $ui .= '<div class="message_content paddingup" style="margin-left:41px;">'.$message_input.'</div>';
     }
 
 
