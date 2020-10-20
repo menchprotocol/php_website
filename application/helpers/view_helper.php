@@ -778,7 +778,6 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
     $i_stats = i_stats($i['i__metadata']);
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $has_completion = $completion_rate['completion_percentage']>0;
-    $x_mode = ( !$completion_rate['completion_percentage'] ? 12273 /* Still an idea */ : 6255 /* Made some Discovery */ );
 
     //Build View:
     $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' cover_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
@@ -797,7 +796,7 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
 
         $ui .= '<div class="col-9 col-sm-10 col-md-8">';
             $ui .= ( $can_click ? '<a href="/' . $i['i__id'] .'" class="itemdiscover">' : '' );
-            $ui .= '<span class="icon-block">'.$e___12467[$x_mode]['m__icon'].'</span>';
+            $ui .= '<span class="icon-block">'.( !$completion_rate['completion_percentage'] ? view_i_icon($i) : $e___12467[6255]['m__icon'] /* DISCOVERED */ ).'</span>';
             $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
             $ui .= ( $can_click ? '</a>' : '' );
         $ui .= '</div>';
