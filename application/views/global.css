@@ -414,9 +414,7 @@ img.no-radius {
     margin:0 0 10px;
     margin-left: 41px;
 }
-.emoji_adjust{
-    padding-top: 5px !important; padding-left: 20px !important;
-}
+
 
 .modal-footer{
     display: block;
@@ -2024,6 +2022,19 @@ i, .btn .show-max {
     border: 3px solid #222222 !important;
     border-radius: 13px;
 }
+
+.emoji_adjust{
+    padding-top: 5px !important; padding-left: 20px !important;
+}
+
+
+
+
+
+
+
+
+
 
 
 /* DARK - DEFAULT */
