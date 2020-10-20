@@ -10,8 +10,11 @@ echo '<div class="list-group list-grey">';
 foreach($custom_query as $x){
     echo view_x($x);
     $parts = explode(':',$x['x__message']);
-    if(count($parts)==3){
-        echo '<div class="idea montserrat">MATCH</div>';
+    if(count($parts)==3 && second_calc($parts[1])>0 && second_calc($parts[2])>0){
+        if($parts[1]>60 || $parts[2]>60){
+            echo '<div class="discover montserrat">NEED ADJUSTMENT!!!!!!!!</div>';
+        }
+        echo '<div class="idea montserrat">REPLACE WITH: '.str_replace('.',':',str_replace(':','|',$x['x__message'])).'</div>';
     } else {
         echo '<div class="discover montserrat">MISMATCH</div>';
     }
