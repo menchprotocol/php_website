@@ -96,7 +96,6 @@ function extract_e_references($x__message)
             echo 1;
 
             if(substr_count($word,'|')==2){
-                die('2');
                 //See if this is it:
                 $times = explode('|',$word);
                 if(second_calc($times[1])>=0 && second_calc($times[2])>0 && $word==$times[0].'|'.$times[1].'|'.$times[2]){
@@ -104,8 +103,8 @@ function extract_e_references($x__message)
                     $string_references['ref_time_start'] = second_calc($times[1]);
                     $string_references['ref_time_end'] = second_calc($times[2]);
                 }
+                die($string_references['ref_time_start'].'/'.$string_references['ref_time_end']);
             }
-            die('3');
 
             array_push($string_references['ref_urls'], $word);
 
