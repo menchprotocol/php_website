@@ -15,7 +15,7 @@ foreach($custom_query as $x){
     echo view_x($x);
 
     $x__metadata = unserialize($x['x__metadata']);
-    echo $x__metadata['fields_changed']['before'];
+    echo $x__metadata['fields_changed'][0]['before'];
     continue;
 
     $parts = explode(':',$x['x__message']);
