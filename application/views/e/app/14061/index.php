@@ -1,9 +1,9 @@
 <?php
 
-die('retired for now'); //No longer needed
+//die('retired for now'); //No longer needed
 
 $custom_query = $this->X_model->fetch(array(
-    "x__type IN (4983,7545,13865,4231,13970,13971,10573,4601,12419,12896) AND x__status=6176 AND x__message LIKE '%:%' AND x__message LIKE '%@%'" => null,
+    "x__type IN (10679) AND x__status=6176 AND x_id>=1001502720" => null,
 ), array(), 0);
 
 //Update format of video slicing
@@ -11,6 +11,7 @@ echo '<div>Found '.count($custom_query).' Transactions:</div>';
 echo '<div class="list-group list-grey">';
 foreach($custom_query as $x){
     echo view_x($x);
+    continue;
     $parts = explode(':',$x['x__message']);
     if(count($parts)==3 && second_calc($parts[1])>=0 && second_calc($parts[2])>0){
 
