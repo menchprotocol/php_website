@@ -8,7 +8,8 @@ $source_of_e = source_of_e($e['e__id']);
 $source_is_e = $e['e__id']==$user_e['e__id'];
 $superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEATION
 $superpower_13422 = superpower_active(13422, true); //SUPERPOWER OF SOURCING
-$superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GLASSES
+$superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF GLASSES
+$superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
 ?>
 
@@ -148,7 +149,7 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF DISCOVERY GL
             $list_e = view_coins_e(12274, $e['e__id'], 1);
 
             //SOURCE MASS EDITOR
-            if($superpower_13422){
+            if($superpower_12703){
 
                 //Mass Editor:
                 $dropdown_options = '';
