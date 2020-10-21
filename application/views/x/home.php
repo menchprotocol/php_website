@@ -6,8 +6,7 @@
     $e___12467 = $this->config->item('e___12467'); //MENCH COINS
 
     //IDEA TITLE
-    $i['i__title'] = str_replace('on the','<span class="inline-block">on the</span>',$i['i__title']); //UI HACK
-    echo '<h1 class="big-frame extra-big">' . view_i_title($i) . '</h1>';
+    echo '<h1 class="big-frame extra-big">' . str_replace('on the','<span class="inline-block">on the</span>',$i['i__title']) . '</h1>';
 
     //IDEA MESSAGES
     echo '<div class="message-center how_it_works" style="margin-bottom:89px;"><a href="javascript:void(0);" onclick="$(\'.how_it_works\').toggleClass(\'hidden\');">'.$e___11035[13952]['m__icon'].' '.$e___11035[13952]['m__title'].'</a></div>';
