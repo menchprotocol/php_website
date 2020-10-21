@@ -252,7 +252,7 @@ if($in_my_x){
 }
 
 //HEADER
-echo '<h1 class="big-frame extra-big">' . view_i_title($i_focus) . '</h1>';
+echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
 
 
 //MESSAGES
