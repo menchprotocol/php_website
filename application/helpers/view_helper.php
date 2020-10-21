@@ -382,7 +382,9 @@ function view_x($x, $is_parent_tr = false)
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $user_e = superpower_unlocked();
     $superpower_css_12701 = superpower_active(12701); //SUPERPOWER OF DISCOVERY GLASSES
-
+    $add_e = $CI->E_model->fetch(array(
+        'e__id' => $x['x__source'],
+    ));
 
 
 
@@ -396,15 +398,7 @@ function view_x($x, $is_parent_tr = false)
 
 
     //SOURCE
-    if($x['x__source'] > 0){
-
-        $add_e = $CI->E_model->fetch(array(
-            'e__id' => $x['x__source'],
-        ));
-
-        $ui .= '<div class="simple-line"><a href="/@'.$add_e[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m__title'].'" class="montserrat"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4364]['m__icon']. '</span><span class="'.extract_icon_color($add_e[0]['e__icon']).'"><span class="icon-block">'.view_e__icon($add_e[0]['e__icon']) . '</span>' . $add_e[0]['e__title'] . '</span></a></div>';
-
-    }
+    $ui .= '<div class="simple-line"><a href="/@'.$add_e[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m__title'].'" class="montserrat"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4364]['m__icon']. '</span><span class="'.extract_icon_color($add_e[0]['e__icon']).'"><span class="icon-block">'.view_e__icon($add_e[0]['e__icon']) . '</span>' . $add_e[0]['e__title'] . '</span></a></div>';
 
 
     //HIDE PRIVATE INFO?
@@ -426,7 +420,6 @@ function view_x($x, $is_parent_tr = false)
         );
 
     }
-
 
 
     //TIME
