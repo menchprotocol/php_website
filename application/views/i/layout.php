@@ -6,6 +6,7 @@ $e_of_i = e_of_i($i_focus['i__id']);
 $is_active = in_array($i_focus['i__type'], $this->config->item('n___7356'));
 $is_public = in_array($i_focus['i__type'], $this->config->item('n___7355'));
 $superpower_13422 = superpower_active(13422, true); //Advance Sourcing
+$superpower_14005 = superpower_active(14005, true);
 
 ?>
 
@@ -71,7 +72,7 @@ echo '</div>';
 
 echo '<div class="container wrap-card card-idea">';
 
-if(isset($_GET['load__e']) && superpower_active(14005, true)){
+if(isset($_GET['load__e']) && $superpower_14005){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
         'e__id' => intval($_GET['load__e']),
@@ -357,7 +358,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__left' => $i_focus['i__id'],
             );
-            if(isset($_GET['load__e'])){
+            if(isset($_GET['load__e']) && $superpower_14005){
                 $query_filters['x__source'] = intval($_GET['load__e']);
             }
 
