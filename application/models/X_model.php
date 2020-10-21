@@ -20,7 +20,7 @@ class X_model extends CI_Model
 
         //Set some defaults:
         if (!isset($add_fields['x__source']) || intval($add_fields['x__source']) < 1) {
-            $add_fields['x__source'] = 0;
+            $add_fields['x__source'] = 14068; //GUEST MEMBER
         }
 
         //Only require transaction type:
