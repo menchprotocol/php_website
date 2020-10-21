@@ -1868,6 +1868,10 @@ i, .btn .show-max {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    .message-center, .message-center .msg {
+        text-align: left;
+    }
+
     .superpower-message{
         display: block;
         padding:5px 41px;
