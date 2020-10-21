@@ -2076,7 +2076,7 @@ class E extends CI_Controller
 
             //Log Transaction
             $this->X_model->create(array(
-                'x__source' => ( !$is_u_request || !$user_e['e__id'] ? 7274 : $user_e['e__id'] ),
+                'x__source' => ( !$is_u_request || !$user_e ? 7274 : $user_e['e__id'] ),
                 'x__type' => 14067, //MENCH APP LOADED
                 'x__down' => $app_e__id,
             ));
