@@ -1878,6 +1878,7 @@ i, .btn .show-max {
     }
     .extra-big{
         font-size: 3.4em !important;
+        text-align: left;
     }
 
     .social-footer li{
