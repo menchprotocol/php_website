@@ -1874,10 +1874,7 @@ i, .btn .show-max {
     max-width: 767px;
 }
 .gif-col{
-    padding: 21px 0 0;
-}
-.gif-col a{
-    padding:0 5px;
+    padding:0 5px 21px 0 !important;
 }
 .gif-col img{
     width: 100%;

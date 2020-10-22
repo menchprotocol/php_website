@@ -681,7 +681,7 @@ function gif_search(){
                 counter++;
                 var gifObject = data[index];
                 console.log(gifObject);
-                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+",'"+gifObject.id+"','"+gifObject.title+"')\"><img src='/img/mench.png' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.id+"/giphy.gif' /></a></div>";
+                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+",'"+gifObject.id+"','"+gifObject.title+"')\"><img src='/img/mench.png' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.id+"/100w.gif' /></a></div>";
                 if(!Math.fmod(counter, 3)){
                     output += "</div><div class=\"row\">";
                 }
