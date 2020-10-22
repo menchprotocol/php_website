@@ -653,6 +653,7 @@ function gif_modal(x__type){
     $('#modal_x__type').val(x__type);
     $('#gif_results').html('');
     $('#gif_query').val('');
+    gif_search('trending'); //Show Some GIFs
     setTimeout(function () {
         $('#gif_query').focus();
     }, 610);
@@ -661,15 +662,18 @@ function gif_modal(x__type){
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
 
 var current_q = '';
-function gif_search(){
+function gif_search(q){
 
-    var q = encodeURI($('#gif_query').val());
+    if(!q.length){
+        q = encodeURI($('#gif_query').val());
+    }
+
     if(q==current_q){
         return false;
     }
 
-    var x__type = $('#modal_x__type').val();
     current_q = q;
+    var x__type = $('#modal_x__type').val();
     $('#gif_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     $.get({
         url: js_e___6404[14073]['m__message']+current_q,
