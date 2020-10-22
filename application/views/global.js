@@ -652,7 +652,10 @@ function gif_modal(x__type){
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
     $('#gif_results').html('');
-    $('#gif_query').focus().val('');
+    $('#gif_query').val('');
+    setTimeout(function () {
+        $('#gif_query').focus();
+    }, 144);
 }
 
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
@@ -672,19 +675,26 @@ function gif_search(){
         url: "https://api.giphy.com/v1/gifs/search?q="+current_q+"&api_key=7kQlJD3Q1puRjBoKomL4wSx5Qi2XOS8F&limit=50&offset=0",
         success: function(result) {
             var data = result.data;
-            var output = "<div style=\"margin:5px 0;\">Click on a GIF you want to add:</div>";
-            output += "<div class=\"row\">";
+            var output = "";
             var counter = 0;
             for (var index in data){
                 counter++;
                 var gifObject = data[index];
-                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+","+gifObject.images.original.id+")\"><img src='"+gifObject.images.original.url+"'/></a></div>";
+                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+","+gifObject.images.original.id+")\"><img src='/img/mench.png' alt='IMAGE' class='content-image lazyimage' data-src='"+gifObject.images.original.url+"' /></a></div>";
                 if(Math.fmod(counter, 3)==0){
                     output += "</div><div class=\"row\">";
                 }
             }
-            output += "</div>";
+
+            //Did we find anything?
+            if(output.length){
+                output = "<div style=\"margin:5px 0;\">Click on a GIF you want to add:</div><div class=\"row\">"+output+"</div>";
+            } else {
+                //No results found:
+                output = "<div style=\"margin:5px 0;\">No GIFs found</div>";
+            }
             $("#gif_results").html(output);
+            lazy_load();
         },
         error: function(error) {
             console.log(error);
