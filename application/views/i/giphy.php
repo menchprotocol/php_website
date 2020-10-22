@@ -16,9 +16,8 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
                 <input type="hidden" id="modal_i__id" value="0" />
                 <input type="hidden" id="modal_x__type" value="0" />
-                <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___11035[14074]['m__icon'].'</span>'.$e___11035[14074]['m__title'] ?></div>
                 <input type="text" class="form-control text-edit border montserrat white-border" id="gif_query" name="gif_query" placeholder="Search GIFs..." onkeyup="gif_search()" data-lpignore="true" />
-                <div class="gif_results margin-top-down hideIfEmpty"></div>
+                <div id="gif_results" class="margin-top-down hideIfEmpty"></div>
 
             </div>
         </div>

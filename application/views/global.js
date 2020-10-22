@@ -648,12 +648,11 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
 
 }
 
-function gif_modal(x__type,i__id){
+function gif_modal(x__type){
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
-    $('#modal_i__id').val(i__id);
-    $('.gif_query').val('');
-    $('.gif_results').html('');
+    $('#gif_results').html('');
+    $('#gif_query').val('').focus();
 }
 
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
@@ -667,26 +666,25 @@ function gif_search(){
     }
 
     var x__type = $('#modal_x__type').val();
-    var i__id = $('#modal_i__id').val();
-
     current_q = q;
-    $('.gif_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
+    $('#gif_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     $.get({
-        url: "https://api.giphy.com/v1/gifs/search?q="+q+"&api_key=7kQlJD3Q1puRjBoKomL4wSx5Qi2XOS8F&limit=50&offset=0",
+        url: "https://api.giphy.com/v1/gifs/search?q="+current_q+"&api_key=7kQlJD3Q1puRjBoKomL4wSx5Qi2XOS8F&limit=50&offset=0",
         success: function(result) {
             var data = result.data;
-            var output = "<div class=\"row\">";
+            var output = "<div style=\"margin:5px 0;\">Click on a GIF you want to add:</div>";
+            output += "<div class=\"row\">";
             var counter = 0;
             for (var index in data){
                 counter++;
                 var gifObject = data[index];
-                output += "<div class=\"gif-col col-6 col-md-4 col-lg-3\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+","+i__id+","+gifObject.images.original.id+")\"><img src='"+gifObject.images.original.url+"'/></a></div>";
+                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+","+gifObject.images.original.id+")\"><img src='"+gifObject.images.original.url+"'/></a></div>";
                 if(Math.fmod(counter, 3)==0){
                     output += "</div><div class=\"row\">";
                 }
             }
             output += "</div>";
-            $(".gif_results").html(output);
+            $("#gif_results").html(output);
         },
         error: function(error) {
             console.log(error);
@@ -695,8 +693,10 @@ function gif_search(){
 
 }
 
-function gif_add(x__type, i__id, giphy_id){
-    alert(x__type+'https://media.giphy.com/media/'+giphy_id+'/giphy.gif'+i__id);
+function gif_add(x__type, giphy_id){
+    $('#modal14073').modal('hide');
+    $('#x__message' + x__type).val('https://media.giphy.com/media/'+giphy_id+'/giphy.gif');
+    i_note_text(x__type);
 }
 
 
