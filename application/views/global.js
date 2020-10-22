@@ -654,7 +654,6 @@ function gif_modal(x__type){
     $('#gif_results').html('');
     $('#gif_query').val('');
     setTimeout(function () {
-        alert('now');
         $('#gif_query').focus();
     }, 610);
 }
@@ -682,7 +681,7 @@ function gif_search(){
                 counter++;
                 var gifObject = data[index];
                 console.log(gifObject);
-                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+","+gifObject.images.original.id+")\"><img src='/img/mench.png' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.images.original.id+"/giphy.gif' /></a></div>";
+                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+",'"+gifObject.id+"','"+gifObject.title+"')\"><img src='/img/mench.png' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.id+"/giphy.gif' /></a></div>";
                 if(!Math.fmod(counter, 3)){
                     output += "</div><div class=\"row\">";
                 }
@@ -705,9 +704,9 @@ function gif_search(){
 
 }
 
-function gif_add(x__type, giphy_id){
+function gif_add(x__type, giphy_id, giphy_title){
     $('#modal14073').modal('hide');
-    $('#x__message' + x__type).val('https://media.giphy.com/media/'+giphy_id+'/giphy.gif');
+    $('#x__message' + x__type).val('https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
     i_note_text(x__type);
 }
 
