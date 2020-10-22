@@ -1869,6 +1869,13 @@ i, .btn .show-max {
     cursor: not-allowed !important;
 }
 
+.modal-dialog{
+    max-width: 767px;
+}
+.gif-col img{
+    width: 100%;
+}
+
 /* RESPONSIVE */
 @media (max-width:767px) {
 

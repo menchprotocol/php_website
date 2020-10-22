@@ -602,7 +602,6 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
     }
 
-
     echo '</div>';
     ?>
 
