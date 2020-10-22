@@ -652,7 +652,7 @@ function gif_modal(x__type){
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
     $('#gif_results').html('');
-    $('#gif_query').val('').focus();
+    $('#gif_query').focus().val('');
 }
 
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
