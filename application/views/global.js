@@ -651,7 +651,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
 function gif_modal(x__type){
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
-    $('#gif_results').html('Powered by GIPHY');
+    $('#gif_results').html('');
     $('#gif_query').val('');
     setTimeout(function () {
         $('#gif_query').focus();
