@@ -654,8 +654,9 @@ function gif_modal(x__type){
     $('#gif_results').html('');
     $('#gif_query').val('');
     setTimeout(function () {
+        alert('now');
         $('#gif_query').focus();
-    }, 377);
+    }, 610);
 }
 
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
@@ -680,8 +681,9 @@ function gif_search(){
             for (var index in data){
                 counter++;
                 var gifObject = data[index];
+                console.log(gifObject);
                 output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+","+gifObject.images.original.id+")\"><img src='/img/mench.png' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.images.original.id+"/giphy.gif' /></a></div>";
-                if(Math.fmod(counter, 3)==0){
+                if(!Math.fmod(counter, 3)){
                     output += "</div><div class=\"row\">";
                 }
             }
