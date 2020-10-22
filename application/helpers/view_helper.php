@@ -285,11 +285,11 @@ function view_i_note($x__type, $x, $note_e = false)
         $ui .= '<td class="table-btn"><a class="btn btn-'.$color_code.'" href="javascript:save_13574(' . $x['x__id'] . ',' . $x['x__type'] . ');" title="'.$e___11035[14039]['m__title'].'">'.$e___11035[14039]['m__icon'].'</a></td>';
 
         //CANCEL
-        $ui .= '<td class="table-btn first_btn"><a class="btn btn-grey" title="'.$e___11035[13502]['m__title'].'" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__icon'].'</a></td>';
+        $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" title="'.$e___11035[13502]['m__title'].'" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__icon'].'</a></td>';
 
         if($supports_emoji){
             //EMOJI
-            $ui .= '<td class="table-btn emoji_edit hidden first_btn" style="padding-top: 5px !important; width: 60px !important;"><span class="btn btn-grey" id="emoji_pick_id'.$x['x__id'].'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+            $ui .= '<td class="table-btn emoji_edit hidden first_btn" style="padding-top: 5px !important; width: 60px !important;"><span class="btn btn-compact btn-grey" id="emoji_pick_id'.$x['x__id'].'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
         }
 
 
@@ -1178,7 +1178,7 @@ function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e){
 }
 
 
-function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false, $show_headline = true){
+function view_i_note_list($x__type, $i_focus, $i_notes, $e_of_i, $show_empty_error = false, $show_headline = true){
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
@@ -1235,16 +1235,22 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
         //UPLOAD
         if($handles_uploads){
+
+            //Upload:
             $ui .= '<td class="table-btn first_btn">';
             $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
-            $ui .= '<label class="btn btn-grey file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
+            $ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" data-toggle="tooltip" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'" data-placement="top"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
             $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
             $ui .= '</td>';
+
+            //Add GIF:
+            $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="gif_modal(' . $x__type . ', ' . $i_focus['i__id'] . ')" title="'.$e___11035[14073]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
+
         }
 
         if($supports_emoji){
             //EMOJI
-            $ui .= '<td class="table-btn first_btn" style="padding-top: 5px !important; width: 60px !important;"><span class="btn btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+            $ui .= '<td class="table-btn first_btn" style="padding-top: 5px !important;"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
         }
 
         //File counter:

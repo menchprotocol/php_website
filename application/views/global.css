@@ -208,6 +208,10 @@ a.btn, .btn.dropdown-toggle, label.btn {
     min-width: 80px;
 }
 
+.btn-compact{
+    min-width: auto !important;
+}
+
 .left_nav a.btn, .left_nav .btn.dropdown-toggle, .left_nav label.btn{
     padding:10px;
 }
@@ -2034,6 +2038,7 @@ i, .btn .show-max {
 
 .first_btn{
     text-align: center !important;
+    margin-left: 8px;
 }
 
 

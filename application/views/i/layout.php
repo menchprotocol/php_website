@@ -97,7 +97,7 @@ echo '</div>';
 
 
 //IDEA MESSAGES:
-echo view_i_note_list(4231, $this->X_model->fetch(array(
+echo view_i_note_list(4231, $i_focus, $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 4231,
     'x__right' => $i_focus['i__id'],
@@ -179,7 +179,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $counter = ( count($i_notes) > $i_stats['count_13207'] ? count($i_notes) : $i_stats['count_13207'] );
-        $focus_tab .= view_i_note_list(4983, $i_notes, $e_of_i, false, false);
+        $focus_tab .= view_i_note_list(4983, $i_focus, $i_notes, $e_of_i, false, false);
 
         //Show tree sources only if more than the sources for this idea:
         if( $i_stats['count_13207']>0 ){
@@ -390,7 +390,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
 
         $counter = count($i_notes);
-        $focus_tab .= view_i_note_list($x__type, $i_notes, $e_of_i, false, false);
+        $focus_tab .= view_i_note_list($x__type, $i_focus, $i_notes, $e_of_i, false, false);
 
     } elseif($x__type==12969){
 
@@ -447,3 +447,6 @@ echo $tab_content;
 
 echo '</div>';
 
+
+//ADD GIF MODAL
+$this->load->view('i/giphy');

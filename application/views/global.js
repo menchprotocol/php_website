@@ -648,6 +648,40 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
 
 }
 
+function gif_modal(x__type,i__id){
+    $('#modal14073').modal('show');
+    $('#modal_x__type').val(x__type);
+    $('#modal_i__id').val(i__id);
+    $('.gif_query').val('');
+    $('.gif_results').html('');
+}
+
+function gif_search(){
+
+    $('.gif_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
+    $.get({
+        url: "https://api.giphy.com/v1/gifs/search?q="+encodeURI($('#gif_query').val())+"&api_key=7kQlJD3Q1puRjBoKomL4wSx5Qi2XOS8F&limit=50&offset=0",
+        success: function(result) {
+            var data = result.data;
+            var output = "";
+            for (var index in data){
+                var gifObject = data[index];
+                var gifURL = gifObject.images.original.url;
+                console.log(gifURL);
+                output += "<a href=\"javascript:void(0);\" onclick=\"gif_add("+$('#modal_x__type').val()+","+$('#modal_i__id').val()+","+gifObject.images.original.id+")\"><img width='144px' src='"+gifURL+"'/></a>";
+            }
+            $(".gif_results").html(output);
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+
+}
+
+function gif_add(x__type, i__id, giphy_id){
+    alert(x__type+'https://media.giphy.com/media/'+giphy_id+'/giphy.gif'+i__id);
+}
 
 
 function x_set_text_start(){

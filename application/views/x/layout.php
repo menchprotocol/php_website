@@ -721,7 +721,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
         $counter = count($notes);
         $is_editable = in_array($x__type, $this->config->item('n___14043'));
-        $focus_tab .= view_i_note_list($x__type, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true, false);
+        $focus_tab .= view_i_note_list($x__type, $i_focus, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true, false);
 
     } elseif($x__type==13023){
 
@@ -903,6 +903,10 @@ if($in_my_x){
 
 }
 
+
+
+//ADD GIF MODAL
+$this->load->view('i/giphy');
 
 
 ?>
