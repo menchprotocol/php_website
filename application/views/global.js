@@ -655,7 +655,7 @@ function gif_modal(x__type){
     $('#gif_query').val('');
     setTimeout(function () {
         $('#gif_query').focus();
-    }, 144);
+    }, 377);
 }
 
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
