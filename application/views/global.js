@@ -680,7 +680,7 @@ function gif_search(){
             for (var index in data){
                 counter++;
                 var gifObject = data[index];
-                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+","+gifObject.images.original.id+")\"><img src='/img/mench.png' alt='IMAGE' class='content-image lazyimage' data-src='"+gifObject.images.original.url+"' /></a></div>";
+                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+","+gifObject.images.original.id+")\"><img src='/img/mench.png' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.images.original.id+"/giphy.gif' /></a></div>";
                 if(Math.fmod(counter, 3)==0){
                     output += "</div><div class=\"row\">";
                 }
@@ -688,7 +688,7 @@ function gif_search(){
 
             //Did we find anything?
             if(output.length){
-                output = "<div style=\"margin:5px 0;\">Click on a GIF you want to add:</div><div class=\"row\">"+output+"</div>";
+                output = "<div style=\"margin:5px 0;\">Tap the GIF you want to add:</div><div class=\"row\">"+output+"</div>";
             } else {
                 //No results found:
                 output = "<div style=\"margin:5px 0;\">No GIFs found</div>";
