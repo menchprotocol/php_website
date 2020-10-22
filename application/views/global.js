@@ -672,7 +672,7 @@ function gif_search(){
     current_q = q;
     $('#gif_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     $.get({
-        url: "https://api.giphy.com/v1/gifs/search?q="+current_q+"&api_key=7kQlJD3Q1puRjBoKomL4wSx5Qi2XOS8F&limit=50&offset=0",
+        url: js_e___6404[14073]['m__message']+current_q,
         success: function(result) {
             var data = result.data;
             var output = "";
