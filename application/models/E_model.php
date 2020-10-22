@@ -628,6 +628,13 @@ class E_model extends CI_Model
         $e___4537 = $this->config->item('e___4537');
         $e___4592 = $this->config->item('e___4592');
 
+        if(substr_count($url, 'e__title=')==1){
+            //We have File Title in URL:
+            $e__title = one_two_explode('e__title=','&',$url);
+            $url = rtrim(rtrim(str_replace('e__title='.$e__title,'',$url), '?'), '&');
+            $page_title = strtoupper(urldecode($e__title));
+        }
+
         //Initially assume Generic URL unless we can prove otherwise:
         $x__type = 4256; //Generic URL
 
