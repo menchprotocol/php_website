@@ -1873,6 +1873,13 @@ i, .btn .show-max {
 .modal-dialog{
     max-width: 767px;
 }
+.modal-content{
+    border: 3px solid #FFF;
+    border-radius: 13px;
+}
+.modal-header{
+    border-bottom: 3px solid #FFF;
+}
 .gif-col{
     padding:0 5px 21px 0 !important;
 }
