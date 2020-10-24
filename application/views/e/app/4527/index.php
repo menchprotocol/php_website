@@ -36,7 +36,7 @@ foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $n___7359) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
         'e__type IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
-    ), array('x__down'), 0, 0, array('x__sort' => 'ASC', 'e__title' => 'ASC'));
+    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
 
     //Find common base, if allowed:

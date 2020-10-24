@@ -482,7 +482,7 @@ function i_fetch_cover($i__id, $html_format = false){
         '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     ), array(), 0, 0, array(
         'x__type' => 'ASC', //Messages First, Sources Second
-        'x__sort' => 'ASC', //Sort by message order
+        'x__spectrum' => 'ASC', //Sort by message order
     )) as $fetched_e){
 
         foreach(array('x__up','x__down') as $e_ref_field) {
@@ -520,7 +520,7 @@ function i_fetch_description($i__id){
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i__id,
-    ), array(), 0, 0, array('x__sort' => 'ASC')) as $fetched_e){
+    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $fetched_e){
         if(substr_count($fetched_e['x__message'], ' ')>=2){ //Require 3+ words
             //This is it, return:
             return $CI->X_model->message_send(
@@ -1399,7 +1399,7 @@ function objectToArray($object)
 function sources_currently_sorted($e__id){
     $CI =& get_instance();
     return count( $CI->X_model->fetch(array(
-        'x__sort >' => 0, //Sorted
+        'x__spectrum >' => 0, //Sorted
         'x__up' => $e__id,
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -1645,7 +1645,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $CI->config->item('n___4485')) . ')' => null, //IDEA NOTES
                     'x__right' => $s['i__id'],
-                ), array(), 0, 0, array('x__sort' => 'ASC')) as $keyword) {
+                ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $keyword) {
                     $export_row['s__keywords'] .= $keyword['x__message'] . ' ';
                 }
                 $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));

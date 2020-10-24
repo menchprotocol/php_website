@@ -494,7 +494,7 @@ class I_model extends CI_Model
                 'x__type' => 4228, //Idea Transaction Regular Discovery
                 ( $is_parent ? 'x__right' : 'x__left' ) => $x_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
-                'x__sort' => 1 + $this->X_model->max_sort(array(
+                'x__spectrum' => 1 + $this->X_model->max_sort(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                         'x__left' => ( $is_parent ? $i_new['i__id'] : $x_to_i__id ),
@@ -694,7 +694,7 @@ class I_model extends CI_Model
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $focus_in['i__id'],
-        ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $next_i){
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i){
 
             //Determine action based on parent idea type:
             if(in_array($next_i['x__type'], $this->config->item('n___12842'))){
@@ -831,7 +831,7 @@ class I_model extends CI_Model
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i__id,
-        ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
 
         //Process request:
@@ -1228,7 +1228,7 @@ class I_model extends CI_Model
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i['i__id'],
-        ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
         if(count($is_next) < 1){
             //No children, no path:
             return array();

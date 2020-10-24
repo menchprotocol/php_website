@@ -209,7 +209,7 @@ function i_remove(i__id, x__id, is_parent){
 
 function i_sort_save(i__id) {
 
-    var new_x__sorts = [];
+    var new_x__spectrums = [];
     var sort_rank = 0;
 
     $("#list-in-" + focus_i__id + "-0 .i_sortable").each(function () {
@@ -220,13 +220,13 @@ function i_sort_save(i__id) {
         sort_rank++;
 
         //Store in DB:
-        new_x__sorts[sort_rank] = x__id;
+        new_x__spectrums[sort_rank] = x__id;
     });
 
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0 && i__id) {
         //Update backend:
-        $.post("/i/i_sort_save", {i__id: i__id, new_x__sorts: new_x__sorts}, function (data) {
+        $.post("/i/i_sort_save", {i__id: i__id, new_x__spectrums: new_x__spectrums}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!

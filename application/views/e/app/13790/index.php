@@ -40,7 +40,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-    ), array('x__down'), 0, 0, array('x__sort' => 'ASC'));
+    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC'));
 
 
     $column_ideas = array();
@@ -50,7 +50,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $_GET['i__tree_id'],
-        ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $x){
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $x){
             array_push($column_ideas, $x);
         }
     }

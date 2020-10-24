@@ -54,7 +54,7 @@ class X_model extends CI_Model
         }
 
         //Set some zero defaults if not set:
-        foreach(array('x__right', 'x__left', 'x__down', 'x__up', 'x__reference', 'x__sort') as $dz) {
+        foreach(array('x__right', 'x__left', 'x__down', 'x__up', 'x__reference', 'x__spectrum') as $dz) {
             if (!isset($add_fields[$dz])) {
                 $add_fields[$dz] = 0;
             }
@@ -558,7 +558,7 @@ class X_model extends CI_Model
 
                             $x__message .= view_db_field($key) . ' updated from [' . $before_i[0]['i__title'] . '] to [' . $after_i[0]['i__title'] . ']' . "\n";
 
-                        } elseif(in_array($key, array('x__message', 'x__sort'))){
+                        } elseif(in_array($key, array('x__message', 'x__spectrum'))){
 
                             $x__message .= view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
 
@@ -611,7 +611,7 @@ class X_model extends CI_Model
     {
 
         //Fetches the maximum order value
-        $this->db->select('MAX(x__sort) as largest_order');
+        $this->db->select('MAX(x__spectrum) as largest_order');
         $this->db->from('mench__x');
         foreach($query_filters as $key => $value) {
             $this->db->where($key, $value);
@@ -1058,7 +1058,7 @@ class X_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $next_i) {
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i) {
 
             if ($find_after_i__id && !$found_trigger) {
                 if ($next_i['i__id'] == $find_after_i__id) {
@@ -1136,7 +1136,7 @@ class X_model extends CI_Model
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            ), array('x__left'), 0, 0, array('x__sort' => 'ASC')) as $x_list_i) {
+            ), array('x__left'), 0, 0, array('x__spectrum' => 'ASC')) as $x_list_i) {
                 $found_next = $this->X_model->find_next($e__id, $x_list_i, $find_after_i__id, false, $i_completed);
                 if ($found_next) {
                     return $found_next;
@@ -1230,7 +1230,7 @@ class X_model extends CI_Model
                 'x__source' => $e__id, //Belongs to this User
                 'x__left' => $is[0]['i__id'], //The Idea they are adding
                 'x__right' => $recommender_i__id, //Store the recommended idea
-                'x__sort' => $i_rank, //Always place at the top of their Discoveries
+                'x__spectrum' => $i_rank, //Always place at the top of their Discoveries
             ));
 
             //Can we auto complete since they have already discovered this idea?
@@ -1252,14 +1252,14 @@ class X_model extends CI_Model
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__source' => $e__id, //Belongs to this User
-            ), array(), 0, 0, array('x__sort' => 'ASC')) as $current_i){
+            ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $current_i){
 
                 //Increase rank:
                 $i_rank++;
 
                 //Update order:
                 $this->X_model->update($current_i['x__id'], array(
-                    'x__sort' => $i_rank,
+                    'x__spectrum' => $i_rank,
                 ), $e__id, 10681 /* Ideas Ordered Automatically  */);
 
             }
@@ -1477,7 +1477,7 @@ class X_model extends CI_Model
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i['i__id'],
-        ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
         if(count($is_next) < 1){
             return array(
                 'status' => 0,

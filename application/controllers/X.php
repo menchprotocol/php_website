@@ -601,7 +601,7 @@ class X extends CI_Controller
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__left' => $previous_level_id,
-            ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $next_i){
+            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i){
                 if($next_i['i__id']==$i__id){
                     break;
                 } else {
@@ -1091,11 +1091,11 @@ class X extends CI_Controller
         //Update the order of their Discoveries:
         $updated = 0;
         $results = array();
-        foreach($_POST['new_x_order'] as $x__sort => $x__id){
-            if(intval($x__id) > 0 && intval($x__sort) > 0){
+        foreach($_POST['new_x_order'] as $x__spectrum => $x__id){
+            if(intval($x__id) > 0 && intval($x__spectrum) > 0){
                 //Update order of this transaction:
-                $results[$x__sort] = $this->X_model->update(intval($x__id), array(
-                    'x__sort' => $x__sort,
+                $results[$x__spectrum] = $this->X_model->update(intval($x__id), array(
+                    'x__spectrum' => $x__spectrum,
                 ), $user_e['e__id'], intval($_POST['x__type']));
                 $updated++;
             }

@@ -59,16 +59,16 @@ class I extends CI_Controller {
         }
 
         //Move Existing Bookmarks by one:
-        $x__sort = 2;
+        $x__spectrum = 2;
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 10573, //MY IDEAS
             'x__up' => $user_e['e__id'], //For this user
-        ), array(), 0, 0, array('x__sort' => 'ASC')) as $u_i){
+        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $u_i){
             $this->X_model->update($u_i['x__id'], array(
-                'x__sort' => $x__sort,
+                'x__spectrum' => $x__spectrum,
             ), $user_e['e__id']);
-            $x__sort++;
+            $x__spectrum++;
         }
 
         //Add to top of my ideas:
@@ -78,7 +78,7 @@ class I extends CI_Controller {
             'x__right' => $i['new_i__id'],
             'x__up' => $user_e['e__id'],
             'x__message' => '@'.$user_e['e__id'],
-            'x__sort' => 1, //Top of the list
+            'x__spectrum' => 1, //Top of the list
         ), true);
 
         return view_json(array(
@@ -145,7 +145,7 @@ class I extends CI_Controller {
                 'x__source' => $user_e['e__id'],
                 'x__type' => 4993, //User Opened Idea
                 'x__right' => $i__id,
-                'x__sort' => $new_order,
+                'x__spectrum' => $new_order,
             ));
 
         }
@@ -201,7 +201,7 @@ class I extends CI_Controller {
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $previous_i__id,
-        ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $i){
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i){
             if($action=='next'){
                 if($trigger_next){
                     return redirect_message('/~' . $i['i__id'] );
@@ -500,7 +500,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid i__id',
             ));
-        } elseif (!isset($_POST['new_x__sorts']) || !is_array($_POST['new_x__sorts']) || count($_POST['new_x__sorts']) < 1) {
+        } elseif (!isset($_POST['new_x__spectrums']) || !is_array($_POST['new_x__spectrums']) || count($_POST['new_x__spectrums']) < 1) {
             view_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
@@ -519,9 +519,9 @@ class I extends CI_Controller {
             } else {
 
                 //Update them all:
-                foreach($_POST['new_x__sorts'] as $rank => $x__id) {
+                foreach($_POST['new_x__spectrums'] as $rank => $x__id) {
                     $this->X_model->update(intval($x__id), array(
-                        'x__sort' => intval($rank),
+                        'x__spectrum' => intval($rank),
                     ), $user_e['e__id'], 10675 /* Ideas Ordered by User */);
                 }
 
@@ -587,7 +587,7 @@ class I extends CI_Controller {
         //Create Message:
         $x = $this->X_model->create(array(
             'x__source' => $user_e['e__id'],
-            'x__sort' => 1 + $this->X_model->max_sort(array(
+            'x__spectrum' => 1 + $this->X_model->max_sort(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type' => intval($_POST['note_type_id']),
                     'x__right' => intval($_POST['i__id']),
@@ -702,7 +702,7 @@ class I extends CI_Controller {
             'x__up' => $cdn_status['cdn_e']['e__id'],
             'x__right' => intval($_POST['i__id']),
             'x__message' => '@' . $cdn_status['cdn_e']['e__id'],
-            'x__sort' => 1 + $this->X_model->max_sort(array(
+            'x__spectrum' => 1 + $this->X_model->max_sort(array(
                     'x__type' => $_POST['note_type_id'],
                     'x__right' => $_POST['i__id'],
                 )),
@@ -740,7 +740,7 @@ class I extends CI_Controller {
                 'message' => view_unauthorized_message(10939),
             ));
 
-        } elseif (!isset($_POST['new_x__sorts']) || !is_array($_POST['new_x__sorts']) || count($_POST['new_x__sorts']) < 1) {
+        } elseif (!isset($_POST['new_x__spectrums']) || !is_array($_POST['new_x__spectrums']) || count($_POST['new_x__spectrums']) < 1) {
 
             //Do not treat this case as error as it could happen in moving Messages between types:
             return view_json(array(
@@ -752,12 +752,12 @@ class I extends CI_Controller {
 
         //Update all transaction orders:
         $sort_count = 0;
-        foreach($_POST['new_x__sorts'] as $x__sort => $x__id) {
+        foreach($_POST['new_x__spectrums'] as $x__spectrum => $x__id) {
             if (intval($x__id) > 0) {
                 $sort_count++;
                 //Log update and give credit to the session User:
                 $this->X_model->update($x__id, array(
-                    'x__sort' => intval($x__sort),
+                    'x__spectrum' => intval($x__spectrum),
                 ), $user_e['e__id'], 10676 /* IDEA NOTES Ordered */);
             }
         }

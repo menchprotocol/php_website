@@ -951,7 +951,7 @@ function i_note_e_search(obj) {
 
 function i_note_sort_apply(note_type_id) {
 
-    var new_x__sorts = [];
+    var new_x__spectrums = [];
     var sort_rank = 0;
     var this_x__id = 0;
 
@@ -959,13 +959,13 @@ function i_note_sort_apply(note_type_id) {
         this_x__id = parseInt($(this).attr('x__id'));
         if (this_x__id > 0) {
             sort_rank++;
-            new_x__sorts[sort_rank] = this_x__id;
+            new_x__spectrums[sort_rank] = this_x__id;
         }
     });
 
     //Update backend if any:
     if(sort_rank > 0){
-        $.post("/i/i_note_sort", {new_x__sorts: new_x__sorts}, function (data) {
+        $.post("/i/i_note_sort", {new_x__spectrums: new_x__spectrums}, function (data) {
             //Only show message if there was an error:
             if (!data.status) {
                 //Show error:

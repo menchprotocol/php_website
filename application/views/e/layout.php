@@ -388,7 +388,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 10573, //BOOKMARKED IDEAS
                         'x__up' => $e['e__id'],
-                    ), array('x__right'), view_memory(6404,11064), 0, array('x__sort' => 'ASC'));
+                    ), array('x__right'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
 
                     if(count($i_bookmarks) > 0){
 
@@ -513,7 +513,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                 }
 
                 //FETCH FEATURED IDEAS
-                $featured_i = $this->X_model->fetch($featured_filter, array('x__right'), 0, 0, array('x__sort' => 'ASC'));
+                $featured_i = $this->X_model->fetch($featured_filter, array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
                 if(count($featured_i)){
                     $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12138]['m__icon'].'</span>'.$e___11035[12138]['m__title'].'</div>';

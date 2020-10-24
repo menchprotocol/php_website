@@ -55,7 +55,7 @@ foreach($this->I_model->fetch($filters) as $in){
         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $in['i__id'],
-    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $is_next){
+    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $is_next){
         $this_time = words_to_seconds($is_next['i__title']);
         $estimated_time += $this_time;
         if($i__id){
@@ -70,7 +70,7 @@ foreach($this->I_model->fetch($filters) as $in){
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $in['i__id'],
-    ), array(), 0, 0, array('x__sort' => 'ASC')) as $message){
+    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message){
 
         //Count text in this message:
         $this_time = words_to_seconds(trim(str_replace('@' . $message['x__up'],'', $message['x__message'])));

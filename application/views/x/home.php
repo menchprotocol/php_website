@@ -15,7 +15,7 @@
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i['i__id'],
-    ), array(), 0, 0, array('x__sort' => 'ASC')) as $x) {
+    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
         echo $this->X_model->message_send( $x['x__message'], true);
     }
     echo '</div>';
@@ -29,7 +29,7 @@
         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $i['i__id'],
-    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $key => $x){
+    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $key => $x){
         //Show only if not in discovering list:
         echo view_i_cover(6255, $x, false, null, false);
     }

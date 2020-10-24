@@ -46,14 +46,14 @@ $is_next = $this->X_model->fetch(array(
     'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
     'x__left' => $i_focus['i__id'],
-), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
+), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
 //Messages:
 $messages = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $i_focus['i__id'],
-), array(), 0, 0, array('x__sort' => 'ASC'));
+), array(), 0, 0, array('x__spectrum' => 'ASC'));
 
 $completion_rate['completion_percentage'] = 0;
 $u_x_ids = $this->X_model->ids($user_e['e__id']);
@@ -133,7 +133,7 @@ if($user_e['e__id']){
         'x__source' => $user_e['e__id'],
         'x__type' => 7610, //USER VIEWED IDEA
         'x__left' => $i_focus['i__id'],
-        'x__sort' => fetch_cookie_order('7610_'.$i_focus['i__id']),
+        'x__spectrum' => fetch_cookie_order('7610_'.$i_focus['i__id']),
     ));
 
     if ($in_my_x) {
@@ -462,7 +462,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                         'x__left' => $i_focus['i__id'],
-                    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $x) {
+                    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
                         //See if this answer was seleted:
                         if (count($this->X_model->fetch(array(
                             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -718,7 +718,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => $x__type,
             'x__right' => $i_focus['i__id'],
-        ), array('x__source'), 0, 0, array('x__sort' => 'ASC'));
+        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($notes);
         $is_editable = in_array($x__type, $this->config->item('n___14043'));
         $focus_tab .= view_i_note_list($x__type, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true, false);

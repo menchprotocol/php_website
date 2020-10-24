@@ -596,7 +596,7 @@ function e_upload_file(droppedFiles, uploadType) {
 
 function e_sort_save() {
 
-    var new_x__sorts = [];
+    var new_x__spectrums = [];
     var sort_rank = 0;
 
     $("#list_e .en-item").each(function () {
@@ -607,13 +607,13 @@ function e_sort_save() {
         sort_rank++;
 
         //Store in DB:
-        new_x__sorts[sort_rank] = x__id;
+        new_x__spectrums[sort_rank] = x__id;
     });
 
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/e/e_sort_save", {e__id: e_focus_id, new_x__sorts: new_x__sorts}, function (data) {
+        $.post("/e/e_sort_save", {e__id: e_focus_id, new_x__spectrums: new_x__spectrums}, function (data) {
             //Update UI to confirm with user:
             if (!data.status) {
                 //There was some sort of an error returned!

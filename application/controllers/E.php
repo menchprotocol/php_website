@@ -79,7 +79,7 @@ class E extends CI_Controller
                 'x__source' => $user_e['e__id'],
                 'x__type' => 4994, //User Viewed Source
                 'x__down' => $e__id,
-                'x__sort' => $new_order,
+                'x__spectrum' => $new_order,
             ));
 
         }
@@ -141,7 +141,7 @@ class E extends CI_Controller
             'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0, 0, array(), 'x__id') as $x) {
             $this->X_model->update($x['x__id'], array(
-                'x__sort' => 0,
+                'x__spectrum' => 0,
             ), $user_e['e__id'], 13007 /* SOURCE SORT RESET */);
         }
 
@@ -167,7 +167,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid e__id',
             ));
-        } elseif (!isset($_POST['new_x__sorts']) || !is_array($_POST['new_x__sorts']) || count($_POST['new_x__sorts']) < 1) {
+        } elseif (!isset($_POST['new_x__spectrums']) || !is_array($_POST['new_x__spectrums']) || count($_POST['new_x__spectrums']) < 1) {
             view_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
@@ -205,9 +205,9 @@ class E extends CI_Controller
             } else {
 
                 //Update them all:
-                foreach($_POST['new_x__sorts'] as $rank => $x__id) {
+                foreach($_POST['new_x__spectrums'] as $rank => $x__id) {
                     $this->X_model->update($x__id, array(
-                        'x__sort' => intval($rank),
+                        'x__spectrum' => intval($rank),
                     ), $user_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
                 }
 
@@ -286,7 +286,7 @@ class E extends CI_Controller
 
         //Fetch & display next batch of children:
         $child_e = $this->X_model->fetch($filters, array('x__down'), $items_per_page, ($page * $items_per_page), array(
-            'x__sort' => 'ASC',
+            'x__spectrum' => 'ASC',
             'e__title' => 'ASC'
         ));
 
@@ -601,7 +601,7 @@ class E extends CI_Controller
                 //Profile
                 $x__down = $fetch_e[0]['e__id'];
                 $x__up = $focus_e['e__id'];
-                $x__sort = 0; //Never sort profiles, only sort portfolios
+                $x__spectrum = 0; //Never sort profiles, only sort portfolios
 
             } else {
 
@@ -611,7 +611,7 @@ class E extends CI_Controller
 
                 if(sources_currently_sorted($x__up)){
 
-                    $x__sort = 1 + $this->X_model->max_sort(array(
+                    $x__spectrum = 1 + $this->X_model->max_sort(array(
                             'x__up' => $x__up,
                             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -620,7 +620,7 @@ class E extends CI_Controller
                 } else {
 
                     //Don't sort since currently not sorted:
-                    $x__sort = 0;
+                    $x__spectrum = 0;
 
                 }
 
@@ -651,7 +651,7 @@ class E extends CI_Controller
                 'x__message' => $x__message,
                 'x__down' => $x__down,
                 'x__up' => $x__up,
-                'x__sort' => $x__sort,
+                'x__spectrum' => $x__spectrum,
             ));
         }
 
@@ -844,7 +844,7 @@ class E extends CI_Controller
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
                 'x__up' => $_POST['e__id'],
-            ), array('x__right'), 0, 0, array('x__sort' => 'ASC'));
+            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             if(count($i_notes) && !$_POST['do_13527']){
                 //Cannot delete this source until Idea references are deleted:
                 return view_json(array(

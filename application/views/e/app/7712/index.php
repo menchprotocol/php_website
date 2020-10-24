@@ -18,7 +18,7 @@ foreach($this->I_model->fetch(array(
         'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $in['i__id'],
-    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $child_or){
+    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $child_or){
 
         $x_coins = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

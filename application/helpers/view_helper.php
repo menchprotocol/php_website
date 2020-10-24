@@ -435,8 +435,8 @@ function view_x($x, $is_parent_tr = false)
 
 
     //Order
-    if($x['x__sort'] > 0){
-        $ui .= '<div class="simple-line '.$superpower_css_12701.'"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[4370]['m__title']. '"><span class="icon-block">'.$e___4341[4370]['m__icon']. '</span>'.view_ordinal($x['x__sort']).'</span></div>';
+    if($x['x__spectrum'] > 0){
+        $ui .= '<div class="simple-line '.$superpower_css_12701.'"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[4370]['m__title']. '"><span class="icon-block">'.$e___4341[4370]['m__icon']. '</span>'.view_ordinal($x['x__spectrum']).'</span></div>';
     }
 
 
@@ -624,7 +624,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         //SOURCES
         $limit = view_memory(6404,11064);
-        $order_columns = array('x__sort' => 'ASC', 'e__title' => 'ASC');
+        $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
         $join_objects = array('x__down');
         $query_filters = array(
             'x__up' => $e__id,
@@ -659,7 +659,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $limit = view_memory(6404,11064);
 
         if($page_num > 0){
-            $order_columns = array('x__sort' => 'ASC');
+            $order_columns = array('x__spectrum' => 'ASC');
             $query_filters = array(
                 'x__source' => $e__id,
                 'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
@@ -837,7 +837,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-    ), array('x__right'), 0, 0, array('x__sort' => 'ASC')) as $i_x){
+    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i_x){
 
         //Prep Metadata:
         $metadata = unserialize($i_x['x__metadata']);
@@ -846,7 +846,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $i_x['i__id'],
-        ), array(), 0, 0, array('x__sort' => 'ASC'));
+        ), array(), 0, 0, array('x__spectrum' => 'ASC'));
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
@@ -1028,7 +1028,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         //IDEA TITLE
         if($is_i_link && $e_of_i){
 
-            $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__sort']*100)+1));
+            $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__spectrum']*100)+1));
 
         } else {
 
@@ -1082,16 +1082,16 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
 
             //LINK MARKS
             $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
-            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $e_of_i, ($i['x__sort']*10)+2 );
+            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+2 );
             $ui .='</span>';
 
 
             //LINK CONDITIONAL RANGE
             $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
             //MIN
-            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $e_of_i, ($i['x__sort']*10)+3);
+            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+3);
             //MAX
-            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $e_of_i, ($i['x__sort']*10)+4);
+            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+4);
             $ui .= '</span>';
             $ui .= '</span>';
 
@@ -1508,7 +1508,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<div class="col-9 col-sm-10 col-md-8">';
 
             //SOURCE ICON
-            $ui .= '<a href="'.$e_url.'" '.( $is_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__sort'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</span></a>';
+            $ui .= '<a href="'.$e_url.'" '.( $is_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__spectrum'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</span></a>';
 
 
             //SOURCE TITLE TEXT EDITOR
