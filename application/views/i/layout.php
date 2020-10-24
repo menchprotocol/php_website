@@ -191,7 +191,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'e__id IN (' . join(',', $i_stats['array_13207']) . ')' => null,
                 'e__id NOT IN (' . join(',', $i_notes_ids) . ')' => null,
-            ), array('x__down'), 0, 0, array('e__weight' => 'DESC'));
+            ), array('x__down'), 0, 0, array('e__spectrum' => 'DESC'));
 
             if(count($not_directly_listed)){
                 //Add Tree Sources

@@ -951,7 +951,7 @@ class X_model extends CI_Model
                     'x__down' => $referenced_e,
                 ), array('x__up'), 0, 0, array(
                     'x__type' => 'ASC', /* Text first */
-                    'e__weight' => 'DESC',
+                    'e__spectrum' => 'DESC',
                 )) as $e_profile) {
 
                     if(in_array($e_profile['e__id'], $this->config->item('n___4755'))){

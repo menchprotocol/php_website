@@ -683,7 +683,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__up IN (' . join(',', $this->config->item('n___13207')) . ')' => null, //LEADERBOARD Source
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'e__id IN (' . join(',', $i_stats['array_13207']) . ')' => null,
-            ), array('x__down'), 0, 0, array('e__weight' => 'DESC')) as $e) {
+            ), array('x__down'), 0, 0, array('e__spectrum' => 'DESC')) as $e) {
                 $focus_tab .= view_e($e);
             }
             $focus_tab .= '</div>';

@@ -539,7 +539,7 @@ function i_fetch_description($i__id){
 }
 
 
-function i__weight_calculator($i){
+function i__spectrum_calculator($i){
 
     //DISCOVERIES
     $CI =& get_instance();
@@ -561,9 +561,9 @@ function i__weight_calculator($i){
         + ( $counts[0]['totals'] * view_memory(6404,12565) );
 
     //Should we update?
-    if($weight != $i['i__weight']){
+    if($weight != $i['i__spectrum']){
         return $CI->I_model->update($i['i__id'], array(
-            'i__weight' => $weight,
+            'i__spectrum' => $weight,
         ));
     } else {
         return 0;
@@ -571,7 +571,7 @@ function i__weight_calculator($i){
 
 }
 
-function e__weight_calculator($e){
+function e__spectrum_calculator($e){
 
     //DISCOVERIES
     $CI =& get_instance();
@@ -593,9 +593,9 @@ function e__weight_calculator($e){
             + ( $counts[0]['totals'] * view_memory(6404,12565) );
 
     //Should we update?
-    if($weight != $e['e__weight']){
+    if($weight != $e['e__spectrum']){
         return $CI->E_model->update($e['e__id'], array(
-            'e__weight' => $weight,
+            'e__spectrum' => $weight,
         ));
     } else {
         return 0;
@@ -736,8 +736,8 @@ function email_template($template_id, $member, $member_email){
 }
 
 function sortByWeight($a, $b) {
-    if(isset($a['e__weight']) && isset($b['e__weight'])){
-        return $b['e__weight'] - $a['e__weight'];
+    if(isset($a['e__spectrum']) && isset($b['e__spectrum'])){
+        return $b['e__spectrum'] - $a['e__spectrum'];
     }
 }
 
@@ -1548,9 +1548,9 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
             if($s__id){
                 //Update weight before updating this object:
                 if($s__type==12274){
-                    e__weight_calculator($s);
+                    e__spectrum_calculator($s);
                 } elseif($s__type==12273){
-                    i__weight_calculator($s);
+                    i__spectrum_calculator($s);
                 }
             }
 
@@ -1591,7 +1591,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__status'] = intval($s['e__type']);
                 $export_row['s__icon'] = view_e__icon($s['e__icon']);
                 $export_row['s__title'] = $s['e__title'];
-                $export_row['s___weight'] = intval($s['e__weight']);
+                $export_row['s___weight'] = intval($s['e__spectrum']);
 
                 //Add source as their own author:
                 array_push($export_row['_tags'], 'alg_e_' . $s['x__source']);
@@ -1614,7 +1614,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     'x__down' => $s['e__id'], //This child source
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-                ), array('x__up'), 0, 0, array('e__weight' => 'DESC')) as $x) {
+                ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $x) {
 
                     //Always add to tags:
                     array_push($export_row['_tags'], 'alg_e_' . $x['e__id']);
@@ -1637,7 +1637,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__status'] = intval($s['i__type']);
                 $export_row['s__icon'] = view_i_icon($s);
                 $export_row['s__title'] = $s['i__title'];
-                $export_row['s___weight'] = intval($s['i__weight']);
+                $export_row['s___weight'] = intval($s['i__spectrum']);
 
                 //Add keywords:
                 $export_row['s__keywords'] = '';

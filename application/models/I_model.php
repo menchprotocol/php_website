@@ -950,13 +950,13 @@ class I_model extends CI_Model
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i__id,
-        ), array('x__right'), 0, 0, array(), 'i__id, i__weight') as $next_i){
-            $total_child_weights += $next_i['i__weight'] + $this->I_model->weight($next_i['i__id']);
+        ), array('x__right'), 0, 0, array(), 'i__id, i__spectrum') as $next_i){
+            $total_child_weights += $next_i['i__spectrum'] + $this->I_model->weight($next_i['i__id']);
         }
 
         //Update This Level:
         if($total_child_weights > 0){
-            $this->db->query("UPDATE mench__i SET i__weight=i__weight+".$total_child_weights." WHERE i__id=".$i__id.";");
+            $this->db->query("UPDATE mench__i SET i__spectrum=i__spectrum+".$total_child_weights." WHERE i__id=".$i__id.";");
         }
 
         //Return data:

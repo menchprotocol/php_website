@@ -34,7 +34,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__down' => $e['e__id'],
-        ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
+        ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
         $show_max = view_memory(6404,13803);
         $hide = false;
         foreach($profiles as $count => $e_profile) {
@@ -543,7 +543,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
             $focus_tab .= '<div class="list-group">';
             if($counter>0){
 
-                $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), view_memory(6404,11064), 0, array('i__weight' => 'DESC'));
+                $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), view_memory(6404,11064), 0, array('i__spectrum' => 'DESC'));
                 foreach($i_notes_query as $count => $i_notes) {
 
                     if($x__type==12896){

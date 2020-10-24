@@ -913,7 +913,7 @@ class X extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
             'x__down' => $e__id,
-        ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
+        ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
 
         if(!count($profiles)){
 

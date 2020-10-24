@@ -20,7 +20,7 @@ if(!$obj || $obj==12273){
         'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     )) as $in) {
         $stats['i_scanned']++;
-        $stats['i_updated'] += i__weight_calculator($in);
+        $stats['i_updated'] += i__spectrum_calculator($in);
     }
 
     //Now addup weights starting from primary Idea:
@@ -35,7 +35,7 @@ if(!$obj || $obj==12274){
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     )) as $en) {
         $stats['e_scanned']++;
-        $stats['e_changed'] += e__weight_calculator($en);
+        $stats['e_changed'] += e__spectrum_calculator($en);
     }
 }
 

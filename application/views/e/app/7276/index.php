@@ -26,7 +26,7 @@ $stats = array(
 );
 
 $is_scanned = array(); //Keeps track of those
-foreach($this->I_model->fetch($query_filters, 0, 0, array('i__weight' => 'DESC')) as $i){
+foreach($this->I_model->fetch($query_filters, 0, 0, array('i__spectrum' => 'DESC')) as $i){
 
     if(in_array($i['i__id'], $is_scanned)){
         continue;

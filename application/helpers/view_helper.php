@@ -641,7 +641,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         //IDEAS
         $limit = view_memory(6404,13958);
         $join_objects = array('x__right');
-        $order_columns = array('i__weight' => 'DESC'); //BEST IDEAS
+        $order_columns = array('i__spectrum' => 'DESC'); //BEST IDEAS
         $query_filters = array(
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1023,7 +1023,7 @@ function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_i
         $href = '/~'.$i['i__id'].( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
 
         //IDEA STATUS:
-        $ui .= '<a href="'.$href.'" title="Weight: '.number_format($i['i__weight'], 0).'" class="icon-block">'.view_i_icon($i).'</a>';
+        $ui .= '<a href="'.$href.'" title="Weight: '.number_format($i['i__spectrum'], 0).'" class="icon-block">'.view_i_icon($i).'</a>';
 
         //IDEA TITLE
         if($is_i_link && $e_of_i){
@@ -1432,7 +1432,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         'x__down' => $e['e__id'], //This child source
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__up'), 0, 0, array('e__weight' => 'DESC'));
+    ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
 
     $is_public = in_array($e['e__type'], $CI->config->item('n___7357'));
     $is_x_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
@@ -1508,7 +1508,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<div class="col-9 col-sm-10 col-md-8">';
 
             //SOURCE ICON
-            $ui .= '<a href="'.$e_url.'" '.( $is_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__spectrum'].' WEIGHT '.$e['e__weight'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</span></a>';
+            $ui .= '<a href="'.$e_url.'" '.( $is_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__spectrum'].' WEIGHT '.$e['e__spectrum'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</span></a>';
 
 
             //SOURCE TITLE TEXT EDITOR
