@@ -1720,32 +1720,43 @@ class E extends CI_Controller
     }
 
     function search_icon($e__id){
+
         $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
         ));
-        if(count($es)){
-
-            if(( substr_count($es[0]['e__icon'], 'class="') ?  : null )){
-
-                return redirect_message('/app/7267?search_for='.urlencode(one_two_explode('class="','"',$es[0]['e__icon'])));
-
-            } elseif(strlen($es[0]['e__icon'])) {
-
-                return redirect_message('/app/7267?search_for=' . urlencode($es[0]['e__icon']));
-
-            } else {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Source Missing Icon'
-                ));
-            }
-
-        } else {
+        if(!count($es)){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source ID'
             ));
+        } elseif(!strlen($es[0]['e__icon'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Source Missing Icon'
+            ));
         }
+
+        if(substr_count($es[0]['e__icon'], 'src="')){
+
+            $icon_keyword = one_two_explode('src="','"',$es[0]['e__icon']);
+
+        } elseif(substr_count($es[0]['e__icon'], '<i') && substr_count($es[0]['e__icon'], 'class="')){
+
+            $icon_keyword = one_two_explode('class="','"',$es[0]['e__icon']);
+            foreach(array('idea', 'source', 'discover', 'fas', 'far', 'fad', 'fal') as $remove_class){
+                $icon_keyword = str_replace($remove_class, '', $icon_keyword);
+            }
+            $icon_keyword = trim($icon_keyword);
+
+        } else {
+
+            $icon_keyword = $es[0]['e__icon'];
+
+        }
+
+        return redirect_message('/app/7267?search_for=' . urlencode($icon_keyword));
+
+
     }
 
     function e_signin_password(){
