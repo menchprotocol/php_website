@@ -5,8 +5,12 @@
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
     $e___12467 = $this->config->item('e___12467'); //MENCH COINS
 
+    foreach(array('on the', 'of GIANTS') as $term){
+        $i['i__title'] = str_replace($term,'<span class="inline-block">'.$term.'</span>',$i['i__title']);
+    }
+
     //IDEA TITLE
-    echo '<h1 class="big-frame extra-big">' . str_replace('on the','<span class="inline-block">on the</span>',$i['i__title']) . '</h1>';
+    echo '<h1 class="big-frame extra-big">' . $i['i__title'] . '</h1>';
 
     //IDEA MESSAGES
     echo '<div class="message-center how_it_works" style="margin:0 41px 89px;"><a href="javascript:void(0);" onclick="$(\'.how_it_works\').toggleClass(\'hidden\');">'.$e___11035[13952]['m__icon'].' '.$e___11035[13952]['m__title'].'</a></div>';
