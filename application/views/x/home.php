@@ -5,6 +5,8 @@
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
     $e___12467 = $this->config->item('e___12467'); //MENCH COINS
 
+
+    //HACK: Group certain terms to make UI look nicer:
     foreach(array('on the', 'of GIANTS') as $term){
         $i['i__title'] = str_replace($term,'<span class="inline-block">'.$term.'</span>',$i['i__title']);
     }
@@ -12,22 +14,26 @@
     //IDEA TITLE
     echo '<h1 class="big-frame extra-big">' . $i['i__title'] . '</h1>';
 
-    //IDEA MESSAGES
-    echo '<div class="message-center how_it_works" style="margin:0 41px 89px;"><a href="javascript:void(0);" onclick="$(\'.how_it_works\').toggleClass(\'hidden\');">'.$e___11035[13952]['m__icon'].' '.$e___11035[13952]['m__title'].'</a></div>';
-    echo '<div class="message-center how_it_works hidden" style="margin-bottom:89px;">';
+    //IDEA MESSAGES (Show first one only)
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i['i__id'],
-    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
+        if($count==1){
+            echo '<div class="how_it_works" style="margin:0 41px;"><a href="javascript:void(0);" onclick="$(\'.how_it_works\').toggleClass(\'hidden\');">'.$e___11035[13952]['m__icon'].' '.$e___11035[13952]['m__title'].'</a></div>';
+            echo '<div class="how_it_works hidden">';
+        }
         echo $this->X_model->message_send( $x['x__message'], true);
     }
-    echo '</div>';
+    if($count > 0){
+        echo '</div>';
+    }
 
 
 
     //FEATURED IDEAS
-    echo '<div class="row">';
+    echo '<div class="row" style="margin-top: 89px;">';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
