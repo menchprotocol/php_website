@@ -1736,11 +1736,11 @@ class E extends CI_Controller
             ));
         }
 
-        if(substr_count($es[0]['e__icon'], 'src="')){
+        if(substr_count($es[0]['e__icon'], '<img ') && substr_count($es[0]['e__icon'], 'src="')){
 
             $icon_keyword = one_two_explode('src="','"',$es[0]['e__icon']);
 
-        } elseif(substr_count($es[0]['e__icon'], '<i') && substr_count($es[0]['e__icon'], 'class="')){
+        } elseif(substr_count($es[0]['e__icon'], '<i ') && substr_count($es[0]['e__icon'], 'class="')){
 
             $icon_keyword = one_two_explode('class="','"',$es[0]['e__icon']);
             foreach(array('idea', 'source', 'discover', 'fas', 'far', 'fad', 'fal') as $remove_class){
