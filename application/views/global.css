@@ -1402,6 +1402,7 @@ label {
 .btn-edit {
     border: 3px solid transparent;
     padding: 3px;
+    border-radius: 50% !important;
 }
 .btn-edit .icon-block {
     width: 28px !important;
