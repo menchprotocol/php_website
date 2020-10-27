@@ -114,18 +114,10 @@ echo view_i_note_list(4231, $this->X_model->fetch(array(
 echo '<div style="padding: 21px 0 8px 0;">';
 
 //IDEA STATUS
-echo '<div class="inline-block pull-left left-margin">'.view_input_dropdown(4737, $i_focus['i__type'], 'btn-idea', $e_of_i, true, $i_focus['i__id']).'</div>';
-
+echo '<div class="inline-block left-margin">'.view_input_dropdown(4737, $i_focus['i__type'], 'btn-idea', $e_of_i, true, $i_focus['i__id']).'</div>';
 
 //IDEA TIME
-echo '<div class="inline-block pull-left left-half-margin '.superpower_active(12700).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
-
-//PREVIEW DISCOVERY
-if(!$is_north_star) {
-    echo '<div class="inline-block pull-right" style="margin-right:41px;"><a class="btn btn-discover" href="/'.$i_focus['i__id'].'" style="font-size: 1em !important;" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__icon'].'</a></div>';
-}
-
-echo '<div class="doclear">&nbsp;</div>';
+echo '<div class="inline-block left-half-margin '.superpower_active(12700).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
 
 echo '</div>';
 
@@ -163,7 +155,16 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $pre_fix_6169 = null;
 
 
-    if($x__type==12274){
+    if($x__type==13562){
+
+        if(!$is_north_star){
+            $href = 'href="/'.$i_focus['i__id'].'"';
+        } else {
+            //Cannot preview North Star:
+            continue;
+        }
+
+    } elseif($x__type==12274){
 
         //SOURCES
         $i_notes_ids = array();
@@ -431,7 +432,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $default_active = in_array($x__type, $this->config->item('n___12675'));
 
 
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;<span class="'.superpower_active(12700).'">'.$pre_fix_6169.'</span><span class="en-type-counter-'.$x__type.'">'.view_number($counter).( intval($counter) ? '&nbsp;' : '' ).'</span></a></li>';
+    echo '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14103')) ? ' pull-right ' : '' ).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;<span class="'.superpower_active(12700).'">'.$pre_fix_6169.'</span><span class="en-type-counter-'.$x__type.'">'.view_number($counter).( intval($counter) ? '&nbsp;' : '' ).'</span></a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
