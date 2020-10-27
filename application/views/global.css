@@ -1374,7 +1374,7 @@ label {
     border: 3px solid #007AFD;
 }
 .btn-source .fas,.btn-source .far,.btn-source .fal,.btn-source .fad { color: #007AFD !important; }
-.btn-edit.btn-source { border-color:#007AFD !important; }
+.btn-source { border-color:#007AFD !important; }
 
 
 
@@ -1385,7 +1385,7 @@ label {
     border: 3px solid #FC1B44;
 }
 .btn-discover .fas,.btn-discover .far,.btn-discover .fal ,.btn-discover .fad { color: #FC1B44 !important; }
-.btn-edit.btn-discover { border-color:#FC1B44 !important; }
+.btn-discover { border-color:#FC1B44 !important; }
 
 
 
@@ -1396,7 +1396,7 @@ label {
     border: 3px solid #FFC500;
 }
 .btn-idea .fas,.btn-idea .far,.btn-idea .fal,.btn-idea .fad { color: #FFC500 !important; }
-.btn-edit.btn-idea { border-color:#FFC500 !important; }
+.btn-idea { border-color:#FFC500 !important; }
 
 
 .btn-edit {
