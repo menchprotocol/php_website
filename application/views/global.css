@@ -755,7 +755,10 @@ img.no-radius {
 .nav-tabs {
     border-bottom: 3px solid #999999;
 }
-.nav-tabs, .dropdown-menu {
+.nav-tabs {
+    border-color:#999999;
+}
+.dropdown-menu {
     border:3px solid #999999;
 }
 
