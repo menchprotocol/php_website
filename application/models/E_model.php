@@ -761,7 +761,7 @@ class E_model extends CI_Model
                 }
 
                 //Create a new source for this URL ONLY If user source is provided...
-                $added_e = $this->E_model->verify_create($page_title, $x__source, 6181, $e___4592[$x__type]['m__icon']);
+                $added_e = $this->E_model->verify_create($page_title, $x__source, 6181);
                 if($added_e['status']){
 
                     //All good:
