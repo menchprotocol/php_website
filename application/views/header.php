@@ -22,6 +22,7 @@ $current_mench = current_mench();
     <?php
     //USER VARIABLES
     echo ' var js_session_superpowers_activated = ' . json_encode( ($user_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
+    echo ' var superpower_js_12701 = ' . intval(in_array(12701, $this->session->userdata('session_superpowers_activated'))) . '; ';
     echo ' var js_pl_id = ' . ( isset($user_e['e__id']) ? $user_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_name = \'' . ( $user_e ? $user_e['e__title'] : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
