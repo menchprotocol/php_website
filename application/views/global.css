@@ -318,6 +318,11 @@ img.no-radius {
 .pull-right{
     float:right;
 }
+.nav .pull-right {
+    float: none;
+    margin-left: auto;
+    order: 2;
+}
 .pull-left{
     float:left;
 }
