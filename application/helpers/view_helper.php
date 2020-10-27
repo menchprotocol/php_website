@@ -1675,7 +1675,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
 
     $ui .= '</button>';
 
-    $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_e__id.'">';
+    $ui .= '<div class="dropdown-menu btn-'.$btn_class.'" aria-labelledby="dropdownMenuButton'.$cache_e__id.'">';
 
     foreach($e___this as $e__id => $m) {
 
