@@ -191,6 +191,23 @@ class I extends CI_Controller {
 
     }
 
+
+
+    function search_google($i__id){
+        $is = $this->I_model->fetch(array(
+            'i__id' => $i__id,
+        ));
+        if(count($is)){
+            return redirect_message('https://www.google.com/search?q='.urlencode($is[0]['i__title']));
+        } else {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Idea ID'
+            ));
+        }
+    }
+
+
     function i_navigate($previous_i__id, $current_i__id, $action){
 
         $trigger_next = false;
