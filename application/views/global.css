@@ -205,7 +205,7 @@ li a {
 
 a.btn, .btn.dropdown-toggle, label.btn {
     padding:15px;
-    min-width: 80px;
+    min-width:66px;
 }
 
 .btn-compact{
