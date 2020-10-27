@@ -282,7 +282,7 @@ $(document).ready(function () {
                         if(js_pl_id > 0){
 
                             //For Users:
-                            if(!(js_session_superpowers_activated.includes(12701))){
+                            if(js_session_superpowers_activated.indexOf(12701) < 0){
                                 //Can view limited sources:
                                 if(search_filters.length>0){
                                     search_filters += ' AND ';
