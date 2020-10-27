@@ -607,7 +607,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             } else {
                 algolia_index.search(q, {
 
-                    filters: ' s__type=12273 ' + ( js_session_superpowers_activated.includes(12701) ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
+                    filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
                     hitsPerPage:21,
 
                 }, function (error, content) {
