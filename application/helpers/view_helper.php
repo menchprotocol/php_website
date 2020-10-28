@@ -17,41 +17,28 @@ function view_e_load_more($page, $limit, $list_e_count)
     return $ui;
 }
 
-function view_i_tree_stats($i_stats, $noshow_idea){
-
-    //IDEA STATUS BAR
-    $CI =& get_instance();
-    $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
-    $is_interactive = ( $i_stats['i___6169']!=$i_stats['i___6170'] );
-    $has_idea = ( $i_stats['i___6169'] && $i_stats['i___6170'] );
-    $cover_show = (!$noshow_idea);
-
-    //Variable time range:
-    $ui = null;
-
-    //IDEAS
-    if(!$noshow_idea){
-        $ui .= '<span class="inline-block '.extract_icon_color($e___13544[12273]['m__icon']).'" '.( !$cover_show ? 'style="min-width:80px;"' : '' ).' title="'.$e___13544[12273]['m__title'].'" data-toggle="tooltip" data-placement="top">'.( $i_stats['i___6169'] > 0 ? ( $has_idea ? ( $cover_show ? $e___13544[12273]['m__icon'].'&nbsp;' : '<span class="icon-block">'.$e___13544[12273]['m__icon'].'</span>' ) : '' ).( $has_idea ? ( $is_interactive ? '<span class="'.superpower_active(12700).'">'.view_number($i_stats['i___6169']).'<span class="mid-range">-</span></span>' : '' ).view_number($i_stats['i___6170']).'&nbsp;' : '' ) : '' ).'</span>';
-    }
-
+function view_i_time($i_stats){
 
     //TIME STATS
-    if($i_stats['i___6161'] > 0){
-        $ui .= '<span class="inline-block grey">';
-        $ui .= ( $cover_show ? '&nbsp;&nbsp;'.$e___13544[13292]['m__icon'].' ' : '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>' );
-
-        if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
-            //SECONDS
-            $ui .= '<span class="inline-block">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
-        } else {
-            //MINUTES
-            $ui .= '<span class="inline-block">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).( !$cover_show ? '&nbsp;MIN' : '\'' ).'</span>';
-        }
-        $ui .= '</span>';
+    if(!$i_stats['i___6161']){
+        return null;
     }
 
-
-    return ( $ui ? '<span class="montserrat doupper">'.$ui.'</span>' : $ui );
+    //Has Time
+    $CI =& get_instance();
+    $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
+    $ui = null;
+    $ui .= '<span class="montserrat doupper inline-block grey">';
+    $ui .= '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>';
+    if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
+        //SECONDS
+        $ui .= '<span class="inline-block">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
+    } else {
+        //MINUTES
+        $ui .= '<span class="inline-block">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+    }
+    $ui .= '</span>';
+    return $ui;
 }
 
 function view_db_field($field_name){
@@ -1374,7 +1361,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     $ui .= '</div>';
     $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
     $ui .= view_i_title($i);
-    $ui .= '<div style="padding:5px 0;">'.view_i_tree_stats($i_stats, true).'</div>';
+    $ui .= '<div style="padding:5px 0;">'.view_i_time($i_stats).'</div>';
     $ui .= '</a></div>';
     $ui .= '</div>';
 

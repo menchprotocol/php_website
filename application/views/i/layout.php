@@ -344,7 +344,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         if($counter > 1){
             //IDEA TREE STATS
-            $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_tree_stats($i_stats, true).'</div>';
+            $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_time($i_stats).'</div>';
         }
 
     } elseif($x__type==6255) {

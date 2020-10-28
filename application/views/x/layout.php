@@ -578,7 +578,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 $has_stats = false;
                 if (count($is_next) > 1) {
                     //NEXT IDEAS
-                    $has_stats = view_i_tree_stats($i_stats, true);
+                    $has_stats = view_i_time($i_stats);
                     $focus_tab .= '<div class="i_estimates hideIfEmpty">' . $has_stats . '</div>';
                     $has_substance = true;
                 }
@@ -645,7 +645,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         } else {
 
             //TIME ESTIMATE
-            $time_estimate = view_i_tree_stats($i_stats, true);
+            $time_estimate = view_i_time($i_stats);
 
             //NEXT IDEAS
             $focus_tab .= view_i_list(0, $in_my_x, $i_focus, $is_next, $user_e); //13542
