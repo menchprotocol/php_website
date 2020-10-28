@@ -28,16 +28,16 @@ function view_i_time($i_stats){
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = null;
-    $ui .= '<span class="montserrat doupper inline-block grey">';
+    $ui .= '<div class="montserrat doupper grey">';
     $ui .= '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>';
     if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
         //SECONDS
-        $ui .= '<span class="inline-block">'.$i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC</span>';
+        $ui .= $i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC';
     } else {
         //MINUTES
-        $ui .= '<span class="inline-block">'.round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN</span>';
+        $ui .= round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN';
     }
-    $ui .= '</span>';
+    $ui .= '</div>';
     return $ui;
 }
 
