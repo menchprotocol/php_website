@@ -1404,10 +1404,10 @@ label {
 
 .btn-edit {
     border: 3px solid transparent;
-    padding: 3px;
+    padding: 3px 0;
 }
 .btn-edit .icon-block {
-    width: 28px !important;
+    width: 29px !important;
 }
 
 
