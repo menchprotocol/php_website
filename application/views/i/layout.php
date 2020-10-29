@@ -198,7 +198,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             if(count($not_directly_listed)){
                 //Add Tree Sources
                 $focus_tab .= '<div style="margin:21px 0 41px;">';
-                $focus_tab .= '<div class="tree_sources list-group"><a class="list-group-item montserrat doupper source itemsource" href="javascript:void(0);" onclick="$(\'.tree_sources\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-search-plus source"></i></span>LIST '.$counter.' SOURCES'.( $counter_i > 1 ? ' FOR ALL '.$counter_i.' IDEAS' : '' ).'</a></div>';
+                $focus_tab .= '<div class="tree_sources list-group"><a class="list-group-item montserrat doupper source itemsource" href="javascript:void(0);" onclick="$(\'.tree_sources\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-search-plus source"></i></span>LIST ALL '.$counter.' SOURCES IN IDEA TREE</a></div>';
                 $focus_tab .= '<div class="tree_sources hidden">';
                 $focus_tab .= '<div class="list-group" style="margin-bottom:41px;">';
                 foreach ($not_directly_listed as $e) {
