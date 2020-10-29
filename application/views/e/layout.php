@@ -490,7 +490,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
                 } else {
 
-                    $focus_tab .= '<div class="i_content padded top-margin"><div class="msg">'.$e['e__title'].' has discovered '.number_format($counter, 0).' idea'.view__s($counter).'.</div></div>';
+                    $focus_tab .= '<div class="i_content padded top-margin"><div class="msg">'.$e['e__title'].' has privately discovered '.number_format($counter, 0).' idea'.view__s($counter).'.</div></div>';
 
 
                 }
