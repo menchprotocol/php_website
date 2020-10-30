@@ -782,6 +782,8 @@ img.no-radius {
 }
 .dropdown-menu {
     border:3px solid #999999;
+    border-radius: 13px;
+    margin-top: -3px;
 }
 
 .nav-source, .nav-source .nav-item.show .nav-x, .nav-source .nav-x.active, .nav-source .nav-x:focus, .nav-source .nav-x:hover {
