@@ -95,7 +95,7 @@ if(!$e_of_i){
 
 
 //IDEA CONTROLLER
-echo '<div>';
+echo '<div style="padding:25px 0 10px;">';
 
 //IDEA TYPE
 echo '<div class="inline-block left-margin">'.view_input_dropdown(4737, $i_focus['i__type'], 'idea', $e_of_i, true, $i_focus['i__id']).'</div>';
