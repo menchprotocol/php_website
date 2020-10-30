@@ -553,7 +553,29 @@ img.no-radius {
 }
 .btn-lrg{
     font-size: 2em !important;
+    border: 0 !important;
 }
+.btn-lrg.btn-source{
+    background-color: #007AFD !important;
+    color: #222222 !important;
+}
+.btn-lrg.btn-discover{
+    background-color: #FC1B44 !important;
+    color: #222222 !important;
+}
+
+
+.btn-superpower.active .fas.source, .btn-superpower.active .far.source, .btn-superpower.active .fal.source, .btn-superpower.active .fad.source {
+    color:#007AFD !important;
+}
+.btn-superpower.active .fas.idea, .btn-superpower.active .far.idea, .btn-superpower.active .fal.idea, .btn-superpower.active .fad.idea {
+    color:#FFC500 !important;
+}
+.btn-superpower.active .fas.discover, .btn-superpower.active .far.discover, .btn-superpower.active .fal.discover, .btn-superpower.active .fad.discover {
+    color:#FC1B44 !important;
+}
+
+
 .click-info {
     padding: 5px 10px;
 }
@@ -1400,15 +1422,6 @@ label {
 }
 .btn-idea .fas,.btn-idea .far,.btn-idea .fal,.btn-idea .fad { color: #FFC500 !important; }
 .btn-idea { border-color:#FFC500 !important; }
-
-
-.btn-edit {
-    border: 3px solid transparent;
-    padding: 3px 0;
-}
-.btn-edit .icon-block {
-    width: 29px !important;
-}
 
 
 

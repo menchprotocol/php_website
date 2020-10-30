@@ -92,7 +92,7 @@ if(!$e_of_i){
 
 //IDEA TITLE
 echo '<div style="padding:8px 0; margin-top: 13px;">';
-echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true, view_input_dropdown(4737, $i_focus['i__type'], 'idea', $e_of_i, false, $i_focus['i__id'])); //view_i_icon($i_focus)
+echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true, view_i_icon($i_focus));
 echo '</div>';
 
 
@@ -114,7 +114,7 @@ echo view_i_note_list(4231, $this->X_model->fetch(array(
 echo '<div style="padding: 21px 0 8px 0;" class="'.superpower_active(12700).'">';
 
 //IDEA TYPE
-//echo '<div class="inline-block left-margin">'.view_input_dropdown(4737, $i_focus['i__type'], 'idea', $e_of_i, true, $i_focus['i__id']).'</div>';
+echo '<div class="inline-block left-margin">'.view_input_dropdown(4737, $i_focus['i__type'], 'idea', $e_of_i, true, $i_focus['i__id']).'</div>';
 
 //IDEA TIME
 echo '<div class="inline-block left-half-margin '.superpower_active(12700).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
