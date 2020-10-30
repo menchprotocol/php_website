@@ -1398,7 +1398,7 @@ label {
     color: #007AFD;
     border: 3px solid #007AFD;
 }
-.btn-source .fas,.btn-source .far,.btn-source .fal,.btn-source .fad { color: #007AFD !important; }
+.btn-source i { color: #007AFD !important; }
 .btn-source { border-color:#007AFD !important; }
 
 
@@ -1409,7 +1409,7 @@ label {
     color: #FC1B44;
     border: 3px solid #FC1B44;
 }
-.btn-discover .fas,.btn-discover .far,.btn-discover .fal ,.btn-discover .fad { color: #FC1B44 !important; }
+.btn-discover i { color: #FC1B44 !important; }
 .btn-discover { border-color:#FC1B44 !important; }
 
 
@@ -1420,10 +1420,10 @@ label {
     color: #FFC500;
     border: 3px solid #FFC500;
 }
-.btn-idea .fas,.btn-idea .far,.btn-idea .fal,.btn-idea .fad { color: #FFC500 !important; }
+.btn-idea i { color: #FFC500 !important; }
 .btn-idea { border-color:#FFC500 !important; }
 
-
+.btn-lrg i { color: #222222 !important; }
 
 
 .x-micro-data {
