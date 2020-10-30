@@ -111,7 +111,7 @@ echo view_i_note_list(4231, $this->X_model->fetch(array(
 
 
 //IDEA CONTROLLER
-echo '<div style="padding: 21px 0 8px 0;" class="'.superpower_active(12700).'">';
+echo '<div style="padding: 13px 0;">';
 
 //IDEA TYPE
 echo '<div class="inline-block left-margin">'.view_input_dropdown(4737, $i_focus['i__type'], 'idea', $e_of_i, true, $i_focus['i__id']).'</div>';
