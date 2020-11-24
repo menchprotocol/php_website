@@ -1361,7 +1361,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     $ui .= '</div>';
     $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
     $ui .= view_i_title($i);
-    $ui .= '<div style="padding:5px 0;">'.view_i_time($i_stats).'</div>';
+    $ui .= '<div>'.view_i_time($i_stats).'</div>';
     $ui .= '</a></div>';
     $ui .= '</div>';
 

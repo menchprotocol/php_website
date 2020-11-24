@@ -1831,13 +1831,14 @@ i, .btn .show-max {
 }
 
 .cover-text{
-    margin: 8px 41px 55px;
+    margin: 8px 5px 21px;
     text-align: center;
+    font-size: 0.88em;
 }
 .cover-progress{
-    width: calc(100% - 42px);
-    top:-18px;
-    left:21px;
+    width: calc(100% - 20px);
+    top: -8px;
+    left: 10px;
     position: absolute;
 }
 .cover-content{
@@ -1867,11 +1868,11 @@ i, .btn .show-max {
 }
 
 .inside-btn.top-left {
-    top: 10px;
+    bottom: 10px;
     left: 10px;
 }
 .inside-btn.top-right {
-    top: 10px;
+    bottom: 10px;
     right: 10px;
 }
 
