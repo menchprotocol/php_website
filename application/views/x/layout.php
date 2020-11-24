@@ -245,7 +245,7 @@ echo '</div>';
 
 
 
-echo '<div class="container wrap-card card-discover '.( $i_completed ? ' card-grey ' : '' ).'">';
+echo '<div class="container wrap-card">';
 
 if($in_my_x){
     echo view_x_progress($i_completion_rate, $i_focus, false);

@@ -624,29 +624,13 @@ img.no-radius {
 }
 
 .wrap-card {
-    border: 3px solid transparent;
-    padding:13px 0 25px 0;
-    border-radius: 34px;
+    border: 0;
+    padding:13px 0;
 }
 
 .coin-frame{
-    border: 3px solid transparent;
-    padding:0 0 25px 0;
-    border-radius: 34px;
-}
-
-.card-source{
-    border: 3px solid #007AFD;
-
-}
-.card-idea{
-    border: 3px solid #FFC500;
-}
-.card-discover{
-    border: 3px solid #FC1B44;
-}
-.card-grey{
-    border-color:#999999 !important;
+    border: 0;
+    padding:0 0 13px 0;
 }
 
 
@@ -2217,7 +2201,7 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13885 textarea,
 .custom_ui_13884_13885 .modal-content {
-    background-color:#FFFFFF;
+    background-color:#f0f0f0; /* WAS WHITE */
     color: #222222;
 }
 .custom_ui_13884_13885 .form-control{
@@ -2241,10 +2225,10 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .nav-tabs .nav-x.active,
 .custom_ui_13884_13885 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover {
-    border-bottom-color: #FFFFFF !important;
+    border-bottom-color: #f0f0f0 !important; /* WAS WHITE */
 }
 .custom_ui_13884_13885 .cover-link {
-    border-color: #FFFFFF !important;
+    border-color: #f0f0f0 !important; /* WAS WHITE */
 }
 
 .alert a, .alert i {

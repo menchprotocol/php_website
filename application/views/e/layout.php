@@ -64,7 +64,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
     }
 
 
-    echo '<div class="container wrap-card card-source">';
+    echo '<div class="container wrap-card">';
 
 
     //SOURCE DRAFTING?

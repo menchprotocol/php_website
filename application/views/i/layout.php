@@ -70,7 +70,7 @@ echo '</div>';
 
 
 
-echo '<div class="container wrap-card card-idea">';
+echo '<div class="container wrap-card">';
 
 if(isset($_GET['load__e']) && $superpower_14005){
     //Filtered Specific Source:
