@@ -1336,12 +1336,12 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     $ui .= '<div class="cover-wrapper">';
     $ui .= ( $can_click ? '<a href="'.$href.'"' : '<div' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
+    if(($discovery_mode && $show_editor) || $completion_rate['completion_percentage'] > 0){
+        $ui .= '<span class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</span>';
+    }
+
     //EDITING TOOLBAR
     if($show_editor){
-
-        if($discovery_mode){
-            $ui .= '<span class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</span>';
-        }
 
         //SORT
         $sort_id = ( $discovery_mode ? 6132 : 13412 );
