@@ -1816,18 +1816,15 @@ i, .btn .show-max {
     position:  absolute;
     text-align: center;
     font-size: 25px;
-    color:#222222;
+    color:#FFFFFF;
     border-radius: 50%;
     width:34px;
     height: 34px;
-    background-color: #FC1B44 !important;
+    background-color: #000000 !important;
 }
 .inside-btn i {
     margin-top: 5px;
     color: #FFFFFF !important;
-}
-.wrap-idea .inside-btn i{
-    color: #222222 !important;
 }
 
 .cover-text{
