@@ -1781,8 +1781,7 @@ i, .btn .show-max {
 
 .cover-wrapper {
     border:0;
-    border-radius: 13px;
-    margin:0 8px;
+    margin:0 5px;
 }
 
 .cover-link {
@@ -1794,6 +1793,7 @@ i, .btn .show-max {
     background-size: cover;
     background-position: center;
     display: block;
+    border-radius: 13px;
 }
 .chat-title{
     position: fixed;
