@@ -1796,20 +1796,19 @@ i, .btn .show-max {
 
 
 .cover-wrapper {
-    border: 3px solid #999999;
-    border-radius: 34px;
-    margin:0 41px;
+    border:0;
+    border-radius: 13px;
+    margin:0 8px;
 }
 
 .cover-link {
-    border: 2px solid transparent;
+    border:0;
     width: 100%;
     position: relative;
     padding-top: 150%;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    border-radius: 31px;
     display: block;
 }
 .chat-title{
@@ -1892,12 +1891,6 @@ i, .btn .show-max {
     right: 10px;
 }
 
-.cover-wrapper.wrap-discover {
-    border-color:#FC1B44;
-}
-.cover-wrapper.wrap-idea {
-    border-color:#FFC500;
-}
 .wrap-idea .inside-btn {
     background-color: #FFC500 !important;
 }
