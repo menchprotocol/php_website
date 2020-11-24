@@ -1828,13 +1828,13 @@ i, .btn .show-max {
 }
 
 .cover-text{
-    margin: 8px 5px 21px;
+    margin: 14px 5px 21px;
     text-align: center;
     font-size: 0.88em;
 }
 .cover-progress{
     width: calc(100% - 20px);
-    top: -8px;
+    bottom: -10px;
     left: 10px;
     position: absolute;
 }
