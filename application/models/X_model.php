@@ -901,7 +901,8 @@ class X_model extends CI_Model
 
 
         //Start building the Output message body based on format:
-        $has_text = substr_count($message_input, ' ');
+        $parts = explode('@',$message_input);
+        $has_text_after = substr_count($parts[(count($parts)-1)], ' ');
         $message_input .= ' ';//Helps with accurate source reference replacement
         $output_body_message = htmlentities($message_input);
         $string_references = extract_e_references($message_input); //Do it again since it may be updated
@@ -990,19 +991,19 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $is_single_link = ( $is_discovery_mode && count($e_urls)==1 && $e_media_count==1 && $has_text );
+            $is_single_link = ( $is_discovery_mode && count($e_urls)==1 && $e_media_count==1 && $has_text_after );
             if(!$is_single_link){
                 //For single link it would be linked directly
                 $output_body_message .= $e_appendix;
             }
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
-            $tooltip_class = ( $tooltip_info ? ' class="inline-block underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="top"' : ' class="inline-block"' );
+            $tooltip_class = ( $tooltip_info ? ' class="underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="top"' : '' );
 
             //USER REFERENCE
             if($is_discovery_mode || $is_current_e || $simple_version){
 
                 //NO LINK so we can maintain focus...
-                if((!$has_text && $is_current_e) || (!$has_text && $is_discovery_mode && $e_count>0 && $e_media_count==$e_count /* All media */)){
+                if((!$has_text_after && $is_current_e) || (!$has_text_after && $is_discovery_mode && $e_count>0 && $e_media_count==$e_count /* All media */)){
 
                     //HIDE
                     $output_body_message = str_replace($identifier_string, ' ', $output_body_message);
@@ -1011,10 +1012,12 @@ class X_model extends CI_Model
 
                     if($is_single_link){
                         //SINGLE LINK:
-                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].'" style="text-decoration:underline;">' . $es[0]['e__title'] . '</a></span> ', $output_body_message);
+                        //<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span>
+                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].'" style="text-decoration:underline;">' . $es[0]['e__title'] . '</a></span> ', $output_body_message);
                     } else {
                         //TEXT ONLY
-                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+                        //<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span>
+                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
                     }
 
                 }
