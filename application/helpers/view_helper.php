@@ -1328,8 +1328,8 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     }
 
     $i_stats = i_stats($i['i__metadata']);
+    $i_title = view_i_title($i);
     $href = ( $discovery_mode ? ( $user_input && $focus_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?load__e='.$focus_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
-
 
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-xs-4 col-6 i_class_'.$x__type.'_'.$i['i__id'].' no-padding '.( $show_editor ? ' cover_sort ' : '' ).'">';
@@ -1353,15 +1353,18 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
 
     }
 
-    if($message_input){
-        $ui .= '<div class="cover-content">'.$message_input.'</div>';
+
+    if($message_input || $i_title){
+        $ui .= '<div class="cover-content">';
+        $ui .= $i_title;
+        $ui .= $message_input;
+        $ui .= '</div>';
     }
 
     $ui .= ( $can_click ? '</a>' : '</div>' );
     $ui .= '</div>';
     $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
-    $ui .= view_i_title($i);
-    $ui .= '<div>'.view_i_time($i_stats).'</div>';
+    $ui .= view_i_time($i_stats);
     $ui .= '</a></div>';
     $ui .= '</div>';
 
