@@ -1780,7 +1780,7 @@ i, .btn .show-max {
 
 .cover-wrapper {
     border:0;
-    margin:0 5px;
+    margin:0 3px;
 }
 
 .cover-link {
@@ -1828,7 +1828,7 @@ i, .btn .show-max {
 }
 
 .cover-text{
-    margin: 14px 5px 21px;
+    margin: 3px 3px 13px;
     text-align: center;
     font-size: 0.88em;
 }
