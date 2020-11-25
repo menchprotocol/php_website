@@ -199,6 +199,16 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 }
 
 function view_i_title($i, $common_prefix = null){
+
+    $CI =& get_instance();
+    if(count($CI->X_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__right' => $i['i__id'],
+        '(x__up = 14362 OR x__down = 14362)' => null,
+    )))){
+        return false;
+    }
     if(strlen($common_prefix) > 0){
         $i['i__title'] = trim(substr($i['i__title'], strlen($common_prefix)));
     }
