@@ -1840,16 +1840,19 @@ i, .btn .show-max {
 }
 .cover-content{
     width:100%;
-    max-height:70%;
+    max-height:71%;
     position: absolute;
     left: 0;
     top: 0;
-    background: rgba(0, 0, 0, 0.75);
     overflow-x: hidden;
     overflow-y: scroll;
     color: #FFFFFF;
-    padding: 8px;
-    border-radius: 13px;
+    padding: 3px;
+}
+.cover-content span{
+    background: rgba(0, 0, 0, 0.34);
+    padding: 2px;
+    border-radius: 3px;
 }
 .cover-content .icon-block-xs {
     display: none;
