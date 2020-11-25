@@ -1847,12 +1847,13 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: scroll;
     color: #FFFFFF;
-    padding: 3px;
+    padding: 5px;
 }
 .cover-content span{
-    background: rgba(0, 0, 0, 0.34);
-    padding: 2px;
-    border-radius: 3px;
+    padding: 0 2px 0 0;
+    background: rgba(0, 0, 0, 0.55);
+    line-height: 120%;
+    white-space: pre-wrap;
 }
 .cover-content .icon-block-xs {
     display: none;
