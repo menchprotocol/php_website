@@ -1852,8 +1852,9 @@ i, .btn .show-max {
 .cover-content span{
     padding: 0 2px 0 0;
     background: rgba(0, 0, 0, 0.55);
-    line-height: 120%;
+    line-height: 130%;
     white-space: pre-wrap;
+    font-size: 0.88em;
 }
 .cover-content .icon-block-xs {
     display: none;
