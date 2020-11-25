@@ -618,11 +618,14 @@ img.no-radius {
     margin: 0;
     background-color: #CCCCCC;
     position: relative !important;
-    height:5px;
+    height:8px;
     cursor: pointer;
     overflow: hidden;
 }
-
+.progress-done{
+    height:8px;
+    background-color: #FC1B44;
+}
 .wrap-card {
     border: 0;
     padding:13px 0;
@@ -668,10 +671,6 @@ img.no-radius {
 }
 .cover-gold img{
     border-color: #FFC500 !important;
-}
-.progress-done{
-    height:5px;
-    background-color: #FC1B44;
 }
 
 .progress-rate{
@@ -1794,6 +1793,7 @@ i, .btn .show-max {
     background-position: center;
     display: block;
     border-radius: 13px;
+    overflow: hidden;
 }
 .chat-title{
     position: fixed;
@@ -1833,9 +1833,9 @@ i, .btn .show-max {
     font-size: 0.88em;
 }
 .cover-progress{
-    width: calc(100% - 20px);
-    bottom: -10px;
-    left: 10px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
     position: absolute;
 }
 .cover-content{
