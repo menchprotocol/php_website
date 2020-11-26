@@ -1787,12 +1787,13 @@ i, .btn .show-max {
     border:0;
     width: 100%;
     position: relative;
-    padding-top: 100%;
+    padding-top: 150%;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     display: block;
-    border-radius: 50%;
+    border-radius: 10px;
+    overflow: hidden;
 }
 .chat-title{
     position: fixed;
