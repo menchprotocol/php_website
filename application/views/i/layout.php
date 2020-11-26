@@ -98,7 +98,7 @@ if(!$e_of_i){
 echo '<div style="padding:25px 0 10px;">';
 
 //IDEA TYPE
-echo '<div class="inline-block left-margin">'.view_input_dropdown(4737, $i_focus['i__type'], 'idea', $e_of_i, true, $i_focus['i__id']).'</div>';
+echo view_input_dropdown(4737, $i_focus['i__type'], 'idea', $e_of_i, true, $i_focus['i__id']);
 
 //IDEA TIME
 echo '<div class="inline-block left-half-margin '.superpower_active(12700).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
@@ -348,11 +348,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         $focus_tab .= '</div>';
-
-        if($counter > 1){
-            //IDEA TREE STATS
-            $focus_tab .= '<div class="i_estimates hideIfEmpty">'.view_i_time($i_stats).'</div>';
-        }
 
     } elseif($x__type==6255) {
 

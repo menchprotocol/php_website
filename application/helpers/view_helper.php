@@ -17,7 +17,7 @@ function view_e_load_more($page, $limit, $list_e_count)
     return $ui;
 }
 
-function view_i_time($i_stats){
+function view_i_time($i_stats, $show_icon){
 
     //TIME STATS
     if(!$i_stats['i___6161']){
@@ -29,7 +29,9 @@ function view_i_time($i_stats){
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = null;
     $ui .= '<div class="montserrat doupper grey">';
-    //$ui .= '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>';
+    if($show_icon){
+        $ui .= '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>';
+    }
     if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
         //SECONDS
         $ui .= $i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC';
@@ -1373,8 +1375,9 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
 
     $ui .= ( $can_click ? '</a>' : '</div>' );
     $ui .= '</div>';
+
     $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
-    $ui .= view_i_time($i_stats);
+    $ui .= view_i_time($i_stats, false);
     $ui .= '</a></div>';
     $ui .= '</div>';
 
