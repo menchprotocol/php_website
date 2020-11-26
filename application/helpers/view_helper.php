@@ -1336,7 +1336,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     $href = ( $discovery_mode ? ( $user_input && $focus_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?load__e='.$focus_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-xs-4 col-6 i_class_'.$x__type.'_'.$i['i__id'].' no-padding '.( $show_editor ? ' cover_sort ' : '' ).'">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-sm-3 col-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding '.( $show_editor ? ' cover_sort ' : '' ).'">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= ( $can_click ? '<a href="'.$href.'"' : '<div' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
