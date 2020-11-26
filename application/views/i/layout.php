@@ -94,23 +94,16 @@ if(!$e_of_i){
 
 
 
-//IDEA CONTROLLER
-echo '<div style="padding:25px 0 10px;">';
-
 //IDEA TYPE
-echo view_input_dropdown(4737, $i_focus['i__type'], 'idea', $e_of_i, true, $i_focus['i__id']);
+echo '<div class="inline-block">'.view_input_dropdown(4737, $i_focus['i__type'], 'idea', $e_of_i, true, $i_focus['i__id']).'</div>';
 
 //IDEA TIME
 echo '<div class="inline-block left-half-margin '.superpower_active(12700).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
 
-echo '</div>';
-
-
-
 
 
 //IDEA TITLE
-echo '<div style="padding:8px 0; margin-top: 13px;">';
+echo '<div style="padding:5px 0;">';
 echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true); //, view_i_icon($i_focus)
 echo '</div>';
 
