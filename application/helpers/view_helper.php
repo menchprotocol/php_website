@@ -200,9 +200,17 @@ function view_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function view_i_title($i, $common_prefix = null){
+function view_i_title($i, $common_prefix = null, $is_cover = false){
 
     $CI =& get_instance();
+    if($is_cover && count($CI->X_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__right' => $i['i__id'],
+        '(x__up = 14362 OR x__down = 14362)' => null,
+    )))){
+        return false;
+    }
     if(strlen($common_prefix) > 0){
         $i['i__title'] = trim(substr($i['i__title'], strlen($common_prefix)));
     }
@@ -1332,7 +1340,7 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     }
 
     $i_stats = i_stats($i['i__metadata']);
-    $i_title = view_i_title($i);
+    $i_title = view_i_title($i, null, true);
     $href = ( $discovery_mode ? ( $user_input && $focus_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?load__e='.$focus_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
 
 
