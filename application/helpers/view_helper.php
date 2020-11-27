@@ -1229,7 +1229,7 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
 
         //ADD
-        $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus-circle"></i></a></td>';
+        $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' btn-compact save_notes_'.$x__type.'"><i class="fas fa-plus-circle"></i></a></td>';
 
 
         //UPLOAD
