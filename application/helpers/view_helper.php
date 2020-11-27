@@ -1668,7 +1668,6 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
     $e___12079 = $CI->config->item('e___12079');
     $e___4527 = $CI->config->item('e___4527');
 
-    //data-toggle="tooltip" data-placement="top" title="'.$e___4527[$cache_e__id]['m__title'].'"
     $ui = '<div class="inline-block">';
     $ui .= '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' '.( !$show_full_name ? ' icon-block ' : '' ).'" selected-val="'.$selected_e__id.'">'; //dropup
 
