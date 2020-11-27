@@ -1212,13 +1212,13 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
 
         $color_code = trim(extract_icon_color($e___4485[$x__type]['m__icon']));
 
-        $ui .= '<div class="list-group-item no-side-padding add_notes_' . $x__type .'">';
+        $ui .= '<div class="list-group-item no-padding add_notes_' . $x__type .'">';
         $ui .= '<div class="add_notes_form">';
         $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
 
 
-        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL, @SOURCE' : '' ).'" style="margin-top:6px;"></textarea>';
+        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL, @SOURCE' : '' ).'"></textarea>';
 
 
         //Response result:
