@@ -1357,7 +1357,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
             $drop_menu .= '<a href="javascript:void(0);" onclick="alert(\''.$menu_item_id.'>'.$x__type.'\')" class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).'"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</a>';
         }
     }
-    if($drop_menu){
+    if($drop_menu && 0){
 
         $dropdown_id = 'dropdownMenu'.$x__type.'_'.$i['i__id'];
 
