@@ -1362,7 +1362,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         $dropdown_id = 'dropdownMenu'.$x__type.'_'.$i['i__id'];
 
         //DROPDOWN MENU
-        $ui .= '<div class="dropdown inline-block '.$dropdown_id.'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">';
+        $ui .= '<span class="inside-btn top-right"><div class="dropdown inline-block '.$dropdown_id.'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">';
 
             $ui .= '<button type="button" class="btn no-side-padding" id="'.$dropdown_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
             $ui .= '<span class="icon-block">' .$e___11035[14371]['m__icon'].'</span>';
@@ -1372,7 +1372,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
             $ui .= $drop_menu;
             $ui .= '</div>';
 
-        $ui .= '</div>';
+        $ui .= '</div></span>';
 
         //REMOVE
         /*
