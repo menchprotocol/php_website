@@ -1317,7 +1317,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     $user_session = superpower_unlocked();
     $discovery_mode = $x__type==6255;
     $can_click = !(strlen($message_input) && strip_tags($message_input)!=$message_input); //Otherwise top part would show content
-    $is_sortable = in_array($x__type, $this->config->item('n___4603'));
+    $is_sortable = in_array($x__type, $CI->config->item('n___4603'));
 
     if(!$focus_e){
         $focus_e = $user_session;
@@ -1352,8 +1352,8 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
     //Build MENU
     $drop_menu = null;
-    foreach($this->config->item('e___14371') as $menu_item_id => $m) {
-        if(in_array($x__type, $this->config->item('n___'.$menu_item_id))){
+    foreach($CI->config->item('e___14371') as $menu_item_id => $m) {
+        if(in_array($x__type, $CI->config->item('n___'.$menu_item_id))){
             $drop_menu .= '<a href="javascript:void(0);" onclick="alert(\''.$menu_item_id.'>'.$x__type.'\')" class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).'"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</a>';
         }
     }
