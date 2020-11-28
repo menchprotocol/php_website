@@ -48,7 +48,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0) as $previous_i) {
-    echo view_i($previous_i, $i_focus['i__id'], true, e_of_i($previous_i['i__id']));
+    echo view_i_cover(11019, $previous_i);
 }
 if($show_previous){
     echo '<div class="list-group-item list-adder '.superpower_active(10939).'">
@@ -324,7 +324,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //$focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m__icon'].'</span>'.$e___11035[13542]['m__title'].'</div>';
         $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';
         foreach($is_next as $next_i) {
-            $focus_tab .= view_i($next_i, $i_focus['i__id'], false, $e_of_i);
+            $focus_tab .= view_i_cover(13542, $next_i);
         }
 
         if($e_of_i && $is_active){

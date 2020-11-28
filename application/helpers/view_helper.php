@@ -1139,7 +1139,7 @@ function view_caret($e__id, $m, $s__id){
 }
 
 
-function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e){
+function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e){
 
     //If no list just return the next step:
     if(!count($is_next)){
@@ -1152,22 +1152,10 @@ function view_i_list($list_e__id, $in_my_x, $i, $is_next, $user_e){
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
     $ui = '';
-
-    if($list_e__id > 0){
-        $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$list_e__id]['m__icon'].'</span>'.$e___11035[$list_e__id]['m__title'].'</div>';
-    }
-
-
+    $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__icon'].'</span>'.$e___11035[$x__type]['m__title'].'</div>';
     $ui .= '<div class="list-group">';
-    $is_last_continious_complete = true;
-    $counter = 0;
     foreach($is_next as $key => $next_i){
-        $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $next_i);
-        $ui .= view_i_x($next_i, ( $completion_rate['completion_percentage'] > 0 || i_is_featured($next_i) ), $common_prefix, false, $completion_rate);
-
-        //Search for the first unlocked idea right after the first stack of continuously completed ideas
-        $is_last_continious_complete = ( $is_last_continious_complete && $completion_rate['completion_percentage']>=100 ? true : false );
-        $counter = ( $is_last_continious_complete ? 0 : $counter+1 );
+        $ui .= view_i_cover($x__type, $next_i, null, $user_e);
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
@@ -1320,7 +1308,7 @@ function view__load__e($e){
     return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__icon'].'</span>' . view_e__icon($e['e__icon']) . '&nbsp;<a href="/@'.$e['e__id'].'" class="'.extract_icon_color($e['e__icon']).'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__icon'].'</a></div>';
 }
 
-function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_e = false){
+function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $completion_rate = null){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1328,42 +1316,72 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
     $discovery_mode = $x__type==6255;
-    $can_click = !strlen($message_input); //Otherwise top part would show content
+    $can_click = !(strlen($message_input) && strip_tags($message_input)!=$message_input); //Otherwise top part would show content
+    $is_sortable = in_array($x__type, $this->config->item('n___4603'));
 
     if(!$focus_e){
         $focus_e = $user_session;
     }
 
-    $completion_rate['completion_percentage'] = 0; //Assume no progress
-    if($focus_e && $discovery_mode){
-        $completion_rate = $CI->X_model->completion_progress($focus_e['e__id'], $i);
+    if(is_null($completion_rate)){
+        $completion_rate['completion_percentage'] = 0; //Assume no progress
+        if($focus_e && $discovery_mode){
+            $completion_rate = $CI->X_model->completion_progress($focus_e['e__id'], $i);
+        }
     }
+
 
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, true);
     $href = ( $discovery_mode ? ( $user_input && $focus_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?load__e='.$focus_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding '.( $show_editor ? ' cover_sort ' : '' ).'">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding '.( $is_sortable ? ' cover_sort ' : '' ).'">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= ( $can_click ? '<a href="'.$href.'"' : '<div' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
-    if(($discovery_mode && $show_editor) || $completion_rate['completion_percentage'] > 0){
+    if($completion_rate['completion_percentage'] > 0){
         $ui .= '<span class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</span>';
     }
 
-    //EDITING TOOLBAR
-    if($show_editor){
+    if($is_sortable){
+        //SORTABLE
+        $ui .= '<span class="inside-btn top-left x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</span>';
+    }
 
-        //SORT
-        $sort_id = ( $discovery_mode ? 6132 : 13412 );
-        $ui .= '<span class="inside-btn top-left x_sort" title="'.$e___11035[$sort_id]['m__title'].'">'.$e___11035[$sort_id]['m__icon'].'</span>';
+
+    //Build MENU
+    $drop_menu = null;
+    foreach($this->config->item('e___14371') as $menu_item_id => $m) {
+        if(in_array($x__type, $this->config->item('n___'.$menu_item_id))){
+            $drop_menu .= '<a href="javascript:void(0);" onclick="alert(\''.$menu_item_id.'>'.$x__type.'\')" class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).'"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</a>';
+        }
+    }
+    if($drop_menu){
+
+        $dropdown_id = 'dropdownMenu'.$x__type.'_'.$i['i__id'];
+
+        //DROPDOWN MENU
+        $ui .= '<div class="dropdown inline-block '.$dropdown_id.'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">';
+
+            $ui .= '<button type="button" class="btn no-side-padding" id="'.$dropdown_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            $ui .= '<span class="icon-block">' .$e___11035[14371]['m__icon'].'</span>';
+            $ui .= '</button>';
+
+            $ui .= '<div class="dropdown-menu" aria-labelledby="'.$dropdown_id.'">';
+            $ui .= $drop_menu;
+            $ui .= '</div>';
+
+        $ui .= '</div>';
 
         //REMOVE
+        /*
         $remove_id = ( $discovery_mode ? 6155 : 13415 );
         $ui .= '<span class="inside-btn top-right x_remove" title="'.$e___11035[$remove_id]['m__title'].'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___11035[$remove_id]['m__icon'].'</span>';
+        */
 
     }
+
 
 
     if($message_input || $i_title){
@@ -1379,6 +1397,9 @@ function view_i_cover($x__type, $i, $show_editor, $message_input = null, $focus_
     $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
     $ui .= view_i_time($i_stats, false);
     $ui .= '</a></div>';
+
+    //TODO Controller
+
     $ui .= '</div>';
 
     return $ui;

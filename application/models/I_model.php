@@ -343,7 +343,7 @@ class I_model extends CI_Model
 
     }
 
-    function create_or_link($i__title, $x__source, $x_to_i__id = 0, $is_parent = false, $new_i_type = 6677, $x_i__id = 0)
+    function create_or_link($x__type, $i__title, $x__source, $x_to_i__id = 0, $is_parent = false, $new_i_type = 6677, $x_i__id = 0)
     {
 
         /*
@@ -487,6 +487,8 @@ class I_model extends CI_Model
 
 
         //Create Idea Transaction:
+        $next_i_html = null;
+
         if($x_to_i__id > 0){
 
             $relation = $this->X_model->create(array(
@@ -501,7 +503,7 @@ class I_model extends CI_Model
                     )),
             ), true);
 
-            //Fetch and return full data to be properly shown on the UI using the view_i() function
+            //Fetch and return full data to be properly shown on the UI
             $new_i = $this->X_model->fetch(array(
                 ( $is_parent ? 'x__right' : 'x__left' ) => $x_to_i__id,
                 ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
@@ -510,12 +512,9 @@ class I_model extends CI_Model
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ), array(($is_parent ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
-
-            $next_i_html = view_i($new_i[0], $x_to_i__id, $is_parent, true /* Since they added it! */);
-
-        } else {
-
-            $next_i_html = null;
+            if($x__type > 0){
+                $next_i_html = view_i_cover($x__type, $new_i[0]);
+            }
 
         }
 
@@ -889,7 +888,7 @@ class I_model extends CI_Model
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
-                    $this->I_model->create_or_link('', $x__source, $adjust_i__id, false, 6677, $next_i['i__id']);
+                    $this->I_model->create_or_link(0, '', $x__source, $adjust_i__id, false, 6677, $next_i['i__id']);
 
                     //Add Source since not there:
                     $applied_success++;

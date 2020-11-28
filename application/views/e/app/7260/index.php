@@ -14,7 +14,8 @@ if(count($orphan_i) > 0){
     //List orphans:
     echo '<div class="list-group">';
     foreach($orphan_i as $i) {
-        echo view_i($i, 0, false, true);
+        echo view_i_cover(7260, $i);
+
     }
     echo '</div>';
 

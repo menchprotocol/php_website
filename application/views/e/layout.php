@@ -404,7 +404,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                         $focus_tab .= '<div class="row top-margin" id="list_13412">';
                         foreach($i_bookmarks as $item){
                             array_push($exclude_ids, $item['i__id']);
-                            $focus_tab .= view_i_cover(12273, $item, $source_is_e, null, $e);
+                            $focus_tab .= view_i_cover(10573, $item, null, $e);
                         }
                         $focus_tab .= '</div>';
 
@@ -449,7 +449,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                 $focus_tab .= '<div class="row top-margin" id="list_13550">';
                 foreach($list_i as $count => $item){
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-                    $focus_tab .= view_i_cover(12273, $item, false, ( $show_message ? $this->X_model->message_send($item['x__message'], true) : null), $e);
+                    $focus_tab .= view_i_cover(13550, $item, ( $show_message ? $this->X_model->message_send($item['x__message'], true) : null), $e);
                 }
                 $focus_tab .= '</div>';
 
@@ -479,7 +479,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
                         $focus_tab .= '<div class="row" style="padding-top:34px;" id="list_6132">';
                         foreach($list_x as $item){
-                            $focus_tab .= view_i_cover(6255, $item, $source_is_e, null, $e);
+                            $focus_tab .= view_i_cover(12969, $item,null, $e);
                             array_push($my_x_ids, $item['i__id']);
                         }
                         $focus_tab .= '</div>';
@@ -519,7 +519,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                     $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12138]['m__icon'].'</span>'.$e___11035[12138]['m__title'].'</div>';
                     $focus_tab .= '<div class="row top-margin">';
                     foreach($featured_i as $key => $x){
-                        $focus_tab .= view_i_cover(6255, $x, false, null, $e);
+                        $focus_tab .= view_i_cover(12138, $x, null, $e);
                     }
                     $focus_tab .= '</div>';
                 }
@@ -545,17 +545,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
                 $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), view_memory(6404,11064), 0, array('i__spectrum' => 'DESC'));
                 foreach($i_notes_query as $count => $i_notes) {
-
-                    if($x__type==12896){
-
-                        //Saved IDEA
-                        $focus_tab .= view_i_x($i_notes, true, null, true);
-
-
-                    } else {
-                        $focus_tab .= view_i_x($i_notes, true); //Inputs when it used to use view_i() : 0, false, false, $i_notes['x__message'], null, false
-                    }
-
+                    $focus_tab .= view_i_cover(4486, $i_notes);
                 }
 
             }

@@ -34,7 +34,7 @@
         'x__left' => $i['i__id'],
     ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $key => $x){
         //Show only if not in discovering list:
-        echo view_i_cover(6255, $x, false, null, false);
+        echo view_i_cover(12138, $x, null, false);
     }
     echo '</div>';
 

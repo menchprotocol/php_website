@@ -119,7 +119,7 @@ if($in_my_x){
         }
 
         foreach($sitemap_items_raw as $si) {
-            array_push($sitemap_items, view_i_x($si['i'], true, null, $si['completion_rate']));
+            array_push($sitemap_items, view_i_cover(6255, $si['i'],  null, false, $si['completion_rate']));
         }
 
     }
@@ -425,7 +425,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 }
 
                 //List Children if any:
-                $focus_tab .= view_i_list(0, $in_my_x, $i_focus, $is_next, $user_e);
+                $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
                 $has_substance = count($is_next);
 
 
@@ -572,7 +572,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             } elseif ($i_focus['i__type'] == 6677) {
 
                 //DISCOVER ONLY
-                $focus_tab .= view_i_list(0, $in_my_x, $i_focus, $is_next, $user_e);
+                $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
 
                 $has_substance = count($is_next);
                 $has_stats = false;
@@ -595,7 +595,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 if (count($x_completes)) {
                     //Next Ideas:
-                    $focus_tab .= view_i_list(0, $in_my_x, $i_focus, $is_next, $user_e);
+                    $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
                 }
 
                 $focus_tab .= '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
@@ -623,7 +623,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $focus_tab .= '</div>';
 
                     //Any child ideas?
-                    $focus_tab .= view_i_list(0, $in_my_x, $i_focus, $is_next, $user_e);
+                    $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
 
                 } else {
 
@@ -648,7 +648,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $time_estimate = view_i_time($i_stats, true);
 
             //NEXT IDEAS
-            $focus_tab .= view_i_list(0, $in_my_x, $i_focus, $is_next, $user_e); //13542
+            $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e); //13542
             $focus_tab .= ( $time_estimate && count($is_next) ? '<div class="i_estimates">'.$time_estimate.'</div>' : '' );
 
             //IDEA PREVIOUS
@@ -662,7 +662,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             ), array('x__left'), 0);
             if(count($is_previous)){
                 $focus_tab .= '<div style="padding-top: 34px;">';
-                $focus_tab .= view_i_list(11019, $in_my_x, $i_focus, $is_previous, $user_e);
+                $focus_tab .= view_i_list(12991, $in_my_x, $i_focus, $is_previous, $user_e);
                 $focus_tab .= '</div>';
             }
             */
