@@ -7,6 +7,7 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
 $current_mench = current_mench();
+$simple_header = ( $current_mench['x_id']==6255 ? ' header-drop hidden' : '' );
 
 ?><!doctype html>
 <html lang="en" >
@@ -98,9 +99,24 @@ $current_mench = current_mench();
 
 </head>
 
-<body class="mench-<?= $current_mench['x_name'] ?> <?php foreach($this->config->item('e___13890') as $e__id => $m){ echo ' custom_ui_'.$e__id.'_'.$this->session->userdata('session_custom_ui_'.$e__id).' '; } ?>">
-
 <?php
+//Generate Body Class String:
+$body_class = 'mench-'.$current_mench['x_name']; //Always append current mench
+foreach($this->config->item('e___13890') as $e__id => $m){
+    $session_var = $this->session->userdata('session_custom_ui_'.$e__id);
+    if(!$session_var){
+        //Find the default value:
+        $account_defaults = array_intersect($this->config->item('n___13889'), $this->config->item('n___'.$e__id));
+        if(count($account_defaults)){
+            $session_var = end($account_defaults);
+        } else {
+            //Could not find the default value
+            continue;
+        }
+    }
+    $body_class .= ' custom_ui_'.$e__id.'_'.$session_var.' ';
+}
+echo '<body class="'.$body_class.'">';
 
 //Load live chat?
 if(intval(view_memory(6404,12899))){
@@ -169,79 +185,69 @@ if(!isset($hide_header)){
 
                     echo '<td>';
 
-                    //MENCH LOGO
+                    echo '<div class="inline-block '.$simple_header.'">';
+
+                    //MENCH
                     echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
 
-                    //SEARCH BAR (hidden, replaces LOGO when active)
+                    //SEARCH
                     echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search white-border" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
 
+                    echo '</div>';
                     echo '</td>';
 
                     if(intval(view_memory(6404,12678))){
 
                         //Search button
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m__icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__icon'].'</span></a></td>';
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;" class="'.$simple_header.'"><span class="search_icon">'.$e___11035[7256]['m__icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__icon'].'</span></a></td>';
 
                     }
 
-                    if (!$user_e) {
+                    //MENU
+                    $menu_type = ( $user_e ? 12500 : 14372 );
+                    echo '<td class="block-menu">';
+                    echo '<div class="dropdown inline-block">';
+                    echo '<button type="button" class="btn no-side-padding header-drop" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                    echo '<span class="icon-block">' .$e___13479[$menu_type]['m__icon'].'</span>';
+                    echo '</button>';
+                    echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
+                    foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
 
-                        //GUESTS
+                        //Skip superpowers if not unlocked
+                        if($x__type==10957 && !count($this->session->userdata('session_superpowers_unlocked'))){
+                            continue;
+                        }
 
-                        //FEEDBACK SUPPORT
-                        //echo '<td class="block-x"><a class="icon_12899" href="javascript:void(0);" title="'.$e___11035[12899]['m__title'].'">'.$e___11035[12899]['m__icon'].'</a></td>';
+                        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
+                        $extra_class = null;
+                        $text_class = null;
 
-                        //Sign In/Up
-                        echo '<td class="block-x"><a href="/signin" class="montserrat">'.$e___13479[4269]['m__icon'].'</a></td>';
+                        if(in_array($x__type, $this->config->item('n___10876'))){
 
-                    } else {
+                            //Fetch URL:
+                            $href = 'href="'.$e___10876[$x__type]['m__message'].'"';
 
-                        //USER LOGGED-IN
-                        echo '<td class="block-menu">';
-                        echo '<div class="dropdown inline-block">';
-                        echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton12500" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                        echo '<span class="icon-block">' .$e___13479[12500]['m__icon'].'</span>';
-                        echo '</button>';
+                        } elseif($x__type==12899) {
 
-                        echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton12500">';
-                        foreach($this->config->item('e___12500') as $x__type => $m) {
+                            //FEEDBACK SUPPORT
+                            $href = 'href="javascript:void(0);"';
+                            $extra_class = ' icon_12899 ';
 
-                            //Skip superpowers if not unlocked
-                            if($x__type==10957 && !count($this->session->userdata('session_superpowers_unlocked'))){
-                                continue;
-                            }
+                        } else {
 
-                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
-                            $extra_class = null;
-                            $text_class = null;
-
-                            if(in_array($x__type, $this->config->item('n___10876'))){
-
-                                //Fetch URL:
-                                $href = 'href="'.$e___10876[$x__type]['m__message'].'"';
-
-                            } elseif($x__type==12899) {
-
-                                //FEEDBACK SUPPORT
-                                $href = 'href="javascript:void(0);"';
-                                $extra_class = ' icon_12899 ';
-
-                            } else {
-
-                                continue;
-
-                            }
-
-                            //Navigation
-                            echo '<a '.$href.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__icon'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                            continue;
 
                         }
 
-                        echo '</div>';
-                        echo '</div>';
-                        echo '</td>';
+                        //Navigation
+                        echo '<a '.$href.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__icon'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
+
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</td>';
+
                     ?>
                 </tr>
             </table>
