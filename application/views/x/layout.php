@@ -509,8 +509,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $focus_tab .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[13982]['m__icon'].'</span>'.$e___11035[13982]['m__title'].'</div>';
 
                         //Give option to Select None/All
+                        /*
                         $focus_tab .= '<div class="doclear">&nbsp;</div>';
                         $focus_tab .= '<div class="pull-right right-adj inline-block" data-toggle="tooltip" data-placement="top" title="SELECT ALL OR NONE"><a href="javascript:void(0);" onclick="$(\'.answer-item i\').removeClass(\'far fa-circle\').addClass(\'fas fa-check-circle\');" style="text-decoration: underline;" title="'.$e___11035[13692]['m__title'].'">'.$e___11035[13692]['m__icon'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.answer-item i\').removeClass(\'fas fa-check-circle\').addClass(\'far fa-circle\');" style="text-decoration: underline;" title="'.$e___11035[13693]['m__title'].'">'.$e___11035[13693]['m__icon'].'</a></div>';
+                        */
 
                     }
 
