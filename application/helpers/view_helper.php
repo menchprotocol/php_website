@@ -1329,7 +1329,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     }
 
 
-    $is_locked = in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage'];
+    $is_locked = in_array($x__type, $CI->config->item('n___14377')) && !($completion_rate['completion_percentage'] > 0);
     $is_sortable = !$is_locked && in_array($x__type, $CI->config->item('n___4603'));
     $can_click = !$is_locked && !(strlen($message_input) && strip_tags($message_input)!=$message_input); //Otherwise top part would show content
 
