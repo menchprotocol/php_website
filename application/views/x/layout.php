@@ -248,7 +248,7 @@ echo '</div>';
 echo '<div class="container wrap-card">';
 
 
-// if($in_my_x){ echo view_x_progress($i_completion_rate, $i_focus, false); }
+if($in_my_discoveries){ echo view_x_progress($i_completion_rate, $i_focus, false); }
 
 
 //HEADER
