@@ -1800,7 +1800,7 @@ i, .btn .show-max {
     display: block;
     border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 .chat-title{
     position: fixed;
@@ -1835,7 +1835,7 @@ i, .btn .show-max {
 }
 
 .cover-text{
-    margin: 0 3px 10px;
+    margin: 0 3px 13px;
     text-align: center;
     font-size: 0.88em;
 }
