@@ -1315,7 +1315,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
-    $discovery_mode = $x__type==6255;
+    $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
 
     if(!$focus_e){
         $focus_e = $user_session;
@@ -1332,7 +1332,6 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     $is_locked = in_array($x__type, $CI->config->item('n___14377')) && !($completion_rate['completion_percentage'] > 0);
     $is_sortable = !$is_locked && in_array($x__type, $CI->config->item('n___4603'));
     $can_click = !$is_locked && !(strlen($message_input) && strip_tags($message_input)!=$message_input); //Otherwise top part would show content
-
 
 
     $i_stats = i_stats($i['i__metadata']);
