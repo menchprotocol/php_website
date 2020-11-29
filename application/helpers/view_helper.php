@@ -1153,7 +1153,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e){
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
     $ui = '';
     $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__icon'].'</span>'.$e___11035[$x__type]['m__title'].'</div>';
-    $ui .= '<div class="list-group">';
+    $ui .= '<div class="row top-margin">';
     foreach($is_next as $key => $next_i){
         $ui .= view_i_cover($x__type, $next_i, null, $user_e);
     }

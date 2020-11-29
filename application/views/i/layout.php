@@ -41,7 +41,7 @@ if($is_north_star) {
 } elseif($show_previous){
     //echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m__icon'].'</span>'.$e___11035[11019]['m__title'].'</div>';
 }
-echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="list-group grey-list previous_i">';
+echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="row top-margin grey-list previous_i">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -322,7 +322,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
         //$focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m__icon'].'</span>'.$e___11035[13542]['m__title'].'</div>';
-        $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="list-group next_i">';
+        $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="row top-margin next_i">';
         foreach($is_next as $next_i) {
             $focus_tab .= view_i_cover(13542, $next_i);
         }

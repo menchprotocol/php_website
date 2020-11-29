@@ -477,7 +477,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
                     if(count($list_x)){
 
-                        $focus_tab .= '<div class="row" style="padding-top:34px;" id="list_6132">';
+                        $focus_tab .= '<div class="row top-margin" id="list_6132">';
                         foreach($list_x as $item){
                             $focus_tab .= view_i_cover(12969, $item,null, $e);
                             array_push($my_x_ids, $item['i__id']);
@@ -540,7 +540,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
             $counter = $item_counters[0]['totals'];
 
             //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
-            $focus_tab .= '<div class="list-group">';
+            $focus_tab .= '<div class="row top-margin">';
             if($counter>0){
 
                 $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), view_memory(6404,11064), 0, array('i__spectrum' => 'DESC'));
