@@ -1816,7 +1816,7 @@ i, .btn .show-max {
 .cover-text{
     margin: 0 3px 13px;
     text-align: center;
-    font-size: 0.88em;
+    font-size: 0.89em;
 }
 .cover-progress{
     width: 100%;
@@ -1836,11 +1836,11 @@ i, .btn .show-max {
     padding: 5px;
 }
 .cover-content span{
-    padding: 0 2px 0 0;
-    background: rgba(0, 0, 0, 0.55);
+    padding: 2px 2px 2px 0;
+    background: rgba(0, 0, 0, 0.89);
     line-height: 130%;
     white-space: pre-wrap;
-    font-size: 0.88em;
+    font-size: 0.89em;
 }
 .cover-content .icon-block-xs {
     display: none;
