@@ -1139,7 +1139,7 @@ function view_caret($e__id, $m, $s__id){
 }
 
 
-function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e){
+function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content = null){
 
     //If no list just return the next step:
     if(!count($is_next)){
@@ -1152,7 +1152,16 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e){
     $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
     $ui = '';
+    $ui .= '<div>';
+    $ui .= '<div class="pull-left">';
     $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__icon'].'</span>'.$e___11035[$x__type]['m__title'].'</div>';
+    $ui .= '</div>';
+    if($right_content){
+        $ui .= '<div class="pull-right" style="text-align: right;">'.$right_content.'</div>';
+    }
+    $ui .= '</div>';
+    $ui .= '<div class="doclear">&nbsp;</div>';
+
     $ui .= '<div class="row top-margin">';
     foreach($is_next as $key => $next_i){
         $ui .= view_i_cover($x__type, $next_i, null, $user_e);
