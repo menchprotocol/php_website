@@ -1155,7 +1155,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
     $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__icon'].'</span>'.$e___11035[$x__type]['m__title'].'</div>';
     $ui .= '</div>';
     if($right_content){
-        $ui .= '<div class="pull-right" style="text-align: right; padding:10px 5px 10px 0;">'.$right_content.'</div>';
+        $ui .= '<div class="pull-right" style="text-align: right; padding:16px 5px 0 0;">'.$right_content.'</div>';
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
