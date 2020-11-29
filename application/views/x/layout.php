@@ -247,9 +247,9 @@ echo '</div>';
 
 echo '<div class="container wrap-card">';
 
-if($in_my_x){
-    echo view_x_progress($i_completion_rate, $i_focus, false);
-}
+
+// if($in_my_x){ echo view_x_progress($i_completion_rate, $i_focus, false); }
+
 
 //HEADER
 echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
