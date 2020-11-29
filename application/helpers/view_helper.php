@@ -17,7 +17,7 @@ function view_e_load_more($page, $limit, $list_e_count)
     return $ui;
 }
 
-function view_i_time($i_stats, $show_icon){
+function view_i_time($i_stats){
 
     //TIME STATS
     if(!$i_stats['i___6161']){
@@ -29,9 +29,7 @@ function view_i_time($i_stats, $show_icon){
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = null;
     $ui .= '<div class="montserrat doupper grey">';
-    if($show_icon){
-        $ui .= '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>';
-    }
+    //$ui .= '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>';
     if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
         //SECONDS
         $ui .= $i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC';
@@ -1154,7 +1152,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
     $ui = '';
     $ui .= '<div>';
     $ui .= '<div class="pull-left">';
-    $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__icon'].'</span>'.$e___11035[$x__type]['m__title'].'</div>';
+    $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[$x__type]['m__title'].'</div>'; //'.$e___11035[$x__type]['m__icon'].'
     $ui .= '</div>';
     if($right_content){
         $ui .= '<div class="pull-right" style="text-align: right; padding:10px 0;">'.$right_content.'</div>';
@@ -1410,7 +1408,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
     if(!$is_locked){
         $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
-        $ui .= view_i_time($i_stats, false);
+        $ui .= view_i_time($i_stats);
         $ui .= '</a></div>';
     }
 
