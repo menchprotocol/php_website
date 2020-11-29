@@ -1316,8 +1316,9 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
     $discovery_mode = $x__type==6255;
-    $can_click = !(strlen($message_input) && strip_tags($message_input)!=$message_input); //Otherwise top part would show content
-    $is_sortable = in_array($x__type, $CI->config->item('n___4603'));
+    $is_locked = in_array($x__type, $CI->config->item('n___14377'));
+    $is_sortable = !$is_locked && in_array($x__type, $CI->config->item('n___4603'));
+    $can_click = !$is_locked && !(strlen($message_input) && strip_tags($message_input)!=$message_input); //Otherwise top part would show content
 
     if(!$focus_e){
         $focus_e = $user_session;
@@ -1344,9 +1345,11 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         $ui .= '<span class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</span>';
     }
 
-    if($is_sortable){
+    if($is_locked){
+        $ui .= '<span class="inside-btn left-btn" title="'.$e___11035[14377]['m__title'].'">'.$e___11035[14377]['m__icon'].'</span>';
+    } elseif($is_sortable){
         //SORTABLE
-        $ui .= '<span class="inside-btn top-left x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</span>';
+        $ui .= '<span class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</span>';
     }
 
 
@@ -1362,7 +1365,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         $dropdown_id = 'dropdownMenu'.$x__type.'_'.$i['i__id'];
 
         //DROPDOWN MENU
-        $ui .= '<span class="inside-btn top-right"><div class="dropdown inline-block '.$dropdown_id.'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">';
+        $ui .= '<span class="inside-btn right-btn"><div class="dropdown inline-block '.$dropdown_id.'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">';
 
             $ui .= '<button type="button" class="btn no-side-padding" id="'.$dropdown_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
             $ui .= '<span class="icon-block">' .$e___11035[14371]['m__icon'].'</span>';
@@ -1377,7 +1380,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         //REMOVE
         /*
         $remove_id = ( $discovery_mode ? 6155 : 13415 );
-        $ui .= '<span class="inside-btn top-right x_remove" title="'.$e___11035[$remove_id]['m__title'].'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___11035[$remove_id]['m__icon'].'</span>';
+        $ui .= '<span class="inside-btn right-btn x_remove" title="'.$e___11035[$remove_id]['m__title'].'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___11035[$remove_id]['m__icon'].'</span>';
         */
 
     }
@@ -1394,9 +1397,12 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     $ui .= ( $can_click ? '</a>' : '</div>' );
     $ui .= '</div>';
 
-    $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
-    $ui .= view_i_time($i_stats, false);
-    $ui .= '</a></div>';
+    if(!$is_locked){
+        $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
+        $ui .= view_i_time($i_stats, false);
+        $ui .= '</a></div>';
+    }
+
 
     //TODO Controller
 

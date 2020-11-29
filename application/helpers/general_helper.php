@@ -239,7 +239,7 @@ function e_is_featured($e)
     return in_array($e['e__type'], $CI->config->item('n___7357') /* PUBLIC */) && count($CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__up IN (' . join(',', $CI->config->item('n___12138')) . ')' => null, //FEATURED PARENT
+            'x__up IN (' . join(',', $CI->config->item('n___14374')) . ')' => null, //FEATURED SOURCES
             'x__down' => $e['e__id'],
         )));
 
@@ -1438,7 +1438,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
 
     $e___4737 = $CI->config->item('e___4737'); //Idea Status
-    $n___12138 = $CI->config->item('n___12138');
 
     //Define the support objects indexed on algolia:
     $s__id = intval($s__id);
