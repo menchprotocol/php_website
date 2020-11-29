@@ -1416,9 +1416,9 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
 function view_x_progress($completion_rate, $i, $show_micro){
 
-    $ui = ( !$show_micro ? '<div class="progress-title">'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED</div><div class="doclear">&nbsp;</div>' : '' ); // '.$completion_rate['completion_percentage'].'%
+    $ui = ( 0 && !$show_micro ? '<div class="progress-title">'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED</div><div class="doclear">&nbsp;</div>' : '' ); // '.$completion_rate['completion_percentage'].'%
 
-    if($completion_rate['steps_total'] < 55 && !$show_micro){
+    if( 0 && $completion_rate['steps_total']<55 && !$show_micro ){
 
         $ui .= '<ul class="story-bar '.( 1 ? ' compact ' : '' ).'">';
         for($i=0;$i<$completion_rate['steps_total'];$i++){
