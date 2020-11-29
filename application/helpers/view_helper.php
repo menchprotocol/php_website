@@ -1316,9 +1316,6 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
     $discovery_mode = $x__type==6255;
-    $is_locked = in_array($x__type, $CI->config->item('n___14377'));
-    $is_sortable = !$is_locked && in_array($x__type, $CI->config->item('n___4603'));
-    $can_click = !$is_locked && !(strlen($message_input) && strip_tags($message_input)!=$message_input); //Otherwise top part would show content
 
     if(!$focus_e){
         $focus_e = $user_session;
@@ -1330,6 +1327,12 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
             $completion_rate = $CI->X_model->completion_progress($focus_e['e__id'], $i);
         }
     }
+
+
+    $is_locked = in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage'];
+    $is_sortable = !$is_locked && in_array($x__type, $CI->config->item('n___4603'));
+    $can_click = !$is_locked && !(strlen($message_input) && strip_tags($message_input)!=$message_input); //Otherwise top part would show content
+
 
 
     $i_stats = i_stats($i['i__metadata']);
