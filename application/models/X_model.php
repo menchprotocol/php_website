@@ -1842,7 +1842,7 @@ class X_model extends CI_Model
         ), 0, 0, array(), 'COUNT(i__id) as total_x, SUM(i__duration) as total_seconds');
 
 
-        //Count completed for u:
+        //Count completed so far:
         $common_completed = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
             'x__source' => $e__id, //Belongs to this User
@@ -1947,7 +1947,7 @@ class X_model extends CI_Model
             }
 
 
-            //Hack for now, investigate later:
+            //Hack for now, TODO investigate later:
             if($metadata_this['completion_percentage'] > 100){
                 $metadata_this['completion_percentage'] = 100;
             }

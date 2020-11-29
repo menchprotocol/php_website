@@ -234,7 +234,7 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 if($in_my_x && $previous_level_id){
     //Idea Map:
-    echo '<div class="list-group grey-list indentation">';
+    echo '<div class="row">';
     echo join('', array_reverse($sitemap_items));
     echo '</div>';
 }
