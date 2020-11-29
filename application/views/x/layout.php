@@ -574,16 +574,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             } elseif ($i_focus['i__type'] == 6677) {
 
                 //DISCOVER ONLY
-                $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
+                $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) > 1 ? view_i_time($i_stats, true) : '' ));
 
                 $has_substance = count($is_next);
-                $has_stats = false;
-                if (count($is_next) > 1) {
-                    //NEXT IDEAS
-                    $has_stats = view_i_time($i_stats, true);
-                    $focus_tab .= '<div class="i_estimates hideIfEmpty">' . $has_stats . '</div>';
-                    $has_substance = true;
-                }
 
             } elseif ($i_focus['i__type'] == 6683) {
 
@@ -646,12 +639,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         } else {
 
-            //TIME ESTIMATE
-            $time_estimate = view_i_time($i_stats, true);
-
             //NEXT IDEAS
-            $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e); //13542
-            $focus_tab .= ( $time_estimate && count($is_next) ? '<div class="i_estimates">'.$time_estimate.'</div>' : '' );
+            $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) ? view_i_time($i_stats, true) : '' )); //13542
 
             //IDEA PREVIOUS
             /*
