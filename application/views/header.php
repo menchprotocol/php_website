@@ -185,7 +185,7 @@ if(!isset($hide_header)){
 
                     echo '<td>';
 
-                    echo '<div class="inline-block '.$simple_header.'">';
+                    echo '<div class="'.$simple_header.'">';
 
                     //MENCH
                     echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
