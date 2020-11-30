@@ -1178,7 +1178,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         $ui .= '<div class="inside-btn right-btn"><div class="dropdown '.$dropdown_id.'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">';
 
             $ui .= '<button type="button" class="btn no-side-padding" id="'.$dropdown_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-            $ui .= '<span class="icon-block">' .$e___11035[14371]['m__icon'].'</span>';
+            $ui .= '<span class="icon-block inside-btn-alt">' .$e___11035[14371]['m__icon'].'</span>';
             $ui .= '</button>';
 
             $ui .= '<div class="dropdown-menu" aria-labelledby="'.$dropdown_id.'">';

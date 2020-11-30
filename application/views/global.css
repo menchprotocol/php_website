@@ -1511,9 +1511,6 @@ label {
 i, .btn .show-max {
     font-size: 1.44em !important;
 }
-.btn-lrg i, .inside-btn i, .controller-nav i {
-    font-size: 1em !important;
-}
 
 .controller-nav i{
     color: #222222 !important;
@@ -1803,7 +1800,7 @@ i, .btn .show-max {
     height: 34px;
     background-color: #000000 !important;
 }
-.inside-btn i {
+.inside-btn>i, .inside-btn-alt>i {
     margin-top: 5px;
     color: #FFFFFF !important;
 }
