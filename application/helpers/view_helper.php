@@ -1143,7 +1143,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= '<a href="'.$href.'" class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
+    $ui .= ( $is_locked ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
     if($completion_rate['completion_percentage'] > 0){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</div>';
@@ -1163,7 +1163,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
     }
 
-    $ui .= '</a>';
+    $ui .= ( $is_locked ? '</div>' : '</a>' );
     $ui .= '</div>';
 
 
