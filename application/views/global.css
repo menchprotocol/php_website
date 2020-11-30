@@ -1883,11 +1883,16 @@ i, .btn .show-max {
     max-width: 767px;
 }
 .modal-content{
-    border: 3px solid #FFF;
+    border: 3px solid #222222;
+    border-radius: 13px;
+}
+.giphy_logo{
+    background-color: #222;
+    padding: 5px;
     border-radius: 13px;
 }
 .modal-header{
-    border-bottom: 3px solid #FFF;
+    border-bottom: 3px solid #222222;
 }
 .gif-col{
     padding:0 5px 21px 0 !important;
