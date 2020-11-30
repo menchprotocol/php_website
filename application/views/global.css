@@ -1828,7 +1828,7 @@ i, .btn .show-max {
     width: -webkit-calc(100% - 11px) !important;
     width:    -moz-calc(100% - 11px) !important;
     width:         calc(100% - 11px) !important;
-    height:133px !important;
+    max-height:133px;
     position: absolute;
     left: 8px;
     top: 3px;
