@@ -1842,6 +1842,9 @@ i, .btn .show-max {
     font-size: 0.89em;
     color: #FFFFFF;
 }
+.cover-content .msg, .cover-content .msg>span {
+    line-height: 110% !important;
+}
 .cover-content a>span {
     padding: 2px 2px 2px 0;
     white-space: pre-wrap;
