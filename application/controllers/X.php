@@ -942,7 +942,6 @@ class X extends CI_Controller
 
     function x_save(){
 
-        //See if we need to add or remove a highlight:
         //Authenticate User:
         $user_e = superpower_unlocked();
         if (!$user_e) {
@@ -972,31 +971,14 @@ class X extends CI_Controller
             ));
         }
 
-        //First try to remove:
-        $removed = 0;
-        foreach($this->X_model->fetch(array(
+        //Save IDEA:
+        $this->X_model->create(array(
+            'x__source' => $user_e['e__id'],
             'x__up' => $user_e['e__id'],
+            'x__message' => '@'.$user_e['e__id'],
             'x__right' => $_POST['i__id'],
             'x__type' => 12896, //SAVED
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        )) as $remove_saved){
-            $removed++;
-            $this->X_model->update($remove_saved['x__id'], array(
-                'x__status' => 6173, //Transaction Removed
-            ), $user_e['e__id'], 12906 /* UNSAVED */);
-        }
-
-        //Need to add?
-        if(!$removed){
-            //Then we must add:
-            $this->X_model->create(array(
-                'x__source' => $user_e['e__id'],
-                'x__up' => $user_e['e__id'],
-                'x__message' => '@'.$user_e['e__id'],
-                'x__right' => $_POST['i__id'],
-                'x__type' => 12896, //SAVED
-            ));
-        }
+        ));
 
         //All Good:
         return view_json(array(
@@ -1038,14 +1020,9 @@ class X extends CI_Controller
         }
 
 
-        //Call function to delete form Discoveries:
-        if($_POST['x__type']==6255){
-            //Delete Discovery
-            $delete_result = $this->X_model->delete($user_e['e__id'], $_POST['i__id'], 6155);
-        } elseif($_POST['x__type']==12273){
-            //Delete IDEAS
-            $delete_result = $this->I_model->delete($user_e['e__id'], $_POST['i__id'], 13415);
-        }
+        //Remove Idea
+        $delete_result = $this->X_model->delete();
+
 
         if(!$delete_result['status']){
             return view_json($delete_result);

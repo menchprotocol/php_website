@@ -30,7 +30,7 @@ function view_i_time($i_stats){
     $ui = null;
     $ui .= '<div class="montserrat doupper grey">';
     //$ui .= '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>';
-    if($i_stats['i___6161']<30 && $i_stats['i___6162']<30){
+    if($i_stats['i___6161']<60 && $i_stats['i___6162']<60){
         //SECONDS
         $ui .= $i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC';
     } else {
@@ -785,33 +785,10 @@ function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $
     if($show_editor && $is_saved){
         $ui .= '<div class="note-editor edit-off">';
         $ui .= '<span class="show-on-hover">';
-        $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick="x_save('.$i['i__id'].');$(\'#x_save_'.$i['i__id'].'\').remove();"><i class="fas fa-times"></i></a></span>';
+        $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick=""><i class="fas fa-times"></i></a></span>';
         $ui .= '</span>';
         $ui .= '</div>';
     }
-
-    $ui .= '<div class="row">';
-
-
-        $ui .= '<div class="col-9 col-sm-10 col-md-8">';
-            $ui .= ( $can_click ? '<a href="/' . $i['i__id'] .'" class="itemdiscover">' : '' );
-            $ui .= '<span class="icon-block">'.( !$completion_rate['completion_percentage'] ? view_i_icon($i) : str_replace('idea','discover',view_i_icon($i)) ).'</span>';
-            $ui .= '<b class="'.( $can_click ? ' montserrat ' : '' ).' i-url title-block">'.view_i_title($i, $common_prefix).'</b>';
-            $ui .= ( $can_click ? '</a>' : '' );
-        $ui .= '</div>';
-
-
-
-        //MENCH COINS
-        $ui .= '<div class="col-3 col-sm-2 col-md-4">';
-            $ui .= '<div class="row">';
-                $ui .= '<div class="col-md-4 show-max">'.view_coins_i(12274, $i).'</div>';
-                $ui .= '<div class="col-md-4 col">'.view_coins_i(12273, $i).'</div>';
-                $ui .= '<div class="col-md-4 show-max">'.view_coins_i(6255, $i).'</div>';
-            $ui .= '</div>';
-        $ui .= '</div>';
-
-    $ui .= '</div>';
 
     $ui .= '</div>';
 
@@ -1355,35 +1332,39 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     $href = ( $discovery_mode ? ( $user_input && $focus_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?load__e='.$focus_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 i_class_'.$x__type.'_'.$i['i__id'].' no-padding '.( $is_sortable ? ' cover_sort ' : '' ).( $is_locked ? ' not-allowed ' : '' ).'" title="'.$completion_rate['completion_percentage'].'% Completed">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 no-padding '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_locked ? ' not-allowed ' : '' ).'">';
+
     $ui .= '<div class="cover-wrapper">';
     $ui .= ( $can_click ? '<a href="'.$href.'"' : '<div' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
     if($completion_rate['completion_percentage'] > 0){
-        $ui .= '<span class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</span>';
+        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</div>';
     }
 
     if($is_locked){
-        $ui .= '<span class="inside-btn left-btn" title="'.$e___11035[14377]['m__title'].'">'.$e___11035[14377]['m__icon'].'</span>';
+        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14377]['m__title'].'">'.$e___11035[14377]['m__icon'].'</div>';
     } elseif($is_sortable){
         //SORTABLE
-        $ui .= '<span class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</span>';
+        $ui .= '<div class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div>';
     }
 
 
     //Build MENU
     $drop_menu = null;
-    foreach($CI->config->item('e___14371') as $menu_item_id => $m) {
-        if(in_array($x__type, $CI->config->item('n___'.$menu_item_id))){
-            $drop_menu .= '<a href="javascript:void(0);" onclick="alert(\''.$menu_item_id.'>'.$x__type.'\')" class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).'"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</a>';
+    if(isset($i['x__id'])){
+        foreach($CI->config->item('e___14371') as $menu_item_id => $m) {
+            if(in_array($x__type, $CI->config->item('n___'.$menu_item_id))){
+                $drop_menu .= '<a href="javascript:void(0);" onclick="i_cover_menu('.$menu_item_id.', '.$x__type.', '.$i['i__id'].', '.$i['x__id'].')" class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).'"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</a>';
+            }
         }
     }
-    if($drop_menu && 0){
 
-        $dropdown_id = 'dropdownMenu'.$x__type.'_'.$i['i__id'];
+    if($drop_menu){
+
+        $dropdown_id = 'dropdownMenu'.$i['x__id'];
 
         //DROPDOWN MENU
-        $ui .= '<span class="inside-btn right-btn"><div class="dropdown inline-block '.$dropdown_id.'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">';
+        $ui .= '<div class="inside-btn right-btn"><div class="dropdown '.$dropdown_id.'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">';
 
             $ui .= '<button type="button" class="btn no-side-padding" id="'.$dropdown_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
             $ui .= '<span class="icon-block">' .$e___11035[14371]['m__icon'].'</span>';
@@ -1393,13 +1374,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
             $ui .= $drop_menu;
             $ui .= '</div>';
 
-        $ui .= '</div></span>';
-
-        //REMOVE
-        /*
-        $remove_id = ( $discovery_mode ? 6155 : 13415 );
-        $ui .= '<span class="inside-btn right-btn x_remove" title="'.$e___11035[$remove_id]['m__title'].'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">'.$e___11035[$remove_id]['m__icon'].'</span>';
-        */
+        $ui .= '</div></div>';
 
     }
 

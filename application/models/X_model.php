@@ -1155,47 +1155,19 @@ class X_model extends CI_Model
     }
 
 
-    function delete($e__id, $i__id, $x__type){
+    function delete($x__id){
 
-
-        if(!in_array($x__type, $this->config->item('n___6150') /* Discoveries Idea Completed */)){
+        $user_e = superpower_unlocked();
+        if (!$user_e) {
             return array(
                 'status' => 0,
-                'message' => 'Invalid stop method',
+                'message' => view_unauthorized_message(),
             );
         }
 
-        //Validate idea to be deleted:
-        $is = $this->I_model->fetch(array(
-            'i__id' => $i__id,
-        ));
-        if (count($is) < 1) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid idea',
-            );
-        }
-
-        //Go ahead and delete from Discoveries:
-        $u_x = $this->X_model->fetch(array(
-            'x__source' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__left' => $i__id,
-        ));
-        if(count($u_x) < 1){
-            return array(
-                'status' => 0,
-                'message' => 'Could not locate Discovery',
-            );
-        }
-
-        //Delete:
-        foreach($u_x as $x){
-            $this->X_model->update($x['x__id'], array(
-                'x__status' => 6173, //DELETED
-            ), $e__id, $x__type);
-        }
+        $this->X_model->update($x__id, array(
+            'x__status' => 6173, //DELETED
+        ), $user_e['e__id'], 6155);
 
         return array(
             'status' => 1,

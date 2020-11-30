@@ -180,6 +180,46 @@ function lazy_load(){
 }
 
 
+function i_cover_menu(action_id, x__type, i__id, x__id){
+
+    if(action_id==6155 /* REMOVE */){
+
+        var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
+        if (r == true) {
+            //Save changes:
+            $.post("/x/x_remove", {
+                x__type:x__type,
+                i__id:i__id,
+                x__id:x__id
+            }, function (data) {
+                //Update UI to confirm with user:
+                if (!data.status) {
+
+                    //There was some sort of an error returned!
+                    alert(data.message);
+
+                } else {
+
+                    //REMOVE BOOKMARK from UI:
+                    $('.cover_x_'+x__id).fadeOut();
+
+                    setTimeout(function () {
+
+                        //Delete from body:
+                        $('.cover_x_'+x__id).fadeOut();
+
+                    }, 233);
+                }
+            });
+        }
+
+    }
+
+
+    return false;
+
+}
+
 
 var algolia_index = false;
 $(document).ready(function () {

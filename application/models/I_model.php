@@ -527,47 +527,6 @@ class I_model extends CI_Model
 
     }
 
-    function delete($e__id, $i__id, $x__type){
-
-        //Validate idea to be deleted:
-        $is = $this->I_model->fetch(array(
-            'i__id' => $i__id,
-        ));
-        if (count($is) < 1) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid idea',
-            );
-        }
-
-
-        //Go ahead and delete from Discoveries:
-        $u_i = $this->X_model->fetch(array(
-            'x__type' => 10573, //MY IDEAS
-            'x__up' => $e__id,
-            'x__right' => $i__id,
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ));
-        if(count($u_i) < 1){
-            return array(
-                'status' => 0,
-                'message' => 'Could not locate Idea',
-            );
-        }
-
-        //Delete:
-        foreach($u_i as $x){
-            $this->X_model->update($x['x__id'], array(
-                'x__status' => 6173, //DELETED
-            ), $e__id, $x__type);
-        }
-
-        return array(
-            'status' => 1,
-            'message' => 'Success',
-        );
-
-    }
 
     function recursive_parents($i__id, $first_level = true, $public_only = true)
     {

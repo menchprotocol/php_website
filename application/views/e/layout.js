@@ -14,44 +14,6 @@ $(document).ready(function () {
     //Load Idea Search
     i_load_search(".add_e_idea",0, 'a', 'x_my_in');
 
-    if(e_focus_id==js_pl_id){
-
-        //User loaded their own source:
-        //Watch for Discovery removal click:
-        $('.x_remove').on('click', function(e) {
-
-            var i__id = $(this).attr('i__id');
-            var x__type = parseInt($(this).attr('x__type'));
-            var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
-            if (r == true) {
-                //Save changes:
-                $.post("/x/x_remove", { x__type:x__type, i__id:i__id }, function (data) {
-                    //Update UI to confirm with user:
-                    if (!data.status) {
-
-                        //There was some sort of an error returned!
-                        alert(data.message);
-
-                    } else {
-
-                        //REMOVE BOOKMARK from UI:
-                        $('.i_class_'+x__type+'_'+i__id).fadeOut();
-
-                        setTimeout(function () {
-
-                            //Delete from body:
-                            $('.i_class_'+x__type+'_'+i__id).remove();
-
-                        }, 233);
-                    }
-                });
-            }
-
-            return false;
-
-        });
-    }
-
     //Source Loader:
     var portfolio_count = parseInt($('#new_11029').attr('current-count'));
     if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m__message'])){

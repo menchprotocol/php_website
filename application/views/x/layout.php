@@ -359,7 +359,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
-    $pre_fix_6169 = null;
     $counter = null; //Assume no counters
     $focus_tab = '';
     $href = 'href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')"';
@@ -375,15 +374,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     } elseif($x__type==12273){
 
         //IDEAS
-        $counter = ( count($is_next) > $i_stats['i___6170'] ? count($is_next) : $i_stats['i___6170'] );
-
-        if($counter > $i_stats['i___6169'] && $i_stats['i___6169'] > 0){
-            $pre_fix_6169 = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
-        }
-
-        //Now we can make it look nice:
-        $counter = view_number($counter);
-        $has_substance = false;
+        $counter = count($is_next);
 
         if($in_my_x) {
 
@@ -399,7 +390,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //Did we have any steps unlocked?
             if (count($unlocked_x) > 0) {
                 $focus_tab .= view_i_list(13978, $in_my_x, $i_focus, $unlocked_x, $user_e);
-                $has_substance = true;
             }
 
 
@@ -422,13 +412,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                     //List Unlock paths:
                     $focus_tab .= view_i_list(13979, $in_my_x, $i_focus, $unlock_paths, $user_e);
-                    $has_substance = true;
 
                 }
 
                 //List Children if any:
                 $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
-                $has_substance = count($is_next);
 
 
             } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
@@ -454,8 +442,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     }
 
                 } else {
-
-                    $has_substance = true;
 
                     //First fetch answers based on correct order:
                     $x_selects = array();
@@ -578,13 +564,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 //DISCOVER ONLY
                 $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) > 1 ? view_i_time($i_stats) : '' ));
 
-                $has_substance = count($is_next);
 
             } elseif ($i_focus['i__type'] == 6683) {
 
                 //TEXT RESPONSE
-                $has_substance = true;
-
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__icon'].'</span>'.$e___11035[13980]['m__title'].'</div>';
 
                 //Write `skip` if you prefer not to answer...
@@ -599,8 +582,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
             } elseif ($i_focus['i__type'] == 7637) {
-
-                $has_substance = true;
 
                 //FILE UPLOAD
                 $focus_tab .= '<div class="userUploader">';
@@ -659,9 +640,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 $focus_tab .= '</div>';
             }
             */
-
-            $has_substance = count($is_next);// || count($is_previous)
-
 
         }
 
@@ -753,7 +731,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $tab_pill_count++;
 
 
-    $tab_pills .= '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14103')) ? ' pull-right ' : '' ).'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;<span class="'.superpower_active(12700).'">'.$pre_fix_6169.'</span>'.( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>&nbsp;' ).'</a></li>';
+    $tab_pills .= '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14103')) ? ' pull-right ' : '' ).'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;'.( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>&nbsp;' ).'</a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
