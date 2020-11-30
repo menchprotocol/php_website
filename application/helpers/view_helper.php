@@ -1209,6 +1209,8 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     //TOOLBAR
     if(superpower_active(12673, true)){
 
+        $e_of_i = e_of_i($i['i__id']);
+
         //Idea Toolbar
         $ui .= '<div class="cover-text">';
 
