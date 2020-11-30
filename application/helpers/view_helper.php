@@ -1129,7 +1129,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     }
 
 
-    $is_locked = in_array($x__type, $CI->config->item('n___14377')) && !($completion_rate['completion_percentage'] > 0);
+    $is_locked = in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage'];
     $is_sortable = !$is_locked && in_array($x__type, $CI->config->item('n___4603'));
 
     $i_stats = i_stats($i['i__metadata']);
@@ -1171,10 +1171,14 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         $ui .= '<div class="cover-content">';
         //$ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__spectrum']*100)+1));
         if($i_title){
-            $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
+            if(!$is_locked){
+                $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
+            } else {
+                $ui .= $i_title;
+            }
         }
         if($message_input){
-            if(!substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
+            if(!$is_locked && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
                 //No HTML Tags, add link:
                 $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
             } else {
