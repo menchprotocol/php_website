@@ -159,51 +159,12 @@ function e_e_only_search(note_type_id) {
 }
 
 
-function i_remove(i__id, x__id, is_parent){
-    var i__title = $('.text__4736_'+i__id+':first').text();
-    if(!i__title.length){
-        i__title = $('.text__4736_'+i__id+':first').val();
-    }
-    var r = confirm("Remove ["+i__title+"]?");
-    if (r == true) {
-
-        //Fetch Idea Data to load modify widget:
-        $.post("/i/i_remove", {
-            i__id: i__id,
-            x__id: x__id,
-        }, function (data) {
-            if (data.status) {
-
-                //Delete from UI:
-                $('.i__tr_' + x__id).html('<span style="color:#222222;"><i class="fas fa-trash-alt"></i></span>');
-
-                //Hide the editor & saving results:
-                $('.i__tr_' + x__id).fadeOut();
-
-                //Disappear in a while:
-                setTimeout(function () {
-
-                    //Hide the editor & saving results:
-                    $('.i__tr_' + x__id).remove();
-
-                }, 610);
-
-                if(!is_parent){
-                    i_note_counter(12273, -1);
-                }
-            }
-        });
-    }
-}
-
-
-
 function i_sort_save(i__id) {
 
     var new_x__spectrums = [];
     var sort_rank = 0;
 
-    $("#list-in-" + focus_i__id + "-0 .i_sortable").each(function () {
+    $("#list-in-" + focus_i__id + "-0 .cover_sort").each(function () {
         //Fetch variables for this idea:
         var i__id = parseInt($(this).attr('i-id'));
         var x__id = parseInt($(this).attr('x__id'));
@@ -238,8 +199,8 @@ function i_sort_load(i__id) {
 
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: ".i_sortable", // Specifies which items inside the element should be sortable
-        handle: ".sort_i", // Restricts sort start click/touch to the specified element
+        draggable: ".cover_sort", // Specifies which items inside the element should be sortable
+        handle: ".x_sort", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             i_sort_save(i__id);
         }
@@ -257,7 +218,7 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
      * */
 
 
-    var sort_handler = ".i_sortable";
+    var sort_handler = ".cover_sort";
     var sort_list_id = "list-in-" + focus_i__id + '-' + is_parent;
     var input_field = $('#addi-c-' + i_x_id + '-' + is_parent);
     var i__title = input_field.val();
@@ -434,8 +395,8 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
             }
 
             if(element_id==4486){
-                $('.i__tr_'+x__id+' .x_marks').addClass('hidden');
-                $('.i__tr_'+x__id+' .account_' + new_e__id).removeClass('hidden');
+                $('.cover_x_'+x__id+' .x_marks').addClass('hidden');
+                $('.cover_x_'+x__id+' .account_' + new_e__id).removeClass('hidden');
             }
 
         } else {

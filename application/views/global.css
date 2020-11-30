@@ -967,7 +967,7 @@ textarea.note-textarea{
 .x_remove{
     cursor: pointer;
 }
-.x_sort, .sort_i, .sort_e, .fa-sort, .fa-arrows{
+.x_sort, .sort_e, .fa-sort, .fa-arrows{
     cursor: grab;
 }
 .space-left{
@@ -1228,10 +1228,6 @@ td.MENCHcolumn3  { width: 13%; }
 }
 .note-btn .show-on-hover i {
     font-size: 1.3em !important;
-}
-
-.show-on-hover .sort_i, .show-on-hover .sort_e {
-    margin-bottom:0;
 }
 
 .dropdown-lock{

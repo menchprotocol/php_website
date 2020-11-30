@@ -758,44 +758,6 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 }
 
 
-function view_i_x($i, $can_click, $common_prefix = null, $show_editor = false, $completion_rate = null)
-{
-    //See if user is logged-in:
-    $CI =& get_instance();
-    $user_session = superpower_unlocked();
-    $user_e__id = ( (isset($_GET['load__e']) ? $_GET['load__e'] : ( $user_session ? $user_session['e__id'] : 0 ) ));
-    $is_saved = ( isset($i['x__type']) && $i['x__type']==12896 );
-
-    if(!$completion_rate){
-        if($user_e__id){
-            $completion_rate = $CI->X_model->completion_progress($user_e__id, $i);
-        } else {
-            $completion_rate['completion_percentage'] = 0;
-        }
-    }
-
-    $i_stats = i_stats($i['i__metadata']);
-    $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
-    $has_completion = $completion_rate['completion_percentage']>0;
-
-    //Build View:
-    $ui  = '<div id="x_save_'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="list-group-item no-side-padding '.( $show_editor ? ' cover_sort ' : '' ).( $can_click ? ' itemdiscover ' : '' ).'" style="padding-right:17px;">';
-
-    //Give option to remove saved ideas:
-    if($show_editor && $is_saved){
-        $ui .= '<div class="note-editor edit-off">';
-        $ui .= '<span class="show-on-hover">';
-        $ui .= '<span><a href="javascript:void(0);" title="Unsave" data-toggle="tooltip" data-placement="left" onclick=""><i class="fas fa-times"></i></a></span>';
-        $ui .= '</span>';
-        $ui .= '</div>';
-    }
-
-    $ui .= '</div>';
-
-    return $ui;
-}
-
-
 
 function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $previous_i__type){
 
@@ -937,158 +899,6 @@ function view_i_marks($i_x){
 function view_i_icon($i){
 
     return '<span class="this_i__icon_'.$i['i__id'].'">'.view_cache(4737, $i['i__type'], true, 'right', $i['i__id']).'</span>';
-
-}
-
-
-function view_i($i, $i_x_id = 0, $is_parent = false, $e_of_i = false, $message_input = null, $extra_class = null, $control_enabled = true)
-{
-
-    $CI =& get_instance();
-    $user_e = superpower_unlocked();
-    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
-
-    //DISCOVER
-    $x__id = ( isset($i['x__id']) ? $i['x__id'] : 0 );
-    $is_i_link = ($x__id && in_array($i['x__type'], $CI->config->item('n___4486')));
-    $e___6186 = $CI->config->item('e___6186');
-
-    //IDEA
-    $i_stats = i_stats($i['i__metadata']);
-    $is_public = in_array($i['i__type'], $CI->config->item('n___7355'));
-    $e_of_i = ( !$is_i_link ? false : $e_of_i ); //Disable Edits on Idea List Page
-    $show_toolbar = ($control_enabled && superpower_active(12673, true));
-
-    //IDEA INFO BAR
-    $box_items_list = '';
-
-    //DISCOVER STATUS
-    if($x__id && !in_array($i['x__status'], $CI->config->item('n___7359'))){
-        $e___6186 = $CI->config->item('e___6186');
-        $box_items_list .= '<span class="inline-block"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$i['x__status']]['m__title'].' @'.$i['x__status'].'">' . $e___6186[$i['x__status']]['m__icon'] . '</span>&nbsp;</span>';
-    }
-
-
-    $ui = '<div x__id="' . $x__id . '" i-id="' . $i['i__id'] . '" class="list-group-item no-side-padding itemidea itemidealist i_sortable paddingup level2_in object_saved saved_i_'.$i['i__id'] . ' i_line_' . $i['i__id'] . ' i__tr_'.$x__id.' '.$extra_class.'" style="padding-left:0;">';
-
-
-
-
-
-    //EDITING TOOLBAR
-    if($is_i_link && $control_enabled && $e_of_i){
-
-        //RIGHT EDITING:
-        $ui .= '<div class="note-editor edit-off '.superpower_active(10939).'">';
-        $ui .= '<span class="show-on-hover">';
-
-        if(!$is_parent){
-            $ui .= '<span title="'.$e___11035[13908]['m__title'].'" class="sort_i">'.$e___11035[13908]['m__icon'].'</span>';
-        }
-
-        //Unlink:
-        $ui .= '<span title="'.$e___11035[10686]['m__title'].'"><a href="javascript:void(0);" onclick="i_remove('.$i['i__id'].', '.$i['x__id'].', '.( $is_parent ? 1 : 0 ).')">'.$e___11035[10686]['m__icon'].'</a></span>';
-
-        $ui .= '</span>';
-        $ui .= '</div>';
-
-    }
-
-
-
-
-
-
-    $ui .= '<div class="row">';
-    $ui .= '<div class="col-sm col-md">';
-
-        //IDEA Transaction:
-        $href = '/~'.$i['i__id'].( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
-
-        //IDEA STATUS:
-        $ui .= '<a href="'.$href.'" title="Weight: '.number_format($i['i__spectrum'], 0).'" class="icon-block">'.view_i_icon($i).'</a>';
-
-        //IDEA TITLE
-        if($is_i_link && $e_of_i){
-
-            $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__spectrum']*100)+1));
-
-        } else {
-
-            $ui .= '<a href="'.$href.'" class="title-block montserrat">';
-            $ui .= $box_items_list;
-            $ui .= view_i_title($i, null); //IDEA TITLE
-            $ui .= '</a>';
-
-        }
-    $ui .= '</div>';
-    $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
-        //MENCH COINS
-        $ui .= '<div class="row">';
-            $ui .= '<div class="col-4">'.view_coins_i(12274, $i).'</div>';
-            $ui .= '<div class="col-4">'.view_coins_i(12273, $i).'</div>';
-            $ui .= '<div class="col-4">'.view_coins_i(6255,  $i).'</div>';
-        $ui .= '</div>';
-
-    $ui .= '</div>';
-    $ui .= '</div>';
-
-
-
-    if($message_input && trim($message_input)!=$CI->uri->segment(1)){
-        $ui .= '<div class="i-footer hideIfEmpty">' . $CI->X_model->message_send($message_input, false, $user_e) . '</div>';
-    }
-
-
-    if($show_toolbar){
-
-        //Idea Toolbar
-        $ui .= '<div class="space-content ' . superpower_active(12673) . '" style="padding-left:25px; padding-top:13px;">';
-
-        $ui .= $box_items_list;
-
-        //IDEA STATUS
-        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . ' </div>';
-
-
-
-
-        if($x__id){
-
-            $x__metadata = unserialize($i['x__metadata']);
-
-            //IDEA LINK BAR
-            $ui .= '<span class="' . superpower_active(12700) . '">';
-
-            //LINK TYPE
-            $ui .= view_input_dropdown(4486, $i['x__type'], null, $e_of_i, false, $i['i__id'], $i['x__id']);
-
-            //LINK MARKS
-            $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
-            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+2 );
-            $ui .='</span>';
-
-
-            //LINK CONDITIONAL RANGE
-            $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
-            //MIN
-            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+3);
-            //MAX
-            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+4);
-            $ui .= '</span>';
-            $ui .= '</span>';
-
-        }
-
-        $ui .= '</div>';
-
-    }
-
-    $ui .= '</div>';
-
-
-
-    return $ui;
 
 }
 
@@ -1330,7 +1140,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     $href = ( $discovery_mode ? ( $user_input && $focus_e['e__id']!=$user_session['e__id'] ? '/~'.$i['i__id'].'?load__e='.$focus_e['e__id'] : '/'.$i['i__id'] ) : '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 no-padding '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_locked ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_locked ? ' not-allowed ' : '' ).'">';
 
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<div class="cover-link" href="'.$href.'" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
@@ -1380,6 +1190,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
     if($message_input || $i_title){
         $ui .= '<div class="cover-content">';
+        //$ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__spectrum']*100)+1));
         $ui .= $i_title;
         $ui .= $message_input;
         $ui .= '</div>';
@@ -1395,7 +1206,46 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     }
 
 
-    //TODO Controller
+    //TOOLBAR
+    if(superpower_active(12673, true)){
+
+        //Idea Toolbar
+        $ui .= '<div class="cover-text">';
+
+        //IDEA STATUS
+        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . ' </div>';
+
+        if(isset($i['x__id'])){
+
+            $x__metadata = unserialize($i['x__metadata']);
+
+            //IDEA LINK BAR
+            $ui .= '<span class="' . superpower_active(12700) . '">';
+
+            //LINK TYPE
+            $ui .= view_input_dropdown(4486, $i['x__type'], null, $e_of_i, false, $i['i__id'], $i['x__id']);
+
+            //LINK MARKS
+            $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
+            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+2 );
+            $ui .='</span>';
+
+
+            //LINK CONDITIONAL RANGE
+            $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
+            //MIN
+            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+3);
+            //MAX
+            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+4);
+            $ui .= '</span>';
+            $ui .= '</span>';
+
+        }
+
+        $ui .= '</div>';
+
+    }
+
 
     $ui .= '</div>';
 

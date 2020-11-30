@@ -393,39 +393,6 @@ class I extends CI_Controller {
 
     }
 
-    function i_remove(){
-
-        //Authenticate User:
-        $user_e = superpower_unlocked();
-        if (!$user_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Idea ID',
-            ));
-        } elseif (!isset($_POST['x__id']) || intval($_POST['x__id']) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Transaction ID',
-            ));
-        }
-
-        //Delete this transaction:
-        $this->X_model->update($_POST['x__id'], array(
-            'x__status' => 6173, //Transaction Removed
-        ), $user_e['e__id'], 10686 /* Idea Transaction Unpublished */);
-
-        return view_json(array(
-            'status' => 1,
-            'message' => 'Success',
-        ));
-
-    }
-
 
     function i_add()
     {

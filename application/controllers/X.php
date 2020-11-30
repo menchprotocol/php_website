@@ -1007,21 +1007,16 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
+        } elseif (!isset($_POST['x__id']) || intval($_POST['x__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing idea ID',
-            ));
-        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___12467'))) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Mench Coin ID',
+                'message' => 'Missing Link ID',
             ));
         }
 
 
         //Remove Idea
-        $delete_result = $this->X_model->delete();
+        $delete_result = $this->X_model->delete($_POST['x__id']);
 
 
         if(!$delete_result['status']){

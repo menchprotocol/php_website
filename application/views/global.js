@@ -188,8 +188,6 @@ function i_cover_menu(action_id, x__type, i__id, x__id){
         if (r == true) {
             //Save changes:
             $.post("/x/x_remove", {
-                x__type:x__type,
-                i__id:i__id,
                 x__id:x__id
             }, function (data) {
                 //Update UI to confirm with user:
@@ -212,6 +210,10 @@ function i_cover_menu(action_id, x__type, i__id, x__id){
                 }
             });
         }
+
+    } else if(action_id==6415 /* CLEAR HISTORY */){
+
+        
 
     }
 
