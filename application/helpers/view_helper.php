@@ -1359,7 +1359,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         }
     }
 
-    if($drop_menu){
+    if($drop_menu && 0){
 
         $dropdown_id = 'dropdownMenu'.$i['x__id'];
 
