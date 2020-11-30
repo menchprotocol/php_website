@@ -1163,7 +1163,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
     //REMOVE?
     if(in_array($x__type, $CI->config->item('n___6155'))){
-        $ui .= '<a href="javascript:void(0);" onclick="x_remove('.$x__type.', '.$i['i__id'].', '.$i['x__id'].')" class="inside-btn left-btn" title="'.$e___11035[14371]['m__title'].'">'.$e___11035[14371]['m__icon'].'</a>';
+        $ui .= '<a href="javascript:void(0);" onclick="x_remove('.$x__type.', '.$i['i__id'].', '.$i['x__id'].')" class="inside-btn left-btn" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</a>';
     }
 
 
