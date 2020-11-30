@@ -1775,6 +1775,7 @@ i, .btn .show-max {
     display: block;
     border-radius: 10px;
     margin-bottom: 6px;
+    overflow: hidden;
 }
 .chat-title{
     position: fixed;

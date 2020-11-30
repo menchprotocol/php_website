@@ -217,6 +217,9 @@ function x_remove(x__type, i__id, x__id){
 var algolia_index = false;
 $(document).ready(function () {
 
+    $(".cover-link").click(function(event) {
+        window.location = $(this).attr('href');
+    });
 
     //For the S shortcut to load search:
     $("#mench_search").focus(function() {
