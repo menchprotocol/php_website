@@ -1180,6 +1180,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
             } else {
                 //Leave as is so HTML tags work:
                 $ui .= $message_input;
+                $ui .= '<a href="'.$href.'" title="'.strip_tags($message_input).' NOT SAME '.$message_input.'">'.$message_input.'</a>';
             }
         }
         $ui .= '</div>';
@@ -1189,7 +1190,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     if(!$is_locked){
 
         //TOOLBAR
-        if(superpower_active(12673, true)){
+        if(!$discovery_mode && superpower_active(12673, true)){
 
             $e_of_i = e_of_i($i['i__id']);
 
