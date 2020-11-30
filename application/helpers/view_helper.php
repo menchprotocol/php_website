@@ -1174,7 +1174,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
             $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
         }
         if($message_input){
-            if(strip_tags($message_input)==$message_input){
+            if(!substr_count($message_input,'<')){
                 //No HTML Tags, add link:
                 $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
             } else {
