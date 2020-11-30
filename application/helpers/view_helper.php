@@ -1188,31 +1188,13 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
 
 
-    if($message_input || $i_title){
-        $ui .= '<div class="cover-content">';
-        //$ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__spectrum']*100)+1));
-        $ui .= $i_title;
-        $ui .= $message_input;
-        $ui .= '</div>';
-    }
-
-    $ui .= '</div>';
-    $ui .= '</div>';
-
-    if(!$is_locked){
-        $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
-        $ui .= view_i_time($i_stats);
-        $ui .= '</a></div>';
-    }
-
-
     //TOOLBAR
     if(superpower_active(12673, true)){
 
         $e_of_i = e_of_i($i['i__id']);
 
         //Idea Toolbar
-        $ui .= '<div class="cover-text">';
+        $ui .= '<div>';
 
         //IDEA STATUS
         $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . ' </div>';
@@ -1246,6 +1228,25 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
         $ui .= '</div>';
 
+    }
+
+
+
+    if($message_input || $i_title){
+        $ui .= '<div class="cover-content">';
+        //$ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__spectrum']*100)+1));
+        $ui .= $i_title;
+        $ui .= $message_input;
+        $ui .= '</div>';
+    }
+
+    $ui .= '</div>';
+    $ui .= '</div>';
+
+    if(!$is_locked){
+        $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
+        $ui .= view_i_time($i_stats);
+        $ui .= '</a></div>';
     }
 
 
