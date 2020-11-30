@@ -1837,12 +1837,14 @@ i, .btn .show-max {
     padding: 0;
 }
 .cover-content span {
-    padding: 2px 2px 2px 0;
     background: rgba(0, 0, 0, 0.75);
     line-height: 130%;
-    white-space: pre-wrap;
     font-size: 0.89em;
     color: #FFFFFF;
+}
+.cover-content a>span {
+    padding: 2px 2px 2px 0;
+    white-space: pre-wrap;
 }
 .cover-content .icon-block-xs {
     display: none;
