@@ -1040,7 +1040,7 @@ class X_model extends CI_Model
             'output_messages' => array(
                 array(
                     'message_type_e__id' => 4570, //User Received Email Message
-                    'message_body' => ( strlen($output_body_message) ? '<div class="i_content padded"><div class="msg">' . nl2br($output_body_message) . '</div></div>' : null ),
+                    'message_body' => ( strlen($output_body_message) ? '<div class="i_content padded"><div class="msg"><span>' . nl2br($output_body_message) . '</span></div></div>' : null ),
                 ),
             ),
             //Source References:
