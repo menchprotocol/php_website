@@ -180,46 +180,8 @@ function lazy_load(){
 }
 
 
-function x_remove(x__type, i__id, x__id){
-
-    var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
-    if (r == true) {
-        //Save changes:
-        $.post("/x/x_remove", {
-            x__id:x__id
-        }, function (data) {
-            //Update UI to confirm with user:
-            if (!data.status) {
-
-                //There was some sort of an error returned!
-                alert(data.message);
-
-            } else {
-
-                //REMOVE BOOKMARK from UI:
-                $('.cover_x_'+x__id).fadeOut();
-
-                setTimeout(function () {
-
-                    //Delete from body:
-                    $('.cover_x_'+x__id).remove();
-
-                }, 233);
-            }
-        });
-    }
-
-    return false;
-
-}
-
-
 var algolia_index = false;
 $(document).ready(function () {
-
-    $(".cover-link").click(function(event) {
-        window.location = $(this).attr('href');
-    });
 
     //For the S shortcut to load search:
     $("#mench_search").focus(function() {
@@ -227,6 +189,40 @@ $(document).ready(function () {
             toggle_search();
         }
     });
+
+    $(".x_remove").click(function(event) {
+        event.preventDefault();
+        var i__id = $(this).attr('i__id');
+        var x__id = $(this).attr('x__id');
+        var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
+        if (r == true) {
+            //Save changes:
+            $.post("/x/x_remove", {
+                x__id:x__id
+            }, function (data) {
+                //Update UI to confirm with user:
+                if (!data.status) {
+
+                    //There was some sort of an error returned!
+                    alert(data.message);
+
+                } else {
+
+                    //REMOVE BOOKMARK from UI:
+                    $('.cover_x_'+x__id).fadeOut();
+
+                    setTimeout(function () {
+
+                        //Delete from body:
+                        $('.cover_x_'+x__id).remove();
+
+                    }, 233);
+                }
+            });
+        }
+    });
+
+
 
 
     lazy_load();

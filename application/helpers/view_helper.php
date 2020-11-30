@@ -1143,7 +1143,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= '<div class="cover-link" href="'.$href.'" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
+    $ui .= '<a href="'.$href.'" class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
     if($completion_rate['completion_percentage'] > 0){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</div>';
@@ -1159,9 +1159,12 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     }
 
     //REMOVE?
-    if(in_array($x__type, $CI->config->item('n___6155'))){
-        $ui .= '<a href="javascript:void(0);" onclick="x_remove('.$x__type.', '.$i['i__id'].', '.$i['x__id'].')" class="inside-btn right-btn" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</a>';
+    if(isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
+        $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
     }
+
+    $ui .= '</a>';
+    $ui .= '</div>';
 
 
     if($message_input || $i_title){
@@ -1171,10 +1174,6 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         $ui .= $message_input;
         $ui .= '</div>';
     }
-
-    $ui .= '</div>';
-    $ui .= '</div>';
-
 
 
     if(!$is_locked){
