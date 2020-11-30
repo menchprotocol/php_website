@@ -1825,19 +1825,21 @@ i, .btn .show-max {
     position: absolute;
 }
 .cover-content{
-    width:100%;
-    max-height:71%;
+    width: -webkit-calc(100% - 10px) !important;
+    width:    -moz-calc(100% - 10px) !important;
+    width:         calc(100% - 10px) !important;
+    max-height:133px;
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 5px;
+    top: 5px;
     overflow-x: hidden;
     overflow-y: scroll;
     color: #FFFFFF;
-    padding: 5px;
+    padding: 0;
 }
-.cover-content span{
+.cover-content span, .cover-content .msg{
     padding: 2px 2px 2px 0;
-    background: rgba(0, 0, 0, 0.89);
+    background: rgba(0, 0, 0, 0.75);
     line-height: 130%;
     white-space: pre-wrap;
     font-size: 0.89em;

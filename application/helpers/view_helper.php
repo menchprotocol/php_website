@@ -1170,7 +1170,9 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     if($message_input || $i_title){
         $ui .= '<div class="cover-content">';
         //$ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__spectrum']*100)+1));
-        $ui .= $i_title;
+        if($i_title){
+            $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
+        }
         $ui .= $message_input;
         $ui .= '</div>';
     }
