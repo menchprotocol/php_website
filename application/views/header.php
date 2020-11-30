@@ -7,7 +7,7 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
 $current_mench = current_mench();
-$simple_header = ( $user_e && $first_segment && $current_mench['x_id']==6255 ? ' header-drop hidden' : '' );
+$simple_header = ( $first_segment && $current_mench['x_id']==6255 ? ' header-drop hidden' : '' );
 
 ?><!doctype html>
 <html lang="en" >

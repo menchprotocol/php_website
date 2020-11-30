@@ -745,7 +745,7 @@ function gif_search(q){
 
 function gif_add(x__type, giphy_id, giphy_title){
     $('#modal14073').modal('hide');
-    $('#x__message' + x__type).val('https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
+    $('#x__message' + x__type).val('https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title.replace('\'','').replace('"','')));
     i_note_text(x__type);
 }
 
