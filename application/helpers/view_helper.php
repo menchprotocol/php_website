@@ -1173,7 +1173,15 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         if($i_title){
             $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
         }
-        $ui .= $message_input;
+        if($message_input){
+            if(strip_tags($message_input)==$message_input){
+                //No HTML Tags, add link:
+                $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
+            } else {
+                //Leave as is so HTML tags work:
+                $ui .= $message_input;
+            }
+        }
         $ui .= '</div>';
     }
 

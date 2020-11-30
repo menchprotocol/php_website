@@ -1834,7 +1834,6 @@ i, .btn .show-max {
     top: 5px;
     overflow-x: hidden;
     overflow-y: scroll;
-    color: #FFFFFF;
     padding: 0;
 }
 .cover-content span {
@@ -1843,6 +1842,7 @@ i, .btn .show-max {
     line-height: 130%;
     white-space: pre-wrap;
     font-size: 0.89em;
+    color: #FFFFFF;
 }
 .cover-content .icon-block-xs {
     display: none;
