@@ -1215,7 +1215,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
             $e_of_i = e_of_i($i['i__id']);
 
             //Idea Toolbar
-            $ui .= '<div>';
+            $ui .= '<div style="text-align: center;">';
 
             //IDEA STATUS
             $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . ' </div>';
