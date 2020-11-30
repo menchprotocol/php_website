@@ -1180,7 +1180,6 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
             } else {
                 //Leave as is so HTML tags work:
                 $ui .= $message_input;
-                $ui .= '<a href="'.$href.'" title="'.strip_tags($message_input).' NOT SAME '.$message_input.'">'.$message_input.'</a>';
             }
         }
         $ui .= '</div>';
