@@ -180,43 +180,34 @@ function lazy_load(){
 }
 
 
-function i_cover_menu(action_id, x__type, i__id, x__id){
+function x_remove(x__type, i__id, x__id){
 
-    if(action_id==6155 /* REMOVE */){
+    var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
+    if (r == true) {
+        //Save changes:
+        $.post("/x/x_remove", {
+            x__id:x__id
+        }, function (data) {
+            //Update UI to confirm with user:
+            if (!data.status) {
 
-        var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
-        if (r == true) {
-            //Save changes:
-            $.post("/x/x_remove", {
-                x__id:x__id
-            }, function (data) {
-                //Update UI to confirm with user:
-                if (!data.status) {
+                //There was some sort of an error returned!
+                alert(data.message);
 
-                    //There was some sort of an error returned!
-                    alert(data.message);
+            } else {
 
-                } else {
+                //REMOVE BOOKMARK from UI:
+                $('.cover_x_'+x__id).fadeOut();
 
-                    //REMOVE BOOKMARK from UI:
-                    $('.cover_x_'+x__id).fadeOut();
+                setTimeout(function () {
 
-                    setTimeout(function () {
+                    //Delete from body:
+                    $('.cover_x_'+x__id).remove();
 
-                        //Delete from body:
-                        $('.cover_x_'+x__id).fadeOut();
-
-                    }, 233);
-                }
-            });
-        }
-
-    } else if(action_id==6415 /* CLEAR HISTORY */){
-
-        
-
+                }, 233);
+            }
+        });
     }
-
 
     return false;
 

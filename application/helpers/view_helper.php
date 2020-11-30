@@ -1152,46 +1152,19 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</div>';
     }
 
+
     if($is_locked){
+        //LOCKED
         $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14377]['m__title'].'">'.$e___11035[14377]['m__icon'].'</div>';
     } elseif($is_sortable){
         //SORTABLE
         $ui .= '<div class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div>';
     }
 
-
-    //Build MENU
-    $drop_menu = null;
-    if(isset($i['x__id'])){
-        foreach($CI->config->item('e___14371') as $menu_item_id => $m) {
-            if(in_array($x__type, $CI->config->item('n___'.$menu_item_id))){
-                $drop_menu .= '<a href="javascript:void(0);" onclick="i_cover_menu('.$menu_item_id.', '.$x__type.', '.$i['i__id'].', '.$i['x__id'].')" class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).'"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</a>';
-            }
-        }
+    //REMOVE?
+    if(in_array($x__type, $CI->config->item('n___6155'))){
+        $ui .= '<a href="javascript:void(0);" onclick="x_remove('.$x__type.', '.$i['i__id'].', '.$i['x__id'].')" class="inside-btn left-btn" title="'.$e___11035[14371]['m__title'].'">'.$e___11035[14371]['m__icon'].'</a>';
     }
-
-    if($drop_menu){
-
-        $dropdown_id = 'dropdownMenu'.$i['x__id'];
-
-        //DROPDOWN MENU
-        $ui .= '<div class="inside-btn right-btn"><div class="dropdown '.$dropdown_id.'" i__id="'.$i['i__id'].'" x__type="'.$x__type.'">';
-
-            $ui .= '<button type="button" class="btn no-side-padding" id="'.$dropdown_id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-            $ui .= '<span class="icon-block inside-btn-alt">' .$e___11035[14371]['m__icon'].'</span>';
-            $ui .= '</button>';
-
-            $ui .= '<div class="dropdown-menu" aria-labelledby="'.$dropdown_id.'">';
-            $ui .= $drop_menu;
-            $ui .= '</div>';
-
-        $ui .= '</div></div>';
-
-    }
-
-
-
-
 
 
     if($message_input || $i_title){
