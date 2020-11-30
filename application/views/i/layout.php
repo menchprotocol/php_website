@@ -186,14 +186,19 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //Show tree sources only if more than the sources for this idea:
         if( $i_stats['count_13207']>0 ){
 
-            $not_directly_listed = $this->X_model->fetch(array(
+            $filters = array(
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__up IN (' . join(',', $this->config->item('n___13207')) . ')' => null, //LEADERBOARD Source
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'e__id IN (' . join(',', $i_stats['array_13207']) . ')' => null,
-                'e__id NOT IN (' . join(',', $i_notes_ids) . ')' => null,
-            ), array('x__down'), 0, 0, array('e__spectrum' => 'DESC'));
+            );
+
+            if(count($i_notes_ids)){
+                $filters['e__id NOT IN (' . join(',', $i_notes_ids) . ')'] = null;
+            }
+
+            $not_directly_listed = $this->X_model->fetch($filters, array('x__down'), 0, 0, array('e__spectrum' => 'DESC'));
 
             if(count($not_directly_listed)){
                 //Add Tree Sources
@@ -256,8 +261,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if($counter > $i_stats['i___6169'] && $i_stats['i___6169'] > 0){
             $pre_fix_6169 = view_number($i_stats['i___6169']).'<span class="mid-range">-</span>';
         }
-
-
 
         if(superpower_active(12700, true)){
 

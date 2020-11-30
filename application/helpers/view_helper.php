@@ -698,7 +698,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
 
 
-function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = false, $data_placement = 'top'){
+function view_coins_i($x__type, $i, $append_coin_icon = true){
 
     /*
      *
@@ -711,14 +711,24 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
     if($x__type==12274){
 
         //SOURCES
-        $i_stats = i_stats($i['i__metadata']);
-        $count_query = $i_stats['count_13207'];
+        $query = $CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $i['i__id'],
+            '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+        ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
+        $count_query = $query[0]['totals'];
 
     } elseif($x__type==12273){
 
         //IDEAS
-        $i_stats = i_stats($i['i__metadata']);
-        $count_query = $i_stats['i___6170'];
+        $query = $CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__left' => $i['i__id'],
+        ), array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
+        $count_query = $query[0]['totals'];
 
     } elseif($x__type==6255){
 
@@ -732,16 +742,15 @@ function view_coins_i($x__type, $i, $append_coin_icon = true, $append_name = fal
             $query_filters['x__source'] = intval($_GET['load__e']);
         }
 
-
-        $x_coins = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
-        $count_query = $x_coins[0]['totals'];
+        $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
+        $count_query = $query[0]['totals'];
 
     }
 
     //Return Results:
     if($append_coin_icon){
         $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
-        return ( $count_query > 0 ? '<span title="'.$e___12467[$x__type]['m__title'].'" '.( $data_placement ? 'data-toggle="tooltip" data-placement="'.$data_placement.'"' : ''  ).' class="montserrat '.extract_icon_color($e___12467[$x__type]['m__icon']).'">'.( $append_name ? '' : $e___12467[$x__type]['m__icon'].'&nbsp;'  ).view_number($count_query).( $append_name ? '&nbsp'.$e___12467[$x__type]['m__title'] : '' ).'</span>' : null);
+        return ( $count_query > 0 ? '<span title="'.$e___12467[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" class="montserrat '.extract_icon_color($e___12467[$x__type]['m__icon']).'">'.$e___12467[$x__type]['m__icon'].'&nbsp;'.view_number($count_query).'</span>' : null);
     } else {
         return intval($count_query);
     }

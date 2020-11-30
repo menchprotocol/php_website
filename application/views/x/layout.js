@@ -37,7 +37,7 @@ $(document).ready(function () {
 });
 
 
-function go_12211(go_next_url){
+function go_next(go_next_url){
     //Attempts to go next if no submissions:
     if(focus_i__type==6683) {
 
@@ -57,7 +57,7 @@ function go_12211(go_next_url){
     } else {
 
         //Go Next:
-        window.location = go_next_url + focus_i__id;
+        window.location = go_next_url+focus_i__id;
 
     }
 }

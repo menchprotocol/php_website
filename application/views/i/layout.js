@@ -158,15 +158,6 @@ function e_e_only_search(note_type_id) {
     }
 }
 
-function x_preview(){
-    if(parseInt($('.dropi_4737_'+focus_i__id+'_0.active').attr('new-en-id')) in js_e___7355){
-        //Idea is public, go to preview:
-        window.location = '/' + focus_i__id;
-    } else {
-        //Inform them that they cannot discover yet:
-        alert('You must publish idea before discovering it.');
-    }
-}
 
 function i_remove(i__id, x__id, is_parent){
     var i__title = $('.text__4736_'+i__id+':first').text();
