@@ -1142,6 +1142,50 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_locked ? ' not-allowed ' : '' ).'">';
 
+
+    //TOOLBAR
+    if(superpower_active(12673, true)){
+
+        $e_of_i = e_of_i($i['i__id']);
+
+        //Idea Toolbar
+        $ui .= '<div>';
+
+        //IDEA STATUS
+        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . ' </div>';
+
+        if(isset($i['x__id'])){
+
+            $x__metadata = unserialize($i['x__metadata']);
+
+            //IDEA LINK BAR
+            $ui .= '<span class="' . superpower_active(12700) . '">';
+
+            //LINK TYPE
+            $ui .= view_input_dropdown(4486, $i['x__type'], null, $e_of_i, false, $i['i__id'], $i['x__id']);
+
+            //LINK MARKS
+            $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
+            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+2 );
+            $ui .='</span>';
+
+
+            //LINK CONDITIONAL RANGE
+            $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
+            //MIN
+            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+3);
+            //MAX
+            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+4);
+            $ui .= '</span>';
+            $ui .= '</span>';
+
+        }
+
+        $ui .= '</div>';
+
+    }
+
+
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<div class="cover-link" href="'.$href.'" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
@@ -1188,47 +1232,6 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
 
 
-    //TOOLBAR
-    if(superpower_active(12673, true)){
-
-        $e_of_i = e_of_i($i['i__id']);
-
-        //Idea Toolbar
-        $ui .= '<div>';
-
-        //IDEA STATUS
-        $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . ' </div>';
-
-        if(isset($i['x__id'])){
-
-            $x__metadata = unserialize($i['x__metadata']);
-
-            //IDEA LINK BAR
-            $ui .= '<span class="' . superpower_active(12700) . '">';
-
-            //LINK TYPE
-            $ui .= view_input_dropdown(4486, $i['x__type'], null, $e_of_i, false, $i['i__id'], $i['x__id']);
-
-            //LINK MARKS
-            $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
-            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+2 );
-            $ui .='</span>';
-
-
-            //LINK CONDITIONAL RANGE
-            $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
-            //MIN
-            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+3);
-            //MAX
-            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+4);
-            $ui .= '</span>';
-            $ui .= '</span>';
-
-        }
-
-        $ui .= '</div>';
-
-    }
 
 
 
