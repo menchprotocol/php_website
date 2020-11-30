@@ -1825,13 +1825,13 @@ i, .btn .show-max {
     position: absolute;
 }
 .cover-content{
-    width: -webkit-calc(100% - 10px) !important;
-    width:    -moz-calc(100% - 10px) !important;
-    width:         calc(100% - 10px) !important;
+    width: -webkit-calc(100% - 16px) !important;
+    width:    -moz-calc(100% - 16px) !important;
+    width:         calc(100% - 16px) !important;
     max-height:133px;
     position: absolute;
-    left: 5px;
-    top: 5px;
+    left: 8px;
+    top: 8px;
     overflow-x: hidden;
     overflow-y: scroll;
     padding: 0;
