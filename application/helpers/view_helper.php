@@ -1324,8 +1324,6 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
     $is_locked = in_array($x__type, $CI->config->item('n___14377')) && !($completion_rate['completion_percentage'] > 0);
     $is_sortable = !$is_locked && in_array($x__type, $CI->config->item('n___4603'));
-    $can_click = !$is_locked && !(strlen($message_input) && strip_tags($message_input)!=$message_input); //Otherwise top part would show content
-    $can_click = false;
 
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, true);
@@ -1335,7 +1333,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 no-padding '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_locked ? ' not-allowed ' : '' ).'">';
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $can_click ? '<a href="'.$href.'"' : '<div' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
+    $ui .= '<div class="cover-link" href="'.$href.'" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
     if($completion_rate['completion_percentage'] > 0){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</div>';
@@ -1387,7 +1385,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         $ui .= '</div>';
     }
 
-    $ui .= ( $can_click ? '</a>' : '</div>' );
+    $ui .= '</div>';
     $ui .= '</div>';
 
     if(!$is_locked){

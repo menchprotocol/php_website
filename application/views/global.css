@@ -744,7 +744,7 @@ img.no-radius {
     border-color:#999999;
 }
 .dropdown-menu {
-    border:3px solid #999999;
+    border:3px solid #222222;
     border-radius: 13px;
 }
 
@@ -1778,7 +1778,6 @@ i, .btn .show-max {
     background-position: center;
     display: block;
     border-radius: 10px;
-    overflow: hidden;
     margin-bottom: 6px;
 }
 .chat-title{
@@ -1811,6 +1810,10 @@ i, .btn .show-max {
 .inside-btn i {
     margin-top: 5px;
     color: #FFFFFF !important;
+}
+.inside-btn .btn {
+    padding: 0 !important;
+    margin-left: -3px !important;
 }
 
 .cover-text{
