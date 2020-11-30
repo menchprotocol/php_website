@@ -1174,8 +1174,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
             $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
         }
         if($message_input){
-            $innser_message = one_two_explode('<div class="msg"><span>','</span></div></div>',$message_input);
-            if(strip_tags($innser_message)==$innser_message){
+            if(!substr_count($message_input, '<a ') && !substr_count($message_input, '<video ') && !substr_count($message_input, '<audio') && !substr_count($message_input, '<iframe')){
                 //No HTML Tags, add link:
                 $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
             } else {
