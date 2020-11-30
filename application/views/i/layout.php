@@ -164,56 +164,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             continue;
         }
 
-    } elseif($x__type==12274){
-
-        //SOURCES
-        $i_notes_ids = array();
-        $i_notes = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4983, //IDEA SOURCES
-            'x__right' => $i_focus['i__id'],
-        ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC'));
-        foreach($i_notes as $i_note){
-            if(!in_array($i_note['e__id'], $i_notes_ids)){
-                array_push($i_notes_ids, $i_note['e__id']);
-            }
-        }
-
-        $counter = ( count($i_notes) > $i_stats['count_13207'] ? count($i_notes) : $i_stats['count_13207'] );
-        $focus_tab .= view_i_note_list(4983, $i_notes, $e_of_i, false, false);
-
-        //Show tree sources only if more than the sources for this idea:
-        if( $i_stats['count_13207']>0 ){
-
-            $filters = array(
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__up IN (' . join(',', $this->config->item('n___13207')) . ')' => null, //LEADERBOARD Source
-                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                'e__id IN (' . join(',', $i_stats['array_13207']) . ')' => null,
-            );
-
-            if(count($i_notes_ids)){
-                $filters['e__id NOT IN (' . join(',', $i_notes_ids) . ')'] = null;
-            }
-
-            $not_directly_listed = $this->X_model->fetch($filters, array('x__down'), 0, 0, array('e__spectrum' => 'DESC'));
-
-            if(count($not_directly_listed)){
-                //Add Tree Sources
-                $focus_tab .= '<div style="margin:21px 0 41px;">';
-                $focus_tab .= '<div class="tree_sources list-group"><a class="list-group-item montserrat doupper source itemsource" href="javascript:void(0);" onclick="$(\'.tree_sources\').toggleClass(\'hidden\');"><span class="icon-block"><i class="fas fa-search-plus source"></i></span>LIST ALL '.$counter.' SOURCES IN IDEA TREE</a></div>';
-                $focus_tab .= '<div class="tree_sources hidden">';
-                $focus_tab .= '<div class="list-group" style="margin-bottom:41px;">';
-                foreach ($not_directly_listed as $e) {
-                    $focus_tab .= view_e($e);
-                }
-                $focus_tab .= '</div>';
-                $focus_tab .= '</div>';
-                $focus_tab .= '</div>';
-            }
-        }
-
     } elseif(in_array($x__type, $this->config->item('n___7551'))){
 
         //Reference Sources Only:
@@ -222,11 +172,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__type' => $x__type,
             'x__right' => $i_focus['i__id'],
         ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC'));
-
-
         $counter = count($i_notes);
 
-        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
         $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:41px;">';
         foreach($i_notes as $i_note) {
             $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
@@ -315,6 +262,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             $focus_tab .= '</form>';
             $focus_tab .= '</div>';
+
         }
 
 
@@ -374,17 +322,17 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         }
 
-    } elseif(in_array($x__type, $this->config->item('n___4485'))){
+    } elseif($x__type==12274 || in_array($x__type, $this->config->item('n___4485'))){
 
         //IDEA NOTES
+        $note_x__type = ($x__type==12274 ? 4983 : $x__type );
         $i_notes = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => $x__type,
+            'x__type' => $note_x__type,
             'x__right' => $i_focus['i__id'],
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
-
         $counter = count($i_notes);
-        $focus_tab .= view_i_note_list($x__type, $i_notes, $e_of_i, false, false);
+        $focus_tab .= view_i_note_list($note_x__type, $i_notes, $e_of_i, false, false);
 
     } elseif($x__type==12969){
 

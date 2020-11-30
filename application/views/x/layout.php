@@ -643,23 +643,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         }
 
-    } elseif($x__type==12274){
-
-        $counter = $i_stats['count_13207'];
-        if($counter){
-            $focus_tab .= '<div class="list-group" style="margin-bottom:41px;">';
-            foreach ($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__up IN (' . join(',', $this->config->item('n___13207')) . ')' => null, //LEADERBOARD Source
-                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                'e__id IN (' . join(',', $i_stats['array_13207']) . ')' => null,
-            ), array('x__down'), 0, 0, array('e__spectrum' => 'DESC')) as $e) {
-                $focus_tab .= view_e($e);
-            }
-            $focus_tab .= '</div>';
-        }
-
     } elseif($x__type==6255){
 
         $discovered = $this->X_model->fetch(array(
@@ -682,17 +665,18 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $focus_tab .= '</div>';
         }
 
-    } elseif( in_array($x__type, $this->config->item('n___4485')) ){
+    } elseif( $x__type==12274 || in_array($x__type, $this->config->item('n___4485')) ){
 
         //NOTES
+        $note_x__type = ($x__type==12274 ? 4983 : $x__type );
         $notes = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => $x__type,
+            'x__type' => $note_x__type,
             'x__right' => $i_focus['i__id'],
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($notes);
-        $is_editable = in_array($x__type, $this->config->item('n___14043'));
-        $focus_tab .= view_i_note_list($x__type, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true, false);
+        $is_editable = in_array($note_x__type, $this->config->item('n___14043'));
+        $focus_tab .= view_i_note_list($note_x__type, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true, false);
 
     } elseif($x__type==13023){
 
