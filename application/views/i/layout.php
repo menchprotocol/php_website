@@ -50,8 +50,10 @@ foreach($this->X_model->fetch(array(
 ), array('x__left'), 0) as $previous_i) {
     echo view_i_cover(11019, $previous_i);
 }
+echo '</div>';
+
 if($show_previous){
-    echo '<div class="list-group-item list-adder '.superpower_active(10939).'">
+    echo '<div class="list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[14014]['m__icon'].'</span></span>
                         <input type="text"
@@ -62,7 +64,7 @@ if($show_previous){
                                placeholder="'.$e___11035[14014]['m__title'].'">
                     </div><div class="algolia_pad_search hidden">'.view_memory(6404,13912).'</div></div>';
 }
-echo '</div>';
+
 echo '</div>';
 
 

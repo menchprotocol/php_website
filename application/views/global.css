@@ -1830,8 +1830,8 @@ i, .btn .show-max {
     width:         calc(100% - 11px) !important;
     max-height:133px;
     position: absolute;
-    left: 8px;
-    top: 3px;
+    left: 7px;
+    top: 5px;
     overflow-x: hidden;
     overflow-y: scroll;
     padding: 0;
@@ -1846,7 +1846,7 @@ i, .btn .show-max {
     line-height: 110% !important;
 }
 .cover-content a>span {
-    padding: 2px 2px 2px 0;
+    padding: 0 2px 0 0;
     white-space: pre-wrap;
 }
 .cover-content .icon-block-xs {
