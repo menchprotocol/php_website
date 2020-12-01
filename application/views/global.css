@@ -479,7 +479,7 @@ img.no-radius {
 .discover-controller div a{
     display: inline-block;
     border-radius: 50%;
-    background-color: #FC1B44;
+    background-color: #222222;
     width: 60px;
     height: 60px;
     padding:9px 0 0 0;
@@ -2047,7 +2047,7 @@ i, .btn .show-max {
     background-color: #222222 !important;
 }
 .round-btn{
-    background-color: #FC1B44 !important;
+    background-color: #222222 !important;
 }
 .round-btn i{
     color: #FFFFFF !important;
