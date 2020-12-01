@@ -73,7 +73,7 @@ body {
 }
 .mench-discover .x__message img, .mench-discover .i_content img, .mench-discover .content-image {
     max-height: 610px;
-    margin: 0 auto;
+    /* margin: 0 auto; */
 }
 .mench-discover .e-appendix{
     text-align: center !important;
@@ -333,7 +333,6 @@ img.no-radius {
 }
 .big-frame{
     padding:55px 41px;
-    text-align: center;
     margin:0;
     font-size: 3.4em;
 }
@@ -1810,7 +1809,7 @@ i, .btn .show-max {
     background: rgba(0, 0, 0, 0.75) !important;
 }
 .inside-btn>i, .inside-btn-alt>i {
-    margin-top: 5px;
+    margin-top: 6px;
     color: #FFFFFF !important;
 }
 .inside-btn .btn {
