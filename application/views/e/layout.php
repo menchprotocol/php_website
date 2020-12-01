@@ -380,7 +380,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                                maxlength="' . view_memory(6404,4736) . '"
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[14015]['m__title'].'">
-                    </div><div class="algolia_pad_search hidden">'.view_memory(6404,13914).'</div></div></div>';
+                    </div><div class="add_e_idea algolia_pad_search hidden">'.view_memory(6404,13914).'</div></div></div>';
 
 
                     $i_bookmarks = $this->X_model->fetch(array(
@@ -441,7 +441,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                                maxlength="' . view_memory(6404,4736) . '"
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[14016]['m__title'].'">
-                    </div><div class="algolia_pad_search hidden">'.view_memory(6404,13914).'</div></div></div>';
+                    </div><div class="add_e_idea algolia_pad_search hidden">'.view_memory(6404,13914).'</div></div></div>';
             }
 
 
