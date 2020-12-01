@@ -1146,7 +1146,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
     $ui .= ( $is_locked ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
     if($completion_rate['completion_percentage'] > 0){
-        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i, true).'</div>';
+        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
 
 
@@ -1246,13 +1246,9 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
 }
 
-function view_x_progress($completion_rate, $i, $show_micro){
+function view_x_progress($completion_rate, $i){
 
-    $ui = ( !$show_micro ? '<div class="progress-title">'.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED</div><div class="doclear">&nbsp;</div>' : '' ); // '.$completion_rate['completion_percentage'].'%
-
-    $ui .= '<div class="progress-bg-list" style="'.( $show_micro ? 'width:100%;' : 'margin-left:41px;' ).'"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
-
-    return $ui;
+    return '<div class="progress-bg-list" style="width:100%;"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%" title="'.$completion_rate['completion_percentage'].'% COMPLETE: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED" data-toggle="tooltip" data-placement="top"></div></div>';
 
 }
 

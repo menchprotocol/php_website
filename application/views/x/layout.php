@@ -248,10 +248,6 @@ echo '</div>';
 echo '<div class="container wrap-card">';
 
 
-if($in_my_discoveries){
-    echo view_x_progress($i_completion_rate, $i_focus, false);
-}
-
 
 //HEADER
 echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
@@ -743,10 +739,8 @@ echo '</div>'; //CLOSE CONTAINER
 
 if($in_my_x){
 
-
     $buttons_found = 0;
     $buttons_ui = '';
-
 
     foreach($this->config->item('e___13289') as $e__id => $m) {
 
@@ -796,10 +790,11 @@ if($in_my_x){
     }
 
     if($buttons_found > 0){
-        echo '<div class="container">'; // fixed-bottom
+        echo '<div class="container fixed-bottom">';
         echo '<div class="row">';
         echo '<div class="discover-controller margin-top-down">';
         echo $buttons_ui;
+        echo view_x_progress($i_completion_rate, $i_focus);
         echo '</div>';
         echo '</div>';
         echo '</div>';
