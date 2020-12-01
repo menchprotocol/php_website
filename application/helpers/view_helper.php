@@ -1248,7 +1248,7 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
 function view_x_progress($completion_rate, $i){
 
-    return '<div class="progress-bg-list" style="width:100%;" title="'.$completion_rate['completion_percentage'].'% COMPLETE: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED" data-toggle="tooltip" data-placement="top"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+    return '<div class="progress-bg-list" style="height:10px;" title="'.$completion_rate['completion_percentage'].'% COMPLETED: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED" data-toggle="tooltip" data-placement="top"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
 
 }
 

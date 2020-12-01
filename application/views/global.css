@@ -600,6 +600,7 @@ img.no-radius {
     height:8px;
     cursor: pointer;
     overflow: hidden;
+    width: 100%;
 }
 .progress-done{
     height:8px;
@@ -1594,7 +1595,7 @@ i, .btn .show-max {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.texttype__lg, .input-group .algolia-autocomplete, .x__message, .x_input, .progress-bg-list, .add_notes_form, .note-textarea.edit-on {
+.texttype__lg, .input-group .algolia-autocomplete, .x__message, .x_input, .add_notes_form, .note-textarea.edit-on {
     width: -webkit-calc(100% - 82px);
     width:    -moz-calc(100% - 82px);
     width:         calc(100% - 82px);
