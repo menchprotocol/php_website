@@ -857,7 +857,9 @@ if($buttons_found > 0){
     echo '</div>';
     echo '</div>';
     echo '</div>';
-    echo view_x_progress($i_completion_rate, $i_focus);
+    if($in_my_x){
+        echo view_x_progress($i_completion_rate, $i_focus);
+    }
     echo '</div>';
 }
 
