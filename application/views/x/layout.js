@@ -54,7 +54,6 @@ function go_previous(href_url) {
     if(i_drip_mode_js && i_drip_pointer>1){
         i_drip_pointer--;
         //Simply go to the next drip:
-        history.pushState(null,null,( i_drip_pointer==1 ? '#' : '#message'+i_drip_pointer ));
         $('.drip_msg').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
         $('.final_drip').addClass('hidden');
@@ -70,7 +69,6 @@ function go_next(go_next_url){
 
         i_drip_pointer++;
         //Simply go to the next drip:
-        history.pushState(null,null,'#message'+i_drip_pointer);
         $('.drip_msg').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
 

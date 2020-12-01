@@ -484,7 +484,6 @@ function i_fetch_cover($i__id, $html_format = false){
         'x__type' => 'ASC', //Messages First, Sources Second
         'x__spectrum' => 'ASC', //Sort by message order
     )) as $fetched_e){
-
         foreach(array('x__up','x__down') as $e_ref_field) {
             if($fetched_e[$e_ref_field] > 0){
                 //See if this source has a photo:
@@ -500,8 +499,13 @@ function i_fetch_cover($i__id, $html_format = false){
                     break;
                 }
             }
+            if($i_fetch_cover){
+                break;
+            }
         }
-
+        if($i_fetch_cover){
+            break;
+        }
     }
 
     //Return something:
