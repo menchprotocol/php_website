@@ -79,11 +79,11 @@ if(count($current_sign_i_attempt) == 0){
                         'i__id' => $sign_i__id,
                     ));
                     if(count($sign_i)){
-                        echo '<a href="/'.$sign_i__id.'" data-toggle="tooltip" data-placement="bottom" class="btn btn-source transparent btn-raised " title="'.$sign_i[0]['i__title'].'">'.$e___11035[12991]['m__icon'].'</a>';
+                        echo '<a href="/'.$sign_i__id.'" data-toggle="tooltip" data-placement="bottom" class="btn btn-source btn-black transparent btn-raised " title="'.$sign_i[0]['i__title'].'">'.$e___11035[12991]['m__icon'].'</a>';
                     }
                 }
                 ?>
-                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-raised" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-black btn-raised" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
 
             </span>
         </div>
@@ -105,8 +105,8 @@ if(count($current_sign_i_attempt) == 0){
             <div class="doclear">&nbsp;</div>
             
             <div id="step3buttons">
-                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-source transparent btn-raised " title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
-                <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="btn btn-source btn-raised " title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-source btn-black transparent btn-raised " title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
+                <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="btn btn-source btn-black btn-raised " title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
             </div>
 
             <div style="padding-top:13px;">Forgot Password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration: underline;font-weight: bold;"><?= $e___11035[11068]['m__title'] ?></a> <?= $e___11035[11068]['m__icon'] ?></div>
@@ -148,8 +148,8 @@ if(count($current_sign_i_attempt) == 0){
             <!-- Signup Buttons -->
             <div id="new_account_errors" class="discover margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-source transparent btn-raised" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
-                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-source btn-raised" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-source btn-black transparent btn-raised" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
+                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-source btn-black btn-raised" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
             </span>
 
         </div>
