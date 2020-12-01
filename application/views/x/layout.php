@@ -60,13 +60,14 @@ $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 $i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383'));
 $drip_msg_counter = 0;
+$drip_msg_total = count($messages) + 1 /* For Title */;
 
 ?>
 
 <script>
     var focus_i__id = <?= $i_focus['i__id'] ?>;
     var focus_i__type = <?= $i_focus['i__type'] ?>;
-    var drip_msg_total = <?= count($messages) + 1 /* For Title */ ?>;
+    var drip_msg_total = <?= $drip_msg_total ?>;
     var i_drip_pointer = 1; //Start at the first message
     var i_drip_mode_js = <?= intval($i_drip_mode) ?>;
 </script>
@@ -282,7 +283,7 @@ foreach($messages as $message_x) {
 
 if($i_drip_mode){
     $drip_msg_counter++;
-    echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.' hidden">';
+    echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.( $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
     echo '<div class="headline"><span class="icon-block">'.$e___11035[14384]['m__icon'].'</span>'.$e___11035[14384]['m__title'].'</div>';
     echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
     echo '</div>';
