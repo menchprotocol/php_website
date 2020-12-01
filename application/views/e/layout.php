@@ -63,24 +63,23 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
     }
 
+    echo '<div class="container wrap-card">';
+
+    //SOURCE DRAFTING?
+    if(!in_array($e['e__type'], $this->config->item('n___7357'))){
+        echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__type']]['m__icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__icon'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
+    }
+
+
+
     if($superpower_13422 || !$source_is_e){
 
         $icon_frame = '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>';
 
-        echo '<div class="container wrap-card">';
-
-        //SOURCE DRAFTING?
-        if(!in_array($e['e__type'], $this->config->item('n___7357'))){
-            echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__type']]['m__icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__icon'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
-        }
-
         //SOURCE NAME
-        echo '<div style="padding: 8px 0; margin-top:10px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, ($superpower_13422 ? '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m__title'].'">'.$icon_frame.'</a>' : $icon_frame ), extract_icon_color($e['e__icon'])).'</div>';
-
-        echo '</div>';
+        echo '<div style="padding: 8px 0; margin-top:10px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, ($superpower_13422 ? '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m__title'].'">'.$icon_frame.'</a>' : $icon_frame ), extract_icon_color($e['e__icon'])).'</div>';
 
     }
-
 
 
 
@@ -89,6 +88,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
     $counter__i = view_coins_e(12273, $e['e__id'], 0, false);
     $counter__x = view_coins_e( 6255, $e['e__id'], 0, false);
     $active_x__type = 0;
+
 
     if($counter__e > 0 && !$source_is_e && $counter__e > $counter__i){
         //SOURCES
@@ -100,6 +100,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
         //DISCOVERIES
         $active_x__type = 6255;
     }
+
 
     $tab_nav = '';
     $tab_content = '';
