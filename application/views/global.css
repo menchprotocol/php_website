@@ -332,7 +332,7 @@ img.no-radius {
     max-height:250px;
 }
 .big-frame{
-    padding:55px 41px;
+    padding:34px 41px;
     margin:0;
     font-size: 3.4em;
 }
@@ -598,7 +598,7 @@ img.no-radius {
     background-color: #CCCCCC;
     position: relative !important;
     height:8px;
-    cursor: pointer;
+    cursor: default;
     overflow: hidden;
     width: 100%;
 }
@@ -607,8 +607,8 @@ img.no-radius {
     background-color: #FC1B44;
 }
 .wrap-card {
-    border: 0;
-    padding:13px 0;
+    border:0;
+    padding:0;
 }
 
 .coin-frame{

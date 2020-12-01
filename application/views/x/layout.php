@@ -798,7 +798,7 @@ if($in_my_x){
     if($buttons_found > 0){
         echo '<div class="fixed-bottom">';
         echo '<div class="container">';
-        echo '<div class="row">';
+        echo '<div class="row" style="padding-top: 5px;">';
         echo '<div class="discover-controller">';
         echo $buttons_ui;
         echo '</div>';
