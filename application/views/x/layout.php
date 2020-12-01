@@ -58,13 +58,17 @@ $previous_level_id = 0; //The ID of the Idea one level up, if any
 $superpower_10939 = superpower_active(10939, true);
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
+$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383'));
+$drip_msg_counter = 0;
 
 ?>
 
 <script>
     var focus_i__id = <?= $i_focus['i__id'] ?>;
     var focus_i__type = <?= $i_focus['i__type'] ?>;
-    var focus_message_count = <?= count($messages) ?>;
+    var drip_msg_total = <?= count($messages) + 1 /* For Title */ + ( count($is_next) ? 1 : 0 ) ?>;
+    var i_drip_pointer = 1; //Start at the first message
+    var i_drip_mode_js = <?= intval($i_drip_mode) ?>;
 </script>
 
 <script src="/application/views/x/layout.js?v=<?= view_memory(6404,11060) ?>"
@@ -73,9 +77,6 @@ $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n_
 <?php
 
 echo '<div class="container coin-frame hideIfEmpty">';
-
-
-
 
 
 
@@ -263,24 +264,29 @@ echo '<div class="container wrap-card">';
 
 
 
-//HEADER
-echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
+if(!$i_drip_mode){
+    //HEADER
+    echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
+}
 
 
 //MESSAGES
-echo '<div style="margin-bottom:41px;">';
 foreach($messages as $message_x) {
-    echo $this->X_model->message_send(
+    $drip_msg_counter++;
+    echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">'.$this->X_model->message_send(
         $message_x['x__message'],
         true,
         $user_e
-    );
+    ).'<div>';
 }
-echo '</div>';
 
-
-
-
+if($i_drip_mode){
+    $drip_msg_counter++;
+    echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.' hidden">';
+    echo '<div class="headline"><span class="icon-block">'.$e___11035[14384]['m__icon'].'</span>'.$e___11035[14384]['m__title'].'</div>';
+    echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
+    echo '</div>';
+}
 
 
 
@@ -294,7 +300,7 @@ $meets_13865 = !count($fetch_13865);
 
 if(count($fetch_13865)){
 
-    echo '<div class="headline"><span class="icon-block">'.$e___11035[13865]['m__icon'].'</span>'.$e___11035[13865]['m__title'].'</div>';
+    echo '<div class="headline" style="margin-top: 41px;"><span class="icon-block">'.$e___11035[13865]['m__icon'].'</span>'.$e___11035[13865]['m__title'].'</div>';
 
     $missing_13865 = 0;
     $e___13865 = $this->config->item('e___13865'); //PREREQUISITES
@@ -385,6 +391,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //IDEAS
         $counter = count($is_next);
+
+        $focus_tab .= '<div class="'.($i_drip_mode ? ' drip_msg drip_msg_'.$drip_msg_counter.' hidden' : '' ).'">';
 
         if($in_my_x) {
 
@@ -653,6 +661,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         }
 
+        $focus_tab .= '</div>';
+
     } elseif($x__type==6255){
 
         $discovered = $this->X_model->fetch(array(
@@ -773,12 +783,12 @@ if($in_my_x){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
-            $control_btn = '<a class="round-btn" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title">'.$m['m__title'].'</span>';
+            $control_btn = '<a class="round-btn final_drip '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==12991 && count($sitemap_items)){
 
             //BACK
-            $control_btn = '<a class="controller-nav round-btn" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==12211){
 

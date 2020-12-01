@@ -40,29 +40,66 @@ $(document).ready(function () {
 
 });
 
+/*
+*
+* var drip_msg_total = <?= count($messages) ?>;
+var i_drip_pointer = 1; //Start at the first message
+var i_drip_mode_js = <?= intval($i_drip_mode) ?>;
+*
+* */
+
+
+
+function go_previous(href_url) {
+    if(i_drip_mode_js && i_drip_pointer>1){
+        i_drip_pointer--;
+        //Simply go to the next drip:
+        $('.drip_msg').addClass('hidden');
+        $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
+        $('.final_drip').addClass('hidden');
+    } else {
+        //Go Next:
+        window.location = href_url;
+    }
+}
 
 function go_next(go_next_url){
-    //Attempts to go next if no submissions:
-    if(focus_i__type==6683) {
 
-        //TEXT RESPONSE:
-        return x_reply(go_next_url);
+    if(i_drip_mode_js && i_drip_pointer<drip_msg_total){
 
-    } else if (js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
+        i_drip_pointer++;
+        //Simply go to the next drip:
+        $('.drip_msg').addClass('hidden');
+        $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
 
-        //SELECT ONE/SOME
-        return x_select(go_next_url);
-
-    } else if (focus_i__type==7637 && !$('.file_saving_result').html().length ) {
-
-        //Must upload file first:
-        alert('You must upload file before going next.');
+        //Are we at the last drip?
+        if(i_drip_pointer==drip_msg_total){
+            $('.final_drip').removeClass('hidden');
+        }
 
     } else {
+        //Attempts to go next if no submissions:
+        if(focus_i__type==6683) {
 
-        //Go Next:
-        window.location = go_next_url+focus_i__id;
+            //TEXT RESPONSE:
+            return x_reply(go_next_url);
 
+        } else if (js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
+
+            //SELECT ONE/SOME
+            return x_select(go_next_url);
+
+        } else if (focus_i__type==7637 && !$('.file_saving_result').html().length ) {
+
+            //Must upload file first:
+            alert('You must upload file before going next.');
+
+        } else {
+
+            //Go Next:
+            window.location = go_next_url+focus_i__id;
+
+        }
     }
 }
 
