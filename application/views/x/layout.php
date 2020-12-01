@@ -57,8 +57,19 @@ $in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
 $previous_level_id = 0; //The ID of the Idea one level up, if any
 $superpower_10939 = superpower_active(10939, true);
 $x_completes = array();
+
+if($in_my_x){
+    //Fetch progress history:
+    $x_completes = $this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
+        'x__source' => $user_e['e__id'],
+        'x__left' => $i_focus['i__id'],
+    ));
+}
+
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383'));
+$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383')) && count($messages)>1 && (!$in_my_x || !count($x_completes));
 $drip_msg_counter = 0;
 $drip_msg_total = count($messages) + 1 /* For Title */;
 
@@ -152,14 +163,6 @@ if($user_e['e__id']){
     ));
 
     if ($in_my_x) {
-
-        //Fetch progress history:
-        $x_completes = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-            'x__source' => $user_e['e__id'],
-            'x__left' => $i_focus['i__id'],
-        ));
 
         //Auto go next?
         if(!count($x_completes) && !count($messages) && count($is_next)<2 && in_array($i_focus['i__type'], $this->config->item('n___12330'))){
