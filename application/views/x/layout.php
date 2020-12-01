@@ -235,6 +235,7 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 if($in_my_x && $previous_level_id){
     //Idea Map:
     echo '<div class="navigation_list hidden">';
+    echo '<a name="navigation"></a>';
     echo '<div class="headline block"><span class="icon-block">'.$e___11035[14382]['m__icon'].'</span>'.$e___11035[14382]['m__title'].'</div>';
     echo '<div class="row">';
     echo join('', array_reverse($sitemap_items));
@@ -769,7 +770,7 @@ if($in_my_x){
 
         } elseif($e__id==14382 && $in_my_x && !$in_my_discoveries){
 
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="$(\'.navigation_list\').toggleClass(\'hidden\');">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn" href="#navigation" onclick="$(\'.navigation_list\').toggleClass(\'hidden\');">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==12991 && count($sitemap_items)){
 
