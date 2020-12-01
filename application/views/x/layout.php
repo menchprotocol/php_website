@@ -1,14 +1,4 @@
-<script>
-    var focus_i__id = <?= $i_focus['i__id'] ?>;
-    var focus_i__type = <?= $i_focus['i__type'] ?>;
-</script>
-
-<script src="/application/views/x/layout.js?v=<?= view_memory(6404,11060) ?>"
-        type="text/javascript"></script>
-
 <?php
-
-echo '<div class="container coin-frame hideIfEmpty">';
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
@@ -39,6 +29,13 @@ if(!isset($user_e['e__id']) ){
 
 
 
+//Messages:
+$messages = $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type' => 4231, //IDEA NOTES Messages
+    'x__right' => $i_focus['i__id'],
+), array(), 0, 0, array('x__spectrum' => 'ASC'));
+
 
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
@@ -47,13 +44,6 @@ $is_next = $this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
     'x__left' => $i_focus['i__id'],
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
-
-//Messages:
-$messages = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 4231, //IDEA NOTES Messages
-    'x__right' => $i_focus['i__id'],
-), array(), 0, 0, array('x__spectrum' => 'ASC'));
 
 $completion_rate['completion_percentage'] = 0;
 $u_x_ids = $this->X_model->ids($user_e['e__id']);
@@ -69,6 +59,29 @@ $previous_level_id = 0; //The ID of the Idea one level up, if any
 $superpower_10939 = superpower_active(10939, true);
 $x_completes = array();
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
+
+?>
+
+<script>
+    var focus_i__id = <?= $i_focus['i__id'] ?>;
+    var focus_i__type = <?= $i_focus['i__type'] ?>;
+    var focus_message_count = <?= count($messages) ?>;
+</script>
+
+<script src="/application/views/x/layout.js?v=<?= view_memory(6404,11060) ?>"
+        type="text/javascript"></script>
+
+<?php
+
+echo '<div class="container coin-frame hideIfEmpty">';
+
+
+
+
+
+
+
+
 
 if($in_my_x){
 
@@ -235,7 +248,6 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 if($in_my_x && $previous_level_id){
     //Idea Map:
     echo '<div class="navigation_list hidden">';
-    echo '<a name="navigation"></a>';
     echo '<div class="headline block"><span class="icon-block">'.$e___11035[14382]['m__icon'].'</span>'.$e___11035[14382]['m__title'].'</div>';
     echo '<div class="row">';
     echo join('', array_reverse($sitemap_items));
@@ -738,9 +750,6 @@ echo $tab_content;
 
 echo '</div>'; //CLOSE CONTAINER
 
-
-
-
 if($in_my_x){
 
     $buttons_found = 0;
@@ -770,7 +779,7 @@ if($in_my_x){
 
         } elseif($e__id==14382 && $in_my_x && !$in_my_discoveries){
 
-            $control_btn = '<a class="controller-nav round-btn" href="#navigation" onclick="$(\'.navigation_list\').toggleClass(\'hidden\');">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn navigation_list" href="javascript:void(0);" onclick="$(\'.navigation_list\').toggleClass(\'hidden\');window.scrollTo(0,0);">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==12991 && count($sitemap_items)){
 
