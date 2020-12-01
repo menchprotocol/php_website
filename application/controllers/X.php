@@ -972,7 +972,7 @@ class X extends CI_Controller
         }
 
         //Save IDEA:
-        $this->X_model->create(array(
+        $x = $this->X_model->create(array(
             'x__source' => $user_e['e__id'],
             'x__up' => $user_e['e__id'],
             'x__message' => '@'.$user_e['e__id'],
@@ -983,6 +983,7 @@ class X extends CI_Controller
         //All Good:
         return view_json(array(
             'status' => 1,
+            'x__id' => $x['x__id'],
         ));
 
     }

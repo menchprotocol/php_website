@@ -191,7 +191,9 @@ $(document).ready(function () {
     });
 
     $(".x_remove").click(function(event) {
+
         event.preventDefault();
+
         var i__id = $(this).attr('i__id');
         var x__id = $(this).attr('x__id');
         var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
@@ -516,15 +518,39 @@ function toggle_search(){
 
 
 function x_save(i__id){
+
     $('.toggle_saved').toggleClass('hidden');
-    $.post("/x/x_save", {
-        i__id:i__id,
-    }, function (data) {
-        if (!data.status) {
-            alert(data.message);
-            $('.toggle_saved').toggleClass('hidden');
-        }
-    });
+    var x__id = parseInt($('.save_controller').attr('current_x_id'));
+
+    if(!x__id){
+        //Add:
+        $.post("/x/x_save", {
+            i__id:i__id,
+        }, function (data) {
+            if (!data.status) {
+                alert(data.message);
+                $('.toggle_saved').toggleClass('hidden');
+            } else {
+                //Update new link ID:
+                $('.save_controller').attr('current_x_id', data.x__id);
+            }
+        });
+    } else {
+        //REMOVE
+        $.post("/x/x_remove", {
+            x__id:x__id
+        }, function (data) {
+            //Update UI to confirm with user:
+            if (!data.status) {
+                //There was some sort of an error returned!
+                alert(data.message);
+                $('.toggle_saved').toggleClass('hidden');
+            } else {
+                //Update new link ID:
+                $('.save_controller').attr('current_x_id', 0);
+            }
+        });
+    }
 }
 
 
