@@ -9,7 +9,7 @@ foreach($this->I_model->fetch(array(
     'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null,
 ), 0, 0, array('i__id' => 'DESC')) as $count => $in) {
 
-    echo '<div>'.($count+1).')'.view_cache(6193 /* OR Ideas */, $in['i__type']).'<a href="/i/i_go/'.$in['i__id'].'">'.view_i_title($in).'</a></div>';
+    echo '<div>'.($count+1).')'.view_cache(6193 /* OR Ideas */, $in['i__type']).'<a href="/~'.$in['i__id'].'">'.view_i_title($in).'</a></div>';
 
     echo '<ul style="list-style: decimal;">';
     //Fetch all children for this OR:
@@ -30,7 +30,7 @@ foreach($this->I_model->fetch(array(
         $all_children++;
 
         echo '<li>';
-        echo '<a href="/i/i_go/'.$child_or['i__id'].'">'.view_i_title($child_or).'</a>';
+        echo '<a href="/~'.$child_or['i__id'].'">'.view_i_title($child_or).'</a>';
         echo ( $x_coins[0]['totals'] > 0 ? ' <span class="discover montserrat"><i class="fas fa-circle discover"></i> '.$x_coins[0]['totals'].'</span>' : '' );
         echo '</li>';
 

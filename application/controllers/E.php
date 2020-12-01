@@ -1498,7 +1498,7 @@ class E extends CI_Controller
 
             //Lead user and above, go to console:
             if($i__id > 0){
-                return redirect_message(( superpower_unlocked(10939) ? '/i/i_go/' : home_url() ) . $i__id);
+                return redirect_message('/' . $i__id);
             } else {
                 return redirect_message(home_url());
             }

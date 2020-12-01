@@ -234,7 +234,8 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 if($in_my_x && $previous_level_id){
     //Idea Map:
-    echo '<div class="row">';
+    echo '<div class="row navigation_list hidden">';
+    echo '<div class="headline"><span class="icon-block">'.$e___11035[14382]['m__icon'].'</span>'.$e___11035[14382]['m__title'].'</div>';
     echo join('', array_reverse($sitemap_items));
     echo '</div>';
 }
@@ -752,7 +753,7 @@ if($in_my_x){
 
         $control_btn = '';
 
-        if($e__id==13877 && count($sitemap_items)){
+        if($in_my_x && !$in_my_discoveries && $e__id==13877){
 
             //Is Saved already by this user?
             $is_saved = count($this->X_model->fetch(array(
@@ -764,15 +765,14 @@ if($in_my_x){
 
             $control_btn = '<a class="round-btn" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title">'.$m['m__title'].'</span>';
 
+        } elseif($in_my_x && !$in_my_discoveries && $e__id==14382){
+
+            $control_btn = '<a class="round-btn" href="javascript:void(0);" onclick="$(\'.navigation_list\').toggleClass(\'hidden\');">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
+
         } elseif($e__id==12991 && count($sitemap_items)){
 
             //BACK
             $control_btn = '<a class="controller-nav round-btn" href="'.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
-
-        } elseif($e__id==13563){
-
-            //EDIT
-            $control_btn = '<a class="controller-nav round-btn" href="/~'.$i_focus['i__id'].'">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==12211){
 
