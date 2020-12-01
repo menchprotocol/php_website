@@ -1234,9 +1234,15 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
         }
 
-        $ui .= '<div class="cover-text"><a href="'.$href.'" class="montserrat">';
+        $ui .= '<div class="cover-text montserrat"><a href="'.$href.'">';
         $ui .= view_i_time($i_stats);
         $ui .= '</a></div>';
+
+    } else {
+
+        //Just Time:
+        $ui .= '<div class="cover-text montserrat">'.view_i_time($i_stats).'</div>';
+
     }
 
 
