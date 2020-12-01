@@ -1837,6 +1837,7 @@ i, .btn .show-max {
     padding: 0;
 }
 .cover-content span {
+    padding: 1px 2px 1px 0;
     background: rgba(0, 0, 0, 0.75);
     line-height: 130%;
     font-size: 0.89em;
@@ -1846,7 +1847,6 @@ i, .btn .show-max {
     line-height: 110% !important;
 }
 .cover-content a>span {
-    padding: 0 2px 0 0;
     white-space: pre-wrap;
 }
 .cover-content .icon-block-xs {
