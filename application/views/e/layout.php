@@ -63,30 +63,25 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
     }
 
+    if($superpower_13422 || !$source_is_e){
 
-    echo '<div class="container wrap-card">';
+        $icon_frame = '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>';
 
+        echo '<div class="container wrap-card">';
 
-    //SOURCE DRAFTING?
-    if(!in_array($e['e__type'], $this->config->item('n___7357'))){
-        echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__type']]['m__icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__icon'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
+        //SOURCE DRAFTING?
+        if(!in_array($e['e__type'], $this->config->item('n___7357'))){
+            echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__type']]['m__icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__icon'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
+        }
+
+        //SOURCE NAME
+        echo '<div style="padding: 8px 0; margin-top:10px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, ($superpower_13422 ? '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m__title'].'">'.$icon_frame.'</a>' : $icon_frame ), extract_icon_color($e['e__icon'])).'</div>';
+
+        echo '</div>';
+
     }
 
 
-    //SOURCE NAME
-    echo '<div style="padding: 8px 0; margin-top:13px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>', extract_icon_color($e['e__icon'])).'</div>';
-    echo '<div class="doclear">&nbsp;</div>';
-
-
-    //SOURCE MODIFY BUTTON
-    echo '<div class="pull-right inline-block" style="margin:0 0 -40px 0;">';
-
-        if($superpower_13422) {
-            echo '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block" style="padding-top:10px;" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</a>';
-        }
-
-    echo '</div>';
-    echo '<div class="doclear">&nbsp;</div>';
 
 
     //Determine Focus Tab:
@@ -550,16 +545,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
             }
 
-
             $focus_tab .= '</div>';
-
-
-            //SHOW LASTEST 100
-            if(!$counter){
-
-                $focus_tab .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$m['m__title'].' yet</div>';
-
-            }
 
         }
 
