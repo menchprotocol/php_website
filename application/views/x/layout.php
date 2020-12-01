@@ -277,7 +277,7 @@ foreach($messages as $message_x) {
         $message_x['x__message'],
         true,
         $user_e
-    ).'<div>';
+    ).'</div>';
 }
 
 if($i_drip_mode){
