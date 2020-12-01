@@ -1511,7 +1511,12 @@ label {
 i, .btn .show-max {
     font-size: 1.44em !important;
 }
-.btn-lrg i, .inside-btn i, .controller-nav i {
+
+.inside-btn i {
+    font-size: 0.89em !important;
+}
+
+.btn-lrg i, .controller-nav i {
     font-size: 1em !important;
 }
 
