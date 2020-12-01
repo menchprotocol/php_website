@@ -184,7 +184,7 @@ if(!isset($hide_header)){
                     <?php
 
                     echo '<td>';
-                    echo '<div style="width:100%;" class="'.$simple_header.'">';
+                    echo '<div class="'.$simple_header.'">';
 
                     //MENCH
                     echo '<div class="mench_nav left_nav"><span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
@@ -198,7 +198,7 @@ if(!isset($hide_header)){
                     if(intval(view_memory(6404,12678))){
 
                         //Search button
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;" class="'.$simple_header.'"><span class="search_icon">'.$e___11035[7256]['m__icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__icon'].'</span></a></td>';
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="'.$simple_header.'"><span class="search_icon">'.$e___11035[7256]['m__icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__icon'].'</span></span></a></td>';
 
                     }
 
