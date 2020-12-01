@@ -237,7 +237,7 @@ function e_name(){
     $.post("/x/x_set_text", {
         s__id: js_pl_id,
         cache_e__id: 6197,
-        field_value: $('#e_email').val().trim()
+        field_value: $('#e_name').val().trim()
     }, function (data) {
 
         if (!data.status) {
