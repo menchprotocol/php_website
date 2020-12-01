@@ -80,6 +80,7 @@ function go_next(go_next_url){
         }
 
     } else {
+
         //Attempts to go next if no submissions:
         if(focus_i__type==6683) {
 
@@ -98,8 +99,12 @@ function go_next(go_next_url){
 
         } else {
 
-            //Go Next:
-            window.location = go_next_url+focus_i__id;
+            if(go_next_url.length){
+                //Go Next:
+                window.location = go_next_url;
+            } else {
+                alert('This idea is disabled & cannot be started at this time.');
+            }
 
         }
     }
@@ -198,7 +203,7 @@ function x_reply(go_next_url){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            window.location = go_next_url+focus_i__id;
+            window.location = go_next_url;
         } else {
             //Show error:
             alert(data.message);
@@ -224,7 +229,7 @@ function x_select(go_next_url){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            window.location = go_next_url+focus_i__id;
+            window.location = go_next_url;
         } else {
             //Show error:
             alert(data.message);

@@ -62,6 +62,7 @@ $i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383'));
 $drip_msg_counter = 0;
 $drip_msg_total = count($messages) + 1 /* For Title */;
 
+
 ?>
 
 <script>
@@ -162,7 +163,7 @@ if($user_e['e__id']){
 
         //Auto go next?
         if(!count($x_completes) && !count($messages) && count($is_next)<2 && in_array($i_focus['i__type'], $this->config->item('n___12330'))){
-            echo '<script> $(document).ready(function () { go_next(\'/x/x_next/\') }); </script>';
+            echo '<script> $(document).ready(function () { go_next(\'/x/x_next/'.$i_focus['i__id'].'\') }); </script>';
         }
 
         // % DONE
@@ -239,6 +240,47 @@ if($user_e['e__id']){
         }
     }
 }
+
+
+
+
+
+//Determine next path:
+if($in_my_x){
+
+    $next_href = ( $i_completed ? '/x/i_next/' : '/x/x_next/' ) . $i_focus['i__id'];
+
+} else {
+
+    if(i_is_startable($i_focus)){
+
+        //OPEN TO REGISTER
+        $next_href = '/x/x_start/'.$i_focus['i__id'];
+
+    } else {
+
+        //Try to find the top registrable idea:
+        $top_startable = $this->I_model->top_startable($i_focus);
+        if(count($top_startable)){
+
+            foreach($top_startable as $start_i){
+                //OPEN TO REGISTER
+                $next_href = '/'.$start_i['i__id'];
+                break; //Ignore other possible pathways
+            }
+
+        } else {
+
+            $next_href = null;
+
+        }
+
+    }
+}
+
+
+
+
 
 
 $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion_rate['completion_percentage']<100 */ ;
@@ -570,7 +612,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $focus_tab .= '<div class="inline-block margin-top-down"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__icon'] . '</a></div>';
 
                         //Save Answers:
-                        $focus_tab .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__icon'] . '</a></div>';
+                        $focus_tab .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/'.$i_focus['i__id'].'\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__icon'] . '</a></div>';
 
                     }
 
@@ -759,119 +801,65 @@ echo $tab_content;
 
 echo '</div>'; //CLOSE CONTAINER
 
-if($in_my_x){
-
-    $buttons_found = 0;
-    $buttons_ui = '';
-
-    foreach($this->config->item('e___13289') as $e__id => $m) {
 
 
-        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
-        if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
-            continue;
-        }
+$buttons_found = 0;
+$buttons_ui = '';
 
-        $control_btn = '';
+foreach($this->config->item('e___13289') as $e__id => $m) {
 
-        if($e__id==13877 && $in_my_x && !$in_my_discoveries){
 
-            //Is Saved already by this user?
-            $is_saved = count($this->X_model->fetch(array(
-                'x__up' => $user_e['e__id'],
-                'x__right' => $i_focus['i__id'],
-                'x__type' => 12896, //SAVED
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )));
+    $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
+    if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
+        continue;
+    }
 
-            $control_btn = '<span class="final_drip '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'"><a class="round-btn" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title">'.$m['m__title'].'</span></span>';
+    $control_btn = '';
 
-        } elseif($e__id==12991 && count($sitemap_items)){
+    if($e__id==13877 && $in_my_x && !$in_my_discoveries){
 
-            //BACK
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
+        //Is Saved already by this user?
+        $is_saved = count($this->X_model->fetch(array(
+            'x__up' => $user_e['e__id'],
+            'x__right' => $i_focus['i__id'],
+            'x__type' => 12896, //SAVED
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        )));
 
-        } elseif($e__id==12211){
+        $control_btn = '<span class="final_drip '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'"><a class="round-btn" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title">'.$m['m__title'].'</span></span>';
 
-            //NEXT
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_next(\''.($i_completed ? '/x/i_next/' : '/x/x_next/').'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
+    } elseif($e__id==12991){
 
-        }
+        //BACK
+        $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
 
-        $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
+    } elseif($e__id==12211){
 
-        if($control_btn){
-            $buttons_found++;
-        }
+        //NEXT
+        $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_next(\''.$next_href.'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
 
     }
 
-    if($buttons_found > 0){
-        echo '<div class="fixed-bottom">';
-        echo '<div class="container">';
-        echo '<div class="row" style="padding-top: 5px;">';
-        echo '<div class="discover-controller">';
-        echo $buttons_ui;
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        echo view_x_progress($i_completion_rate, $i_focus);
-        echo '</div>';
+    $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
+
+    if($control_btn){
+        $buttons_found++;
     }
-
-} else {
-
-    echo '<div class="container">'; // fixed-bottom
-    echo '<div class="margin-top-down center">';
-
-    //GET STARTED
-    if($meets_13865){
-
-        if(i_is_startable($i_focus)){
-
-            //OPEN TO REGISTER
-            echo '<a class="btn btn-lrg btn-discover" href="/x/x_start/'.$i_focus['i__id'].'">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__icon'].'</a>';
-
-        } else {
-
-            //Try to find the top registrable idea:
-            $top_startable = $this->I_model->top_startable($i_focus);
-            if(count($top_startable)){
-
-                foreach($top_startable as $start_i){
-                    //Give link to go to top:
-                    echo '<div class="bottom-margin"><a class="btn btn-lrg btn-discover" href="/'.$start_i['i__id'].'">'.$start_i['i__title'].' '.$e___11035[14022]['m__icon'].'</a></div>';
-                }
-
-            } else {
-
-                //Inform them that nothing was found:
-                echo '<div style="text-align:center;"><div class="montserrat '.extract_icon_color($e___11035[14023]['m__title']).'">'.$e___11035[14023]['m__icon'].' '.$e___11035[14023]['m__title'].'</div><div>'.$e___11035[14023]['m__message'].'</div></div>';
-
-            }
-        }
-
-
-
-    } elseif(!$user_e['e__id']) {
-
-        //Signin to see if they meet requirement:
-        echo '<a class="btn btn-lrg btn-source" href="/signin">'.$e___11035[4269]['m__title'].' '.$e___11035[4269]['m__icon'].'</a>';
-
-    } else {
-
-        //Locked to meet requirements...
-        echo '<div style="text-align:center;">You must meet all requirements</div>';
-
-        //TODO show message...
-
-    }
-
-    echo '</div>';
-    echo '</div>';
 
 }
 
+if($buttons_found > 0){
+    echo '<div class="fixed-bottom">';
+    echo '<div class="container">';
+    echo '<div class="row" style="padding-top: 5px;">';
+    echo '<div class="discover-controller">';
+    echo $buttons_ui;
+    echo '</div>';
+    echo '</div>';
+    echo '</div>';
+    echo view_x_progress($i_completion_rate, $i_focus);
+    echo '</div>';
+}
 
 
 //ADD GIF MODAL
