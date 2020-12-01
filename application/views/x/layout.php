@@ -473,7 +473,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $focus_tab .= '<div class="doclear">&nbsp;</div>';
 
                         //EDIT ANSWER:
-                        $focus_tab .= '<div class="margin-top-down left-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__icon'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
+                        $focus_tab .= '<div class="margin-top-down"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__icon'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
 
                         $focus_tab .= '<div class="doclear">&nbsp;</div>';
 
@@ -548,7 +548,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     if (count($x_selects) > 0) {
 
                         //Cancel:
-                        $focus_tab .= '<div class="inline-block margin-top-down left-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__icon'] . '</a></div>';
+                        $focus_tab .= '<div class="inline-block margin-top-down"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__icon'] . '</a></div>';
 
                         //Save Answers:
                         $focus_tab .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__icon'] . '</a></div>';
@@ -611,7 +611,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 }
 
                 //UPLOAD BUTTON:
-                $focus_tab .= '<div class="margin-top-down left-margin"><label class="btn btn-discover inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__icon'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
+                $focus_tab .= '<div class="margin-top-down"><label class="btn btn-discover inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__icon'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
 
 
                 $focus_tab .= '<div class="doclear">&nbsp;</div>';
