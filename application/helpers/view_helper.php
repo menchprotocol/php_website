@@ -49,7 +49,7 @@ function view_db_field($field_name){
 }
 
 
-function view_x__message($x__message, $x__type, $full_message = null)
+function view_x__message($x__message, $x__type, $full_message = null, $is_discovery_mode = false)
 {
 
     /*
@@ -74,7 +74,7 @@ function view_x__message($x__message, $x__type, $full_message = null)
 
     } elseif ($x__type == 4260 /* Image URL */) {
 
-        return '<img data-src="' . $x__message . '" src="/img/mench.png" alt="IMAGE" class="content-image lazyimage" />';
+        return '<img '.( $is_discovery_mode ? ' src="' . $x__message . '" ' : ' data-src="' . $x__message . '" src="/img/mench.png" ' ).' alt="IMAGE" class="content-image lazyimage" />';
 
     } elseif ($x__type == 4259 /* Audio URL */) {
 
