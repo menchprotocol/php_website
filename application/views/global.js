@@ -599,7 +599,7 @@ jQuery.fn.extend({
 
 function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
 
-    $(element_focus + ' .add-input').focus(function() {
+    $(element_focus + '.add-input').focus(function() {
         $(element_focus + '.algolia_pad_search').removeClass('hidden');
     }).focusout(function() {
         $(element_focus + '.algolia_pad_search').addClass('hidden');
@@ -665,7 +665,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             },
             header: function (data) {
                 if (is_add_mode=='x_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:void(0);" onclick="i_add(' + parseInt($(element_focus + ' .add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 } else if(is_add_mode=='x_my_in'){
                     return '<a href="javascript:void(0);" onclick="i_create()" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 }
@@ -673,9 +673,9 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             empty: function (data) {
                 if(is_add_mode=='x_in'){
                     if($(element_focus).val().charAt(0)=='#'){
-                        return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + ' .add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
+                        return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
                     } else {
-                        return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + ' .add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                        return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
                 }
             },
