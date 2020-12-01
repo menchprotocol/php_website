@@ -792,7 +792,7 @@ if($in_my_x){
     if($buttons_found > 0){
         echo '<div class="container fixed-bottom">';
         echo '<div class="row">';
-        echo '<div class="discover-controller margin-top-down">';
+        echo '<div class="discover-controller">';
         echo $buttons_ui;
         echo '</div>';
         echo view_x_progress($i_completion_rate, $i_focus);
