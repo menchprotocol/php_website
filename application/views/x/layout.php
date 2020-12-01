@@ -795,8 +795,8 @@ if($in_my_x){
         echo '<div class="discover-controller">';
         echo $buttons_ui;
         echo '</div>';
-        echo view_x_progress($i_completion_rate, $i_focus);
         echo '</div>';
+        echo view_x_progress($i_completion_rate, $i_focus);
         echo '</div>';
     }
 
