@@ -6,6 +6,10 @@ $(document).ready(function () {
 
     autosize($('#x_reply'));
 
+    $('.header-click').click(function (e) {
+        window.scrollTo(0,0);
+    });
+
     //Watchout for file uplods:
     $('.boxUpload').find('input[type="file"]').change(function () {
         x_upload(droppedFiles, 'file');

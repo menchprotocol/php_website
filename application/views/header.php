@@ -8,7 +8,6 @@ $e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
 $current_mench = current_mench();
 $simple_header = ( $first_segment && $current_mench['x_id']==6255 ? ' header-drop hidden' : '' );
-
 ?><!doctype html>
 <html lang="en" >
 <head>
@@ -208,7 +207,7 @@ if(!isset($hide_header)){
                     $menu_type = ( $user_e ? 12500 : 14372 );
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
-                    echo '<button type="button" class="btn no-side-padding header-drop" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                    echo '<button type="button" class="btn no-side-padding header-click" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                     echo '<span class="icon-block">' .$e___13479[$menu_type]['m__icon'].'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';

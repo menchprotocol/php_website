@@ -232,9 +232,10 @@ $(document).ready(function () {
         load_fullstory();
     }
 
-    $('.header-drop').click(function (e) {
+    $('.header-click').click(function (e) {
         $('.header-drop').removeClass('hidden');
     });
+
 
     $('#topnav li a').click(function (e) {
 
