@@ -74,7 +74,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $is_discov
 
     } elseif ($x__type == 4260 /* Image URL */) {
 
-        return '<img '.( $is_discovery_mode ? ' src="' . $x__message . '" ' : ' data-src="' . $x__message . '" src="/img/mench.png" ' ).' alt="IMAGE" class="content-image lazyimage" />';
+        return '<img '.( $is_discovery_mode ? ' src="' . $x__message . '" class="content-image" ' : ' data-src="' . $x__message . '" src="/img/mench.png" class="content-image lazyimage" ' ).' alt="IMAGE" />';
 
     } elseif ($x__type == 4259 /* Audio URL */) {
 
