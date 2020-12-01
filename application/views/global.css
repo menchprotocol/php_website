@@ -2078,7 +2078,6 @@ i, .btn .show-max {
 
 
 /* DARK - DEFAULT */
-.custom_ui_13884_13886 .btn-black i,
 .custom_ui_13884_13886,
 .custom_ui_13884_13886 .fade,
 .custom_ui_13884_13886 .container,
@@ -2100,6 +2099,7 @@ i, .btn .show-max {
 
 }
 
+.custom_ui_13884_13886 .btn-black i,
 .custom_ui_13884_13886 .dropdown-menu,
 .custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu{
@@ -2147,7 +2147,6 @@ i, .btn .show-max {
 
 
 /* WHITE */
-.custom_ui_13884_13885 .btn-black i,
 .custom_ui_13884_13885.mench-idea .list-group-item:nth-child(odd),
 .custom_ui_13884_13885,
 .custom_ui_13884_13885 .container,
@@ -2201,7 +2200,7 @@ i, .btn .show-max {
     border-color: #f0f0f0 !important; /* WAS WHITE */
 }
 
-.alert a, .alert i {
+.alert a, .alert i, .custom_ui_13884_13885 .btn-black i {
     color: #222222 !important;
 }
 .btn-tiny{
