@@ -296,8 +296,6 @@ $(document).ready(function () {
             {
                 source: function (q, cb) {
 
-                    $('.header-drop').removeClass('hidden');
-
                     //Users can filter search with first word:
                     var search_only_e = $("#mench_search").val().charAt(0) == '@';
                     var search_only_in = $("#mench_search").val().charAt(0) == '#';
@@ -509,7 +507,7 @@ function toggle_search(){
 
         //Turn Search On:
         search_on = true; //Reverse
-        $('.search_nav').removeClass('hidden');
+        $('.search_nav, .header-drop').removeClass('hidden');
         $('#searchFrontForm input').focus();
 
     }
