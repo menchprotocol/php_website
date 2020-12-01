@@ -392,7 +392,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //IDEAS
         $counter = count($is_next);
 
-        $focus_tab .= '<div class="'.($i_drip_mode ? ' drip_msg drip_msg_'.$drip_msg_counter.' hidden' : '' ).'">';
+        $focus_tab .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.($i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
 
         if($in_my_x) {
 
