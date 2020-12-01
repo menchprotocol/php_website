@@ -228,6 +228,40 @@ function e_email(){
 }
 
 
+
+function e_name(){
+
+    //Show spinner:
+    $('.save_name').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
+
+    $.post("/x/x_set_text", {
+        s__id: js_pl_id,
+        cache_e__id: 6197,
+        field_value: $('#e_email').val().trim()
+    }, function (data) {
+
+        if (!data.status) {
+
+            //Ooops there was an error!
+            $('.save_name').html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+
+        } else {
+
+            //Show success:
+            $('.save_name').html('<i class="fas fa-check-circle"></i> UPDATED </span>').hide().fadeIn();
+
+            //Disappear in a while:
+            setTimeout(function () {
+                $('.save_name').html('');
+            }, 1597);
+
+        }
+
+    });
+
+}
+
+
 function e_password(){
 
     //Show spinner:

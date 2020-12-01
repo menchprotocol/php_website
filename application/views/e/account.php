@@ -96,6 +96,12 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
         $focus_tab .= '</div>';
 
+    } elseif ($acc_e__id == 13025 /* Full Name */) {
+
+        $focus_tab .= '<span><input type="text" id="e_name" class="form-control border dotransparent" value="' . $user_e['e__title'] . '" /></span>
+                <a href="javascript:void(0)" onclick="e_name()" class="btn btn-source">Save</a>
+                <span class="saving-account save_name"></span>';
+
     } elseif ($acc_e__id == 3288 /* Email */) {
 
         $u_emails = $this->X_model->fetch(array(
