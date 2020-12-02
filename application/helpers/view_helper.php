@@ -1145,7 +1145,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
             $ui .= '</div>';
 
             //We need to check if we have more than this?
-            if(!$e__id_limit && $limit==count($query)){
+            if(!$e__id_limit){
                 //We might have more, let's check:
                 $count_query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
                 if($count_query[0]['totals'] > $limit){
