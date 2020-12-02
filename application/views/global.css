@@ -2052,6 +2052,9 @@ i, .btn .show-max {
     color: #FFFFFF !important;
 }
 
+.info_box{
+    padding: 5px 0;
+}
 .info_box_header{
     padding:34px 3px 13px;
     font-size: 2.1em;
@@ -2064,10 +2067,11 @@ i, .btn .show-max {
 .info_box_title{
     text-align: center;
     font-size: 1.3em;
-    padding: 5px 0;
+    padding: 13px 0 5px;
 }
 .info_box_message{
     text-align: center;
+    font-size: 0.89em;
 }
 
 
