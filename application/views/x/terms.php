@@ -5,7 +5,7 @@ $terms_i__id = view_memory(6404,14373);
 
 
 echo '<div class="container">';
-echo '<h1 class="big-frame">'.$e___11035[14373]['m__title'].'</h1>';
+echo '<h1 class="big-frame extra-big">'.$e___11035[14373]['m__title'].'</h1>';
 
 //MESSAGES
 foreach($this->X_model->fetch(array(
@@ -24,7 +24,7 @@ foreach($is_next = $this->X_model->fetch(array(
     'x__left' => $terms_i__id,
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i){
 
-    echo '<h2 style="margin-top:55px;">'.$i['i__title'].'</h2>';
+    echo '<h1 class="big-frame">'.$i['i__title'].'</h1>';
 
     //MESSAGES
     foreach($this->X_model->fetch(array(
