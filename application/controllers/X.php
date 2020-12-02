@@ -57,6 +57,15 @@ class X extends CI_Controller
 
     }
 
+    function terms(){
+        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+        $this->load->view('header', array(
+            'title' => $e___11035[14373]['m__title'],
+        ));
+        $this->load->view('x/terms');
+        $this->load->view('footer');
+    }
+
 
     function x_list(){
 
