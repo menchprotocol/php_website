@@ -1,6 +1,7 @@
 <?php
 $e___4269 = $this->config->item('e___4269');
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+$e___10876 = $this->config->item('e___10876'); //Mench Website
 
 $this_attempt = array(
     'x__type' => ( $sign_i__id > 0 ? 7560 /* User Signin Idea Channel Choose */ : 7561 /* User Signin on Website */ ),
@@ -122,6 +123,13 @@ if(count($current_sign_i_attempt) == 0){
         <!-- Step 4: Create New Account -->
         <div id="step4" class="signup-steps hidden">
 
+
+            <!-- Welcome Message -->
+            <div class="margin-top-down">
+                <?= sprintf($e___4269[14044]['m__message'], view_coins_e(12274, 4430, 0, false)); ?>
+            </div>
+
+
             <!-- pre-set Email -->
             <div class="margin-top-down">
                 <div class="montserrat"><span class="icon-block"><?= $e___4269[14026]['m__icon'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
@@ -142,6 +150,16 @@ if(count($current_sign_i_attempt) == 0){
             <div class="margin-top-down">
                 <span class="montserrat" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[14027]['m__icon'] ?></span><?= $e___4269[14027]['m__title'] ?></span>
                 <div class="form-group"><input type="password" id="new_password" class="form-control border white-border"></div>
+            </div>
+
+
+            <!-- Terms of Service -->
+            <div class="margin-top-down">
+                <span class="montserrat" style="padding-bottom: 3px; display:block;"><span class="icon-block"></span>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="terms_accepted">
+                    <label class="form-check-label inline-block" for="terms_accepted">Accept <a href="<?= $e___10876[14373]['m__message'] ?>" target="_blank"><?= $e___4269[14373]['m__icon'] .' '. $e___4269[14373]['m__title'] ?></a></label>
+                </div>
             </div>
 
 
