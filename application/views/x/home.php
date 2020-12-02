@@ -31,7 +31,7 @@
 
     //Info Boxes:
     echo view_info_box(14340); //Discover
-    echo view_info_box(14344); //Publish
+    //echo view_info_box(14344); //Publish
 
 
     //SOCIAL FOOTER
