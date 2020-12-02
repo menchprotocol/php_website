@@ -2045,6 +2045,7 @@ i, .btn .show-max {
     width: 60px;
     height: 60px;
     padding:9px 0 0 0;
+    text-align: center;
 }
 .round-btn i{
     color: #FFFFFF !important;
