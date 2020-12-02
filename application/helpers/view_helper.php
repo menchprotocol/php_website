@@ -1160,9 +1160,9 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
 
 function view_info_box($e__id){
     $CI =& get_instance();
-    $e___14339 = $CI->config->item('e___14339');
+    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $ui = '';
-    $ui .= '<h2 class="info_box_header montserrat">' . $e___14339[$e__id]['m__title'] . '</h2>';
+    $ui .= '<h2 class="info_box_header montserrat">' . $e___11035[$e__id]['m__title'] . '</h2>';
     $ui .= '<div class="row">';
     foreach($CI->config->item('e___'.$e__id) as $m) {
         $ui .= '<div class="col-12 col-sm-4">';
