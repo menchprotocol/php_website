@@ -52,7 +52,6 @@ class X extends CI_Controller
         ));
         $this->load->view('x/browse', array(
             'e__id' => $e__id,
-            'm' => $e___12138[$e__id],
         ));
         $this->load->view('footer');
 
