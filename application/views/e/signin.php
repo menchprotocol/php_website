@@ -66,7 +66,7 @@ if(count($current_sign_i_attempt) == 0){
 
     <div class="login-content" style="margin-top:41px;">
 
-        <!-- Step 2: Enter Email -->
+        <!-- Step 1: Enter Email -->
         <div id="step2" class="signup-steps hidden">
             <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__icon'].'</span>'.$e___4269[3288]['m__title'] ?></span>
             <div class="form-group"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
@@ -84,7 +84,7 @@ if(count($current_sign_i_attempt) == 0){
                     }
                 }
                 ?>
-                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="btn btn-source btn-black btn-raised" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
 
             </span>
         </div>
@@ -93,7 +93,7 @@ if(count($current_sign_i_attempt) == 0){
 
 
 
-        <!-- Step 3: Enter password -->
+        <!-- Step 2: Enter password (IF FOUND) -->
         <div id="step3" class="signup-steps hidden">
 
             <!-- To be updated to >0 IF email was found -->
@@ -106,8 +106,8 @@ if(count($current_sign_i_attempt) == 0){
             <div class="doclear">&nbsp;</div>
             
             <div id="step3buttons">
-                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="btn btn-source btn-black transparent btn-raised " title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
-                <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="btn btn-source btn-black btn-raised " title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
+                <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="controller-nav round-btn" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
             </div>
 
             <div style="padding-top:13px;">Forgot Password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration: underline;font-weight: bold;"><?= $e___11035[11068]['m__title'] ?></a> <?= $e___11035[11068]['m__icon'] ?></div>
@@ -120,7 +120,7 @@ if(count($current_sign_i_attempt) == 0){
 
 
 
-        <!-- Step 4: Create New Account -->
+        <!-- Step 3: Create New Account (IF NOT FOUND) -->
         <div id="step4" class="signup-steps hidden">
 
 
@@ -158,7 +158,8 @@ if(count($current_sign_i_attempt) == 0){
                 <span class="montserrat" style="padding-bottom: 3px; display:block;"><span class="icon-block"></span>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="terms_accepted">
-                    <label class="form-check-label inline-block" for="terms_accepted">Accept <a href="<?= $e___10876[14373]['m__message'] ?>" target="_blank"><?= $e___4269[14373]['m__icon'] .' '. $e___4269[14373]['m__title'] ?></a></label>
+                    <label class="form-check-label inline-block" for="terms_accepted">Accept Our <?= $e___4269[14373]['m__title'] ?></label>
+                    <a href="<?= $e___10876[14373]['m__message'] ?>" target="_blank"><i class="fas fa-external-link"></i></a>
                 </div>
             </div>
 
@@ -166,8 +167,8 @@ if(count($current_sign_i_attempt) == 0){
             <!-- Signup Buttons -->
             <div id="new_account_errors" class="discover margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(2)" class="btn btn-source btn-black transparent btn-raised" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
-                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="btn btn-source btn-black btn-raised" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                <a href="javascript:void(0)" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
+                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
             </span>
 
         </div>
