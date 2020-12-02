@@ -854,7 +854,7 @@ foreach($this->config->item('e___13289') as $e__id => $m) {
 if($buttons_found > 0){
     echo '<div class="fixed-bottom">';
     echo '<div class="container">';
-    echo '<div class="row" style="padding: 8px 0 '.( $in_my_x ? '' : '16pxe' ).';">';
+    echo '<div class="row" style="padding: 8px 0 '.( $in_my_x ? '' : '16px' ).';">';
     echo '<div class="discover-controller">';
     echo $buttons_ui;
     echo '</div>';
