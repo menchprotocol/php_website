@@ -1112,7 +1112,7 @@ function view__load__e($e){
 function view_i_featured($e__id_limit = 0, $i_exclude = array()){
 
     $CI =& get_instance();
-    $ui = '<div class="row">';
+    $ui = '';
     $limit = ( $e__id_limit ? 0 : view_memory(6404,12138) );
 
     //Go through Featured Categories:
@@ -1135,9 +1135,11 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
         if(count($query)){
 
             $ui .= '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
+            $ui .= '<div class="row">';
             foreach($query as $i){
                 $ui .= view_i_cover(12138, $i);
             }
+            $ui .= '</div>';
 
             //We need to check if we have more than this?
             if(!$e__id_limit && $limit==count($query)){
@@ -1150,7 +1152,6 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
             }
         }
     }
-    $ui .= '</div>';
     return $ui;
 }
 
