@@ -379,7 +379,7 @@ if(count($fetch_13865)){
 //DISCOVER LAYOUT
 $i_stats = i_stats($i_focus['i__metadata']);
 $tab_group = 13291;
-$tab_pills = '<ul class="nav nav-tabs nav-sm nav-discover '.superpower_active(10939).'">';
+$tab_pills = '<ul class="nav nav-tabs nav-sm nav-discover '.superpower_active(10939).' header-drop hidden">';
 $tab_content = '';
 $tab_pill_count = 0;
 
