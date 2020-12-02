@@ -229,11 +229,11 @@ if(!isset($hide_header)){
                             //Fetch URL:
                             $href = 'href="'.$e___10876[$x__type]['m__message'].'"';
 
-                        } elseif($x__type==12899) {
+                        } elseif($x__type==14393) {
 
-                            //FEEDBACK SUPPORT
+                            //SUGGEST
                             $href = 'href="javascript:void(0);"';
-                            $extra_class = ' icon_12899 ';
+                            $extra_class = ' suggest_modal ';
 
                         } else {
 

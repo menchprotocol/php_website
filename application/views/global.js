@@ -239,6 +239,9 @@ $(document).ready(function () {
         $('.header-drop').removeClass('hidden');
     });
 
+    $('.suggest_modal').click(function (e) {
+        $('#modal14393').modal('show');
+    });
 
     $('#topnav li a').click(function (e) {
 
@@ -486,6 +489,37 @@ function x_type_preview() {
 }
 
 
+function x_suggestion(){
+
+    //Make sure all inputs are completed:
+    var sugg_type = parseInt($("#sugg_type option:selected").val());
+    var sugg_note = $("#sugg_type").val();
+
+    if(sugg_type < 1){
+        alert('You must select suggestion type to continue.');
+        return false;
+    } else if(sugg_note.length < 1){
+        alert('You must write suggestion note to continue.');
+        return false;
+    } else if(js_pl_id < 1){
+        alert('You must be logged-in to continue.');
+        return false;
+    }
+
+    //All good, submit:
+    $.post("/x/x_suggestion", {
+        js_pl_id:js_pl_id,
+        sugg_type:sugg_type,
+        sugg_note:sugg_note,
+        sugg_url:window.location.href,
+    }, function (data) {
+        //Inform User:
+        alert('Thank you for your suggestion, we will review it shortly and get back to you.');
+
+        //Close Modal:
+        $('#modal14393').modal('hide');
+    });
+}
 
 
 //For the drag and drop file uploader:

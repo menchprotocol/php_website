@@ -677,7 +677,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="e_modify_save()" id="save_btn" class="btn btn-source">SAVE</button>
+                <button type="button" onclick="e_modify_save()" class="btn btn-source">SAVE</button>
             </div>
         </div>
     </div>
