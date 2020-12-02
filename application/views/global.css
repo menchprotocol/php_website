@@ -1814,8 +1814,8 @@ i, .btn .show-max {
     margin-left: -3px !important;
 }
 
-.cover-text{
-    margin: 0 3px 13px;
+.cover-text {
+    margin: -3px 0 13px;
     text-align: center;
     font-size: 0.89em;
 }
