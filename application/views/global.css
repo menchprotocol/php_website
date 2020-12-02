@@ -2058,6 +2058,7 @@ i, .btn .show-max {
 .info_box_header{
     padding:89px 3px 0;
     font-size: 2.5em;
+    line-height: 144%;
     text-align: center;
 }
 .info_box_cover{
