@@ -2056,18 +2056,19 @@ i, .btn .show-max {
     padding: 8px 0;
 }
 .info_box_header{
-    padding:34px 3px 13px;
+    padding:55px 3px 0;
     font-size: 2.1em;
     text-align: center;
 }
 .info_box_cover{
+    padding:13px 0 8px;
     text-align: center;
     font-size: 3.4em;
 }
 .info_box_title{
     text-align: center;
     font-size: 1.3em;
-    padding: 13px 0 5px;
+    padding: 8px 0 0;
 }
 .info_box_message{
     text-align: center;
