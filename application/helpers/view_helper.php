@@ -152,7 +152,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
                 //Header For Time
                 if($end_time){
                     $seconds = $end_time-$start_time;
-                    $embed_html_code .= '<div class="grey montserrat" style="padding:5px 0 0 0; font-size:0.84em;"><span class="icon-block-xs">'.$e___11035[13292]['m__icon'].'</span>'.( $seconds<60 ? $seconds.' SECOND' : round_minutes($seconds).' MIN' ).' CLIP <span class="inline-block">('.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).')</span></div>';
+                    $embed_html_code .= '<div class="grey montserrat" style="padding:5px 0 0 0; font-size:0.84em;"><span class="icon-block-xs">'.$e___11035[13292]['m__icon'].'</span>'.( $seconds<60 ? $seconds.' SEC.' : round_minutes($seconds).' MIN' ).' CLIP <span class="inline-block">('.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).')</span></div>';
                 }
 
                 $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe id="youtubeplayer'.$video_id.'"  src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';

@@ -476,14 +476,6 @@ img.no-radius {
     width: 2%;
     margin-bottom: 0;
 }
-.discover-controller div a{
-    display: inline-block;
-    border-radius: 50%;
-    background-color: #222222;
-    width: 60px;
-    height: 60px;
-    padding:9px 0 0 0;
-}
 .nav-title{
     display: none;
     padding: 5px 0 !important;
@@ -2048,6 +2040,11 @@ i, .btn .show-max {
 }
 .round-btn{
     background-color: #222222 !important;
+    display: inline-block;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    padding:9px 0 0 0;
 }
 .round-btn i{
     color: #FFFFFF !important;
