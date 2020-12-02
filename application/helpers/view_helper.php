@@ -1138,6 +1138,9 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
             $ui .= '<div class="row">';
             foreach($query as $i){
                 $ui .= view_i_cover(12138, $i);
+                if(!in_array($i['i__id'], $i_exclude)){
+                    array_push($i_exclude, $i['i__id']);
+                }
             }
             $ui .= '</div>';
 
