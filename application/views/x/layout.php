@@ -379,7 +379,7 @@ if(count($fetch_13865)){
 //DISCOVER LAYOUT
 $i_stats = i_stats($i_focus['i__metadata']);
 $tab_group = 13291;
-$tab_pills = '<ul class="nav nav-tabs nav-sm nav-discover '.superpower_active(10939).' header-drop hidden">';
+$tab_pills = '<div class="header-drop hidden"><ul class="nav nav-tabs nav-sm nav-discover '.superpower_active(10939).'">';
 $tab_content = '';
 $tab_pill_count = 0;
 
@@ -789,7 +789,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $tab_content .= '</div>';
 
 }
-$tab_pills .= '</ul>';
+$tab_pills .= '</ul></div>';
 
 
 
@@ -854,7 +854,7 @@ foreach($this->config->item('e___13289') as $e__id => $m) {
 if($buttons_found > 0){
     echo '<div class="fixed-bottom">';
     echo '<div class="container">';
-    echo '<div class="row" style="padding: 8px 0 '.( $in_my_x ? '' : '16px' ).';">';
+    echo '<div class="row" style="padding: 8px 0 '.( $in_my_x ? '' : '16pxe' ).';">';
     echo '<div class="discover-controller">';
     echo $buttons_ui;
     echo '</div>';
