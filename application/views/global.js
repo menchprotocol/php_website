@@ -513,11 +513,15 @@ function x_suggestion(){
         sugg_note:sugg_note,
         sugg_url:window.location.href,
     }, function (data) {
+
         //Inform User:
         alert('Thank you for your suggestion, we will review it shortly and get back to you.');
 
         //Close Modal:
         $('#modal14393').modal('hide');
+        $("#sugg_note").val('');
+        $("#sugg_type").val('0');
+
     });
 }
 
