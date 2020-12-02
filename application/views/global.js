@@ -180,16 +180,7 @@ function lazy_load(){
 }
 
 
-var algolia_index = false;
-$(document).ready(function () {
-
-    //For the S shortcut to load search:
-    $("#mench_search").focus(function() {
-        if(!search_on){
-            toggle_search();
-        }
-    });
-
+function initialize_remove(){
     $(".x_remove").click(function(event) {
 
         event.preventDefault();
@@ -223,10 +214,20 @@ $(document).ready(function () {
             });
         }
     });
+}
+
+var algolia_index = false;
+$(document).ready(function () {
+
+    //For the S shortcut to load search:
+    $("#mench_search").focus(function() {
+        if(!search_on){
+            toggle_search();
+        }
+    });
 
 
-
-
+    initialize_remove();
     lazy_load();
 
     if(js_pl_id > 1){
@@ -593,6 +594,8 @@ function add_to_list(sort_list_id, sort_handler, html_content) {
     }
 
     lazy_load();
+    initialize_remove();
+
 }
 
 jQuery.fn.extend({
