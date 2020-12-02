@@ -97,7 +97,7 @@ function go_next(go_next_url){
 
         } else {
 
-            if(go_next_url.length){
+            if(go_next_url && go_next_url.length > 0){
                 //Go Next:
                 window.location = go_next_url;
             } else {

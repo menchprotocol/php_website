@@ -251,14 +251,14 @@ if($user_e['e__id']){
 //Determine next path:
 if($in_my_x){
 
-    $next_href = ( $i_completed ? '/x/i_next/' : '/x/x_next/' ) . $i_focus['i__id'];
+    $go_next_url = ( $i_completed ? '/x/i_next/' : '/x/x_next/' ) . $i_focus['i__id'];
 
 } else {
 
     if(i_is_startable($i_focus)){
 
         //OPEN TO REGISTER
-        $next_href = '/x/x_start/'.$i_focus['i__id'];
+        $go_next_url = '/x/x_start/'.$i_focus['i__id'];
 
     } else {
 
@@ -268,13 +268,13 @@ if($in_my_x){
 
             foreach($top_startable as $start_i){
                 //OPEN TO REGISTER
-                $next_href = '/'.$start_i['i__id'];
+                $go_next_url = '/'.$start_i['i__id'];
                 break; //Ignore other possible pathways
             }
 
         } else {
 
-            $next_href = null;
+            $go_next_url = null;
 
         }
 
@@ -839,7 +839,7 @@ foreach($this->config->item('e___13289') as $e__id => $m) {
     } elseif($e__id==12211){
 
         //NEXT
-        $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_next(\''.$next_href.'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
+        $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
 
     }
 
