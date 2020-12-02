@@ -29,6 +29,11 @@
     echo view_i_featured();
 
 
+    //Info Boxes:
+    echo view_info_box(14340); //Discover
+    echo view_info_box(14344); //Publish
+
+
     //SOCIAL FOOTER
     echo '<ul class="social-footer">';
     foreach($this->config->item('e___13894') as $e__id => $m) {

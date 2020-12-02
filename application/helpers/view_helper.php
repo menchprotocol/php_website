@@ -1158,6 +1158,24 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
     return $ui;
 }
 
+function view_info_box($e__id){
+    $CI =& get_instance();
+    $e___14339 = $CI->config->item('e___14339');
+    $ui = '';
+    $ui .= '<h1 class="big-frame center">' . $e___14339[$e__id]['m__title'] . '</h1>';
+    $ui .= '<div class="row">';
+    foreach($CI->config->item('e___'.$e__id) as $m) {
+        $ui .= '<div class="col-12 col-sm-4">';
+        $ui .= '<div class="info_box_cover">'.$m['m__icon'].'</div>';
+        $ui .= '<div class="info_box_title">'.$m['m__title'].'</div>';
+        $ui .= '<div class="info_box_message">'.$m['m__message'].'</div>';
+        $ui .= '</div>';
+
+    }
+    $ui .= '</div>';
+    return $ui;
+}
+
 function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $completion_rate = null){
 
     //Search to see if an idea has a thumbnail:
