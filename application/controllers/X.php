@@ -48,7 +48,7 @@ class X extends CI_Controller
 
         //Load header:
         $this->load->view('header', array(
-            'title' => $e___12138[$e__id]['i__title'].' IDEAS',
+            'title' => $e___12138[$e__id]['m__title'].' IDEAS',
         ));
         $this->load->view('x/browse', array(
             'e__id' => $e__id,
