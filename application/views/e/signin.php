@@ -85,6 +85,7 @@ if(count($current_sign_i_attempt) == 0){
                 }
                 ?>
                 <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                <div class="doclear">&nbsp;</div>
 
             </span>
         </div>
@@ -110,9 +111,8 @@ if(count($current_sign_i_attempt) == 0){
                 <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
             </div>
 
-            <div style="padding-top:13px;">Forgot Password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration: underline;font-weight: bold;"><?= $e___11035[11068]['m__title'] ?></a> <?= $e___11035[11068]['m__icon'] ?></div>
-
             <div class="doclear">&nbsp;</div>
+            <div style="padding-top:13px;">Forgot Password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration: underline;font-weight: bold;"><?= $e___11035[11068]['m__title'] ?></a> <?= $e___11035[11068]['m__icon'] ?></div>
 
         </div>
 
@@ -169,6 +169,7 @@ if(count($current_sign_i_attempt) == 0){
             <span id="step2buttons">
                 <a href="javascript:void(0)" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
                 <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                <div class="doclear">&nbsp;</div>
             </span>
 
         </div>
