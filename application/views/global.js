@@ -493,7 +493,7 @@ function x_suggestion(){
 
     //Make sure all inputs are completed:
     var sugg_type = parseInt($("#sugg_type option:selected").val());
-    var sugg_note = $("#sugg_type").val();
+    var sugg_note = $("#sugg_note").val();
 
     if(sugg_type < 1){
         alert('You must select suggestion type to continue.');

@@ -29,7 +29,7 @@ $e___14393 = $this->config->item('e___14393'); //SUGGEST
 
 
                 <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___14393[14395]['m__icon'].'</span>'.$e___14393[14395]['m__title'] ?></div>
-                <textarea class="form-control text-edit border" id="sugg_note" data-lpignore="true"></textarea>
+                <textarea class="form-control text-edit border white-border" id="sugg_note" data-lpignore="true" placeholder="More details here..."></textarea>
 
 
             </div>
