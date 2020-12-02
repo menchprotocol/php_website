@@ -634,11 +634,11 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
     });
 
     //Idea Search
-    $(element_focus + ' .add-input').keypress(function (e) {
+    $(element_focus + '.add-input').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             if(is_add_mode=='x_in') {
-                return i_add($(element_focus + ' .add-input').attr('i-id'), is_i_previous, 0);
+                return i_add($(element_focus + '.add-input').attr('i-id'), is_i_previous, 0);
             } else if(is_add_mode=='x_my_in') {
                 return i_create();
             }
@@ -652,10 +652,10 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
     }
 
     //Not yet loaded, continue with loading it:
-    $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
+    $(element_focus + '.add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if(is_add_mode=='x_in'){
-            i_add($(element_focus + ' .add-input').attr('i-id'), is_i_previous, suggestion.s__id);
+            i_add($(element_focus + '.add-input').attr('i-id'), is_i_previous, suggestion.s__id);
         } else {
             //Go to idea:
             window.location = suggestion.s__url;
