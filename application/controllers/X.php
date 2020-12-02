@@ -36,6 +36,28 @@ class X extends CI_Controller
 
     }
 
+    function browse($e__id = 0){
+
+        //Make sure valid category:
+        if(!in_array($e__id, $this->config->item('n___12138'))){
+            //Go to Home page:
+            redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid Category ID</div>');
+        }
+
+        $e___12138 = $this->config->item('e___12138'); //FEATURED IDEAS
+
+        //Load header:
+        $this->load->view('header', array(
+            'title' => $e___12138[$e__id]['i__title'].' IDEAS',
+        ));
+        $this->load->view('x/browse', array(
+            'e__id' => $e__id,
+            'm' => $e___12138[$e__id],
+        ));
+        $this->load->view('footer');
+
+    }
+
 
     function x_list(){
 

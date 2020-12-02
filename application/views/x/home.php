@@ -6,7 +6,7 @@
     $e___12467 = $this->config->item('e___12467'); //MENCH COINS
 
 
-    //HACK: Group certain terms to make UI look nicer:
+    //HACK: Group certain terms to make UI look nicer in mobile:
     foreach(array('on the', 'of GIANTS') as $term){
         $i['i__title'] = str_replace($term,'<span class="inline-block">'.$term.'</span>',$i['i__title']);
     }
@@ -26,18 +26,7 @@
 
 
     //FEATURED IDEAS
-    echo '<div class="row" style="margin-top: 89px;">';
-    foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-        'x__left' => $i['i__id'],
-    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $key => $x){
-        //Show only if not in discovering list:
-        echo view_i_cover(12138, $x, null, false);
-    }
-    echo '</div>';
-
+    echo view_i_featured();
 
 
     //SOCIAL FOOTER

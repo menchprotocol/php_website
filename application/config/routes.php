@@ -5,10 +5,12 @@ $route['translate_uri_dashes']      = FALSE;
 
 //Home
 $route['default_controller']        = "x/index"; //Home page
+$route['browse']                    = "x/browse";
+$route['browse/(:num)']             = "x/browse/$1";
 $route['@']                         = "e/index"; //Source home
 $route['signin']                    = "e/signin"; //Sign
 $route['signin/(:num)']             = "e/signin/$1"; //Sign
-$route['account']                  = "e/e_account";
+$route['account']                   = "e/e_account";
 
 //COINS
 $route['(:num)']                    = "x/x_layout/$1";

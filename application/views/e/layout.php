@@ -358,7 +358,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
             //IDEAS
             $counter = $counter__i;
-            $exclude_ids = array();
+            $i_exclude = array();
 
             if($superpower_10939){
 
@@ -399,7 +399,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
                         $focus_tab .= '<div class="row top-margin" id="list_13412">';
                         foreach($i_bookmarks as $item){
-                            array_push($exclude_ids, $item['i__id']);
+                            array_push($i_exclude, $item['i__id']);
                             $focus_tab .= view_i_cover(10573, $item, null, $e);
                         }
                         $focus_tab .= '</div>';
@@ -421,9 +421,9 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
 
             //List References
-            $list_i = view_coins_e(12273, $e['e__id'], 1, true, $exclude_ids);
+            $list_i = view_coins_e(12273, $e['e__id'], 1, true, $i_exclude);
 
-            if(count($list_i) && count($exclude_ids)){
+            if(count($list_i) && count($i_exclude)){
                 $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
             }
 
@@ -490,23 +490,20 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
 
                 }
-
             }
 
 
 
             if($source_is_e){
 
-
+                //SAVED
                 $i_notes_query = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                     'x__type' => 12896,
                     'x__up' => $e['e__id'],
                 ), array('x__right'), 0, 0, array('i__spectrum' => 'DESC'));
-
                 if(count($i_notes_query)){
-
                     $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__icon'].'</span>'.$e___11035[12896]['m__title'].'</div>';
                     $focus_tab .= '<div class="row">';
                     foreach($i_notes_query as $count => $i_notes) {
@@ -514,32 +511,11 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                     }
 
                     $focus_tab .= '</div>';
-
                 }
-
-
 
                 //FEATURED IDEAS
-                $featured_filter = array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'x__left' => view_memory(6404,14002),
-                );
-                if(count($my_x_ids)){
-                    //Exclude Featured Ideas already added to Discoveries:
-                    $featured_filter['i__id NOT IN (' . join(',', $my_x_ids) . ')'] = null;
-                }
-                $featured_i = $this->X_model->fetch($featured_filter, array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+                $focus_tab .= view_i_featured(0, $my_x_ids);
 
-                if(count($featured_i)){
-                    $focus_tab .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12138]['m__icon'].'</span>'.$e___11035[12138]['m__title'].'</div>';
-                    $focus_tab .= '<div class="row">';
-                    foreach($featured_i as $key => $x){
-                        $focus_tab .= view_i_cover(12138, $x, null, $e);
-                    }
-                    $focus_tab .= '</div>';
-                }
             }
 
         } elseif(in_array($x__type, $this->config->item('n___4485'))){

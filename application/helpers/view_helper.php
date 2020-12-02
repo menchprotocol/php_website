@@ -604,7 +604,7 @@ function view_mench_coins(){
 
 
 
-function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true, $exclude_ids = array()){
+function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true, $i_exclude = array()){
 
     /*
      *
@@ -626,8 +626,8 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
-        if(count($exclude_ids)){
-            $query_filters['e__id NOT IN (' . join(',', $exclude_ids) . ')'] = null;
+        if(count($i_exclude)){
+            $query_filters['e__id NOT IN (' . join(',', $i_exclude) . ')'] = null;
         }
 
     } elseif($x__type==12273){
@@ -642,8 +642,8 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
         );
-        if(count($exclude_ids)){
-            $query_filters['i__id NOT IN (' . join(',', $exclude_ids) . ')'] = null;
+        if(count($i_exclude)){
+            $query_filters['i__id NOT IN (' . join(',', $i_exclude) . ')'] = null;
         }
 
     } elseif($x__type==6255){
@@ -670,8 +670,8 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             );
         }
 
-        if(count($exclude_ids)){
-            $query_filters['i__id NOT IN (' . join(',', $exclude_ids) . ')'] = null;
+        if(count($i_exclude)){
+            $query_filters['i__id NOT IN (' . join(',', $i_exclude) . ')'] = null;
         }
 
     }
@@ -1106,6 +1106,52 @@ function view__load__e($e){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
     return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__icon'].'</span>' . view_e__icon($e['e__icon']) . '&nbsp;<a href="/@'.$e['e__id'].'" class="'.extract_icon_color($e['e__icon']).'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__icon'].'</a></div>';
+}
+
+
+function view_i_featured($e__id_limit = 0, $i_exclude = array()){
+
+    $CI =& get_instance();
+    $ui = '<div class="row">';
+    $limit = ( $e__id_limit ? 0 : view_memory(6404,12138) );
+
+    //Go through Featured Categories:
+    foreach($CI->config->item('e___12138') as $e__id => $m) {
+        if($e__id_limit && $e__id_limit!=$e__id){
+            continue;
+        }
+        $query_filters = array(
+            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
+        );
+        if(count($i_exclude)){
+            $query_filters['i__id NOT IN (' . join(',', $i_exclude) . ')'] = null;
+        }
+
+        $query = $CI->X_model->fetch($query_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC'));
+
+        if(count($query)){
+
+            $ui .= '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
+            foreach($query as $i){
+                $ui .= view_i_cover(12138, $i);
+            }
+
+            //We need to check if we have more than this?
+            if(!$e__id_limit && $limit==count($query)){
+                //We might have more, let's check:
+                $count_query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
+                if($query[0]['totals'] > $limit){
+                    //Yes, we have more, show this:
+                    $ui .= '<div style="text-align: right;"><a href="/browse/'.$e__id.'">All '.number_format($query[0]['totals'], 0).' &raquo;</a></div>';
+                }
+            }
+        }
+    }
+    $ui .= '</div>';
+    return $ui;
 }
 
 function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $completion_rate = null){
