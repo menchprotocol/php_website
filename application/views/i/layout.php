@@ -273,9 +273,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         foreach($is_next as $next_i) {
             $focus_tab .= view_i_cover(13542, $next_i);
         }
+        $focus_tab .= '</div>';
 
         if($e_of_i && $is_active){
-            $focus_tab .= '<div class="list-group-item list-adder '.superpower_active(10939).'">
+            $focus_tab .= '<div class="list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m__icon'].'</span></span>
                     <input type="text"
@@ -286,8 +287,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                            placeholder="'.$e___11035[13912]['m__title'].'">
                 </div><div class="next_i algolia_pad_search hidden">'.view_memory(6404,13912).'</div></div>';
         }
-
-        $focus_tab .= '</div>';
 
     } elseif($x__type==6255) {
 
