@@ -2059,7 +2059,7 @@ i, .btn .show-max {
     padding:89px 3px 0;
     font-size: 2.5em;
     text-align: center;
-    line-height: 144%;
+    line-height: 110%;
 }
 .info_box_cover{
     padding:21px 0 13px;
@@ -2070,7 +2070,7 @@ i, .btn .show-max {
     text-align: center;
     font-size: 1.3em;
     padding: 0 3px;
-    line-height: 144%;
+    line-height: 110%;
 }
 .info_box_message{
     text-align: center;
