@@ -2057,11 +2057,11 @@ i, .btn .show-max {
 }
 .info_box_header{
     padding:89px 3px 0;
-    font-size: 2.1em;
+    font-size: 3.4em;
     text-align: center;
 }
 .info_box_cover{
-    padding:13px 0;
+    padding:21px 0 13px;
     text-align: center;
     font-size: 3.4em;
 }
@@ -2072,7 +2072,7 @@ i, .btn .show-max {
 }
 .info_box_message{
     text-align: center;
-    padding: 13px 8px;
+    padding: 13px;
 }
 
 
