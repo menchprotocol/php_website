@@ -960,6 +960,8 @@ class X_model extends CI_Model
                         continue;
                     }
 
+                    echo '('.$e_profile['e__title'].': ' . $e_profile['x__message'].')';
+
                     $e_count++;
 
                     if (in_array($e_profile['x__type'], $this->config->item('n___13899'))) {

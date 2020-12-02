@@ -1025,7 +1025,7 @@ class X extends CI_Controller
             'x__source' => intval($_POST['js_pl_id']),
             'x__type' => 14393,
             'x__down' => intval($_POST['sugg_type']),
-            'x__message' => trim($_POST['sugg_note'])."\n\n".$_POST['sugg_url'],
+            'x__message' => trim($_POST['sugg_note']).' '.$_POST['sugg_url'],
         ));
         return view_json(array(
             'status' => 1,
