@@ -497,9 +497,11 @@ function x_suggestion(){
 
     if(sugg_type < 1){
         alert('You must select suggestion type to continue.');
+        $("#sugg_type").focus();
         return false;
     } else if(sugg_note.length < 1){
         alert('You must write suggestion note to continue.');
+        $("#sugg_note").focus();
         return false;
     } else if(js_pl_id < 1){
         alert('You must be logged-in to continue.');
@@ -515,7 +517,7 @@ function x_suggestion(){
     }, function (data) {
 
         //Inform User:
-        alert('Thank you for your suggestion, we will review it shortly and get back to you.');
+        alert('You ROCK! We will review your suggestion and get back to you if necessary.');
 
         //Close Modal:
         $('#modal14393').modal('hide');
