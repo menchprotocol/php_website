@@ -485,7 +485,7 @@ img.no-radius {
     padding:9px 0 0 0;
 }
 .nav-title{
-    display: block;
+    display: none;
     padding: 5px 0 !important;
 }
 
