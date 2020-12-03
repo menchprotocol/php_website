@@ -1021,6 +1021,11 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             } elseif($x__type==13562){
 
+                if($i['i__id']==view_memory(6404,14002)){
+                    //Cannot preview North Star:
+                    continue;
+                }
+
                 //PREVIEW
                 $href = 'href="/'.$i['i__id'].'"';
 
