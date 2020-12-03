@@ -1048,7 +1048,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             }
 
-            $tab_nav .= '<li class="nav-item"><a class="nav-x tab-nav-14418 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" '.$href.'>'.$m['m__icon'].'&nbsp;'.$m['m__title'].'&nbsp;<span class="errors-'.$x__type.'"></span></a></li>';
+            $tab_nav .= '<li class="nav-item '.( in_array($x__type, $this->config->item('n___14103')) ? ' pull-right ' : '' ).'"><a class="nav-x tab-nav-14418 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" '.$href.'>'.$m['m__icon'].'&nbsp;'.$m['m__title'].'&nbsp;<span class="errors-'.$x__type.'"></span></a></li>';
 
             $tab_content .= '<div class="tab-content tab-group-14418 tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
             $tab_content .= $focus_tab;
@@ -1057,7 +1057,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
         }
 
 
-        $ui .= '<ul class="nav nav-pills nav-fill">';
+        $ui .= '<ul class="nav nav-tabs nav-sm">';
         $ui .= $tab_nav;
         $ui .= '</ul>';
 
