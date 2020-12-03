@@ -111,11 +111,11 @@ echo '</div>';
 
 
 //IDEA MESSAGES:
-echo view_i_note_list(4231, $this->X_model->fetch(array(
+echo view_i_note_list(4231, $i_focus, $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 4231,
     'x__right' => $i_focus['i__id'],
-), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i, false, false);
+), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i, false);
 
 
 
@@ -333,7 +333,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__right' => $i_focus['i__id'],
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($i_notes);
-        $focus_tab .= view_i_note_list($note_x__type, $i_notes, $e_of_i, false, false);
+        $focus_tab .= view_i_note_list($note_x__type, $i_focus, $i_notes, $e_of_i, false);
 
     } elseif($x__type==12969){
 

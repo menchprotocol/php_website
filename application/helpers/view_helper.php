@@ -965,7 +965,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
 }
 
 
-function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false, $show_headline = true){
+function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = false){
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
@@ -976,84 +976,144 @@ function view_i_note_list($x__type, $i_notes, $e_of_i, $show_empty_error = false
     $user_e = superpower_unlocked();
     $ui = '';
 
-    //Header:
-    if($show_headline){
-        $ui .= '<div class="headline"><span class="icon-block">'.$e___4485[$x__type]['m__icon'].'</span>'.$e___4485[$x__type]['m__title'].'</div>';
-    }
-
     if($show_empty_error && !count($i_notes) && $e_of_i){
         $ui .= '<div class="no_notes_' . $x__type .'" style="margin-bottom:13px;">';
         $ui .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($e___4485[$x__type]['m__title'])).' yet</div>';
         $ui .= '</div>';
     }
 
-    //Show no-Message notifications for each message type:
-    $ui .= '<div id="i_notes_list_'.$x__type.'" class="list-group">';
 
-    //List current notes:
-    foreach($i_notes as $i_notes) {
-        $ui .= view_i_note($x__type, $i_notes, ($i_notes['x__source']==$user_e['e__id'] || $e_of_i));
+    //UPLOAD
+    $control_buttons = '';
+    if($handles_uploads){
+
+        //Upload:
+        $control_buttons .= '<td class="table-btn first_btn">';
+        $control_buttons .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
+        $control_buttons .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
+        $control_buttons .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
+        $control_buttons .= '</td>';
+
+        //Add GIF:
+        $control_buttons .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="gif_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
+
     }
 
-    //ADD NEW:
-    if(!in_array($x__type, $CI->config->item('n___12677')) && $e_of_i){
+    if($supports_emoji){
+        //EMOJI
+        $control_buttons .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+    }
 
-        $color_code = trim(extract_icon_color($e___4485[$x__type]['m__icon']));
+    if(in_array($x__type, $CI->config->item('n___14311'))){
 
-        $ui .= '<div class="list-group-item no-padding add_notes_' . $x__type .'">';
-        $ui .= '<div class="add_notes_form">';
-        $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
+        //POWER EDITORS
 
+        $tab_nav = '';
+        $tab_content = '';
+        foreach($this->config->item('e___14418') as $x__type => $m) {
 
+            $default_active = false;
+            $focus_tab = null;
+            $href = 'href="javascript:void(0);" onclick="loadtab(14418,'.$x__type.')"';
 
-        $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" id="x__message' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL, @SOURCE' : '' ).'"></textarea>';
+            //Is this a caret menu?
+            if($x__type==14419){
 
+                //WRITE
+                $default_active = true;
 
-        //Response result:
-        $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
+                $textarea_content = '';
+                foreach($i_notes as $i_notes) {
+                    $textarea_content .= $i_notes['x__message']."\n";
+                }
 
+                $focus_tab .= '<textarea class="form-control msg note-textarea algolia_search new-note emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." i__id="'.$i['i__id'].'" x__type="'.$x__type.'" old-value="'.$textarea_content.'">'.$textarea_content.'</textarea>';
+                $focus_tab .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
+                $focus_tab .= $control_buttons;
+                $focus_tab .= '</tr></table>';
 
-        $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
+            } elseif($x__type==14420){
 
+                //READ
+                $focus_tab .= '<div class="list-group power_editor_'.$x__type.'">';
+                foreach($i_notes as $i_notes) {
+                    $focus_tab .= $CI->X_model->message_send($i_notes['x__message'], false, $user_e, $i['i__id']);
+                }
+                $focus_tab .= '</div>';
 
-        //ADD
-        $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
+            } elseif($x__type==13562){
 
+                //PREVIEW
+                $href = 'href="/'.$i['i__id'].'"';
 
-        //UPLOAD
-        if($handles_uploads){
+            }
 
-            //Upload:
-            $ui .= '<td class="table-btn first_btn">';
-            $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
-            $ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
-            $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
-            $ui .= '</td>';
+            $tab_nav .= '<li class="nav-item"><a class="nav-x tab-nav-14418 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" '.$href.'>'.$m['m__icon'].'&nbsp;'.$m['m__title'].'&nbsp;<span class="errors-'.$x__type.'"></span></a></li>';
 
-            //Add GIF:
-            $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="gif_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
+            $tab_content .= '<div class="tab-content tab-group-14418 tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
+            $tab_content .= $focus_tab;
+            $tab_content .= '</div>';
 
         }
 
-        if($supports_emoji){
-            //EMOJI
-            $ui .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+
+        $ui .= '<ul class="nav nav-pills nav-fill">';
+        $ui .= $tab_nav;
+        $ui .= '</ul>';
+
+        //Show All Tab Content:
+        $ui .= $tab_content;
+
+
+    } else {
+
+        //Show no-Message notifications for each message type:
+        $ui .= '<div id="i_notes_list_'.$x__type.'" class="list-group">';
+
+        //List current notes:
+        foreach($i_notes as $i_notes) {
+            $ui .= view_i_note($x__type, $i_notes, ($i_notes['x__source']==$user_e['e__id'] || $e_of_i));
         }
 
-        //File counter:
-        $ui .= '<td style="padding:10px 0 0 0;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden some-text"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).' CHARACTERS</span></td>';
+        //ADD NEW:
+        if(!in_array($x__type, $CI->config->item('n___12677')) && $e_of_i){
 
-        $ui .= '</tr></table>';
+            $color_code = trim(extract_icon_color($e___4485[$x__type]['m__icon']));
+
+            $ui .= '<div class="list-group-item no-padding add_notes_' . $x__type .'">';
+            $ui .= '<div class="add_notes_form">';
+            $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
+
+            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL, @SOURCE' : '' ).'"></textarea>';
+
+            //Response result:
+            $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
+
+
+            $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
+
+
+            //ADD
+            $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
+
+            $ui .= $control_buttons;
+
+            //File counter:
+            $ui .= '<td style="padding:10px 0 0 0;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden some-text"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).' CHARACTERS</span></td>';
+
+            $ui .= '</tr></table>';
 
 
 
-        $ui .= '</form>';
+            $ui .= '</form>';
+            $ui .= '</div>';
+            $ui .= '</div>';
+        }
+
+
         $ui .= '</div>';
-        $ui .= '</div>';
+
     }
-
-
-    $ui .= '</div>';
 
     return $ui;
 
@@ -1548,7 +1608,7 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
     $name = 'input'.substr(md5($cache_e__id.$current_value.$s__id.$e_of_i.$tabindex), 0, 8);
 
     //Define element attributes:
-    $attributes = ( $e_of_i ? '' : 'disabled' ).' spellcheck="false" tabindex="'.$tabindex.'" old-value="'.$current_value.'" id="input_'.$cache_e__id.'_'.$s__id.'" class="form-control dotransparent montserrat inline-block x_set_text text__'.$cache_e__id.'_'.$s__id.($extra_large?' texttype__lg ' : ' texttype__sm ').' text_e_'.$cache_e__id.' '.$append_css.'" cache_e__id="'.$cache_e__id.'" s__id="'.$s__id.'" ';
+    $attributes = ( $e_of_i ? '' : 'disabled' ).' spellcheck="false" tabindex="'.$tabindex.'" old-value="'.$current_value.'" id="input_'.$cache_e__id.'_'.$s__id.'" class="form-control dotransparent montserrat inline-block x_set_class_text text__'.$cache_e__id.'_'.$s__id.($extra_large?' texttype__lg ' : ' texttype__sm ').' text_e_'.$cache_e__id.' '.$append_css.'" cache_e__id="'.$cache_e__id.'" s__id="'.$s__id.'" ';
 
     //Also Append Counter to the end?
     if($extra_large){

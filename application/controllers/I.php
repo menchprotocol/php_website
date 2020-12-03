@@ -876,4 +876,105 @@ class I extends CI_Controller {
 
     }
 
+
+
+
+    function i_set_editor(){
+
+        //Authenticate User:
+        $user_e = superpower_unlocked();
+        $e___12112 = $this->config->item('e___12112');
+
+        if (!$user_e) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+
+        } elseif(!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14311'))){
+
+            //Not a power editor:
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid type',
+            ));
+
+        } elseif(!isset($_POST['i__id']) || !isset($_POST['field_value'])){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing core variables',
+            ));
+
+        }
+
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+        ));
+        if(!count($is)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Idea ID.',
+            ));
+        }
+
+
+
+        $message_inputs = preg_split('\\r\\n|\\r|\\n/', $_POST['field_value']);
+        $errors = array();
+        foreach($message_inputs as $message_input) {
+
+            if(!strlen(trim($message_input))){
+                //Empty line:
+                continue;
+            }
+
+            //Validate message:
+            $msg_validation = $this->X_model->message_compile($message_input, false, $user_e, 0, $is[0]['i__id']);
+
+            //Did we have ane error in message validation?
+            if (!$msg_validation['status']) {
+                array_push($errors, array(
+                    'original_message' => $message_input,
+                    'error_message' => $msg_validation['message'],
+                ));
+            }
+        }
+
+
+        if(count($errors)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Message had some errors',
+                'message_errors' => $errors,
+            ));
+        }
+
+
+        $new_preview = null;
+        //DELETE all current messages:
+
+        //No errors, go ahead and update messages:
+        foreach($message_inputs as $message_input) {
+
+            //SAVE this message:
+
+
+            //GENERATE New Preview:
+            $textarea_content .= $this->X_model->message_send($message_input, false, $user_e, $is[0]['i__id']);
+
+        }
+
+
+        return view_json(array(
+            'status' => 1,
+            'new_preview' => $new_preview,
+        ));
+
+    }
+
+
+
 }

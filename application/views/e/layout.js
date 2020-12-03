@@ -38,7 +38,7 @@ $(document).ready(function () {
 
 
     //Lookout for textinput updates
-    x_set_text_start();
+    x_set_start_text();
 
 
 
@@ -319,7 +319,7 @@ function e__add(e_existing_id, is_parent) {
             add_to_list(list_id, '.en-item', data.e_new_echo);
 
             //Allow inline editing if enabled:
-            x_set_text_start();
+            x_set_start_text();
 
             e_sort_portfolio_load();
 
@@ -387,7 +387,7 @@ function e_load_page(page, load_new_filter) {
 
         lazy_load();
 
-        x_set_text_start();
+        x_set_start_text();
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();

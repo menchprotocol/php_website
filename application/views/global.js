@@ -816,13 +816,13 @@ function gif_search(q){
 
 function gif_add(x__type, giphy_id, giphy_title){
     $('#modal14073').modal('hide');
-    $('#x__message' + x__type).val('https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
+    $('.input_note_' + x__type).val('https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
     i_note_text(x__type);
 }
 
 
-function x_set_text_start(){
-    $('.x_set_text').keypress(function(e) {
+function x_set_start_text(){
+    $('.x_set_class_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
             x_set_text(this);
@@ -906,6 +906,7 @@ function x_set_text(this_handler){
 
 
 
+
 /*
 *
 * IDEA NOTES
@@ -941,7 +942,7 @@ function i_note_activate(){
         });
 
         //Watch for message creation:
-        $('#x__message' + note_type_id).keydown(function (e) {
+        $('.input_note_' + note_type_id).keydown(function (e) {
             if (e.ctrlKey && e.keyCode == 13) {
                 i_note_text(note_type_id);
             }
@@ -988,7 +989,7 @@ function i_note_counter(note_type_id, adjustment_count){
 function i_note_count_new(note_type_id) {
 
     //Update count:
-    var len = $('#x__message' + note_type_id).val().length;
+    var len = $('.input_note_' + note_type_id).val().length;
     if (len > js_e___6404[4485]['m__message']) {
         $('#charNum' + note_type_id).addClass('overload').text(len);
     } else {
@@ -1211,7 +1212,7 @@ function i_note_start_adding(note_type_id) {
     $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
     $('.add_notes_' + note_type_id).addClass('is-working');
     $('.no_notes_' + note_type_id).remove();
-    $('#x__message' + note_type_id).prop("disabled", true);
+    $('.input_note_' + note_type_id).prop("disabled", true);
     $('.remove_loading').hide();
 }
 
@@ -1221,7 +1222,7 @@ function i_note_end_adding(result, note_type_id) {
     //Update UI to unlock:
     $('.save_notes_' + note_type_id).html('<i class="fas fa-plus"></i>').attr('href', 'javascript:i_note_text('+note_type_id+');');
     $('.add_notes_' + note_type_id).removeClass('is-working');
-    $('#x__message' + note_type_id).prop("disabled", false).focus();
+    $('.input_note_' + note_type_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
 
     //What was the result?
@@ -1314,7 +1315,7 @@ function i_note_text(note_type_id) {
     $.post("/i/i_note_text", {
 
         i__id: focus_i__id, //Synonymous
-        x__message: $('#x__message' + note_type_id).val(),
+        x__message: $('.input_note_' + note_type_id).val(),
         note_type_id: note_type_id,
 
     }, function (data) {
@@ -1323,8 +1324,8 @@ function i_note_text(note_type_id) {
         if (data.status) {
 
             //Reset input field:
-            $('#x__message' + note_type_id).val("");
-            autosize.update($('#x__message' + note_type_id));
+            $('.input_note_' + note_type_id).val("");
+            autosize.update($('.input_note_' + note_type_id));
 
             i_note_count_new(note_type_id);
             i_note_counter(note_type_id, +1);

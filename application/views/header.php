@@ -54,7 +54,7 @@ $simple_header = ( is_numeric($first_segment) && $current_mench['x_id']==6255 ? 
             const picker = new EmojiButton();
             const trigger = document.querySelector('#emoji_pick_type'+note_type_id);
             picker.on('emoji', selection => {
-                document.querySelector('#x__message'+note_type_id).value += selection.emoji;
+                $('.input_note_'+note_type_id).val( $('.input_note_'+note_type_id).val() + selection.emoji );
             });
             trigger.addEventListener('click', () => picker.togglePicker(trigger));
         });

@@ -16,11 +16,22 @@ $(document).ready(function () {
     load_editor();
 
     //Lookout for textinput updates
-    x_set_text_start();
+    x_set_start_text();
+
+    //Look for power editor updates:
+    $('.x_set_class_text').keypress(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            x_set_text(this);
+            e.preventDefault();
+        }
+    }).change(function() {
+        x_set_text(this);
+    });
 
     //Put focus on messages if no message:
     if(!$('#i_notes_list_4231 .note_sortable').length){
-        $('#x__message4231').focus();
+        $('.input_note_' + '4231').focus();
     }
 
     autosize($('.text__4736_'+focus_i__id));
@@ -30,6 +41,7 @@ $(document).ready(function () {
         e_e_only_search($(this).attr('note_type_id'));
     });
 
+
     //Load top/bottom idea searches:
     i_load_search(".previous_i",1, 'q', 'x_in');
     i_load_search(".next_i",0, 'w', 'x_in');
@@ -38,6 +50,53 @@ $(document).ready(function () {
     i_sort_load(focus_i__id);
 
 });
+
+
+
+
+
+function i_set_editor(this_handler){
+
+    var modify_data = {
+        i__id: parseInt($(this_handler).attr('i__id')),
+        x__type: parseInt($(this_handler).attr('x__type')),
+        field_value: $(this_handler).val().trim()
+    };
+
+    //See if anything changes:
+    if( $(this_handler).attr('old-value') == modify_data['field_value'] ){
+        //Nothing changed:
+        return false;
+    }
+
+    //Grey background to indicate saving...
+    var handler = '.text__'+modify_data['cache_e__id']+'_'+modify_data['s__id'];
+    $(handler).addClass('dynamic_saving');
+
+    $.post("/i/i_set_editor", modify_data, function (data) {
+
+        if (!data.status) {
+
+            //Show Errors:
+
+
+            //Show error:
+            alert(data.message);
+
+        } else {
+
+            //All good, update new preview:
+
+
+        }
+
+        setTimeout(function () {
+            //Restore background:
+            $(handler).removeClass('dynamic_saving');
+        }, 233);
+
+    });
+}
 
 
 
@@ -274,7 +333,7 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
             i_sort_load(i_x_id);
 
             //Lookout for textinput updates
-            x_set_text_start();
+            x_set_start_text();
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();

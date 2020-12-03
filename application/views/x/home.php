@@ -2,15 +2,6 @@
 <div class="container">
     <?php
 
-    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-    $e___12467 = $this->config->item('e___12467'); //MENCH COINS
-
-
-    //HACK: Group certain terms to make UI look nicer in mobile:
-    foreach(array('on the', 'of GIANTS') as $term){
-        $i['i__title'] = str_replace($term,'<span class="inline-block">'.$term.'</span>',$i['i__title']);
-    }
-
     //IDEA TITLE
     echo '<h1 class="big-frame extra-big">' . $i['i__title'] . '</h1>';
 

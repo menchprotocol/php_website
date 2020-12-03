@@ -742,7 +742,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($notes);
         $is_editable = in_array($note_x__type, $this->config->item('n___14043'));
-        $focus_tab .= view_i_note_list($note_x__type, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true, false);
+        $focus_tab .= view_i_note_list($note_x__type, $i_focus, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true);
 
     } elseif($x__type==13023){
 
