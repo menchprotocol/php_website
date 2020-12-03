@@ -567,7 +567,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
     if($tab_nav){
 
-        echo '<ul class="nav nav-tabs nav-sm nav-source '.superpower_active(10939).'">';
+        echo '<ul class="nav nav-tabs nav-sm '.superpower_active(10939).'">';
         echo $tab_nav;
         echo '</ul>';
 

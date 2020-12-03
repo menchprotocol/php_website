@@ -728,29 +728,16 @@ img.no-radius {
 
 
 .nav-tabs {
-    border-bottom: 3px solid #999999;
-}
-.nav-tabs {
-    border-color:#999999;
+    border-bottom: 3px solid transparent;
 }
 .dropdown-menu {
-    border:3px solid #222222;
+    border:3px solid transparent;
     border-radius: 13px;
-}
-
-.nav-source, .nav-source .nav-item.show .nav-x, .nav-source .nav-x.active, .nav-source .nav-x:focus, .nav-source .nav-x:hover {
-    border-color:#007AFD !important;
-}
-.nav-idea, .nav-idea .nav-item.show .nav-x, .nav-idea .nav-x.active, .nav-idea .nav-x:focus, .nav-idea .nav-x:hover{
-    border-color:#FFC500 !important;
-}
-.nav-discover, .nav-discover .nav-item.show .nav-x, .nav-discover .nav-x.active, .nav-discover .nav-x:focus, .nav-discover .nav-x:hover{
-    border-color:#FC1B44 !important;
 }
 
 
 .nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
-    border: 3px solid #999999;
+    border: 3px solid transparent;
     border-top-left-radius: 13px;
     border-top-right-radius: 13px;
     position: relative;
@@ -2160,10 +2147,11 @@ i, .btn .show-max {
     border-color: #222222 !important;
 }
 .custom_ui_13884_13886 .btn-source,
-.custom_ui_13884_13886 .btn.btn-source {
+.custom_ui_13884_13886 .btn.btn-source,
+.custom_ui_13884_13886 .nav-tabs,
+.custom_ui_13884_13886 .dropdown-menu {
     border-color: #FFFFFF !important;
 }
-
 
 
 /* WHITE */
@@ -2227,7 +2215,9 @@ i, .btn .show-max {
     font-size: 0.55em !important;
 }
 .custom_ui_13884_13885 .btn-source,
-.custom_ui_13884_13885 .btn.btn-source {
+.custom_ui_13884_13885 .btn.btn-source,
+.custom_ui_13884_13885 .nav-tabs,
+.custom_ui_13884_13885 .dropdown-menu {
     border-color: #222222 !important;
 }
 
