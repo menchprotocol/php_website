@@ -1024,7 +1024,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
                 $textarea_content = '';
                 foreach($i_notes as $i_note) {
-                    $textarea_content .= $i_note['x__message']."\n";
+                    $textarea_content .= $i_note['x__message']."\n\n";
                 }
 
                 $focus_tab .= '<textarea class="form-control msg note-textarea algolia_search new-note emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." i__id="'.$i['i__id'].'" x__type="'.$x__type.'" old-value="'.$textarea_content.'">'.$textarea_content.'</textarea>';
