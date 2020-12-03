@@ -983,26 +983,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
     }
 
 
-    //UPLOAD
-    $control_buttons = '';
-    if($handles_uploads){
 
-        //Upload:
-        $control_buttons .= '<td class="table-btn first_btn">';
-        $control_buttons .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
-        $control_buttons .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
-        $control_buttons .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
-        $control_buttons .= '</td>';
-
-        //Add GIF:
-        $control_buttons .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="gif_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
-
-    }
-
-    if($supports_emoji){
-        //EMOJI
-        $control_buttons .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
-    }
 
     if(in_array($x__type, $CI->config->item('n___14311'))){
 
@@ -1028,9 +1009,6 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 }
 
                 $focus_tab .= '<textarea class="form-control msg note-textarea algolia_search new-note emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." i__id="'.$i['i__id'].'" x__type="'.$x__type.'" old-value="'.$textarea_content.'" style="margin:13px 0 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
-                $focus_tab .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
-                $focus_tab .= $control_buttons;
-                $focus_tab .= '</tr></table>';
 
             } elseif($x__type==14420){
 
@@ -1096,7 +1074,25 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
             //ADD
             $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'"><i class="fas fa-plus"></i></a></td>';
 
-            $ui .= $control_buttons;
+            if($handles_uploads){
+
+                //Upload:
+                $ui .= '<td class="table-btn first_btn">';
+                $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
+                $ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
+                $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
+                $ui .= '</td>';
+
+                //Add GIF:
+                $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="gif_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
+
+            }
+
+            if($supports_emoji){
+                //EMOJI
+                $ui .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+            }
+
 
             //File counter:
             $ui .= '<td style="padding:10px 0 0 0;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden some-text"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).' CHARACTERS</span></td>';
