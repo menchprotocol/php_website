@@ -2149,7 +2149,11 @@ i, .btn .show-max {
 .custom_ui_13884_13886 .btn-source,
 .custom_ui_13884_13886 .btn.btn-source,
 .custom_ui_13884_13886 .nav-tabs,
-.custom_ui_13884_13886 .dropdown-menu {
+.custom_ui_13884_13886 .dropdown-menu,
+.custom_ui_13884_13886 .nav-tabs .nav-item.show .nav-x,
+.custom_ui_13884_13886 .nav-tabs .nav-x.active,
+.custom_ui_13884_13886 .nav-tabs .nav-x:focus,
+.custom_ui_13884_13886 .nav-tabs .nav-x:hover{
     border-color: #FFFFFF !important;
 }
 
@@ -2217,7 +2221,12 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .btn-source,
 .custom_ui_13884_13885 .btn.btn-source,
 .custom_ui_13884_13885 .nav-tabs,
-.custom_ui_13884_13885 .dropdown-menu {
+.custom_ui_13884_13885 .dropdown-menu,
+.custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
+.custom_ui_13884_13885 .nav-tabs .nav-x.active,
+.custom_ui_13884_13885 .nav-tabs .nav-x:focus,
+.custom_ui_13884_13885 .nav-tabs .nav-x:hover
+{
     border-color: #222222 !important;
 }
 
