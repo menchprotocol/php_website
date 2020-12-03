@@ -1010,7 +1010,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
         $tab_nav = '';
         $tab_content = '';
-        foreach($this->config->item('e___14418') as $x__type => $m) {
+        foreach($CI->config->item('e___14418') as $x__type => $m) {
 
             $default_active = false;
             $focus_tab = null;
