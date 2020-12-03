@@ -1037,7 +1037,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 //READ
                 $focus_tab .= '<div class="list-group power_editor_'.$x__type.'">';
                 foreach($i_notes as $i_note) {
-                    $focus_tab .= $CI->X_model->message_send($i_note['x__message'], false, $user_e, $i['i__id']);
+                    $focus_tab .= $CI->X_model->message_send($i_note['x__message'], true, $user_e, $i['i__id']);
                 }
                 $focus_tab .= '</div>';
 
