@@ -1035,7 +1035,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
             } elseif($x__type==14420){
 
                 //READ
-                $focus_tab .= '<div class="list-group power_editor_'.$x__type.'">';
+                $focus_tab .= '<div class="list-group power_editor_'.$x__type.'" style="margin-top:13px;">';
                 foreach($i_notes as $i_note) {
                     $focus_tab .= $CI->X_model->message_send($i_note['x__message'], true, $user_e, $i['i__id']);
                 }
