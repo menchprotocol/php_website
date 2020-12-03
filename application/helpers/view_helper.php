@@ -1023,8 +1023,8 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 $default_active = true;
 
                 $textarea_content = '';
-                foreach($i_notes as $i_notes) {
-                    $textarea_content .= $i_notes['x__message']."\n";
+                foreach($i_notes as $i_note) {
+                    $textarea_content .= $i_note['x__message']."\n";
                 }
 
                 $focus_tab .= '<textarea class="form-control msg note-textarea algolia_search new-note emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." i__id="'.$i['i__id'].'" x__type="'.$x__type.'" old-value="'.$textarea_content.'">'.$textarea_content.'</textarea>';
@@ -1036,8 +1036,8 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
                 //READ
                 $focus_tab .= '<div class="list-group power_editor_'.$x__type.'">';
-                foreach($i_notes as $i_notes) {
-                    $focus_tab .= $CI->X_model->message_send($i_notes['x__message'], false, $user_e, $i['i__id']);
+                foreach($i_notes as $i_note) {
+                    $focus_tab .= $CI->X_model->message_send($i_note['x__message'], false, $user_e, $i['i__id']);
                 }
                 $focus_tab .= '</div>';
 
@@ -1071,8 +1071,8 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
         $ui .= '<div id="i_notes_list_'.$x__type.'" class="list-group">';
 
         //List current notes:
-        foreach($i_notes as $i_notes) {
-            $ui .= view_i_note($x__type, $i_notes, ($i_notes['x__source']==$user_e['e__id'] || $e_of_i));
+        foreach($i_notes as $i_note) {
+            $ui .= view_i_note($x__type, $i_note, ($i_notes['x__source']==$user_e['e__id'] || $e_of_i));
         }
 
         //ADD NEW:
