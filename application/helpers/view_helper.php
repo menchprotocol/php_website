@@ -1027,7 +1027,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                     $textarea_content .= $i_note['x__message']."\n\n";
                 }
 
-                $focus_tab .= '<textarea class="form-control msg note-textarea algolia_search new-note emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." i__id="'.$i['i__id'].'" x__type="'.$x__type.'" old-value="'.$textarea_content.'">'.$textarea_content.'</textarea>';
+                $focus_tab .= '<textarea class="form-control msg note-textarea algolia_search new-note emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." i__id="'.$i['i__id'].'" x__type="'.$x__type.'" old-value="'.$textarea_content.'" style="margin:5px 0 0 41px;">'.$textarea_content.'</textarea>';
                 $focus_tab .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
                 $focus_tab .= $control_buttons;
                 $focus_tab .= '</tr></table>';
@@ -1048,7 +1048,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             }
 
-            $tab_nav .= '<li class="nav-item '.( in_array($x__type, $CI->config->item('n___14103')) ? ' pull-right ' : '' ).'"><a class="nav-x tab-nav-14418 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" '.$href.'>'.$m['m__icon'].'&nbsp;'.$m['m__title'].'&nbsp;<span class="errors-'.$x__type.'"></span></a></li>';
+            $tab_nav .= '<li class="nav-item '.( in_array($x__type, $CI->config->item('n___14103')) ? ' pull-right ' : '' ).'"><a class="nav-x tab-nav-14418 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" '.$href.'>&nbsp;'.$m['m__icon'].'&nbsp;'.$m['m__title'].'&nbsp;<span class="errors-'.$x__type.'"></span></a></li>';
 
             $tab_content .= '<div class="tab-content tab-group-14418 tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
             $tab_content .= $focus_tab;
