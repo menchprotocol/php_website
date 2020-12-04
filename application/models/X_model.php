@@ -928,15 +928,14 @@ class X_model extends CI_Model
             'x__down' => 0,
         );
 
-        foreach($string_references['ref_e'] as $referenced_e){
+        if(count($string_references['ref_e']) > 2){
+            return array(
+                'status' => 0,
+                'message' => 'You referenced '.count($string_references['ref_e']).' sources which is more than the allowed 2 references per line',
+            );
+        }
 
-            if(!isset($e_reference_keys[$referenced_key])){
-                //Too many references:
-                return array(
-                    'status' => 0,
-                    'message' => 'You can only have 2 source references per line.',
-                );
-            }
+        foreach($string_references['ref_e'] as $referenced_e){
 
             //We have a reference within this message, let's fetch it to better understand it:
             $es = $this->E_model->fetch(array(
