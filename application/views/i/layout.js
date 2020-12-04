@@ -52,22 +52,22 @@ $(document).ready(function () {
 });
 
 
-function i_note_save_edit(x__type){
+function i_note_save_edit(note_type_id){
 
-    var handler = '.input_note_'+modify_data['s__id'];
+    var handler = '.input_note_'+note_type_id;
     $(handler).addClass('dynamic_saving').prop("disabled", true);
-    $('.save_notes_' + x__type).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
+    $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
 
     //TODO ADD SUPER EDITOR to JS CACHE
 
     $.post("/i/i_note_save_edit", {
         i__id: focus_i__id,
-        x__type: x__type,
+        note_type_id: note_type_id,
         field_value: $(handler).val().trim()
     }, function (data) {
 
         $(handler).removeClass('dynamic_saving').prop("disabled", false);
-        $('.save_notes_' + x__type).html(js_e___11035[14422]['m__icon']).attr('href', 'javascript:i_note_save_edit('+x__type+');');
+        $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon']).attr('href', 'javascript:i_note_save_edit('+note_type_id+');');
 
         if (!data.status) {
 
@@ -83,7 +83,7 @@ function i_note_save_edit(x__type){
             $(handler).val(data.new_edit);
 
             //Update READ:
-            $('.editor_read_'+x__type).val(data.new_read);
+            $('.editor_read_'+note_type_id).val(data.new_read);
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();

@@ -892,7 +892,7 @@ class I extends CI_Controller {
                 'message' => view_unauthorized_message(),
             ));
 
-        } elseif(!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14311'))){
+        } elseif(!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___14311'))){
 
             //Not a power editor:
             return view_json(array(
