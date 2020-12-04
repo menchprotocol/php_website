@@ -72,8 +72,8 @@ function search_email(){
             $('#sign_e__id').val(data.sign_e__id);
 
             //Update email:
-            $('#input_email').val(data.clean_input_email);
-            $('.focus_email').html(data.clean_input_email);
+            $('#input_email').val(data.clean_email_input);
+            $('.focus_email').html(data.clean_email_input);
             $('#email_errors').html('');
 
             //Go to next discovers:

@@ -52,38 +52,36 @@ $(document).ready(function () {
 });
 
 
-function i_note_save_edit(note_type_id){
+function i_note_power_edit(note_type_id){
 
-    var handler = '.input_note_'+note_type_id;
-    $(handler).addClass('dynamic_saving').prop("disabled", true);
+    var input_textarea = '.input_note_'+note_type_id;
+    $(input_textarea).addClass('dynamic_saving').prop("disabled", true);
     $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
 
-    //TODO ADD SUPER EDITOR to JS CACHE
-
-    $.post("/i/i_note_save_edit", {
+    $.post("/i/i_note_power_edit", {
         i__id: focus_i__id,
         note_type_id: note_type_id,
-        field_value: $(handler).val().trim()
+        field_value: $(input_textarea).val().trim()
     }, function (data) {
 
-        $(handler).removeClass('dynamic_saving').prop("disabled", false);
-        $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon']).attr('href', 'javascript:i_note_save_edit('+note_type_id+');');
+        $(input_textarea).removeClass('dynamic_saving').prop("disabled", false);
+        $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon']).attr('href', 'javascript:i_note_power_edit('+note_type_id+');');
+
+        //Update raw text input:
+        $(input_textarea).val(data.input_clean);
 
         if (!data.status) {
 
             //Show Errors:
-            $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message);
+            $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span> Message not saved because:<br />'+data.message);
 
         } else {
 
             //Reset errors:
             $(".note_error_"+note_type_id).html('');
 
-            //Update EDIT:
-            $(handler).val(data.new_edit);
-
             //Update READ:
-            $('.editor_read_'+note_type_id).val(data.new_read);
+            $('.editor_read_'+note_type_id).html(data.message);
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
@@ -92,7 +90,6 @@ function i_note_save_edit(note_type_id){
             lazy_load();
 
         }
-
     });
 }
 

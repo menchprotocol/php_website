@@ -143,7 +143,7 @@ function select_answer(i__id){
 function x_upload(droppedFiles, uploadType) {
 
     //Prevent multiple concurrent uploads:
-    if ($('.boxUpload').hasClass('is-uploading')) {
+    if ($('.boxUpload').hasClass('dynamic_saving')) {
         return false;
     }
 
@@ -174,7 +174,7 @@ function x_upload(droppedFiles, uploadType) {
             contentType: false,
             processData: false,
             complete: function () {
-                $('.boxUpload').removeClass('is-uploading');
+                $('.boxUpload').removeClass('dynamic_saving');
             },
             success: function (data) {
                 //Render new file:

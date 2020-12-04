@@ -18,26 +18,26 @@ echo '<div class="accordion" id="MyAccountAccordion">';
 foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
     //Print account fields that are either Single Selectable or Multi Selectable:
-    $focus_tab = null;
+    $ui = null;
     $is_multi_selectable = in_array(6122, $acc_detail['m__profile']);
     $is_single_selectable = in_array(6204, $acc_detail['m__profile']);
 
     //Append description if any:
     if(strlen($acc_detail['m__message']) > 0){
-        $focus_tab .= '<div class="i_content padded"><div class="msg">' . $acc_detail['m__message'] . '</div></div>';
+        $ui .= '<div class="i_content padded"><div class="msg">' . $acc_detail['m__message'] . '</div></div>';
     }
 
     if ($acc_e__id == 12289) {
 
         $e__icon_parts = explode(' ',one_two_explode('class="', '"', $user_e['e__icon']));
 
-        $focus_tab .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">';
+        $ui .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">';
         foreach($this->config->item('e___13533') as $m3) {
-            $focus_tab .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m3['m__message'].'\')" class="btn btn-'.$m3['m__message'].' '.( $e__icon_parts[0]==$m3['m__message'] ? ' active ' : '' ).'" title="'.$m3['m__title'].'">'.$m3['m__icon'].'</a>';
+            $ui .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m3['m__message'].'\')" class="btn btn-'.$m3['m__message'].' '.( $e__icon_parts[0]==$m3['m__message'] ? ' active ' : '' ).'" title="'.$m3['m__title'].'">'.$m3['m__icon'].'</a>';
         }
-        $focus_tab .= '</div>';
-        $focus_tab .= '<div class="doclear">&nbsp;</div>';
-        $focus_tab .= '</div>';
+        $ui .= '</div>';
+        $ui .= '<div class="doclear">&nbsp;</div>';
+        $ui .= '</div>';
 
 
         //List avatars:
@@ -47,9 +47,9 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
             $avatar_type_match = ($e__icon_parts[0] == $avatar_icon_parts[0]);
             $superpower_actives3 = array_intersect($this->config->item('n___10957'), $m3['m__profile']);
 
-            $focus_tab .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
-            $focus_tab .= '<a href="javascript:void(0);" onclick="e_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item avatar-item avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m__icon'] . '</div></a>';
-            $focus_tab .= '</span>';
+            $ui .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
+            $ui .= '<a href="javascript:void(0);" onclick="e_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item avatar-item avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m__icon'] . '</div></a>';
+            $ui .= '</span>';
 
         }
 
@@ -57,14 +57,14 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
         if(count($this->session->userdata('session_superpowers_unlocked')) >= 2){
             //Mass Toggle Option:
-            $focus_tab .= '<div class="btn-group pull-right" role="group" style="margin:0 0 10px 0;">
+            $ui .= '<div class="btn-group pull-right" role="group" style="margin:0 0 10px 0;">
                   <a href="javascript:void(0)" onclick="account_toggle_all(1)" class="btn btn-far"><i class="fas fa-toggle-on"></i></a>
                   <a href="javascript:void(0)" onclick="account_toggle_all(0)" class="btn btn-fad"><i class="fas fa-toggle-off"></i></a>
                 </div><div class="doclear">&nbsp;</div>';
         }
 
         //SUPERPOWERS
-        $focus_tab .= '<div class="list-group">';
+        $ui .= '<div class="list-group">';
         foreach($this->config->item('e___10957') as $superpower_e__id => $m3){
 
             $is_unlocked = in_array($superpower_e__id, $this->session->userdata('session_superpowers_unlocked'));
@@ -76,29 +76,29 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
                 //SUPERPOWERS UNLOCKED
                 $progress_type_id=14008;
-                $focus_tab .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( superpower_active($superpower_e__id, true) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
+                $ui .= '<a class="list-group-item itemsetting btn-superpower superpower-frame-'.$superpower_e__id.' '.( superpower_active($superpower_e__id, true) ? ' active ' : '' ).'" en-id="'.$superpower_e__id.'" href="javascript:void();" onclick="e_toggle_superpower('.$superpower_e__id.')"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
             } elseif(!$is_unlocked && $public_link){
 
                 //SUPERPOWERS AVAILABLE
                 $progress_type_id=14011;
-                $focus_tab .= '<a class="list-group-item no-side-padding" href="'.view_memory(6404,$superpower_e__id).'"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
+                $ui .= '<a class="list-group-item no-side-padding" href="'.view_memory(6404,$superpower_e__id).'"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
             } elseif(!$is_unlocked && !$public_link){
 
                 //SUPERPOWERS UNAVAILABLE
                 $progress_type_id=14009;
-                $focus_tab .= '<a href="javascript:void();" onclick="alert(\'This superpower is locked & cannot be unlocked at this time. Start by unlocking other available superpowers.\')" class="list-group-item no-side-padding islocked grey"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
+                $ui .= '<a href="javascript:void();" onclick="alert(\'This superpower is locked & cannot be unlocked at this time. Start by unlocking other available superpowers.\')" class="list-group-item no-side-padding islocked grey"><span class="icon-block pull-right" title="'.$e___14010[$progress_type_id]['m__title'].'">'.$e___14010[$progress_type_id]['m__icon'].'</span>'.$anchor.'</a>';
 
             }
 
         }
 
-        $focus_tab .= '</div>';
+        $ui .= '</div>';
 
     } elseif ($acc_e__id == 13025 /* Full Name */) {
 
-        $focus_tab .= '<span><input type="text" id="e_name" class="form-control border dotransparent" value="' . $user_e['e__title'] . '" /></span>
+        $ui .= '<span><input type="text" id="e_name" class="form-control border dotransparent" value="' . $user_e['e__title'] . '" /></span>
                 <a href="javascript:void(0)" onclick="e_name()" class="btn btn-source">Save</a>
                 <span class="saving-account save_name"></span>';
 
@@ -111,26 +111,26 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
             'x__up' => 3288, //Mench Email
         ));
 
-        $focus_tab .= '<span><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($u_emails) > 0 ? $u_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
+        $ui .= '<span><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($u_emails) > 0 ? $u_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
                 <a href="javascript:void(0)" onclick="e_email()" class="btn btn-source">Save</a>
                 <span class="saving-account save_email"></span>';
 
     } elseif ($acc_e__id == 3286 /* Password */) {
 
-        $focus_tab .= '<span><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
+        $ui .= '<span><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
                 <a href="javascript:void(0)" onclick="e_password()" class="btn btn-source">Save</a>
                 <span class="saving-account save_password"></span>';
 
     } elseif ($is_multi_selectable || $is_single_selectable) {
 
-        $focus_tab .= view_radio_e($acc_e__id, $user_e['e__id'], ($is_multi_selectable ? 1 : 0));
+        $ui .= view_radio_e($acc_e__id, $user_e['e__id'], ($is_multi_selectable ? 1 : 0));
 
     }
 
 
 
 
-    if($focus_tab){
+    if($ui){
 
         //Print header:
         echo '<div class="card">
@@ -149,7 +149,7 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
 
 
-        echo $focus_tab;
+        echo $ui;
 
         //Print footer:
         echo '<div class="doclear">&nbsp;</div>';

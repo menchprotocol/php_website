@@ -723,7 +723,7 @@ class X_model extends CI_Model
                 'x__source' => (isset($user_e['e__id']) ? $user_e['e__id'] : 0),
                 'x__message' => 'message_compile() returned error [' . $msg_validation['message'] . '] for input message [' . $message_input . ']',
                 'x__metadata' => array(
-                    'input_message' => $message_input,
+                    'clean_message' => $message_input,
                     'user_e' => $user_e,
                     'message_i__id' => $message_i__id
                 ),
@@ -796,15 +796,27 @@ class X_model extends CI_Model
          * Source Creation within Message?
          *
          * */
-        if($strict_validation && substr_count($message_input, '@')==1 && substr_count($message_input, '|')==1){
+        if($strict_validation && substr_count($message_input, '++')>0 && substr_count($message_input, '@')>=substr_count($message_input, '~')){
             //We Seem to have a creation mode:
-            $e__title = one_two_explode('@','|',$message_input);
+            $e__title = one_two_explode('@','++',$message_input);
             $added_e = $this->E_model->verify_create($e__title, $user_e['e__id']);
             if(!$added_e['status']){
                 return $added_e;
             } else {
                 //New source added, replace text:
-                $message_input = str_replace($e__title.'|', $added_e['new_e']['e__id'], $message_input);
+                $message_input = str_replace($e__title.'++', $added_e['new_e']['e__id'], $message_input);
+            }
+        }
+        //Do we have a second source creation?
+        if($strict_validation && substr_count($message_input, '@')==2 && substr_count($message_input, '++')==1){
+            //We Seem to have a creation mode:
+            $e__title = one_two_explode('@','++',$message_input);
+            $added_e = $this->E_model->verify_create($e__title, $user_e['e__id']);
+            if(!$added_e['status']){
+                return $added_e;
+            } else {
+                //New source added, replace text:
+                $message_input = str_replace($e__title.'++', $added_e['new_e']['e__id'], $message_input);
             }
         }
 
@@ -1036,7 +1048,7 @@ class X_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'input_message' => trim($message_input),
+            'clean_message' => trim($message_input),
             'output_messages' => array(
                 array(
                     'message_type_e__id' => 4570, //User Received Email Message

@@ -814,18 +814,19 @@ function gif_search(q){
 
 }
 
-function gif_add(x__type, giphy_id, giphy_title){
-    var current_value = $('.input_note_' + x__type).val();
+function gif_add(note_type_id, giphy_id, giphy_title){
+
+    var current_value = $('.input_note_' + note_type_id).val();
     $('#modal14073').modal('hide');
-    $('.input_note_' + x__type).val(( current_value.length ? current_value+' ' : '' ) + 'https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
+    $('.input_note_' + note_type_id).val(( current_value.length ? current_value+' ' : '' ) + 'https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
 
     //Save or Submit:
-    if(js_n___14311.includes(x__type)){
+    if(js_n___14311.includes(note_type_id)){
         //Power Editor:
-        i_note_save_edit(x__type);
+        i_note_power_edit(note_type_id);
     } else {
         //Regular Editor:
-        i_note_add_text(x__type);
+        i_note_add_text(note_type_id);
     }
 }
 
@@ -1156,7 +1157,7 @@ function cancel_13574(x__id) {
     $("#ul-nav-" + x__id + ">div").css('width', 'inherit');
 }
 
-function save_13574(x__id, note_type_id) {
+function i_note_update_text(x__id, note_type_id) {
 
     //Revert View:
     cancel_13574(x__id);
@@ -1171,7 +1172,7 @@ function save_13574(x__id, note_type_id) {
     };
 
     //Update message:
-    $.post("/i/save_13574", modify_data, function (data) {
+    $.post("/i/i_note_update_text", modify_data, function (data) {
 
         if (data.status) {
 
@@ -1195,9 +1196,9 @@ function save_13574(x__id, note_type_id) {
 }
 
 
-function remove_13579(x__id, note_type_id){
+function i_note_remove(x__id, note_type_id){
     //REMOVE NOTE
-    $.post("/i/remove_13579", { x__id: parseInt(x__id) }, function (data) {
+    $.post("/i/i_note_remove", { x__id: parseInt(x__id) }, function (data) {
         if (data.status) {
 
             i_note_counter(note_type_id, -1);
@@ -1259,60 +1260,65 @@ function i_note_end_adding(result, note_type_id) {
 function i_note_add_file(droppedFiles, uploadType, note_type_id) {
 
     //Prevent multiple concurrent uploads:
-    if ($('.box' + note_type_id).hasClass('is-uploading')) {
+    if ($('.box' + note_type_id).hasClass('dynamic_saving') || !isAdvancedUpload) {
         return false;
     }
 
-    if (isAdvancedUpload) {
 
-        //Lock message:
-        i_note_start_adding(note_type_id);
+    //Lock message:
+    i_note_start_adding(note_type_id);
 
-        var ajaxData = new FormData($('.box' + note_type_id).get(0));
-        if (droppedFiles) {
-            $.each(droppedFiles, function (i, file) {
-                var thename = $('.box' + note_type_id).find('input[type="file"]').attr('name');
-                if (typeof thename == typeof undefined || thename == false) {
-                    var thename = 'drop';
-                }
-                ajaxData.append(uploadType, file);
-            });
-        }
+    var ajaxData = new FormData($('.box' + note_type_id).get(0));
+    if (droppedFiles) {
+        $.each(droppedFiles, function (i, file) {
+            var thename = $('.box' + note_type_id).find('input[type="file"]').attr('name');
+            if (typeof thename == typeof undefined || thename == false) {
+                var thename = 'drop';
+            }
+            ajaxData.append(uploadType, file);
+        });
+    }
 
-        ajaxData.append('upload_type', uploadType);
-        ajaxData.append('i__id', focus_i__id);
-        ajaxData.append('note_type_id', note_type_id);
+    ajaxData.append('upload_type', uploadType);
+    ajaxData.append('i__id', focus_i__id);
+    ajaxData.append('note_type_id', note_type_id);
 
-        $.ajax({
-            url: '/i/i_note_add_file',
-            type: $('.box' + note_type_id).attr('method'),
-            data: ajaxData,
-            dataType: 'json',
-            cache: false,
-            contentType: false,
-            processData: false,
-            complete: function () {
-                $('.box' + note_type_id).removeClass('is-uploading');
-            },
-            success: function (data) {
+    $.ajax({
+        url: '/i/i_note_add_file',
+        type: $('.box' + note_type_id).attr('method'),
+        data: ajaxData,
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        complete: function () {
+            $('.box' + note_type_id).removeClass('dynamic_saving');
+        },
+        success: function (data) {
 
+            if(js_n___14311.includes(note_type_id)){
+                //Power Editor:
+                var current_value = $('.input_note_' + note_type_id).val();
+                $('.input_note_' + note_type_id).val(( current_value.length ? current_value+' ' : '' ) + data.new_source);
+                i_note_power_edit(note_type_id);
+            } else {
+                //Regular Editor:
                 i_note_counter(note_type_id, +1);
                 i_note_end_adding(data, note_type_id);
-
-                //Adjust icon again:
-                $('.file_label_' + note_type_id).html('<span class="icon-block">'+js_e___11035[13572]['m__icon']+'</span>');
-
-            },
-            error: function (data) {
-                var result = [];
-                result.status = 0;
-                result.message = data.responseText;
-                i_note_end_adding(result, note_type_id);
             }
-        });
-    } else {
-        // ajax for legacy browsers
-    }
+
+            //Adjust icon again:
+            $('.file_label_' + note_type_id).html('<span class="icon-block">'+js_e___11035[13572]['m__icon']+'</span>');
+
+        },
+        error: function (data) {
+            var result = [];
+            result.status = 0;
+            result.message = data.responseText;
+            i_note_end_adding(result, note_type_id);
+        }
+    });
+
 }
 
 function i_note_add_text(note_type_id) {

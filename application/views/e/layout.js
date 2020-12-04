@@ -487,7 +487,7 @@ function e_x_form_unlock(result){
 function e_upload_file(droppedFiles, uploadType) {
 
     //Prevent multiple concurrent uploads:
-    if ($('.drag-box').hasClass('is-uploading')) {
+    if ($('.drag-box').hasClass('dynamic_saving')) {
         return false;
     }
 
@@ -528,7 +528,7 @@ function e_upload_file(droppedFiles, uploadType) {
             contentType: false,
             processData: false,
             complete: function () {
-                $('.drag-box').removeClass('is-uploading');
+                $('.drag-box').removeClass('dynamic_saving');
             },
             success: function (data) {
 

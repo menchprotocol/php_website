@@ -2033,7 +2033,7 @@ class E extends CI_Controller
                 'status' => 1,
                 'email_existed_previously' => 1,
                 'sign_e__id' => $u_emails[0]['e__id'],
-                'clean_input_email' => $_POST['input_email'],
+                'clean_email_input' => $_POST['input_email'],
             ));
 
         } else {
@@ -2042,7 +2042,7 @@ class E extends CI_Controller
                 'status' => 1,
                 'email_existed_previously' => 0,
                 'sign_e__id' => 0,
-                'clean_input_email' => $_POST['input_email'],
+                'clean_email_input' => $_POST['input_email'],
             ));
 
         }

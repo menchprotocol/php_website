@@ -422,7 +422,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     }
 
     $counter = null; //Assume no counters
-    $focus_tab = '';
+    $ui = '';
     $href = 'href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')"';
 
     if($x__type==13563){
@@ -438,7 +438,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //IDEAS
         $counter = count($is_next);
 
-        $focus_tab .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.($i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
+        $ui .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.($i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
 
         if($in_my_x) {
 
@@ -453,7 +453,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             //Did we have any steps unlocked?
             if (count($unlocked_x) > 0) {
-                $focus_tab .= view_i_list(13978, $in_my_x, $i_focus, $unlocked_x, $user_e);
+                $ui .= view_i_list(13978, $in_my_x, $i_focus, $unlocked_x, $user_e);
             }
 
 
@@ -475,12 +475,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 if (!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)) {
 
                     //List Unlock paths:
-                    $focus_tab .= view_i_list(13979, $in_my_x, $i_focus, $unlock_paths, $user_e);
+                    $ui .= view_i_list(13979, $in_my_x, $i_focus, $unlock_paths, $user_e);
 
                 }
 
                 //List Children if any:
-                $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
+                $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
 
 
             } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
@@ -529,48 +529,48 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                     if (count($x_selects) > 0) {
                         //MODIFY ANSWER
-                        $focus_tab .= '<div class="edit_select_answer">';
+                        $ui .= '<div class="edit_select_answer">';
 
                         //List answers:
-                        $focus_tab .= view_i_list(13980, $in_my_x, $i_focus, $x_selects, $user_e);
+                        $ui .= view_i_list(13980, $in_my_x, $i_focus, $x_selects, $user_e);
 
-                        $focus_tab .= '<div class="doclear">&nbsp;</div>';
+                        $ui .= '<div class="doclear">&nbsp;</div>';
 
                         //EDIT ANSWER:
-                        $focus_tab .= '<div class="margin-top-down"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__icon'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
+                        $ui .= '<div class="margin-top-down"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__icon'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
 
-                        $focus_tab .= '<div class="doclear">&nbsp;</div>';
+                        $ui .= '<div class="doclear">&nbsp;</div>';
 
-                        $focus_tab .= '</div>';
+                        $ui .= '</div>';
                     }
 
 
-                    $focus_tab .= '<div class="edit_select_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
-                    $focus_tab .= '<div class="doclear">&nbsp;</div>';
+                    $ui .= '<div class="edit_select_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
+                    $ui .= '<div class="doclear">&nbsp;</div>';
 
                     //HTML:
                     if ($i_focus['i__type'] == 6684) {
 
-                        $focus_tab .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[13981]['m__icon'].'</span>'.$e___11035[13981]['m__title'].'</div>';
+                        $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[13981]['m__icon'].'</span>'.$e___11035[13981]['m__title'].'</div>';
 
                     } elseif ($i_focus['i__type'] == 7231) {
 
 
-                        $focus_tab .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[13982]['m__icon'].'</span>'.$e___11035[13982]['m__title'].'</div>';
+                        $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[13982]['m__icon'].'</span>'.$e___11035[13982]['m__title'].'</div>';
 
                         //Give option to Select None/All
                         /*
-                        $focus_tab .= '<div class="doclear">&nbsp;</div>';
-                        $focus_tab .= '<div class="pull-right right-adj inline-block" data-toggle="tooltip" data-placement="top" title="SELECT ALL OR NONE"><a href="javascript:void(0);" onclick="$(\'.answer-item i\').removeClass(\'far fa-circle\').addClass(\'fas fa-check-circle\');" style="text-decoration: underline;" title="'.$e___11035[13692]['m__title'].'">'.$e___11035[13692]['m__icon'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.answer-item i\').removeClass(\'fas fa-check-circle\').addClass(\'far fa-circle\');" style="text-decoration: underline;" title="'.$e___11035[13693]['m__title'].'">'.$e___11035[13693]['m__icon'].'</a></div>';
+                        $ui .= '<div class="doclear">&nbsp;</div>';
+                        $ui .= '<div class="pull-right right-adj inline-block" data-toggle="tooltip" data-placement="top" title="SELECT ALL OR NONE"><a href="javascript:void(0);" onclick="$(\'.answer-item i\').removeClass(\'far fa-circle\').addClass(\'fas fa-check-circle\');" style="text-decoration: underline;" title="'.$e___11035[13692]['m__title'].'">'.$e___11035[13692]['m__icon'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.answer-item i\').removeClass(\'fas fa-check-circle\').addClass(\'far fa-circle\');" style="text-decoration: underline;" title="'.$e___11035[13693]['m__title'].'">'.$e___11035[13693]['m__icon'].'</a></div>';
                         */
 
                     }
 
-                    $focus_tab .= '<div class="doclear">&nbsp;</div>';
+                    $ui .= '<div class="doclear">&nbsp;</div>';
 
 
                     //Open for list to be printed:
-                    $focus_tab .= '<div class="list-group list-answers" i__type="' . $i_focus['i__type'] . '">';
+                    $ui .= '<div class="list-group list-answers" i__type="' . $i_focus['i__type'] . '">';
 
 
                     //List children to choose from:
@@ -586,25 +586,25 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                             'x__source' => $user_e['e__id'],
                         )));
 
-                        $focus_tab .= '<a href="javascript:void(0);" onclick="select_answer(' . $next_i['i__id'] . ')" selection_i__id="' . $next_i['i__id'] . '" class="x_select_' . $next_i['i__id'] . ' answer-item list-group-item itemdiscover no-left-padding">';
+                        $ui .= '<a href="javascript:void(0);" onclick="select_answer(' . $next_i['i__id'] . ')" selection_i__id="' . $next_i['i__id'] . '" class="x_select_' . $next_i['i__id'] . ' answer-item list-group-item itemdiscover no-left-padding">';
 
 
-                        $focus_tab .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-                        $focus_tab .= '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="' . ($previously_selected ? 'fas fa-check-circle discover' : 'far fa-circle discover') . '"></i></td>';
+                        $ui .= '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
+                        $ui .= '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="' . ($previously_selected ? 'fas fa-check-circle discover' : 'far fa-circle discover') . '"></i></td>';
 
-                        $focus_tab .= '<td style="width:100%; padding: 0 !important;">';
-                        $focus_tab .= '<b class="montserrat i-url" style="margin-left:0;">' . view_i_title($next_i, $common_prefix) . '</b>';
-                        $focus_tab .= '</td>';
+                        $ui .= '<td style="width:100%; padding: 0 !important;">';
+                        $ui .= '<b class="montserrat i-url" style="margin-left:0;">' . view_i_title($next_i, $common_prefix) . '</b>';
+                        $ui .= '</td>';
 
-                        $focus_tab .= '</tr></table>';
+                        $ui .= '</tr></table>';
 
 
-                        $focus_tab .= '</a>';
+                        $ui .= '</a>';
                     }
 
 
                     //Close list:
-                    $focus_tab .= '</div>';
+                    $ui .= '</div>';
 
 
 
@@ -612,82 +612,82 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     if (count($x_selects) > 0) {
 
                         //Cancel:
-                        $focus_tab .= '<div class="inline-block margin-top-down"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__icon'] . '</a></div>';
+                        $ui .= '<div class="inline-block margin-top-down"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__icon'] . '</a></div>';
 
                         //Save Answers:
-                        $focus_tab .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/'.$i_focus['i__id'].'\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__icon'] . '</a></div>';
+                        $ui .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/'.$i_focus['i__id'].'\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__icon'] . '</a></div>';
 
                     }
 
-                    $focus_tab .= '</div>';
+                    $ui .= '</div>';
 
                 }
 
             } elseif ($i_focus['i__type'] == 6677) {
 
                 //DISCOVER ONLY
-                $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) > 1 ? view_i_time($i_stats) : '' ));
+                $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) > 1 ? view_i_time($i_stats) : '' ));
 
 
             } elseif ($i_focus['i__type'] == 6683) {
 
                 //TEXT RESPONSE
-                $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__icon'].'</span>'.$e___11035[13980]['m__title'].'</div>';
+                $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__icon'].'</span>'.$e___11035[13980]['m__title'].'</div>';
 
                 //Write `skip` if you prefer not to answer...
-                $focus_tab .= '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
+                $ui .= '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
 
                 if (count($x_completes)) {
                     //Next Ideas:
-                    $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
+                    $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
                 }
 
-                $focus_tab .= '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
+                $ui .= '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
 
 
             } elseif ($i_focus['i__type'] == 7637) {
 
                 //FILE UPLOAD
-                $focus_tab .= '<div class="userUploader">';
-                $focus_tab .= '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
+                $ui .= '<div class="userUploader">';
+                $ui .= '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
 
-                $focus_tab .= '<input class="inputfile" type="file" name="file" id="fileType' . $i_focus['i__type'] . '" />';
+                $ui .= '<input class="inputfile" type="file" name="file" id="fileType' . $i_focus['i__type'] . '" />';
 
 
                 if (count($x_completes)) {
 
-                    $focus_tab .= '<div class="file_saving_result">';
+                    $ui .= '<div class="file_saving_result">';
 
-                    $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__icon'].'</span>'.$e___11035[13977]['m__title'].'</div>';
+                    $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__icon'].'</span>'.$e___11035[13977]['m__title'].'</div>';
 
-                    $focus_tab .= '<div class="previous_answer">' . $this->X_model->message_send($x_completes[0]['x__message'], true) . '</div>';
+                    $ui .= '<div class="previous_answer">' . $this->X_model->message_send($x_completes[0]['x__message'], true) . '</div>';
 
-                    $focus_tab .= '</div>';
+                    $ui .= '</div>';
 
                     //Any child ideas?
-                    $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
+                    $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
 
                 } else {
 
                     //for when added:
-                    $focus_tab .= '<div class="file_saving_result"></div>';
+                    $ui .= '<div class="file_saving_result"></div>';
 
                 }
 
                 //UPLOAD BUTTON:
-                $focus_tab .= '<div class="margin-top-down"><label class="btn btn-discover inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__icon'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
+                $ui .= '<div class="margin-top-down"><label class="btn btn-discover inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__icon'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
 
 
-                $focus_tab .= '<div class="doclear">&nbsp;</div>';
-                $focus_tab .= '</form>';
-                $focus_tab .= '</div>';
+                $ui .= '<div class="doclear">&nbsp;</div>';
+                $ui .= '</form>';
+                $ui .= '</div>';
 
             }
 
         } else {
 
             //NEXT IDEAS
-            $focus_tab .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) ? view_i_time($i_stats) : '' )); //13542
+            $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) ? view_i_time($i_stats) : '' )); //13542
 
             //IDEA PREVIOUS
             /*
@@ -699,15 +699,15 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__left !=' => view_memory(6404,14002),
             ), array('x__left'), 0);
             if(count($is_previous)){
-                $focus_tab .= '<div style="padding-top: 34px;">';
-                $focus_tab .= view_i_list(12991, $in_my_x, $i_focus, $is_previous, $user_e);
-                $focus_tab .= '</div>';
+                $ui .= '<div style="padding-top: 34px;">';
+                $ui .= view_i_list(12991, $in_my_x, $i_focus, $is_previous, $user_e);
+                $ui .= '</div>';
             }
             */
 
         }
 
-        $focus_tab .= '</div>';
+        $ui .= '</div>';
 
     } elseif($x__type==6255){
 
@@ -720,15 +720,15 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = view_number($discovered[0]['totals']);
 
         if($counter > 0){
-            $focus_tab .= '<div class="list-group" style="margin-bottom:41px;">';
+            $ui .= '<div class="list-group" style="margin-bottom:41px;">';
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__left' => $i_focus['i__id'],
             ), array('x__source'), view_memory(6404,11064), 0, array( 'x__id' => 'DESC' )) as $discover_e){
-                $focus_tab .= view_e($discover_e);
+                $ui .= view_e($discover_e);
             }
-            $focus_tab .= '</div>';
+            $ui .= '</div>';
         }
 
     } elseif( $x__type==12274 || in_array($x__type, $this->config->item('n___4485')) ){
@@ -742,7 +742,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($notes);
         $is_editable = in_array($note_x__type, $this->config->item('n___14043'));
-        $focus_tab .= view_i_note_list($note_x__type, $i_focus, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true);
+        $ui .= view_i_note_list($note_x__type, $i_focus, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true);
 
     } elseif($x__type==13023){
 
@@ -753,18 +753,18 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             if($x__type2==10876){
 
                 //MENCH URL
-                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m__icon'].'</span>'.$m2['m__title'].'</div>';
-                $focus_tab .= '<div style="margin: 5px 0 41px 41px; cursor: text;">'.$this_url.'</div>';
+                $ui .= '<div class="headline"><span class="icon-block">'.$m2['m__icon'].'</span>'.$m2['m__title'].'</div>';
+                $ui .= '<div style="margin: 5px 0 41px 41px; cursor: text;">'.$this_url.'</div>';
 
             } elseif($x__type2==13531){
 
                 //SHARE ON SOCIAL MEDIA
-                $focus_tab .= '<div class="headline"><span class="icon-block">'.$m2['m__icon'].'</span>'.$m2['m__title'].'</div>';
-                $focus_tab .= '<div class="share-this space-content" style="margin:5px 0 41px;">';
+                $ui .= '<div class="headline"><span class="icon-block">'.$m2['m__icon'].'</span>'.$m2['m__title'].'</div>';
+                $ui .= '<div class="share-this space-content" style="margin:5px 0 41px;">';
                 foreach($this->config->item('e___13531') as $m2) {
-                    $focus_tab .= '<div class="icon-block"><div data-network="'.$m2['m__message'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share with '.$m2['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m2['m__icon'].'</div></div>';
+                    $ui .= '<div class="icon-block"><div data-network="'.$m2['m__message'].'" data-url="'.$this_url.'" data-title="'.$i_focus['i__title'].'" class="st-custom-button" title="Share with '.$m2['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m2['m__icon'].'</div></div>';
                 }
-                $focus_tab .= '</div>';
+                $ui .= '</div>';
 
             }
         }
@@ -785,7 +785,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
-    $tab_content .= $focus_tab;
+    $tab_content .= $ui;
     $tab_content .= '</div>';
 
 }

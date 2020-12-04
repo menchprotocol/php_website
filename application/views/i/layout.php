@@ -153,7 +153,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
     $counter = null; //Assume no counters
-    $focus_tab = '';
+    $ui = '';
     $href = 'href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')"';
 
 
@@ -176,13 +176,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($i_notes);
 
-        $focus_tab .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:41px;">';
+        $ui .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:41px;">';
         foreach($i_notes as $i_note) {
-            $focus_tab .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
+            $ui .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
         }
 
         if($e_of_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {
-            $focus_tab .= '<div class="list-group-item list-adder no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
+            $ui .= '<div class="list-group-item list-adder no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___11035[14055]['m__icon'] . '</span></span>
                     <input type="text"
@@ -192,7 +192,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">'.view_memory(6404,13912).'</div></div>';
         }
 
-        $focus_tab .= '</div>';
+        $ui .= '</div>';
 
     } elseif($x__type==12273){
 
@@ -208,16 +208,16 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if(superpower_active(12700, true)){
 
             //IDEA LIST EDITOR
-            $focus_tab .= '<div class="action-left-btn grey toggle_12589"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m__icon'].'</a></div>';
+            $ui .= '<div class="action-left-btn grey toggle_12589"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m__icon'].'</a></div>';
 
 
-            $focus_tab .= '<div class="toggle_12589 hidden" style="margin-bottom:41px;">';
-            $focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[12589]['m__icon'].'</span>'.$e___11035[12589]['m__title'].'</div>';
+            $ui .= '<div class="toggle_12589 hidden" style="margin-bottom:41px;">';
+            $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[12589]['m__icon'].'</span>'.$e___11035[12589]['m__title'].'</div>';
             $dropdown_options = '';
             $input_options = '';
             $this_counter = 0;
 
-            //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
+            //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
             foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
 
                 $this_counter++;
@@ -251,32 +251,32 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             }
 
-            $focus_tab .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 41px;">';
+            $ui .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 41px;">';
 
             //Drop Down
-            $focus_tab .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
-            $focus_tab .= $dropdown_options;
-            $focus_tab .= '</select>';
+            $ui .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
+            $ui .= $dropdown_options;
+            $ui .= '</select>';
 
-            $focus_tab .= $input_options;
+            $ui .= $input_options;
 
-            $focus_tab .= '<div><input type="submit" value="APPLY" class="btn btn-idea inline-block"></div>';
+            $ui .= '<div><input type="submit" value="APPLY" class="btn btn-idea inline-block"></div>';
 
-            $focus_tab .= '</form>';
-            $focus_tab .= '</div>';
+            $ui .= '</form>';
+            $ui .= '</div>';
 
         }
 
 
-        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m__icon'].'</span>'.$e___11035[13542]['m__title'].'</div>';
-        $focus_tab .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="row top-margin next_i">';
+        //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m__icon'].'</span>'.$e___11035[13542]['m__title'].'</div>';
+        $ui .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="row top-margin next_i">';
         foreach($is_next as $next_i) {
-            $focus_tab .= view_i_cover(13542, $next_i);
+            $ui .= view_i_cover(13542, $next_i);
         }
-        $focus_tab .= '</div>';
+        $ui .= '</div>';
 
         if($e_of_i && $is_active){
-            $focus_tab .= '<div class="list-adder '.superpower_active(10939).'">
+            $ui .= '<div class="list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m__icon'].'</span></span>
                     <input type="text"
@@ -293,7 +293,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //DISCOVERIES
         $counter = view_coins_i(6255,  $i_focus, false);
 
-        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
+        //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
         if($counter){
 
             $query_filters = array(
@@ -309,17 +309,17 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $query = $this->X_model->fetch($query_filters, array('x__source'), view_memory(6404,11064), 0, array('x__id' => 'DESC'));
 
             //Return UI:
-            $focus_tab .= '<div class="list-group">';
+            $ui .= '<div class="list-group">';
             foreach($query as $item){
-                $focus_tab .= view_e($item);
+                $ui .= view_e($item);
             }
-            $focus_tab .= '</div>';
+            $ui .= '</div>';
 
         } else {
 
             //No Results:
             $e___12467 = $this->config->item('e___12467'); //MENCH COINS
-            //$focus_tab .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m__title'].' yet</div>';
+            //$ui .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m__title'].' yet</div>';
 
         }
 
@@ -333,11 +333,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             'x__right' => $i_focus['i__id'],
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($i_notes);
-        $focus_tab .= view_i_note_list($note_x__type, $i_focus, $i_notes, $e_of_i, false);
+        $ui .= view_i_note_list($note_x__type, $i_focus, $i_notes, $e_of_i, false);
 
     } elseif($x__type==12969){
 
-        //$focus_tab .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
+        //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
         $u_x = $this->X_model->fetch(array(
             'x__left' => $i_focus['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
@@ -346,15 +346,15 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = $u_x[0]['totals'];
         if($counter > 0){
 
-            $focus_tab .= '<div class="list-group">';
+            $ui .= '<div class="list-group">';
             foreach($this->X_model->fetch(array(
                 'x__left' => $i_focus['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array('x__source')) as $u){
-                $focus_tab .= view_e($u);
+                $ui .= view_e($u);
             }
-            $focus_tab .= '</div>';
+            $ui .= '</div>';
 
         }
 
@@ -377,7 +377,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
-    $tab_content .= $focus_tab;
+    $tab_content .= $ui;
     $tab_content .= '</div>';
 
 }

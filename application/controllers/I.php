@@ -579,7 +579,7 @@ class I extends CI_Controller {
             //Referencing attributes:
             'x__type' => intval($_POST['note_type_id']),
             'x__right' => intval($_POST['i__id']),
-            'x__message' => $msg_validation['input_message'],
+            'x__message' => $msg_validation['clean_message'],
             //Source References:
             'x__up' => $msg_validation['x__up'],
             'x__down' => $msg_validation['x__down'],
@@ -599,7 +599,7 @@ class I extends CI_Controller {
     function i_note_add_file()
     {
 
-        //TODO: MERGE WITH FUNCTION x_upload()
+        //TODO: MERGE WITH FUNCTION x_upload() ?
 
         //Authenticate User:
         $user_e = superpower_unlocked();
@@ -702,6 +702,7 @@ class I extends CI_Controller {
         //Echo message:
         view_json(array(
             'status' => 1,
+            'new_source' => '@' . $cdn_status['cdn_e']['e__id'],
             'message' => view_i_note($_POST['note_type_id'], array_merge($user_e, $new_messages[0], array(
                 'x__down' => $user_e['e__id'],
             )), true),
@@ -755,7 +756,7 @@ class I extends CI_Controller {
 
 
 
-    function save_13574()
+    function i_note_update_text()
     {
 
         //Authenticate User:
@@ -812,18 +813,18 @@ class I extends CI_Controller {
             //There was some sort of an error:
             return view_json($msg_validation);
 
-        } elseif($messages[0]['x__message'] != $msg_validation['input_message']) {
+        } elseif($messages[0]['x__message'] != $msg_validation['clean_message']) {
 
             //Now update the DB:
             $this->X_model->update(intval($_POST['x__id']), array(
 
-                'x__message' => $msg_validation['input_message'],
+                'x__message' => $msg_validation['clean_message'],
 
                 //Source References:
                 'x__up' => $msg_validation['x__up'],
                 'x__down' => $msg_validation['x__down'],
 
-            ), $user_e['e__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['x__message'], $msg_validation['input_message']));
+            ), $user_e['e__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['x__message'], $msg_validation['clean_message']));
 
         }
 
@@ -834,14 +835,14 @@ class I extends CI_Controller {
         return view_json(array(
             'status' => 1,
             'delete_from_ui' => 0,
-            'message' => $this->X_model->message_send($msg_validation['input_message'], false, $user_e, $_POST['i__id']),
+            'message' => $this->X_model->message_send($msg_validation['clean_message'], false, $user_e, $_POST['i__id']),
         ));
 
     }
 
 
 
-    function remove_13579(){
+    function i_note_remove(){
 
         //Authenticate User:
         $user_e = superpower_unlocked();
@@ -879,17 +880,26 @@ class I extends CI_Controller {
 
 
 
-    function i_note_save_edit(){
+    function i_note_power_edit(){
 
         //Authenticate User:
         $user_e = superpower_unlocked();
         $e___12112 = $this->config->item('e___12112');
 
-        if (!$user_e) {
+        if(!isset($_POST['field_value'])){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing message input',
+                'input_clean' => '',
+            ));
+
+        } elseif (!$user_e) {
 
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
+                'input_clean' => $_POST['field_value'],
             ));
 
         } elseif(!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___14311'))){
@@ -898,13 +908,15 @@ class I extends CI_Controller {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid type',
+                'input_clean' => $_POST['field_value'],
             ));
 
-        } elseif(!isset($_POST['i__id']) || !isset($_POST['field_value'])){
+        } elseif(!isset($_POST['i__id'])){
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing core variables',
+                'message' => 'Missing Idea ID',
+                'input_clean' => $_POST['field_value'],
             ));
 
         }
@@ -916,67 +928,94 @@ class I extends CI_Controller {
         if(!count($is)){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Idea ID.',
+                'message' => 'Invalid Idea ID',
+                'input_clean' => $_POST['field_value'],
             ));
         }
 
 
-
-        $message_inputs = preg_split('\\r\\n|\\r|\\n/', $_POST['field_value']);
-        $errors = array();
-        foreach($message_inputs as $message_input) {
+        $errors = false;
+        $line_number = 0;
+        $msg_validations = array();
+        $input_clean = ''; //Generate new clean message
+        $textarea_content = '';
+        foreach(preg_split('\\r\\n|\\r|\\n/', $_POST['field_value']) as $message_input) {
 
             if(!strlen(trim($message_input))){
-                //Empty line:
+                //Ignore empty line:
                 continue;
             }
+
+            $line_number++;
 
             //Validate message:
             $msg_validation = $this->X_model->message_compile($message_input, false, $user_e, 0, $is[0]['i__id']);
 
+            //Add to clean messages:
+            $input_clean .= $msg_validation['clean_message']."\n\n";
+
             //Did we have ane error in message validation?
             if (!$msg_validation['status']) {
-                array_push($errors, array(
-                    'original_message' => $message_input,
-                    'error_message' => $msg_validation['message'],
-                ));
+                $errors .= '<br />Line #'.$line_number.': '.$msg_validation['message'];
+            } else {
+                array_push($msg_validations, $msg_validation);
             }
+
         }
 
-
-        if(count($errors)){
+        //Did we catch any errors?
+        if($errors){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Message had some errors',
-                'message_errors' => $errors,
+                'message' => $errors,
+                'input_clean' => $input_clean,
             ));
         }
 
+        //Validation complete! Let's update messages...
+        //DELETE all current notes, if any:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => $_POST['note_type_id'],
+            'x__right' => $is[0]['i__id'],
+        ), array(), 0) as $x) {
+            $this->X_model->update($x['x__id'], array(
+                'x__status' => 6173,
+            ), $user_e['e__id'], 13579);
+        }
 
-        $new_preview = null;
-        //DELETE all current messages:
 
-        //No errors, go ahead and update messages:
-        foreach($message_inputs as $message_input) {
+        foreach($msg_validations as $count => $msg_validation) {
 
             //SAVE this message:
-
+            $this->X_model->create(array(
+                'x__source' => $user_e['e__id'],
+                'x__spectrum' => ($count + 1),
+                //Referencing attributes:
+                'x__type' => intval($_POST['note_type_id']),
+                'x__right' => $is[0]['i__id'],
+                'x__message' => $msg_validation['clean_message'],
+                //Source References:
+                'x__up' => $msg_validation['x__up'],
+                'x__down' => $msg_validation['x__down'],
+            ));
 
             //GENERATE New Preview:
-            $textarea_content .= $this->X_model->message_send($message_input, false, $user_e, $is[0]['i__id']);
+            $textarea_content .= $this->X_model->message_send($msg_validation['clean_message'], false, $user_e, $is[0]['i__id']);
 
         }
+
+
+        //Update Search Index:
+        update_algolia(12273, $is[0]['i__id']);
 
 
         return view_json(array(
             'status' => 1,
-            'new_preview' => $new_preview,
-            'new_edit' => 'hi', //Updated Edit Text
-            'new_read' => 'bye', //Updated Read UI
+            'message' => $textarea_content,
+            'input_clean' => $input_clean,
         ));
 
     }
-
-
 
 }
