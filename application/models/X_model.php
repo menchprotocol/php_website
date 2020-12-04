@@ -930,6 +930,14 @@ class X_model extends CI_Model
 
         foreach($string_references['ref_e'] as $referenced_e){
 
+            if(!isset($e_reference_keys[$referenced_key])){
+                //Too many references:
+                return array(
+                    'status' => 0,
+                    'message' => 'You can only have 2 source references per line.',
+                );
+            }
+
             //We have a reference within this message, let's fetch it to better understand it:
             $es = $this->E_model->fetch(array(
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
