@@ -31,6 +31,7 @@ $(document).ready(function () {
 
     $('.power_editor').keydown(function (e) {
         if (e.ctrlKey && e.keyCode == 13) {
+            alert($(this).attr('note_type_id'));
             i_note_power_edit($(this).attr('note_type_id'));
         }
     });
