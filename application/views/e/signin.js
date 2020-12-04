@@ -118,7 +118,7 @@ function add_account(){
         if (data.status) {
 
             //Release field lock:
-            $('#add_acount_next').html('<i class="fas fa-check-circle"></i>');
+            $('#add_acount_next').html(js_e___11035[14424]['m__icon']);
             $('#new_account_errors').html('');
 
             setTimeout(function () {
@@ -170,7 +170,7 @@ function e_signin_password(){
         if (data.status) {
 
             //Release field lock:
-            $('#password_check_next').html('<i class="fas fa-check-circle"></i>');
+            $('#password_check_next').html(js_e___11035[14424]['m__icon']);
             $('#password_errors').html('');
 
             //Redirect

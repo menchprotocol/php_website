@@ -215,7 +215,7 @@ function e_email(){
         } else {
 
             //Show success:
-            $('.save_email').html('<i class="fas fa-check-circle"></i> ' + data.message + '</span>').hide().fadeIn();
+            $('.save_email').html(js_e___11035[14424]['m__icon'] + ' ' + data.message + '</span>').hide().fadeIn();
 
             //Disappear in a while:
             setTimeout(function () {
@@ -248,7 +248,7 @@ function e_name(){
         } else {
 
             //Show success:
-            $('.save_name').html('<i class="fas fa-check-circle"></i> UPDATED </span>').hide().fadeIn();
+            $('.save_name').html(js_e___11035[14424]['m__icon'] + ' ' + js_e___11035[14422]['m__title']).hide().fadeIn();
 
             //Disappear in a while:
             setTimeout(function () {
@@ -280,7 +280,7 @@ function e_password(){
         } else {
 
             //Show success:
-            $('.save_password').html('<i class="fas fa-check-circle"></i> ' + data.message + '</span>').hide().fadeIn();
+            $('.save_password').html(js_e___11035[14424]['m__icon'] + ' ' + data.message + '</span>').hide().fadeIn();
 
             //Disappear in a while:
             setTimeout(function () {
