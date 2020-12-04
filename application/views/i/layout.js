@@ -29,6 +29,12 @@ $(document).ready(function () {
         x_set_text(this);
     });
 
+    $('.power_editor').keydown(function (e) {
+        if (e.ctrlKey && e.keyCode == 13) {
+            i_note_add_text($(this).attr('note_type_id'));
+        }
+    });
+
     //Put focus on messages if no message:
     if(!$('#i_notes_list_4231 .note_sortable').length){
         $('.input_note_' + '4231').focus();
@@ -68,7 +74,7 @@ function i_note_power_edit(note_type_id){
         $('.save_notes_' + note_type_id).attr('href', 'javascript:i_note_power_edit('+note_type_id+');');
 
         //Update raw text input:
-        $(input_textarea).val(data.input_clean);
+        $(input_textarea).val(data.input_clean.trim());
         autosize($(input_textarea));
 
         if (!data.status) {
