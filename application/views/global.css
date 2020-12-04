@@ -2079,7 +2079,9 @@ i, .btn .show-max {
     width: 41px !important;
 }
 
-
+.btn.btn-default {
+    border: 3px solid transparent;
+}
 
 
 
@@ -2106,7 +2108,7 @@ i, .btn .show-max {
 
 }
 
-.custom_ui_13884_13886 .btn-black i,
+.custom_ui_13884_13886 .btn-default i,
 .custom_ui_13884_13886 .dropdown-menu,
 .custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu{
@@ -2148,7 +2150,8 @@ i, .btn .show-max {
 .custom_ui_13884_13886 .nav-tabs .nav-item.show .nav-x,
 .custom_ui_13884_13886 .nav-tabs .nav-x.active,
 .custom_ui_13884_13886 .nav-tabs .nav-x:focus,
-.custom_ui_13884_13886 .nav-tabs .nav-x:hover{
+.custom_ui_13884_13886 .nav-tabs .nav-x:hover,
+.custom_ui_13884_13886 .btn.btn-default{
     border-color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .nav-tabs .nav-item.show .nav-x,
@@ -2208,7 +2211,7 @@ i, .btn .show-max {
     border-color: #f0f0f0 !important; /* WAS WHITE */
 }
 
-.alert a, .alert i, .custom_ui_13884_13885 .btn-black i {
+.alert a, .alert i, .custom_ui_13884_13885 .btn-default i {
     color: #222222 !important;
 }
 .btn-tiny{
@@ -2221,7 +2224,8 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
 .custom_ui_13884_13885 .nav-tabs .nav-x.active,
 .custom_ui_13884_13885 .nav-tabs .nav-x:focus,
-.custom_ui_13884_13885 .nav-tabs .nav-x:hover
+.custom_ui_13884_13885 .nav-tabs .nav-x:hover,
+.custom_ui_13884_13886 .btn.btn-default
 {
     border-color: #222222 !important;
 }

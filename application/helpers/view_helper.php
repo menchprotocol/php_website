@@ -1005,12 +1005,12 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                     $textarea_content .= $i_note['x__message']."\n\n";
                 }
 
-                $focus_tab .= '<textarea class="form-control msg note-textarea algolia_search new-note input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." style="margin:13px 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
+                $focus_tab .= '<textarea class="form-control msg note-textarea algolia_search new-note emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" note_type_id="' . $x__type . '" placeholder="WRITE..." style="margin:13px 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
 
 
                 //CONTROLLER
                 $focus_tab .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
-                $focus_tab .= '<td class="table-btn first_btn"><a href="javascript:i_note_save_edit('.$x__type.');" class="btn btn-black save_notes_'.$x__type.'" title="'.$e___11035[14422]['m__title'].'">'.$e___11035[14422]['m__icon'].'</a></td>';
+                $focus_tab .= '<td class="table-btn first_btn"><a href="javascript:i_note_save_edit('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" title="'.$e___11035[14422]['m__title'].'">'.$e___11035[14422]['m__icon'].'</a></td>';
 
                 if($handles_uploads){
 
@@ -1030,7 +1030,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                     //EMOJI
                     $focus_tab .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
                 }
-
+                $ui .= '<td style="padding:10px 0 0 0;">&nbsp;</td>';
                 $focus_tab .= '</tr></table>';
 
             } elseif($x__type==14420){
@@ -1098,7 +1098,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             //CONTROLLER
             $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
-            $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_add_text('.$x__type.');" class="btn btn-'.$color_code.' save_notes_'.$x__type.'" title="'.$e___11035[14421]['m__title'].'">'.$e___11035[14421]['m__icon'].'</a></td>';
+            $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_add_text('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" title="'.$e___11035[14421]['m__title'].'">'.$e___11035[14421]['m__icon'].'</a></td>';
 
             if($handles_uploads){
 
