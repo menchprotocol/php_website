@@ -943,7 +943,8 @@ class X_model extends CI_Model
             }
 
             //Set as source reference:
-            $e_reference_fields[$e_reference_keys[$referenced_key]] = intval($referenced_e);
+            $e_reference_key_val = $e_reference_keys[$referenced_key];
+            $e_reference_fields[$e_reference_key_val] = intval($referenced_e);
 
             //See if this source has any parent transactions to be shown in this appendix
             $e_urls = array();
