@@ -954,7 +954,7 @@ class I extends CI_Controller {
 
             //Did we have ane error in message validation?
             if (!$msg_validation['status']) {
-                $errors .= '<br />Line #'.$line_number.': '.$msg_validation['message'];
+                $errors .= '<br /><span class="inline-block">&nbsp;</span>Line #'.$line_number.': '.$msg_validation['message'];
                 $input_clean .= $message_input."\n\n";
             } else {
                 array_push($msg_validations, $msg_validation);
