@@ -1030,7 +1030,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                     //EMOJI
                     $focus_tab .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
                 }
-                $ui .= '<td style="padding:10px 0 0 0;">&nbsp;</td>';
+                $focus_tab .= '<td style="padding:10px 0 0 0;">&nbsp;</td>';
                 $focus_tab .= '</tr></table>';
 
             } elseif($x__type==14420){
