@@ -68,7 +68,8 @@ function i_note_power_edit(note_type_id){
         $('.save_notes_' + note_type_id).attr('href', 'javascript:i_note_power_edit('+note_type_id+');');
 
         //Update raw text input:
-        $(input_textarea).val(data.input_clean + "\n\n");
+        $(input_textarea).val(data.input_clean);
+        autosize($(input_textarea));
 
         if (!data.status) {
 
