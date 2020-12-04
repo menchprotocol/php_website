@@ -2232,9 +2232,7 @@ i, .btn .show-max {
     border-bottom-color: #f0f0f0 !important; /* WAS WHITE */
 }
 
-.dynamic_saving {
-    background-color: #999999 !important;
-}
+
 
 @media (min-width:767px) {
 
@@ -2276,4 +2274,10 @@ i, .btn .show-max {
 
 .custom_ui_13491_13494 .msg{ font-size:1.5em; }
 .custom_ui_13491_13494 .msg i{ font-size:0.96em !important; } /* To get to 1.44em*/
+
+
+
+.dynamic_saving {
+    background-color: #999999 !important;
+}
 

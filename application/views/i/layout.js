@@ -52,48 +52,46 @@ $(document).ready(function () {
 });
 
 
+function i_note_save_edit(x__type){
 
+    var handler = '.input_note_'+modify_data['s__id'];
+    $(handler).addClass('dynamic_saving').prop("disabled", true);
+    $('.save_notes_' + x__type).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
 
+    //TODO ADD SUPER EDITOR to JS CACHE
 
-function i_set_editor(this_handler){
+    $.post("/i/i_note_save_edit", {
+        i__id: focus_i__id,
+        x__type: x__type,
+        field_value: $(handler).val().trim()
+    }, function (data) {
 
-    var modify_data = {
-        i__id: parseInt($(this_handler).attr('i__id')),
-        x__type: parseInt($(this_handler).attr('x__type')),
-        field_value: $(this_handler).val().trim()
-    };
-
-    //See if anything changes:
-    if( $(this_handler).attr('old-value') == modify_data['field_value'] ){
-        //Nothing changed:
-        return false;
-    }
-
-    //Grey background to indicate saving...
-    var handler = '.text__'+modify_data['cache_e__id']+'_'+modify_data['s__id'];
-    $(handler).addClass('dynamic_saving');
-
-    $.post("/i/i_set_editor", modify_data, function (data) {
+        $(handler).removeClass('dynamic_saving').prop("disabled", false);
+        $('.save_notes_' + x__type).html(js_e___11035[14422]['m__icon']).attr('href', 'javascript:i_note_save_edit('+x__type+');');
 
         if (!data.status) {
 
             //Show Errors:
-
-
-            //Show error:
-            alert(data.message);
+            $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message);
 
         } else {
 
-            //All good, update new preview:
+            //Reset errors:
+            $(".note_error_"+note_type_id).html('');
 
+            //Update EDIT:
+            $(handler).val(data.new_edit);
+
+            //Update READ:
+            $('.editor_read_'+x__type).val(data.new_read);
+
+            //Tooltips:
+            $('[data-toggle="tooltip"]').tooltip();
+
+            //Load Images:
+            lazy_load();
 
         }
-
-        setTimeout(function () {
-            //Restore background:
-            $(handler).removeClass('dynamic_saving');
-        }, 233);
 
     });
 }

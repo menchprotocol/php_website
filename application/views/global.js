@@ -815,9 +815,18 @@ function gif_search(q){
 }
 
 function gif_add(x__type, giphy_id, giphy_title){
+    var current_value = $('.input_note_' + x__type).val();
     $('#modal14073').modal('hide');
-    $('.input_note_' + x__type).val('https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
-    i_note_text(x__type);
+    $('.input_note_' + x__type).val(( current_value.length ? current_value+' ' : '' ) + 'https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
+
+    //Save or Submit:
+    if(js_n___14311.includes(x__type)){
+        //Power Editor:
+        i_note_save_edit(x__type);
+    } else {
+        //Regular Editor:
+        i_note_add_text(x__type);
+    }
 }
 
 
@@ -877,7 +886,7 @@ function x_set_text(this_handler){
 
     //Grey background to indicate saving...
     var handler = '.text__'+modify_data['cache_e__id']+'_'+modify_data['s__id'];
-    $(handler).addClass('dynamic_saving');
+    $(handler).addClass('dynamic_saving').prop("disabled", true);
 
     $.post("/x/x_set_text", modify_data, function (data) {
 
@@ -898,7 +907,7 @@ function x_set_text(this_handler){
 
         setTimeout(function () {
             //Restore background:
-            $(handler).removeClass('dynamic_saving');
+            $(handler).removeClass('dynamic_saving').prop("disabled", false);
         }, 233);
 
     });
@@ -944,13 +953,13 @@ function i_note_activate(){
         //Watch for message creation:
         $('.input_note_' + note_type_id).keydown(function (e) {
             if (e.ctrlKey && e.keyCode == 13) {
-                i_note_text(note_type_id);
+                i_note_add_text(note_type_id);
             }
         });
 
         //Watchout for file uplods:
         $('.box' + note_type_id).find('input[type="file"]').change(function () {
-            i_note_file(droppedFiles, 'file', note_type_id);
+            i_note_add_file(droppedFiles, 'file', note_type_id);
         });
 
 
@@ -973,7 +982,7 @@ function i_note_activate(){
                 .on('drop', function (e) {
                     droppedFiles = e.originalEvent.dataTransfer.files;
                     e.preventDefault();
-                    i_note_file(droppedFiles, 'drop', note_type_id);
+                    i_note_add_file(droppedFiles, 'drop', note_type_id);
                 });
         }
 
@@ -1220,7 +1229,7 @@ function i_note_start_adding(note_type_id) {
 function i_note_end_adding(result, note_type_id) {
 
     //Update UI to unlock:
-    $('.save_notes_' + note_type_id).html('<i class="fas fa-plus"></i>').attr('href', 'javascript:i_note_text('+note_type_id+');');
+    $('.save_notes_' + note_type_id).html(js_e___11035[14421]['m__icon']).attr('href', 'javascript:i_note_add_text('+note_type_id+');');
     $('.add_notes_' + note_type_id).removeClass('is-working');
     $('.input_note_' + note_type_id).prop("disabled", false).focus();
     $('.remove_loading').fadeIn();
@@ -1247,7 +1256,7 @@ function i_note_end_adding(result, note_type_id) {
     }
 }
 
-function i_note_file(droppedFiles, uploadType, note_type_id) {
+function i_note_add_file(droppedFiles, uploadType, note_type_id) {
 
     //Prevent multiple concurrent uploads:
     if ($('.box' + note_type_id).hasClass('is-uploading')) {
@@ -1275,7 +1284,7 @@ function i_note_file(droppedFiles, uploadType, note_type_id) {
         ajaxData.append('note_type_id', note_type_id);
 
         $.ajax({
-            url: '/i/i_note_file',
+            url: '/i/i_note_add_file',
             type: $('.box' + note_type_id).attr('method'),
             data: ajaxData,
             dataType: 'json',
@@ -1306,13 +1315,13 @@ function i_note_file(droppedFiles, uploadType, note_type_id) {
     }
 }
 
-function i_note_text(note_type_id) {
+function i_note_add_text(note_type_id) {
 
     //Lock message:
     i_note_start_adding(note_type_id);
 
     //Update backend:
-    $.post("/i/i_note_text", {
+    $.post("/i/i_note_add_text", {
 
         i__id: focus_i__id, //Synonymous
         x__message: $('.input_note_' + note_type_id).val(),

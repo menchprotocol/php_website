@@ -518,7 +518,7 @@ class I extends CI_Controller {
     }
 
 
-    function i_note_text()
+    function i_note_add_text()
     {
 
         //Authenticate User:
@@ -596,7 +596,7 @@ class I extends CI_Controller {
     }
 
 
-    function i_note_file()
+    function i_note_add_file()
     {
 
         //TODO: MERGE WITH FUNCTION x_upload()
@@ -879,7 +879,7 @@ class I extends CI_Controller {
 
 
 
-    function i_set_editor(){
+    function i_note_save_edit(){
 
         //Authenticate User:
         $user_e = superpower_unlocked();
@@ -971,6 +971,8 @@ class I extends CI_Controller {
         return view_json(array(
             'status' => 1,
             'new_preview' => $new_preview,
+            'new_edit' => 'hi', //Updated Edit Text
+            'new_read' => 'bye', //Updated Read UI
         ));
 
     }
