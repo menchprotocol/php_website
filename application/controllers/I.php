@@ -951,14 +951,15 @@ class I extends CI_Controller {
             //Validate message:
             $msg_validation = $this->X_model->message_compile($message_input, false, $user_e, 0, $is[0]['i__id']);
 
-            //Add to clean messages:
-            $input_clean .= $msg_validation['clean_message']."\n\n";
 
             //Did we have ane error in message validation?
             if (!$msg_validation['status']) {
                 $errors .= '<br />Line #'.$line_number.': '.$msg_validation['message'];
+                $input_clean .= $message_input."\n\n";
             } else {
                 array_push($msg_validations, $msg_validation);
+                //Add to clean messages:
+                $input_clean .= $msg_validation['clean_message']."\n\n";
             }
 
         }
