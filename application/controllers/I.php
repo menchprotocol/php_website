@@ -939,7 +939,7 @@ class I extends CI_Controller {
         $msg_validations = array();
         $input_clean = ''; //Generate new clean message
         $textarea_content = '';
-        foreach(preg_split("\\r\\n|\\r|\\n/", $_POST['field_value']) as $message_input) {
+        foreach(explode(PHP_EOL, $_POST['field_value']) as $message_input) {
 
             if(!strlen(trim($message_input))){
                 //Ignore empty line:
