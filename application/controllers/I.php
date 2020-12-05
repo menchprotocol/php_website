@@ -1002,7 +1002,7 @@ class I extends CI_Controller {
             ));
 
             //GENERATE New Preview:
-            $textarea_content .= $this->X_model->message_send($msg_validation['clean_message'], false, $user_e, $is[0]['i__id']);
+            $textarea_content .= $this->X_model->message_send($msg_validation['clean_message'], true, $user_e, $is[0]['i__id']);
 
         }
 

@@ -80,7 +80,7 @@ function i_note_power_edit(note_type_id){
 
         if (!data.status) {
 
-            $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon']);
+            $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__title']);
 
             //Show Errors:
             $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span> Message not saved because:<br />'+data.message);
@@ -103,7 +103,7 @@ function i_note_power_edit(note_type_id){
             lazy_load();
 
             setTimeout(function () {
-                $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon']);
+                $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__title']);
             }, 987);
 
         }

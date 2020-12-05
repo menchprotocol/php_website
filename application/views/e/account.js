@@ -248,7 +248,7 @@ function e_name(){
         } else {
 
             //Show success:
-            $('.save_name').html(js_e___11035[14424]['m__icon'] + ' ' + js_e___11035[14422]['m__title']).hide().fadeIn();
+            $('.save_name').html(js_e___11035[14424]['m__icon'] + ' ' + js_e___11035[14424]['m__title']).hide().fadeIn();
 
             //Disappear in a while:
             setTimeout(function () {

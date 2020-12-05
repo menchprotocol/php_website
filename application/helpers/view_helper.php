@@ -1013,11 +1013,11 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
 
                 //CONTROLLER
-                $ui .= '<div class="list-group-item no-padding add_notes_' . $x__type .'">';
+                $ui .= '<div class="no-padding add_notes_' . $x__type .'">';
                 $ui .= '<div class="add_notes_form">';
                 $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
                 $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
-                $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_power_edit('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" title="'.$e___11035[14422]['m__title'].'">'.$e___11035[14422]['m__icon'].'</a></td>';
+                $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_power_edit('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'">'.$e___11035[14422]['m__title'].'</a></td>';
 
                 if($handles_uploads){
 
@@ -1048,7 +1048,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 //READ
                 $ui .= '<div class="list-group editor_read_'.$x__type.'" style="margin-top:13px;">';
                 foreach($i_notes as $i_note) {
-                    $ui .= $CI->X_model->message_send($i_note['x__message'], false, $user_e, $i['i__id']);
+                    $ui .= $CI->X_model->message_send($i_note['x__message'], true, $user_e, $i['i__id']);
                 }
                 $ui .= '</div>';
 
@@ -1096,11 +1096,11 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             $color_code = trim(extract_icon_color($e___4485[$x__type]['m__icon']));
 
-            $ui .= '<div class="list-group-item no-padding add_notes_' . $x__type .'">';
+            $ui .= '<div class="no-padding add_notes_' . $x__type .'">';
             $ui .= '<div class="add_notes_form">';
             $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE'.( $handles_url ? ', PASTE URL, @SOURCE' : '' ).'"></textarea>';
+            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" style="margin-top: 10px;" placeholder="WRITE'.( $handles_url ? ', PASTE URL, @SOURCE' : '' ).'"></textarea>';
 
             //Response result:
             $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
