@@ -1418,6 +1418,12 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
         $ui .= view_i_time($i_stats);
         $ui .= '</a></div>';
 
+    } else {
+
+        $ui .= '<div class="cover-text montserrat">';
+        $ui .= view_i_time($i_stats);
+        $ui .= '</div>';
+
     }
 
 

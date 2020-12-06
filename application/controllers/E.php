@@ -1936,6 +1936,10 @@ class E extends CI_Controller
         ));
     }
 
+    function auth0(){
+        $this->load->view('e/auth0');
+    }
+
     function e_magic_sign($x__id){
 
         //Remove Session:
