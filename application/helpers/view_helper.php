@@ -1223,12 +1223,12 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
 
         if(count($query)){
 
-            $loaded_topics++;
-
-            if($loaded_topics > $max_visible){
+            if($loaded_topics==$max_visible){
                 //Hide the rest:
                 $ui .= '<div class="all-topics hidden">';
             }
+
+            $loaded_topics++;
 
             $ui .= '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
             $ui .= '<div class="row top-margin">';
