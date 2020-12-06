@@ -1815,7 +1815,7 @@ i, .btn .show-max {
 }
 .cover-content span {
     padding: 0 1px 0 0;
-    background: rgba(0, 0, 0, 0.75);
+    background-color: #222222;
     line-height: 130%;
     font-size: 0.89em;
     color: #FFFFFF;
