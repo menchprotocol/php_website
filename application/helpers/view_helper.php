@@ -1201,6 +1201,8 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
     $CI =& get_instance();
     $ui = '';
     $limit = ( $e__id_limit ? 0 : view_memory(6404,12138) );
+    $max_visible = view_memory(6404,14435);
+    $loaded_topics = 0;
 
     //Go through Featured Categories:
     foreach($CI->config->item('e___12138') as $e__id => $m) {
@@ -1220,6 +1222,13 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
         $query = $CI->X_model->fetch($query_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC'));
 
         if(count($query)){
+
+            $loaded_topics++;
+
+            if($loaded_topics > $max_visible){
+                //Hide the rest:
+                $ui .= '<div class="all-topics hidden">';
+            }
 
             $ui .= '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
             $ui .= '<div class="row top-margin">';
@@ -1241,6 +1250,17 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
                 }
             }
         }
+
+        if($loaded_topics > $max_visible){
+
+            //Close the opened DIV
+            $ui .= '</div>';
+
+            //Show load button:
+            $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
+            $ui .= '<div class="row top-margin all-topics"><a  href="javascript:void(0);" onclick="$(\'.all-topics\').toggleClass(\'hidden\');" class="btn btn-large btn-idea">'.$e___11035[14435]['m__icon'].' '.$e___11035[14435]['m__title'].'</a></div>';
+        }
+
     }
     return $ui;
 }
