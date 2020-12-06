@@ -1250,6 +1250,10 @@ function view_info_box($e__id){
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $ui = '';
     $ui .= '<h2 class="info_box_header montserrat">' . $e___11035[$e__id]['m__title'] . '</h2>';
+    if(strlen($e___11035[$e__id]['m__message'])){
+        //Show at end:
+        $ui .= '<div class="row"><div class="col-12 center">'.$e___11035[$e__id]['m__message'].'</div></div>';
+    }
     $ui .= '<div class="row">';
     foreach($CI->config->item('e___'.$e__id) as $m) {
         $ui .= '<div class="col-12 col-sm-4">';
@@ -1261,10 +1265,6 @@ function view_info_box($e__id){
         $ui .= '</div>';
     }
     $ui .= '</div>';
-    if(strlen($e___11035[$e__id]['m__message'])){
-        //Show at end:
-        $ui .= '<div class="row"><div class="col-12 center">'.$e___11035[$e__id]['m__message'].'</div></div>';
-    }
     return $ui;
 }
 
