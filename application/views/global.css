@@ -1779,7 +1779,7 @@ i, .btn .show-max {
     border-radius: 50%;
     width:34px;
     height: 34px;
-    background: rgba(0, 0, 0, 0.75) !important;
+    background-color: #000000;
 }
 .inside-btn>i, .inside-btn-alt>i {
     margin-top: 6px;
@@ -2048,7 +2048,7 @@ i, .btn .show-max {
     line-height: 110%;
 }
 .info_box_cover{
-    padding:21px 0 13px;
+    padding:21px 0;
     text-align: center;
     font-size: 3.4em;
 }
