@@ -464,16 +464,14 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
             //Show My Discoveries
             if($counter){
 
-                if($source_is_e){
-                    $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>'.$e___11035[12969]['m__title'].'</div>';
-                }
+                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>'.$e___11035[12969]['m__title'].'</div>';
 
                 if($source_is_e || superpower_active(12701, true)){
 
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
                     if(count($list_x)){
 
-                        $ui .= '<div class="row" id="list_6132">';
+                        $ui .= '<div class="row top-margin" id="list_6132">';
                         foreach($list_x as $item){
                             $ui .= view_i_cover(12969, $item,null, $e);
                             array_push($my_x_ids, $item['i__id']);
@@ -505,7 +503,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                 ), array('x__right'), 0, 0, array('i__spectrum' => 'DESC'));
                 if(count($i_notes_query)){
                     $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__icon'].'</span>'.$e___11035[12896]['m__title'].'</div>';
-                    $ui .= '<div class="row">';
+                    $ui .= '<div class="row top-margin">';
                     foreach($i_notes_query as $count => $i_notes) {
                         $ui .= view_i_cover(12896, $i_notes);
                     }

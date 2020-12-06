@@ -1222,7 +1222,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
         if(count($query)){
 
             $ui .= '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
-            $ui .= '<div class="row">';
+            $ui .= '<div class="row top-margin">';
             foreach($query as $i){
                 $ui .= view_i_cover(12138, $i);
                 if(!in_array($i['i__id'], $i_exclude)){
