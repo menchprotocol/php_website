@@ -94,8 +94,6 @@ echo '<div class="container coin-frame hideIfEmpty">';
 
 
 
-
-
 if($in_my_x){
 
     //Fetch Parents all the way to the Discovery Item

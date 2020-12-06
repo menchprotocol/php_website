@@ -1017,7 +1017,7 @@ class X_model extends CI_Model
                 $output_body_message .= $e_appendix;
             }
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
-            $tooltip_class = ( $tooltip_info ? ' class="underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="top"' : '' );
+            $tooltip_class = ( $tooltip_info ? ' class="underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
 
             //USER REFERENCE
             if($is_discovery_mode || $is_current_e || $simple_version){

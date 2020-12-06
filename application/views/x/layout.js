@@ -54,9 +54,8 @@ function go_previous(href_url) {
     if(i_drip_mode_js && i_drip_pointer>1){
         i_drip_pointer--;
         //Simply go to the next drip:
-        $('.drip_msg').addClass('hidden');
+        $('.drip_msg, .final_drip, .header-drop').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
-        $('.final_drip').addClass('hidden');
     } else {
         //Go Next:
         window.location = href_url;
@@ -69,7 +68,7 @@ function go_next(go_next_url){
 
         i_drip_pointer++;
         //Simply go to the next drip:
-        $('.drip_msg').addClass('hidden');
+        $('.drip_msg, .header-drop').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
 
         //Are we at the last drip?
