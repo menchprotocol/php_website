@@ -1263,7 +1263,7 @@ function view_info_box($e__id){
     $ui .= '</div>';
     if(strlen($e___11035[$e__id]['m__message'])){
         //Show at end:
-        $ui .= '<div class="row"><div class="col-12">'.$e___11035[$e__id]['m__message'].'</div></div>';
+        $ui .= '<div class="row"><div class="col-12 center">'.$e___11035[$e__id]['m__message'].'</div></div>';
     }
     return $ui;
 }
