@@ -1063,7 +1063,7 @@ function i_note_e_search(obj) {
                         });
                 },
                 template: function (suggestion) {
-                    return '<div style="padding: 3px 0;">' + view_s_js(suggestion) + '</div>';
+                    return view_s_js(suggestion);
                 },
                 replace: function (suggestion) {
                     return ' @' + suggestion.s__id + ' ';
