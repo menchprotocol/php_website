@@ -39,6 +39,8 @@ $auth0 = new Auth0\SDK\Auth0([
  * */
 
 $userInfo = $auth0->getUser();
+print_r($userInfo);
+die();
 ?>
 
 <form id="accountCreation" action="/e/e_signin_create" method="post">
