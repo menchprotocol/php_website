@@ -1941,8 +1941,12 @@ class E extends CI_Controller
         ));
     }
 
-    function auth0(){
-        $this->load->view('e/auth0');
+    function auth0_login(){
+        $this->load->view('e/auth0_login');
+    }
+
+    function auth0_callback(){
+        $this->load->view('e/auth0_callback');
     }
 
     function e_magic_sign($x__id){

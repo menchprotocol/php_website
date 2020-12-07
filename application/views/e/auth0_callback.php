@@ -12,7 +12,7 @@ $auth0 = new Auth0\SDK\Auth0([
     'domain' => 'mench.auth0.com',
     'client_id' => 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi',
     'client_secret' => $this->config->item('cred_auth0_client_secret'),
-    'redirect_uri' => 'https://mench.com/e/auth0',
+    'redirect_uri' => 'https://mench.com/e/auth0_callback',
     'scope' => 'openid profile email',
 ]);
 
