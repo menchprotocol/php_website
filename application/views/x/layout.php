@@ -143,7 +143,7 @@ if($in_my_x){
         }
 
         foreach($sitemap_items_raw as $si) {
-            array_push($sitemap_items, view_i_cover(6255, $si['i'],  null, false, $si['completion_rate']));
+            array_push($sitemap_items, view_i(6255, $si['i'],  null, false, $si['completion_rate']));
         }
 
     }

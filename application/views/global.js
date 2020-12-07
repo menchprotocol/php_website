@@ -77,7 +77,7 @@ function load_editor(){
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return view_search_result(suggestion);
+                    return view_e_js(suggestion);
                 },
                 empty: function (data) {
                     return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
@@ -108,7 +108,7 @@ function load_editor(){
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return view_search_result(suggestion);
+                    return view_e_js(suggestion);
                 },
                 empty: function (data) {
                     return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
@@ -135,12 +135,16 @@ function js_extract_icon_color(e__icon){
     }
 }
 
-function view_search_result(algolia_object){
+function view_s__title(algolia_object){
+    return htmlentitiesjs( algolia_object._highlightResult && algolia_object._highlightResult.s__title.value ? algolia_object._highlightResult.s__title.value : algolia_object.s__title );
+}
 
-    var title = htmlentitiesjs( algolia_object._highlightResult && algolia_object._highlightResult.s__title.value ? algolia_object._highlightResult.s__title.value : algolia_object.s__title );
+function view_e_js(algolia_object){
+    return '<span class="icon-block">'+ algolia_object.s__icon +'</span><span class="montserrat '+ (algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__icon) : '' ) +'">' + view_s__title(algolia_object) + '</span>';
+}
 
-    return '<span class="icon-block">'+ algolia_object.s__icon +'</span><span class="montserrat '+ (algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__icon) : '' ) +'">' + title + '</span>';
-
+function view_i_js(algolia_object){
+    return '<div class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + s__icon + '\')"></div></div><div class="cover-content">'+view_s__title(algolia_object)+'</div></div>';
 }
 
 
@@ -362,7 +366,7 @@ $(document).ready(function () {
                 },
                 templates: {
                     suggestion: function (suggestion) {
-                        return view_search_result(suggestion);
+                        return view_e_js(suggestion);
                     },
                     header: function (data) {
                         if(validURL(data.query)){
@@ -602,7 +606,7 @@ function e_fetch_canonical(query_string, not_found){
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-e-suggest').remove();
-            $('.not-found').html('<a href="/@'+searchdata.algolia_object.s__id+'" class="suggestion montserrat">' + view_search_result(searchdata.algolia_object)+'</a>');
+            $('.not-found').html('<a href="/@'+searchdata.algolia_object.s__id+'" class="suggestion montserrat">' + view_e_js(searchdata.algolia_object)+'</a>');
         }
     });
 
@@ -708,7 +712,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
 
         source: function (q, cb) {
 
-            if($(element_focus).val().charAt(0)=='#'){
+            if($(element_focus+ '.add-input').val().charAt(0)=='#'){
                 cb([]);
                 return;
             } else {
@@ -732,10 +736,10 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return view_search_result(suggestion);
+                return view_i_js(suggestion);
             },
             header: function (data) {
-                if (is_add_mode=='x_in' && !($(element_focus).val().charAt(0)=='#') && !data.isEmpty) {
+                if (is_add_mode=='x_in' && !($(element_focus+ '.add-input').val().charAt(0)=='#') && !data.isEmpty) {
                     return '<a href="javascript:void(0);" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 } else if(is_add_mode=='x_my_in'){
                     return '<a href="javascript:void(0);" onclick="i_create()" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create Idea "' + data.query + '"</b></a>';
@@ -743,7 +747,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             },
             empty: function (data) {
                 if(is_add_mode=='x_in'){
-                    if($(element_focus).val().charAt(0)=='#'){
+                    if($(element_focus+ '.add-input').val().charAt(0)=='#'){
                         return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
                     } else {
                         return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
@@ -1057,7 +1061,7 @@ function i_note_e_search(obj) {
                         });
                 },
                 template: function (suggestion) {
-                    return '<div style="padding: 3px 0;">' + view_search_result(suggestion) + '</div>';
+                    return '<div style="padding: 3px 0;">' + view_e_js(suggestion) + '</div>';
                 },
                 replace: function (suggestion) {
                     return ' @' + suggestion.s__id + ' ';

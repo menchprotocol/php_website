@@ -14,7 +14,7 @@ if(count($orphan_i) > 0){
     //List orphans:
     echo '<div class="row top-margin">';
     foreach($orphan_i as $i) {
-        echo view_i_cover(7260, $i);
+        echo view_i(7260, $i);
 
     }
     echo '</div>';

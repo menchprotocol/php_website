@@ -248,7 +248,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return view_search_result(suggestion);
+                    return view_e_js(suggestion);
                 },
                 header: function (data) {
                     if (!data.isEmpty) {

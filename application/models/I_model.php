@@ -513,7 +513,7 @@ class I_model extends CI_Model
             ), array(($is_parent ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
             if($x__type > 0){
-                $next_i_html = view_i_cover($x__type, $new_i[0]);
+                $next_i_html = view_i($x__type, $new_i[0]);
             }
 
         }

@@ -955,7 +955,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
 
     $ui .= '<div class="row top-margin">';
     foreach($is_next as $key => $next_i){
-        $ui .= view_i_cover($x__type, $next_i, null, $user_e);
+        $ui .= view_i($x__type, $next_i, null, $user_e);
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
@@ -1233,7 +1233,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
             $ui .= '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
             $ui .= '<div class="row top-margin">';
             foreach($query as $i){
-                $ui .= view_i_cover(12138, $i);
+                $ui .= view_i(12138, $i);
                 if(!in_array($i['i__id'], $i_exclude)){
                     array_push($i_exclude, $i['i__id']);
                 }
@@ -1288,7 +1288,7 @@ function view_info_box($e__id){
     return $ui;
 }
 
-function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $completion_rate = null){
+function view_i($x__type, $i, $message_input = null, $focus_e = false, $completion_rate = null){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1314,11 +1314,10 @@ function view_i_cover($x__type, $i, $message_input = null, $focus_e = false, $co
 
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, true);
-    $href = ( $discovery_mode ? '/'.$i['i__id'] : '/~'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
+    $href = ( $discovery_mode ? '/'.$i['i__id'] : '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
 
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_locked ? ' not-allowed ' : '' ).'">';
-
 
 
 

@@ -214,7 +214,7 @@ function e_e_only_search(note_type_id) {
             templates: {
                 suggestion: function (suggestion) {
                     //If clicked, would trigger the autocomplete:selected above which will trigger the e__add() function
-                    return view_search_result(suggestion);
+                    return view_e_js(suggestion);
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
