@@ -69,6 +69,19 @@ if(count($current_sign_i_attempt) == 0){
         <!-- Step 1: Enter Email -->
         <div id="step2" class="signup-steps hidden">
 
+            <?php
+            //SOCIAL BUTTON:
+            echo '<div class="margin-top-down full-width-btn center"><a href="/e/auth0_login" class="btn btn-large btn-default">';
+            foreach($this->config->item('e___14436') as $e__id => $m) {
+                echo $m['m__icon'].'&nbsp;';
+            }
+            echo '<u>'.$e___11035[14436]['m__title'].'</u>';
+            echo '</a></div>';
+
+            echo '<div class="mid-text-line"><span>OR</span></div>';
+
+            ?>
+
             <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__icon'].'</span>'.$e___4269[3288]['m__title'] ?></span>
             <div class="form-group"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
             <div id="email_errors" class="discover margin-top-down hideIfEmpty"></div>
@@ -89,9 +102,6 @@ if(count($current_sign_i_attempt) == 0){
                 <div class="doclear">&nbsp;</div>
 
             </span>
-
-            <div class="doclear">&nbsp;</div>
-            <div style="padding-top:13px;">Or use <a href="/e/auth0_login" style="text-decoration: none;font-weight: bold;"><?php echo '<u>'.$e___11035[14436]['m__title'].'</u>'; foreach($this->config->item('e___14436') as $e__id => $m) { echo '&nbsp;'.$m['m__icon']; } ?></a></div>
 
         </div>
 

@@ -1259,7 +1259,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
 
         //Show load button:
         $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
-        $ui .= '<div class="margin-top-down all-topics center"><a  href="javascript:void(0);" onclick="$(\'.all-topics\').toggleClass(\'hidden\');" class="btn btn-large btn-default">'.$e___11035[14435]['m__icon'].' '.$e___11035[14435]['m__title'].'</a></div>';
+        $ui .= '<div class="margin-top-down full-width-btn all-topics center"><a  href="javascript:void(0);" onclick="$(\'.all-topics\').toggleClass(\'hidden\');" class="btn btn-large btn-default">'.$e___11035[14435]['m__icon'].' '.$e___11035[14435]['m__title'].'</a></div>';
     }
 
     return $ui;
