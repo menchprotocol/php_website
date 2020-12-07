@@ -253,7 +253,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
                 header: function (data) {
                     if (!data.isEmpty) {
                         if(superpower_js_13422){
-                            return '<a href="javascript:void(0);" onclick="e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + '<b class="source montserrat">' + data.query.toUpperCase() + '</b>' + '</a>';
+                            return '<a href="javascript:void(0);" onclick="e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + '<b class="source montserrat">Create Source "' + data.query.toUpperCase() + '"</b>' + '</a>';
                         } else {
                             return '';
                         }
