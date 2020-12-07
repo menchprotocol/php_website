@@ -91,7 +91,7 @@ if(count($current_sign_i_attempt) == 0){
             </span>
 
             <div class="doclear">&nbsp;</div>
-            <div style="padding-top:13px;">Or <a href="/e/auth0_login" style="text-decoration: none;font-weight: bold;"><?php echo $e___11035[14436]['m__title']; foreach($this->config->item('e___14436') as $e__id => $m) { echo '&nbsp;'.$m['m__icon']; } ?></a></div>
+            <div style="padding-top:13px;">Or <a href="/e/auth0_login" style="text-decoration: none;font-weight: bold;"><?php echo '<u>'.$e___11035[14436]['m__title'].'</u>'; foreach($this->config->item('e___14436') as $e__id => $m) { echo '&nbsp;'.$m['m__icon']; } ?></a></div>
 
         </div>
 
@@ -117,7 +117,7 @@ if(count($current_sign_i_attempt) == 0){
             </div>
 
             <div class="doclear">&nbsp;</div>
-            <div style="padding-top:13px;">No password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration: underline;font-weight: bold;"><?= $e___11035[11068]['m__title'] ?></a> <?= $e___11035[11068]['m__icon'] ?></div>
+            <div style="padding-top:13px;">No password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration:none;font-weight: bold;"><?= '<u>'.$e___11035[11068]['m__title'].'</u> '.$e___11035[11068]['m__icon'] ?></a></div>
 
         </div>
 
