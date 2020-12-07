@@ -60,31 +60,18 @@ if($userInfo){
         ),
     ));
 
-
     if(count($user_emails)){
 
         //Activate Session:
         $this->E_model->activate_session($user_emails[0], true);
+        header('Location: ' . ($sign_i__id > 0 ? '/x/x_start/'.$sign_i__id :  home_url() ));
 
     } else {
 
-        //New account to be created:
-        $member_result = $this->E_model->add_member($userInfo['name'], $userInfo['email']);
-        if(!$member_result['status']) {
-            $this->X_model->create(array(
-                'x__type' => 4246, //Platform Bug Reports
-                'x__message' => 'auth0_callback() Failed to create new member: '.$member_result['message'],
-                'x__metadata' => array(
-                    'auth0_getUser' => $userInfo,
-                    'member_result' => $member_result,
-                ),
-            ));
-            die('Error creating a new account: '.$member_result['message']);
-        }
+        header('Location: /e/auth0_create/'.$sign_i__id.'?name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']));
 
     }
 
-    header('Location: ' . ($sign_i__id > 0 ? '/x/x_start/'.$sign_i__id :  home_url() ));
 
 } else {
 

@@ -1903,6 +1903,24 @@ class E extends CI_Controller
         $this->load->view('e/auth0_callback');
     }
 
+    function auth0_create($sign_i__id){
+
+        //TODO make this more secure
+
+        //New account to be created:
+        $member_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']));
+        if(!$member_result['status']) {
+            $this->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__message' => 'auth0_callback() Failed to create new member: '.$member_result['message'],
+            ));
+            die('Error creating a new account: '.$member_result['message']);
+        }
+
+        header('Location: ' . ($sign_i__id > 0 ? '/x/x_start/'.$sign_i__id :  home_url() ));
+
+    }
+
     function e_magic_sign($x__id){
 
         //Remove Session:
