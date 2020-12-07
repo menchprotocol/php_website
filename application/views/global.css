@@ -1821,10 +1821,12 @@ i, .btn .show-max {
     color: #FFFFFF;
     white-space: pre-wrap;
 }
+.all-topics {
+    padding: 0 21px;
+}
 .all-topics a {
     display: block;
-    width: calc(100% - 42px);
-    margin: 0 21px;
+    margin:0;
 }
 .cover-content .msg, .cover-content .msg>span {
     line-height: 110% !important;
