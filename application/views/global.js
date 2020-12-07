@@ -77,7 +77,7 @@ function load_editor(){
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return view_e_js(suggestion);
+                    return view_s_js(suggestion);
                 },
                 empty: function (data) {
                     return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
@@ -108,7 +108,7 @@ function load_editor(){
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return view_e_js(suggestion);
+                    return view_s_js(suggestion);
                 },
                 empty: function (data) {
                     return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
@@ -140,14 +140,15 @@ function view_s__title(algolia_object){
 }
 
 
-function view_e_js(algolia_object){
-    return '<span class="icon-block">'+ algolia_object.s__icon +'</span><span class="montserrat '+ js_extract_icon_color(algolia_object.s__icon) +'">' + view_s__title(algolia_object) + '</span>';
+function view_s_js(algolia_object){
+    if(algolia_object.s__type==12274){
+        //SOURCE
+        return '<span class="icon-block">'+ algolia_object.s__icon +'</span><span class="montserrat '+ (algolia_object.s__type==12274 ?  : '' ) +'">' + view_s__title(algolia_object) + '</span>';
+    } else {
+        //IDEA
+        return '<div class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + s__icon + '\')"></div></div><div class="cover-content">'+view_s__title(algolia_object)+'</div></div>';
+    }
 }
-
-function view_i_js(algolia_object){
-    return '<div class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + s__icon + '\')"></div></div><div class="cover-content">'+view_s__title(algolia_object)+'</div></div>';
-}
-
 
 
 function js_view_shuffle_message(e__id){
@@ -367,7 +368,7 @@ $(document).ready(function () {
                 },
                 templates: {
                     suggestion: function (suggestion) {
-                        return view_e_js(suggestion);
+                        return view_s_js(suggestion);
                     },
                     header: function (data) {
                         if(validURL(data.query)){
@@ -607,7 +608,7 @@ function e_fetch_canonical(query_string, not_found){
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-e-suggest').remove();
-            $('.not-found').html('<a href="/@'+searchdata.algolia_object.s__id+'" class="suggestion montserrat">' + view_e_js(searchdata.algolia_object)+'</a>');
+            $('.not-found').html('<a href="/@'+searchdata.algolia_object.s__id+'" class="suggestion montserrat">' + view_s_js(searchdata.algolia_object)+'</a>');
         }
     });
 
@@ -737,7 +738,7 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return view_i_js(suggestion);
+                return view_s_js(suggestion);
             },
             header: function (data) {
                 if (is_add_mode=='x_in' && !($(element_focus+ '.add-input').val().charAt(0)=='#') && !data.isEmpty) {
@@ -1062,7 +1063,7 @@ function i_note_e_search(obj) {
                         });
                 },
                 template: function (suggestion) {
-                    return '<div style="padding: 3px 0;">' + view_e_js(suggestion) + '</div>';
+                    return '<div style="padding: 3px 0;">' + view_s_js(suggestion) + '</div>';
                 },
                 replace: function (suggestion) {
                     return ' @' + suggestion.s__id + ' ';
