@@ -91,7 +91,7 @@ if(count($current_sign_i_attempt) == 0){
             </span>
 
             <div class="doclear">&nbsp;</div>
-            <div style="padding-top:13px;">Or <a href="/e/auth0_login" style="text-decoration: none;font-weight: bold;"><?php echo '<u>'.$e___11035[14436]['m__title'].'</u>'; foreach($this->config->item('e___14436') as $e__id => $m) { echo '&nbsp;'.$m['m__icon']; } ?></a></div>
+            <div style="padding-top:13px;">Or use <a href="/e/auth0_login" style="text-decoration: none;font-weight: bold;"><?php echo '<u>'.$e___11035[14436]['m__title'].'</u>'; foreach($this->config->item('e___14436') as $e__id => $m) { echo '&nbsp;'.$m['m__icon']; } ?></a></div>
 
         </div>
 
