@@ -130,7 +130,7 @@ class E_model extends CI_Model
         if(!$added_e['status']){
             //We had an error, return it:
             return $added_e;
-        } elseif(!filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)){
+        } elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
             return array(
                 'status' => 0,
                 'message' => 'Invalid Email',
