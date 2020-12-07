@@ -1624,7 +1624,7 @@ class E extends CI_Controller
         }
 
 
-        $member_result = $this->X_model->add_member(trim($_POST['input_name']), $_POST['input_email']);
+        $member_result = $this->E_model->add_member(trim($_POST['input_name']), $_POST['input_email']);
         if (!$member_result['status']) {
             return view_json($member_result);
         }

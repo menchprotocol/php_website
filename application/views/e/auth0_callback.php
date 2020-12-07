@@ -70,7 +70,7 @@ if($userInfo){
     } else {
 
         //New account to be created:
-        $member_result = $this->X_model->add_member($userInfo['name'], $userInfo['email']);
+        $member_result = $this->E_model->add_member($userInfo['name'], $userInfo['email']);
         if(!$member_result['status']) {
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
