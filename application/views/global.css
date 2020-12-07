@@ -1823,6 +1823,7 @@ i, .btn .show-max {
 }
 .all-topics a {
     display: block;
+    width: calc(100% - 42px);
     margin: 0 21px;
 }
 .cover-content .msg, .cover-content .msg>span {
