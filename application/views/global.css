@@ -366,7 +366,7 @@ img.no-radius {
     width: 100%;
     max-width:380px !important;
     padding: 15px;
-    padding-top:41px;
+    padding-top: 0;
     margin: 0 auto;
 }
 .center{
@@ -698,7 +698,7 @@ img.no-radius {
 }
 .mench-large{
     width:128px;
-    margin-bottom: 41px;
+    margin-bottom: 5px;
 }
 
 @-webkit-keyframes mench-spin {
