@@ -7,15 +7,14 @@ header("Pragma: no-cache");
 
 
 require 'vendor/autoload.php';
-
-$auth0 = new Auth0\SDK\Auth0([
+use Auth0\SDK\Auth0;
+$auth0 = new Auth0([
     'domain' => 'mench.auth0.com',
     'client_id' => 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi',
     'client_secret' => $this->config->item('cred_auth0_client_secret'),
     'redirect_uri' => 'https://mench.com/e/auth0_callback',
     'scope' => 'openid profile email',
 ]);
-
 
 
 /*
@@ -39,30 +38,8 @@ $auth0 = new Auth0\SDK\Auth0([
  * */
 
 $userInfo = $auth0->getUser();
-print_r($userInfo);
-die();
-?>
+$sign_i__id = intval($this->session->userdata('login_i__id'));
 
-<form id="accountCreation" action="/e/e_signin_create" method="post">
-    <?php
-    foreach(array(
-        'sign_i__id' => '',
-        'input_email' => '',
-        'input_name' => '',
-        'new_password' => '',
-        'input_email' => '',
-        'input_email' => '',
-
-    ) as $key => $value){
-        echo '<input type="hidden" name="'.$key.'" value="'.htmlentities($value).'">';
-    }
-    ?>
-</form>
-<script type="text/javascript">
-    document.getElementById('myForm').submit();
-</script>
-
-<?php
 if($userInfo){
 
     //We have their email already?
@@ -74,41 +51,52 @@ if($userInfo){
     ), array('x__down'));
 
 
-    if(!count($user_emails)){
+    $this->X_model->create(array(
+        'x__type' => 14436, //Social Sign in
+        'x__source' => ( count($user_emails) ? $user_emails[0]['e__id'] : 0 ),
+        'x__up' => 0, //TODO Linkt o Google, Linkedin or Facebook, which all must be a child of @14436
+        'x__message' => ( count($user_emails) ? 'Welcome Back ' : 'New Member ' ).$userInfo['email'],
+        'x__metadata' => array(
+            'auth0_getUser' => $userInfo,
+        ),
+    ));
 
-        //Create new user:
-        $user_emails[0] = $this->E_model->verify_create($userInfo['name'], 0, 6181, random_avatar());
 
-        //Link to Auth0 Key Source
-        $this->X_model->ln_create(array(
-            'ln_parent_source_id' => 4430, //Mench User
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_creator_source_id' => $user_emails[0]['en_id'],
-            'ln_child_source_id' => $user_emails[0]['en_id'],
-        ));
+    if(count($user_emails)){
 
-        $this->X_model->ln_create(array(
-            'ln_type_source_id' => 4230, //Raw link
-            'ln_parent_source_id' => 1278, //People
-            'ln_creator_source_id' => $user_emails[0]['en_id'],
-            'ln_child_source_id' => $user_emails[0]['en_id'],
-        ));
+        //Activate Session:
+        $this->E_model->activate_session($user_emails[0], true);
 
-        $this->X_model->ln_create(array(
-            'ln_type_source_id' => 4255, //Text link
-            'ln_content' => $userInfo['email'],
-            'ln_parent_source_id' => 3288, //Email
-            'ln_creator_source_id' => $user_emails[0]['en_id'],
-            'ln_child_source_id' => $user_emails[0]['en_id'],
-        ));
+    } else {
+
+        //New account to be created:
+        $member_result = $this->X_model->add_member($userInfo['name'], $userInfo['email']);
+        if(!$member_result['status']) {
+            $this->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__message' => 'auth0_callback() Failed to create new member: '.$member_result['message'],
+                'x__metadata' => array(
+                    'auth0_getUser' => $userInfo,
+                    'member_result' => $member_result,
+                ),
+            ));
+            die('Error creating a new account: '.$member_result['message']);
+        }
 
     }
 
-    //Activate Session:
-    $this->E_model->activate_session($user_emails[0], true);
+    header('Location: ' . ($sign_i__id > 0 ? '/x/x_start/'.$sign_i__id :  home_url() ));
+
+} else {
+
+    //Log this error:
+    $this->X_model->create(array(
+        'x__type' => 4246, //Platform Bug Reports
+        'x__message' => 'auth0_callback() Failed to fetch data from server',
+        'x__metadata' => array(
+            'auth0_getUser' => $userInfo,
+        ),
+    ));
+    header('Location: /' . ( $sign_i__id ? $sign_i__id : '' ));
 
 }
-
-//Still Here? Go home:
-header('Location: /');
-die();

@@ -1994,6 +1994,9 @@ i, .btn .show-max {
     }
 }
 
+.form-control{
+    background-color:transparent;
+}
 
 .itemidea.list-group-item {
     padding:10px 0;
@@ -2130,9 +2133,6 @@ i, .btn .show-max {
     background-color:transparent !important;
     color: #FFFFFF !important;
 }
-.custom_ui_13884_13886 .form-control{
-    background-color:transparent !important;
-}
 .custom_ui_13884_13886 .adj-btn i{
     color: #FFFFFF !important;
 }
@@ -2196,10 +2196,6 @@ i, .btn .show-max {
     background-color:#f0f0f0; /* WAS WHITE */
     color: #222222;
 }
-.custom_ui_13884_13885 .form-control{
-    background-color:transparent !important;
-}
-
 .custom_ui_13884_13885 .some-text{
     background-color:transparent !important;
     color: #222222;

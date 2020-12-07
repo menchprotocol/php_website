@@ -36,17 +36,18 @@ class E_model extends CI_Model
         if(!$update_session){
 
             if(!$is_cookie){
+
                 //Set cookie for this new session:
-                $u_passwords = $this->X_model->fetch(array(
+                $u_emails = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__up' => 3286, //Password
+                    'x__up' => 3288, //Mench Email
                     'x__down' => $e['e__id'],
                 ));
 
                 //Create Cookie:
                 $cookie_time = time();
-                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.md5($e['e__id'].$u_passwords[0]['x__message'].$cookie_time.$this->config->item('cred_password_salt'));
+                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.md5($e['e__id'].$u_emails[0]['x__message'].$cookie_time.$this->config->item('cred_password_salt'));
                 setcookie('mench_auto_login', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
 
             }
@@ -122,6 +123,53 @@ class E_model extends CI_Model
     }
 
 
+    function add_member($full_name, $email){
+
+        //All good, create new source:
+        $added_e = $this->E_model->verify_create($full_name, 0, 6181, random_avatar());
+        if(!$added_e['status']){
+            //We had an error, return it:
+            return $added_e;
+        } elseif(!filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)){
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Email',
+            );
+        }
+
+        //Add User:
+        $this->X_model->create(array(
+            'x__up' => 4430, //MENCH USERS
+            'x__type' => e_x__type(),
+            'x__source' => $added_e['new_e']['e__id'],
+            'x__down' => $added_e['new_e']['e__id'],
+        ));
+        $this->X_model->create(array(
+            'x__type' => e_x__type(trim(strtolower($email))),
+            'x__message' => trim(strtolower($email)),
+            'x__up' => 3288, //Mench Email
+            'x__source' => $added_e['new_e']['e__id'],
+            'x__down' => $added_e['new_e']['e__id'],
+        ));
+
+        //Now update Algolia:
+        update_algolia(12274,  $added_e['new_e']['e__id']);
+
+
+        //Send Welcome Email:
+        email_template(14044, $added_e['new_e'], $email);
+
+
+        //Assign session & log login transaction:
+        $this->E_model->activate_session($added_e['new_e']);
+
+        //Return Member:
+        return array(
+            'status' => 1,
+            'e' => $added_e['new_e'],
+        );
+
+    }
 
 
     function create($add_fields, $external_sync = false, $x__source = 0)

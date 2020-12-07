@@ -1514,14 +1514,14 @@ class E extends CI_Controller
             $es = $this->E_model->fetch(array(
                 'e__id' => $cookie_parts[0],
             ));
-            $u_passwords = $this->X_model->fetch(array(
+            $u_emails = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__up' => 3286, //Password
+                'x__up' => 3288, //Mench Email
                 'x__down' => $cookie_parts[0],
             ));
 
-            if(count($es) && count($u_passwords) && $cookie_parts[2]==md5($cookie_parts[0].$u_passwords[0]['x__message'].$cookie_parts[1].$this->config->item('cred_password_salt'))){
+            if(count($es) && count($u_emails) && $cookie_parts[2]==md5($cookie_parts[0].$u_emails[0]['x__message'].$cookie_parts[1].$this->config->item('cred_password_salt'))){
 
                 //Assign session & log transaction:
                 $this->E_model->activate_session($es[0], false, true);
@@ -1533,6 +1533,13 @@ class E extends CI_Controller
                 cookie_delete();
 
             }
+        }
+
+        if($i__id > 0){
+            //Assign Session variable:
+            $session_data = $this->session->all_userdata();
+            $session_data['login_i__id'] = $i__id;
+            $this->session->set_userdata($session_data);
         }
 
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
@@ -1572,12 +1579,12 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing core data',
             ));
-        } elseif (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
+        } elseif (!isset($_POST['input_email'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Email',
             ));
-        } elseif (!isset($_POST['input_name']) || strlen($_POST['input_name'])<1) {
+        } elseif (!isset($_POST['input_name'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing name',
@@ -1588,7 +1595,8 @@ class E extends CI_Controller
         //Prep inputs & validate further:
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
         $_POST['input_name'] = trim($_POST['input_name']);
-        $name_parts = explode(' ', trim($_POST['input_name']));
+
+
         if (strlen($_POST['input_name']) < view_memory(6404,12232)) {
             return view_json(array(
                 'status' => 0,
@@ -1601,35 +1609,13 @@ class E extends CI_Controller
                 'message' => 'Name must be less than '.view_memory(6404,6197).' characters',
                 'focus_input_field' => 'input_name',
             ));
-
-            /*
-            } elseif (!isset($name_parts[1])) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'There must be a space between your your first and last name',
-                    'focus_input_field' => 'input_name',
-                ));
-            } elseif (strlen($name_parts[1])<2) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Last name must be 2 characters or longer',
-                    'focus_input_field' => 'input_name',
-                ));
-            } elseif (strlen($name_parts[0])<2) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'First name must be 2 characters or longer',
-                    'focus_input_field' => 'input_name',
-                ));
-            */
-
-        } elseif (isset($_POST['new_password']) && strlen($_POST['new_password'])<1) {
+        } elseif (strlen($_POST['new_password'])<1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing password',
                 'focus_input_field' => 'new_password',
             ));
-        } elseif (isset($_POST['new_password']) && strlen($_POST['new_password']) < view_memory(6404,11066)) {
+        } elseif (strlen($_POST['new_password']) < view_memory(6404,11066)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'New password must be '.view_memory(6404,11066).' characters or longer',
@@ -1638,54 +1624,21 @@ class E extends CI_Controller
         }
 
 
-
-        //All good, create new source:
-        $added_e = $this->E_model->verify_create(trim($_POST['input_name']), 0, 6181, random_avatar());
-        if(!$added_e['status']){
-            //We had an error, return it:
-            return view_json($added_e);
+        $member_result = $this->X_model->add_member(trim($_POST['input_name']), $_POST['input_email']);
+        if (!$member_result['status']) {
+            return view_json($member_result);
         }
 
 
-        //Add User:
+        //Add Password:
+        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $member_result['e']['e__id']));
         $this->X_model->create(array(
-            'x__up' => 4430, //MENCH USERS
-            'x__type' => e_x__type(),
-            'x__source' => $added_e['new_e']['e__id'],
-            'x__down' => $added_e['new_e']['e__id'],
+            'x__type' => e_x__type($hash),
+            'x__message' => $hash,
+            'x__up' => 3286, //Mench Password
+            'x__source' => $member_result['e']['e__id'],
+            'x__down' => $member_result['e']['e__id'],
         ));
-
-        $this->X_model->create(array(
-            'x__type' => e_x__type(trim(strtolower($_POST['input_email']))),
-            'x__message' => trim(strtolower($_POST['input_email'])),
-            'x__up' => 3288, //Mench Email
-            'x__source' => $added_e['new_e']['e__id'],
-            'x__down' => $added_e['new_e']['e__id'],
-        ));
-
-
-        if(isset($_POST['new_password'])){
-            $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $added_e['new_e']['e__id']));
-            $this->X_model->create(array(
-                'x__type' => e_x__type($hash),
-                'x__message' => $hash,
-                'x__up' => 3286, //Mench Password
-                'x__source' => $added_e['new_e']['e__id'],
-                'x__down' => $added_e['new_e']['e__id'],
-            ));
-        }
-
-
-        //Now update Algolia:
-        update_algolia(12274,  $added_e['new_e']['e__id']);
-
-
-        //Send Welcome Email:
-        email_template(14044, $added_e['new_e'], $_POST['input_email']);
-
-
-        //Assign session & log login transaction:
-        $this->E_model->activate_session($added_e['new_e']);
 
 
         if(intval($_POST['sign_i__id']) > 0){
@@ -1703,6 +1656,7 @@ class E extends CI_Controller
 
         }
 
+        //Created account via Mench:
         return view_json(array(
             'status' => 1,
             'sign_url' => $sign_url,
