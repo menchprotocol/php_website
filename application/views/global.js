@@ -139,8 +139,9 @@ function view_s__title(algolia_object){
     return htmlentitiesjs( algolia_object._highlightResult && algolia_object._highlightResult.s__title.value ? algolia_object._highlightResult.s__title.value : algolia_object.s__title );
 }
 
+
 function view_e_js(algolia_object){
-    return '<span class="icon-block">'+ algolia_object.s__icon +'</span><span class="montserrat '+ (algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__icon) : '' ) +'">' + view_s__title(algolia_object) + '</span>';
+    return '<span class="icon-block">'+ algolia_object.s__icon +'</span><span class="montserrat '+ js_extract_icon_color(algolia_object.s__icon) +'">' + view_s__title(algolia_object) + '</span>';
 }
 
 function view_i_js(algolia_object){
