@@ -71,7 +71,7 @@ if(count($current_sign_i_attempt) == 0){
 
             <?php
             //SOCIAL BUTTON:
-            echo '<div class="margin-top-down full-width-btn center"><a href="/e/auth0_login" class="btn btn-large btn-default">';
+            echo '<div class="full-width-btn center"><a href="/e/auth0_login" class="btn btn-large btn-default">';
             foreach($this->config->item('e___14436') as $e__id => $m) {
                 echo $m['m__icon'].'&nbsp;&nbsp;';
             }
