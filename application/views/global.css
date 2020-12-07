@@ -1823,6 +1823,7 @@ i, .btn .show-max {
 }
 .all-topics a {
     display: block;
+    margin: 0 21px;
 }
 .cover-content .msg, .cover-content .msg>span {
     line-height: 110% !important;
@@ -2054,13 +2055,13 @@ i, .btn .show-max {
 }
 .info_box_title{
     text-align: center;
-    font-size: 1.3em;
-    padding: 0 3px;
+    font-size: 1.8em;
+    padding: 0 8px;
     line-height: 110%;
 }
 .info_box_message{
     text-align: center;
-    padding: 13px;
+    margin:13px 21px;
 }
 
 

@@ -39,39 +39,60 @@ $auth0 = new Auth0\SDK\Auth0([
  * */
 
 $userInfo = $auth0->getUser();
+?>
+
+<form id="accountCreation" action="/e/e_signin_create" method="post">
+    <?php
+    foreach(array(
+        'sign_i__id' => '',
+        'input_email' => '',
+        'input_name' => '',
+        'new_password' => '',
+        'input_email' => '',
+        'input_email' => '',
+
+    ) as $key => $value){
+        echo '<input type="hidden" name="'.$key.'" value="'.htmlentities($value).'">';
+    }
+    ?>
+</form>
+<script type="text/javascript">
+    document.getElementById('myForm').submit();
+</script>
+
+<?php
 if($userInfo){
 
     //We have their email already?
-    $user_emails = $this->READ_model->ln_fetch(array(
-        'ln_status_source_id IN (' . join(',', $this->config->item('en_ids_7359')) . ')' => null, //Transaction Status Public
-        'ln_content' => $userInfo['email'],
-        'ln_type_source_id IN (' . join(',', $this->config->item('en_ids_4592')) . ')' => null, //Source Links
-        'ln_parent_source_id' => 3288, //Mench Email
-    ), array('en_child'));
+    $user_emails = $this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
+        'x__up' => 3288, //Mench Email
+        'x__message' => $userInfo['email'],
+    ), array('x__down'));
 
 
     if(!count($user_emails)){
 
         //Create new user:
-        $user_emails[0] = $this->SOURCE_model->en_verify_create($userInfo['name'], 0, 6181, random_source_avatar());
+        $user_emails[0] = $this->E_model->verify_create($userInfo['name'], 0, 6181, random_avatar());
 
         //Link to Auth0 Key Source
-
-        $this->READ_model->ln_create(array(
+        $this->X_model->ln_create(array(
             'ln_parent_source_id' => 4430, //Mench User
             'ln_type_source_id' => 4230, //Raw link
             'ln_creator_source_id' => $user_emails[0]['en_id'],
             'ln_child_source_id' => $user_emails[0]['en_id'],
         ));
 
-        $this->READ_model->ln_create(array(
+        $this->X_model->ln_create(array(
             'ln_type_source_id' => 4230, //Raw link
             'ln_parent_source_id' => 1278, //People
             'ln_creator_source_id' => $user_emails[0]['en_id'],
             'ln_child_source_id' => $user_emails[0]['en_id'],
         ));
 
-        $this->READ_model->ln_create(array(
+        $this->X_model->ln_create(array(
             'ln_type_source_id' => 4255, //Text link
             'ln_content' => $userInfo['email'],
             'ln_parent_source_id' => 3288, //Email
@@ -82,7 +103,7 @@ if($userInfo){
     }
 
     //Activate Session:
-    $this->SOURCE_model->en_activate_session($user_emails[0]);
+    $this->E_model->activate_session($user_emails[0], true);
 
 }
 

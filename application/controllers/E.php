@@ -1623,13 +1623,13 @@ class E extends CI_Controller
                 ));
             */
 
-        } elseif (!isset($_POST['new_password']) || strlen($_POST['new_password'])<1) {
+        } elseif (isset($_POST['new_password']) && strlen($_POST['new_password'])<1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing password',
                 'focus_input_field' => 'new_password',
             ));
-        } elseif (strlen($_POST['new_password']) < view_memory(6404,11066)) {
+        } elseif (isset($_POST['new_password']) && strlen($_POST['new_password']) < view_memory(6404,11066)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'New password must be '.view_memory(6404,11066).' characters or longer',
@@ -1662,14 +1662,19 @@ class E extends CI_Controller
             'x__source' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
         ));
-        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $added_e['new_e']['e__id']));
-        $this->X_model->create(array(
-            'x__type' => e_x__type($hash),
-            'x__message' => $hash,
-            'x__up' => 3286, //Mench Password
-            'x__source' => $added_e['new_e']['e__id'],
-            'x__down' => $added_e['new_e']['e__id'],
-        ));
+
+
+        if(isset($_POST['new_password'])){
+            $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $added_e['new_e']['e__id']));
+            $this->X_model->create(array(
+                'x__type' => e_x__type($hash),
+                'x__message' => $hash,
+                'x__up' => 3286, //Mench Password
+                'x__source' => $added_e['new_e']['e__id'],
+                'x__down' => $added_e['new_e']['e__id'],
+            ));
+        }
+
 
         //Now update Algolia:
         update_algolia(12274,  $added_e['new_e']['e__id']);
