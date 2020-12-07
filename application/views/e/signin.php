@@ -73,13 +73,11 @@ if(count($current_sign_i_attempt) == 0){
             //SOCIAL BUTTON:
             echo '<div class="margin-top-down full-width-btn center"><a href="/e/auth0_login" class="btn btn-large btn-default">';
             foreach($this->config->item('e___14436') as $e__id => $m) {
-                echo $m['m__icon'].'&nbsp;';
+                echo $m['m__icon'].'&nbsp;&nbsp;';
             }
-            echo '<u>'.$e___11035[14436]['m__title'].'</u>';
+            echo $e___11035[14436]['m__title'];
             echo '</a></div>';
-
             echo '<div class="mid-text-line"><span>OR</span></div>';
-
             ?>
 
             <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__icon'].'</span>'.$e___4269[3288]['m__title'] ?></span>
@@ -127,7 +125,7 @@ if(count($current_sign_i_attempt) == 0){
             </div>
 
             <div class="doclear">&nbsp;</div>
-            <div style="padding-top:13px;">No password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration:none;font-weight: bold;"><?= '<u>'.$e___11035[11068]['m__title'].'</u> '.$e___11035[11068]['m__icon'] ?></a></div>
+            <div style="padding-top:13px;">No password? Try <a  style="text-decoration:none;font-weight: bold;"><?= '<u>'.$e___11035[11068]['m__title'].'</u> '.$e___11035[11068]['m__icon'] ?></a></div>
 
         </div>
 

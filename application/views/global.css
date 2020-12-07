@@ -700,16 +700,21 @@ img.no-radius {
     width:128px;
     margin-bottom: 5px;
 }
+
 .mid-text-line{
     border-bottom: 1px solid #999999;
     text-align: center;
+    margin: 21px 0;
+    height: 15px;
 }
 .mid-text-line span{
-    display: block;
+    display: inline-block;
     margin: 0 auto;
-    background-color: #222;
-    padding: 5px;
-    margin-bottom: -15px;
+    padding: 6px 8px;
+    margin-bottom: 0px;
+    color: #999999 !important;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
 }
 
 @-webkit-keyframes mench-spin {
@@ -2123,7 +2128,8 @@ i, .btn .show-max {
 .custom_ui_13884_13886 .form-control,
 .custom_ui_13884_13886 .edit-locked span,
 .custom_ui_13884_13886 .chat-title span,
-.custom_ui_13884_13886 div.dropdown-item{
+.custom_ui_13884_13886 div.dropdown-item,
+.custom_ui_13884_13886 .mid-text-line span{
     background-color:#222222;
     color: #FFFFFF;
 
@@ -2189,7 +2195,8 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .fade,
 .custom_ui_13884_13885 .coin-frame,
 .custom_ui_13884_13885 .chat-title span,
-.custom_ui_13884_13885 div.dropdown-item
+.custom_ui_13884_13885 div.dropdown-item,
+.custom_ui_13884_13885 .mid-text-line span
 {
     background-color: #f0f0f0;
     color: #222222;
