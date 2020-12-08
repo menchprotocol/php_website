@@ -311,6 +311,9 @@ img.no-radius {
     font-weight: normal;
     z-index: 99999 !important;
 }
+.input-group .algolia-autocomplete {
+    width: 100%;
+}
 
 
 .no-margin{
@@ -1593,7 +1596,7 @@ i, .btn .show-max {
     width:    -moz-calc(100% - 15px);
     width:         calc(100% - 15px);
 }
-.texttype__lg, .input-group .algolia-autocomplete, .x__message, .x_input, .add_notes_form, .note-textarea.edit-on {
+.texttype__lg, .x__message, .x_input, .add_notes_form, .note-textarea.edit-on {
     width: -webkit-calc(100% - 82px);
     width:    -moz-calc(100% - 82px);
     width:         calc(100% - 82px);
