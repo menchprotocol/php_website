@@ -11,6 +11,8 @@ $superpower_13422 = superpower_active(13422, true); //SUPERPOWER OF SOURCING
 $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF GLASSES
 $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
+
+
 ?>
 
 <script>
@@ -90,10 +92,10 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
     $active_x__type = 0;
 
 
-    if($counter__e > 0 && !$source_is_e && $counter__e > $counter__i){
+    if($counter__e > 0 && (!$source_is_e || $superpower_10939) && $counter__e > $counter__i){
         //SOURCES
         $active_x__type = 12274;
-    } elseif($counter__i > 0){
+    } elseif($counter__i > 0 && (!$source_is_e || $superpower_10939)){
         //IDEAS
         $active_x__type = 12273;
     } elseif($source_is_e || ($superpower_12701 && $counter__x > 0)){
