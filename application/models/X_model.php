@@ -1012,7 +1012,7 @@ class X_model extends CI_Model
 
             //Append any appendix generated:
             $is_single_link = ( $is_discovery_mode && count($e_urls)==1 && $e_media_count==1 && $has_text_after );
-            if(!$is_single_link && !$is_current_e){
+            if(!$is_single_link){
                 //For single link it would be linked directly
                 $output_body_message .= $e_appendix;
             }
