@@ -1800,7 +1800,7 @@ i, .btn .show-max {
     border-radius: 50%;
     width:34px;
     height: 34px;
-    background-color: #000000;
+    background: rgba(0, 0, 0, 0.55);
 }
 .inside-btn>i, .inside-btn-alt>i {
     margin-top: 6px;
