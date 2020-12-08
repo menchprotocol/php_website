@@ -49,6 +49,7 @@ var i_drip_mode_js = <?= intval($i_drip_mode) ?>;
 function go_previous(href_url) {
     if(i_drip_mode_js && i_drip_pointer>1){
         i_drip_pointer--;
+        adjust_drip_percent();
         //Simply go to the next drip:
         $('.drip_msg, .final_drip').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
@@ -56,6 +57,10 @@ function go_previous(href_url) {
         //Go Next:
         window.location = href_url;
     }
+}
+
+function adjust_drip_percent(){
+    $('.progress_'+focus_i__id+' .progress-done').css('width', Math.round(i_drip_pointer/drip_msg_total)+'%');
 }
 
 function go_next(go_next_url){
@@ -66,6 +71,8 @@ function go_next(go_next_url){
         //Simply go to the next drip:
         $('.drip_msg').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
+
+        adjust_drip_percent();
 
         //Are we at the last drip?
         if(i_drip_pointer==drip_msg_total){

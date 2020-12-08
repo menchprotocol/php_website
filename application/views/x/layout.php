@@ -309,6 +309,7 @@ if($i_is_drip && !$i_drip_mode){
     echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
 }
 
+
 if(!$i_drip_mode){
 
 }
@@ -842,18 +843,10 @@ foreach($this->config->item('e___13289') as $e__id => $m) {
 }
 
 if($buttons_found > 0){
-
     echo '<div class="fixed-bottom">';
-    echo '<div class="container">';
-    echo '<div class="row" style="padding: 8px 0 '.( $in_my_x ? '' : '16px' ).';">';
-    echo '<div class="discover-controller">';
+    echo '<div class="discover-controller" style="padding: 8px 0;">';
     echo $buttons_ui;
     echo '</div>';
-    echo '</div>';
-    echo '</div>';
-
-    //if($in_my_x){ echo view_x_progress($i_completion_rate, $i_focus); }
-
     echo '</div>';
 }
 
