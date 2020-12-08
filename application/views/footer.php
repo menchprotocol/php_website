@@ -2,7 +2,10 @@
 <?php
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___14393 = $this->config->item('e___14393'); //SUGGEST
+$user_e = superpower_unlocked();
 ?>
+
+
 
 <!-- SUGGEST Modal -->
 <div class="modal fade" id="modal14393" tabindex="-1" role="dialog" aria-labelledby="modal14393Label" aria-hidden="true">
@@ -39,6 +42,33 @@ $e___14393 = $this->config->item('e___14393'); //SUGGEST
         </div>
     </div>
 </div>
+
+
+<?php
+if($user_e){
+    ?>
+    <!-- ACCOUNT Modal -->
+    <div class="modal fade" id="modal6225" tabindex="-1" role="dialog" aria-labelledby="modal6225Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    $this->load->view('e/account', array(
+                        'user_e' => $user_e,
+                    ));
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+?>
 
 
 </body>

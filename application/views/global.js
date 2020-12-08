@@ -245,8 +245,8 @@ $(document).ready(function () {
         $('.header-drop').removeClass('hidden');
     });
 
-    $('.suggest_modal').click(function (e) {
-        $('#modal14393').modal('show');
+    $('.trigger_modal').click(function (e) {
+        $('#modal'+$(this).attr('href')).modal('show');
     });
 
     $('#topnav li a').click(function (e) {

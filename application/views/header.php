@@ -233,16 +233,16 @@ if(!isset($hide_header)){
                         $extra_class = null;
                         $text_class = null;
 
-                        if(in_array($x__type, $this->config->item('n___10876'))){
+                        if(in_array($x__type, $this->config->item('n___13566'))) {
 
-                            //Fetch URL:
-                            $href = 'href="'.$e___10876[$x__type]['m__message'].'"';
-
-                        } elseif($x__type==14393) {
-
-                            //SUGGEST
+                            //MODAL
                             $href = 'href="javascript:void(0);"';
-                            $extra_class = ' suggest_modal ';
+                            $extra_class = ' trigger_modal ';
+
+                        } elseif(in_array($x__type, $this->config->item('n___10876'))){
+
+                            //URL
+                            $href = 'href="'.$e___10876[$x__type]['m__message'].'"';
 
                         } else {
 
@@ -251,7 +251,7 @@ if(!isset($hide_header)){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__icon'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<a '.$href.' x-type="'.$x__type.'" class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__icon'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
 
