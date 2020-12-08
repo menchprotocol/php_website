@@ -1851,8 +1851,9 @@ i, .btn .show-max {
     border-top-right-radius: 10px;
 }
 .cover-content .inner-content span {
-    padding-top:2px;
+    padding-top:3px;
     padding-bottom:2px;
+    display: inline-block;
 }
 .cover-content * {
     color: #FFFFFF;
