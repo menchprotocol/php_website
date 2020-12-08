@@ -936,8 +936,7 @@ class X_model extends CI_Model
 
         foreach($string_references['ref_e'] as $referenced_e){
 
-            $parts = explode('@'.$referenced_e,$message_input);
-            $has_text_after = substr_count($parts[(count($parts)-1)], ' ');
+
 
             //We have a reference within this message, let's fetch it to better understand it:
             $es = $this->E_model->fetch(array(
@@ -954,6 +953,9 @@ class X_model extends CI_Model
             //Set as source reference:
             $e_reference_key_val = $e_reference_keys[$referenced_key];
             $e_reference_fields[$e_reference_key_val] = intval($referenced_e);
+
+            $parts = explode('@'.$referenced_e,$message_input);
+            $has_text_after = substr_count($parts[(count($parts)-1)], ' ');
 
             //See if this source has any parent transactions to be shown in this appendix
             $e_urls = array();
@@ -1025,7 +1027,7 @@ class X_model extends CI_Model
             if($is_discovery_mode || $is_current_e || $simple_version){
 
                 //NO LINK so we can maintain focus...
-                if((!$has_text_after && $is_current_e) || (!$has_text_after && $e_count>0 && $e_media_count==$e_count /* All media */)){
+                if(!$has_text_after && ($is_current_e || ($e_count>0 && $e_media_count==$e_count /* All media */))){
 
                     //HIDE
                     $output_body_message = str_replace($identifier_string, ' ', $output_body_message);
@@ -1039,7 +1041,7 @@ class X_model extends CI_Model
                     } else {
                         //TEXT ONLY
                         //<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span>
-                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].'" title="'.$e_media_count.'/'.$e_count.'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
                     }
 
                 }
