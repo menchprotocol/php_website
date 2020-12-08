@@ -372,7 +372,6 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                     //Give Option to Add New Idea:
                     $ui .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14015]['m__icon'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add_e_idea add-input"
                                maxlength="' . view_memory(6404,4736) . '"
