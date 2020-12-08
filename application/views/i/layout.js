@@ -17,6 +17,7 @@ $(document).ready(function () {
 
     //Lookout for textinput updates
     x_set_start_text();
+    */
 
     //Look for power editor updates:
     $('.x_set_class_text').keypress(function(e) {
@@ -28,6 +29,7 @@ $(document).ready(function () {
     }).change(function() {
         x_set_text(this);
     });
+
 
     $('.power_editor').keydown(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -41,7 +43,7 @@ $(document).ready(function () {
     if(!$('#i_notes_list_4231 .note_sortable').length){
         $('.input_note_4231').focus();
     }
-    */
+
 
     autosize($('.text__4736_'+focus_i__id));
 
