@@ -1823,24 +1823,26 @@ i, .btn .show-max {
     position: absolute;
 }
 .cover-content{
-    width: -webkit-calc(100% - 11px) !important;
-    width:    -moz-calc(100% - 11px) !important;
-    width:         calc(100% - 11px) !important;
-    max-height:133px;
+    top: 0;
+    left: 3px;
+    width: calc(100% - 6px) !important;
+    max-height: 133px;
     position: absolute;
-    left: 7px;
-    top: 5px;
     overflow-x: hidden;
     overflow-y: scroll;
     padding: 0;
+    display: block;
 }
 .cover-content span {
-    padding: 0 1px 0 0;
-    background-color: #000000;
-    line-height: 130%;
+    padding: 3px;
+    background: rgba(0, 0, 0, 0.75);
+    line-height: 120%;
     font-size: 0.89em;
     color: #FFFFFF;
-    white-space: pre-wrap;
+    display: block;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 .full-width-btn {
     padding: 0 3px;

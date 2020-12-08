@@ -957,7 +957,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
     $found_next_discovery = false;
     foreach($is_next as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $next_i);
-        if(!$found_next_discovery && $completion_rate['completion_percentage']<100){
+        if($x__type==12211 && !$found_next_discovery && $completion_rate['completion_percentage']<100){
             $found_next_discovery = true;
             $x__type_to_pass = 14455; //The Immediate Next
         } else {
