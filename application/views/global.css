@@ -1834,7 +1834,7 @@ i, .btn .show-max {
     display: block;
 }
 .cover-content span {
-    padding: 3px;
+    padding: 3px 3px 2px;
     background: rgba(0, 0, 0, 0.55);
     line-height: 120%;
     font-size: 0.89em;
