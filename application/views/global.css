@@ -265,7 +265,7 @@ img.no-radius {
 }
 .card-body{
     margin: 0;
-    padding: 13px 41px;
+    padding: 13px 5px;
 }
 .card-body .padded, .card-body .list-group {
     margin: 0 0 13px;
