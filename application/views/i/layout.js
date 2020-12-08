@@ -9,7 +9,7 @@
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
-    /*
+
 
     i_note_activate();
 
@@ -31,16 +31,19 @@ $(document).ready(function () {
     });
 
     $('.power_editor').keydown(function (e) {
-        if (e.ctrlKey && e.keyCode == 13) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (e.ctrlKey && code== 13) {
             alert($(this).attr('note_type_id'));
             i_note_power_edit($(this).attr('note_type_id'));
         }
     });
 
     //Put focus on messages if no message:
+    /*
     if(!$('#i_notes_list_4231 .note_sortable').length){
         $('.input_note_' + '4231').focus();
     }
+    */
 
     autosize($('.text__4736_'+focus_i__id));
 
@@ -56,7 +59,6 @@ $(document).ready(function () {
 
     //Load Sortable:
     i_sort_load(focus_i__id);
-    */
 
 });
 
