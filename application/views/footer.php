@@ -67,7 +67,7 @@ if($user_e){
     </div>
 
     <?php
-    if($user_e){
+    if(superpower_active(12699, true)){
         ?>
         <!-- APP Modal -->
         <div class="modal fade" id="modal6287" tabindex="-1" role="dialog" aria-labelledby="modal6287Label" aria-hidden="true">
