@@ -1266,6 +1266,13 @@ label {
 .dolight{
     color: #999999;
 }
+
+.dotransparent {
+    background-color: transparent !important;
+}
+.dotransparent *, .btn-grey {
+    background-color: transparent;
+}
 .doclear{
     clear: both;
     line-height: 100%;
@@ -2328,10 +2335,5 @@ custom_ui_13884_13885 .dynamic_saving,
 custom_ui_13884_13886 .dynamic_saving,
 .dynamic_saving {
     background-color: #999999 !important;
-}
-
-
-.dotransparent, .dotransparent *, .btn-grey {
-    background-color: transparent;
 }
 
