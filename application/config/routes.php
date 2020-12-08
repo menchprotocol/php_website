@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['translate_uri_dashes']      = FALSE;
 
 //Home
+$route['home']                      = "x/index";
 $route['default_controller']        = "x/index"; //Home page
 $route['terms']                     = "x/terms";
 $route['browse']                    = "x/browse";
