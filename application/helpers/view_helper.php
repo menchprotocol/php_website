@@ -1292,6 +1292,9 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
+    if(!in_array($x__type, $CI->config->item('n___13369'))){
+        return 'Invalid x__type';
+    }
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
@@ -1312,6 +1315,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     $is_locked = in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage'];
     $is_sortable = !$is_locked && in_array($x__type, $CI->config->item('n___4603'));
 
+
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, true);
     $href = ( $discovery_mode ? '/'.$i['i__id'] : '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
@@ -1329,12 +1333,15 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     }
 
 
-    if($is_locked){
-        //LOCKED
-        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14377]['m__title'].'">'.$e___11035[14377]['m__icon'].'</div>';
-    } elseif($is_sortable){
+    if($is_sortable){
         //SORTABLE
         $ui .= '<div class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div>';
+    } elseif(in_array($x__type, $CI->config->item('n___14452'))){
+        //Show Self Icon
+        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</div>';
+    } elseif($is_locked){
+        //LOCKED
+        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14377]['m__title'].'">'.$e___11035[14377]['m__icon'].'</div>';
     }
 
     //REMOVE?

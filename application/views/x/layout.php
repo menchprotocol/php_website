@@ -69,7 +69,7 @@ if($in_my_x){
 }
 
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383')) && count($messages)>1 && (!$in_my_x || !count($x_completes));
+$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383')) && count($messages)>1; // && (!$in_my_x || !count($x_completes))
 $drip_msg_counter = 0;
 $drip_msg_total = count($messages) + 1 /* For Title */;
 
@@ -143,8 +143,11 @@ if($in_my_x){
         }
 
         foreach($sitemap_items_raw as $si) {
-            array_push($sitemap_items, view_i(6255, $si['i'],  null, false, $si['completion_rate']));
+            array_push($sitemap_items, view_i(14450, $si['i'],  null, false, $si['completion_rate']));
         }
+
+        //Add Current DIscoveryt
+        array_push($sitemap_items, view_i(14451, $i_focus,  null, false, $completion_rate));
 
     }
 }
@@ -291,7 +294,7 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 if($in_my_x && $previous_level_id){
     //Idea Map:
-    echo '<div class="header-drop hidden">';
+    echo '<div class="">'; //header-drop hidden
     echo '<div class="row">';
     echo join('', array_reverse($sitemap_items));
     echo '</div>';
@@ -850,6 +853,7 @@ foreach($this->config->item('e___13289') as $e__id => $m) {
 }
 
 if($buttons_found > 0){
+
     echo '<div class="fixed-bottom">';
     echo '<div class="container">';
     echo '<div class="row" style="padding: 8px 0 '.( $in_my_x ? '' : '16px' ).';">';
@@ -858,9 +862,9 @@ if($buttons_found > 0){
     echo '</div>';
     echo '</div>';
     echo '</div>';
-    if($in_my_x){
-        echo view_x_progress($i_completion_rate, $i_focus);
-    }
+
+    //if($in_my_x){ echo view_x_progress($i_completion_rate, $i_focus); }
+
     echo '</div>';
 }
 
