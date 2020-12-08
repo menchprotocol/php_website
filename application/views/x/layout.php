@@ -142,12 +142,14 @@ if($in_my_x){
             }
         }
 
+        //Add Current DIscoveryt
+        array_push($sitemap_items, view_i(14451, $i_focus,  null, false, $completion_rate));
+
         foreach($sitemap_raw as $si) {
             array_push($sitemap_items, view_i(14450, $si['i'],  null, false, $si['completion_rate']));
         }
 
-        //Add Current DIscoveryt
-        array_push($sitemap_items, view_i(14451, $i_focus,  null, false, $completion_rate));
+
 
     }
 }
