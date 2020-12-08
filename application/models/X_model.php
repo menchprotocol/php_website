@@ -1024,7 +1024,7 @@ class X_model extends CI_Model
             $tooltip_class = ( $tooltip_info ? ' class="underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
 
             //USER REFERENCE
-            if($is_discovery_mode || $is_current_e || $simple_version){
+            if($is_discovery_mode || $is_current_e || $simple_version || !$has_text_after){
 
                 //NO LINK so we can maintain focus...
                 if(!$has_text_after && ($is_current_e || ($e_count>0 && $e_media_count==$e_count /* All media */))){
