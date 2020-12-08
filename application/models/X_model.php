@@ -954,8 +954,8 @@ class X_model extends CI_Model
             $e_reference_key_val = $e_reference_keys[$referenced_key];
             $e_reference_fields[$e_reference_key_val] = intval($referenced_e);
 
-            $parts = explode('@'.$referenced_e,$message_input);
-            $has_text_after = substr_count($parts[(count($parts)-1)], ' ');
+            $parts = explode('@'.$referenced_e,$message_input,2);
+            $has_text_after = substr_count(trim($parts[1]), ' ');
 
             //See if this source has any parent transactions to be shown in this appendix
             $e_urls = array();
@@ -1024,7 +1024,7 @@ class X_model extends CI_Model
             $tooltip_class = ( $tooltip_info ? ' class="underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
 
             //USER REFERENCE
-            if($is_discovery_mode || $is_current_e || $simple_version || !$has_text_after){
+            if($is_discovery_mode || $is_current_e || $simple_version){
 
                 //NO LINK so we can maintain focus...
                 if(!$has_text_after && ($is_current_e || ($e_count>0 && $e_media_count==$e_count /* All media */))){
