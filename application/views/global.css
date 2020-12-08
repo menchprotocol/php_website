@@ -1842,13 +1842,17 @@ i, .btn .show-max {
 }
 
 .cover-content .inner-content {
-    padding: 3px 3px 2px;
+    padding: 0 3px;
     line-height: 120%;
     font-size: 0.89em;
     display: block;
     text-align: center;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+}
+.cover-content .inner-content span {
+    padding-top:2px;
+    padding-bottom:2px;
 }
 .cover-content * {
     color: #FFFFFF;
