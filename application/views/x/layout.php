@@ -69,7 +69,7 @@ if($in_my_x){
 }
 
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383')) && count($messages)>1; // && (!$in_my_x || !count($x_completes))
+$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383')) && count($messages)>1 && (!$in_my_x || !count($x_completes));
 $drip_msg_counter = 0;
 $drip_msg_total = count($messages) + 1 /* For Title */;
 
@@ -92,13 +92,13 @@ $drip_msg_total = count($messages) + 1 /* For Title */;
 echo '<div class="container coin-frame hideIfEmpty">';
 
 
+//Add Current DIscoveryt
+array_push($sitemap_items, view_i(14451, $i_focus,  null, false));
 
 
 if($in_my_x){
 
     //Fetch Parents all the way to the Discovery Item
-    //Add Current DIscoveryt
-    array_push($sitemap_items, view_i(14451, $i_focus,  null, false));
 
     if(!$in_my_discoveries){
 
@@ -291,7 +291,7 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 
 
-if($in_my_x){
+if($in_my_x || 1){
     //Idea Map:
     echo '<div class="row">';
     echo join('', array_reverse($sitemap_items));
