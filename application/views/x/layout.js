@@ -6,10 +6,6 @@ $(document).ready(function () {
 
     autosize($('#x_reply'));
 
-    $('.header-click').click(function (e) {
-        window.scrollTo(0,0);
-    });
-
     //Watchout for file uplods:
     $('.boxUpload').find('input[type="file"]').change(function () {
         x_upload(droppedFiles, 'file');
@@ -54,7 +50,7 @@ function go_previous(href_url) {
     if(i_drip_mode_js && i_drip_pointer>1){
         i_drip_pointer--;
         //Simply go to the next drip:
-        $('.drip_msg, .final_drip, .header-drop').addClass('hidden');
+        $('.drip_msg, .final_drip').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
     } else {
         //Go Next:
@@ -68,7 +64,7 @@ function go_next(go_next_url){
 
         i_drip_pointer++;
         //Simply go to the next drip:
-        $('.drip_msg, .header-drop').addClass('hidden');
+        $('.drip_msg').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
 
         //Are we at the last drip?

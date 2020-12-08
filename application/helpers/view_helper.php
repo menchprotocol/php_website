@@ -1343,7 +1343,8 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     $ui .= '<div class="cover-wrapper">';
     $ui .= ( $is_locked ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
-    if($completion_rate['completion_percentage'] > 0){
+
+    if($completion_rate['completion_percentage'] > 0 || $x__type==14451){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
 
@@ -1452,7 +1453,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
 
 function view_x_progress($completion_rate, $i){
 
-    return '<div class="progress-bg-list" title="'.$completion_rate['completion_percentage'].'% COMPLETED: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED" data-toggle="tooltip" data-placement="top"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+    return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$completion_rate['completion_percentage'].'% COMPLETED: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED" data-toggle="tooltip" data-placement="top"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
 
 }
 

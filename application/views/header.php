@@ -7,7 +7,6 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
 $current_mench = current_mench();
-$simple_header = ( 0 && is_numeric($first_segment) && $current_mench['x_id']==6255 ? ' header-drop hidden' : '' );
 ?><!doctype html>
 <html lang="en" >
 <head>
@@ -190,22 +189,20 @@ if(!isset($hide_header)){
 
                     echo '<td>';
                     echo '<div class="max_width">';
-                    echo '<div class=""'.$simple_header.'>';
 
                     //MENCH
-                    echo '<div class="left_nav mench_nav"><span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" />'.( !$user_e ? '<b class="montserrat text-logo">MENCH</b>' : '' ).'</a></span></div>';
+                    echo '<div class="left_nav mench_nav"><span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
 
                     //SEARCH
                     echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search white-border" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
 
-                    echo '</div>';
                     echo '</div>';
                     echo '</td>';
 
                     if(intval(view_memory(6404,12678))){
 
                         //Search button
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="'.$simple_header.'"><span class="search_icon">'.$e___11035[7256]['m__icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__icon'].'</span></span></a></td>';
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m__icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__icon'].'</span></a></td>';
 
                     }
 
@@ -218,7 +215,7 @@ if(!isset($hide_header)){
                     $menu_type = ( $user_e ? 12500 : 14372 );
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
-                    echo '<button type="button" class="btn no-side-padding header-click" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                    echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                     echo '<span class="icon-block">' .$e___13479[$menu_type]['m__icon'].'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';

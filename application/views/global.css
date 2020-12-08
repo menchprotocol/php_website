@@ -266,7 +266,7 @@ img.no-radius {
 }
 .card-body{
     margin: 0;
-    padding: 13px 5px;
+    padding: 13px 8px;
 }
 .card-body .padded, .card-body .list-group {
     margin: 0 0 13px;
@@ -514,9 +514,10 @@ img.no-radius {
     width: 100%;
     border:1px solid #222222;
 }
+
+
 .media-info {
     padding: 1px 4px;
-    background: rgba(0, 0, 0, 0.89);
     position: absolute;
     color: #FFF;
     font-weight: bold;
@@ -1800,7 +1801,6 @@ i, .btn .show-max {
     border-radius: 50%;
     width:34px;
     height: 34px;
-    background: rgba(0, 0, 0, 0.55);
 }
 .inside-btn>i, .inside-btn-alt>i {
     margin-top: 6px;
@@ -1809,6 +1809,9 @@ i, .btn .show-max {
 .inside-btn .btn {
     padding: 0 !important;
     margin-left: -3px !important;
+}
+.modal-body{
+    padding: 10px;
 }
 
 .cover-text {
@@ -1833,9 +1836,9 @@ i, .btn .show-max {
     padding: 0;
     display: block;
 }
+
 .cover-content span {
     padding: 3px 3px 2px;
-    background: rgba(0, 0, 0, 0.55);
     line-height: 120%;
     font-size: 0.89em;
     color: #FFFFFF;
@@ -2197,6 +2200,13 @@ i, .btn .show-max {
     border-bottom-color: #222222 !important;
 }
 
+.custom_ui_13884_13886 .fixed-bottom,
+.cover-link .inside-btn,
+.cover-content span,
+.media-info {
+    background: rgba(0, 0, 0, 0.55);
+}
+
 
 
 /* WHITE */
@@ -2269,7 +2279,9 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover {
     border-bottom-color: #f0f0f0 !important; /* WAS WHITE */
 }
-
+.custom_ui_13884_13885 .fixed-bottom {
+    background: rgba(255, 255, 255, 0.55);
+}
 
 
 @media (min-width:767px) {

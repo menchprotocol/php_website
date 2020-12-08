@@ -241,10 +241,6 @@ $(document).ready(function () {
         load_fullstory();
     }
 
-    $('.header-click').click(function (e) {
-        $('.header-drop').removeClass('hidden');
-    });
-
     $('.trigger_modal').click(function (e) {
         $('#modal'+$(this).attr('note_type_id')).modal('show');
     });
@@ -557,7 +553,7 @@ function toggle_search(){
 
         //Turn Search On:
         search_on = true; //Reverse
-        $('.search_nav, .header-drop').removeClass('hidden');
+        $('.search_nav').removeClass('hidden');
         $('#searchFrontForm input').focus();
 
     }

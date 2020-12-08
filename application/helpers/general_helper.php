@@ -977,7 +977,7 @@ function i_calc_common_prefix($child_list, $child_field){
         foreach($child_list as $child_item){
             $child_words = explode(' ', $child_item[$child_field]);
 
-            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word || strlen($word)<2){
+            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word){
                 //Not the same:
                 $all_the_same = false;
                 break;

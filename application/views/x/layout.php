@@ -69,10 +69,10 @@ if($in_my_x){
 }
 
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383')) && count($messages)>1 && (!$in_my_x || !count($x_completes));
+$i_is_drip = in_array($i_focus['i__type'], $this->config->item('n___14383'));
+$i_drip_mode = $i_is_drip && count($messages)>1 && (!$in_my_x || !count($x_completes));
 $drip_msg_counter = 0;
 $drip_msg_total = count($messages) + 1 /* For Title */;
-
 
 ?>
 
@@ -291,26 +291,26 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 
 
-if($in_my_x || 1){
-    //Idea Map:
-    echo '<div class="row">';
-    echo join('', array_reverse($sitemap_items));
-    echo '</div>';
-}
-
+//Idea Map:
+echo '<div class="row">';
+echo join('', array_reverse($sitemap_items));
 echo '</div>';
 
 
 
+if($in_my_x && count($x_completes)){
+    //Show Discovery time:
+    echo '<div class="headline"><span class="icon-block">'.$e___11035[14457]['m__icon'].'</span>'.sprintf($e___11035[14457]['m__title'], view_time_difference(strtotime($x_completes[0]['x__time']))).'</div>';
+}
 
 
-echo '<div class="container wrap-card">';
-
-
-
-if(!$i_drip_mode){
+if($i_is_drip && !$i_drip_mode){
     //HEADER
     echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
+}
+
+if(!$i_drip_mode){
+
 }
 
 
@@ -327,8 +327,8 @@ foreach($messages as $message_x) {
 if($i_drip_mode){
     $drip_msg_counter++;
     echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.( $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
-    echo '<div class="headline"><span class="icon-block">'.$e___11035[14384]['m__icon'].'</span>'.$e___11035[14384]['m__title'].'</div>';
-    echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
+    echo '<div class="headline" style="padding: 0;"><span class="icon-block">'.$e___11035[14384]['m__icon'].'</span>'.$e___11035[14384]['m__title'].'</div>';
+    echo '<h1 class="big-frame" style="padding: 21px 41px;">' . view_i_title($i_focus) . '</h1>';
     echo '</div>';
 }
 
