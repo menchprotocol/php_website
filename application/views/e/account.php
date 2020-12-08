@@ -10,8 +10,7 @@ $e___14010 = $this->config->item('e___14010');
 
 //ACCOUNT SETTING
 //echo '<h1 class="big-frame '.extract_icon_color($user_e['e__icon']).'">' . $user_e['e__title'] . '</h1>';
-
-echo '<div class="headline"><span class="icon-block">'.$e___11035[6225]['m__icon'].'</span>'.$e___11035[6225]['m__title'].'</div>';
+//echo '<div class="headline"><span class="icon-block">'.$e___11035[6225]['m__icon'].'</span>'.$e___11035[6225]['m__title'].'</div>';
 echo '<div class="accordion" id="MyAccountAccordion">';
 
 //Display account fields ordered with their SOURCE LINKS:
