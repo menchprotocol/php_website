@@ -262,6 +262,7 @@ img.no-radius {
 .card-header{
     padding: 0;
     background-color:transparent !important;
+    border-bottom: 0;
 }
 .card-body{
     margin: 0;
@@ -1894,7 +1895,7 @@ i, .btn .show-max {
     border-radius: 13px;
 }
 .modal-header{
-    border-bottom: 3px solid #222222;
+    border-bottom:0;
 }
 .gif-col{
     padding:0 5px 21px 0 !important;
