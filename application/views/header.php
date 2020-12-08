@@ -7,7 +7,7 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
 $current_mench = current_mench();
-$simple_header = ( is_numeric($first_segment) && $current_mench['x_id']==6255 ? ' header-drop hidden' : '' );
+$simple_header = ( 0 && is_numeric($first_segment) && $current_mench['x_id']==6255 ? ' header-drop hidden' : '' );
 ?><!doctype html>
 <html lang="en" >
 <head>
@@ -24,7 +24,7 @@ $simple_header = ( is_numeric($first_segment) && $current_mench['x_id']==6255 ? 
     echo ' var js_session_superpowers_activated = ' . json_encode( ($user_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
     echo ' var superpower_js_12701 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(12701, $this->session->userdata('session_superpowers_activated'))) . '; ';
     echo ' var superpower_js_13422 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(13422, $this->session->userdata('session_superpowers_activated'))) . '; ';
-    echo ' var js_pl_id = ' . ( isset($user_e['e__id']) ? $user_e['e__id'] : '0' ) . '; ';
+    echo ' var js_pl_id = ' . ( $user_e ? $user_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_name = \'' . ( $user_e ? $user_e['e__title'] : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
 
@@ -190,10 +190,10 @@ if(!isset($hide_header)){
 
                     echo '<td>';
                     echo '<div class="max_width">';
-                    echo '<div class="'.$simple_header.'">';
+                    echo '<div class=""'.$simple_header.'>';
 
                     //MENCH
-                    echo '<div class="left_nav mench_nav"><span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
+                    echo '<div class="left_nav mench_nav"><span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" />'.( !$user_e ? '<b class="montserrat text-logo">MENCH</b>' : '' ).'</a></span></div>';
 
                     //SEARCH
                     echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search white-border" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
