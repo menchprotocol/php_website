@@ -283,7 +283,8 @@ img.no-radius {
 .algolia_pad_search{
     height:377px;
     font-family: 'Montserrat', sans-serif;
-    padding: 13px 41px;
+    padding: 13px 3px;
+    text-align: center;
     color: #999999;
     font-weight: bold;
 }
