@@ -211,7 +211,7 @@ if(!isset($hide_header)){
 
                     //EDIT IDEA
                     if($i__id && superpower_active(10939, true)){
-                        echo '<td class="block-x"><a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'">'.$e___11035[13563]['m__icon'].'</a></td>';
+                        echo '<td class="block-x"><a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'" data-toggle="tooltip" data-placement="bottom">'.$e___11035[13563]['m__icon'].'</a></td>';
                     }
 
                     //MENU
