@@ -246,7 +246,7 @@ $(document).ready(function () {
     });
 
     $('.trigger_modal').click(function (e) {
-        $('#modal'+$(this).attr('href')).modal('show');
+        $('#modal'+$(this).attr('x-type')).modal('show');
     });
 
     $('#topnav li a').click(function (e) {
