@@ -5,7 +5,6 @@ $first_segment = $this->uri->segment(1);
 $i__id = is_numeric($first_segment) && $first_segment!=view_memory(6404,14002) ? intval($first_segment) : 0;
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
-$e___1326 = $this->config->item('e___1326'); //OFFICIAL WEBSITE
 $e___13479 = $this->config->item('e___13479');
 $current_mench = current_mench();
 $simple_header = ( 0 && is_numeric($first_segment) && $current_mench['x_id']==6255 ? ' header-drop hidden' : '' );
@@ -233,13 +232,6 @@ if(!isset($hide_header)){
 
                             //Fetch URL:
                             $href = 'href="'.$e___10876[$x__type]['m__message'].'"';
-
-                        } elseif(in_array($x__type, $this->config->item('n___1326'))){
-
-                            //Fetch URL:
-                            $href = 'href="'.$e___1326[$x__type]['m__message'].'"';
-
-
 
                         } elseif($x__type==14393) {
 
