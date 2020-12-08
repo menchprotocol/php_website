@@ -97,6 +97,8 @@ echo '<div class="container coin-frame hideIfEmpty">';
 if($in_my_x){
 
     //Fetch Parents all the way to the Discovery Item
+    //Add Current DIscoveryt
+    array_push($sitemap_items, view_i(14451, $i_focus,  null, false, $completion_rate));
 
     if(!$in_my_discoveries){
 
@@ -142,14 +144,9 @@ if($in_my_x){
             }
         }
 
-        //Add Current DIscoveryt
-        array_push($sitemap_items, view_i(14451, $i_focus,  null, false, $completion_rate));
-
         foreach($sitemap_raw as $si) {
             array_push($sitemap_items, view_i(14450, $si['i'],  null, false, $si['completion_rate']));
         }
-
-
 
     }
 }
