@@ -991,7 +991,7 @@ class X_model extends CI_Model
 
                         //SOURCE LINK VISUAL
                         $e_media_count++;
-                        $e_appendix .= '<div class="e-appendix paddingup" title="'.$this->uri->segment(1) .'//'.'@'.$referenced_e.'">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input, $is_discovery_mode) . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input, $is_discovery_mode) . '</div>';
 
                     } elseif($e_profile['x__type'] == 4256 /* URL */) {
 
@@ -1033,7 +1033,7 @@ class X_model extends CI_Model
                     if($is_single_link){
                         //SINGLE LINK:
                         //<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span>
-                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].'" style="text-decoration:underline;">' . $es[0]['e__title'] . '</a></span> ', $output_body_message);
+                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].'" target="_blank"><u>' . $es[0]['e__title'] . '</u>&nbsp;<i class="fas fa-external-link"></i></a></span> ', $output_body_message);
                     } else {
                         //TEXT ONLY
                         //<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span>
