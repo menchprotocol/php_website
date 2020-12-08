@@ -1841,7 +1841,7 @@ i, .btn .show-max {
     display: block;
 }
 
-.cover-content span {
+.cover-content .inner-content {
     padding: 3px 3px 2px;
     line-height: 120%;
     font-size: 0.89em;
@@ -1851,9 +1851,7 @@ i, .btn .show-max {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
-.cover-content .msg span {
-    border-radius: 0 !important;
-}
+
 .full-width-btn {
     padding: 0 3px;
 }

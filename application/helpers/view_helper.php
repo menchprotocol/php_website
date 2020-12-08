@@ -1370,7 +1370,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
 
 
     if($message_input || $i_title){
-        $ui .= '<div class="cover-content">';
+        $ui .= '<div class="cover-content"><div class="inner-content">';
         //$ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__spectrum']*100)+1));
         if($i_title){
             if(!$is_locked){
@@ -1388,7 +1388,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
                 $ui .= $message_input;
             }
         }
-        $ui .= '</div>';
+        $ui .= '</div></div>';
     }
 
 
