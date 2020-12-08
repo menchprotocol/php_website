@@ -1299,6 +1299,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
+    $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
 
     if(!$focus_e){
         $focus_e = $user_session;
@@ -1312,7 +1313,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     }
 
 
-    $is_locked = in_array($x__type, $CI->config->item('n___14453')) || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']);
+    $is_locked = $is_hard_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']);
     $is_sortable = !$is_locked && in_array($x__type, $CI->config->item('n___4603'));
 
 
@@ -1321,7 +1322,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     $href = ( $discovery_mode ? '/'.$i['i__id'] : '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_locked ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_locked ? ' not-allowed ' : '' ).'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : '' ).'>';
 
 
 
@@ -1420,15 +1421,11 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
 
         }
 
-        $ui .= '<div class="cover-text montserrat"><a href="'.$href.'">';
-        $ui .= view_i_time($i_stats);
-        $ui .= '</a></div>';
+        //$ui .= '<div class="cover-text montserrat"><a href="'.$href.'">'.view_i_time($i_stats).'</a></div>';
 
     } else {
 
-        $ui .= '<div class="cover-text montserrat">';
-        $ui .= view_i_time($i_stats);
-        $ui .= '</div>';
+        //$ui .= '<div class="cover-text montserrat">'.view_i_time($i_stats).'</div>';
 
     }
 
