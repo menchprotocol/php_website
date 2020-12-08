@@ -913,8 +913,7 @@ class X_model extends CI_Model
 
 
         //Start building the Output message body based on format:
-        $parts = explode('@',$message_input);
-        $has_text_after = substr_count($parts[(count($parts)-1)], ' ');
+
         $message_input .= ' ';//Helps with accurate source reference replacement
         $output_body_message = htmlentities($message_input);
         $string_references = extract_e_references($message_input); //Do it again since it may be updated
@@ -936,6 +935,9 @@ class X_model extends CI_Model
         }
 
         foreach($string_references['ref_e'] as $referenced_e){
+
+            $parts = explode('@'.$referenced_e,$message_input);
+            $has_text_after = substr_count($parts[(count($parts)-1)], ' ');
 
             //We have a reference within this message, let's fetch it to better understand it:
             $es = $this->E_model->fetch(array(
@@ -1023,7 +1025,7 @@ class X_model extends CI_Model
             if($is_discovery_mode || $is_current_e || $simple_version){
 
                 //NO LINK so we can maintain focus...
-                if((!$has_text_after && $is_current_e) || (!$has_text_after && $is_discovery_mode && $e_count>0 && $e_media_count==$e_count /* All media */)){
+                if((!$has_text_after && $is_current_e) || (!$has_text_after && $e_count>0 && $e_media_count==$e_count /* All media */)){
 
                     //HIDE
                     $output_body_message = str_replace($identifier_string, ' ', $output_body_message);
