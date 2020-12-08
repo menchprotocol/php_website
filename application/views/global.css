@@ -394,6 +394,7 @@ img.no-radius {
 .nav-tabs {
     margin:0 0 0px 0;
     padding-left: 41px !important;
+    padding-top: 21px;
 }
 
 .nav-pills {

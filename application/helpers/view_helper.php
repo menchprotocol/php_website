@@ -1231,7 +1231,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
             $loaded_topics++;
 
             $ui .= '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
-            $ui .= '<div class="row top-margin">';
+            $ui .= '<div class="row margin-top-down-half">';
             foreach($query as $i){
                 $ui .= view_i(12138, $i);
                 if(!in_array($i['i__id'], $i_exclude)){
