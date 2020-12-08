@@ -954,8 +954,16 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
     $ui .= '<div class="doclear">&nbsp;</div>';
 
     $ui .= '<div class="row top-margin">';
+    $found_next_discovery = false;
     foreach($is_next as $key => $next_i){
-        $ui .= view_i($x__type, $next_i, null, $user_e);
+        $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $next_i);
+        if(!$found_next_discovery && !$completion_rate['completion_percentage']){
+            $found_next_discovery = true;
+            $x__type_to_pass = 14455; //The Immediate Next
+        } else {
+            $x__type_to_pass = $x__type;
+        }
+        $ui .= view_i($x__type_to_pass, $next_i, null, $user_e, $completion_rate);
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
@@ -1315,11 +1323,17 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
 
     $is_locked = $is_hard_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']);
     $is_sortable = !$is_locked && in_array($x__type, $CI->config->item('n___4603'));
-
-
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, true);
-    $href = ( $discovery_mode ? '/'.$i['i__id'] : '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' ));
+
+
+    if(in_array($x__type, $CI->config->item('n___14454')) && $completion_rate['completion_percentage']<100){
+        $href = '/x/x_next/'.$i['i__id'];
+    } elseif($discovery_mode){
+        $href = '/'.$i['i__id'];
+    } else {
+        $href = '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
+    }
 
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_locked ? ' not-allowed ' : '' ).'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : '' ).'>';
