@@ -11,7 +11,6 @@ $route['browse/(:num)']             = "x/browse/$1";
 $route['@']                         = "e/index"; //Source home
 $route['signin']                    = "e/signin"; //Sign
 $route['signin/(:num)']             = "e/signin/$1"; //Sign
-$route['account']                   = "e/e_account";
 
 //COINS
 $route['(:num)']                    = "x/x_layout/$1";

@@ -332,26 +332,6 @@ class E extends CI_Controller
 
     }
 
-    function e_account(){
-
-        $user_e = superpower_unlocked(null, 1);
-
-        //Log View:
-        $this->X_model->create(array(
-            'x__source' => $user_e['e__id'],
-            'x__type' => 14013, //User Viewed Source
-        ));
-
-        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-        $this->load->view('header', array(
-            'title' => $e___11035[6225]['m__title'].' | '.$user_e['e__title'],
-        ));
-        $this->load->view('e/account', array(
-            'user_e' => $user_e,
-        ));
-        $this->load->view('footer');
-
-    }
 
     function e_only_add()
     {
