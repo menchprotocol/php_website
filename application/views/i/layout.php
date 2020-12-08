@@ -55,7 +55,6 @@ echo '</div>';
 if($show_previous){
     echo '<div class="list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
-                        <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[14014]['m__icon'].'</span></span>
                         <input type="text"
                                class="form-control form-control-thick previous_i add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
@@ -184,7 +183,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if($e_of_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {
             $ui .= '<div class="list-group-item list-adder no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">' . $e___11035[14055]['m__icon'] . '</span></span>
                     <input type="text"
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"                          
@@ -278,7 +276,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if($e_of_i && $is_active){
             $ui .= '<div class="list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
-                    <span class="input-group-addon addon-lean icon-adder"><span class="icon-block">'.$e___11035[13912]['m__icon'].'</span></span>
                     <input type="text"
                            class="form-control form-control-thick next_i add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
