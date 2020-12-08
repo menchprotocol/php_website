@@ -98,7 +98,7 @@ if($in_my_x){
 
     //Fetch Parents all the way to the Discovery Item
     //Add Current DIscoveryt
-    array_push($sitemap_items, view_i(14451, $i_focus,  null, false, $completion_rate));
+    array_push($sitemap_items, view_i(14451, $i_focus,  null, false));
 
     if(!$in_my_discoveries){
 
