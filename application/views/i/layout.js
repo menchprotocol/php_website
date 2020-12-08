@@ -9,8 +9,7 @@
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
-
-
+    /*
     i_note_activate();
 
     //Load search for mass update function:
@@ -39,9 +38,8 @@ $(document).ready(function () {
     });
 
     //Put focus on messages if no message:
-    /*
     if(!$('#i_notes_list_4231 .note_sortable').length){
-        $('.input_note_' + '4231').focus();
+        $('.input_note_4231').focus();
     }
     */
 
