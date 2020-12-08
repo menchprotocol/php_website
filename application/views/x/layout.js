@@ -60,7 +60,7 @@ function go_previous(href_url) {
 }
 
 function adjust_drip_percent(){
-    $('.progress_'+focus_i__id+' .progress-done').css('width', Math.round(i_drip_pointer/drip_msg_total)+'%');
+    $('.progress_'+focus_i__id+' .progress-done').css('width', Math.round(i_drip_pointer/drip_msg_total*100)+'%');
 }
 
 function go_next(go_next_url){
