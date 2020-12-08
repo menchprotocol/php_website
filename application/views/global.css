@@ -1885,7 +1885,7 @@ i, .btn .show-max {
     max-width: 767px;
 }
 .modal-content{
-    border: 3px solid #222222;
+    border: 3px solid transparent;
     border-radius: 13px;
 }
 .giphy_logo{
@@ -2183,7 +2183,8 @@ i, .btn .show-max {
 .custom_ui_13884_13886 .nav-tabs .nav-x.active,
 .custom_ui_13884_13886 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13886 .nav-tabs .nav-x:hover,
-.custom_ui_13884_13886 .btn.btn-default{
+.custom_ui_13884_13886 .btn.btn-default,
+.custom_ui_13884_13886 .modal-content{
     border-color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .nav-tabs .nav-item.show .nav-x,
@@ -2254,7 +2255,8 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .nav-tabs .nav-x.active,
 .custom_ui_13884_13885 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover,
-.custom_ui_13884_13885 .btn.btn-default
+.custom_ui_13884_13885 .btn.btn-default,
+.custom_ui_13884_13885 .modal-content
 {
     border-color: #222222 !important;
 }
