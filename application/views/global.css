@@ -1851,6 +1851,9 @@ i, .btn .show-max {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
+.cover-content span {
+    border-radius: 0 !important;
+}
 .full-width-btn {
     padding: 0 3px;
 }

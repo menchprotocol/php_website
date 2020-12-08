@@ -958,7 +958,7 @@ class X_model extends CI_Model
             $e_media_count = 0;
             $e_count = 0;
             $e_appendix = null;
-            $is_current_e = $this->uri->segment(1)=='@'.$referenced_e;
+            $is_current_e = ( $this->uri->segment(1) == '@'.$referenced_e );
             $tooltip_info = null;
 
 
@@ -1012,7 +1012,7 @@ class X_model extends CI_Model
 
             //Append any appendix generated:
             $is_single_link = ( $is_discovery_mode && count($e_urls)==1 && $e_media_count==1 && $has_text_after );
-            if(!$is_single_link){
+            if(!$is_single_link && !$is_current_e){
                 //For single link it would be linked directly
                 $output_body_message .= $e_appendix;
             }
