@@ -839,11 +839,9 @@ foreach($this->config->item('e___13289') as $e__id => $m) {
 }
 
 if($buttons_found > 0){
-    echo '<div class="fixed-bottom">';
-    echo '<div class="container dotransparent">';
+    echo '<div class="container fixed-bottom light-bg">';
     echo '<div class="discover-controller" style="padding: 8px 0;">';
     echo $buttons_ui;
-    echo '</div>';
     echo '</div>';
     echo '</div>';
 }

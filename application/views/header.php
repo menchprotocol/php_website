@@ -181,7 +181,7 @@ if(!isset($hide_header)){
     ?>
 
     <!-- MENCH LINE -->
-    <div class="container fixed-top" style="padding-bottom: 0 !important;">
+    <div class="container fixed-top light-bg" style="padding-bottom: 0 !important;">
         <div class="row">
             <table class="mench-navigation">
                 <tr>
