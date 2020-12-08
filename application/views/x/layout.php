@@ -298,11 +298,6 @@ echo '</div>';
 
 
 
-if($in_my_x && count($x_completes)){
-    //Show Discovery time:
-    echo '<div class="headline"><span class="icon-block">'.$e___11035[14457]['m__icon'].'</span>'.str_replace('%S',view_time_difference(strtotime($x_completes[0]['x__time'])), $e___11035[14457]['m__title']).'</div>';
-}
-
 
 if($i_is_drip && !$i_drip_mode){
     //HEADER
@@ -310,8 +305,9 @@ if($i_is_drip && !$i_drip_mode){
 }
 
 
-if(!$i_drip_mode){
-
+if($in_my_x && count($x_completes)){
+    //Show Discovery time:
+    echo '<div class="headline"><span class="icon-block">'.$e___11035[14457]['m__icon'].'</span>'.str_replace('%S',view_time_difference(strtotime($x_completes[0]['x__time'])), $e___11035[14457]['m__title']).'</div>';
 }
 
 
