@@ -9,6 +9,7 @@
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
+    /*
 
     i_note_activate();
 
@@ -55,6 +56,7 @@ $(document).ready(function () {
 
     //Load Sortable:
     i_sort_load(focus_i__id);
+    */
 
 });
 

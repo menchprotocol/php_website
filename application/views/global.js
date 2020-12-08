@@ -246,7 +246,7 @@ $(document).ready(function () {
     });
 
     $('.trigger_modal').click(function (e) {
-        $('#modal'+$(this).attr('x-type')).modal('show');
+        $('#modal'+$(this).attr('note_type_id')).modal('show');
     });
 
     $('#topnav li a').click(function (e) {

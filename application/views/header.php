@@ -251,7 +251,7 @@ if(!isset($hide_header)){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' x-type="'.$x__type.'" class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__icon'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<a '.$href.' note_type_id="'.$x__type.'" class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__icon'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
 

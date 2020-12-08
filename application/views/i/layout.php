@@ -19,9 +19,10 @@ $superpower_14005 = superpower_active(14005, true);
     //Include some cached sources:
     var focus_i__id = <?= $i_focus['i__id'] ?>;
 </script>
+<script src="/application/views/i/layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 <?php
-/*<script src="/application/views/i/layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>*/
+
 $e_focus_found = false; //Used to determine the first tab to be opened
 $is_north_star = $i_focus['i__id']==view_memory(6404,14002);
 $show_previous = $e_of_i && $is_active && !$is_north_star;
