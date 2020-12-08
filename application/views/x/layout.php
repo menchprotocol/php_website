@@ -292,7 +292,7 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 
 
-if($in_my_x && $previous_level_id){
+if($in_my_x){
     //Idea Map:
     echo '<div class="row">';
     echo join('', array_reverse($sitemap_items));
