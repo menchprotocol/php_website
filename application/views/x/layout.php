@@ -47,7 +47,7 @@ $is_next = $this->X_model->fetch(array(
 $completion_rate['completion_percentage'] = 0;
 $u_x_ids = $this->X_model->ids($user_e['e__id']);
 $in_my_x = ( $user_e['e__id'] > 0 ? $this->X_model->i_home($i_focus['i__id'], $user_e) : false );
-$sitemap_items_raw = array();
+$sitemap_raw = array();
 $sitemap_items = array();
 $i = array(); //Assume main intent not yet completed, unless proven otherwise...
 $i_completed = false; //Assume main intent not yet completed, unless proven otherwise...
@@ -107,7 +107,7 @@ if($in_my_x){
             foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
                 foreach($grand_parent_ids as $count => $previous_i__id) {
 
-                    if(filter_array($sitemap_items_raw, 'i__id', $previous_i__id)){
+                    if(filter_array($sitemap_raw, 'i__id', $previous_i__id)){
                         //Already There
                         break;
                     }
@@ -123,7 +123,7 @@ if($in_my_x){
                     ));
 
                     $completion_rate = $this->X_model->completion_progress($user_e['e__id'], $is_this[0]);
-                    array_push($sitemap_items_raw, array(
+                    array_push($sitemap_raw, array(
                         'i__id' => $previous_i__id,
                         'i' => $is_this[0],
                         'completion_rate' => $completion_rate,
@@ -142,7 +142,7 @@ if($in_my_x){
             }
         }
 
-        foreach($sitemap_items_raw as $si) {
+        foreach($sitemap_raw as $si) {
             array_push($sitemap_items, view_i(14450, $si['i'],  null, false, $si['completion_rate']));
         }
 
@@ -294,10 +294,8 @@ $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion
 
 if($in_my_x && $previous_level_id){
     //Idea Map:
-    echo '<div class="">'; //header-drop hidden
     echo '<div class="row">';
     echo join('', array_reverse($sitemap_items));
-    echo '</div>';
     echo '</div>';
 }
 
@@ -380,7 +378,7 @@ if(count($fetch_13865)){
 //DISCOVER LAYOUT
 $i_stats = i_stats($i_focus['i__metadata']);
 $tab_group = 13291;
-$tab_pills = '<div class=""><ul class="nav nav-tabs nav-sm '.superpower_active(10939).'">'; //header-drop hidden
+$tab_pills = '<ul class="nav nav-tabs nav-sm '.superpower_active(13422).'">';
 $tab_content = '';
 $tab_pill_count = 0;
 
@@ -426,15 +424,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $ui = '';
     $href = 'href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')"';
 
-    if($x__type==13563){
-
-        if($user_e['e__id']>0 && $superpower_10939 && source_of_e($user_e['e__id'])){
-            $href = 'href="/~'.$i_focus['i__id'].'"';
-        } else {
-            continue;
-        }
-
-    } elseif($x__type==12273){
+    if($x__type==12273){
 
         //IDEAS
         $counter = count($is_next);
@@ -790,7 +780,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $tab_content .= '</div>';
 
 }
-$tab_pills .= '</ul></div>';
+$tab_pills .= '</ul>';
 
 
 
