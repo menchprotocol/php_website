@@ -61,7 +61,7 @@ if($show_previous){
                                i-id="' . $i_focus['i__id'] . '"
                                id="addi-c-' . $i_focus['i__id'] . '-1"
                                placeholder="'.$e___11035[14014]['m__title'].'">
-                    </div><div class="previous_i algolia_pad_search hidden">'.view_memory(6404,13912).'</div></div>';
+                    </div>'.''.'</div>'; //<div class="previous_i algolia_pad_search hidden">'.view_memory(6404,13912).'</div>
 }
 
 echo '</div>';
