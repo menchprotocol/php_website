@@ -9,9 +9,9 @@
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
-    /*
+
     i_note_activate();
-    */
+
     //Load search for mass update function:
     load_editor();
 

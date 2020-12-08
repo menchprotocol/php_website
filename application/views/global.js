@@ -1101,9 +1101,14 @@ function i_note_sort_apply(note_type_id) {
 
 function i_note_sort_load(note_type_id) {
 
+
+    var sotrable_div = document.getElementById("i_notes_list_" + note_type_id);
+    if(!sotrable_div){
+        return false;
+    }
     var inner_content = null;
 
-    var sort_msg = Sortable.create( document.getElementById("i_notes_list_" + note_type_id) , {
+    var sort_msg = Sortable.create( sotrable_div , {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
         handle: ".i_note_sorting", // Restricts sort start click/touch to the specified element
         draggable: ".note_sortable", // Specifies which items inside the element should be sortable
