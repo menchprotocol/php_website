@@ -45,5 +45,9 @@
         echo '</div>';
     }
 
+
+    //Info Boxes:
+    echo view_info_box(14340); //Discover
+
     ?>
 </div>
