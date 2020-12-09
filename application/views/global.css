@@ -890,6 +890,12 @@ img.no-radius {
     margin-left: 41px;
 }
 
+.info_box_icon{
+    text-align: center;
+    width: 100%;
+    font-size: 5.5em;
+}
+
 
 textarea.note-textarea{
     border:0;

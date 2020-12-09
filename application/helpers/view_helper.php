@@ -1290,6 +1290,7 @@ function view_info_box($e__id){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $ui = '';
+    $ui .= '<div class="info_box_icon">' . $e___11035[$e__id]['m__icon'] . '</div>';
     $ui .= '<h2 class="info_box_header montserrat">' . $e___11035[$e__id]['m__title'] . '</h2>';
     if(strlen($e___11035[$e__id]['m__message'])){
         //Show at end:
