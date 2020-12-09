@@ -895,6 +895,7 @@ img.no-radius {
     text-align: center;
     width: 100%;
     font-size: 5.5em;
+    padding: 89px 0 0 0;
 }
 
 
@@ -2114,7 +2115,7 @@ i, .btn .show-max {
     padding: 8px 0;
 }
 .info_box_header{
-    padding:89px 3px 0;
+    padding:13px 3px 0;
     font-size: 2.5em;
     text-align: center;
     line-height: 110%;

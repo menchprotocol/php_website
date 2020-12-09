@@ -3,7 +3,6 @@ $e___6177 = $this->config->item('e___6177'); //Source Status
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
 $e___6198 = $this->config->item('e___6198'); //SOURCE ICON
-$e___10957 = $this->config->item('e___10957'); //SUPERPOWERS
 $source_of_e = source_of_e($e['e__id']);
 $source_is_e = $e['e__id']==$user_e['e__id'];
 $superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEATION
@@ -409,11 +408,6 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
                     }
                 }
-
-            } elseif($user_e) {
-
-                //Give Option to Get Started:
-                $ui .= '<div class="msg alert alert-warning" role="alert" style="text-decoration: none;"><span class="icon-block">'.$e___10957[10939]['m__icon'].'</span><a href="'.view_memory(6404,10939).'">'.$e___10957[10939]['m__title'].'<span class="icon-block"><i class="fas fa-arrow-right"></i></span></a><div class="padded">'.$e___10957[10939]['m__message'].'</div></div>';
 
             }
 
