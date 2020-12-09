@@ -79,7 +79,7 @@ function i_note_poweredit_save(note_type_id){
         $('.save_notes_' + note_type_id).attr('href', 'javascript:i_note_poweredit_save('+note_type_id+');');
 
         //Update raw text input:
-        $(input_textarea).val(data.input_clean.trim().' ');
+        $(input_textarea).val(data.input_clean.trim() + ' ');
         autosize.update($(input_textarea));
         $(input_textarea).focus();
 
