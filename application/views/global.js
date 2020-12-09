@@ -707,11 +707,6 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             return true;
         }
     }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_i_previous ? 'q' : 'a' )]}, [{
-
-        cssClasses: {
-            root: 'row row45',
-        },
-
         source: function (q, cb) {
 
             if($(element_focus+ '.add-input').val().charAt(0)=='#'){
@@ -722,6 +717,10 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
 
                     filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
                     hitsPerPage:21,
+                    container: '#hits',
+                    cssClasses: {
+                        root: 'row row45',
+                    },
 
                 }, function (error, content) {
                     if (error) {
