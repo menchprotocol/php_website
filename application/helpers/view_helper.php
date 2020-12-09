@@ -998,9 +998,16 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
         $tab_content = '';
         foreach($CI->config->item('e___14418') as $x__type2 => $m) {
 
+            if($x__type2==14468){
+                $x__type2 = 4231;
+                $m = $e___4485[$x__type2];
+            }
+
+
             $default_active = false;
             $ui = null;
             $href = 'href="javascript:void(0);" onclick="loadtab(14418,'.$x__type2.')"';
+
 
             //Is this a caret menu?
             if($x__type2==14468){
