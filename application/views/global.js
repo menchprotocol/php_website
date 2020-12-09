@@ -1069,7 +1069,7 @@ function i_note_e_search(obj) {
                     setTimeout(function () {
                         autosize.update(obj);
                     }, 233);
-                    return '@' + suggestion.s__id + "\n";
+                    return ' @' + suggestion.s__id + ' ';
                 }
             },
         ]);
