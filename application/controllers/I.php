@@ -892,7 +892,7 @@ class I extends CI_Controller {
 
 
 
-    function i_note_power_edit(){
+    function i_note_poweredit_save(){
 
         //Authenticate User:
         $user_e = superpower_unlocked();

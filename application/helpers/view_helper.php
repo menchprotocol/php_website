@@ -1025,7 +1025,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 $ui .= '<div class="add_notes_form">';
                 $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
                 $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
-                $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_power_edit('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'">'.$e___11035[14422]['m__title'].'</a></td>';
+                $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'">'.$e___11035[14422]['m__title'].'</a></td>';
 
                 if($handles_uploads){
 

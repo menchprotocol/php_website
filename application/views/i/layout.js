@@ -35,7 +35,7 @@ $(document).ready(function () {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (e.ctrlKey && code== 13) {
             alert($(this).attr('note_type_id'));
-            i_note_power_edit($(this).attr('note_type_id'));
+            i_note_poweredit_save($(this).attr('note_type_id'));
         }
     });
 
@@ -63,20 +63,20 @@ $(document).ready(function () {
 });
 
 
-function i_note_power_edit(note_type_id){
+function i_note_poweredit_save(note_type_id){
 
     var input_textarea = '.input_note_'+note_type_id;
     $(input_textarea).addClass('dynamic_saving').prop("disabled", true);
     $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
 
-    $.post("/i/i_note_power_edit", {
+    $.post("/i/i_note_poweredit_save", {
         i__id: focus_i__id,
         note_type_id: note_type_id,
         field_value: $(input_textarea).val().trim()
     }, function (data) {
 
         $(input_textarea).removeClass('dynamic_saving').prop("disabled", false);
-        $('.save_notes_' + note_type_id).attr('href', 'javascript:i_note_power_edit('+note_type_id+');');
+        $('.save_notes_' + note_type_id).attr('href', 'javascript:i_note_poweredit_save('+note_type_id+');');
 
         //Update raw text input:
         $(input_textarea).val(data.input_clean.trim());
