@@ -350,6 +350,24 @@ img.no-radius {
 
 
 
+.aa-input-container {
+    background-color: #FF0000 !important;
+}
+.aa-input-search {
+    background-color: #0000FF !important;
+}
+.aa-dropdown-menu {
+    background-color: #00CC00 !important;
+}
+.aa-suggestion {
+
+}
+
+.row45{
+    background-color: #FF0000;
+}
+
+
 .aa-dropdown-menu .aa-suggestion,
 .suggestion {
     border:0;
@@ -357,7 +375,7 @@ img.no-radius {
     padding: 7px 3px;
     font-weight: 500;
     margin: 0;
-    display: inline-block;
+    display: block;
     text-decoration: none;
 }
 

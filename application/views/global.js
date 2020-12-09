@@ -146,7 +146,7 @@ function view_s_js(algolia_object){
         return '<span class="icon-block">'+ algolia_object.s__icon +'</span><span class="montserrat '+ js_extract_icon_color(algolia_object.s__icon) +'">' + view_s__title(algolia_object) + '</span>';
     } else {
         //IDEA
-        return '<div class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__icon + '\')"></div></div><div class="cover-content"><div class="inner-content">'+view_s__title(algolia_object)+'</div></div></div>';
+        return '<div class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__icon + '\')"></div></div><div class="cover-content"><div class="inner-content montserrat">'+view_s__title(algolia_object)+'</div></div></div>';
     }
 }
 
@@ -707,6 +707,10 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             return true;
         }
     }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_i_previous ? 'q' : 'a' )]}, [{
+
+        cssClasses: {
+            root: 'row row45',
+        },
 
         source: function (q, cb) {
 
