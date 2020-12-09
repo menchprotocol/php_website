@@ -141,9 +141,9 @@ function view_s__title(algolia_object){
 
 
 function view_s_js(algolia_object){
-    if(algolia_object.s__type==12274){
+    if(algolia_object.s__type==12274 || 1){
         //SOURCE
-        return '<span class="icon-block">'+ algolia_object.s__icon +'</span><span class="montserrat '+ js_extract_icon_color(algolia_object.s__icon) +'">' + view_s__title(algolia_object) + '</span>';
+        return '<span class="icon-block">'+ algolia_object.s__icon +'</span><span class="montserrat">' + view_s__title(algolia_object) + '</span>';
     } else {
         //IDEA
         return '<div class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__icon + '\')"></div></div><div class="cover-content"><div class="inner-content montserrat">'+view_s__title(algolia_object)+'</div></div></div>';
@@ -717,10 +717,6 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
 
                     filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
                     hitsPerPage:21,
-                    container: '#hits',
-                    cssClasses: {
-                        root: 'row row45',
-                    },
 
                 }, function (error, content) {
                     if (error) {
