@@ -62,11 +62,6 @@ $(document).ready(function () {
 });
 
 
-function set_autosize(object){
-    var current_val = object.val();
-    object.val( current_val + ' ').keydown().keypress().keyup();
-    autosize(object);
-}
 
 function i_note_poweredit_save(note_type_id){
 
