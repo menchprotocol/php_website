@@ -20,7 +20,7 @@ $(document).ready(function () {
         e_sort_portfolio_load();
     }
 
-    autosize($('.texttype__lg.text__6197_'+e_focus_id));
+    set_autosize($('.texttype__lg.text__6197_'+e_focus_id));
 
     $("#input__6197, #e__title").keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -425,7 +425,7 @@ function e_modify_load(e__id, x__id) {
             $('#e__type').val(data.e__type);
             $('#e__icon').val(data.e__icon);
 
-            autosize($('#e__title'));
+            set_autosize($('#e__title'));
             e__title_word_count();
             update_demo_icon();
 
@@ -435,7 +435,7 @@ function e_modify_load(e__id, x__id) {
                 $('#x__message').val(data.x__message);
                 $('#e_x_count').val(0);
                 $('.remove-e, .e_has_link').removeClass('hidden');
-                autosize($('#x__message'));
+                set_autosize($('#x__message'));
                 x_type_preview();
 
             } else {

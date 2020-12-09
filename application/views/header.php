@@ -55,7 +55,7 @@ $current_mench = current_mench();
             const trigger = document.querySelector('#emoji_pick_type'+note_type_id);
             picker.on('emoji', selection => {
                 $('.input_note_'+note_type_id).val( $('.input_note_'+note_type_id).val() + selection.emoji );
-                autosize($(this));
+                set_autosize($(this));
             });
             trigger.addEventListener('click', () => picker.togglePicker(trigger));
         });

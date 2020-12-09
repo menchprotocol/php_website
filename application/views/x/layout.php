@@ -626,7 +626,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e);
                 }
 
-                $ui .= '<script> $(document).ready(function () { autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
+                $ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
 
 
             } elseif ($i_focus['i__type'] == 7637) {

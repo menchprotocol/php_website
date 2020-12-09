@@ -44,7 +44,7 @@ $(document).ready(function () {
     }
 
 
-    autosize($('.text__4736_'+focus_i__id));
+    set_autosize($('.text__4736_'+focus_i__id));
 
     //Activate Source-Only Inputs:
     $(".e-only").each(function () {
@@ -61,6 +61,11 @@ $(document).ready(function () {
 
 });
 
+
+function set_autosize(object){
+    object.val(object.val() + ' ').keydown().keypress().keyup();
+    autosize(object);
+}
 
 function i_note_poweredit_save(note_type_id){
 
@@ -79,11 +84,11 @@ function i_note_poweredit_save(note_type_id){
 
         //Update raw text input:
         $(input_textarea).val(data.input_clean.trim());
-        autosize($(input_textarea));
+        set_autosize($(input_textarea));
 
         if (!data.status) {
 
-            $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__title']);
+            $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon'] + ' ' + js_e___11035[14422]['m__title']);
 
             //Show Errors:
             $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span> Message not saved because:<br />'+data.message);
@@ -106,7 +111,7 @@ function i_note_poweredit_save(note_type_id){
             lazy_load();
 
             setTimeout(function () {
-                $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__title']);
+                $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon'] + ' ' + js_e___11035[14422]['m__title']);
             }, 987);
 
         }

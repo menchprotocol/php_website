@@ -932,7 +932,7 @@ function i_note_activate(){
         //Initiate @ search for all idea text areas:
         i_note_e_search($(this));
 
-        autosize($(this));
+        set_autosize($(this));
 
         //Activate sorting:
         i_note_sort_load(note_type_id);
@@ -1149,7 +1149,7 @@ function load_i_note_editor(x__id) {
     var textinput = $("#ul-nav-" + x__id + " textarea");
     var data = textinput.val();
     textinput.focus().val('').val(data);
-    autosize(textinput); //Adjust height
+    set_autosize(textinput); //Adjust height
 
 
     //Initiate search:
@@ -1357,7 +1357,7 @@ function i_note_add_text(note_type_id) {
 
             //Reset input field:
             $('.input_note_' + note_type_id).val("");
-            autosize.update($('.input_note_' + note_type_id));
+            set_autosize($('.input_note_' + note_type_id));
 
             i_note_count_new(note_type_id);
             i_note_counter(note_type_id, +1);

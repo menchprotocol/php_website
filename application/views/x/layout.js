@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     i_note_activate();
 
-    autosize($('#x_reply'));
+    set_autosize($('#x_reply'));
 
     //Watchout for file uplods:
     $('.boxUpload').find('input[type="file"]').change(function () {
