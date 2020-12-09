@@ -924,6 +924,7 @@ function x_set_text(this_handler){
 *
 * */
 function i_note_activate(){
+
     //Loop through all new idea inboxes:
     $(".new-note").each(function () {
 

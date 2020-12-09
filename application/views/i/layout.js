@@ -10,17 +10,13 @@ var match_search_loaded = 0; //Keeps track of when we load the match search
 
 $(document).ready(function () {
 
-    setTimeout(function() {
+    i_note_activate();
 
-        i_note_activate();
+    //Load search for mass update function:
+    load_editor();
 
-        //Load search for mass update function:
-        load_editor();
-
-        //Lookout for textinput updates
-        x_set_start_text();
-
-    }, 144);
+    //Lookout for textinput updates
+    x_set_start_text();
 
 
     //Look for power editor updates:
