@@ -1374,9 +1374,8 @@ function i_note_add_text(note_type_id) {
 function set_autosize(object){
     autosize(object);
     setTimeout(function () {
-        alert('aaaa');
-        object.keydown();
-        object.keypress();
+        var e = $.Event('keydown', { keyCode: 13 });
+        object.trigger(e);
     }, 987);
 }
 
