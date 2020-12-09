@@ -42,7 +42,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
         foreach($profiles as $count => $e_profile) {
             if(!$hide && $count==$show_max){
                 $hide = true;
-                echo '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block">'.$e___11035[13915]['m__icon'].'</span><b class="montserrat source">'.$e___11035[13915]['m__title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
+                echo '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><b class="montserrat source">'.$e___11035[13915]['m__title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
                 echo '<div class="list-group-item see_all_11030 no-padding"></div>';
             }
             echo view_e($e_profile,true, ( $hide ? ' see_all_11030 hidden ' : null ), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
