@@ -778,7 +778,7 @@ img.no-radius {
 
 #x_reply{
     padding: 5px;
-    border: 3px solid #FC1B44 !important;
+    border: 3px solid transparent !important;
     height: 55px;
     border-radius: 13px !important;
 }
@@ -2205,7 +2205,8 @@ i, .btn .show-max {
 .custom_ui_13884_13886 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13886 .nav-tabs .nav-x:hover,
 .custom_ui_13884_13886 .btn.btn-default,
-.custom_ui_13884_13886 .modal-content{
+.custom_ui_13884_13886 .modal-content,
+.custom_ui_13884_13886 #x_reply{
     border-color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .nav-tabs .nav-item.show .nav-x,
@@ -2283,7 +2284,8 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover,
 .custom_ui_13884_13885 .btn.btn-default,
-.custom_ui_13884_13885 .modal-content
+.custom_ui_13884_13885 .modal-content,
+.custom_ui_13884_13885 #x_reply
 {
     border-color: #222222 !important;
 }
