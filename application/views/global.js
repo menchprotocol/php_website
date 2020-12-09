@@ -1373,7 +1373,11 @@ function i_note_add_text(note_type_id) {
 
 function set_autosize(object){
     autosize(object);
-    object.keydown().keypress().keyup();
+    setTimeout(function () {
+        alert('aaaa');
+        object.keydown();
+        object.keypress();
+    }, 987);
 }
 
 
