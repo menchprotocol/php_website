@@ -975,18 +975,22 @@ function i_note_activate(){
             $('.box' + note_type_id).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
+                $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).addClass('dynamic_saving');
             })
-                .on('dragover dragenter', function () {
-                    $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).addClass('dynamic_saving');
-                })
-                .on('dragleave dragend drop', function () {
-                    $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).removeClass('dynamic_saving');
-                })
-                .on('drop', function (e) {
-                    droppedFiles = e.originalEvent.dataTransfer.files;
-                    e.preventDefault();
-                    i_note_add_file(droppedFiles, 'drop', note_type_id);
-                });
+                /*
+            .on('dragover dragenter', function () {
+                $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).addClass('dynamic_saving');
+            })
+            .on('dragleave dragend drop', function () {
+                $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).removeClass('dynamic_saving');
+            })
+                */
+            .on('drop', function (e) {
+                droppedFiles = e.originalEvent.dataTransfer.files;
+                e.preventDefault();
+                i_note_add_file(droppedFiles, 'drop', note_type_id);
+                $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).removeClass('dynamic_saving');
+            });
         }
 
     });
