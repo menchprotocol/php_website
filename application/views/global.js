@@ -1373,7 +1373,7 @@ function i_note_add_text(note_type_id) {
 
 function append_value(theobject, thevalue){
     var current_value = theobject.val();
-    theobject.val( current_value + thevalue );
+    theobject.val( current_value + thevalue ).focus();
 }
 
 function set_autosize(theobject){
