@@ -647,7 +647,7 @@ class I extends CI_Controller {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Unknown error 1 while trying to save file: '.print_r($_FILES, true),
+                'message' => 'Unknown error while trying to save file',
             ));
 
         } elseif ($_FILES[$_POST['upload_type']]['size'] > (view_memory(6404,13572) * 1024 * 1024)) {
