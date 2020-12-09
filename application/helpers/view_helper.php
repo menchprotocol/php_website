@@ -1010,7 +1010,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
 
             //Is this a caret menu?
-            if($x__type2==14468){
+            if($x__type2==4231){
 
                 //WRITE
                 $default_active = true;
