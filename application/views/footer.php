@@ -42,21 +42,16 @@ if($user_e){
                 </div>
                 <div class="modal-body">
 
-
-                    <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___14393[14394]['m__icon'].'</span>'.$e___14393[14394]['m__title'] ?></div>
-                    <select class="form-control border" id="sugg_type">
+                    <select class="form-control border white-border" id="sugg_type">
                         <?php
-                        echo '<option value="0">SELECT...</option>';
+                        echo '<option value="0">SELECT '.$e___14393[14394]['m__title'].'...</option>';
                         foreach($this->config->item('e___14394') /* SUGGESTION TYPE */ as $x__type => $m){
                             echo '<option value="' . $x__type . '" title="' . $m['m__message'] . '">' . $m['m__title'] . '</option>';
                         }
                         ?>
                     </select>
 
-
-                    <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___14393[14395]['m__icon'].'</span>'.$e___14393[14395]['m__title'] ?></div>
-                    <textarea class="form-control text-edit border white-border" id="sugg_note" data-lpignore="true" placeholder="More details here..."></textarea>
-
+                    <textarea class="form-control text-edit border white-border" id="sugg_note" data-lpignore="true" placeholder="<?= $e___14393[14395]['m__title'] ?>: More details here..."></textarea>
 
                 </div>
                 <div class="modal-footer">
