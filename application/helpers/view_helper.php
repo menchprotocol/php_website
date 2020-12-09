@@ -1453,6 +1453,10 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
 
 function view_x_progress($completion_rate, $i){
 
+    if(!isset($completion_rate['steps_total'])){
+        return '<div class="progress-bg-list progress_'.$i['i__id'].'"><div class="progress-done" style="width:0%"></div></div>';
+    }
+
     return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$completion_rate['completion_percentage'].'% COMPLETED: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERED" data-toggle="tooltip" data-placement="top"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
 
 }
