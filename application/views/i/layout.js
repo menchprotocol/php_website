@@ -63,7 +63,8 @@ $(document).ready(function () {
 
 
 function set_autosize(object){
-    object.val(object.val() + ' ').keydown().keypress().keyup();
+    var current_val = object.val();
+    object.val( current_val + ' ').keydown().keypress().keyup();
     autosize(object);
 }
 
