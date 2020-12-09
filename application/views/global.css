@@ -306,9 +306,28 @@ img.no-radius {
     float:left;
 }
 
-.sample-container{
+
+.aa-input-container {
+    display: inline-block;
+    position: relative;
     background-color: #FF0000 !important;
-    color: #FF0000 !important;
+}
+.aa-input-search {
+    width: 300px;
+    padding: 12px 28px 12px 12px;
+    border: 1px solid #e4e4e4;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #0000FF !important;
+}
+.aa-dropdown-menu {
+    background-color: #00CC00 !important;
+}
+.aa-suggestion {
+    background-color: #FFC500 !important;
+
 }
 
 .algolia-autocomplete .aa-dropdown-menu {

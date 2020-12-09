@@ -386,7 +386,6 @@ echo $tab_content;
 
 echo '</div>';
 
-echo '<div class="sample-container">hi</div>';
 
 
 //ADD GIF MODAL
