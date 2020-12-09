@@ -1066,7 +1066,7 @@ function i_note_e_search(obj) {
                     return view_s_js(suggestion);
                 },
                 replace: function (suggestion) {
-                    return ' @' + suggestion.s__id + "\n";
+                    return "\n" + '@' + suggestion.s__id + "\n";
                 }
             },
         ]);
