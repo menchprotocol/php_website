@@ -924,7 +924,6 @@ function x_set_text(this_handler){
 *
 * */
 function i_note_activate(){
-
     //Loop through all new idea inboxes:
     $(".new-note").each(function () {
 
@@ -1042,63 +1041,6 @@ function count_13574(x__id) {
         $('#NoteCounter' + x__id).addClass('hidden');
     }
 }
-
-
-
-
-function i_note_poweredit_save(note_type_id){
-
-    var input_textarea = '.input_note_'+note_type_id;
-    $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).addClass('dynamic_saving');
-    $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
-
-    $.post("/i/i_note_poweredit_save", {
-        i__id: focus_i__id,
-        note_type_id: note_type_id,
-        field_value: $(input_textarea).val().trim()
-    }, function (data) {
-
-        $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).removeClass('dynamic_saving');
-        $('.save_notes_' + note_type_id).attr('href', 'javascript:i_note_poweredit_save('+note_type_id+');');
-
-        //Update raw text input:
-        $(input_textarea).val(data.input_clean.trim().' ');
-        autosize.update($(input_textarea));
-        $(input_textarea).focus();
-
-        if (!data.status) {
-
-            $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon'] + ' ' + js_e___11035[14422]['m__title']);
-
-            //Show Errors:
-            $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span> Message not saved because:<br />'+data.message);
-
-        } else {
-
-            //Show update success icon:
-            $('.save_notes_' + note_type_id).html(js_e___11035[14424]['m__icon']);
-
-            //Reset errors:
-            $(".note_error_"+note_type_id).html('');
-
-            //Update READ:
-            $('.editor_read_'+note_type_id).html(data.message);
-
-            //Tooltips:
-            $('[data-toggle="tooltip"]').tooltip();
-
-            //Load Images:
-            lazy_load();
-
-            setTimeout(function () {
-                $(input_textarea).focus();
-                $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon'] + ' ' + js_e___11035[14422]['m__title']);
-            }, 987);
-
-        }
-    });
-}
-
 
 
 
