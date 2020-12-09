@@ -428,7 +428,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
     //Show Loading...
     var data_object = eval('js_e___'+element_id);
-    $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? '<span class="show-max">SAVING...</span>' : '' ) +'</b>');
+    $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
     $.post("/i/i_set_dropdown", {
 
