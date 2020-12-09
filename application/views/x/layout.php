@@ -559,7 +559,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
                     //List children to choose from:
-                    $common_prefix = i_calc_common_prefix($is_next, 'i__title');
                     foreach ($is_next as $key => $next_i) {
 
                         //Has this been previously selected?
@@ -578,7 +577,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $ui .= '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="' . ($previously_selected ? 'fas fa-check-circle discover' : 'far fa-circle discover') . '"></i></td>';
 
                         $ui .= '<td style="width:100%; padding: 0 !important;">';
-                        $ui .= '<b class="montserrat i-url" style="margin-left:0;">' . view_i_title($next_i, $common_prefix) . '</b>';
+                        $ui .= '<b class="montserrat i-url" style="margin-left:0;">' . view_i_title($next_i) . '</b>';
                         $ui .= '</td>';
 
                         $ui .= '</tr></table>';
