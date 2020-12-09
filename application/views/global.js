@@ -297,7 +297,7 @@ $(document).ready(function () {
 
         $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            $('#mench_search').prop("disabled", true).val('Loading...');
+            $('#mench_search').val('Loading...');
 
             window.location = suggestion.s__url;
 
@@ -1233,7 +1233,6 @@ function i_note_start_adding(note_type_id) {
     $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
     $('.input_note_' + note_type_id).addClass('dynamic_saving');
     $('.no_notes_' + note_type_id).remove();
-    $('.input_note_' + note_type_id).prop("disabled", true);
     $('.remove_loading').hide();
 }
 
@@ -1242,8 +1241,7 @@ function i_note_end_adding(result, note_type_id) {
 
     //Update UI to unlock:
     $('.save_notes_' + note_type_id).html(js_e___11035[14421]['m__icon']).attr('href', 'javascript:i_note_add_text('+note_type_id+');');
-    $('.input_note_' + note_type_id).removeClass('dynamic_saving');
-    $('.input_note_' + note_type_id).prop("disabled", false).focus();
+    $('.input_note_' + note_type_id).removeClass('dynamic_saving').focus();
     $('.remove_loading').fadeIn();
 
     //What was the result?
