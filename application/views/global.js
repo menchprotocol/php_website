@@ -953,9 +953,10 @@ function i_note_activate(){
         });
 
         //Watch for message creation:
-        $('.input_note_' + note_type_id).keydown(function (e) {
-            if (e.ctrlKey && e.keyCode == 13) {
-                i_note_add_text(note_type_id);
+        $('.regular_editor').keydown(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (e.ctrlKey && code== 13) {
+                i_note_add_text($(this).attr('note_type_id'));
             }
         });
 
