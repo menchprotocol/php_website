@@ -307,18 +307,6 @@ img.no-radius {
 }
 
 
-.aa-input-container {
-    background-color: #FF0000 !important;
-}
-.aa-input-search {
-    background-color: #0000FF !important;
-}
-.aa-dropdown-menu {
-    background-color: #00CC00 !important;
-}
-.aa-suggestion {
-    float: left;
-}
 
 .algolia-autocomplete .aa-dropdown-menu {
     width: 100%;
@@ -357,13 +345,19 @@ img.no-radius {
     font-size: 4em !important;
 }
 
-.aa-dropdown-menu .aa-suggestion, .suggestion {
+
+
+
+
+
+.aa-dropdown-menu .aa-suggestion,
+.suggestion {
     border:0;
     cursor: pointer;
     padding: 7px 3px;
     font-weight: 500;
     margin: 0;
-    display: block;
+    display: inline-block;
     text-decoration: none;
 }
 
