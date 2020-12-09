@@ -80,7 +80,7 @@ function i_note_poweredit_save(note_type_id){
 
         //Update raw text input:
         $(input_textarea).val(data.input_clean.trim());
-        set_autosize($(input_textarea));
+        autosize.update($(input_textarea));
 
         if (!data.status) {
 

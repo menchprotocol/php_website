@@ -1149,7 +1149,7 @@ function load_i_note_editor(x__id) {
     var textinput = $("#ul-nav-" + x__id + " textarea");
     var data = textinput.val();
     textinput.focus().val('').val(data);
-    set_autosize(textinput); //Adjust height
+    autosize.update(textinput);
 
 
     //Initiate search:
