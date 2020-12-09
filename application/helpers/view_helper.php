@@ -1003,7 +1003,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
             $href = 'href="javascript:void(0);" onclick="loadtab(14418,'.$x__type2.')"';
 
             //Is this a caret menu?
-            if($x__type2==14419){
+            if($x__type2==14468){
 
                 //WRITE
                 $default_active = true;
@@ -1074,7 +1074,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             $tab_nav .= '<li class="nav-item '.( in_array($x__type2, $CI->config->item('n___14103')) ? ' pull-right ' : '' ).'"><a '.$href.' class="nav-x tab-nav-14418 tab-head-'.$x__type2.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;</a></li>';
 
-            $tab_content .= '<div class="tab-content tab-group-14418 tab-data-'.$x__type2.( $default_active ? '' : ' hidden ' ).'">';
+            $tab_content .= '<div class="tab-content tab-group-14418 tab-data-'.$x__type2.' power-editor-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
             $tab_content .= $ui;
             $tab_content .= '</div>';
 

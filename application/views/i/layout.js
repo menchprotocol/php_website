@@ -65,7 +65,7 @@ $(document).ready(function () {
 function i_note_poweredit_save(note_type_id){
 
     var input_textarea = '.input_note_'+note_type_id;
-    $(input_textarea).addClass('dynamic_saving').prop("disabled", true);
+    $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).addClass('dynamic_saving');
     $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
 
     $.post("/i/i_note_poweredit_save", {
@@ -74,7 +74,7 @@ function i_note_poweredit_save(note_type_id){
         field_value: $(input_textarea).val().trim()
     }, function (data) {
 
-        $(input_textarea).removeClass('dynamic_saving').prop("disabled", false);
+        $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).removeClass('dynamic_saving');
         $('.save_notes_' + note_type_id).attr('href', 'javascript:i_note_poweredit_save('+note_type_id+');');
 
         //Update raw text input:

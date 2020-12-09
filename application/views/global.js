@@ -977,10 +977,10 @@ function i_note_activate(){
                 e.stopPropagation();
             })
                 .on('dragover dragenter', function () {
-                    $('.input_note_' + note_type_id).addClass('dynamic_saving');
+                    $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).addClass('dynamic_saving');
                 })
                 .on('dragleave dragend drop', function () {
-                    $('.input_note_' + note_type_id).removeClass('dynamic_saving');
+                    $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).removeClass('dynamic_saving');
                 })
                 .on('drop', function (e) {
                     droppedFiles = e.originalEvent.dataTransfer.files;
