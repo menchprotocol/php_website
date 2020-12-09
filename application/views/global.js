@@ -1373,7 +1373,7 @@ function i_note_add_text(note_type_id) {
 
 function set_autosize(theobject){
     //autosize(theobject);
-    autosize.update(elements);
+    autosize.update(theobject);
 }
 
 
