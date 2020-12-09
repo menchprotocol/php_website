@@ -1358,6 +1358,9 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     } elseif($is_locked){
         //LOCKED
         $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14377]['m__title'].'">'.$e___11035[14377]['m__icon'].'</div>';
+    } elseif($completion_rate['completion_percentage']>=100){
+        //100% COMPLETE
+        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div>';
     }
 
     //REMOVE?
