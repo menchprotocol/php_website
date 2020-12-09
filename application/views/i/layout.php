@@ -61,7 +61,7 @@ if($show_previous){
                                i-id="' . $i_focus['i__id'] . '"
                                id="addi-c-' . $i_focus['i__id'] . '-1"
                                placeholder="'.$e___11035[14014]['m__title'].'">
-                    </div>'.''.'</div>'; //<div class="previous_i algolia_pad_search hidden">'.view_memory(6404,13912).'</div>
+                    </div></div>';
 }
 
 echo '</div>';
@@ -187,7 +187,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"                          
                            placeholder="' . $e___11035[14055]['m__title'] . '">
-                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">'.view_memory(6404,13912).'</div></div>';
+                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">&nbsp;</div></div>';
         }
 
         $ui .= '</div>';
@@ -282,7 +282,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                            i-id="' . $i_focus['i__id'] . '"
                            id="addi-c-' . $i_focus['i__id'] . '-0"
                            placeholder="'.$e___11035[13912]['m__title'].'">
-                </div><div class="next_i algolia_pad_search hidden">'.view_memory(6404,13912).'</div></div>';
+                </div><div class="next_i algolia_pad_search hidden">&nbsp;</div></div>';
         }
 
     } elseif($x__type==6255) {
