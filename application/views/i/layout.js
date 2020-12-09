@@ -79,8 +79,9 @@ function i_note_poweredit_save(note_type_id){
         $('.save_notes_' + note_type_id).attr('href', 'javascript:i_note_poweredit_save('+note_type_id+');');
 
         //Update raw text input:
-        $(input_textarea).val(data.input_clean.trim());
+        $(input_textarea).val(data.input_clean.trim().' ');
         autosize.update($(input_textarea));
+        $(input_textarea).focus();
 
         if (!data.status) {
 
@@ -107,6 +108,7 @@ function i_note_poweredit_save(note_type_id){
             lazy_load();
 
             setTimeout(function () {
+                $(input_textarea).focus();
                 $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon'] + ' ' + js_e___11035[14422]['m__title']);
             }, 987);
 
