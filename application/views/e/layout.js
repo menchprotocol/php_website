@@ -306,9 +306,6 @@ function e__add(e_existing_id, is_parent) {
 
     }, function (data) {
 
-        //Release lock:
-        input.prop('disabled', false);
-
         if (data.status) {
 
             //Raw input to make it discovers for next URL:

@@ -136,7 +136,6 @@ function e_only_add(e_existing_id, note_type_id) {
     }
 
     //Add via Ajax:
-    input.prop('disabled', true);
     $.post("/e/e_only_add", {
 
         i__id: focus_i__id,
@@ -145,9 +144,6 @@ function e_only_add(e_existing_id, note_type_id) {
         e_new_string: e_new_string,
 
     }, function (data) {
-
-        //Release lock:
-        input.prop('disabled', false);
 
         if (data.status) {
 
