@@ -50,14 +50,14 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
         }
 
         //ADD NEW
-        echo '<div id="new_11030" class="list-group-item list-adder no-side-padding '.superpower_active(13422).'">
+        echo '<div id="new_11030" class="list-group-item see_all_11030 hidden list-adder no-side-padding '.superpower_active(13422).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                id="New11030input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[13914]['m__title'].'">
-                    </div><div class="algolia_pad_search hidden pad_expand">'.view_memory(6404,13914).'</div></div>';
+                    </div></div>';
         echo '</div>';
         echo '</div>';
 
@@ -344,7 +344,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                                    id="New11029input"
                                    maxlength="' . view_memory(6404,6197) . '"
                                    placeholder="'.$e___11035[14054]['m__title'].'">
-                        </div><div class="algolia_pad_search hidden pad_expand">'.view_memory(6404,13914).'</div></div>';
+                        </div><div class="algolia_pad_search hidden pad_expand">&nbsp;</div></div>';
 
             } else {
 
@@ -435,7 +435,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                                maxlength="' . view_memory(6404,4736) . '"
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[14016]['m__title'].'">
-                    </div><div class="add_e_idea algolia_pad_search hidden">'.view_memory(6404,13914).'</div></div></div>';
+                    </div><div class="add_e_idea algolia_pad_search hidden">&nbsp;</div></div></div>';
             }
 
 
