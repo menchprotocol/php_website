@@ -1849,7 +1849,7 @@ i, .btn .show-max {
 .cover-content{
     top: 0;
     left: 3px;
-    width: calc(100% - 6px) !important;
+    width: calc(100% - 5px) !important;
     max-height: 70%;
     position: absolute;
     overflow-x: hidden;
