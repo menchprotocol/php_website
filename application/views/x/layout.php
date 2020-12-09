@@ -376,7 +376,7 @@ $tab_pills = '<ul class="nav nav-tabs nav-sm '.superpower_active(13758).'">';
 $tab_content = '';
 $tab_pill_count = 0;
 
-
+/*
 if($in_my_x && count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type' => 4983, //IDEA SOURCES
@@ -393,7 +393,7 @@ if($in_my_x && count($this->X_model->fetch(array(
     echo '<div class="msg alert no-margin space-left">Save idea for quick access? <span class="inline-block">Tap <i class="far fa-bookmark black"></i></span></div>';
 
 }
-
+*/
 
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
