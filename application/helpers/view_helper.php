@@ -1037,7 +1037,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 if($handles_uploads){
 
                     //SOURCE
-                    $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \'@\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
+                    $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \' @\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
 
                     //UPLOAD
                     $ui .= '<td class="table-btn first_btn">';
@@ -1131,7 +1131,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
             if($handles_uploads){
 
                 //SOURCE
-                $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \'@\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
+                $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \' @\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
 
                 //UPLOAD
                 $ui .= '<td class="table-btn first_btn">';
