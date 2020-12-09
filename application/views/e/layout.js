@@ -233,7 +233,6 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
             e__add(suggestion.s__id, is_e_parent);
 
         }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_e_parent ? 'q' : 'a' )]}, [{
-
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */

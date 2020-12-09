@@ -102,6 +102,18 @@ class I extends CI_Controller {
         return redirect_message(( $user_e ? '/~' : '/' ) . $i__id . ( $user_e && isset($_GET['load__e']) ? '?load__e='.$_GET['load__e'] : '' ) );
     }
 
+    function x_go($i__id){
+        /*
+         *
+         * The next section is very important as it
+         * manages the entire search traffic that
+         * comes through /iID
+         *
+         * */
+        $user_e = superpower_unlocked(10939);
+        return redirect_message(( $user_e ? '/~' : '/' ) . $i__id . ( $user_e && isset($_GET['load__e']) ? '?load__e='.$_GET['load__e'] : '' ) );
+    }
+
 
     function i_layout($i__id){
 

@@ -708,6 +708,8 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
         }
     }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_i_previous ? 'q' : 'a' )]}, [{
 
+        appendTo: '.sample-container',
+
         source: function (q, cb) {
 
             if($(element_focus+ '.add-input').val().charAt(0)=='#'){

@@ -306,6 +306,11 @@ img.no-radius {
     float:left;
 }
 
+.sample-container{
+    background-color: #FF0000 !important;
+    color: #FF0000 !important;
+}
+
 .algolia-autocomplete .aa-dropdown-menu {
     width: 100%;
     border-top: none;
