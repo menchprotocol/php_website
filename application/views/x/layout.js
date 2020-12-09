@@ -22,10 +22,10 @@ $(document).ready(function () {
             e.stopPropagation();
         })
         .on('dragover dragenter', function () {
-            $('.userUploader').addClass('is-working');
+            $('.userUploader').addClass('dynamic_saving');
         })
         .on('dragleave dragend drop', function () {
-            $('.userUploader').removeClass('is-working');
+            $('.userUploader').removeClass('dynamic_saving');
         })
         .on('drop', function (e) {
             droppedFiles = e.originalEvent.dataTransfer.files;

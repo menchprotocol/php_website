@@ -125,10 +125,10 @@ $(document).ready(function () {
             e.stopPropagation();
         })
             .on('dragover dragenter', function () {
-                $('.e_has_link').addClass('is-working');
+                $('.e_has_link').addClass('dynamic_saving');
             })
             .on('dragleave dragend drop', function () {
-                $('.e_has_link').removeClass('is-working');
+                $('.e_has_link').removeClass('dynamic_saving');
             })
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
