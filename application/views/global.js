@@ -1229,9 +1229,7 @@ function i_note_remove(x__id, note_type_id){
 }
 
 function i_note_start_adding(note_type_id) {
-
     $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
-    $('.input_note_' + note_type_id).addClass('dynamic_saving');
     $('.no_notes_' + note_type_id).remove();
     $('.remove_loading').hide();
 }
