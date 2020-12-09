@@ -1065,13 +1065,8 @@ function i_note_e_search(obj) {
                 template: function (suggestion) {
                     return view_s_js(suggestion);
                 },
-                header: function (data) {
-                    if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">Create Source "' + data.query.toUpperCase() + '"</b></a>';
-                    }
-                },
                 replace: function (suggestion) {
-                    return '@' + suggestion.s__id + "\n";
+                    return ' @' + suggestion.s__id + "\n";
                 }
             },
         ]);
