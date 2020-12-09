@@ -1032,12 +1032,12 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 $ui .= '<div class="add_notes_form">';
                 $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
                 $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
-                $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
+                $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
 
                 if($handles_uploads){
 
                     //SOURCE
-                    $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
+                    $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \'@\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
 
                     //UPLOAD
                     $ui .= '<td class="table-btn first_btn">';
@@ -1129,6 +1129,9 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
             $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_add_text('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" title="'.$e___11035[14421]['m__title'].'">'.$e___11035[14421]['m__icon'].'</a></td>';
 
             if($handles_uploads){
+
+                //SOURCE
+                $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \'@\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
 
                 //UPLOAD
                 $ui .= '<td class="table-btn first_btn">';
