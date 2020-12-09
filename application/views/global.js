@@ -1373,8 +1373,8 @@ function i_note_add_text(note_type_id) {
 
 function set_autosize(object){
     var current_val = object.val();
-    object.val( current_val + ' ').keydown().keypress().keyup();
     autosize(object);
+    object.val( current_val + ' abc').keydown().keypress().keyup();
 }
 
 
