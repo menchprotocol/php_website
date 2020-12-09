@@ -1067,7 +1067,6 @@ function i_note_e_search(obj) {
                 },
                 replace: function (suggestion) {
                     setTimeout(function () {
-                        alert(obj.attr('note_type_id'));
                         i_note_poweredit_save(parseInt(obj.attr('note_type_id')));
                         autosize.update(obj);
                     }, 233);
