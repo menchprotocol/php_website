@@ -442,7 +442,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         if (data.status) {
 
             //Update on page:
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m__icon']+'</span><span class="show-max">' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ) + '</span>');
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m__icon']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
 
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .dropi_' + element_id +'_'+i__id+ '_' + x__id).removeClass('active');
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .optiond_' + new_e__id+'_'+i__id+ '_' + x__id).addClass('active');
