@@ -1043,7 +1043,9 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
         $editor_ui .= '</div>';
 
 
+        $ui .= '<div class="power-editor-'.$x__type.'">';
         $ui .= $editor_ui;
+        $ui .= '</div>';
 
 
         /*
