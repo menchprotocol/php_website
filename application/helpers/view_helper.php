@@ -1020,7 +1020,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                     $textarea_content .= $i_note['x__message']."\n\n";
                 }
 
-                $ui .= '<textarea class="form-control msg note-textarea algolia_search new-note power_editor emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." style="margin:13px 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
+                $ui .= '<textarea class="form-control msg note-textarea algolia_search new-note power_editor dotransparent emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." style="margin:13px 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
 
 
                 //Response result:
@@ -1118,7 +1118,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
             $ui .= '<div class="add_notes_form">';
             $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea regular_editor algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" style="margin-top: 10px;" placeholder="WRITE'.( $handles_url ? ', PASTE URL, @SOURCE' : '' ).'"></textarea>';
+            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea regular_editor dotransparent algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" style="margin-top: 10px;" placeholder="WRITE'.( $handles_url ? ', PASTE URL, @SOURCE' : '' ).'"></textarea>';
 
             //Response result:
             $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
