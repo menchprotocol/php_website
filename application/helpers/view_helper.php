@@ -1006,13 +1006,13 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             $default_active = false;
             $ui = null;
-            $href = 'href="javascript:void(0);" onclick="loadtab(14418,'.$x__type2.');i_note_poweredit_save(4231);"';
 
 
             //Is this a caret menu?
             if($x__type2==4231){
 
                 //WRITE
+                $href = 'href="javascript:void(0);" onclick="loadtab(14418,'.$x__type2.');"';
                 $default_active = true;
 
                 $textarea_content = '';
@@ -1064,6 +1064,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
             } elseif($x__type2==14420){
 
                 //READ
+                $href = 'href="javascript:void(0);" onclick="loadtab(14418,'.$x__type2.');i_note_poweredit_save(4231);"';
                 $ui .= '<div class="list-group editor_read_'.$x__type.'" style="margin-top:13px;">';
                 foreach($i_notes as $i_note) {
                     $ui .= $CI->X_model->message_send($i_note['x__message'], true, $user_e, $i['i__id']);
@@ -1072,13 +1073,13 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             } elseif($x__type2==13562){
 
+                $href = 'href="javascript:void(0);" onclick="i_note_poweredit_save(4231);setTimeout(function(){window.location=\'/'.$i['i__id'].'\';},144);';
+
                 if($i['i__id']==view_memory(6404,14002)){
                     //Cannot preview North Star:
                     continue;
                 }
 
-                //PREVIEW
-                $href = 'href="javascript:void(0);" onclick="i_note_poweredit_save(4231);setTimeout(function(){window.location=\'/'.$i['i__id'].'\';},144);';
             }
 
             $tab_nav .= '<li class="nav-item '.( in_array($x__type2, $CI->config->item('n___14103')) ? ' pull-right ' : '' ).'"><a '.$href.' class="nav-x tab-nav-14418 tab-head-'.$x__type2.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;</a></li>';
