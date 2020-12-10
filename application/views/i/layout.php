@@ -134,7 +134,7 @@ $i_stats = i_stats($i_focus['i__metadata']);
 $counter_i = $i_stats['i___6170'];
 $tab_group = 11018;
 $tab_content = '';
-echo '<ul class="nav nav-tabs nav-sm" style="padding-top: 21px;">';
+echo '<ul class="nav nav-tabs nav-sm">';
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
