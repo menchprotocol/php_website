@@ -823,7 +823,7 @@ foreach($this->config->item('e___13289') as $e__id => $m) {
     } elseif($e__id==12211){
 
         //NEXT
-        $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
+        $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
 
     }
 
