@@ -680,6 +680,7 @@ class X extends CI_Controller
 
         $this->load->view('header', array(
             'title' => $is[0]['i__title'],
+            'i_focus' => $is[0],
         ));
 
         //Load specific view based on Idea Level:

@@ -2,7 +2,7 @@
 
 $user_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
-$i__id = is_numeric($first_segment) && $first_segment!=view_memory(6404,14002) ? intval($first_segment) : 0;
+$i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
@@ -207,8 +207,12 @@ if(!isset($hide_header)){
                     }
 
                     //EDIT IDEA
-                    if($i__id && superpower_active(10939, true)){
+                    if($i__id && is_numeric($first_segment) && superpower_active(10939, true)){
+                        //PUBLISH
                         echo '<td class="block-x"><a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'" data-toggle="tooltip" data-placement="bottom">'.$e___11035[13563]['m__icon'].'</a></td>';
+                    } elseif($i__id && substr($first_segment, 0, 1)=='~'){
+                        //DISCOVER
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="i_note_poweredit_save(4231);setTimeout(function(){window.location=\'/'.$i__id.'\';},34);" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="bottom">'.$e___11035[13562]['m__icon'].'</a></td>';
                     }
 
                     //MENU

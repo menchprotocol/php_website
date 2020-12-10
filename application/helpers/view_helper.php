@@ -993,6 +993,60 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
     if(in_array($x__type, $CI->config->item('n___14311'))){
 
+
+        $textarea_content = '';
+        foreach($i_notes as $i_note) {
+            $textarea_content .= $i_note['x__message']."\n\n";
+        }
+
+        $ui .= '<textarea class="form-control msg note-textarea algolia_search new-note power_editor dotransparent emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." style="margin:13px 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
+
+
+        //Response result:
+        $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
+
+
+        //CONTROLLER
+        $ui .= '<div class="no-padding add_notes_' . $x__type .'">';
+        $ui .= '<div class="add_notes_form">';
+        $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
+        $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
+        $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
+
+        if($handles_uploads){
+
+            //UPLOAD
+            $ui .= '<td class="table-btn first_btn">';
+            $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
+            $ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
+            $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
+            $ui .= '</td>';
+
+            //GIF
+            $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="gif_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
+
+        }
+
+        if($supports_emoji){
+            //EMOJI
+            $ui .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+        }
+
+        if($handles_uploads){
+            //SOURCE
+            $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \' @\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
+
+        }
+
+        $ui .= '<td style="padding:10px 0 0 0;">&nbsp;</td>';
+        $ui .= '</tr></table>';
+        $ui .= '</form>';
+        $ui .= '</div>';
+        $ui .= '</div>';
+
+
+
+
         //POWER EDITOR
         $tab_nav = '';
         $tab_content = '';
@@ -1015,55 +1069,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 $href = 'href="javascript:void(0);" onclick="loadtab(14418,'.$x__type2.');"';
                 $default_active = true;
 
-                $textarea_content = '';
-                foreach($i_notes as $i_note) {
-                    $textarea_content .= $i_note['x__message']."\n\n";
-                }
 
-                $ui .= '<textarea class="form-control msg note-textarea algolia_search new-note power_editor dotransparent emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." style="margin:13px 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
-
-
-                //Response result:
-                $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
-
-
-                //CONTROLLER
-                $ui .= '<div class="no-padding add_notes_' . $x__type .'">';
-                $ui .= '<div class="add_notes_form">';
-                $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
-                $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
-                $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
-
-                if($handles_uploads){
-
-                    //UPLOAD
-                    $ui .= '<td class="table-btn first_btn">';
-                    $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
-                    $ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
-                    $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
-                    $ui .= '</td>';
-
-                    //GIF
-                    $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="gif_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
-
-                }
-
-                if($supports_emoji){
-                    //EMOJI
-                    $ui .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
-                }
-
-                if($handles_uploads){
-                    //SOURCE
-                    $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \' @\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
-
-                }
-
-                $ui .= '<td style="padding:10px 0 0 0;">&nbsp;</td>';
-                $ui .= '</tr></table>';
-                $ui .= '</form>';
-                $ui .= '</div>';
-                $ui .= '</div>';
 
             } elseif($x__type2==14420){
 
@@ -1077,7 +1083,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             } elseif($x__type2==13562){
 
-                $href = 'href="javascript:void(0);" onclick="i_note_poweredit_save(4231);setTimeout(function(){window.location=\'/'.$i['i__id'].'\';},55);" ';
+                $href = ' ';
 
 
                 if($i['i__id']==view_memory(6404,14002)){
