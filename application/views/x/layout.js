@@ -204,6 +204,7 @@ function x_reply(go_next_url){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
+            $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
             window.location = go_next_url;
         } else {
             //Show error:
@@ -223,6 +224,8 @@ function x_select(go_next_url){
         }
     });
 
+
+
     //Show Loading:
     $.post("/x/x_select", {
         focus_i__id:focus_i__id,
@@ -230,6 +233,7 @@ function x_select(go_next_url){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
+            $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
             window.location = go_next_url;
         } else {
             //Show error:
