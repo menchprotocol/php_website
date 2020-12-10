@@ -104,7 +104,9 @@ echo '<div class="inline-block left-half-margin '.superpower_active(12700).'">'.
 
 
 //IDEA TITLE
+echo '<div style="padding:0;">';
 echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true); //, view_i_icon($i_focus)
+echo '</div>';
 
 
 //IDEA MESSAGES:
