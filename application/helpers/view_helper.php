@@ -1077,7 +1077,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             } elseif($x__type2==13562){
 
-                $href = 'href="javascript:void(0);" onclick="i_note_poweredit_save(4231);setTimeout(function(){window.location=\'/'.$i['i__id'].'\';},144);" ';
+                $href = 'href="javascript:void(0);" onclick="i_note_poweredit_save(4231);setTimeout(function(){window.location=\'/'.$i['i__id'].'\';},55);" ';
 
 
                 if($i['i__id']==view_memory(6404,14002)){
