@@ -3,7 +3,7 @@
     <?php
 
     //IDEA TITLE
-    echo '<h1 class="big-frame extra-big">' . $i['i__title'] . '</h1>';
+    echo '<h1>' . $i['i__title'] . '</h1>';
 
 
     //MESSAGES

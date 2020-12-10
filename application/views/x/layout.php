@@ -304,7 +304,7 @@ if($in_my_x && count($x_completes)){
 
 if($i_is_drip && !$i_drip_mode){
     //HEADER
-    echo '<h1 class="big-frame">' . view_i_title($i_focus) . '</h1>';
+    echo '<h1>' . view_i_title($i_focus) . '</h1>';
 }
 
 
@@ -323,7 +323,7 @@ if($i_drip_mode){
     $drip_msg_counter++;
     echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.( $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
     echo '<div class="headline" style="padding: 0;"><span class="icon-block">'.$e___11035[14384]['m__icon'].'</span>'.$e___11035[14384]['m__title'].'</div>';
-    echo '<h1 class="big-frame" style="padding: 21px 41px;">' . view_i_title($i_focus) . '</h1>';
+    echo '<h1 style="padding: 21px 41px;">' . view_i_title($i_focus) . '</h1>';
     echo '</div>';
 }
 
