@@ -884,6 +884,10 @@ img.no-radius {
     padding: 89px 0 0 0;
 }
 
+.info_box_icon img{
+    width: 89px;
+}
+
 
 textarea.note-textarea{
     border:0;

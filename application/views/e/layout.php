@@ -506,6 +506,9 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                 //FEATURED IDEAS
                 $ui .= view_i_featured(0, $my_x_ids);
 
+                //Info Boxes:
+                $ui .= view_info_box(14340); //Discover
+
             }
 
         } elseif(in_array($x__type, $this->config->item('n___4485'))){
