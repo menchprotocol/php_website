@@ -1036,9 +1036,6 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
                 if($handles_uploads){
 
-                    //SOURCE
-                    $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \' @\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
-
                     //UPLOAD
                     $ui .= '<td class="table-btn first_btn">';
                     $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
@@ -1055,6 +1052,13 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                     //EMOJI
                     $ui .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
                 }
+
+                if($handles_uploads){
+                    //SOURCE
+                    $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \' @\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
+
+                }
+
                 $ui .= '<td style="padding:10px 0 0 0;">&nbsp;</td>';
                 $ui .= '</tr></table>';
                 $ui .= '</form>';
@@ -1131,9 +1135,6 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             if($handles_uploads){
 
-                //SOURCE
-                $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \' @\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
-
                 //UPLOAD
                 $ui .= '<td class="table-btn first_btn">';
                 $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
@@ -1149,6 +1150,12 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
             if($supports_emoji){
                 //EMOJI
                 $ui .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+            }
+
+            if($handles_uploads){
+                //SOURCE
+                $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="append_value($(\'.input_note_'.$x__type.'\'), \' @\')" title="'.$e___11035[14472]['m__title'].'"><span class="icon-block">'.$e___11035[14472]['m__icon'].'</span></a></td>';
+
             }
 
             //File counter:
