@@ -38,18 +38,19 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
         ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
         $show_max = view_memory(6404,13803);
         $hide = false;
+        $counter = 0;
         foreach($profiles as $count => $e_profile) {
             if(!$hide && $count==$show_max){
+                $counter++;
                 $hide = true;
                 echo '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block">'.$e___11035[11030]['m__icon'].'</span><b class="montserrat source">'.$e___11035[11030]['m__title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
                 echo '<div class="list-group-item see_all_11030 no-padding"></div>';
             }
             echo view_e($e_profile,true, ( $hide ? ' see_all_11030 hidden ' : null ), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
-
         }
 
         //ADD NEW
-        echo '<div id="new_11030" class="list-group-item see_all_11030 hidden list-adder no-side-padding '.superpower_active(13422).'">
+        echo '<div id="new_11030" class="list-group-item '.( $counter ? ' see_all_11030 hidden ' : '' ).' list-adder no-side-padding '.superpower_active(13422).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"

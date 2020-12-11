@@ -5,6 +5,10 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
+//Log initiation:
+$this->X_model->create(array(
+    'x__type' => 14482, //Social Login initiate
+));
 
 require 'vendor/autoload.php';
 use Auth0\SDK\Auth0;

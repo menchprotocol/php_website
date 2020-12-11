@@ -49,11 +49,20 @@ if($userInfo){
         'x__message' => $userInfo['email'],
     ), array('x__down'));
 
+    //Can we determine the type?
+    $signin_method = 0;
+    foreach($this->config->item('e___14436') as $e__id => $m) {
+        if(substr_count(strtolower($userInfo['sub']), strtolower($m['m__title']))){
+            $signin_method = $e__id;
+            break;
+        }
+    }
+
 
     $this->X_model->create(array(
         'x__type' => 14436, //Social Sign in
         'x__source' => ( count($user_emails) ? $user_emails[0]['e__id'] : 0 ),
-        'x__up' => 0, //TODO Linkt o Google, Linkedin or Facebook, which all must be a child of @14436
+        'x__up' => $signin_method,
         'x__message' => ( count($user_emails) ? 'Welcome Back ' : 'New Member ' ).$userInfo['email'],
         'x__metadata' => array(
             'auth0_getUser' => $userInfo,
