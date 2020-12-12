@@ -963,7 +963,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
         } else {
             $x__type_to_pass = $x__type;
         }
-        $ui .= view_i($x__type_to_pass, $next_i, null, $user_e, $completion_rate);
+        $ui .= view_i($x__type_to_pass, $next_i, $in_my_x, null, $user_e, $completion_rate);
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
@@ -1327,7 +1327,7 @@ function view_info_box($e__id){
     return $ui;
 }
 
-function view_i($x__type, $i, $message_input = null, $focus_e = false, $completion_rate = null){
+function view_i($x__type, $i, $control_enabled = false, $message_input = null, $focus_e = false, $completion_rate = null){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1382,7 +1382,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     }
 
 
-    if($is_sortable){
+    if($is_sortable && $control_enabled){
         //SORTABLE
         $ui .= '<div class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div>';
     } elseif(in_array($x__type, $CI->config->item('n___14452'))){
@@ -1397,7 +1397,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     }
 
     //REMOVE?
-    if(isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
+    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
         $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
     }
 

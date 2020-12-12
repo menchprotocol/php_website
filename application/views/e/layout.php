@@ -9,7 +9,7 @@ $superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEATION
 $superpower_13422 = superpower_active(13422, true); //SUPERPOWER OF SOURCING
 $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF GLASSES
 $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
-
+$control_enabled = $source_is_e || $superpower_10939;
 
 
 ?>
@@ -399,7 +399,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                         $ui .= '<div class="row top-margin" id="list_13412">';
                         foreach($i_bookmarks as $item){
                             array_push($i_exclude, $item['i__id']);
-                            $ui .= view_i(10573, $item, null, $e);
+                            $ui .= view_i(10573, $item, $control_enabled,null, $e);
                         }
                         $ui .= '</div>';
 
@@ -438,7 +438,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                 $ui .= '<div class="row top-margin" id="list_13550">';
                 foreach($list_i as $count => $item){
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-                    $ui .= view_i(13550, $item, ( $show_message ? $this->X_model->message_send($item['x__message'], true) : null), $e);
+                    $ui .= view_i(13550, $item, $control_enabled,( $show_message ? $this->X_model->message_send($item['x__message'], true) : null), $e);
                 }
                 $ui .= '</div>';
 
@@ -466,7 +466,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
                         $ui .= '<div class="row margin-top-down-half" id="list_6132">';
                         foreach($list_x as $item){
-                            $ui .= view_i(12969, $item,null, $e);
+                            $ui .= view_i(12969, $item,$control_enabled,null, $e);
                             array_push($my_x_ids, $item['i__id']);
                         }
                         $ui .= '</div>';
@@ -498,7 +498,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
                     $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__icon'].'</span>'.$e___11035[12896]['m__title'].'</div>';
                     $ui .= '<div class="row margin-top-down-half">';
                     foreach($i_notes_query as $count => $i_notes) {
-                        $ui .= view_i(12896, $i_notes);
+                        $ui .= view_i(12896, $i_notes, $control_enabled);
                     }
 
                     $ui .= '</div>';
@@ -532,7 +532,7 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 
                 $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), view_memory(6404,11064), 0, array('i__spectrum' => 'DESC'));
                 foreach($i_notes_query as $count => $i_notes) {
-                    $ui .= view_i(4486, $i_notes);
+                    $ui .= view_i(4486, $i_notes, $control_enabled);
                 }
 
             }

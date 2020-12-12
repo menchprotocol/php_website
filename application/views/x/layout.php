@@ -93,7 +93,7 @@ echo '<div class="container coin-frame hideIfEmpty">';
 
 
 //Add Current Discoveryt
-array_push($sitemap_items, view_i(14451, $i_focus,  null, false));
+array_push($sitemap_items, view_i(14451, $i_focus, $in_my_x, null, false));
 
 
 if($in_my_x){
@@ -145,7 +145,7 @@ if($in_my_x){
         }
 
         foreach($sitemap_raw as $si) {
-            array_push($sitemap_items, view_i(14450, $si['i'],  null, false, $si['completion_rate']));
+            array_push($sitemap_items, view_i(14450, $si['i'],  $in_my_x,null, false, $si['completion_rate']));
         }
 
     }
