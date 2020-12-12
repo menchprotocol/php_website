@@ -95,8 +95,9 @@ echo '<div class="container coin-frame hideIfEmpty">';
 if($in_my_x){
 
     //Add Current Discovery
-    array_push($sitemap_items, view_i(14451, $i_focus, $in_my_x, null, false));
-
+    if($i_drip_mode){
+        array_push($sitemap_items, view_i(14451, $i_focus, $in_my_x, null, false));
+    }
 
     //Fetch Parents all the way to the Discovery Item
     if(!$in_my_discoveries){
