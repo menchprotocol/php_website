@@ -1373,7 +1373,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
 
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_soft_lock ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
+    $ui .= ( $is_soft_lock || $is_hard_lock ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
 
     if($completion_rate['completion_percentage'] > 0 || $x__type==14451){
@@ -1400,7 +1400,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
         $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
     }
 
-    $ui .= ( $is_soft_lock ? '</div>' : '</a>' );
+    $ui .= ( $is_soft_lock || $is_hard_lock ? '</div>' : '</a>' );
     $ui .= '</div>';
 
 
