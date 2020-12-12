@@ -302,7 +302,7 @@ if($in_my_x && count($x_completes)){
     echo '<div class="headline"><span class="icon-block">'.$e___11035[14457]['m__icon'].'</span>'.str_replace('%S',view_time_difference(strtotime($x_completes[0]['x__time'])), $e___11035[14457]['m__title']).'</div>';
 }
 
-if($i_is_drip && !$i_drip_mode){
+if(){
     //HEADER
     echo '<h1>' . view_i_title($i_focus) . '</h1>';
 }
@@ -319,9 +319,9 @@ foreach($messages as $message_x) {
     ).'</div>';
 }
 
-if($i_drip_mode){
+if($i_drip_mode || (!$i_drip_mode && $i_is_drip)){
     $drip_msg_counter++;
-    echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.( $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
+    echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
     echo '<div class="headline" style="padding: 0;"><span class="icon-block">'.$e___11035[14384]['m__icon'].'</span>'.$e___11035[14384]['m__title'].'</div>';
     echo '<h1 style="padding: 21px 41px;">' . view_i_title($i_focus) . '</h1>';
     echo '</div>';
