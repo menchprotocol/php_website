@@ -482,6 +482,7 @@ img.no-radius {
     width: 100% !important;
     display: table;
     table-layout: fixed;
+    padding: 8px 0 20px;
 }
 .discover-controller div{
     text-align: center;

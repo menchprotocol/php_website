@@ -837,7 +837,7 @@ foreach($this->config->item('e___13289') as $e__id => $m) {
 
 if($buttons_found > 0){
     echo '<div class="container fixed-bottom light-bg">';
-    echo '<div class="discover-controller" style="padding: 8px 0;">';
+    echo '<div class="discover-controller">';
     echo $buttons_ui;
     echo '</div>';
     echo '</div>';
