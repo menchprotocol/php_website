@@ -92,7 +92,7 @@ $drip_msg_total = count($messages) + 1 /* For Title */;
 echo '<div class="container coin-frame hideIfEmpty">';
 
 
-//Add Current DIscoveryt
+//Add Current Discoveryt
 array_push($sitemap_items, view_i(14451, $i_focus,  null, false));
 
 
