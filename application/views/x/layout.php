@@ -92,14 +92,13 @@ $drip_msg_total = count($messages) + 1 /* For Title */;
 echo '<div class="container coin-frame hideIfEmpty">';
 
 
-//Add Current Discoveryt
-array_push($sitemap_items, view_i(14451, $i_focus, $in_my_x, null, false));
-
-
 if($in_my_x){
 
-    //Fetch Parents all the way to the Discovery Item
+    //Add Current Discovery
+    array_push($sitemap_items, view_i(14451, $i_focus, $in_my_x, null, false));
 
+
+    //Fetch Parents all the way to the Discovery Item
     if(!$in_my_discoveries){
 
         //Find it:
@@ -300,7 +299,11 @@ echo '</div>';
 if($in_my_x && count($x_completes)){
     //Show Discovery time:
     echo '<div class="headline"><span class="icon-block">'.$e___11035[14457]['m__icon'].'</span>'.str_replace('%S',view_time_difference(strtotime($x_completes[0]['x__time'])), $e___11035[14457]['m__title']).'</div>';
+} elseif(!$in_my_x) {
+    //HEADER
+    echo '<h1>' . view_i_title($i_focus) . '</h1>';
 }
+
 
 
 //MESSAGES
@@ -313,7 +316,7 @@ foreach($messages as $message_x) {
     ).'</div>';
 }
 
-if($i_drip_mode || (!$i_drip_mode && $i_is_drip)){
+if($in_my_x && ($i_drip_mode || (!$i_drip_mode && $i_is_drip))){
     $drip_msg_counter++;
     echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
     echo '<div class="headline" style="padding: 0;"><span class="icon-block">'.$e___11035[14384]['m__icon'].'</span>'.$e___11035[14384]['m__title'].'</div>';
