@@ -108,9 +108,6 @@ body {
 table td { border: none !important; }
 
 .texttype__lg { font-size: 2.3em; }
-h1 i {
-    font-size:0.417em !important;
-}
 
 h1 {
     font-family: 'Montserrat', sans-serif;
@@ -1351,8 +1348,8 @@ label {
 }
 
 .btn.dropdown-toggle{
-    padding-left: 0 !important;
     border: 0 !important;
+    padding:20px 20px 20px 0 !important;
 }
 
 .btn-superpower .fas, .btn-superpower .far, .btn-superpower .fal, .btn-superpower .fad, .btn-superpower:not(.active) .source, .btn-superpower:not(.active) .idea, .btn-superpower:not(.active) .discover {
@@ -1959,7 +1956,7 @@ i, .btn .show-max {
     }
 
     h1{
-        font-size: 2.8em;
+        font-size: 3em;
     }
 
     .social-footer li{
@@ -2044,7 +2041,7 @@ i, .btn .show-max {
 @media (max-width:576px) {
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
-        font-size: 2.3em;
+        font-size: 2.5em;
     }
 }
 
