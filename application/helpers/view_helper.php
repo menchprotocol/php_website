@@ -1339,6 +1339,11 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
     $user_session = superpower_unlocked();
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
 
+    if($focus_e && (!$user_session || $user_session['e__id']!=$focus_e['e__id']) && !superpower_active(12701, true)){
+        //Do not allow to see this user's info:
+        $focus_e = false;
+    }
+
     if(!$focus_e){
         $focus_e = $user_session;
     }
