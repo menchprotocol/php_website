@@ -1351,9 +1351,9 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     }
 
 
-    $locking_enabled = 1 || intval(view_memory(6404,14377));
+    $locking_enabled = intval(view_memory(6404,14377)) || !isset($focus_e['e__id']) || $focus_e['e__id']<1;
     $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
-    $is_soft_lock = ($locking_enabled || !isset($focus_e['e__id'])) && ($is_hard_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
+    $is_soft_lock = $locking_enabled && ($is_hard_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
     $is_sortable = !$is_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, true);
