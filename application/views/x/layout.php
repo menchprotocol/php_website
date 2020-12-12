@@ -70,7 +70,7 @@ if($in_my_x){
 
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 $i_is_drip = in_array($i_focus['i__type'], $this->config->item('n___14383'));
-$i_drip_mode = $i_is_drip && count($messages)>1 && (!$in_my_x || !count($x_completes));
+$i_drip_mode = $i_is_drip && count($messages)>1 && (!$in_my_x || !count($x_completes)) && intval(view_memory(6404,14383));
 $drip_msg_counter = 0;
 $drip_msg_total = count($messages) + 1 /* For Title */;
 

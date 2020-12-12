@@ -1338,7 +1338,6 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
-    $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
 
     if(!$focus_e){
         $focus_e = $user_session;
@@ -1352,8 +1351,10 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     }
 
 
-    $is_locked = $is_hard_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']);
-    $is_sortable = !$is_locked && in_array($x__type, $CI->config->item('n___4603'));
+    $locking_enabled = intval(view_memory(6404,14377));
+    $is_hard_lock = $locking_enabled && in_array($x__type, $CI->config->item('n___14453'));
+    $is_soft_lock = $locking_enabled && ($is_hard_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
+    $is_sortable = !$is_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, true);
 
@@ -1367,12 +1368,12 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     }
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_locked ? ' not-allowed ' : '' ).'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_locked ? ' title="'.$e___11035[14377]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="col-md-2 col-sm-3 col-4 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_soft_lock ? ' not-allowed ' : '' ).'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_soft_lock ? ' title="'.$e___11035[14377]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
 
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_locked ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
+    $ui .= ( $is_soft_lock ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
 
     if($completion_rate['completion_percentage'] > 0 || $x__type==14451){
@@ -1386,7 +1387,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     } elseif(in_array($x__type, $CI->config->item('n___14452'))){
         //Show Self Icon
         $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</div>';
-    } elseif($is_locked){
+    } elseif($is_soft_lock){
         //LOCKED
         $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14377]['m__title'].'">'.$e___11035[14377]['m__icon'].'</div>';
     } elseif($completion_rate['completion_percentage']>=100){
@@ -1399,7 +1400,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
         $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
     }
 
-    $ui .= ( $is_locked ? '</div>' : '</a>' );
+    $ui .= ( $is_soft_lock ? '</div>' : '</a>' );
     $ui .= '</div>';
 
 
@@ -1407,14 +1408,14 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
         $ui .= '<div class="cover-content"><div class="inner-content">';
         //$ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__spectrum']*100)+1));
         if($i_title){
-            if(!$is_locked){
+            if(!$is_soft_lock){
                 $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
             } else {
                 $ui .= $i_title;
             }
         }
         if($message_input){
-            if(!$is_locked && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
+            if(!$is_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
                 //No HTML Tags, add link:
                 $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
             } else {
@@ -1426,7 +1427,7 @@ function view_i($x__type, $i, $message_input = null, $focus_e = false, $completi
     }
 
 
-    if(!$is_locked){
+    if(!$is_soft_lock){
 
         //TOOLBAR
         if(!$discovery_mode && superpower_active(12673, true)){
