@@ -471,19 +471,23 @@ img.no-radius {
 .btn-source i, .btn-discover i, .btn-idea i { color: #222222 !important; }
 
 
-.mid-range{
+
+.mid-range {
     padding: 0 2px;
 }
+
 .right-adj {
     margin-top:-22px;
     margin-right:41px !important;
 }
-.discover-controller{
+
+.discover-controller {
     width: 100% !important;
     display: table;
     table-layout: fixed;
     padding: 8px 0 20px;
 }
+
 .discover-controller div{
     text-align: center;
     display: table-cell;
