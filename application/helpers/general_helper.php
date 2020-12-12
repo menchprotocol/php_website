@@ -959,6 +959,18 @@ function fetch_cookie_order($cookie_name){
     return $new_order_value;
 }
 
+function member_setting($e__id){
+    $session_var = $this->session->userdata('session_custom_ui_'.$e__id);
+    if(!$session_var){
+        //Find the default value:
+        $account_defaults = array_intersect($this->config->item('n___13889'), $this->config->item('n___'.$e__id));
+        if(count($account_defaults)){
+            //We should find it by now:
+            $session_var = end($account_defaults);
+        }
+    }
+    return $session_var;
+}
 
 function i_calc_common_prefix($child_list, $child_field){
 

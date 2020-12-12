@@ -107,18 +107,7 @@ $current_mench = current_mench();
 //Generate Body Class String:
 $body_class = 'mench-'.$current_mench['x_name']; //Always append current mench
 foreach($this->config->item('e___13890') as $e__id => $m){
-    $session_var = $this->session->userdata('session_custom_ui_'.$e__id);
-    if(!$session_var){
-        //Find the default value:
-        $account_defaults = array_intersect($this->config->item('n___13889'), $this->config->item('n___'.$e__id));
-        if(count($account_defaults)){
-            $session_var = end($account_defaults);
-        } else {
-            //Could not find the default value
-            continue;
-        }
-    }
-    $body_class .= ' custom_ui_'.$e__id.'_'.$session_var.' ';
+    $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
 }
 echo '<body class="'.$body_class.'">';
 
