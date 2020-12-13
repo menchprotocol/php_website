@@ -250,8 +250,10 @@ $(document).ready(function () {
     });
 
 
-    $('.editor_preview_4231:not(.ignore-click)').click(function (e) {
-        loadtab(14418, 14468);//Load Write Tab
+    $('.editor_preview_4231').click(function (e) {
+        if (!$(this).hasClass('ignore-click')) {
+            loadtab(14418, 14468);//Load Write Tab
+        }
     });
 
 
