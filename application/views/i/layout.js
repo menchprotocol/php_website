@@ -99,7 +99,7 @@ function i_note_poweredit_save(note_type_id){
             $(".note_error_"+note_type_id).html('');
 
             //Update READ:
-            $('.editor_read_'+note_type_id).html(data.message);
+            $('.editor_preview_'+note_type_id).html(data.message);
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();

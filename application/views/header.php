@@ -201,7 +201,7 @@ if(!isset($hide_header)){
                         echo '<td class="block-x"><a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'" data-toggle="tooltip" data-placement="bottom">'.$e___11035[13563]['m__icon'].'</a></td>';
                     } elseif($i__id && substr($first_segment, 0, 1)=='~'){
                         //DISCOVER
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="i_note_poweredit_save(4231);setTimeout(function(){window.location=\'/'.$i__id.'\';},34);" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="bottom">'.$e___11035[13562]['m__icon'].'</a></td>';
+                        echo '<td class="block-x"><a href="/'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="bottom">'.$e___11035[13562]['m__icon'].'</a></td>';
                     }
 
                     //MENU
