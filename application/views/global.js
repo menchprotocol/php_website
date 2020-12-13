@@ -251,7 +251,7 @@ $(document).ready(function () {
 
 
     $('.editor_preview_4231').click(function (e) {
-        if (!$(this).hasClass('ignore-click')) {
+        if (!(this).hasClass('ignore-click')) {
             loadtab(14418, 14468);//Load Write Tab
         } else{
             alert('ignored');
