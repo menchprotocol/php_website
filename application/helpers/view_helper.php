@@ -1080,7 +1080,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
         }
 
 
-        $ui .= '<ul class="nav nav-tabs nav-sm">';
+        $ui .= '<ul class="nav nav-tabs nav-sm hidden">'; //Toggled automatically via JS
         $ui .= $tab_nav;
         $ui .= '</ul>';
 
