@@ -64,7 +64,7 @@ $control_enabled = $source_is_e || $superpower_10939;
 
     }
 
-    echo '<div class="container wrap-card">';
+    echo '<div class="container">';
 
     //SOURCE DRAFTING?
     if(!in_array($e['e__type'], $this->config->item('n___7357'))){

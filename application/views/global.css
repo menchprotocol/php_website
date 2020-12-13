@@ -615,10 +615,6 @@ img.no-radius {
     height:8px;
     background-color: #FC1B44;
 }
-.wrap-card {
-    border:0;
-    padding:0;
-}
 
 .coin-frame{
     border: 0;
@@ -1968,14 +1964,6 @@ i, .btn .show-max {
     .icon-tweak{ padding-left: 8px; }
     .name-block{ margin-left: 41px; }
 
-    /* .active .show-max-active {display:none !important;} */
-    .wrap-card, .coin-frame{
-        margin: 0 5px;
-        width: -webkit-calc(100% - 10px) !important;
-        width:    -moz-calc(100% - 10px) !important;
-        width:         calc(100% - 10px) !important;
-    }
-
     .story-bar li{
         margin: 0 1px 0 0;
     }
@@ -2158,7 +2146,6 @@ i, .btn .show-max {
 .custom_ui_13884_13886 .x-list,
 .custom_ui_13884_13886 .accordion .card,
 .custom_ui_13884_13886 .coin-frame,
-.custom_ui_13884_13886 .wrap-card,
 .custom_ui_13884_13886 .btn-block,
 .custom_ui_13884_13886 textarea,
 .custom_ui_13884_13886 .modal-content,
@@ -2249,7 +2236,6 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .table-striped tbody tr,
 .custom_ui_13884_13885 .x-list,
 .custom_ui_13884_13885 .accordion .card,
-.custom_ui_13884_13885 .wrap-card,
 .custom_ui_13884_13885 .btn-block,
 .custom_ui_13884_13885 .dropdown-menu,
 .custom_ui_13884_13885 .algolia-autocomplete .aa-dropdown-menu,
