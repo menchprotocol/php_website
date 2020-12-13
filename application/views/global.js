@@ -1315,19 +1315,24 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
                 alert('ERROR: '+data.message);
 
             } else {
+
                 if(js_n___14311.includes(note_type_id)){
                     //Power Editor:
                     var current_value = $('.input_note_' + note_type_id).val();
                     $('.input_note_' + note_type_id).val(( current_value.length ? current_value+" " : '' ) + data.new_source);
-                    i_note_poweredit_save(note_type_id);
                 } else {
                     //Regular Editor:
                     i_note_counter(note_type_id, +1);
-                    i_note_end_adding(data, note_type_id);
                 }
 
                 //Adjust icon again:
                 $('.file_label_' + note_type_id).html('<span class="icon-block">'+js_e___11035[13572]['m__icon']+'</span>');
+            }
+
+            if(js_n___14311.includes(note_type_id)){
+                i_note_poweredit_save(note_type_id);
+            } else {
+                i_note_end_adding(data, note_type_id);
             }
 
         },

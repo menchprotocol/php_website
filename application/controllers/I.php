@@ -645,16 +645,30 @@ class I extends CI_Controller {
 
         } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
 
+            $error_message = 'This file is not supported. Try another file to continue.';
+
+            $this->X_model->create(array(
+                'x__message' => $error_message,
+                'x__source' => $user_e['e__id'],
+                'x__left' => $_POST['i__id'],
+                'x__up' => $_POST['note_type_id'],
+                'x__type' => 4246, //Platform Bug Reports
+                'x__metadata' => array(
+                    '$_FILES' => $_FILES,
+                    '$_POST' => $_POST,
+                ),
+            ));
+
             return view_json(array(
                 'status' => 0,
-                'message' => 'Unknown error while trying to save file',
+                'message' => $error_message,
             ));
 
         } elseif ($_FILES[$_POST['upload_type']]['size'] > (view_memory(6404,13572) * 1024 * 1024)) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'File is larger than the maximum allowed file size of ' . view_memory(6404,13572) . ' MB.',
+                'message' => 'File is larger than the maximum allowed file size of ' . view_memory(6404,13572) . ' MB. Try a smaller file to continue.',
             ));
 
         }
