@@ -172,7 +172,11 @@ function loadtab(x__type, tab_data_id){
     //Show this tab:
     $('.tab-group-'+x__type+'.tab-data-'+tab_data_id).removeClass('hidden');
     $('.tab-nav-'+x__type+'.tab-head-'+tab_data_id).addClass('active');
-    autosize.update($(".tab-data-" + tab_data_id + " textarea")); //If it has any...
+
+    //If it has any:
+    autosize.update($(".tab-data-" + tab_data_id + " textarea"));
+    $(".tab-data-" + tab_data_id + " textarea").focus();
+
     //Focus on potential input field if any:
     $('.input_note_'+tab_data_id).focus();
 
