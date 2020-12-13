@@ -250,7 +250,7 @@ $(document).ready(function () {
     });
 
 
-    $('.editor_preview_4231 *:not(.ignore-click)').click(function (e) {
+    $('.editor_preview_4231:not(a)').click(function (e) {
         loadtab(14418, 14468);//Load Write Tab
     });
 
