@@ -245,6 +245,12 @@ $(document).ready(function () {
         $('#modal'+$(this).attr('note_type_id')).modal('show');
     });
 
+
+    $('.editor_preview_4231:not(.ignore-click)').click(function (e) {
+        loadtab(14418, 14468);//Load Write Tab
+    });
+
+
     $('#topnav li a').click(function (e) {
 
         e.preventDefault();

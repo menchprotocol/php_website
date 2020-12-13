@@ -172,7 +172,7 @@ if(count($current_sign_i_attempt) == 0){
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="terms_accepted">
                     <label class="form-check-label inline-block" for="terms_accepted">Accept Our <?= $e___4269[14373]['m__title'] ?></label>
-                    <a href="<?= $e___10876[14373]['m__message'] ?>" target="_blank"><i class="fas fa-external-link"></i></a>
+                    <a href="<?= $e___10876[14373]['m__message'] ?>" target="_blank" class="ignore-click"><i class="fas fa-external-link"></i></a>
                 </div>
             </div>
 

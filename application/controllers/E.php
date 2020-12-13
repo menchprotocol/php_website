@@ -1860,7 +1860,7 @@ class E extends CI_Controller
         $magic_x_expiry_hours = (view_memory(6404,11065)/3600);
         $html_message .= '<div>Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).( $has_i ? ' to discover '.$is[0]['i__title'] : '' ).':</div>';
         $magic_url = $this->config->item('base_url').'/e/e_magic_sign/' . $reset_x['x__id'] . '?email='.$_POST['input_email'];
-        $html_message .= '<div><a href="'.$magic_url.'" target="_blank">' . $magic_url . '</a></div>';
+        $html_message .= '<div><a href="'.$magic_url.'" target="_blank" class="ignore-click">' . $magic_url . '</a></div>';
 
         $html_message .= '<br /><br />';
         $html_message .= '<div>'.view_shuffle_message(12691).'</div>';

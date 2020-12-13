@@ -66,7 +66,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $is_discov
 
     if ($x__type == 4256 /* Generic URL */) {
 
-        return '<div class="block"><a href="' . $x__message . '" target="_blank"><span class="url_truncate">' . view_url_clean($x__message) . '</span></a></div>';
+        return '<div class="block"><a href="' . $x__message . '" target="_blank" class="ignore-click"><span class="url_truncate">' . view_url_clean($x__message) . '</span></a></div>';
 
     } elseif ($x__type == 4257 /* Embed Widget URL? */) {
 
@@ -87,7 +87,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $is_discov
     } elseif ($x__type == 4261 /* File URL */) {
 
         $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
-        return '<a href="' . $x__message . '" class="btn btn-idea" target="_blank">'.$e___11035[13573]['m__icon'].' '.$e___11035[13573]['m__title'].'</a>';
+        return '<a href="' . $x__message . '" class="btn btn-idea" target="_blank" class="ignore-click">'.$e___11035[13573]['m__icon'].' '.$e___11035[13573]['m__title'].'</a>';
 
     } elseif(strlen($x__message) > 0) {
 
@@ -152,10 +152,10 @@ function view_url_embed($url, $full_message = null, $return_array = false)
                 //Header For Time
                 if($end_time){
                     $seconds = $end_time-$start_time;
-                    $embed_html_code .= '<div class="grey montserrat" style="padding:5px 0 0 0; font-size:0.84em;"><span class="icon-block-xs">'.$e___11035[13292]['m__icon'].'</span>'.( $seconds<60 ? $seconds.' SEC.' : round_minutes($seconds).' MIN' ).' CLIP <span class="inline-block">('.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).')</span></div>';
+                    $embed_html_code .= '<div class="grey montserrat ignore-click" style="padding:5px 0 0 0; font-size:0.84em;"><span class="icon-block-xs">'.$e___11035[13292]['m__icon'].'</span>'.( $seconds<60 ? $seconds.' SEC.' : round_minutes($seconds).' MIN' ).' CLIP <span class="inline-block">('.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).')</span></div>';
                 }
 
-                $embed_html_code .= '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe id="youtubeplayer'.$video_id.'"  src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
+                $embed_html_code .= '<div class="media-content ignore-click"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe id="youtubeplayer'.$video_id.'"  src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div></div>';
 
             }
 
@@ -167,7 +167,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
             //This should be an integer!
             if (intval($video_id) == $video_id) {
                 $clean_url = 'https://vimeo.com/' . $video_id;
-                $embed_html_code = '<div class="media-content"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://user.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="vm-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
+                $embed_html_code = '<div class="media-content ignore-click"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://user.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="vm-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
             }
 
         } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
@@ -175,7 +175,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
             //Seems to be Wistia:
             $video_id = trim(one_two_explode('wistia.com/medias/', '?', $url));
             $clean_url = trim(one_two_explode('', '?', $url));
-            $embed_html_code = '<script src="https://fast.wistia.com/embed/medias/' . $video_id . '.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding video-sorting" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_' . $video_id . ' seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div></div></div>';
+            $embed_html_code = '<script src="https://fast.wistia.com/embed/medias/' . $video_id . '.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding video-sorting ignore-click" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_' . $video_id . ' seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div></div></div>';
 
         }
     }
@@ -1061,7 +1061,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 }
 
                 //PREVIEW
-                $tab_ui .= '<div class="list-group editor_preview editor_preview_'.$x__type.'" style="margin-top:13px;">';
+                $tab_ui .= '<div class="list-group editor_preview editor_preview_'.$x__type.'"" style="margin-top:13px;">';
                 foreach($i_notes as $i_note) {
                     $tab_ui .= $CI->X_model->message_send($i_note['x__message'], true, $user_e, $i['i__id']);
                 }

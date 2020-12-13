@@ -1001,7 +1001,7 @@ class X_model extends CI_Model
 
                         $e_media_count++;
                         array_push($e_urls, $e_profile['x__message']);
-                        $e_appendix .= '<div class="e-appendix paddingup"><a href="'.$e_profile['x__message'].'" target="_blank"><span class="icon-block-xs">'.view_e__icon($e_profile['e__icon']).'</span>' . ( in_array($e_profile['e__id'], $this->config->item('n___13672')) ? view_url_clean($e_profile['x__message']) : $e_profile['e__title'] /* .'<span class="icon-block-xs"><i class="fas fa-external-link"></i></span>' */  ) . '</a></div>';
+                        $e_appendix .= '<div class="e-appendix paddingup"><a href="'.$e_profile['x__message'].'" target="_blank" class="ignore-click"><span class="icon-block-xs">'.view_e__icon($e_profile['e__icon']).'</span>' . ( in_array($e_profile['e__id'], $this->config->item('n___13672')) ? view_url_clean($e_profile['x__message']) : $e_profile['e__title'] /* .'<span class="icon-block-xs"><i class="fas fa-external-link"></i></span>' */  ) . '</a></div>';
 
                     } else {
 
@@ -1037,7 +1037,7 @@ class X_model extends CI_Model
                     if($is_single_link){
                         //SINGLE LINK:
                         //<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span>
-                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].'" target="_blank"><u>' . $es[0]['e__title'] . '</u>&nbsp;<i class="fas fa-external-link"></i></a></span> ', $output_body_message);
+                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click" target="_blank" ><u>' . $es[0]['e__title'] . '</u>&nbsp;<i class="fas fa-external-link"></i></a></span> ', $output_body_message);
                     } else {
                         //TEXT ONLY
                         //<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span>
