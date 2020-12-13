@@ -250,11 +250,6 @@ $(document).ready(function () {
     });
 
 
-    $('.editor_preview_4231:not(a)').click(function (e) {
-        loadtab(14418, 14468);//Load Write Tab
-    });
-
-
     $('#topnav li a').click(function (e) {
 
         e.preventDefault();

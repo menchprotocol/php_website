@@ -18,6 +18,9 @@ $(document).ready(function () {
     //Lookout for textinput updates
     x_set_start_text();
 
+    $('.editor_preview_4231:not(a)').click(function (e) {
+        loadtab(14418, 14468);//Load Write Tab
+    });
 
     //Look for power editor updates:
     $('.x_set_class_text').keypress(function(e) {
@@ -106,6 +109,11 @@ function i_note_poweredit_save(note_type_id){
 
             //Load Images:
             lazy_load();
+
+            //Revert to preview tab:
+            if(note_type_id==4231){
+                loadtab(14418, 14420);
+            }
 
             setTimeout(function () {
                 $(input_textarea).focus();
