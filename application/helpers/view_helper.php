@@ -999,6 +999,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
         foreach($CI->config->item('e___14418') as $x__type2 => $m) {
 
             $default_active = false;
+            $tab_ui = '';
 
             //Is this a caret menu?
             if($x__type2==14468){
@@ -1012,45 +1013,45 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 $default_active = !strlen($textarea_content);
 
 
-                $ui .= '<div class="power-editor-'.$x__type.'">';
-                $ui .= '<textarea class="form-control msg note-textarea algolia_search new-note power_editor dotransparent emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." style="margin:0 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
+                $tab_ui .= '<div class="power-editor-'.$x__type.'">';
+                $tab_ui .= '<textarea class="form-control msg note-textarea algolia_search new-note power_editor dotransparent emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." style="margin:0 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
 
                 //Response result:
-                $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
+                $tab_ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
 
 
                 //CONTROLLER
-                $ui .= '<div class="no-padding add_notes_' . $x__type .'">';
-                $ui .= '<div class="add_notes_form">';
-                $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
-                $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
-                $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
+                $tab_ui .= '<div class="no-padding add_notes_' . $x__type .'">';
+                $tab_ui .= '<div class="add_notes_form">';
+                $tab_ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
+                $tab_ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
+                $tab_ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
 
                 if($handles_uploads){
 
                     //UPLOAD
-                    $ui .= '<td class="table-btn first_btn">';
-                    $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
-                    $ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
-                    $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
-                    $ui .= '</td>';
+                    $tab_ui .= '<td class="table-btn first_btn">';
+                    $tab_ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
+                    $tab_ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
+                    $tab_ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
+                    $tab_ui .= '</td>';
 
                     //GIF
-                    $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="gif_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
+                    $tab_ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="gif_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
 
                 }
 
                 if($supports_emoji){
                     //EMOJI
-                    $ui .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+                    $tab_ui .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
                 }
 
-                $ui .= '<td style="padding:10px 0 0 0;">&nbsp;</td>';
-                $ui .= '</tr></table>';
-                $ui .= '</form>';
-                $ui .= '</div>';
-                $ui .= '</div>';
-                $ui .= '</div>';
+                $tab_ui .= '<td style="padding:10px 0 0 0;">&nbsp;</td>';
+                $tab_ui .= '</tr></table>';
+                $tab_ui .= '</form>';
+                $tab_ui .= '</div>';
+                $tab_ui .= '</div>';
+                $tab_ui .= '</div>';
 
 
             } elseif($x__type2==14420){
@@ -1060,11 +1061,11 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 }
 
                 //PREVIEW
-                $ui .= '<div class="list-group editor_preview editor_preview_'.$x__type.'" style="margin-top:13px;">';
+                $tab_ui .= '<div class="list-group editor_preview editor_preview_'.$x__type.'" style="margin-top:13px;">';
                 foreach($i_notes as $i_note) {
-                    $ui .= $CI->X_model->message_send($i_note['x__message'], true, $user_e, $i['i__id']);
+                    $tab_ui .= $CI->X_model->message_send($i_note['x__message'], true, $user_e, $i['i__id']);
                 }
-                $ui .= '</div>';
+                $tab_ui .= '</div>';
 
             }
 
@@ -1073,7 +1074,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
 
             $tab_content .= '<div class="tab-content tab-group-14418 tab-data-'.$x__type2.' power-editor-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
-            $tab_content .= $ui;
+            $tab_content .= $tab_ui;
             $tab_content .= '</div>';
 
         }
