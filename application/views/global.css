@@ -485,7 +485,7 @@ img.no-radius {
     width: 100% !important;
     display: table;
     table-layout: fixed;
-    padding: 8px 0 20px;
+    padding: 8px 0;
 }
 
 .discover-controller div{
@@ -496,7 +496,8 @@ img.no-radius {
     margin-bottom: 0;
 }
 .nav-title{
-    padding: 5px 0 !important;
+    padding: 5px 0 0 !important;
+    display: block;
 }
 
 
