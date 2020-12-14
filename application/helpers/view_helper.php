@@ -1061,7 +1061,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 }
 
                 //PREVIEW
-                $tab_ui .= '<div class="list-group editor_preview editor_preview_'.$x__type.'">';
+                $tab_ui .= '<div class="list-group '.( $e_of_i ? ' editor_preview ' : '' ).' editor_preview_'.$x__type.'">';
                 foreach($i_notes as $i_note) {
                     $tab_ui .= $CI->X_model->message_send($i_note['x__message'], true, $user_e, $i['i__id']);
                 }
