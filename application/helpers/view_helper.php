@@ -1582,7 +1582,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
                 $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, 0, false, null, extract_icon_color($e['e__icon']));
 
-                if($superpower_12706){
+                if($box_items_list){
                     $ui .= '<div class="space-content">'.$box_items_list.'</div>';
                 }
 
