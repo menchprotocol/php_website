@@ -365,7 +365,7 @@ $control_enabled = $source_is_e || $superpower_10939;
                 //MY IDEAS?
                 if($source_is_e){
 
-                    //$ui .= '<div class="headline '.superpower_active(12700).'"><span class="icon-block">' . $e___11035[10573]['m__icon'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
+                    $ui .= '<div class="headline '.superpower_active(12700).'"><span class="icon-block">' . $e___11035[10573]['m__icon'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
 
                     //Give Option to Add New Idea:
                     $ui .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
@@ -417,10 +417,6 @@ $control_enabled = $source_is_e || $superpower_10939;
             //List References
             $list_i = view_coins_e(12273, $e['e__id'], 1, true, $i_exclude);
 
-            if(count($list_i) && count($i_exclude)){
-                $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
-            }
-
             if($superpower_10939 && !$source_is_e){
                 //Give Option to Add New Idea:
                 $ui .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
@@ -435,6 +431,7 @@ $control_enabled = $source_is_e || $superpower_10939;
 
 
             if(count($list_i)){
+                $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
                 $ui .= '<div class="row top-margin" id="list_13550">';
                 foreach($list_i as $count => $item){
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only

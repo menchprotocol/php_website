@@ -1356,7 +1356,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
 
 
-    $ui .= '<div class="cover-wrapper" title="'.$x__type.'">';
+    $ui .= '<div class="cover-wrapper">';
     $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
 
