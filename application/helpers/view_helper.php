@@ -1238,17 +1238,17 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
 
 
             //We need to check if we have more than this?
-            $see_all_link = '';
+            $see_all_link = '<span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'];
             if(!$e__id_limit){
                 //We might have more, let's check:
                 $count_query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
                 if($count_query[0]['totals'] > $limit){
                     //Yes, we have more, show this:
-                    $see_all_link = '&nbsp;|&nbsp;<a href="/browse/'.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><u>More</u>&nbsp;&raquo;</a>';
+                    $see_all_link = '<span class="icon-block">'.$m['m__icon'].'</span><a href="/browse/'.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><u>'.''.$m['m__title'].'</u>&nbsp;<i class="far fa-chevron-right"></i></a>';
                 }
             }
 
-            $ui .= '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].$see_all_link.'</div>';
+            $ui .= '<div class="headline top-margin">'.$see_all_link.'</div>';
             $ui .= '<div class="row margin-top-down-half">';
             foreach($query as $i){
                 $ui .= view_i(12138, $i);
