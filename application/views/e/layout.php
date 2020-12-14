@@ -21,6 +21,7 @@ $control_enabled = $source_is_e || $superpower_10939;
 </script>
 
 <script src="/application/views/e/layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+<script src="/application/views/layouts.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
     <?php
 

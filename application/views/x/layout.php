@@ -84,8 +84,8 @@ $drip_msg_total = count($messages) + 1 /* For Title */;
     var i_drip_mode_js = <?= intval($i_drip_mode) ?>;
 </script>
 
-<script src="/application/views/x/layout.js?v=<?= view_memory(6404,11060) ?>"
-        type="text/javascript"></script>
+<script src="/application/views/x/layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+<script src="/application/views/layouts.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 <?php
 

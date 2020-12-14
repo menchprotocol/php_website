@@ -19,7 +19,8 @@ $superpower_14005 = superpower_active(14005, true);
     //Include some cached sources:
     var focus_i__id = <?= $i_focus['i__id'] ?>;
 </script>
-<script src="/application/views/i/layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+    <script src="/application/views/i/layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+    <script src="/application/views/layouts.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 <?php
 
