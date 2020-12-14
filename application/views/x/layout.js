@@ -52,6 +52,7 @@ function go_previous(href_url) {
 }
 
 function adjust_drip_percent(i_drip_pointer){
+    console.log(i_drip_pointer);
     $('.progress_'+focus_i__id+' .progress-done').css('width', ( i_drip_pointer > 0 ? Math.round(i_drip_pointer/drip_msg_total*100) : '0' )+'%');
 }
 
