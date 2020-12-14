@@ -41,7 +41,7 @@ $(document).ready(function () {
 function go_previous(href_url) {
     if(i_drip_mode_js && i_drip_pointer>1){
         i_drip_pointer--;
-        adjust_drip_percent(i_drip_pointer);
+        adjust_drip_percent((i_drip_pointer-1));
         //Simply go to the next drip:
         $('.drip_msg, .final_drip').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
@@ -58,12 +58,14 @@ function adjust_drip_percent(i_drip_pointer){
 function go_next(go_next_url){
 
     if(i_drip_mode_js && i_drip_pointer<drip_msg_total){
+
         i_drip_pointer++;
+
+        adjust_drip_percent(i_drip_pointer);
+
         //Simply go to the next drip:
         $('.drip_msg').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
-
-        adjust_drip_percent(i_drip_pointer);
 
         //Are we at the last drip?
         if(i_drip_pointer==drip_msg_total){

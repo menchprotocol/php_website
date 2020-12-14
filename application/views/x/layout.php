@@ -80,7 +80,7 @@ $drip_msg_total = count($messages) + 1 /* For Title */;
     var focus_i__id = <?= $i_focus['i__id'] ?>;
     var focus_i__type = <?= $i_focus['i__type'] ?>;
     var drip_msg_total = <?= $drip_msg_total ?>;
-    var i_drip_pointer = 0; //Start at the first message
+    var i_drip_pointer = 1; //Start at the first message
     var i_drip_mode_js = <?= intval($i_drip_mode) ?>;
 </script>
 
