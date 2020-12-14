@@ -1409,7 +1409,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         $e_of_i = e_of_i($i['i__id']);
 
         //IDEA TYPE
-        $ui .= '<div class="cover-text montserrat"><a href="'.$href.'" class="inline-block">'.view_i_time($i_stats).'</a>' . view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . view_coins_i(12273, $i, false) . '</div>';
+        $ui .= '<div class="cover-text montserrat"><a href="'.$href.'" class="inline-block">'.view_i_time($i_stats).'</a>' . view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . '<span class="idea">'.view_coins_i(12273, $i, false) . '</span></div>';
 
         //TOOLBAR
         if(!$discovery_mode && superpower_active(12673, true)){
