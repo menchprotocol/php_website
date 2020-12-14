@@ -14,8 +14,6 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
     *
     * */
 
-    alert('it is: '+focus_i__id);
-
     var current_selected = parseInt($('.dropi_'+element_id+'_'+i__id+'_'+x__id+'.active').attr('new-en-id'));
     new_e__id = parseInt(new_e__id);
     if(current_selected == new_e__id){
