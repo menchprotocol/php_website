@@ -1309,6 +1309,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
+    $idea_editing = in_array($x__type, $CI->config->item('n___14502')); //IDEA EDITING
 
     if($focus_e && (!$user_session || $user_session['e__id']!=$focus_e['e__id']) && !superpower_active(12701, true)){
         //Do not allow to see this user's info:
@@ -1319,12 +1320,18 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         $focus_e = $user_session;
     }
 
-    if(is_null($completion_rate)){
-        $completion_rate['completion_percentage'] = 0; //Assume no progress
-        if($focus_e && $discovery_mode){
-            $completion_rate = $CI->X_model->completion_progress($focus_e['e__id'], $i);
+    if(in_array($x__type, $CI->config->item('n___14501'))){ //Load Completion Bar
+        if(is_null($completion_rate)){
+            $completion_rate['completion_percentage'] = 0; //Assume no progress
+            if($focus_e && $discovery_mode){
+                $completion_rate = $CI->X_model->completion_progress($focus_e['e__id'], $i);
+            }
         }
+    } else {
+        //Completion rate not supported:
+        $completion_rate = null;
     }
+
 
     $superpower_10939 = superpower_active(10939, true);
     $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || in_array($i['i__type'], $CI->config->item('n___14488'));
@@ -1372,7 +1379,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         //$ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div>';
     }
 
-    //REMOVE?
+    //UNLINK?
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
         $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
     }
@@ -1409,10 +1416,10 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         $e_of_i = e_of_i($i['i__id']);
 
         //IDEA TYPE
-        $ui .= '<div class="cover-text montserrat">'.view_i_time($i_stats). view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . '<span class="idea">'.view_coins_i(12273, $i, false) . '</span></div>';
+        $ui .= '<div class="cover-text montserrat">'.view_i_time($i_stats). view_input_dropdown(4737, $i['i__type'], null, ($idea_editing && $e_of_i), false, $i['i__id']) . '<span class="idea">'.view_coins_i(12273, $i, false) . '</span></div>';
 
         //TOOLBAR
-        if(!$discovery_mode && superpower_active(12673, true)){
+        if($idea_editing && superpower_active(12673, true)){
 
             //Idea Toolbar
             $ui .= '<div style="text-align: center;">';
