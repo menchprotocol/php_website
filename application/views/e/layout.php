@@ -431,8 +431,8 @@ $control_enabled = $source_is_e || $superpower_10939;
 
 
             if(count($list_i)){
-                $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
-                $ui .= '<div class="row top-margin" id="list_13550">';
+                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
+                $ui .= '<div class="row margin-top-down-half" id="list_13550">';
                 foreach($list_i as $count => $item){
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
                     $ui .= view_i(13550, $item, $control_enabled,( $show_message ? $this->X_model->message_send($item['x__message'], true) : null), $e);
