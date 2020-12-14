@@ -797,7 +797,7 @@ if(!$in_my_x && !$i_drip_mode){
     //Get Started
     echo '<div class="container fixed-bottom light-bg">';
     echo '<div class="discover-controller">';
-    echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[14499]['m__icon'].' '.$e___11035[14499]['m__title'].'</a></div>';
+    echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[4235]['m__icon'].' '.$e___11035[4235]['m__title'].'</a></div>';
     echo '</div>';
     echo '</div>';
 
