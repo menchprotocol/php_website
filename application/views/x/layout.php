@@ -792,60 +792,71 @@ echo $tab_content;
 echo '</div>'; //CLOSE CONTAINER
 
 
+if(!$in_my_x && !$i_drip_mode){
 
-$buttons_found = 0;
-$buttons_ui = '';
-
-foreach($this->config->item('e___13289') as $e__id => $m) {
-
-
-    $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
-    if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
-        continue;
-    }
-
-    $control_btn = '';
-
-    if($e__id==13877 && $in_my_x && !$in_my_discoveries){
-
-        //Is Saved already by this user?
-        $is_saved = count($this->X_model->fetch(array(
-            'x__up' => $user_e['e__id'],
-            'x__right' => $i_focus['i__id'],
-            'x__type' => 12896, //SAVED
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        )));
-
-        $control_btn = '<span class="final_drip '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'"><a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="0"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title">'.$m['m__title'].'</span></span>';
-
-    } elseif($e__id==12991){
-
-        //BACK
-        $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
-
-    } elseif($e__id==12211){
-
-        //NEXT
-        $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
-
-    }
-
-    $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
-
-    if($control_btn){
-        $buttons_found++;
-    }
-
-}
-
-if($buttons_found > 0){
+    //Get Started
     echo '<div class="container fixed-bottom light-bg">';
     echo '<div class="discover-controller">';
-    echo $buttons_ui;
+    echo '<div><a class="controller-nav go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[14499]['m__icon'].' '.$e___11035[14499]['m__title'].'</a></div>';
     echo '</div>';
     echo '</div>';
-}
 
+} else {
+
+    $buttons_found = 0;
+    $buttons_ui = '';
+
+    foreach($this->config->item('e___13289') as $e__id => $m) {
+
+
+        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
+        if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
+            continue;
+        }
+
+        $control_btn = '';
+
+        if($e__id==13877 && $in_my_x && !$in_my_discoveries){
+
+            //Is Saved already by this user?
+            $is_saved = count($this->X_model->fetch(array(
+                'x__up' => $user_e['e__id'],
+                'x__right' => $i_focus['i__id'],
+                'x__type' => 12896, //SAVED
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            )));
+
+            $control_btn = '<span class="final_drip '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'"><a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="0"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title">'.$m['m__title'].'</span></span>';
+
+        } elseif($e__id==12991){
+
+            //BACK
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
+
+        } elseif($e__id==12211){
+
+            //NEXT
+            $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m['m__icon'].'</a><span class="nav-title">'.$m['m__title'].'</span>';
+
+        }
+
+        $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
+
+        if($control_btn){
+            $buttons_found++;
+        }
+
+    }
+
+    if($buttons_found > 0){
+        echo '<div class="container fixed-bottom light-bg">';
+        echo '<div class="discover-controller">';
+        echo $buttons_ui;
+        echo '</div>';
+        echo '</div>';
+    }
+
+}
 
 //ADD GIF MODAL
 $this->load->view('i/giphy');

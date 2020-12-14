@@ -1403,6 +1403,8 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
     if(!$is_any_lock){
 
+        $ui .= '<div class="cover-text montserrat"><a href="'.$href.'">'.view_i_time($i_stats).'</a></div>';
+
         //TOOLBAR
         if(!$discovery_mode && superpower_active(12673, true)){
 
@@ -1444,8 +1446,6 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
             $ui .= '</div>';
 
         }
-
-        $ui .= '<div class="cover-text montserrat"><a href="'.$href.'">'.view_i_time($i_stats).'</a></div>';
 
     } else {
 
