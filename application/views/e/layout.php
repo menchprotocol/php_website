@@ -16,6 +16,7 @@ $control_enabled = $source_is_e || $superpower_10939;
 
 <script>
     //Set global variables:
+    var focus_i__id = 0;
     var e_focus_filter = -1; //No filter, show all
     var e_focus_id = <?= $e['e__id'] ?>;
 </script>
