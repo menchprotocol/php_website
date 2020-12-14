@@ -1445,11 +1445,11 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
         }
 
-        //$ui .= '<div class="cover-text montserrat"><a href="'.$href.'">'.view_i_time($i_stats).'</a></div>';
+        $ui .= '<div class="cover-text montserrat"><a href="'.$href.'">'.view_i_time($i_stats).'</a></div>';
 
     } else {
 
-        //$ui .= '<div class="cover-text montserrat">'.view_i_time($i_stats).'</div>';
+        $ui .= '<div class="cover-text montserrat">'.view_i_time($i_stats).'</div>';
 
     }
 
