@@ -281,7 +281,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Target Idea ID',
             ));
-        } elseif (!isset($_POST['focus_i__id']) || intval($_POST['focus_i__id']) < 1) {
+        } elseif (!isset($_POST['focus_i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Loaded Idea ID',

@@ -1309,7 +1309,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
-    $idea_editing = in_array($x__type, $CI->config->item('n___14502')); //IDEA EDITING
+    $idea_editing = in_array($x__type, $CI->config->item('n___14502')) && e_of_i($i['i__id']); //IDEA EDITING
 
     if($focus_e && (!$user_session || $user_session['e__id']!=$focus_e['e__id']) && !superpower_active(12701, true)){
         //Do not allow to see this user's info:
@@ -1390,7 +1390,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
     if($message_input || $i_title){
         $ui .= '<div class="cover-content"><div class="inner-content">';
-        //$ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (($i['x__spectrum']*100)+1));
+        //$ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1));
         if($i_title){
             if(!$is_any_lock){
                 $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
@@ -1413,10 +1413,8 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
     if(!$is_any_lock){
 
-        $e_of_i = ($idea_editing && e_of_i($i['i__id']));
-
         //IDEA TYPE
-        $ui .= '<div class="cover-text montserrat">'.view_i_time($i_stats). ( $idea_editing ? view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']).'<span class="idea">'.view_coins_i(12273, $i, false) . '</span>' : '' ) .'</div>';
+        $ui .= '<div class="cover-text montserrat">'. ( $idea_editing ? view_i_time($i_stats).view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']).'<span class="idea">'.view_coins_i(12273, $i, false) . '</span>' : '' ) .'</div>';
 
         //TOOLBAR
         if($idea_editing && superpower_active(12673, true)){
@@ -1432,20 +1430,20 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 $ui .= '<span class="' . superpower_active(12700) . '">';
 
                 //LINK TYPE
-                $ui .= view_input_dropdown(4486, $i['x__type'], null, $e_of_i, false, $i['i__id'], $i['x__id']);
+                $ui .= view_input_dropdown(4486, $i['x__type'], null, $idea_editing, false, $i['i__id'], $i['x__id']);
 
                 //LINK MARKS
                 $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
-                $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+2 );
+                $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+2 );
                 $ui .='</span>';
 
 
                 //LINK CONDITIONAL RANGE
                 $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
                 //MIN
-                $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+3);
+                $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+3);
                 //MAX
-                $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $e_of_i, ($i['x__spectrum']*10)+4);
+                $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+4);
                 $ui .= '</span>';
                 $ui .= '</span>';
 
