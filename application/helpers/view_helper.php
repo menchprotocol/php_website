@@ -28,7 +28,7 @@ function view_i_time($i_stats){
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = null;
-    $ui .= '<div class="montserrat doupper grey">';
+    $ui .= '<div class="montserrat doupper grey inline-block">';
     //$ui .= '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>';
     if($i_stats['i___6161']<60 && $i_stats['i___6162']<60){
         //SECONDS
@@ -1409,7 +1409,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         $e_of_i = e_of_i($i['i__id']);
 
         //IDEA TYPE
-        $ui .= '<div class="cover-text montserrat">'.view_i_time($i_stats).view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . '<span class="idea">'.view_coins_i(12273, $i, false) . '</span></div>';
+        $ui .= '<div class="cover-text montserrat">'.view_i_time($i_stats). view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . '<span class="idea">'.view_coins_i(12273, $i, false) . '</span></div>';
 
         //TOOLBAR
         if(!$discovery_mode && superpower_active(12673, true)){
