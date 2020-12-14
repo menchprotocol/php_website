@@ -41,16 +41,6 @@ if($is_north_star) {
 } elseif($show_previous){
     //echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m__icon'].'</span>'.$e___11035[11019]['m__title'].'</div>';
 }
-echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="row top-margin grey-list previous_i">';
-foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-    'x__right' => $i_focus['i__id'],
-), array('x__left'), 0) as $previous_i) {
-    echo view_i(11019, $previous_i, $e_of_i);
-}
-echo '</div>';
 
 if($show_previous){
     echo '<div class="list-adder '.superpower_active(10939).'">
@@ -63,6 +53,17 @@ if($show_previous){
                                placeholder="'.$e___11035[14014]['m__title'].'">
                     </div></div>';
 }
+
+echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="row top-margin grey-list previous_i">';
+foreach($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+    'x__right' => $i_focus['i__id'],
+), array('x__left'), 0) as $previous_i) {
+    echo view_i(11019, $previous_i, $e_of_i);
+}
+echo '</div>';
 
 echo '</div>';
 
