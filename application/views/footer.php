@@ -89,5 +89,6 @@ if($user_e){
 
 ?>
 
+<link href="/application/views/global.css?v=<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
 
 </body>
