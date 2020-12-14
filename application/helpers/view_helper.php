@@ -1329,7 +1329,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         }
     } else {
         //Completion rate not supported:
-        $completion_rate = null;
+        $completion_rate['completion_percentage'] = 0; //Assume no progress
     }
 
 
