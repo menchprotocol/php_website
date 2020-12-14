@@ -561,7 +561,7 @@ $control_enabled = $source_is_e || $superpower_10939;
 
     if($tab_nav){
 
-        echo '<ul class="nav nav-tabs nav-sm '.superpower_active(10939).'">';
+        echo '<ul class="nav nav-tabs nav-sm '.( $source_is_e ? superpower_active(10939) : '' ).'">';
         echo $tab_nav;
         echo '</ul>';
 
