@@ -1326,7 +1326,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         }
     }
 
-
+    $superpower_10939 = superpower_active(10939, true);
     $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || in_array($i['i__type'], $CI->config->item('n___14488'));
     $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
     $is_soft_lock = $locking_enabled && ($is_hard_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
@@ -1406,18 +1406,16 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
     if(!$is_any_lock){
 
-        $ui .= '<div class="cover-text montserrat"><a href="'.$href.'">'.view_i_time($i_stats).'</a></div>';
+        $e_of_i = e_of_i($i['i__id']);
+
+        //IDEA TYPE
+        $ui .= '<div class="cover-text montserrat"><span class="icon-block">' . view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . ' </span><a href="'.$href.'">'.view_i_time($i_stats).'</a></div>';
 
         //TOOLBAR
         if(!$discovery_mode && superpower_active(12673, true)){
 
-            $e_of_i = e_of_i($i['i__id']);
-
             //Idea Toolbar
             $ui .= '<div style="text-align: center;">';
-
-            //IDEA STATUS
-            $ui .= '<div class="inline-block">' . view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']) . ' </div>';
 
             if(isset($i['x__id'])){
 
