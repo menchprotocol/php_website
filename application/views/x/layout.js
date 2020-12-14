@@ -36,14 +36,6 @@ $(document).ready(function () {
 
 });
 
-/*
-*
-* var drip_msg_total = <?= count($messages) ?>;
-var i_drip_pointer = 1; //Start at the first message
-var i_drip_mode_js = <?= intval($i_drip_mode) ?>;
-*
-* */
-
 
 
 function go_previous(href_url) {
@@ -60,7 +52,10 @@ function go_previous(href_url) {
 }
 
 function adjust_drip_percent(){
-    $('.progress_'+focus_i__id+' .progress-done').css('width', Math.round(i_drip_pointer/drip_msg_total*100)+'%');
+    setTimeout(function () {
+        //Give it some time so the counter updates
+        $('.progress_'+focus_i__id+' .progress-done').css('width', Math.round(i_drip_pointer/drip_msg_total*100)+'%');
+    }, 89);
 }
 
 function go_next(go_next_url){
