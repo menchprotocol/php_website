@@ -67,7 +67,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
         i__id: i__id,
         x__id: x__id,
-        focus_i__id:( typeof variable !== 'undefined' ? parseInt(focus_i__id) : 0 ),
+        focus_i__id:focus_i__id,
         element_id: element_id,
         new_e__id: new_e__id
 
