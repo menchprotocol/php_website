@@ -41,7 +41,7 @@ $(document).ready(function () {
 function go_previous(href_url) {
     if(i_drip_mode_js && i_drip_pointer>1){
         i_drip_pointer--;
-        adjust_drip_percent();
+        adjust_drip_percent(i_drip_pointer);
         //Simply go to the next drip:
         $('.drip_msg, .final_drip').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
@@ -51,11 +51,8 @@ function go_previous(href_url) {
     }
 }
 
-function adjust_drip_percent(){
-    setTimeout(function () {
-        //Give it some time so the counter updates
-        $('.progress_'+focus_i__id+' .progress-done').css('width', Math.round(i_drip_pointer/drip_msg_total*100)+'%');
-    }, 89);
+function adjust_drip_percent(i_drip_pointer){
+    $('.progress_'+focus_i__id+' .progress-done').css('width', Math.round(i_drip_pointer/drip_msg_total*100)+'%');
 }
 
 function go_next(go_next_url){
@@ -67,7 +64,7 @@ function go_next(go_next_url){
         $('.drip_msg').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
 
-        adjust_drip_percent();
+        adjust_drip_percent(i_drip_pointer);
 
         //Are we at the last drip?
         if(i_drip_pointer==drip_msg_total){
