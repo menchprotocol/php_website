@@ -1244,7 +1244,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
                 $count_query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
                 if($count_query[0]['totals'] > $limit){
                     //Yes, we have more, show this:
-                    $see_all_link = '<span class="icon-block">'.$m['m__icon'].'</span><a href="/browse/'.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><u>'.''.$m['m__title'].'</u>&nbsp;<i class="far fa-chevron-right"></i></a>';
+                    $see_all_link = '<span class="icon-block">'.$m['m__icon'].'</span><a href="/browse/'.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><u>'.''.$m['m__title'].'</u>&nbsp;<i class="far fa-chevron-right" style="font-size: 0.9em !important; margin-left: 5px;"></i></a>';
                 }
             }
 
