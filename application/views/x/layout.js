@@ -40,7 +40,7 @@ $(document).ready(function () {
 
 function go_previous(href_url) {
     if(i_drip_mode_js && i_drip_pointer>1){
-        i_drip_pointer = i_drip_pointer - 1;
+        i_drip_pointer--;
         adjust_drip_percent(i_drip_pointer);
         //Simply go to the next drip:
         $('.drip_msg, .final_drip').addClass('hidden');
@@ -52,15 +52,13 @@ function go_previous(href_url) {
 }
 
 function adjust_drip_percent(i_drip_pointer){
-    console.log(i_drip_pointer);
-    $('.progress_'+focus_i__id+' .progress-done').css('width', ( i_drip_pointer > 0 ? Math.round(i_drip_pointer/drip_msg_total*100) : '0' )+'%');
+    $('.progress_'+focus_i__id+' .progress-done').css('width', Math.round(i_drip_pointer/drip_msg_total*100)+'%');
 }
 
 function go_next(go_next_url){
 
     if(i_drip_mode_js && i_drip_pointer<drip_msg_total){
-
-        i_drip_pointer = i_drip_pointer + 1;
+        i_drip_pointer++;
         //Simply go to the next drip:
         $('.drip_msg').addClass('hidden');
         $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
