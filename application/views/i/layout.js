@@ -15,12 +15,12 @@ function watch_for(target_class){
             console.log('Preview initiated');
             //Aggregare parents:
             var class_found = false;
-            if($(e.target).hasClass(target_class)){
+            if($(e.target).is(target_class)){
                 class_found = true;
             }
             if(!class_found){
                 $(e.target).parentsUntil( "body" ).each(function () {
-                    if(!class_found && $(this).hasClass(target_class)){
+                    if(!class_found && $(this).is(target_class)){
                         class_found = true;
                     }
                 });
@@ -50,7 +50,7 @@ $(document).ready(function () {
 
         loadtab(14418, 14468);//Load Write Tab
 
-        watch_for('power_editor');
+        watch_for('.input_note_4231, .editor_preview_4231');
 
     });
 
