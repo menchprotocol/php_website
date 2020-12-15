@@ -8,6 +8,29 @@
 
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
+function watch_for(target_class){
+    $('html').click(function(e) {
+        //Aggregare parents:
+        var class_found = false;
+        if($(e.target).hasClass(target_class)){
+            class_found = true;
+        }
+        if(!class_found){
+            $(e.target).parentsUntil( "body" ).each(function () {
+                if(!class_found && $(this).hasClass(target_class)){
+                    class_found = true;
+                }
+            });
+            if(!class_found) {
+                //Revert back IF the same:
+                if(!i_note_poweredit_has_changed(4231)){
+                    loadtab(14418, 14420); //Load Preview tab
+                }
+            }
+        }
+    });
+}
+
 $(document).ready(function () {
 
     i_note_activate();
@@ -22,27 +45,7 @@ $(document).ready(function () {
 
         loadtab(14418, 14468);//Load Write Tab
 
-        $('html').click(function(e) {
-            //Aggregare parents:
-            var target_class = 'power_editor';
-            var class_found = false;
-            if($(e.target).hasClass(target_class)){
-                class_found = true;
-            }
-            if(!class_found){
-                $(e.target).parentsUntil( "body" ).each(function () {
-                    if(!class_found && $(this).hasClass(target_class)){
-                        class_found = true;
-                    }
-                });
-                if(!class_found) {
-                    //Revert back IF the same:
-                    if(!i_note_poweredit_has_changed(4231)){
-                        loadtab(14418, 14420); //Load Preview tab
-                    }
-                }
-            }
-        });
+        watch_for('power_editor');
 
     });
 
