@@ -21,6 +21,11 @@ $(document).ready(function () {
     $('.editor_preview.editor_preview_4231').click(function (e) {
         loadtab(14418, 14468);//Load Write Tab
     });
+    $('html').click(function(e) {
+        if(!$(e.target).hasClass('editor_preview')){
+            console.log('Outer click');
+        }
+    });
 
     //Look for power editor updates:
     $('.x_set_class_text').keypress(function(e) {
