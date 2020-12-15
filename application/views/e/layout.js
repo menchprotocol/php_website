@@ -170,7 +170,7 @@ function i_create(){
     }
 
     //Lockdown:
-    $('#newIdeaTitle').prop('disabled', true);
+    $('#newIdeaTitle').prop('disabled', true).addClass('dynamic_saving');
     $('#tempLoader').remove();
 
     //Set processing status:
@@ -193,7 +193,7 @@ function i_create(){
 
             //Unlock:
             $('#tempLoader').html('<span class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
-            $('#newIdeaTitle').prop('disabled', false).focus();
+            $('#newIdeaTitle').prop('disabled', false).removeClass('dynamic_saving').focus();
 
         }
 
