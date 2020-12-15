@@ -22,8 +22,14 @@ $(document).ready(function () {
         loadtab(14418, 14468);//Load Write Tab
     });
     $('html').click(function(e) {
+
+        //Aggregare parents:
+        $(e.target).parentsUntil( "body" ).each(function () {
+            console.log('Outer click: '+$(this).attr('class'));
+        });
+
         if(!$(e.target).hasClass('editor_preview')){
-            console.log('Outer click: '+$(e.target).parentsUntil( "body" ).attr('class'));
+           // console.log('Outer click: '+$(e.target).parentsUntil( "body" ).attr('class'));
         }
     });
 
