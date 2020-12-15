@@ -68,7 +68,7 @@ $(document).ready(function () {
     });
 
 
-    $('.power_editor').keydown(function (e) {
+    $('.power_editor').on('change keyup paste', function(e) {
 
         var note_type_id = $(this).attr('note_type_id');
 
@@ -83,6 +83,7 @@ $(document).ready(function () {
         if (e.ctrlKey && code== 13) {
             i_note_poweredit_save(note_type_id);
         }
+
     });
 
     //Put focus on messages if no message:
@@ -139,7 +140,8 @@ function i_note_poweredit_save(note_type_id){
         $('.save_notes_' + note_type_id).attr('href', 'javascript:i_note_poweredit_save('+note_type_id+');');
 
         //Update raw text input:
-        $(input_textarea).val(data.input_clean.trim() + ' ');
+        var new_text = data.input_clean.trim();
+        $(input_textarea).val(new_text + ' ').attr('current_text', new_text);
         autosize.update($(input_textarea));
         $(input_textarea).focus();
 
@@ -163,6 +165,9 @@ function i_note_poweredit_save(note_type_id){
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
+
+            //Hide Save BUtton:
+            $('.save_button_'+note_type_id).addClass('hidden');
 
             //Load Images:
             lazy_load();

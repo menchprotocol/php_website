@@ -1117,7 +1117,6 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
             //CONTROLLER
             $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
-            $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_add_text('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" title="'.$e___11035[14421]['m__title'].'">'.$e___11035[14421]['m__icon'].'</a></td>';
 
             if($handles_uploads){
 
@@ -1137,6 +1136,10 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 //EMOJI
                 $ui .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
             }
+
+            //Add
+            $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_add_text('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;">'.$e___11035[14421]['m__icon'].' '.$e___11035[14421]['m__title'].'</a></td>';
+
 
             //File counter:
             $ui .= '<td style="padding:10px 0 0 0;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden some-text"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).' CHARACTERS</span></td>';
