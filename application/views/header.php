@@ -191,7 +191,7 @@ if(!isset($hide_header)){
                             if('@'.$user_e['e__id']==$first_segment){
 
                                 //Home Page:
-                                echo '<b class="montserrat text-logo">'.$user_e['e__title'].'</b>';
+                                echo '<b class="montserrat text-logo text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>';
 
                             } else {
 
