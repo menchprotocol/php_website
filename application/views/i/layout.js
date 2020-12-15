@@ -9,23 +9,29 @@
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
 function watch_for(target_class){
+
     return false;
+
     $('html').click(function(e) {
-        //Aggregare parents:
-        var class_found = false;
-        if($(e.target).hasClass(target_class)){
-            class_found = true;
-        }
-        if(!class_found){
-            $(e.target).parentsUntil( "body" ).each(function () {
-                if(!class_found && $(this).hasClass(target_class)){
-                    class_found = true;
-                }
-            });
-            if(!class_found) {
-                //Revert back IF the same:
-                if(!i_note_poweredit_has_changed(4231)){
-                    loadtab(14418, 14420); //Load Preview tab
+        if($('.tab-data-14420').hasClass('hidden')){
+            console.log('Preview initiated');
+            //Aggregare parents:
+            var class_found = false;
+            if($(e.target).hasClass(target_class)){
+                class_found = true;
+            }
+            if(!class_found){
+                $(e.target).parentsUntil( "body" ).each(function () {
+                    if(!class_found && $(this).hasClass(target_class)){
+                        class_found = true;
+                    }
+                });
+                if(!class_found) {
+                    //Revert back IF the same:
+                    if(!i_note_poweredit_has_changed(4231)){
+                        console.log('Preview loaded');
+                        loadtab(14418, 14420); //Load Preview tab
+                    }
                 }
             }
         }
