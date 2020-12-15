@@ -476,7 +476,7 @@ $control_enabled = $source_is_e || $superpower_10939;
 
                 } else {
 
-                    $ui .= '<div class="i_content padded top-margin"><div class="msg">'.$e['e__title'].' has privately discovered '.number_format($counter, 0).' idea'.view__s($counter).'.</div></div>';
+                    $ui .= '<div class="msg top-margin">'.$e['e__title'].' has privately discovered '.number_format($counter, 0).' idea'.view__s($counter).'.</div>';
 
 
                 }

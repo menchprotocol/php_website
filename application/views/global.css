@@ -2234,6 +2234,7 @@ i, .btn .show-max {
 .editor_preview{
     padding-top: 5px !important;
     padding-bottom: 5px !important;
+    margin: 0 41px;
 }
 
 .editor_preview:hover{

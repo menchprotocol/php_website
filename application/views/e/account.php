@@ -22,7 +22,7 @@ foreach($this->config->item('e___6225') as $acc_e__id => $acc_detail) {
 
     //Append description if any:
     if(strlen($acc_detail['m__message']) > 0){
-        $ui .= '<div class="i_content padded"><div class="msg">' . $acc_detail['m__message'] . '</div></div>';
+        $ui .= '<div class="msg">' . $acc_detail['m__message'] . '</div>';
     }
 
     if ($acc_e__id == 12289) {
