@@ -43,17 +43,7 @@ if($is_north_star) {
     //echo '<div class="headline"><span class="icon-block">'.$e___11035[11019]['m__icon'].'</span>'.$e___11035[11019]['m__title'].'</div>';
 }
 
-if($show_previous){
-    echo '<div class="list-adder '.superpower_active(10939).'">
-                    <div class="input-group border">
-                        <input type="text"
-                               class="form-control form-control-thick previous_i add-input algolia_search dotransparent"
-                               maxlength="' . view_memory(6404,4736) . '"
-                               i-id="' . $i_focus['i__id'] . '"
-                               id="addi-c-' . $i_focus['i__id'] . '-1"
-                               placeholder="'.$e___11035[14014]['m__title'].'">
-                    </div></div>';
-}
+
 
 echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="row top-margin grey-list previous_i">';
 foreach($this->X_model->fetch(array(
@@ -65,7 +55,17 @@ foreach($this->X_model->fetch(array(
     echo view_i(11019, $previous_i, $e_of_i);
 }
 echo '</div>';
-
+if($show_previous){
+    echo '<div class="list-adder '.superpower_active(10939).'">
+                    <div class="input-group border">
+                        <input type="text"
+                               class="form-control form-control-thick previous_i add-input algolia_search dotransparent"
+                               maxlength="' . view_memory(6404,4736) . '"
+                               i-id="' . $i_focus['i__id'] . '"
+                               id="addi-c-' . $i_focus['i__id'] . '-1"
+                               placeholder="'.$e___11035[14014]['m__title'].'">
+                    </div></div>';
+}
 echo '</div>';
 
 
