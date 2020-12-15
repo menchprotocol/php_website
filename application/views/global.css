@@ -2231,11 +2231,14 @@ i, .btn .show-max {
     background-color:#000000 !important;
 }
 
+.editor_preview{
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
 .editor_preview:hover{
     cursor: text !important;
     border-radius: 10px !important;
-    padding-top: 5px !important;
-    padding-bottom: 5px !important;
 }
 
 .doabsolute {
