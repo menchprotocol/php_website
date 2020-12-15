@@ -825,6 +825,7 @@ label:focus,
 
 .msg {
     line-height: 144%;
+    margin: 0 0 25px 0;
 }
 
 .msg-nav {
