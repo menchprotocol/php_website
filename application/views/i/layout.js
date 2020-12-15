@@ -24,15 +24,20 @@ $(document).ready(function () {
 
     $('html').click(function(e) {
         //Aggregare parents:
-        var target_class = 'editor_preview';
+        var target_class = 'power_editor';
         var class_found = false;
-        $(e.target).parentsUntil( "body" ).each(function () {
-            if(!class_found && $(this).hasClass(target_class)){
-                class_found = true;
+        if($(e.target).hasClass(target_class)){
+            class_found = true;
+        }
+        if(!class_found){
+            $(e.target).parentsUntil( "body" ).each(function () {
+                if(!class_found && $(this).hasClass(target_class)){
+                    class_found = true;
+                }
+            });
+            if(!class_found) {
+                console.log(target_class + ' Not CLicked');
             }
-        });
-        if(!class_found) {
-           console.log(target_class + ' Not CLicked');
         }
     });
 
