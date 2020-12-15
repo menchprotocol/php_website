@@ -65,9 +65,19 @@ $(document).ready(function () {
 
 
     $('.power_editor').keydown(function (e) {
+
+        var note_type_id = $(this).attr('note_type_id');
+
+        //Toggle save button based on changed:
+        if(i_note_poweredit_has_changed(note_type_id)){
+            $('.save_button_'+note_type_id).removeClass('hidden');
+        } else {
+            $('.save_button_'+note_type_id).addClass('hidden');
+        }
+
         var code = (e.keyCode ? e.keyCode : e.which);
         if (e.ctrlKey && code== 13) {
-            i_note_poweredit_save($(this).attr('note_type_id'));
+            i_note_poweredit_save(note_type_id);
         }
     });
 
