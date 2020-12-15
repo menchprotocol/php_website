@@ -180,7 +180,19 @@ if(!isset($hide_header)){
                     echo '<div class="max_width">';
 
                     //MENCH
-                    echo '<div class="left_nav mench_nav"><span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'">'.( !$user_e ? '<img src="/img/mench.png" class="mench-logo mench-spin" />' : '<span class="mench-circle"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>' ).'<b class="montserrat text-logo">MENCH</b></a></span></div>';
+                    echo '<div class="left_nav mench_nav">';
+                    echo '<span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'">'.( !$user_e ? '<img src="/img/mench.png" class="mench-logo mench-spin" />' : '<span class="mench-circle"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>' ).'<b class="montserrat text-logo">MENCH</b></a></span>';
+
+                    //EDIT IDEA
+                    if($i__id && is_numeric($first_segment) && superpower_active(10939, true)){
+                        //PUBLISH
+                        echo '<span class="inline-block"><a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'" data-toggle="tooltip" data-placement="bottom">'.$e___11035[13563]['m__icon'].'</a></span>';
+                    } elseif($i__id && substr($first_segment, 0, 1)=='~'){
+                        //DISCOVER
+                        echo '<span class="inline-block"><a href="/'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="bottom">'.$e___11035[13562]['m__icon'].'</a></span>';
+                    }
+
+                    echo '</div>';
 
                     //SEARCH
                     echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search white-border" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
@@ -193,15 +205,6 @@ if(!isset($hide_header)){
                         //Search button
                         echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m__icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__icon'].'</span></a></td>';
 
-                    }
-
-                    //EDIT IDEA
-                    if($i__id && is_numeric($first_segment) && superpower_active(10939, true)){
-                        //PUBLISH
-                        echo '<td class="block-x"><a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'" data-toggle="tooltip" data-placement="bottom">'.$e___11035[13563]['m__icon'].'</a></td>';
-                    } elseif($i__id && substr($first_segment, 0, 1)=='~'){
-                        //DISCOVER
-                        echo '<td class="block-x"><a href="/'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="bottom">'.$e___11035[13562]['m__icon'].'</a></td>';
                     }
 
                     //MENU
