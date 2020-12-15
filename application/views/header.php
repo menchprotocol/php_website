@@ -180,7 +180,7 @@ if(!isset($hide_header)){
                     echo '<div class="max_width">';
 
                     //MENCH
-                    echo '<div class="left_nav mench_nav"><span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a></span></div>';
+                    echo '<div class="left_nav mench_nav"><span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'">'.( !$user_e ? '<img src="/img/mench.png" class="mench-logo mench-spin" />' : '<i class="fas mench-circle fa-circle '.$current_mench['x_name'].'"></i>' ).'<b class="montserrat text-logo">MENCH</b></a></span></div>';
 
                     //SEARCH
                     echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search white-border" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
