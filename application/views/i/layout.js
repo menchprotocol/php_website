@@ -37,7 +37,9 @@ $(document).ready(function () {
             });
             if(!class_found) {
                 //Revert back IF the same:
-                console.log(target_class + ' Not CLicked');
+                if(!i_note_poweredit_has_changed(note_type_id)){
+                    loadtab(14418, 14420); //Load Preview tab
+                }
             }
         }
     });
@@ -86,7 +88,20 @@ $(document).ready(function () {
 
 
 
+function i_note_poweredit_has_changed(note_type_id){
+    return $('.input_note_'+note_type_id).val().trim() != $('.input_note_'+note_type_id).attr('current_text').trim();
+}
+
+
+
 function i_note_poweredit_save(note_type_id){
+
+    //Only save if something changed:
+    if(!i_note_poweredit_has_changed(note_type_id)){
+        //Just revert to preview mode:
+        loadtab(14418, 14420); //Load Preview tab
+        return false;
+    }
 
     var input_textarea = '.input_note_'+note_type_id;
     $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).addClass('dynamic_saving');
@@ -130,9 +145,8 @@ function i_note_poweredit_save(note_type_id){
             //Load Images:
             lazy_load();
 
-            //Revert to preview tab:
             if(note_type_id==4231){
-                loadtab(14418, 14420);
+                loadtab(14418, 14420); //Load Preview tab
             }
 
             setTimeout(function () {
