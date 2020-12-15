@@ -188,7 +188,7 @@ if(!isset($hide_header)){
                         if('@'.$user_e['e__id']==$first_segment){
 
                             //Home Page:
-                            echo '<img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b>';
+                            echo '<img src="/img/mench.png" class="mench-logo mench-spin" />';
 
                         } else {
 
