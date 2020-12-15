@@ -183,7 +183,14 @@ if(!isset($hide_header)){
                     echo '<div class="left_nav mench_nav">';
                     echo '<span class="inline-block pull-left">';
 
-                    echo '<a href="'.home_url($current_mench['x_id']).'">'.( !$user_e ? '<img src="/img/mench.png" class="mench-logo mench-spin" />' : '<span class="mench-circle"><i class="fas fa-circle '.$current_mench['x_name'].'" title="'.strtoupper($current_mench['x_name']).'"></i></span>' ).'<b class="montserrat text-logo">MENCH</b></a>';
+                    if($user_e){
+                        //Home Icon
+                        echo '<span class="mench-circle"><i class="fas fa-circle '.$current_mench['x_name'].'" title="'.strtoupper($current_mench['x_name']).'"></i></span><a href="'.home_url($current_mench['x_id']).'"><b class="montserrat text-logo">HOME</b></a>';
+                    } else {
+                        //Mench Icon
+                        echo '<a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a>';
+                    }
+
 
                     //EDIT IDEA
                     if($i__id && is_numeric($first_segment) && superpower_active(10939, true)){
