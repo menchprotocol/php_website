@@ -9,6 +9,7 @@
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
 function watch_for(target_class){
+    return false;
     $('html').click(function(e) {
         //Aggregare parents:
         var class_found = false;

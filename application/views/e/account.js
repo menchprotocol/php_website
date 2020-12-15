@@ -134,7 +134,6 @@ var current_focus = 0;
 
 function remove_ui_class(item, index) {
     var the_class = 'custom_ui_'+current_focus+'_'+item;
-    console.log('REMOVED: '+the_class);
     $('body').removeClass(the_class);
 }
 
