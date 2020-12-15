@@ -1143,7 +1143,7 @@ td.MENCHcolumn3  { width: 13%; }
     display: block;
     float: left;
     padding-top: 13px;
-    padding-left: 2px;
+    padding-left:0;
 }
 .x-list {
     padding:21px 0;
@@ -1590,8 +1590,8 @@ i, .btn .show-max {
     line-height: 100%;
     width: 33px !important;
     height: 33px !important;
-    margin-left: 2px !important;
-    margin-right: 3px !important;
+    margin-left: 3px !important;
+    margin-right: 5px !important;
     margin-bottom: 0 !important;
     margin-top: 3px;
     border-radius:0 !important;
@@ -1601,11 +1601,12 @@ i, .btn .show-max {
 
 .mench-circle{
     line-height: 100%;
-    width: 38px !important;
+    width: 41px !important;
     margin-bottom: 0 !important;
-    margin-top: 3px;
+    margin-top: 9px;
     display: block;
     float: left;
+    text-align: center;
 }
 
 .icon-demo img {
