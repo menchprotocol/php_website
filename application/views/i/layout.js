@@ -19,30 +19,34 @@ $(document).ready(function () {
     x_set_start_text();
 
     $('.editor_preview.editor_preview_4231').click(function (e) {
-        loadtab(14418, 14468);//Load Write Tab
-    });
 
-    $('html').click(function(e) {
-        //Aggregare parents:
-        var target_class = 'power_editor';
-        var class_found = false;
-        if($(e.target).hasClass(target_class)){
-            class_found = true;
-        }
-        if(!class_found){
-            $(e.target).parentsUntil( "body" ).each(function () {
-                if(!class_found && $(this).hasClass(target_class)){
-                    class_found = true;
-                }
-            });
-            if(!class_found) {
-                //Revert back IF the same:
-                if(!i_note_poweredit_has_changed(4231)){
-                    loadtab(14418, 14420); //Load Preview tab
+        loadtab(14418, 14468);//Load Write Tab
+
+        $('html').click(function(e) {
+            //Aggregare parents:
+            var target_class = 'power_editor';
+            var class_found = false;
+            if($(e.target).hasClass(target_class)){
+                class_found = true;
+            }
+            if(!class_found){
+                $(e.target).parentsUntil( "body" ).each(function () {
+                    if(!class_found && $(this).hasClass(target_class)){
+                        class_found = true;
+                    }
+                });
+                if(!class_found) {
+                    //Revert back IF the same:
+                    if(!i_note_poweredit_has_changed(4231)){
+                        loadtab(14418, 14420); //Load Preview tab
+                    }
                 }
             }
-        }
+        });
+
     });
+
+
 
     //Look for power editor updates:
     $('.x_set_class_text').keypress(function(e) {
