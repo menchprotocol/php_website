@@ -1014,7 +1014,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
 
                 $tab_ui .= '<div class="power-editor-'.$x__type.'">';
-                $tab_ui .= '<textarea class="form-control msg note-textarea algolia_search new-note power_editor dotransparent emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." style="margin:0 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
+                $tab_ui .= '<textarea class="form-control msg note-textarea algolia_search new-note power_editor doabsolute emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="WRITE..." style="margin:0 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
 
                 //Response result:
                 $tab_ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
