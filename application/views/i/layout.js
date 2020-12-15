@@ -23,7 +23,7 @@ $(document).ready(function () {
     });
     $('html').click(function(e) {
         if(!$(e.target).hasClass('editor_preview')){
-            console.log('Outer click: '+$(e.target).attr('class'));
+            console.log('Outer click: '+$(e.target).parentsUntil( "body" ).attr('class'));
         }
     });
 
