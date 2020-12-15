@@ -181,7 +181,9 @@ if(!isset($hide_header)){
 
                     //MENCH
                     echo '<div class="left_nav mench_nav">';
-                    echo '<span class="inline-block pull-left"><a href="'.home_url($current_mench['x_id']).'">'.( !$user_e ? '<img src="/img/mench.png" class="mench-logo mench-spin" />' : '<span class="mench-circle"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>' ).'<b class="montserrat text-logo">MENCH</b></a></span>';
+                    echo '<span class="inline-block pull-left">';
+
+                    echo '<a href="'.home_url($current_mench['x_id']).'">'.( !$user_e ? '<img src="/img/mench.png" class="mench-logo mench-spin" />' : '<span class="mench-circle"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>' ).'<b class="montserrat text-logo">MENCH</b></a>';
 
                     //EDIT IDEA
                     if($i__id && is_numeric($first_segment) && superpower_active(10939, true)){
@@ -192,6 +194,7 @@ if(!isset($hide_header)){
                         echo '<span class="mench-circle"><a href="/'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="bottom">'.$e___11035[13562]['m__icon'].'</a></span>';
                     }
 
+                    echo '</span>';
                     echo '</div>';
 
                     //SEARCH
