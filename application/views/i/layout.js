@@ -21,15 +21,18 @@ $(document).ready(function () {
     $('.editor_preview.editor_preview_4231').click(function (e) {
         loadtab(14418, 14468);//Load Write Tab
     });
+
     $('html').click(function(e) {
-
         //Aggregare parents:
+        var target_class = 'editor_preview';
+        var class_found = false;
         $(e.target).parentsUntil( "body" ).each(function () {
-            console.log('Outer click: '+$(this).attr('class'));
+            if(!class_found && $(this).hasClass(target_class)){
+                class_found = true;
+            }
         });
-
-        if(!$(e.target).hasClass('editor_preview')){
-           // console.log('Outer click: '+$(e.target).parentsUntil( "body" ).attr('class'));
+        if(!class_found) {
+           console.log(target_class + ' Not CLicked');
         }
     });
 
