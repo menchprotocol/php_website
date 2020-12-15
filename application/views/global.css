@@ -2226,10 +2226,12 @@ i, .btn .show-max {
 }
 
 .custom_ui_13884_13886 .doabsolute {
-    background-color:#111111 !important;
+    background-color:#000000 !important;
 }
 
-
+.doabsolute {
+    border-radius: 10px !important;
+}
 
 /* WHITE */
 .custom_ui_13884_13885,
@@ -2304,7 +2306,7 @@ i, .btn .show-max {
     background: rgba(240,240,240, 0.75);
 }
 .custom_ui_13884_13885 .doabsolute {
-    background-color:#F9F9F9 !important;
+    background-color:#FFFFFF !important;
 }
 
 @media (min-width:767px) {
