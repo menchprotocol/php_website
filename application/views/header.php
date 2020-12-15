@@ -185,19 +185,20 @@ if(!isset($hide_header)){
 
                     if($user_e){
 
-                        if('@'.$user_e['e__id']==$first_segment){
-
-                            //Home Page:
-                            echo '<img src="/img/mench.png" class="mench-logo mench-spin" />';
-
-                        } else {
-
                             //Current Mench Icon
                             echo '<span class="mench-circle"><i class="fas fa-circle '.$current_mench['x_name'].'" data-toggle="tooltip" data-placement="right" title="Viewing a '.strtoupper($current_mench['x_name']).'"></i></span>';
-                            //Home Link
-                            echo '<a href="'.home_url($current_mench['x_id']).'"><b class="montserrat text-logo">HOME</b></a>';
 
-                        }
+                            if('@'.$user_e['e__id']==$first_segment){
+
+                                //Home Page:
+                                echo '<b class="montserrat text-logo">'.$user_e['e__title'].'</b>';
+
+                            } else {
+
+                                //Home Link
+                                echo '<a href="'.home_url($current_mench['x_id']).'"><b class="montserrat text-logo">HOME</b></a>';
+
+                            }
 
                     } else {
 
