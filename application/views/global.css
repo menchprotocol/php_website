@@ -470,7 +470,23 @@ img.no-radius {
 
 .btn-source i, .btn-discover i, .btn-idea i { color: #222222 !important; }
 
-
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+}
 
 .mid-range {
     padding: 0 1px;

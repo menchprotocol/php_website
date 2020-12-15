@@ -36,6 +36,7 @@ $(document).ready(function () {
                 }
             });
             if(!class_found) {
+                //Revert back IF the same:
                 console.log(target_class + ' Not CLicked');
             }
         }
