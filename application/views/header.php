@@ -184,8 +184,12 @@ if(!isset($hide_header)){
                     echo '<span class="inline-block pull-left">';
 
                     if($user_e){
-                        //Home Icon
-                        echo '<span class="mench-circle"><i class="fas fa-circle '.$current_mench['x_name'].'" title="'.strtoupper($current_mench['x_name']).'"></i></span><a href="'.home_url($current_mench['x_id']).'"><b class="montserrat text-logo">HOME</b></a>';
+
+                        //Current Mench Icon
+                        echo '<span class="mench-circle"><i class="fas fa-circle '.$current_mench['x_name'].'" data-toggle="tooltip" data-placement="right" title="Viewing a '.strtoupper($current_mench['x_name']).'"></i></span>';
+                        //Home Link
+                        echo '<a href="'.home_url($current_mench['x_id']).'"><b class="montserrat text-logo">HOME</b></a>';
+
                     } else {
                         //Mench Icon
                         echo '<a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo">MENCH</b></a>';
