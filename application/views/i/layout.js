@@ -37,7 +37,7 @@ $(document).ready(function () {
             });
             if(!class_found) {
                 //Revert back IF the same:
-                if(!i_note_poweredit_has_changed(note_type_id)){
+                if(!i_note_poweredit_has_changed(4231)){
                     loadtab(14418, 14420); //Load Preview tab
                 }
             }
