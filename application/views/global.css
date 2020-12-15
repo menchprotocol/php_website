@@ -2226,7 +2226,8 @@ i, .btn .show-max {
     background: rgba(34,34,34,0.75);
 }
 
-.custom_ui_13884_13886 .doabsolute {
+.custom_ui_13884_13886 .doabsolute,
+.custom_ui_13884_13886 .editor_preview:hover{
     background-color:#000000 !important;
 }
 
@@ -2315,7 +2316,8 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .light-bg {
     background: rgba(240,240,240, 0.75);
 }
-.custom_ui_13884_13885 .doabsolute {
+.custom_ui_13884_13885 .doabsolute,
+.custom_ui_13884_13885 .editor_preview:hover{
     background-color:#FFFFFF !important;
 }
 
