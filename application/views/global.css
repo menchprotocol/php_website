@@ -999,9 +999,10 @@ textarea.note-textarea{
     width: 100%;
     margin-bottom: 0;
 }
-.x_remove, .editor_preview{
+.x_remove{
     cursor: pointer;
 }
+
 .x_sort, .sort_e, .fa-sort, .fa-arrows{
     cursor: grab;
 }
@@ -2227,6 +2228,13 @@ i, .btn .show-max {
 
 .custom_ui_13884_13886 .doabsolute {
     background-color:#000000 !important;
+}
+
+.editor_preview:hover{
+    cursor: text !important;
+    border-radius: 10px !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
 }
 
 .doabsolute {
