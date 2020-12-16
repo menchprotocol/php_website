@@ -207,26 +207,30 @@ function current_mench(){
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
     $first_letter = substr($first_segment, 0, 1);
+    $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
 
     if($first_letter=='@' || $first_segment=='e' || $first_segment=='app' || $first_segment=='account' || $first_segment=='signin'){
 
         return array(
-            'x_id' => 12274,
-            'x_name' => 'source',
+            'c__id' => 12274,
+            'c__css' => 'source',
+            'c__m' => $e___12467[12274],
         );
 
     } elseif($first_letter=='~' || $first_segment=='i'){
 
         return array(
-            'x_id' => 12273,
-            'x_name' => 'idea',
+            'c__id' => 12273,
+            'c__css' => 'idea',
+            'c__m' => $e___12467[12273],
         );
 
     } else {
 
         return array(
-            'x_id' => 6255,
-            'x_name' => 'discover',
+            'c__id' => 6255,
+            'c__css' => 'discover',
+            'c__m' => $e___12467[6255],
         );
 
     }

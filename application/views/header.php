@@ -12,7 +12,7 @@ $current_mench = current_mench();
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment ? 'mench' : $current_mench['x_name'] ) ?>.png">
+    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment ? 'mench' : $current_mench['c__css'] ) ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title : 'MENCH' ) ?></title>
 
@@ -105,7 +105,7 @@ $current_mench = current_mench();
 
 <?php
 //Generate Body Class String:
-$body_class = 'mench-'.$current_mench['x_name']; //Always append current mench
+$body_class = 'mench-'.$current_mench['c__css']; //Always append current mench
 foreach($this->config->item('e___13890') as $e__id => $m){
     $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
 }
@@ -184,37 +184,41 @@ if(!isset($hide_header)){
 
 
 
-                    if($user_e && '@'.$user_e['e__id']==$first_segment){
+                    if($user_e){
 
-                        //Home Page:
-                        //Current Mench Icon
-                        echo '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'" title="'.strtoupper($current_mench['x_name']).'">'.$user_e['e__icon'].'</span>';
-                        echo '<b class="montserrat text-logo text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>';
+                        //My Source
+                        $member_source = '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'" title="'.strtoupper($current_mench['c__css']).'">'.$user_e['e__icon'].'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].' '.extract_icon_color($user_e['e__icon']).'">'.$user_e['e__title'].'</b>';
 
-                    } elseif(superpower_active(10939, true)){
+                        if('@'.$user_e['e__id']==$first_segment){
+                            echo $member_source;
+                        } else {
+                            echo '<a href="'.home_url($current_mench['c__id']).'">'.$member_source.'</a>';
+                        }
 
-                        echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>';
+                        if(superpower_active(10939, true)){
 
-                        //EDIT IDEA
-                        if($i__id && is_numeric($first_segment)){
+                            //Flip Coin?
+                            if($i__id && is_numeric($first_segment)){
 
-                            //PUBLISH
-                            echo '<span class="mench-circle"><a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'" data-toggle="tooltip" data-placement="right">'.$e___11035[13563]['m__icon'].'</a></span>';
+                                //PUBLISH
+                                echo '<a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'" data-toggle="tooltip" data-placement="left" class="mench-circle pull-right">'.$e___11035[13563]['m__icon'].'</a>';
 
-                        } elseif($i__id && substr($first_segment, 0, 1)=='~' && $i__id!=view_memory(6404,14002)){
+                            } elseif($i__id && substr($first_segment, 0, 1)=='~' && $i__id!=view_memory(6404,14002)){
 
-                            //DISCOVER
-                            echo '<span class="mench-circle"><a href="/'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="right">'.$e___11035[13562]['m__icon'].'</a></span>';
+                                //DISCOVER
+                                echo '<a href="/'.$i__id.'" style="margin-left: 0;" class="mench-circle pull-right" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="left">'.$e___11035[13562]['m__icon'].'</a>';
+
+                            }
+
+                            //Current Coin
+                            echo '<span title="'.$current_mench['c__m']['m__title'].'" class="mench-circle pull-right">'.$current_mench['c__m']['m__icon'].'</span>';
 
                         }
 
-                        //Home Link
-                        echo '<a href="'.home_url($current_mench['x_id']).'" class="mench-circle pull-right"><i class="fas fa-home"></i></a>';
-
                     } else {
 
-                        //Default logo
-                        echo '<a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo text__6197_2738">MENCH</b></a>';
+                        //Mench Link
+                        echo '<a href="'.home_url($current_mench['c__id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo text__6197_2738">MENCH</b></a>';
 
                     }
 
