@@ -83,14 +83,14 @@ $current_mench = current_mench();
    -->
 
 
-
+    <link rel="preconnect" href="https://fonts.gstatic.com">
     <?php
     //FONT TYPE
     $font_type = intval(member_setting(14506));
 
     //GOOGLE FONTS
     $e___14509 = $this->config->item('e___14509');
-    echo '<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:wght@500|'.$e___14509[$font_type]['m__message'].'&display=swap" rel="stylesheet">';
+    echo '<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:wght@500&family='.$e___14509[$font_type]['m__message'].'&display=swap" rel="stylesheet">';
 
     //CSS FONT SCRIPTS
     echo '<style>';
