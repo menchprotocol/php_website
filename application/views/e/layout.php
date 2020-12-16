@@ -110,21 +110,14 @@ $profiles = $this->X_model->fetch(array(
 
             //PROFILE
             $ui .= '<div id="list_11030" class="list-group grey-list">';
-            $show_max = view_memory(6404,13803);
-            $hide = false;
-            $counter = 0;
+            $counter = count($profiles);
+
             foreach($profiles as $count => $e_profile) {
-                if(!$hide && $count==$show_max){
-                    $counter++;
-                    $hide = true;
-                    $ui .= '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block">'.$e___11035[11030]['m__icon'].'</span><b class="montserrat source">'.$e___11035[11030]['m__title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
-                    $ui .= '<div class="list-group-item see_all_11030 no-padding"></div>';
-                }
-                $ui .= view_e($e_profile,true, ( $hide ? ' see_all_11030 hidden ' : null ), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+                $ui .= view_e($e_profile,true, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
             }
 
             //ADD NEW
-            $ui .= '<div id="new_11030" class="list-group-item '.( $counter ? ' see_all_11030 hidden ' : '' ).' list-adder no-side-padding '.superpower_active(13422).'">
+            $ui .= '<div id="new_11030" class="list-group-item list-adder no-side-padding '.superpower_active(13422).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
@@ -132,6 +125,7 @@ $profiles = $this->X_model->fetch(array(
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[13914]['m__title'].'">
                     </div></div>';
+
             $ui .= '</div>';
 
         } elseif($x__type==12274){
