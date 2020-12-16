@@ -209,7 +209,7 @@ if(!isset($hide_header)){
                             echo '<span class="mench-circle"><a href="/'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="right">'.$e___11035[13562]['m__icon'].'</a></span>';
                         }
 
-                    } else {
+                    } elseif(!$user_e) {
 
                         //Default logo
                         echo '<a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo text__6197_2738">MENCH</b></a>';
