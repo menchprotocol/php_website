@@ -1307,21 +1307,26 @@ function view_e_settings($list_id, $show_accordion){
 <div id="openEn' . $acc_e__id . '" class="collapse" aria-labelledby="heading' . $acc_e__id . '" data-parent="#MyAccountAccordion">
 <div class="card-body">';
 
+                //TAB CONTENT
+                $ui .= $tab_ui;
+
             } else {
 
                 //Show Title only:
                 $ui .= '<div class="headline top-margin"><span class="icon-block">'.$acc_detail['m__icon'].'</span>'.$acc_detail['m__title'].'</div>';
 
+                //TAB CONTENT
+                $ui .= '<div class="padded">'.$tab_ui.'</div>';
+
             }
 
 
-            //TAB CONTENT
-            $ui .= $tab_ui;
+
 
 
             //Print footer:
+            $ui .= '<div class="doclear">&nbsp;</div>';
             if($show_accordion){
-                $ui .= '<div class="doclear">&nbsp;</div>';
                 $ui .= '</div></div></div>';
             }
         }
