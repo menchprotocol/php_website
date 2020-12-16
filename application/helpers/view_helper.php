@@ -940,7 +940,6 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
     //List children so they know what's ahead:
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
-    $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
     $ui = '';
     $ui .= '<div>';
@@ -1046,7 +1045,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 }
 
                 //SAVE Button:
-                $tab_ui .= '<td class="table-btn first_btn save_button save_button_'.$x__type.' hidden"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
+                $tab_ui .= '<td class="table-btn first_btn save_button save_button_'.$x__type.' hidden"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;" data-toggle="tooltip" data-placement="bottom" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
 
 
                 $tab_ui .= '<td style="padding:10px 0 0 0;">&nbsp;</td>';
@@ -1138,7 +1137,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
             }
 
             //Add
-            $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_add_text('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;">'.$e___11035[14421]['m__icon'].' '.$e___11035[14421]['m__title'].'</a></td>';
+            $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_add_text('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;" data-toggle="tooltip" data-placement="bottom" title="Shortcut: Ctrl + Enter">'.$e___11035[14421]['m__icon'].' '.$e___11035[14421]['m__title'].'</a></td>';
 
 
             //File counter:
