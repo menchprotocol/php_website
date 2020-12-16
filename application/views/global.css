@@ -538,10 +538,6 @@ label:focus,
     margin-bottom: 5px;
 }
 
-.mono-space, .fa-gif-wrap{
-    font-family: 'Roboto Mono', monospace !important;
-    font-weight: normal !important;
-}
 
 .cover-image {
     width: 100%;
@@ -2173,11 +2169,15 @@ i, .btn .show-max {
 
 
 
+.mono-space, .fa-gif-wrap{
+    font-family: 'Roboto Mono', monospace !important;
+    font-weight: normal !important;
+}
 
 .fa-gif-wrap{
     border:1px solid transparent;
     border-radius: 3px;
-    font-size: 0.6em;
+    font-size: 0.6em !important;
     text-transform: uppercase;
     padding: 3px 1px;
     font-weight: bold;
