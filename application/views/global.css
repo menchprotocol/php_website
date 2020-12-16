@@ -1,15 +1,16 @@
 @CHARSET "ISO-8859-1";
 @import url('https://rsms.me/inter/inter.css');
+/*
 @supports (font-variation-settings: normal) {
     html { font-family: 'Rubik', sans-serif; }
 }
+*/
 
 body {
     font-size: 1em;
     margin:55px 0 144px 0 !important;
     font-weight: 400;
     line-height: 110%;
-    font-family: 'Rubik', sans-serif;
 }
 
 
@@ -45,7 +46,6 @@ body {
 }
 
 .dorubik{
-    font-family: 'Rubik', sans-serif !important;
     font-weight: 400;
 }
 .doleft{
@@ -110,12 +110,13 @@ table td { border: none !important; }
 .texttype__lg { font-size: 2.3em; }
 
 h1 {
-    font-family: 'Montserrat', sans-serif;
     padding:34px 41px;
     margin:0;
     font-size: 3.5em; /* 1 / 3.5em = 0.2857em */
     text-align: left;
 }
+
+
 h1 i {
     font-size: 0.2857em; /* 1 / 3.5em = 0.2857em */
 }
@@ -159,7 +160,6 @@ li a {
 
 /* FONTS */
 .montserrat, .headline, .btn {
-    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     text-decoration: none;
     margin-left: 0 !important;
@@ -191,7 +191,6 @@ li a {
 }
 
 .btn {
-    font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
     font-size: 1em !important;
     border-radius: 0 !important;
@@ -279,7 +278,6 @@ img.no-radius {
 
 .algolia_pad_search{
     height:377px;
-    font-family: 'Montserrat', sans-serif;
     padding: 13px 3px;
     text-align: center;
     color: #999999;
@@ -553,7 +551,6 @@ label:focus,
     font-size: 0.8em;
     border-radius: 10px;
     z-index: 1;
-    font-family: 'Montserrat', sans-serif;
 }
 .btn-lrg{
     font-size: 2em !important;
@@ -615,7 +612,6 @@ label:focus,
     padding-top: 21px;
     padding-bottom: 3px;
     font-weight: bold;
-    font-family: 'Montserrat', sans-serif;
     color: #999999;
 }
 .progress-bg-list{
@@ -679,7 +675,6 @@ label:focus,
     width: 100%;
     line-height: 100%;
     padding: 3px 0 0px;
-    font-family: 'Montserrat', sans-serif;
     height: 20px;
 }
 .progress-rate i{
@@ -745,7 +740,6 @@ label:focus,
     margin-bottom: 0px;
     color: #999999 !important;
     font-weight: bold;
-    font-family: 'Montserrat', sans-serif;
 }
 
 @-webkit-keyframes mench-spin {
@@ -806,7 +800,6 @@ label:focus,
 .previous_answer{
     display: block;
     width: 100%;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .nav-pills .nav-x.active, .nav-pills .show>.nav-x {
@@ -861,7 +854,6 @@ label:focus,
 .nav-pill-sm .nav-x {
     display: block;
     padding: .4rem 0.7rem;
-    font-family: 'Montserrat', sans-serif;
     margin-right: 6px;
 }
 
@@ -869,7 +861,6 @@ label:focus,
     border: 1px solid transparent;
     display: block;
     padding: .5rem .2rem;
-    font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
 }
 
@@ -1684,7 +1675,6 @@ i, .btn .show-max {
 }
 .texttype__lg {
     background-color: transparent;
-    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     color:#222222;
     padding:0;
@@ -1701,7 +1691,6 @@ i, .btn .show-max {
     margin:-49px 0 26px 9px;
 }
 .texttype__lg::placeholder, .alert a {
-    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 }
 .form-control::placeholder {
@@ -1722,7 +1711,6 @@ i, .btn .show-max {
     padding-top: 7px;
     margin-bottom: -77px;
     margin-top: 47px;
-    font-family: 'Montserrat', sans-serif;
 }
 .small-click{
     display: block;
@@ -2182,6 +2170,8 @@ i, .btn .show-max {
     padding: 4px;
     font-weight: bold !important;
 }
+
+
 
 
 /* DARK */

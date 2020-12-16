@@ -18,29 +18,27 @@ $current_mench = current_mench();
 
 
     <script type="text/javascript">
-    <?php
-    //USER VARIABLES
-    echo ' var js_session_superpowers_activated = ' . json_encode( ($user_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
-    echo ' var superpower_js_12701 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(12701, $this->session->userdata('session_superpowers_activated'))) . '; ';
-    echo ' var superpower_js_13422 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(13422, $this->session->userdata('session_superpowers_activated'))) . '; ';
-    echo ' var js_pl_id = ' . ( $user_e ? $user_e['e__id'] : '0' ) . '; ';
-    echo ' var js_pl_name = \'' . ( $user_e ? $user_e['e__title'] : '' ) . '\'; ';
-    echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
+        <?php
+        //USER VARIABLES
+        echo ' var js_session_superpowers_activated = ' . json_encode( ($user_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
+        echo ' var superpower_js_12701 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(12701, $this->session->userdata('session_superpowers_activated'))) . '; ';
+        echo ' var superpower_js_13422 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(13422, $this->session->userdata('session_superpowers_activated'))) . '; ';
+        echo ' var js_pl_id = ' . ( $user_e ? $user_e['e__id'] : '0' ) . '; ';
+        echo ' var js_pl_name = \'' . ( $user_e ? $user_e['e__title'] : '' ) . '\'; ';
+        echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
 
-    //JAVASCRIPT PLATFORM MEMORY
-    foreach($this->config->item('e___11054') as $x__type => $m){
-        if(is_array($this->config->item('e___'.$x__type)) && count($this->config->item('e___'.$x__type))){
-            echo ' var js_e___'.$x__type.' = ' . json_encode($this->config->item('e___'.$x__type)) . ';';
-            echo ' var js_n___'.$x__type.' = ' . json_encode($this->config->item('n___'.$x__type)) . ';';
+        //JAVASCRIPT PLATFORM MEMORY
+        foreach($this->config->item('e___11054') as $x__type => $m){
+            if(is_array($this->config->item('e___'.$x__type)) && count($this->config->item('e___'.$x__type))){
+                echo ' var js_e___'.$x__type.' = ' . json_encode($this->config->item('e___'.$x__type)) . ';';
+                echo ' var js_n___'.$x__type.' = ' . json_encode($this->config->item('n___'.$x__type)) . ';';
+            }
         }
-    }
-    ?>
-
+        ?>
     </script>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/typeit@6.1.1/dist/typeit.min.js"></script>
@@ -84,12 +82,31 @@ $current_mench = current_mench();
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=custom-share-buttons&cms=website' async='async'></script>
    -->
 
+
+
+    <?php
+    //FONT TYPE
+    $font_type = intval(member_setting(14506));
+
+    //GOOGLE FONTS
+    $e___14509 = $this->config->item('e___14509');
+    echo '<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:wght@500|'.$e___14509[$font_type]['m__message'].'&display=swap" rel="stylesheet">';
+
+    //CSS FONT SCRIPTS
+    echo '<style>';
+    foreach($this->config->item('e___14513') as $x__type => $m){
+        $current_tree = $this->config->item('e___'.$x__type);
+        echo ' '.$m['m__message'].' { font-family: '.$current_tree[$font_type]['m__message'].' ; } ';
+    }
+    echo '</style>';
+    ?>
+
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
 
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:800|Roboto+Mono:wght@500|Rubik&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
     <link href="/application/views/global.css?v=<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
 
