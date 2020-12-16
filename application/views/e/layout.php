@@ -367,7 +367,7 @@ $control_enabled = $source_is_e || $superpower_10939;
                 //MY IDEAS?
                 if($source_is_e){
 
-                    $ui .= '<div class="headline"><span class="icon-block">' . $e___11035[10573]['m__icon'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
+                    $ui .= '<div class="headline top-margin"><span class="icon-block">' . $e___11035[10573]['m__icon'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
 
                     //Give Option to Add New Idea:
                     $ui .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
