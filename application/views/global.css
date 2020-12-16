@@ -2320,16 +2320,22 @@ i, .btn .show-max {
 }
 
 .custom_ui_13884_13886 .doabsolute,
-.custom_ui_13884_13886 .editor_preview .msg:hover{
+.custom_ui_13884_13886 .editor_preview:hover{
     background-color:#000000 !important;
 }
 
 .editor_preview{
     padding-top: 5px !important;
     padding-bottom: 5px !important;
+    margin:0 41px;
+}
+.editor_preview .msg{
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
-.editor_preview .msg:hover{
+
+.editor_preview:hover{
     cursor: text !important;
     border-radius: 10px !important;
 }
@@ -2415,7 +2421,7 @@ i, .btn .show-max {
     background: rgba(240,240,240, 0.75);
 }
 .custom_ui_13884_13885 .doabsolute,
-.custom_ui_13884_13885 .editor_preview .msg:hover{
+.custom_ui_13884_13885 .editor_preview:hover{
     background-color:#FFFFFF !important;
 }
 .btn-grey .fa-gif-wrap {
