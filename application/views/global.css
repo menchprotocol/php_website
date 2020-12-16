@@ -2174,6 +2174,71 @@ i, .btn .show-max {
 
 
 
+/* SERIF / HEADER */
+.custom_ui_14506_14508 h1,
+.custom_ui_14506_14508 .montserrat,
+.custom_ui_14506_14508 .headline,
+.custom_ui_14506_14508 .btn,
+.custom_ui_14506_14508 .algolia_pad_search,
+.custom_ui_14506_14508 .media-info,
+.custom_ui_14506_14508 .progress-title,
+.custom_ui_14506_14508 .progress-rate,
+.custom_ui_14506_14508 .mid-text-line span,
+.custom_ui_14506_14508 .previous_answer,
+.custom_ui_14506_14508 .nav-x,
+.custom_ui_14506_14508 .texttype__lg,
+.custom_ui_14506_14508 .texttype__lg::placeholder,
+.custom_ui_14506_14508 .alert a,
+.custom_ui_14506_14508 .pull-middle {
+    font-family:'Merriweather', serif !important;
+    font-weight:900 !important;
+}
+
+/* SERIF / CONTENT */
+.custom_ui_14506_14508 html,
+.custom_ui_14506_14508 body,
+.custom_ui_14506_14508 .dorubik {
+    font-family:'Roboto Slab', serif !important;
+    font-weight:400 !important;
+}
+
+
+
+
+/* SANSSERIF / HEADER */
+.custom_ui_14506_14507 h1,
+.custom_ui_14506_14507 .montserrat,
+.custom_ui_14506_14507 .headline,
+.custom_ui_14506_14507 .btn,
+.custom_ui_14506_14507 .algolia_pad_search,
+.custom_ui_14506_14507 .media-info,
+.custom_ui_14506_14507 .progress-title,
+.custom_ui_14506_14507 .progress-rate,
+.custom_ui_14506_14507 .mid-text-line span,
+.custom_ui_14506_14507 .previous_answer,
+.custom_ui_14506_14507 .nav-x,
+.custom_ui_14506_14507 .texttype__lg,
+.custom_ui_14506_14507 .texttype__lg::placeholder,
+.custom_ui_14506_14507 .alert a,
+.custom_ui_14506_14507 .pull-middle {
+    font-family:'Montserrat', sans-serif;
+    font-weight:800 !important;
+}
+
+/* SANSSERIF / CONTENT */
+.custom_ui_14506_14507 html,
+.custom_ui_14506_14507 body,
+.custom_ui_14506_14507 .dorubik {
+    font-family: 'Rubik', sans-serif;
+}
+
+
+
+
+
+
+
+
 /* DARK */
 .custom_ui_13884_13886,
 .custom_ui_13884_13886 .fade,

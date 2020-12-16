@@ -83,23 +83,7 @@ $current_mench = current_mench();
    -->
 
 
-    <?php
-    //FONT TYPE
-    $font_type = intval(member_setting(14506));
-
-    //GOOGLE FONTS
-    $e___14509 = $this->config->item('e___14509');
-    echo '<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:500|'.$e___14509[$font_type]['m__message'].'&display=swap" rel="stylesheet">';
-
-    //CSS FONT SCRIPTS
-    echo '<style>';
-    foreach($this->config->item('e___14513') as $x__type => $m){
-        $current_tree = $this->config->item('e___'.$x__type);
-        echo  $m['m__message'].' '.$current_tree[$font_type]['m__message'];
-    }
-    echo '</style>';
-    ?>
-
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:500|Montserrat:800|Rubik|Merriweather:900|Roboto+Slab:400&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
