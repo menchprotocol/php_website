@@ -196,7 +196,7 @@ if(!isset($hide_header)){
                             } else {
 
                                 //Home Link
-                                echo '<a href="'.home_url($current_mench['x_id']).'" class="montserrat text-logo text__6197_2738">MENCH</a>';
+                                echo '<a href="'.home_url($current_mench['x_id']).'" class="montserrat text-logo icon-block"><i class="fas fa-home"></i></a>';
 
                             }
 
