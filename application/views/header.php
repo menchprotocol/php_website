@@ -183,11 +183,10 @@ if(!isset($hide_header)){
                     echo '<div class="left_nav mench_nav">';
 
 
-
                     if($user_e){
 
                         //My Source
-                        $member_source = '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'" title="'.strtoupper($current_mench['c__css']).'">'.$user_e['e__icon'].'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].' '.extract_icon_color($user_e['e__icon']).'">'.$user_e['e__title'].'</b>';
+                        $member_source = '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].' '.extract_icon_color($user_e['e__icon']).'">'.$user_e['e__title'].'</b>';
 
                         if('@'.$user_e['e__id']==$first_segment){
                             echo $member_source;
