@@ -531,7 +531,7 @@ $control_enabled = $source_is_e || $superpower_10939;
 
                 $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), view_memory(6404,11064), 0, array('i__spectrum' => 'DESC'));
                 foreach($i_notes_query as $count => $i_notes) {
-                    $ui .= view_i($x__type, $i_notes, $control_enabled);
+                    $ui .= view_i(4485, $i_notes, $control_enabled);
                 }
 
             }
