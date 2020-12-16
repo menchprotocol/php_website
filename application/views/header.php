@@ -181,7 +181,7 @@ if(!isset($hide_header)){
 
                     //MENCH
                     echo '<div class="left_nav mench_nav">';
-                    echo '<span class="inline-block pull-left">';
+                    echo '<span class="block">';
 
                     if(superpower_active(10939, true)){
 
@@ -196,7 +196,7 @@ if(!isset($hide_header)){
                             } else {
 
                                 //Home Link
-                                echo '<a href="'.home_url($current_mench['x_id']).'" class="mench-circle"><i class="fas fa-home"></i></a>';
+                                echo '<a href="'.home_url($current_mench['x_id']).'" class="mench-circle pull-right"><i class="fas fa-home"></i></a>';
 
                             }
 

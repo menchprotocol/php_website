@@ -290,7 +290,7 @@ img.no-radius {
     display: inline-block;
 }
 .pull-right{
-    float:right;
+    float:right !important;
 }
 .nav .pull-right {
     float: none;
