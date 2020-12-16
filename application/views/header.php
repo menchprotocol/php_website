@@ -94,10 +94,10 @@ $current_mench = current_mench();
 
     //CSS FONT SCRIPTS
     echo '<style>';
-    $base_font = '.custom_ui_14506_'.$font_type;
+    $base_font = '.custom_ui_14506_'.$font_type.' ';
     foreach($this->config->item('e___14513') as $x__type => $m){
         $current_tree = $this->config->item('e___'.$x__type);
-        echo ' '.$base_font.' '.join(', '.$base_font, explode(',', $m['m__message'])).' { font-family: '.$current_tree[$font_type]['m__message'].' ; } ';
+        echo ' '.$base_font.join(','."\n".$base_font, explode(',', $m['m__message'])).' { font-family: '.$current_tree[$font_type]['m__message'].' ; } ';
     }
     echo '</style>';
     ?>
