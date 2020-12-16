@@ -185,24 +185,28 @@ if(!isset($hide_header)){
 
                     if(superpower_active(10939, true)){
 
-                            //Current Mench Icon
-                            echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>';
-
                             if('@'.$user_e['e__id']==$first_segment){
 
                                 //Home Page:
+                                //Current Mench Icon
+                                echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'">'.$user_e['e__icon'].'</span>';
                                 echo '<b class="montserrat text-logo text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>';
 
                             } else {
 
                                 //Home Link
+                                //Current Mench Icon
+                                echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>';
                                 echo '<a href="'.home_url($current_mench['x_id']).'" class="mench-circle pull-right"><i class="fas fa-home"></i></a>';
 
                             }
 
                     } else {
 
-                        //Mench Icon
+                        //Current Mench Icon
+                        echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>';
+
+                        //Mench Link
                         echo '<a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo text__6197_2738">MENCH</b></a>';
 
                     }
