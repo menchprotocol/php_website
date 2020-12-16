@@ -409,7 +409,7 @@ function is_valid_icon($string){
 
         }
 
-    } elseif(substr($string, 0, 12) == '<i class="fa' && substr_count($string , ' fa-')>=1 && substr_count($string , ' fa-')<=2 && substr($string, -6) == '"></i>'){
+    } elseif(substr($string, 0, 12) == '<i class="fa' && substr_count($string , ' fa-')>=1 && substr_count($string , ' fa-')<=2 && substr($string, -4) == '</i>'){
 
         //FontAwesome icons are supported https://fontawesome.com/icons
         return array(
