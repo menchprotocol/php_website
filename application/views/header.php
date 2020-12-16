@@ -186,7 +186,7 @@ if(!isset($hide_header)){
                     if($user_e){
 
                             //Current Mench Icon
-                            echo '<span class="mench-circle" data-toggle="tooltip" data-placement="right" title="'.strtoupper($current_mench['x_name']).' COIN"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>';
+                            echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>';
 
                             if('@'.$user_e['e__id']==$first_segment){
 
