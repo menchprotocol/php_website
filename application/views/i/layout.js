@@ -50,7 +50,7 @@ $(document).ready(function () {
 
         loadtab(14418, 14468);//Load Write Tab
 
-        watch_for('.input_note_4231, .editor_preview_4231');
+        watch_for('.input_note_4231, .editor_preview_4231, .indifferent');
 
     });
 
