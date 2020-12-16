@@ -2175,12 +2175,12 @@ i, .btn .show-max {
 }
 
 .fa-gif-wrap{
-    border:1px solid transparent;
+    border:2px solid transparent;
     border-radius: 3px;
-    font-size: 0.6em !important;
+    font-size: 0.8em !important;
     text-transform: uppercase;
     padding: 3px 1px;
-    font-weight: bold;
+    font-weight: bold !important;
 }
 
 
