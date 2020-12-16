@@ -14,8 +14,8 @@ foreach($this->config->item('e___6287') as $e__id => $m) {
     echo '<b class="montserrat '.extract_icon_color($m['m__icon']).'">'.$m['m__title'].'</b>';
     echo ( strlen($m['m__message']) ? '&nbsp;'.$m['m__message'] : '' );
 
-
     //PROFILE
+    /*
     echo '<div class="pull-right inline-block">';
     foreach($this->X_model->fetch(array(
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -27,6 +27,7 @@ foreach($this->config->item('e___6287') as $e__id => $m) {
         echo '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '" data-toggle="tooltip" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '" data-placement="top">' . view_e__icon($e_profile['e__icon']) . '</span>&nbsp;';
     }
     echo '</div>';
+    */
 
     echo '</a>';
 }
