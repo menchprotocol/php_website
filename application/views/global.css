@@ -406,6 +406,14 @@ img.no-radius {
     padding-top: 27px;
 }
 
+.a-gif-wrap{
+    border:1px solid #000000;
+    border-radius: 3px;
+    font-size: 0.5em;
+    text-transform: uppercase;
+    padding: 3px 5px;
+}
+
 .drip_msg{
     margin-top: 21px;
     margin-left: 41px;
@@ -536,7 +544,7 @@ label:focus,
     margin-bottom: 5px;
 }
 
-.mono-space{
+.mono-space, .a-gif-wrap{
     font-family: 'Roboto Mono', monospace !important;
     font-weight: normal !important;
 }
