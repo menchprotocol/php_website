@@ -12,6 +12,12 @@ $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 $control_enabled = $source_is_e || $superpower_10939;
 
 
+$profiles = $this->X_model->fetch(array(
+    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    'x__down' => $e['e__id'],
+), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
 ?>
 
 <script>
@@ -25,46 +31,6 @@ $control_enabled = $source_is_e || $superpower_10939;
 <script src="/application/views/layouts.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
     <?php
-
-    if( $superpower_13422 ){
-
-        //PROFILE
-        echo '<div class="container coin-frame">';
-        //echo '<div class="headline"><span class="icon-block">'.$e___11035[11030]['m__icon'].'</span>'.$e___11035[11030]['m__title'].'</div>';
-        echo '<div id="list_11030" class="list-group grey-list">';
-        $profiles = $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            'x__down' => $e['e__id'],
-        ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
-        $show_max = view_memory(6404,13803);
-        $hide = false;
-        $counter = 0;
-        foreach($profiles as $count => $e_profile) {
-            if(!$hide && $count==$show_max){
-                $counter++;
-                $hide = true;
-                echo '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block">'.$e___11035[11030]['m__icon'].'</span><b class="montserrat source">'.$e___11035[11030]['m__title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
-                echo '<div class="list-group-item see_all_11030 no-padding"></div>';
-            }
-            echo view_e($e_profile,true, ( $hide ? ' see_all_11030 hidden ' : null ), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
-        }
-
-        //ADD NEW
-        echo '<div id="new_11030" class="list-group-item '.( $counter ? ' see_all_11030 hidden ' : '' ).' list-adder no-side-padding '.superpower_active(13422).'">
-                    <div class="input-group border">
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               id="New11030input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[13914]['m__title'].'">
-                    </div></div>';
-        echo '</div>';
-        echo '</div>';
-
-
-    }
 
     echo '<div class="container">';
 
@@ -102,6 +68,9 @@ $control_enabled = $source_is_e || $superpower_10939;
     } elseif($source_is_e || ($superpower_12701 && $counter__x > 0)){
         //DISCOVERIES
         $active_x__type = 6255;
+    } elseif(count($profiles)) {
+        //PROFILE
+        $active_x__type = 11030;
     }
 
 
@@ -140,6 +109,34 @@ $control_enabled = $source_is_e || $superpower_10939;
             }
             //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
             $ui .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m__icon'].' '.$m['m__title'].' '.number_format($counter, 0).' times.</div>';
+
+        } elseif($x__type==11030){
+
+            //PROFILE
+            $ui .= '<div id="list_11030" class="list-group grey-list">';
+            $show_max = view_memory(6404,13803);
+            $hide = false;
+            $counter = 0;
+            foreach($profiles as $count => $e_profile) {
+                if(!$hide && $count==$show_max){
+                    $counter++;
+                    $hide = true;
+                    $ui .= '<div class="load-more montserrat list-group-item itemsource no-left-padding see_all_11030"><a href="javascript:void(0);" onclick="$(\'.see_all_11030\').toggleClass(\'hidden\')"><span class="icon-block">'.$e___11035[11030]['m__icon'].'</span><b class="montserrat source">'.$e___11035[11030]['m__title'].'<span class="'.superpower_active(13422).'"> ['.count($profiles).']</span></b></a></div>';
+                    $ui .= '<div class="list-group-item see_all_11030 no-padding"></div>';
+                }
+                $ui .= view_e($e_profile,true, ( $hide ? ' see_all_11030 hidden ' : null ), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+            }
+
+            //ADD NEW
+            $ui .= '<div id="new_11030" class="list-group-item '.( $counter ? ' see_all_11030 hidden ' : '' ).' list-adder no-side-padding '.superpower_active(13422).'">
+                    <div class="input-group border">
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               id="New11030input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="'.$e___11035[13914]['m__title'].'">
+                    </div></div>';
+            $ui .= '</div>';
 
         } elseif($x__type==12274){
 
