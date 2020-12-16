@@ -12,7 +12,7 @@ $current_mench = current_mench();
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment ? 'mench' : $current_mench['c__css'] ) ?>.png">
+    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment ? 'mench' : $current_mench['c__class'] ) ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title : 'MENCH' ) ?></title>
 
@@ -105,7 +105,7 @@ $current_mench = current_mench();
 
 <?php
 //Generate Body Class String:
-$body_class = 'mench-'.$current_mench['c__css']; //Always append current mench
+$body_class = 'mench-'.$current_mench['c__class']; //Always append current mench
 foreach($this->config->item('e___13890') as $e__id => $m){
     $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
 }
@@ -186,7 +186,7 @@ if(!isset($hide_header)){
                     if($user_e){
 
                         //My Source
-                        $member_source = '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].' '.$current_mench['c__css'].'">'.$user_e['e__title'].'</b>';
+                        $member_source = '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.str_replace('source',$current_mench['c__class'],$user_e['e__icon']).'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].' '.$current_mench['c__class'].'">'.$user_e['e__title'].'</b>';
 
                         if('@'.$user_e['e__id']==$first_segment){
                             echo $member_source;

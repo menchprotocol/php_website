@@ -213,7 +213,7 @@ function current_mench(){
 
         return array(
             'c__id' => 12274,
-            'c__css' => 'source',
+            'c__class' => 'source',
             'c__m' => $e___12467[12274],
         );
 
@@ -221,7 +221,7 @@ function current_mench(){
 
         return array(
             'c__id' => 12273,
-            'c__css' => 'idea',
+            'c__class' => 'idea',
             'c__m' => $e___12467[12273],
         );
 
@@ -229,7 +229,7 @@ function current_mench(){
 
         return array(
             'c__id' => 6255,
-            'c__css' => 'discover',
+            'c__class' => 'discover',
             'c__m' => $e___12467[6255],
         );
 
