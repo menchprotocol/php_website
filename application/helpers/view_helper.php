@@ -1309,7 +1309,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     if(!in_array($x__type, $CI->config->item('n___13369'))){
-        return 'Invalid x__type';
+        return 'Invalid x__type '.$x__type;
     }
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $user_input = $focus_e;
