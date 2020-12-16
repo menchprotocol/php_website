@@ -201,12 +201,16 @@ if(!isset($hide_header)){
                         echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>';
 
                         //EDIT IDEA
-                        if($i__id && is_numeric($first_segment) && superpower_active(10939, true)){
+                        if($i__id && is_numeric($first_segment)){
+
                             //PUBLISH
                             echo '<span class="mench-circle"><a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'" data-toggle="tooltip" data-placement="right">'.$e___11035[13563]['m__icon'].'</a></span>';
+
                         } elseif($i__id && substr($first_segment, 0, 1)=='~' && $i__id!=view_memory(6404,14002)){
+
                             //DISCOVER
                             echo '<span class="mench-circle"><a href="/'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="right">'.$e___11035[13562]['m__icon'].'</a></span>';
+
                         }
 
                     } else {
