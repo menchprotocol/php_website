@@ -189,7 +189,7 @@ if(!isset($hide_header)){
 
                                 //Home Page:
                                 //Current Mench Icon
-                                echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'">'.$user_e['e__icon'].'</span>';
+                                echo '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'" title="'.strtoupper($current_mench['x_name']).'">'.$user_e['e__icon'].'</span>';
                                 echo '<b class="montserrat text-logo text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>';
 
                             } else {
