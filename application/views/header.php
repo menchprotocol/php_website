@@ -181,47 +181,41 @@ if(!isset($hide_header)){
 
                     //MENCH
                     echo '<div class="left_nav mench_nav">';
-                    echo '<span class="block">';
 
-                    if(superpower_active(10939, true)){
+                    if(strlen($first_segment) && $first_segment!='@'.( $user_e ? $user_e['e__id'] : '0' )){
+                        //Home Link
+                        echo '<a href="'.home_url($current_mench['x_id']).'" class="mench-circle pull-right"><i class="fas fa-home"></i></a>';
+                    }
 
-                            if('@'.$user_e['e__id']==$first_segment){
 
-                                //Home Page:
-                                //Current Mench Icon
-                                echo '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'" title="'.strtoupper($current_mench['x_name']).'">'.$user_e['e__icon'].'</span>';
-                                echo '<b class="montserrat text-logo text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>';
 
-                            } else {
+                    if($user_e && '@'.$user_e['e__id']==$first_segment){
 
-                                //Home Link
-                                //Current Mench Icon
-                                echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>';
-                                echo '<a href="'.home_url($current_mench['x_id']).'" class="mench-circle pull-right"><i class="fas fa-home"></i></a>';
+                        //Home Page:
+                        //Current Mench Icon
+                        echo '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'" title="'.strtoupper($current_mench['x_name']).'">'.$user_e['e__icon'].'</span>';
+                        echo '<b class="montserrat text-logo text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>';
 
-                            }
+                    } elseif(superpower_active(10939, true)){
+
+                        echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>';
+
+                        //EDIT IDEA
+                        if($i__id && is_numeric($first_segment) && superpower_active(10939, true)){
+                            //PUBLISH
+                            echo '<span class="mench-circle"><a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'" data-toggle="tooltip" data-placement="right">'.$e___11035[13563]['m__icon'].'</a></span>';
+                        } elseif($i__id && substr($first_segment, 0, 1)=='~' && $i__id!=view_memory(6404,14002)){
+                            //DISCOVER
+                            echo '<span class="mench-circle"><a href="/'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="right">'.$e___11035[13562]['m__icon'].'</a></span>';
+                        }
 
                     } else {
 
-                        //Current Mench Icon
-                        echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>';
-
-                        //Mench Link
+                        //Default logo
                         echo '<a href="'.home_url($current_mench['x_id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo text__6197_2738">MENCH</b></a>';
 
                     }
 
-
-                    //EDIT IDEA
-                    if($i__id && is_numeric($first_segment) && superpower_active(10939, true)){
-                        //PUBLISH
-                        echo '<span class="mench-circle"><a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'" data-toggle="tooltip" data-placement="right">'.$e___11035[13563]['m__icon'].'</a></span>';
-                    } elseif($i__id && substr($first_segment, 0, 1)=='~' && $i__id!=view_memory(6404,14002)){
-                        //DISCOVER
-                        echo '<span class="mench-circle"><a href="/'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="right">'.$e___11035[13562]['m__icon'].'</a></span>';
-                    }
-
-                    echo '</span>';
                     echo '</div>';
 
                     //SEARCH
