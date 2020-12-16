@@ -1169,6 +1169,9 @@ function view_e_settings($list_id, $show_accordion){
     $CI =& get_instance();
     $user_e = superpower_unlocked();
     $ui = null;
+    if(!$user_e){
+        return $ui;
+    }
     if($show_accordion){
         $ui .= '<div class="accordion" id="MyAccountAccordion">';
     }
