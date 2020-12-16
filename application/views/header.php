@@ -182,11 +182,6 @@ if(!isset($hide_header)){
                     //MENCH
                     echo '<div class="left_nav mench_nav">';
 
-                    if(strlen($first_segment) && $first_segment!='@'.( $user_e ? $user_e['e__id'] : '0' )){
-                        //Home Link
-                        echo '<a href="'.home_url($current_mench['x_id']).'" class="mench-circle pull-right"><i class="fas fa-home"></i></a>';
-                    }
-
 
 
                     if($user_e && '@'.$user_e['e__id']==$first_segment){
@@ -212,6 +207,9 @@ if(!isset($hide_header)){
                             echo '<span class="mench-circle"><a href="/'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="right">'.$e___11035[13562]['m__icon'].'</a></span>';
 
                         }
+
+                        //Home Link
+                        echo '<a href="'.home_url($current_mench['x_id']).'" class="mench-circle pull-right"><i class="fas fa-home"></i></a>';
 
                     } else {
 
