@@ -1216,7 +1216,7 @@ class E extends CI_Controller
         }
 
         //Validate:
-        $icon_new_css = $_POST['type_css'].' '.$_POST['icon_css'].' source';
+        $icon_new_css = $_POST['type_css'].' '.$_POST['icon_css'];
         $validated = false;
         foreach($this->config->item('e___12279') as $e__id => $m) {
             if(substr_count($m['m__icon'], $icon_new_css) == 1){
