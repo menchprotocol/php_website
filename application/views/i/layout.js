@@ -26,7 +26,7 @@ function watch_for(target_class){
                 });
                 if(!class_found) {
                     //Revert back IF the same:
-                    if(!i_note_poweredit_has_changed(4231)){
+                    if(!i_note_poweredit_has_changed(4231) && i_note_poweredit_has_text(4231)){
                         loadtab(14418, 14420); //Load Preview tab
                     }
                 }
@@ -112,6 +112,10 @@ $(document).ready(function () {
 
 function i_note_poweredit_has_changed(note_type_id){
     return $('.input_note_'+note_type_id).val().trim() != $('.input_note_'+note_type_id).attr('current_text').trim();
+}
+
+function i_note_poweredit_has_text(note_type_id){
+    return $('.input_note_'+note_type_id).val().trim().length > 0;
 }
 
 
