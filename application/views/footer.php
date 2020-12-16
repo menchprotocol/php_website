@@ -1,12 +1,12 @@
 
 <?php
-$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-$e___14393 = $this->config->item('e___14393'); //SUGGEST
 $user_e = superpower_unlocked();
+if($user_e && !isset($min_header_footer)){
 
+    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+    $e___14010 = $this->config->item('e___14010');
+    $e___14393 = $this->config->item('e___14393'); //SUGGEST
 
-
-if($user_e){
     ?>
 
     <!-- ACCOUNT Modal -->
@@ -20,15 +20,12 @@ if($user_e){
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?php
-                    $this->load->view('e/account', array(
-                        'user_e' => $user_e,
-                    ));
-                    ?>
+                    <?php echo view_e_settings(6225, true); ?>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- SUGGEST Modal -->
     <div class="modal fade indifferent" id="modal14393" tabindex="-1" role="dialog" aria-labelledby="modal14393Label" aria-hidden="true">
@@ -61,29 +58,40 @@ if($user_e){
         </div>
     </div>
 
-    <?php
-    if(superpower_active(12699, true)){
-        ?>
-        <!-- APP Modal -->
-        <div class="modal fade indifferent" id="modal6287" tabindex="-1" role="dialog" aria-labelledby="modal6287Label" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title montserrat <?= extract_icon_color($e___11035[6287]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[6287]['m__icon'].' '.$e___11035[6287]['m__title'] ?></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <?php
-                        $this->load->view('e/app_home');
-                        ?>
-                    </div>
+
+
+
+    <!-- APP Modal -->
+    <div class="modal fade indifferent" id="modal6287" tabindex="-1" role="dialog" aria-labelledby="modal6287Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title montserrat <?= extract_icon_color($e___11035[6287]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[6287]['m__icon'].' '.$e___11035[6287]['m__title'] ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    if(superpower_active(12699, true)){
+                        echo '<div class="list-group">';
+                        foreach($this->config->item('e___6287') as $e__id => $m) {
+                            echo '<a href="/app/'.$e__id.'" class="list-group-item no-side-padding">';
+                            echo '<span class="icon-block">' . view_e__icon($m['m__icon']) . '</span>';
+                            echo '<b class="montserrat '.extract_icon_color($m['m__icon']).'">'.$m['m__title'].'</b>';
+                            echo ( strlen($m['m__message']) ? '&nbsp;'.$m['m__message'] : '' );
+                            echo '</a>';
+                        }
+                        echo '</div>';
+                    } else {
+                        echo '<p><a href="">Refresh your browser</a> to load all apps.</p>';
+                    }
+                    ?>
                 </div>
             </div>
         </div>
-        <?php
-    }
+    </div>
+    <?php
 
 }
 

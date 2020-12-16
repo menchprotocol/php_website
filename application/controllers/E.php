@@ -47,6 +47,21 @@ class E extends CI_Controller
         $this->load->view('footer');
     }
 
+
+    function get_started($i__id = 0){
+        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+        $this->load->view('header', array(
+            'min_header_footer' => 1,
+            'title' => $e___11035[14517]['m__title'],
+        ));
+        $this->load->view('e/get_started', array(
+            'i__id' => $i__id,
+        ));
+        $this->load->view('footer', array(
+            'min_header_footer' => 1,
+        ));
+    }
+
     //Lists sources
     function e_layout($e__id)
     {
@@ -1524,13 +1539,15 @@ class E extends CI_Controller
 
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
-            'hide_header' => 1,
+            'min_header_footer' => 1,
             'title' => $e___11035[4269]['m__title'],
         ));
         $this->load->view('e/signin', array(
             'sign_i__id' => $i__id,
         ));
-        $this->load->view('footer');
+        $this->load->view('footer', array(
+            'min_header_footer' => 1,
+        ));
 
     }
 
@@ -1542,11 +1559,13 @@ class E extends CI_Controller
 
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
-            'hide_header' => 1,
+            'min_header_footer' => 1,
             'title' => $e___11035[7291]['m__title'],
         ));
         $this->load->view('e/signout');
-        $this->load->view('footer');
+        $this->load->view('footer', array(
+            'min_header_footer' => 1,
+        ));
 
     }
 

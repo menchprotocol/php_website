@@ -159,13 +159,13 @@ if(strlen($flash_message) > 0) {
     //Delete from Flash:
     $this->session->unmark_flash('flash_message');
 
-    echo '<div class="container '.( isset($hide_header) ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 10px;">'.$flash_message.'</div>';
+    echo '<div class="container '.( isset($min_header_footer) ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 10px;">'.$flash_message.'</div>';
 
 }
 
 
+if(!isset($min_header_footer)){
 
-if(!isset($hide_header)){
     //Do not show for /sign view
     ?>
 
