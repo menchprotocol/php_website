@@ -39,9 +39,7 @@ $profiles = $this->X_model->fetch(array(
         echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__type']]['m__icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__icon'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
     }
 
-
-
-    if($superpower_13422 || !$source_is_e){
+    if(!$source_is_e){
 
         $icon_frame = '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>';
 
@@ -49,8 +47,6 @@ $profiles = $this->X_model->fetch(array(
         echo '<div style="padding: 8px 0; margin-top:10px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, ($superpower_13422 ? '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m__title'].'">'.$icon_frame.'</a>' : $icon_frame ), extract_icon_color($e['e__icon'])).'</div>';
 
     }
-
-
 
     //Determine Focus Tab:
     $counter__e = view_coins_e(12274, $e['e__id'], 0, false);
