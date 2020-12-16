@@ -27,7 +27,6 @@ function watch_for(target_class){
                 if(!class_found) {
                     //Revert back IF the same:
                     if(!i_note_poweredit_has_changed(4231)){
-                        console.log('Preview loaded');
                         loadtab(14418, 14420); //Load Preview tab
                     }
                 }
@@ -172,7 +171,7 @@ function i_note_poweredit_save(note_type_id){
             //Load Images:
             lazy_load();
 
-            if(note_type_id==4231){
+            if(note_type_id==4231 && new_text.length>0){
                 loadtab(14418, 14420); //Load Preview tab
             }
 
