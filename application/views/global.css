@@ -406,7 +406,7 @@ img.no-radius {
     padding-top: 27px;
 }
 
-.a-gif-wrap{
+.fa-gif-wrap{
     border:1px solid #000000;
     border-radius: 3px;
     font-size: 0.5em;
@@ -544,7 +544,7 @@ label:focus,
     margin-bottom: 5px;
 }
 
-.mono-space, .a-gif-wrap{
+.mono-space, .fa-gif-wrap{
     font-family: 'Roboto Mono', monospace !important;
     font-weight: normal !important;
 }
