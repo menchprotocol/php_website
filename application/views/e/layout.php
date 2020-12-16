@@ -61,12 +61,12 @@ $profiles = $this->X_model->fetch(array(
     } elseif($counter__i > 0 && (!$source_is_e || $superpower_10939)){
         //IDEAS
         $active_x__type = 12273;
+    } elseif(count($profiles) && $superpower_13422) {
+        //PROFILE
+        $active_x__type = 11030;
     } elseif($source_is_e || ($superpower_12701 && $counter__x > 0)){
         //DISCOVERIES
         $active_x__type = 6255;
-    } elseif(count($profiles)) {
-        //PROFILE
-        $active_x__type = 11030;
     }
 
 
