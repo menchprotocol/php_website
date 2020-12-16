@@ -45,7 +45,7 @@ $(document).ready(function () {
     //Lookout for textinput updates
     x_set_start_text();
 
-    $('.editor_preview.editor_preview_4231').click(function (e) {
+    $('.editor_preview.editor_preview_4231 .msg').click(function (e) {
 
         loadtab(14418, 14468);//Load Write Tab
 
