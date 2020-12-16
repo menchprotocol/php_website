@@ -2363,7 +2363,9 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .editor_preview:hover{
     background-color:#FFFFFF !important;
 }
-
+.btn-grey .fa-gif-wrap {
+    border-color: #999999 !important;
+}
 @media (min-width:767px) {
 
     /* DARK */
