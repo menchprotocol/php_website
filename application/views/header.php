@@ -196,6 +196,9 @@ if(!isset($hide_header)){
 
                         if(superpower_active(10939, true)){
 
+                            //Current Coin
+                            echo '<span title="'.$current_mench['c__m']['m__title'].'" class="mench-circle pull-right">'.$current_mench['c__m']['m__icon'].'</span>';
+
                             //Flip Coin?
                             if($i__id && is_numeric($first_segment)){
 
@@ -208,9 +211,6 @@ if(!isset($hide_header)){
                                 echo '<a href="/'.$i__id.'" style="margin-left: 0;" class="mench-circle pull-right" title="'.$e___11035[13562]['m__title'].'" data-toggle="tooltip" data-placement="left">'.$e___11035[13562]['m__icon'].'</a>';
 
                             }
-
-                            //Current Coin
-                            echo '<span title="'.$current_mench['c__m']['m__title'].'" class="mench-circle pull-right">'.$current_mench['c__m']['m__icon'].'</span>';
 
                         }
 
