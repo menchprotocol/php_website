@@ -1166,6 +1166,8 @@ function view_shuffle_message($e__id){
 
 function view_e_settings($list_id, $show_accordion){
 
+    $CI =& get_instance();
+    $user_e = superpower_unlocked();
     $ui = null;
     if($show_accordion){
         $ui .= '<div class="accordion" id="MyAccountAccordion">';
@@ -1173,7 +1175,7 @@ function view_e_settings($list_id, $show_accordion){
 
 
     //Display account fields ordered with their SOURCE LINKS:
-    foreach($this->config->item('e___'.$list_id) as $acc_e__id => $acc_detail) {
+    foreach($CI->config->item('e___'.$list_id) as $acc_e__id => $acc_detail) {
 
         //Print account fields that are either Single Selectable or Multi Selectable:
         $is_multi_selectable = in_array(6122, $acc_detail['m__profile']);
@@ -1190,7 +1192,7 @@ function view_e_settings($list_id, $show_accordion){
             $e__icon_parts = explode(' ',one_two_explode('class="', '"', $user_e['e__icon']));
 
             $tab_ui .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group pull-right" role="group" style="margin:0 0 10px 0;">';
-            foreach($this->config->item('e___13533') as $m3) {
+            foreach($CI->config->item('e___13533') as $m3) {
                 $tab_ui .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m3['m__message'].'\')" class="btn btn-'.$m3['m__message'].' '.( $e__icon_parts[0]==$m3['m__message'] ? ' active ' : '' ).'" title="'.$m3['m__title'].'">'.$m3['m__icon'].'</a>';
             }
             $tab_ui .= '</div>';
@@ -1199,11 +1201,11 @@ function view_e_settings($list_id, $show_accordion){
 
 
             //List avatars:
-            foreach($this->config->item('e___12279') as $x__type3 => $m3) {
+            foreach($CI->config->item('e___12279') as $x__type3 => $m3) {
 
                 $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m__icon']));
                 $avatar_type_match = ($e__icon_parts[0] == $avatar_icon_parts[0]);
-                $superpower_actives3 = array_intersect($this->config->item('n___10957'), $m3['m__profile']);
+                $superpower_actives3 = array_intersect($CI->config->item('n___10957'), $m3['m__profile']);
 
                 $tab_ui .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
                 $tab_ui .= '<a href="javascript:void(0);" onclick="e_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item avatar-item avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m__icon'] . '</div></a>';
@@ -1213,7 +1215,7 @@ function view_e_settings($list_id, $show_accordion){
 
         } elseif ($acc_e__id == 10957 /* Superpowers */) {
 
-            if(count($this->session->userdata('session_superpowers_unlocked')) >= 2){
+            if(count($CI->session->userdata('session_superpowers_unlocked')) >= 2){
                 //Mass Toggle Option:
                 $tab_ui .= '<div class="btn-group pull-right" role="group" style="margin:0 0 10px 0;">
                   <a href="javascript:void(0)" onclick="account_toggle_all(1)" class="btn btn-far"><i class="fas fa-toggle-on"></i></a>
@@ -1223,10 +1225,10 @@ function view_e_settings($list_id, $show_accordion){
 
             //SUPERPOWERS
             $tab_ui .= '<div class="list-group">';
-            foreach($this->config->item('e___10957') as $superpower_e__id => $m3){
+            foreach($CI->config->item('e___10957') as $superpower_e__id => $m3){
 
-                $is_unlocked = in_array($superpower_e__id, $this->session->userdata('session_superpowers_unlocked'));
-                $public_link = in_array($superpower_e__id, $this->config->item('n___6404'));
+                $is_unlocked = in_array($superpower_e__id, $CI->session->userdata('session_superpowers_unlocked'));
+                $public_link = in_array($superpower_e__id, $CI->config->item('n___6404'));
                 $extract_icon_color = extract_icon_color($m3['m__icon']);
                 $anchor = '<span class="icon-block '.$extract_icon_color.'">'.$m3['m__icon'].'</span><b class="montserrat '.$extract_icon_color.'">'.$m3['m__title'].'</b><span class="superpower-message">'.$m3['m__message'].'</span>';
 
@@ -1262,10 +1264,10 @@ function view_e_settings($list_id, $show_accordion){
 
         } elseif ($acc_e__id == 3288 /* Email */) {
 
-            $u_emails = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            $u_emails = $CI->X_model->fetch(array(
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__down' => $user_e['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up' => 3288, //Mench Email
             ));
 
