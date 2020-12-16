@@ -1181,6 +1181,8 @@ function view_e_settings($list_id, $show_accordion){
     //Display account fields ordered with their SOURCE LINKS:
     foreach($CI->config->item('e___'.$list_id) as $acc_e__id => $acc_detail) {
 
+        //Skip if missing superpower:
+        $superpower_actives = array_intersect($this->config->item('n___10957'), $acc_detail['m__profile']);
         //Print account fields that are either Single Selectable or Multi Selectable:
         $is_multi_selectable = in_array(6122, $acc_detail['m__profile']);
         $is_single_selectable = in_array(6204, $acc_detail['m__profile']);
@@ -1296,7 +1298,7 @@ function view_e_settings($list_id, $show_accordion){
             if($show_accordion){
 
                 //Accordion header:
-                $ui .= '<div class="card">
+                $ui .= '<div class="card '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">
 <div class="card-header" id="heading' . $acc_e__id . '">
 <button class="btn btn-block" type="button" data-toggle="collapse" data-target="#openEn' . $acc_e__id . '" aria-expanded="false" aria-controls="openEn' . $acc_e__id . '">
   <span class="icon-block">' . $acc_detail['m__icon'] . '</span><b class="montserrat doupper ' . extract_icon_color($acc_detail['m__icon']) . '">' . $acc_detail['m__title'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
