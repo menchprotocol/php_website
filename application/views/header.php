@@ -183,7 +183,7 @@ if(!isset($hide_header)){
                     echo '<div class="left_nav mench_nav">';
                     echo '<span class="inline-block pull-left">';
 
-                    if($user_e){
+                    if(superpower_active(10939, true)){
 
                             //Current Mench Icon
                             echo '<span class="mench-circle" title="'.strtoupper($current_mench['x_name']).'"><i class="fas fa-circle '.$current_mench['x_name'].'"></i></span>';
