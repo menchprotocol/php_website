@@ -203,12 +203,12 @@ if(!isset($hide_header)){
                             if($i__id && is_numeric($first_segment)){
 
                                 //PUBLISH
-                                echo '<a href="/~'.$i__id.'" style="margin-left: 0;" title="'.$e___11035[13563]['m__title'].'" class="mench-circle pull-right">'.$e___11035[13563]['m__icon'].'</a>';
+                                echo '<a href="/~'.$i__id.'" style="margin-right: 8px;" title="'.$e___11035[13563]['m__title'].'" class="mench-circle pull-right">'.$e___11035[13563]['m__icon'].'</a>';
 
                             } elseif($i__id && substr($first_segment, 0, 1)=='~' && $i__id!=view_memory(6404,14002)){
 
                                 //DISCOVER
-                                echo '<a href="/'.$i__id.'" style="margin-left: 0;" class="mench-circle pull-right" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__icon'].'</a>';
+                                echo '<a href="/'.$i__id.'" style="margin-right: 8px;" class="mench-circle pull-right" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__icon'].'</a>';
 
                             }
 
