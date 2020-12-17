@@ -49,6 +49,10 @@ class E extends CI_Controller
 
 
     function get_started($i__id = 0){
+        $user_e = superpower_unlocked();
+        if(!$user_e){
+            return redirect_message('/');
+        }
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
         $this->load->view('header', array(
             'min_header_footer' => 1,
