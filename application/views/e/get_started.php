@@ -1,6 +1,6 @@
 <?php
 $e___11035 = $this->config->item('e___11035');
-$next_link = '<a href="'.( $i__id > 0 ? '/x/x_start/'.$i__id : home_url() ).'" style="margin-right: 8px;" class="pull-right inline-block"><b class="montserrat special-text text__6197_14521 '.extract_icon_color($e___11035[14521]['m__icon']).'">'.$e___11035[14521]['m__title'].'</b>'.$e___11035[14521]['m__icon'].'</a>';
+$next_link = '<a href="'.( $i__id > 0 ? '/x/x_start/'.$i__id : home_url() ).'" style="margin-right: 8px;" class="pull-right inline-block"><b class="css__title special-text text__6197_14521 '.extract_icon_color($e___11035[14521]['m__icon']).'">'.$e___11035[14521]['m__title'].'</b>'.$e___11035[14521]['m__icon'].'</a>';
 ?>
 
 <!-- HEADLINE -->

@@ -292,11 +292,11 @@ function e_e_only_search(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">Create "' + data.query.toUpperCase() + '"</b></a>';
+                        return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">Create "' + data.query.toUpperCase() + '"</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
@@ -391,7 +391,7 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
 
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item montserrat no-side-padding"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>' + js_view_shuffle_message(12695) +  '</div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item css__title no-side-padding"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>' + js_view_shuffle_message(12695) +  '</div>');
 
 
     //Update backend:

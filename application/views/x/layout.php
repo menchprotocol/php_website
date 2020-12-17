@@ -580,7 +580,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $ui .= '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="' . ($previously_selected ? 'fas fa-check-circle discover' : 'far fa-circle discover') . '"></i></td>';
 
                         $ui .= '<td style="width:100%; padding: 0 !important;">';
-                        $ui .= '<b class="montserrat i-url" style="margin-left:0;">' . view_i_title($next_i) . '</b>';
+                        $ui .= '<b class="css__title i-url" style="margin-left:0;">' . view_i_title($next_i) . '</b>';
                         $ui .= '</td>';
 
                         $ui .= '</tr></table>';
@@ -826,17 +826,17 @@ if(!$in_my_x && !$i_drip_mode){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
-            $control_btn = '<span class="final_drip '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'"><a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="0"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title montserrat">'.$m['m__title'].'</span></span>';
+            $control_btn = '<span class="final_drip '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'"><a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="0"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span></span>';
 
         } elseif($e__id==12991){
 
             //BACK
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m['m__icon'].'</a><span class="nav-title montserrat">'.$m['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==12211){
 
             //NEXT
-            $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m['m__icon'].'</a><span class="nav-title montserrat">'.$m['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
 
         }
 

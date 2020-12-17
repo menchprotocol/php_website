@@ -36,7 +36,7 @@ $profiles = $this->X_model->fetch(array(
 
     //SOURCE DRAFTING?
     if(!in_array($e['e__type'], $this->config->item('n___7357'))){
-        echo '<div class="montserrat '.extract_icon_color($e___6177[$e['e__type']]['m__icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__icon'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
+        echo '<div class="css__title '.extract_icon_color($e___6177[$e['e__type']]['m__icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__icon'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
     }
 
     if(!$source_is_e){
@@ -145,7 +145,7 @@ $profiles = $this->X_model->fetch(array(
 
                     $editor_counter++;
                     $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m__title'] . '</option>';
-                    $is_upper = ( in_array($action_e__id, $this->config->item('n___12577') /* SOURCE UPDATER UPPERCASE */) ? ' montserrat doupper ' : false );
+                    $is_upper = ( in_array($action_e__id, $this->config->item('n___12577') /* SOURCE UPDATER UPPERCASE */) ? ' css__title doupper ' : false );
 
 
                     //Start with the input wrapper:
@@ -360,7 +360,7 @@ $profiles = $this->X_model->fetch(array(
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14015]['m__icon'].'</span></a>
                         <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add_e_idea add-input"
+                               class="form-control form-control-thick algolia_search css__title dotransparent add_e_idea add-input"
                                maxlength="' . view_memory(6404,4736) . '"
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[14015]['m__title'].'">
@@ -565,7 +565,7 @@ $profiles = $this->X_model->fetch(array(
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title montserrat <?= extract_icon_color($e___11035[13571]['m__icon']) ?>" id="modal13571Label"><?= $e___11035[13571]['m__icon'].' '.$e___11035[13571]['m__title'] ?></h5>
+                <h5 class="modal-title css__title <?= extract_icon_color($e___11035[13571]['m__icon']) ?>" id="modal13571Label"><?= $e___11035[13571]['m__icon'].' '.$e___11035[13571]['m__title'] ?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -596,7 +596,7 @@ $profiles = $this->X_model->fetch(array(
 
                 <!-- Source Title -->
                 <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6197]['m__icon'].'</span>'.$e___13571[6197]['m__title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= view_memory(6404,6197) ?></span>]</div>
-                <textarea class="form-control text-edit border montserrat doupper" id="e__title" name="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
+                <textarea class="form-control text-edit border css__title doupper" id="e__title" name="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
 
 
 

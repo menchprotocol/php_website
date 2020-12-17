@@ -120,7 +120,7 @@ class X extends CI_Controller
             }
 
             //Subsequent messages:
-            $message .= '<div class="montserrat x-info grey">'.( $x_count[0]['total_count']>$total_items_loaded ? ( $has_more_x && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) : '') . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS</div>';
+            $message .= '<div class="css__title x-info grey">'.( $x_count[0]['total_count']>$total_items_loaded ? ( $has_more_x && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) : '') . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS</div>';
 
         }
 
@@ -217,7 +217,7 @@ class X extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'x__type_preview' => '<b class="montserrat doupper '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m__icon']).'">' . $e___4592[$detected_x_type['x__type']]['m__icon'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
+            'x__type_preview' => '<b class="css__title doupper '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m__icon']).'">' . $e___4592[$detected_x_type['x__type']]['m__icon'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
             'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">'.view_x__message($_POST['x__message'], $detected_x_type['x__type'], null, true).'</span>' : ''),
         ));
 

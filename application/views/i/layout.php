@@ -47,7 +47,7 @@ if($show_previous){
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#addi-c-' . $i_focus['i__id'] . '-1\').focus();"><span class="icon-block">'.$e___11035[14014]['m__icon'].'</span></a>
                         <input type="text"
-                               class="form-control form-control-thick previous_i add-input algolia_search dotransparent"
+                               class="form-control css__title form-control-thick previous_i add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                i-id="' . $i_focus['i__id'] . '"
                                id="addi-c-' . $i_focus['i__id'] . '-1"
@@ -88,7 +88,7 @@ if(isset($_GET['load__e']) && $superpower_14005){
 
 
 if(!$e_of_i){
-    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block montserrat">JOIN NOW</a> to contribute.</span></div>';
+    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block css__title">JOIN NOW</a> to contribute.</span></div>';
 }
 
 
@@ -233,7 +233,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     //Source search box:
 
                     //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border montserrat">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border css__title">';
 
                     //We don't need the second value field here:
                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -241,7 +241,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 } elseif(in_array($action_e__id, array(12611, 12612))){
 
                     //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_search i_text_search border montserrat">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_search i_text_search border css__title">';
 
                     //We don't need the second value field here:
                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -281,7 +281,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#addi-c-' . $i_focus['i__id'] . '-0\').focus();"><span class="icon-block">'.$e___11035[13912]['m__icon'].'</span></a>
                     <input type="text"
-                           class="form-control form-control-thick next_i add-input algolia_search dotransparent"
+                           class="form-control form-control-thick next_i add-input css__title algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
                            i-id="' . $i_focus['i__id'] . '"
                            id="addi-c-' . $i_focus['i__id'] . '-0"

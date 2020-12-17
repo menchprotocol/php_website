@@ -148,7 +148,7 @@ function x_reset_all(){
     //Confirm First:
     var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE discovery history. This action cannot be undone and you will lose all your discovery coins.");
     if (r == true) {
-        $('.x_reset_all').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="montserrat">REMOVING ALL...</b>');
+        $('.x_reset_all').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">REMOVING ALL...</b>');
 
         //Redirect:
         window.location = '/x/x_clear_coins';
@@ -174,7 +174,7 @@ function i_create(){
     $('#tempLoader').remove();
 
     //Set processing status:
-    add_to_list('myIdeas', '.cover_sort', '<div id="tempLoader" class="list-group-item no-side-padding montserrat"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Saving Idea...</div>');
+    add_to_list('myIdeas', '.cover_sort', '<div id="tempLoader" class="list-group-item no-side-padding css__title"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Saving Idea...</div>');
 
     //Process this:
     $.post("/i/i_create", {
@@ -192,7 +192,7 @@ function i_create(){
         } else {
 
             //Unlock:
-            $('#tempLoader').html('<span class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
+            $('#tempLoader').html('<span class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
             $('#newIdeaTitle').prop('disabled', false).removeClass('dynamic_saving').focus();
 
         }
@@ -252,14 +252,14 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
                 header: function (data) {
                     if (!data.isEmpty) {
                         if(superpower_js_13422){
-                            return '<a href="javascript:void(0);" onclick="e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + '<b class="source montserrat">Create "' + data.query.toUpperCase() + '"</b>' + '</a>';
+                            return '<a href="javascript:void(0);" onclick="e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + '<b class="source css__title">Create "' + data.query.toUpperCase() + '"</b>' + '</a>';
                         } else {
                             return '';
                         }
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="e__add(0,'+is_e_parent+')" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="e__add(0,'+is_e_parent+')" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
@@ -741,7 +741,7 @@ function e_modify_save() {
 
         } else {
             //Ooops there was an error!
-            $('#modal13571 .save_results').html('<span class="discover montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
+            $('#modal13571 .save_results').html('<span class="discover css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
         }
 
     });

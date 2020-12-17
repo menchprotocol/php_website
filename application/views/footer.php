@@ -13,7 +13,7 @@ if($user_e && !isset($min_header_footer)){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title montserrat <?= extract_icon_color($e___11035[6225]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[6225]['m__icon'].' '.$e___11035[6225]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[6225]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[6225]['m__icon'].' '.$e___11035[6225]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -31,7 +31,7 @@ if($user_e && !isset($min_header_footer)){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title montserrat <?= extract_icon_color($e___11035[14393]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[14393]['m__icon'].' '.$e___11035[14393]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[14393]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[14393]['m__icon'].' '.$e___11035[14393]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -71,7 +71,7 @@ if($user_e && !isset($min_header_footer)){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title montserrat <?= extract_icon_color($e___11035[6287]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[6287]['m__icon'].' '.$e___11035[6287]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[6287]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[6287]['m__icon'].' '.$e___11035[6287]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -83,7 +83,7 @@ if($user_e && !isset($min_header_footer)){
                         foreach($this->config->item('e___6287') as $e__id => $m) {
                             echo '<a href="/app/'.$e__id.'" class="list-group-item no-side-padding">';
                             echo '<span class="icon-block">' . view_e__icon($m['m__icon']) . '</span>';
-                            echo '<b class="montserrat '.extract_icon_color($m['m__icon']).'">'.$m['m__title'].'</b>';
+                            echo '<b class="css__title '.extract_icon_color($m['m__icon']).'">'.$m['m__title'].'</b>';
                             echo ( strlen($m['m__message']) ? '&nbsp;'.$m['m__message'] : '' );
                             echo '</a>';
                         }

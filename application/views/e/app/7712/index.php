@@ -31,7 +31,7 @@ foreach($this->I_model->fetch(array(
 
         echo '<li>';
         echo '<a href="/~'.$child_or['i__id'].'">'.view_i_title($child_or).'</a>';
-        echo ( $x_coins[0]['totals'] > 0 ? ' <span class="discover montserrat"><i class="fas fa-circle discover"></i> '.$x_coins[0]['totals'].'</span>' : '' );
+        echo ( $x_coins[0]['totals'] > 0 ? ' <span class="discover css__title"><i class="fas fa-circle discover"></i> '.$x_coins[0]['totals'].'</span>' : '' );
         echo '</li>';
 
     }

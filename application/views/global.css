@@ -173,7 +173,7 @@ li a {
 }
 
 /* FONTS */
-.montserrat, .headline, .btn {
+.css__title, .headline, .btn {
     font-weight: bold;
     text-decoration: none;
     margin-left: 0 !important;
@@ -1340,7 +1340,7 @@ label {
     cursor: default !important;
 }
 
-.list-group-item .montserrat, .list-group-item{
+.list-group-item .css__title, .list-group-item{
     text-decoration: none;
 }
 
@@ -2195,7 +2195,7 @@ i, .btn .show-max {
 
 /* SERIF / HEADER */
 .custom_ui_14506_14508 h1,
-.custom_ui_14506_14508 .montserrat,
+.custom_ui_14506_14508 .css__title,
 .custom_ui_14506_14508 .headline,
 .custom_ui_14506_14508 .btn,
 .custom_ui_14506_14508 .algolia_pad_search,
@@ -2229,7 +2229,7 @@ i, .btn .show-max {
 
 /* SANSSERIF / HEADER */
 .custom_ui_14506_14507 h1,
-.custom_ui_14506_14507 .montserrat,
+.custom_ui_14506_14507 .css__title,
 .custom_ui_14506_14507 .headline,
 .custom_ui_14506_14507 .btn,
 .custom_ui_14506_14507 .algolia_pad_search,
@@ -2300,7 +2300,7 @@ i, .btn .show-max {
 }
 .custom_ui_13884_13886 .icon-block i,
 .custom_ui_13884_13886 .mench-navigation a,
-.custom_ui_13884_13886 .montserrat,
+.custom_ui_13884_13886 .css__title,
 .custom_ui_13884_13886 a,
 .custom_ui_13884_13886 .close span,
 .custom_ui_13884_13886 .fa-gif-wrap{

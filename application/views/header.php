@@ -205,7 +205,7 @@ if(!isset($min_header_footer)){
                         }
 
                         //My Source
-                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span class="montserrat text-logo" '.( $flip_coin ? '' : ' style="width: calc(100% - 43px);" ' ).'><b class="text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>'.( $superpower_10939 && $first_segment!='@'.$user_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_mench['c__id'], $user_e['e__id']).'</span>' : '' ).'</span></a>';
+                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span class="css__title text-logo" '.( $flip_coin ? '' : ' style="width: calc(100% - 43px);" ' ).'><b class="text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>'.( $superpower_10939 && $first_segment!='@'.$user_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_mench['c__id'], $user_e['e__id']).'</span>' : '' ).'</span></a>';
 
                         echo $flip_coin;
 
@@ -214,7 +214,7 @@ if(!isset($min_header_footer)){
                     } else {
 
                         //Mench Link
-                        echo '<a href="'.home_url($current_mench['c__id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="montserrat text-logo text__6197_2738">MENCH</b></a>';
+                        echo '<a href="'.home_url($current_mench['c__id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="css__title text-logo text__6197_2738">MENCH</b></a>';
 
                     }
 
@@ -270,7 +270,7 @@ if(!isset($min_header_footer)){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' note_type_id="'.$x__type.'" class="dropdown-item montserrat doupper '.extract_icon_color($m['m__icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__icon'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<a '.$href.' note_type_id="'.$x__type.'" class="dropdown-item css__title doupper '.extract_icon_color($m['m__icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__icon'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
 

@@ -79,7 +79,7 @@ if(count($current_sign_i_attempt) == 0){
             echo '<div class="mid-text-line"><span>OR</span></div>';
             ?>
 
-            <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__icon'].'</span>'.$e___4269[3288]['m__title'] ?></span>
+            <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__icon'].'</span>'.$e___4269[3288]['m__title'] ?></span>
             <div class="form-group"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
             <div id="email_errors" class="discover margin-top-down hideIfEmpty"></div>
             <span id="step2buttons">
@@ -112,7 +112,7 @@ if(count($current_sign_i_attempt) == 0){
             <!-- To be updated to >0 IF email was found -->
             <input type="hidden" id="sign_e__id" value="0" />
 
-            <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m__icon'].'</span>'.$e___4269[3286]['m__title'] ?></span>
+            <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m__icon'].'</span>'.$e___4269[3286]['m__title'] ?></span>
             <div class="form-group"><input type="password" id="input_password" class="form-control border white-border"></div>
             <div id="password_errors" class="discover margin-top-down hideIfEmpty"></div>
 
@@ -143,21 +143,21 @@ if(count($current_sign_i_attempt) == 0){
 
             <!-- pre-set Email -->
             <div class="margin-top-down">
-                <div class="montserrat"><span class="icon-block"><?= $e___4269[14026]['m__icon'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
+                <div class="css__title"><span class="icon-block"><?= $e___4269[14026]['m__icon'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
                 <div style="padding:8px 0;"><span class="icon-block">&nbsp;</span><span class="focus_email"></span></div>
             </div>
 
 
             <!-- Full Name -->
             <div class="margin-top-down">
-                <span class="montserrat" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__icon'].'</span>'.$e___4269[13025]['m__title'] ?></span>
-                <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="input_name" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border doupper montserrat white-border"></div>
+                <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__icon'].'</span>'.$e___4269[13025]['m__title'] ?></span>
+                <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="input_name" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border doupper css__title white-border"></div>
             </div>
 
 
             <!-- New Password -->
             <div class="margin-top-down">
-                <span class="montserrat" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[14027]['m__icon'] ?></span><?= $e___4269[14027]['m__title'] ?></span>
+                <span class="css__title" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[14027]['m__icon'] ?></span><?= $e___4269[14027]['m__title'] ?></span>
                 <div class="form-group"><input type="password" id="new_password" class="form-control border white-border"></div>
             </div>
 

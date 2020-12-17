@@ -143,7 +143,7 @@ function x_upload(droppedFiles, uploadType) {
         return false;
     }
 
-    $('.file_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="montserrat">UPLOADING...</span>');
+    $('.file_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="css__title">UPLOADING...</span>');
 
     if (isAdvancedUpload) {
 

@@ -34,7 +34,7 @@
         foreach($e_list as $count=>$e) {
 
             if($count==$show_max){
-                echo '<div class="list-group-item see_more_who'.$e__id.' no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$e__id.'\').toggleClass(\'hidden\')" class="block"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><b class="montserrat source" style="text-decoration: none !important;">SEE MORE</b></a></div>';
+                echo '<div class="list-group-item see_more_who'.$e__id.' no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$e__id.'\').toggleClass(\'hidden\')" class="block"><span class="icon-block"><i class="fas fa-plus-circle source"></i></span><b class="css__title source" style="text-decoration: none !important;">SEE MORE</b></a></div>';
                 echo '<div class="list-group-item see_more_who'.$e__id.' no-height"></div>';
             }
 

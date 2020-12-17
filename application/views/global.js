@@ -80,7 +80,7 @@ function load_editor(){
                     return view_s_js(suggestion);
                 },
                 empty: function (data) {
-                    return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
+                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
                 },
             }
         }]);
@@ -111,7 +111,7 @@ function load_editor(){
                     return view_s_js(suggestion);
                 },
                 empty: function (data) {
-                    return '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
+                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
                 },
             }
         }]);
@@ -144,10 +144,10 @@ function view_s_js(algolia_object){
 
     if(algolia_object.s__type==12274 || 1){
         //SOURCE
-        return '<span class="icon-block">'+ ( algolia_object.s__type==12274 ? algolia_object.s__icon : '<i class="fas fa-circle idea"></i>' ) +'</span><span class="montserrat '+ ( algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__icon) : '' ) +'">' + view_s__title(algolia_object) + '</span>';
+        return '<span class="icon-block">'+ ( algolia_object.s__type==12274 ? algolia_object.s__icon : '<i class="fas fa-circle idea"></i>' ) +'</span><span class="css__title '+ ( algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__icon) : '' ) +'">' + view_s__title(algolia_object) + '</span>';
     } else {
         //IDEA
-        return '<div class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__icon + '\')"></div></div><div class="cover-content"><div class="inner-content montserrat">'+view_s__title(algolia_object)+'</div></div></div>';
+        return '<div class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__icon + '\')"></div></div><div class="cover-content"><div class="inner-content css__title">'+view_s__title(algolia_object)+'</div></div></div>';
     }
 }
 
@@ -384,7 +384,7 @@ $(document).ready(function () {
                             var search_body = $("#mench_search").val().substr(1);
                             if(!isNaN(search_body)){
                                 //Valid Integer, Give option to go there:
-                                return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/i/i_go/' : '/@' ) + search_body + '" class="suggestion montserrat"><span class="icon-block"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
+                                return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/i/i_go/' : '/@' ) + search_body + '" class="suggestion css__title"><span class="icon-block"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
                             }
 
                         }
@@ -397,14 +397,14 @@ $(document).ready(function () {
                             return e_fetch_canonical(data.query, true);
                         } else if($("#mench_search").val().charAt(0)=='#'){
                             if(isNaN($("#mench_search").val().substr(1))){
-                                return '<div class="not-found montserrat"><span class="icon-block-xs"><i class="fas fa-exclamation-circle"></i></span>No IDEA found</div>';
+                                return '<div class="not-found css__title"><span class="icon-block-xs"><i class="fas fa-exclamation-circle"></i></span>No IDEA found</div>';
                             }
                         } else if($("#mench_search").val().charAt(0)=='@'){
                             if(isNaN($("#mench_search").val().substr(1))) {
-                                return '<div class="not-found montserrat"><span class="icon-block-xs"><i class="fas fa-exclamation-circle"></i></span>No SOURCE found</div>';
+                                return '<div class="not-found css__title"><span class="icon-block-xs"><i class="fas fa-exclamation-circle"></i></span>No SOURCE found</div>';
                             }
                         } else {
-                            return '<div class="not-found suggestion montserrat"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No results found</div>';
+                            return '<div class="not-found suggestion css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No results found</div>';
                         }
                     },
                 }
@@ -613,12 +613,12 @@ function e_fetch_canonical(query_string, not_found){
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-e-suggest').remove();
-            $('.not-found').html('<a href="/@'+searchdata.algolia_object.s__id+'" class="suggestion montserrat">' + view_s_js(searchdata.algolia_object)+'</a>');
+            $('.not-found').html('<a href="/@'+searchdata.algolia_object.s__id+'" class="suggestion css__title">' + view_s_js(searchdata.algolia_object)+'</a>');
         }
     });
 
     //We did not find the URL:
-    return ( not_found ? '<div class="not-found montserrat"><i class="fas fa-exclamation-circle"></i> URL not found</div>' : '');
+    return ( not_found ? '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i> URL not found</div>' : '');
 }
 
 
@@ -746,17 +746,17 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
             },
             header: function (data) {
                 if (is_add_mode=='x_in' && !($(element_focus+ '.add-input').val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:void(0);" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                 } else if(is_add_mode=='x_my_in'){
-                    return '<a href="javascript:void(0);" onclick="i_create()" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
+                    return '<a href="javascript:void(0);" onclick="i_create()" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
                 }
             },
             empty: function (data) {
                 if(is_add_mode=='x_in'){
                     if($(element_focus+ '.add-input').val().charAt(0)=='#'){
-                        return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
+                        return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
                     } else {
-                        return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion montserrat"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                        return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
                 }
             },
@@ -1210,7 +1210,7 @@ function i_note_update_text(x__id, note_type_id) {
         } else {
 
             //ERROR
-            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
 
         }
 
@@ -1604,7 +1604,7 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
         if (!data.status) {
 
             //Ooops there was an error!
-            $(notify_el).html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+            $(notify_el).html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
 
         } else {
 
@@ -1631,7 +1631,7 @@ function e_email(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_email').html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_email').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -1666,7 +1666,7 @@ function e_name(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_name').html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_name').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -1700,7 +1700,7 @@ function e_password(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_password').html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_password').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
