@@ -2093,6 +2093,7 @@ i, .btn .show-max {
 }
 .icon-adder{
     margin-top: 3px;
+    margin-bottom: -26px;
 }
 .divider{
     height: 1px;
