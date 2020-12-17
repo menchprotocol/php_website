@@ -1214,7 +1214,7 @@ function view_e_settings($list_id, $show_accordion){
                 $avatar_type_match = ($e__icon_parts[0] == $avatar_icon_parts[0]);
                 $superpower_actives3 = array_intersect($CI->config->item('n___10957'), $m3['m__profile']);
 
-                if(count($superpower_actives3) && !superpower_active(end($superpower_actives3, true))){
+                if(count($superpower_actives3) && !superpower_active(end($superpower_actives3), true)){
                     //Missing needed superpower, skip:
                     continue;
                 }
