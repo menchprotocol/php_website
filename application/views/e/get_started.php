@@ -11,7 +11,7 @@ $e___11035 = $this->config->item('e___11035');
     <?php
 
     if(strlen($e___11035[14517]['m__message']) > 0){
-        echo '<div class="msg">' . $e___11035[14517]['m__message'] . '</div>';
+        echo '<div class="msg top-margin">' . $e___11035[14517]['m__message'] . '</div>';
     } else {
         echo '<h1 class="'.extract_icon_color($e___11035[14517]['m__icon']).'">' . $e___11035[14517]['m__title'] . '</h1>';
     }
