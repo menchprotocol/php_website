@@ -187,7 +187,7 @@ function i_create(){
 
             //Redirect:
             $('#tempLoader').html(data.message);
-            //window.location = '/~' + data.i__id;
+            window.location = '/~' + data.i__id;
 
         } else {
 
