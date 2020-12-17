@@ -1609,9 +1609,6 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
     if(!$is_any_lock){
 
-        //IDEA TYPE
-        $ui .= '<div class="cover-text montserrat">'. ( $idea_editing ? view_i_time($i_stats).view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']).'<span class="idea">'.view_coins_i(12273, $i, false) . '</span>' : view_i_time($i_stats) ) .'</div>';
-
         //TOOLBAR
         if($idea_editing && superpower_active(12673, true)){
 
@@ -1648,6 +1645,9 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
             $ui .= '</div>';
 
         }
+
+        //IDEA TYPE
+        $ui .= '<div class="cover-text montserrat">'. ( $idea_editing ? view_i_time($i_stats).view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']).'<span class="idea">'.view_coins_i(12273, $i, false) . '</span>' : view_i_time($i_stats) ) .'</div>';
 
     } else {
 
