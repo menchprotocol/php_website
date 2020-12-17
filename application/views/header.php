@@ -186,7 +186,7 @@ if(!isset($min_header_footer)){
                     if($user_e){
 
                         //My Source
-                        $member_source = '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.str_replace('source',$current_mench['c__class'],$user_e['e__icon']).'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].' '.$current_mench['c__class'].'">'.$user_e['e__title'].'</b>';
+                        $member_source = '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.str_replace(' fa-',' '.$current_mench['c__class'].' fa-',$user_e['e__icon']).'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].' '.$current_mench['c__class'].'">'.$user_e['e__title'].'</b>';
 
                         if('@'.$user_e['e__id']==$first_segment){
                             echo $member_source;
