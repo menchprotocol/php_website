@@ -54,6 +54,7 @@ if($user_e && !isset($min_header_footer)){
                     ?>
                     <textarea class="form-control text-edit border white-border" id="sugg_note" data-lpignore="true" placeholder="More details here..."></textarea>
 
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="x_suggestion()" class="btn btn-source">SUBMIT</button>

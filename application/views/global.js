@@ -240,6 +240,7 @@ $(document).ready(function () {
 
     initialize_remove();
     lazy_load();
+    set_autosize($('#sugg_note'));
 
     if(js_pl_id > 1){
         //For any logged in user except shervin:
