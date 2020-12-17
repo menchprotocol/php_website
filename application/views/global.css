@@ -613,7 +613,6 @@ label:focus,
 }
 .progress-bg-list{
     margin: 0;
-    background-color: #CCCCCC;
     position: relative !important;
     height:8px;
     cursor: default;
@@ -2332,8 +2331,9 @@ i, .btn .show-max {
 }
 
 .custom_ui_13884_13886 .doabsolute,
-.custom_ui_13884_13886 .editor_preview:hover{
-    background-color:#000000 !important;
+.custom_ui_13884_13886 .editor_preview:hover,
+.custom_ui_13884_13886 .progress-bg-list{
+    background-color: #000000 !important;
 }
 
 .editor_preview{
@@ -2437,7 +2437,8 @@ i, .btn .show-max {
     background: rgba(240,240,240, 0.75);
 }
 .custom_ui_13884_13885 .doabsolute,
-.custom_ui_13884_13885 .editor_preview:hover{
+.custom_ui_13884_13885 .editor_preview:hover,
+.custom_ui_13884_13885 .progress-bg-list {
     background-color:#FFFFFF !important;
 }
 .btn-grey .fa-gif-wrap {

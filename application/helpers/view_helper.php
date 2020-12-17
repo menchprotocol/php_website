@@ -1495,6 +1495,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
     $user_session = superpower_unlocked();
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $idea_editing = in_array($x__type, $CI->config->item('n___14502')) && e_of_i($i['i__id']); //IDEA EDITING
+    $load_completion = in_array($x__type, $CI->config->item('n___14501'));
 
     if($focus_e && (!$user_session || $user_session['e__id']!=$focus_e['e__id']) && !superpower_active(12701, true)){
         //Do not allow to see this user's info:
@@ -1505,7 +1506,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         $focus_e = $user_session;
     }
 
-    if(in_array($x__type, $CI->config->item('n___14501'))){ //Load Completion Bar
+    if($load_completion){ //Load Completion Bar
         if(is_null($completion_rate)){
             $completion_rate['completion_percentage'] = 0; //Assume no progress
             if($focus_e && $discovery_mode){
@@ -1545,7 +1546,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
     $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
 
 
-    if($completion_rate['completion_percentage'] > 0 || $x__type==14451){
+    if($load_completion){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
 
