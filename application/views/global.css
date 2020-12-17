@@ -23,7 +23,7 @@ body {
     padding:0;
 }
 .padded {
-    margin: 0 40px 25px 41px;
+    margin: 0 13px 25px 41px;
 }
 
 .edit-off .padded, .edit-on .padded {
