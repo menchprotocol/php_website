@@ -136,8 +136,8 @@ li a {
 .avatar-item {
     display: block;
     float: left;
-    width: 165px !important;
-    padding: 13px 0  !important;
+    width:89px !important;
+    padding:10px 0 !important;
 }
 .avatar-item.active, .btn-group a.active , .itemsetting.active{
     background-color: #999999 !important;
@@ -150,7 +150,7 @@ li a {
     display: block;
     text-align: center;
     width: 100% !important;
-    font-size:4.3em !important;
+    font-size:2.1em !important;
 }
 
 
@@ -2021,8 +2021,7 @@ i, .btn .show-max {
     .content-image{ max-height:144px; }
     .show-on-hover { display:inline-block !important; }
     .form-control-thick { padding-left: 26px; }
-    .avatar-item { width:89px !important; padding:10px 0 !important; }
-    .avatar-item .avatar-icon i { font-size: 2.3em !important; }
+
 
     td.MENCHcolumn1  { width: 60%; }
     td.MENCHcolumn12  { width: 80%; }
