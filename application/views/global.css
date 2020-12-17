@@ -141,8 +141,8 @@ li a {
 .avatar-item {
     display: block;
     float: left;
-    width:80px !important;
-    padding:15px 0 !important;
+    width:78px !important;
+    padding:13px 0 !important;
 }
 .avatar-item.active, .btn-group a.active , .itemsetting.active{
     background-color: #999999 !important;
