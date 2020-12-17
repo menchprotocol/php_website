@@ -23,13 +23,5 @@
     //Info Boxes:
     echo view_info_box(14340);
 
-
-    //SOCIAL FOOTER
-    echo '<ul class="social-footer">';
-    foreach($this->config->item('e___13894') as $e__id => $m) {
-        echo '<li><a href="/x/go_url/'.$e__id.'" title="'.$m['m__title'].'">'.$m['m__icon'].'</a></li>';
-    }
-    echo '</ul>';
-
     ?>
 </div>

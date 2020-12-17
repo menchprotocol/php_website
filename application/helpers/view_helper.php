@@ -1480,6 +1480,16 @@ function view_info_box($e__id){
         $ui .= '</div>';
     }
     $ui .= '</div>';
+
+
+    //SOCIAL FOOTER
+    $ui .= '<ul class="social-footer">';
+    foreach($this->config->item('e___13894') as $e__id => $m) {
+        $ui .= '<li><a href="/x/go_url/'.$e__id.'" title="'.$m['m__title'].'">'.$m['m__icon'].'</a></li>';
+    }
+    $ui .= '</ul>';
+
+
     return $ui;
 }
 
