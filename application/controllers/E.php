@@ -1916,7 +1916,7 @@ class E extends CI_Controller
             die('Error creating a new account: '.$member_result['message']);
         }
 
-        header('Location: ' . ($sign_i__id > 0 ? '/x/x_start/'.$sign_i__id :  home_url() ));
+        header('Location: /get_started' . ($sign_i__id > 0 ? '/'.$sign_i__id :  '' ));
 
     }
 
