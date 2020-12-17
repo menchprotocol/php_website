@@ -38,16 +38,21 @@ if($user_e && !isset($min_header_footer)){
                 </div>
                 <div class="modal-body">
 
-                    <select class="form-control border white-border" id="sugg_type">
-                        <?php
-                        echo '<option value="0">SELECT '.$e___14393[14394]['m__title'].'...</option>';
-                        foreach($this->config->item('e___14394') /* SUGGESTION TYPE */ as $x__type => $m){
-                            echo '<option value="' . $x__type . '" title="' . $m['m__message'] . '">' . $m['m__title'] . '</option>';
-                        }
-                        ?>
-                    </select>
+                    <?php
+                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14394]['m__icon'].'</span>'.$e___14393[14394]['m__title'].'</div>';
+                    $counter_options = 0;
+                    foreach($this->config->item('e___14394') /* SUGGESTION TYPE */ as $x__type => $m){
+                        $counter_options++;
+                        echo '<div class="form-check">
+                    <input class="form-check-input" type="radio" name="sugg_type" id="formRadio'.$x__type.'" value="'.$x__type.'" '.( $counter_options==1 ? ' checked ' : '' ).'>
+                    <label class="form-check-label" for="formRadio'.$x__type.'">' . $m['m__title'] . '</label>
+                </div>';
+                    }
 
-                    <textarea class="form-control text-edit border white-border" id="sugg_note" data-lpignore="true" placeholder="<?= $e___14393[14395]['m__title'] ?>: More details here..."></textarea>
+
+                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14395]['m__icon'].'</span>'.$e___14393[14395]['m__title'].'</div>';
+                    ?>
+                    <textarea class="form-control text-edit border white-border" id="sugg_note" data-lpignore="true" placeholder="More details here..."></textarea>
 
                 </div>
                 <div class="modal-footer">

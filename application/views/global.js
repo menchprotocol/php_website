@@ -502,7 +502,7 @@ function x_type_preview() {
 function x_suggestion(){
 
     //Make sure all inputs are completed:
-    var sugg_type = parseInt($("#sugg_type option:selected").val());
+    var sugg_type = parseInt($('input[name="sugg_type"]:checked').val());
     var sugg_note = $("#sugg_note").val();
 
     if(sugg_type < 1){
