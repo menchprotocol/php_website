@@ -1078,6 +1078,7 @@ class X extends CI_Controller
 
     function x_sort()
     {
+
         /*
          *
          * Saves the order of discover ideas based on
@@ -1097,7 +1098,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing sorting ideas',
             ));
-        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___13413'))) {
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___4603'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Transaction Type',
@@ -1112,7 +1113,7 @@ class X extends CI_Controller
                 //Update order of this transaction:
                 $results[$x__spectrum] = $this->X_model->update(intval($x__id), array(
                     'x__spectrum' => $x__spectrum,
-                ), $user_e['e__id'], intval($_POST['x__type']));
+                ), $user_e['e__id'], 4603);
                 $updated++;
             }
         }

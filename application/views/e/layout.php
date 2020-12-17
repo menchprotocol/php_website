@@ -380,15 +380,9 @@ $profiles = $this->X_model->fetch(array(
                     if(count($i_bookmarks) > 0){
 
                         //Need 2 or more to sort...
-                        if(count($i_bookmarks) >= view_memory(6404,14527)){
-                            //SORTING ENABLED
-                            $ui .= '<script> $(document).ready(function () {x_sort_load(13412)}); </script>';
-                        } else {
-                            //SORTING DISABLED
-                            $ui .= '<style> #list_13412 .x_sort {display:none !important;} </style>';
-                        }
+                        $ui .= ( count($i_bookmarks) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list_10573 .x_sort {display:none !important;} </style>' );
 
-                        $ui .= '<div class="row top-margin" id="list_13412">';
+                        $ui .= '<div class="row top-margin" id="list_10573">';
                         foreach($i_bookmarks as $item){
                             array_push($i_exclude, $item['i__id']);
                             $ui .= view_i(10573, $item, $control_enabled,null, $e);
