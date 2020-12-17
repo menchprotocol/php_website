@@ -248,7 +248,12 @@ $(document).ready(function () {
     }
 
     $('.trigger_modal').click(function (e) {
-        $('#modal'+$(this).attr('note_type_id')).modal('show');
+        var note_type_id = parseInt($(this).attr('note_type_id'));
+        $('#modal'+note_type_id).modal('show');
+        if(note_type_id==14393){
+            //Suggest Load Current URL
+            $('#current_url').html(window.location.href);
+        }
     });
 
 
