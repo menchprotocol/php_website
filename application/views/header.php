@@ -83,7 +83,7 @@ $current_mench = current_mench();
    -->
 
 
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:500|Montserrat:800|Rubik|Crete+Round|Roboto+Slab:400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:500|Montserrat:800|Rubik|Bitter:800|Roboto+Slab:400&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
