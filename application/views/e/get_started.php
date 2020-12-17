@@ -4,7 +4,7 @@ $e___11035 = $this->config->item('e___11035');
 
 <!-- HEADLINE -->
 <div class="container fixed-top" style="padding-bottom: 0 !important;">
-    <?= '<a href="'.( $i__id > 0 ? '/x/x_start/'.$i__id : home_url() ).'" style="margin-right: 8px;" class="pull-right"><b class="montserrat text-logo text__6197_14521">'.$e___11035[14521]['m__title'].'</b> '.$e___11035[14521]['m__icon'].'</a>' ?>
+    <?= '<a href="'.( $i__id > 0 ? '/x/x_start/'.$i__id : home_url() ).'" style="margin-right: 8px;" class="pull-right"><b class="montserrat text-logo text__6197_14521">'.$e___11035[14521]['m__title'].' '.$e___11035[14521]['m__icon'].'</b></a>' ?>
 </div>
 
 <div class="container">
