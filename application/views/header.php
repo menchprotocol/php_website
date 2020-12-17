@@ -191,9 +191,8 @@ if(!isset($min_header_footer)){
                             $default_coin = $current_mench['c__id'];
                         } else {
                             //The System default:
-                            $mench_coins = $this->config->item('n___12467');
-                            $default_coins = $this->config->item('n___13776');
-                            $default_coin = end(array_intersect($mench_coins, $default_coins));
+                            $default_coins = array_intersect($this->config->item('n___12467'), $this->config->item('n___13776'));
+                            $default_coin = end($default_coins);
                         }
 
                         //My Source
