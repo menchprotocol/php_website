@@ -187,13 +187,13 @@ function i_create(){
 
             //Redirect:
             $('#tempLoader').html(data.message);
-            window.location = '/~' + data.i__id;
+            //window.location = '/~' + data.i__id;
 
         } else {
 
             //Unlock:
             $('#tempLoader').html('<span class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
-            $('#newIdeaTitle').prop('disabled', false).focus(); //.removeClass('dynamic_saving')
+            $('#newIdeaTitle').prop('disabled', false).removeClass('dynamic_saving').focus();
 
         }
 
