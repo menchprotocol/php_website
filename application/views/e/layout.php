@@ -477,7 +477,7 @@ $profiles = $this->X_model->fetch(array(
                     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                     'x__type' => 12896,
                     'x__up' => $e['e__id'],
-                ), array('x__right'), 0, 0, array('i__spectrum' => 'DESC'));
+                ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
                 if(count($i_notes_query)){
                     $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__icon'].'</span>'.$e___11035[12896]['m__title'].'</div>';
                     $ui .= '<div class="row margin-top-down-half" id="list_12896">';
