@@ -2491,7 +2491,7 @@ i, .btn .show-max {
 
 
 
-.form-control:disabled, .form-control[readonly], .dynamic_saving {
+.form-control:disabled, .dynamic_saving {
     background-color: #999999 !important;
 }
 

@@ -91,12 +91,6 @@ function search_email(){
 var account_adding = false;
 function add_account(){
 
-    //Make sure Terms are Accepted:
-    if(!($('#terms_accepted').is(":checked"))){
-        alert('You must accept our terms of Service to create a new account.');
-        return false;
-    }
-
     if(account_adding){
         return false;
     }
