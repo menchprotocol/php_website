@@ -1197,14 +1197,6 @@ function view_e_settings($list_id, $show_accordion){
 
             $e__icon_parts = explode(' ',one_two_explode('class="', '"', $user_e['e__icon']));
 
-            $tab_ui .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group" role="group">';
-            foreach($CI->config->item('e___13533') as $m3) {
-                $tab_ui .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m3['m__message'].'\')" class="btn btn-'.$m3['m__message'].' '.( $e__icon_parts[0]==$m3['m__message'] ? ' active ' : '' ).'" title="'.$m3['m__title'].'">'.$m3['m__icon'].'</a>';
-            }
-            $tab_ui .= '</div>';
-            $tab_ui .= '<div class="doclear">&nbsp;</div>';
-            $tab_ui .= '</div>';
-
 
             //List avatars:
             $tab_ui .= '<div class="row">';
@@ -1223,6 +1215,15 @@ function view_e_settings($list_id, $show_accordion){
 
             }
             $tab_ui .= '</div>';
+
+
+            //Toggle Avatar Type
+            $tab_ui .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group" role="group">';
+            foreach($CI->config->item('e___13533') as $m3) {
+                $tab_ui .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m3['m__message'].'\')" class="btn btn-'.$m3['m__message'].' '.( $e__icon_parts[0]==$m3['m__message'] ? ' active ' : '' ).'" title="'.$m3['m__title'].'">'.$m3['m__icon'].'</a>';
+            }
+            $tab_ui .= '</div><div class="doclear">&nbsp;</div></div>';
+
 
         } elseif ($acc_e__id == 10957 /* Superpowers */) {
 
