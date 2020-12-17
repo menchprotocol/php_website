@@ -178,7 +178,7 @@ li a {
 }
 .add-input{
     margin-bottom: 0;
-    padding: 5px 0 5px 42px !important;
+    padding: 5px 0 5px 41px !important;
     width: 100%;
 }
 
@@ -2486,8 +2486,6 @@ i, .btn .show-max {
 
 
 
-custom_ui_13884_13885 .dynamic_saving,
-custom_ui_13884_13886 .dynamic_saving,
 .dynamic_saving {
     background-color: #999999 !important;
 }

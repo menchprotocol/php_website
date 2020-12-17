@@ -193,7 +193,7 @@ function i_create(){
 
             //Unlock:
             $('#tempLoader').html('<span class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
-            $('#newIdeaTitle').prop('disabled', false).removeClass('dynamic_saving').focus();
+            $('#newIdeaTitle').prop('disabled', false).focus(); //.removeClass('dynamic_saving')
 
         }
 
