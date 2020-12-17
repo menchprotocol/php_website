@@ -119,6 +119,7 @@ $profiles = $this->X_model->fetch(array(
             //ADD NEW
             $ui .= '<div id="new_11030" class="list-group-item list-adder no-side-padding '.superpower_active(13422).'">
                     <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__icon'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                id="New11030input"
@@ -328,6 +329,7 @@ $profiles = $this->X_model->fetch(array(
 
                 $ui .= '<div id="new_11029" current-count="'.$counter.'" class="list-group-item list-adder no-side-padding '.superpower_active(10939).'">
                         <div class="input-group border">
+                            <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11029input\').focus();"><span class="icon-block">'.$e___11035[14054]['m__icon'].'</span></a>
                             <input type="text"
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
                                    id="New11029input"
@@ -359,6 +361,7 @@ $profiles = $this->X_model->fetch(array(
                     //Give Option to Add New Idea:
                     $ui .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
                     <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14015]['m__icon'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add_e_idea add-input"
                                maxlength="' . view_memory(6404,4736) . '"
@@ -410,6 +413,7 @@ $profiles = $this->X_model->fetch(array(
                 //Give Option to Add New Idea:
                 $ui .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
                     <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14016]['m__icon'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add_e_idea add-input"
                                maxlength="' . view_memory(6404,4736) . '"
