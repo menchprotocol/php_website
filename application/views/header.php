@@ -6,6 +6,7 @@ $i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
+$superpower_10939 = superpower_active(10939, true);
 $current_mench = current_mench();
 ?><!doctype html>
 <html lang="en" >
@@ -186,10 +187,10 @@ if(!isset($min_header_footer)){
                     if($user_e){
 
                         //My Source
-                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span class="montserrat text-logo" style="width: calc(100% - 100px);"><b class="text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b><span style="font-size: 0.75em; margin-left: 5px; display: inline-block;">'.( '@'.$user_e['e__id']==$first_segment ? '' : view_coins_e($current_mench['c__id'], $user_e['e__id']) ).'</span></span></a>';
+                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span class="montserrat text-logo" '.( $superpower_10939 ? '' : ' style="width: calc(100% - 43px);" ' ).'><b class="text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b><span style="font-size: 0.75em; margin-left: 5px; display: inline-block;">'.( '@'.$user_e['e__id']==$first_segment ? '' : view_coins_e($current_mench['c__id'], $user_e['e__id']) ).'</span></span></a>';
 
                         //Idea flipper if has superpower:
-                        if(superpower_active(10939, true)){
+                        if($superpower_10939){
 
                             //Flip Coin?
                             if($i__id && is_numeric($first_segment)){
