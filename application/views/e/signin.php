@@ -135,9 +135,8 @@ if(count($current_sign_i_attempt) == 0){
         <!-- Step 3: Create New Account (IF NOT FOUND) -->
         <div id="step4" class="signup-steps hidden">
 
-
             <!-- Welcome Message -->
-            <div class="margin-top-down">
+            <div style="margin-top:13px; text-align: center;">
                 <?= sprintf($e___4269[14044]['m__message'], view_coins_e(12274, 4430, 0, false)); ?>
             </div>
 
