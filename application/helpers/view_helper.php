@@ -1207,6 +1207,7 @@ function view_e_settings($list_id, $show_accordion){
 
 
             //List avatars:
+            $tab_ui .= '<div class="center-block">';
             foreach($CI->config->item('e___12279') as $x__type3 => $m3) {
 
                 $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m__icon']));
@@ -1218,6 +1219,7 @@ function view_e_settings($list_id, $show_accordion){
                 $tab_ui .= '</span>';
 
             }
+            $tab_ui .= '</div>';
 
         } elseif ($acc_e__id == 10957 /* Superpowers */) {
 

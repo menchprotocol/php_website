@@ -1970,6 +1970,14 @@ i, .btn .show-max {
     border-radius: 13px;
 }
 
+.center-block{
+    display: inline-block;
+    text-align: center;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+}
+
 /* RESPONSIVE */
 @media (max-width:767px) {
 
