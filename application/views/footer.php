@@ -55,7 +55,7 @@ if($user_e && !isset($min_header_footer)){
 
                     //Current URL:
                     echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14532]['m__icon'].'</span>'.$e___14393[14532]['m__title'].'</div>';
-                    echo '<div id="current_url"></div>';
+                    echo '<div id="current_url" class="padded hideIfEmpty"></div>';
 
                     ?>
 
