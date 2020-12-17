@@ -618,6 +618,7 @@ label:focus,
     cursor: default;
     overflow: hidden;
     width: 100%;
+    background-color: #999999 !important;
 }
 .progress-done{
     height:8px;
@@ -2334,9 +2335,6 @@ i, .btn .show-max {
 .custom_ui_13884_13886 .editor_preview:hover{
     background-color: #000000 !important;
 }
-.custom_ui_13884_13886 .progress-bg-list{
-    background-color: #FFFFFF !important;
-}
 
 .editor_preview{
     padding-top: 5px !important;
@@ -2441,9 +2439,6 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .doabsolute,
 .custom_ui_13884_13885 .editor_preview:hover {
     background-color:#FFFFFF !important;
-}
-.custom_ui_13884_13885 .progress-bg-list {
-    background-color:#000000 !important;
 }
 .btn-grey .fa-gif-wrap {
     border-color: #999999 !important;
