@@ -112,7 +112,7 @@ table td { border: none !important; }
 h1 {
     padding:34px 41px;
     margin:0;
-    font-size: 4em;
+    font-size: 3.8em;
     text-align: left;
 }
 
@@ -1987,7 +1987,7 @@ i, .btn .show-max {
     }
 
     h1{
-        font-size: 3.4em;
+        font-size: 3.2em;
     }
 
     .social-footer li{
@@ -2018,7 +2018,6 @@ i, .btn .show-max {
     .todiscover .top-icon{
         margin-top: -7px;
     }
-    .texttype__lg { font-size: 1.5em; margin-top: 8px; }
 
     .mini-hidden{
         display: none;
@@ -2063,7 +2062,7 @@ i, .btn .show-max {
 @media (max-width:576px) {
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
-        font-size: 2.8em;
+        font-size: 2.5em;
     }
 }
 

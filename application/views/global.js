@@ -176,10 +176,10 @@ function loadtab(x__type, tab_data_id){
 
     //If it has any:
     autosize.update($(".tab-data-" + tab_data_id + " textarea"));
-    $(".tab-data-" + tab_data_id + " textarea").focus();
+    $(".tab-data-" + tab_data_id + " .power_editor").focus();
 
     //Focus on potential input field if any:
-    $('.input_note_'+tab_data_id).focus();
+    //$('.input_note_'+tab_data_id).focus();
 
 }
 
