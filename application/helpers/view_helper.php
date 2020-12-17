@@ -1219,6 +1219,7 @@ function view_e_settings($list_id, $show_accordion){
                 $tab_ui .= '</span>';
 
             }
+            $tab_ui .= '<div class="doclear">&nbsp;</div>';
             $tab_ui .= '</div>';
 
         } elseif ($acc_e__id == 10957 /* Superpowers */) {
