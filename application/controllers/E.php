@@ -1644,18 +1644,14 @@ class E extends CI_Controller
         ));
 
 
-        if(intval($_POST['sign_i__id']) > 0){
-
-            $sign_url = '/x/x_start/'.$_POST['sign_i__id'];
-
-        } elseif (strlen($_POST['referrer_url']) > 0) {
+        if (strlen($_POST['referrer_url']) > 0) {
 
             $sign_url = urldecode($_POST['referrer_url']);
 
         } else {
 
             //Go to home page and let them continue from there:
-            $sign_url = home_url();
+            $sign_url = '/get_started'.(intval($_POST['sign_i__id']) > 0 ? '/'.$_POST['sign_i__id'] : '' );
 
         }
 
