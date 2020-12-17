@@ -186,8 +186,18 @@ if(!isset($min_header_footer)){
 
                     if($user_e){
 
+                        if($superpower_10939){
+                            //Current Coin for navigational help:
+                            $default_coin = $current_mench['c__id'];
+                        } else {
+                            //The System default:
+                            $mench_coins = $this->config->item('n___12467');
+                            $default_coins = $this->config->item('n___13776');
+                            $default_coin = end(array_intersect($mench_coins, $default_coins));
+                        }
+
                         //My Source
-                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span class="montserrat text-logo" '.( $superpower_10939 ? '' : ' style="width: calc(100% - 43px);" ' ).'><b class="text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b><span style="font-size: 0.75em; margin-left: 5px; display: inline-block;">'.view_coins_e(( $superpower_10939 ? $current_mench['c__id'] : end(array_intersect($this->config->item('n___12467'), $this->config->item('n___13776'))) ), $user_e['e__id']).'</span></span></a>';
+                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span class="montserrat text-logo" '.( $superpower_10939 ? '' : ' style="width: calc(100% - 43px);" ' ).'><b class="text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b><span style="font-size: 0.75em; margin-left: 5px; display: inline-block;">'.view_coins_e($default_coin, $user_e['e__id']).'</span></span></a>';
 
                         //Idea flipper if has superpower:
                         if($superpower_10939){
