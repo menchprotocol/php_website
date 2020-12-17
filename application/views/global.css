@@ -710,6 +710,10 @@ label:focus,
     font-weight: bold;
 }
 
+.mench-reverse-spin{
+    -webkit-animation: mench-reverse-spin 13s infinite linear;
+    animation: mench-reverse-spin 13s infinite linear;
+}
 
 .mench-spin {
     -webkit-animation: mench-spin 13s infinite linear;
@@ -757,7 +761,25 @@ label:focus,
         transform: rotate(0deg); }
     100% {
         -webkit-transform: rotate(360deg);
-        transform: rotate(360deg); } }
+        transform: rotate(360deg); }
+}
+
+@-webkit-keyframes mench-reverse-spin {
+    0% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg); }
+    100% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg); } }
+
+@keyframes mench-reverse-spin {
+    0% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg); }
+    100% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg); }
+}
 
 
 .form-control, .border {
