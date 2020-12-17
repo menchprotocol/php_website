@@ -1968,6 +1968,11 @@ i, .btn .show-max {
     width: 100%;
     border-radius: 13px;
 }
+.avatar-type-group{
+    margin: 10px auto;
+    text-align: center;
+    display: block;
+}
 
 /* RESPONSIVE */
 @media (max-width:767px) {
