@@ -1653,11 +1653,13 @@ function e_name(){
     //Show spinner:
     $('.save_name').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
 
-    $.post("/x/x_set_text", {
+    modify_data = {
         s__id: js_pl_id,
         cache_e__id: 6197,
         field_value: $('#e_name').val().trim()
-    }, function (data) {
+    };
+
+    $.post("/x/x_set_text", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -1665,6 +1667,8 @@ function e_name(){
             $('.save_name').html('<b class="discover montserrat"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
+
+            update_text_name(modify_data['cache_e__id'], modify_data['s__id'], modify_data['field_value']);
 
             //Show success:
             $('.save_name').html(js_e___11035[14424]['m__icon'] + ' ' + js_e___11035[14424]['m__title']).hide().fadeIn();

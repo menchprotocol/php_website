@@ -186,12 +186,10 @@ if(!isset($min_header_footer)){
                     if($user_e){
 
                         //My Source
-                        $member_source = '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].' '.$current_mench['c__class'].'">'.$user_e['e__icon'].'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].' '.$current_mench['c__class'].'">'.$user_e['e__title'].'</b>';
-
                         if('@'.$user_e['e__id']==$first_segment){
-                            echo $member_source;
+                            echo '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>';
                         } else {
-                            echo '<a href="'.home_url($current_mench['c__id']).'">'.$member_source.'</a>';
+                            echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].' '.$current_mench['c__class'].'">'.$user_e['e__icon'].'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].' '.$current_mench['c__class'].'">'.$user_e['e__title'].'</b></a>';
                         }
 
                         if(superpower_active(10939, true)){
