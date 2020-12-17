@@ -150,7 +150,7 @@ li a {
 .avatar-item {
     display: block;
     float: left;
-    width:78px !important;
+    width:76px !important;
     padding:13px 0 !important;
 }
 .avatar-item.active, .btn-group a.active , .itemsetting.active{
