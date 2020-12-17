@@ -195,7 +195,7 @@ if(!isset($min_header_footer)){
                         if(superpower_active(10939, true)){
 
                             //Current Coin
-                            echo '<span title="'.$current_mench['c__m']['m__title'].'" class="mench-circle">'.$current_mench['c__m']['m__icon'].'</span>';
+                            //echo '<span title="'.$current_mench['c__m']['m__title'].'" class="mench-circle">'.$current_mench['c__m']['m__icon'].'</span>';
 
                             //Flip Coin?
                             if($i__id && is_numeric($first_segment)){
