@@ -2331,9 +2331,13 @@ i, .btn .show-max {
     padding-bottom: 5px !important;
     margin:0 41px;
 }
-.editor_preview .msg, .padded .msg{
+.editor_preview .msg {
     margin-left: 0 !important;
     margin-right: 0 !important;
+}
+
+.padded .msg{
+    margin: 0 !important;
 }
 
 
