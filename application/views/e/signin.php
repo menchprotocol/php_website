@@ -59,17 +59,16 @@ if(count($current_sign_i_attempt) == 0){
 
     <div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>
 
-    <?php
-    echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
-    echo '<p style="margin-top:13px; text-align: center;">'.$e___11035[4269]['m__message'].'</p>';
-    ?>
-
     <div class="login-content" style="margin-top:41px;">
 
         <!-- Step 1: Enter Email -->
         <div id="step2" class="signup-steps hidden">
 
             <?php
+
+            echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
+            echo '<p style="margin-top:13px; text-align: center;">'.$e___11035[4269]['m__message'].'</p>';
+
             //SOCIAL BUTTON:
             echo '<div class="full-width-btn center"><a href="/e/auth0_login" class="btn btn-large btn-default">';
             echo $e___11035[14436]['m__title'];
