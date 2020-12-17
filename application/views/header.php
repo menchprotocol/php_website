@@ -190,9 +190,8 @@ if(!isset($min_header_footer)){
                             //Current Coin for navigational help:
                             $default_coin = $current_mench['c__id'];
                         } else {
-                            //The System default:
-                            $default_coins = array_intersect($this->config->item('n___12467'), $this->config->item('n___13776'));
-                            $default_coin = end($default_coins);
+                            //Discovery is their only option:
+                            $default_coin = 6255;
                         }
 
                         //My Source

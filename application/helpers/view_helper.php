@@ -685,7 +685,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $count_query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         if($append_coin_icon){
             $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
-            return '<span class="montserrat '.extract_icon_color($e___12467[$x__type]['m__icon']).'" title="'.number_format($count_query[0]['totals'], 0).' '.$e___12467[$x__type]['m__title'].'">'.$e___12467[$x__type]['m__icon'].( $count_query[0]['totals'] > 0 ? '&nbsp;'.view_number($count_query[0]['totals']) : null).'</span>'; //data-toggle="tooltip" data-placement="top"
+            return ( $count_query[0]['totals'] > 0 ? '<span class="montserrat '.extract_icon_color($e___12467[$x__type]['m__icon']).'" title="'.number_format($count_query[0]['totals'], 0).' '.$e___12467[$x__type]['m__title'].'">'.$e___12467[$x__type]['m__icon'].'&nbsp;'.view_number($count_query[0]['totals']).'</span>' : null); //data-toggle="tooltip" data-placement="top"
         } else {
             return intval($count_query[0]['totals']);
         }
