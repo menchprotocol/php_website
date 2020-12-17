@@ -149,9 +149,8 @@ li a {
 }
 .avatar-item {
     display: block;
-    float: left;
-    width:89px !important;
     padding:13px 0 !important;
+    text-align: center;
 }
 .avatar-item.active, .btn-group a.active , .itemsetting.active{
     background-color: #999999 !important;
@@ -1968,14 +1967,6 @@ i, .btn .show-max {
 .gif-col img{
     width: 100%;
     border-radius: 13px;
-}
-
-.center-block{
-    display: inline-block;
-    text-align: center;
-    margin-left: auto !important;
-    margin-right: auto !important;
-
 }
 
 /* RESPONSIVE */

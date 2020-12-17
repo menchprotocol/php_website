@@ -1207,19 +1207,18 @@ function view_e_settings($list_id, $show_accordion){
 
 
             //List avatars:
-            $tab_ui .= '<div class="center-block">';
+            $tab_ui .= '<div class="row">';
             foreach($CI->config->item('e___12279') as $x__type3 => $m3) {
 
                 $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m__icon']));
                 $avatar_type_match = ($e__icon_parts[0] == $avatar_icon_parts[0]);
                 $superpower_actives3 = array_intersect($CI->config->item('n___10957'), $m3['m__profile']);
 
-                $tab_ui .= '<span class="'.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
+                $tab_ui .= '<span class="col-4 col-sm-3 col-md-2 '.( count($superpower_actives3) ? superpower_active(end($superpower_actives3)) : '' ).'">';
                 $tab_ui .= '<a href="javascript:void(0);" onclick="e_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="list-group-item avatar-item avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__icon_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m__icon'] . '</div></a>';
                 $tab_ui .= '</span>';
 
             }
-            $tab_ui .= '<div class="doclear">&nbsp;</div>';
             $tab_ui .= '</div>';
 
         } elseif ($acc_e__id == 10957 /* Superpowers */) {
