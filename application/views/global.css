@@ -107,7 +107,7 @@ body {
 
 table td { border: none !important; }
 
-.texttype__lg { font-size: 2.3em; }
+.texttype__lg { font-size: 3em; }
 
 h1 {
     padding:34px 41px;
@@ -2018,6 +2018,7 @@ i, .btn .show-max {
     .todiscover .top-icon{
         margin-top: -7px;
     }
+    .texttype__lg { font-size: 2.3em; }
 
     .mini-hidden{
         display: none;
