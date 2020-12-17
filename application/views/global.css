@@ -146,11 +146,11 @@ li a {
     border-radius: 13px !important;
 }
 
-.avatar-item .avatar-icon {
+.avatar-item .avatar-icon i {
     display: block;
     text-align: center;
     width: 100% !important;
-    font-size:4.3em;
+    font-size:4.3em !important;
 }
 
 
@@ -2022,7 +2022,7 @@ i, .btn .show-max {
     .show-on-hover { display:inline-block !important; }
     .form-control-thick { padding-left: 26px; }
     .avatar-item { width:89px !important; padding:10px 0 !important; }
-    .avatar-item .avatar-icon { font-size: 2.3em; }
+    .avatar-item .avatar-icon i { font-size: 2.3em !important; }
 
     td.MENCHcolumn1  { width: 60%; }
     td.MENCHcolumn12  { width: 80%; }
