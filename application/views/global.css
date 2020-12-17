@@ -469,8 +469,6 @@ img.no-radius {
 .grey, .grey i, .grey .source, .grey .idea, .grey .discover, .headline .source, .headline .idea, .headline .discover, .btn-grey, .btn-grey i { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#222222 !important; }
 
-.btn-source i, .btn-discover i, .btn-idea i { color: #222222 !important; }
-
 textarea:hover,
 input:hover,
 textarea:active,
@@ -1132,9 +1130,13 @@ td.MENCHcolumn3  { width: 13%; }
     font-size: 1.4em;
     display: block;
     float: left;
-    padding-top: 13px;
-    padding-left:0;
+    padding-top: 5px;
+    padding-left: 0;
     font-weight: bold;
+    width: calc(100% - 100px);
+    height: 34px;
+    overflow: hidden;
+    line-height: 144%;
 }
 .x-list {
     padding:21px 0;
@@ -2282,7 +2284,10 @@ i, .btn .show-max {
 }
 .custom_ui_13884_13886 .adj-btn i,
 .custom_ui_13884_13886 .controller-nav i,
-.custom_ui_13884_13886 .controller-nav{
+.custom_ui_13884_13886 .controller-nav,
+.custom_ui_13884_13886 .btn-source,
+.custom_ui_13884_13886 .btn-idea,
+.custom_ui_13884_13886 .btn-discover {
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .icon-block i,
@@ -2380,9 +2385,14 @@ i, .btn .show-max {
     background-color:transparent !important;
     color: #222222;
 }
+
+.alert a, .alert i, .custom_ui_13884_13885 .btn-default i,
 .custom_ui_13884_13885 .new-note,
 .custom_ui_13884_13885 .controller-nav i,
-.custom_ui_13884_13885 .controller-nav {
+.custom_ui_13884_13885 .controller-nav,
+.custom_ui_13884_13885 .btn-source,
+.custom_ui_13884_13885 .btn-idea,
+.custom_ui_13884_13885 .btn-discover {
     color: #222222 !important;
 }
 
@@ -2397,9 +2407,7 @@ i, .btn .show-max {
     border-color: #f0f0f0 !important; /* WAS WHITE */
 }
 
-.alert a, .alert i, .custom_ui_13884_13885 .btn-default i {
-    color: #222222 !important;
-}
+
 .btn-tiny{
     font-size: 0.55em !important;
 }
