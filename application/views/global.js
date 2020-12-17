@@ -252,7 +252,8 @@ $(document).ready(function () {
         $('#modal'+note_type_id).modal('show');
         if(note_type_id==14393){
             //Suggest Load Current URL
-            $('#current_url').html(window.location.href);
+            console.log('hiiii' +window.location.href);
+            $('#current_url').text(window.location.href);
         }
     });
 
