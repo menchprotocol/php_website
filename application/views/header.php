@@ -186,26 +186,28 @@ if(!isset($min_header_footer)){
 
                     if($user_e){
 
-                        //My Source
-                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span class="montserrat text-logo" '.( $superpower_10939 ? '' : ' style="width: calc(100% - 43px);" ' ).'><b class="text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>'.( $superpower_10939 ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_mench['c__id'], $user_e['e__id']).'</span>' : '' ).'</span></a>';
-
                         //Idea flipper if has superpower:
+                        $flip_coin = null;
                         if($superpower_10939){
 
                             //Flip Coin?
                             if($i__id && is_numeric($first_segment)){
 
                                 //PUBLISH
-                                echo '<a href="/~'.$i__id.'" style="margin-right: 8px;" title="'.$e___11035[13563]['m__title'].'" class="mench-circle pull-right">'.$e___11035[13563]['m__icon'].'</a>';
+                                $flip_coin = '<a href="/~'.$i__id.'" style="margin-right: 8px;" title="'.$e___11035[13563]['m__title'].'" class="mench-circle pull-right">'.$e___11035[13563]['m__icon'].'</a>';
 
                             } elseif($i__id && substr($first_segment, 0, 1)=='~' && $i__id!=view_memory(6404,14002)){
 
                                 //DISCOVER
-                                echo '<a href="/'.$i__id.'" style="margin-right: 8px;" class="mench-circle pull-right" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__icon'].'</a>';
+                                $flip_coin = '<a href="/'.$i__id.'" style="margin-right: 8px;" class="mench-circle pull-right" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__icon'].'</a>';
 
                             }
-
                         }
+
+                        //My Source
+                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span class="montserrat text-logo" '.( $flip_coin ? '' : ' style="width: calc(100% - 43px);" ' ).'><b class="text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>'.( $superpower_10939 ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_mench['c__id'], $user_e['e__id']).'</span>' : '' ).'</span></a>';
+
+
 
                     } else {
 
