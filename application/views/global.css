@@ -277,10 +277,6 @@ img.no-radius {
     border:0;
 }
 
-.form-control:disabled, .form-control[readonly] {
-    background-color:transparent !important;
-}
-
 .algolia_pad_search{
     height:377px;
     padding: 13px 3px;
@@ -2486,7 +2482,7 @@ i, .btn .show-max {
 
 
 
-.dynamic_saving {
+.form-control:disabled, .form-control[readonly], .dynamic_saving {
     background-color: #999999 !important;
 }
 

@@ -1170,7 +1170,7 @@ class E_model extends CI_Model
             return $e__title_validate;
         }
 
-        //Create source
+        //Create
         $focus_e = $this->E_model->create(array(
             'e__title' => $e__title_validate['e__title_clean'],
             'e__icon' => $e__icon,

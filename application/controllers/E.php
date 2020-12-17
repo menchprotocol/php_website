@@ -441,7 +441,7 @@ class E extends CI_Controller
 
         } else {
 
-            //Create source:
+            //Create:
             $added_e = $this->E_model->verify_create($_POST['e_new_string'], $user_e['e__id']);
             if(!$added_e['status']){
                 //We had an error, return it:
@@ -574,7 +574,7 @@ class E extends CI_Controller
 
             } else {
 
-                //Create source:
+                //Create:
                 $added_e = $this->E_model->verify_create($_POST['e_new_string'], $user_e['e__id']);
                 if(!$added_e['status']){
                     //We had an error, return it:
