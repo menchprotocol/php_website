@@ -1264,7 +1264,7 @@ function view_e_settings($list_id, $show_accordion){
 
         } elseif ($acc_e__id == 13025 /* Full Name */) {
 
-            $tab_ui .= '<span><input type="text" id="e_name" class="form-control border dotransparent doupper montserrat" value="' . $user_e['e__title'] . '" /></span>
+            $tab_ui .= '<span><input type="text" id="e_name" class="form-control border dotransparent doupper" value="' . $user_e['e__title'] . '" /></span>
                 <a href="javascript:void(0)" onclick="e_name()" class="btn btn-source">Save</a>
                 <span class="saving-account save_name"></span>';
 

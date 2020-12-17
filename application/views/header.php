@@ -186,16 +186,10 @@ if(!isset($min_header_footer)){
                     if($user_e){
 
                         //My Source
-                        if('@'.$user_e['e__id']==$first_segment){
-                            echo '<span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>';
-                        } else {
-                            echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].' '.$current_mench['c__class'].'">'.$user_e['e__icon'].'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].' '.$current_mench['c__class'].'">'.$user_e['e__title'].'</b></a>';
-                        }
+                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><b class="montserrat text-logo text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>'.( '@'.$user_e['e__id']==$first_segment ? '' : view_coins_e($current_mench['c__id'], $user_e['e__id']) ).'</a>';
 
+                        //Idea flipper if has superpower:
                         if(superpower_active(10939, true)){
-
-                            //Current Coin
-                            //echo '<span title="'.$current_mench['c__m']['m__title'].'" class="mench-circle">'.$current_mench['c__m']['m__icon'].'</span>';
 
                             //Flip Coin?
                             if($i__id && is_numeric($first_segment)){
