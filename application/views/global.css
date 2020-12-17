@@ -133,10 +133,19 @@ li a {
     text-decoration: none;
 }
 .special-text{
-    display: inline-block;
+    font-size: 1.4em;
+    display: block;
+    float: left;
+    padding-top: 5px;
+    padding-left: 0;
+    font-weight: bold;
+    height: 34px;
+    overflow: hidden;
+    line-height: 144%;
     margin-top: -8px;
     margin-right: 5px;
     margin-bottom: 5px;
+
 }
 .avatar-item {
     display: block;
