@@ -136,6 +136,7 @@ li a {
     display: inline-block;
     margin-top: -8px;
     margin-right: 5px;
+    margin-bottom: 5px;
 }
 .avatar-item {
     display: block;
