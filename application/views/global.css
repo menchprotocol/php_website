@@ -132,7 +132,11 @@ a:hover {
 li a {
     text-decoration: none;
 }
-
+.special-text{
+    display: inline-block;
+    margin-top: -8px;
+    margin-right: 5px;
+}
 .avatar-item {
     display: block;
     float: left;
