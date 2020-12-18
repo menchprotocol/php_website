@@ -940,6 +940,15 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
         return false;
     }
 
+
+    if($x__type==12211){
+        //Replace with Idea Type:
+        $e___4737 = $this->config->item('e___4737'); // Idea Type
+        $header_title = $e___4737[$i['i__type']];
+    } else {
+        $header_title = $e___11035[$x__type];
+    }
+
     //List children so they know what's ahead:
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
@@ -947,7 +956,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
     $ui = '';
     $ui .= '<div>';
     $ui .= '<div class="pull-left">';
-    $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__icon'].'</span>'.$e___11035[$x__type]['m__title'].'</div>';
+    $ui .= '<div class="headline"><span class="icon-block">'.$header_title['m__icon'].'</span>'.$header_title['m__title'].'</div>';
     $ui .= '</div>';
     if($right_content){
         $ui .= '<div class="pull-right" style="text-align: right; padding:16px 5px 0 0;">'.$right_content.'</div>';
