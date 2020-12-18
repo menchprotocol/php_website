@@ -41,9 +41,6 @@ body {
 .i-footer .paddingup{
     padding:0 !important;
 }
-.content-image {
-    margin:0;
-}
 
 .dorubik{
     font-weight: 400;
@@ -65,7 +62,6 @@ body {
     max-width: 100%;
     max-height: 377px;
     border-radius: 13px !important;
-    margin: 0;
     display: block;
 }
 .mench-idea .media-content, .mench-idea .x__message video {
@@ -2555,6 +2551,11 @@ i, .btn .show-max {
     margin-left: 10px;
     margin-right: 10px;
 }
+.custom_ui_14541_14542 .content-image {
+    margin:0;
+    text-align: left;
+}
+
 
 /* TEXT ALIGN CENTER */
 .custom_ui_14541_14543 .msg {
@@ -2564,6 +2565,11 @@ i, .btn .show-max {
     margin-left: 0;
     margin-right: 0;
 }
+.custom_ui_14541_14543 .content-image {
+    margin:0 auto;
+    text-align: center;
+}
+
 
 /* TEXT ALIGN RIGHT */
 .custom_ui_14541_14544 .msg {
@@ -2572,6 +2578,10 @@ i, .btn .show-max {
 .custom_ui_14541_14544 .e-appendix{
     margin-left: 10px;
     margin-right: 10px;
+}
+.custom_ui_14541_14544 .content-image {
+    margin:0;
+    text-align: right;
 }
 
 
