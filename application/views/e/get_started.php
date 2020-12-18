@@ -11,10 +11,9 @@ $next_link = '<a href="'.( $i__id > 0 ? '/x/x_start/'.$i__id : home_url() ).'" s
 <div class="container">
     <?php
 
+    echo '<h1 class="top-margin '.extract_icon_color($e___11035[14517]['m__icon']).'">' . $e___11035[14517]['m__title'] . '</h1>';
     if(strlen($e___11035[14517]['m__message']) > 0){
-        echo '<div class="msg top-margin">' . $e___11035[14517]['m__message'] . '</div>';
-    } else {
-        echo '<h1 class="top-margin '.extract_icon_color($e___11035[14517]['m__icon']).'">' . $e___11035[14517]['m__title'] . '</h1>';
+        echo '<div class="msg">' . $e___11035[14517]['m__message'] . '</div>';
     }
 
     echo view_e_settings(14517, false);
