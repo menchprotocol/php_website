@@ -849,7 +849,7 @@ if(!$in_my_x && !$i_drip_mode){
     }
 
     if($buttons_found > 0){
-        echo '<div class="container fixed-bottom light-bg">';
+        echo '<div class="container light-bg">'; //fixed-bottom
         echo '<div class="discover-controller">';
         echo $buttons_ui;
         echo '</div>';
