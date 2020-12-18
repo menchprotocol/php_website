@@ -2217,6 +2217,13 @@ i, .btn .show-max {
 }
 
 
+
+
+
+
+
+
+
 /* SERIF / CONTENT */
 .custom_ui_14506_14508 div,
 .custom_ui_14506_14508 p,
@@ -2226,9 +2233,6 @@ i, .btn .show-max {
     font-family:'Roboto Slab', serif !important;
     font-weight:400 !important;
 }
-
-
-
 /* SERIF / HEADER */
 .custom_ui_14506_14508 h1,
 .custom_ui_14506_14508 .css__title,
@@ -2252,6 +2256,9 @@ i, .btn .show-max {
 
 
 
+
+
+
 /* SANSSERIF / CONTENT */
 .custom_ui_14506_14507 div,
 .custom_ui_14506_14507 p,
@@ -2260,9 +2267,6 @@ i, .btn .show-max {
 .custom_ui_14506_14507 .dorubik {
     font-family: 'Rubik', sans-serif;
 }
-
-
-
 /* SANSSERIF / HEADER */
 .custom_ui_14506_14507 h1,
 .custom_ui_14506_14507 .css__title,
@@ -2281,6 +2285,37 @@ i, .btn .show-max {
 .custom_ui_14506_14507 .pull-middle {
     font-family:'Montserrat', sans-serif;
     font-weight:800 !important;
+}
+
+
+
+
+
+/* CURSIVE / CONTENT */
+.custom_ui_14506_14540 div,
+.custom_ui_14506_14540 p,
+.custom_ui_14506_14540 html,
+.custom_ui_14506_14540 body,
+.custom_ui_14506_14540 .dorubik {
+    font-family: 'Lato', sans-serif;
+}
+/* CURSIVE / HEADER */
+.custom_ui_14506_14540 h1,
+.custom_ui_14506_14540 .css__title,
+.custom_ui_14506_14540 .headline,
+.custom_ui_14506_14540 .btn,
+.custom_ui_14506_14540 .algolia_pad_search,
+.custom_ui_14506_14540 .media-info,
+.custom_ui_14506_14540 .progress-title,
+.custom_ui_14506_14540 .progress-rate,
+.custom_ui_14506_14540 .mid-text-line span,
+.custom_ui_14506_14540 .previous_answer,
+.custom_ui_14506_14540 .nav-x,
+.custom_ui_14506_14540 .texttype__lg,
+.custom_ui_14506_14540 .texttype__lg::placeholder,
+.custom_ui_14506_14540 .alert a,
+.custom_ui_14506_14540 .pull-middle {
+    font-family: 'Righteous', cursive;
 }
 
 
