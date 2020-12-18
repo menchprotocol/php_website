@@ -23,7 +23,7 @@ body {
     padding:0;
 }
 .padded {
-    margin: 0 13px 25px 41px;
+    margin: 0 41px 25px;
 }
 
 .edit-off .padded, .edit-on .padded {
@@ -149,21 +149,21 @@ li a {
 }
 .avatar-item {
     display: block;
-    padding:13px 0 !important;
+    padding:10px 0 !important;
     text-align: center;
 }
 .avatar-item.active, .btn-group a.active , .itemsetting.active{
     background-color: #999999 !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 .avatar-item .avatar-icon i {
     display: block;
     text-align: center;
     width: 100% !important;
-    font-size:3em !important;
+    font-size:2.6em !important;
 }
 
 
