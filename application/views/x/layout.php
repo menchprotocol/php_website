@@ -613,7 +613,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             } elseif ($i_focus['i__type'] == 6677) {
 
                 //DISCOVER ONLY
-                $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) > 1 ? view_i_time($i_stats) : '' ));
+                $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) > 1 ? view_i_time($i_stats, true) : '' ));
 
 
             } elseif ($i_focus['i__type'] == 6683) {
@@ -674,7 +674,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         } else {
 
             //NEXT IDEAS
-            $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) ? view_i_time($i_stats) : '' )); //13542
+            $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) ? view_i_time($i_stats, true) : '' )); //13542
 
             //IDEA PREVIOUS
             /*
