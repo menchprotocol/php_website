@@ -2383,6 +2383,10 @@ i, .btn .show-max {
     margin-right: 0 !important;
 }
 
+.cover-content .msg {
+    margin: 0 !important;
+}
+
 
 .editor_preview:hover{
     cursor: text !important;
