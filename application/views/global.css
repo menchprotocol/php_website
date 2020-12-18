@@ -842,6 +842,7 @@ label:focus,
 .msg {
     line-height: 144%;
     margin:0 41px 25px;
+    text-align: center;
 }
 
 .msg-nav {
