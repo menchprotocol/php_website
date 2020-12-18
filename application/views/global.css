@@ -1915,18 +1915,13 @@ i, .btn .show-max {
 }
 
 .cover-content .inner-content {
-    padding: 0 3px;
+    padding: 3px;
     line-height: 120%;
     font-size: 0.80em;
     display: block;
     text-align: center;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-}
-.cover-content .inner-content span {
-    padding-top:3px;
-    padding-bottom:2px;
-    display: inline-block;
 }
 .cover-content * {
     color: #FFFFFF;
