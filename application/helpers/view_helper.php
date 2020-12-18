@@ -940,17 +940,17 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
         return false;
     }
 
+    $CI =& get_instance();
 
     if($x__type==12211){
         //Replace with Idea Type:
-        $e___4737 = $this->config->item('e___4737'); // Idea Type
+        $e___4737 = $CI->config->item('e___4737'); // Idea Type
         $header_title = $e___4737[$i['i__type']];
     } else {
         $header_title = $e___11035[$x__type];
     }
 
     //List children so they know what's ahead:
-    $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
     $ui = '';
