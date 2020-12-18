@@ -858,8 +858,5 @@ if(!$in_my_x && !$i_drip_mode){
 
 }
 
-//ADD GIF MODAL
-$this->load->view('i/giphy');
-
 
 ?>

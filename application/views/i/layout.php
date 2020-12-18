@@ -389,7 +389,3 @@ echo '</ul>';
 echo $tab_content;
 
 echo '</div>';
-
-
-//ADD GIF MODAL
-$this->load->view('i/giphy');
