@@ -2544,7 +2544,8 @@ i, .btn .show-max {
 
 
 /* TEXT ALIGN LEFT */
-.custom_ui_14541_14542 .msg {
+.custom_ui_14541_14542 .msg,
+.custom_ui_14541_14542 .texttype__lg{
     text-align: left;
 }
 .custom_ui_14541_14542 .e-appendix{
@@ -2558,7 +2559,8 @@ i, .btn .show-max {
 
 
 /* TEXT ALIGN CENTER */
-.custom_ui_14541_14543 .msg {
+.custom_ui_14541_14543 .msg,
+.custom_ui_14541_14543 .texttype__lg {
     text-align: center;
 }
 .custom_ui_14541_14543 .e-appendix{
@@ -2572,7 +2574,8 @@ i, .btn .show-max {
 
 
 /* TEXT ALIGN RIGHT */
-.custom_ui_14541_14544 .msg {
+.custom_ui_14541_14544 .msg,
+.custom_ui_14541_14544 .texttype__lg {
     text-align: right;
 }
 .custom_ui_14541_14544 .e-appendix{
@@ -2581,7 +2584,7 @@ i, .btn .show-max {
 }
 .custom_ui_14541_14544 .content-image {
     margin:0;
-    text-align: right;
+    float: right;
 }
 
 
