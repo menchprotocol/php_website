@@ -6,12 +6,15 @@ function view_e_load_more($page, $limit, $list_e_count)
      * Gives an option to "Load More" sources when we have too many to show in one go
      * */
 
+    $CI =& get_instance();
+    $e___11035 = $CI->config->item('e___11035');
+
     $ui = '<div class="load-more css__title list-group-item itemsource no-left-padding"><a href="javascript:void(0);" onclick="e_load_page(' . $page . ', 0)">';
 
     //Regular section:
     $max_e = (($page + 1) * $limit);
     $max_e = ($max_e > $list_e_count ? $list_e_count : $max_e);
-    $ui .= '<span class="icon-block"><i class="fas fa-plus-circle source"></i></span><b class="css__title source">SEE MORE</b>';
+    $ui .= '<span class="icon-block">'.$e___11035[14538]['m__icon'].'</span><b class="css__title '.extract_icon_color($e___11035[14538]['m__icon']).'">'.$e___11035[14538]['m__title'].'</b>';
     $ui .= '</a></div>';
 
     return $ui;
