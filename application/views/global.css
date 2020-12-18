@@ -177,6 +177,7 @@ li a {
     font-weight: bold;
     text-decoration: none;
     margin-left: 0 !important;
+    text-align: center;
 }
 .e-appendix a, .e-appendix a .url_truncate {
     text-decoration: underline;
