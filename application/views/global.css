@@ -177,11 +177,16 @@ li a {
     font-weight: bold;
     text-decoration: none;
     margin-left: 0 !important;
-    text-align: center;
 }
 .e-appendix a, .e-appendix a .url_truncate {
     text-decoration: underline;
 }
+
+.msg {
+    line-height: 144%;
+    margin:0 41px 25px;
+}
+
 
 .doupper, .text_e_6197 {
     text-transform: uppercase !important;
@@ -835,11 +840,7 @@ label:focus,
     padding:0;
 }
 
-.msg {
-    line-height: 144%;
-    margin:0 41px 25px;
-    text-align: center;
-}
+
 
 .msg-nav {
     list-style-type: none;
@@ -2542,6 +2543,37 @@ i, .btn .show-max {
     }
 
 }
+
+
+
+
+/* TEXT ALIGN LEFT */
+.custom_ui_14541_14542 .msg {
+    text-align: left;
+}
+.custom_ui_14541_14542 .e-appendix{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* TEXT ALIGN CENTER */
+.custom_ui_14541_14543 .msg {
+    text-align: center;
+}
+.custom_ui_14541_14543 .e-appendix{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* TEXT ALIGN RIGHT */
+.custom_ui_14541_14544 .msg {
+    text-align: right;
+}
+.custom_ui_14541_14544 .e-appendix{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 
 
 
