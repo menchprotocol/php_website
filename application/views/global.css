@@ -2115,6 +2115,9 @@ i, .btn .show-max {
     display: inline-block;
 }
 
+.light-bg{
+    padding-top: 34px;
+}
 
 .hideIfEmpty:empty {
     display: none !important;
