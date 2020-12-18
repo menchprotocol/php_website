@@ -1917,7 +1917,7 @@ i, .btn .show-max {
 }
 
 .cover-content .inner-content {
-    padding: 5px 3px 0;
+    padding: 5px 0 0;
     line-height: 120%;
     font-size: 0.80em;
     display: block;
@@ -2087,10 +2087,15 @@ i, .btn .show-max {
 
 }
 
+.cover-content .inner-content .css__title {
+    padding-top:3px;
+    padding-bottom:2px;
+}
+
 @media (max-width:576px) {
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
-        font-size: 2.5em;
+        font-size: 2.4em;
     }
 }
 
