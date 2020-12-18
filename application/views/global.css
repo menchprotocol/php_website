@@ -281,7 +281,7 @@ img.no-radius {
 }
 .card-body{
     margin: 0;
-    padding: 21px 0;
+    padding: 10px 0 20px;
 }
 .card-body .padded, .card-body .list-group {
     margin: 0 0 13px;
