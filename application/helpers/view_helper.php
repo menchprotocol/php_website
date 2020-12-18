@@ -1396,12 +1396,12 @@ function view__load__e($e){
 function view_i_featured($e__id_limit = 0, $i_exclude = array()){
 
     $CI =& get_instance();
-    $ui = '';
+    $visible_ui = '';
+    $hidden_ui = '';
     $limit = ( $e__id_limit ? 0 : view_memory(6404,12138) );
     $max_visible = view_memory(6404,14435);
     $user_e = superpower_unlocked();
     $loaded_topics = 0;
-    $hidden_topics = 0;
     $my_topics = ( $user_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___12138')) : array() );
 
 
@@ -1426,11 +1426,6 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
         if(count($query)){
 
             $should_be_hidden = ( !count($my_topics) && $loaded_topics>=$max_visible ) || ( count($my_topics) && !in_array($e__id, $my_topics) );
-
-            if($should_be_hidden){
-                $hidden_topics++;
-            }
-
             $loaded_topics++;
 
             //We need to check if we have more than this?
@@ -1444,7 +1439,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
                 }
             }
 
-            $ui .= '<div class="'.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';
+            $ui = '<div class="'.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';
             $ui .= '<div class="headline top-margin">'.$see_all_link.'</div>';
             $ui .= '<div class="row margin-top-down-half">';
             foreach($query as $i){
@@ -1456,16 +1451,23 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
             $ui .= '</div>';
             $ui .= '</div>';
 
+            if($should_be_hidden){
+                $hidden_ui .= $ui;
+            } else {
+                $visible_ui .= $ui;
+            }
         }
     }
 
-    if($loaded_topics > $max_visible){
-        //Show load button:
+
+    if($hidden_ui){
+        //Append hidden UI to visible UI:
         $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
-        $ui .= '<div class="margin-top-down full-width-btn all-topics center"><a  href="javascript:void(0);" onclick="$(\'.all-topics\').toggleClass(\'hidden\');" class="btn btn-large btn-default">'.$e___11035[14435]['m__icon'].' '.$e___11035[14435]['m__title'].'</a></div>';
+        $visible_ui .= $hidden_ui;
+        $visible_ui .= '<div class="margin-top-down full-width-btn all-topics center"><a  href="javascript:void(0);" onclick="$(\'.all-topics\').toggleClass(\'hidden\');" class="btn btn-large btn-default">'.$e___11035[14435]['m__icon'].' '.$e___11035[14435]['m__title'].'</a></div>';
     }
 
-    return $ui;
+    return $visible_ui;
 }
 
 function view_info_box($e__id){
