@@ -1915,7 +1915,7 @@ i, .btn .show-max {
 }
 
 .cover-content .inner-content {
-    padding: 3px;
+    padding: 5px 0 0;
     line-height: 120%;
     font-size: 0.80em;
     display: block;
