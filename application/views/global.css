@@ -2379,7 +2379,7 @@ i, .btn .show-max {
 }
 
 .cover-content .msg {
-    margin: 0 5px !important;
+    margin: 5px 5px 0 !important;
     text-align: left !important;
 }
 
