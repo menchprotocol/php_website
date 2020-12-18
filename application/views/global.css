@@ -2392,6 +2392,7 @@ i, .btn .show-max {
 .cover-content .msg {
     margin:0 2px 0 !important;
     text-align: left !important;
+    padding-bottom: 3px !important;
 }
 
 
