@@ -32,7 +32,6 @@ function view_i_time($i_stats){
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = null;
     $ui .= '<div class="css__title doupper grey inline-block">';
-    //$ui .= '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>';
     if($i_stats['i___6161']<60 && $i_stats['i___6162']<60){
         //SECONDS
         $ui .= $i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC';
@@ -40,6 +39,7 @@ function view_i_time($i_stats){
         //MINUTES
         $ui .= round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN';
     }
+    $ui .= '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>';
     $ui .= '</div>';
     return $ui;
 }
@@ -959,7 +959,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
     $ui .= '<div class="headline"><span class="icon-block">'.$header_title['m__icon'].'</span>'.$header_title['m__title'].'</div>';
     $ui .= '</div>';
     if($right_content){
-        $ui .= '<div class="pull-right" style="text-align: right; padding:16px 5px 0 0;">'.$right_content.'</div>';
+        $ui .= '<div class="pull-right" style="text-align: right; padding:16px 0 0 0;">'.$right_content.'</div>';
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
