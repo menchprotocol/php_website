@@ -35,8 +35,14 @@ $is_in_my_ideas = count($this->X_model->fetch(array(
 )));
 
 
-//IDEA PREVIOUS
-echo '<div class="container coin-frame">';
+
+
+
+
+echo '<div class="container">';
+
+
+
 if($is_north_star) {
     echo '<div class="headline"><span class="icon-block">'.$e___11035[14002]['m__icon'].'</span>'.$e___11035[14002]['m__title'].'</div>';
 }
@@ -65,14 +71,8 @@ foreach($this->X_model->fetch(array(
 }
 echo '</div>';
 
-echo '</div>';
 
 
-
-
-
-
-echo '<div class="container">';
 
 if(isset($_GET['load__e']) && $superpower_14005){
     //Filtered Specific Source:

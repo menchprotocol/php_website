@@ -89,7 +89,7 @@ $drip_msg_total = count($messages) + 1 /* For Title */;
 
 <?php
 
-echo '<div class="container coin-frame hideIfEmpty">';
+echo '<div class="container hideIfEmpty">';
 
 
 if($in_my_x){

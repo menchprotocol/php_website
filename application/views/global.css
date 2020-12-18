@@ -635,12 +635,6 @@ label:focus,
     background-color: #FC1B44;
 }
 
-.coin-frame{
-    border: 0;
-    padding:0 0 13px 0;
-}
-
-
 
 .progress-micro{
     width:160px !important;
@@ -2333,7 +2327,6 @@ i, .btn .show-max {
 .custom_ui_13884_13886 .table-striped tbody tr,
 .custom_ui_13884_13886 .x-list,
 .custom_ui_13884_13886 .accordion .card,
-.custom_ui_13884_13886 .coin-frame,
 .custom_ui_13884_13886 .btn-block,
 .custom_ui_13884_13886 textarea,
 .custom_ui_13884_13886 .modal-content,
@@ -2446,7 +2439,6 @@ i, .btn .show-max {
 .custom_ui_13884_13885,
 .custom_ui_13884_13885 .container,
 .custom_ui_13884_13885 .fade,
-.custom_ui_13884_13885 .coin-frame,
 .custom_ui_13884_13885 .chat-title span,
 .custom_ui_13884_13885 div.dropdown-item,
 .custom_ui_13884_13885 .mid-text-line span
