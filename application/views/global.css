@@ -72,8 +72,9 @@ body {
     max-width: 377px;
 }
 .mench-discover .x__message img, .mench-discover .i_content img, .mench-discover .content-image {
-    max-height: 610px;
-    /* margin: 0 auto; */
+    /*max-height: 610px; */
+    margin: 0 auto;
+    max-width: 100%;
 }
 .yt-container{
     margin: 10px 0 0;
