@@ -711,13 +711,13 @@ label:focus,
 }
 
 .mench-reverse-spin{
-    -webkit-animation: mench-reverse-spin 13s infinite linear;
-    animation: mench-reverse-spin 13s infinite linear;
+    -webkit-animation: mench-reverse-spin 20s infinite linear;
+    animation: mench-reverse-spin 20s infinite linear;
 }
 
 .mench-spin {
-    -webkit-animation: mench-spin 13s infinite linear;
-    animation: mench-spin 13s infinite linear;
+    -webkit-animation: mench-spin 20s infinite linear;
+    animation: mench-spin 20s infinite linear;
 }
 .lazyimage:not(.loaded) {
     -webkit-animation: mench-spin 5s infinite linear;
