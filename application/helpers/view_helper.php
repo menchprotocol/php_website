@@ -1402,8 +1402,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
     $user_e = superpower_unlocked();
     $loaded_topics = 0;
     $hidden_topics = 0;
-    $my_topics = ($user_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___12138')) : array() );
-
+    $my_topics = ( $user_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___12138')) : array() );
 
 
     //Go through Featured Categories:

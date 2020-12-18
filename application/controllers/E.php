@@ -1180,9 +1180,8 @@ class E extends CI_Controller
         ));
 
 
-        if(in_array($_POST['parent_e__id'], $this->config->item('n___13890'))){
-            $this->session->set_userdata(array('session_custom_ui_'.$_POST['parent_e__id'] => intval($_POST['selected_e__id'])));
-        }
+        //Update Session:
+        $this->E_model->activate_session($user_e, true);
 
 
         //All good:
