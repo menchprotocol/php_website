@@ -60,7 +60,7 @@ if($show_previous){
                                placeholder="'.$e___11035[14014]['m__title'].'">
                     </div></div>';
 }
-echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="row top-margin grey-list previous_i">';
+echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="row top-margin grey-list previous_i hideIfEmpty">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
