@@ -458,7 +458,7 @@ $profiles = $this->X_model->fetch(array(
 
                 } else {
 
-                    $ui .= '<div class="msg top-margin">'.$e['e__title'].' has privately discovered '.number_format($counter, 0).' idea'.view__s($counter).'.</div>';
+                    $ui .= '<div class="msg top-margin">'.$e['e__title'].' has discovered '.number_format($counter, 0).' idea'.view__s($counter).'.</div>';
 
 
                 }
