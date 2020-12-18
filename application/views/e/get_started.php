@@ -4,7 +4,7 @@ $next_link = '<a href="'.( $i__id > 0 ? '/x/x_start/'.$i__id : home_url() ).'" s
 ?>
 
 <!-- HEADLINE -->
-<div class="container fixed-top" style="padding: 10px 0 !important;">
+<div class="container fixed-top hidden" style="padding: 10px 0 !important;">
     <?php echo $next_link; ?>
 </div>
 
