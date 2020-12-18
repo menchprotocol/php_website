@@ -1906,7 +1906,7 @@ i, .btn .show-max {
     top: 0;
     left: 3px;
     width: calc(100% - 6px) !important;
-    max-height: 70%;
+    max-height: 60%;
     position: absolute;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -1915,7 +1915,7 @@ i, .btn .show-max {
 }
 
 .cover-content .inner-content {
-    padding: 5px 0 0;
+    padding: 5px 3px 0;
     line-height: 120%;
     font-size: 0.80em;
     display: block;
@@ -1935,7 +1935,7 @@ i, .btn .show-max {
     margin:0;
 }
 .cover-content .msg, .cover-content .msg>span {
-    line-height: 110% !important;
+    line-height: 125% !important;
 }
 .cover-content .icon-block-xs {
     display: none;
