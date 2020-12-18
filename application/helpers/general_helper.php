@@ -699,8 +699,8 @@ function session_delete(){
 }
 
 function cookie_delete(){
-    unset($_COOKIE['mench_auto_login']);
-    setcookie('mench_auto_login', null, -1, '/');
+    unset($_COOKIE['mench_login']);
+    setcookie('mench_login', null, -1, '/');
 }
 
 function cookie_check()
@@ -708,7 +708,7 @@ function cookie_check()
 
     date_default_timezone_set(view_memory(6404,11079));
 
-    if(!substr_count($_SERVER['REQUEST_URI'], 'sign') && isset($_COOKIE['mench_auto_login']) && !superpower_unlocked()) {
+    if(!substr_count($_SERVER['REQUEST_URI'], 'sign') && isset($_COOKIE['mench_login']) && !superpower_unlocked()) {
         header("Location: " . '/signin?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
         exit;
     }
