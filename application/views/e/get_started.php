@@ -18,7 +18,7 @@ $next_link = '<a href="'.( $i__id > 0 ? '/x/x_start/'.$i__id : home_url() ).'" s
 
     echo view_e_settings(14517, false);
 
-    echo '<div style="padding: 34px 0;">'.$next_link.'</div>';
+    echo '<div style="padding: 34px 0; text-align: center;">'.$next_link.'</div>';
 
     ?>
 </div>
