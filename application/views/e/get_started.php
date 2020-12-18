@@ -5,6 +5,7 @@ $e___11035 = $this->config->item('e___11035');
 
 //MENCH SETUP
 echo '<div class="container">';
+echo '<div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>';
 echo '<h1 class="top-margin '.extract_icon_color($e___11035[14517]['m__icon']).'">' . $e___11035[14517]['m__title'] . '</h1>';
 if(strlen($e___11035[14517]['m__message']) > 0){
     echo '<div class="msg">' . $e___11035[14517]['m__message'] . '</div>';
