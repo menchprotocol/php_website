@@ -438,13 +438,13 @@ $profiles = $this->X_model->fetch(array(
             //Show My Discoveries
             if($counter){
 
-                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>'.$e___11035[12969]['m__title'].'</div>';
 
                 if($source_is_e || superpower_active(12701, true)){
 
                     $list_x  = view_coins_e(6255, $e['e__id'], 1);
                     if(count($list_x)){
 
+                        $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>'.$e___11035[12969]['m__title'].'</div>';
                         $ui .= '<div class="row margin-top-down-half" id="list_12969">';
                         foreach($list_x as $item){
                             $ui .= view_i(12969, $item,$control_enabled,null, $e);
@@ -459,7 +459,6 @@ $profiles = $this->X_model->fetch(array(
                 } else {
 
                     $ui .= '<div class="msg top-margin">'.$e['e__title'].' has discovered '.number_format($counter, 0).' idea'.view__s($counter).'.</div>';
-
 
                 }
             }
