@@ -1032,7 +1032,7 @@ class X_model extends CI_Model
             $edit_btn = null;
             if(source_of_e($es[0]['e__id'])){
                 $e___11035 = $this->config->item('e___11035');
-                $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click trigger_13571_edit '.$only_per_line.'" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</span> ';
+                $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click trigger_13571_edit subtle-line" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</span> ';
             }
 
 
