@@ -447,6 +447,199 @@ function x_type_preview_load(){
 
 
 
+
+function e__title_word_count() {
+    var len = $('#e__title').val().length;
+    if (len > js_e___6404[6197]['m__message']) {
+        $('#charEnNum').addClass('overload').text(len);
+    } else {
+        $('#charEnNum').removeClass('overload').text(len);
+    }
+}
+
+
+function update_demo_icon(){
+    //Update demo icon based on icon input value:
+    $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_e___12467[12274]['m__icon'] ));
+}
+
+function e_modify_load(e__id, x__id) {
+
+    $("#modal13571 .save_results").html('');
+    $('#modal13571').modal('show');
+    $('.notify_e_delete, .notify_unx_e').addClass('hidden'); //Cannot be deleted OR Unpublished as this would not load, so delete them
+
+    //Load current Source:
+    $.post("/e/e_modify_load", {
+
+        e__id: e__id,
+        x__id: x__id,
+
+    }, function (data) {
+
+        if (data.status) {
+
+            //Update variables:
+            $('#modal13571 .modal_x__id').val(x__id);
+            $('#modal13571 .modal_e__id').val(e__id);
+
+            $('#modal13571 .save_results').html('');
+            $('.e_delete_stats').html('');
+
+            $('#e__title').val(data.e__title).focus();
+            $('#e__type').val(data.e__type);
+            $('#e__icon').val(data.e__icon);
+
+            set_autosize($('#e__title'));
+            e__title_word_count();
+            update_demo_icon();
+
+            if (x__id > 0) {
+
+                $('#x__status').val(data.x__status);
+                $('#x__message').val(data.x__message);
+                $('#e_x_count').val(0);
+                $('.remove-e, .e_has_link').removeClass('hidden');
+                set_autosize($('#x__message'));
+                x_type_preview();
+
+            } else {
+
+                //Hide the section and clear it:
+                $('.remove-e, .e_has_link').addClass('hidden');
+
+            }
+
+        } else {
+
+            $("#modal13571 .save_results").html('<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>');
+
+        }
+    });
+}
+
+
+function e_modify_save() {
+
+    //Are we about to delete an source with a lot of transactions?
+    var x_count= parseInt($('#e_x_count').val());
+    var do_13527 = 0;
+    if(x_count >= 1){
+        //Yes, confirm before doing so:
+        var confirm_removal = prompt("Delete  "+x_count+" links?! Type \"delete\" to confirm.", "");
+        do_13527 = ( confirm_removal=='destroy' ? 1 : 0 );
+
+        if (!(confirm_removal == 'delete') && !do_13527) {
+            //Abandon process:
+            alert('Source will not be deleted.');
+            return false;
+        }
+    }
+
+    //Prepare data to be modified for this idea:
+    var modify_data = {
+        e_focus_id: e_focus_id, //Determines if we need to change location upon removing...
+        do_13527:do_13527,
+        e__id: $('#modal13571 .modal_e__id').val(),
+        e__title: $('#e__title').val().toUpperCase(),
+        e__icon: $('#e__icon').val(),
+        e__type: $('#e__type').val(), //The new status (might not have changed too)
+        //Transaction data:
+        x__id: $('#modal13571 .modal_x__id').val(),
+        x__message: $('#x__message').val(),
+        x__status: $('#x__status').val(),
+    };
+
+    //Show spinner:
+    $('#modal13571 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695) +  '').hide().fadeIn();
+
+
+    $.post("/e/e_modify_save", modify_data, function (data) {
+
+        if (data.status) {
+
+            $('#modal13571').modal('hide');
+
+            if(data.delete_from_ui){
+
+                //need to delete this source:
+                //Idea has been either deleted OR Unpublished:
+                if (data.delete_redirect_url) {
+
+                    //move up 1 level as this was the focus idea:
+                    window.location = data.delete_redirect_url;
+
+                } else {
+
+                    //Delete from UI:
+                    $('.tr_' + modify_data['x__id']).html('<span><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Deleted</span>').fadeOut();
+
+                    //Disappear in a while:
+                    setTimeout(function () {
+
+                        //Hide the editor & saving results:
+                        $('.tr_' + modify_data['x__id']).remove();
+
+                    }, 610);
+
+                }
+
+            } else {
+
+                //Reflect changed:
+                //Might be in an INPUT or a DIV based on active superpowers:
+                update_text_name(6197, modify_data['e__id'], modify_data['e__title']);
+
+
+                //User Status:
+                $('.e__type_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__type']]["m__title"] + ': ' + js_e___6177[modify_data['e__type']]["m__message"] + '">' + js_e___6177[modify_data['e__type']]["m__icon"] + '</span>');
+
+
+                //User Icon:
+                var icon_set = ( modify_data['e__icon'].length > 0 ? 1 : 0 );
+                if(!icon_set){
+                    //Set source default icon:
+                    modify_data['e__icon'] = js_e___12467[12274]['m__icon'];
+                }
+                $('.e_ui_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
+                $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
+
+
+                //Did we have ideas to update?
+                if (modify_data['x__id'] > 0) {
+
+                    //Yes, update the ideas:
+                    $(".x__message_" + modify_data['x__id']).html(data.x__message);
+
+                    //Did the content get modified? (Likely for a domain URL):
+                    if(!(data.x__message_final==modify_data['x__message'])){
+                        $('#x__message').val(data.x__message_final).hide().fadeIn('slow');
+                    }
+
+                    //Transaction Status:
+                    $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m__title"] + ': ' + js_e___6186[modify_data['x__status']]["m__message"] + '">' + js_e___6186[modify_data['x__status']]["m__icon"] + '</span>');
+
+                }
+
+                //Update source timestamp:
+                $('#modal13571 .save_results').html(data.message);
+
+                //Reload Tooltip again:
+                $('[data-toggle="tooltip"]').tooltip();
+            }
+
+        } else {
+            //Ooops there was an error!
+            $('#modal13571 .save_results').html('<span class="discover css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
+        }
+
+    });
+
+}
+
+
+
+
 function remove_10673(x__id, note_type_id) {
 
     var r = confirm("Remove this source?");
