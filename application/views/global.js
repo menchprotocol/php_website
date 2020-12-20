@@ -638,7 +638,7 @@ function e_modify_save() {
 }
 
 
-function click_has_class(target_el, class_found){
+function click_has_class(target_el, target_class){
     //Aggregare parents:
     var class_found = false;
     if(target_el.is(target_class)){
