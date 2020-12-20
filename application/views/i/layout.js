@@ -25,7 +25,7 @@ $(document).ready(function () {
         }
 
         //Watch for click to reverse to preview:
-        $('html').click(fun     ction(e2) {
+        $('html').click(function(e2) {
             if($('.tab-data-14420').hasClass('hidden')){
                 if(!click_has_class($(e2.target), '.input_note_4231, .editor_preview_4231, .indifferent') && !i_note_poweredit_has_changed(4231) && i_note_poweredit_has_text(4231)){
                     loadtab(14418, 14420); //Load Preview tab
