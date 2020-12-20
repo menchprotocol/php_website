@@ -956,7 +956,9 @@ class X_model extends CI_Model
 
             $on_its_own_line = false;
             foreach(explode("\n", $message_input) as $line){
-                if(trim($line)=='@'.$referenced_e){
+                $line = trim($line);
+                $looking_for = '@'.$referenced_e;
+                if(!substr_count($line, ' ') && substr($line, 0, count($looking_for))==$looking_for){
                     $on_its_own_line = true;
                     break;
                 }
