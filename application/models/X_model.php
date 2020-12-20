@@ -967,7 +967,8 @@ class X_model extends CI_Model
             $e_media_count = 0;
             $e_count = 0;
             $e_appendix = null;
-            $is_current_e = ( $this->uri->segment(1) == '@'.$referenced_e );
+            $first_segment = $this->uri->segment(1);
+            $is_current_e = ( $first_segment == '@'.$referenced_e );
             $tooltip_info = null;
 
 
@@ -1030,7 +1031,7 @@ class X_model extends CI_Model
 
             $only_per_line = ( $on_its_own_line ? ' subtle-line ' : '' );
             $edit_btn = null;
-            if(source_of_e($es[0]['e__id'])){
+            if(substr($first_segment, 0, 1)=='~' && source_of_e($es[0]['e__id'])){
                 $e___11035 = $this->config->item('e___11035');
                 $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click trigger_13571_edit subtle-line" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</span> ';
             }
