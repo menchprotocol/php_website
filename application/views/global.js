@@ -466,10 +466,6 @@ function update_demo_icon(){
 
 function e_modify_load(e__id, x__id) {
 
-    $("#modal13571 .save_results").html('');
-    $('#modal13571').modal('show');
-    $('.notify_e_delete, .notify_unx_e').addClass('hidden'); //Cannot be deleted OR Unpublished as this would not load, so delete them
-
     //Load current Source:
     $.post("/e/e_modify_load", {
 
@@ -479,6 +475,10 @@ function e_modify_load(e__id, x__id) {
     }, function (data) {
 
         if (data.status) {
+
+            $("#modal13571 .save_results").html('');
+            $('#modal13571').modal('show');
+            $('.notify_e_delete, .notify_unx_e').addClass('hidden'); //Cannot be deleted OR Unpublished as this would not load, so delete them
 
             //Update variables:
             $('#modal13571 .modal_x__id').val(x__id);
@@ -517,7 +517,7 @@ function e_modify_load(e__id, x__id) {
 
         } else {
 
-            $("#modal13571 .save_results").html('<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+data.message+'</div>');
+            alert(data.message);
 
         }
     });
