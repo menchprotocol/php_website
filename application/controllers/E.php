@@ -2118,7 +2118,18 @@ class E extends CI_Controller
 
     function e_modify_load(){
 
-        if (!isset($_POST['e__id']) || !isset($_POST['x__id'])) {
+        $user_e = superpower_unlocked(10939);
+        if (!$user_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(10939),
+            ));
+        } elseif(!source_of_e($user_e['e__id'])){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing permissions to modify this source',
+            ));
+        } elseif (!isset($_POST['e__id']) || !isset($_POST['x__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core inputs',
