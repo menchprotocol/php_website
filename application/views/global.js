@@ -1572,7 +1572,7 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
 
 function watch_for_note_e_clicks(){
     //Watchout for source clicks if they have the superpower:
-    $('.source_reference').click(function (e) {
+    $('.source_reference.underdot').click(function (e) {
         e_modify_load(parseInt($(this).attr('e__id')), 0);
     });
 }
