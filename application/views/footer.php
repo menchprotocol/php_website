@@ -204,7 +204,7 @@ if($user_e && !isset($min_header_footer)){
                 <div class="modal-body">
                     <input type="hidden" id="modal_i__id" value="0" />
                     <input type="hidden" id="modal_x__type" value="0" />
-                    <input type="text" class="form-control text-edit border css__title white-border" id="gif_query" name="gif_query" placeholder="Search GIFs..." onkeyup="gif_search('')" data-lpignore="true" />
+                    <input type="text" class="form-control text-edit border css__title" id="gif_query" name="gif_query" placeholder="Search GIFs..." onkeyup="gif_search('')" data-lpignore="true" />
                     <div id="gif_results" class="margin-top-down hideIfEmpty"></div>
                 </div>
             </div>

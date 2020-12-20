@@ -986,7 +986,6 @@ function gif_modal(x__type){
     $('#modal_x__type').val(x__type);
     $('#gif_results').html('');
     $('#gif_query').val('');
-    gif_search('trending'); //Show Some GIFs
     setTimeout(function () {
         $('#gif_query').focus();
     }, 610);
