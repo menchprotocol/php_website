@@ -486,13 +486,17 @@ function e_modify_load(e__id, x__id) {
             $('#modal13571 .save_results').html('');
             $('.e_delete_stats').html('');
 
-            $('#e__title').val(data.e__title).focus();
+            $('#e__title').val(data.e__title);
             $('#e__type').val(data.e__type);
             $('#e__icon').val(data.e__icon);
 
             set_autosize($('#e__title'));
             e__title_word_count();
             update_demo_icon();
+
+            setTimeout(function () {
+                $('#e__title').focus();
+            }, 144);
 
             if (x__id > 0) {
 
