@@ -1034,7 +1034,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
 
                 //CONTROLLER
-                $tab_ui .= '<div class="no-padding indifferent add_notes_' . $x__type .'">';
+                $tab_ui .= '<div class="no-padding add_notes_' . $x__type .'">';
                 $tab_ui .= '<div class="add_notes_form">';
                 $tab_ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
                 $tab_ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
@@ -1042,24 +1042,24 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 if($handles_uploads){
 
                     //UPLOAD
-                    $tab_ui .= '<td class="table-btn first_btn">';
+                    $tab_ui .= '<td class="table-btn first_btn indifferent">';
                     $tab_ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
                     $tab_ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
                     $tab_ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
                     $tab_ui .= '</td>';
 
                     //GIF
-                    $tab_ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="gif_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
+                    $tab_ui .= '<td class="table-btn first_btn indifferent"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="gif_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__icon'].'</span></a></td>';
 
                 }
 
                 if($supports_emoji){
                     //EMOJI
-                    $tab_ui .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
+                    $tab_ui .= '<td class="table-btn first_btn indifferent"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__icon'].'</span></span></td>';
                 }
 
                 //SAVE Button:
-                $tab_ui .= '<td class="table-btn first_btn save_button save_button_'.$x__type.' hidden"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;" data-toggle="tooltip" data-placement="bottom" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
+                $tab_ui .= '<td class="table-btn first_btn indifferent save_button save_button_'.$x__type.' hidden"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
 
 
                 $tab_ui .= '<td style="padding:10px 0 0 0;">&nbsp;</td>';
