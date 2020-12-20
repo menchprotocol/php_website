@@ -1024,7 +1024,7 @@ class X_model extends CI_Model
             $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
 
 
-            $output_body_message = str_replace($identifier_string, '<span class="underdot" '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].' source_reference" e__id="' . $es[0]['e__id'] . '">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+            $output_body_message = str_replace($identifier_string, '<span class="'.( superpower_active(10939, true) ? ' underdot ' : '' ).'" '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].' source_reference" e__id="' . $es[0]['e__id'] . '">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
 
 
             //USER REFERENCE

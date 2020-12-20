@@ -5,12 +5,7 @@
 *
 * */
 
-function watch_for_note_e_clicks(){
-    //Watchout for source clicks if they have the superpower:
-    $('.source_reference').click(function (e) {
-        e_modify_load(parseInt($(this).attr('e__id')), 0);
-    });
-}
+
 
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
@@ -41,7 +36,6 @@ $(document).ready(function () {
 
     });
 
-    watch_for_note_e_clicks();
 
     //Look for power editor updates:
     $('.x_set_class_text').keypress(function(e) {

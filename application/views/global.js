@@ -241,6 +241,7 @@ $(document).ready(function () {
     initialize_remove();
     lazy_load();
     set_autosize($('#sugg_note'));
+    watch_for_note_e_clicks();
 
     if(js_pl_id > 1){
         //For any logged in user except shervin:
@@ -1567,6 +1568,13 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
         }
     });
 
+}
+
+function watch_for_note_e_clicks(){
+    //Watchout for source clicks if they have the superpower:
+    $('.source_reference').click(function (e) {
+        e_modify_load(parseInt($(this).attr('e__id')), 0);
+    });
 }
 
 function i_note_add_text(note_type_id) {

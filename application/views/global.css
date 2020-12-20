@@ -456,7 +456,7 @@ img.no-radius {
     background-color:transparent !important;
 }
 .underdot{
-    cursor: help;
+    cursor: zoom-in;
     border-bottom: 1px dotted #999;
 }
 
