@@ -790,7 +790,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid ID',
             ));
-        } elseif (!isset($_POST['e_focus_id']) || intval($_POST['e_focus_id']) < 1) {
+        } elseif (!isset($_POST['e_focus_id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Focus ID',

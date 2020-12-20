@@ -538,7 +538,7 @@ function e_modify_save() {
 
     //Prepare data to be modified for this idea:
     var modify_data = {
-        e_focus_id: $('#modal_e__id').val(), //Determines if we need to change location upon removing...
+        e_focus_id: ( typeof e_focus_id !== 'undefined' ? e_focus_id : 0 ),
         do_13527:do_13527,
         e__id: $('#modal13571 .modal_e__id').val(),
         e__title: $('#e__title').val().toUpperCase(),
