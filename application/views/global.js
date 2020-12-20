@@ -644,8 +644,10 @@ function click_has_class(target_el, target_class){
     if(target_el.is(target_class)){
         class_found = true;
     }
+    console.log(target_el.className());
     if(!class_found){
         target_el.parentsUntil( "body" ).each(function () {
+            console.log($(this).className());
             if(!class_found && $(this).is(target_class)){
                 class_found = true;
             }
