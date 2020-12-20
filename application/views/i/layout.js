@@ -55,7 +55,7 @@ $(document).ready(function () {
 
     //Watchout for source clicks if they have the superpower:
     $('.source_reference').click(function (e) {
-        e_modify_load(parseInt($(this).attr('e__id'), parseInt($(this).attr('x__id'));
+        e_modify_load(parseInt($(this).attr('e__id')), parseInt($(this).attr('x__id')));
     });
 
 
