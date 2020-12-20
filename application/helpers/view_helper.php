@@ -1030,11 +1030,11 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 $tab_ui .= '<textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor doabsolute emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="DESCRIBE IDEA..." style="margin:0 82px 0 41px; width:calc(100% - 82px);" current_text="'.trim($textarea_content).'">'.$textarea_content.'</textarea>';
 
                 //Response result:
-                $tab_ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
+                $tab_ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger indifferent" style="margin:8px 0;"></div>';
 
 
                 //CONTROLLER
-                $tab_ui .= '<div class="no-padding add_notes_' . $x__type .'">';
+                $tab_ui .= '<div class="no-padding indifferent add_notes_' . $x__type .'">';
                 $tab_ui .= '<div class="add_notes_form">';
                 $tab_ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
                 $tab_ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
