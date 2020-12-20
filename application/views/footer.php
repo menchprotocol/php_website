@@ -6,6 +6,7 @@ if($user_e && !isset($min_header_footer)){
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
     $e___14393 = $this->config->item('e___14393'); //SUGGEST
     $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
+    $e___6198 = $this->config->item('e___6198'); //SOURCE ICON
 
     ?>
 

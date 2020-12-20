@@ -1,7 +1,6 @@
 <?php
 $e___6177 = $this->config->item('e___6177'); //Source Status
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$e___6198 = $this->config->item('e___6198'); //SOURCE ICON
 $source_of_e = source_of_e($e['e__id']);
 $source_is_e = $e['e__id']==$user_e['e__id'];
 $superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEATION
