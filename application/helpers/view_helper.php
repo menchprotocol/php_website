@@ -1256,7 +1256,7 @@ function view_e_settings($list_id, $show_accordion){
                 $is_unlocked = in_array($superpower_e__id, $CI->session->userdata('session_superpowers_unlocked'));
                 $public_link = in_array($superpower_e__id, $CI->config->item('n___6404'));
                 $extract_icon_color = extract_icon_color($m3['m__icon']);
-                $anchor = '<span class="icon-block '.$extract_icon_color.'">'.$m3['m__icon'].'</span><b class="css__title '.$extract_icon_color.'">'.$m3['m__title'].'</b><span class="superpower-message">'.$m3['m__message'].'</span>';
+                $anchor = '<span class="icon-block '.$extract_icon_color.'" title="@'.$superpower_e__id.'">'.$m3['m__icon'].'</span><b class="css__title '.$extract_icon_color.'">'.$m3['m__title'].'</b><span class="superpower-message">'.$m3['m__message'].'</span>';
 
                 if($is_unlocked){
 

@@ -53,10 +53,13 @@ $(document).ready(function () {
 
     });
 
-    //Watchout for source clicks:
-    $('.source_reference').click(function (e) {
-        e_modify_load(parseInt($(this).attr('e__id'), parseInt($(this).attr('x__id'));
-    });
+    //Watchout for source clicks if they have the superpower:
+    if(js_session_superpowers_activated.includes(focus_i__type)){
+        $('.source_reference').click(function (e) {
+            e_modify_load(parseInt($(this).attr('e__id'), parseInt($(this).attr('x__id'));
+        });
+    }
+
 
     //Look for power editor updates:
     $('.x_set_class_text').keypress(function(e) {
