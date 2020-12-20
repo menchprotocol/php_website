@@ -96,7 +96,11 @@ body {
     background-color: transparent;
 }
 
-#searchFrontForm{margin-top:5px; padding-right: 5px;}
+#searchFrontForm{
+    margin-top: 2px;
+    padding-right: 0px;
+    margin-left: 3px;
+}
 .table-sm td, .table-sm th { padding:0; }
 .table {
     width: 100%;
@@ -2147,7 +2151,7 @@ i, .btn .show-max {
     padding: 8px 0;
 }
 .info_box_header{
-    padding:34px 2px;
+    padding:34px 21px;
     font-size: 2.5em;
     text-align: center;
     line-height: 110%;
@@ -2160,7 +2164,7 @@ i, .btn .show-max {
 .info_box_title{
     text-align: center;
     font-size: 1.5em;
-    padding: 0 8px;
+    padding: 0 21px;
     line-height: 110%;
 }
 .info_box_message{
