@@ -1043,7 +1043,7 @@ function gif_add(note_type_id, giphy_id, giphy_title){
 
     var current_value = $('.input_note_' + note_type_id).val();
     $('#modal14073').modal('hide');
-    $('.input_note_' + note_type_id).val(( current_value.length ? current_value+' ' : '' ) + 'https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
+    $('.input_note_' + note_type_id).val(( current_value.length ? current_value+"\n\n" : '' ) + 'https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
 
     //Save or Submit:
     if(js_n___14311.includes(note_type_id)){
@@ -1542,7 +1542,7 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
                 if(js_n___14311.includes(note_type_id)){
                     //Power Editor:
                     var current_value = $('.input_note_' + note_type_id).val();
-                    $('.input_note_' + note_type_id).val(( current_value.length ? current_value+" " : '' ) + data.new_source);
+                    $('.input_note_' + note_type_id).val(( current_value.length ? current_value+"\n\n" : '' ) + data.new_source);
                 } else {
                     //Regular Editor:
                     i_note_counter(note_type_id, +1);
