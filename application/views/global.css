@@ -2574,7 +2574,8 @@ i, .btn .show-max {
     margin-right: 0;
 }
 .custom_ui_14541_14543 .content-image,
-.custom_ui_14541_14543 .media-content{
+.custom_ui_14541_14543 .media-content,
+.custom_ui_14541_14544 .media-content{
     margin:0 auto;
     text-align: center;
 }
@@ -2589,8 +2590,7 @@ i, .btn .show-max {
     margin-left: 10px;
     margin-right: 10px;
 }
-.custom_ui_14541_14544 .content-image,
-.custom_ui_14541_14544 .media-content{
+.custom_ui_14541_14544 .content-image{
     margin:0;
     float: right;
 }
