@@ -395,7 +395,7 @@ $(document).ready(function () {
                         }
                     },
                     footer: function (data) {
-                        return '<div class="suggestion" style="text-align: right;">Search Powered by Algolia<span class="icon-block"><i class="fab fa-algolia" style="margin: 0 5px;"></i></span></div>';
+                        //return '<div class="suggestion" style="text-align: right;">Search Powered by Algolia<span class="icon-block"><i class="fab fa-algolia" style="margin: 0 5px;"></i></span></div>';
                     },
                     empty: function (data) {
                         if(validURL(data.query)){
