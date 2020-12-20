@@ -8,33 +8,6 @@
 
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
-function watch_for(target_class){
-
-    $('html').click(function(e) {
-        if($('.tab-data-14420').hasClass('hidden')){
-            console.log('Preview initiated');
-            //Aggregare parents:
-            var class_found = false;
-            if($(e.target).is(target_class)){
-                class_found = true;
-            }
-            if(!class_found){
-                $(e.target).parentsUntil( "body" ).each(function () {
-                    if(!class_found && $(this).is(target_class)){
-                        class_found = true;
-                    }
-                });
-                if(!class_found) {
-                    //Revert back IF the same:
-                    if(!i_note_poweredit_has_changed(4231) && i_note_poweredit_has_text(4231)){
-                        loadtab(14418, 14420); //Load Preview tab
-                    }
-                }
-            }
-        }
-    });
-}
-
 $(document).ready(function () {
 
     i_note_activate();
@@ -47,9 +20,18 @@ $(document).ready(function () {
 
     $('.editor_preview.editor_preview_4231').click(function (e) {
 
-        loadtab(14418, 14468);//Load Write Tab
+        if(!click_has_class($(e.target), '.source_reference')){
+            loadtab(14418, 14468);//Load Write Tab
+        }
 
-        watch_for('.input_note_4231, .editor_preview_4231, .indifferent, .source_reference');
+        //Watch for click to reverse to preview:
+        $('html').click(function(e) {
+            if($('.tab-data-14420').hasClass('hidden')){
+                if(!click_has_class($(e.target), '.input_note_4231, .editor_preview_4231, .indifferent') && !i_note_poweredit_has_changed(4231) && i_note_poweredit_has_text(4231)){
+                    loadtab(14418, 14420); //Load Preview tab
+                }
+            }
+        });
 
     });
 

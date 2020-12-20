@@ -638,7 +638,21 @@ function e_modify_save() {
 }
 
 
-
+function click_has_class(target_el, class_found){
+    //Aggregare parents:
+    var class_found = false;
+    if(target_el.is(target_class)){
+        class_found = true;
+    }
+    if(!class_found){
+        target_el.parentsUntil( "body" ).each(function () {
+            if(!class_found && $(this).is(target_class)){
+                class_found = true;
+            }
+        });
+    }
+    return class_found;
+}
 
 function remove_10673(x__id, note_type_id) {
 
