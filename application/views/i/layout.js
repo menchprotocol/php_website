@@ -5,6 +5,12 @@
 *
 * */
 
+function watch_for_note_e_clicks(){
+    //Watchout for source clicks if they have the superpower:
+    $('.source_reference').click(function (e) {
+        e_modify_load(parseInt($(this).attr('e__id')), 0);
+    });
+}
 
 var match_search_loaded = 0; //Keeps track of when we load the match search
 
@@ -35,11 +41,7 @@ $(document).ready(function () {
 
     });
 
-    //Watchout for source clicks if they have the superpower:
-    $('.source_reference').click(function (e) {
-        e_modify_load(parseInt($(this).attr('e__id')), 0);
-    });
-
+    watch_for_note_e_clicks();
 
     //Look for power editor updates:
     $('.x_set_class_text').keypress(function(e) {
@@ -164,6 +166,8 @@ function i_note_poweredit_save(note_type_id){
             if(note_type_id==4231 && new_text.length>0){
                 loadtab(14418, 14420); //Load Preview tab
             }
+
+            watch_for_note_e_clicks();
 
             setTimeout(function () {
                 $(input_textarea).focus();
