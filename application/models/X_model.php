@@ -1029,17 +1029,17 @@ class X_model extends CI_Model
             $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
 
             $only_per_line = ( $on_its_own_line ? ' subtle-line ' : '' );
-
-            if($is_single_link){
-                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click '.$only_per_line.'" target="_blank" ><u>' . $es[0]['e__title'] . '</u>&nbsp;<i class="fas fa-external-link"></i></a></span> ', $output_body_message);
-            } else {
-                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].$only_per_line.'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+            $edit_btn = null;
+            if(source_of_e($es[0]['e__id'])){
+                $e___11035 = $this->config->item('e___11035');
+                $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click trigger_13571_edit icon-block-xs" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</span> ';
             }
 
 
-            if(source_of_e($es[0]['e__id'])){
-                $e___11035 = $this->config->item('e___11035');
-                $output_body_message .= '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click trigger_13571_edit icon-block-xs" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</span>';
+            if($is_single_link){
+                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click '.$only_per_line.'" target="_blank" ><u>' . $es[0]['e__title'] . '</u>&nbsp;<i class="fas fa-external-link"></i></a></span> '.$edit_btn, $output_body_message);
+            } else {
+                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].$only_per_line.'">' . $es[0]['e__title'] . '</span></span> '.$edit_btn, $output_body_message);
             }
 
             $referenced_key++;
