@@ -97,9 +97,7 @@ body {
 }
 
 #searchFrontForm{
-    margin-top: 2px;
-    padding-right: 0px;
-    margin-left: 3px;
+    margin-top: 5px;
 }
 .table-sm td, .table-sm th { padding:0; }
 .table {

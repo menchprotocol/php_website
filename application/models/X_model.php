@@ -1023,11 +1023,15 @@ class X_model extends CI_Model
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
             $tooltip_class = ( $tooltip_info ? ' class="underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
 
+
+            $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].' source_reference" e__id="' . $es[0]['e__id'] . '" x__id="' . ( isset($es[0]['x__id']) ? $es[0]['x__id'] : 0 ) . '">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+
             //USER REFERENCE
+            /*
             if($is_discovery_mode || $is_current_e || $simple_version){
 
                 //NO LINK so we can maintain focus...
-                if(!$has_text_after && ($is_current_e || ($e_count>0 && $e_media_count==$e_count /* All media */))){
+                if(!$has_text_after && ($is_current_e || ($e_count>0 && $e_media_count==$e_count))){
 
                     //HIDE
                     $output_body_message = str_replace($identifier_string, ' ', $output_body_message);
@@ -1052,6 +1056,7 @@ class X_model extends CI_Model
                 $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a class="css__title '.extract_icon_color($es[0]['e__icon']).'" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__type'], $this->config->item('n___7357')) ? '<span class="icon-block-xs">'.$e___6177[$es[0]['e__type']]['m__icon'].'</span> ' : '' ).'<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></a></span>'.' ', $output_body_message);
 
             }
+            */
 
             $referenced_key++;
         }

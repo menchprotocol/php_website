@@ -49,11 +49,14 @@ $(document).ready(function () {
 
         loadtab(14418, 14468);//Load Write Tab
 
-        watch_for('.input_note_4231, .editor_preview_4231, .indifferent');
+        watch_for('.input_note_4231, .editor_preview_4231, .indifferent, .source_reference');
 
     });
 
-
+    //Watchout for source clicks:
+    $('.source_reference').click(function (e) {
+        e_modify_load(parseInt($(this).attr('e__id'), parseInt($(this).attr('x__id'));
+    });
 
     //Look for power editor updates:
     $('.x_set_class_text').keypress(function(e) {
