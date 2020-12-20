@@ -2124,7 +2124,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif(!source_of_e($user_e['e__id'])){
+        } elseif(!source_of_e($_POST['e__id'], $user_e)){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing permissions to modify this source',
