@@ -954,8 +954,13 @@ class X_model extends CI_Model
             $e_reference_key_val = $e_reference_keys[$referenced_key];
             $e_reference_fields[$e_reference_key_val] = intval($referenced_e);
 
-            $parts = explode('@'.$referenced_e,$message_input,2);
-            $has_text_after = substr_count(trim($parts[1]), ' ');
+            $on_its_own_line = false;
+            foreach(explode("\n", $message_input) as $line){
+                if(trim($line)=='@'.$referenced_e){
+                    $on_its_own_line = true;
+                    break;
+                }
+            }
 
             //See if this source has any parent transactions to be shown in this appendix
             $e_urls = array();
@@ -1015,7 +1020,7 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $is_single_link = ( $is_discovery_mode && count($e_urls)==1 && $e_media_count==1 && $has_text_after );
+            $is_single_link = ( $is_discovery_mode && count($e_urls)==1 && $e_media_count==1 );
             if(!$is_single_link){
                 //For single link it would be linked directly
                 $output_body_message .= $e_appendix;
@@ -1023,41 +1028,19 @@ class X_model extends CI_Model
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
             $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
 
+            $only_per_line = ( $on_its_own_line ? ' subtle-line ' : '' );
 
-            $output_body_message = str_replace($identifier_string, '<span e__id="' . $es[0]['e__id'] . '" class="source_reference '.( source_of_e($es[0]['e__id']) ? ' underdot ' : '' ).'" '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
-
-
-            //USER REFERENCE
-            /*
-            if($is_discovery_mode || $is_current_e || $simple_version){
-
-                //NO LINK so we can maintain focus...
-                if(!$has_text_after && ($is_current_e || ($e_count>0 && $e_media_count==$e_count))){
-
-                    //HIDE
-                    $output_body_message = str_replace($identifier_string, ' ', $output_body_message);
-
-                } else {
-
-                    if($is_single_link){
-                        //SINGLE LINK:
-                        //<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span>
-                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click" target="_blank" ><u>' . $es[0]['e__title'] . '</u>&nbsp;<i class="fas fa-external-link"></i></a></span> ', $output_body_message);
-                    } else {
-                        //TEXT ONLY
-                        //<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span>
-                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].'" title="'.$e_media_count.'/'.$e_count.'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
-                    }
-
-                }
-
+            if($is_single_link){
+                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click '.$only_per_line.'" target="_blank" ><u>' . $es[0]['e__title'] . '</u>&nbsp;<i class="fas fa-external-link"></i></a></span> ', $output_body_message);
             } else {
-
-                //FULL SOURCE LINK
-                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><a class="css__title '.extract_icon_color($es[0]['e__icon']).'" href="/@' . $es[0]['e__id'] . '">'.( !in_array($es[0]['e__type'], $this->config->item('n___7357')) ? '<span class="icon-block-xs">'.$e___6177[$es[0]['e__type']]['m__icon'].'</span> ' : '' ).'<span class="icon-block-xs e__icon_'.$es[0]['e__id'].'">'.view_e__icon($es[0]['e__icon']).'</span><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></a></span>'.' ', $output_body_message);
-
+                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].$only_per_line.'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
             }
-            */
+
+
+            if(source_of_e($es[0]['e__id'])){
+                $e___11035 = $this->config->item('e___11035');
+                $output_body_message .= '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click trigger_13571_edit icon-block-xs" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</span>';
+            }
 
             $referenced_key++;
         }

@@ -21,7 +21,7 @@ $(document).ready(function () {
 
     $('.editor_preview.editor_preview_4231').click(function (e) {
 
-        if(!click_has_class($(e.target), '.source_reference')){
+        if(!click_has_class($(e.target), '.ignore-click')){
             loadtab(14418, 14468);//Load Write Tab
         }
 
