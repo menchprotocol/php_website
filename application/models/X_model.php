@@ -1021,10 +1021,11 @@ class X_model extends CI_Model
                 $output_body_message .= $e_appendix;
             }
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
-            $tooltip_class = ( $tooltip_info ? ' class="underdot" title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
+            $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
 
 
-            $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].' source_reference" e__id="' . $es[0]['e__id'] . '">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+            $output_body_message = str_replace($identifier_string, '<span class="underdot" '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].' source_reference" e__id="' . $es[0]['e__id'] . '">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+
 
             //USER REFERENCE
             /*
