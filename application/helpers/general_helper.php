@@ -531,7 +531,7 @@ function i_fetch_description($i__id){
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $fetched_e){
         if(substr_count($fetched_e['x__message'], ' ')>=2){ //Require 3+ words
             //This is it, return:
-            return $CI->X_model->message_send(
+            return $CI->X_model->message_view(
                 join(' ', array_slice(explode(' ', trim(preg_replace('/\s\s+/', ' ', $fetched_e['x__message']))), 0, view_memory(6404,13556))).( substr_count($fetched_e['x__message'], ' ') >= (view_memory(6404,13556) - 1) ? '...' : '' ), //Limit Length
                 true,
                 superpower_unlocked(),

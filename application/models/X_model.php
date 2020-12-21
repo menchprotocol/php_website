@@ -681,7 +681,7 @@ class X_model extends CI_Model
     }
 
 
-    function message_send($message_input, $is_discovery_mode, $user_e = array(), $message_i__id = 0, $simple_version = false)
+    function message_view($message_input, $is_discovery_mode, $user_e = array(), $message_i__id = 0, $simple_version = false)
     {
 
         /*
@@ -749,7 +749,7 @@ class X_model extends CI_Model
          *
          * This function is used to validate IDEA NOTES.
          *
-         * See message_send() for more information on input variables.
+         * See message_view() for more information on input variables.
          *
          * */
 

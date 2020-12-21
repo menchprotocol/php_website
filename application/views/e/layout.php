@@ -417,7 +417,7 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= '<div class="row margin-top-down-half" id="list_13550">';
                 foreach($list_i as $count => $item){
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-                    $ui .= view_i(13550, $item, $control_enabled,( $show_message ? $this->X_model->message_send($item['x__message'], true) : null), $e);
+                    $ui .= view_i(13550, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e);
                 }
                 $ui .= '</div>';
 

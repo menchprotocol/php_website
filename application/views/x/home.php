@@ -12,7 +12,7 @@
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
-        echo $this->X_model->message_send( $x['x__message'], true);
+        echo $this->X_model->message_view( $x['x__message'], true);
     }
 
 

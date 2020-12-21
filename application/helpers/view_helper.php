@@ -247,7 +247,7 @@ function view_i_note($x__type, $x, $note_e = false)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $x['x__id'] . '">';
-    $ui .= $CI->X_model->message_send($x['x__message'], in_array($x__type, $CI->config->item('n___13291')), $user_e, $x['x__right']);
+    $ui .= $CI->X_model->message_view($x['x__message'], in_array($x__type, $CI->config->item('n___13291')), $user_e, $x['x__right']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -816,7 +816,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         $ui .= '<div class="messages-'.$i_x['i__id'].' hidden">';
         foreach($messages as $msg) {
             $ui .= '<div class="tip_bubble">';
-            $ui .= $CI->X_model->message_send($msg['x__message'], false);
+            $ui .= $CI->X_model->message_view($msg['x__message'], false);
             $ui .= '</div>';
         }
         $ui .= '</div>';
@@ -1080,7 +1080,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
                 //PREVIEW
                 $tab_ui .= '<div class="list-group '.( $e_of_i ? ' editor_preview ' : '' ).' editor_preview_'.$x__type.'">';
                 foreach($i_notes as $i_note) {
-                    $tab_ui .= $CI->X_model->message_send($i_note['x__message'], true, $user_e, $i['i__id']);
+                    $tab_ui .= $CI->X_model->message_view($i_note['x__message'], true, $user_e, $i['i__id']);
                 }
                 $tab_ui .= '</div>';
 
@@ -1898,7 +1898,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
             //DISCOVER PROGRESS
             $ui .= '<div class="message_content paddingup" style="margin-left: 0;">';
-            $ui .= $CI->X_model->message_send($e['x__message'], false);
+            $ui .= $CI->X_model->message_view($e['x__message'], false);
             $ui .= '</div>';
 
         }

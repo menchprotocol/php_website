@@ -13,7 +13,7 @@ foreach($this->X_model->fetch(array(
     'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $terms_i__id,
 ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
-    echo $this->X_model->message_send( $x['x__message'], true);
+    echo $this->X_model->message_view( $x['x__message'], true);
 }
 
 //1 Level of Next Ideas:
@@ -32,7 +32,7 @@ foreach($is_next = $this->X_model->fetch(array(
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
-        echo $this->X_model->message_send( $x['x__message'], true);
+        echo $this->X_model->message_view( $x['x__message'], true);
     }
 
 }

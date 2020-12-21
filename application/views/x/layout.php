@@ -315,7 +315,7 @@ if(!$i_drip_mode) {
 //MESSAGES
 foreach($messages as $message_x) {
     $drip_msg_counter++;
-    echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">'.$this->X_model->message_send(
+    echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">'.$this->X_model->message_view(
         $message_x['x__message'],
         true,
         $user_e
@@ -647,7 +647,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                     $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__icon'].'</span>'.$e___11035[13977]['m__title'].'</div>';
 
-                    $ui .= '<div class="previous_answer">' . $this->X_model->message_send($x_completes[0]['x__message'], true) . '</div>';
+                    $ui .= '<div class="previous_answer">' . $this->X_model->message_view($x_completes[0]['x__message'], true) . '</div>';
 
                     $ui .= '</div>';
 

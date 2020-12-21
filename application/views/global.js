@@ -1502,7 +1502,6 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
         return false;
     }
 
-
     //Lock message:
     i_note_start_adding(note_type_id);
 
