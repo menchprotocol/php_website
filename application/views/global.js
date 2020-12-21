@@ -1485,6 +1485,8 @@ function i_note_end_adding(result, note_type_id) {
         //Load Images:
         lazy_load();
 
+        watch_for_note_e_clicks();
+
         //Hide any errors:
         $(".note_error_"+note_type_id).html('');
 
