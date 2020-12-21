@@ -219,7 +219,7 @@ function view_i_title($i, $common_prefix = null, $is_cover = false){
 }
 
 
-function view_i_note($x__type, $x, $note_e = false)
+function view_i_note($x__type, $is_discovery_mode, $x, $note_e = false)
 {
 
     /*
@@ -247,7 +247,7 @@ function view_i_note($x__type, $x, $note_e = false)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $x['x__id'] . '">';
-    $ui .= $CI->X_model->message_view($x['x__message'], in_array($x__type, $CI->config->item('n___13291')), $user_e, $x['x__right']);
+    $ui .= $CI->X_model->message_view($x['x__message'], $is_discovery_mode, $user_e, $x['x__right']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -987,7 +987,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
 }
 
 
-function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = false){
+function view_i_note_list($x__type, $is_discovery_mode, $i, $i_notes, $e_of_i, $show_empty_error = false){
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
@@ -1111,7 +1111,7 @@ function view_i_note_list($x__type, $i, $i_notes, $e_of_i, $show_empty_error = f
 
         //List current notes:
         foreach($i_notes as $i_note) {
-            $ui .= view_i_note($x__type, $i_note, ($i_note['x__source']==$user_e['e__id'] || $e_of_i));
+            $ui .= view_i_note($x__type, $is_discovery_mode, $i_note, ($i_note['x__source']==$user_e['e__id'] || $e_of_i));
         }
 
         //ADD NEW:

@@ -1,7 +1,6 @@
 <?php
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-$e___13291 = $this->config->item('e___13291'); //DISCOVER TABS
 $e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 
 
@@ -729,7 +728,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($notes);
         $is_editable = in_array($note_x__type, $this->config->item('n___14043'));
-        $ui .= view_i_note_list($note_x__type, $i_focus, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true);
+        $ui .= view_i_note_list($note_x__type, true, $i_focus, $notes, ( $user_e['e__id'] > 0 && $is_editable ), true);
 
     } elseif($x__type==13023){
 

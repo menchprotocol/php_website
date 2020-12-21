@@ -601,7 +601,7 @@ class I extends CI_Controller {
         //Print the challenge:
         return view_json(array(
             'status' => 1,
-            'message' => view_i_note($_POST['note_type_id'], array_merge($user_e, $x, array(
+            'message' => view_i_note($_POST['note_type_id'], false, array_merge($user_e, $x, array(
                 'x__down' => $user_e['e__id'],
             )), true),
         ));
@@ -729,7 +729,7 @@ class I extends CI_Controller {
         view_json(array(
             'status' => 1,
             'new_source' => '@' . $cdn_status['cdn_e']['e__id'],
-            'message' => view_i_note($_POST['note_type_id'], array_merge($user_e, $new_messages[0], array(
+            'message' => view_i_note($_POST['note_type_id'], false, array_merge($user_e, $new_messages[0], array(
                 'x__down' => $user_e['e__id'],
             )), true),
         ));
