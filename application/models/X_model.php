@@ -1030,7 +1030,7 @@ class X_model extends CI_Model
             $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
 
             $edit_btn = null;
-            if($is_discovery_mode && source_of_e($es[0]['e__id'])){
+            if(!$is_discovery_mode && source_of_e($es[0]['e__id'])){
                 $e___11035 = $this->config->item('e___11035');
                 $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click trigger_13571_edit subtle-line" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</span> ';
             }
