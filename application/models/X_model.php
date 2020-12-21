@@ -1037,7 +1037,7 @@ class X_model extends CI_Model
 
 
             if($is_single_link){
-                $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click" target="_blank" ><u>' . $es[0]['e__title'] . '</u>&nbsp;<i class="fas fa-external-link"></i></a></span> ', $output_body_message);
+                $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click" target="_blank" ><u>' . $es[0]['e__title'] . '</u></a></span> ', $output_body_message);
             } else {
                 $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].( $on_its_own_line ? ' subtle-line ' : '' ).'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
             }
