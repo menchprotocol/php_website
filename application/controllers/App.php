@@ -16,7 +16,7 @@ class App extends CI_Controller
 
 
 
-    function load($app_e__id){
+    function load($app_e__id = 14565){
 
         $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
         if(!$memory_detected){

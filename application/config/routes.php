@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['translate_uri_dashes']      = FALSE;
-$route['default_controller']        = "app/load/14565";     //Home
+$route['default_controller']        = "app/load";     //Home
 $route['404_override']              = 'app/load/14563';     //Page not found
 $route['app/(:num)']                = "app/load/$1";        //Load App
 $route['@(:num)']                   = "e/layout_e/$1";      //Source
