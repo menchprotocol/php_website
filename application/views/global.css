@@ -2402,6 +2402,10 @@ i, .btn .show-max {
     background: rgba(34,34,34,0.75);
 }
 
+.btn:hover{
+    color: inherit;
+}
+
 .custom_ui_13884_13886 .doabsolute {
     background-color: #000000 !important;
 }
