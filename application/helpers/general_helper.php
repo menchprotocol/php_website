@@ -709,7 +709,7 @@ function cookie_check()
     date_default_timezone_set(view_memory(6404,11079));
 
     if(!substr_count($_SERVER['REQUEST_URI'], 'sign') && isset($_COOKIE['mench_login']) && !superpower_unlocked()) {
-        header("Location: " . '/signin?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
+        header("Location: " . '/app/4269?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
         exit;
     }
 
@@ -934,7 +934,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
         if($has_session){
             $goto_url = '/@'.$user_e['e__id'];
         } else {
-            $goto_url = '/signin?url=' . urlencode($_SERVER['REQUEST_URI']);
+            $goto_url = '/app/4269?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:
@@ -1201,6 +1201,15 @@ function analyze_domain($full_url){
 }
 
 
+function js_redirect($url, $timer){
+    echo '<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            window.location = \''.$url.'\';
+        }, '.$timer.');
+    });
+</script>';
+}
 
 function i__title_validate($string){
 

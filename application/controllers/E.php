@@ -20,14 +20,6 @@ class E extends CI_Controller
         //source:
         $user_e = superpower_unlocked(null);
 
-        //Log View:
-        if($user_e){
-            $this->X_model->create(array(
-                'x__type' => 12489, //Opened Leaderboard
-                'x__source' => $user_e['e__id'],
-            ));
-        }
-
         $e___11035 = $this->config->item('e___11035');
         $this->load->view('header', array(
             'title' => $e___11035[13207]['m__title'],
@@ -38,36 +30,10 @@ class E extends CI_Controller
         $this->load->view('footer');
     }
 
-    function e_404()
-    {
-        $this->load->view('header', array(
-            'title' => 'Page Not Found',
-        ));
-        $this->load->view('e/404');
-        $this->load->view('footer');
-    }
 
-
-    function get_started($i__id = 0){
-        $user_e = superpower_unlocked();
-        if(!$user_e){
-            return redirect_message('/');
-        }
-        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-        $this->load->view('header', array(
-            'min_header_footer' => 1,
-            'title' => $e___11035[14517]['m__title'],
-        ));
-        $this->load->view('e/get_started', array(
-            'i__id' => $i__id,
-        ));
-        $this->load->view('footer', array(
-            'min_header_footer' => 1,
-        ));
-    }
 
     //Lists sources
-    function e_layout($e__id)
+    function layout_e($e__id)
     {
 
         //Make sure not a private discover:
@@ -109,7 +75,7 @@ class E extends CI_Controller
         ));
 
         if (count($es) < 1) {
-            return redirect_message('/@');
+            return redirect_message(home_url());
         }
 
         //Load views:
@@ -117,7 +83,7 @@ class E extends CI_Controller
             'title' => $es[0]['e__title'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('e/layout', array(
+        $this->load->view('layout_e', array(
             'e' => $es[0],
             'user_e' => $user_e,
         ));
@@ -323,7 +289,7 @@ class E extends CI_Controller
 
     }
 
-    function remove_10673(){
+    function e_remove(){
 
         //Auth user and check required variables:
         $user_e = superpower_unlocked(10939);
@@ -878,7 +844,7 @@ class E extends CI_Controller
                     $delete_redirect_url = '/@' . $e__profiles[0]['e__id'];
                 } else {
                     //Is the app activated?
-                    $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/app/7269' : '/@' );
+                    $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/app/7269' : home_url() );
                 }
             }
 
@@ -1480,97 +1446,68 @@ class E extends CI_Controller
 
 
 
+    function e_modify_load(){
 
-
-
-
-    /*
-     *
-     * SIGN FUNCTIONS
-     *
-     *
-     * */
-
-
-    function signin($i__id = 0){
-
-        //Check to see if they are previously logged in?
-        if(superpower_unlocked()) {
-
-            //Lead user and above, go to console:
-            if($i__id > 0){
-                return redirect_message('/' . $i__id);
-            } else {
-                return redirect_message(home_url());
-            }
-
-        } elseif(isset($_COOKIE['mench_login'])){
-
-            //Authenticate Cookie:
-            $cookie_parts = explode('ABCEFG',$_COOKIE['mench_login']);
-
-            $es = $this->E_model->fetch(array(
-                'e__id' => $cookie_parts[0],
+        $user_e = superpower_unlocked(10939);
+        if (!$user_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(10939),
             ));
-            $u_emails = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__up' => 3288, //Mench Email
-                'x__down' => $cookie_parts[0],
+        } elseif(!source_of_e($_POST['e__id'], $user_e)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing permissions to modify this source',
             ));
-
-            if(count($es) && count($u_emails) && $cookie_parts[2]==md5($cookie_parts[0].$u_emails[0]['x__message'].$cookie_parts[1].$this->config->item('cred_password_salt'))){
-
-                //Assign session & log transaction:
-                $this->E_model->activate_session($es[0], false, true);
-
-                return redirect_message( isset($_GET['url']) ? urldecode($_GET['url']) : home_url() );
-
-            } else {
-
-                cookie_delete();
-
-            }
+        } elseif (!isset($_POST['e__id']) || !isset($_POST['x__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing core inputs',
+            ));
         }
 
-        if($i__id > 0){
-            //Assign Session variable:
-            $session_data = $this->session->all_userdata();
-            $session_data['login_i__id'] = $i__id;
-            $this->session->set_userdata($session_data);
+        $es = $this->E_model->fetch(array(
+            'e__id' => $_POST['e__id'],
+        ));
+        if(!count($es)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Source ID',
+            ));
+        }
+        $return_data = array(
+            'status' => 1,
+            'e__title' => $es[0]['e__title'],
+            'e__type' => $es[0]['e__type'],
+            'e__icon' => $es[0]['e__icon'],
+        );
+
+        if($_POST['x__id'] > 0){
+
+            $fetch_xs = $this->X_model->fetch(array(
+                'x__id' => $_POST['x__id'],
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            ));
+            if(!count($fetch_xs)){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Transaction ID',
+                ));
+            }
+
+            //Append more data:
+            $return_data['x__status'] = $fetch_xs[0]['x__status'];
+            $return_data['x__message'] = $fetch_xs[0]['x__message'];
+
         }
 
-        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-        $this->load->view('header', array(
-            'min_header_footer' => 1,
-            'title' => $e___11035[4269]['m__title'],
-        ));
-        $this->load->view('e/signin', array(
-            'sign_i__id' => $i__id,
-        ));
-        $this->load->view('footer', array(
-            'min_header_footer' => 1,
-        ));
+        return view_json($return_data);
 
     }
 
 
-    function signout()
-    {
-        //Destroys Session
-        session_delete();
 
-        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-        $this->load->view('header', array(
-            'min_header_footer' => 1,
-            'title' => $e___11035[7291]['m__title'],
-        ));
-        $this->load->view('e/signout');
-        $this->load->view('footer', array(
-            'min_header_footer' => 1,
-        ));
 
-    }
 
 
 
@@ -1650,7 +1587,7 @@ class E extends CI_Controller
         } else {
 
             //Go to home page and let them continue from there:
-            $sign_url = '/get_started'.(intval($_POST['sign_i__id']) > 0 ? '/'.$_POST['sign_i__id'] : '' );
+            $sign_url = '/app/14517'.(intval($_POST['sign_i__id']) > 0 ? '?i__id='.$_POST['sign_i__id'] : '' );
 
         }
 
@@ -1663,61 +1600,6 @@ class E extends CI_Controller
     }
 
 
-
-
-    function search_google($e__id){
-        $es = $this->E_model->fetch(array(
-            'e__id' => $e__id,
-        ));
-        if(count($es)){
-            return redirect_message('https://www.google.com/search?q='.urlencode($es[0]['e__title']));
-        } else {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Source ID'
-            ));
-        }
-    }
-
-    function search_icon($e__id){
-
-        $es = $this->E_model->fetch(array(
-            'e__id' => $e__id,
-        ));
-        if(!count($es)){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Source ID'
-            ));
-        } elseif(!strlen($es[0]['e__icon'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Source Missing Icon'
-            ));
-        }
-
-        if(substr_count($es[0]['e__icon'], '<img ') && substr_count($es[0]['e__icon'], 'src="')){
-
-            $icon_keyword = one_two_explode('src="','"',$es[0]['e__icon']);
-
-        } elseif(substr_count($es[0]['e__icon'], '<i ') && substr_count($es[0]['e__icon'], 'class="')){
-
-            $icon_keyword = one_two_explode('class="','"',$es[0]['e__icon']);
-            foreach(array('idea', 'source', 'discover', 'fas', 'far', 'fad', 'fal') as $remove_class){
-                $icon_keyword = str_replace($remove_class, '', $icon_keyword);
-            }
-            $icon_keyword = trim($icon_keyword);
-
-        } else {
-
-            $icon_keyword = $es[0]['e__icon'];
-
-        }
-
-        return redirect_message('/app/7267?search_for=' . urlencode($icon_keyword));
-
-
-    }
 
     function e_signin_password(){
 
@@ -1893,31 +1775,6 @@ class E extends CI_Controller
         ));
     }
 
-    function auth0_login(){
-        $this->load->view('e/auth0_login');
-    }
-
-    function auth0_callback(){
-        $this->load->view('e/auth0_callback');
-    }
-
-    function auth0_create($sign_i__id){
-
-        //TODO make this more secure
-
-        //New account to be created:
-        $member_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']));
-        if(!$member_result['status']) {
-            $this->X_model->create(array(
-                'x__type' => 4246, //Platform Bug Reports
-                'x__message' => 'auth0_callback() Failed to create new member: '.$member_result['message'],
-            ));
-            die('Error creating a new account: '.$member_result['message']);
-        }
-
-        header('Location: /get_started' . ($sign_i__id > 0 ? '/'.$sign_i__id :  '' ));
-
-    }
 
     function e_magic_sign($x__id){
 
@@ -1927,7 +1784,7 @@ class E extends CI_Controller
         //Validate email:
         if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/signin/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>');
+            return redirect_message('/app/4269', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>');
         }
 
         //Validate DISCOVER ID and matching email:
@@ -1938,10 +1795,10 @@ class E extends CI_Controller
         )); //The user making the request
         if(count($validate_x) < 1){
             //Probably previously completed the reset password:
-            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
+            return redirect_message('/app/4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
         } elseif(strtotime($validate_x[0]['x__time']) + view_memory(6404,11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic transaction has expired. Try again.</div>');
+            return redirect_message('/app/4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic transaction has expired. Try again.</div>');
         }
 
 
@@ -1951,7 +1808,7 @@ class E extends CI_Controller
             'e__id' => $validate_x[0]['x__source'],
         ));
         if(count($es) < 1){
-            return redirect_message('/signin?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
+            return redirect_message('/app/4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
         }
 
 
@@ -2031,197 +1888,6 @@ class E extends CI_Controller
         }
     }
 
-
-    function app($app_e__id = 0){
-
-        $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
-        if(!$memory_detected){
-            $app_e__id = 4527;
-        }
-
-        if(!$app_e__id){
-
-            //List apps to choose from:
-            $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-            $this->load->view('header', array(
-                'title' => $e___11035[6287]['m__title'],
-            ));
-            $this->load->view('e/app_home');
-            $this->load->view('footer');
-
-        } else {
-
-            //Load a specific app:
-            //Valud app?
-            if($memory_detected && !in_array($app_e__id, $this->config->item('n___6287'))){
-                die('Invalid app ID');
-            }
-
-            boost_power();
-            $user_e = false;
-            $is_u_request = isset($_SERVER['SERVER_NAME']);
-
-            if($memory_detected && $is_u_request){
-                //Needs superpowers?
-                $user_e = superpower_unlocked();
-                $e___6287 = $this->config->item('e___6287'); //MENCH APP
-                $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__profile']);
-                if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-                    die(view_unauthorized_message(end($superpower_actives)));
-                }
-            }
-
-            //Log Transaction
-            $this->X_model->create(array(
-                'x__source' => ( !$is_u_request || !$user_e ? 7274 : $user_e['e__id'] ),
-                'x__type' => 14067, //MENCH APP LOADED
-                'x__down' => $app_e__id,
-            ));
-
-
-            //This is also duplicated in app_frame to pass-on to app file:
-            $view_data = array(
-                'app_e__id' => $app_e__id,
-                'user_e' => $user_e,
-                'is_u_request' => $is_u_request,
-                'memory_detected' => $memory_detected,
-            );
-
-            if(!$memory_detected){
-
-                //Just focus on the core:
-                $this->load->view('e/app_frame', $view_data);
-
-            } else {
-
-                if(in_array($app_e__id, $this->config->item('n___12741'))){
-
-                    //Raw UI:
-                    $this->load->view('e/app/'.$app_e__id.'/index', $view_data);
-
-                } else {
-
-                    //Regular UI:
-                    //Load App:
-                    $this->load->view('header', array(
-                        'title' => strip_tags($e___6287[$app_e__id]['m__icon']).$e___6287[$app_e__id]['m__title'].' | APP',
-                    ));
-                    $this->load->view('e/app_frame', $view_data);
-                    $this->load->view('footer');
-
-                }
-
-            }
-        }
-    }
-
-
-    function e_modify_load(){
-
-        $user_e = superpower_unlocked(10939);
-        if (!$user_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(10939),
-            ));
-        } elseif(!source_of_e($_POST['e__id'], $user_e)){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing permissions to modify this source',
-            ));
-        } elseif (!isset($_POST['e__id']) || !isset($_POST['x__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing core inputs',
-            ));
-        }
-
-        $es = $this->E_model->fetch(array(
-            'e__id' => $_POST['e__id'],
-        ));
-        if(!count($es)){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Source ID',
-            ));
-        }
-        $return_data = array(
-            'status' => 1,
-            'e__title' => $es[0]['e__title'],
-            'e__type' => $es[0]['e__type'],
-            'e__icon' => $es[0]['e__icon'],
-        );
-
-        if($_POST['x__id'] > 0){
-
-            $fetch_xs = $this->X_model->fetch(array(
-                'x__id' => $_POST['x__id'],
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ));
-            if(!count($fetch_xs)){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Invalid Transaction ID',
-                ));
-            }
-
-            //Append more data:
-            $return_data['x__status'] = $fetch_xs[0]['x__status'];
-            $return_data['x__message'] = $fetch_xs[0]['x__message'];
-
-        }
-
-        return view_json($return_data);
-
-    }
-
-    function app_7264(){
-
-        //Authenticate User:
-        $user_e = superpower_unlocked(12700);
-
-        if (!$user_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(12700),
-            ));
-        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Starting Idea',
-            ));
-        } elseif (!isset($_POST['depth_levels']) || intval($_POST['depth_levels']) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Depth',
-            ));
-        }
-
-        //Fetch/Validate idea:
-        $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-        ));
-        if(count($is) != 1){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Could not find idea #'.$_POST['i__id'],
-            ));
-        }
-
-
-        //Load AND/OR Ideas:
-        $e___4737 = $this->config->item('e___4737'); // Idea Status
-
-
-        //Return report:
-        return view_json(array(
-            'status' => 1,
-            'message' => '<h3>'.$e___4737[$is[0]['i__type']]['m__icon'].' '.view_i_title($is[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $is[0]['i__type']),
-        ));
-
-
-    }
 
 
 }

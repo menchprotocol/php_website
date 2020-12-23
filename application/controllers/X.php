@@ -36,143 +36,6 @@ class X extends CI_Controller
 
     }
 
-    function browse($e__id = 0){
-
-        //Make sure valid category:
-        if(!in_array($e__id, $this->config->item('n___12138'))){
-            //Go to Home page:
-            redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid Category ID</div>');
-        }
-
-        $e___12138 = $this->config->item('e___12138'); //FEATURED IDEAS
-
-        //Load header:
-        $this->load->view('header', array(
-            'title' => $e___12138[$e__id]['m__title'].' IDEAS',
-        ));
-        $this->load->view('x/browse', array(
-            'e__id' => $e__id,
-        ));
-        $this->load->view('footer');
-
-    }
-
-    function terms(){
-        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-        $this->load->view('header', array(
-            'title' => $e___11035[14373]['m__title'],
-        ));
-        $this->load->view('x/terms');
-        $this->load->view('footer');
-    }
-
-
-    function x_list(){
-
-        /*
-         *
-         * List all Transactions on reverse chronological order
-         * and Display Status for ideas, sources and
-         * transactions.
-         *
-         * */
-
-        //Load header:
-        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-
-        $this->load->view('header', array(
-            'title' => $e___11035[4341]['m__title'],
-        ));
-        $this->load->view('x/ledger');
-        $this->load->view('footer');
-
-    }
-
-    function x_load(){
-
-        /*
-         * Loads the list of transactions based on the
-         * filters passed on.
-         *
-         * */
-
-        $filters = unserialize($_POST['x_filters']);
-        $joined_by = unserialize($_POST['x_joined_by']);
-        $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
-        $next_page = ($page_num+1);
-        $query_offset = (($page_num-1)*view_memory(6404,11064));
-        $user_e = superpower_unlocked();
-
-        $message = '';
-
-        //Fetch transactions and total transaction counts:
-        $x = $this->X_model->fetch($filters, $joined_by, view_memory(6404,11064), $query_offset);
-        $x_count = $this->X_model->fetch($filters, $joined_by, 0, 0, array(), 'COUNT(x__id) as total_count');
-        $total_items_loaded = ($query_offset+count($x));
-        $has_more_x = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
-
-
-        //Display filter:
-        if($total_items_loaded > 0){
-
-            if($page_num==1){
-                $message .= view_mench_coins();
-            }
-
-            //Subsequent messages:
-            $message .= '<div class="css__title x-info grey">'.( $x_count[0]['total_count']>$total_items_loaded ? ( $has_more_x && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) : '') . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS</div>';
-
-        }
-
-
-        if(count($x)>0){
-
-            $message .= '<div class="list-group list-grey">';
-            foreach($x as $x) {
-
-                $message .= view_x($x);
-
-                if($user_e && strlen($x['x__message'])>0 && strlen($_POST['x__message_search'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($x['x__message'], $_POST['x__message_search'])>0){
-
-                    $new_content = str_replace($_POST['x__message_search'],trim($_POST['x__message_replace']),$x['x__message']);
-
-                    $this->X_model->update($x['x__id'], array(
-                        'x__message' => $new_content,
-                    ), $user_e['e__id'], 12360, update_description($x['x__message'], $new_content));
-
-                    $message .= '<div class="msg alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_search'].'] with ['.trim($_POST['x__message_replace']).']</div>';
-
-                }
-
-            }
-            $message .= '</div>';
-
-            //Do we have more to show?
-            if($has_more_x){
-                $message .= '<div id="x_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-discover" onclick="x_load(x_filters, x_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Page '.$next_page.'</a></div>';
-                $message .= '';
-            } else {
-                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$x_count[0]['total_count'].' transactions have been loaded</div>';
-
-            }
-
-        } else {
-
-            //Show no transaction warning:
-            $message .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Transactions found with the selected filters. Modify filters and try again.</div>';
-
-        }
-
-
-        return view_json(array(
-            'status' => 1,
-            'message' => $message,
-        ));
-
-
-    }
-
-
 
     function x_type_preview()
     {
@@ -481,7 +344,7 @@ class X extends CI_Controller
 
         //Check to see if added to Discovery for logged-in users:
         if(!$user_e){
-            return redirect_message('/signin/'.$i__id);
+            return redirect_message('/app/4269?i__id='.$i__id);
         }
 
         //Add this Idea to their Discovery If not there:
@@ -506,7 +369,7 @@ class X extends CI_Controller
 
         $user_e = superpower_unlocked();
         if(!$user_e){
-            return redirect_message('/signin/');
+            return redirect_message('/app/4269');
         }
 
         //Fetch Idea:
@@ -570,7 +433,7 @@ class X extends CI_Controller
 
         $user_e = superpower_unlocked();
         if(!$user_e){
-            return redirect_message('/signin/');
+            return redirect_message('/app/4269');
         }
 
         if(!$i__id){
@@ -648,7 +511,7 @@ class X extends CI_Controller
 
 
 
-    function x_layout($top_i__id, $i__id)
+    function layout_x($top_i__id, $i__id)
     {
 
         /*
@@ -684,7 +547,7 @@ class X extends CI_Controller
         ));
 
         //Load specific view based on Idea Level:
-        $this->load->view('x/layout', array(
+        $this->load->view('layout_x', array(
             'i_focus' => $is[0],
         ));
 

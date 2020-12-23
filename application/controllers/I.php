@@ -115,7 +115,7 @@ class I extends CI_Controller {
     }
 
 
-    function i_layout($i__id){
+    function layout_i($i__id){
 
         //Validate/fetch Idea:
         $is = $this->I_model->fetch(array(
@@ -170,7 +170,7 @@ class I extends CI_Controller {
             'i_focus' => $is[0],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('i/layout', array(
+        $this->load->view('layout_i', array(
             'i_focus' => $is[0],
             'user_e' => $user_e,
         ));
@@ -204,20 +204,6 @@ class I extends CI_Controller {
     }
 
 
-
-    function search_google($i__id){
-        $is = $this->I_model->fetch(array(
-            'i__id' => $i__id,
-        ));
-        if(count($is)){
-            return redirect_message('https://www.google.com/search?q='.urlencode($is[0]['i__title']));
-        } else {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Idea ID'
-            ));
-        }
-    }
 
 
     function i_navigate($previous_i__id, $current_i__id, $action){
@@ -868,7 +854,7 @@ class I extends CI_Controller {
 
 
 
-    function i_note_remove(){
+    function i_remove_note(){
 
         //Authenticate User:
         $user_e = superpower_unlocked();

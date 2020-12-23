@@ -271,11 +271,10 @@ $config['log_date_format'] = 'Y-m-d H:i:s';
 | Error Views Directory Path
 |--------------------------------------------------------------------------
 |
-| Leave this BLANK unless you would like to set something other than the default
-| application/views/errors/ directory.  Use a full server path with trailing slash.
+| Use a full server path with trailing slash.
 |
 */
-$config['error_views_path'] = 'application/views/e/errors/';
+$config['error_views_path'] = 'application/views/error/';
 
 /*
 |--------------------------------------------------------------------------

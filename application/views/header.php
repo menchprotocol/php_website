@@ -4,10 +4,10 @@ $user_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
 $i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-$e___10876 = $this->config->item('e___10876'); //Mench Website
 $e___13479 = $this->config->item('e___13479');
 $superpower_10939 = superpower_active(10939, true);
 $current_mench = current_mench();
+$basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
 ?><!doctype html>
 <html lang="en" >
 <head>
@@ -160,12 +160,12 @@ if(strlen($flash_message) > 0) {
     //Delete from Flash:
     $this->session->unmark_flash('flash_message');
 
-    echo '<div class="container '.( isset($min_header_footer) ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 10px;">'.$flash_message.'</div>';
+    echo '<div class="container '.( $basic_header_footer ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 10px;">'.$flash_message.'</div>';
 
 }
 
 
-if(!isset($min_header_footer)){
+if(!$basic_header_footer){
 
     //Do not show for /sign view
     ?>
@@ -258,10 +258,10 @@ if(!isset($min_header_footer)){
                             $href = 'href="javascript:void(0);"';
                             $extra_class = ' trigger_modal ';
 
-                        } elseif(in_array($x__type, $this->config->item('n___10876'))){
+                        } elseif(in_array($x__type, $this->config->item('n___6287'))){
 
-                            //URL
-                            $href = 'href="'.$e___10876[$x__type]['m__message'].'"';
+                            //Mench APP
+                            $href = 'href="/app/'.$x__type.'"';
 
                         } else {
 

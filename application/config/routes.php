@@ -2,26 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['translate_uri_dashes']      = FALSE;
-
-//Home
-$route['default_controller']        = "x/index"; //Home page
-$route['terms']                     = "x/terms";
-$route['browse']                    = "x/browse";
-$route['browse/(:num)']             = "x/browse/$1";
-$route['@']                         = "e/index"; //Source home
-$route['signin']                    = "e/signin"; //Sign
-$route['signin/(:num)']             = "e/signin/$1"; //Sign
-$route['get_started/(:num)']        = "e/get_started/$1"; //Personalize Account
-$route['get_started']               = "e/get_started"; //Personalize Account
-
-//COINS
-$route['(:num)/(:num)']             = "x/x_layout/$1/$2";
-$route['(:num)']                    = "x/x_layout/0/$1";
-$route['@(:num)']                   = "e/e_layout/$1";
-$route['~(:num)']                   = "i/i_layout/$1";
-
-//OTHER
-$route['app']                       = "e/app";
-$route['app/(:num)']                = "e/app/$1";
-$route['ledger']                    = "x/x_list"; //Transactions
-$route['404_override']              = 'e/e_404'; //Page not found, etc...
+$route['default_controller']        = "app/load/14565";     //Home
+$route['404_override']              = 'app/load/14563';     //Page not found
+$route['app/(:num)']                = "app/load/$1";        //Load App
+$route['@(:num)']                   = "e/layout_e/$1";      //Source
+$route['~(:num)']                   = "i/layout_i/$1";      //Publish Idea
+$route['(:num)']                    = "x/layout_x/0/$1";    //Discover Idea
+$route['(:num)/(:num)']             = "x/layout_x/$1/$2";   //My Discoveries

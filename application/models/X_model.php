@@ -1007,7 +1007,7 @@ class X_model extends CI_Model
 
                         $e_media_count++;
                         array_push($e_urls, $e_profile['x__message']);
-                        $e_appendix .= '<div class="e-appendix paddingup"><a href="'.$e_profile['x__message'].'" target="_blank" class="ignore-click"><span class="icon-block-xs">'.view_e__icon($e_profile['e__icon']).'</span>' . ( in_array($e_profile['e__id'], $this->config->item('n___13672')) ? view_url_clean($e_profile['x__message']) : $e_profile['e__title'] /* .'<span class="icon-block-xs"><i class="fas fa-external-link"></i></span>' */  ) . '</a></div>';
+                        $e_appendix .= '<div class="e-appendix paddingup"><a href="'.$e_profile['x__message'].'" target="_blank" class="ignore-click" title="' . $e_profile['e__title'] . '"><span class="icon-block-xs">'.view_e__icon($e_profile['e__icon']).'</span></a></div>';
 
                     } else {
 
@@ -1021,7 +1021,7 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $is_single_link = ( $is_discovery_mode && count($e_urls)==1 && $e_media_count==1 );
+            $is_single_link = ( count($e_urls)==1 && $e_media_count==1 );
             if(!$is_single_link){
                 //For single link it would be linked directly
                 $output_body_message .= $e_appendix;

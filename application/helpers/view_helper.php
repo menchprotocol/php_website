@@ -264,7 +264,7 @@ function view_i_note($x__type, $is_discovery_mode, $x, $note_e = false)
             $ui .= '<span title="'.$e___11035[13574]['m__title'].'"><a href="javascript:void(0);" class="load_i_note_editor '.( $supports_emoji ? 'load_emoji_editor' : '' ).'" x__id="' . $x['x__id'] . '" onclick="load_i_note_editor(' . $x['x__id'] . ');">'.$e___11035[13574]['m__icon'].'</a></span>';
 
             //REMOVE NOTE
-            $ui .= '<span title="'.$e___11035[13579]['m__title'].'"><a href="javascript:void(0);" onclick="i_note_remove(' . $x['x__id'] . ', '.$x['x__type'].')">'.$e___11035[13579]['m__icon'].'</a></span>';
+            $ui .= '<span title="'.$e___11035[13579]['m__title'].'"><a href="javascript:void(0);" onclick="i_remove_note(' . $x['x__id'] . ', '.$x['x__type'].')">'.$e___11035[13579]['m__icon'].'</a></span>';
 
         $ui .= '</span></div>';
 
@@ -394,7 +394,7 @@ function view_x($x, $is_parent_tr = false)
 
 
     //ID
-    $ui .= '<div class="simple-line"><a href="/ledger?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m__title'].'" class="mono-space"><span class="icon-block">'.$e___4341[4367]['m__icon']. '</span>'.$x['x__id'].'</a></div>';
+    $ui .= '<div class="simple-line"><a href="/app/4341?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m__title'].'" class="mono-space"><span class="icon-block">'.$e___4341[4367]['m__icon']. '</span>'.$x['x__id'].'</a></div>';
 
 
     //SOURCE
@@ -1450,7 +1450,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
                 $count_query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
                 if($count_query[0]['totals'] > $limit){
                     //Yes, we have more, show this:
-                    $see_all_link = '<a href="/browse/'.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><span class="icon-block">'.$m['m__icon'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
+                    $see_all_link = '<a href="/app/12138?e__id='.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><span class="icon-block">'.$m['m__icon'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
                 }
             }
 
@@ -1784,7 +1784,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         if($superpower_10939 && (($source_of_e && !$is_parent) || $superpower_13422)){
 
             //UNLINK SOURCE
-            $ui .= '<span class="'.( $main_controller ? ' show-max ' : '' ).'"><a href="javascript:void(0);" onclick="remove_10673(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m__title'].'">'.$e___11035[10673]['m__icon'].'</a></span>';
+            $ui .= '<span class="'.( $main_controller ? ' show-max ' : '' ).'"><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m__title'].'">'.$e___11035[10673]['m__icon'].'</a></span>';
 
         }
 
