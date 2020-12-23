@@ -2402,8 +2402,7 @@ i, .btn .show-max {
     background: rgba(34,34,34,0.75);
 }
 
-.custom_ui_13884_13886 .doabsolute,
-.custom_ui_13884_13886 .editor_preview:hover{
+.custom_ui_13884_13886 .doabsolute {
     background-color: #000000 !important;
 }
 

@@ -1007,7 +1007,7 @@ class X_model extends CI_Model
 
                         $e_media_count++;
                         array_push($e_urls, $e_profile['x__message']);
-                        $e_appendix .= '<div class="e-appendix paddingup"><a href="'.$e_profile['x__message'].'" target="_blank" class="ignore-click" title="' . $e_profile['e__title'] . '"><span class="icon-block-xs">'.view_e__icon($e_profile['e__icon']).'</span></a></div>';
+                        $e_appendix .= '<div class="e-appendix paddingup inline-block"><a href="'.$e_profile['x__message'].'" target="_blank" class="ignore-click" title="' . $e_profile['e__title'] . '"><span class="icon-block-xs">'.view_e__icon($e_profile['e__icon']).'</span></a></div>';
 
                     } else {
 
