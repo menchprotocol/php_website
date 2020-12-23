@@ -36,8 +36,6 @@ class E extends CI_Controller
     function layout_e($e__id)
     {
 
-        die('hi');
-
         //Make sure not a private discover:
         if(in_array($e__id, $this->config->item('n___4755'))){
             $user_e = superpower_unlocked(12701, true);
@@ -1816,6 +1814,8 @@ class E extends CI_Controller
 
         //Log them in:
         $this->E_model->activate_session($es[0]);
+
+        die('aaa' .$validate_x[0]['x__left'].home_url());
 
 
         //Take them to DISCOVER HOME
