@@ -1815,8 +1815,6 @@ class E extends CI_Controller
         //Log them in:
         $this->E_model->activate_session($es[0]);
 
-        die('hii');
-
 
         //Did we have original intent?
         if($validate_x[0]['x__left'] > 0){
@@ -1825,6 +1823,8 @@ class E extends CI_Controller
         } else {
             $sign_url = home_url();
         }
+
+        die('hii'.$sign_url);
 
         //Take them to DISCOVER HOME
         return redirect_message($sign_url, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
