@@ -1898,7 +1898,7 @@ i, .btn .show-max {
     max-height: 58%;
     position: absolute;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding: 0;
     display: block;
 }
