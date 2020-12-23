@@ -2367,7 +2367,8 @@ i, .btn .show-max {
 .custom_ui_13884_13886 .css__title,
 .custom_ui_13884_13886 a,
 .custom_ui_13884_13886 .close span,
-.custom_ui_13884_13886 .fa-gif-wrap{
+.custom_ui_13884_13886 .fa-gif-wrap,
+.custom_ui_13884_13886 .btn:hover{
     color: #FFFFFF;
 }
 
@@ -2400,10 +2401,6 @@ i, .btn .show-max {
 .cover-content .inner-content,
 .media-info {
     background: rgba(34,34,34,0.75);
-}
-
-.btn:hover{
-    color: inherit;
 }
 
 .custom_ui_13884_13886 .doabsolute {
@@ -2479,7 +2476,8 @@ i, .btn .show-max {
 .custom_ui_13884_13885 a,
 .custom_ui_13884_13885 .mench-navigation a,
 .custom_ui_13884_13885 .form-control,
-.custom_ui_13884_13885 .fa-gif-wrap{
+.custom_ui_13884_13885 .fa-gif-wrap,
+.custom_ui_13884_13885 .btn:hover{
     color: #222222;
 }
 .custom_ui_13884_13885 .cover-link
@@ -2515,7 +2513,7 @@ i, .btn .show-max {
 .custom_ui_13884_13885 .light-bg {
     background: rgba(240,240,240, 0.75);
 }
-.custom_ui_13884_13885 .doabsolute {
+.custom_ui_13884_13885 .doabsolute{
     background-color:#FFFFFF !important;
 }
 .btn-grey .fa-gif-wrap {
