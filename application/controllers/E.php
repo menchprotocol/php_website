@@ -1815,6 +1815,8 @@ class E extends CI_Controller
         //Log them in:
         $this->E_model->activate_session($es[0]);
 
+        die('hii');
+
 
         //Did we have original intent?
         if($validate_x[0]['x__left'] > 0){

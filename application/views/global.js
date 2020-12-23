@@ -1620,7 +1620,7 @@ function set_autosize(theobject){
     autosize(theobject);
     setTimeout(function () {
         autosize.update(theobject);
-    }, 89);
+    }, 13);
 }
 
 

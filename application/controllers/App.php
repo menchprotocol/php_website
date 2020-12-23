@@ -93,7 +93,7 @@ class App extends CI_Controller
                 //Regular UI:
                 //Load App:
                 $this->load->view('header', array(
-                    'title' => strip_tags($e___6287[$app_e__id]['m__icon']).$e___6287[$app_e__id]['m__title'].' | APP',
+                    'title' => $e___6287[$app_e__id]['m__title'].' | MENCH',
                     'basic_header_footer' => $basic_header,
                 ));
                 $this->load->view('app_frame', $view_data);

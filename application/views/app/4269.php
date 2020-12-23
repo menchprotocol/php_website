@@ -7,7 +7,7 @@ $next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ($sign_i__id > 0 ?
 if(superpower_unlocked()) {
 
     //Lead user and above, go to console:
-    js_redirect($next_url, 89);
+    js_redirect($next_url, 13);
 
 } elseif(isset($_COOKIE['mench_login'])){
 
@@ -36,7 +36,7 @@ if(superpower_unlocked()) {
 
     }
 
-    js_redirect($next_url, 89);
+    js_redirect($next_url, 13);
 
 } else {
 
