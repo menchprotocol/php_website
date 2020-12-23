@@ -14,9 +14,20 @@ class App extends CI_Controller
 
     }
 
+    function index(){
+        //App directory is a modal, redirect for now:
+        return redirect_message('/');
+    }
 
+    function home(){
+        $this->load(14565);
+    }
 
-    function load($app_e__id = 14565){
+    function error(){
+        $this->load(14563);
+    }
+
+    function load($app_e__id){
 
         $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
         if(!$memory_detected){
