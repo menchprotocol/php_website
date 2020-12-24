@@ -16,7 +16,7 @@ if($search_for_set){
 
     $matching_results = $this->E_model->fetch(array(
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'LOWER(e__title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
+        'e__title LIKE \'%'.strtoupper($_GET['search_for']).'%\'' => null,
     ));
 
     //List the matching search:
@@ -38,7 +38,7 @@ if($search_for_set){
             if($replace_with_set){
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$en['e__title']).$append_text;
+                $new_outcome = str_replace(strtoupper($_GET['search_for']),strtoupper($_GET['replace_with']),$en['e__title']).$append_text;
 
                 if($replace_with_confirmed){
                     //Update idea:
