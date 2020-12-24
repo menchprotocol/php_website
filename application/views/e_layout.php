@@ -344,13 +344,36 @@ $profiles = $this->X_model->fetch(array(
             $counter = $counter__i;
             $i_exclude = array();
 
+
+
+            $i_bookmarks = $this->X_model->fetch(array(
+                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 10573, //BOOKMARKED IDEAS
+                'x__up' => $e['e__id'],
+            ), array('x__right'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
+
+            //Any Ideas?
+            if(count($i_bookmarks) > 0){
+
+                $ui .= '<div class="headline top-margin"><span class="icon-block">' . $e___11035[10573]['m__icon'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
+
+                //Need 2 or more to sort...
+                $ui .= ( count($i_bookmarks) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list_10573 .x_sort {display:none !important;} </style>' );
+
+                $ui .= '<div class="row top-margin" id="list_10573">';
+                foreach($i_bookmarks as $item){
+                    array_push($i_exclude, $item['i__id']);
+                    $ui .= view_i(10573, $item, $control_enabled,null, $e);
+                }
+                $ui .= '</div>';
+
+            }
+
+
+            //Add Idea:
             if($superpower_10939){
-
-                //MY IDEAS?
                 if($source_is_e){
-
-                    //$ui .= '<div class="headline top-margin"><span class="icon-block">' . $e___11035[10573]['m__icon'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
-
                     //Give Option to Add New Idea:
                     $ui .= '<div class="list-group add_e_idea top-margin"><div class="list-group-item list-adder">
                     <div class="input-group border">
@@ -361,44 +384,9 @@ $profiles = $this->X_model->fetch(array(
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[14015]['m__title'].'">
                     </div></div></div>';
-
-
-                    $i_bookmarks = $this->X_model->fetch(array(
-                        'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 10573, //BOOKMARKED IDEAS
-                        'x__up' => $e['e__id'],
-                    ), array('x__right'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
-
-                    if(count($i_bookmarks) > 0){
-
-                        //Need 2 or more to sort...
-                        $ui .= ( count($i_bookmarks) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list_10573 .x_sort {display:none !important;} </style>' );
-
-                        $ui .= '<div class="row top-margin" id="list_10573">';
-                        foreach($i_bookmarks as $item){
-                            array_push($i_exclude, $item['i__id']);
-                            $ui .= view_i(10573, $item, $control_enabled,null, $e);
-                        }
-                        $ui .= '</div>';
-
-                    } else {
-
-                        //$ui .= '<div class="msg alert alert-warning" role="alert" style="text-decoration: none;"><span class="icon-block"><i class="fas fa-exclamation-circle idea"></i></span>No Ideas Bookmarked Yet</div>';
-
-                    }
-                }
-
-            }
-
-
-
-            //List References
-            $list_i = view_coins_e(12273, $e['e__id'], 1, true, $i_exclude);
-
-            if($superpower_10939 && !$source_is_e){
-                //Give Option to Add New Idea:
-                $ui .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
+                } else {
+                    //Give Option to Add New Idea:
+                    $ui .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14016]['m__icon'].'</span></a>
                         <input type="text"
@@ -407,10 +395,14 @@ $profiles = $this->X_model->fetch(array(
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[14016]['m__title'].'">
                     </div></div></div>';
+                }
             }
 
+            //List References
+            $list_i = view_coins_e(12273, $e['e__id'], 1, true, $i_exclude);
 
             if(count($list_i)){
+
                 $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
                 $ui .= '<div class="row margin-top-down-half" id="list_13550">';
                 foreach($list_i as $count => $item){
@@ -423,6 +415,7 @@ $profiles = $this->X_model->fetch(array(
                 if($counter > count($list_i)){
                     $ui .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/app/4341?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m__icon'].'</span>'.$e___11035[13913]['m__title'].' ['.$counter.']</a></div></div>';
                 }
+
             }
 
         } elseif($x__type==6255){
