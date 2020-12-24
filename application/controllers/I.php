@@ -184,22 +184,40 @@ class I extends CI_Controller {
         //Make sure it's a logged in user:
         $user_e = superpower_unlocked(10939, true);
 
-        $this->X_model->create(array(
-            'x__type' => 4983, //IDEA SOURCES
-            'x__source' => $user_e['e__id'],
-            'x__up' => $user_e['e__id'],
-            'x__message' => '@'.$user_e['e__id'],
-            'x__right' => $i__id,
-        ));
+        if(superpower_active(12700, true)){
 
-        $this->X_model->create(array(
-            'x__type' => 13933, //JOIN AS SOURCE
-            'x__source' => $user_e['e__id'],
-            'x__right' => $i__id,
-        ));
+            //They can instantly join:
+            $this->X_model->create(array(
+                'x__type' => 4983, //IDEA SOURCES
+                'x__source' => $user_e['e__id'],
+                'x__up' => $user_e['e__id'],
+                'x__message' => '@'.$user_e['e__id'],
+                'x__right' => $i__id,
+            ));
+
+            $this->X_model->create(array(
+                'x__type' => 13933, //JOIN AS SOURCE INSTANTLY
+                'x__source' => $user_e['e__id'],
+                'x__right' => $i__id,
+            ));
+
+            $success_message = '<span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY Joined & Notified relevant members of your intention to contribute.';
+
+        } else {
+
+            //Pending Request
+            $this->X_model->create(array(
+                'x__type' => 14577, //JOIN AS SOURCE PENDING
+                'x__source' => $user_e['e__id'],
+                'x__right' => $i__id,
+            ));
+
+            $success_message = '<span class="icon-block"><i class="fad fa-check-circle"></i></span>Notified relevant members of your intention to join & will notify once approved.';
+
+        }
 
         //Go back to idea:
-        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY Joined & Notified relevant members of your intention to contribute.</div>');
+        return redirect_message('/~'.$i__id, '<div class="msg alert alert-warning" role="alert">'.$success_message.'</div>');
 
     }
 

@@ -1860,7 +1860,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 1, 0, array('x__time' => 'DESC'));
 
-        $ui .= '<div class="space-content hideIfEmpty">'.view_number($total_transactions[0]['totals']).' Last '.( count($last_transaction) ? $last_transaction[0]['x__time'] : 'NEVER' ).'</div>';
+        $ui .= '<div class="space-content hideIfEmpty">'.view_number($total_transactions[0]['totals']).' Transactions | Latest: '.( count($last_transaction) ? substr($last_transaction[0]['x__time'], 19) : 'NEVER' ).'</div>';
 
     }
 

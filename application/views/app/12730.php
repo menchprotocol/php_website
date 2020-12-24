@@ -42,13 +42,13 @@ if($search_for_set){
 
                 if($replace_with_confirmed){
                     //Update idea:
-                    $this->E_model->update($en['e__id'], array(
+                    $res = $this->E_model->update($en['e__id'], array(
                         'e__title' => $new_outcome,
                     ), true, $user_e['e__id']);
                 }
             }
 
-            echo view_e($en, false, null, false, false, null, ( $replace_with_set ? $new_outcome . ( $replace_with_confirmed ? ' [UPDATED]' : '') : null ));
+            echo view_e($en, false, null, false, false, null, ( $replace_with_set ? $new_outcome . ( $replace_with_confirmed ? ' [UPDATED @'.$en['e__id'].' from '.$en['e__title'].' to '.$new_outcome.' with result '.$res.']' : '') : null ));
         }
         echo '</div>';
 

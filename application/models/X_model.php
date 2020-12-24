@@ -749,11 +749,7 @@ class X_model extends CI_Model
         }
 
         //Message validation passed...
-        $html_message_body = '';
-        foreach($msg_validation['output_messages'] as $output_message) {
-            $html_message_body .= $output_message['message_body'];
-        }
-        return $html_message_body;
+        return $msg_validation['output_messages'];
 
     }
 
@@ -1067,12 +1063,7 @@ class X_model extends CI_Model
         return array(
             'status' => 1,
             'clean_message' => trim($message_input),
-            'output_messages' => array(
-                array(
-                    'message_type_e__id' => 4570, //User Received Email Message
-                    'message_body' => ( strlen($output_body_message) ? '<div class="msg"><span>' . nl2br($output_body_message) . '</span></div>' : null ),
-                ),
-            ),
+            'output_messages' => ( strlen($output_body_message) ? '<div class="msg"><span>' . nl2br($output_body_message) . '</span></div>' : null ),
             //Source References:
             'x__up' => $e_reference_fields['x__up'],
             'x__down' => $e_reference_fields['x__down'],
