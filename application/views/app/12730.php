@@ -48,7 +48,7 @@ if($search_for_set){
                 }
             }
 
-            echo view_e($en, false, null, false, false, null, ( $replace_with_set ? $new_outcome . ( $replace_with_confirmed ? ' [UPDATED @'.$en['e__id'].' from '.$en['e__title'].' to '.$new_outcome.' with result '.$res.']' : '') : null ));
+            echo view_e($en, false, null, false, false, null, ( $replace_with_set ? $new_outcome . ( $replace_with_confirmed ? ' [UPDATED]' : '') : null ));
         }
         echo '</div>';
 
