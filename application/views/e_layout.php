@@ -24,7 +24,7 @@ $profiles = $this->X_model->fetch(array(
     var e_focus_id = <?= $e['e__id'] ?>;
 </script>
 <input type="hidden" id="focus_i__id" value="0" />
-<script src="/application/views/layout_e.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+<script src="/application/views/e_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
     <?php
 

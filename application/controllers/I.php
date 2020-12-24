@@ -115,7 +115,7 @@ class I extends CI_Controller {
     }
 
 
-    function layout_i($i__id){
+    function i_layout($i__id){
 
         //Validate/fetch Idea:
         $is = $this->I_model->fetch(array(
@@ -170,7 +170,7 @@ class I extends CI_Controller {
             'i_focus' => $is[0],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('layout_i', array(
+        $this->load->view('i_layout', array(
             'i_focus' => $is[0],
             'user_e' => $user_e,
         ));

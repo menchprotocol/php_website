@@ -83,7 +83,7 @@ $drip_msg_total = count($messages) + 1 /* For Title */;
 </script>
 
 <input type="hidden" id="focus_i__id" value="<?= $i_focus['i__id'] ?>" />
-<script src="/application/views/layout_x.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+<script src="/application/views/x_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 <?php
 
@@ -215,7 +215,7 @@ if($user_e['e__id']){
                     $this->X_model->create(array(
                         'x__type' => 4246, //Platform Bug Reports
                         'x__source' => $user_e['e__id'],
-                        'x__message' => 'layout_x() found idea connector ['.$unlocked_connections[0]['x__type'].'] without a valid unlock method @12327',
+                        'x__message' => 'x_layout() found idea connector ['.$unlocked_connections[0]['x__type'].'] without a valid unlock method @12327',
                         'x__left' => $i_focus['i__id'],
                         'x__reference' => $unlocked_connections[0]['x__id'],
                     ));
@@ -247,6 +247,7 @@ if($user_e['e__id']){
 
 
 //Determine next path:
+$is_discovarable = true;
 if($in_my_x){
 
     $go_next_url = ( $i_completed ? '/x/i_next/' : '/x/x_next/' ) . $i_focus['i__id'];
@@ -266,6 +267,7 @@ if($in_my_x){
 
             foreach($top_startable as $start_i){
                 //OPEN TO REGISTER
+                $is_discovarable = false;
                 $go_next_url = '/'.$start_i['i__id'];
                 break; //Ignore other possible pathways
             }
@@ -767,10 +769,12 @@ echo '</div>'; //CLOSE CONTAINER
 
 if(!$in_my_x && !$i_drip_mode){
 
+    $discovery_e = ( $is_discovarable ? 4235 : 14022 );
+
     //Get Started
     echo '<div class="container light-bg">'; //fixed-bottom
     echo '<div class="discover-controller">';
-    echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__icon'].'</a></div>';
+    echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__icon'].'</a></div>';
     echo '</div>';
     echo '</div>';
 

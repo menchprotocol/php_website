@@ -16,7 +16,7 @@ $superpower_14005 = superpower_active(14005, true);
 </style>
 
 <input type="hidden" id="focus_i__id" value="<?= $i_focus['i__id'] ?>" />
-<script src="/application/views/layout_i.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+<script src="/application/views/i_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 <?php
 

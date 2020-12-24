@@ -33,7 +33,7 @@ class E extends CI_Controller
 
 
     //Lists sources
-    function layout_e($e__id)
+    function e_layout($e__id)
     {
 
         //Make sure not a private discover:
@@ -83,7 +83,7 @@ class E extends CI_Controller
             'title' => $es[0]['e__title'],
             'flash_message' => $message, //Possible mass-action message for UI:
         ));
-        $this->load->view('layout_e', array(
+        $this->load->view('e_layout', array(
             'e' => $es[0],
             'user_e' => $user_e,
         ));

@@ -514,7 +514,7 @@ class X extends CI_Controller
 
 
 
-    function layout_x($top_i__id, $i__id)
+    function x_layout($top_i__id, $i__id)
     {
 
         /*
@@ -550,7 +550,7 @@ class X extends CI_Controller
         ));
 
         //Load specific view based on Idea Level:
-        $this->load->view('layout_x', array(
+        $this->load->view('x_layout', array(
             'i_focus' => $is[0],
         ));
 
