@@ -1847,6 +1847,22 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
 
+    if($CI->uri->segment(1)=='@4593'){
+
+        //Load more context:
+        $total_transactions = $this->X_model->fetch(array(
+            'x__type' => $e['e__id'],
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+
+        $last_transaction = $this->X_model->fetch(array(
+            'x__type' => $e['e__id'],
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ), array(), 1, 0, array('x__time' => 'DESC'));
+
+        $ui .= '<div class="space-content hideIfEmpty">'.view_number($total_transactions[0]['totals']).' Last '.$last_transaction[0]['x__time'].'</div>';
+
+    }
 
 
     if($superpower_12706){
