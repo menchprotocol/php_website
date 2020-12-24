@@ -28,6 +28,16 @@ class X_model extends CI_Model
             return false;
         }
 
+        if(!in_array($add_fields['x__type'], $this->config->item('n___4593'))){
+            $this->X_model->create(array(
+                'x__message' => 'x->create() failed to create because of invalid transaction type @'.$add_fields['x__type'],
+                'x__type' => 4246, //Platform Bug Reports
+                'x__source' => $add_fields['x__source'],
+                'x__metadata' => $add_fields,
+            ));
+            return false;
+        }
+
         //Clean metadata is provided:
         if (isset($add_fields['x__metadata']) && is_array($add_fields['x__metadata'])) {
             $add_fields['x__metadata'] = serialize($add_fields['x__metadata']);

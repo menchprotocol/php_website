@@ -209,8 +209,6 @@ if(!$basic_header_footer){
 
                         echo $flip_coin;
 
-
-
                     } else {
 
                         //Mench Link

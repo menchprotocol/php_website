@@ -227,6 +227,12 @@ function init_remove(){
     });
 }
 
+function x_create(add_fields){
+    $.post("/x/x_create", add_fields, function (data) {
+        console.log(data);
+    });
+}
+
 var algolia_index = false;
 $(document).ready(function () {
 
@@ -251,6 +257,12 @@ $(document).ready(function () {
     $('.trigger_modal').click(function (e) {
         var note_type_id = parseInt($(this).attr('note_type_id'));
         $('#modal'+note_type_id).modal('show');
+        x_create({
+            x__source: js_pl_id,
+            x__type: 14576, //MODAL VIEWED
+            x__up: note_type_id,
+        });
+        //Log Viewed Transaction
         if(note_type_id==14393){
             //Suggest Load Current URL
             $('#current_url').text(window.location.href);
