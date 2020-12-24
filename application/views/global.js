@@ -228,9 +228,7 @@ function init_remove(){
 }
 
 function x_create(add_fields){
-    $.post("/x/x_create", add_fields, function (data) {
-        console.log(data);
-    });
+    $.post("/x/x_create", add_fields);
 }
 
 var algolia_index = false;
