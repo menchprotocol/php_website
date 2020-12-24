@@ -38,10 +38,10 @@ function view_i_time($i_stats, $show_icon = false){
 
 
     $ui .= '<div class="css__title doupper grey inline-block" data-toggle="tooltip" data-placement="top" title="'.
-        ( $has_any_diff ? 'Interactively ' : '' ).
         'Discover '.$i_stats['i___6169'].
         ( $has_any_diff ? ' - '.$i_stats['i___6170'] : '' ).
         ' '.$e___13544[12273]['m__title'].
+        ( $has_any_diff ? ' Interactively' : '' ).
         ( !$is_micro ? ' in '.( $has_notable_diff ? round_minutes($i_stats['i___6161']).' - ' : '' ).round_minutes($i_stats['i___6162']).' MIN' : '' ).
         '">';
 
