@@ -1880,6 +1880,9 @@ i, .btn .show-max {
 .mini-grey{
     font-size: 0.80em;
 }
+.underdot{
+    border-bottom: 1px dotted #999999;
+}
 .subtle-line{
     line-height: 110%;
     display: inline-block;

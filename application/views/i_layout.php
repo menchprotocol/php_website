@@ -33,9 +33,13 @@ $is_in_my_ideas = count($this->X_model->fetch(array(
 
 
 
-
-
 echo '<div class="container">';
+
+
+
+if(!$e_of_i){
+    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block css__title">JOIN NOW</a> to contribute.</span></div>';
+}
 
 
 
@@ -82,10 +86,6 @@ if(isset($_GET['load__e']) && $superpower_14005){
 }
 
 
-
-if(!$e_of_i){
-    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block css__title">JOIN NOW</a> to contribute.</span></div>';
-}
 
 
 
