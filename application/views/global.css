@@ -1877,8 +1877,10 @@ i, .btn .show-max {
 .modal-body{
     padding: 10px;
 }
-.subtle-line{
+.mini-item{
     font-size: 0.80em;
+}
+.subtle-line{
     line-height: 110%;
     display: block;
     padding: 5px 0;
