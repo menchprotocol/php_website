@@ -41,7 +41,14 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body">
 
                     <?php
-                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14394]['m__icon'].'</span>'.$e___14393[14394]['m__title'].'</div>';
+
+                    //Current URL:
+                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14532]['m__icon'].'</span>'.$e___14393[14532]['m__title'].'</div>';
+                    echo '<div id="current_url" class="padded hideIfEmpty"></div>';
+
+
+                    //Type
+                    echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14394]['m__icon'].'</span>'.$e___14393[14394]['m__title'].'</div>';
                     $counter_options = 0;
                     foreach($this->config->item('e___14394') /* SUGGESTION TYPE */ as $x__type => $m){
                         $counter_options++;
@@ -51,13 +58,9 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>';
                     }
 
-
+                    //Details
                     echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14395]['m__icon'].'</span>'.$e___14393[14395]['m__title'].'</div>';
                     echo '<textarea class="form-control text-edit border" id="sugg_note" data-lpignore="true" placeholder="More details here..."></textarea>';
-
-                    //Current URL:
-                    echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14532]['m__icon'].'</span>'.$e___14393[14532]['m__title'].'</div>';
-                    echo '<div id="current_url" class="padded hideIfEmpty"></div>';
 
                     ?>
 

@@ -478,6 +478,14 @@ function update_demo_icon(){
 
 function e_modify_load(e__id, x__id) {
 
+    x_create({
+        x__source: js_pl_id,
+        x__type: 14576, //MODAL VIEWED
+        x__up: 13571,
+        x__down: e__id,
+        x__reference: x__id,
+    });
+
     //Load current Source:
     $.post("/e/e_modify_load", {
 
@@ -995,6 +1003,12 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
 }
 
 function gif_modal(x__type){
+    x_create({
+        x__source: js_pl_id,
+        x__type: 14576, //MODAL VIEWED
+        x__up: 14073,
+        x__right: $('#focus_i__id').val(),
+    });
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
     $('#gif_results').html('');
