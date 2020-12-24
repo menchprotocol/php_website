@@ -1879,6 +1879,9 @@ i, .btn .show-max {
 }
 .subtle-line{
     font-size: 0.80em;
+    line-height: 110%;
+    display: block;
+    padding: 5px 0;
 }
 .cover-text {
     margin: -3px 0 13px;
@@ -2148,9 +2151,6 @@ i, .btn .show-max {
 
 .info_box{
     padding: 8px 0;
-}
-.subtle-line{
-    line-height: 110%;
 }
 .info_box_header{
     padding:34px 21px;
