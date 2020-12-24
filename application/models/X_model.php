@@ -479,6 +479,12 @@ class X_model extends CI_Model
         if (count($update_columns) == 0) {
             return false;
         } elseif ($x__type>0 && !in_array($x__type, $this->config->item('n___4593'))) {
+            $this->X_model->create(array(
+                'x__message' => 'x->update() failed to update because of invalid transaction type @'.$x__type,
+                'x__type' => 4246, //Platform Bug Reports
+                'x__source' => $x__source,
+                'x__metadata' => $update_columns,
+            ));
             return false;
         }
 

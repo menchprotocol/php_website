@@ -68,7 +68,7 @@ foreach($this->I_model->fetch() as $in) {
             //Delete this transaction:
             $stats['note_deleted'] += $this->X_model->update($i_note['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
-            ), $user_e['e__id'], 10686 /* Idea Transaction Unpublished */);
+            ), $user_e['e__id'], 13579 /* Idea Transaction Unpublished */);
         }
 
     }
