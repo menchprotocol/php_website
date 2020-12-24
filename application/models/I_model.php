@@ -230,7 +230,8 @@ class I_model extends CI_Model
             '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
         ), array(), 0) as $x){
             //Delete this transaction:
-            $x_deleted += $this->X_model->update($x['x__id'], array(
+            $x_deleted++;
+            $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
             ), $x__source, 10686 /* Idea Transaction Unpublished */);
         }
@@ -244,7 +245,8 @@ class I_model extends CI_Model
         ), array(), 0);
         foreach($i_notes as $i_note){
             //Delete this transaction:
-            $x_deleted += $this->X_model->update($i_note['x__id'], array(
+            $x_deleted++;
+            $this->X_model->update($i_note['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
             ), $x__source, 10686 /* Idea Transaction Unpublished */);
         }
