@@ -136,7 +136,7 @@ foreach($this->I_model->fetch($filters) as $in){
     $estimated_time = round($estimated_time);
     if($i__id){
         //Show details:
-        echo $estimated_time.' SECONDS TOTAL<hr />';
+        echo $estimated_time.' SEC.<hr />';
     }
 
     //Update if necessary:

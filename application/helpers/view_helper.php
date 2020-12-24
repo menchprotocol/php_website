@@ -27,23 +27,27 @@ function view_i_time($i_stats, $show_icon = false){
         return null;
     }
 
+    $has_time_diff = ($i_stats['i___6161'] * view_memory(6404,14579)) < $i_stats['i___6162'];
+
     //Has Time
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = null;
-    $ui .= '<div class="css__title doupper grey inline-block">';
+    $ui .= '<div class="css__title doupper grey inline-block" data-toggle="tooltip" data-placement="top" title="'.$i_stats['i___6169'].( $has_time_diff ? ' - '.$i_stats['i___6170'].' '.$e___13544[12273]['m__title'].' Discovered Interactively' : '' ).'">';
     if($i_stats['i___6161']<60 && $i_stats['i___6162']<60){
         //SECONDS
-        $ui .= $i_stats['i___6161'].( $i_stats['i___6161']!=$i_stats['i___6162'] ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC';
+        $ui .= $i_stats['i___6161'].( $has_time_diff ? '<span class="mid-range">-</span>'.$i_stats['i___6162'] : '' ).'&nbsp;SEC.';
     } else {
         //MINUTES
-        $ui .= round_minutes($i_stats['i___6161']).( round_minutes($i_stats['i___6161']) != round_minutes($i_stats['i___6162']) ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN';
+        $ui .= round_minutes($i_stats['i___6161']).( $has_time_diff ? '<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : '' ).'&nbsp;MIN';
     }
     if($show_icon){
         $ui .= '<span class="icon-block">'.$e___13544[13292]['m__icon'].'</span>';
     }
     $ui .= '</div>';
+
     return $ui;
+
 }
 
 function view_db_field($field_name){
@@ -1844,25 +1848,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     $ui .= '</div>';
 
-
-
-
-    if($CI->uri->segment(1)=='@4593'){
-
-        //Load more context:
-        $total_transactions = $CI->X_model->fetch(array(
-            'x__type' => $e['e__id'],
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-
-        $last_transaction = $CI->X_model->fetch(array(
-            'x__type' => $e['e__id'],
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array(), 1, 0, array('x__time' => 'DESC'));
-
-        $ui .= '<div class="space-content hideIfEmpty">'.view_number($total_transactions[0]['totals']).' Transactions | Latest: '.( count($last_transaction) ? substr($last_transaction[0]['x__time'],0, 19) : 'NEVER' ).'</div>';
-
-    }
 
 
     if($superpower_12706){
