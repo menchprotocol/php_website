@@ -964,15 +964,6 @@ class X_model extends CI_Model
             $e_reference_key_val = $e_reference_keys[$referenced_key];
             $e_reference_fields[$e_reference_key_val] = intval($referenced_e);
 
-            $on_its_own_line = false;
-            foreach(explode("\n", $message_input) as $line){
-                $line = trim($line);
-                $looking_for = '@'.$referenced_e;
-                if(!substr_count($line, ' ') && substr($line, 0, strlen($looking_for))==$looking_for){
-                    $on_its_own_line = true;
-                    break;
-                }
-            }
 
             //See if this source has any parent transactions to be shown in this appendix
             $e_urls = array();
@@ -1026,6 +1017,20 @@ class X_model extends CI_Model
                         //Text and Percentage, etc...
                         $e_appendix .= '<div class="e-appendix paddingup"><span class="icon-block-xs">' . $e_profile['e__icon'].'</span>' . $e_profile['e__title'].': ' . $e_profile['x__message'] . '</div>';
 
+                    }
+                }
+            }
+
+
+
+            $on_its_own_line = false;
+            if($e_appendix){
+                foreach(explode("\n", $message_input) as $line){
+                    $line = trim($line);
+                    $looking_for = '@'.$referenced_e;
+                    if(!substr_count($line, ' ') && substr($line, 0, strlen($looking_for))==$looking_for){
+                        $on_its_own_line = true;
+                        break;
                     }
                 }
             }
