@@ -1378,19 +1378,22 @@ function e_of_i($i__id, $user_e = array()){
     //Ways a user can modify an idea:
     $CI =& get_instance();
     return (
-        superpower_active(10939, true) && //PUBLISHING PEN
+        superpower_active(12700, true) || //WALKIE TALKIE
         (
-            count($CI->X_model->fetch(array( //User created the idea
-                'x__type' => 4250, //IDEA CREATOR
-                'x__right' => $i__id,
-                'x__source' => $user_e['e__id'],
-            ))) ||
-            count($CI->X_model->fetch(array( //IDEA SOURCE
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i__id,
-                '(x__up = '.$user_e['e__id'].' OR x__down = '.$user_e['e__id'].')' => null,
-            )))
+            superpower_active(10939, true) && //PEN
+            (
+                count($CI->X_model->fetch(array( //User created the idea
+                    'x__type' => 4250, //IDEA CREATOR
+                    'x__right' => $i__id,
+                    'x__source' => $user_e['e__id'],
+                ))) ||
+                count($CI->X_model->fetch(array( //IDEA SOURCE
+                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__right' => $i__id,
+                    '(x__up = '.$user_e['e__id'].' OR x__down = '.$user_e['e__id'].')' => null,
+                )))
+            )
         )
     );
 
