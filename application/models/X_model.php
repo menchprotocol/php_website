@@ -1041,7 +1041,7 @@ class X_model extends CI_Model
             $edit_btn = null;
             if(!$is_discovery_mode && source_of_e($es[0]['e__id'])){
                 $e___11035 = $this->config->item('e___11035');
-                $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click trigger_13571_edit mini-item" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</span> ';
+                $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click trigger_13571_edit mini-grey" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</span> ';
             }
 
 
@@ -1049,7 +1049,7 @@ class X_model extends CI_Model
                 $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click" target="_blank" ><u>' . $es[0]['e__title'] . '</u></a></span> ', $output_body_message);
             } else {
                 if($on_its_own_line){
-                    $output_body_message = str_replace($identifier_string, $e_appendix.$edit_btn.'<span '.$tooltip_class.'><span class="subtle-line mini-item text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+                    $output_body_message = str_replace($identifier_string, $e_appendix.$edit_btn.'<span '.$tooltip_class.'><span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
                 } else {
                     $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> '.$e_appendix, $output_body_message);
                 }
