@@ -2149,6 +2149,9 @@ i, .btn .show-max {
 .info_box{
     padding: 8px 0;
 }
+.subtle-line{
+    line-height: 110%;
+}
 .info_box_header{
     padding:34px 21px;
     font-size: 2.5em;
