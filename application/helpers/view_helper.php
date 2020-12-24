@@ -27,21 +27,21 @@ function view_i_time($i_stats, $show_icon = false){
         return null;
     }
 
-    $has_any_time_diff = $i_stats['i___6161'] != $i_stats['i___6162'];
-    $has_notable_time_diff = ($i_stats['i___6161'] * view_memory(6404,14579)) < $i_stats['i___6162'];
+    $has_any_diff = $i_stats['i___6169'] != $i_stats['i___6170'];
+    $has_notable_diff = ($i_stats['i___6161'] * view_memory(6404,14579)) < $i_stats['i___6162'];
 
     //Has Time
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = null;
-    $ui .= '<div class="css__title doupper grey inline-block" data-toggle="tooltip" data-placement="top" title="'.( $has_any_time_diff ? $i_stats['i___6169'].' - '.$i_stats['i___6170'].' '.$e___13544[12273]['m__title'].' Discovered Interactively'.( !$has_notable_time_diff ? ' in '.round_minutes($i_stats['i___6161']).' - '.round_minutes($i_stats['i___6162']).'&nbsp;MIN' : '' ) : $i_stats['i___6169'].' '.$e___13544[12273]['m__title'] ).'">';
+    $ui .= '<div class="css__title doupper grey inline-block" data-toggle="tooltip" data-placement="top" title="'.( $has_any_diff ? $i_stats['i___6169'].' - '.$i_stats['i___6170'].' '.$e___13544[12273]['m__title'].' Discovered Interactively'.( !$has_notable_diff ? ' in '.round_minutes($i_stats['i___6161']).' - '.round_minutes($i_stats['i___6162']).'&nbsp;MIN' : '' ) : $i_stats['i___6169'].' '.$e___13544[12273]['m__title'] ).'">';
 
     if($i_stats['i___6161']<60 && $i_stats['i___6162']<60){
         //SECONDS
-        $ui .= ( $has_notable_time_diff ? $i_stats['i___6161'].'<span class="mid-range">-</span>'.$i_stats['i___6162'] : $i_stats['i___6162'] ).'&nbsp;SEC.';
+        $ui .= ( $has_notable_diff ? $i_stats['i___6161'].'<span class="mid-range">-</span>'.$i_stats['i___6162'] : $i_stats['i___6162'] ).'&nbsp;SEC.';
     } else {
         //MINUTES
-        $ui .= ( $has_notable_time_diff ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : round_minutes($i_stats['i___6162']) ).'&nbsp;MIN';
+        $ui .= ( $has_notable_diff ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : round_minutes($i_stats['i___6162']) ).'&nbsp;MIN';
     }
 
     if($show_icon){
