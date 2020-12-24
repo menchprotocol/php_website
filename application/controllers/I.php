@@ -78,7 +78,11 @@ class I extends CI_Controller {
             'x__right' => $i['new_i__id'],
             'x__up' => $user_e['e__id'],
             'x__message' => '@'.$user_e['e__id'],
-            'x__spectrum' => 1, //Top of the list
+            'x__spectrum' => 1 + $this->X_model->max_sort(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__type' => 10573, //MY IDEAS
+                    'x__up' => $user_e['e__id'],
+                )),
         ), true);
 
         return view_json(array(
