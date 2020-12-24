@@ -706,7 +706,7 @@ function cookie_delete(){
 function cookie_check() {
     date_default_timezone_set(view_memory(6404,11079));
     $CI =& get_instance();
-    $is_sign_page = ($CI->uri->segment(1)=='app' && ($CI->uri->segment(2)==4269 || $CI->uri->segment(2)==7291));
+    $is_sign_page = ($CI->uri->segment(1)=='app' && in_array($CI->uri->segment(2), $CI->config->item('n___14582')));
     if(!$is_sign_page && isset($_COOKIE['mench_login']) && !superpower_unlocked()) {
         header("Location: " . '/app/4269?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
         exit;
