@@ -17,7 +17,7 @@ echo '</div>';
 
 
 //CONTINUE:
-echo '<div class="container light-bg">'; //fixed-bottom
+echo '<div class="container light-bg fixed-bottom">';
 echo '<div class="discover-controller">';
 echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="'.( $i__id > 0 ? '/x/x_start/'.$i__id : home_url() ).'">'.$e___11035[14521]['m__title'].' '.$e___11035[14521]['m__icon'].'</a></div>';
 echo '</div>';

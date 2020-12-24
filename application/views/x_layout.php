@@ -772,7 +772,7 @@ if(!$in_my_x && !$i_drip_mode){
     $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
     //Get Started
-    echo '<div class="container light-bg">'; //fixed-bottom
+    echo '<div class="container light-bg fixed-bottom">';
     echo '<div class="discover-controller">';
     echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__icon'].'</a></div>';
     echo '</div>';
@@ -826,7 +826,7 @@ if(!$in_my_x && !$i_drip_mode){
     }
 
     if($buttons_found > 0){
-        echo '<div class="container light-bg">'; //fixed-bottom
+        echo '<div class="container light-bg fixed-bottom">';
         echo '<div class="discover-controller">';
         echo $buttons_ui;
         echo '</div>';
