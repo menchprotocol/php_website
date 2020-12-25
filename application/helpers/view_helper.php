@@ -1766,7 +1766,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
     //ROW
-    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'">';
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'" title="'.md5($e['e__title'], true).'">';
 
 
 
