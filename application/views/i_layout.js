@@ -37,9 +37,10 @@ $(document).ready(function () {
     });
 
 
-    $(window).on("beforeunload", function() {
-        alert('unla');
-    });
+    window.onbeforeunload = function(event) {
+        // do stuff here
+        return "you have unsaved changes. Are you sure you want to navigate away?";
+    };
 
     /*
     $('a:not(.trigger_modal)').click(function (e) {
