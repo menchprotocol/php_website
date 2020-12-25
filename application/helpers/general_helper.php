@@ -124,7 +124,6 @@ function extract_e_references($x__message)
                     $string_references['ref_time_end'] = $ref_time_end;
                 }
             }
-
         }
     }
 

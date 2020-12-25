@@ -15,7 +15,7 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[6225]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[6225]['m__icon'].' '.$e___11035[6225]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[6225]['m__icon']) ?>" id="modal6225Label"><?= $e___11035[6225]['m__icon'].' '.$e___11035[6225]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -95,6 +95,14 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="save_results margin-top-down-half hideIfEmpty"></div>
 
 
+                    <?php
+
+                    //Source URL:
+                    echo '<div class="headline"><span class="icon-block">'.$e___13571[13433]['m__icon'].'</span>'.$e___13571[13433]['m__title'].'</div>';
+                    echo '<div id="source_url" class="padded hideIfEmpty"></div>';
+
+                    ?>
+
                     <div class="<?= superpower_active(13422) ?>">
 
                         <!-- Source Status -->
@@ -138,7 +146,7 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <!-- Source Title -->
-                    <div class="headline no-left-padding <?= superpower_active(13422) ?>"><?= '<span class="icon-block">'.$e___13571[6197]['m__icon'].'</span>'.$e___13571[6197]['m__title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= view_memory(6404,6197) ?></span>]</div>
+                    <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6197]['m__icon'].'</span>'.$e___13571[6197]['m__title'] ?> [<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= view_memory(6404,6197) ?></span>]</div>
                     <textarea class="form-control text-edit border css__title doupper" id="e__title" name="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
 
 

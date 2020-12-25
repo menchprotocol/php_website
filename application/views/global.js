@@ -514,6 +514,7 @@ function e_modify_load(e__id, x__id) {
 
         if (data.status) {
 
+            $('#source_url').text('https://mench.com/@'+e__id);
             $("#modal13571 .save_results").html('');
             $('#modal13571').modal('show');
             $('.notify_e_delete, .notify_unx_e').addClass('hidden'); //Cannot be deleted OR Unpublished as this would not load, so delete them
