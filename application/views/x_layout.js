@@ -97,7 +97,7 @@ function go_next(go_next_url){
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
                 window.location = go_next_url;
             } else {
-                alert('This idea is disabled & cannot be started at this time.');
+                alert('This idea is not published yet & cannot be started at this time.');
             }
 
         }
