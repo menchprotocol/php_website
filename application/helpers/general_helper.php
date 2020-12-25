@@ -261,9 +261,15 @@ function i_is_featured($i)
 }
 
 function int_hash($string){
+    $int_length = 6;
     $binhash = md5($string, true);
     $numhash = unpack('N2', $binhash); //- or 'V2' for little endian
-    return $numhash[1] & 0x000FFFFF; //- to get numbers between 0 and 1048575
+    $int_val = $numhash[1] & 0x000FFFFF; //- to get numbers between 0 and 1048575
+    if(strlen($int_val) < $int_length){
+        return str_pad($int_val, $int_length, "0", STR_PAD_RIGHT);
+    } else {
+        return substr($int_val, 0, $int_length);
+    }
 }
 
 function i_is_startable($i)
