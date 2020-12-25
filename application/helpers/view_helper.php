@@ -1506,12 +1506,9 @@ function view_info_box($e__id){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $ui = '';
-    $ui .= '<div class="info_box_icon">' . $e___11035[$e__id]['m__icon'] . '</div>';
+    //$ui .= '<div class="info_box_icon">' . $e___11035[$e__id]['m__icon'] . '</div>';
     $ui .= '<h2 class="info_box_header css__title">' . $e___11035[$e__id]['m__title'] . '</h2>';
-    if(strlen($e___11035[$e__id]['m__message'])){
-        //Show at end:
-        $ui .= '<div class="info_box_message" style="margin-bottom: 89px;">'.$e___11035[$e__id]['m__message'].'</div>';
-    }
+    //if(strlen($e___11035[$e__id]['m__message'])){ $ui .= '<div class="info_box_message" style="margin-bottom: 89px;">'.$e___11035[$e__id]['m__message'].'</div>'; }
     $ui .= '<div class="row">';
     foreach($CI->config->item('e___'.$e__id) as $m) {
         $ui .= '<div class="col-12 col-sm-4">';
