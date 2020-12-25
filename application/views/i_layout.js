@@ -37,6 +37,17 @@ $(document).ready(function () {
     });
 
 
+    $('a').click(function (e) {
+        if(i_note_poweredit_has_changed(4231)){
+            e.preventDefault();
+            var r = confirm("Unsaved Changes! Are you sure you want to navigate away from this idea?");
+            if (r == true) {
+                window.location = $(this).attr('href');
+            }
+        }
+    });
+
+
     //Look for power editor updates:
     $('.x_set_class_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
