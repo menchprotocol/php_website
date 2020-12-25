@@ -267,6 +267,7 @@ function i_is_startable($i)
         (
             i_is_featured($i)
             || (
+                superpower_active(10939, true) &&
                 in_array($i['i__type'], $CI->config->item('n___7355')) &&
                 count($CI->X_model->fetch(array(
                     'x__type' => 10573, //MY IDEAS
