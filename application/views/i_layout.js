@@ -38,11 +38,7 @@ $(document).ready(function () {
 
 
     $(window).on("beforeunload", function() {
-        if(i_note_poweredit_has_changed(4231)){
-            var r = confirm("Unsaved Changes! Are you sure you want to navigate away from this idea?");
-            if (r == true) {
-            }
-        }
+        alert('unla');
     });
 
     /*
