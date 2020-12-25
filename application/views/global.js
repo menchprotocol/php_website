@@ -227,6 +227,20 @@ function init_remove(){
     });
 }
 
+function i_note_poweredit_has_changed(note_type_id){
+    return $('.input_note_'+note_type_id).val().trim() != $('.input_note_'+note_type_id).attr('current_text').trim();
+}
+
+function i_note_poweredit_has_text(note_type_id){
+    return $('.input_note_'+note_type_id).val().trim().length > 0;
+}
+
+function revert_poweredit(){
+    if($('.tab-data-14420').hasClass('hidden') && !i_note_poweredit_has_changed(4231) && i_note_poweredit_has_text(4231)){
+        loadtab(14418, 14420); //Load Preview tab
+    }
+}
+
 function x_create(add_fields){
     $.post("/x/x_create", add_fields);
 }
@@ -297,8 +311,14 @@ $(document).ready(function () {
     //General ESC cancel
     $(document).keyup(function (e) {
         //Watch for action keys:
-        if (e.keyCode === 27 && search_on) { //ESC
-            toggle_search();
+        if (e.keyCode === 27) { //ESC
+
+            if(search_on){
+                toggle_search();
+            }
+
+            revert_poweredit();
+
         }
     });
 
