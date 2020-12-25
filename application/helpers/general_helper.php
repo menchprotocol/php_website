@@ -260,6 +260,12 @@ function i_is_featured($i)
 
 }
 
+function int_hash($string){
+    $binhash = md5($string, true);
+    $numhash = unpack('N2', $binhash); //- or 'V2' for little endian
+    return $numhash[1] & 0x000FFFFF; //- to get numbers between 0 and 1048575
+}
+
 function i_is_startable($i)
 {
     $CI =& get_instance();
