@@ -1040,7 +1040,7 @@ class X_model extends CI_Model
             //Append any appendix generated:
             $is_single_link = ( count($e_urls)==1 && $e_media_count==1 );
 
-            $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
+            $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' );
             $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
 
             $edit_btn = null;
@@ -1051,12 +1051,12 @@ class X_model extends CI_Model
 
 
             if($is_single_link){
-                $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click" target="_blank" ><u>' . $es[0]['e__title'] . '</u></a></span> ', $output_body_message);
+                $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click" target="_blank" ><u>' . $es[0]['e__title'] . '</u></a></span>', $output_body_message);
             } else {
                 if($on_its_own_line){
                     $output_body_message = $e_appendix.str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
                 } else {
-                    $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message).$e_appendix;
+                    $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span>', $output_body_message).$e_appendix;
                 }
             }
 
