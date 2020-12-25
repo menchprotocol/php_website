@@ -37,7 +37,7 @@ $(document).ready(function () {
     });
 
 
-    $('a').click(function (e) {
+    $('a:not(.trigger_modal)').click(function (e) {
         if(i_note_poweredit_has_changed(4231)){
             e.preventDefault();
             var r = confirm("Unsaved Changes! Are you sure you want to navigate away from this idea?");
