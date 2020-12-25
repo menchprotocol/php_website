@@ -1023,17 +1023,7 @@ class X_model extends CI_Model
 
 
 
-            $on_its_own_line = false;
-            if($e_appendix){
-                foreach(explode("\n", $message_input) as $line){
-                    $line = trim($line);
-                    $looking_for = '@'.$referenced_e;
-                    if(!substr_count($line, ' ') && substr($line, 0, strlen($looking_for))==$looking_for){
-                        $on_its_own_line = true;
-                        break;
-                    }
-                }
-            }
+
 
 
 
@@ -1043,10 +1033,21 @@ class X_model extends CI_Model
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' );
             $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
 
+
             $edit_btn = null;
             if(!$is_discovery_mode && source_of_e($es[0]['e__id'])){
                 $e___11035 = $this->config->item('e___11035');
                 $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click trigger_13571_edit mini-grey" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</span> ';
+            }
+
+            $on_its_own_line = false;
+            if($e_appendix){
+                foreach(explode("\n", $message_input) as $line){
+                    if(trim($line)==$identifier_string){
+                        $on_its_own_line = true;
+                        break;
+                    }
+                }
             }
 
 
