@@ -99,7 +99,7 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     //Source URL:
                     echo '<div class="headline"><span class="icon-block">'.$e___13571[13433]['m__icon'].'</span>'.$e___13571[13433]['m__title'].'</div>';
-                    echo '<div id="source_url" class="padded hideIfEmpty"></div>';
+                    echo '<div class="padded"><a id="source_url" href="#" target="_blank"></a></div>';
 
                     ?>
 
