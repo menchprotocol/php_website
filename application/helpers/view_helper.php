@@ -1550,10 +1550,12 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
     $idea_editing = in_array($x__type, $CI->config->item('n___14502')) && e_of_i($i['i__id']); //IDEA EDITING
     $load_completion = in_array($x__type, $CI->config->item('n___14501'));
 
+    /*
     if($focus_e && (!$user_session || $user_session['e__id']!=$focus_e['e__id']) && !superpower_active(12701, true)){
         //Do not allow to see this user's info:
         $focus_e = false;
     }
+    */
 
     if(!$focus_e){
         $focus_e = $user_session;
