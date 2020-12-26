@@ -101,7 +101,6 @@ class App extends CI_Controller
 
 
             $ui .= '<div class="container">';
-            $ui .= '<div>'.( $new_cache ? 'NEW CACHE' : $cache_x__id ).'</div>'; //TODO REMOVE
             if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){
                 $e___6287 = $this->config->item('e___6287'); //MENCH APP
                 $ui .= '<h1 class="'.extract_icon_color($e___6287[$app_e__id]['m__icon']).'">' . $e___6287[$app_e__id]['m__title'] . '</h1>';
@@ -170,6 +169,7 @@ class App extends CI_Controller
                     'title' => $e___6287[$app_e__id]['m__title'].' | MENCH',
                     'basic_header_footer' => $basic_header,
                 ), true);
+                echo '<div>'.( $new_cache ? 'NEW CACHE' : $cache_x__id ).'</div>'; //TODO REMOVE
                 echo $ui;
                 echo $this->load->view('footer', array(
                     'basic_header_footer' => $basic_header,
