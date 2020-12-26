@@ -2002,6 +2002,10 @@ i, .btn .show-max {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    .block-if-mini{
+        display: block;
+    }
+
     .drip_msg{
         margin-top: 8px;
     }
