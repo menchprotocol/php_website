@@ -844,7 +844,7 @@ class E extends CI_Controller
                     $delete_redirect_url = '/@' . $e__profiles[0]['e__id'];
                 } else {
                     //Is the app activated?
-                    $delete_redirect_url = ( intval($this->session->userdata('session_time_7269')) ? '/app/7269' : home_url() );
+                    $delete_redirect_url = home_url();
                 }
             }
 
