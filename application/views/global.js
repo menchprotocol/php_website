@@ -735,18 +735,19 @@ function e_hard_delete(e__id, note_type_id) {
             e__id: e__id,
 
         }, function (data) {
-
-            //Show Message either way:
-            alert(data.message);
-
             if (data.status) {
+
+                console.log(data.message);
                 i_note_counter(note_type_id, -1);
                 $(".e__id_" + e__id).fadeOut();
                 setTimeout(function () {
                     $(".e__id_" + e__id).remove();
                 }, 610);
-            }
 
+            } else {
+                //We had an error:
+                alert(data.message);
+            }
         });
     }
 
