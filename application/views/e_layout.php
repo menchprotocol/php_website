@@ -36,6 +36,7 @@ $profiles = $this->X_model->fetch(array(
 
     //PROFILE
     if(!$source_is_e || $superpower_13422){
+
         $show_max = view_memory(6404,11986);
         echo '<div id="list_11030" class="list-group grey-list">';
         foreach($profiles as $count => $e_profile) {
@@ -55,20 +56,11 @@ $profiles = $this->X_model->fetch(array(
                                        placeholder="'.$e___11035[13914]['m__title'].'">
                             </div></div>';
         echo '</div>';
-    }
 
-
-
-
-
-
-
-    //SOURCE DRAFTING?
-    if(!in_array($e['e__type'], $this->config->item('n___7357'))){
-        echo '<div class="css__title '.extract_icon_color($e___6177[$e['e__type']]['m__icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__icon'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
-    }
-
-    if(!$source_is_e){
+        //SOURCE DRAFTING?
+        if(!in_array($e['e__type'], $this->config->item('n___7357'))){
+            echo '<div class="css__title '.extract_icon_color($e___6177[$e['e__type']]['m__icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__icon'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
+        }
 
         $icon_frame = '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>';
 
