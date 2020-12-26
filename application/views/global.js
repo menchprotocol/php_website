@@ -726,6 +726,33 @@ function e_remove(x__id, note_type_id) {
 }
 
 
+function e_hard_delete(e__id, note_type_id) {
+
+    var r = confirm("Hard Delete Source? This cannot be undone!");
+    if (r == true) {
+        $.post("/e/e_hard_delete", {
+
+            e__id: e__id,
+
+        }, function (data) {
+
+            //Show Message either way:
+            alert(data.message);
+
+            if (data.status) {
+                i_note_counter(note_type_id, -1);
+                $(".e__id_" + e__id).fadeOut();
+                setTimeout(function () {
+                    $(".e__id_" + e__id).remove();
+                }, 610);
+            }
+
+        });
+    }
+
+}
+
+
 
 function x_type_preview() {
 

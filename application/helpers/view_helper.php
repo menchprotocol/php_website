@@ -1786,6 +1786,13 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
         }
 
+        if($superpower_13422){
+
+            //HARD DELETE SOURCE
+            $ui .= '<span class="'.( $main_controller ? ' show-max ' : '' ).'"><a href="javascript:void(0);" onclick="e_hard_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
+
+        }
+
         $ui .= '</span>';
         $ui .= '</div>';
 
