@@ -39,12 +39,14 @@ $profiles = $this->X_model->fetch(array(
 
         $count = 0;
         $show_max = view_memory(6404,11986);
+        $see_more_button = false;
         echo '<div id="list_11030" class="list-group grey-list">';
         foreach($profiles as $e_profile) {
 
-            if($count==$show_max){
+            if(!$see_more_button && $count==$show_max){
                 echo '<div class="list-group-item see_all_profiles no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_all_profiles\').toggleClass(\'hidden\')" class="block"><span class="icon-block">'.$e___11035[14538]['m__icon'].'</span><b class="css__title '.extract_icon_color($e___11035[14538]['m__icon']).'" style="text-decoration: none !important;">'.$e___11035[14538]['m__title'].'</b></a></div>';
                 echo '<div class="list-group-item see_all_profiles no-height"></div>';
+                $see_more_button = true;
             }
 
             $view_e = view_e($e_profile,true, ( $count<$show_max ? '' : 'see_all_profiles hidden'), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
