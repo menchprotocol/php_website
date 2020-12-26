@@ -54,6 +54,9 @@ class App extends CI_Controller
             }
         }
 
+        $x__source = ( $is_u_request ? ( $user_e ? $user_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
+
+
         //Special App Conditions:
         if($app_e__id==14565 && $user_e){
             //Home Page with member, redirect to source:
@@ -61,55 +64,98 @@ class App extends CI_Controller
         }
 
 
-        //Log Transaction
-        $this->X_model->create(array(
-            'x__source' => ( !$is_u_request || !$user_e ? ( $is_u_request ? 14068 /* GUEST */ : 7274 /* CRON JOB */ ) : $user_e['e__id'] ),
-            'x__type' => 14067, //MENCH APP LOADED
-            'x__down' => $app_e__id,
-            'x__metadata' => array(
-                'GET' => $_GET,
-                'POST' => $_POST,
-            ),
-        ));
+        //Cache App?
+        $ui = null;
+        $new_cache = false;
+        $cache_x__id = 0;
+        if(0 && $memory_detected && in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
+
+            //Fetch Most Recent Cache:
+            foreach($this->X_model->fetch(array(
+                'x__type' => 14599, //Cache App
+                'x__up' => $app_e__id,
+                'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
+                $ui = $latest_cache['x__message'];
+                $cache_x__id = $latest_cache['x__id'];
+            }
+            if(!$ui){
+                //No recent cache found, create a new one:
+                $new_cache = true;
+            }
+
+        }
 
 
-        //This is also duplicated in app_frame to pass-on to app file:
-        $view_data = array(
-            'app_e__id' => $app_e__id,
-            'user_e' => $user_e,
-            'is_u_request' => $is_u_request,
-            'memory_detected' => $memory_detected,
-        );
+
+        if(!$ui){
+
+            //Prep view:
+            $raw_app = $this->load->view('app/'.$app_e__id, array(
+                'app_e__id' => $app_e__id,
+                'user_e' => $user_e,
+                'is_u_request' => $is_u_request,
+                'memory_detected' => $memory_detected,
+            ), true);
 
 
-        $raw_view = in_array($app_e__id, $this->config->item('n___12741'));
-        $raw_app = $this->load->view('app/'.$app_e__id, $view_data, true);
-
-
-        if(!$memory_detected || !$raw_view){
-            $ui = '<div class="container">';
+            $ui .= '<div class="container">';
+            $ui .= '<div>'.( $new_cache ? 'NEW CACHE' : $cache_x__id ).'</div>'; //TODO REMOVE
             if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){
                 $e___6287 = $this->config->item('e___6287'); //MENCH APP
-                //echo '<span class="icon-block">'.view_e__icon($e___6287[$app_e__id]['m__icon']).'</span>';
                 $ui .= '<h1 class="'.extract_icon_color($e___6287[$app_e__id]['m__icon']).'">' . $e___6287[$app_e__id]['m__title'] . '</h1>';
                 if(strlen($e___6287[$app_e__id]['m__message']) > 0){
                     $ui .= '<p class="msg">'.$e___6287[$app_e__id]['m__message'].'</p>';
                 }
             }
-
-            //Load App:
             $ui .= $raw_app;
             $ui .= '</div>';
         }
 
 
+        if($new_cache){
+            $cache_x = $this->X_model->create(array(
+                'x__source' => $x__source,
+                'x__type' => 14599, //Cache App
+                'x__up' => $app_e__id,
+                'x__message' => $ui,
+            ));
+            $cache_x__id = $cache_x['x__id'];
+        }
+
+
+        //Log App Load:
+        $log_data = array(
+            'x__source' => $x__source,
+            'x__type' => 14067, //MENCH APP LOADED
+            'x__up' => $app_e__id,
+            'x__reference' => $cache_x__id,
+        );
+        if(count($_GET)){
+            $log_data['x__metadata'] = array(
+                'GET' => $_GET,
+            );
+            foreach(array('x__down','x__left','x__right') as $append){
+                if(isset($_GET[$append]) && intval($_GET[$append])){
+                    $log_data[$append] = intval($_GET[$append]);
+                }
+            }
+        }
+        $this->X_model->create($log_data);
+
+
+
+
+
+        //Delivery App
         if(!$memory_detected){
 
             echo $ui;
 
         } else {
 
-            if($raw_view){
+            if(in_array($app_e__id, $this->config->item('n___12741'))){
 
                 //Raw UI:
                 echo $raw_app;
