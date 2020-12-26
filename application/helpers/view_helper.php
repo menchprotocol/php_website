@@ -606,7 +606,7 @@ function view_mench_coins(){
     $ui .= '<div class="row">';
     foreach($CI->config->item('e___12467') as $e__id => $m) {
         $count = count_unique_coins($e__id);
-        $ui .= '<div class="col-4"><span class="css__title '.extract_icon_color($m['m__icon']).'" title="'.number_format($count, 0).' '.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__icon'].'&nbsp;'.view_number($count).' '.$m['m__title'].'</span></div>';
+        $ui .= '<div class="col-4" style="text-align: center"><span class="css__title '.extract_icon_color($m['m__icon']).'" title="'.number_format($count, 0).' '.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__icon'].'&nbsp;'.view_number($count).' '.$m['m__title'].'</span></div>';
     }
     $ui .= '</div>';
 
