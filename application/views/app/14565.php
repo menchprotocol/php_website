@@ -17,6 +17,9 @@ foreach($this->X_model->fetch(array(
     echo $this->X_model->message_view( $x['x__message'], true);
 }
 
+//Show Stats:
+echo view_mench_coins();
+
 
 //FEATURED IDEAS
 echo view_i_featured();

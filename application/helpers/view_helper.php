@@ -602,23 +602,12 @@ function view_mench_coins(){
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $ui = '';
 
-    $ui .= '<div class="'.superpower_active(10939).'">';
-    $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[12467]['m__icon'].'</span>'.$e___11035[12467]['m__title'].'</div>';
-    $ui .= '<div class="list-group" style="padding-bottom:41px;">';
-    $ui .= '<div class="list-group-item no-side-padding">';
-    $ui .= '<div class="row">';
-    $ui .= '<div class="col-sm col-md">&nbsp;</div>';
-    $ui .= '<div class="col-sm-6 col-md-4 col2nd">';
+    //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[12467]['m__icon'].'</span>'.$e___11035[12467]['m__title'].'</div>';
     $ui .= '<div class="row">';
     foreach($CI->config->item('e___12467') as $e__id => $m) {
         $count = count_unique_coins($e__id);
-        $ui .= '<div class="col-4"><span class="css__title '.extract_icon_color($m['m__icon']).'" title="'.number_format($count, 0).' '.$m['m__title'].': '.$m['m__message'].'" data-toggle="tooltip" data-placement="top">'.$m['m__icon'].'&nbsp;'.view_number($count).'</span></div>';
+        $ui .= '<div class="col-4"><span class="css__title '.extract_icon_color($m['m__icon']).'" title="'.number_format($count, 0).' '.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__icon'].'&nbsp;'.view_number($count).' '.$m['m__title'].'</span></div>';
     }
-    $ui .= '</div>';
-    $ui .= '</div>';
-    $ui .= '</div>';
-    $ui .= '</div>';
-    $ui .= '</div>';
     $ui .= '</div>';
 
     return $ui;
