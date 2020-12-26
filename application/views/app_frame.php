@@ -1,6 +1,8 @@
 <?php
 
+
 echo '<div class="container">';
+
 
 
 if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){

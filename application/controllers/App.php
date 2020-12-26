@@ -81,17 +81,38 @@ class App extends CI_Controller
             'memory_detected' => $memory_detected,
         );
 
+
+        $raw_view = in_array($app_e__id, $this->config->item('n___12741'));
+        $raw_app = $this->load->view('app/'.$app_e__id, $view_data);
+
+
+        if(!$memory_detected || !$raw_view){
+            $ui = '<div class="container">';
+            if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){
+                $e___6287 = $this->config->item('e___6287'); //MENCH APP
+                //echo '<span class="icon-block">'.view_e__icon($e___6287[$app_e__id]['m__icon']).'</span>';
+                $ui .= '<h1 class="'.extract_icon_color($e___6287[$app_e__id]['m__icon']).'">' . $e___6287[$app_e__id]['m__title'] . '</h1>';
+                if(strlen($e___6287[$app_e__id]['m__message']) > 0){
+                    $ui .= '<p class="msg">'.$e___6287[$app_e__id]['m__message'].'</p>';
+                }
+            }
+
+            //Load App:
+            $ui .= $raw_app;
+            $ui .= '</div>';
+        }
+
+
         if(!$memory_detected){
 
-            //Just focus on the core:
-            $this->load->view('app_frame', $view_data);
+            echo $ui;
 
         } else {
 
-            if(in_array($app_e__id, $this->config->item('n___12741'))){
+            if($raw_view){
 
                 //Raw UI:
-                $this->load->view('app/'.$app_e__id, $view_data);
+                echo $raw_app;
 
             } else {
 
@@ -103,7 +124,7 @@ class App extends CI_Controller
                     'title' => $e___6287[$app_e__id]['m__title'].' | MENCH',
                     'basic_header_footer' => $basic_header,
                 ));
-                $this->load->view('app_frame', $view_data);
+                echo $ui;
                 $this->load->view('footer', array(
                     'basic_header_footer' => $basic_header,
                 ));
