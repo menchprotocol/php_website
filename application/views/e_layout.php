@@ -51,15 +51,15 @@ $profiles = $this->X_model->fetch(array(
     $active_x__type = 0;
 
 
-    if($counter__e > 0 && (!$source_is_e || $superpower_10939) && $counter__e > $counter__i){
-        //SOURCES
-        $active_x__type = 12274;
-    } elseif($counter__i > 0 && (!$source_is_e || $superpower_10939)){
+    if($counter__i > 0 || ($source_is_e && $superpower_10939)){
         //IDEAS
         $active_x__type = 12273;
-    } elseif($source_is_e || ($superpower_12701 && $counter__x > 0)){
+    } elseif($counter__x > 0 || $source_is_e){
         //DISCOVERIES
         $active_x__type = 6255;
+    } elseif($counter__e > 0){
+        //SOURCES
+        $active_x__type = 12274;
     }
 
 
@@ -344,8 +344,7 @@ $profiles = $this->X_model->fetch(array(
             $counter = $counter__i;
             $i_exclude = array();
 
-
-
+            //My Ideas
             $i_bookmarks = $this->X_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -353,8 +352,9 @@ $profiles = $this->X_model->fetch(array(
                 'x__up' => $e['e__id'],
             ), array('x__right'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
 
+
             //Any Ideas?
-            if(count($i_bookmarks) > 0){
+            if(count($i_bookmarks)){
 
                 $ui .= '<div class="headline top-margin"><span class="icon-block">' . $e___11035[10573]['m__icon'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
 
@@ -369,7 +369,6 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= '</div>';
 
             }
-
 
             //Add Idea:
             if($superpower_10939 && $source_is_e){
@@ -386,13 +385,15 @@ $profiles = $this->X_model->fetch(array(
             }
 
 
-
-            //List References
+            //Referenced Ideas
             $list_i = view_coins_e(12273, $e['e__id'], 1, true, $i_exclude);
 
             if(count($list_i)){
 
-                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
+                if(count($i_bookmarks)){
+                    $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
+                }
+
                 $ui .= '<div class="row margin-top-down-half" id="list_13550">';
                 foreach($list_i as $count => $item){
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only

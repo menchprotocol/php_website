@@ -255,16 +255,15 @@ function i_is_featured($i)
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__right' => $i['i__id'],
-        '(x__up IN (' . join(',', $CI->config->item('n___12138')) . ') OR x__down IN (' . join(',', $CI->config->item('n___12138')) . '))' => null,
+        '(x__up IN (' . join(',', $CI->config->item('n___4235')) . ') OR x__down IN (' . join(',', $CI->config->item('n___4235')) . '))' => null,
     )));
 
 }
 
 function int_hash($string){
-    $int_length = 6;
-    $binhash = md5($string, true);
-    $numhash = unpack('N2', $binhash); //- or 'V2' for little endian
-    $int_val = $numhash[1] & 0x000FFFFF; //- to get numbers between 0 and 1048575
+    $int_length = 4;
+    $numhash = unpack('N2', md5($string, true));
+    $int_val = $numhash[1] & 0x000FFFFF;
     if(strlen($int_val) < $int_length){
         return str_pad($int_val, $int_length, "0", STR_PAD_RIGHT);
     } else {

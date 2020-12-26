@@ -394,7 +394,7 @@ class E extends CI_Controller
 
 
             //Make sure not featured, or have superpower to do so:
-            if(in_array($_POST['e_existing_id'], $this->config->item('n___12138')) && !superpower_active(13994, true)){
+            if(in_array($_POST['e_existing_id'], $this->config->item('n___4235')) && !superpower_active(13994, true)){
                 return view_json(array(
                     'status' => 0,
                     'message' => view_unauthorized_message(13994),

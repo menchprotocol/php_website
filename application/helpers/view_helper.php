@@ -1459,7 +1459,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
                 $count_query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
                 if($count_query[0]['totals'] > $limit){
                     //Yes, we have more, show this:
-                    $see_all_link = '<a href="/app/12138?e__id='.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><span class="icon-block">'.$m['m__icon'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
+                    $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><span class="icon-block">'.$m['m__icon'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
                 }
             }
 
@@ -1766,7 +1766,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
     //ROW
-    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'" title="'.int_hash($e['e__title']).'">';
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'">';
 
 
 
