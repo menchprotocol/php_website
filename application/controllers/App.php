@@ -83,7 +83,7 @@ class App extends CI_Controller
 
 
         $raw_view = in_array($app_e__id, $this->config->item('n___12741'));
-        $raw_app = $this->load->view('app/'.$app_e__id, $view_data);
+        $raw_app = $this->load->view('app/'.$app_e__id, $view_data, true);
 
 
         if(!$memory_detected || !$raw_view){
