@@ -30,6 +30,36 @@ $profiles = $this->X_model->fetch(array(
 
     echo '<div class="container">';
 
+
+
+
+
+    //PROFILE
+    $show_max = view_memory(6404,11986);
+    echo '<div id="list_11030" class="list-group grey-list">';
+    foreach($profiles as $count => $e_profile) {
+        if($count==$show_max){
+            echo '<div class="list-group-item see_all_profiles no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_all_profiles\').toggleClass(\'hidden\')" class="block"><span class="icon-block">'.$e___11035[14538]['m__icon'].'</span><b class="css__title '.extract_icon_color($e___11035[14538]['m__icon']).'" style="text-decoration: none !important;">'.$e___11035[14538]['m__title'].'</b></a></div>';
+            echo '<div class="list-group-item see_all_profiles no-height"></div>';
+        }
+        echo view_e($e_profile,true, ( $count<$show_max ? '' : 'see_all_profiles hidden'), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+    }
+    echo '<div id="new_11030" class="list-group-item list-adder no-side-padding '.superpower_active(13422).'">
+                        <div class="input-group border">
+                            <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__icon'].'</span></a>
+                            <input type="text"
+                                   class="form-control form-control-thick algolia_search dotransparent add-input"
+                                   id="New11030input"
+                                   maxlength="' . view_memory(6404,6197) . '"
+                                   placeholder="'.$e___11035[13914]['m__title'].'">
+                        </div></div>';
+    echo '</div>';
+
+
+
+
+
+
     //SOURCE DRAFTING?
     if(!in_array($e['e__type'], $this->config->item('n___7357'))){
         echo '<div class="css__title '.extract_icon_color($e___6177[$e['e__type']]['m__icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__icon'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
@@ -98,29 +128,6 @@ $profiles = $this->X_model->fetch(array(
             }
             //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
             $ui .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m__icon'].' '.$m['m__title'].' '.number_format($counter, 0).' times.</div>';
-
-        } elseif($x__type==11030){
-
-            //PROFILE
-            $ui .= '<div id="list_11030" class="list-group grey-list">';
-            $counter = count($profiles);
-
-            foreach($profiles as $count => $e_profile) {
-                $ui .= view_e($e_profile,true, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
-            }
-
-            //ADD NEW
-            $ui .= '<div id="new_11030" class="list-group-item list-adder no-side-padding '.superpower_active(13422).'">
-                    <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__icon'].'</span></a>
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               id="New11030input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[13914]['m__title'].'">
-                    </div></div>';
-
-            $ui .= '</div>';
 
         } elseif($x__type==12274){
 
