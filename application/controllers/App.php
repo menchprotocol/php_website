@@ -124,6 +124,7 @@ class App extends CI_Controller
         }
 
 
+
         //Log App Load:
         $log_data = array(
             'x__source' => $x__source,
@@ -135,9 +136,12 @@ class App extends CI_Controller
             $log_data['x__metadata'] = array(
                 'GET' => $_GET,
             );
-            foreach(array('x__down','x__left','x__right') as $append){
-                if(isset($_GET[$append]) && intval($_GET[$append])){
-                    $log_data[$append] = intval($_GET[$append]);
+            foreach(array(
+                'e__id' => 'x__down',
+                'i__id' => 'x__left'
+            ) as $get_key => $x_save){
+                if(isset($_GET[$get_key]) && intval($_GET[$get_key])){
+                    $log_data[$x_save] = intval($_GET[$get_key]);
                 }
             }
         }
@@ -169,7 +173,6 @@ class App extends CI_Controller
                     'title' => $e___6287[$app_e__id]['m__title'].' | MENCH',
                     'basic_header_footer' => $basic_header,
                 ), true);
-                echo '<div>'.( $new_cache ? 'NEW CACHE' : $cache_x__id ).'</div>'; //TODO REMOVE
                 echo $ui;
                 echo $this->load->view('footer', array(
                     'basic_header_footer' => $basic_header,
