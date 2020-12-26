@@ -319,6 +319,8 @@ class E extends CI_Controller
 
     function e_hard_delete(){
 
+        exit;
+
         //Auth user and check required variables:
         $user_e = superpower_unlocked(13422);
 

@@ -603,7 +603,7 @@ function view_mench_coins(){
     $ui = '';
 
     //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[12467]['m__icon'].'</span>'.$e___11035[12467]['m__title'].'</div>';
-    $ui .= '<div class="row margin-top-down">';
+    $ui .= '<div class="row top-margin">';
     foreach($CI->config->item('e___12467') as $e__id => $m) {
         $count = count_unique_coins($e__id);
         $ui .= '<div class="col-4" style="text-align: center"><span class="css__title '.extract_icon_color($m['m__icon']).'" title="'.number_format($count, 0).' '.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__icon'].'&nbsp;'.view_number($count).' <span class="block-if-mini">'.$m['m__title'].'</span></span></div>';
@@ -1789,7 +1789,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         if($superpower_13422){
 
             //HARD DELETE SOURCE
-            $ui .= '<span class="'.( $main_controller ? ' show-max ' : '' ).'"><a href="javascript:void(0);" onclick="e_hard_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
+            //$ui .= '<span class="'.( $main_controller ? ' show-max ' : '' ).'"><a href="javascript:void(0);" onclick="e_hard_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
 
         }
 

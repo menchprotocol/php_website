@@ -23,7 +23,7 @@ foreach($this->config->item('e___13207') as $e__id => $m) {
         continue;
     }
 
-    echo '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
+    echo '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
     echo '<div class="list-group" style="padding-bottom:41px;">';
 
 
