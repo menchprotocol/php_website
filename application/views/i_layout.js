@@ -123,7 +123,8 @@ function i_note_poweredit_save(note_type_id){
 
         //Update raw text input:
         var new_text = data.input_clean.trim();
-        $(input_textarea).val(new_text + ' ').attr('current_text', new_text);
+        $(input_textarea).val(new_text + ' ');
+        $('#current_text_'+note_type_id).text(new_text);
         autosize.update($(input_textarea));
         $(input_textarea).focus();
 
