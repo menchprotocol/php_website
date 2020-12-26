@@ -68,7 +68,7 @@ class App extends CI_Controller
         $ui = null;
         $new_cache = false;
         $cache_x__id = 0;
-        if(0 && $memory_detected && in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
+        if($memory_detected && in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
 
             //Fetch Most Recent Cache:
             foreach($this->X_model->fetch(array(
