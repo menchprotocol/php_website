@@ -205,17 +205,12 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 <?php
 
-echo '<div class="container">';
+
+echo '<div class="inline-block margin-top-down '.superpower_active(14005).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m__icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="css__title">'.$e___11035[12707]['m__title'].'</a></div>';
 
 
-    echo '<h1 class="'.extract_icon_color($e___11035[4341]['m__icon']).'">' . $e___11035[4341]['m__title'] . '</h1>';
-
-
-    echo '<div class="inline-block margin-top-down '.superpower_active(14005).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m__icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="css__title">'.$e___11035[12707]['m__title'].'</a></div>';
-
-
-    echo '<div class="show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
-    echo '<form action="" method="GET">';
+echo '<div class="show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
+echo '<form action="" method="GET">';
 
 
 
@@ -223,88 +218,88 @@ echo '<div class="container">';
 
 
 
-    echo '<table class="table table-sm maxout"><tr>';
+echo '<table class="table table-sm maxout"><tr>';
 
-    //ANY IDEA
-    echo '<td><div style="padding-right:5px;">';
-    echo '<span class="mini-header">ANY IDEA:</span>';
-    echo '<input type="text" name="any_i__id" value="' . ((isset($_GET['any_i__id'])) ? $_GET['any_i__id'] : '') . '" class="form-control border">';
+//ANY IDEA
+echo '<td><div style="padding-right:5px;">';
+echo '<span class="mini-header">ANY IDEA:</span>';
+echo '<input type="text" name="any_i__id" value="' . ((isset($_GET['any_i__id'])) ? $_GET['any_i__id'] : '') . '" class="form-control border">';
+echo '</div></td>';
+
+echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="x__left" value="' . ((isset($_GET['x__left'])) ? $_GET['x__left'] : '') . '" class="form-control border"></td>';
+
+echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="x__right" value="' . ((isset($_GET['x__right'])) ? $_GET['x__right'] : '') . '" class="form-control border"></td>';
+
+echo '</tr></table>';
+
+
+
+
+
+
+
+echo '<table class="table table-sm maxout"><tr>';
+
+//ANY SOURCE
+echo '<td><div style="padding-right:5px;">';
+echo '<span class="mini-header">ANY SOURCE:</span>';
+echo '<input type="text" name="any_e__id" value="' . ((isset($_GET['any_e__id'])) ? $_GET['any_e__id'] : '') . '" class="form-control border">';
+echo '</div></td>';
+
+echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="x__source" value="' . ((isset($_GET['x__source'])) ? $_GET['x__source'] : '') . '" class="form-control border"></td>';
+
+echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="x__up" value="' . ((isset($_GET['x__up'])) ? $_GET['x__up'] : '') . '" class="form-control border"></td>';
+
+echo '<td><span class="mini-header">SOURCE PORTFOLIO:</span><input type="text" name="x__down" value="' . ((isset($_GET['x__down'])) ? $_GET['x__down'] : '') . '" class="form-control border"></td>';
+
+echo '</tr></table>';
+
+
+
+
+
+echo '<table class="table table-sm maxout"><tr>';
+
+//ANY DISCOVER
+echo '<td><div style="padding-right:5px;">';
+echo '<span class="mini-header">ANY TRANSACTION:</span>';
+echo '<input type="text" name="any_x__id" value="' . ((isset($_GET['any_x__id'])) ? $_GET['any_x__id'] : '') . '" class="form-control border">';
+echo '</div></td>';
+
+echo '<td><span class="mini-header">TRANSACTION ID:</span><input type="text" name="x__id" value="' . ((isset($_GET['x__id'])) ? $_GET['x__id'] : '') . '" class="form-control border"></td>';
+
+echo '<td><span class="mini-header">PARENT TRANSACTION:</span><input type="text" name="x__reference" value="' . ((isset($_GET['x__reference'])) ? $_GET['x__reference'] : '') . '" class="form-control border"></td>';
+
+echo '<td><span class="mini-header">TRANSACTION STATUS:</span><input type="text" name="x__status" value="' . ((isset($_GET['x__status'])) ? $_GET['x__status'] : '') . '" class="form-control border"></td>';
+
+echo '</tr></table>';
+
+
+
+
+
+
+echo '<table class="table table-sm maxout"><tr>';
+
+
+//Search
+echo '<td><div style="padding-right:5px;">';
+echo '<span class="mini-header">TRANSACTION MESSAGE SEARCH:</span>';
+echo '<input type="text" name="x__message_search" value="' . ((isset($_GET['x__message_search'])) ? $_GET['x__message_search'] : '') . '" class="form-control border">';
+echo '</div></td>';
+
+if(isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0){
+    //Give Option to Replace:
+    echo '<td class="' . superpower_active(14005) . '"><div style="padding-right:5px;">';
+    echo '<span class="mini-header">TRANSACTION MESSAGE REPLACE:</span>';
+    echo '<input type="text" name="x__message_replace" value="' . ((isset($_GET['x__message_replace'])) ? $_GET['x__message_replace'] : '') . '" class="form-control border">';
     echo '</div></td>';
-
-    echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="x__left" value="' . ((isset($_GET['x__left'])) ? $_GET['x__left'] : '') . '" class="form-control border"></td>';
-
-    echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="x__right" value="' . ((isset($_GET['x__right'])) ? $_GET['x__right'] : '') . '" class="form-control border"></td>';
-
-    echo '</tr></table>';
+}
 
 
 
-
-
-
-
-    echo '<table class="table table-sm maxout"><tr>';
-
-    //ANY SOURCE
-    echo '<td><div style="padding-right:5px;">';
-    echo '<span class="mini-header">ANY SOURCE:</span>';
-    echo '<input type="text" name="any_e__id" value="' . ((isset($_GET['any_e__id'])) ? $_GET['any_e__id'] : '') . '" class="form-control border">';
-    echo '</div></td>';
-
-    echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="x__source" value="' . ((isset($_GET['x__source'])) ? $_GET['x__source'] : '') . '" class="form-control border"></td>';
-
-    echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="x__up" value="' . ((isset($_GET['x__up'])) ? $_GET['x__up'] : '') . '" class="form-control border"></td>';
-
-    echo '<td><span class="mini-header">SOURCE PORTFOLIO:</span><input type="text" name="x__down" value="' . ((isset($_GET['x__down'])) ? $_GET['x__down'] : '') . '" class="form-control border"></td>';
-
-    echo '</tr></table>';
-
-
-
-
-
-    echo '<table class="table table-sm maxout"><tr>';
-
-    //ANY DISCOVER
-    echo '<td><div style="padding-right:5px;">';
-    echo '<span class="mini-header">ANY TRANSACTION:</span>';
-    echo '<input type="text" name="any_x__id" value="' . ((isset($_GET['any_x__id'])) ? $_GET['any_x__id'] : '') . '" class="form-control border">';
-    echo '</div></td>';
-
-    echo '<td><span class="mini-header">TRANSACTION ID:</span><input type="text" name="x__id" value="' . ((isset($_GET['x__id'])) ? $_GET['x__id'] : '') . '" class="form-control border"></td>';
-
-    echo '<td><span class="mini-header">PARENT TRANSACTION:</span><input type="text" name="x__reference" value="' . ((isset($_GET['x__reference'])) ? $_GET['x__reference'] : '') . '" class="form-control border"></td>';
-
-    echo '<td><span class="mini-header">TRANSACTION STATUS:</span><input type="text" name="x__status" value="' . ((isset($_GET['x__status'])) ? $_GET['x__status'] : '') . '" class="form-control border"></td>';
-
-    echo '</tr></table>';
-
-
-
-
-
-
-    echo '<table class="table table-sm maxout"><tr>';
-
-
-    //Search
-    echo '<td><div style="padding-right:5px;">';
-    echo '<span class="mini-header">TRANSACTION MESSAGE SEARCH:</span>';
-    echo '<input type="text" name="x__message_search" value="' . ((isset($_GET['x__message_search'])) ? $_GET['x__message_search'] : '') . '" class="form-control border">';
-    echo '</div></td>';
-
-    if(isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0){
-        //Give Option to Replace:
-        echo '<td class="' . superpower_active(14005) . '"><div style="padding-right:5px;">';
-        echo '<span class="mini-header">TRANSACTION MESSAGE REPLACE:</span>';
-        echo '<input type="text" name="x__message_replace" value="' . ((isset($_GET['x__message_replace'])) ? $_GET['x__message_replace'] : '') . '" class="form-control border">';
-        echo '</div></td>';
-    }
-
-
-
-    //DISCOVER Type Filter Groups
-    echo '<td></td>';
+//DISCOVER Type Filter Groups
+echo '<td></td>';
 
 
 
@@ -324,80 +319,79 @@ echo '</div></td>';
 
 
 
-    echo '<td>';
-    echo '<div>';
-    echo '<span class="mini-header">TRANSACTION TYPE:</span>';
+echo '<td>';
+echo '<div>';
+echo '<span class="mini-header">TRANSACTION TYPE:</span>';
 
-    if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
+if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
 
-        //We have multiple predefined transaction types, so we must use a text input:
-        echo '<input type="text" name="x__type" value="' . $_GET['x__type'] . '" class="form-control border">';
+    //We have multiple predefined transaction types, so we must use a text input:
+    echo '<input type="text" name="x__type" value="' . $_GET['x__type'] . '" class="form-control border">';
+
+} else {
+
+    echo '<select class="form-control border" name="x__type" id="x__type" class="border" style="width: 100% !important;">';
+
+    if(isset($_GET['x__source'])) {
+
+        //Fetch details for this user:
+        $all_x_count = 0;
+        $select_ui = '';
+        foreach($this->X_model->fetch($ini_filter, array('x__type'), 0, 0, array('e__title' => 'ASC'), 'COUNT(x__type) as total_count, e__title, x__type', 'x__type, e__title') as $x) {
+            //Echo drop down:
+            $select_ui .= '<option value="' . $x['x__type'] . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $x['x__type']) ? 'selected="selected"' : '') . '>' . $x['e__title'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
+            $all_x_count += $x['total_count'];
+        }
+
+        //Now that we know the total show:
+        echo '<option value="0">All ('  . number_format($all_x_count, 0) . ')</option>';
+        echo $select_ui;
 
     } else {
 
-        echo '<select class="form-control border" name="x__type" id="x__type" class="border" style="width: 100% !important;">';
-
-        if(isset($_GET['x__source'])) {
-
-            //Fetch details for this user:
-            $all_x_count = 0;
-            $select_ui = '';
-            foreach($this->X_model->fetch($ini_filter, array('x__type'), 0, 0, array('e__title' => 'ASC'), 'COUNT(x__type) as total_count, e__title, x__type', 'x__type, e__title') as $x) {
-                //Echo drop down:
-                $select_ui .= '<option value="' . $x['x__type'] . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $x['x__type']) ? 'selected="selected"' : '') . '>' . $x['e__title'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
-                $all_x_count += $x['total_count'];
-            }
-
-            //Now that we know the total show:
-            echo '<option value="0">All ('  . number_format($all_x_count, 0) . ')</option>';
-            echo $select_ui;
-
-        } else {
-
-            //Load all fast:
-            echo '<option value="0">ALL TRANSACTION TYPES</option>';
-            foreach($this->config->item('e___4593') /* DISCOVER Types */ as $e__id => $m){
-                //Echo drop down:
-                echo '<option value="' . $e__id . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $e__id) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
-            }
-
+        //Load all fast:
+        echo '<option value="0">ALL TRANSACTION TYPES</option>';
+        foreach($this->config->item('e___4593') /* DISCOVER Types */ as $e__id => $m){
+            //Echo drop down:
+            echo '<option value="' . $e__id . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $e__id) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
         }
-
-        echo '</select>';
-
 
     }
 
-    echo '</div>';
+    echo '</select>';
 
-    //Optional IDEA/SOURCE status filter ONLY IF DISCOVER Type = Create New IDEA/SOURCE
+
+}
+
+echo '</div>';
+
+//Optional IDEA/SOURCE status filter ONLY IF DISCOVER Type = Create New IDEA/SOURCE
 
 echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(es)</span><input type="text" name="i__type" value="' . ((isset($_GET['i__type'])) ? $_GET['i__type'] : '') . '" class="form-control border"></div>';
 
-    echo '<div class="filter-statuses e_status_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__type" value="' . ((isset($_GET['e__type'])) ? $_GET['e__type'] : '') . '" class="form-control border"></div>';
+echo '<div class="filter-statuses e_status_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__type" value="' . ((isset($_GET['e__type'])) ? $_GET['e__type'] : '') . '" class="form-control border"></div>';
 
-    echo '</td>';
+echo '</td>';
 
-    echo '</tr></table>';
-
-
-
-
-    echo '</tr></table>';
+echo '</tr></table>';
 
 
 
 
-    echo '<input type="submit" class="btn btn-discover" value="Apply" />';
-
-    if($has_filters){
-        echo ' &nbsp;<a href="/app/4341" style="font-size: 0.8em;">Remove Filters</a>';
-    }
-
-    echo '</form>';
-    echo '</div>';
+echo '</tr></table>';
 
 
-    //AJAX Would load content here:
-    echo '<div id="x_page_1"></div>';
+
+
+echo '<input type="submit" class="btn btn-discover" value="Apply" />';
+
+if($has_filters){
+    echo ' &nbsp;<a href="/app/4341" style="font-size: 0.8em;">Remove Filters</a>';
+}
+
+echo '</form>';
 echo '</div>';
+
+
+//AJAX Would load content here:
+echo '<div id="x_page_1"></div>';

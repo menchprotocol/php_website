@@ -1,11 +1,6 @@
 <?php
 
-$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $terms_i__id = view_memory(6404,14373);
-
-
-echo '<div class="container">';
-echo '<h1>'.$e___11035[14373]['m__title'].'</h1>';
 
 //MESSAGES
 foreach($this->X_model->fetch(array(
@@ -36,5 +31,3 @@ foreach($is_next = $this->X_model->fetch(array(
     }
 
 }
-
-echo '</div>';

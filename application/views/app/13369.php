@@ -20,6 +20,12 @@
 
 <input id="cover_input" type="text" value="fas fa-circle idea" class="form-control white-border" />
 
-<div style="width: 400px; height: 600px; text-align: center; border:3px solid #FC1B44; margin:21px 0;">
-    <i id="cover_frame" style="font-size: 18em; padding-top: 144px;"></i>
+<div style="    width: 300px;
+    height: 450px;
+    text-align: center;
+    border: 3px solid #FC1B44;
+    margin: 21px auto;
+    background-color: #000;
+    font-size: 8em;">
+    <i id="cover_frame" style="padding-top: 135px;"></i>
 </div>
