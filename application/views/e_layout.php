@@ -37,14 +37,22 @@ $profiles = $this->X_model->fetch(array(
     //PROFILE
     if(!$source_is_e || $superpower_13422){
 
+        $count = 0;
         $show_max = view_memory(6404,11986);
         echo '<div id="list_11030" class="list-group grey-list">';
-        foreach($profiles as $count => $e_profile) {
+        foreach($profiles as $e_profile) {
+
             if($count==$show_max){
                 echo '<div class="list-group-item see_all_profiles no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_all_profiles\').toggleClass(\'hidden\')" class="block"><span class="icon-block">'.$e___11035[14538]['m__icon'].'</span><b class="css__title '.extract_icon_color($e___11035[14538]['m__icon']).'" style="text-decoration: none !important;">'.$e___11035[14538]['m__title'].'</b></a></div>';
                 echo '<div class="list-group-item see_all_profiles no-height"></div>';
             }
-            echo view_e($e_profile,true, ( $count<$show_max ? '' : 'see_all_profiles hidden'), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+
+            $view_e = view_e($e_profile,true, ( $count<$show_max ? '' : 'see_all_profiles hidden'), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+
+            if($view_e){
+                echo $view_e;
+                $count++;
+            }
         }
         echo '<div id="new_11030" class="list-group-item list-adder no-side-padding '.superpower_active(13422).'">
                             <div class="input-group border">

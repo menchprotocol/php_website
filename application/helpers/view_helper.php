@@ -1708,6 +1708,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
 
+    $e_url = '/@'.$e['e__id'];
     $focus_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $is_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
@@ -1716,7 +1717,9 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
     $superpower_13422 = superpower_active(13422, true);
+    $superpower_12701 = superpower_active(12701, true);
     $source_of_e = ( $superpower_13422 ? true : $source_of_e );
+    $public_sources = $CI->config->item('n___14603');
 
     $e__profiles = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -1729,13 +1732,13 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $is_public = in_array($e['e__type'], $CI->config->item('n___7357'));
     $is_x_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
     //Allow source to see all their own transactions:
-    $is_hidden = (!$user_e || $user_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
-    $e_url = '/@'.$e['e__id'];
+    $is_private = (!$user_e || $user_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
+    $is_public = in_array($e['e__id'], $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
 
 
-    if($is_hidden && !superpower_active(12701, true)){
-        //PRIVATE INFORMATION:
-        return '<div class="list-group-item no-side-padding itemsource '. $extra_class  . '"><span class="icon-block">'.$e___11035[4755]['m__icon'].'</span>'.$e___11035[4755]['m__title'].'</div>';
+    if(($is_private && !$superpower_12701) || (!$is_public && !$superpower_13422)){
+        //PRIVATE SOURCE:
+        return ( $superpower_13422 ? '<div class="list-group-item no-side-padding itemsource '. $extra_class  . '"><span class="icon-block">'.$e___11035[4755]['m__icon'].'</span>'.$e___11035[4755]['m__title'].'</div>' : null );
     }
 
 

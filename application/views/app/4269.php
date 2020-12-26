@@ -155,7 +155,7 @@ if(superpower_unlocked()) {
 
 
 
-            <!-- Step 2: Enter password (IF FOUND) -->
+            <!-- Step 3: Enter password (IF FOUND) -->
             <div id="step3" class="signup-steps hidden">
 
                 <!-- To be updated to >0 IF email was found -->
@@ -181,7 +181,7 @@ if(superpower_unlocked()) {
 
 
 
-            <!-- Step 3: Create New Account (IF NOT FOUND) -->
+            <!-- Step 4: Create New Account (IF NOT FOUND) -->
             <div id="step4" class="signup-steps hidden">
 
                 <!-- pre-set Email -->

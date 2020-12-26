@@ -18,7 +18,7 @@ foreach($this->X_model->fetch(array(
 }
 
 //Show Stats:
-echo view_mench_coins();
+//echo view_mench_coins();
 
 
 //FEATURED IDEAS
