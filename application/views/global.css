@@ -2347,6 +2347,7 @@ i, .btn .show-max {
 .custom_ui_13884_13886 textarea,
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 .form-control,
+.custom_ui_13884_13886 .form-control:disabled,
 .custom_ui_13884_13886 .edit-locked span,
 .custom_ui_13884_13886 .chat-title span,
 .custom_ui_13884_13886 div.dropdown-item,
@@ -2492,6 +2493,7 @@ i, .btn .show-max {
 .custom_ui_13884_13885 a,
 .custom_ui_13884_13885 .mench-navigation a,
 .custom_ui_13884_13885 .form-control,
+.custom_ui_13884_13885 .form-control:disabled,
 .custom_ui_13884_13885 .fa-gif-wrap,
 .custom_ui_13884_13885 .btn:hover{
     color: #222222;

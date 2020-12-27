@@ -1730,7 +1730,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
 
     $is_public = in_array($e['e__type'], $CI->config->item('n___7357'));
-    $is_x_published = ( !$x__id || in_array($e['x__status'], $CI->config->item('n___7359')));
     //Allow source to see all their own transactions:
     $is_private = (!$user_e || $user_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
     $is_public = in_array($e['e__id'], $public_sources) || in_array($focus_e__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
@@ -1752,10 +1751,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     }
 
     //DISCOVER STATUS
-    if($x__id){
-        if(!$is_x_published){
-            $box_items_list .= '<span class="inline-block x__status_' . $x__id .'"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$e['x__status']]['m__title'].' @'.$e['x__status'].'">' . $e___6186[$e['x__status']]['m__icon'] . '</span>&nbsp;</span>';
-        }
+    if($x__id > 0 && !in_array($e['x__status'], $CI->config->item('n___7359'))){
+        $box_items_list .= '<span class="inline-block x__status_' . $x__id .'"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$e['x__status']]['m__title'].' @'.$e['x__status'].'">' . $e___6186[$e['x__status']]['m__icon'] . '</span>&nbsp;</span>';
     }
 
 
