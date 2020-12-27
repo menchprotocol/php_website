@@ -93,12 +93,11 @@ function go_next(go_next_url){
         } else {
 
             if(go_next_url && go_next_url.length > 0){
+
                 //Go Next:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                setTimeout(function () {
-                    window.location = go_next_url;
-                    $('.go-next').html('<i class="fas fa-check-circle"></i>');
-                }, 55);
+                $('.go-next').html('<i class="fas fa-check-circle"></i>');
+                window.location = go_next_url;
+
             } else {
 
                 x_create({
