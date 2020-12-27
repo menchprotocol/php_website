@@ -1209,18 +1209,19 @@ function view_e_settings($list_id, $show_accordion){
 
         if ($acc_e__id == 12289) {
 
-            $e__icon_parts = explode(' ',one_two_explode('class="', '"', $user_e['e__icon']));
-
+            $my_avatar = one_two_explode('class="', '"', $user_e['e__icon']);
+            $e__icon_parts = explode(' ',$my_avatar);
 
             //List avatars:
             $tab_ui .= '<div class="row">';
             foreach($CI->config->item('e___12279') as $x__type3 => $m3) {
 
-                $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m__icon']));
+                $full_avatar = one_two_explode('class="', '"', $m3['m__icon']);
+                $avatar_icon_parts = explode(' ',$full_avatar);
                 $avatar_type_match = ($e__icon_parts[0] == $avatar_icon_parts[0]);
                 $superpower_actives3 = array_intersect($CI->config->item('n___10957'), $m3['m__profile']);
 
-                if(count($superpower_actives3) && !superpower_active(end($superpower_actives3), true)){
+                if($full_avatar!=$my_avatar && count($superpower_actives3) && !superpower_active(end($superpower_actives3), true)){
                     //Missing needed superpower, skip:
                     continue;
                 }
