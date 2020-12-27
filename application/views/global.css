@@ -2107,7 +2107,9 @@ i, .btn .show-max {
         font-size: 2.4em;
     }
 }
-
+.texttransparent{
+    color:transparent;
+}
 .form-control{
     background-color:transparent;
 }

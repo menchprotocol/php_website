@@ -270,7 +270,7 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= '</form>';
 
                 //Also add invisible child IDs for quick copy/pasting:
-                $ui .= '<div style="color:transparent;" class="hideIfEmpty">';
+                $ui .= '<div class="hideIfEmpty texttransparent">';
                 foreach($list_e as $e_portfolio) {
                     $ui .= $e_portfolio['e__id'].',';
                 }
