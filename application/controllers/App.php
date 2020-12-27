@@ -133,6 +133,7 @@ class App extends CI_Controller
             'x__source' => $x__source,
             'x__type' => 14067, //MENCH APP LOADED
             'x__up' => $app_e__id,
+            'x__message' => $_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI],
             'x__reference' => $cache_x__id,
         );
         if(count($_GET)){
