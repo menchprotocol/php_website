@@ -1,7 +1,7 @@
 <?php
 
 //Calculates the weekly coins issued:
-$e___12467 = $this->config->item('e___12467'); //MENCH COINS
+$e___2738 = $this->config->item('e___2738'); //MENCH
 $last_x_days = 7;
 
 $x__time_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
@@ -15,7 +15,7 @@ $html_message = '<br />';
 $html_message .= '<div>In the last '.$last_x_days.' day'.view__s($last_x_days).' we grew:</div>';
 $html_message .= '<br />';
 
-foreach($this->config->item('e___12467') as $x__type => $m) {
+foreach($this->config->item('e___2738') as $x__type => $m) {
 
     //Calculate Growth Rate:
     $icon = extract_icon_color($m['m__icon'], true);

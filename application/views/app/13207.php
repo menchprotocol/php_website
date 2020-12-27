@@ -9,6 +9,11 @@ $group_by =                       'e__id, e__title, e__icon, e__metadata, e__typ
 //SOURCE LEADERBOARD
 foreach($this->config->item('e___13207') as $e__id => $m) {
 
+    if($e__id==2738){
+        echo view_mench_coins();
+        continue;
+    }
+
     //WITH MOST IDEAS
     $e_list = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -37,8 +42,5 @@ foreach($this->config->item('e___13207') as $e__id => $m) {
 
     echo '</div>';
 }
-
-echo view_mench_coins();
-
 
 ?>

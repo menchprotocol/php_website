@@ -332,8 +332,8 @@ function view_e__icon($e__icon = null)
     } else {
         //Return default icon for sources:
         $CI =& get_instance();
-        $e___12467 = $CI->config->item('e___12467'); //MENCH
-        return $e___12467[12274]['m__icon'];
+        $e___2738 = $CI->config->item('e___2738'); //MENCH
+        return $e___2738[12274]['m__icon'];
     }
 }
 
@@ -602,9 +602,9 @@ function view_mench_coins(){
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
     $ui = '';
 
-    //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[12467]['m__icon'].'</span>'.$e___11035[12467]['m__title'].'</div>';
+    //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[2738]['m__icon'].'</span>'.$e___11035[2738]['m__title'].'</div>';
     $ui .= '<div class="row">';
-    foreach($CI->config->item('e___12467') as $e__id => $m) {
+    foreach($CI->config->item('e___2738') as $e__id => $m) {
         $count = count_unique_coins($e__id);
         $ui .= '<div class="col-4" style="text-align: center"><span class="css__title '.extract_icon_color($m['m__icon']).'" title="'.number_format($count, 0).' '.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__icon'].'&nbsp;'.view_number($count).' <span class="block-if-mini">'.$m['m__title'].'</span></span></div>';
     }
@@ -620,7 +620,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
     /*
      *
-     * Loads Source Mench Coins
+     * Loads Source MENCH
      *
      * */
 
@@ -696,8 +696,8 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     } else {
         $count_query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         if($append_coin_icon){
-            $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
-            return ( $count_query[0]['totals'] > 0 ? '<span class="css__title '.extract_icon_color($e___12467[$x__type]['m__icon']).'" title="'.number_format($count_query[0]['totals'], 0).' '.$e___12467[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___12467[$x__type]['m__icon'].'&nbsp;'.view_number($count_query[0]['totals']).'</span>' : null);
+            $e___2738 = $CI->config->item('e___2738'); //MENCH
+            return ( $count_query[0]['totals'] > 0 ? '<span class="css__title '.extract_icon_color($e___2738[$x__type]['m__icon']).'" title="'.number_format($count_query[0]['totals'], 0).' '.$e___2738[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___2738[$x__type]['m__icon'].'&nbsp;'.view_number($count_query[0]['totals']).'</span>' : null);
         } else {
             return intval($count_query[0]['totals']);
         }
@@ -711,7 +711,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
     /*
      *
-     * Loads Idea Mench Coins
+     * Loads Idea MENCH
      *
      * */
 
@@ -758,8 +758,8 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
     //Return Results:
     if($append_coin_icon){
-        $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
-        return ( $count_query > 0 ? '<span title="'.$e___12467[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" class="css__title '.extract_icon_color($e___12467[$x__type]['m__icon']).'">'.$e___12467[$x__type]['m__icon'].'&nbsp;'.view_number($count_query).'</span>' : null);
+        $e___2738 = $CI->config->item('e___2738'); //MENCH
+        return ( $count_query > 0 ? '<span title="'.$e___2738[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" class="css__title '.extract_icon_color($e___2738[$x__type]['m__icon']).'">'.$e___2738[$x__type]['m__icon'].'&nbsp;'.view_number($count_query).'</span>' : null);
     } else {
         return intval($count_query);
     }
@@ -1834,7 +1834,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
         $ui .= '<div class="col-3 col-sm-2 col-md-4">';
 
-            //MENCH COINS
+            //MENCH
             $ui .= '<div class="row">';
                 $ui .= '<div class="col-md-4 show-max">'.view_coins_e(12274, $e['e__id']).'</div>';
                 $ui .= '<div class="col-md-4 col">'.view_coins_e(12273, $e['e__id']).'</div>';

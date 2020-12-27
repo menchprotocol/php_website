@@ -206,14 +206,14 @@ function current_mench(){
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
     $first_letter = substr($first_segment, 0, 1);
-    $e___12467 = $CI->config->item('e___12467'); //MENCH COINS
+    $e___2738 = $CI->config->item('e___2738'); //MENCH
 
     if($first_letter=='@' || $first_segment=='e' || $first_segment=='app' || $first_segment=='account' || $first_segment=='signin'){
 
         return array(
             'c__id' => 12274,
             'c__class' => 'source',
-            'c__m' => $e___12467[12274],
+            'c__m' => $e___2738[12274],
         );
 
     } elseif($first_letter=='~' || $first_segment=='i'){
@@ -221,7 +221,7 @@ function current_mench(){
         return array(
             'c__id' => 12273,
             'c__class' => 'idea',
-            'c__m' => $e___12467[12273],
+            'c__m' => $e___2738[12273],
         );
 
     } else {
@@ -229,7 +229,7 @@ function current_mench(){
         return array(
             'c__id' => 6255,
             'c__class' => 'discover',
-            'c__m' => $e___12467[6255],
+            'c__m' => $e___2738[6255],
         );
 
     }
@@ -806,7 +806,7 @@ function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null
 
     /*
      *
-     * Counts Unique MENCH COINS
+     * Counts Unique MENCH
      *
      * */
 
@@ -1849,7 +1849,7 @@ function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
      *
      * */
 
-    if (!in_array($s__type, $CI->config->item('n___12467')) || $s__id < 1 || count($new_fields) < 1) {
+    if (!in_array($s__type, $CI->config->item('n___2738')) || $s__id < 1 || count($new_fields) < 1) {
         return false;
     }
 

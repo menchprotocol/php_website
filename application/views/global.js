@@ -491,7 +491,7 @@ function e__title_word_count() {
 
 function update_demo_icon(){
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_e___12467[12274]['m__icon'] ));
+    $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_e___2738[12274]['m__icon'] ));
 }
 
 function e_modify_load(e__id, x__id) {
@@ -644,7 +644,7 @@ function e_modify_save() {
                 var icon_set = ( modify_data['e__icon'].length > 0 ? 1 : 0 );
                 if(!icon_set){
                     //Set source default icon:
-                    modify_data['e__icon'] = js_e___12467[12274]['m__icon'];
+                    modify_data['e__icon'] = js_e___2738[12274]['m__icon'];
                 }
                 $('.e_ui_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
                 $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__icon']);

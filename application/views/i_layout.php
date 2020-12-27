@@ -1,5 +1,5 @@
     <?php
-$e___12467 = $this->config->item('e___12467');
+$e___2738 = $this->config->item('e___2738');
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
 $e_of_i = e_of_i($i_focus['i__id']);
@@ -315,8 +315,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         } else {
 
             //No Results:
-            $e___12467 = $this->config->item('e___12467'); //MENCH COINS
-            //$ui .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___12467[6255]['m__title'].' yet</div>';
+            $e___2738 = $this->config->item('e___2738'); //MENCH
+            //$ui .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___2738[6255]['m__title'].' yet</div>';
 
         }
 
