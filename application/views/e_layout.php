@@ -302,7 +302,7 @@ $profiles = $this->X_model->fetch(array(
                         $ui .= '<div class="nav nav-pills nav-sm">';
 
                         //Show fixed All button:
-                        $ui .= '<li class="nav-item"><a href="#" onclick="e_filter_status(-1)" class="nav-x e_filter_status active en_status_-1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span><span class="show-max source">&nbsp;TOTAL</span></a></li>';
+                        $ui .= '<li class="nav-item"><a href="#" onclick="e_filter_status(-1)" class="nav-x e_filter_status active en_status_-1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span></a></li>';
 
                         //Show each specific filter based on DB counts:
                         foreach($child_e_filters as $c_c) {
