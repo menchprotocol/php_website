@@ -19,7 +19,7 @@ foreach($is_next = $this->X_model->fetch(array(
     'x__left' => $terms_i__id,
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i){
 
-    echo '<h1>'.$i['i__title'].'</h1>';
+    echo '<h2>'.$i['i__title'].'</h2>';
 
     //MESSAGES
     foreach($this->X_model->fetch(array(
