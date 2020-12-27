@@ -649,6 +649,24 @@ function format_percentage($percent){
     return number_format($percent, ( $percent < 10 ? 1 : 0 ));
 }
 
+
+function reset_cache($x__source){
+    $CI =& get_instance();
+    $count = 0;
+    foreach($CI->X_model->fetch(array(
+        'x__type' => 14599, //Cache App
+        'x__up IN (' . join(',', $CI->config->item('n___14599')) . ')' => null, //Cache Apps
+        'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+    )) as $delete_cahce){
+        //Delete email:
+        $count += $CI->X_model->update($delete_cahce['x__id'], array(
+            'x__status' => 6173, //Transaction Removed
+        ), $x__source, 14600 /* Delete Cache */);
+    }
+    return $count;
+}
+
 function filter_array($array, $match_key, $match_value, $return_all = false)
 {
 

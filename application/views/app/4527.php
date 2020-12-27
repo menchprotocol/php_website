@@ -88,7 +88,7 @@ fwrite($myfile, $memory_text);
 fclose($myfile);
 
 
-echo '<div class="margin-top-down"><div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully updated file, see details below.</div></div>';
+echo '<div class="margin-top-down"><div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully updated memory & removed '.reset_cache($x__source).' cached pages.</div></div>';
 
 
 //Show:

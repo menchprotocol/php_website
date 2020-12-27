@@ -1,23 +1,9 @@
 <?php
 
 $user_e = superpower_unlocked();
-if(isset($_GET['reset'])){
+if($user_e && isset($_GET['reset'])){
     //Remove all Active Cache:
-    $count = 0;
-    foreach($this->X_model->fetch(array(
-        'x__type' => 14599, //Cache App
-        'x__up IN (' . join(',', $this->config->item('n___14599')) . ')' => null, //Cache Apps
-        'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    )) as $delete_cahce){
-        //Delete email:
-        $count += $this->X_model->update($delete_cahce['x__id'], array(
-            'x__status' => 6173, //Transaction Removed
-        ), $user_e['e__id'], 14600 /* Delete Cache */);
-    }
-
-    echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Deleted '.$count.' active caches</div>';
-
+    echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Deleted '.reset_cache($user_e['e__id']).' active caches</div>';
 }
 
 
