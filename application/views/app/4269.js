@@ -9,7 +9,7 @@ var step_count = 0;
 $(document).ready(function () {
 
     //Watch for email address change:
-    $('#email_check_next').on('input',function(e){
+    $('#input_email').on('input',function(e){
         if($(this).length){
             $('#step2buttons').removeClass('hidden');
         } else {
