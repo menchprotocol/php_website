@@ -201,13 +201,14 @@ function x_upload(droppedFiles, uploadType) {
 
 
 function x_reply(go_next_url){
+    $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
     $.post("/x/x_reply", {
         i__id:$('#focus_i__id').val(),
         x_reply:$('#x_reply').val(),
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
+            $('.go-next').html('<i class="fas fa-check-circle"></i>');
             window.location = go_next_url;
         } else {
             //Show error:
@@ -228,7 +229,7 @@ function x_select(go_next_url){
     });
 
 
-
+    $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
     //Show Loading:
     $.post("/x/x_select", {
         focus_i__id:$('#focus_i__id').val(),
@@ -236,7 +237,7 @@ function x_select(go_next_url){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
+            $('.go-next').html('<i class="fas fa-check-circle"></i>');
             window.location = go_next_url;
         } else {
             //Show error:
