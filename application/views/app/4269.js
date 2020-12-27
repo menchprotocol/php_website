@@ -8,6 +8,15 @@ var step_count = 0;
 
 $(document).ready(function () {
 
+    //Watch for email address change:
+    $('#email_check_next').on('input',function(e){
+        if($(this).length){
+            $('#step2buttons').removeClass('hidden');
+        } else {
+            $('#step2buttons').addClass('hidden');
+        }
+    });
+
     goto_step(2);
 
     $(document).keyup(function (e) {

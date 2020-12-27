@@ -115,8 +115,25 @@ if(superpower_unlocked()) {
 
                 <?php
 
+
+                //Back only if coming from an idea:
+                $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
+                if ($sign_i__id > 0) {
+                    $sign_i = $this->I_model->fetch(array(
+                        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                        'i__id' => $sign_i__id,
+                    ));
+                    if (count($sign_i)) {
+                        $intro_message = str_replace('%S','<a href="/' . $sign_i__id . '"><u>'.$sign_i[0]['i__title'].'</u></a>', $e___4269[7560]['m__message']);
+                    }
+                }
+
+
+
                 echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
-                echo '<p style="margin-top:13px; text-align: center;">'.$e___11035[4269]['m__message'].'</p>';
+                echo '<p style="margin-top:13px; margin-bottom: 34px; text-align: center;">'.$intro_message.'</p>';
+
+
 
                 //SOCIAL BUTTON:
                 echo '<div class="full-width-btn center"><a href="/app/14436" class="btn btn-large btn-default">';
@@ -131,21 +148,11 @@ if(superpower_unlocked()) {
                 <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__icon'].'</span>'.$e___4269[3288]['m__title'] ?></span>
                 <div class="form-group"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
                 <div id="email_errors" class="discover margin-top-down hideIfEmpty"></div>
-                <span id="step2buttons">
-                <?php
-                //Back only if coming from an idea:
-                if($sign_i__id > 0){
-                    $sign_i = $this->I_model->fetch(array(
-                        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                        'i__id' => $sign_i__id,
-                    ));
-                    if(count($sign_i)){
-                        echo '<a href="/'.$sign_i__id.'" class="controller-nav round-btn pull-left">'.$e___11035[12991]['m__icon'].'</a>';
-                    }
-                }
-                ?>
-                <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                <span id="step2buttons" class="<?= isset($_GET['input_email']) ? '' : ' hidden ' ?>" >
+                    <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
                 <div class="doclear">&nbsp;</div>
+
+
 
             </span>
 
@@ -207,11 +214,11 @@ if(superpower_unlocked()) {
 
                 <!-- Signup Buttons -->
                 <div id="new_account_errors" class="discover margin-top-down hideIfEmpty"></div>
-                <span id="step2buttons">
-                <a href="javascript:void(0)" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
-                <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
-                <div class="doclear">&nbsp;</div>
-            </span>
+                <span>
+                    <a href="javascript:void(0)" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
+                    <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                    <div class="doclear">&nbsp;</div>
+                </span>
 
             </div>
 

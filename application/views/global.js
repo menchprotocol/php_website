@@ -848,7 +848,13 @@ function toggle_search(){
         //Turn Search On:
         search_on = true; //Reverse
         $('.search_nav').removeClass('hidden');
-        $('#searchFrontForm input').focus();
+
+        //Focus:
+        $('#mench_search').focus();
+        setTimeout(function () {
+            //One more time to make sure it also works in mobile:
+            $('#mench_search').focus();
+        }, 144);
 
     }
 }
