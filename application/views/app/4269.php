@@ -124,14 +124,14 @@ if(superpower_unlocked()) {
                         'i__id' => $sign_i__id,
                     ));
                     if (count($sign_i)) {
-                        $intro_message = str_replace('%S','<a href="/' . $sign_i__id . '"><u>'.$sign_i[0]['i__title'].'</u></a>', $e___4269[7560]['m__message']);
+                        $intro_message = str_replace('%s','<a href="/' . $sign_i__id . '"><u>'.$sign_i[0]['i__title'].'</u></a>', $e___4269[7560]['m__message']);
                     }
                 }
 
 
 
                 echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
-                echo '<p style="margin-top:13px; margin-bottom: 34px; text-align: center;">'.$intro_message.'</p>';
+                echo '<p style="margin-top:13px; text-align: center;">'.$intro_message.'</p>';
 
 
 
