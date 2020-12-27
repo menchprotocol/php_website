@@ -497,7 +497,7 @@ function view_x($x, $is_parent_tr = false)
                 $x = $CI->X_model->fetch(array('x__id' => $x[$var_index[$e__id]]));
 
                 if(count($x)){
-                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'">'.$e___4341[$e__id]['m__icon']. '</span><div class="x-ref hidden x_msg_'.$x['x__id'].'">'.view_x($x[0], true).'</div><a class="x_msg_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.x_msg_'.$x['x__id'].'\').toggleClass(\'hidden\');">View Referenced Transaction</a></div>';
+                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'">'.$e___4341[$e__id]['m__icon']. '</span><span class="x-ref"><span class="hidden x_msg_'.$x['x__id'].'">'.view_x($x[0], true).'</span><a class="x_msg_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.x_msg_'.$x['x__id'].'\').toggleClass(\'hidden\');">View Referenced Transaction</a></div></div>';
                 }
 
             }
