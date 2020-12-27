@@ -115,9 +115,11 @@ h1 {
     text-align: center;
 }
 
-
-h1 i {
-    font-size: 0.25em; /* 1 / 3.5em = 0.25em */
+h2 {
+    padding:21px 10px;
+    margin:0;
+    font-size:2.10em;
+    text-align: center;
 }
 
 a {
@@ -2024,6 +2026,9 @@ i, .btn .show-max {
     h1{
         font-size: 3.2em;
     }
+    h2{
+        font-size: 2.5em;
+    }
 
     .social-footer li{
         font-size: 1.2em;
@@ -2105,6 +2110,9 @@ i, .btn .show-max {
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
         font-size: 2.4em;
+    }
+    h2{
+        font-size: 1.9em;
     }
 }
 
@@ -2249,6 +2257,7 @@ i, .btn .show-max {
 }
 /* SERIF / HEADER */
 .custom_ui_14506_14508 h1,
+.custom_ui_14506_14508 h2,
 .custom_ui_14506_14508 .css__title,
 .custom_ui_14506_14508 .headline,
 .custom_ui_14506_14508 .btn,
@@ -2283,6 +2292,7 @@ i, .btn .show-max {
 }
 /* SANSSERIF / HEADER */
 .custom_ui_14506_14507 h1,
+.custom_ui_14506_14507 h2,
 .custom_ui_14506_14507 .css__title,
 .custom_ui_14506_14507 .headline,
 .custom_ui_14506_14507 .btn,
@@ -2315,6 +2325,7 @@ i, .btn .show-max {
 }
 /* CURSIVE / HEADER */
 .custom_ui_14506_14540 h1,
+.custom_ui_14506_14540 h2,
 .custom_ui_14506_14540 .css__title,
 .custom_ui_14506_14540 .headline,
 .custom_ui_14506_14540 .btn,
