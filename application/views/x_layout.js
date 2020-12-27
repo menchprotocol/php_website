@@ -95,7 +95,10 @@ function go_next(go_next_url){
             if(go_next_url && go_next_url.length > 0){
                 //Go Next:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                window.location = go_next_url;
+                setTimeout(function () {
+                    window.location = go_next_url;
+                    $('.go-next').html('<i class="fas fa-check-circle"></i>');
+                }, 89);
             } else {
 
                 x_create({
