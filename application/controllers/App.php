@@ -80,7 +80,7 @@ class App extends CI_Controller
             ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                 $ui = $latest_cache['x__message'];
                 $cache_x__id = $latest_cache['x__id'];
-                $cache_x__time = '<div class="mini-grey grey margin-top-down center css__title">Updated '.date("j F g:i a", strtotime($latest_cache['x__time'])).' '.view_memory(6404,11079).'</div>';
+                $cache_x__time = '<div class="mini-grey grey margin-top-down center css__title">Updated '.date("F j g:i a", strtotime($latest_cache['x__time'])).' '.view_memory(6404,11079).'</div>';
             }
             if(!$ui){
                 //No recent cache found, create a new one:
