@@ -201,7 +201,6 @@ function x_upload(droppedFiles, uploadType) {
 
 
 function x_reply(go_next_url){
-    $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
     $.post("/x/x_reply", {
         i__id:$('#focus_i__id').val(),
         x_reply:$('#x_reply').val(),
@@ -229,7 +228,6 @@ function x_select(go_next_url){
     });
 
 
-    $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
     //Show Loading:
     $.post("/x/x_select", {
         focus_i__id:$('#focus_i__id').val(),
