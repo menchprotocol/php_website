@@ -137,9 +137,6 @@ class App extends CI_Controller
             'x__reference' => $cache_x__id,
         );
         if(count($_GET)){
-            $log_data['x__metadata'] = array(
-                'GET' => $_GET,
-            );
             foreach(array(
                 'e__id' => 'x__down',
                 'i__id' => 'x__left'
