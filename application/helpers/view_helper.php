@@ -1847,7 +1847,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
     if($show_text_editor && $box_items_list){
-        $ui .= '<div class="space-content">'.$box_items_list.'</div>';
+        $ui .= '<div class="space-content" style="padding-top: 10px;">'.$box_items_list.'</div>';
     }
 
     if($superpower_12706){
