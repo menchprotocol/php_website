@@ -2002,6 +2002,10 @@ i, .btn .show-max {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    .title-icon{
+        margin-top: 5px;
+    }
+
     .block-if-mini{
         display: block;
     }
