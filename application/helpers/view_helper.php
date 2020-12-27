@@ -872,7 +872,7 @@ function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_m
     }
 
     foreach($CI->config->item('e___'.$parent_e__id) as $e__id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m__icon']).' list-group-item css__title itemsetting item-'.$e__id.' '.( $count>=$show_max ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'<span class="change-results"></span></a>';
+        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m__icon']).' list-group-item css__title itemsetting item-'.$e__id.' '.( $count>=$show_max ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__icon'].'</span>'.$m['m__title'].'</a>';
         $count++;
     }
 

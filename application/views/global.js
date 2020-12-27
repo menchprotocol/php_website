@@ -1877,7 +1877,8 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
 
     //Show spinner on the notification element:
     var notify_el = '.radio-'+parent_e__id+' .item-'+selected_e__id+' .change-results';
-    $(notify_el).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    var current_icon = $(notify_el).html();
+    $(notify_el).html('<i class="far fa-yin-yang fa-spin"></i>');
 
 
     if(!enable_mulitiselect){
@@ -1899,17 +1900,12 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
         was_previously_selected: was_previously_selected,
     }, function (data) {
 
+        $(notify_el).html(current_icon);
+
         if (!data.status) {
-
-            //Ooops there was an error!
-            $(notify_el).html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
-
-        } else {
-
-            //Delete message:
-            $(notify_el).html('');
-
+            alert(data.message);
         }
+
     });
 
 
