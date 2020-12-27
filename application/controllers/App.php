@@ -133,9 +133,12 @@ class App extends CI_Controller
             'x__source' => $x__source,
             'x__type' => 14067, //MENCH APP LOADED
             'x__up' => $app_e__id,
-            'x__message' => $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
             'x__reference' => $cache_x__id,
         );
+        //Append additional:
+        if($is_u_request){
+            $log_data['x__message'] = ( isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '' ) . ( isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '' );
+        }
         if(count($_GET)){
             foreach(array(
                 'e__id' => 'x__down',
