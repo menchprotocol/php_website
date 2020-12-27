@@ -1585,9 +1585,7 @@ i, .btn .show-max {
     line-height: 100%;
     width: 33px !important;
     height: 33px !important;
-    margin-left: 2px !important;
-    margin-right: 3px !important;
-    margin-bottom: 0 !important;
+    margin: -5px 3px -5px 2px !important;
 }
 .icon-block-xs img {
     width: 24px !important;
