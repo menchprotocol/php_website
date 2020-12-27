@@ -38,7 +38,7 @@ $profiles = $this->X_model->fetch(array(
     if(!$source_is_e || $superpower_13422){
 
         $count = 0;
-        $show_max = view_memory(6404,11986);
+        $show_max = view_memory(6404,14538);
         $see_more_button = false;
         echo '<div id="list_11030" class="list-group grey-list">';
         foreach($profiles as $e_profile) {

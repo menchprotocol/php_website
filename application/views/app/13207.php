@@ -5,7 +5,7 @@ echo view_mench_coins();
 
 
 $load_max = view_memory(6404,13206);
-$show_max = view_memory(6404,11986);
+$show_max = view_memory(6404,14538);
 $select = 'COUNT(x__id) as totals, e__id, e__title, e__icon, e__metadata, e__type, e__spectrum';
 $group_by =                       'e__id, e__title, e__icon, e__metadata, e__type, e__spectrum';
 
