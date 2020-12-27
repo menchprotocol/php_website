@@ -80,7 +80,7 @@ class App extends CI_Controller
             ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                 $ui = $latest_cache['x__message'];
                 $cache_x__id = $latest_cache['x__id'];
-                $cache_x__time = 'As Of '.date("", $latest_cache['x__id']);
+                $cache_x__time = 'As Of '.date("F j, Y, g:i a", $latest_cache['x__time']).' '.view_memory(6404,11079);
             }
             if(!$ui){
                 //No recent cache found, create a new one:
