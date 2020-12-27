@@ -1734,7 +1734,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     //Allow source to see all their own transactions:
     $is_private = (!$user_e || $user_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
     $is_public = in_array($e['e__id'], $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
-
+    $show_text_editor = $user_e && $source_of_e && $is_e_link;
 
     if(($is_private && !$superpower_12701) || (!$is_public && !$superpower_13422)){
         //PRIVATE SOURCE:
@@ -1814,13 +1814,9 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
 
             //SOURCE TITLE TEXT EDITOR
-            if($user_e && $source_of_e && $is_e_link){
+            if($show_text_editor){
 
                 $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, 0, false, null, extract_icon_color($e['e__icon']));
-
-                if($box_items_list){
-                    $ui .= '<div class="space-content">'.$box_items_list.'</div>';
-                }
 
             } else {
 
@@ -1846,13 +1842,13 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
         $ui .= '</div>';
 
-
-
-
-
     $ui .= '</div>';
 
 
+
+    if($show_text_editor && $box_items_list){
+        $ui .= '<div class="space-content">'.$box_items_list.'</div>';
+    }
 
     if($superpower_12706){
         //PROFILE

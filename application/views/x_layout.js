@@ -98,6 +98,7 @@ function go_next(go_next_url){
                 window.location = go_next_url;
             } else {
                 alert('This idea is not published yet & cannot be started at this time.');
+
             }
 
         }
