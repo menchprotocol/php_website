@@ -97,6 +97,15 @@ function go_next(go_next_url){
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
                 window.location = go_next_url;
             } else {
+
+                /*
+                x_create({
+                    x__source: js_pl_id,
+                    x__type: 14576, //MODAL VIEWED
+                    x__up: note_type_id,
+                });
+                */
+
                 alert('This idea is not published yet & cannot be started at this time.');
 
             }
