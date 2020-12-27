@@ -1188,7 +1188,7 @@ function view_e_settings($list_id, $show_accordion){
         return $ui;
     }
     if($show_accordion){
-        $ui .= '<div class="accordion" id="MyAccountAccordion">';
+        $ui .= '<div class="accordion" id="MyAccountAccordion'.$list_id.'">';
     }
 
 
@@ -1327,7 +1327,7 @@ function view_e_settings($list_id, $show_accordion){
 
 <div class="doclear">&nbsp;</div>
 
-<div id="openEn' . $acc_e__id . '" class="collapse" aria-labelledby="heading' . $acc_e__id . '" data-parent="#MyAccountAccordion">
+<div id="openEn' . $acc_e__id . '" class="collapse" aria-labelledby="heading' . $acc_e__id . '" data-parent="#MyAccountAccordion'.$list_id.'">
 <div class="card-body">';
 
                 //TAB CONTENT
