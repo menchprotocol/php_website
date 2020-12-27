@@ -462,7 +462,7 @@ function view_x($x, $is_parent_tr = false)
 
     //Message
     if(strlen($x['x__message']) > 0 && $x['x__message']!='@'.$x['x__up']){
-        $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4372]['m__title'].'"><span class="icon-block">'.$e___4341[4372]['m__icon'].'</span><div class="title-block x-msg">'.htmlentities($x['x__message']).'</div></div>';
+        $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4372]['m__title'].'"><span class="icon-block">'.$e___4341[4372]['m__icon'].'</span><div class="title-block x-msg">'.$x['x__message'].'</div></div>'; //htmlentities()
     }
 
 
