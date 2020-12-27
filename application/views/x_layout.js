@@ -98,13 +98,11 @@ function go_next(go_next_url){
                 window.location = go_next_url;
             } else {
 
-                /*
                 x_create({
                     x__source: js_pl_id,
-                    x__type: 14576, //MODAL VIEWED
-                    x__up: note_type_id,
+                    x__type: 14604, //START BLOCKED
+                    x__left: $('#focus_i__id').val(),
                 });
-                */
 
                 alert('This idea is not published yet & cannot be started at this time.');
 
