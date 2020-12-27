@@ -21,7 +21,12 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?php echo view_e_settings(6225, true); ?>
+                    <?php
+                    foreach($this->config->item('e___6225') as $e__id => $m) {
+                        echo '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
+                        echo view_e_settings($e__id, true);
+                    }
+                    ?>
                 </div>
             </div>
         </div>
