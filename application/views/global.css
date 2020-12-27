@@ -2107,8 +2107,12 @@ i, .btn .show-max {
         font-size: 2.4em;
     }
 }
+
 .texttransparent{
     color:transparent;
+}
+.texttransparent:hover{
+    color:#999999;
 }
 .form-control{
     background-color:transparent;
