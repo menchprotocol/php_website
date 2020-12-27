@@ -462,7 +462,7 @@ function view_x($x, $is_parent_tr = false)
 
     //Message
     if(strlen($x['x__message']) > 0 && $x['x__message']!='@'.$x['x__up']){
-        $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4372]['m__title'].'"><span class="icon-block">'.$e___4341[4372]['m__icon'].'</span><div class="title-block x-msg">'.$x['x__message'].'</div></div>'; //htmlentities()
+        $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4372]['m__title'].'"><span class="icon-block">'.$e___4341[4372]['m__icon'].'</span><div class="title-block x-msg">'.( strip_tags($x['x__message'])==$x['x__message'] ? $x['x__message'] : '<span class="hidden html_msg_'.$x['x__id'].'">'.$x['x__message'].'</span><a class="html_msg_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.html_msg_'.$x['x__id'].'\').toggleClass(\'hidden\');">View HTML Message</a>' ).'</div></div>';
     }
 
 
@@ -497,7 +497,7 @@ function view_x($x, $is_parent_tr = false)
                 $x = $CI->X_model->fetch(array('x__id' => $x[$var_index[$e__id]]));
 
                 if(count($x)){
-                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'">'.$e___4341[$e__id]['m__icon']. '</span><div class="x-ref">'.view_x($x[0], true).'</div></div>';
+                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'">'.$e___4341[$e__id]['m__icon']. '</span><div class="x-ref hidden x_msg_'.$x['x__id'].'">'.view_x($x[0], true).'</div><a class="x_msg_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.x_msg_'.$x['x__id'].'\').toggleClass(\'hidden\');">View Referenced Transaction</a></div>';
                 }
 
             }
