@@ -124,7 +124,7 @@ if(superpower_unlocked()) {
                         'i__id' => $sign_i__id,
                     ));
                     if (count($sign_i)) {
-                        $intro_message = str_replace('%s','<a href="/' . $sign_i__id . '"><u>'.$sign_i[0]['i__title'].'</u></a>', $e___4269[7560]['m__message']);
+                        $intro_message = str_replace('%s','<br /><a href="/' . $sign_i__id . '"><u>'.$sign_i[0]['i__title'].'</u></a>', $e___4269[7560]['m__message']);
                     }
                 }
 
