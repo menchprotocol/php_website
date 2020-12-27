@@ -63,7 +63,6 @@ if($userInfo){
         'x__type' => 14436, //Social Sign in
         'x__source' => ( count($user_emails) ? $user_emails[0]['e__id'] : 0 ),
         'x__up' => $signin_method,
-        'x__message' => ( count($user_emails) ? 'Welcome Back ' : 'New Member ' ).$userInfo['email'],
         'x__metadata' => array(
             'auth0_getUser' => $userInfo,
         ),

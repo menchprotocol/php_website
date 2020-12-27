@@ -68,6 +68,7 @@ class App extends CI_Controller
         $ui = null;
         $new_cache = false;
         $cache_x__id = 0;
+        $cache_x__time = null;
         if($memory_detected && in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
 
             //Fetch Most Recent Cache:
@@ -79,6 +80,7 @@ class App extends CI_Controller
             ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                 $ui = $latest_cache['x__message'];
                 $cache_x__id = $latest_cache['x__id'];
+                $cache_x__time = 'As Of '.date("", $latest_cache['x__id']);
             }
             if(!$ui){
                 //No recent cache found, create a new one:
@@ -174,6 +176,7 @@ class App extends CI_Controller
                     'basic_header_footer' => $basic_header,
                 ), true);
                 echo $ui;
+                echo '<div class="small-click grey margin-top-down">'.$cache_x__time.'</div>';
                 echo $this->load->view('footer', array(
                     'basic_header_footer' => $basic_header,
                 ), true);
