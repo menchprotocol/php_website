@@ -80,7 +80,7 @@ class App extends CI_Controller
             ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                 $ui = $latest_cache['x__message'];
                 $cache_x__id = $latest_cache['x__id'];
-                $cache_x__time = 'As Of '.date("F j, Y, g:i a", $latest_cache['x__time']).' '.view_memory(6404,11079);
+                $cache_x__time = '<div class="btn-tiny grey margin-top-down center">AS OF '.date("F j, Y, g:i a", $latest_cache['x__time']).' '.view_memory(6404,11079).'</div>';
             }
             if(!$ui){
                 //No recent cache found, create a new one:
@@ -176,7 +176,7 @@ class App extends CI_Controller
                     'basic_header_footer' => $basic_header,
                 ), true);
                 echo $ui;
-                echo '<div class="small-click grey margin-top-down">'.$cache_x__time.'</div>';
+                echo $cache_x__time;
                 echo $this->load->view('footer', array(
                     'basic_header_footer' => $basic_header,
                 ), true);
