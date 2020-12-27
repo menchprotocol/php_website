@@ -98,7 +98,7 @@ function go_next(go_next_url){
                 setTimeout(function () {
                     window.location = go_next_url;
                     $('.go-next').html('<i class="fas fa-check-circle"></i>');
-                }, 89);
+                }, 55);
             } else {
 
                 x_create({
