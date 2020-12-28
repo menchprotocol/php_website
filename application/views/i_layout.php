@@ -154,14 +154,18 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
 
-    if($x__type==13562){
+    if($x__type==13562) {
 
-        if(!$is_north_star){
-            $href = 'href="/'.$i_focus['i__id'].'"';
+        if (!$is_north_star) {
+            $href = 'href="/' . $i_focus['i__id'] . '"';
         } else {
             //Cannot preview North Star:
             continue;
         }
+
+    } elseif($x__type==13022){
+
+        $href = 'href="/x/i_next/'.$i_focus['i__id'].'/1"';
 
     } elseif(in_array($x__type, $this->config->item('n___7551'))){
 

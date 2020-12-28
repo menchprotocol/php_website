@@ -432,13 +432,15 @@ class X extends CI_Controller
 
 
 
-    function i_next($i__id = 0){
+    function i_next($i__id = 0, $is_edit_mode = 0){
 
         $user_e = superpower_unlocked();
         if(!$user_e){
             return redirect_message('/-4269');
         }
 
+        $base_url = ( $is_edit_mode ? '/~' : '/' );
+        $url_appendix = ( $is_edit_mode ? '' : '?previous_x='.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? $_GET['previous_x'] : $i__id ) );
         if(!$i__id){
             return redirect_message(home_url(), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Missing Idea ID</div>');
         }
@@ -451,7 +453,7 @@ class X extends CI_Controller
         //Go to Next Idea:
         $next_i__id = $this->X_model->find_next($user_e['e__id'], $is[0], 0, true, true);
         if($next_i__id > 0){
-            return redirect_message('/'.$next_i__id.'?previous_x='.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? $_GET['previous_x'] : $i__id ));
+            return redirect_message($base_url.$next_i__id.$url_appendix);
         } else {
 
             //All completed, find the top idea:
@@ -473,7 +475,7 @@ class X extends CI_Controller
                 }
             }
 
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-danger" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You discovered all ideas & will be notified of new updates.</div></div>');
+            return redirect_message($base_url.$top_i__id, '<div class="msg alert alert-danger" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You discovered all ideas & will be notified of new updates.</div></div>');
 
         }
 
