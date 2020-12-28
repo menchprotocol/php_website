@@ -182,8 +182,10 @@ li a {
     text-decoration: underline;
 }
 
-.msg {
+.regtext, .msg{
     line-height: 144%;
+}
+.msg {
     margin:0 41px 25px;
 }
 
