@@ -242,7 +242,7 @@ function revert_poweredit(){
 }
 
 function x_create(add_fields){
-    $.post("/x/x_create", add_fields);
+    return $.post("/x/x_create", add_fields);
 }
 
 var algolia_index = false;
