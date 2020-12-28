@@ -1761,14 +1761,15 @@ function e_toggle_superpower(superpower_id){
 
     superpower_id = parseInt(superpower_id);
 
-    var superpower_icon = $('.superpower-frame-'+superpower_id).html();
-    $('.superpower-frame-'+superpower_id).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    var notify_el = '.superpower-frame-'+superpower_id+' .main-icon';
+    var initial_icon = $(notify_el).html();
+    $(notify_el).html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Save session variable to save the state of advance setting:
     $.post("/e/e_toggle_superpower/"+superpower_id, {}, function (data) {
 
         //Change top menu icon:
-        $('.superpower-frame-'+superpower_id).html(superpower_icon);
+        $(notify_el).html(initial_icon);
 
         if(!data.status){
 
@@ -1883,7 +1884,7 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
 
     //Show spinner on the notification element:
     var notify_el = '.radio-'+parent_e__id+' .item-'+selected_e__id+' .change-results';
-    var current_icon = $(notify_el).html();
+    var initial_icon = $(notify_el).html();
     $(notify_el).html('<i class="far fa-yin-yang fa-spin"></i>');
 
 
@@ -1906,7 +1907,7 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
         was_previously_selected: was_previously_selected,
     }, function (data) {
 
-        $(notify_el).html(current_icon);
+        $(notify_el).html(initial_icon);
 
         if (!data.status) {
             alert(data.message);
