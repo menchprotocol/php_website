@@ -1204,7 +1204,7 @@ function view_e_settings($list_id, $show_accordion){
 
         //Append description if any:
         if(strlen($acc_detail['m__message']) > 0){
-            $tab_ui .= '<div class="regtext" style="text-align: left; margin-left: 5px;">' . $acc_detail['m__message'] . '</div>';
+            $tab_ui .= '<div class="regtext" style="text-align: left; padding:0 0 10px 5px;">' . $acc_detail['m__message'] . '</div>';
         }
 
         if ($acc_e__id == 12289) {
