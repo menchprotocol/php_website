@@ -86,7 +86,7 @@ $profiles = $this->X_model->fetch(array(
     $active_x__type = 0;
 
 
-    if($counter__i > 0 || ($source_is_e && $superpower_10939)){
+    if(($counter__i>0 && !($source_is_e && !$superpower_10939)) || ($source_is_e && $superpower_10939)){
         //IDEAS
         $active_x__type = 12273;
     } elseif($counter__x > 0 || $source_is_e){
