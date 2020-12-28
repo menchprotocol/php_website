@@ -40,7 +40,6 @@ if(superpower_unlocked()) {
 
 } else {
 
-
     if($sign_i__id){
         //Assign Session variable so we can detect upon social login:
         $session_data = $this->session->all_userdata();
