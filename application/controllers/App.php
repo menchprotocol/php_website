@@ -57,9 +57,9 @@ class App extends CI_Controller
         $x__source = ( $is_u_request ? ( $user_e ? $user_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
 
 
-        //Special App Conditions:
-        if($app_e__id==14565 && $user_e){
-            //Home Page with member, redirect to source:
+        //MEMBER REDIRECT?
+        if($user_e && in_array($app_e__id, $this->config->item('n___14639'))){
+            //Should redirect them:
             return redirect_message('/@'.$user_e['e__id']);
         }
 
