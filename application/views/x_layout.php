@@ -421,7 +421,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $ui = '';
     $href = 'href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')"';
 
-    if($x__type==12273){
+    if($x__type==13563){
+
+        //Editing Mode:
+        $href = 'href="/~'.$i_focus['i__id'].'"';
+
+    } elseif($x__type==12273){
 
         //IDEAS
         $counter = count($is_next);
@@ -743,7 +748,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $tab_pill_count++;
 
 
-    $tab_pills .= '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14103')) ? ' pull-right ' : '' ).'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;'.( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>&nbsp;' ).'</a></li>';
+    $tab_pills .= '<li class="nav-item'.'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;'.( !$counter ? '' : '<span class="en-type-counter-'.$x__type.'">'.$counter.'</span>&nbsp;' ).'</a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';

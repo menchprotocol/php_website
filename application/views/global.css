@@ -1154,7 +1154,7 @@ td.MENCHcolumn3  { width: 13%; }
     padding-top: 5px;
     padding-left: 0;
     font-weight: bold;
-    width: calc(100% - 100px);
+    width: calc(100% - 43px);
     height: 34px;
     overflow: hidden;
     line-height: 144%;

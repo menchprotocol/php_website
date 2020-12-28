@@ -180,38 +180,16 @@ if(!$basic_header_footer){
                     echo '<td>';
                     echo '<div class="max_width">';
 
-                    //MENCH
                     echo '<div class="left_nav mench_nav">';
-
 
                     if($user_e){
 
-                        //Idea flipper if has superpower:
-                        $flip_coin = null;
-                        if($superpower_10939){
-
-                            //Flip Coin?
-                            if($i__id && is_numeric($first_segment)){
-
-                                //PUBLISH
-                                $flip_coin = '<a href="/~'.$i__id.'" style="margin-right: 8px;" title="'.$e___11035[13563]['m__title'].'" class="mench-circle pull-right">'.$e___11035[13563]['m__icon'].'</a>';
-
-                            } elseif($i__id && substr($first_segment, 0, 1)=='~' && $i__id!=view_memory(6404,14002)){
-
-                                //DISCOVER
-                                $flip_coin = '<a href="/'.$i__id.'" style="margin-right: 8px;" class="mench-circle pull-right" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__icon'].'</a>';
-
-                            }
-                        }
-
                         //My Source
-                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span class="css__title text-logo" '.( $flip_coin ? '' : ' style="width: calc(100% - 43px);" ' ).'><b class="text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$user_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_mench['c__id'], $user_e['e__id']).'</span>' : '' ).'</span></a>';
-
-                        echo $flip_coin;
+                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span class="css__title text-logo"><b class="text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$user_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_mench['c__id'], $user_e['e__id']).'</span>' : '' ).'</span></a>';
 
                     } else {
 
-                        //Mench Link
+                        //Mench
                         echo '<a href="'.home_url($current_mench['c__id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="css__title text-logo text__6197_2738">MENCH</b></a>';
 
                     }
