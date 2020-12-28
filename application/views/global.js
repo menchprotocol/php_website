@@ -1377,7 +1377,7 @@ function i_note_e_search(obj) {
                     setTimeout(function () {
                         autosize.update(obj);
                     }, 233);
-                    return "\n\n" + '@' + suggestion.s__id + ' ';
+                    return "\n" + '@' + suggestion.s__id + ' ';
                 }
             },
         ]);
