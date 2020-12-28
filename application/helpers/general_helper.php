@@ -737,7 +737,7 @@ function cookie_check() {
     $CI =& get_instance();
     $is_sign_page = ($CI->uri->segment(1)=='app' && in_array($CI->uri->segment(2), $CI->config->item('n___14582')));
     if(!$is_sign_page && isset($_COOKIE['mench_login']) && !superpower_unlocked()) {
-        header("Location: " . '/app/4269?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
+        header("Location: " . '/-4269?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
         exit;
     }
 }
@@ -961,7 +961,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
         if($has_session){
             $goto_url = '/@'.$user_e['e__id'];
         } else {
-            $goto_url = '/app/4269?url=' . urlencode($_SERVER['REQUEST_URI']);
+            $goto_url = '/-4269?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
 
         //Now redirect:

@@ -1621,7 +1621,7 @@ class E extends CI_Controller
         } else {
 
             //Go to home page and let them continue from there:
-            $sign_url = '/app/14517'.(intval($_POST['sign_i__id']) > 0 ? '?i__id='.$_POST['sign_i__id'] : '' );
+            $sign_url = '/-14517'.(intval($_POST['sign_i__id']) > 0 ? '?i__id='.$_POST['sign_i__id'] : '' );
 
         }
 
@@ -1818,7 +1818,7 @@ class E extends CI_Controller
         //Validate email:
         if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/app/4269', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>');
+            return redirect_message('/-4269', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>');
         }
 
         //Validate DISCOVER ID and matching email:
@@ -1829,10 +1829,10 @@ class E extends CI_Controller
         )); //The user making the request
         if(count($validate_x) < 1){
             //Probably previously completed the reset password:
-            return redirect_message('/app/4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
+            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>');
         } elseif(strtotime($validate_x[0]['x__time']) + view_memory(6404,11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('/app/4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic transaction has expired. Try again.</div>');
+            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic transaction has expired. Try again.</div>');
         }
 
 
@@ -1842,7 +1842,7 @@ class E extends CI_Controller
             'e__id' => $validate_x[0]['x__source'],
         ));
         if(count($es) < 1){
-            return redirect_message('/app/4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
+            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>User not found</div>');
         }
 
 

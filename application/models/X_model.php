@@ -398,14 +398,14 @@ class X_model extends CI_Model
                     } elseif (in_array(4367 , $m['m__profile'])) {
 
                         //DISCOVER
-                        $html_message .= '<div>' . $m['m__title'] . ' ID: <a href="'.$this->config->item('base_url').'/app/12722?x__id=' . $add_fields[$var_index[$e__id]] . '" target="_parent">'.$add_fields[$var_index[$e__id]].'</a></div>';
+                        $html_message .= '<div>' . $m['m__title'] . ' ID: <a href="'.$this->config->item('base_url').'/-12722?x__id=' . $add_fields[$var_index[$e__id]] . '" target="_parent">'.$add_fields[$var_index[$e__id]].'</a></div>';
 
                     }
 
                 }
 
                 //Finally append DISCOVER ID:
-                $html_message .= '<div>TRANSACTION ID: <a href="'.$this->config->item('base_url').'/app/12722?x__id=' . $add_fields['x__id'] . '">' . $add_fields['x__id'] . '</a></div>';
+                $html_message .= '<div>TRANSACTION ID: <a href="'.$this->config->item('base_url').'/-12722?x__id=' . $add_fields['x__id'] . '">' . $add_fields['x__id'] . '</a></div>';
 
                 //Inform how to change settings:
                 $html_message .= '<div style="color: #999999; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="'.$this->config->item('base_url').'/@5967" target="_blank">@5967</a></div>';

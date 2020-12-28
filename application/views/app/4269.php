@@ -135,7 +135,7 @@ if(superpower_unlocked()) {
 
 
                 //SOCIAL BUTTON:
-                echo '<div class="full-width-btn center top-margin"><a href="/app/14436" class="btn btn-large btn-default">';
+                echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
                 echo $e___11035[14436]['m__title'];
                 foreach($this->config->item('e___14436') as $e__id => $m) {
                     echo '&nbsp;&nbsp;'.$m['m__icon'];
