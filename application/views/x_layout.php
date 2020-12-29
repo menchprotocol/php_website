@@ -332,6 +332,18 @@ if($i_drip_mode){ //|| (!$i_drip_mode && $i_is_drip)
 }
 
 
+//COMMENTS:
+echo '<div class="view-comments hidden">';
+echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12419]['m__icon'].'</span>'.$e___11035[12419]['m__title'].'</div>';
+echo view_i_note_list(12419, true, $i_focus, $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'x__type' => 12419,
+    'x__right' => $i_focus['i__id'],
+), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC')), true, true);
+echo '</div>';
+
+
+
 
 $fetch_13865 = $this->X_model->fetch(array(
     'x__right' => $i_focus['i__id'],
@@ -810,6 +822,11 @@ if(!$in_my_x && !$i_drip_mode){
             )));
 
             $control_btn = '<span class="final_drip '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'"><a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="0"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span></span>';
+
+        } elseif($e__id==14672){
+
+            //COMMENT
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="$(\'.view-comments\').toggleClass(\'hidden\');">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==12991){
 
