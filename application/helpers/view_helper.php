@@ -1713,11 +1713,6 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 $ui .= '<div class="inline-block idea css__title">0</div>';
             }
 
-        } else {
-
-            //Show Ideas:
-            $ui .= '<div class="css__title doupper grey inline-block"><span class="mid-range">&middot;</span>'.count($is_next).' IDEA'.view__s(count($is_next)).'</div>';
-
         }
         $ui .= '</div>';
 
