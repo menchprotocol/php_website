@@ -35,22 +35,25 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = null;
-
-
+    $full_sec = ' SEC.';
+    $full_min = ' MIN';
 
     $ui .= '<div class="css__title doupper grey inline-block" data-toggle="tooltip" data-placement="top" title="'.
         $i_stats['i___6169'].
         ( $has_any_diff ? '-'.$i_stats['i___6170'] : '' ).
         ' '.$e___13544[12273]['m__title'].
-        ( !$is_micro ? ' in '.( $has_notable_diff ? round_minutes($i_stats['i___6161']).'-' : '' ).round_minutes($i_stats['i___6162']).' MIN' : '' ).
+        ' in '.
+        ( $is_micro
+            ? ( $has_notable_diff ? $i_stats['i___6161'].'-' : '' ).$i_stats['i___6162'].$full_sec
+            : ( $has_notable_diff ? round_minutes($i_stats['i___6161']).'-' : '' ).round_minutes($i_stats['i___6162']).$full_min ).
         '">';
 
     if($is_micro){
         //SECONDS
-        $ui .= ( $has_notable_diff && !$micro_sign ? $i_stats['i___6161'].'<span class="mid-range">-</span>'.$i_stats['i___6162'] : $i_stats['i___6162'] ).( $micro_sign ? '"' : ' SEC.' );
+        $ui .= ( $has_notable_diff && !$micro_sign ? $i_stats['i___6161'].'<span class="mid-range">-</span>'.$i_stats['i___6162'] : $i_stats['i___6162'] ).( $micro_sign ? '"' : $full_sec );
     } else {
         //MINUTES
-        $ui .= ( $has_notable_diff && !$micro_sign ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : round_minutes($i_stats['i___6162']) ).( $micro_sign ? '\'' : ' MIN' );
+        $ui .= ( $has_notable_diff && !$micro_sign ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : round_minutes($i_stats['i___6162']) ).( $micro_sign ? '\'' : $full_min );
     }
 
     if($show_icon){
