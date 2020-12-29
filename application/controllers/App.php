@@ -58,7 +58,7 @@ class App extends CI_Controller
 
 
         //MEMBER REDIRECT?
-        if($user_e && in_array($app_e__id, $this->config->item('n___14639'))){
+        if($user_e && $user_e['e__id'] > 0 && in_array($app_e__id, $this->config->item('n___14639'))){
             //Should redirect them:
             return redirect_message('/@'.$user_e['e__id']);
         }
