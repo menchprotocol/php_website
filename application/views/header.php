@@ -13,7 +13,7 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment ? 'mench' : $current_mench['c__class'] ) ?>.png">
+    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment || substr($first_segment, 0, 1)=='-' ? 'mench' : $current_mench['c__class'] ) ?>.png">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title : 'MENCH' ) ?></title>
 
