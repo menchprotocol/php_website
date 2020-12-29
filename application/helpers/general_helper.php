@@ -491,6 +491,7 @@ function i_fetch_cover($i__id, $html_format = false){
     $CI =& get_instance();
     $found_image = null;
     $first_source_icon = null;
+    $first_source_id = 0;
     foreach($CI->X_model->fetch(array( //IDEA SOURCE
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
@@ -513,6 +514,7 @@ function i_fetch_cover($i__id, $html_format = false){
                     ));
                     if(count($es) && strlen($es[0]['e__icon']) > 0){
                         $first_source_icon = $es[0]['e__icon'];
+                        $first_source_id = $es[0]['e__id'];
                     }
                 }
 
@@ -544,7 +546,7 @@ function i_fetch_cover($i__id, $html_format = false){
             return '<img src="'.$found_image.'" class="cover-image" />';
         } elseif($first_source_icon){
             //Return with HTML code as is:
-            return $first_source_icon;
+            return '<span class="e_ui_icon_'.$first_source_id.'">'.$first_source_icon.'</span>';
         } else {
             return '<img src="'.view_memory(6404,12904).'" class="cover-image" />';
         }
@@ -558,7 +560,7 @@ function i_fetch_cover($i__id, $html_format = false){
                 return one_two_explode('src="','"',$first_source_icon);
             } else {
                 //This is EMOJI OR FONTAWESOME HTML COde:
-                return $first_source_icon;
+                return '<span class="e_ui_icon_'.$first_source_id.'">'.$first_source_icon.'</span>';
             }
         } else {
             return view_memory(6404,12904);
