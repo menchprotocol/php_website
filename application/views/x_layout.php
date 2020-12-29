@@ -842,7 +842,7 @@ if(!$in_my_x && !$i_drip_mode){
 
         }
 
-        $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
+        $buttons_ui .= ( $control_btn ? '<div>'.$control_btn.'</div>' : '' );
 
         if($control_btn){
             $buttons_found++;
