@@ -1583,7 +1583,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
     $i_fetch_cover = i_fetch_cover($i['i__id']);
     $is_valid_url = filter_var($i_fetch_cover, FILTER_VALIDATE_URL);
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_fetch_cover.'\');"' : '' ).'>';
+    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' '.( $is_valid_url ? ' class="cover-link" style="background-image:url(\''.$i_fetch_cover.'\');"' : ' class="cover-link black-background" ' ).'>';
 
 
     //ICON?
