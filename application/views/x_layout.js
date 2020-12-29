@@ -114,7 +114,18 @@ function go_next(go_next_url){
     }
 }
 
+function load_comments(){
+    if($('.view-comments').hasClass('hidden')){
+        $('.view-comments').removeClass('hidden');
+        $('.input_note_12419').focus();
+        setTimeout(function () {
+            $('.input_note_12419').focus();
+        }, 144);
+    } else {
+        $('.view-comments').addClass('hidden');
+    }
 
+}
 
 function select_answer(i__id){
 

@@ -827,7 +827,7 @@ if(!$in_my_x && !$i_drip_mode){
         } elseif($e__id==14672){
 
             //COMMENT
-            $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="$(\'.view-comments\').toggleClass(\'hidden\');$(\'.input_note_12419\').focus();">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==12991){
 
