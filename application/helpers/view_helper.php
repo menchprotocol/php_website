@@ -1688,7 +1688,6 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
             $first_segment = $CI->uri->segment(1);
             $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
             $e___4737 = $CI->config->item('e___4737'); // Idea Status
-            $ui .= '<div class="inline-block idea">';
             if(count($is_next)){
                 $ui .= '<div class="dropdown inline-block">';
                 $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
@@ -1700,9 +1699,8 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 $ui .= '</div>';
                 $ui .= '</div>';
             } else {
-                $ui .= '0';
+                $ui .= '<div class="inline-block idea css__title">0</div>';
             }
-            $ui .= '</div>';
 
         }
         $ui .= '</div>';
