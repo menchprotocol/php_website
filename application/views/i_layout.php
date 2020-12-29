@@ -83,7 +83,7 @@ foreach($this->X_model->fetch(array(
     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
     'x__right' => $i_focus['i__id'],
-), array('x__left'), 0) as $previous_i) {
+), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
     echo view_i(11019, $previous_i, $e_of_i);
 }
 echo '</div>';

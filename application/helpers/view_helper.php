@@ -20,7 +20,7 @@ function view_e_load_more($page, $limit, $list_e_count)
     return $ui;
 }
 
-function view_i_time($i_stats, $show_icon = false){
+function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
 
     //TIME STATS
     if(!$i_stats['i___6161']){
@@ -35,21 +35,24 @@ function view_i_time($i_stats, $show_icon = false){
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = null;
+    $min_sign = ( $micro_sign ? '\'' : ' MIN' );
+    $sec_sign = ( $micro_sign ? '"' : ' SEC.' );
+
 
 
     $ui .= '<div class="css__title doupper grey inline-block" data-toggle="tooltip" data-placement="top" title="'.
         $i_stats['i___6169'].
         ( $has_any_diff ? '-'.$i_stats['i___6170'] : '' ).
         ' '.$e___13544[12273]['m__title'].
-        ( !$is_micro ? ' in '.( $has_notable_diff ? round_minutes($i_stats['i___6161']).'-' : '' ).round_minutes($i_stats['i___6162']).' MIN' : '' ).
+        ( !$is_micro ? ' in '.( $has_notable_diff ? round_minutes($i_stats['i___6161']).'-' : '' ).round_minutes($i_stats['i___6162']).$min_sign : '' ).
         '">';
 
     if($is_micro){
         //SECONDS
-        $ui .= ( $has_notable_diff ? $i_stats['i___6161'].'<span class="mid-range">-</span>'.$i_stats['i___6162'] : $i_stats['i___6162'] ).' SEC.';
+        $ui .= ( $has_notable_diff ? $i_stats['i___6161'].'<span class="mid-range">-</span>'.$i_stats['i___6162'] : $i_stats['i___6162'] ).$sec_sign;
     } else {
         //MINUTES
-        $ui .= ( $has_notable_diff ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : round_minutes($i_stats['i___6162']) ).' MIN';
+        $ui .= ( $has_notable_diff ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : round_minutes($i_stats['i___6162']) ).$min_sign;
     }
 
     if($show_icon){
@@ -1678,25 +1681,49 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         $ui .= '<div class="cover-text css__title">';
 
         //Always Show Time
-        $ui .= view_i_time($i_stats);
+        $ui .= view_i_time($i_stats, false, $idea_editing);
 
         if($idea_editing) {
+
+            $e___4737 = $CI->config->item('e___4737'); // Idea Status
+            $first_segment = $CI->uri->segment(1);
+            $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
+
+            //Previous Ideas:
+            $is_previous = $CI->X_model->fetch(array(
+                'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                'x__right' => $i['i__id'],
+            ), array('x_left'), 0, 0, array('i__spectrum' => 'DESC'));
+
+            if(count($is_previous)){
+                $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'">';
+                $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
+                $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
+                foreach($is_previous as $previous_i) {
+                    $ui .= '<a href="/~'.$previous_i['i__id'].'" class="dropdown-item css__title '.( $previous_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block i__type_'.$previous_i['i__id'].'" title="'.$e___4737[$previous_i['i__type']]['m__title'].'">'.$e___4737[$previous_i['i__type']]['m__icon'].'</span>'.view_i_title($previous_i).'</a>';
+                }
+                $ui .= '</div>';
+                $ui .= '</div>';
+            } else {
+                $ui .= '<div class="inline-block idea css__title" title="'.$e___11035[11019]['m__title'].'">0</div>';
+            }
+
 
             //Type Dropdown:
             $ui .= view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']);
 
-            //Next Ideas Dropdown:
+
+            //Next Ideas:
             $is_next = $CI->X_model->fetch(array(
                 'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
-            $first_segment = $CI->uri->segment(1);
-            $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-            $e___4737 = $CI->config->item('e___4737'); // Idea Status
             if(count($is_next)){
-                $ui .= '<div class="dropdown inline-block">';
+                $ui .= '<div class="dropdown inline-block" title="'.$e___11035[13542]['m__title'].'">';
                 $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
                 $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                 foreach($is_next as $next_i) {
@@ -1706,7 +1733,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 $ui .= '</div>';
                 $ui .= '</div>';
             } else {
-                $ui .= '<div class="inline-block idea css__title">0</div>';
+                $ui .= '<div class="inline-block idea css__title" title="'.$e___11035[13542]['m__title'].'">0</div>';
             }
 
         }
