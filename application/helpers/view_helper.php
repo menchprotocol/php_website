@@ -49,10 +49,10 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
 
     if($is_micro){
         //SECONDS
-        $ui .= ( $has_notable_diff ? $i_stats['i___6161'].'<span class="mid-range">-</span>'.$i_stats['i___6162'] : $i_stats['i___6162'] ).$sec_sign;
+        $ui .= ( $has_notable_diff && !$micro_sign ? $i_stats['i___6161'].'<span class="mid-range">-</span>'.$i_stats['i___6162'] : $i_stats['i___6162'] ).$sec_sign;
     } else {
         //MINUTES
-        $ui .= ( $has_notable_diff ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : round_minutes($i_stats['i___6162']) ).$min_sign;
+        $ui .= ( $has_notable_diff && !$micro_sign ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : round_minutes($i_stats['i___6162']) ).$min_sign;
     }
 
     if($show_icon){
