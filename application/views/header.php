@@ -79,10 +79,7 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
 
     <script src="/application/views/global.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
-<!--
-    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=custom-share-buttons&cms=website' async='async'></script>
-   -->
-
+    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5ec369bdaa9dfe001ab3f797&product=sticky-share-buttons' async='async'></script>
 
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:500|Montserrat:800|Rubik|Bitter:800|Roboto+Slab:400|Righteous|Lato&display=swap" rel="stylesheet">
 

@@ -55,7 +55,7 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     //Current URL:
                     echo '<div class="headline"><span class="icon-block">'.$e___14393[14532]['m__icon'].'</span>'.$e___14393[14532]['m__title'].'</div>';
-                    echo '<div id="current_url" class="padded hideIfEmpty"></div>';
+                    echo '<div class="current_url padded hideIfEmpty"></div>';
 
 
                     //Type
@@ -83,6 +83,39 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+    <!-- SHARE Modal -->
+    <div class="modal fade" id="modal13024" tabindex="-1" role="dialog" aria-labelledby="modal13024Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[13024]['m__icon']) ?>" id="modal13024Label"><?= $e___11035[13024]['m__icon'].' '.$e___11035[13024]['m__title'] ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <?php
+                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14532]['m__icon'].'</span>'.$e___14393[14532]['m__title'].'</div>';
+                    echo '<div class="current_url padded hideIfEmpty"></div>';
+                    ?>
+
+                    <!-- ShareThis BEGIN -->
+                    <div class="sharethis-inline-share-buttons"></div>
+                    <!-- ShareThis END -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 

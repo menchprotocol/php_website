@@ -275,9 +275,9 @@ $(document).ready(function () {
             x__up: note_type_id,
         });
         //Log Viewed Transaction
-        if(note_type_id==14393){
+        if(note_type_id==14393 || note_type_id==13024){
             //Suggest Load Current URL
-            $('#current_url').text(window.location.href);
+            $('.current_url').text(window.location.href);
         }
     });
 
