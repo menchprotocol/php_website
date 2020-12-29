@@ -772,8 +772,12 @@ function cookie_delete(){
 function cookie_check() {
     date_default_timezone_set(view_memory(6404,11079));
     $CI =& get_instance();
-    $is_sign_page = ($CI->uri->segment(1)=='app' && in_array($CI->uri->segment(2), $CI->config->item('n___14582')));
-    if(!$is_sign_page && isset($_COOKIE['mench_login']) && !superpower_unlocked()) {
+    $first_segment = $CI->uri->segment(1);
+    if(
+        !(substr($first_segment, 0, 1)=='-' && in_array(intval(substr($first_segment, 1)), $CI->config->item('n___14582')))
+        && isset($_COOKIE['mench_login'])
+        && !superpower_unlocked()
+    ) {
         header("Location: " . '/-4269?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
         exit;
     }
