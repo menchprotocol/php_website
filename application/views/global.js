@@ -2050,7 +2050,6 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         var is_i_active = (new_e__id in js_e___7356);
         var is_i_public = (new_e__id in js_e___7355);
 
-
         //Deleting?
         if(!is_i_active){
             //Seems to be deleting, confirm:
@@ -2096,6 +2095,11 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
     }, function (data) {
         if (data.status) {
+
+            if(element_id==4737){
+                //Update dropdown menu:
+                $('.i__type_'+i__id).html(data_object[new_e__id]['m__icon']);
+            }
 
             //Update on page:
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m__icon']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
