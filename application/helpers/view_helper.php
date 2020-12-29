@@ -258,12 +258,19 @@ function view_i_note($x__type, $is_discovery_mode, $x, $note_e = false)
     $color_code = trim(extract_icon_color($e___4485[$x__type]['m__icon']));
     $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
     $referenced_ideas = (in_array($x__type, $CI->config->item('n___13550')));
+    $editable_discovery = (in_array($x__type, $CI->config->item('n___14043')));
 
 
     //Build the HTML UI:
     $ui = '';
     $ui .= '<div class="list-group-item item'.$color_code.' is-msg note_sortable msg_e_type_' . $x['x__type'] . '" id="ul-nav-' . $x['x__id'] . '" x__id="' . $x['x__id'] . '">'; //title="'.$x['e__title'].' Posted On '.substr($x['x__time'], 0, 19).'" data-toggle="tooltip" data-placement="top"
     $ui .= '<div style="overflow:visible !important;">';
+
+    if($editable_discovery && isset($x['e__id'])){
+        //Show member:
+        $ui .= view_e($x);
+
+    }
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $x['x__id'] . '">';
