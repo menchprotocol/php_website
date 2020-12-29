@@ -35,8 +35,6 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = null;
-    $min_sign = ( $micro_sign ? '\'' : ' MIN' );
-    $sec_sign = ( $micro_sign ? '"' : ' SEC.' );
 
 
 
@@ -44,15 +42,15 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
         $i_stats['i___6169'].
         ( $has_any_diff ? '-'.$i_stats['i___6170'] : '' ).
         ' '.$e___13544[12273]['m__title'].
-        ( !$is_micro ? ' in '.( $has_notable_diff ? round_minutes($i_stats['i___6161']).'-' : '' ).round_minutes($i_stats['i___6162']).$min_sign : '' ).
+        ( !$is_micro ? ' in '.( $has_notable_diff ? round_minutes($i_stats['i___6161']).'-' : '' ).round_minutes($i_stats['i___6162']).' MIN' : '' ).
         '">';
 
     if($is_micro){
         //SECONDS
-        $ui .= ( $has_notable_diff && !$micro_sign ? $i_stats['i___6161'].'<span class="mid-range">-</span>'.$i_stats['i___6162'] : $i_stats['i___6162'] ).$sec_sign;
+        $ui .= ( $has_notable_diff && !$micro_sign ? $i_stats['i___6161'].'<span class="mid-range">-</span>'.$i_stats['i___6162'] : $i_stats['i___6162'] ).( $micro_sign ? '"' : ' SEC.' );
     } else {
         //MINUTES
-        $ui .= ( $has_notable_diff && !$micro_sign ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : round_minutes($i_stats['i___6162']) ).$min_sign;
+        $ui .= ( $has_notable_diff && !$micro_sign ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>'.round_minutes($i_stats['i___6162']) : round_minutes($i_stats['i___6162']) ).( $micro_sign ? '\'' : ' MIN' );
     }
 
     if($show_icon){
