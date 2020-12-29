@@ -2224,7 +2224,11 @@ i, .btn .show-max {
     border: 3px solid transparent;
 }
 
-
+.cover-btn{
+    font-size: 3em;
+    text-align: center;
+    margin-top: -100%;
+}
 
 .mono-space, .fa-gif-wrap{
     font-family: 'Roboto Mono', monospace !important;
