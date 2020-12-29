@@ -107,9 +107,8 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     echo '<div class="current_url padded hideIfEmpty"></div>';
                     ?>
 
-                    <!-- ShareThis BEGIN -->
-                    <div class="sharethis-inline-share-buttons"></div>
-                    <!-- ShareThis END -->
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_inline_share_toolbox"></div>
 
                 </div>
             </div>
@@ -304,4 +303,7 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 ?>
 
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5febba6d9845bb2b"></script>
+
 </body>
+</html>
