@@ -489,7 +489,8 @@ function e_count_6194($e__id, $specific_id = 0){
 function i_fetch_cover($i__id, $html_format = false){
 
     $CI =& get_instance();
-    $i_fetch_cover = null;
+    $found_image = null;
+    $first_source_icon = null;
     foreach($CI->X_model->fetch(array( //IDEA SOURCE
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
@@ -499,34 +500,70 @@ function i_fetch_cover($i__id, $html_format = false){
         'x__type' => 'ASC', //Messages First, Sources Second
         'x__spectrum' => 'ASC', //Sort by message order
     )) as $fetched_e){
+
         foreach(array('x__up','x__down') as $e_ref_field) {
+
             if($fetched_e[$e_ref_field] > 0){
+
+                //Set the first icon only once:
+                if(!$first_source_icon){
+                    $es = $CI->E_model->fetch(array(
+                        'e__id' => $fetched_e[$e_ref_field],
+                        'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+                    ));
+                    if(count($es) && strlen($es[0]['e__icon']) > 0){
+                        $first_source_icon = $es[0]['e__icon'];
+                    }
+                }
+
                 //See if this source has a photo:
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 4260, //IMAGES ONLY
                     'x__down' => $fetched_e[$e_ref_field],
                 )) as $e_image) {
-                    $i_fetch_cover = $e_image['x__message'];
+                    $found_image = $e_image['x__message'];
                     break;
                 }
-                if($i_fetch_cover){
+                if($found_image){
                     break;
                 }
             }
-            if($i_fetch_cover){
+            if($found_image){
                 break;
             }
         }
-        if($i_fetch_cover){
+        if($found_image){
             break;
         }
     }
 
     //Return something:
-    $image_url = ( $i_fetch_cover ? $i_fetch_cover : view_memory(6404,12904) );
-    return ( $html_format ? '<img src="'.$image_url.'" class="cover-image" />' : $image_url );
-
+    if($html_format){
+        if($found_image){
+            return '<img src="'.$found_image.'" class="cover-image" />';
+        } elseif($first_source_icon){
+            //Return with HTML code as is:
+            return $first_source_icon;
+        } else {
+            return '<img src="'.view_memory(6404,12904).'" class="cover-image" />';
+        }
+    } else {
+        //RAW Background usage:
+        if($found_image){
+            return $found_image;
+        } elseif($first_source_icon){
+            if(substr_count($first_source_icon, '<img') > 0 && substr_count($first_source_icon, 'src="') > 0){
+                //Simplify since Icon is an image:
+                return one_two_explode('src="','"',$first_source_icon);
+            } else {
+                //This is EMOJI OR FONTAWESOME HTML COde:
+                return $first_source_icon;
+            }
+        } else {
+            return view_memory(6404,12904);
+        }
+    }
 }
 
 
@@ -1694,7 +1731,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__id'] = intval($s['i__id']);
                 $export_row['s__url'] = '/i/i_go/' . $s['i__id'];
                 $export_row['s__status'] = intval($s['i__type']);
-                $export_row['s__icon'] = i_fetch_cover($s['i__id']);
+                $export_row['s__icon'] = i_fetch_cover($s['i__id'], true);
                 $export_row['s__title'] = $s['i__title'];
                 $export_row['s___weight'] = intval($s['i__spectrum']);
 

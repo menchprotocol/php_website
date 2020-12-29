@@ -1580,15 +1580,19 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
 
 
+    $i_fetch_cover = i_fetch_cover($i['i__id']);
+    $is_valid_url = filter_var($i_fetch_cover, FILTER_VALIDATE_URL);
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" style="background-image:url(\''.i_fetch_cover($i['i__id']).'\');">';
+    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_fetch_cover.'\');"' : '' ).'>';
 
 
-    if($load_completion){
-        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
+    //ICON?
+    if(!$is_valid_url){
+        $ui .= '<div class="cover-btn">'.$i_fetch_cover.'</div>';
     }
 
 
+    //LEFT
     if($is_sortable && $control_enabled){
         //SORTABLE
         $ui .= '<div class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div>';
@@ -1603,9 +1607,15 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         //$ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div>';
     }
 
-    //UNLINK?
+    //RIGHT
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
+        //UNLINK
         $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
+    }
+
+    //PROGRESS?
+    if($load_completion){
+        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
 
     $ui .= ( $is_any_lock ? '</div>' : '</a>' );
