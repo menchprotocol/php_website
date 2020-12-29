@@ -1695,7 +1695,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__right' => $i['i__id'],
-            ), array('x_left'), 0, 0, array('i__spectrum' => 'DESC'));
+            ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
 
             if(count($is_previous)){
                 $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'">';
