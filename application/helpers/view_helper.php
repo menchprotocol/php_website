@@ -1671,7 +1671,37 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         }
 
         //IDEA TYPE
-        $ui .= '<div class="cover-text css__title">'. ( $idea_editing ? view_i_time($i_stats).view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']).'<span class="idea">'.view_coins_i(12273, $i, false) . '</span>' : view_i_time($i_stats) ) .'</div>';
+        $ui .= '<div class="cover-text css__title">';
+        $ui .= view_i_time($i_stats);
+        if($idea_editing) {
+
+            //Type Dropdown:
+            $ui .= view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']);
+
+            //Next Ideas Dropdown:
+            $is_next = $CI->X_model->fetch(array(
+                'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                'x__left' => $i['i__id'],
+            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+            $first_segment = $CI->uri->segment(1);
+            $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
+            $e___4737 = $CI->config->item('e___4737'); // Idea Status
+            $ui .= '<div class="inline-block">';
+            $ui .= '<div class="dropdown inline-block">';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding btn-idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
+            $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
+            foreach($is_next as $next_i) {
+                $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block" title="'.$e___4737[$next_i['i__type']]['m__title'].'">'.$e___4737[$next_i['i__type']]['m__icon'].'</span>'.view_i_title($next_i).'</a>';
+
+            }
+            $ui .= '</div>';
+            $ui .= '</div>';
+            $ui .= '</div>';
+
+        }
+        $ui .= '</div>';
 
     } else {
 

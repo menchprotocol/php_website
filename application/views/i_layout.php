@@ -163,10 +163,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             continue;
         }
 
-    } elseif($x__type==13022){
-
-        $href = 'href="/x/i_next/'.$i_focus['i__id'].'/1"';
-
     } elseif(in_array($x__type, $this->config->item('n___7551'))){
 
         //Reference Sources Only:

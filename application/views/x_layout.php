@@ -250,7 +250,7 @@ if($user_e['e__id']){
 $is_discovarable = true;
 if($in_my_x){
 
-    $go_next_url = ( $i_completed ? '/x/i_next/' : '/x/x_next/' ) . $i_focus['i__id'];
+    $go_next_url = ( $i_completed ? '/x/x_done_next/' : '/x/x_next/' ) . $i_focus['i__id'];
 
 } else {
 
