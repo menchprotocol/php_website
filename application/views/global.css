@@ -2231,28 +2231,27 @@ i, .btn .show-max {
 }
 
 .nav-counter{
-    font-size: 1em;
+    font-size: 0.4em;
     display: inline-block;
-    width: 36px;
-    margin-left: -48px !important;
-    margin-right: 18px;
+    width: 35px;
+    margin-left: -38px !important;
     top: 28px;
     position: absolute;
     text-align: center;
 }
 
 .mono-space, .fa-gif-wrap{
-    font-family: 'Roboto Mono', monospace !important;
-    font-weight: normal !important;
+font-family: 'Roboto Mono', monospace !important;
+font-weight: normal !important;
 }
 
 .fa-gif-wrap{
-    border:2px solid transparent;
-    border-radius: 3px;
-    font-size: 0.8em !important;
-    text-transform: uppercase;
-    padding: 2px;
-    font-weight: bold !important;
+border:2px solid transparent;
+border-radius: 3px;
+font-size: 0.8em !important;
+text-transform: uppercase;
+padding: 2px;
+font-weight: bold !important;
 }
 
 

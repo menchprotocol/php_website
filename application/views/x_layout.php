@@ -828,7 +828,7 @@ if(!$in_my_x && !$i_drip_mode){
         } elseif($e__id==14672){
 
             //COMMENT
-            $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m['m__icon'].'<span class="nav-counter css__title en-type-counter-12419">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m['m__icon'].'<span class="nav-counter css__title en-type-counter-12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==12991){
 
