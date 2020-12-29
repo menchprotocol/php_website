@@ -1696,7 +1696,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
             ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
 
             if(count($is_previous)){
-                $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'">';
+                $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="top">';
                 $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea icon-block-xs" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
                 $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                 foreach($is_previous as $previous_i) {
@@ -1705,7 +1705,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 $ui .= '</div>';
                 $ui .= '</div>';
             } else {
-                $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[11019]['m__title'].'">0</div>';
+                $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="top">0</div>';
             }
 
 
@@ -1721,7 +1721,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             if(count($is_next)){
-                $ui .= '<div class="dropdown inline-block" title="'.$e___11035[13542]['m__title'].'">';
+                $ui .= '<div class="dropdown inline-block" title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="top">';
                 $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea icon-block-xs" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
                 $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                 foreach($is_next as $next_i) {
@@ -1731,7 +1731,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 $ui .= '</div>';
                 $ui .= '</div>';
             } else {
-                $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[13542]['m__title'].'">0</div>';
+                $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="top">0</div>';
             }
 
         }
