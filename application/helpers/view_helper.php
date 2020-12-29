@@ -1691,7 +1691,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
             $ui .= '<div class="inline-block idea">';
             if(count($is_next)){
                 $ui .= '<div class="dropdown inline-block">';
-                $ui .= '<button type="button" class="btn no-left-padding no-right-padding btn-idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
+                $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
                 $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                 foreach($is_next as $next_i) {
                     $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block" title="'.$e___4737[$next_i['i__type']]['m__title'].'">'.$e___4737[$next_i['i__type']]['m__icon'].'</span>'.view_i_title($next_i).'</a>';
@@ -1700,7 +1700,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 $ui .= '</div>';
                 $ui .= '</div>';
             } else {
-                echo '0';
+                $ui .= '0';
             }
             $ui .= '</div>';
 
