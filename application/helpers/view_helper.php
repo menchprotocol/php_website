@@ -257,6 +257,7 @@ function view_i_note($x__type, $is_discovery_mode, $x, $note_e = false)
     $e___11035 = $CI->config->item('e___11035');
     $color_code = trim(extract_icon_color($e___4485[$x__type]['m__icon']));
     $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
+    $referenced_ideas = (in_array($x__type, $CI->config->item('n___13550')));
 
 
     //Build the HTML UI:

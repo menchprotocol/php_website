@@ -2149,7 +2149,7 @@ i, .btn .show-max {
 }
 
 .light-bg{
-    padding-top: 34px;
+    margin-top: 34px;
 }
 
 .hideIfEmpty:empty {
@@ -2231,8 +2231,15 @@ i, .btn .show-max {
 }
 
 .nav-counter{
-    font-size: 1.4em;
-
+    font-size: 1em;
+    display: inline-block;
+    background-color: #00cc00;
+    width: 36px;
+    margin-left: -48px !important;
+    margin-right: 18px;
+    top: 62px;
+    position: absolute;
+    text-align: center;
 }
 
 .mono-space, .fa-gif-wrap{
