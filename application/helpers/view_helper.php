@@ -1681,7 +1681,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         $ui .= '<div class="cover-text css__title">';
 
         //Always Show Time
-        $ui .= view_i_time($i_stats, false, $idea_editing);
+        $ui .= '<div class="inline-block" style="padding-right: 5px;">'.view_i_time($i_stats, false, $idea_editing).'</div>';
 
         if($idea_editing) {
 
