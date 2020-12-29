@@ -38,7 +38,24 @@ echo '<div class="container">';
 
 
 if(!$e_of_i){
-    echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block css__title">JOIN NOW</a> to contribute.</span></div>';
+
+    //DO they already have a request?
+    $request_history = $this->X_model->fetch(array(
+        'x__source' => $user_e['e__id'],
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type' => 14577,
+        'x__right' => $i_focus['i__id'],
+    ), array(), 1, 0, array('x__id' => 'DESC'));
+
+    if(count($request_history)){
+
+        echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You submitted your request to join ' . view_time_difference(strtotime($request_history[0]['x__time'])) . ' ago. You will be notified soon.</span></div>';
+
+    } else {
+
+        echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet.<span class="inline-block '.superpower_active(10939).'">&nbsp;<a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block css__title">JOIN NOW</a> to contribute.</span></div>';
+
+    }
 }
 
 

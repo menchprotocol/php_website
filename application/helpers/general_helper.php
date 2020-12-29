@@ -942,7 +942,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
         //No minimum level required, grant access IF user is logged in:
         return $user_e;
 
-    } elseif ($has_session && in_array($superpower_e__id, $CI->session->userdata('session_superpowers_activated'))) {
+    } elseif ($has_session && in_array($superpower_e__id, $CI->session->userdata('session_superpowers_unlocked'))) {
 
         //They are part of one of the levels assigned to them:
         return $user_e;

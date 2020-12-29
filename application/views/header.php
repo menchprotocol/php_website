@@ -219,11 +219,6 @@ if(!$basic_header_footer){
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
 
-                        //Skip superpowers if not unlocked
-                        if($x__type==10957 && !count($this->session->userdata('session_superpowers_unlocked'))){
-                            continue;
-                        }
-
                         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
                         $extra_class = null;
                         $text_class = null;

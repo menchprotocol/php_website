@@ -164,6 +164,7 @@ if($user_e['e__id']){
 
         //Auto go next?
         if(!count($x_completes) && !count($messages) && count($is_next)<2 && in_array($i_focus['i__type'], $this->config->item('n___12330'))){
+            //TODO REMOVE
             echo '<script> $(document).ready(function () { go_next(\'/x/x_next/'.$i_focus['i__id'].'\') }); </script>';
         }
 

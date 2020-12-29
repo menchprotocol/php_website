@@ -190,7 +190,7 @@ class I extends CI_Controller {
         //Make sure it's a logged in user:
         $user_e = superpower_unlocked(10939, true);
 
-        if(superpower_active(12700, true)){
+        if(superpower_unlocked(12700)){
 
             //They can instantly join:
             $this->X_model->create(array(
