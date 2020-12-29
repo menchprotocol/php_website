@@ -336,11 +336,12 @@ if($i_drip_mode){ //|| (!$i_drip_mode && $i_is_drip)
 echo '<div class="view-comments hidden">';
 echo '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
 echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12419]['m__icon'].'</span>'.$e___11035[12419]['m__title'].'</div>';
-echo view_i_note_list(12419, true, $i_focus, $this->X_model->fetch(array(
+$comments = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 12419,
     'x__right' => $i_focus['i__id'],
-), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC')), true, true);
+), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
+echo view_i_note_list(12419, true, $i_focus, $comments, true, true);
 echo '</div>';
 
 
@@ -822,12 +823,12 @@ if(!$in_my_x && !$i_drip_mode){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
-            $control_btn = '<span class="final_drip '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'"><a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="0"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span></span>';
+            $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="0"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[12906]['m__icon'].'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==14672){
 
             //COMMENT
-            $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m['m__icon'].'</a>'.( count($comments) ? '<span class="nav-counter css__title">'.count($comments).'</span>' : '' ).'<span class="nav-title css__title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==12991){
 

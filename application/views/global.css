@@ -2230,6 +2230,11 @@ i, .btn .show-max {
     margin-top: -100%;
 }
 
+.nav-counter{
+    font-size: 1.4em;
+
+}
+
 .mono-space, .fa-gif-wrap{
     font-family: 'Roboto Mono', monospace !important;
     font-weight: normal !important;
