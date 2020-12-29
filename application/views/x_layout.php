@@ -334,6 +334,7 @@ if($i_drip_mode){ //|| (!$i_drip_mode && $i_is_drip)
 
 //COMMENTS:
 echo '<div class="view-comments hidden">';
+echo '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
 echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12419]['m__icon'].'</span>'.$e___11035[12419]['m__title'].'</div>';
 echo view_i_note_list(12419, true, $i_focus, $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -826,7 +827,7 @@ if(!$in_my_x && !$i_drip_mode){
         } elseif($e__id==14672){
 
             //COMMENT
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="$(\'.view-comments\').toggleClass(\'hidden\');">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="$(\'.view-comments\').toggleClass(\'hidden\');">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==12991){
 
