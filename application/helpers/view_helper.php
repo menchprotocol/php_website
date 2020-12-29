@@ -1698,7 +1698,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
             ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
 
             if(count($is_previous)){
-                $ui .= '<div class="dropdown icon-block" title="'.$e___11035[11019]['m__title'].'">';
+                $ui .= '<div class="dropdown icon-block-xs" title="'.$e___11035[11019]['m__title'].'">';
                 $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
                 $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                 foreach($is_previous as $previous_i) {
@@ -1707,7 +1707,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 $ui .= '</div>';
                 $ui .= '</div>';
             } else {
-                $ui .= '<div class="icon-block idea css__title" title="'.$e___11035[11019]['m__title'].'">0</div>';
+                $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[11019]['m__title'].'">0</div>';
             }
 
 
@@ -1723,7 +1723,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             if(count($is_next)){
-                $ui .= '<div class="dropdown icon-block" title="'.$e___11035[13542]['m__title'].'">';
+                $ui .= '<div class="dropdown icon-block-xs" title="'.$e___11035[13542]['m__title'].'">';
                 $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
                 $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                 foreach($is_next as $next_i) {
@@ -1733,7 +1733,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                 $ui .= '</div>';
                 $ui .= '</div>';
             } else {
-                $ui .= '<div class="icon-block idea css__title" title="'.$e___11035[13542]['m__title'].'">0</div>';
+                $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[13542]['m__title'].'">0</div>';
             }
 
         }
@@ -2025,11 +2025,11 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
     $e___4527 = $CI->config->item('e___4527');
 
     $ui = '<div class="inline-block">';
-    $ui .= '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' '.( !$show_full_name ? ' icon-block ' : '' ).'" selected-val="'.$selected_e__id.'">'; //dropup
+    $ui .= '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' '.( !$show_full_name ? ' icon-block-xs ' : '' ).'" selected-val="'.$selected_e__id.'">'; //dropup
 
     $ui .= '<button type="button" '.( $e_of_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked  '.$btn_class.'"' ).' >';
 
-    $ui .= '<span class="icon-block">' .$e___this[$selected_e__id]['m__icon'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' );
+    $ui .= '<span class="'.( $show_full_name ? 'icon-block' : 'icon-block-xs' ).'">' .$e___this[$selected_e__id]['m__icon'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' );
 
     $ui .= '</button>';
 
