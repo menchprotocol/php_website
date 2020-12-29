@@ -1670,21 +1670,32 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
         }
 
+
+
+
+
         //IDEA TYPE
         $ui .= '<div class="cover-text css__title">';
+
+
+        //Always Show Time
         $ui .= view_i_time($i_stats);
+
+
+        //Count next:
+        $is_next = $CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__left' => $i['i__id'],
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+
         if($idea_editing) {
 
             //Type Dropdown:
             $ui .= view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']);
 
             //Next Ideas Dropdown:
-            $is_next = $CI->X_model->fetch(array(
-                'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                'x__left' => $i['i__id'],
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             $first_segment = $CI->uri->segment(1);
             $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
             $e___4737 = $CI->config->item('e___4737'); // Idea Status
@@ -1701,6 +1712,11 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
             } else {
                 $ui .= '<div class="inline-block idea css__title">0</div>';
             }
+
+        } else {
+
+            //Show Ideas:
+            $ui .= '<div class="css__title doupper grey inline-block"><span class="mid-range">&middot;</span>'.count($is_next).' IDEA'.view__s(count($is_next)).'</div>';
 
         }
         $ui .= '</div>';

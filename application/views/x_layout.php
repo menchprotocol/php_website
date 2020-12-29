@@ -383,7 +383,7 @@ $tab_pill_count = 0;
 if($in_my_x && count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type' => 4983, //IDEA SOURCES
-        'x__up' => 12896, //SAVE THIS IDAE
+        'x__up' => 12896, //SAVE THIS IDEA
         'x__right' => $i_focus['i__id'],
     ))) && !count($this->X_model->fetch(array(
         'x__up' => $user_e['e__id'],
