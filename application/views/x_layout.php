@@ -813,7 +813,7 @@ if(!$in_my_x && !$i_drip_mode){
 
         $control_btn = '';
 
-        if($e__id==13877 && $in_my_x){
+        if($e__id==13877 && $in_my_x && !$in_my_discoveries){
 
             //Is Saved already by this user?
             $is_saved = count($this->X_model->fetch(array(
