@@ -347,7 +347,7 @@ class X extends CI_Controller
 
         //Check to see if added to Discovery for logged-in users:
         if(!$user_e){
-            return redirect_message('/@@4269?i__id='.$i__id);
+            return redirect_message('/-4269?i__id='.$i__id);
         }
 
         //Add this Idea to their Discovery If not there:
@@ -372,7 +372,7 @@ class X extends CI_Controller
 
         $user_e = superpower_unlocked();
         if(!$user_e){
-            return redirect_message('/@@4269');
+            return redirect_message('/-4269');
         }
 
         //Fetch Idea:
@@ -436,7 +436,7 @@ class X extends CI_Controller
 
         $user_e = superpower_unlocked();
         if(!$user_e){
-            return redirect_message('/@@4269');
+            return redirect_message('/-4269');
         }
 
         if(!$i__id){

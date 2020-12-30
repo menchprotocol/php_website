@@ -421,7 +421,7 @@ function view_x($x, $is_parent_tr = false)
 
 
     //ID
-    $ui .= '<div class="simple-line"><a href="/@@4341?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m__title'].'" class="mono-space"><span class="icon-block">'.$e___4341[4367]['m__icon']. '</span>'.$x['x__id'].'</a></div>';
+    $ui .= '<div class="simple-line"><a href="/-4341?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m__title'].'" class="mono-space"><span class="icon-block">'.$e___4341[4367]['m__icon']. '</span>'.$x['x__id'].'</a></div>';
 
 
     //SOURCE
@@ -469,7 +469,7 @@ function view_x($x, $is_parent_tr = false)
 
     //Metadata
     if(strlen($x['x__metadata']) > 0){
-        $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/@@12722?x__id=' . $x['x__id'] . '"><span class="icon-block">'.$e___4341[6103]['m__icon']. '</span><u>'.$e___4341[6103]['m__title']. '</u></a></div>';
+        $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/-12722?x__id=' . $x['x__id'] . '"><span class="icon-block">'.$e___4341[6103]['m__icon']. '</span><u>'.$e___4341[6103]['m__title']. '</u></a></div>';
     }
 
     //Message
