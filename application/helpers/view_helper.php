@@ -1566,6 +1566,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
 
     $superpower_10939 = superpower_active(10939, true);
+    $superpower_12700 = superpower_active(12700, true);
     $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || in_array($i['i__type'], $CI->config->item('n___14488'));
     $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
     $is_soft_lock = $locking_enabled && ($is_hard_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
@@ -1708,7 +1709,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
             $first_segment = $CI->uri->segment(1);
             $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
 
-            if(superpower_active(12700, true)){
+            if($superpower_12700){
 
                 //Previous Ideas:
                 $is_previous = $CI->X_model->fetch(array(
@@ -1731,17 +1732,12 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                     $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">0</div>';
                 }
 
-            } else {
-                //Then we need some space:
-                $ui .= '<div class="inline-block" style="width:10px;">&nbsp;</div>';
-
             }
 
 
 
-
             //Type Dropdown:
-            $ui .= view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']);
+            $ui .= '<div class="inline-block" '.( !$superpower_12700 ? ' style="min-width: 38px; padding-right: 10px;" ' : '' ).'>'.view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']).'</div>';
 
 
 
