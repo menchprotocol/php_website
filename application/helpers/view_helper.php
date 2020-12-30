@@ -1731,6 +1731,10 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
                     $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">0</div>';
                 }
 
+            } else {
+                //Then we need some space:
+                $ui .= '<div class="inline-block" style="width: 8px;">&nbsp;</div>';
+
             }
 
 
