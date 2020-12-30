@@ -1733,7 +1733,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
             } else {
                 //Then we need some space:
-                $ui .= '<div class="inline-block" style="width: 8px;">&nbsp;</div>';
+                $ui .= '<div class="inline-block" style="width:10px;">&nbsp;</div>';
 
             }
 
