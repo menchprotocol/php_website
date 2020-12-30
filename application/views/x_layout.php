@@ -830,7 +830,7 @@ if(!$in_my_x && !$i_drip_mode){
             //COMMENT
             $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m['m__icon'].'<span class="nav-counter css__title en-type-counter-12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
 
-        } elseif($e__id==12991){
+        } elseif($e__id==12991 && !$in_my_discoveries){
 
             //BACK
             $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
@@ -842,7 +842,7 @@ if(!$in_my_x && !$i_drip_mode){
 
         }
 
-        $buttons_ui .= ( $control_btn ? '<div>'.$control_btn.'</div>' : '' );
+        $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
 
         if($control_btn){
             $buttons_found++;
