@@ -1658,7 +1658,13 @@ function watch_for_note_e_clicks(){
     });
 }
 
+var currentlu_adding = false;
 function i_note_add_text(note_type_id) {
+
+    if(currentlu_adding){
+        return false;
+    }
+    currentlu_adding = true;
 
     //Lock message:
     i_note_start_adding(note_type_id);
@@ -1686,6 +1692,9 @@ function i_note_add_text(note_type_id) {
 
         //Unlock field:
         i_note_end_adding(data, note_type_id);
+
+        //Done adding:
+        currentlu_adding = false;
 
     });
 
