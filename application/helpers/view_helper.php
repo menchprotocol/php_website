@@ -1824,7 +1824,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     if(($is_private && !$superpower_12701) || (!$is_public && !$superpower_13422)){
         //PRIVATE SOURCE:
-        return ( $superpower_13422 ? '<div class="list-group-item no-side-padding itemsource '. $extra_class  . '"><span class="icon-block">'.$e___11035[4755]['m__icon'].'</span>'.$e___11035[4755]['m__title'].'</div>' : null );
+        return ( $superpower_13422 ? '<div class="list-group-item no-side-padding '. $extra_class  . '"><span class="icon-block">'.$e___11035[4755]['m__icon'].'</span>'.$e___11035[4755]['m__title'].'</div>' : null );
     }
 
 
@@ -1842,8 +1842,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     }
 
 
-    //ROW
-    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'">';
+    //ROW itemsource
+    $ui = '<div class="list-group-item no-side-padding en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'">';
 
 
 
