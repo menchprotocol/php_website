@@ -279,11 +279,6 @@ $(document).ready(function () {
             //Suggest Load Current URL
             $('.current_url').text(window.location.href);
         }
-        if(note_type_id==13024){
-            console.log('aaa');
-            var script = document.createElement('script');
-            script.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5febba6d9845bb2b';
-        }
     });
 
 

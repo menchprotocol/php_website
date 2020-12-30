@@ -301,8 +301,6 @@ if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 }
 
-//<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5febba6d9845bb2b"></script>
-
 ?>
 
 
