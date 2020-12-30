@@ -1256,7 +1256,7 @@ td.MENCHcolumn3  { width: 13%; }
 
 .note-editor{
     line-height: 100%;
-    width: 32px;
+    width: 36px;
     text-align: right;
     position: absolute;
     overflow: hidden;
@@ -1266,7 +1266,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 .note-editor>span{
     display: block;
-    width: 32px;
+    width: 18px;
     text-align: center;
     padding:5px 0 0;
 }
@@ -1277,10 +1277,14 @@ td.MENCHcolumn3  { width: 13%; }
     margin-bottom: 5px;
 }
 .show-on-hover span:nth-child(3) {
-    background-color: #00CC00;
+    position: absolute;
+    top: 6px;
+    right: 20px;
 }
 .show-on-hover span:nth-child(4) {
-    background-color: #0000FF;
+    position: absolute;
+    top: 26px;
+    right: 20px;
 }
 .show-on-hover i {
     font-size: 0.80em !important;
