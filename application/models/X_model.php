@@ -153,12 +153,11 @@ class X_model extends CI_Model
 
                 //IDEA TYPE SELECT NEXT
                 $is_next_autoscan = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVER ANSWERED
                     'x__source' => $add_fields['x__source'],
                     'x__left' => $is[0]['i__id'],
-                    'x__right>' => 0, //With an answer
-                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                    'x__right >' => 0, //With an answer
                 ), array('x__right'), 0);
 
             } elseif(in_array($is[0]['i__type'], $this->config->item('n___13022'))){
@@ -168,7 +167,6 @@ class X_model extends CI_Model
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $is[0]['i__id'],
-                    'i__type IN (' . join(',', $this->config->item('n___12330')) . ')' => null, //IDEA TYPE COMPLETE IF EMPTY
                 ), array('x__right'), 0);
 
             }
@@ -177,6 +175,10 @@ class X_model extends CI_Model
 
                 //IS IT EMPTY?
                 if(
+
+                    //Auto completable type?
+                    in_array($next_i['i__type'], $this->config->item('n___12330')) &&
+
                     //No Messages
                     !count($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -184,12 +186,12 @@ class X_model extends CI_Model
                         'x__right' => $next_i['i__id'],
                     ))) &&
 
-                    //No Next
-                    !count($this->X_model->fetch(array(
+                    //One or less next
+                    count($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                         'x__left' => $next_i['i__id'],
-                    ))) &&
+                    ))) <= 1 &&
 
                     //Not Already Completed:
                     !count($this->X_model->fetch(array(
