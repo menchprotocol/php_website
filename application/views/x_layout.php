@@ -816,14 +816,14 @@ if(!$in_my_x && !$i_drip_mode){
         if($e__id==13877 && $in_my_x && !$in_my_discoveries){
 
             //Is Saved already by this user?
-            $is_saved = count($this->X_model->fetch(array(
+            $is_saves = $this->X_model->fetch(array(
                 'x__up' => $user_e['e__id'],
                 'x__right' => $i_focus['i__id'],
                 'x__type' => 12896, //SAVED
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )));
+            ));
 
-            $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="0"><span class="controller-nav toggle_saved '.( $is_saved ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( $is_saved ? 'hidden' : '' ).'">'.$e___11035[13877]['m__icon'].'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+            $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__icon'].'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
 
         } elseif($e__id==14672){
 
