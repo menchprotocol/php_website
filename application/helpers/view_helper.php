@@ -1701,7 +1701,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         $ui .= '<div class="cover-text css__title">';
 
         //Always Show Time
-        $ui .= view_i_time($i_stats, false, $idea_editing);
+        $ui .= '<div class="inline-block" '.( !$superpower_12700 ? ' style="min-width: 38px; padding-right: 10px;" ' : '' ).'>'.view_i_time($i_stats, false, $idea_editing).'</div>';
 
         if($idea_editing) {
 
@@ -1737,7 +1737,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
 
             //Type Dropdown:
-            $ui .= '<div class="inline-block" '.( !$superpower_12700 ? ' style="min-width: 38px; padding-right: 10px;" ' : '' ).'>'.view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']).'</div>';
+            $ui .= view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']);
 
 
 
