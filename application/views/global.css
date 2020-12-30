@@ -2229,6 +2229,9 @@ i, .btn .show-max {
     text-align: center;
     margin-top: -100%;
 }
+.cover-btn i{
+    color: #FFFFFF !important;
+}
 
 .nav-counter{
     font-size: 0.4em;
