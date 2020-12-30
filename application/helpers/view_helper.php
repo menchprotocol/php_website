@@ -1854,32 +1854,27 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<span class="show-on-hover">';
 
 
-        $main_controller = $is_e_link && $superpower_13422;
-        if($main_controller){
+        if($is_e_link){
 
             //Sort
             if(!$is_parent && $superpower_10939){
-                $ui .= '<span title="'.$e___11035[13911]['m__title'].'" class="sort_e hidden">'.$e___11035[13911]['m__icon'].'</span>';
+                $ui .= '<span title="'.$e___11035[13911]['m__title'].'" class="'.superpower_active(13422).' sort_e hidden">'.$e___11035[13911]['m__icon'].'</span>';
             }
 
             //Edit Raw Source
-            $ui .= '<span><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</a></span>';
+            $ui .= '<span class="'.superpower_active(13422).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</a></span>';
 
         }
 
-        if($superpower_10939 && (($source_of_e && !$is_parent) || $superpower_13422)){
+        if(($source_of_e && !$is_parent) || $superpower_13422){
 
             //UNLINK SOURCE
-            $ui .= '<span><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m__title'].'">'.$e___11035[10673]['m__icon'].'</a></span>';
+            $ui .= '<span class="'.superpower_active(10939).'"><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m__title'].'">'.$e___11035[10673]['m__icon'].'</a></span>';
 
         }
 
-        if($superpower_13422){
-
-            //HARD DELETE SOURCE
-            $ui .= '<span class="'.superpower_active(14683).'"><a href="javascript:void(0);" onclick="e_hard_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
-
-        }
+        //HARD DELETE SOURCE
+        $ui .= '<span class="'.superpower_active(14683).'"><a href="javascript:void(0);" onclick="e_hard_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
