@@ -319,15 +319,13 @@ class E extends CI_Controller
 
     function e_hard_delete(){
 
-        exit;
-
         //Auth user and check required variables:
-        $user_e = superpower_unlocked(13422);
+        $user_e = superpower_unlocked(14683);
 
         if (!$user_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(13422),
+                'message' => view_unauthorized_message(14683),
             ));
         } elseif (!isset($_POST['e__id'])) {
             return view_json(array(

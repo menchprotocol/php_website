@@ -1853,6 +1853,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<div class="note-editor edit-off">';
         $ui .= '<span class="show-on-hover">';
 
+
         $main_controller = $is_e_link && $superpower_13422;
         if($main_controller){
 
@@ -1876,7 +1877,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         if($superpower_13422){
 
             //HARD DELETE SOURCE
-            //$ui .= '<span><a href="javascript:void(0);" onclick="e_hard_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
+            $ui .= '<span class="'.superpower_active(14683).'"><a href="javascript:void(0);" onclick="e_hard_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
 
         }
 
