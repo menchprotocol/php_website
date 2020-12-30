@@ -1703,7 +1703,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
         //Always Show Time
         $ui .= '<div class="inline-block" '.( $idea_editing && !$superpower_12700 ? ' style="min-width: 38px; padding-right: 10px; margin-left: -4px;" ' : '' ).'>'.view_i_time($i_stats, false, $idea_editing).'</div>';
 
-        if($idea_editing) {
+        if($idea_editing) {b
 
             $e___4737 = $CI->config->item('e___4737'); // Idea Status
             $first_segment = $CI->uri->segment(1);
