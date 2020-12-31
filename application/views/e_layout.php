@@ -407,7 +407,7 @@ $profiles = $this->X_model->fetch(array(
                 }
 
                 $ui .= '<div class="row margin-top-down-half" id="list_13550">';
-                $drop_limit = view_memory(6404,14684);
+                $drop_limit = doubleval(view_memory(6404,14684));
                 $max_i__spectrum = 0;
                 $show_all_i_btn = false;
                 foreach($list_i as $count => $item){
