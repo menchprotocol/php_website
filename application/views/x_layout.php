@@ -188,8 +188,8 @@ if($user_e['e__id']){
 
                 //Determine DISCOVER COIN type based on it's connection type's parents that will hold the appropriate discover coin.
                 $x_completion_type_id = 0;
-                foreach($this->config->item('e___12327') /* DISCOVER UNLOCKS */ as $e__id => $m){
-                    if(in_array($unlocked_connections[0]['x__type'], $m['m__profile'])){
+                foreach($this->config->item('e___12327') /* DISCOVER UNLOCKS */ as $e__id => $m2){
+                    if(in_array($unlocked_connections[0]['x__type'], $m2['m__profile'])){
                         $x_completion_type_id = $e__id;
                         break;
                     }
@@ -730,10 +730,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $buttons_found = 0;
             $buttons_ui = '';
 
-            foreach($this->config->item('e___13289') as $e__id => $m) {
+            foreach($this->config->item('e___13289') as $e__id => $m2) {
 
 
-                $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
+                $superpower_actives = array_intersect($this->config->item('n___10957'), $m2['m__profile']);
                 if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
                     continue;
                 }
@@ -750,22 +750,22 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     ));
 
-                    $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__icon'].'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+                    $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__icon'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
                 } elseif($e__id==14672){
 
                     //COMMENT
-                    $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m['m__icon'].'<span class="nav-counter css__title en-type-counter-12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+                    $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m2['m__icon'].'<span class="nav-counter css__title en-type-counter-12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
                 } elseif($e__id==12991 && !$in_my_discoveries){
 
                     //BACK
-                    $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+                    $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m2['m__icon'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
                 } elseif($e__id==12211){
 
                     //NEXT
-                    $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+                    $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__icon'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
                 }
 
