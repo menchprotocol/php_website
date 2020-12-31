@@ -1940,7 +1940,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<div class="space-content" style="padding-top: 10px;">'.$box_items_list.'</div>';
     }
 
-    if($superpower_12706){
+    if($superpower_12706 && $control_enabled){
         //PROFILE
         $ui .= '<div class="space-content hideIfEmpty '.superpower_active(12706).'">';
         //PROFILE SOURCES:
@@ -1956,7 +1956,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     //DISCOVERY TOOLBAR
     if($is_x_progress && superpower_active(13758, true)){
-        $ui .= '<div class="message_content paddingup x__message block">';
+
+        $ui .= '<div class="message_content paddingup x__message block '.superpower_active(13758).'">';
 
         //Show Filter?
         if(superpower_active(14005, true) && (!isset($_GET['load__e']) || $_GET['load__e']!=$e['e__id'])){
