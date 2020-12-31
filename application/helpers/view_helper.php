@@ -1567,8 +1567,8 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
 
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12700 = superpower_active(12700, true);
-    $top_is_lock = ($top_i && in_array($top_i['i__type'], $CI->config->item('n___14488'));
-    $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || $top_is_lock);
+    $top_is_lock = ($top_i && in_array($top_i['i__type'], $CI->config->item('n___14488')));
+    $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || $top_is_lock;
     $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
     $is_soft_lock = $locking_enabled && ($is_hard_lock || $top_is_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
     $is_sortable = !$is_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
