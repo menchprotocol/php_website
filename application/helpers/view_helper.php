@@ -1575,7 +1575,7 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, true);
     $is_any_lock = $is_soft_lock || $is_hard_lock;
-    $lock_notice = (  $top_is_lock ? 14487 : 14377 );
+    $lock_notice = (  $top_is_lock ? 14488 : 14377 );
 
 
     if(in_array($x__type, $CI->config->item('n___14454')) && $completion_rate['completion_percentage']<100){
