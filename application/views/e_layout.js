@@ -169,7 +169,7 @@ function i_create(){
     //Start Processing:
     saving_i = true;
     $('#newIdeaTitle').prop('disabled', true).addClass('dynamic_saving');
-    add_to_list('list_10573', '.cover_sort', '<div id="tempLoader" class="list-group-item no-side-padding css__title"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Saving New Idea...</div>');
+    add_to_list('list_10573', '.cover_sort', '<div id="tempLoader" class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin idea"></i></div><div class="cover-head idea">SAVING IDEA...</div></div></div></div>');
 
     //Process this:
     $.post("/i/i_create", {
