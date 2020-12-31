@@ -163,18 +163,13 @@ var saving_i = false;
 function i_create(){
 
     if(saving_i){
-        alert('Idea currently being saved, Be patient...');
         return false;
-    } else {
-        saving_i = true;
     }
 
-    //Lockdown:
+    //Start Processing:
+    saving_i = true;
     $('#newIdeaTitle').prop('disabled', true).addClass('dynamic_saving');
-    $('#tempLoader').remove();
-
-    //Set processing status:
-    add_to_list('myIdeas', '.cover_sort', '<div id="tempLoader" class="list-group-item no-side-padding css__title"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Saving Idea...</div>');
+    add_to_list('list_10573', '.cover_sort', '<div id="tempLoader" class="list-group-item no-side-padding css__title"><span class="icon-block"><i class="fas fa-yin-yang fa-spin idea"></i></span>Saving New Idea...</div>');
 
     //Process this:
     $.post("/i/i_create", {
@@ -183,21 +178,28 @@ function i_create(){
         newIdeaTitle: $('#newIdeaTitle').val(),
 
     }, function (data) {
+
+        saving_i = false;
+        $('#tempLoader').remove();
+        $('#newIdeaTitle').prop('disabled', false).removeClass('dynamic_saving').val('').focus();
+
         if (data.status) {
 
-            //Redirect:
-            $('#tempLoader').html(data.message);
-            window.location = '/~' + data.i__id;
+            //Add new
+            add_to_list('list_10573', ".cover_sort", data.new_i_html);
+
+            //Reload sorting to enable sorting for the newly added idea:
+            x_sort_load(10573);
+
+            //Tooltips:
+            $('[data-toggle="tooltip"]').tooltip();
 
         } else {
 
-            //Unlock:
-            $('#tempLoader').html('<span class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</span>');
-            $('#newIdeaTitle').prop('disabled', false).removeClass('dynamic_saving').focus();
+            alert('ERROR: ' + data.message);
 
         }
 
-        saving_i = false;
     });
 
 }

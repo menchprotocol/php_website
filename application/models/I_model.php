@@ -491,7 +491,7 @@ class I_model extends CI_Model
 
 
         //Create Idea Transaction:
-        $next_i_html = null;
+        $new_i_html = null;
 
         if($x_to_i__id > 0){
 
@@ -517,7 +517,7 @@ class I_model extends CI_Model
             ), array(($is_parent ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
             if($x__type > 0){
-                $next_i_html = view_i($x__type, $x_i[0], $new_i[0], true);
+                $new_i_html = view_i($x__type, $x_i[0], $new_i[0], true);
             }
 
         }
@@ -526,7 +526,7 @@ class I_model extends CI_Model
         return array(
             'status' => 1,
             'new_i__id' => $i_new['i__id'],
-            'next_i_html' => $next_i_html,
+            'new_i_html' => $new_i_html,
         );
 
     }

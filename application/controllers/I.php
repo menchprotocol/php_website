@@ -85,10 +85,20 @@ class I extends CI_Controller {
                 )),
         ), true);
 
+
+
+        $i_bookmarks = $this->X_model->fetch(array(
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 10573, //BOOKMARKED IDEAS
+            'x__up' => $user_e['e__id'],
+            'x__right' => $i['new_i__id'],
+        ), array('x__right'));
+
+
         return view_json(array(
             'status' => 1,
-            'message' => '<span class="icon-block"><i class="fas fa-check-circle idea"></i></span>Success! Redirecting now...',
-            'i__id' => $i['new_i__id'],
+            'new_i_html' => view_i(10573, null, $i_bookmarks[0], true),
         ));
 
     }

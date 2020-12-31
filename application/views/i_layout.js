@@ -395,7 +395,7 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
             }
 
             //Add new
-            add_to_list(sort_list_id, sort_handler, data.next_i_html);
+            add_to_list(sort_list_id, sort_handler, data.new_i_html);
 
             //Reload sorting to enable sorting for the newly added idea:
             i_sort_load(i_x_id);
