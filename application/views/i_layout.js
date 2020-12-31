@@ -85,8 +85,8 @@ $(document).ready(function () {
 
 
     //Load top/bottom idea searches:
-    i_load_search(".previous_i",1, 'q', 'x_in');
-    i_load_search(".next_i",0, 'w', 'x_in');
+    i_load_search(11019, ".previous_i",1, 'q', 'x_in');
+    i_load_search(13542, ".next_i",0, 'w', 'x_in');
 
     //Load Sortable:
     i_sort_load($('#focus_i__id').val());
@@ -291,9 +291,9 @@ function i_sort_save(i__id) {
     var new_x__spectrums = [];
     var sort_rank = 0;
 
-    $("#list-in-" + $('#focus_i__id').val() + "-0 .cover_sort").each(function () {
+    $("#list-in-13542 .cover_sort").each(function () {
         //Fetch variables for this idea:
-        var i__id = parseInt($(this).attr('i-id'));
+        var i__id = parseInt($('#focus_i__id').val());
         var x__id = parseInt($(this).attr('x__id'));
 
         sort_rank++;
@@ -318,7 +318,7 @@ function i_sort_save(i__id) {
 function i_sort_load(i__id) {
 
     var element_key = null;
-    var theobject = document.getElementById("list-in-" + $('#focus_i__id').val() + "-0");
+    var theobject = document.getElementById("list-in-13542");
     if (!theobject) {
         //due to duplicate ideas belonging in this idea:
         return false;
@@ -334,7 +334,7 @@ function i_sort_load(i__id) {
     });
 }
 
-function i_add(i_x_id, is_parent, i_x_child_id) {
+function i_add(x__type, i_x_child_id) {
 
     /*
      *
@@ -345,9 +345,10 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
      * */
 
 
+    var i_x_id = parseInt($('#focus_i__id').val());
     var sort_handler = ".cover_sort";
-    var sort_list_id = "list-in-" + $('#focus_i__id').val() + '-' + is_parent;
-    var input_field = $('#addi-c-' + i_x_id + '-' + is_parent);
+    var sort_list_id = "list-in-" + x__type;
+    var input_field = $('.new-list-'+x__type+' .add-input');
     var i__title = input_field.val();
 
 
@@ -379,7 +380,7 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
     //Update backend:
     $.post("/i/i_add", {
         i_x_id: i_x_id,
-        is_parent:is_parent,
+        x__type:x__type,
         i__title: i__title,
         i_x_child_id: i_x_child_id
     }, function (data) {
@@ -389,8 +390,8 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
 
         if (data.status) {
 
-            if(!is_parent){
-                //Only children have a counter:
+            if(x__type==13542){
+                //Next Ideas map to ideas so increment counter:
                 i_note_counter(12273, +1);
             }
 

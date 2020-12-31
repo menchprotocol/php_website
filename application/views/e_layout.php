@@ -49,7 +49,7 @@ $profiles = $this->X_model->fetch(array(
                 $see_more_button = true;
             }
 
-            $view_e = view_e($e_profile,true, ( $count<$show_max ? '' : 'see_all_profiles hidden'), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+            $view_e = view_e(11030, $e_profile, ( $count<$show_max ? '' : 'see_all_profiles hidden'), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
 
             if($view_e){
                 echo $view_e;
@@ -302,13 +302,13 @@ $profiles = $this->X_model->fetch(array(
                         $ui .= '<div class="nav nav-pills nav-sm">';
 
                         //Show fixed All button:
-                        $ui .= '<li class="nav-item"><a href="#" onclick="e_filter_status(-1)" class="nav-x e_filter_status active en_status_-1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span></a></li>';
+                        $ui .= '<li class="nav-item"><a href="#" onclick="e_filter_status(11029, -1)" class="nav-x e_filter_status_11029 active en_status_11029_-1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk source"></i><span class="source">&nbsp;' . $e_count . '</span></a></li>';
 
                         //Show each specific filter based on DB counts:
                         foreach($child_e_filters as $c_c) {
                             $st = $e___6177[$c_c['e__type']];
                             $extract_icon_color = extract_icon_color($st['m__icon']);
-                            $ui .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(' . $c_c['e__type'] . ')" class="nav-x nav-link e_filter_status en_status_' . $c_c['e__type'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m__message'] . '">' . $st['m__icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m__title'] . '</span></a></li>';
+                            $ui .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(11029, ' . $c_c['e__type'] . ')" class="nav-x nav-link e_filter_status_11029 en_status_11029_' . $c_c['e__type'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m__message'] . '">' . $st['m__icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m__title'] . '</span></a></li>';
                         }
 
                         $ui .= '</div>';
@@ -318,15 +318,15 @@ $profiles = $this->X_model->fetch(array(
             }
 
             //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[11029]['m__icon'].'</span>'.$e___11035[11029]['m__title'].'</div>';
-            $ui .= '<div id="list_e" class="list-group">';
+            $ui .= '<div id="list_11029" class="list-group">';
 
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
 
             foreach($list_e as $e_portfolio) {
-                $ui .= view_e($e_portfolio,false, null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
+                $ui .= view_e(11029, $e_portfolio,null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
             }
             if ($counter > count($list_e)) {
-                $ui .= view_e_load_more(1, view_memory(6404,11064), $counter);
+                $ui .= view_e_load_more(11029, 1, view_memory(6404,11064), $counter);
             }
 
             //Input to add new child:
@@ -384,16 +384,20 @@ $profiles = $this->X_model->fetch(array(
 
             //Add Idea:
             if($superpower_10939 && $source_is_e){
+
                 //Give Option to Add New Idea:
-                $ui .= '<div class="list-group add_e_idea top-margin"><div class="list-group-item list-adder">
+                $ui .= '<div class="new-list-10573 list-group top-margin"><div class="list-group-item list-adder">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14015]['m__icon'].'</span></a>
                         <input type="text"
-                               class="form-control form-control-thick algolia_search css__title dotransparent add_e_idea add-input"
+                               class="form-control form-control-thick algolia_search css__title dotransparent add-input"
                                maxlength="' . view_memory(6404,4736) . '"
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[14015]['m__title'].'">
                     </div></div></div>';
+
+                $ui .= '<script> $(document).ready(function () { i_load_search(10573, ".add_e_idea" ,0 , "a", "x_my_in"); }); </script>';
+
             }
 
 
@@ -432,16 +436,20 @@ $profiles = $this->X_model->fetch(array(
             }
 
             if($superpower_10939 && !$source_is_e){
+
                 //Give Option to Add New Idea:
-                $ui .= '<div class="list-group add_e_idea"><div class="list-group-item list-adder">
+                $ui .= '<div class="new-list-13550 list-group"><div class="list-group-item list-adder">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14016]['m__icon'].'</span></a>
                         <input type="text"
-                               class="form-control form-control-thick css__title algolia_search dotransparent add_e_idea add-input"
+                               class="form-control form-control-thick css__title algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,4736) . '"
                                id="newIdeaTitle"
                                placeholder="'.$e___11035[14016]['m__title'].'">
                     </div></div></div>';
+
+                $ui .= '<script> $(document).ready(function () { i_load_search(13550, ".add_e_idea" ,0 , "a", "x_my_in"); }); </script>';
+
             }
 
 

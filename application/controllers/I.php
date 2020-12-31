@@ -449,10 +449,10 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Parent Idea ID',
             ));
-        } elseif (!isset($_POST['is_parent']) || !in_array(intval($_POST['is_parent']), array(0,1))) {
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14685'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Is Parent setting',
+                'message' => 'Invaid Idea Add Type',
             ));
         } elseif (!isset($_POST['i__title']) || !isset($_POST['i_x_child_id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['i_x_child_id']) < 1)) {
             return view_json(array(
@@ -494,7 +494,7 @@ class I extends CI_Controller {
         }
 
         //All seems good, go ahead and try creating the Idea:
-        return view_json($this->I_model->create_or_link((intval($_POST['is_parent']) ? 11019 : 13542 ), trim($_POST['i__title']), $user_e['e__id'], $_POST['i_x_id'], intval($_POST['is_parent']), 6677, $_POST['i_x_child_id']));
+        return view_json($this->I_model->create_or_link($_POST['x__type'], trim($_POST['i__title']), $user_e['e__id'], $_POST['i_x_id'], 6677, $_POST['i_x_child_id']));
 
     }
 

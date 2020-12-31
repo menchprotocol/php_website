@@ -713,7 +713,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__left' => $i_focus['i__id'],
             ), array('x__source'), view_memory(6404,11064), 0, array( 'x__id' => 'DESC' )) as $discover_e){
-                $ui .= view_e($discover_e);
+                $ui .= view_e(14688, $discover_e);
             }
             $ui .= '</div>';
         }

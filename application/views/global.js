@@ -975,46 +975,51 @@ jQuery.fn.extend({
 
 
 
-function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
+function i_load_search(x__type, element_focus, is_i_previous, shortcut, is_add_mode) {
 
-    $(element_focus + '.add-input').focus(function() {
-        $(element_focus + '.algolia_pad_search').removeClass('hidden');
+    if(!parseInt(js_e___6404[12678]['m__message'])){
+        alert('Search is currently disabled');
+        return false;
+    } else if(!js_n___14685.includes(x__type)){
+        alert('Idea Type not supported to be added');
+        return false;
+    }
+
+    var search_input = '.new-list-'+x__type+' .add-input';
+
+    $(search_input).focus(function() {
+
+        $('.new-list-'+x__type+' .algolia_pad_search').removeClass('hidden');
+
     }).focusout(function() {
-        $(element_focus + '.algolia_pad_search').addClass('hidden');
-    });
 
-    //Idea Search
-    $(element_focus + '.add-input').keypress(function (e) {
+        $('.new-list-'+x__type+' .algolia_pad_search').addClass('hidden');
+
+    }).keypress(function (e) {
+
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             if(is_add_mode=='x_in') {
-                return i_add($(element_focus + '.add-input').attr('i-id'), is_i_previous, 0);
+                return i_add(is_i_previous, 0);
             } else if(is_add_mode=='x_my_in') {
                 return i_create();
             }
             e.preventDefault();
         }
-    });
 
-    if(!parseInt(js_e___6404[12678]['m__message'])){
-        //Previously loaded:
-        return false;
-    }
-
-    //Not yet loaded, continue with loading it:
-    $(element_focus + '.add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
+    }).on('autocomplete:selected', function (event, suggestion, dataset) {
 
         if(is_add_mode=='x_in'){
-            i_add($(element_focus + '.add-input').attr('i-id'), is_i_previous, suggestion.s__id);
+            i_add(is_i_previous, suggestion.s__id);
         } else {
             //Go to idea:
             window.location = suggestion.s__url;
             return true;
         }
-    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_i_previous ? 'q' : 'a' )]}, [{
+    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [js_e___14685[x__type]['m__message']]}, [{
         source: function (q, cb) {
 
-            if($(element_focus+ '.add-input').val().charAt(0)=='#'){
+            if($(search_input).val().charAt(0)=='#'){
                 cb([]);
                 return;
             } else {
@@ -1041,18 +1046,18 @@ function i_load_search(element_focus, is_i_previous, shortcut, is_add_mode) {
                 return view_s_js(suggestion);
             },
             header: function (data) {
-                if (is_add_mode=='x_in' && !($(element_focus+ '.add-input').val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:void(0);" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
+                if (is_add_mode=='x_in' && !($(search_input).val().charAt(0)=='#') && !data.isEmpty) {
+                    return '<a href="javascript:void(0);" onclick="i_add('+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
                 } else if(is_add_mode=='x_my_in'){
                     return '<a href="javascript:void(0);" onclick="i_create()" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
                 }
             },
             empty: function (data) {
                 if(is_add_mode=='x_in'){
-                    if($(element_focus+ '.add-input').val().charAt(0)=='#'){
-                        return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
+                    if($(search_input).val().charAt(0)=='#'){
+                        return '<a href="javascript:void(0)" onclick="i_add('+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
                     } else {
-                        return '<a href="javascript:void(0)" onclick="i_add(' + parseInt($(element_focus + '.add-input').attr('i-id')) + ','+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
+                        return '<a href="javascript:void(0)" onclick="i_add('+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
                     }
                 }
             },

@@ -1,6 +1,6 @@
 <?php
 
-function view_e_load_more($page, $limit, $list_e_count)
+function view_e_load_more($x__type, $page, $limit, $list_e_count)
 {
     /*
      * Gives an option to "Load More" sources when we have too many to show in one go
@@ -9,7 +9,7 @@ function view_e_load_more($page, $limit, $list_e_count)
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
 
-    $ui = '<div class="load-more css__title list-group-item itemsource no-left-padding"><a href="javascript:void(0);" onclick="e_load_page(' . $page . ', 0)">';
+    $ui = '<div class="load-more css__title list-group-item itemsource no-left-padding"><a href="javascript:void(0);" onclick="e_load_page('.$x__type.',' . $page . ', 0)">';
 
     //Regular section:
     $max_e = (($page + 1) * $limit);
@@ -268,7 +268,7 @@ function view_i_note($x__type, $is_discovery_mode, $x, $note_e = false)
 
     if($editable_discovery && isset($x['e__id'])){
         //Show member:
-        $ui .= view_e($x);
+        $ui .= view_e(14688, $x);
 
     }
 
@@ -400,7 +400,7 @@ function view_number($number)
 }
 
 
-function view_x($x, $is_parent_tr = false)
+function view_x($x, $is_x__reference = false)
 {
 
     $CI =& get_instance();
@@ -479,7 +479,7 @@ function view_x($x, $is_parent_tr = false)
 
 
     //5x Relations:
-    if(!$is_parent_tr){
+    if(!$is_x__reference){
 
         $var_index = var_index();
         foreach($CI->config->item('e___10692') as $e__id => $m) {
@@ -1794,7 +1794,7 @@ function view_x_progress($completion_rate, $i){
 
 
 
-function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = false, $source_of_e = false, $common_prefix = null, $message_input = null)
+function view_e($x__type, $e, $extra_class = null, $control_enabled = false, $source_of_e = false, $common_prefix = null, $message_input = null)
 {
 
     $CI =& get_instance();
@@ -1809,6 +1809,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $is_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
     $is_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
+    $is_sortable = in_array($x__type, $CI->config->item('n___13911'));
     $is_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
@@ -1856,7 +1857,6 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
     $ui = '<div class="list-group-item no-side-padding en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'">';
 
 
-
     if($control_enabled && $source_of_e && ($is_e_link || $is_note)){
 
         //RIGHT EDITING:
@@ -1864,7 +1864,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<span class="show-on-hover">';
 
 
-        if(($source_of_e && !$is_parent) || $superpower_13422){
+        if(($source_of_e && $is_sortable) || $superpower_13422){
 
             //UNLINK SOURCE
             $ui .= '<span class="'.superpower_active(10939).'"><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m__title'].'">'.$e___11035[10673]['m__icon'].'</a></span>';
@@ -1875,7 +1875,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         if($is_e_link){
 
             //Sort
-            if(!$is_parent && $superpower_10939){
+            if($is_sortable && $superpower_10939){
                 $ui .= '<span title="'.$e___11035[13911]['m__title'].'" class="'.superpower_active(13422).' sort_e hidden">'.$e___11035[13911]['m__icon'].'</span>';
             }
 

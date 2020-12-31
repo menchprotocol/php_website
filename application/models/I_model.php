@@ -347,7 +347,7 @@ class I_model extends CI_Model
 
     }
 
-    function create_or_link($x__type, $i__title, $x__source, $x_to_i__id = 0, $is_parent = false, $new_i_type = 6677, $x_i__id = 0)
+    function create_or_link($x__type, $i__title, $x__source, $x_to_i__id = 0, $new_i_type = 6677, $x_i__id = 0)
     {
 
         /*
@@ -362,6 +362,9 @@ class I_model extends CI_Model
          * p.s. Inputs have previously been validated via ideas/i_add() function
          *
          * */
+
+
+        $is_upwards = in_array($x__type, $this->config->item('n___14686'));
 
         //Validate Original idea:
         if($x_to_i__id > 0){
@@ -393,7 +396,7 @@ class I_model extends CI_Model
             ));
 
             //Determine which is parent Idea, and which is child
-            if($is_parent){
+            if($is_upwards){
 
                 $previous_i = $is[0];
                 $next_i = $x_i[0];
@@ -464,7 +467,7 @@ class I_model extends CI_Model
                 //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot add "' . $i_new['i__title'] . '" as its own '.( $is_parent ? 'previous' : 'next' ).' idea.',
+                    'message' => 'You cannot add "' . $i_new['i__title'] . '" as its own '.( $is_upwards ? 'previous' : 'next' ).' idea.',
                 );
 
             }
@@ -498,23 +501,23 @@ class I_model extends CI_Model
             $relation = $this->X_model->create(array(
                 'x__source' => $x__source,
                 'x__type' => 4228, //Idea Transaction Regular Discovery
-                ( $is_parent ? 'x__right' : 'x__left' ) => $x_to_i__id,
-                ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
+                ( $is_upwards ? 'x__right' : 'x__left' ) => $x_to_i__id,
+                ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__spectrum' => 1 + $this->X_model->max_sort(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                        'x__left' => ( $is_parent ? $i_new['i__id'] : $x_to_i__id ),
+                        'x__left' => ( $is_upwards ? $i_new['i__id'] : $x_to_i__id ),
                     )),
             ), true);
 
             //Fetch and return full data to be properly shown on the UI
             $new_i = $this->X_model->fetch(array(
-                ( $is_parent ? 'x__right' : 'x__left' ) => $x_to_i__id,
-                ( $is_parent ? 'x__left' : 'x__right' ) => $i_new['i__id'],
+                ( $is_upwards ? 'x__right' : 'x__left' ) => $x_to_i__id,
+                ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-            ), array(($is_parent ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
+            ), array(($is_upwards ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
             if($x__type > 0){
                 $new_i_html = view_i($x__type, $x_i[0], $new_i[0], true);
@@ -851,7 +854,7 @@ class I_model extends CI_Model
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
-                    $this->I_model->create_or_link(0, '', $x__source, $adjust_i__id, false, 6677, $next_i['i__id']);
+                    $this->I_model->create_or_link(0, '', $x__source, $adjust_i__id, 6677, $next_i['i__id']);
 
                     //Add Source since not there:
                     $applied_success++;

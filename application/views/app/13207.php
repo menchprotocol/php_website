@@ -36,7 +36,7 @@ foreach($this->config->item('e___13207') as $e__id => $m) {
             echo '<div class="list-group-item see_more_who'.$e__id.' no-height"></div>';
         }
 
-        echo view_e($e, false, ( $count<$show_max ? '' : ' see_more_who'.$e__id.' hidden '), false, true);
+        echo view_e(14688, $e, ( $count<$show_max ? '' : ' see_more_who'.$e__id.' hidden '), false, true);
 
     }
 

@@ -11,9 +11,6 @@ var $input = $('.drag-box').find('input[type="file"]'),
 
 $(document).ready(function () {
 
-    //Load Idea Search
-    i_load_search(".add_e_idea",0, 'a', 'x_my_in');
-
     //Source Loader:
     var portfolio_count = parseInt($('#new_11029').attr('current-count'));
     if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m__message'])){
@@ -105,8 +102,8 @@ $(document).ready(function () {
 
 
     //SEARCH
-    e_load_search("#new_11030", 1, 'q');
-    e_load_search("#new_11029", 0, 'w');
+    e_load_search(11030);
+    e_load_search(11029);
 
 
     //UPLOAD
@@ -205,7 +202,10 @@ function i_create(){
 }
 
 
-function e_load_search(element_focus, is_e_parent, shortcut) {
+function e_load_search(x__type) {
+
+
+    var element_focus = '#new_'+x__type;
 
     //Load Search:
     $(element_focus + ' .add-input').focus(function() {
@@ -221,7 +221,7 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             if(superpower_js_13422){
-                e__add(0, is_e_parent);
+                e__add(x__type, 0);
             }
             return true;
         }
@@ -232,9 +232,9 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            e__add(suggestion.s__id, is_e_parent);
+            e__add(x__type, suggestion.s__id);
 
-        }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [( is_e_parent ? 'q' : 'a' )]}, [{
+        }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [js_e___14685[x__type]['m__message']]}, [{
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
@@ -254,14 +254,14 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
                 header: function (data) {
                     if (!data.isEmpty) {
                         if(superpower_js_13422){
-                            return '<a href="javascript:void(0);" onclick="e__add(0,'+is_e_parent+')" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + '<b class="source css__title">Create "' + data.query.toUpperCase() + '"</b>' + '</a>';
+                            return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + '<b class="source css__title">Create "' + data.query.toUpperCase() + '"</b>' + '</a>';
                         } else {
                             return '';
                         }
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="e__add(0,'+is_e_parent+')" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);
@@ -274,18 +274,13 @@ function e_load_search(element_focus, is_e_parent, shortcut) {
 
 
 //Adds OR transactions sources to sources
-function e__add(e_existing_id, is_parent) {
+function e__add(x__type, e_existing_id) {
 
     //if e_existing_id>0 it means we're adding an existing source, in which case e_new_string should be null
     //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
 
-    if (is_parent) {
-        var input = $('#new_11030 .add-input');
-        var list_id = 'list_11030';
-    } else {
-        var input = $('#new_11029 .add-input');
-        var list_id = 'list_e';
-    }
+    var input = $('#new_'+x__type+' .add-input');
+    var list_id = 'list_'+x__type;
 
     var e_new_string = null;
     if (e_existing_id == 0) {
@@ -297,14 +292,13 @@ function e__add(e_existing_id, is_parent) {
         }
     }
 
-
     //Add via Ajax:
     $.post("/e/e__add", {
 
+        x__type: x__type,
         e__id: e_focus_id,
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
-        is_parent: (is_parent ? 1 : 0),
 
     }, function (data) {
 
@@ -333,32 +327,33 @@ function e__add(e_existing_id, is_parent) {
 }
 
 
-function e_filter_status(new_val) {
+function e_filter_status(x__type, new_val) {
     //Delete active class:
-    $('.e_filter_status').removeClass('active');
+    $('.e_filter_status_'+x__type).removeClass('active');
     //We do have a filter:
     e_focus_filter = parseInt(new_val);
-    $('.en_status_' + new_val).addClass('active');
-    e_load_page(0, 1);
+    $('.en_status_'+x__type+'_' + new_val).addClass('active');
+    e_load_page(x__type,0, 1);
 }
 
 
 
 
 
-function e_load_page(page, load_new_filter) {
+function e_load_page(x__type, page, load_new_filter) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
-        var append_div = $('#new_11029').html();
+        var append_div = $('#new_'+x__type).html();
         //The padding-bottom would delete the scrolling effect on the left side!
-        $('#list_e').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+        $('#list_'+x__type).html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
         $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     }
 
     $.post("/e/e_load_page", {
+        x__type: x__type,
         page: page,
         parent_e__id: e_focus_id,
         e_focus_filter: e_focus_filter,
@@ -368,12 +363,12 @@ function e_load_page(page, load_new_filter) {
         $('.load-more').remove();
 
         if (load_new_filter) {
-            $('#list_e').html(data + '<div id="new_11029" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#list_'+x__type).html(data + '<div id="new_'+x__type+'" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
-            e_load_search("#new_11029", 0, 'w');
+            e_load_search(x__type);
         } else {
             //Update UI to confirm with user:
-            $(data).insertBefore('#new_11029');
+            $(data).insertBefore('#new_'+x__type);
         }
 
         lazy_load();
@@ -495,7 +490,7 @@ function e_sort_save() {
     var new_x__spectrums = [];
     var sort_rank = 0;
 
-    $("#list_e .en-item").each(function () {
+    $("#list_11029 .en-item").each(function () {
         //Fetch variables for this idea:
         var e__id = parseInt($(this).attr('e__id'));
         var x__id = parseInt($(this).attr('x__id'));
@@ -547,7 +542,7 @@ function e_sort_reset(){
 function e_sort_portfolio_load() {
 
     var element_key = null;
-    var theobject = document.getElementById("list_e");
+    var theobject = document.getElementById("list_11029");
     if (!theobject) {
         //due to duplicate ideas belonging in this idea:
         return false;

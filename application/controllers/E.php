@@ -276,7 +276,7 @@ class E extends CI_Controller
         ));
 
         foreach($child_e as $e) {
-            echo view_e($e,false, null, true, $source_of_e);
+            echo view_e($_POST['x__type'], $e, null, true, $source_of_e);
         }
 
         //Count total children:
@@ -284,7 +284,7 @@ class E extends CI_Controller
 
         //Do we need another load more button?
         if ($child_e_count[0]['totals'] > (($page * $items_per_page) + count($child_e))) {
-            echo view_e_load_more(($page + 1), $items_per_page, $child_e_count[0]['totals']);
+            echo view_e_load_more($_POST['x__type'], ($page + 1), $items_per_page, $child_e_count[0]['totals']);
         }
 
     }
@@ -469,7 +469,7 @@ class E extends CI_Controller
         //Return source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e(array_merge($focus_e, $new_note), 0, null, true, true),
+            'e_new_echo' => view_e(14688, array_merge($focus_e, $new_note),  null, true, true),
         ));
 
     }
@@ -491,10 +491,10 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Parent Source',
             ));
-        } elseif (!isset($_POST['is_parent'])) {
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14687'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Source Transaction Direction',
+                'message' => 'Invaid Source Add Type',
             ));
         } elseif (!isset($_POST['e_existing_id']) || !isset($_POST['e_new_string']) || (intval($_POST['e_existing_id']) < 1 && strlen($_POST['e_new_string']) < 1)) {
             return view_json(array(
@@ -516,7 +516,7 @@ class E extends CI_Controller
 
 
         //Set some variables:
-        $_POST['is_parent'] = intval($_POST['is_parent']);
+        $_POST['x__type'] = intval($_POST['x__type']);
         $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
         $is_url_input = false;
 
@@ -593,7 +593,7 @@ class E extends CI_Controller
         if (!$is_url_input) {
 
             //Add transactions only if not previously added by the URL function:
-            if ($_POST['is_parent']) {
+            if (in_array($_POST['x__type'], $this->config->item('n___14686'))) {
 
                 //Profile
                 $x__down = $fetch_e[0]['e__id'];
@@ -667,7 +667,7 @@ class E extends CI_Controller
         //Return source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e(array_merge($es_latest[0], $ur2), $_POST['is_parent'], null, true, true),
+            'e_new_echo' => view_e($_POST['x__type'], array_merge($es_latest[0], $ur2), null, true, true),
         ));
 
     }

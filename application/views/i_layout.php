@@ -66,18 +66,16 @@ if($is_north_star) {
 
 
 if($show_previous){
-    echo '<div class="list-adder '.superpower_active(10939).'">
+    echo '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#addi-c-' . $i_focus['i__id'] . '-1\').focus();"><span class="icon-block">'.$e___11035[14014]['m__icon'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14014]['m__icon'].'</span></a>
                         <input type="text"
-                               class="form-control css__title form-control-thick previous_i add-input algolia_search dotransparent"
+                               class="form-control css__title form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
-                               i-id="' . $i_focus['i__id'] . '"
-                               id="addi-c-' . $i_focus['i__id'] . '-1"
                                placeholder="'.$e___11035[14014]['m__title'].'">
                     </div></div>';
 }
-echo '<div id="list-in-' . $i_focus['i__id'] . '-1" class="row top-margin grey-list previous_i hideIfEmpty">';
+echo '<div id="list-in-11019" class="row top-margin grey-list hideIfEmpty">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -192,7 +190,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $ui .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:41px;">';
         foreach($i_notes as $i_note) {
-            $ui .= view_e($i_note, 0, null, $e_of_i && $is_active, $e_of_i);
+            $ui .= view_e(14688, $i_note,  null, $e_of_i && $is_active, $e_of_i);
         }
 
         if($e_of_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {
@@ -284,23 +282,21 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
         //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m__icon'].'</span>'.$e___11035[13542]['m__title'].'</div>';
-        $ui .= '<div id="list-in-' . $i_focus['i__id'] . '-0" class="row next_i">';
+        $ui .= '<div id="list-in-13542" class="row">';
         foreach($is_next as $next_i) {
             $ui .= view_i(13542, $i_focus, $next_i, $e_of_i);
         }
         $ui .= '</div>';
 
         if($e_of_i && $is_active){
-            $ui .= '<div class="list-adder '.superpower_active(10939).'">
+            $ui .= '<div class="new-list-13542 list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#addi-c-' . $i_focus['i__id'] . '-0\').focus();"><span class="icon-block">'.$e___11035[13912]['m__icon'].'</span></a>
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-13542 .add-input\').focus();"><span class="icon-block">'.$e___11035[13912]['m__icon'].'</span></a>
                     <input type="text"
-                           class="form-control form-control-thick next_i add-input css__title algolia_search dotransparent"
+                           class="form-control form-control-thick add-input css__title algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
-                           i-id="' . $i_focus['i__id'] . '"
-                           id="addi-c-' . $i_focus['i__id'] . '-0"
                            placeholder="'.$e___11035[13912]['m__title'].'">
-                </div><div class="next_i algolia_pad_search hidden">&nbsp;</div></div>';
+                </div><div class="algolia_pad_search hidden">&nbsp;</div></div>';
         }
 
     } elseif($x__type==6255) {
@@ -326,7 +322,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //Return UI:
             $ui .= '<div class="list-group">';
             foreach($query as $item){
-                $ui .= view_e($item);
+                $ui .= view_e(14688, $item);
             }
             $ui .= '</div>';
 
@@ -367,7 +363,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array('x__source')) as $u){
-                $ui .= view_e($u);
+                $ui .= view_e(14688, $u);
             }
             $ui .= '</div>';
 
