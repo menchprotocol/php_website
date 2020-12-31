@@ -778,7 +778,7 @@ $comments = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 12419,
     'x__right' => $i_focus['i__id'],
-), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'DESC'));
+), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
 echo view_i_note_list(12419, true, $i_focus, $comments, true, true);
 echo '</div>';
 
