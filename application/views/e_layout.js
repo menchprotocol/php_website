@@ -82,7 +82,7 @@ $(document).ready(function () {
 
             //Notify User:
             $('.notify_e_delete').removeClass('hidden');
-            $('.e_delete_stats').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>');
+            $('.e_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
             //About to delete... Fetch total transactions:
             $.post("/e/e_count_deletion", { e__id: parseInt($('#modal13571 .modal_e__id').val()) }, function (data) {
@@ -148,7 +148,7 @@ function x_reset_all(){
     //Confirm First:
     var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE discovery history. This action cannot be undone and you will lose all your discovery coins.");
     if (r == true) {
-        $('.x_reset_all').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span><b class="css__title">REMOVING ALL...</b>');
+        $('.x_reset_all').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">REMOVING ALL...</b>');
 
         //Redirect:
         window.location = '/x/x_clear_coins';
@@ -169,7 +169,7 @@ function i_create(){
     //Start Processing:
     saving_i = true;
     $('#newIdeaTitle').prop('disabled', true).addClass('dynamic_saving');
-    add_to_list('list_10573', '.cover_sort', '<div id="tempLoader" class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="fal fa-yin-yang fa-spin"></i></div><div class="cover-head">SAVING IDEA...</div></div></div></div>');
+    add_to_list('list_10573', '.cover_sort', '<div id="tempLoader" class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div><div class="cover-head">SAVING IDEA...</div></div></div></div>');
 
     //Process this:
     $.post("/i/i_create", {
@@ -352,10 +352,10 @@ function e_load_page(page, load_new_filter) {
         //Replace load more with spinner:
         var append_div = $('#new_11029').html();
         //The padding-bottom would delete the scrolling effect on the left side!
-        $('#list_e').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+        $('#list_e').html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
-        $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+        $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     }
 
     $.post("/e/e_load_page", {
@@ -392,7 +392,7 @@ function e_load_page(page, load_new_filter) {
 function e_x_form_lock(){
     $('#x__message').prop("disabled", true);
 
-    $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block">i class="fal fa-yin-yang fa-spin"></i></span>Uploading');
+    $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block">i class="far fa-yin-yang fa-spin"></i></span>Uploading');
 
 }
 
@@ -522,7 +522,7 @@ function e_sort_save() {
 function e_sort_reset(){
     var r = confirm("Reset all Portfolio Source orders & sort alphabetically?");
     if (r == true) {
-        $('.sort_reset').html('<i class="fal fa-yin-yang fa-spin"></i>');
+        $('.sort_reset').html('<i class="far fa-yin-yang fa-spin"></i>');
 
         //Update via call:
         $.post("/e/e_sort_reset", {

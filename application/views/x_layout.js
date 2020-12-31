@@ -89,7 +89,7 @@ function go_next(go_next_url){
             if(go_next_url && go_next_url.length > 0){
 
                 //Go Next:
-                $('.go-next').html(( js_pl_id > 0 ? '<i class="fas fa-check-circle"></i>' : '<i class="fal fa-yin-yang fa-spin"></i>' ));
+                $('.go-next').html(( js_pl_id > 0 ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
                 window.location = go_next_url;
 
             } else {
@@ -161,7 +161,7 @@ function x_upload(droppedFiles, uploadType) {
         return false;
     }
 
-    $('.file_saving_result').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span><span class="css__title">UPLOADING...</span>');
+    $('.file_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="css__title">UPLOADING...</span>');
 
     if (isAdvancedUpload) {
 

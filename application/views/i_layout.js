@@ -110,7 +110,7 @@ function i_note_poweredit_save(note_type_id){
 
     var input_textarea = '.input_note_'+note_type_id;
     $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).addClass('dynamic_saving');
-    $('.save_notes_' + note_type_id).html('<i class="fal fa-yin-yang fa-spin"></i>').attr('href', '#');
+    $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
 
     $.post("/i/i_note_poweredit_save", {
         i__id: $('#focus_i__id').val(),
@@ -373,7 +373,7 @@ function i_add(i_x_id, is_parent, i_x_child_id) {
 
 
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item css__title no-side-padding"><span class="icon-block"><i class="fal fa-yin-yang fa-spin idea"></i></span>' + js_view_shuffle_message(12695) +  '</div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item css__title no-side-padding"><span class="icon-block"><i class="far fa-yin-yang fa-spin idea"></i></span>' + js_view_shuffle_message(12695) +  '</div>');
 
 
     //Update backend:
