@@ -227,7 +227,6 @@ function e_load_search(x__type) {
 
     });
 
-    console.log(x__type);
 
     if(parseInt(js_e___6404[12678]['m__message'])){
 
@@ -235,7 +234,7 @@ function e_load_search(x__type) {
 
             e__add(x__type, suggestion.s__id);
 
-        }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [js_e___14685[x__type]['m__message']]}, [{
+        }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [js_e___14687[x__type]['m__message']]}, [{
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
