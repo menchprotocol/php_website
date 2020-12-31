@@ -596,7 +596,7 @@ function e_modify_save() {
     };
 
     //Show spinner:
-    $('#modal13571 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695) +  '').hide().fadeIn();
+    $('#modal13571 .save_results').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695) +  '').hide().fadeIn();
 
 
     $.post("/e/e_modify_save", modify_data, function (data) {
@@ -763,7 +763,7 @@ function e_nuclear_delete(e__id, note_type_id) {
 function x_type_preview() {
 
     //Shows the transaction type based on the transaction message
-    $('#x__type_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('#x__type_preview').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>');
 
     //Fetch Idea Data to load modify widget:
     $.post("/x/x_type_preview", {
@@ -1092,7 +1092,7 @@ function gif_search(q){
 
     current_q = q;
     var x__type = $('#modal_x__type').val();
-    $('#gif_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
+    $('#gif_results').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     $.get({
         url: js_e___6404[14073]['m__message']+current_q,
         success: function(result) {
@@ -1545,7 +1545,7 @@ function i_remove_note(x__id, note_type_id){
 }
 
 function i_note_start_adding(note_type_id) {
-    $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
+    $('.save_notes_' + note_type_id).html('<i class="fal fa-yin-yang fa-spin"></i>').attr('href', '#');
     $('.no_notes_' + note_type_id).remove();
     $('.remove_loading').hide();
 }
@@ -1777,7 +1777,7 @@ function e_toggle_superpower(superpower_id){
 
     var notify_el = '.superpower-frame-'+superpower_id+' .main-icon';
     var initial_icon = $(notify_el).html();
-    $(notify_el).html('<i class="far fa-yin-yang fa-spin"></i>');
+    $(notify_el).html('<i class="fal fa-yin-yang fa-spin"></i>');
 
     //Save session variable to save the state of advance setting:
     $.post("/e/e_toggle_superpower/"+superpower_id, {}, function (data) {
@@ -1847,7 +1847,7 @@ function e_avatar(type_css, icon_css){
         $('.avatar-item.avatar-name-'+icon_css).addClass('active');
     }
 
-    $('.e_ui_icon_'+js_pl_id).html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('.e_ui_icon_'+js_pl_id).html('<i class="fal fa-yin-yang fa-spin"></i>');
 
     //Update via call:
     $.post("/e/e_avatar", {
@@ -1899,7 +1899,7 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
     //Show spinner on the notification element:
     var notify_el = '.radio-'+parent_e__id+' .item-'+selected_e__id+' .change-results';
     var initial_icon = $(notify_el).html();
-    $(notify_el).html('<i class="far fa-yin-yang fa-spin"></i>');
+    $(notify_el).html('<i class="fal fa-yin-yang fa-spin"></i>');
 
 
     if(!enable_mulitiselect){
@@ -1936,7 +1936,7 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
 function e_email(){
 
     //Show spinner:
-    $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
+    $('.save_email').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_email", {
@@ -1968,7 +1968,7 @@ function e_email(){
 function e_name(){
 
     //Show spinner:
-    $('.save_name').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
+    $('.save_name').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
 
     modify_data = {
         s__id: js_pl_id,
@@ -2005,7 +2005,7 @@ function e_name(){
 function e_password(){
 
     //Show spinner:
-    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
+    $('.save_password').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_password", {
@@ -2097,7 +2097,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
     //Show Loading...
     var data_object = eval('js_e___'+element_id);
-    $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
+    $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span><b class="css__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
     $.post("/i/i_set_dropdown", {
 
