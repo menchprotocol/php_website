@@ -2601,25 +2601,31 @@ font-weight: bold !important;
 @media (min-width:767px) {
 
     /* DARK */
-    .custom_ui_13884_13886 .itemidea:hover{
+    .custom_ui_13884_13886 .itemidea:hover,
+    .custom_ui_13884_13886 .itemidea:hover .form-control{
         background-color:#796e35 !important;
     }
-    .custom_ui_13884_13886 .itemsource:hover{
+    .custom_ui_13884_13886 .itemsource:hover,
+    .custom_ui_13884_13886 .itemsource:hover .form-control{
         background-color:#375266 !important;
     }
-    .custom_ui_13884_13886 .itemdiscover:hover{
+    .custom_ui_13884_13886 .itemdiscover:hover,
+    .custom_ui_13884_13886 .itemdiscover:hover .form-control{
         background-color: #774040 !important;
     }
 
 
     /* WHITE */
-    .custom_ui_13884_13885 .itemidea:hover {
+    .custom_ui_13884_13885 .itemidea:hover,
+    .custom_ui_13884_13885 .itemidea:hover .form-control{
         background-color:#fff4b5 !important;
     }
-    .custom_ui_13884_13885 .itemsource:hover {
+    .custom_ui_13884_13885 .itemsource:hover,
+    .custom_ui_13884_13885 .itemsource:hover .form-control{
         background-color:#a2cdec !important;
     }
-    .custom_ui_13884_13885 .itemdiscover:hover {
+    .custom_ui_13884_13885 .itemdiscover:hover,
+    .custom_ui_13884_13885 .itemdiscover:hover .form-control{
         background-color: #ffcbcb !important;
     }
 
