@@ -94,7 +94,7 @@ if($in_my_x){
 
     //Add Current Discovery
     if($i_drip_mode){
-        array_push($sitemap_items, view_i(14451, $i_focus, $in_my_x, null, false));
+        array_push($sitemap_items, view_i(14451, null, $i_focus, $in_my_x, null, false));
     }
 
     //Fetch Parents all the way to the Discovery Item
@@ -143,7 +143,7 @@ if($in_my_x){
         }
 
         foreach($sitemap_raw as $si) {
-            array_push($sitemap_items, view_i(14450, $si['i'],  $in_my_x,null, false, $si['completion_rate']));
+            array_push($sitemap_items, view_i(14450, null, $si['i'],  $in_my_x,null, false, $si['completion_rate']));
         }
 
     }

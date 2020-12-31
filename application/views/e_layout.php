@@ -376,7 +376,7 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= '<div class="row top-margin" id="list_10573">';
                 foreach($i_bookmarks as $item){
                     array_push($i_exclude, $item['i__id']);
-                    $ui .= view_i(10573, $item, $control_enabled,null, $e);
+                    $ui .= view_i(10573, null, $item, $control_enabled,null, $e);
                 }
                 $ui .= '</div>';
 
@@ -409,7 +409,7 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= '<div class="row margin-top-down-half" id="list_13550">';
                 foreach($list_i as $count => $item){
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-                    $ui .= view_i(13550, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e);
+                    $ui .= view_i(13550, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e);
                 }
                 $ui .= '</div>';
 
@@ -448,7 +448,7 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>'.$e___11035[12969]['m__title'].'</div>';
                 $ui .= '<div class="row margin-top-down-half" id="list_12969">';
                 foreach($list_x as $item){
-                    $ui .= view_i(12969, $item,$control_enabled,null, $e);
+                    $ui .= view_i(12969, null, $item,$control_enabled,null, $e);
                     array_push($my_x_ids, $item['i__id']);
                 }
                 $ui .= '</div>';
@@ -472,7 +472,7 @@ $profiles = $this->X_model->fetch(array(
                     $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__icon'].'</span>'.$e___11035[12896]['m__title'].'</div>';
                     $ui .= '<div class="row margin-top-down-half" id="list_12896">';
                     foreach($i_notes_query as $count => $i_notes) {
-                        $ui .= view_i(12896, $i_notes, $control_enabled);
+                        $ui .= view_i(12896, null, $i_notes, $control_enabled);
                     }
                     $ui .= '</div>';
 
@@ -508,7 +508,7 @@ $profiles = $this->X_model->fetch(array(
 
                 $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), view_memory(6404,11064), 0, array('i__spectrum' => 'DESC'));
                 foreach($i_notes_query as $count => $i_notes) {
-                    $ui .= view_i(4485, $i_notes, $control_enabled);
+                    $ui .= view_i(4485, null, $i_notes, $control_enabled);
                 }
 
             }

@@ -987,7 +987,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
         } else {
             $x__type_to_pass = $x__type;
         }
-        $ui .= view_i($x__type_to_pass, $next_i, $in_my_x, null, $user_e, $completion_rate);
+        $ui .= view_i($x__type_to_pass, $i, $next_i, $in_my_x, null, $user_e, $completion_rate);
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
@@ -1469,7 +1469,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
             $ui .= '<div class="headline top-margin">'.$see_all_link.'</div>';
             $ui .= '<div class="row margin-top-down-half">';
             foreach($query as $i){
-                $ui .= view_i(12138, $i);
+                $ui .= view_i(12138, null, $i);
                 if(!in_array($i['i__id'], $i_exclude)){
                     array_push($i_exclude, $i['i__id']);
                 }
@@ -1527,7 +1527,7 @@ function view_info_box($e__id){
     return $ui;
 }
 
-function view_i($x__type, $i, $control_enabled = false, $message_input = null, $focus_e = false, $completion_rate = null){
+function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_input = null, $focus_e = false, $completion_rate = null){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1567,10 +1567,10 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
 
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12700 = superpower_active(12700, true);
-    $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || in_array($i['i__type'], $CI->config->item('n___14488'));
+    $top_is_lock = ($top_i && in_array($top_i['i__type'], $CI->config->item('n___14488'));
+    $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || $top_is_lock);
     $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
-    $is_soft_lock = $locking_enabled && ($is_hard_lock || in_array($i['i__type'], $CI->config->item('n___14488')) || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
-    $is_soft_lock = ( isset($_GET['lock']) ? true : $is_soft_lock );
+    $is_soft_lock = $locking_enabled && ($is_hard_lock || $top_is_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
     $is_sortable = !$is_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, true);
