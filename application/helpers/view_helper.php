@@ -1570,6 +1570,7 @@ function view_i($x__type, $i, $control_enabled = false, $message_input = null, $
     $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || in_array($i['i__type'], $CI->config->item('n___14488'));
     $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
     $is_soft_lock = $locking_enabled && ($is_hard_lock || in_array($i['i__type'], $CI->config->item('n___14488')) || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
+    $is_soft_lock = ( isset($_GET['lock']) ? true : $is_soft_lock );
     $is_sortable = !$is_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, true);
