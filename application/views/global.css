@@ -2254,6 +2254,11 @@ i, .btn .show-max {
 .cover-btn i{
     color: #FFFFFF;
 }
+.cover-head{
+    font-size: 0.8em;
+    text-align: center;
+    padding-top: 21px;
+}
 
 .nav-counter{
     font-size: 0.4em;
