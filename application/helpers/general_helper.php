@@ -602,6 +602,11 @@ function i__spectrum_calculator($i){
     //DISCOVERIES
     $CI =& get_instance();
 
+    //Set Weight to Max Time for now:
+    $i_stats = i_stats($i['i__metadata']);
+    $weight = $i_stats['i___6162'];
+
+    /*
     $count_x = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         '(x__right='.$i['i__id'].' OR x__left='.$i['i__id'].')' => null,
@@ -617,6 +622,8 @@ function i__spectrum_calculator($i){
     //Returns the weight of a idea:
     $weight = ( $count_x[0]['totals'] * view_memory(6404,12568) )
         + ( $counts[0]['totals'] * view_memory(6404,12565) );
+
+    */
 
     //Should we update?
     if($weight != $i['i__spectrum']){
