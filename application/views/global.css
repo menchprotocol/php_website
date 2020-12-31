@@ -2636,6 +2636,7 @@ font-weight: bold !important;
 /* DISCOVERY MODE */
 .custom_ui_14485_14486 .fixed-bottom {
     position: relative;
+    z-index: 0 !important;
 }
 
 
