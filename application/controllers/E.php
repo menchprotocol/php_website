@@ -350,7 +350,7 @@ class E extends CI_Controller
     }
 
 
-    function e_only_add()
+    function e_add_only_7551()
     {
 
         //Auth user and check required variables:
@@ -453,7 +453,7 @@ class E extends CI_Controller
             $this->E_model->add_source($focus_e['e__id']);
 
             //Update Algolia:
-            update_algolia(12274, $focus_e['e__id']);
+            update_algolia($_POST['note_type_id'], $focus_e['e__id']);
 
         }
 
@@ -469,7 +469,7 @@ class E extends CI_Controller
         //Return source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e(14688, array_merge($focus_e, $new_note),  null, true, true),
+            'e_new_echo' => view_e($_POST['note_type_id'], array_merge($focus_e, $new_note),  null, true, true),
         ));
 
     }
@@ -494,7 +494,7 @@ class E extends CI_Controller
         } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14687'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invaid Source Add Type',
+                'message' => 'Invaid Source Creation Type',
             ));
         } elseif (!isset($_POST['e_existing_id']) || !isset($_POST['e_new_string']) || (intval($_POST['e_existing_id']) < 1 && strlen($_POST['e_new_string']) < 1)) {
             return view_json(array(

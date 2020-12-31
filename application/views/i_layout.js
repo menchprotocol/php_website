@@ -79,8 +79,8 @@ $(document).ready(function () {
     set_autosize($('.text__4736_'+$('#focus_i__id').val()));
 
     //Activate Source-Only Inputs:
-    $(".e-only").each(function () {
-        e_e_only_search($(this).attr('note_type_id'));
+    $(".e-only-7551").each(function () {
+        e_e_only_search_7551($(this).attr('note_type_id'));
     });
 
 
@@ -172,7 +172,7 @@ function i_note_poweredit_save(note_type_id){
 
 
 
-function e_only_add(e_existing_id, note_type_id) {
+function e_add_only_7551(e_existing_id, note_type_id) {
 
 
     //if e_existing_id>0 it means we're adding an existing source, in which case e_new_string should be null
@@ -193,7 +193,7 @@ function e_only_add(e_existing_id, note_type_id) {
     }
 
     //Add via Ajax:
-    $.post("/e/e_only_add", {
+    $.post("/e/e_add_only_7551", {
 
         i__id: $('#focus_i__id').val(),
         note_type_id: note_type_id,
@@ -226,7 +226,7 @@ function e_only_add(e_existing_id, note_type_id) {
 
 }
 
-function e_e_only_search(note_type_id) {
+function e_e_only_search_7551(note_type_id) {
 
     if(!js_pl_id){
         return false;
@@ -243,7 +243,7 @@ function e_e_only_search(note_type_id) {
     }).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return e_only_add(0, note_type_id);
+            return e_add_only_7551(0, note_type_id);
         }
     });
 
@@ -251,7 +251,7 @@ function e_e_only_search(note_type_id) {
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            e_only_add(suggestion.s__id, note_type_id);
+            e_add_only_7551(suggestion.s__id, note_type_id);
 
         }).autocomplete({hint: false, minLength: 1}, [{
 
@@ -274,11 +274,11 @@ function e_e_only_search(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">Create "' + data.query.toUpperCase() + '"</b></a>';
+                        return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">Create "' + data.query.toUpperCase() + '"</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="e_only_add(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
                 },
             }
         }]);

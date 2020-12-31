@@ -190,11 +190,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $ui .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:41px;">';
         foreach($i_notes as $i_note) {
-            $ui .= view_e(14688, $i_note,  null, $e_of_i && $is_active, $e_of_i);
+            $ui .= view_e($x__type, $i_note,  null, $e_of_i && $is_active, $e_of_i);
         }
 
         if($e_of_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {
-            $ui .= '<div class="list-group-item list-adder no-side-padding e-only e-i-' . $x__type . '" note_type_id="' . $x__type . '">
+            $ui .= '<div class="list-group-item list-adder no-side-padding e-only-7551 e-i-' . $x__type . '" note_type_id="' . $x__type . '">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new_e_' . $x__type . '\').focus();"><span class="icon-block">'.$e___11035[14055]['m__icon'].'</span></a>
                     <input type="text"
@@ -322,7 +322,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             //Return UI:
             $ui .= '<div class="list-group">';
             foreach($query as $item){
-                $ui .= view_e(14688, $item);
+                $ui .= view_e(6255, $item);
             }
             $ui .= '</div>';
 
@@ -363,7 +363,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array('x__source')) as $u){
-                $ui .= view_e(14688, $u);
+                $ui .= view_e(12969, $u);
             }
             $ui .= '</div>';
 

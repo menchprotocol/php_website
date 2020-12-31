@@ -204,6 +204,18 @@ function i_create(){
 
 function e_load_search(x__type) {
 
+    //Search Enabled?
+    if(!parseInt(js_e___6404[12678]['m__message'])){
+        return false;
+    }
+
+    //Valid Source Creation Type?
+    if(!js_n___14687.includes(x__type)){
+        alert('Invalid Source Creation Type: ' + x__type);
+        return false;
+    }
+
+
     var element_focus = '#new_'+x__type;
 
     //Load Search:
@@ -225,47 +237,41 @@ function e_load_search(x__type) {
             return true;
         }
 
-    });
+    }).on('autocomplete:selected', function (event, suggestion, dataset) {
 
+        e__add(x__type, suggestion.s__id);
 
-    if(parseInt(js_e___6404[12678]['m__message'])){
-
-        $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
-
-            e__add(x__type, suggestion.s__id);
-
-        }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [js_e___14687[x__type]['m__message']]}, [{
-            source: function (q, cb) {
-                algolia_index.search(q, {
-                    filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
-                    hitsPerPage: ( validURL(q) ? 1 : 21 ),
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
+    }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [js_e___14687[x__type]['m__message']]}, [{
+        source: function (q, cb) {
+            algolia_index.search(q, {
+                filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
+                hitsPerPage: ( validURL(q) ? 1 : 21 ),
+            }, function (error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        templates: {
+            suggestion: function (suggestion) {
+                return view_s_js(suggestion);
             },
-            templates: {
-                suggestion: function (suggestion) {
-                    return view_s_js(suggestion);
-                },
-                header: function (data) {
-                    if (!data.isEmpty) {
-                        if(superpower_js_13422){
-                            return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + '<b class="source css__title">Create "' + data.query.toUpperCase() + '"</b>' + '</a>';
-                        } else {
-                            return '';
-                        }
+            header: function (data) {
+                if (!data.isEmpty) {
+                    if(superpower_js_13422){
+                        return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + '<b class="source css__title">Create "' + data.query.toUpperCase() + '"</b>' + '</a>';
+                    } else {
+                        return '';
                     }
-                },
-                empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
-                },
-            }
-        }]);
-    }
+                }
+            },
+            empty: function (data) {
+                return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query.toUpperCase() + '</b></a>';
+            },
+        }
+    }]);
 }
 
 
@@ -366,6 +372,7 @@ function e_load_page(x__type, page, load_new_filter) {
             $('#list_'+x__type).html(data + '<div id="new_'+x__type+'" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
             e_load_search(x__type);
+
         } else {
             //Update UI to confirm with user:
             $(data).insertBefore('#new_'+x__type);

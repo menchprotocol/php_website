@@ -268,7 +268,7 @@ function view_i_note($x__type, $is_discovery_mode, $x, $note_e = false)
 
     if($editable_discovery && isset($x['e__id'])){
         //Show member:
-        $ui .= view_e(14688, $x);
+        $ui .= view_e(14672, $x);
 
     }
 
@@ -1134,7 +1134,7 @@ function view_i_note_list($x__type, $is_discovery_mode, $i, $i_notes, $e_of_i, $
             $ui .= '<div class="add_notes_form">';
             $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea regular_editor dotransparent algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" style="margin-top: 10px;" placeholder="WRITE'.( $handles_url ? ', PASTE URL, @SOURCE' : '' ).'"></textarea>';
+            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea regular_editor dotransparent algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" style="margin-top: 10px;" placeholder="Write'.( $handles_url ? ' or Paste URL' : '' ).'"></textarea>';
 
             //Response result:
             $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
@@ -1798,6 +1798,11 @@ function view_e($x__type, $e, $extra_class = null, $control_enabled = false, $so
 {
 
     $CI =& get_instance();
+    if(!in_array($x__type, $CI->config->item('n___14690'))){
+        //Not a valid Source List
+        return 'Invalid x__type '.$x__type;
+    }
+
     $user_e = superpower_unlocked();
     $e___6177 = $CI->config->item('e___6177'); //Source Status
     $e___4592 = $CI->config->item('e___4592');
@@ -1805,6 +1810,7 @@ function view_e($x__type, $e, $extra_class = null, $control_enabled = false, $so
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
 
     $is_sortable = in_array($x__type, $CI->config->item('n___13911'));
+
     $e_url = '/@'.$e['e__id'];
     $focus_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
