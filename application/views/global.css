@@ -1279,7 +1279,7 @@ td.MENCHcolumn3  { width: 13%; }
 }
 .show-on-hover span:nth-child(3) {
     position: absolute;
-    top: 4px;
+    top: 3px;
     right: 20px;
 }
 .show-on-hover span:nth-child(4) {

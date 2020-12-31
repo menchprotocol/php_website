@@ -1861,6 +1861,14 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
         $ui .= '<span class="show-on-hover">';
 
 
+        if(($source_of_e && !$is_parent) || $superpower_13422){
+
+            //UNLINK SOURCE
+            $ui .= '<span class="'.superpower_active(10939).'"><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m__title'].'">'.$e___11035[10673]['m__icon'].'</a></span>';
+
+        }
+
+
         if($is_e_link){
 
             //Sort
@@ -1873,15 +1881,8 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
         }
 
-        if(($source_of_e && !$is_parent) || $superpower_13422){
-
-            //UNLINK SOURCE
-            $ui .= '<span class="'.superpower_active(10939).'"><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m__title'].'">'.$e___11035[10673]['m__icon'].'</a></span>';
-
-        }
-
         //HARD DELETE SOURCE
-        $ui .= '<span class="'.superpower_active(14683).'"><a href="javascript:void(0);" onclick="e_hard_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
+        $ui .= '<span class="'.superpower_active(14683).'"><a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';

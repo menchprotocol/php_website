@@ -624,11 +624,10 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 }
 
-            } elseif ($i_focus['i__type'] == 6677) {
+            } elseif (in_array($i_focus['i__type'], $this->config->item('n___4559'))) {
 
                 //DISCOVER ONLY
                 $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $user_e, ( count($is_next) > 1 ? view_i_time($i_stats, true) : '' ));
-
 
             } elseif ($i_focus['i__type'] == 6683) {
 

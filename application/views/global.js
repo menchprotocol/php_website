@@ -726,14 +726,19 @@ function e_remove(x__id, note_type_id) {
 }
 
 
-function e_hard_delete(e__id, note_type_id) {
+function e_nuclear_delete(e__id, note_type_id) {
 
-    var r = confirm("Hard Delete Source? This cannot be undone!");
-    if (r == true) {
-        $.post("/e/e_hard_delete", {
+    var confirm_removal = prompt("Nuclear Delete Source and all its related transactions? This cannot be undone! Type \"nuclear\" to confirm.", "");
+    if (!(confirm_removal=='nuclear')) {
 
+        //Abandon process:
+        alert('Source will not be deleted.');
+
+    } else {
+
+        //Delete Source
+        $.post("/e/e_nuclear_delete", {
             e__id: e__id,
-
         }, function (data) {
             if (data.status) {
 
@@ -749,8 +754,8 @@ function e_hard_delete(e__id, note_type_id) {
                 alert(data.message);
             }
         });
-    }
 
+    }
 }
 
 
