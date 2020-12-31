@@ -1804,12 +1804,12 @@ function view_e($x__type, $e, $extra_class = null, $control_enabled = false, $so
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
 
+    $is_sortable = in_array($x__type, $CI->config->item('n___13911'));
     $e_url = '/@'.$e['e__id'];
     $focus_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $is_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
     $is_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
-    $is_sortable = in_array($x__type, $CI->config->item('n___13911'));
     $is_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
@@ -1880,12 +1880,12 @@ function view_e($x__type, $e, $extra_class = null, $control_enabled = false, $so
             }
 
             //Edit Raw Source
-            $ui .= '<span class="'.superpower_active(13422).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</a></span>';
+            $ui .= '<span class="btn-third '.superpower_active(13422).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</a></span>';
 
         }
 
         //HARD DELETE SOURCE
-        $ui .= '<span class="'.superpower_active(14683).'"><a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
+        $ui .= '<span class="btn-fourth '.superpower_active(14683).'"><a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
 
         $ui .= '</span>';
         $ui .= '</div>';
