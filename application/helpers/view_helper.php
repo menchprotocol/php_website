@@ -1854,7 +1854,7 @@ function view_e($x__type, $e, $extra_class = null, $control_enabled = false, $so
 
 
     //ROW itemsource
-    $ui = '<div class="list-group-item no-side-padding en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'">';
+    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'">';
 
 
     if($control_enabled && $source_of_e && ($is_e_link || $is_note)){
