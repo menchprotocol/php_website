@@ -59,7 +59,6 @@ class E_model extends CI_Model
             $this->X_model->create(array(
                 'x__source' => $e['e__id'],
                 'x__type' => ( $is_cookie ? 14032 /* COOKIE SIGN */ : 7564 /* USER SIGN */ ),
-                'x__metadata' => $e,
             ));
 
         }

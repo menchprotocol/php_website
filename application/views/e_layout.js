@@ -204,7 +204,6 @@ function i_create(){
 
 function e_load_search(x__type) {
 
-
     var element_focus = '#new_'+x__type;
 
     //Load Search:
@@ -227,6 +226,8 @@ function e_load_search(x__type) {
         }
 
     });
+
+    console.log(x__type);
 
     if(parseInt(js_e___6404[12678]['m__message'])){
 
