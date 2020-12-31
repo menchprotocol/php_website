@@ -784,7 +784,7 @@ class X_model extends CI_Model
         if (strlen($message_input) < 1) {
             return array(
                 'status' => 0,
-                'message' => 'Missing Message Content',
+                'message' => 'Missing Message',
             );
         } elseif ($strict_validation && strlen($message_input) > view_memory(6404,4485)) {
             return array(
@@ -1043,24 +1043,31 @@ class X_model extends CI_Model
             }
 
             $on_its_own_line = false;
+            $new_lines = 0;
             if($e_appendix){
                 foreach(explode("\n", $message_input) as $line){
-                    if(trim($line)==$identifier_string){
+                    if(strlen($line) > 0){
+                        $new_lines++;
+                    }
+                    if(!$on_its_own_line && trim($line)==$identifier_string){
                         $on_its_own_line = true;
-                        break;
                     }
                 }
             }
 
 
             if($is_single_link){
+
                 $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click" target="_blank" ><u>' . $es[0]['e__title'] . '</u></a></span>', $output_body_message);
+
             } else {
-                if($on_its_own_line){
+
+                if($on_its_own_line && $new_lines <= 1){
                     $output_body_message = $e_appendix.str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
                 } else {
                     $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span>', $output_body_message).$e_appendix;
                 }
+
             }
 
 
