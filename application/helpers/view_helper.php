@@ -1621,7 +1621,7 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
     //RIGHT
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
         //UNLINK
-        $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
+        $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].$i['i__spectrum'].'">'.$e___11035[6155]['m__icon'].'</div>';
     }
 
     //PROGRESS?
