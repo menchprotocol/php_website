@@ -112,14 +112,14 @@ function go_next(go_next_url){
 }
 
 function load_comments(){
-    if($('.view-comments').hasClass('hidden')){
-        $('.view-comments').removeClass('hidden');
+    if($('.view-discussions').hasClass('hidden')){
+        $('.view-discussions').removeClass('hidden');
         $('.input_note_12419').focus();
         setTimeout(function () {
             $('.input_note_12419').focus();
         }, 144);
     } else {
-        $('.view-comments').addClass('hidden');
+        $('.view-discussions').addClass('hidden');
     }
 
 }

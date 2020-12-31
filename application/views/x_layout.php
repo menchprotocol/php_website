@@ -697,97 +697,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
 
-        //COMMENTS:
-        $ui .= '<div class="view-comments hidden">';
-        $ui .= '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
-        $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12419]['m__icon'].'</span>'.$e___11035[12419]['m__title'].'</div>';
-        $comments = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 12419,
-            'x__right' => $i_focus['i__id'],
-        ), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
-        $ui .= view_i_note_list(12419, true, $i_focus, $comments, true, true);
-        $ui .= '</div>';
-
-
-
-
-
-
-        if(!$in_my_x && !$i_drip_mode){
-
-            $discovery_e = ( $is_discovarable ? 4235 : 14022 );
-
-            //Get Started
-            $ui .= '<div class="light-bg fixed-bottom">';
-            $ui .= '<div class="discover-controller">';
-            $ui .= '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__icon'].'</a></div>';
-            $ui .= '</div>';
-            $ui .= '</div>';
-
-        } else {
-
-            $buttons_found = 0;
-            $buttons_ui = '';
-
-            foreach($this->config->item('e___13289') as $e__id => $m2) {
-
-
-                $superpower_actives = array_intersect($this->config->item('n___10957'), $m2['m__profile']);
-                if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
-                    continue;
-                }
-
-                $control_btn = '';
-
-                if($e__id==13877 && $in_my_x && !$in_my_discoveries){
-
-                    //Is Saved already by this user?
-                    $is_saves = $this->X_model->fetch(array(
-                        'x__up' => $user_e['e__id'],
-                        'x__right' => $i_focus['i__id'],
-                        'x__type' => 12896, //SAVED
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    ));
-
-                    $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__icon'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
-
-                } elseif($e__id==14672){
-
-                    //COMMENT
-                    $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m2['m__icon'].'<span class="nav-counter css__title en-type-counter-12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
-
-                } elseif($e__id==12991 && !$in_my_discoveries){
-
-                    //BACK
-                    $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m2['m__icon'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
-
-                } elseif($e__id==12211){
-
-                    //NEXT
-                    $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__icon'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
-
-                }
-
-                $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
-
-                if($control_btn){
-                    $buttons_found++;
-                }
-
-            }
-
-            if($buttons_found > 0){
-                $ui .= '<div class="light-bg fixed-bottom">';
-                $ui .= '<div class="discover-controller">';
-                $ui .= $buttons_ui;
-                $ui .= '</div>';
-                $ui .= '</div>';
-            }
-
-        }
-
-
         $ui .= '</div>';
 
     } elseif($x__type==6255){
@@ -859,6 +768,102 @@ if($tab_pill_count > 1){
 echo $tab_content;
 
 
+
+
+//DISCUSSIONS:
+echo '<div class="view-discussions hidden">';
+echo '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
+echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12419]['m__icon'].'</span>'.$e___11035[12419]['m__title'].'</div>';
+$comments = $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'x__type' => 12419,
+    'x__right' => $i_focus['i__id'],
+), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
+echo view_i_note_list(12419, true, $i_focus, $comments, true, true);
+echo '</div>';
+
+
+
 echo '</div>'; //CLOSE CONTAINER
+
+
+
+
+
+
+
+
+if(!$in_my_x && !$i_drip_mode){
+
+    $discovery_e = ( $is_discovarable ? 4235 : 14022 );
+
+    //Get Started
+    echo '<div class="container light-bg fixed-bottom">';
+    echo '<div class="discover-controller">';
+    echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__icon'].'</a></div>';
+    echo '</div>';
+    echo '</div>';
+
+} else {
+
+    $buttons_found = 0;
+    $buttons_ui = '';
+
+    foreach($this->config->item('e___13289') as $e__id => $m2) {
+
+
+        $superpower_actives = array_intersect($this->config->item('n___10957'), $m2['m__profile']);
+        if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
+            continue;
+        }
+
+        $control_btn = '';
+
+        if($e__id==13877 && $in_my_x && !$in_my_discoveries){
+
+            //Is Saved already by this user?
+            $is_saves = $this->X_model->fetch(array(
+                'x__up' => $user_e['e__id'],
+                'x__right' => $i_focus['i__id'],
+                'x__type' => 12896, //SAVED
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ));
+
+            $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__icon'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+
+        } elseif($e__id==14672){
+
+            //COMMENT
+            $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m2['m__icon'].'<span class="nav-counter css__title en-type-counter-12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+
+        } elseif($e__id==12991 && !$in_my_discoveries){
+
+            //BACK
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m2['m__icon'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+
+        } elseif($e__id==12211){
+
+            //NEXT
+            $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__icon'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+
+        }
+
+        $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
+
+        if($control_btn){
+            $buttons_found++;
+        }
+
+    }
+
+    if($buttons_found > 0){
+        echo '<div class="container light-bg fixed-bottom">';
+        echo '<div class="discover-controller">';
+        echo $buttons_ui;
+        echo '</div>';
+        echo '</div>';
+    }
+
+}
 
 ?>
