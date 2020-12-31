@@ -326,19 +326,6 @@ if($i_drip_mode){ //|| (!$i_drip_mode && $i_is_drip)
 }
 
 
-//COMMENTS:
-echo '<div class="view-comments hidden">';
-echo '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
-echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12419]['m__icon'].'</span>'.$e___11035[12419]['m__title'].'</div>';
-$comments = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'x__type' => 12419,
-    'x__right' => $i_focus['i__id'],
-), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
-echo view_i_note_list(12419, true, $i_focus, $comments, true, true);
-echo '</div>';
-
-
 
 
 $fetch_13865 = $this->X_model->fetch(array(
@@ -776,6 +763,21 @@ if($tab_pill_count > 1){
 
 //Show All Tab Content:
 echo $tab_content;
+
+
+//COMMENTS:
+echo '<div class="view-comments hidden">';
+echo '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
+echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12419]['m__icon'].'</span>'.$e___11035[12419]['m__title'].'</div>';
+$comments = $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'x__type' => 12419,
+    'x__right' => $i_focus['i__id'],
+), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
+echo view_i_note_list(12419, true, $i_focus, $comments, true, true);
+echo '</div>';
+
+
 
 echo '</div>'; //CLOSE CONTAINER
 
