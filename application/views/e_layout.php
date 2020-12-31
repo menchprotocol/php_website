@@ -407,9 +407,20 @@ $profiles = $this->X_model->fetch(array(
                 }
 
                 $ui .= '<div class="row margin-top-down-half" id="list_13550">';
+                $drop_limit = view_memory(6404,14684);
+                $max_i__spectrum = 0;
+                $show_all_i_btn = false;
                 foreach($list_i as $count => $item){
+
+                    if(!$show_all_i_btn && $item['i__spectrum']>0 && ($max_i__spectrum * $drop_limit) > $item['i__spectrum']){
+                        $ui .= '<div class="col-md-2 col-sm-3 col-4 no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="black-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__icon'].'</div><div class="cover-head">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
+                        $showx_all_i_btn = true;
+                    }
+
+                    $max_i__spectrum = $item['i__spectrum'];
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-                    $ui .= view_i(13550, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e);
+                    $ui .= view_i(13550, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, ( $show_all_i_btn ? ' show_all_ideas hidden ' : '' ));
+
                 }
                 $ui .= '</div>';
 

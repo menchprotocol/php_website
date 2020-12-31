@@ -100,10 +100,13 @@ function go_next(go_next_url){
                     x__left: $('#focus_i__id').val(),
                 });
 
-                alert('This idea is not published yet & cannot be started at this time.');
+                if(superpower_js_10939){
+                    alert('This idea is not published yet & cannot be started unless you add it to MY IDEAS and then you can start & preview it while it is reviewed and published by a moderator.');
+                } else {
+                    alert('This idea is not published yet & cannot be started at this time.');
+                }
 
             }
-
         }
     }
 }
