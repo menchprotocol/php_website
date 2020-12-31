@@ -1062,8 +1062,12 @@ class X_model extends CI_Model
 
             } else {
 
-                if($on_its_own_line && $new_lines <= 1){
-                    $output_body_message = $e_appendix.str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+                if($on_its_own_line){
+                    if($new_lines <= 1){
+                        $output_body_message = $e_appendix.str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
+                    } else {
+                        $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message).$e_appendix;
+                    }
                 } else {
                     $output_body_message = str_replace($identifier_string, $edit_btn.'<span '.$tooltip_class.'><span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span>', $output_body_message).$e_appendix;
                 }
