@@ -381,7 +381,7 @@ class X extends CI_Controller
         ));
 
         //Should we check for auto next redirect if empty? Only if this is a selection:
-        if($is[0]['i__type']==6677){
+        if(in_array($is[0]['i__type'], $this->config->item('n___4559'))){
 
             //Mark as discover If not previously:
             $x_completes = $this->X_model->fetch(array(

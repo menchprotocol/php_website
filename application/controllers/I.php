@@ -462,7 +462,6 @@ class I extends CI_Controller {
         }
 
 
-        $new_i_type = 6677; //Idea Read & Next
         $x_i = array();
 
         if($_POST['i_x_child_id'] > 0){
@@ -474,6 +473,7 @@ class I extends CI_Controller {
             ));
 
             if(count($x_i)==0){
+
                 //validate Idea:
                 return view_json(array(
                     'status' => 0,
@@ -481,13 +481,10 @@ class I extends CI_Controller {
                 ));
             }
 
-            if(!intval($_POST['is_parent']) && in_array($x_i[0]['i__type'], $this->config->item('n___7712'))){
-                $new_i_type = 6914; //Require All
-            }
         }
 
         //All seems good, go ahead and try creating the Idea:
-        return view_json($this->I_model->create_or_link((intval($_POST['is_parent']) ? 11019 : 13542 ), trim($_POST['i__title']), $user_e['e__id'], $_POST['i_x_id'], intval($_POST['is_parent']), $new_i_type, $_POST['i_x_child_id']));
+        return view_json($this->I_model->create_or_link((intval($_POST['is_parent']) ? 11019 : 13542 ), trim($_POST['i__title']), $user_e['e__id'], $_POST['i_x_id'], intval($_POST['is_parent']), 6677, $_POST['i_x_child_id']));
 
     }
 
