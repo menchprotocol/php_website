@@ -280,7 +280,6 @@ if($in_my_x){
 
 
 
-
 $show_percentage = $completion_rate['completion_percentage']>0 /* && $completion_rate['completion_percentage']<100 */ ;
 
 
@@ -307,92 +306,12 @@ if(!$i_drip_mode) {
 
 
 
-//MESSAGES
-foreach($messages as $message_x) {
-    $drip_msg_counter++;
-    echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">'.$this->X_model->message_view(
-        $message_x['x__message'],
-        true,
-        $user_e
-    ).'</div>';
-}
-
-if($i_drip_mode){ //|| (!$i_drip_mode && $i_is_drip)
-    $drip_msg_counter++;
-    echo '<div class="drip_msg drip_msg_'.$drip_msg_counter.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
-    echo '<div class="headline" style="padding: 0;"><span class="icon-block">'.$e___11035[14384]['m__icon'].'</span>'.$e___11035[14384]['m__title'].'</div>';
-    echo '<h1 style="padding: 21px 41px;">' . view_i_title($i_focus) . '</h1>';
-    echo '</div>';
-}
-
-
-
-
-$fetch_13865 = $this->X_model->fetch(array(
-    'x__right' => $i_focus['i__id'],
-    'x__type' => 13865, //PREREQUISITES
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-), array('x__up'), 0);
-$meets_13865 = !count($fetch_13865);
-
-if(count($fetch_13865)){
-
-    echo '<div class="headline" style="margin-top: 41px;"><span class="icon-block">'.$e___11035[13865]['m__icon'].'</span>'.$e___11035[13865]['m__title'].'</div>';
-
-    $missing_13865 = 0;
-    $e___13865 = $this->config->item('e___13865'); //PREREQUISITES
-    echo '<div class="list-group" style="margin-bottom: 34px;">';
-    foreach($fetch_13865 as $e_pre){
-
-        $meets_this = ($user_e['e__id'] > 0 && count($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__up' => $e_pre['x__up'],
-            'x__down' => $user_e['e__id'],
-        ))));
-
-        $meets_this_id = ( $meets_this ? 13875 : 13876 );
-
-        echo '<div class="list-group-item no-left-padding"><span class="icon-block">'.$e___13865[$meets_this_id]['m__icon'].'</span>'.$e_pre['e__title'].'</div>';
-
-        if(!$meets_this){
-            $missing_13865++;
-        }
-
-    }
-    echo '</div>';
-    $meets_13865 = !$missing_13865;
-}
-
-
-
-
 //DISCOVER LAYOUT
 $i_stats = i_stats($i_focus['i__metadata']);
 $tab_group = 13291;
 $tab_pills = '<ul class="nav nav-tabs nav-sm '.superpower_active(10939).'">';
 $tab_content = '';
 $tab_pill_count = 0;
-
-/*
-if($in_my_x && count($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type' => 4983, //IDEA SOURCES
-        'x__up' => 12896, //SAVE THIS IDEA
-        'x__right' => $i_focus['i__id'],
-    ))) && !count($this->X_model->fetch(array(
-        'x__up' => $user_e['e__id'],
-        'x__right' => $i_focus['i__id'],
-        'x__type' => 12896, //SAVED
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    )))){
-
-    //Recommended to Save This Idea:
-    echo '<div class="msg alert no-margin space-left">Save idea for quick access? <span class="inline-block">Tap <i class="far fa-bookmark black"></i></span></div>';
-
-}
-*/
 
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
@@ -427,8 +346,91 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //IDEAS
         $counter = count($is_next);
 
-        $ui .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.($i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
 
+
+        //MESSAGES
+        foreach($messages as $message_x) {
+            $drip_msg_counter++;
+            $ui .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">'.$this->X_model->message_view(
+                    $message_x['x__message'],
+                    true,
+                    $user_e
+                ).'</div>';
+        }
+
+        if($i_drip_mode){ //|| (!$i_drip_mode && $i_is_drip)
+            $drip_msg_counter++;
+            $ui .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
+            $ui .= '<div class="headline" style="padding: 0;"><span class="icon-block">'.$e___11035[14384]['m__icon'].'</span>'.$e___11035[14384]['m__title'].'</div>';
+            $ui .= '<h1 style="padding: 21px 41px;">' . view_i_title($i_focus) . '</h1>';
+            $ui .= '</div>';
+        }
+
+
+
+
+        $fetch_13865 = $this->X_model->fetch(array(
+            'x__right' => $i_focus['i__id'],
+            'x__type' => 13865, //PREREQUISITES
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        ), array('x__up'), 0);
+        $meets_13865 = !count($fetch_13865);
+
+        if(count($fetch_13865)){
+
+            $ui .= '<div class="headline" style="margin-top: 41px;"><span class="icon-block">'.$e___11035[13865]['m__icon'].'</span>'.$e___11035[13865]['m__title'].'</div>';
+
+            $missing_13865 = 0;
+            $e___13865 = $this->config->item('e___13865'); //PREREQUISITES
+            $ui .= '<div class="list-group" style="margin-bottom: 34px;">';
+            foreach($fetch_13865 as $e_pre){
+
+                $meets_this = ($user_e['e__id'] > 0 && count($this->X_model->fetch(array(
+                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__up' => $e_pre['x__up'],
+                        'x__down' => $user_e['e__id'],
+                    ))));
+
+                $meets_this_id = ( $meets_this ? 13875 : 13876 );
+
+                $ui .= '<div class="list-group-item no-left-padding"><span class="icon-block">'.$e___13865[$meets_this_id]['m__icon'].'</span>'.$e_pre['e__title'].'</div>';
+
+                if(!$meets_this){
+                    $missing_13865++;
+                }
+
+            }
+            $ui .= '</div>';
+            $meets_13865 = !$missing_13865;
+        }
+
+        /*
+        if($in_my_x && count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__type' => 4983, //IDEA SOURCES
+                'x__up' => 12896, //SAVE THIS IDEA
+                'x__right' => $i_focus['i__id'],
+            ))) && !count($this->X_model->fetch(array(
+                'x__up' => $user_e['e__id'],
+                'x__right' => $i_focus['i__id'],
+                'x__type' => 12896, //SAVED
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))){
+
+            //Recommended to Save This Idea:
+            $ui .= '<div class="msg alert no-margin space-left">Save idea for quick access? <span class="inline-block">Tap <i class="far fa-bookmark black"></i></span></div>';
+
+        }
+        */
+
+
+
+
+
+        //IDAS
+        $ui .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.($i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
         if($in_my_x) {
 
             //PREVIOUSLY UNLOCKED:
@@ -694,6 +696,98 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         }
 
+
+        //COMMENTS:
+        $ui .= '<div class="view-comments hidden">';
+        $ui .= '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
+        $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12419]['m__icon'].'</span>'.$e___11035[12419]['m__title'].'</div>';
+        $comments = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 12419,
+            'x__right' => $i_focus['i__id'],
+        ), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
+        $ui .= view_i_note_list(12419, true, $i_focus, $comments, true, true);
+        $ui .= '</div>';
+
+
+
+
+
+
+        if(!$in_my_x && !$i_drip_mode){
+
+            $discovery_e = ( $is_discovarable ? 4235 : 14022 );
+
+            //Get Started
+            $ui .= '<div class="light-bg fixed-bottom">';
+            $ui .= '<div class="discover-controller">';
+            $ui .= '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__icon'].'</a></div>';
+            $ui .= '</div>';
+            $ui .= '</div>';
+
+        } else {
+
+            $buttons_found = 0;
+            $buttons_ui = '';
+
+            foreach($this->config->item('e___13289') as $e__id => $m) {
+
+
+                $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
+                if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
+                    continue;
+                }
+
+                $control_btn = '';
+
+                if($e__id==13877 && $in_my_x && !$in_my_discoveries){
+
+                    //Is Saved already by this user?
+                    $is_saves = $this->X_model->fetch(array(
+                        'x__up' => $user_e['e__id'],
+                        'x__right' => $i_focus['i__id'],
+                        'x__type' => 12896, //SAVED
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    ));
+
+                    $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__icon'].'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+
+                } elseif($e__id==14672){
+
+                    //COMMENT
+                    $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m['m__icon'].'<span class="nav-counter css__title en-type-counter-12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+
+                } elseif($e__id==12991 && !$in_my_discoveries){
+
+                    //BACK
+                    $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+
+                } elseif($e__id==12211){
+
+                    //NEXT
+                    $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
+
+                }
+
+                $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
+
+                if($control_btn){
+                    $buttons_found++;
+                }
+
+            }
+
+            if($buttons_found > 0){
+                $ui .= '<div class="light-bg fixed-bottom">';
+                $ui .= '<div class="discover-controller">';
+                $ui .= $buttons_ui;
+                $ui .= '</div>';
+                $ui .= '</div>';
+            }
+
+        }
+
+
         $ui .= '</div>';
 
     } elseif($x__type==6255){
@@ -739,7 +833,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
-    $default_active = ( $counter && in_array($x__type, $this->config->item('n___13300')) );
+    $default_active = ( in_array($x__type, $this->config->item('n___13300')) );
     $tab_pill_count++;
 
 
@@ -765,95 +859,6 @@ if($tab_pill_count > 1){
 echo $tab_content;
 
 
-//COMMENTS:
-echo '<div class="view-comments hidden">';
-echo '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
-echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12419]['m__icon'].'</span>'.$e___11035[12419]['m__title'].'</div>';
-$comments = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'x__type' => 12419,
-    'x__right' => $i_focus['i__id'],
-), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
-echo view_i_note_list(12419, true, $i_focus, $comments, true, true);
-echo '</div>';
-
-
-
 echo '</div>'; //CLOSE CONTAINER
-
-
-if(!$in_my_x && !$i_drip_mode){
-
-    $discovery_e = ( $is_discovarable ? 4235 : 14022 );
-
-    //Get Started
-    echo '<div class="container light-bg fixed-bottom">';
-    echo '<div class="discover-controller">';
-    echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__icon'].'</a></div>';
-    echo '</div>';
-    echo '</div>';
-
-} else {
-
-    $buttons_found = 0;
-    $buttons_ui = '';
-
-    foreach($this->config->item('e___13289') as $e__id => $m) {
-
-
-        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
-        if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
-            continue;
-        }
-
-        $control_btn = '';
-
-        if($e__id==13877 && $in_my_x && !$in_my_discoveries){
-
-            //Is Saved already by this user?
-            $is_saves = $this->X_model->fetch(array(
-                'x__up' => $user_e['e__id'],
-                'x__right' => $i_focus['i__id'],
-                'x__type' => 12896, //SAVED
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ));
-
-            $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__icon'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__icon'].'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
-
-        } elseif($e__id==14672){
-
-            //COMMENT
-            $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m['m__icon'].'<span class="nav-counter css__title en-type-counter-12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m['m__title'].'</span>';
-
-        } elseif($e__id==12991 && !$in_my_discoveries){
-
-            //BACK
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
-
-        } elseif($e__id==12211){
-
-            //NEXT
-            $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m['m__icon'].'</a><span class="nav-title css__title">'.$m['m__title'].'</span>';
-
-        }
-
-        $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
-
-        if($control_btn){
-            $buttons_found++;
-        }
-
-    }
-
-    if($buttons_found > 0){
-        echo '<div class="container light-bg fixed-bottom">';
-        echo '<div class="discover-controller">';
-        echo $buttons_ui;
-        echo '</div>';
-        echo '</div>';
-    }
-
-}
-
 
 ?>
