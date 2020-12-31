@@ -419,7 +419,7 @@ $profiles = $this->X_model->fetch(array(
 
                     $max_i__spectrum = $item['i__spectrum'];
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-                    $ui .= view_i(13550, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, ( $show_all_i_btn ? ' show_all_ideas hidden ' : '' ));
+                    $ui .= view_i(13550, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, ( $show_all_i_btn ? ' show_all_ideas hidden ' : null ));
 
                 }
                 $ui .= '</div>';
