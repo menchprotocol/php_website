@@ -1565,6 +1565,7 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
     }
 
 
+    $message_input = null; //TODO remove later or disable
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12700 = superpower_active(12700, true);
     $top_is_lock = ($top_i && in_array($top_i['i__type'], $CI->config->item('n___14488')));
