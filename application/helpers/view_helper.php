@@ -1573,7 +1573,7 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
     $is_soft_lock = $locking_enabled && ($is_hard_lock || $top_is_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
     $is_sortable = !$is_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
     $i_stats = i_stats($i['i__metadata']);
-    $i_title = view_i_title($i, null, true);
+    $i_title = view_i_title($i, null, !$message_input);
     $is_any_lock = $is_soft_lock || $is_hard_lock;
     $lock_notice = (  $top_is_lock ? 14488 : 14377 );
 

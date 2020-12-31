@@ -776,9 +776,9 @@ function cookie_check() {
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
     if(
-        !(substr($first_segment, 0, 1)=='-' && in_array(intval(substr($first_segment, 1)), $CI->config->item('n___14582')))
+        !superpower_unlocked()
         && isset($_COOKIE['mench_login'])
-        && !superpower_unlocked()
+        && !(substr($first_segment, 0, 1)=='-' && in_array(intval(substr($first_segment, 1)), $CI->config->item('n___14582')))
     ) {
         header("Location: " . '/-4269?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
         exit;
