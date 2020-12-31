@@ -1942,7 +1942,7 @@ function view_e($e, $is_parent = false, $extra_class = null, $control_enabled = 
 
     if($superpower_12706){
         //PROFILE
-        $ui .= '<div class="space-content hideIfEmpty">';
+        $ui .= '<div class="space-content hideIfEmpty '.superpower_active(12706).'">';
         //PROFILE SOURCES:
         $ui .= '<span class="paddingup inline-block hideIfEmpty">';
         foreach($e__profiles as $e_profile) {
