@@ -276,7 +276,7 @@ class E extends CI_Controller
         ));
 
         foreach($child_e as $e) {
-            echo view_e($_POST['x__type'], $e, null, true, $source_of_e);
+            echo view_e($_POST['x__type'], $e, null, $source_of_e);
         }
 
         //Count total children:
@@ -469,7 +469,7 @@ class E extends CI_Controller
         //Return source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e($_POST['note_type_id'], array_merge($focus_e, $new_note),  null, true, true),
+            'e_new_echo' => view_e($_POST['note_type_id'], array_merge($focus_e, $new_note),  null,  true),
         ));
 
     }
@@ -667,7 +667,7 @@ class E extends CI_Controller
         //Return source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e($_POST['x__type'], array_merge($es_latest[0], $ur2), null, true, true),
+            'e_new_echo' => view_e($_POST['x__type'], array_merge($es_latest[0], $ur2), null,  true),
         ));
 
     }

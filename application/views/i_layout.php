@@ -190,7 +190,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         $ui .= '<div id="add-e-' .$x__type . '" class="list-group e-adder" style="margin-bottom:41px;">';
         foreach($i_notes as $i_note) {
-            $ui .= view_e($x__type, $i_note,  null, $e_of_i && $is_active, $e_of_i);
+            $ui .= view_e($x__type, $i_note,  null, $e_of_i && $is_active);
         }
 
         if($e_of_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {

@@ -49,7 +49,7 @@ $profiles = $this->X_model->fetch(array(
                 $see_more_button = true;
             }
 
-            $view_e = view_e(11030, $e_profile, ( $count<$show_max ? '' : 'see_all_profiles hidden'), true, ($source_of_e || ($member_e && ($member_e['e__id']==$e_profile['x__source']))));
+            $view_e = view_e(11030, $e_profile, ( $count<$show_max ? '' : 'see_all_profiles hidden'),  ($source_of_e || ($member_e && ($member_e['e__id']==$e_profile['x__source']))));
 
             if($view_e){
                 echo $view_e;
@@ -323,7 +323,7 @@ $profiles = $this->X_model->fetch(array(
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
 
             foreach($list_e as $e_portfolio) {
-                $ui .= view_e(11029, $e_portfolio,null, true, ($source_of_e || ($member_e && ($member_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
+                $ui .= view_e(11029, $e_portfolio,null,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
             }
             if ($counter > count($list_e)) {
                 $ui .= view_e_load_more(11029, 1, view_memory(6404,11064), $counter);

@@ -48,7 +48,7 @@ if($search_for_set){
                 }
             }
 
-            echo view_e(12730, $en, null, false, false, null, ( $replace_with_set ? $new_outcome . ( $replace_with_confirmed ? ' [UPDATED]' : '') : null ));
+            echo view_e(12730, $en, null,  false, null, ( $replace_with_set ? $new_outcome . ( $replace_with_confirmed ? ' [UPDATED]' : '') : null ));
         }
         echo '</div>';
 
