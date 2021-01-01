@@ -14,6 +14,13 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
         'x__down' => $_GET['e__id'],
     ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
 
+
+    echo '<div class="center-info">';
+    echo '<div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>';
+    echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
+    echo '</div>';
+
+
     if(!count($profiles)){
 
         $this->X_model->create(array(
@@ -25,11 +32,11 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
             'x__down' => $_GET['e__id'],
         ));
 
-        echo '<script> window.location = \'/\';</script>';
+        js_redirect('/', 1597);
 
     } else {
 
-        echo '<script> window.location = \''.$profiles[0]['x__message'].'\';</script>';
+        js_redirect($profiles[0]['x__message'], 1597);
 
     }
 
