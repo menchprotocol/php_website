@@ -335,7 +335,7 @@ class App extends CI_Controller
             die('Error creating a new account: '.$member_result['message']);
         }
 
-        header('Location: /-14517' . ($sign_i__id > 0 ? '?i__id='.$sign_i__id :  '' ));
+        header('Location: /-14517' . ($sign_i__id > 0 ? '?i__id='.$sign_i__id : ( isset($_GET['url']) ? '?url='.$_GET['url'] : '' ) ));
 
     }
 

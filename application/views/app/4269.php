@@ -40,10 +40,15 @@ if(superpower_unlocked()) {
 
 } else {
 
-    if($sign_i__id){
+    if($sign_i__id || isset($_GET['url'])){
         //Assign Session variable so we can detect upon social login:
         $session_data = $this->session->all_userdata();
-        $session_data['login_i__id'] = $_GET['i__id'];
+        if($sign_i__id){
+            $session_data['login_i__id'] = $_GET['i__id'];
+        }
+        if(isset($_GET['url'])){
+            $session_data['redirect_url'] = urldecode($_GET['url']);
+        }
         $this->session->set_userdata($session_data);
     }
 

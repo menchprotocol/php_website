@@ -38,6 +38,8 @@ $auth0 = new Auth0\SDK\Auth0([
 
 $userInfo = $auth0->getUser();
 $sign_i__id = intval($this->session->userdata('login_i__id'));
+$redirect_url = $this->session->userdata('redirect_url');
+
 
 if($userInfo){
 
@@ -58,7 +60,6 @@ if($userInfo){
         }
     }
 
-
     $this->X_model->create(array(
         'x__type' => 14436, //Social Sign in
         'x__source' => ( count($member_emails) ? $member_emails[0]['e__id'] : 0 ),
@@ -72,11 +73,11 @@ if($userInfo){
 
         //Activate Session:
         $this->E_model->activate_session($member_emails[0], true);
-        header('Location: ' . ($sign_i__id > 0 ? '/x/x_start/'.$sign_i__id :  home_url() ));
+        header('Location: ' . ($sign_i__id > 0 ? '/x/x_start/'.$sign_i__id : ( $redirect_url ? $redirect_url : home_url() )));
 
     } else {
 
-        header('Location: /app/auth0_create/'.$sign_i__id.'?name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']));
+        header('Location: /app/auth0_create/'.$sign_i__id.'?name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&url='.urlencode($redirect_url));
 
     }
 
@@ -91,6 +92,6 @@ if($userInfo){
             'auth0_getUser' => $userInfo,
         ),
     ));
-    header('Location: /' . ( $sign_i__id ? $sign_i__id : '' ));
+    header('Location: ' . ( $sign_i__id ? '/'.$sign_i__id : ( $redirect_url ? $redirect_url : home_url() ) ));
 
 }
