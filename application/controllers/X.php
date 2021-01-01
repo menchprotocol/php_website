@@ -801,11 +801,6 @@ class X extends CI_Controller
 
     }
 
-    function go_url($e__id){
-
-
-    }
-
     function x_save(){
 
         //Authenticate Member:

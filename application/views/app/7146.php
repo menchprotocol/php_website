@@ -18,9 +18,11 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
         $this->X_model->create(array(
             'x__down' => $_GET['e__id'],
-            'x__message' => 'go_url() failed to find URL',
+            'x__message' => 'Failed to find URL',
             'x__type' => 4246, //Platform Bug Reports
             'x__source' => ( $member_e ? $member_e['e__id'] : 0 ),
+            'x__up' => 7146,
+            'x__down' => $_GET['e__id'],
         ));
 
         return redirect_message('/');
