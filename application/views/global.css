@@ -2485,6 +2485,9 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .doabsolute, .black-background {
     background-color: #000000 !important;
 }
+.grey-background {
+    background-color: #999999 !important;
+}
 
 .editor_preview{
     padding-top: 5px !important;
