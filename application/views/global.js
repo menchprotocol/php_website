@@ -998,13 +998,13 @@ function i_load_search(x__type, element_focus) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return js_create_or_link(x__type, 0);
+            return i_add(x__type, 0);
             e.preventDefault();
         }
 
     }).on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        js_create_or_link(x__type, suggestion.s__id);
+        i_add(x__type, suggestion.s__id);
 
     }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [js_e___14685[x__type]['m__message']]}, [{
         source: function (q, cb) {
@@ -1031,10 +1031,10 @@ function i_load_search(x__type, element_focus) {
                 return view_s_js(suggestion);
             },
             header: function (data) {
-                return '<a href="javascript:void(0);" onclick="js_create_or_link('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
+                return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
             },
             empty: function (data) {
-                return '<a href="javascript:void(0)" onclick="js_create_or_link('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
+                return '<a href="javascript:void(0)" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
             },
         }
     }]);
@@ -1698,63 +1698,6 @@ function set_autosize(theobject){
 }
 
 
-function x_sort(x__type) {
-
-    var sort_rank = 0;
-    var new_x_order = [];
-    $("#list-in-"+x__type+" .cover_sort").each(function () {
-        var x_id = parseInt($(this).attr('x__id'));
-        if(x_id > 0){
-            sort_rank++;
-            new_x_order[sort_rank] = x_id;
-        }
-    });
-
-    //Update order:
-    if(sort_rank > 0){
-        $.post("/x/x_sort", { new_x_order:new_x_order, x__type:x__type }, function (data) {
-            //Update UI to confirm with member:
-            if (!data.status) {
-                //There was some sort of an error returned!
-                alert(data.message);
-            }
-        });
-    }
-
-}
-
-function i_sort_save(x__type) {
-
-    var new_x__spectrums = [];
-    var sort_rank = 0;
-
-    $("#list-in-"+x__type+" .cover_sort").each(function () {
-
-        //Fetch variables for this idea:
-        var x__id = parseInt($(this).attr('x__id'));
-
-        sort_rank++;
-
-        //Store in DB:
-        new_x__spectrums[sort_rank] = x__id;
-    });
-
-    //It might be zero for lists that have jsut been emptied
-    if (sort_rank > 0 ) {
-        //Update backend:
-        $.post("/i/i_sort_save", {
-            new_x__spectrums: new_x__spectrums
-        }, function (data) {
-            //Update UI to confirm with member:
-            if (!data.status) {
-                //There was some sort of an error returned!
-                alert(data.message);
-            }
-        });
-    }
-}
-
-
 
 
 function x_sort_load(x__type){
@@ -1768,9 +1711,9 @@ function x_sort_load(x__type){
     var theobject = document.getElementById("list-in-" + x__type);
     if (!theobject) {
         //due to duplicate ideas belonging in this idea:
+        console.log(x__type+' failed to find sortable object');
         return false;
     }
-
 
     //Load sorter:
     var sort = Sortable.create(theobject, {
@@ -1778,25 +1721,31 @@ function x_sort_load(x__type){
         draggable: "#list-in-"+x__type+" .cover_sort", // Specifies which items inside the element should be sortable
         handle: "#list-in-"+x__type+" .x_sort", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            x_sort(x__type);
+
+            var sort_rank = 0;
+            var new_x_order = [];
+            $("#list-in-"+x__type+" .cover_sort").each(function () {
+                var x_id = parseInt($(this).attr('x__id'));
+                if(x_id > 0){
+                    sort_rank++;
+                    new_x_order[sort_rank] = x_id;
+                }
+            });
+
+            //Update order:
+            if(sort_rank > 0){
+                $.post("/x/x_sort_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
+                    //Update UI to confirm with member:
+                    if (!data.status) {
+                        //There was some sort of an error returned!
+                        alert(data.message);
+                    }
+                });
+            }
         }
     });
+
 }
-
-
-
-function i_sort_load(x__type) {
-
-    var sort = Sortable.create(theobject, {
-        animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: ".cover_sort", // Specifies which items inside the element should be sortable
-        handle: ".x_sort", // Restricts sort start click/touch to the specified element
-        onUpdate: function (evt/**Event*/) {
-            i_sort_save(x__type);
-        }
-    });
-}
-
 
 
 
@@ -2205,7 +2154,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
 
 
-function js_create_or_link(x__type, link_i__id, focus__id) {
+function i_add(x__type, link_i__id, focus__id) {
 
     /*
      *
@@ -2235,7 +2184,7 @@ function js_create_or_link(x__type, link_i__id, focus__id) {
 
 
     //Update backend:
-    $.post("/i/js_create_or_link", {
+    $.post("/i/i_add", {
         x__type: x__type,
         focus_i__id: focus__id,
         i__title: i__title,
@@ -2252,10 +2201,7 @@ function js_create_or_link(x__type, link_i__id, focus__id) {
                 i_note_counter(12273, +1);
             }
 
-            if(js_n___4603.includes(x__type)){
-                //Reload sorting to enable sorting for the newly added idea:
-                i_sort_load(x__type);
-            }
+            x_sort_load(x__type);
 
             //Add new
             add_to_list(sort_list_id, sort_handler, data.new_i_html);

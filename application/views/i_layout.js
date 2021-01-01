@@ -89,7 +89,7 @@ $(document).ready(function () {
     i_load_search(13542, ".next_i");
 
     //Load Sortable:
-    i_sort_load(13542);
+    x_sort_load(13542);
 
 });
 

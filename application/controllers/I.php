@@ -336,7 +336,7 @@ class I extends CI_Controller {
     }
 
 
-    function js_create_or_link()
+    function i_add()
     {
 
         /*
@@ -399,37 +399,6 @@ class I extends CI_Controller {
 
     }
 
-    function i_sort_save()
-    {
-
-        //Authenticate Member:
-        $member_e = superpower_unlocked(10939);
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(10939),
-            ));
-        } elseif (!isset($_POST['new_x__spectrums']) || !is_array($_POST['new_x__spectrums']) || count($_POST['new_x__spectrums']) < 1) {
-            view_json(array(
-                'status' => 0,
-                'message' => 'Nothing passed for sorting',
-            ));
-        } else {
-
-            //Update them all:
-            foreach($_POST['new_x__spectrums'] as $rank => $x__id) {
-                $this->X_model->update(intval($x__id), array(
-                    'x__spectrum' => intval($rank),
-                ), $member_e['e__id'], 4603 /* Sorted */);
-            }
-
-            //Display message:
-            view_json(array(
-                'status' => 1,
-            ));
-
-        }
-    }
 
 
     function i_note_add_text()

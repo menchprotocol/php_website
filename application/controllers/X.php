@@ -942,7 +942,7 @@ class X extends CI_Controller
 
 
 
-    function x_sort()
+    function x_sort_load()
     {
 
         /*
