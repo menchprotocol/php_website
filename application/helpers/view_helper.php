@@ -469,7 +469,7 @@ function view_x($x, $is_x__reference = false)
 
     //Metadata
     if(strlen($x['x__metadata']) > 0){
-        $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/-12722?x__id=' . $x['x__id'] . '"><span class="icon-block">'.$e___4341[6103]['m__icon']. '</span><u>'.$e___4341[6103]['m__title']. '</u></a></div>';
+        $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/-12722?x__id=' . $x['x__id'] . '" target="_blank"><span class="icon-block">'.$e___4341[6103]['m__icon']. '</span><u>'.$e___4341[6103]['m__title']. '</u> <i class="far fa-external-link"></i></a></div>';
     }
 
     //Message
