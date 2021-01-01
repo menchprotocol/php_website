@@ -23,7 +23,7 @@ if(isset($_GET['e__id'])){
 }
 
 if($search_item){
-    return redirect_message('https://www.google.com/search?q='.urlencode($search_item));
+    echo '<script> window.location = \'https://www.google.com/search?q='.urlencode($search_item).'\';</script>';
 } else {
     return view_json(array(
         'status' => 0,

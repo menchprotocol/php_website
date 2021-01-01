@@ -25,12 +25,12 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
             'x__down' => $_GET['e__id'],
         ));
 
-        return redirect_message('/');
+        echo '<script> window.location = \'/\';</script>';
 
     } else {
 
-        //Go to URL:
-        return redirect_message($profiles[0]['x__message']);
+        echo '<script> window.location = \''.$profiles[0]['x__message'].'\';</script>';
+
     }
 
 }
