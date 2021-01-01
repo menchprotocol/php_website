@@ -1659,7 +1659,7 @@ i, .btn .show-max {
 }
 .social-footer li{
     display: inline-block;
-    font-size: 1.3em;
+    font-size: 1.5em;
     margin: 0 10px;
 }
 .texttype__sm {
@@ -2055,7 +2055,8 @@ i, .btn .show-max {
     }
 
     .social-footer li{
-        font-size: 1.2em;
+        font-size: 1em;
+        margin: 0 5px;
     }
     .icon-tweak{ padding-left: 8px; }
     .name-block{ margin-left: 41px; }
