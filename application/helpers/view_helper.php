@@ -1508,7 +1508,7 @@ function view_info_box($e__id){
         $ui .= '<div class="col-12 col-sm-4">';
             $ui .= '<div class="info_box">';
                 $ui .= '<div class="info_box_cover">'.$m['m__icon'].'</div>';
-                $ui .= '<div class="info_box_title css__title">'.str_replace(' ','<br />',$m['m__title']).'</div>';
+                $ui .= '<div class="info_box_title css__title">'.$m['m__title'].'</div>';
                 $ui .= '<div class="info_box_message">'.$m['m__message'].'</div>';
             $ui .= '</div>';
         $ui .= '</div>';
