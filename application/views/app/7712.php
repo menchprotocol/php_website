@@ -3,7 +3,7 @@
 $all_x = 0;
 $all_children = 0;
 $updated = 0;
-$user_e = superpower_unlocked();
+$member_e = superpower_unlocked();
 
 foreach($this->I_model->fetch(array(
     'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null,

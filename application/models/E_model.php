@@ -5,7 +5,7 @@ class E_model extends CI_Model
 
     /*
      *
-     * User related database functions
+     * Member related database functions
      *
      * */
 
@@ -136,7 +136,7 @@ class E_model extends CI_Model
             );
         }
 
-        //Add User:
+        //Add Member:
         $this->X_model->create(array(
             'x__up' => 4430, //MENCH USERS
             'x__type' => e_x__type(),
@@ -308,7 +308,7 @@ class E_model extends CI_Model
 
                 if($key=='e__title') {
 
-                    $x__type = 10646; //User Updated Name
+                    $x__type = 10646; //Member Updated Name
                     $x__message = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='e__type') {
@@ -323,7 +323,7 @@ class E_model extends CI_Model
 
                 } elseif($key=='e__icon') {
 
-                    $x__type = 10653; //User Updated Icon
+                    $x__type = 10653; //Member Updated Icon
                     $x__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
@@ -375,10 +375,10 @@ class E_model extends CI_Model
          * Treats an source child group as a drop down menu where:
          *
          *  $e_profile_bucket_id is the parent of the drop down
-         *  $x__source is the user source ID that one of the children of $e_profile_bucket_id should be assigned (like a drop down)
+         *  $x__source is the member source ID that one of the children of $e_profile_bucket_id should be assigned (like a drop down)
          *  $set_e_child_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
-         * This function is helpful to manage things like User communication levels
+         * This function is helpful to manage things like Member communication levels
          *
          * */
 
@@ -411,7 +411,7 @@ class E_model extends CI_Model
                 //Do not log update transaction here as we would log it further below:
                 $this->X_model->update($x['x__id'], array(
                     'x__status' => 6173, //Transaction Deleted
-                ), $x__source, 6224 /* User Account Updated */);
+                ), $x__source, 6224 /* Member Account Updated */);
             }
 
         }
@@ -443,7 +443,7 @@ class E_model extends CI_Model
             //Delete this transaction:
             $adjusted_count += $this->X_model->update($adjust_tr['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
-            ), $x__source, 10673 /* User Transaction Unpublished */);
+            ), $x__source, 10673 /* Member Transaction Unpublished */);
         }
 
         return $adjusted_count;
@@ -451,16 +451,16 @@ class E_model extends CI_Model
 
     function add_source($e__id){
 
-        $user_e = superpower_unlocked();
-        if(!$user_e){
+        $member_e = superpower_unlocked();
+        if(!$member_e){
             return false;
         }
 
         //Assign to Creator:
         $this->X_model->create(array(
             'x__type' => e_x__type(),
-            'x__source' => $user_e['e__id'],
-            'x__up' => $user_e['e__id'],
+            'x__source' => $member_e['e__id'],
+            'x__up' => $member_e['e__id'],
             'x__down' => $e__id,
         ));
 
@@ -470,7 +470,7 @@ class E_model extends CI_Model
             //Add Pending Review:
             $this->X_model->create(array(
                 'x__type' => e_x__type(),
-                'x__source' => $user_e['e__id'],
+                'x__source' => $member_e['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
             ));
@@ -478,7 +478,7 @@ class E_model extends CI_Model
             //SOURCE PENDING MODERATION TYPE:
             $this->X_model->create(array(
                 'x__type' => 7504, //SOURCE PENDING MODERATION
-                'x__source' => $user_e['e__id'],
+                'x__source' => $member_e['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
             ));
@@ -515,7 +515,7 @@ class E_model extends CI_Model
             'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
-            'x__up' => 1326, //Domain User
+            'x__up' => 1326, //Domain Member
             'x__message' => $url_analysis['url_clean_domain'],
         ), array('x__down'));
 
@@ -536,7 +536,7 @@ class E_model extends CI_Model
             $this->X_model->create(array(
                 'x__source' => $x__source,
                 'x__type' => 4256, //Generic URL (Domains are always generic)
-                'x__up' => 1326, //Domain User
+                'x__up' => 1326, //Domain Member
                 'x__down' => $e_domain['e__id'],
                 'x__message' => $url_analysis['url_clean_domain'],
             ));
@@ -649,9 +649,9 @@ class E_model extends CI_Model
          * Input legend:
          *
          * - $url:                  Input URL
-         * - $x__source:       IF > 0 will save URL (if not previously there) and give credit to this source as the user
+         * - $x__source:       IF > 0 will save URL (if not previously there) and give credit to this source as the member
          * - $add_to_child_e__id:   IF > 0 Will also add URL to this child if present
-         * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable users to edit auto generated title)
+         * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable members to edit auto generated title)
          *
          * */
 
@@ -669,7 +669,7 @@ class E_model extends CI_Model
             );
         }
 
-        //Reuser if source name was passed:
+        //Remember if source name was passed:
         $page_title_generic = 0;
         $name_was_passed = ( $page_title ? true : false );
         $e___4537 = $this->config->item('e___4537');
@@ -787,7 +787,7 @@ class E_model extends CI_Model
             $url_x = $this->X_model->fetch(array(
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //User URL Transactions
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Member URL Transactions
                 'x__message' => $url,
             ), array('x__down'));
 
@@ -807,7 +807,7 @@ class E_model extends CI_Model
                     $page_title_generic = 1;
                 }
 
-                //Create a new source for this URL ONLY If user source is provided...
+                //Create a new source for this URL ONLY If member source is provided...
                 $added_e = $this->E_model->verify_create($page_title, $x__source, 6181);
                 if($added_e['status']){
 
@@ -823,7 +823,7 @@ class E_model extends CI_Model
                         'x__message' => $url,
                     ));
 
-                    //Assign to User:
+                    //Assign to Member:
                     $this->E_model->add_source($e_url['e__id']);
 
                     //Update Search Index:
@@ -849,7 +849,7 @@ class E_model extends CI_Model
                 }
 
             } else {
-                //URL not found and no user source provided to create the URL:
+                //URL not found and no member source provided to create the URL:
                 $e_url = array();
             }
         }
@@ -974,7 +974,7 @@ class E_model extends CI_Model
 
             } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
 
-                //What user searched for:
+                //What member searched for:
                 $parent_e__id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child source has searched parent source:
@@ -999,7 +999,7 @@ class E_model extends CI_Model
                         $add_fields['x__message'] = $x['x__message'];
                     }
 
-                    //Parent User Addition
+                    //Parent Member Addition
                     $this->X_model->create($add_fields);
 
                     $applied_success++;
@@ -1008,19 +1008,19 @@ class E_model extends CI_Model
                         //Since we're migrating we should remove from here:
                         $this->X_model->update($x['x__id'], array(
                             'x__status' => 6173, //Transaction Deleted
-                        ), $x__source, 10673 /* User Transaction Unpublished  */);
+                        ), $x__source, 10673 /* Member Transaction Unpublished  */);
                     }
 
                 } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_e) > 0){
 
                     if($action_e__id==5982){
 
-                        //Parent User Removal
+                        //Parent Member Removal
                         foreach($child_parent_e as $delete_tr){
 
                             $this->X_model->update($delete_tr['x__id'], array(
                                 'x__status' => 6173, //Transaction Deleted
-                            ), $x__source, 10673 /* User Transaction Unpublished  */);
+                            ), $x__source, 10673 /* Member Transaction Unpublished  */);
 
                             $applied_success++;
                         }
@@ -1043,7 +1043,7 @@ class E_model extends CI_Model
 
                 }
 
-            } elseif ($action_e__id == 5943) { //User Mass Update User Icon
+            } elseif ($action_e__id == 5943) { //Member Mass Update Member Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__icon' => $action_command1,
@@ -1051,7 +1051,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 12318 && !strlen($x['e__icon'])) { //User Mass Update User Icon
+            } elseif ($action_e__id == 12318 && !strlen($x['e__icon'])) { //Member Mass Update Member Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__icon' => $action_command1,
@@ -1059,7 +1059,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5000 && substr_count($x['e__title'], strtoupper($action_command1)) > 0) { //Replace User Matching Name
+            } elseif ($action_e__id == 5000 && substr_count($x['e__title'], strtoupper($action_command1)) > 0) { //Replace Member Matching Name
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => str_replace(strtoupper($action_command1), strtoupper($action_command2), $x['e__title']),
@@ -1067,7 +1067,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 10625 && substr_count($x['e__icon'], $action_command1) > 0) { //Replace User Matching Icon
+            } elseif ($action_e__id == 10625 && substr_count($x['e__icon'], $action_command1) > 0) { //Replace Member Matching Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__icon' => str_replace($action_command1, $action_command2, $x['e__icon']),
@@ -1090,7 +1090,7 @@ class E_model extends CI_Model
                     $this->E_model->remove($x['e__id'], $x__source);
                 }
 
-                //Update Matching User Status:
+                //Update Matching Member Status:
                 $this->E_model->update($x['e__id'], array(
                     'e__type' => $action_command2,
                 ), true, $x__source);
@@ -1101,7 +1101,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__status' => $action_command2,
-                ), $x__source, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* User Transaction Updated Status */ : 10673 /* User Transaction Unpublished */ ));
+                ), $x__source, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Member Transaction Updated Status */ : 10673 /* Member Transaction Unpublished */ ));
 
                 $applied_success++;
 

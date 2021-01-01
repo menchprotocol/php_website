@@ -75,12 +75,12 @@ function extract_e_references($x__message)
 
     //Analyzes a message text to extract Source References (Like @123) and URLs
     $CI =& get_instance();
-    $user_e = superpower_unlocked();
+    $member_e = superpower_unlocked();
 
     //Replace non-ascii characters with space:
     $x__message = preg_replace('/[[:^print:]]/', ' ', $x__message);
 
-    //Analyze the message to find referencing URLs and Users in the message text:
+    //Analyze the message to find referencing URLs and Members in the message text:
     $string_references = array(
         'ref_urls' => array(),
         'ref_e' => array(),
@@ -750,7 +750,7 @@ function i_unlockable($i){
 
 function redirect_message($url, $message = null)
 {
-    //An error handling function that would redirect user to $url with optional $message
+    //An error handling function that would redirect member to $url with optional $message
     //Do we have a Message?
     if ($message) {
         $CI =& get_instance();
@@ -974,33 +974,33 @@ function i_stats($i__metadata){
 
 function home_url($came_from = null){
     $CI =& get_instance();
-    $user_e = superpower_unlocked();
-    return ( $user_e ? '/@'.$user_e['e__id'] . ( $came_from==6255 ? '?came_from='.$came_from : '' ) : '/' );
+    $member_e = superpower_unlocked();
+    return ( $member_e ? '/@'.$member_e['e__id'] . ( $came_from==6255 ? '?came_from='.$came_from : '' ) : '/' );
 }
 
 function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
 {
 
-    //Authenticates logged-in users with their session information
+    //Authenticates logged-in members with their session information
     $CI =& get_instance();
-    $user_e = $CI->session->userdata('session_profile');
-    $has_session = ( is_array($user_e) && count($user_e) > 0 && $user_e );
+    $member_e = $CI->session->userdata('session_profile');
+    $has_session = ( is_array($member_e) && count($member_e) > 0 && $member_e );
 
-    //Let's start checking various ways we can give user access:
+    //Let's start checking various ways we can give member access:
     if ($has_session && !$superpower_e__id) {
 
-        //No minimum level required, grant access IF user is logged in:
-        return $user_e;
+        //No minimum level required, grant access IF member is logged in:
+        return $member_e;
 
     } elseif ($has_session && in_array($superpower_e__id, $CI->session->userdata('session_superpowers_unlocked'))) {
 
         //They are part of one of the levels assigned to them:
-        return $user_e;
+        return $member_e;
 
     }
 
     //Still here?!
-    //We could not find a reason to give user access, so block them:
+    //We could not find a reason to give member access, so block them:
     if (!$force_redirect) {
 
         return false;
@@ -1009,7 +1009,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = '/@'.$user_e['e__id'];
+            $goto_url = '/@'.$member_e['e__id'];
         } else {
             $goto_url = '/-4269?url=' . urlencode($_SERVER['REQUEST_URI']);
         }
@@ -1399,75 +1399,74 @@ function e__title_validate($string, $x__type = 0){
 
 
 
-function source_of_e($e__id, $user_e = array()){
+function source_of_e($e__id, $member_e = array()){
 
 
-    if(!$user_e){
+    if(!$member_e){
         //Fetch from session:
-        $user_e = superpower_unlocked();
+        $member_e = superpower_unlocked();
     }
 
-    if(!$user_e || $e__id < 1){
+    if(!$member_e || $e__id < 1){
         return false;
     }
 
-    //Ways a user can modify a source:
+    //Ways a Member can modify a source:
     $CI =& get_instance();
     return (
 
-        //User is the source
-        $e__id==$user_e['e__id']
+        //Member is the source
+        $e__id==$member_e['e__id']
 
+        //Member has Advance source editing superpower
+        || superpower_active(13422, true)
 
-        //User created the source
+        //Member created the source
         || count($CI->X_model->fetch(array(
-            'x__source' => $user_e['e__id'],
+            'x__source' => $member_e['e__id'],
             'x__down' => $e__id,
             'x__type' => 4251, //New Source Created
         )))
 
-        //User has Advance source editing superpower
-        || superpower_active(13422, true)
-
-        //User has source in their portfolio
+        //Member has source in their portfolio
         || count($CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__up' => $user_e['e__id'],
+            'x__up' => $member_e['e__id'],
             'x__down' => $e__id,
         )))
     );
 
 }
 
-function e_of_i($i__id, $user_e = array()){
+function e_of_i($i__id, $member_e = array()){
 
-    if(!$user_e){
+    if(!$member_e){
         //Fetch from session:
-        $user_e = superpower_unlocked();
+        $member_e = superpower_unlocked();
     }
 
-    if(!$user_e || $i__id < 1){
+    if(!$member_e || $i__id < 1){
         return false;
     }
 
-    //Ways a user can modify an idea:
+    //Ways a member can modify an idea:
     $CI =& get_instance();
     return (
         superpower_active(12700, true) || //WALKIE TALKIE
         (
             superpower_active(10939, true) && //PEN
             (
-                count($CI->X_model->fetch(array( //User created the idea
+                count($CI->X_model->fetch(array( //Member created the idea
                     'x__type' => 4250, //IDEA CREATOR
                     'x__right' => $i__id,
-                    'x__source' => $user_e['e__id'],
+                    'x__source' => $member_e['e__id'],
                 ))) ||
                 count($CI->X_model->fetch(array( //IDEA SOURCE
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $i__id,
-                    '(x__up = '.$user_e['e__id'].' OR x__down = '.$user_e['e__id'].')' => null,
+                    '(x__up = '.$member_e['e__id'].' OR x__down = '.$member_e['e__id'].')' => null,
                 )))
             )
         )
@@ -1810,7 +1809,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be deleted?
-        if (in_array($all_db_rows[0][$focus_field_status], array(6178 /* User Deleted */, 6182 /* Idea Deleted */))) {
+        if (in_array($all_db_rows[0][$focus_field_status], array(6178 /* Member Deleted */, 6182 /* Idea Deleted */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -1909,7 +1908,7 @@ function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
      *
      * $s__type:           DISCOVER, SOURCE OR IDEA
      *
-     * $obj:                    The User, Idea or Transaction itself.
+     * $obj:                    The Member, Idea or Transaction itself.
      *                          We're looking for the $obj ID and METADATA
      *
      * $new_fields:             The new array of metadata fields to be Set,
@@ -1962,7 +1961,7 @@ function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
         //We are doing an absolute adjustment if needed:
         if (is_null($metadata_value)) {
 
-            //User asked to delete this value:
+            //Member asked to delete this value:
             unset($metadata[$metadata_key]);
 
         } else {

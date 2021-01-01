@@ -251,7 +251,7 @@ function view_i_note($x__type, $is_discovery_mode, $x, $note_e = false)
 
 
     $CI =& get_instance();
-    $user_e = superpower_unlocked();
+    $member_e = superpower_unlocked();
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___11035 = $CI->config->item('e___11035');
@@ -274,7 +274,7 @@ function view_i_note($x__type, $is_discovery_mode, $x, $note_e = false)
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $x['x__id'] . '">';
-    $ui .= $CI->X_model->message_view($x['x__message'], $is_discovery_mode, $user_e, $x['x__right']);
+    $ui .= $CI->X_model->message_view($x['x__message'], $is_discovery_mode, $member_e, $x['x__right']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -336,7 +336,7 @@ function view_i_note($x__type, $is_discovery_mode, $x, $note_e = false)
 
 function view_e__icon($e__icon = null)
 {
-    //A simple function to display the User Icon OR the default icon if not available:
+    //A simple function to display the Member Icon OR the default icon if not available:
     if (strlen($e__icon) > 0) {
 
         return $e__icon;
@@ -407,7 +407,7 @@ function view_x($x, $is_x__reference = false)
     $e___4593 = $CI->config->item('e___4593'); //Transaction Type
     $e___4341 = $CI->config->item('e___4341'); //Transaction Table
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
-    $user_e = superpower_unlocked();
+    $member_e = superpower_unlocked();
     $superpower_css_12701 = superpower_active(12701); //SUPERPOWER OF DISCOVERY GLASSES
     $add_e = $CI->E_model->fetch(array(
         'e__id' => $x['x__source'],
@@ -429,7 +429,7 @@ function view_x($x, $is_x__reference = false)
 
 
     //HIDE PRIVATE INFO?
-    if(in_array($x['x__type'] , $CI->config->item('n___4755')) && (!$user_e || $x['x__source']!=$user_e['e__id']) && !superpower_active(12701, true) && $add_e[0]['e__id']!=14068){
+    if(in_array($x['x__type'] , $CI->config->item('n___4755')) && (!$member_e || $x['x__source']!=$member_e['e__id']) && !superpower_active(12701, true) && $add_e[0]['e__id']!=14068){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="css__title" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
@@ -954,7 +954,7 @@ function view_caret($e__id, $m, $s__id){
 }
 
 
-function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content = null){
+function view_i_list($x__type, $in_my_x, $i, $is_next, $member_e, $right_content = null){
 
     //If no list just return the next step:
     if(!count($is_next)){
@@ -980,14 +980,14 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $user_e, $right_content =
     $ui .= '<div class="row top-margin">';
     $found_next_discovery = false;
     foreach($is_next as $key => $next_i){
-        $completion_rate = $CI->X_model->completion_progress($user_e['e__id'], $next_i);
+        $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
         if($in_my_x && $x__type==12211 && !$found_next_discovery && $completion_rate['completion_percentage']<100){
             $found_next_discovery = true;
             $x__type_to_pass = 14455; //The Immediate Next
         } else {
             $x__type_to_pass = $x__type;
         }
-        $ui .= view_i($x__type_to_pass, $i, $next_i, $in_my_x, null, $user_e, $completion_rate);
+        $ui .= view_i($x__type_to_pass, $i, $next_i, $in_my_x, null, $member_e, $completion_rate);
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
@@ -1005,7 +1005,7 @@ function view_i_note_list($x__type, $is_discovery_mode, $i, $i_notes, $e_of_i, $
     $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
     $handles_url = (in_array($x__type, $CI->config->item('n___7551')) || in_array($x__type, $CI->config->item('n___4986')));
-    $user_e = superpower_unlocked();
+    $member_e = superpower_unlocked();
     $ui = '';
 
     if($show_empty_error && !count($i_notes) && $e_of_i){
@@ -1091,7 +1091,7 @@ function view_i_note_list($x__type, $is_discovery_mode, $i, $i_notes, $e_of_i, $
                 //PREVIEW
                 $tab_ui .= '<div class="list-group '.( $e_of_i ? ' editor_preview ' : '' ).' editor_preview_'.$x__type.'">';
                 foreach($i_notes as $i_note) {
-                    $tab_ui .= $CI->X_model->message_view($i_note['x__message'], $is_discovery_mode, $user_e, $i['i__id']);
+                    $tab_ui .= $CI->X_model->message_view($i_note['x__message'], $is_discovery_mode, $member_e, $i['i__id']);
                 }
                 $tab_ui .= '</div>';
 
@@ -1122,7 +1122,7 @@ function view_i_note_list($x__type, $is_discovery_mode, $i, $i_notes, $e_of_i, $
 
         //List current notes:
         foreach($i_notes as $i_note) {
-            $ui .= view_i_note($x__type, $is_discovery_mode, $i_note, ($i_note['x__source']==$user_e['e__id'] || $e_of_i));
+            $ui .= view_i_note($x__type, $is_discovery_mode, $i_note, ($i_note['x__source']==$member_e['e__id'] || $e_of_i));
         }
 
         //ADD NEW:
@@ -1193,10 +1193,10 @@ function view_shuffle_message($e__id){
 function view_e_settings($list_id, $show_accordion){
 
     $CI =& get_instance();
-    $user_e = superpower_unlocked();
+    $member_e = superpower_unlocked();
     $e___14010 = $CI->config->item('e___14010');
     $ui = null;
-    if(!$user_e){
+    if(!$member_e){
         return $ui;
     }
     if($show_accordion){
@@ -1221,7 +1221,7 @@ function view_e_settings($list_id, $show_accordion){
 
         if ($acc_e__id == 12289) {
 
-            $e__icon_parts = explode(' ',one_two_explode('class="', '"', $user_e['e__icon']));
+            $e__icon_parts = explode(' ',one_two_explode('class="', '"', $member_e['e__icon']));
 
             //List avatars:
             $tab_ui .= '<div class="row">';
@@ -1296,7 +1296,7 @@ function view_e_settings($list_id, $show_accordion){
 
         } elseif ($acc_e__id == 13025 /* Full Name */) {
 
-            $tab_ui .= '<span><input type="text" id="e_name" class="form-control border dotransparent doupper" value="' . $user_e['e__title'] . '" /></span>
+            $tab_ui .= '<span><input type="text" id="e_name" class="form-control border dotransparent doupper" value="' . $member_e['e__title'] . '" /></span>
                 <a href="javascript:void(0)" onclick="e_name()" class="btn btn-source">Save</a>
                 <span class="saving-account save_name"></span>';
 
@@ -1304,7 +1304,7 @@ function view_e_settings($list_id, $show_accordion){
 
             $u_emails = $CI->X_model->fetch(array(
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__down' => $user_e['e__id'],
+                'x__down' => $member_e['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up' => 3288, //Mench Email
             ));
@@ -1321,7 +1321,7 @@ function view_e_settings($list_id, $show_accordion){
 
         } elseif ($is_multi_selectable || $is_single_selectable) {
 
-            $tab_ui .= view_radio_e($acc_e__id, $user_e['e__id'], ($is_multi_selectable ? 1 : 0));
+            $tab_ui .= view_radio_e($acc_e__id, $member_e['e__id'], ($is_multi_selectable ? 1 : 0));
 
         }
 
@@ -1378,9 +1378,9 @@ function view_e_settings($list_id, $show_accordion){
 
 function view_unauthorized_message($superpower_e__id = 0){
 
-    $user_e = superpower_unlocked($superpower_e__id);
+    $member_e = superpower_unlocked($superpower_e__id);
 
-    if(!$user_e){
+    if(!$member_e){
         if(!$superpower_e__id){
 
             //Missing Session
@@ -1426,9 +1426,9 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
     $hidden_ui = '';
     $limit = ( $e__id_limit ? 0 : view_memory(6404,12138) );
     $max_visible = view_memory(6404,14435);
-    $user_e = superpower_unlocked();
+    $member_e = superpower_unlocked();
     $loaded_topics = 0;
-    $my_topics = ( $user_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___12138')) : array() );
+    $my_topics = ( $member_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___12138')) : array() );
 
 
     //Go through Featured Categories:
@@ -1542,8 +1542,8 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
     $load_completion = in_array($x__type, $CI->config->item('n___14501'));
 
     /*
-    if($focus_e && (!$user_session || $user_session['e__id']!=$focus_e['e__id']) && !superpower_active(12701, true)){
-        //Do not allow to see this user's info:
+    if($focus_e && (!$member_session || $member_session['e__id']!=$focus_e['e__id']) && !superpower_active(12701, true)){
+        //Do not allow to see this member's info:
         $focus_e = false;
     }
     */
@@ -1803,7 +1803,7 @@ function view_e($x__type, $e, $extra_class = null, $control_enabled = false, $so
         return 'Invalid x__type '.$x__type;
     }
 
-    $user_e = superpower_unlocked();
+    $member_e = superpower_unlocked();
     $e___6177 = $CI->config->item('e___6177'); //Source Status
     $e___4592 = $CI->config->item('e___4592');
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
@@ -1821,7 +1821,7 @@ function view_e($x__type, $e, $extra_class = null, $control_enabled = false, $so
     $superpower_12706 = superpower_active(12706, true);
     $superpower_13422 = superpower_active(13422, true);
     $superpower_12701 = superpower_active(12701, true);
-    $source_of_e = ( $superpower_13422 ? true : $source_of_e );
+    $source_of_e = ( $superpower_13422 ? true : $source_of_e ); //source_of_e($e['e__id'])
     $public_sources = $CI->config->item('n___14603');
 
     $e__profiles = $CI->X_model->fetch(array(
@@ -1834,9 +1834,9 @@ function view_e($x__type, $e, $extra_class = null, $control_enabled = false, $so
 
 
     //Allow source to see all their own transactions:
-    $is_private = (!$user_e || $user_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
+    $is_private = (!$member_e || $member_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
     $is_public = in_array($e['e__id'], $public_sources) || in_array($focus_e__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
-    $show_text_editor = $user_e && $source_of_e && $is_e_link;
+    $show_text_editor = $member_e && $source_of_e && $is_e_link;
 
 
     if(($is_private && !$superpower_12701) || (!$is_public && !$superpower_13422)){

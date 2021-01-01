@@ -1,6 +1,6 @@
 <?php
 
-//This page is loaded after user successfully authenticates via Auth0
+//This page is loaded after member successfully authenticates via Auth0
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
@@ -42,7 +42,7 @@ $sign_i__id = intval($this->session->userdata('login_i__id'));
 if($userInfo){
 
     //We have their email already?
-    $user_emails = $this->X_model->fetch(array(
+    $member_emails = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
         'x__up' => 3288, //Mench Email
@@ -61,17 +61,17 @@ if($userInfo){
 
     $this->X_model->create(array(
         'x__type' => 14436, //Social Sign in
-        'x__source' => ( count($user_emails) ? $user_emails[0]['e__id'] : 0 ),
+        'x__source' => ( count($member_emails) ? $member_emails[0]['e__id'] : 0 ),
         'x__up' => $signin_method,
         'x__metadata' => array(
             'auth0_getUser' => $userInfo,
         ),
     ));
 
-    if(count($user_emails)){
+    if(count($member_emails)){
 
         //Activate Session:
-        $this->E_model->activate_session($user_emails[0], true);
+        $this->E_model->activate_session($member_emails[0], true);
         header('Location: ' . ($sign_i__id > 0 ? '/x/x_start/'.$sign_i__id :  home_url() ));
 
     } else {

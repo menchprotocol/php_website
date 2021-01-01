@@ -1,6 +1,6 @@
 <?php
 
-$user_e = superpower_unlocked();
+$member_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
 $i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
@@ -21,12 +21,12 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
     <script type="text/javascript">
         <?php
         //USER VARIABLES
-        echo ' var js_session_superpowers_activated = ' . json_encode( ($user_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
+        echo ' var js_session_superpowers_activated = ' . json_encode( ($member_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
         echo ' var superpower_js_10939 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(10939, $this->session->userdata('session_superpowers_activated'))) . '; ';
         echo ' var superpower_js_12701 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(12701, $this->session->userdata('session_superpowers_activated'))) . '; ';
         echo ' var superpower_js_13422 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(13422, $this->session->userdata('session_superpowers_activated'))) . '; ';
-        echo ' var js_pl_id = ' . ( $user_e ? $user_e['e__id'] : '0' ) . '; ';
-        echo ' var js_pl_name = \'' . ( $user_e ? $user_e['e__title'] : '' ) . '\'; ';
+        echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
+        echo ' var js_pl_name = \'' . ( $member_e ? $member_e['e__title'] : '' ) . '\'; ';
         echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
 
         //JAVASCRIPT PLATFORM MEMORY
@@ -135,7 +135,7 @@ if(intval(view_memory(6404,12899))){
          attribution=setup_tool
          page_id="381488558920384"
          greeting_dialog_display="hide"
-         ref="<?= ( $user_e ? $user_e['e__id'] : '' ) ?>"
+         ref="<?= ( $member_e ? $member_e['e__id'] : '' ) ?>"
          theme_color="#222222">
     </div>
     <div class="chat-title"><span><?= $e___11035[12899]['m__title'] ?></span></div>
@@ -178,10 +178,10 @@ if(!$basic_header_footer){
 
                     echo '<div class="left_nav mench_nav">';
 
-                    if($user_e){
+                    if($member_e){
 
                         //My Source
-                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$user_e['e__id'].'">'.$user_e['e__icon'].'</span><span class="css__title text-logo"><b class="text__6197_'.$user_e['e__id'].'">'.$user_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$user_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_mench['c__id'], $user_e['e__id']).'</span>' : '' ).'</span></a>';
+                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$member_e['e__id'].'">'.$member_e['e__icon'].'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_mench['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
 
                     } else {
 
@@ -206,7 +206,7 @@ if(!$basic_header_footer){
                     }
 
                     //MENU
-                    $menu_type = ( $user_e ? 12500 : 14372 );
+                    $menu_type = ( $member_e ? 12500 : 14372 );
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';

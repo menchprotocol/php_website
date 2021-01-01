@@ -6,7 +6,7 @@ $next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ($sign_i__id > 0 ?
 //Check to see if they are previously logged in?
 if(superpower_unlocked()) {
 
-    //Lead user and above, go to console:
+    //Lead member and above, go to console:
     js_redirect($next_url, 13);
 
 } elseif(isset($_COOKIE['mench_login'])){
@@ -52,7 +52,7 @@ if(superpower_unlocked()) {
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
     $this_attempt = array(
-        'x__type' => ( $sign_i__id > 0 ? 7560 /* User Signin Idea Channel Choose */ : 7561 /* User Signin on Website */ ),
+        'x__type' => ( $sign_i__id > 0 ? 7560 /* Member Signin Idea Channel Choose */ : 7561 /* Member Signin on Website */ ),
         'x__left' => $sign_i__id,
     );
 

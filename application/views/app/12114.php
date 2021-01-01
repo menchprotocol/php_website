@@ -59,8 +59,8 @@ if($is_u_request && !isset($_GET['send_email'])){
 
     //Should we limit the scope?
     if($is_u_request){
-        $user_e = superpower_unlocked();
-        $subscriber_filters['x__down'] = $user_e['e__id'];
+        $member_e = superpower_unlocked();
+        $subscriber_filters['x__down'] = $member_e['e__id'];
     }
 
 
@@ -91,6 +91,6 @@ if($is_u_request && !isset($_GET['send_email'])){
         }
     }
 
-    echo 'Emailed Reports to '.$email_recipients.' User'.view__s($email_recipients);
+    echo 'Emailed Reports to '.$email_recipients.' Member'.view__s($email_recipients);
 
 }

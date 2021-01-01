@@ -24,7 +24,7 @@ $e_focus_found = false; //Used to determine the first tab to be opened
 $is_north_star = $i_focus['i__id']==view_memory(6404,14002);
 $show_previous = $e_of_i && $is_active && !$is_north_star;
 $is_in_my_ideas = count($this->X_model->fetch(array(
-    'x__up' => $user_e['e__id'],
+    'x__up' => $member_e['e__id'],
     'x__right' => $i_focus['i__id'],
     'x__type' => 10573, //MY IDEAS
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -41,7 +41,7 @@ if(!$e_of_i){
 
     //DO they already have a request?
     $request_history = $this->X_model->fetch(array(
-        'x__source' => $user_e['e__id'],
+        'x__source' => $member_e['e__id'],
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type' => 14577,
         'x__right' => $i_focus['i__id'],

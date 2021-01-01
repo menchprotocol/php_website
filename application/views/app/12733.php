@@ -1,12 +1,12 @@
 <?php
 
 if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
-    $_GET['e__id'] = $user_e['e__id'];
+    $_GET['e__id'] = $member_e['e__id'];
 }
 
 if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
-    //List this users Discoveries so they can choose:
+    //List this members Discoveries so they can choose:
     echo '<div>Choose one of your Discoveries to debug:</div><br />';
 
     $u_x = $this->X_model->fetch(array(

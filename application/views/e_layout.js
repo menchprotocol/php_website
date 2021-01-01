@@ -30,7 +30,7 @@ $(document).ready(function () {
 
 
 
-    //Update Profile counters to account for sources that user may not be able to see due to missing permissions...
+    //Update Profile counters to account for sources that member may not be able to see due to missing permissions...
     $('.en-type-counter-11030').text($('#list_11030 .en-item').not(".hidden").length);
 
 
@@ -75,9 +75,9 @@ $(document).ready(function () {
 
     $('#e__type').change(function () {
 
-        if (parseInt($('#e__type').find(":selected").val()) == 6178 /* User Deleted */) {
+        if (parseInt($('#e__type').find(":selected").val()) == 6178 /* Member Deleted */) {
 
-            //Notify User:
+            //Notify Member:
             $('.notify_e_delete').removeClass('hidden');
             $('.e_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
@@ -374,7 +374,7 @@ function e_load_page(x__type, page, load_new_filter) {
             e_load_search(x__type);
 
         } else {
-            //Update UI to confirm with user:
+            //Update UI to confirm with member:
             $(data).insertBefore('#new_'+x__type);
         }
 
@@ -427,7 +427,7 @@ function e_upload_file(droppedFiles, uploadType) {
 
     var current_value = $('#x__message').val();
     if(current_value.length > 0){
-        //There is something in the input field, notify the user:
+        //There is something in the input field, notify the member:
         var r = confirm("Current transaction content [" + current_value + "] will be deleted. Continue?");
         if (r == false) {
             return false;
@@ -512,7 +512,7 @@ function e_sort_save() {
     if (sort_rank > 0) {
         //Update backend:
         $.post("/e/e_sort_save", {e__id: e_focus_id, new_x__spectrums: new_x__spectrums}, function (data) {
-            //Update UI to confirm with user:
+            //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
                 alert(data.message);

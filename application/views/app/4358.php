@@ -59,7 +59,7 @@ foreach($this->X_model->fetch(array(
 
         } else {
 
-            //Update user progression transaction type:
+            //Update member progression transaction type:
             $u_x = $this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
                 'x__left' => $i_x['i__id'],

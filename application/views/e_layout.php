@@ -2,7 +2,7 @@
 $e___6177 = $this->config->item('e___6177'); //Source Status
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $source_of_e = source_of_e($e['e__id']);
-$source_is_e = $e['e__id']==$user_e['e__id'];
+$source_is_e = $e['e__id']==$member_e['e__id'];
 $superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEATION
 $superpower_13422 = superpower_active(13422, true); //SUPERPOWER OF SOURCING
 $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF GLASSES
@@ -49,7 +49,7 @@ $profiles = $this->X_model->fetch(array(
                 $see_more_button = true;
             }
 
-            $view_e = view_e(11030, $e_profile, ( $count<$show_max ? '' : 'see_all_profiles hidden'), true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_profile['x__source']))));
+            $view_e = view_e(11030, $e_profile, ( $count<$show_max ? '' : 'see_all_profiles hidden'), true, ($source_of_e || ($member_e && ($member_e['e__id']==$e_profile['x__source']))));
 
             if($view_e){
                 echo $view_e;
@@ -175,7 +175,7 @@ $profiles = $this->X_model->fetch(array(
 
                     } elseif(in_array($action_e__id, array(5981, 12928, 12930, 5982, 13441))){
 
-                        //User search box:
+                        //Member search box:
 
                         //String command:
                         $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
@@ -195,7 +195,7 @@ $profiles = $this->X_model->fetch(array(
 
                     } elseif($action_e__id == 5003){
 
-                        //User Status update:
+                        //Member Status update:
 
                         //Find:
                         $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
@@ -323,7 +323,7 @@ $profiles = $this->X_model->fetch(array(
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
 
             foreach($list_e as $e_portfolio) {
-                $ui .= view_e(11029, $e_portfolio,null, true, ($source_of_e || ($user_e && ($user_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
+                $ui .= view_e(11029, $e_portfolio,null, true, ($source_of_e || ($member_e && ($member_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
             }
             if ($counter > count($list_e)) {
                 $ui .= view_e_load_more(11029, 1, view_memory(6404,11064), $counter);
@@ -430,7 +430,7 @@ $profiles = $this->X_model->fetch(array(
 
                 //Are there more?
                 if($counter > count($list_i)){
-                    $ui .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/-4341?x__source='.$user_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m__icon'].'</span>'.$e___11035[13913]['m__title'].' ['.$counter.']</a></div></div>';
+                    $ui .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/-4341?x__source='.$member_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m__icon'].'</span>'.$e___11035[13913]['m__title'].' ['.$counter.']</a></div></div>';
                 }
 
             }

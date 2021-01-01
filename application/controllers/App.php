@@ -50,12 +50,12 @@ class App extends CI_Controller
 
         //Run App
         boost_power();
-        $user_e = false;
+        $member_e = false;
         $is_u_request = isset($_SERVER['SERVER_NAME']);
 
         if($memory_detected && $is_u_request){
             //Needs superpowers?
-            $user_e = superpower_unlocked();
+            $member_e = superpower_unlocked();
             $e___6287 = $this->config->item('e___6287'); //MENCH APP
             $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__profile']);
             if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
@@ -63,13 +63,13 @@ class App extends CI_Controller
             }
         }
 
-        $x__source = ( $is_u_request ? ( $user_e ? $user_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
+        $x__source = ( $is_u_request ? ( $member_e ? $member_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
 
 
         //MEMBER REDIRECT?
-        if($user_e && in_array($app_e__id, $this->config->item('n___14639'))){
+        if($member_e && in_array($app_e__id, $this->config->item('n___14639'))){
             //Should redirect them:
-            return redirect_message('/@'.$user_e['e__id']);
+            return redirect_message('/@'.$member_e['e__id']);
         }
 
 
@@ -106,7 +106,7 @@ class App extends CI_Controller
             $raw_app = $this->load->view('app/'.$app_e__id, array(
                 'app_e__id' => $app_e__id,
                 'x__source' => $x__source,
-                'user_e' => $user_e,
+                'member_e' => $member_e,
                 'is_u_request' => $is_u_request,
                 'memory_detected' => $memory_detected,
             ), true);
@@ -200,10 +200,10 @@ class App extends CI_Controller
 
     function app_7264(){
 
-        //Authenticate User:
-        $user_e = superpower_unlocked(12700);
+        //Authenticate Member:
+        $member_e = superpower_unlocked(12700);
 
-        if (!$user_e) {
+        if (!$member_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(12700),
@@ -260,7 +260,7 @@ class App extends CI_Controller
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
         $query_offset = (($page_num-1)*view_memory(6404,11064));
-        $user_e = superpower_unlocked();
+        $member_e = superpower_unlocked();
 
         $message = '';
 
@@ -291,13 +291,13 @@ class App extends CI_Controller
 
                 $message .= view_x($x);
 
-                if($user_e && strlen($x['x__message'])>0 && strlen($_POST['x__message_search'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($x['x__message'], $_POST['x__message_search'])>0){
+                if($member_e && strlen($x['x__message'])>0 && strlen($_POST['x__message_search'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($x['x__message'], $_POST['x__message_search'])>0){
 
                     $new_content = str_replace($_POST['x__message_search'],trim($_POST['x__message_replace']),$x['x__message']);
 
                     $this->X_model->update($x['x__id'], array(
                         'x__message' => $new_content,
-                    ), $user_e['e__id'], 12360, update_description($x['x__message'], $new_content));
+                    ), $member_e['e__id'], 12360, update_description($x['x__message'], $new_content));
 
                     $message .= '<div class="msg alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_search'].'] with ['.trim($_POST['x__message_replace']).']</div>';
 

@@ -204,7 +204,7 @@ function init_remove(){
             $.post("/x/x_remove", {
                 x__id:x__id
             }, function (data) {
-                //Update UI to confirm with user:
+                //Update UI to confirm with member:
                 if (!data.status) {
 
                     //There was some sort of an error returned!
@@ -262,7 +262,7 @@ $(document).ready(function () {
     watch_for_note_e_clicks();
 
     if(js_pl_id > 1){
-        //For any logged in user except shervin:
+        //For any logged in member except shervin:
         load_fullstory();
     }
 
@@ -348,7 +348,7 @@ $(document).ready(function () {
             {
                 source: function (q, cb) {
 
-                    //Users can filter search with first word:
+                    //Members can filter search with first word:
                     var search_only_e = $("#mench_search").val().charAt(0) == '@';
                     var search_only_in = $("#mench_search").val().charAt(0) == '#';
 
@@ -369,7 +369,7 @@ $(document).ready(function () {
 
                         if(js_pl_id > 0){
 
-                            //For Users:
+                            //For Members:
                             if(!superpower_js_12701){
                                 //Can view limited sources:
                                 if(search_filters.length>0){
@@ -636,11 +636,11 @@ function e_modify_save() {
                 update_text_name(6197, modify_data['e__id'], modify_data['e__title']);
 
 
-                //User Status:
+                //Member Status:
                 $('.e__type_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__type']]["m__title"] + ': ' + js_e___6177[modify_data['e__type']]["m__message"] + '">' + js_e___6177[modify_data['e__type']]["m__icon"] + '</span>');
 
 
-                //User Icon:
+                //Member Icon:
                 var icon_set = ( modify_data['e__icon'].length > 0 ? 1 : 0 );
                 if(!icon_set){
                     //Set source default icon:
@@ -817,7 +817,7 @@ function x_suggestion(){
         sugg_url:window.location.href,
     }, function (data) {
 
-        //Inform User:
+        //Inform Member:
         alert('You ROCK! We will review your suggestion and get back to you if necessary.');
 
         //Close Modal:
@@ -888,7 +888,7 @@ function x_save(i__id){
         $.post("/x/x_remove", {
             x__id:x__id
         }, function (data) {
-            //Update UI to confirm with user:
+            //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
                 alert(data.message);
@@ -1751,7 +1751,7 @@ function x_sort(x__type) {
     //Update order:
     if(sort_rank > 0){
         $.post("/x/x_sort", { new_x_order:new_x_order, x__type:x__type }, function (data) {
-            //Update UI to confirm with user:
+            //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
                 alert(data.message);

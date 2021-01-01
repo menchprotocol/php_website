@@ -1,7 +1,7 @@
 
 <?php
-$user_e = superpower_unlocked();
-if($user_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
+$member_e = superpower_unlocked();
+if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
     $e___14393 = $this->config->item('e___14393'); //SUGGEST
