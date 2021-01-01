@@ -2202,7 +2202,7 @@ i, .btn .show-max {
     padding: 8px 0;
 }
 .info_box_header{
-    padding:144px 21px 0;
+    padding:144px 21px 21px;
     font-size: 2.5em;
     text-align: center;
     line-height: 110%;
@@ -2258,6 +2258,7 @@ i, .btn .show-max {
     font-size: 0.8em;
     text-align: center;
     padding-top: 21px;
+    color: #FFFFFF;
 }
 
 .nav-counter{
