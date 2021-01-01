@@ -130,22 +130,27 @@ class App extends CI_Controller
             'x__up' => $app_e__id,
             'x__reference' => $cache_x__id,
         );
-        //Append additional:
+
+        //Append additional info for members:
         if($is_u_request){
             $log_data['x__message'] = ( isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '' ) . ( isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '' );
-        }
-        if(count($_GET)){
-            foreach(array(
-                'e__id' => 'x__down',
-                'i__id' => 'x__left'
-            ) as $get_key => $x_save){
-                if(isset($_GET[$get_key]) && intval($_GET[$get_key])){
-                    $log_data[$x_save] = intval($_GET[$get_key]);
+            if(count($_GET)){
+                foreach(array(
+                            'e__id' => 'x__down',
+                            'i__id' => 'x__left'
+                        ) as $get_key => $x_save){
+                    if(isset($_GET[$get_key]) && intval($_GET[$get_key])){
+                        $log_data[$x_save] = intval($_GET[$get_key]);
+                    }
                 }
             }
         }
-        $this->X_model->create($log_data);
 
+        $x = $this->X_model->create($log_data);
+
+        if($app_e__id==7146){
+            die(':'.$x['x__id']);
+        }
 
 
 
