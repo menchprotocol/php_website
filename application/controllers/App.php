@@ -148,10 +148,6 @@ class App extends CI_Controller
 
         $x = $this->X_model->create($log_data);
 
-        if($app_e__id==7146){
-            die(':'.$x['x__id']);
-        }
-
 
 
 
