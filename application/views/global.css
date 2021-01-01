@@ -42,7 +42,7 @@ body {
     padding:0 !important;
 }
 
-.dorubik{
+.doregular{
     font-weight: 400;
 }
 .doleft{
@@ -2261,8 +2261,8 @@ i, .btn .show-max {
     color: #FFFFFF;
 }
 .headline-input{
-    padding-left: 10px;
-    font-size: 0.8em;
+    padding-left: 5px;
+    font-size: 0.7em;
     display: inline-block;
     font-weight: normal;
 }
@@ -2304,7 +2304,7 @@ font-weight: bold !important;
 .custom_ui_14506_14508 p,
 .custom_ui_14506_14508 html,
 .custom_ui_14506_14508 body,
-.custom_ui_14506_14508 .dorubik {
+.custom_ui_14506_14508 .doregular {
     font-family:'Roboto Slab', serif !important;
     font-weight:400 !important;
 }
@@ -2340,7 +2340,7 @@ font-weight: bold !important;
 .custom_ui_14506_14507 p,
 .custom_ui_14506_14507 html,
 .custom_ui_14506_14507 body,
-.custom_ui_14506_14507 .dorubik {
+.custom_ui_14506_14507 .doregular {
     font-family: 'Rubik', sans-serif;
 }
 /* SANSSERIF / HEADER */
@@ -2373,7 +2373,7 @@ font-weight: bold !important;
 .custom_ui_14506_14540 p,
 .custom_ui_14506_14540 html,
 .custom_ui_14506_14540 body,
-.custom_ui_14506_14540 .dorubik {
+.custom_ui_14506_14540 .doregular {
     font-family: 'Lato', sans-serif;
 }
 /* CURSIVE / HEADER */
