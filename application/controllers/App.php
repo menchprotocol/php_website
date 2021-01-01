@@ -23,15 +23,8 @@ class App extends CI_Controller
 
         $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
         if(!$memory_detected){
+            //Since we don't have the memory created we must load the app that does so:
             $app_e__id = 4527;
-        } else {
-            //Make sure valid Entity:
-            $es = $this->E_model->fetch(array(
-                'e__id' => $app_e__id,
-            ));
-            if(!count($es)){
-                return redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid App ID</div>');
-            }
         }
 
 
@@ -39,6 +32,7 @@ class App extends CI_Controller
         if($memory_detected && !in_array($app_e__id, $this->config->item('n___6287'))){
             return redirect_message('/@'.$app_e__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$es[0]['e__icon'].'</span>'.$es[0]['e__title'].' Is not an APP, yet 🤫</div>');
         }
+
 
         //Run App
         boost_power();
