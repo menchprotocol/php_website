@@ -345,6 +345,7 @@ function i_add(x__type, i_x_child_id) {
      * */
 
 
+    console.log(x__type);
     var i_x_id = parseInt($('#focus_i__id').val());
     var sort_handler = ".cover_sort";
     var sort_list_id = "list-in-" + x__type;
