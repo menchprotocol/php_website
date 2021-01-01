@@ -40,7 +40,7 @@ $profiles = $this->X_model->fetch(array(
         $count = 0;
         $show_max = view_memory(6404,14538);
         $see_more_button = false;
-        echo '<div id="list_11030" class="list-group grey-list">';
+        echo '<div id="list-in-11030" class="list-group grey-list">';
         foreach($profiles as $e_profile) {
 
             if(!$see_more_button && $count==$show_max){
@@ -318,7 +318,7 @@ $profiles = $this->X_model->fetch(array(
             }
 
             //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[11029]['m__icon'].'</span>'.$e___11035[11029]['m__title'].'</div>';
-            $ui .= '<div id="list_11029" class="list-group">';
+            $ui .= '<div id="list-in-11029" class="list-group">';
 
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
 
@@ -465,14 +465,14 @@ $profiles = $this->X_model->fetch(array(
                 $list_x  = view_coins_e(6255, $e['e__id'], 1);
 
                 $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>'.$e___11035[12969]['m__title'].'</div>';
-                $ui .= '<div class="row margin-top-down-half" id="list_12969">';
+                $ui .= '<div class="row margin-top-down-half" id="list-in-12969">';
                 foreach($list_x as $item){
                     $ui .= view_i(12969, null, $item,$control_enabled,null, $e);
                     array_push($my_x_ids, $item['i__id']);
                 }
                 $ui .= '</div>';
 
-                $ui .= ( count($list_x) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list_12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+                $ui .= ( count($list_x) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list-in-12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
             }
 
@@ -489,13 +489,13 @@ $profiles = $this->X_model->fetch(array(
                 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'x__id' => 'DESC'));
                 if(count($i_notes_query)){
                     $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__icon'].'</span>'.$e___11035[12896]['m__title'].'</div>';
-                    $ui .= '<div class="row margin-top-down-half" id="list_12896">';
+                    $ui .= '<div class="row margin-top-down-half" id="list-in-12896">';
                     foreach($i_notes_query as $count => $i_notes) {
                         $ui .= view_i(12896, null, $i_notes, $control_enabled);
                     }
                     $ui .= '</div>';
 
-                    $ui .= ( count($i_notes_query) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12896)}); </script>' : '<style> #list_12896 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+                    $ui .= ( count($i_notes_query) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12896)}); </script>' : '<style> #list-in-12896 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
                 }
 

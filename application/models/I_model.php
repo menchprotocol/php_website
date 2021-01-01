@@ -347,7 +347,7 @@ class I_model extends CI_Model
 
     }
 
-    function create_or_link($x__type, $i__title, $x__source, $focus_i__id = 0, $link_i__id = 0)
+    function create_or_link($x__type, $i__title, $x__source, $focus_i__id, $link_i__id = 0)
     {
 
         /*
@@ -359,7 +359,7 @@ class I_model extends CI_Model
          * (IF $link_i__id>0) OR will create a new idea with outcome $i__title
          * and transaction it to $focus_i__id (In this case $link_i__id will be 0)
          *
-         * p.s. Inputs have previously been validated via ideas/i_add() function
+         * p.s. Inputs have previously been validated via ideas/js_create_or_link() function
          *
          * */
 
@@ -376,21 +376,25 @@ class I_model extends CI_Model
         //Validate Original idea
         if($focus_i__id > 0){
 
-            $x_i = $this->I_model->fetch(array(
+            $focus_i = $this->I_model->fetch(array(
                 'i__id' => intval($focus_i__id),
+                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
 
-            if (count($x_i) < 1) {
+            if (count($focus_i) < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'Invalid Idea ID',
-                );
-            } elseif (!in_array($x_i[0]['i__type'], $this->config->item('n___7356')) /* ACTIVE */) {
-                return array(
-                    'status' => 0,
-                    'message' => 'You can only transaction to active ideas. This idea is not active.',
+                    'message' => 'Invalid Focus Idea',
                 );
             }
+
+        } elseif(in_array($x__type, $this->config->item('n___11020'))) {
+
+            return array(
+                'status' => 0,
+                'message' => 'Graph idea links require focus idea',
+            );
+
         }
 
 
@@ -399,15 +403,22 @@ class I_model extends CI_Model
             //We are adding $link_i__id, We are NOT creating any new ideas...
 
             //Fetch more details on the child idea we're about to transaction:
-            $is = $this->I_model->fetch(array(
+            $link_i = $this->I_model->fetch(array(
                 'i__id' => $link_i__id,
+                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
+            if (count($link_i) < 1) {
+                return array(
+                    'status' => 0,
+                    'message' => 'Invalid Link Idea',
+                );
+            }
 
             //Determine which is parent Idea, and which is child
             if($is_upwards){
 
-                $previous_i = $is[0];
-                $next_i = $x_i[0];
+                $previous_i = $link_i[0];
+                $next_i = $focus_i[0];
 
                 /*
                 //TODO Prevent child duplicates:
@@ -422,8 +433,8 @@ class I_model extends CI_Model
 
             } else {
 
-                $previous_i = $x_i[0];
-                $next_i = $is[0];
+                $previous_i = $focus_i[0];
+                $next_i = $link_i[0];
 
                 //Prevent parent duplicate:
                 $top_tree = $this->I_model->recursive_parents($previous_i['i__id']);
@@ -438,12 +449,12 @@ class I_model extends CI_Model
             }
 
 
-            if (count($is) < 1) {
+            if (count($link_i) < 1) {
                 return array(
                     'status' => 0,
                     'message' => 'Invalid Idea ID',
                 );
-            } elseif (!in_array($is[0]['i__type'], $this->config->item('n___7356') /* ACTIVE */)) {
+            } elseif (!in_array($link_i[0]['i__type'], $this->config->item('n___7356') /* ACTIVE */)) {
                 return array(
                     'status' => 0,
                     'message' => 'You can only transaction to active ideas. This idea is not active.',
@@ -451,7 +462,7 @@ class I_model extends CI_Model
             }
 
             //All good so far, continue with adding:
-            $i_new = $is[0];
+            $i_new = $link_i[0];
 
             //Make sure this is not a duplicate Idea for its parent:
             $dup_x = $this->X_model->fetch(array(
@@ -504,8 +515,9 @@ class I_model extends CI_Model
         //Create Idea Transaction:
         $new_i_html = null;
 
-        if($focus_i__id > 0){
+        if(in_array($x__type, $this->config->item('n___11020'))){
 
+            //Idea Graph Previous/Next
             $relation = $this->X_model->create(array(
                 'x__source' => $x__source,
                 'x__type' => 4228, //Idea Transaction Regular Discovery
@@ -528,11 +540,12 @@ class I_model extends CI_Model
             ), array(($is_upwards ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
             if($x__type > 0){
-                $new_i_html = view_i($x__type, $x_i[0], $new_i[0], true);
+                $new_i_html = view_i($x__type, $focus_i[0], $new_i[0], true);
             }
 
-        } elseif($x__type == 13559){
+        } elseif($x__type == 13550){
 
+            //References
             $this->X_model->create(array(
                 'x__type' => 4983, //IDEA SOURCES
                 'x__source' => $member_e['e__id'],
@@ -543,7 +556,7 @@ class I_model extends CI_Model
 
         } elseif($x__type == 10573){
 
-            //Move Existing Bookmarks by one:
+            //My Ideas
             $x__spectrum = 2;
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

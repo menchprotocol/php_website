@@ -31,7 +31,7 @@ $(document).ready(function () {
 
 
     //Update Profile counters to account for sources that member may not be able to see due to missing permissions...
-    $('.en-type-counter-11030').text($('#list_11030 .en-item').not(".hidden").length);
+    $('.en-type-counter-11030').text($('#list-in-11030 .en-item').not(".hidden").length);
 
 
     //Lookout for textinput updates
@@ -239,7 +239,7 @@ function e__add(x__type, e_existing_id) {
     //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
 
     var input = $('#new_'+x__type+' .add-input');
-    var list_id = 'list_'+x__type;
+    var list_id = 'list-in-'+x__type;
 
     var e_new_string = null;
     if (e_existing_id == 0) {
@@ -305,7 +305,7 @@ function e_load_page(x__type, page, load_new_filter) {
         //Replace load more with spinner:
         var append_div = $('#new_'+x__type).html();
         //The padding-bottom would delete the scrolling effect on the left side!
-        $('#list_'+x__type).html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+        $('#list-in-'+x__type).html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     } else {
         //Replace load more with spinner:
         $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
@@ -322,7 +322,7 @@ function e_load_page(x__type, page, load_new_filter) {
         $('.load-more').remove();
 
         if (load_new_filter) {
-            $('#list_'+x__type).html(data + '<div id="new_'+x__type+'" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#list-in-'+x__type).html(data + '<div id="new_'+x__type+'" class="list-group-item no-side-padding itemsource grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
             e_load_search(x__type);
 
@@ -450,7 +450,7 @@ function e_sort_save() {
     var new_x__spectrums = [];
     var sort_rank = 0;
 
-    $("#list_11029 .en-item").each(function () {
+    $("#list-in-11029 .en-item").each(function () {
         //Fetch variables for this idea:
         var e__id = parseInt($(this).attr('e__id'));
         var x__id = parseInt($(this).attr('x__id'));
@@ -502,7 +502,7 @@ function e_sort_reset(){
 function e_sort_portfolio_load() {
 
     var element_key = null;
-    var theobject = document.getElementById("list_11029");
+    var theobject = document.getElementById("list-in-11029");
     if (!theobject) {
         //due to duplicate ideas belonging in this idea:
         return false;

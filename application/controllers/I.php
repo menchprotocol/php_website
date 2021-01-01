@@ -336,7 +336,7 @@ class I extends CI_Controller {
     }
 
 
-    function i_add()
+    function js_create_or_link()
     {
 
         /*
@@ -354,15 +354,15 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['focus_i__id']) || intval($_POST['focus_i__id']) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Parent Idea ID',
-            ));
         } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14685'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invaid Idea Add Type',
+            ));
+        } elseif (!isset($_POST['focus_i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Parent Idea ID',
             ));
         } elseif (!isset($_POST['i__title']) || !isset($_POST['link_i__id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['link_i__id']) < 1)) {
             return view_json(array(
@@ -373,11 +373,6 @@ class I extends CI_Controller {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Idea outcome cannot be longer than '.view_memory(6404,4736).' characters',
-            ));
-        } elseif($_POST['link_i__id'] >= 2147483647){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Value must be less than 2147483647',
             ));
         }
 
@@ -410,14 +405,9 @@ class I extends CI_Controller {
         //Authenticate Member:
         $member_e = superpower_unlocked(10939);
         if (!$member_e) {
-            view_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
-            ));
-        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
-            view_json(array(
-                'status' => 0,
-                'message' => 'Invalid i__id',
             ));
         } elseif (!isset($_POST['new_x__spectrums']) || !is_array($_POST['new_x__spectrums']) || count($_POST['new_x__spectrums']) < 1) {
             view_json(array(
@@ -426,29 +416,18 @@ class I extends CI_Controller {
             ));
         } else {
 
-            //Validate Parent Idea:
-            $previous_i = $this->I_model->fetch(array(
-                'i__id' => intval($_POST['i__id']),
-            ));
-            if (count($previous_i) < 1) {
-                view_json(array(
-                    'status' => 0,
-                    'message' => 'Invalid i__id',
-                ));
-            } else {
-
-                //Update them all:
-                foreach($_POST['new_x__spectrums'] as $rank => $x__id) {
-                    $this->X_model->update(intval($x__id), array(
-                        'x__spectrum' => intval($rank),
-                    ), $member_e['e__id'], 10675 /* Ideas Ordered by Member */);
-                }
-
-                //Display message:
-                view_json(array(
-                    'status' => 1,
-                ));
+            //Update them all:
+            foreach($_POST['new_x__spectrums'] as $rank => $x__id) {
+                $this->X_model->update(intval($x__id), array(
+                    'x__spectrum' => intval($rank),
+                ), $member_e['e__id'], 4603 /* Sorted */);
             }
+
+            //Display message:
+            view_json(array(
+                'status' => 1,
+            ));
+
         }
     }
 
