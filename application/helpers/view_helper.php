@@ -1813,7 +1813,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
     $control_enabled = in_array($x__type, $CI->config->item('n___14696'));
     $is_sortable = in_array($x__type, $CI->config->item('n___13911'));
-    $show_time = in_array($x__type, $CI->config->item('n___13911'));
+    $show_time = in_array($x__type, $CI->config->item('n___14706'));
     $source_of_e = $control_enabled && $member_e && ($source_of_e || $superpower_13422);
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $is_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
