@@ -16,11 +16,7 @@ class App extends CI_Controller
 
     function index(){
         //App directory is a modal, redirect for now:
-        return redirect_message('/');
-    }
-
-    function home(){
-        $this->load(14565);
+        return redirect_message(view_memory(6404,6287));
     }
 
     function error(){

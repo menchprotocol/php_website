@@ -1797,6 +1797,7 @@ function view_x_progress($completion_rate, $i){
 function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common_prefix = null, $message_input = null)
 {
 
+
     $CI =& get_instance();
     if(!in_array($x__type, $CI->config->item('n___14690'))){
         //Not a valid Source List
@@ -1812,6 +1813,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
     $control_enabled = in_array($x__type, $CI->config->item('n___14696'));
     $is_sortable = in_array($x__type, $CI->config->item('n___13911'));
+    $show_time = in_array($x__type, $CI->config->item('n___13911'));
     $source_of_e = $control_enabled && $member_e && ($source_of_e || $superpower_13422);
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $is_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
@@ -1911,7 +1913,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
             //SOURCE TITLE TEXT EDITOR
-            if($show_text_editor){
+            if($show_text_editor && !$show_time){
 
                 $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, 0, false, null, extract_icon_color($e['e__icon']));
 
@@ -1921,6 +1923,10 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
                 $ui .= '<a href="'.$e_url.'" class="title-block title-no-right css__title '.extract_icon_color($e['e__icon']).'">';
                 $ui .= $box_items_list;
                 $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
+
+                if($show_time){
+                    $ui .= '<span class="headline-input">'.view_time_difference(strtotime($e['x__time'])).' Ago</span>';
+                }
                 $ui .= '</a>';
 
             }

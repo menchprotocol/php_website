@@ -2260,6 +2260,12 @@ i, .btn .show-max {
     padding-top: 21px;
     color: #FFFFFF;
 }
+.headline-input{
+    padding-left: 10px;
+    font-size: 0.8em;
+    display: inline-block;
+    font-weight: normal;
+}
 
 .nav-counter{
     font-size: 0.4em;
