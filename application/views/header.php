@@ -228,7 +228,7 @@ if(!$basic_header_footer){
                         } elseif(in_array($x__type, $this->config->item('n___6287'))){
 
                             //Mench APP
-                            $href = 'href="/-'.$x__type.'"';
+                            $href = 'href="/-'.$x__type.( $x__type==4269 ? '?url='.urlencode($_SERVER['REQUEST_URI']) : '' ).'"';
 
                         } else {
 
