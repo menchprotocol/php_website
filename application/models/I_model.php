@@ -379,7 +379,7 @@ class I_model extends CI_Model
         $is_upwards = in_array($x__type, $this->config->item('n___14686'));
 
         //Validate Original idea
-        if(in_array($x__type, $this->config->item('n___14703'))){
+        if(in_array($x__type, $this->config->item('n___11020'))){
 
             $focus_i = $this->I_model->fetch(array(
                 'i__id' => intval($focus__id),
@@ -939,7 +939,7 @@ class I_model extends CI_Model
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
-                    $this->I_model->create_or_link(12611, '', $x__source, $focus_i__id, $next_i['i__id']);
+                    $this->I_model->create_or_link(11019, '', $x__source, $focus_i__id, $next_i['i__id']);
 
                     //Add Source since not there:
                     $applied_success++;
