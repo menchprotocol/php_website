@@ -85,11 +85,11 @@ $(document).ready(function () {
 
 
     //Load top/bottom idea searches:
-    i_load_search(11019, ".previous_i",1, 'q', 'x_in');
-    i_load_search(13542, ".next_i",0, 'w', 'x_in');
+    i_load_search(11019, ".previous_i");
+    i_load_search(13542, ".next_i");
 
     //Load Sortable:
-    i_sort_load($('#focus_i__id').val());
+    i_sort_load(13542, $('#focus_i__id').val());
 
 });
 
@@ -285,137 +285,3 @@ function e_e_only_search_7551(note_type_id) {
     }
 }
 
-
-function i_sort_save(i__id) {
-
-    var new_x__spectrums = [];
-    var sort_rank = 0;
-
-    $("#list-in-13542 .cover_sort").each(function () {
-        //Fetch variables for this idea:
-        var i__id = parseInt($('#focus_i__id').val());
-        var x__id = parseInt($(this).attr('x__id'));
-
-        sort_rank++;
-
-        //Store in DB:
-        new_x__spectrums[sort_rank] = x__id;
-    });
-
-    //It might be zero for lists that have jsut been emptied
-    if (sort_rank > 0 && i__id) {
-        //Update backend:
-        $.post("/i/i_sort_save", {i__id: i__id, new_x__spectrums: new_x__spectrums}, function (data) {
-            //Update UI to confirm with member:
-            if (!data.status) {
-                //There was some sort of an error returned!
-                alert(data.message);
-            }
-        });
-    }
-}
-
-function i_sort_load(i__id) {
-
-    var element_key = null;
-    var theobject = document.getElementById("list-in-13542");
-    if (!theobject) {
-        //due to duplicate ideas belonging in this idea:
-        return false;
-    }
-
-    var sort = Sortable.create(theobject, {
-        animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: ".cover_sort", // Specifies which items inside the element should be sortable
-        handle: ".x_sort", // Restricts sort start click/touch to the specified element
-        onUpdate: function (evt/**Event*/) {
-            i_sort_save(i__id);
-        }
-    });
-}
-
-function i_add(x__type, i_x_child_id) {
-
-    /*
-     *
-     * Either creates an IDEA transaction between i_x_id & i_x_child_id
-     * OR will create a new idea based on input text and then transaction it
-     * to i_x_id (In this case i_x_child_id=0)
-     *
-     * */
-
-
-    console.log(x__type);
-    var i_x_id = parseInt($('#focus_i__id').val());
-    var sort_handler = ".cover_sort";
-    var sort_list_id = "list-in-" + x__type;
-    var input_field = $('.new-list-'+x__type+' .add-input');
-    var i__title = input_field.val();
-
-
-    if( i__title.charAt(0)=='#'){
-        if(isNaN(i__title.substr(1))){
-            alert('Use numbers only. Example: #1234');
-            return false;
-        } else {
-            //Update the references:
-            i_x_child_id = parseInt(i__title.substr(1));
-            i__title = i_x_child_id; //As if we were just adding
-        }
-    }
-
-
-
-    //We either need the idea name (to create a new idea) or the i_x_child_id>0 to create an IDEA transaction:
-    if (!i_x_child_id && i__title.length < 1) {
-        alert('Enter something');
-        input_field.focus();
-        return false;
-    }
-
-
-    //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item css__title no-side-padding"><span class="icon-block"><i class="far fa-yin-yang fa-spin idea"></i></span>' + js_view_shuffle_message(12695) +  '</div>');
-
-
-    //Update backend:
-    $.post("/i/i_add", {
-        i_x_id: i_x_id,
-        x__type:x__type,
-        i__title: i__title,
-        i_x_child_id: i_x_child_id
-    }, function (data) {
-
-        //Delete loader:
-        $("#tempLoader").remove();
-
-        if (data.status) {
-
-            if(x__type==13542){
-                //Next Ideas map to ideas so increment counter:
-                i_note_counter(12273, +1);
-            }
-
-            //Add new
-            add_to_list(sort_list_id, sort_handler, data.new_i_html);
-
-            //Reload sorting to enable sorting for the newly added idea:
-            i_sort_load(i_x_id);
-
-            //Lookout for textinput updates
-            x_set_start_text();
-
-            //Tooltips:
-            $('[data-toggle="tooltip"]').tooltip();
-
-        } else {
-            //Show errors:
-            alert(data.message);
-        }
-
-    });
-
-    //Return false to prevent <form> submission:
-    return false;
-
-}

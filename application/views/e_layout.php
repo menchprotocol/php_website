@@ -371,9 +371,9 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= '<div class="headline top-margin"><span class="icon-block">' . $e___11035[10573]['m__icon'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
 
                 //Need 2 or more to sort...
-                $ui .= ( count($i_bookmarks) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list_10573 .x_sort {display:none !important;} </style>' );
+                $ui .= ( count($i_bookmarks) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
 
-                $ui .= '<div class="row top-margin" id="list_10573">';
+                $ui .= '<div class="row top-margin" id="list-in-10573">';
                 foreach($i_bookmarks as $item){
                     array_push($i_exclude, $item['i__id']);
                     $ui .= view_i(10573, null, $item, $control_enabled,null, $e);
@@ -396,7 +396,7 @@ $profiles = $this->X_model->fetch(array(
                                placeholder="'.$e___11035[14015]['m__title'].'">
                     </div></div></div>';
 
-                $ui .= '<script> $(document).ready(function () { i_load_search(10573, ".add_e_idea" ,0 , "a", "x_my_in"); }); </script>';
+                $ui .= '<script> $(document).ready(function () { i_load_search(10573, ".add_e_idea"); }); </script>';
 
             }
 
@@ -410,7 +410,7 @@ $profiles = $this->X_model->fetch(array(
                     $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
                 }
 
-                $ui .= '<div class="row margin-top-down-half" id="list_13550">';
+                $ui .= '<div class="row margin-top-down-half" id="list-in-13550">';
                 $drop_limit = doubleval(view_memory(6404,14684));
                 $max_i__spectrum = 0;
                 $show_all_i_btn = false;
@@ -448,7 +448,7 @@ $profiles = $this->X_model->fetch(array(
                                placeholder="'.$e___11035[14016]['m__title'].'">
                     </div></div></div>';
 
-                $ui .= '<script> $(document).ready(function () { i_load_search(13550, ".add_e_idea" ,0 , "a", "x_my_in"); }); </script>';
+                $ui .= '<script> $(document).ready(function () { i_load_search(13550, ".add_e_idea"); }); </script>';
 
             }
 

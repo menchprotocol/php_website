@@ -975,7 +975,7 @@ jQuery.fn.extend({
 
 
 
-function i_load_search(x__type, element_focus, is_i_previous, shortcut, is_add_mode) {
+function i_load_search(x__type, element_focus) {
 
     if(!parseInt(js_e___6404[12678]['m__message'])){
         alert('Search is currently disabled');
@@ -985,9 +985,8 @@ function i_load_search(x__type, element_focus, is_i_previous, shortcut, is_add_m
         return false;
     }
 
-    var search_input = '.new-list-'+x__type+' .add-input';
 
-    $(search_input).focus(function() {
+    $('.new-list-'+x__type+' .add-input').focus(function() {
 
         $('.new-list-'+x__type+' .algolia_pad_search').removeClass('hidden');
 
@@ -999,43 +998,29 @@ function i_load_search(x__type, element_focus, is_i_previous, shortcut, is_add_m
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            if(is_add_mode=='x_in') {
-                return i_add(is_i_previous, 0);
-            } else if(is_add_mode=='x_my_in') {
-                return i_create();
-            }
+            return i_add(x__type, 0);
             e.preventDefault();
         }
 
     }).on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        if(is_add_mode=='x_in'){
-            i_add(is_i_previous, suggestion.s__id);
-        } else {
-            //Go to idea:
-            window.location = suggestion.s__url;
-            return true;
-        }
+        i_add(x__type, suggestion.s__id);
+
     }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [js_e___14685[x__type]['m__message']]}, [{
         source: function (q, cb) {
 
-            if($(search_input).val().charAt(0)=='#'){
-                cb([]);
-                return;
-            } else {
-                algolia_index.search(q, {
+            algolia_index.search(q, {
 
-                    filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
-                    hitsPerPage:21,
+                filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
+                hitsPerPage:21,
 
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
-            }
+            }, function (error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
 
         },
         displayKey: function (suggestion) {
@@ -1046,20 +1031,10 @@ function i_load_search(x__type, element_focus, is_i_previous, shortcut, is_add_m
                 return view_s_js(suggestion);
             },
             header: function (data) {
-                if (is_add_mode=='x_in' && !($(search_input).val().charAt(0)=='#') && !data.isEmpty) {
-                    return '<a href="javascript:void(0);" onclick="i_add('+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
-                } else if(is_add_mode=='x_my_in'){
-                    return '<a href="javascript:void(0);" onclick="i_create()" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
-                }
+                return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
             },
             empty: function (data) {
-                if(is_add_mode=='x_in'){
-                    if($(search_input).val().charAt(0)=='#'){
-                        return '<a href="javascript:void(0)" onclick="i_add('+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-x"></i></span>Transaction to <b>' + data.query + '</b></a>';
-                    } else {
-                        return '<a href="javascript:void(0)" onclick="i_add('+is_i_previous+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>' + data.query + '</b></a>';
-                    }
-                }
+                return '<a href="javascript:void(0)" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
             },
         }
     }]);
@@ -2163,4 +2138,139 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
         }
     });
+}
+
+
+
+function i_add(x__type, link_i__id) {
+
+    /*
+     *
+     * Either creates an IDEA transaction between focus_i__id & link_i__id
+     * OR will create a new idea based on input text and then transaction it
+     * to focus_i__id (In this case link_i__id=0)
+     *
+     * */
+
+
+    console.log(x__type);
+    var sort_handler = ".cover_sort";
+    var sort_list_id = "list-in-" + x__type;
+    var input_field = $('.new-list-'+x__type+' .add-input');
+    var i__title = input_field.val();
+
+
+    //We either need the idea name (to create a new idea) or the link_i__id>0 to create an IDEA transaction:
+    if (!link_i__id && i__title.length < 1) {
+        alert('Missing Idea Title');
+        input_field.focus();
+        return false;
+    }
+
+
+    //Set processing status:
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item css__title no-side-padding"><span class="icon-block"><i class="far fa-yin-yang fa-spin idea"></i></span>' + js_view_shuffle_message(12695) +  '</div>');
+
+
+    //Update backend:
+    $.post("/i/i_add", {
+        x__type:x__type,
+        focus_i__id: $('#focus_i__id').val(),
+        i__title: i__title,
+        link_i__id: link_i__id
+    }, function (data) {
+
+        //Delete loader:
+        $("#tempLoader").remove();
+
+        if (data.status) {
+
+            if(x__type==13542){
+                //Next Ideas map to ideas so increment counter:
+                i_note_counter(12273, +1);
+            }
+
+            //Add new
+            add_to_list(sort_list_id, sort_handler, data.new_i_html);
+
+            //Reload sorting to enable sorting for the newly added idea:
+            i_sort_load(x__type, $('#focus_i__id').val());
+
+            //Lookout for textinput updates
+            x_set_start_text();
+
+            //Tooltips:
+            $('[data-toggle="tooltip"]').tooltip();
+
+        } else {
+            //Show errors:
+            alert(data.message);
+        }
+
+    });
+
+    //Return false to prevent <form> submission:
+    return false;
+
+}
+
+
+
+function i_sort_load(x__type, i__id) {
+
+    if(!js_n___7712.includes(focus_i__type)){
+        console.log(x__type+' is not sortable');
+        return false;
+    }
+
+    var element_key = null;
+    var theobject = document.getElementById("list-in-" + x__type);
+    if (!theobject) {
+        //due to duplicate ideas belonging in this idea:
+        return false;
+    }
+
+    var sort = Sortable.create(theobject, {
+        animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
+        draggable: ".cover_sort", // Specifies which items inside the element should be sortable
+        handle: ".x_sort", // Restricts sort start click/touch to the specified element
+        onUpdate: function (evt/**Event*/) {
+            i_sort_save(x__type, i__id);
+        }
+    });
+}
+
+
+
+function i_sort_save(x__type, i__id) {
+
+    var new_x__spectrums = [];
+    var sort_rank = 0;
+
+    $("#list-in-"+x__type+" .cover_sort").each(function () {
+
+        //Fetch variables for this idea:
+        var i__id = parseInt($('#focus_i__id').val());
+        var x__id = parseInt($(this).attr('x__id'));
+
+        sort_rank++;
+
+        //Store in DB:
+        new_x__spectrums[sort_rank] = x__id;
+    });
+
+    //It might be zero for lists that have jsut been emptied
+    if (sort_rank > 0 && i__id) {
+        //Update backend:
+        $.post("/i/i_sort_save", {
+            i__id: i__id,
+            new_x__spectrums: new_x__spectrums
+        }, function (data) {
+            //Update UI to confirm with member:
+            if (!data.status) {
+                //There was some sort of an error returned!
+                alert(data.message);
+            }
+        });
+    }
 }

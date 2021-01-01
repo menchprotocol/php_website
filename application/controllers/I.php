@@ -14,96 +14,6 @@ class I extends CI_Controller {
     }
 
 
-    function i_create(){
-
-        $e___6201 = $this->config->item('e___6201'); //Idea Table
-        $member_e = superpower_unlocked(10939);
-        if (!$member_e) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(10939),
-            ));
-
-        } elseif (!isset($_POST['newIdeaTitle'])) {
-
-            //Do not treat this case as error as it could happen in moving Messages between types:
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing '.$e___6201[4736]['m__title'],
-            ));
-
-        }
-
-        //Validate Title:
-        $i__title_validation = i__title_validate($_POST['newIdeaTitle']);
-        if(!$i__title_validation['status']){
-            //We had an error, return it:
-            return view_json($i__title_validation);
-        }
-
-
-        //Create Idea:
-        $i = $this->I_model->create_or_link(10573, $i__title_validation['i_clean_title'], $member_e['e__id']);
-
-
-        //Add additional source if different than member:
-        if($member_e['e__id']!=$_POST['e_focus_id']){
-            $this->X_model->create(array(
-                'x__type' => 4983, //IDEA SOURCES
-                'x__source' => $member_e['e__id'],
-                'x__up' => $_POST['e_focus_id'],
-                'x__message' => '@'.$_POST['e_focus_id'],
-                'x__right' => $i['new_i__id'],
-            ));
-        }
-
-        //Move Existing Bookmarks by one:
-        $x__spectrum = 2;
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 10573, //MY IDEAS
-            'x__up' => $member_e['e__id'], //For this member
-        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $u_i){
-            $this->X_model->update($u_i['x__id'], array(
-                'x__spectrum' => $x__spectrum,
-            ), $member_e['e__id']);
-            $x__spectrum++;
-        }
-
-        //Add to top of my ideas:
-        $this->X_model->create(array(
-            'x__type' => 10573, //MY IDEAS
-            'x__source' => $member_e['e__id'],
-            'x__right' => $i['new_i__id'],
-            'x__up' => $member_e['e__id'],
-            'x__message' => '@'.$member_e['e__id'],
-            'x__spectrum' => 1 + $this->X_model->max_sort(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type' => 10573, //MY IDEAS
-                    'x__up' => $member_e['e__id'],
-                )),
-        ), true);
-
-
-
-        $i_bookmarks = $this->X_model->fetch(array(
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 10573, //BOOKMARKED IDEAS
-            'x__up' => $member_e['e__id'],
-            'x__right' => $i['new_i__id'],
-        ), array('x__right'));
-
-
-        return view_json(array(
-            'status' => 1,
-            'new_i_html' => view_i(10573, null, $i_bookmarks[0], true),
-        ));
-
-    }
-
-
 
 
     function i_go($i__id){
@@ -431,9 +341,9 @@ class I extends CI_Controller {
 
         /*
          *
-         * Either creates a IDEA transaction between i_x_id & i_x_child_id
+         * Either creates a IDEA transaction between focus_i__id & link_i__id
          * OR will create a new idea with outcome i__title and then transaction it
-         * to i_x_id (In this case i_x_child_id=0)
+         * to focus_i__id (In this case link_i__id=0)
          *
          * */
 
@@ -444,7 +354,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['i_x_id']) || intval($_POST['i_x_id']) < 1) {
+        } elseif (!isset($_POST['focus_i__id']) || intval($_POST['focus_i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Parent Idea ID',
@@ -454,7 +364,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invaid Idea Add Type',
             ));
-        } elseif (!isset($_POST['i__title']) || !isset($_POST['i_x_child_id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['i_x_child_id']) < 1)) {
+        } elseif (!isset($_POST['i__title']) || !isset($_POST['link_i__id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['link_i__id']) < 1)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing either Idea Outcome OR Child Idea ID',
@@ -464,7 +374,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Idea outcome cannot be longer than '.view_memory(6404,4736).' characters',
             ));
-        } elseif($_POST['i_x_child_id'] >= 2147483647){
+        } elseif($_POST['link_i__id'] >= 2147483647){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Value must be less than 2147483647',
@@ -474,27 +384,23 @@ class I extends CI_Controller {
 
         $x_i = array();
 
-        if($_POST['i_x_child_id'] > 0){
-
+        if($_POST['link_i__id'] > 0){
             //Fetch transaction idea to determine idea type:
             $x_i = $this->I_model->fetch(array(
-                'i__id' => intval($_POST['i_x_child_id']),
+                'i__id' => intval($_POST['link_i__id']),
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
-
             if(count($x_i)==0){
-
                 //validate Idea:
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Idea #'.$_POST['i_x_child_id'].' is not active',
+                    'message' => 'Idea #'.$_POST['link_i__id'].' is not active',
                 ));
             }
-
         }
 
-        //All seems good, go ahead and try creating the Idea:
-        return view_json($this->I_model->create_or_link($_POST['x__type'], trim($_POST['i__title']), $member_e['e__id'], $_POST['i_x_id'], 6677, $_POST['i_x_child_id']));
+        //All seems good, go ahead and try to create/link the Idea:
+        return view_json($this->I_model->create_or_link($_POST['x__type'], trim($_POST['i__title']), $member_e['e__id'], $_POST['focus_i__id'], $_POST['link_i__id']));
 
     }
 

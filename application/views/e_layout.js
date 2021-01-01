@@ -155,53 +155,6 @@ function x_reset_all(){
 }
 
 
-
-var saving_i = false;
-function i_create(){
-
-    if(saving_i){
-        return false;
-    }
-
-    //Start Processing:
-    saving_i = true;
-    $('#newIdeaTitle').prop('disabled', true).addClass('dynamic_saving');
-    add_to_list('list_10573', '.cover_sort', '<div id="tempLoader" class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div><div class="cover-head">SAVING IDEA...</div></div></div></div>');
-
-    //Process this:
-    $.post("/i/i_create", {
-
-        e_focus_id: e_focus_id,
-        newIdeaTitle: $('#newIdeaTitle').val(),
-
-    }, function (data) {
-
-        saving_i = false;
-        $('#tempLoader').remove();
-        $('#newIdeaTitle').prop('disabled', false).removeClass('dynamic_saving').val('').focus();
-
-        if (data.status) {
-
-            //Add new
-            add_to_list('list_10573', ".cover_sort", data.new_i_html);
-
-            //Reload sorting to enable sorting for the newly added idea:
-            x_sort_load(10573);
-
-            //Tooltips:
-            $('[data-toggle="tooltip"]').tooltip();
-
-        } else {
-
-            alert('ERROR: ' + data.message);
-
-        }
-
-    });
-
-}
-
-
 function e_load_search(x__type) {
 
     //Search Enabled?
