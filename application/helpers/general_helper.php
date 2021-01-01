@@ -972,10 +972,10 @@ function i_stats($i__metadata){
 
 }
 
-function home_url($came_from = null){
+function home_url($focus_tab = null){
     $CI =& get_instance();
     $member_e = superpower_unlocked();
-    return ( $member_e ? '/@'.$member_e['e__id'] . ( $came_from==6255 ? '?came_from='.$came_from : '' ) : '/' );
+    return ( $member_e ? '/@'.$member_e['e__id'] . ( $focus_tab==6255 ? '?focus_tab='.$focus_tab : '' ) : '/' );
 }
 
 function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
