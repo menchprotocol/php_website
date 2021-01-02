@@ -366,7 +366,7 @@ $profiles = $this->X_model->fetch(array(
 
 
             //Any Ideas?
-            if(count($i_bookmarks)){
+            if(count($i_bookmarks) || $source_is_e){
 
                 $ui .= '<div class="headline top-margin"><span class="icon-block">' . $e___11035[10573]['m__icon'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
 
@@ -404,7 +404,7 @@ $profiles = $this->X_model->fetch(array(
             //Referenced Ideas
             $list_i = view_coins_e(12273, $e['e__id'], 1, true, $i_exclude);
 
-            if(count($list_i)){
+            if(count($list_i) || $superpower_10939){
 
                 if(count($i_bookmarks)){
                     $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
