@@ -2487,6 +2487,9 @@ font-weight: bold !important;
     background: rgba(34,34,34,0.75);
 }
 
+.black-background i{
+    color: #FFFFFF;
+}
 .custom_ui_13884_13886 .doabsolute, .black-background {
     background-color: #000000 !important;
 }
