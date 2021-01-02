@@ -932,9 +932,12 @@ function validURL(str) {
 function add_to_list(sort_list_id, sort_handler, html_content, add_to_start) {
 
     //See if we previously have a list in place?
-    if (!add_to_start && $("#" + sort_list_id + " " + sort_handler).length > 0) {
-        //yes we do! add this:
-        $("#" + sort_list_id + " " + sort_handler + ":last").after(html_content);
+    if ($("#" + sort_list_id + " " + sort_handler).length > 0) {
+        if(add_to_start){
+            $("#" + sort_list_id + " " + sort_handler + ":first").before(html_content);
+        } else {
+            $("#" + sort_list_id + " " + sort_handler + ":last").after(html_content);
+        }
     } else {
         //Raw list, add before input filed:
         $("#" + sort_list_id).prepend(html_content);
