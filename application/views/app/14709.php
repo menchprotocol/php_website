@@ -7,7 +7,7 @@ $is = $this->I_model->fetch(array(
 
 if(!count($is) || !$member_e){
 
-    js_redirect('/', 0);
+    js_redirect('/', 13);
 
 } else {
 
