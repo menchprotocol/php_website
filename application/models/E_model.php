@@ -511,8 +511,6 @@ class E_model extends CI_Model
 
 
         //Check to see if we have domain:
-        $url_x = array();
-        /*
         $url_x = $this->X_model->fetch(array(
             'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -520,7 +518,6 @@ class E_model extends CI_Model
             'x__up' => 1326, //Domain Member
             'x__message' => $url_analysis['url_clean_domain'],
         ), array('x__down'));
-        */
 
         //Do we need to create an source for this domain?
         if (count($url_x) > 0) {
@@ -786,15 +783,12 @@ class E_model extends CI_Model
         } else {
 
             //Check to see if URL previously exists:
-            /*
             $url_x = $this->X_model->fetch(array(
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Member URL Transactions
                 'x__message' => $url,
             ), array('x__down'));
-            */
-            $url_x = array();
 
 
             //Do we need to create an source for this URL?
