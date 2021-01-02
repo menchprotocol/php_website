@@ -1777,7 +1777,7 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
     }
 
     if($is_self && !$discovery_mode && !$e_of_i){
-        $ui .= '<div class="cover-text css__title grey">[Not a Source Yet]</div>';
+        $ui .= '<div class="cover-text css__title grey" style="margin-top: -15px;">[Not a Source Yet]</div>';
     }
 
 
