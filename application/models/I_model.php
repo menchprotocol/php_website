@@ -576,7 +576,6 @@ class I_model extends CI_Model
                 'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type' => 4983, //IDEA SOURCES
-                        'x__up' => $focus_e[0]['e__id'],
                         'x__right' => $i_new['i__id'],
                     )),
             ));
