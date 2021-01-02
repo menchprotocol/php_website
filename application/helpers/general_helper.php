@@ -322,7 +322,7 @@ function x_detect_type($string)
         $CI =& get_instance();
         return $CI->E_model->url($string);
 
-    } elseif (substr($string, 0, 1)=='/' && !$has_space) {
+    } elseif (substr($string, 0, 1)=='/' && !$has_space && substr($string, 0, 2)!='//') {
 
         //Relative Mench URL
         return array(
