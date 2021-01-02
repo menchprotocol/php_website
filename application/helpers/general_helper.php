@@ -299,6 +299,7 @@ function x_detect_type($string)
      * */
 
     $string = trim($string);
+    $has_space = substr_count($string, ' ');
     $CI =& get_instance();
 
     if (is_null($string) || !strlen($string)) {
@@ -321,6 +322,14 @@ function x_detect_type($string)
         $CI =& get_instance();
         return $CI->E_model->url($string);
 
+    } elseif (substr($string, 0, 1)=='/' && !$has_space) {
+
+        //Relative Mench URL
+        return array(
+            'status' => 1,
+            'x__type' => 14728,
+        );
+
     } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
 
         //Date/time:
@@ -337,7 +346,7 @@ function x_detect_type($string)
             'x__type' => 7657,
         );
 
-    } elseif (!substr_count($string, ' ')) {
+    } elseif (!$has_space) {
 
         //Single Word:
         return array(
