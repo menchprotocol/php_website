@@ -322,9 +322,9 @@ function x_detect_type($string)
         $CI =& get_instance();
         return $CI->E_model->url($string);
 
-    } elseif (substr($string, 0, 1)=='/' && !$has_space && substr($string, 0, 2)!='//') {
+    } elseif (!$has_space && (substr($string, 0, 17)=='https://mench.com' || substr($string, 0, 16)=='http://mench.com' || (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//'))) {
 
-        //Relative Mench URL
+        //Mench URL
         return array(
             'status' => 1,
             'x__type' => 14728,
