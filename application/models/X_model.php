@@ -374,7 +374,7 @@ class X_model extends CI_Model
                 $subject = 'Notification: '  . $u_name . ' ' . $e___5967[$add_fields['x__type']]['m__title'];
 
                 //Compose email body, start with transaction content:
-                $html_message = '<div>' . ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '<i>No transaction content</i>') . '</div><br />';
+                $html_message = ( strlen($add_fields['x__message']) > 0 ? '<div>' .$add_fields['x__message'].'</div>' : '') . '<br />';
 
                 $var_index = var_index();
 
