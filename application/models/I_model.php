@@ -381,6 +381,14 @@ class I_model extends CI_Model
         //Validate Original idea
         if(in_array($x__type, $this->config->item('n___11020'))){
 
+            if ($focus__id > 0 && $link_i__id==$focus__id) {
+                //Make sure none of the parents are the same:
+                return array(
+                    'status' => 0,
+                    'message' => 'You cannot add idea to itself.',
+                );
+            }
+
             $focus_i = $this->I_model->fetch(array(
                 'i__id' => intval($focus__id),
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -411,9 +419,10 @@ class I_model extends CI_Model
         }
 
 
+        //Linking to Existing or Creating New?
         if ($link_i__id > 0) {
 
-            //We are adding $link_i__id, We are NOT creating any new ideas...
+            //Linking to $link_i__id (NOT creating any new ideas)
 
             //Fetch more details on the child idea we're about to transaction:
             $link_i = $this->I_model->fetch(array(
@@ -428,81 +437,81 @@ class I_model extends CI_Model
             }
 
             //Determine which is parent Idea, and which is child
-            if($is_upwards){
+            if(in_array($x__type, $this->config->item('n___11020'))){
 
-                $previous_i = $link_i[0];
-                $next_i = $focus_i[0];
+                //PREVIOUS or NEXT
 
-                /*
-                //TODO Prevent child duplicates:
-                $recursive_children = $this->I_model->recursive_child_ids($next_i['i__id'], false);
-                if (in_array($previous_i['i__id'], $recursive_children)) {
+                //Duplicate Check:
+                if (count($this->X_model->fetch(array(
+                        'x__left' => ( $is_upwards ? $link_i[0]['i__id'] : $focus_i[0]['i__id'] ),
+                        'x__right' => ( $is_upwards ? $focus_i[0]['i__id'] : $link_i[0]['i__id'] ),
+                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    ))) > 0) {
                     return array(
                         'status' => 0,
-                        'message' => 'Idea previously set as child, so it cannot be added as parent',
+                        'message' => 'Idea is already linked here.',
                     );
                 }
-                */
 
-            } else {
-
-                $previous_i = $focus_i[0];
-                $next_i = $link_i[0];
-
-                //Prevent parent duplicate:
-                $top_tree = $this->I_model->recursive_parents($previous_i['i__id']);
-                foreach($top_tree as $grand_parent_ids) {
-                    if (in_array($next_i['i__id'], $grand_parent_ids)) {
-                        return array(
-                            'status' => 0,
-                            'message' => 'Idea previously set as parent, so it cannot be added as child',
-                        );
+                //Tree Check if Next
+                if($x__type==13542){
+                    foreach($this->I_model->recursive_parents($focus_i[0]['i__id']) as $grand_parent_ids) {
+                        if (in_array($link_i[0]['i__id'], $grand_parent_ids)) {
+                            return array(
+                                'status' => 0,
+                                'message' => 'Idea previously set as parent, so it cannot be added as child',
+                            );
+                        }
                     }
                 }
-            }
 
+            } elseif($x__type==13550){
 
-            if (count($link_i) < 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid Idea ID',
-                );
-            } elseif (!in_array($link_i[0]['i__type'], $this->config->item('n___7356') /* ACTIVE */)) {
-                return array(
-                    'status' => 0,
-                    'message' => 'You can only transaction to active ideas. This idea is not active.',
-                );
+                //References
+
+                //Duplicate Check:
+                if(count($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    '(x__up = '.$focus_e[0]['e__id'].' OR x__down = '.$focus_e[0]['e__id'].')' => null,
+                    'x__right' => $link_i[0]['i__id'],
+                )))){
+                    return array(
+                        'status' => 0,
+                        'message' => 'Idea already referenced to this source',
+                    );
+                }
+
+            } elseif($x__type==10573){
+
+                //My Ideas
+
+                //Duplicate Check:
+                if(count($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type' => 10573, //BOOKMARKED IDEAS
+                    'x__up' => $focus_e[0]['e__id'],
+                    'x__right' => $link_i[0]['i__id'],
+                )))){
+                    return array(
+                        'status' => 0,
+                        'message' => 'Idea already in My Ideas',
+                    );
+                }
+
+                //Only themselves:
+                if ($x__source!=$focus_e[0]['e__id']) {
+                    return array(
+                        'status' => 0,
+                        'message' => 'You can only add My Ideas for yourself, not other members.',
+                    );
+                }
+
             }
 
             //All good so far, continue with adding:
             $i_new = $link_i[0];
-
-            //Make sure this is not a duplicate Idea for its parent:
-            $dup_x = $this->X_model->fetch(array(
-                'x__left' => $previous_i['i__id'],
-                'x__right' => $next_i['i__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ));
-
-            //Check for issues:
-            if (count($dup_x) > 0) {
-
-                //Ooopsi, this is a duplicate!
-                return array(
-                    'status' => 0,
-                    'message' => '[' . $i_new['i__title'] . '] is already here.',
-                );
-
-            } elseif ($focus__id > 0 && $link_i__id == $focus__id) {
-
-                //Make sure none of the parents are the same:
-                return array(
-                    'status' => 0,
-                    'message' => 'You cannot add "' . $i_new['i__title'] . '" as its own '.( $is_upwards ? 'previous' : 'next' ).' idea.',
-                );
-
-            }
 
         } else {
 
@@ -528,15 +537,16 @@ class I_model extends CI_Model
         //Create Idea Transaction:
         $new_i_html = null;
 
+
         if(in_array($x__type, $this->config->item('n___11020'))){
 
-            //Idea Graph Previous/Next
+            //PREVIOUS or NEXT
             $relation = $this->X_model->create(array(
                 'x__source' => $x__source,
                 'x__type' => 4228, //Idea Transaction Regular Discovery
                 ( $is_upwards ? 'x__right' : 'x__left' ) => $focus__id,
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
-                'x__spectrum' => 1 + $this->X_model->max_sort(array(
+                'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                         'x__left' => ( $is_upwards ? $i_new['i__id'] : $focus__id ),
@@ -552,62 +562,62 @@ class I_model extends CI_Model
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ), array(($is_upwards ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
-            if($x__type > 0){
-                $new_i_html = view_i($x__type, $focus_i[0], $new_i[0], true);
-            }
+            $new_i_html = view_i($x__type, ( $is_upwards ? null : $focus_i[0] ), $new_i[0], true);
 
         } elseif($x__type == 13550){
 
-            //References
+            //Add References
             $this->X_model->create(array(
                 'x__type' => 4983, //IDEA SOURCES
-                'x__source' => $member_e['e__id'],
-                'x__up' => $_POST['e_focus_id'],
-                'x__message' => '@'.$_POST['e_focus_id'],
+                'x__source' => $x__source,
+                'x__up' => $focus_e[0]['e__id'],
+                'x__message' => '@'.$focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
+                'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'x__type' => 4983, //IDEA SOURCES
+                        'x__up' => $focus_e[0]['e_focus_id'],
+                        'x__right' => $i_new['i__id'],
+                    )),
             ));
+
+            //Fetch Complete References:
+            $new_i = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 4983, //IDEA SOURCES
+                'x__up' => $focus_e[0]['e__id'],
+                'x__right' => $i_new['i__id'],
+            ), array('x__right'));
+
+            $new_i_html = view_i($x__type, null, $new_i[0], true, null, $focus_e[0]);
 
         } elseif($x__type == 10573){
 
             //My Ideas
-            $x__spectrum = 2;
-            foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 10573, //MY IDEAS
-                'x__up' => $member_e['e__id'], //For this member
-            ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $u_i){
-                $this->X_model->update($u_i['x__id'], array(
-                    'x__spectrum' => $x__spectrum,
-                ), $member_e['e__id']);
-                $x__spectrum++;
-            }
 
             //Add to top of my ideas:
             $this->X_model->create(array(
                 'x__type' => 10573, //MY IDEAS
-                'x__source' => $member_e['e__id'],
+                'x__source' => $x__source,
+                'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
-                'x__up' => $member_e['e__id'],
-                'x__message' => '@'.$member_e['e__id'],
-                'x__spectrum' => 1 + $this->X_model->max_sort(array(
+                'x__message' => '@'.$focus_e[0]['e__id'],
+                'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type' => 10573, //MY IDEAS
-                        'x__up' => $member_e['e__id'],
+                        'x__up' => $focus_e[0]['e__id'],
                     )),
             ), true);
 
-
-
-            foreach($this->X_model->fetch(array(
+            $new_i = $this->X_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 10573, //BOOKMARKED IDEAS
-                'x__up' => $member_e['e__id'],
+                'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
-            ), array('x__right')) as $i_b){
-                $new_i_html = $i_b;
-                break;
-            }
+            ), array('x__right'));
+
+            $new_i_html = view_i($x__type, null, $new_i[0], true, null, $focus_e[0]);
 
         }
 

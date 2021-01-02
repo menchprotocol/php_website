@@ -608,7 +608,7 @@ class E extends CI_Controller
 
                 if(sources_currently_sorted($x__up)){
 
-                    $x__spectrum = 1 + $this->X_model->max_sort(array(
+                    $x__spectrum = 1 + $this->X_model->max_spectrum(array(
                             'x__up' => $x__up,
                             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE

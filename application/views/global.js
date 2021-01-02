@@ -975,7 +975,7 @@ jQuery.fn.extend({
 
 
 
-function i_load_search(x__type, element_focus) {
+function i_load_search(x__type, element_focus, focus__id) {
 
     if(!parseInt(js_e___6404[12678]['m__message'])){
         alert('Search is currently disabled');
@@ -998,13 +998,13 @@ function i_load_search(x__type, element_focus) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return i_add(x__type, 0);
+            return i_add(x__type, 0, focus__id);
             e.preventDefault();
         }
 
     }).on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        i_add(x__type, suggestion.s__id);
+        i_add(x__type, suggestion.s__id, focus__id);
 
     }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [js_e___14685[x__type]['m__message']]}, [{
         source: function (q, cb) {
@@ -1031,10 +1031,10 @@ function i_load_search(x__type, element_focus) {
                 return view_s_js(suggestion);
             },
             header: function (data) {
-                return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
+                return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0,'+focus__id+')" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
             },
             empty: function (data) {
-                return '<a href="javascript:void(0)" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
+                return '<a href="javascript:void(0)" onclick="i_add('+x__type+',0,'+focus__id+')" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
             },
         }
     }]);
@@ -2158,12 +2158,11 @@ function i_add(x__type, link_i__id, focus__id) {
 
     /*
      *
-     * Either creates an IDEA transaction between focus_i__id & link_i__id
+     * Either creates an IDEA transaction between focus__id & link_i__id
      * OR will create a new idea based on input text and then transaction it
-     * to focus_i__id (In this case link_i__id=0)
+     * to focus__id (In this case link_i__id=0)
      *
      * */
-
 
     var sort_handler = ".cover_sort";
     var sort_list_id = "list-in-" + x__type;
@@ -2186,7 +2185,7 @@ function i_add(x__type, link_i__id, focus__id) {
     //Update backend:
     $.post("/i/i_add", {
         x__type: x__type,
-        focus_i__id: focus__id,
+        focus__id: focus__id,
         i__title: i__title,
         link_i__id: link_i__id
     }, function (data) {

@@ -625,7 +625,7 @@ class X_model extends CI_Model
         return $affected_rows;
     }
 
-    function max_sort($query_filters)
+    function max_spectrum($query_filters)
     {
 
         //Fetches the maximum order value

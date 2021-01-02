@@ -341,9 +341,9 @@ class I extends CI_Controller {
 
         /*
          *
-         * Either creates a IDEA transaction between focus_i__id & link_i__id
+         * Either creates a IDEA transaction between focus__id & link_i__id
          * OR will create a new idea with outcome i__title and then transaction it
-         * to focus_i__id (In this case link_i__id=0)
+         * to focus__id (In this case link_i__id=0)
          *
          * */
 
@@ -359,7 +359,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invaid Idea Add Type',
             ));
-        } elseif (!isset($_POST['focus_i__id'])) {
+        } elseif (!isset($_POST['focus__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Parent Idea ID',
@@ -395,7 +395,7 @@ class I extends CI_Controller {
         }
 
         //All seems good, go ahead and try to create/link the Idea:
-        return view_json($this->I_model->create_or_link($_POST['x__type'], trim($_POST['i__title']), $member_e['e__id'], $_POST['focus_i__id'], $_POST['link_i__id']));
+        return view_json($this->I_model->create_or_link($_POST['x__type'], trim($_POST['i__title']), $member_e['e__id'], $_POST['focus__id'], $_POST['link_i__id']));
 
     }
 
@@ -454,7 +454,7 @@ class I extends CI_Controller {
         //Create Message:
         $x = $this->X_model->create(array(
             'x__source' => $member_e['e__id'],
-            'x__spectrum' => 1 + $this->X_model->max_sort(array(
+            'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type' => intval($_POST['note_type_id']),
                     'x__right' => intval($_POST['i__id']),
@@ -583,7 +583,7 @@ class I extends CI_Controller {
             'x__up' => $cdn_status['cdn_e']['e__id'],
             'x__right' => intval($_POST['i__id']),
             'x__message' => '@' . $cdn_status['cdn_e']['e__id'],
-            'x__spectrum' => 1 + $this->X_model->max_sort(array(
+            'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                     'x__type' => $_POST['note_type_id'],
                     'x__right' => $_POST['i__id'],
                 )),
