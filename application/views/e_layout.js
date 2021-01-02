@@ -267,7 +267,7 @@ function e__add(x__type, e_existing_id) {
             input.focus();
 
             //Add new object to list:
-            add_to_list(list_id, '.en-item', data.e_new_echo);
+            add_to_list(list_id, '.en-item', data.e_new_echo, js_n___14686.includes(x__type));
 
             //Allow inline editing if enabled:
             x_set_start_text();

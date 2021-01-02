@@ -929,10 +929,10 @@ function validURL(str) {
 }
 
 
-function add_to_list(sort_list_id, sort_handler, html_content) {
+function add_to_list(sort_list_id, sort_handler, html_content, add_to_start) {
 
     //See if we previously have a list in place?
-    if ($("#" + sort_list_id + " " + sort_handler).length > 0) {
+    if (!add_to_start && $("#" + sort_list_id + " " + sort_handler).length > 0) {
         //yes we do! add this:
         $("#" + sort_list_id + " " + sort_handler + ":last").after(html_content);
     } else {
@@ -2183,7 +2183,7 @@ function i_add(x__type, link_i__id, focus__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving').prop("disabled", true);
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="col-md-2 col-sm-3 col-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin idea"></i></div></div></div></div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="col-md-2 col-sm-3 col-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin idea"></i></div></div></div></div>', js_n___14686.includes(x__type));
 
 
     //Update backend:
@@ -2208,7 +2208,7 @@ function i_add(x__type, link_i__id, focus__id) {
             x_sort_load(x__type);
 
             //Add new
-            add_to_list(sort_list_id, sort_handler, data.new_i_html);
+            add_to_list(sort_list_id, sort_handler, data.new_i_html, js_n___14686.includes(x__type));
 
             //Lookout for textinput updates
             x_set_start_text();
