@@ -506,11 +506,13 @@ class E_model extends CI_Model
 
         //Analyze domain:
         $url_analysis = analyze_domain($url);
-        $domai_previously_existed = 0; //Assume false
+        $domain_previously_existed = 0; //Assume false
         $e_domain = false; //Have an empty placeholder:
 
 
         //Check to see if we have domain:
+        $url_x = array();
+        /*
         $url_x = $this->X_model->fetch(array(
             'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -518,12 +520,12 @@ class E_model extends CI_Model
             'x__up' => 1326, //Domain Member
             'x__message' => $url_analysis['url_clean_domain'],
         ), array('x__down'));
-
+        */
 
         //Do we need to create an source for this domain?
         if (count($url_x) > 0) {
 
-            $domai_previously_existed = 1;
+            $domain_previously_existed = 1;
             $e_domain = $url_x[0];
 
         } elseif ($x__source) {
@@ -548,7 +550,7 @@ class E_model extends CI_Model
         return array_merge( $url_analysis , array(
             'status' => 1,
             'message' => 'Success',
-            'domai_previously_existed' => $domai_previously_existed,
+            'domain_previously_existed' => $domain_previously_existed,
             'e_domain' => $e_domain,
         ));
 
@@ -777,19 +779,22 @@ class E_model extends CI_Model
             $e_url = $url_e['e_domain'];
 
             //IF the URL exists since the domain existed and the URL is the domain!
-            if ($url_e['domai_previously_existed']) {
+            if ($url_e['domain_previously_existed']) {
                 $url_previously_existed = 1;
             }
 
         } else {
 
             //Check to see if URL previously exists:
+            /*
             $url_x = $this->X_model->fetch(array(
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Member URL Transactions
                 'x__message' => $url,
             ), array('x__down'));
+            */
+            $url_x = array();
 
 
             //Do we need to create an source for this URL?

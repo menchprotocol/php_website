@@ -929,6 +929,7 @@ function view_i_icon($i){
 function view_caret($e__id, $m, $s__id){
     //Display drop down menu:
     $CI =& get_instance();
+    $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
 
     $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
     $ui = '<li class="nav-item dropdown '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m__title'].'">';
