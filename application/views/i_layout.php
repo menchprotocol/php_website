@@ -70,7 +70,7 @@ if($show_previous){
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14014]['m__icon'].'</span></a>
                         <input type="text"
-                               class="form-control css__title form-control-thick add-input algolia_search dotransparent"
+                               class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[14014]['m__title'].'">
                     </div></div>';
@@ -293,7 +293,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-13542 .add-input\').focus();"><span class="icon-block">'.$e___11035[13912]['m__icon'].'</span></a>
                     <input type="text"
-                           class="form-control form-control-thick add-input css__title algolia_search dotransparent"
+                           class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[13912]['m__title'].'">
                 </div><div class="algolia_pad_search hidden">&nbsp;</div></div>';
