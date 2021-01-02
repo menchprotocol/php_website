@@ -2252,9 +2252,6 @@ i, .btn .show-max {
     text-align: center;
     margin-top: -100%;
 }
-.cover-btn i{
-    color: #FFFFFF;
-}
 .cover-head{
     font-size: 0.8em;
     text-align: center;
@@ -2445,7 +2442,8 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .btn-source,
 .custom_ui_13884_13886 .btn-idea,
 .custom_ui_13884_13886 .btn-discover,
-.custom_ui_13884_13886 .grey-background{
+.custom_ui_13884_13886 .grey-background,
+.custom_ui_13884_13886 .grey-background i{
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .icon-block i,
@@ -2562,7 +2560,8 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .btn-source,
 .custom_ui_13884_13885 .btn-idea,
 .custom_ui_13884_13885 .btn-discover,
-.custom_ui_13884_13885 .grey-background{
+.custom_ui_13884_13885 .grey-background,
+.custom_ui_13884_13886 .grey-background i{
     color: #222222 !important;
 }
 
