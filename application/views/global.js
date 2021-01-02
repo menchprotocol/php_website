@@ -2178,6 +2178,7 @@ function i_add(x__type, link_i__id, focus__id) {
     }
 
     //Set processing status:
+    input_field.addClass('dynamic_saving').prop("disabled", true);
     add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="col-md-2 col-sm-3 col-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin idea"></i></div></div></div></div>');
 
 
@@ -2191,6 +2192,7 @@ function i_add(x__type, link_i__id, focus__id) {
 
         //Delete loader:
         $("#tempLoader").remove();
+        input_field.removeClass('dynamic_saving').prop("disabled", false);
 
         if (data.status) {
 
