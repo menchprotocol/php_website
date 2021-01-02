@@ -316,19 +316,19 @@ function x_detect_type($string)
             'x__type' => 4319, //Number
         );
 
-    } elseif (!$has_space && (substr($string, 0, 17)=='https://mench.com' || substr($string, 0, 16)=='http://mench.com' || (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//'))) {
-
-        //Mench URL
-        return array(
-            'status' => 1,
-            'x__type' => 14728,
-        );
-
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
         $CI =& get_instance();
         return $CI->E_model->url($string);
+
+    } elseif (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//' && !$has_space) {
+
+        //Relative Mench URL
+        return array(
+            'status' => 1,
+            'x__type' => 14728,
+        );
 
     } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
 
