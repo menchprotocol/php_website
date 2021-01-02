@@ -688,7 +688,7 @@ label:focus,
     padding: 0;
 }
 .fixed-top, .fixed-bottom {
-    z-index: 9999 !important;
+    z-index: 999 !important;
 }
 
 
