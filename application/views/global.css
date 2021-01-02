@@ -325,7 +325,7 @@ img.no-radius {
     width: 100%;
     border-top: none;
     font-weight: normal;
-    z-index: 99999 !important;
+    z-index: 9999 !important;
 }
 .input-group .algolia-autocomplete {
     width: 100%;
@@ -1260,7 +1260,7 @@ td.MENCHcolumn3  { width: 13%; }
     text-align: right;
     position: absolute;
     overflow: hidden;
-    z-index: 999 !important;
+    z-index: 900 !important;
     top: 0;
     right: 8px;
 }
