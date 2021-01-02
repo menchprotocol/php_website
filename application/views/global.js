@@ -2177,9 +2177,8 @@ function i_add(x__type, link_i__id, focus__id) {
         return false;
     }
 
-
     //Set processing status:
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="list-group-item css__title no-side-padding"><span class="icon-block"><i class="far fa-yin-yang fa-spin idea"></i></span>' + js_view_shuffle_message(12695) +  '</div>');
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="col-md-2 col-sm-3 col-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="grey-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin idea"></i></div><div class="cover-head">' + js_view_shuffle_message(12695) +  '</div></div></div></div>');
 
 
     //Update backend:
