@@ -975,7 +975,7 @@ jQuery.fn.extend({
 
 
 
-function i_load_search(x__type, element_focus, focus__id) {
+function i_load_search(x__type, focus__id) {
 
     if(!parseInt(js_e___6404[12678]['m__message'])){
         alert('Search is currently disabled');

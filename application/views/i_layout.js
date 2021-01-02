@@ -85,8 +85,8 @@ $(document).ready(function () {
 
 
     //Load top/bottom idea searches:
-    i_load_search(11019, ".previous_i");
-    i_load_search(13542, ".next_i");
+    i_load_search(11019, $('#focus_i__id').val());
+    i_load_search(13542, $('#focus_i__id').val());
 
     //Load Sortable:
     x_sort_load(13542);
