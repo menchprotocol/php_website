@@ -54,7 +54,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <?php
 
                     //Current URL:
-                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14532]['m__icon'].'</span>'.$e___14393[14532]['m__title'].'</div>';
+                    echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
                     echo '<div class="current_url padded hideIfEmpty"></div>';
 
 
@@ -103,7 +103,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body">
 
                     <?php
-                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14532]['m__icon'].'</span>'.$e___14393[14532]['m__title'].'</div>';
+                    echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
                     echo '<div class="current_url padded hideIfEmpty"></div>';
                     ?>
 
