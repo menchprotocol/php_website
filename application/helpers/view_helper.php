@@ -1535,11 +1535,13 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
         return 'Invalid x__type '.$x__type;
     }
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
+    $e_of_i = e_of_i($i['i__id']);
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
-    $idea_editing = in_array($x__type, $CI->config->item('n___14502')) && e_of_i($i['i__id']); //IDEA EDITING
+    $idea_editing = in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
     $load_completion = in_array($x__type, $CI->config->item('n___14501'));
+    $is_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];
 
     /*
     if($focus_e && (!$member_session || $member_session['e__id']!=$focus_e['e__id']) && !superpower_active(12701, true)){
@@ -1656,6 +1658,10 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
         $ui .= '</div></div>';
     }
 
+
+    if($is_self && !$discovery_mode && !$e_of_i){
+        $ui .= '<div class="cover-text css__title grey">[Not a Source Yet]</div>';
+    }
 
     if(!$is_any_lock){
 
