@@ -406,7 +406,7 @@ $profiles = $this->X_model->fetch(array(
 
             if(count($list_i) || $superpower_10939){
 
-                if(count($i_bookmarks)){
+                if(count($i_bookmarks) && count($list_i)){
                     $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
                 }
 
