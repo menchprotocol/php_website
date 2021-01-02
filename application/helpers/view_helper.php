@@ -1197,7 +1197,7 @@ function view_e_settings($list_id, $show_accordion){
     $member_e = superpower_unlocked();
     $e___14010 = $CI->config->item('e___14010');
     $ui = null;
-    if(!$member_e){
+    if(!$member_e || !$CI->config->item('e___'.$list_id)){
         return $ui;
     }
     if($show_accordion){
