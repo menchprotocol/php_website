@@ -13,10 +13,7 @@ if(!count($is) || !$member_e){
 
     echo $is[0]['i__title'];
 
-    foreach($this->config->item('e___14709') as $e__id => $m) {
-        echo '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
-        echo view_e_settings($e__id, true);
-    }
+    echo view_e_settings(14709, false);
 
 }
 
