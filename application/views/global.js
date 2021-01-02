@@ -1504,24 +1504,28 @@ function i_note_update_text(x__id, note_type_id) {
 
 
 function i_remove_note(x__id, note_type_id){
-    //REMOVE NOTE
-    $.post("/i/i_remove_note", { x__id: parseInt(x__id) }, function (data) {
-        if (data.status) {
 
-            i_note_counter(note_type_id, -1);
+    var r = confirm("Remove this note?");
+    if (r == true) {
+        //REMOVE NOTE
+        $.post("/i/i_remove_note", { x__id: parseInt(x__id) }, function (data) {
+            if (data.status) {
 
-            $("#ul-nav-" + x__id).fadeOut();
+                i_note_counter(note_type_id, -1);
 
-            setTimeout(function () {
-                $("#ul-nav-" + x__id).remove();
-            }, 610);
+                $("#ul-nav-" + x__id).fadeOut();
 
-        } else {
+                setTimeout(function () {
+                    $("#ul-nav-" + x__id).remove();
+                }, 610);
 
-            alert(data.message);
+            } else {
 
-        }
-    });
+                alert(data.message);
+
+            }
+        });
+    }
 }
 
 function i_note_start_adding(note_type_id) {
@@ -2192,7 +2196,7 @@ function i_add(x__type, link_i__id, focus__id) {
 
         //Delete loader:
         $("#tempLoader").remove();
-        input_field.removeClass('dynamic_saving').prop("disabled", false);
+        input_field.removeClass('dynamic_saving').prop("disabled", false).focus();
 
         if (data.status) {
 
