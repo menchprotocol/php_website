@@ -2493,6 +2493,9 @@ font-weight: bold !important;
     background-color: #000000 !important;
 }
 .grey-background {
+    background-color: transparent !important;
+}
+.grey-background:hover {
     background-color: #999999 !important;
 }
 
