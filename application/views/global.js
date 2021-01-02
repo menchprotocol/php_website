@@ -1034,7 +1034,7 @@ function i_load_search(x__type, focus__id) {
                 return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0,'+focus__id+')" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
             },
             empty: function (data) {
-                return '<a href="javascript:void(0)" onclick="i_add('+x__type+',0,'+focus__id+')" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
+                return '';
             },
         }
     }]);
