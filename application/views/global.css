@@ -2259,7 +2259,6 @@ i, .btn .show-max {
     font-size: 0.8em;
     text-align: center;
     padding-top: 21px;
-    color: #FFFFFF;
 }
 .headline-input{
     padding-left: 8px;
@@ -2445,7 +2444,8 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .controller-nav,
 .custom_ui_13884_13886 .btn-source,
 .custom_ui_13884_13886 .btn-idea,
-.custom_ui_13884_13886 .btn-discover {
+.custom_ui_13884_13886 .btn-discover,
+.custom_ui_13884_13886 .grey-background{
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .icon-block i,
@@ -2561,7 +2561,8 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .controller-nav,
 .custom_ui_13884_13885 .btn-source,
 .custom_ui_13884_13885 .btn-idea,
-.custom_ui_13884_13885 .btn-discover {
+.custom_ui_13884_13885 .btn-discover,
+.custom_ui_13884_13885 .grey-background{
     color: #222222 !important;
 }
 
