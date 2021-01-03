@@ -55,7 +55,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     //Current URL:
                     echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
-                    echo '<div class="current_url padded hideIfEmpty"></div>';
+                    echo '<div class="current_url padded hideIfEmpty inline-block"></div>';
+
 
 
                     //Type
@@ -105,7 +106,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <?php
                     //URL
                     echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
-                    echo '<div class="current_url padded hideIfEmpty"></div>';
+                    echo '<div class="padded"><a href="javascript:void();" onclick="copy_share_this_url()" class="block share_this_text"><span class="share_this_url hideIfEmpty inline-block"></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap">COPY LINK</i></a></div>';
+
 
                     //Add This
                     echo '<div class="addthis_inline_share_toolbox"></div>'; //Customize at www.addthis.com/dashboard

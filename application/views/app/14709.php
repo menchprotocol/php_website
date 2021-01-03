@@ -50,8 +50,11 @@ if(!count($is) || !$member_e){
         $e___14709 = $this->config->item('e___14709');
 
 
-        //Show the discovery they competed:
-        echo view_i(12969, null, $is[0]);
+
+        //100% COMPLETE
+        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14730]['m__icon'].'</span>'.$e___14709[14730]['m__title'].'</div>';
+        echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14730]['m__message']).'</div>';
+        echo view_i(14730, null, $is[0]);
 
 
 
@@ -69,7 +72,7 @@ if(!count($is) || !$member_e){
 
         //Write Feedback
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14720]['m__icon'].'</span>'.$e___14709[14720]['m__title'].'</div>';
-        echo '<textarea class="form-control text-edit border" id="feedback_writing_14720" data-lpignore="true" placeholder="'.$e___14709[14720]['m__message'].'"></textarea>';
+        echo '<div class="padded"><textarea class="form-control text-edit border" id="feedback_writing_14720" data-lpignore="true" placeholder="'.$e___14709[14720]['m__message'].'"></textarea></div>';
 
 
 
@@ -77,12 +80,19 @@ if(!count($is) || !$member_e){
         //SHARE
         ?>
         <script>
+            function copy_idea_url(){
+                copyToClipboard($(".copy_idea_url"));
+                $(".copy_idea_text i").text('LINK COPIED ✅');
+            }
+
             $(document).ready(function () {
+
                 var new_url = "https://mench.com/<?= $is[0]['i__id'] ?>";
+                $('.copy_idea_url').text(new_url);
                 addthis.update('share', 'url', new_url);
                 addthis.url = new_url;
-                addthis.toolbox(".addthis_inline_share_toolbox");
-                $('.current_url').text(new_url);
+                addthis.toolbox(".addthis_inline_share_toolbox")
+
             });
 
             function complete_spin(){
@@ -92,23 +102,22 @@ if(!count($is) || !$member_e){
         <?php
 
         //Share
-        echo '<div class="headline"><span class="icon-block">' . $e___14709[13024]['m__icon'] . '</span>' . $e___14709[13024]['m__title'] . '</div>';
-        echo '<div class="current_url padded hideIfEmpty"></div>'; //URL
-        echo '<div class="addthis_inline_share_toolbox"></div>'; //AddThis: Customize at www.addthis.com/dashboard
+        echo '<div class="headline top-margin"><span class="icon-block">' . $e___14709[13024]['m__icon'] . '</span>' . $e___14709[13024]['m__title'] . '</div>';
+        echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[13024]['m__message']).'</div>';
+        echo '<div class="padded"><a href="javascript:void();" onclick="copy_idea_url()" class="block copy_idea_text"><span class="copy_idea_url hideIfEmpty inline-block"></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap">COPY LINK</i></a></div>';
+        echo '<div class="padded"><div class="addthis_inline_share_toolbox"></div></div>'; //AddThis: Customize at www.addthis.com/dashboard
 
 
 
-
-        //echo view_e_settings(14709, false);
 
         //Continious Updates
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14343]['m__icon'].'</span>'.$e___14709[14343]['m__title'].'</div>';
-        echo '<div class="padded">'.$e___14709[14343]['m__message'].'</div>';
+        echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14343]['m__message']).'</div>';
 
 
 
         //SAVE & NEXT
-        echo '<div class="discover-controller top-margin"><a class="controller-nav btn btn-lrg btn-discover go-next" href="'.$e___14709[14721]['m__message'].'" onclick="complete_spin()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__icon'].'</a></div>';
+        echo '<div class="discover-controller top-margin"><div><a class="controller-nav btn btn-lrg btn-discover go-next" href="'.$e___14709[14721]['m__message'].'" onclick="complete_spin()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__icon'].'</a></div></div>';
 
     }
 
