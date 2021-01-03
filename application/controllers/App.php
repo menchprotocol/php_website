@@ -38,6 +38,7 @@ class App extends CI_Controller
         boost_power();
         $member_e = false;
         $is_u_request = isset($_SERVER['SERVER_NAME']);
+        $title = null;
 
         if($memory_detected && $is_u_request){
             //Needs superpowers?
@@ -101,6 +102,7 @@ class App extends CI_Controller
             $ui .= '<div class="container">';
             if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){
                 $e___6287 = $this->config->item('e___6287'); //MENCH APP
+                $title = $e___6287[$app_e__id]['m__title'];
                 $ui .= '<h1 class="'.extract_icon_color($e___6287[$app_e__id]['m__icon']).'">' . $e___6287[$app_e__id]['m__title'] . '</h1>';
                 if(strlen($e___6287[$app_e__id]['m__message']) > 0){
                     $ui .= '<p class="msg">'.$e___6287[$app_e__id]['m__message'].'</p>';
@@ -133,15 +135,29 @@ class App extends CI_Controller
 
         //Append additional info for members:
         if($is_u_request){
+
             $log_data['x__message'] = current_link();
-            if(count($_GET)){
-                foreach(array(
-                            'e__id' => 'x__down',
-                            'i__id' => 'x__left'
-                        ) as $get_key => $x_save){
-                    if(isset($_GET[$get_key]) && intval($_GET[$get_key])){
-                        $log_data[$x_save] = intval($_GET[$get_key]);
-                    }
+
+            //Any more data to append?
+            if(isset($_GET['e__id'])){
+                $es = $this->E_model->fetch(array(
+                    'e__id' => $_GET['e__id'],
+                    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                ));
+                if(count($es)){
+                    $log_data['x__down'] = $es[0]['e__id'];
+                    $title = $es[0]['e__title'].' | '.$title;
+                }
+            }
+
+            if(isset($_GET['i__id'])){
+                $is = $this->I_model->fetch(array(
+                    'i__id' => $_GET['i__id'],
+                    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                ));
+                if(count($is)){
+                    $log_data['x__left'] = $is[0]['i__id'];
+                    $title = $is[0]['i__title'].' | '.$title;
                 }
             }
         }
@@ -170,7 +186,7 @@ class App extends CI_Controller
                 //Regular UI:
                 //Load App:
                 echo $this->load->view('header', array(
-                    'title' => $e___6287[$app_e__id]['m__title'].' | MENCH',
+                    'title' => $title.' | MENCH',
                     'basic_header_footer' => $basic_header,
                 ), true);
                 echo $ui;
