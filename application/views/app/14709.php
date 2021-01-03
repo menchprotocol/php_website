@@ -91,12 +91,10 @@ if(!count($is) || !$member_e){
         </script>
         <?php
 
-        //URL
-        echo '<div class="headline"><span class="icon-block">' . $e___14393[10876]['m__icon'] . '</span>' . $e___14393[10876]['m__title'] . '</div>';
-        echo '<div class="current_url padded hideIfEmpty"></div>';
-
-        //Add This
-        echo '<div class="addthis_inline_share_toolbox"></div>'; //Customize at www.addthis.com/dashboard
+        //Share
+        echo '<div class="headline"><span class="icon-block">' . $e___14709[13024]['m__icon'] . '</span>' . $e___14709[13024]['m__title'] . '</div>';
+        echo '<div class="current_url padded hideIfEmpty"></div>'; //URL
+        echo '<div class="addthis_inline_share_toolbox"></div>'; //AddThis: Customize at www.addthis.com/dashboard
 
 
 
