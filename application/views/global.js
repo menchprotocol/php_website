@@ -297,7 +297,7 @@ function copyToClipboard(elem) {
 }
 
 function copy_share_this_url(){
-    copyToClipboard(document.getElementById("share_this_url"));
+    copyToClipboard(document.getElementById("share_this_url_target"));
     $("#share_this_url i").text('✅COPIED');
     return false;
 }
@@ -338,7 +338,7 @@ $(document).ready(function () {
         } else if(note_type_id==13024){
             //Share URL
             $('#share_this_url').attr('href', window.location.href);
-            $('#share_this_url span').text(window.location.href);
+            $('#share_this_url_target').val(window.location.href);
         }
     });
 
