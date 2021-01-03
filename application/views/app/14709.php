@@ -58,12 +58,18 @@ if(!count($is) || !$member_e){
         //Rate
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14712]['m__icon'].'</span>'.$e___14709[14712]['m__title'].'</div>';
         echo '<div class="padded">'.$e___14709[14712]['m__message'].'</div>';
+        foreach($this->config->item('e___14712') as $x__type => $m){
+            echo '<div class="form-check">
+                    <input class="form-check-input" type="radio" name="feedback_rating_14712" id="formRadio'.$x__type.'" value="'.$x__type.'">
+                    <label class="form-check-label" for="formRadio'.$x__type.'"><span class="icon-block">' . $m['m__icon'] . '</span>' . $m['m__title'] . '</label>
+                </div>';
+        }
 
 
 
         //Write Feedback
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14720]['m__icon'].'</span>'.$e___14709[14720]['m__title'].'</div>';
-        echo '<div class="padded">'.$e___14709[14720]['m__message'].'</div>';
+        echo '<textarea class="form-control text-edit border" id="feedback_writing_14720" data-lpignore="true" placeholder="'.$e___14709[14720]['m__message'].'"></textarea>';
 
 
 
