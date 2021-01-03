@@ -1929,7 +1929,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
                 $ui .= $box_items_list;
                 $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
 
-                if($show_time){
+                if($show_time && isset($e['x__time'])){
                     $ui .= '<span class="headline-input doregular grey" data-toggle="tooltip" data-placement="top" title="'.substr($e['x__time'], 0, 19).' '.view_memory(6404,11079).'">'.view_time_difference(strtotime($e['x__time'])).' Ago</span>';
                 }
                 $ui .= '</a>';
