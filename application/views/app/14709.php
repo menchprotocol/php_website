@@ -57,7 +57,7 @@ if(!count($is) || !$member_e){
 
         //Rate
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14712]['m__icon'].'</span>'.$e___14709[14712]['m__title'].'</div>';
-        echo '<div class="padded">'.$e___14709[14712]['m__message'].'</div>';
+        echo '<div class="padded hideIfEmpty">'.$e___14709[14712]['m__message'].'</div>';
         foreach($this->config->item('e___14712') as $x__type => $m){
             echo '<div class="form-check">
                     <input class="form-check-input" type="radio" name="feedback_rating_14712" id="formRadio'.$x__type.'" value="'.$x__type.'">
@@ -78,7 +78,7 @@ if(!count($is) || !$member_e){
         ?>
         <script>
             $(document).ready(function () {
-                var new_url = "http://www.google.com";
+                var new_url = "https://mench.com/<?= $is[0]['i__id'] ?>";
                 addthis.update('share', 'url', new_url);
                 addthis.url = new_url;
                 addthis.toolbox(".addthis_inline_share_toolbox");
@@ -108,10 +108,7 @@ if(!count($is) || !$member_e){
 
 
         //SAVE & NEXT
-        echo '<div class="discover-controller">';
-        echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="'.$e___14709[14721]['m__message'].'" onclick="complete_spin()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__icon'].'</a></div>';
-        echo '</div>';
-
+        echo '<div class="discover-controller top-margin"><a class="controller-nav btn btn-lrg btn-discover go-next" href="'.$e___14709[14721]['m__message'].'" onclick="complete_spin()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__icon'].'</a></div>';
 
     }
 
