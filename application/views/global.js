@@ -337,7 +337,7 @@ $(document).ready(function () {
             $('.current_url').text(window.location.href);
         } else if(note_type_id==13024){
             //Share URL
-            $('#share_this_url').attr('href', window.location.href);
+            $('#share_this_url span').text(window.location.href);
             $('#share_this_url_target').val(window.location.href);
         }
     });
