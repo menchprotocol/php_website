@@ -88,6 +88,7 @@ if(!count($is) || !$member_e){
         <script>
 
             function go_to_next(){
+                return false;
                 setTimeout(function () {
                     window.location = '<?= $e___14709[14721]['m__message'] ?>';
                 }, 1597);
