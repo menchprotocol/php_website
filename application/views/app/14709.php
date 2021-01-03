@@ -96,8 +96,7 @@ if(!count($is) || !$member_e){
         //Share
         echo '<div class="headline top-margin"><span class="icon-block">' . $e___14709[13024]['m__icon'] . '</span>' . $e___14709[13024]['m__title'] . '</div>';
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[13024]['m__message']).'</div>';
-        echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
-        echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(new_url);$(\'.was_copied\').text(\'✅COPIED\');">'.$current_link.'&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
+        echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(new_url);$(\'.was_copied\').text(\'✅COPIED\');"><span></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
         echo '<div class="padded"><div class="addthis_inline_share_toolbox"></div></div>'; //AddThis: Customize at www.addthis.com/dashboard
 
 
