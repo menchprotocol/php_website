@@ -277,7 +277,7 @@ function copyTextToClipboard(text) {
 
     navigator.clipboard.writeText(text).then(function() {
         console.log('Async: Copying to clipboard was successful!');
-        $('.was_copied').text('✅ COPIED');
+        $('.was_copied').text('✅ COPIED').hide().fadeIn();
         x_create({
             x__source: js_pl_id,
             x__type: 14732, //COPIED
