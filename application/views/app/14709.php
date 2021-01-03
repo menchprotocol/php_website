@@ -51,6 +51,11 @@ if(!count($is) || !$member_e){
 
         echo '<div class="submit_feedback">';
 
+        if(count($was_sibmitted)){
+            //Editing, let them know:
+            echo '<div class="padded">You first submitted your feedback for this discovery ' . view_time_difference(strtotime($was_sibmitted[0]['x__time'])) . ' Ago</div>';
+        }
+
 
         //100% COMPLETE
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14730]['m__icon'].'</span>'.$e___14709[14730]['m__title'].'</div>';
@@ -88,7 +93,6 @@ if(!count($is) || !$member_e){
         <script>
 
             function go_to_next(){
-                return false;
                 setTimeout(function () {
                     window.location = '<?= $e___14709[14721]['m__message'] ?>';
                 }, 1597);

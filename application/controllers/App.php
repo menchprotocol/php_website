@@ -205,6 +205,49 @@ class App extends CI_Controller
 
     function app_14709(){
 
+        //Check all core variables:
+        if (!isset($_POST['x__source']) || !isset($_POST['i__id']) || !isset($_POST['update_x__id']) || !isset($_POST['rating_e__id']) || !isset($_POST['feedback_text'])){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Starting Idea',
+            ));
+        }
+
+
+        if(intval($_POST['update_x__id']) > 0){
+
+            //Update:
+            $this->X_model->update($_POST['update_x__id'], array(
+                'x__up' => $_POST['rating_e__id'],
+                'x__message' => $_POST['feedback_text'],
+            ), $_POST['x__source'], 14733); //Update Discovery Rating
+
+        } else {
+
+            //Create:
+            $this->X_model->create(array(
+                'x__source' => $_POST['x__source'],
+                'x__type' => 14709, //RATE DISCOVERY
+                'x__right' => $_POST['i__id'],
+                //Feedback Info:
+                'x__up' => $_POST['rating_e__id'],
+                'x__message' => $_POST['feedback_text'],
+            ));
+
+        }
+
+        //Return report:
+        return view_json(array(
+            'status' => 1,
+        ));
+
+    }
+
+
+
+
+    function app_7264(){
+
         //Authenticate Member:
         $member_e = superpower_unlocked(12700);
 
@@ -248,48 +291,6 @@ class App extends CI_Controller
             'message' => '<h3>'.$e___4737[$is[0]['i__type']]['m__icon'].' '.view_i_title($is[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $is[0]['i__type']),
         ));
 
-    }
-
-
-
-
-    function app_7264(){
-
-        //Check all core variables:
-        if (!isset($_POST['x__source']) || !isset($_POST['i__id']) || !isset($_POST['update_x__id']) || !isset($_POST['rating_e__id']) || !isset($_POST['feedback_text'])){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Starting Idea',
-            ));
-        }
-
-
-        if(intval($_POST['update_x__id']) > 0){
-
-            //Update:
-            $this->X_model->update($_POST['update_x__id'], array(
-                'x__up' => $_POST['rating_e__id'],
-                'x__message' => $_POST['feedback_text'],
-            ), $_POST['x__source'], 14733); //Update Discovery Rating
-
-        } else {
-
-            //Create:
-            $this->X_model->create(array(
-                'x__source' => $_POST['x__source'],
-                'x__type' => 14709, //RATE DISCOVERY
-                'x__right' => $_POST['i__id'],
-                //Feedback Info:
-                'x__up' => $_POST['rating_e__id'],
-                'x__message' => $_POST['feedback_text'],
-            ));
-
-        }
-
-        //Return report:
-        return view_json(array(
-            'status' => 1,
-        ));
 
     }
 
