@@ -249,7 +249,7 @@ function x_create(add_fields){
 function copyToClipboard(element) {
     var $temp = $("<input>");
     $("body").append($temp);
-    $temp.val($(element).val()).select();
+    $temp.val($(element).text()).select();
     document.execCommand("copy");
     $temp.remove();
 }
