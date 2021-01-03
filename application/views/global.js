@@ -255,8 +255,9 @@ function copyToClipboard(element) {
 }
 
 function copy_share_this_url(){
-    $("#share_this_url i").text('✅COPIED');
     copyToClipboard("#share_this_url_target");
+    $("#share_this_url i").text('✅COPIED');
+    alert('aaa');
 }
 
 var algolia_index = false;
