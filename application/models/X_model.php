@@ -1055,7 +1055,7 @@ class X_model extends CI_Model
                 }
             }
 
-            if($on_its_own_line && !$e_media_count && !count($e_urls)){
+            if($on_its_own_line && !$e_media_count){
 
                 //Just replace with
                 $output_body_message = str_replace($identifier_string, view_e(14672, $x, null, false, null, $edit_btn), $output_body_message);
