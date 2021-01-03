@@ -16,7 +16,7 @@ if(!count($is) || !$member_e){
     //Fetch their discoveries:
     if($completion_rate['completion_percentage'] < 100){
 
-        $error_message = 'Idea not yet completed';
+        $error_message = 'Idea not yet completed. Redirecting now...';
         $this->X_model->create(array(
             'x__source' => $member_e['e__id'],
             'x__type' => 4246, //Platform Bug Reports
@@ -26,23 +26,7 @@ if(!count($is) || !$member_e){
         ));
         echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.$error_message.'</div>';
 
-    } elseif(!count($this->X_model->fetch(array(
-        'x__source' => $member_e['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        'i__id' => $is[0]['i__id'],
-    ), array('x__left')))){
-
-        $error_message = 'Idea not part of member discoveries';
-        $this->X_model->create(array(
-            'x__source' => $member_e['e__id'],
-            'x__type' => 4246, //Platform Bug Reports
-            'x__up' => 14709,
-            'x__left' => $is[0]['i__id'],
-            'x__message' => $error_message,
-        ));
-        echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.$error_message.'</div>';
+        js_redirect('/'.$is[0]['i__id'], 2584);
 
     } else {
 
