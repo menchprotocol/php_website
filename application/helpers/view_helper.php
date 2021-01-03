@@ -1535,6 +1535,7 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
         return 'Invalid x__type '.$x__type;
     }
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
+    $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $e_of_i = e_of_i($i['i__id']);
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
@@ -1580,9 +1581,10 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
     $is_any_lock = $is_soft_lock || $is_hard_lock;
     $lock_notice = (  $top_is_lock ? 14488 : 14377 );
 
-
     if(in_array($x__type, $CI->config->item('n___14454')) && $completion_rate['completion_percentage']<100){
         $href = '/x/x_next/'.$i['i__id'];
+    } elseif(strlen($e___13369[$x__type]['m__message'])){
+        $href = $e___13369[$x__type]['m__message'].$i['i__id'];
     } elseif($discovery_mode){
         $href = '/'.$i['i__id'];
     } else {

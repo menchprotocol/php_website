@@ -1,6 +1,7 @@
 <?php
 
 $e___14709 = $this->config->item('e___14709');
+$e___11035 = $this->config->item('e___11035');
 
 $is = $this->I_model->fetch(array(
     'i__id' => ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 ),
@@ -8,10 +9,25 @@ $is = $this->I_model->fetch(array(
 ));
 
 
-if(!count($is) || !$member_e){
+if(!$member_e){
 
-    echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing member and/or idea.</div>';
+    echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Must be signed in.</div>';
     js_redirect('/', 13);
+
+} elseif(!count($is)){
+
+    //List all eligible:
+
+    $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[14730]['m__icon'].'</span>'.$e___11035[14730]['m__title'].'</div>';
+    $ui .= '<div class="row margin-top-down-half hideIfEmpty" id="list-in-14730">';
+    foreach(view_coins_e(6255, $member_e['e__id'], 1) as $item){
+        $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
+        if($completion_rate['completion_percentage'] >= 100){
+            $ui .= view_i(14730, null, $item, false, null, $member_e, $completion_rate);
+        }
+    }
+    $ui .= '</div>';
+
 
 } else {
 
