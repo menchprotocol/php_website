@@ -246,19 +246,17 @@ function x_create(add_fields){
 }
 
 
-function copyToClipboard(elem) {
-
-    /* Select the text field */
-    elem.select();
-    elem.setSelectionRange(0, 99999); /* For mobile devices */
-
-    /* Copy the text inside the text field */
+function copyToClipboard(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(element).val()).select();
     document.execCommand("copy");
+    $temp.remove();
 }
 
 function copy_share_this_url(){
     $("#share_this_url i").text('✅COPIED');
-    copyToClipboard(document.getElementById("share_this_url_target"));
+    copyToClipboard("#share_this_url_target");
 }
 
 var algolia_index = false;
