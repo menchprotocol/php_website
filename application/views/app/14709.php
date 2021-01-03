@@ -81,8 +81,9 @@ if(!count($is) || !$member_e){
         ?>
         <script>
 
+            var new_url = "https://mench.com/<?= $is[0]['i__id'] ?>";
+
             $(document).ready(function () {
-                var new_url = "https://mench.com/<?= $is[0]['i__id'] ?>";
                 addthis.update('share', 'url', new_url);
                 addthis.url = new_url;
                 addthis.toolbox(".addthis_inline_share_toolbox");
@@ -96,13 +97,18 @@ if(!count($is) || !$member_e){
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
             }
 
+            function copy_share(){
+                copyTextToClipboard(new_url);
+                $('.was_copied').text('✅ COPIED');
+            }
+
         </script>
         <?php
 
         //Share
         echo '<div class="headline top-margin"><span class="icon-block">' . $e___14709[13024]['m__icon'] . '</span>' . $e___14709[13024]['m__title'] . '</div>';
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[13024]['m__message']).'</div>';
-        echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(new_url);$(\'.was_copied\').text(\'✅ COPIED\');"><span class="share_url"></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
+        echo '<div class="padded"><a href="javascript:void();" onclick="copy_share()"><span class="share_url"></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
         echo '<div class="padded"><div class="addthis_inline_share_toolbox"></div></div>'; //AddThis: Customize at www.addthis.com/dashboard
 
 
