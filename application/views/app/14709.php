@@ -80,31 +80,24 @@ if(!count($is) || !$member_e){
         //SHARE
         ?>
         <script>
-            function copy_idea_url(){
-                copyToClipboard($(".copy_idea_url"));
-                $(".copy_idea_text i").text('✅COPIED');
-            }
 
-            $(document).ready(function () {
-
-                var new_url = "https://mench.com/<?= $is[0]['i__id'] ?>";
-                $('.copy_idea_url').text(new_url);
-                addthis.update('share', 'url', new_url);
-                addthis.url = new_url;
-                addthis.toolbox(".addthis_inline_share_toolbox")
-
-            });
+            var new_url = "https://mench.com/<?= $is[0]['i__id'] ?>";
+            addthis.update('share', 'url', new_url);
+            addthis.url = new_url;
+            addthis.toolbox(".addthis_inline_share_toolbox");
 
             function complete_spin(){
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
             }
+
         </script>
         <?php
 
         //Share
         echo '<div class="headline top-margin"><span class="icon-block">' . $e___14709[13024]['m__icon'] . '</span>' . $e___14709[13024]['m__title'] . '</div>';
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[13024]['m__message']).'</div>';
-        echo '<div class="padded"><a href="javascript:void();" onclick="copy_idea_url()" class="block copy_idea_text"><span class="copy_idea_url hideIfEmpty inline-block"></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap">COPY</i></a></div>';
+        echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
+        echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(new_url);$(\'.was_copied\').text(\'✅COPIED\');">'.$current_link.'&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
         echo '<div class="padded"><div class="addthis_inline_share_toolbox"></div></div>'; //AddThis: Customize at www.addthis.com/dashboard
 
 
