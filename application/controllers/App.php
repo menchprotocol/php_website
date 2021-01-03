@@ -146,7 +146,7 @@ class App extends CI_Controller
                 ));
                 if(count($es)){
                     $log_data['x__down'] = $es[0]['e__id'];
-                    $title = $es[0]['e__title'].' | '.$title;
+                    $title .= ' | '.$es[0]['e__title'];
                 }
             }
 
@@ -157,7 +157,7 @@ class App extends CI_Controller
                 ));
                 if(count($is)){
                     $log_data['x__left'] = $is[0]['i__id'];
-                    $title = $is[0]['i__title'].' | '.$title;
+                    $title .= ' | '.$is[0]['i__title'];
                 }
             }
         }
