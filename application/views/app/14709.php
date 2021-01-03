@@ -72,7 +72,7 @@ if(!count($is) || !$member_e){
 
         //Write Feedback
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14720]['m__icon'].'</span>'.$e___14709[14720]['m__title'].'</div>';
-        echo '<div class="padded"><textarea class="form-control text-edit border" id="feedback_writing_14720" data-lpignore="true" placeholder="'.$e___14709[14720]['m__message'].'"></textarea></div>';
+        echo '<div class="padded"><textarea class="form-control text-edit border no-padding" id="feedback_writing_14720" data-lpignore="true" placeholder="'.$e___14709[14720]['m__message'].'"></textarea></div>';
 
 
 
@@ -81,10 +81,16 @@ if(!count($is) || !$member_e){
         ?>
         <script>
 
-            var new_url = "https://mench.com/<?= $is[0]['i__id'] ?>";
-            addthis.update('share', 'url', new_url);
-            addthis.url = new_url;
-            addthis.toolbox(".addthis_inline_share_toolbox");
+            $(document).ready(function () {
+                var new_url = "https://mench.com/<?= $is[0]['i__id'] ?>";
+                addthis.update('share', 'url', new_url);
+                addthis.url = new_url;
+                addthis.toolbox(".addthis_inline_share_toolbox");
+
+                $('.share_url').text(new_url);
+
+                set_autosize($('#feedback_writing_14720'));
+            });
 
             function complete_spin(){
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
@@ -96,9 +102,8 @@ if(!count($is) || !$member_e){
         //Share
         echo '<div class="headline top-margin"><span class="icon-block">' . $e___14709[13024]['m__icon'] . '</span>' . $e___14709[13024]['m__title'] . '</div>';
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[13024]['m__message']).'</div>';
-        echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(new_url);$(\'.was_copied\').text(\'✅COPIED\');"><span></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
+        echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(new_url);$(\'.was_copied\').text(\'✅ COPIED\');"><span class="share_url"></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
         echo '<div class="padded"><div class="addthis_inline_share_toolbox"></div></div>'; //AddThis: Customize at www.addthis.com/dashboard
-
 
 
 
@@ -109,7 +114,7 @@ if(!count($is) || !$member_e){
 
 
         //SAVE & NEXT
-        echo '<div class="discover-controller top-margin"><div><a class="controller-nav btn btn-lrg btn-discover go-next" href="'.$e___14709[14721]['m__message'].'" onclick="complete_spin()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__icon'].'</a></div></div>';
+        echo '<div class="discover-controller"><div><a class="controller-nav btn btn-lrg btn-discover go-next top-margin" href="'.$e___14709[14721]['m__message'].'" onclick="complete_spin()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__icon'].'</a></div></div>';
 
     }
 
