@@ -1846,7 +1846,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $is_public = in_array($e['e__id'], $public_sources) || in_array($focus_e__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
 
 
-    if(($is_private && !$superpower_12701) || (!$is_public && !$superpower_13422)){
+    if(($is_private && !$superpower_12701) || (!$is_public && !$source_of_e && !$superpower_13422)){
         //PRIVATE SOURCE:
         return ( $superpower_13422 || in_array($x__type, $CI->config->item('n___14691')) ? '<div class="list-group-item itemsource no-side-padding '. $extra_class  . '"><span class="icon-block">'.$e___11035[4755]['m__icon'].'</span>'.$e___11035[4755]['m__title'].'</div>' : null );
     }
