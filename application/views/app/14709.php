@@ -32,7 +32,7 @@ if(!count($is) || !$member_e){
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'i__id' => $is[0]['i__id'],
-    )))){
+    ), array('x__right')))){
 
         $error_message = 'Idea not part of member discoveries';
         $this->X_model->create(array(
