@@ -107,7 +107,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     //URL
                     echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
                     echo '<div class="padded"><a href="javascript:void(0);" onclick="return copy_share_this_url();" id="share_this_url" class="inline-block"><span></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap">COPY</i></a></div>';
-                    echo '<input type="text" id="share_this_url_target" value="">';
+                    echo '<input type="text" id="share_this_url_target" class="hidden" value="" />';
 
 
                     //Add This
