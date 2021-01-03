@@ -297,9 +297,8 @@ function copyToClipboard(elem) {
 }
 
 function copy_share_this_url(){
-    copyToClipboard(document.getElementById("share_this_url_target"));
     $("#share_this_url i").text('✅COPIED');
-    return false;
+    copyToClipboard(document.getElementById("share_this_url_target"));
 }
 
 var algolia_index = false;
