@@ -297,8 +297,9 @@ function copyToClipboard(elem) {
 }
 
 function copy_share_this_url(){
-    copyToClipboard($(".share_this_url"));
-    $(".share_this_text i").text('LINK COPIED ✅');
+    copyToClipboard(document.getElementById("share_this_url"));
+    $("#share_this_url i").text('✅COPIED');
+    return false;
 }
 
 var algolia_index = false;
@@ -336,7 +337,8 @@ $(document).ready(function () {
             $('.current_url').text(window.location.href);
         } else if(note_type_id==13024){
             //Share URL
-            $('.share_this_url').text(window.location.href);
+            $('#share_this_url').attr('href', window.location.href);
+            $('#share_this_url span').text(window.location.href);
         }
     });
 
