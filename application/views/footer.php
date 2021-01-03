@@ -103,12 +103,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body">
 
                     <?php
+                    //URL
                     echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
                     echo '<div class="current_url padded hideIfEmpty"></div>';
-                    ?>
 
-                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                    <div class="addthis_inline_share_toolbox"></div>
+                    //Add This
+                    echo '<div class="addthis_inline_share_toolbox"></div>'; //Customize at www.addthis.com/dashboard
+                    ?>
 
                 </div>
             </div>

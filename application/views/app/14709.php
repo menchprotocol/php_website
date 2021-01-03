@@ -11,9 +11,105 @@ if(!count($is) || !$member_e){
 
 } else {
 
-    echo $is[0]['i__title'];
+    $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $is[0]);
 
-    echo view_e_settings(14709, false);
+    //Fetch their discoveries:
+    if($completion_rate['completion_percentage'] < 100){
+
+        $error_message = 'Idea not yet completed';
+        $this->X_model->create(array(
+            'x__source' => $member_e['e__id'],
+            'x__type' => 4246, //Platform Bug Reports
+            'x__up' => 14709,
+            'x__left' => $is[0]['i__id'],
+            'x__message' => $error_message,
+        ));
+        echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.$error_message.'</div>';
+
+    } elseif(!count($this->X_model->fetch(array(
+        'x__source' => $member_e['e__id'],
+        'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'i__id' => $is[0]['i__id'],
+    )))){
+
+        $error_message = 'Idea not part of member discoveries';
+        $this->X_model->create(array(
+            'x__source' => $member_e['e__id'],
+            'x__type' => 4246, //Platform Bug Reports
+            'x__up' => 14709,
+            'x__left' => $is[0]['i__id'],
+            'x__message' => $error_message,
+        ));
+        echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.$error_message.'</div>';
+
+    } else {
+
+        //All good
+        $e___14709 = $this->config->item('e___14709');
+
+
+        //Show the discovery they competed:
+        echo view_i(12969, null, $is[0]);
+
+
+
+        //Rate
+        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14712]['m__icon'].'</span>'.$e___14709[14712]['m__title'].'</div>';
+        echo '<div class="padded">'.$e___14709[14712]['m__message'].'</div>';
+
+
+
+        //Write Feedback
+        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14720]['m__icon'].'</span>'.$e___14709[14720]['m__title'].'</div>';
+        echo '<div class="padded">'.$e___14709[14720]['m__message'].'</div>';
+
+
+
+
+        //SHARE
+        ?>
+        <script>
+            $(document).ready(function () {
+                var new_url = "http://www.google.com";
+                addthis.update('share', 'url', new_url);
+                addthis.url = new_url;
+                addthis.toolbox(".addthis_inline_share_toolbox");
+                $('.current_url').text(new_url);
+            });
+
+            function complete_spin(){
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
+            }
+        </script>
+        <?php
+
+        //URL
+        echo '<div class="headline"><span class="icon-block">' . $e___14393[10876]['m__icon'] . '</span>' . $e___14393[10876]['m__title'] . '</div>';
+        echo '<div class="current_url padded hideIfEmpty"></div>';
+
+        //Add This
+        echo '<div class="addthis_inline_share_toolbox"></div>'; //Customize at www.addthis.com/dashboard
+
+
+
+
+        //echo view_e_settings(14709, false);
+
+        //Continious Updates
+        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14343]['m__icon'].'</span>'.$e___14709[14343]['m__title'].'</div>';
+        echo '<div class="padded">'.$e___14709[14343]['m__message'].'</div>';
+
+
+
+        //SAVE & NEXT
+        echo '<div class="discover-controller">';
+        echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="'.$e___14709[14721]['m__message'].'" onclick="complete_spin()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__icon'].'</a></div>';
+        echo '</div>';
+
+
+    }
 
 }
 
