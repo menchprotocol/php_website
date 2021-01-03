@@ -72,7 +72,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     //Details
                     echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14395]['m__icon'].'</span>'.$e___14393[14395]['m__title'].'</div>';
-                    echo '<textarea class="form-control text-edit border" id="sugg_note" data-lpignore="true" placeholder="More details here..."></textarea>';
+                    echo '<div class="padded"><textarea class="form-control text-edit border" id="sugg_note" data-lpignore="true" placeholder="More details here..."></textarea></div>';
 
                     ?>
 
@@ -107,7 +107,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     //URL
                     $current_link = current_link();
                     echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
-                    echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(\''.$current_link.'\');$(\'.was_copied\').text(\'✅ COPIED\');">'.$current_link.'&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
+                    echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(\''.$current_link.'\');">'.$current_link.'&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
 
                     //Add This
                     echo '<div class="addthis_inline_share_toolbox"></div>'; //Customize at www.addthis.com/dashboard

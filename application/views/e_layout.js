@@ -274,9 +274,6 @@ function e__add(x__type, e_existing_id) {
 
             e_sort_portfolio_load();
 
-            //Tooltips:
-            $('[data-toggle="tooltip"]').tooltip();
-
         } else {
             //We had an error:
             alert(data.message);

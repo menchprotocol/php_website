@@ -269,7 +269,6 @@ function view_i_note($x__type, $is_discovery_mode, $x, $note_e = false)
     if($editable_discovery && isset($x['e__id'])){
         //Show member:
         $ui .= view_e(14672, $x);
-
     }
 
     //Type & Delivery Method:

@@ -212,9 +212,6 @@ function e_add_only_7551(e_existing_id, note_type_id) {
             //Add new object to list:
             add_to_list(list_id, '.en-item', data.e_new_echo, false);
 
-            //Tooltips:
-            $('[data-toggle="tooltip"]').tooltip();
-
         } else {
             //We had an error:
             alert(data.message);

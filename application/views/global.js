@@ -269,14 +269,27 @@ function fallbackCopyTextToClipboard(text) {
     document.body.removeChild(textArea);
 }
 function copyTextToClipboard(text) {
+
     if (!navigator.clipboard) {
         fallbackCopyTextToClipboard(text);
         return;
     }
+
     navigator.clipboard.writeText(text).then(function() {
         console.log('Async: Copying to clipboard was successful!');
+        $('.was_copied').text('✅ COPIED');
+        x_create({
+            x__source: js_pl_id,
+            x__type: 14732, //COPIED
+            x__message: text,
+        });
     }, function(err) {
-        console.error('Async: Could not copy text: ', err);
+        console.error('Async Error: Could not copy text: ', err);
+        x_create({
+            x__source: js_pl_id,
+            x__type: 4246, //BUG
+            x__message: 'Async Error: Could not copy text: ' + text,
+        });
     });
 }
 
@@ -983,6 +996,9 @@ function add_to_list(sort_list_id, sort_handler, html_content, add_to_start) {
 
     lazy_load();
     init_remove();
+
+    //Tooltips:
+    $('[data-toggle="tooltip"]').tooltip();
 
 }
 
@@ -2199,6 +2215,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
 
 
+var i_is_adding = false;
 function i_add(x__type, link_i__id, focus__id) {
 
     /*
@@ -2209,6 +2226,11 @@ function i_add(x__type, link_i__id, focus__id) {
      *
      * */
 
+    if(i_is_adding){
+        return false;
+    }
+
+    i_is_adding = true;
     var sort_handler = ".i_cover";
     var sort_list_id = "list-in-" + x__type;
     var input_field = $('.new-list-'+x__type+' .add-input');
@@ -2238,6 +2260,7 @@ function i_add(x__type, link_i__id, focus__id) {
         //Delete loader:
         $("#tempLoader").remove();
         input_field.removeClass('dynamic_saving').prop("disabled", false).focus();
+        i_is_adding = false;
 
         if (data.status) {
 
@@ -2253,9 +2276,6 @@ function i_add(x__type, link_i__id, focus__id) {
 
             //Lookout for textinput updates
             x_set_start_text();
-
-            //Tooltips:
-            $('[data-toggle="tooltip"]').tooltip();
 
         } else {
             //Show errors:
