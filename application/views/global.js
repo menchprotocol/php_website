@@ -1066,8 +1066,8 @@ function i_load_search(x__type, focus__id) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return i_add(x__type, 0, focus__id);
             e.preventDefault();
+            return i_add(x__type, 0, focus__id);
         }
 
     }).on('autocomplete:selected', function (event, suggestion, dataset) {

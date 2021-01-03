@@ -933,7 +933,7 @@ class E extends CI_Controller
 
                     return view_json($detected_x_type);
 
-                } elseif (in_array($detected_x_type['x__type'], $this->config->item('n___4537'))) {
+                } elseif (in_array($detected_x_type['x__type'], $this->config->item('n___4537')) && isset($detected_x_type['url_root']) /* This prevents issues with /mench_urls that start with / */) {
 
                     //This is a URL, validate modification:
 
