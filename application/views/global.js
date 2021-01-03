@@ -247,11 +247,8 @@ function x_create(add_fields){
 
 
 function copyToClipboard(element) {
-    var $temp = $("<input>");
-    $("body").append($temp);
-    $temp.val($(element).text()).select();
+    $(element).select();
     document.execCommand("copy");
-    $temp.remove();
 }
 
 function copy_share_this_url(){
