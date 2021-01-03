@@ -107,8 +107,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     //URL
                     $current_link = current_link();
                     echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
-                    echo '<div class="padded"><button onclick="copyToClipboard(\'#share_this_url_target\')">'.$current_link.'&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></button></div>';
-                    echo '<p id="share_this_url_target">'.$current_link.'</p>';
+                    echo '<div class="padded"><button onclick="copyTextToClipboard(\''.$current_link.'\');$(\'.was_copied\').text(\'✅COPIED\');">'.$current_link.'&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></button></div>';
 
                     //Add This
                     echo '<div class="addthis_inline_share_toolbox"></div>'; //Customize at www.addthis.com/dashboard
