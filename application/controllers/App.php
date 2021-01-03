@@ -38,7 +38,6 @@ class App extends CI_Controller
         boost_power();
         $member_e = false;
         $is_u_request = isset($_SERVER['SERVER_NAME']);
-        $title = null;
 
         if($memory_detected && $is_u_request){
             //Needs superpowers?
@@ -61,28 +60,33 @@ class App extends CI_Controller
 
 
         //Cache App?
+        $title = null;
         $ui = null;
         $new_cache = false;
         $cache_x__id = 0;
         $cache_x__time = null;
-        if($memory_detected && in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
+        if($memory_detected){
 
-            //Fetch Most Recent Cache:
-            foreach($this->X_model->fetch(array(
-                'x__type' => 14599, //Cache App
-                'x__up' => $app_e__id,
-                'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
-                $ui = $latest_cache['x__message'];
-                $cache_x__id = $latest_cache['x__id'];
-                $cache_x__time = '<div class="texttransparent center css__title doupper">Updated ' . view_time_difference(strtotime($latest_cache['x__time'])) . ' Ago</div>';
-            }
-            if(!$ui){
-                //No recent cache found, create a new one:
-                $new_cache = true;
-            }
+            $e___6287 = $this->config->item('e___6287'); //MENCH APP
+            $title = $e___6287[$app_e__id]['m__title'];
 
+            if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
+                //Fetch Most Recent Cache:
+                foreach($this->X_model->fetch(array(
+                    'x__type' => 14599, //Cache App
+                    'x__up' => $app_e__id,
+                    'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
+                    $ui = $latest_cache['x__message'];
+                    $cache_x__id = $latest_cache['x__id'];
+                    $cache_x__time = '<div class="texttransparent center css__title doupper">Updated ' . view_time_difference(strtotime($latest_cache['x__time'])) . ' Ago</div>';
+                }
+                if(!$ui){
+                    //No recent cache found, create a new one:
+                    $new_cache = true;
+                }
+            }
         }
 
 
@@ -101,8 +105,6 @@ class App extends CI_Controller
 
             $ui .= '<div class="container">';
             if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){
-                $e___6287 = $this->config->item('e___6287'); //MENCH APP
-                $title = $e___6287[$app_e__id]['m__title'];
                 $ui .= '<h1 class="'.extract_icon_color($e___6287[$app_e__id]['m__icon']).'">' . $e___6287[$app_e__id]['m__title'] . '</h1>';
                 if(strlen($e___6287[$app_e__id]['m__message']) > 0){
                     $ui .= '<p class="msg">'.$e___6287[$app_e__id]['m__message'].'</p>';
@@ -146,7 +148,7 @@ class App extends CI_Controller
                 ));
                 if(count($es)){
                     $log_data['x__down'] = $es[0]['e__id'];
-                    $title .= ' | '.$es[0]['e__title'];
+                    $title = $es[0]['e__title'].' | '.$title;
                 }
             }
 
@@ -157,7 +159,7 @@ class App extends CI_Controller
                 ));
                 if(count($is)){
                     $log_data['x__left'] = $is[0]['i__id'];
-                    $title .= ' | '.$is[0]['i__title'];
+                    $title = $is[0]['i__title'].' | '.$title;
                 }
             }
         }
