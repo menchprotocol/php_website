@@ -1058,7 +1058,7 @@ class X_model extends CI_Model
             if($on_its_own_line){
 
                 //Just replace with
-                $output_body_message = str_replace($identifier_string, view_e(14672, $x, null, false, null, $edit_btn.$e_appendix), $output_body_message);
+                $output_body_message = str_replace($identifier_string, view_e(14672, $es[0], null, false, null, $edit_btn.$e_appendix), $output_body_message);
 
             } else {
 
