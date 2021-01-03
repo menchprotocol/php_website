@@ -277,12 +277,23 @@ function copyTextToClipboard(text) {
 
     navigator.clipboard.writeText(text).then(function() {
         console.log('Async: Copying to clipboard was successful!');
-        $('.was_copied').text('✅ COPIED').hide().fadeIn();
-        x_create({
-            x__source: js_pl_id,
-            x__type: 14732, //COPIED
-            x__message: text,
-        });
+
+        var affirm_text = '✅ COPIED';
+        if($('.was_copied').text() != affirm_text){
+
+            $('.was_copied').text(affirm_text);
+
+            //Save Once:
+            x_create({
+                x__source: js_pl_id,
+                x__type: 14732, //COPIED
+                x__message: text,
+            });
+
+        }
+        $('.was_copied').hide().fadeIn();
+
+
     }, function(err) {
         console.error('Async Error: Could not copy text: ', err);
         x_create({
