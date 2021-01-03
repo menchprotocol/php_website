@@ -133,7 +133,7 @@ class App extends CI_Controller
 
         //Append additional info for members:
         if($is_u_request){
-            $log_data['x__message'] = ( isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '' ) . ( isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '' );
+            $log_data['x__message'] = current_link();
             if(count($_GET)){
                 foreach(array(
                             'e__id' => 'x__down',

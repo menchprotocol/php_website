@@ -365,6 +365,10 @@ function x_detect_type($string)
     }
 }
 
+function current_link(){
+    return ( isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '' ) . ( isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '' );
+}
+
 function words_to_seconds($text){
     //Average discovering speed assumed to be 250 words/minute
     return ( strlen($text) ? round( (substr_count($text, ' ') + 1) / 250 * 60 , 4 ) : 0 );
