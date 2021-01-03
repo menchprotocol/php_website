@@ -366,7 +366,7 @@ function x_detect_type($string)
 }
 
 function current_link(){
-    return ( isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '' ) . ( isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '' );
+    return 'https://' . ( isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '' );
 }
 
 function words_to_seconds($text){
