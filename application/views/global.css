@@ -2773,7 +2773,6 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .active_selected{
     border: 3px solid #FC1B44 !important;
     border-top:0 !important;
-    margin-bottom: 7px;
 }
 .active_selected .inside-btn > .fas {
     color: #FC1B44 !important;
