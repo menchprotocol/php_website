@@ -1843,7 +1843,9 @@ i, .btn .show-max {
 }
 .icon-tweak{ padding-left: 3px; }
 
-
+.active_selected{
+    border: 3px solid #FC1B44;
+}
 .cover-wrapper {
     border:0;
     margin:0 3px;

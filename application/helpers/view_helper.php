@@ -1549,7 +1549,7 @@ function view_i_select($i, $x__source, $previously_selected){
     }
 
     //LEFT
-    $ui .= '<div class="inside-btn left-btn check-icon"><i class="' . ($previously_selected ? 'fas fa-check-circle discover' : 'far fa-circle discover') . '"></i></div>';
+    $ui .= '<div class="inside-btn left-btn check-icon"><i class="' . ($previously_selected ? 'fas fa-check-circle' : 'far fa-circle') . '"></i></div>';
 
     //PROGRESS?
     if($completion_rate['completion_percentage'] > 0){
