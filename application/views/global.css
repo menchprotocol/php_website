@@ -2762,6 +2762,12 @@ font-weight: bold !important;
     border: 3px solid transparent !important;
     border-top:0 !important;
 }
+.answer-item .inside-btn {
+    display: none !important;
+}
+.active_selected .inside-btn {
+    display: inline-block !important;
+}
 
 .custom_ui_13884_13885 .active_selected,
 .custom_ui_13884_13886 .active_selected{
