@@ -2758,6 +2758,7 @@ font-weight: bold !important;
 
 
 
-.active_selected{
+.custom_ui_13884_13885 .active_selected,
+.custom_ui_13884_13886 .active_selected{
     border: 3px solid #FC1B44 !important;
 }
