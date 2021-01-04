@@ -509,12 +509,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     //HTML:
                     if ($i_focus['i__type'] == 6684) {
 
-                        $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[13981]['m__icon'].'</span>'.$e___11035[13981]['m__title'].'</div>';
+                        $ui .= '<div class="pull-left"><div class="headline"><span class="icon-block">'.$e___11035[13981]['m__icon'].'</span>'.$e___11035[13981]['m__title'].'</div></div>';
 
                     } elseif ($i_focus['i__type'] == 7231) {
 
 
-                        $ui .= '<div class="pull-left headline"><span class="icon-block">'.$e___11035[13982]['m__icon'].'</span>'.$e___11035[13982]['m__title'].'</div>';
+                        $ui .= '<div class="pull-left"><div class="headline"><span class="icon-block">'.$e___11035[13982]['m__icon'].'</span>'.$e___11035[13982]['m__title'].'</div></div>';
 
                         //Give option to Select None/All
                         /*
