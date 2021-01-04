@@ -1562,7 +1562,9 @@ function view_i_select($i, $x__source, $previously_selected){
         $ui .= '<div class="cover-content"><div class="inner-content">'.$i_title.'</div></div>';
     }
 
-    $ui .= '<div class="cover-text css__title">'.view_i_time($i_stats).'</div>';
+    if($i_stats['i___6162'] >= 60){
+        $ui .= '<div class="cover-text css__title">'.view_i_time($i_stats).'</div>';
+    }
     $ui .= '</div>';
 
     return $ui;
