@@ -21,7 +21,7 @@ $is_next = $this->X_model->fetch(array(
 
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $completion_rate['completion_percentage'] = 0;
-$in_my_x = $member_e && $i_top && $this->X_model->ids($x__source, $i_focus['i__id']);
+$in_my_x = $i_top && $this->X_model->ids($x__source, $i_top['i__id']);
 $u_x_ids = ( $i_top ? array($i_top['i__id']) : array() ); //TODO Remove
 $sitemap_raw = array();
 $sitemap_items = array();
