@@ -1563,7 +1563,7 @@ function view_i_select($i, $x__source, $previously_selected){
         $ui .= '<div class="cover-content"><div class="inner-content"><a '.$href.'>'.$i_title.'</a></div></div>';
     }
 
-    if($i_stats['i___6162'] >= 60){
+    if($i_stats['i___6162'] >= view_memory(6404,14735)){
         $ui .= '<div class="cover-text css__title">'.view_i_time($i_stats).'</div>';
     }
     $ui .= '</div>';
@@ -1753,7 +1753,10 @@ function view_i($x__type, $previous_i = null, $i, $control_enabled = false, $mes
         $ui .= '<div class="cover-text css__title">';
 
         //Always Show Time
-        $ui .= '<div class="inline-block" '.( $idea_editing && !$superpower_12700 ? ' style="min-width: 38px; padding-right: 10px; margin-left: -4px;" ' : '' ).'>'.view_i_time($i_stats, false, $idea_editing).'</div>';
+        if($i_stats['i___6162'] >= view_memory(6404,14735)) {
+            $ui .= '<div class="inline-block" ' . ($idea_editing && !$superpower_12700 ? ' style="min-width: 38px; padding-right: 10px; margin-left: -4px;" ' : '') . '>' . view_i_time($i_stats, false, $idea_editing) . '</div>';
+        }
+
 
         if($idea_editing) {
 
@@ -1820,8 +1823,9 @@ function view_i($x__type, $previous_i = null, $i, $control_enabled = false, $mes
 
     } else {
 
-        $ui .= '<div class="cover-text css__title">'.view_i_time($i_stats).'</div>';
-
+        if($i_stats['i___6162'] >= view_memory(6404,14735)) {
+            $ui .= '<div class="cover-text css__title">' . view_i_time($i_stats) . '</div>';
+        }
     }
 
     if($is_self && !$discovery_mode && !$e_of_i){
