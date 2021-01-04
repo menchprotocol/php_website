@@ -208,7 +208,7 @@ function current_mench(){
     $first_letter = substr($first_segment, 0, 1);
     $e___2738 = $CI->config->item('e___2738'); //MENCH
 
-    if($first_letter=='@' || $first_segment=='e' || $first_segment=='app' || $first_segment=='account' || $first_segment=='signin'){
+    if($first_letter=='@' || $first_letter=='-' || $first_segment=='e' || $first_segment=='app'){
 
         return array(
             'c__id' => 12274,
