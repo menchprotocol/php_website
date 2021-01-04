@@ -2757,8 +2757,17 @@ font-weight: bold !important;
 
 
 
+.custom_ui_13884_13885 .answer-item,
+.custom_ui_13884_13886 .answer-item{
+    border: 3px solid transparent !important;
+    border-top:0 !important;
+}
 
 .custom_ui_13884_13885 .active_selected,
 .custom_ui_13884_13886 .active_selected{
     border: 3px solid #FC1B44 !important;
+    border-top:0 !important;
+}
+.active_selected .inside-btn > .fas {
+    color: #FC1B44 !important;
 }
