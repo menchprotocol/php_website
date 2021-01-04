@@ -60,7 +60,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 480  ).'px;">';
 
     echo '<tr style="font-weight:bold;">';
-    echo '<td style="width:200px;">USER</td>';
+    echo '<td style="width:200px;">MEMBER</td>';
     echo '<td style="width:50px;">DONE</td>';
     foreach($column_sources as $e){
         echo '<td style="width:200px;"><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a></td>';

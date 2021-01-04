@@ -1074,7 +1074,7 @@ class I_model extends CI_Model
                 }
             }
 
-            //USERS:
+            //MEMBERS:
             if (!in_array($fetched_e['x__source'], $metadata_this['p___13207'])) {
                 array_push($metadata_this['p___13207'], intval($fetched_e['x__source']));
             }

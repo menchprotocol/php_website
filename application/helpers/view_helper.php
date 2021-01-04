@@ -1527,7 +1527,50 @@ function view_info_box($e__id){
     return $ui;
 }
 
-function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_input = null, $focus_e = false, $completion_rate = null, $extra_class = null){
+function view_i_select($i, $x__source, $previously_selected){
+
+
+    //Search to see if an idea has a thumbnail:
+    $CI =& get_instance();
+    $i_fetch_cover = i_fetch_cover($i['i__id']);
+    $is_valid_url = filter_var($i_fetch_cover, FILTER_VALIDATE_URL);
+    $completion_rate = $CI->X_model->completion_progress($x__source, $i);
+    $i_title = view_i_title($i, null, true);
+    $i_stats = i_stats($i['i__metadata']);
+
+    $ui  = '<div class="i_cover col-md-2 col-sm-3 col-4 no-padding">';
+    $ui .= '<div class="cover-wrapper">';
+    $ui .= '<a href="javascript:void(0);" onclick="select_answer(' . $i['i__id'] . ')" selection_i__id="' . $i['i__id'] . '" class="x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_fetch_cover.'\');"' : '' ).'>';
+
+    //ICON?
+    if(!$is_valid_url){
+        $ui .= '<div class="cover-btn">'.$i_fetch_cover.'</div>';
+    }
+
+    //LEFT
+    $ui .= '<div class="inside-btn left-btn check-icon"><i class="' . ($previously_selected ? 'fas fa-check-circle discover' : 'far fa-circle discover') . '"></i></div>';
+
+    //PROGRESS?
+    if($completion_rate['completion_percentage'] > 0){
+        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
+    }
+
+    $ui .= '</a>';
+    $ui .= '</div>';
+
+    if($i_title){
+        $ui .= '<div class="cover-content"><div class="inner-content">'.$i_title.'</div></div>';
+    }
+
+    $ui .= '<div class="cover-text css__title">'.view_i_time($i_stats).'</div>';
+    $ui .= '</div>';
+
+    return $ui;
+
+}
+
+
+function view_i($x__type, $previous_i = null, $i, $control_enabled = false, $message_input = null, $focus_e = false, $completion_rate = null, $extra_class = null){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1571,18 +1614,18 @@ function view_i($x__type, $top_i = null, $i, $control_enabled = false, $message_
     $message_input = null; //TODO remove later or disable
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12700 = superpower_active(12700, true);
-    $top_is_lock = ($top_i && in_array($top_i['i__type'], $CI->config->item('n___14488')));
-    $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($top_is_lock && $discovery_mode);
+    $previous_is_lock = ($previous_i && in_array($previous_i['i__type'], $CI->config->item('n___14488')));
+    $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($previous_is_lock && $discovery_mode);
     $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
-    $is_soft_lock = $locking_enabled && ($is_hard_lock || $top_is_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
+    $is_soft_lock = $locking_enabled && ($is_hard_lock || $previous_is_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
     $is_sortable = !$is_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, !$message_input);
     $is_any_lock = $is_soft_lock || $is_hard_lock;
-    $lock_notice = (  $top_is_lock ? 14488 : 14377 );
+    $lock_notice = (  $previous_is_lock ? 14488 : 14377 );
 
     if(in_array($x__type, $CI->config->item('n___14454')) && $completion_rate['completion_percentage']<100){
-        $href = '/x/x_next/'.$i['i__id'];
+        $href = '/x/x_next/'.$i['i__id'].'/'.$i['i__id'];
     } elseif(strlen($e___13369[$x__type]['m__message'])){
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
     } elseif($discovery_mode){

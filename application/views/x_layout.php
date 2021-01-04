@@ -3,30 +3,6 @@
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 
-
-//Determine Focus Member:
-$member_e = false;
-if(isset($_GET['load__e']) && superpower_active(14005, true)){
-    //Fetch This Member
-    $e_filters = $this->E_model->fetch(array(
-        'e__id' => $_GET['load__e'],
-        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    ));
-    if(count($e_filters)){
-        echo view__load__e($e_filters[0]);
-        $member_e = $e_filters[0];
-    }
-}
-if(!$member_e){
-    $member_e = superpower_unlocked();
-}
-if(!isset($member_e['e__id']) ){
-    $member_e['e__id'] = 0;
-}
-
-
-
-
 //Messages:
 $messages = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -43,16 +19,17 @@ $is_next = $this->X_model->fetch(array(
     'x__left' => $i_focus['i__id'],
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
+$x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $completion_rate['completion_percentage'] = 0;
-$u_x_ids = $this->X_model->ids($member_e['e__id']);
-$in_my_x = ( $member_e['e__id'] > 0 ? $this->X_model->i_home($i_focus['i__id'], $member_e) : false );
+$in_my_x = $member_e && $i_top && $this->X_model->ids($x__source, $i_focus['i__id']);
+$u_x_ids = ( $i_top ? array($i_top['i__id']) : array() ); //TODO Remove
 $sitemap_raw = array();
 $sitemap_items = array();
 $i = array(); //Assume main intent not yet completed, unless proven otherwise...
 $i_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $i_completion_percentage = 0; //Assume main intent not yet completed, unless proven otherwise...
 $i_completion_rate = array();
-$in_my_discoveries = in_array($i_focus['i__id'], $u_x_ids);
+$in_my_discoveries = ( $i_top && $i_top['i__id']==$i_focus['i__id'] );
 $previous_level_id = 0; //The ID of the Idea one level up, if any
 $superpower_10939 = superpower_active(10939, true);
 $x_completes = array();
@@ -62,7 +39,7 @@ if($in_my_x){
     $x_completes = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-        'x__source' => $member_e['e__id'],
+        'x__source' => $x__source,
         'x__left' => $i_focus['i__id'],
     ));
 }
@@ -122,7 +99,7 @@ if($in_my_x){
                         'i__id' => $previous_i__id,
                     ));
 
-                    $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $is_this[0]);
+                    $completion_rate = $this->X_model->completion_progress($x__source, $is_this[0]);
                     array_push($sitemap_raw, array(
                         'i__id' => $previous_i__id,
                         'i' => $is_this[0],
@@ -150,88 +127,78 @@ if($in_my_x){
 }
 
 
-if($member_e['e__id']){
 
-    //VIEW DISCOVER
-    $this->X_model->create(array(
-        'x__source' => $member_e['e__id'],
-        'x__type' => 7610, //USER VIEWED IDEA
-        'x__left' => $i_focus['i__id'],
-        'x__spectrum' => fetch_cookie_order('7610_'.$i_focus['i__id']),
-    ));
+if ($in_my_x) {
 
-    if ($in_my_x) {
-
-        // % DONE
-        $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $i_focus);
-        if($in_my_discoveries){
-            $i_completed = $completion_rate['completion_percentage'] >= 100;
-            $i_completion_percentage = $completion_rate['completion_percentage'];
-            $i_completion_rate = $completion_rate;
-        }
+    // % DONE
+    $completion_rate = $this->X_model->completion_progress($x__source, $i_focus);
+    if($in_my_discoveries){
+        $i_completed = $completion_rate['completion_percentage'] >= 100;
+        $i_completion_percentage = $completion_rate['completion_percentage'];
+        $i_completion_rate = $completion_rate;
+    }
 
 
-        if($i_type_meet_requirement){
+    if($i_type_meet_requirement){
 
-            //Reverse check answers to see if they have previously unlocked a path:
-            $unlocked_connections = $this->X_model->fetch(array(
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
-                'x__right' => $i_focus['i__id'],
-                'x__source' => $member_e['e__id'],
-            ), array('x__left'), 1);
+        //Reverse check answers to see if they have previously unlocked a path:
+        $unlocked_connections = $this->X_model->fetch(array(
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
+            'x__right' => $i_focus['i__id'],
+            'x__source' => $x__source,
+        ), array('x__left'), 1);
 
-            if(count($unlocked_connections) > 0){
+        if(count($unlocked_connections) > 0){
 
-                //They previously have unlocked a path here!
+            //They previously have unlocked a path here!
 
-                //Determine DISCOVER COIN type based on it's connection type's parents that will hold the appropriate discover coin.
-                $x_completion_type_id = 0;
-                foreach($this->config->item('e___12327') /* DISCOVER UNLOCKS */ as $e__id => $m2){
-                    if(in_array($unlocked_connections[0]['x__type'], $m2['m__profile'])){
-                        $x_completion_type_id = $e__id;
-                        break;
-                    }
+            //Determine DISCOVER COIN type based on it's connection type's parents that will hold the appropriate discover coin.
+            $x_completion_type_id = 0;
+            foreach($this->config->item('e___12327') /* DISCOVER UNLOCKS */ as $e__id => $m2){
+                if(in_array($unlocked_connections[0]['x__type'], $m2['m__profile'])){
+                    $x_completion_type_id = $e__id;
+                    break;
                 }
+            }
 
-                //Could we determine the coin type?
-                if($x_completion_type_id > 0){
+            //Could we determine the coin type?
+            if($x_completion_type_id > 0){
 
-                    //Yes, Issue coin:
-                    array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
-                        'x__type' => $x_completion_type_id,
-                        'x__source' => $member_e['e__id'],
-                    )));
-
-                } else {
-
-                    //Oooops, we could not find it, report bug:
-                    $this->X_model->create(array(
-                        'x__type' => 4246, //Platform Bug Reports
-                        'x__source' => $member_e['e__id'],
-                        'x__message' => 'x_layout() found idea connector ['.$unlocked_connections[0]['x__type'].'] without a valid unlock method @12327',
-                        'x__left' => $i_focus['i__id'],
-                        'x__reference' => $unlocked_connections[0]['x__id'],
-                    ));
-
-                }
+                //Yes, Issue coin:
+                array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
+                    'x__type' => $x_completion_type_id,
+                    'x__source' => $x__source,
+                )));
 
             } else {
 
-                //Try to find paths to unlock:
-                $unlock_paths = $this->I_model->unlock_paths($i_focus);
+                //Oooops, we could not find it, report bug:
+                $this->X_model->create(array(
+                    'x__type' => 4246, //Platform Bug Reports
+                    'x__source' => $x__source,
+                    'x__message' => 'x_layout() found idea connector ['.$unlocked_connections[0]['x__type'].'] without a valid unlock method @12327',
+                    'x__left' => $i_focus['i__id'],
+                    'x__reference' => $unlocked_connections[0]['x__id'],
+                ));
 
-                //Set completion method:
-                if(!count($unlock_paths)){
+            }
 
-                    //No path found:
-                    array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
-                        'x__type' => 7492, //TERMINATE
-                        'x__source' => $member_e['e__id'],
-                    )));
+        } else {
 
-                }
+            //Try to find paths to unlock:
+            $unlock_paths = $this->I_model->unlock_paths($i_focus);
+
+            //Set completion method:
+            if(!count($unlock_paths)){
+
+                //No path found:
+                array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
+                    'x__type' => 7492, //TERMINATE
+                    'x__source' => $x__source,
+                )));
+
             }
         }
     }
@@ -315,7 +282,7 @@ $tab_pill_count = 0;
 
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
-    if(!$member_e['e__id'] && in_array($x__type, $this->config->item('n___13304'))){
+    if(!$x__source && in_array($x__type, $this->config->item('n___13304'))){
         //Hide since Not logged in:
         continue;
     }
@@ -386,11 +353,11 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $ui .= '<div class="list-group" style="margin-bottom: 34px;">';
             foreach($fetch_13865 as $e_pre){
 
-                $meets_this = ($member_e['e__id'] > 0 && count($this->X_model->fetch(array(
+                $meets_this = ($x__source > 0 && count($this->X_model->fetch(array(
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__up' => $e_pre['x__up'],
-                        'x__down' => $member_e['e__id'],
+                        'x__down' => $x__source,
                     ))));
 
                 $meets_this_id = ( $meets_this ? 13875 : 13876 );
@@ -413,7 +380,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__up' => 12896, //SAVE THIS IDEA
                 'x__right' => $i_focus['i__id'],
             ))) && !count($this->X_model->fetch(array(
-                'x__up' => $member_e['e__id'],
+                'x__up' => $x__source,
                 'x__right' => $i_focus['i__id'],
                 'x__type' => 12896, //SAVED
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -438,7 +405,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__type' => 6140, //DISCOVER UNLOCK LINK
-                'x__source' => $member_e['e__id'],
+                'x__source' => $x__source,
                 'x__left' => $i_focus['i__id'],
             ), array('x__right'), 0);
 
@@ -485,13 +452,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     if (!count($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-                        'x__source' => $member_e['e__id'],
+                        'x__source' => $x__source,
                         'x__left' => $i_focus['i__id'],
                     )))) {
 
                         array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
                             'x__type' => 4559, //DISCOVER MESSAGES
-                            'x__source' => $member_e['e__id'],
+                            'x__source' => $x__source,
                         )));
 
                     }
@@ -512,7 +479,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                             'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINK
                             'x__left' => $i_focus['i__id'],
                             'x__right' => $x['i__id'],
-                            'x__source' => $member_e['e__id'],
+                            'x__source' => $x__source,
                         )))) {
                             array_push($x_selects, $x);
                         }
@@ -551,6 +518,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                         //Give option to Select None/All
                         /*
+
                         $ui .= '<div class="doclear">&nbsp;</div>';
                         $ui .= '<div class="pull-right right-adj inline-block" data-toggle="tooltip" data-placement="top" title="SELECT ALL OR NONE"><a href="javascript:void(0);" onclick="$(\'.answer-item i\').removeClass(\'far fa-circle\').addClass(\'fas fa-check-circle\');" style="text-decoration: underline;" title="'.$e___11035[13692]['m__title'].'">'.$e___11035[13692]['m__icon'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.answer-item i\').removeClass(\'fas fa-check-circle\').addClass(\'far fa-circle\');" style="text-decoration: underline;" title="'.$e___11035[13693]['m__title'].'">'.$e___11035[13693]['m__icon'].'</a></div>';
                         */
@@ -561,7 +529,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
                     //Open for list to be printed:
-                    $ui .= '<div class="list-group list-answers" i__type="' . $i_focus['i__type'] . '">';
+                    $ui .= '<div class="row list-answers" i__type="' . $i_focus['i__type'] . '">';
 
 
                     //List children to choose from:
@@ -573,8 +541,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                             'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
                             'x__left' => $i_focus['i__id'],
                             'x__right' => $next_i['i__id'],
-                            'x__source' => $member_e['e__id'],
+                            'x__source' => $x__source,
                         )));
+
+                        $ui .= view_i_select($next_i, $x__source, $previously_selected);
+
+                        /*
 
                         $ui .= '<a href="javascript:void(0);" onclick="select_answer(' . $next_i['i__id'] . ')" selection_i__id="' . $next_i['i__id'] . '" class="x_select_' . $next_i['i__id'] . ' answer-item list-group-item itemdiscover no-left-padding">';
 
@@ -588,12 +560,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                         $ui .= '</tr></table>';
 
-
                         $ui .= '</a>';
+
+                        */
                     }
 
 
-                    //Close list:
                     $ui .= '</div>';
 
 
@@ -732,7 +704,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($notes);
         $is_editable = in_array($note_x__type, $this->config->item('n___14043'));
-        $ui .= view_i_note_list($note_x__type, true, $i_focus, $notes, ( $member_e['e__id'] > 0 && $is_editable ), true);
+        $ui .= view_i_note_list($note_x__type, true, $i_focus, $notes, ( $x__source > 0 && $is_editable ), true);
 
     }
 
@@ -823,7 +795,7 @@ if(!$in_my_x && !$i_drip_mode){
 
             //Is Saved already by this member?
             $is_saves = $this->X_model->fetch(array(
-                'x__up' => $member_e['e__id'],
+                'x__up' => $x__source,
                 'x__right' => $i_focus['i__id'],
                 'x__type' => 12896, //SAVED
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

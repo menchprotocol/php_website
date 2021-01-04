@@ -352,11 +352,11 @@ class X extends CI_Controller
 
         //Add this Idea to their Discovery If not there:
         $i__id_added = $i__id;
-        $success_message = null;
-        $in_my_x = $this->X_model->i_home($i__id, $member_e);
 
-        if(!$in_my_x){
+        if(!in_array($i__id, $this->X_model->ids($member_e['e__id']))){
+
             $i__id_added = $this->X_model->start($member_e['e__id'], $i__id);
+
             if(!$i__id_added){
                 //Failed to add to Discovery:
                 return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>FAILED to add to '.$e___11035[12969]['m__title'].'.</div>');
@@ -364,7 +364,7 @@ class X extends CI_Controller
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$i__id_added, $success_message);
+        return redirect_message('/'.$i__id_added);
 
     }
 
@@ -535,10 +535,24 @@ class X extends CI_Controller
             'i__id' => $i__id,
         ));
 
-        //Make sure we found it:
-        if ( count($is) < 1) {
+        if($top_i__id > 0){
+            $top_is = $this->I_model->fetch(array(
+                'i__id' => $top_i__id,
+            ));
+        }
 
-            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea ID ' . $i__id . ' not found</div>');
+        //Make sure we found it:
+        if ( $top_i__id > 0 && !count($top_is) ) {
+
+            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
+
+        } elseif ( !count($is) ) {
+
+            return redirect_message( ( $top_i__id > 0 ? '/'.$top_is[0]['i__id'] : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea ID ' . $i__id . ' not found</div>');
+
+        } elseif($top_i__id > 0 && !in_array($top_is[0]['i__type'], $this->config->item('n___7355') /* PUBLIC */)){
+
+            return redirect_message((superpower_unlocked(10939) ? '/~' . $top_i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This top idea is not published yet.</div>');
 
         } elseif(!in_array($is[0]['i__type'], $this->config->item('n___7355') /* PUBLIC */)){
 
@@ -546,16 +560,50 @@ class X extends CI_Controller
 
         }
 
+        //Determine Member:
+        /*
+        $member_e = false;
+        if(isset($_GET['load__e']) && superpower_active(14005, true)){
+
+            //Fetch This Member
+            $e_filters = $this->E_model->fetch(array(
+                'e__id' => $_GET['load__e'],
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            ));
+            if(count($e_filters)){
+                echo view__load__e($member_e);
+                $member_e = $e_filters[0];
+            }
+
+        }
+        if(!$member_e){
+            $member_e = superpower_unlocked();
+        }
+        */
+
+
+        $member_e = superpower_unlocked();
+
+        if($member_e) {
+            //VIEW DISCOVER
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => 7610, //MEMBER VIEWED DISCOVERY
+                'x__left' => ( $top_i__id > 0 ? $top_is[0]['i__id'] : 0 ),
+                'x__right' => $is[0]['i__id'],
+                'x__spectrum' => fetch_cookie_order('7610_' . $is[0]['i__id']),
+            ));
+        }
+
         $this->load->view('header', array(
-            'title' => $is[0]['i__title'],
+            'title' => $is[0]['i__title'].( $top_i__id > 0 ? ' | '.$top_is[0]['i__title'] : '' ),
             'i_focus' => $is[0],
         ));
-
-        //Load specific view based on Idea Level:
         $this->load->view('x_layout', array(
+            'i_top' => ( $top_i__id > 0 ? $top_is[0] : false ),
             'i_focus' => $is[0],
+            'member_e' => $member_e,
         ));
-
         $this->load->view('footer');
 
     }

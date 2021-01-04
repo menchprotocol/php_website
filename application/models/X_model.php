@@ -1563,33 +1563,6 @@ class X_model extends CI_Model
     }
 
 
-    function i_home($i__id, $member_e){
-
-        $in_my_x = false;
-
-        if($member_e['e__id'] > 0){
-
-            //Fetch entire Discoveries:
-            $u_x_ids = $this->X_model->ids($member_e['e__id']);
-            $in_my_x = in_array($i__id, $u_x_ids);
-
-            if(!$in_my_x){
-                //Go through parents ideas and detect intersects with member ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-                foreach($this->I_model->recursive_parents($i__id) as $grand_parent_ids) {
-                    //Does this parent and its grandparents have an intersection with the member ideas?
-                    if (array_intersect($grand_parent_ids, $u_x_ids)) {
-                        //Idea is part of their Discoveries:
-                        $in_my_x = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $in_my_x;
-
-    }
-
 
     function mark_complete($i, $add_fields) {
 
@@ -1972,18 +1945,37 @@ class X_model extends CI_Model
     }
 
 
-    function ids($e__id){
+    function ids($e__id, $i__id = 0){
+
         //Simply returns all the idea IDs for a u's Discoveries:
-        $u_x_ids = array();
-        foreach($this->X_model->fetch(array(
-            'x__source' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ), array('x__left'), 0) as $u_in){
-            array_push($u_x_ids, intval($u_in['i__id']));
+        if($i__id > 0){
+
+            if(!$e__id){
+                return false;
+            }
+
+            return count($this->X_model->fetch(array(
+                'x__left' => $i__id,
+                'x__source' => $e__id,
+                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            )));
+
+        } else {
+
+            $u_x_ids = array();
+            if($e__id > 0){
+                foreach($this->X_model->fetch(array(
+                    'x__source' => $e__id,
+                    'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                )) as $u_in){
+                    array_push($u_x_ids, intval($u_in['x__left']));
+                }
+            }
+            return $u_x_ids;
+
         }
-        return $u_x_ids;
     }
 
 

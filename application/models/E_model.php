@@ -58,7 +58,7 @@ class E_model extends CI_Model
 
             $this->X_model->create(array(
                 'x__source' => $e['e__id'],
-                'x__type' => ( $is_cookie ? 14032 /* COOKIE SIGN */ : 7564 /* USER SIGN */ ),
+                'x__type' => ( $is_cookie ? 14032 /* COOKIE SIGN */ : 7564 /* MEMBER SIGN */ ),
             ));
 
         }
@@ -138,7 +138,7 @@ class E_model extends CI_Model
 
         //Add Member:
         $this->X_model->create(array(
-            'x__up' => 4430, //MENCH USERS
+            'x__up' => 4430, //MENCH MEMBERS
             'x__type' => e_x__type(),
             'x__source' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
