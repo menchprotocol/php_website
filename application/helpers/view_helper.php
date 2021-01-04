@@ -1537,10 +1537,11 @@ function view_i_select($i, $x__source, $previously_selected){
     $completion_rate = $CI->X_model->completion_progress($x__source, $i);
     $i_title = view_i_title($i, null, true);
     $i_stats = i_stats($i['i__metadata']);
+    $href = 'href="javascript:void(0);" onclick="select_answer(' . $i['i__id'] . ')"';
 
     $ui  = '<div class="i_cover col-md-2 col-sm-3 col-4 no-padding">';
     $ui .= '<div class="cover-wrapper">';
-    $ui .= '<a href="javascript:void(0);" onclick="select_answer(' . $i['i__id'] . ')" selection_i__id="' . $i['i__id'] . '" class="x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_fetch_cover.'\');"' : '' ).'>';
+    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_fetch_cover.'\');"' : '' ).'>';
 
     //ICON?
     if(!$is_valid_url){
@@ -1559,7 +1560,7 @@ function view_i_select($i, $x__source, $previously_selected){
     $ui .= '</div>';
 
     if($i_title){
-        $ui .= '<div class="cover-content"><div class="inner-content">'.$i_title.'</div></div>';
+        $ui .= '<div class="cover-content"><div class="inner-content"><a '.$href.'>'.$i_title.'</a></div></div>';
     }
 
     if($i_stats['i___6162'] >= 60){
