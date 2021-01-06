@@ -376,7 +376,7 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= '<div class="row top-margin hideIfEmpty" id="list-in-10573">';
                 foreach($i_bookmarks as $item){
                     array_push($i_exclude, $item['i__id']);
-                    $ui .= view_i(10573, null, $item, $control_enabled,null, $e);
+                    $ui .= view_i(10573, 0, null, $item, $control_enabled,null, $e);
                 }
                 $ui .= '</div>';
 
@@ -417,13 +417,13 @@ $profiles = $this->X_model->fetch(array(
                 foreach($list_i as $count => $item){
 
                     if(!$show_all_i_btn && $max_i__spectrum>0 && $item['i__spectrum']>0 && (($max_i__spectrum * $drop_limit) > $item['i__spectrum'])){
-                        $ui .= '<div class="col-md-2 col-sm-3 col-4 no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__icon'].'</div><div class="cover-head '.extract_icon_color($e___11035[14684]['m__icon']).'">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
+                        $ui .= '<div class="'.view_memory(6404,13369).' no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__icon'].'</div><div class="cover-head '.extract_icon_color($e___11035[14684]['m__icon']).'">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
                         $show_all_i_btn = true;
                     }
 
                     $max_i__spectrum = $item['i__spectrum'];
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-                    $ui .= view_i(13550, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, ( $show_all_i_btn ? ' show_all_ideas hidden ' : null ));
+                    $ui .= view_i(13550, 0, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, ( $show_all_i_btn ? ' show_all_ideas hidden ' : null ));
 
                 }
                 $ui .= '</div>';
@@ -467,7 +467,7 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>'.$e___11035[12969]['m__title'].'</div>';
                 $ui .= '<div class="row margin-top-down-half hideIfEmpty" id="list-in-12969">';
                 foreach($list_x as $item){
-                    $ui .= view_i(12969, null, $item,$control_enabled,null, $e);
+                    $ui .= view_i(12969, $item['i__id'], null, $item,$control_enabled,null, $e);
                     array_push($my_x_ids, $item['i__id']);
                 }
                 $ui .= '</div>';
@@ -491,7 +491,7 @@ $profiles = $this->X_model->fetch(array(
                     $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__icon'].'</span>'.$e___11035[12896]['m__title'].'</div>';
                     $ui .= '<div class="row margin-top-down-half hideIfEmpty" id="list-in-12896">';
                     foreach($i_notes_query as $count => $i_notes) {
-                        $ui .= view_i(12896, null, $i_notes, $control_enabled);
+                        $ui .= view_i(12896, $i_notes['x__left'], null, $i_notes, $control_enabled);
                     }
                     $ui .= '</div>';
 
@@ -527,7 +527,7 @@ $profiles = $this->X_model->fetch(array(
 
                 $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), view_memory(6404,11064), 0, array('i__spectrum' => 'DESC'));
                 foreach($i_notes_query as $count => $i_notes) {
-                    $ui .= view_i(4485, null, $i_notes, $control_enabled);
+                    $ui .= view_i(4485, 0, null, $i_notes, $control_enabled);
                 }
 
             }

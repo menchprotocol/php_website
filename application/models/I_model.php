@@ -347,7 +347,7 @@ class I_model extends CI_Model
 
     }
 
-    function create_or_link($x__type, $i__title, $x__source, $focus__id, $link_i__id = 0)
+    function create_or_link($x__type, $top_i__id, $i__title, $x__source, $focus__id, $link_i__id = 0)
     {
 
         /*
@@ -562,7 +562,7 @@ class I_model extends CI_Model
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ), array(($is_upwards ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
-            $new_i_html = view_i($x__type, ( $is_upwards ? null : $focus_i[0] ), $new_i[0], true);
+            $new_i_html = view_i($x__type, 0, ( $is_upwards ? null : $focus_i[0] ), $new_i[0], true);
 
         } elseif($x__type == 13550){
 
@@ -588,7 +588,7 @@ class I_model extends CI_Model
                 'x__right' => $i_new['i__id'],
             ), array('x__right'));
 
-            $new_i_html = view_i($x__type, null, $new_i[0], true, null, $focus_e[0]);
+            $new_i_html = view_i($x__type, 0, null, $new_i[0], true, null, $focus_e[0]);
 
         } elseif($x__type == 10573){
 
@@ -616,7 +616,7 @@ class I_model extends CI_Model
                 'x__right' => $i_new['i__id'],
             ), array('x__right'));
 
-            $new_i_html = view_i($x__type, null, $new_i[0], true, null, $focus_e[0]);
+            $new_i_html = view_i($x__type, 0, null, $new_i[0], true, null, $focus_e[0]);
 
         }
 

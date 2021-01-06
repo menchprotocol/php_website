@@ -147,7 +147,7 @@ function view_s_js(algolia_object){
         return '<span class="icon-block">'+ ( algolia_object.s__type==12274 ? algolia_object.s__icon : '<i class="fas fa-circle idea"></i>' ) +'</span><span class="css__title '+ ( algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__icon) : '' ) +'">' + view_s__title(algolia_object) + '</span>';
     } else {
         //IDEA
-        //return '<div class="col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__icon + '\')"></div></div><div class="cover-content"><div class="inner-content css__title">'+view_s__title(algolia_object)+'</div></div></div>';
+        //return '<div class="'+js_e___6404[13369]['m__message']+' no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__icon + '\')"></div></div><div class="cover-content"><div class="inner-content css__title">'+view_s__title(algolia_object)+'</div></div></div>';
     }
 }
 
@@ -2257,7 +2257,7 @@ function i_add(x__type, link_i__id, focus__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving').prop("disabled", true);
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="col-md-2 col-sm-3 col-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin idea"></i></div></div></div></div>', js_n___14686.includes(x__type));
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="'+ js_e___6404[13369]['m__message'] +' no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin idea"></i></div></div></div></div>', js_n___14686.includes(x__type));
 
 
     //Update backend:

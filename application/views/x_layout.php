@@ -19,17 +19,18 @@ $is_next = $this->X_model->fetch(array(
     'x__left' => $i_focus['i__id'],
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
+$top_i__id = ( $i_top ? $i_top['i__id'] : 0 );
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $completion_rate['completion_percentage'] = 0;
-$in_my_x = $i_top && $this->X_model->ids($x__source, $i_top['i__id']);
-$u_x_ids = ( $i_top ? array($i_top['i__id']) : array() ); //TODO Remove
+$in_my_x = $top_i__id && $this->X_model->ids($x__source, $top_i__id);
+$u_x_ids = ( $top_i__id ? array($top_i__id) : array() ); //TODO Remove
 $sitemap_raw = array();
 $sitemap_items = array();
 $i = array(); //Assume main intent not yet completed, unless proven otherwise...
 $i_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $i_completion_percentage = 0; //Assume main intent not yet completed, unless proven otherwise...
 $i_completion_rate = array();
-$in_my_discoveries = ( $i_top && $i_top['i__id']==$i_focus['i__id'] );
+$in_my_discoveries = ( $top_i__id && $top_i__id==$i_focus['i__id'] );
 $previous_level_id = 0; //The ID of the Idea one level up, if any
 $superpower_10939 = superpower_active(10939, true);
 $x_completes = array();
@@ -71,7 +72,7 @@ if($in_my_x){
 
     //Add Current Discovery
     if($i_drip_mode){
-        array_push($sitemap_items, view_i(14451, null, $i_focus, $in_my_x, null, false));
+        array_push($sitemap_items, view_i(14451, $top_i__id, null, $i_focus, $in_my_x, null, false));
     }
 
     //Fetch Parents all the way to the Discovery Item
@@ -120,7 +121,7 @@ if($in_my_x){
         }
 
         foreach($sitemap_raw as $si) {
-            array_push($sitemap_items, view_i(14450, null, $si['i'],  $in_my_x,null, false, $si['completion_rate']));
+            array_push($sitemap_items, view_i(14450, $top_i__id, null, $si['i'],  $in_my_x,null, false, $si['completion_rate']));
         }
 
     }
@@ -145,7 +146,7 @@ if ($in_my_x) {
         $unlocked_connections = $this->X_model->fetch(array(
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER EXPANSIONS
             'x__right' => $i_focus['i__id'],
             'x__source' => $x__source,
         ), array('x__left'), 1);
@@ -212,7 +213,7 @@ if ($in_my_x) {
 $is_discovarable = true;
 if($in_my_x){
 
-    $go_next_url = ( $i_completed ? '/x/x_done_next/' : '/x/x_next/' ) . $i_focus['i__id'];
+    $go_next_url = ( $i_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i_focus['i__id'];
 
 } else {
 
@@ -411,7 +412,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             //Did we have any steps unlocked?
             if (count($unlocked_x) > 0) {
-                $ui .= view_i_list(13978, $in_my_x, $i_focus, $unlocked_x, $member_e);
+                $ui .= view_i_list(13978, $top_i__id, $in_my_x, $i_focus, $unlocked_x, $member_e);
             }
 
 
@@ -433,12 +434,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 if (!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)) {
 
                     //List Unlock paths:
-                    $ui .= view_i_list(13979, $in_my_x, $i_focus, $unlock_paths, $member_e);
+                    $ui .= view_i_list(13979, $top_i__id, $in_my_x, $i_focus, $unlock_paths, $member_e);
 
                 }
 
                 //List Children if any:
-                $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $member_e);
+                $ui .= view_i_list(12211, $top_i__id, $in_my_x, $i_focus, $is_next, $member_e);
 
 
             } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
@@ -490,7 +491,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $ui .= '<div class="edit_select_answer">';
 
                         //List answers:
-                        $ui .= view_i_list(13980, $in_my_x, $i_focus, $x_selects, $member_e);
+                        $ui .= view_i_list(13980, $top_i__id, $in_my_x, $i_focus, $x_selects, $member_e);
 
                         $ui .= '<div class="doclear">&nbsp;</div>';
 
@@ -538,7 +539,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         //Has this been previously selected?
                         $previously_selected = count($this->X_model->fetch(array(
                             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER IDEA LINKS
+                            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER EXPANSIONS
                             'x__left' => $i_focus['i__id'],
                             'x__right' => $next_i['i__id'],
                             'x__source' => $x__source,
@@ -577,7 +578,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $ui .= '<div class="inline-block margin-top-down"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__icon'] . '</a></div>';
 
                         //Save Answers:
-                        $ui .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/'.$i_focus['i__id'].'\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__icon'] . '</a></div>';
+                        $ui .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__icon'] . '</a></div>';
 
                     }
 
@@ -588,7 +589,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             } elseif (in_array($i_focus['i__type'], $this->config->item('n___4559'))) {
 
                 //DISCOVER ONLY
-                $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $member_e, ( count($is_next) > 1 ? view_i_time($i_stats, true) : '' ));
+                $ui .= view_i_list(12211, $top_i__id, $in_my_x, $i_focus, $is_next, $member_e, ( count($is_next) > 1 ? view_i_time($i_stats, true) : '' ));
 
             } elseif ($i_focus['i__type'] == 6683) {
 
@@ -600,7 +601,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 if (count($x_completes)) {
                     //Next Ideas:
-                    $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $member_e);
+                    $ui .= view_i_list(12211, $top_i__id, $in_my_x, $i_focus, $is_next, $member_e);
                 }
 
                 $ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
@@ -626,7 +627,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $ui .= '</div>';
 
                     //Any child ideas?
-                    $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $member_e);
+                    $ui .= view_i_list(12211, $top_i__id, $in_my_x, $i_focus, $is_next, $member_e);
 
                 } else {
 
@@ -648,7 +649,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         } else {
 
             //NEXT IDEAS
-            $ui .= view_i_list(12211, $in_my_x, $i_focus, $is_next, $member_e, ( count($is_next) ? view_i_time($i_stats, true) : '' )); //13542
+            $ui .= view_i_list(12211, $top_i__id, $in_my_x, $i_focus, $is_next, $member_e, ( count($is_next) ? view_i_time($i_stats, true) : '' )); //13542
 
             //IDEA PREVIOUS
             /*
@@ -661,7 +662,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             ), array('x__left'), 0);
             if(count($is_previous)){
                 $ui .= '<div style="padding-top: 34px;">';
-                $ui .= view_i_list(12991, $in_my_x, $i_focus, $is_previous, $member_e);
+                $ui .= view_i_list(12991, $top_i__id, $in_my_x, $i_focus, $is_previous, $member_e);
                 $ui .= '</div>';
             }
             */

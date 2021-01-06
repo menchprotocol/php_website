@@ -954,7 +954,7 @@ function view_caret($e__id, $m, $s__id){
 }
 
 
-function view_i_list($x__type, $in_my_x, $i, $is_next, $member_e, $right_content = null){
+function view_i_list($x__type, $top_i__id, $in_my_x, $i, $is_next, $member_e, $right_content = null){
 
     //If no list just return the next step:
     if(!count($is_next)){
@@ -987,7 +987,7 @@ function view_i_list($x__type, $in_my_x, $i, $is_next, $member_e, $right_content
         } else {
             $x__type_to_pass = $x__type;
         }
-        $ui .= view_i($x__type_to_pass, $i, $next_i, $in_my_x, null, $member_e, $completion_rate);
+        $ui .= view_i($x__type_to_pass, $top_i__id, $i, $next_i, $in_my_x, null, $member_e, $completion_rate);
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
@@ -1469,7 +1469,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
             $ui .= '<div class="headline top-margin">'.$see_all_link.'</div>';
             $ui .= '<div class="row margin-top-down-half">';
             foreach($query as $i){
-                $ui .= view_i(12138, null, $i);
+                $ui .= view_i(12138, 0, null, $i);
                 if(!in_array($i['i__id'], $i_exclude)){
                     array_push($i_exclude, $i['i__id']);
                 }
@@ -1539,7 +1539,7 @@ function view_i_select($i, $x__source, $previously_selected){
     $i_stats = i_stats($i['i__metadata']);
     $href = 'href="javascript:void(0);" onclick="select_answer(' . $i['i__id'] . ')"';
 
-    $ui  = '<div class="i_cover col-md-2 col-sm-3 col-4 no-padding">';
+    $ui  = '<div class="i_cover '.view_memory(6404,13369).' no-padding">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' active_selected ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_fetch_cover.'\');"' : '' ).'>';
 
@@ -1573,7 +1573,7 @@ function view_i_select($i, $x__source, $previously_selected){
 }
 
 
-function view_i($x__type, $previous_i = null, $i, $control_enabled = false, $message_input = null, $focus_e = false, $completion_rate = null, $extra_class = null){
+function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabled = false, $message_input = null, $focus_e = false, $completion_rate = null, $extra_class = null){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1628,17 +1628,17 @@ function view_i($x__type, $previous_i = null, $i, $control_enabled = false, $mes
     $lock_notice = (  $previous_is_lock ? 14488 : 14377 );
 
     if(in_array($x__type, $CI->config->item('n___14454')) && $completion_rate['completion_percentage']<100){
-        $href = '/x/x_next/'.$i['i__id'].'/'.$i['i__id'];
+        $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
     } elseif(strlen($e___13369[$x__type]['m__message'])){
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
     } elseif($discovery_mode){
-        $href = '/'.$i['i__id'];
+        $href = '/'.$top_i__id.'/'.$i['i__id'];
     } else {
         $href = '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
     }
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_cover col-md-2 col-sm-3 col-4 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_cover '.view_memory(6404,13369).' no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
 
 

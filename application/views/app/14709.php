@@ -23,7 +23,7 @@ if(!$member_e){
     foreach(view_coins_e(6255, $member_e['e__id'], 1) as $item){
         $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
         if($completion_rate['completion_percentage'] >= 100){
-            echo view_i(14730, null, $item, false, null, $member_e, $completion_rate);
+            echo view_i(14730, $item['i__id'], null, $item, false, null, $member_e, $completion_rate);
         }
     }
     echo '</div>';
@@ -76,7 +76,7 @@ if(!$member_e){
         //100% COMPLETE
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14730]['m__icon'].'</span>'.$e___14709[14730]['m__title'].'</div>';
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14730]['m__message']).'</div>';
-        echo '<div class="padded">'.view_i(14730, null, $is[0]).'</div>';
+        echo '<div class="padded">'.view_i(14730, $is[0]['i__id'], null, $is[0]).'</div>';
 
 
 

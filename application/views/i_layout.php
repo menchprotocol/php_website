@@ -82,7 +82,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
-    echo view_i(11019, null, $previous_i, $e_of_i);
+    echo view_i(11019, 0, null, $previous_i, $e_of_i);
 }
 echo '</div>';
 
@@ -284,7 +284,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m__icon'].'</span>'.$e___11035[13542]['m__title'].'</div>';
         $ui .= '<div id="list-in-13542" class="row hideIfEmpty">';
         foreach($is_next as $next_i) {
-            $ui .= view_i(13542, $i_focus, $next_i, $e_of_i);
+            $ui .= view_i(13542, 0, $i_focus, $next_i, $e_of_i);
         }
         $ui .= '</div>';
 

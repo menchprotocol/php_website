@@ -368,12 +368,16 @@ class X extends CI_Controller
 
     }
 
-    function x_next($i__id){
+    function x_next($top_i__id, $i__id){
+
+        //TODO $top_i__id
 
         $member_e = superpower_unlocked();
         if(!$member_e){
             return redirect_message('/-4269');
-        }
+        } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
+            return redirect_message(home_url(), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Idea #'.$top_i__id.' not in your discoveries</div>');
+        } else
 
         //Fetch Idea:
         $is = $this->I_model->fetch(array(
@@ -400,7 +404,7 @@ class X extends CI_Controller
         }
 
         //Go to Next Idea:
-        $next_i__id = $this->X_model->find_next($member_e['e__id'], $is[0]);
+        $next_i__id = $this->X_model->find_next($member_e['e__id'], $top_i__id, $is[0]);
         if($next_i__id > 0){
 
             return redirect_message('/'.$next_i__id.'?previous_x='.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? $_GET['previous_x'] : $i__id ));
@@ -434,14 +438,16 @@ class X extends CI_Controller
 
 
 
-    function x_done_next($i__id = 0){
+    function x_completed_next($top_i__id, $i__id = 0){
+
+        //TODO $top_i__id
 
         $member_e = superpower_unlocked();
         if(!$member_e){
             return redirect_message('/-4269');
-        }
-
-        if(!$i__id){
+        } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
+            return redirect_message(home_url(), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Idea #'.$top_i__id.' not in your discoveries</div>');
+        } elseif(!$i__id){
             return redirect_message(home_url(), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Missing Idea ID</div>');
         }
 
@@ -451,9 +457,9 @@ class X extends CI_Controller
         ));
 
         //Go to Next Idea:
-        $next_i__id = $this->X_model->find_next($member_e['e__id'], $is[0], 0, true, true);
+        $next_i__id = $this->X_model->find_next($member_e['e__id'], $top_i__id, $is[0], 0, true, true);
         if($next_i__id > 0){
-            return redirect_message('/'.$next_i__id.'?previous_x='.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? $_GET['previous_x'] : $i__id ));
+            return redirect_message('/'.$top_i__id.'/'.$next_i__id.'?previous_x='.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? $_GET['previous_x'] : $i__id ));
         } else {
 
             //All completed, find the top idea:
@@ -869,6 +875,20 @@ class X extends CI_Controller
                 'message' => 'Missing Idea ID',
             ));
 
+        } elseif (!isset($_POST['top_i__id'])) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Top Idea ID',
+            ));
+
+        } elseif(!$this->X_model->ids($member_e['e__id'], $_POST['top_i__id'])){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Top Idea not in your discoveries',
+            ));
+
         }
 
         $is = $this->I_model->fetch(array(
@@ -887,6 +907,7 @@ class X extends CI_Controller
             'x__source' => $member_e['e__id'],
             'x__up' => $member_e['e__id'],
             'x__message' => '@'.$member_e['e__id'],
+            'x__left' => $_POST['top_i__id'],
             'x__right' => $_POST['i__id'],
             'x__type' => 12896, //SAVED
         ));
