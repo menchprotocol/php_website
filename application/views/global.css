@@ -1938,7 +1938,7 @@ i, .btn .show-max {
 .cover-content .inner-content {
     padding: 0 3px;
     line-height: 120%;
-    font-size: 0.80em;
+    font-size: 1.3em; /* 0.80em IF 6xIdeas/Row */
     display: block;
     text-align: center;
     border-top-left-radius: 10px;
