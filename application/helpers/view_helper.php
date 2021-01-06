@@ -1539,7 +1539,7 @@ function view_i_select($i, $x__source, $previously_selected){
     $i_stats = i_stats($i['i__metadata']);
     $href = 'href="javascript:void(0);" onclick="select_answer(' . $i['i__id'] . ')"';
 
-    $ui  = '<div class="i_cover '.view_memory(6404,13369).' no-padding">';
+    $ui  = '<div class="i_cover col-md-3 col-sm-4 col-6 no-padding">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' active_selected ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_fetch_cover.'\');"' : '' ).'>';
 
@@ -1638,7 +1638,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_cover '.view_memory(6404,13369).' no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_cover col-md-3 col-sm-4 col-6 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
 
 

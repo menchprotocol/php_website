@@ -417,7 +417,7 @@ $profiles = $this->X_model->fetch(array(
                 foreach($list_i as $count => $item){
 
                     if(!$show_all_i_btn && $max_i__spectrum>0 && $item['i__spectrum']>0 && (($max_i__spectrum * $drop_limit) > $item['i__spectrum'])){
-                        $ui .= '<div class="'.view_memory(6404,13369).' no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__icon'].'</div><div class="cover-head '.extract_icon_color($e___11035[14684]['m__icon']).'">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
+                        $ui .= '<div class="col-md-3 col-sm-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__icon'].'</div><div class="cover-head '.extract_icon_color($e___11035[14684]['m__icon']).'">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
                         $show_all_i_btn = true;
                     }
 
