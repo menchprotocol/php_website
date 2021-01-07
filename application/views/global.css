@@ -1915,7 +1915,6 @@ i, .btn .show-max {
 .cover-text {
     margin: -3px 0 13px;
     text-align: center;
-    font-size: 0.80em;
 }
 .cover-progress{
     width: 100%;
@@ -1927,7 +1926,7 @@ i, .btn .show-max {
     top: 0;
     left: 3px;
     width: calc(100% - 6px) !important;
-    max-height: 58%;
+    max-height: 70%;
     position: absolute;
     overflow-x: hidden;
     overflow-y: auto;

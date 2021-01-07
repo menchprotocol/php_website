@@ -1145,7 +1145,7 @@ class X_model extends CI_Model
 
 
 
-        if ($search_up) {
+        if ($search_up && $top_i__id!=$i['i__id']) {
 
             //Check Previous/Up
             $current_previous = $i['i__id'];
@@ -1166,19 +1166,6 @@ class X_model extends CI_Model
                         $current_previous = $previous_i__id;
 
                     }
-                }
-            }
-
-            //Still Here? as a Last option go through DISCOVER LIST:
-            foreach ($this->X_model->fetch(array(
-                'x__source' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            ), array('x__left'), 0, 0, array('x__spectrum' => 'ASC')) as $x_list_i) {
-                $found_next = $this->X_model->find_next($e__id, $top_i__id, $x_list_i, $find_after_i__id, false, $top_completed);
-                if ($found_next) {
-                    return $found_next;
                 }
             }
 
