@@ -27,7 +27,7 @@ $u_x_ids = ( $top_i__id ? array($top_i__id) : array() ); //TODO Remove
 $sitemap_raw = array();
 $sitemap_items = array();
 $i = array(); //Assume main intent not yet completed, unless proven otherwise...
-$i_completed = false; //Assume main intent not yet completed, unless proven otherwise...
+$top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $i_completion_percentage = 0; //Assume main intent not yet completed, unless proven otherwise...
 $i_completion_rate = array();
 $in_my_discoveries = ( $top_i__id && $top_i__id==$i_focus['i__id'] );
@@ -110,7 +110,7 @@ if($in_my_x){
 
                     if(in_array($previous_i__id, $u_x_ids)){
                         //We reached the top-level discovery:
-                        $i_completed = $completion_rate['completion_percentage'] >= 100;
+                        $top_completed = $completion_rate['completion_percentage'] >= 100;
                         $i_completion_percentage = $completion_rate['completion_percentage'];
                         $i_completion_rate = $completion_rate;
                         $i = $is_this[0];
@@ -134,7 +134,7 @@ if ($in_my_x) {
     // % DONE
     $completion_rate = $this->X_model->completion_progress($x__source, $i_focus);
     if($in_my_discoveries){
-        $i_completed = $completion_rate['completion_percentage'] >= 100;
+        $top_completed = $completion_rate['completion_percentage'] >= 100;
         $i_completion_percentage = $completion_rate['completion_percentage'];
         $i_completion_rate = $completion_rate;
     }
@@ -213,7 +213,7 @@ if ($in_my_x) {
 $is_discovarable = true;
 if($in_my_x){
 
-    $go_next_url = ( $i_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i_focus['i__id'];
+    $go_next_url = ( $top_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i_focus['i__id'];
 
 } else {
 

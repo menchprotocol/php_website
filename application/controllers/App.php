@@ -30,7 +30,7 @@ class App extends CI_Controller
 
         //Validate App
         if($memory_detected && !in_array($app_e__id, $this->config->item('n___6287'))){
-            return redirect_message('/@'.$app_e__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$es[0]['e__icon'].'</span>'.$es[0]['e__title'].' Is not an APP, yet 🤫</div>');
+            return redirect_message('/@'.$app_e__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$es[0]['e__icon'].'</span>'.$es[0]['e__title'].' Is not an APP, yet 🤫</div>', true);
         }
 
 

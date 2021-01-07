@@ -359,7 +359,7 @@ class X extends CI_Controller
 
             if(!$i__id_added){
                 //Failed to add to Discovery:
-                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>FAILED to add to '.$e___11035[12969]['m__title'].'.</div>');
+                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>FAILED to add to '.$e___11035[12969]['m__title'].'.</div>', true);
             }
         }
 
@@ -370,37 +370,34 @@ class X extends CI_Controller
 
     function x_next($top_i__id, $i__id){
 
-        //TODO $top_i__id
-
         $member_e = superpower_unlocked();
-        if(!$member_e){
-            return redirect_message('/-4269');
-        } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
-            return redirect_message(home_url(), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Idea #'.$top_i__id.' not in your discoveries</div>');
-        } else
-
-        //Fetch Idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
 
-        //Should we check for auto next redirect if empty? Only if this is a selection:
-        if(in_array($is[0]['i__type'], $this->config->item('n___4559'))){
+        if(!$member_e){
+            return redirect_message('/-4269?i__id='.$top_i__id);
+        } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
+            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not added to your discoveries yet</div>', true);
+        } elseif(!count($is)) {
+            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>', true);
+        }
 
-            //Mark as discover If not previously:
-            $x_completes = $this->X_model->fetch(array(
+        //Should we check for auto next redirect if empty? Only if this is a selection:
+        if(in_array($is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
                 'x__source' => $member_e['e__id'],
                 'x__left' => $is[0]['i__id'],
+            )))){
+
+            //Mark as discover If not previously:
+            $this->X_model->mark_complete($is[0], array(
+                'x__type' => 4559, //DISCOVER MESSAGES
+                'x__source' => $member_e['e__id'],
             ));
 
-            if(!count($x_completes)){
-                $this->X_model->mark_complete($is[0], array(
-                    'x__type' => 4559, //DISCOVER MESSAGES
-                    'x__source' => $member_e['e__id'],
-                ));
-            }
         }
 
         //Go to Next Idea:
@@ -411,80 +408,73 @@ class X extends CI_Controller
 
         } else {
 
-            //All completed, find the top idea:
-            $top_i__id = $next_i__id; //Starting Assumption
-            $u_x_ids = $this->X_model->ids($member_e['e__id']);
-            if(!in_array($next_i__id, $u_x_ids)){
-                //Search for it:
-                $top_tree = $this->I_model->recursive_parents($is[0]['i__id'], true, true);
-                foreach($top_tree as $grand_parent_ids) {
-                    foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
-                        foreach($grand_parent_ids as $count => $previous_i__id) {
-                            if(in_array($previous_i__id, $u_x_ids)){
-                                //Update It:
-                                $top_i__id = $previous_i__id;
-                                break;
-                            }
-                        }
-                    }
-                }
+            //Has this been completed before?
+            $been_completed = count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 14730, //COMPLETED 100%
+                'x__source' => $member_e['e__id'],
+                'x__right' => $top_i__id,
+            )));
+
+
+            //Mark as Complete (maybe again):
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => 14730, //COMPLETED 100%
+                'x__right' => $top_i__id,
+                //TODO Maybe log additional details like total ideas, time, etc...
+            ));
+
+
+            //Decide where to redirect:
+            if(!$been_completed){
+
+                //Go to Rating App since it's first completion:
+                return redirect_message('/-14709?i__id='.$top_i__id);
+
+            } else {
+
+                //They had already completed this before, so skip feedback & take them to home page:
+                $top_is = $this->I_model->fetch(array(
+                    'i__id' => $top_i__id,
+                ));
+
+                //Home Page:
+                return redirect_message('/@'.$member_e['e__id'], '<div class="msg alert alert-danger" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You discovered all ideas for '.$top_is[0]['i__title'].' & will be notified of future updates.</div></div>');
+
             }
-
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-danger" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You discovered all ideas & will be notified of new updates.</div></div>');
-
         }
-
     }
-
 
 
     function x_completed_next($top_i__id, $i__id = 0){
 
-        //TODO $top_i__id
-
         $member_e = superpower_unlocked();
-        if(!$member_e){
-            return redirect_message('/-4269');
-        } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
-            return redirect_message(home_url(), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Idea #'.$top_i__id.' not in your discoveries</div>');
-        } elseif(!$i__id){
-            return redirect_message(home_url(), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Missing Idea ID</div>');
-        }
-
-        //Fetch Idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
+
+        if(!$member_e){
+            return redirect_message('/-4269?i__id='.$top_i__id);
+        } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
+            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not added to your discoveries yet</div>', true);
+        } elseif(!count($is)) {
+            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>', true);
+        }
 
         //Go to Next Idea:
         $next_i__id = $this->X_model->find_next($member_e['e__id'], $top_i__id, $is[0], 0, true, true);
         if($next_i__id > 0){
+
             return redirect_message('/'.$top_i__id.'/'.$next_i__id.'?previous_x='.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? $_GET['previous_x'] : $i__id ));
+
         } else {
 
-            //All completed, find the top idea:
-            $top_i__id = $next_i__id; //Starting Assumption
-            $u_x_ids = $this->X_model->ids($member_e['e__id']);
-            if(!in_array($next_i__id, $u_x_ids)){
-                //Search for it:
-                $top_tree = $this->I_model->recursive_parents($is[0]['i__id'], true, true);
-                foreach($top_tree as $grand_parent_ids) {
-                    foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
-                        foreach($grand_parent_ids as $count => $previous_i__id) {
-                            if(in_array($previous_i__id, $u_x_ids)){
-                                //Update It:
-                                $top_i__id = $previous_i__id;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-danger" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You discovered all ideas & will be notified of new updates.</div></div>');
+            //Nothing else to find, go to top:
+            return redirect_message('/'.$top_i__id);
 
         }
-
     }
 
 
@@ -550,19 +540,19 @@ class X extends CI_Controller
         //Make sure we found it:
         if ( $top_i__id > 0 && !count($top_is) ) {
 
-            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
+            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>', true);
 
         } elseif ( !count($is) ) {
 
-            return redirect_message( ( $top_i__id > 0 ? '/'.$top_is[0]['i__id'] : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea ID ' . $i__id . ' not found</div>');
+            return redirect_message( ( $top_i__id > 0 ? '/'.$top_is[0]['i__id'] : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea ID ' . $i__id . ' not found</div>', true);
 
         } elseif($top_i__id > 0 && !in_array($top_is[0]['i__type'], $this->config->item('n___7355') /* PUBLIC */)){
 
-            return redirect_message((superpower_unlocked(10939) ? '/~' . $top_i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This top idea is not published yet.</div>');
+            return redirect_message((superpower_unlocked(10939) ? '/~' . $top_i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This top idea is not published yet.</div>', true);
 
         } elseif(!in_array($is[0]['i__type'], $this->config->item('n___7355') /* PUBLIC */)){
 
-            return redirect_message((superpower_unlocked(10939) ? '/~' . $i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not published yet.</div>');
+            return redirect_message((superpower_unlocked(10939) ? '/~' . $i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not published yet.</div>', true);
 
         }
 

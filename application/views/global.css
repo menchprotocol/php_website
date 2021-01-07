@@ -2248,7 +2248,7 @@ i, .btn .show-max {
 }
 
 .cover-btn{
-    font-size: 5em;
+    font-size: 5em; /* 3em */
     text-align: center;
     margin-top: -100%;
 }

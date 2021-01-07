@@ -761,13 +761,24 @@ function i_unlockable($i){
     return in_array($i['i__type'], $CI->config->item('n___7355') /* PUBLIC */);
 }
 
-function redirect_message($url, $message = null)
+function redirect_message($url, $message = null, $log_error = false)
 {
     //An error handling function that would redirect member to $url with optional $message
     //Do we have a Message?
+    $CI =& get_instance();
+
     if ($message) {
-        $CI =& get_instance();
         $CI->session->set_flashdata('flash_message', $message);
+    }
+
+    if($log_error){
+        //Log thie error:
+        $member_e = superpower_unlocked();
+        $CI->X_model->create(array(
+            'x__message' => $url.' '.stripslashes($message),
+            'x__type' => 4246, //Platform Bug Reports
+            'x__source' => ( $member_e ? $member_e['e__id'] : 0 ),
+        ));
     }
 
     if (!$message) {
@@ -1028,7 +1039,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
+        return redirect_message($goto_url, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>', true);
     }
 
 }

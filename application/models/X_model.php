@@ -1091,47 +1091,19 @@ class X_model extends CI_Model
 
 
 
-    function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $i_completed = false)
+    function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false)
     {
 
-        //First look DOWN/NEXT
-        if(in_array($i_focus['i__type'], $this->config->item('n___7712'))){
-
-            $next_is = $this->X_model->fetch(array(
-                'x__left' => $i['i__id'],
-                'x__source' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER EXPANSIONS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            ), array('x__right'), 0, 0, array('x__id' => 'ASC'));
-
-        } elseif(in_array($i_focus['i__type'], $this->config->item('n___13022'))){
-
-            //Go Next:
-            $next_is = $this->X_model->fetch(array(
-                'x__left' => $i['i__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
-
-        } elseif(in_array($i_focus['i__type'], $this->config->item('n___7309'))){
-
-            //Meet Requirements AND/OR
-            //TODO Code...
-
-        } else {
-
-            //Not Active:
-            return 0;
-
-        }
-
-
+        $is_or_i = in_array($i['i__type'], $this->config->item('n___6193'));
         $found_trigger = false;
-        foreach ($next_is as $next_i) {
+        foreach ($this->X_model->fetch(array(
+            'x__left' => $i['i__id'],
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i) {
 
-            //Skip if before the Find After:
+            //Validate Find After:
             if ($find_after_i__id && !$found_trigger) {
                 if ($next_i['i__id'] == $find_after_i__id) {
                     $found_trigger = true;
@@ -1139,41 +1111,36 @@ class X_model extends CI_Model
                 continue;
             }
 
-            $is_or_i = in_array($i['i__type'], $this->config->item('n___6193'));
+            //Validate Selection:
             $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___12840'));
-            $is_complete = ( $i_completed || count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-                'x__source' => $e__id,
-                'x__left' => $next_i['i__id'],
-            ))));
-
-            if($is_or_i){
-                //OR IDEAS - Must be Selected
-                $is_selected = count($this->X_model->fetch(array(
+            if(($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER EXPANSIONS
                     'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
                     'x__source' => $e__id,
-                )));
+                )))){
+                continue;
             }
 
 
-            if ( $is_fixed_x && ( $i_completed || (!$is_complete && ( !$is_or_i || $is_selected ))) ) {
-
-                //FIXED LINK, or Selected OR IDEA, that is NOT COMPLETE, It's This:
+            //Return this if everything is completed, or if this is incomplete:
+            if($top_completed || !count($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
+                    'x__source' => $e__id,
+                    'x__left' => $next_i['i__id'],
+                )))){
                 return intval($next_i['i__id']);
-
-            } elseif ((!$is_or_i || ($is_or_i && $is_selected)) && $is_complete) {
-
-                //This is complete, but maybe there is a child that's not:
-                $found_next = $this->X_model->find_next($e__id, $top_i__id, $next_i, 0, false, $i_completed);
-                if ($found_next) {
-                    return $found_next;
-                }
-
             }
+
+
+            //Keep looking deeper:
+            $found_next = $this->X_model->find_next($e__id, $top_i__id, $next_i, 0, false, $top_completed);
+            if ($found_next) {
+                return $found_next;
+            }
+
         }
 
 
@@ -1192,7 +1159,7 @@ class X_model extends CI_Model
                         $is_this = $this->I_model->fetch(array(
                             'i__id' => $previous_i__id,
                         ));
-                        $found_next = $this->X_model->find_next($e__id, $top_i__id, $is_this[0], $current_previous, false, $i_completed);
+                        $found_next = $this->X_model->find_next($e__id, $top_i__id, $is_this[0], $current_previous, false, $top_completed);
                         if ($found_next) {
                             return $found_next;
                         }
@@ -1209,7 +1176,7 @@ class X_model extends CI_Model
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             ), array('x__left'), 0, 0, array('x__spectrum' => 'ASC')) as $x_list_i) {
-                $found_next = $this->X_model->find_next($e__id, $top_i__id, $x_list_i, $find_after_i__id, false, $i_completed);
+                $found_next = $this->X_model->find_next($e__id, $top_i__id, $x_list_i, $find_after_i__id, false, $top_completed);
                 if ($found_next) {
                     return $found_next;
                 }
