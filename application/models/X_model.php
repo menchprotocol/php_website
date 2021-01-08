@@ -175,21 +175,15 @@ class X_model extends CI_Model
             if(count($sub_e__ids) > 0){
 
                 //yes, start drafting email to be sent to them...
-
+                $u_name = 'MENCH';
                 if($add_fields['x__source'] > 0){
-
                     //Fetch member details:
                     $add_e = $this->E_model->fetch(array(
                         'e__id' => $add_fields['x__source'],
                     ));
-
-                    $u_name = $add_e[0]['e__title'];
-
-                } else {
-
-                    //No u:
-                    $u_name = 'MENCH';
-
+                    if(count($add_e)){
+                        $u_name = $add_e[0]['e__title'];
+                    }
                 }
 
 
