@@ -2033,10 +2033,6 @@ i, .btn .show-max {
         display: block;
     }
 
-    .drip_msg{
-        margin-top: 8px;
-    }
-
     .message-center, .message-center .msg {
         text-align: left;
     }
@@ -2645,14 +2641,6 @@ font-weight: bold !important;
 
 }
 
-
-
-/* DISCOVERY MODE */
-.custom_ui_14485_14486 .fixed-bottom {
-    position: relative;
-    z-index: 0 !important;
-    margin-top: 55px;
-}
 
 
 

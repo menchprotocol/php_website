@@ -36,77 +36,46 @@ $(document).ready(function () {
 
 });
 
-
-
-function go_previous(href_url) {
-    if(i_drip_mode_js && i_drip_pointer>1){
-        i_drip_pointer--;
-        adjust_drip_percent((i_drip_pointer-1));
-        //Simply go to the next drip:
-        $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
-    } else {
-        //Go Back:
-        window.location = href_url;
-    }
-}
-
-function adjust_drip_percent(i_drip_pointer){
-    $('.progress_'+$('#focus_i__id').val()+' .progress-done').css('width', Math.round(i_drip_pointer/drip_msg_total*100)+'%');
-}
-
 function go_next(go_next_url){
 
-    if(i_drip_mode_js && i_drip_pointer<drip_msg_total){
+    //Attempts to go next if no submissions:
+    if(focus_i__type==6683) {
 
-        i_drip_pointer++;
+        //TEXT RESPONSE:
+        return x_reply(go_next_url);
 
-        adjust_drip_percent(i_drip_pointer);
+    } else if (js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
 
-        //Simply go to the next drip:
-        $('.drip_msg').addClass('hidden');
-        $('.drip_msg_'+i_drip_pointer).removeClass('hidden');
+        //SELECT ONE/SOME
+        return x_select(go_next_url);
+
+    } else if (focus_i__type==7637 && !$('.file_saving_result').html().length ) {
+
+        //Must upload file first:
+        alert('You must upload file before going next.');
 
     } else {
 
-        //Attempts to go next if no submissions:
-        if(focus_i__type==6683) {
+        if(go_next_url && go_next_url.length > 0){
 
-            //TEXT RESPONSE:
-            return x_reply(go_next_url);
-
-        } else if (js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
-
-            //SELECT ONE/SOME
-            return x_select(go_next_url);
-
-        } else if (focus_i__type==7637 && !$('.file_saving_result').html().length ) {
-
-            //Must upload file first:
-            alert('You must upload file before going next.');
+            //Go Next:
+            $('.go-next').html(( js_pl_id > 0 ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
+            window.location = go_next_url;
 
         } else {
 
-            if(go_next_url && go_next_url.length > 0){
+            x_create({
+                x__source: js_pl_id,
+                x__type: 14604, //START BLOCKED
+                x__left: $('#focus_i__id').val(),
+            });
 
-                //Go Next:
-                $('.go-next').html(( js_pl_id > 0 ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
-                window.location = go_next_url;
-
+            if(superpower_js_10939){
+                alert('This idea is not published yet & cannot be started unless you add it to MY IDEAS and then you can start & preview it while it is reviewed and published by a moderator.');
             } else {
-
-                x_create({
-                    x__source: js_pl_id,
-                    x__type: 14604, //START BLOCKED
-                    x__left: $('#focus_i__id').val(),
-                });
-
-                if(superpower_js_10939){
-                    alert('This idea is not published yet & cannot be started unless you add it to MY IDEAS and then you can start & preview it while it is reviewed and published by a moderator.');
-                } else {
-                    alert('This idea is not published yet & cannot be started at this time.');
-                }
-
+                alert('This idea is not published yet & cannot be started at this time.');
             }
+
         }
     }
 }

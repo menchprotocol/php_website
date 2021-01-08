@@ -30,8 +30,6 @@ $x_completes = ($top_i__id ? $this->X_model->fetch(array(
 $in_my_discoveries = ( $top_i__id && $top_i__id==$i_focus['i__id'] );
 $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383')) && count($messages)>1 && (!$top_i__id || !count($x_completes)) && member_setting(14485)==14383;
-$drip_msg_counter = 0;
 $is_discovarable = true;
 
 
@@ -41,9 +39,6 @@ $is_discovarable = true;
 
 <script>
     var focus_i__type = <?= $i_focus['i__type'] ?>;
-    var drip_msg_total = <?= count($messages) + 1 /* For Title */ ?>;
-    var i_drip_pointer = 1; //Start at the first message
-    var i_drip_mode_js = <?= intval($i_drip_mode) ?>;
 </script>
 
 <input type="hidden" id="focus_i__id" value="<?= $i_focus['i__id'] ?>" />
@@ -170,19 +165,13 @@ if($top_i__id){
     foreach($this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']) as $sitemap_i){
         echo view_i(14450, $top_i__id, null, $sitemap_i);
     }
-    if($i_drip_mode){
-        echo view_i(14451, $top_i__id, null, $i_focus, $top_i__id);
-    }
     echo '</div>';
 }
 
 
 
-
-if(!$i_drip_mode) {
-    //HEADER
-    echo '<h1>' . view_i_title($i_focus) . '</h1>';
-}
+//HEADER
+echo '<h1>' . view_i_title($i_focus) . '</h1>';
 
 
 
@@ -230,23 +219,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //MESSAGES
         foreach($messages as $message_x) {
-            $drip_msg_counter++;
-            $ui .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">'.$this->X_model->message_view(
+            $ui .= $this->X_model->message_view(
                     $message_x['x__message'],
                     true,
                     $member_e
-                ).'</div>';
+                );
         }
-
-        if($i_drip_mode){
-            $drip_msg_counter++;
-            $ui .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
-            $ui .= '<div class="headline" style="padding: 0;"><span class="icon-block">'.$e___11035[14384]['m__icon'].'</span>'.$e___11035[14384]['m__title'].'</div>';
-            $ui .= '<h1 style="padding: 21px 41px;">' . view_i_title($i_focus) . '</h1>';
-            $ui .= '</div>';
-        }
-
-
 
 
         $fetch_13865 = $this->X_model->fetch(array(
@@ -310,7 +288,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
         //IDAS
-        $ui .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.($i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
         if($top_i__id) {
 
             //PREVIOUSLY UNLOCKED:
@@ -581,9 +558,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         }
 
-
-        $ui .= '</div>';
-
     } elseif($x__type==6255){
 
         $discovered = $this->X_model->fetch(array(
@@ -678,12 +652,12 @@ echo '</div>'; //CLOSE CONTAINER
 
 
 
-if(!$top_i__id && !$i_drip_mode){
+if(!$top_i__id){
 
     $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
     //Get Started
-    echo '<div class="container light-bg fixed-bottom">';
+    echo '<div class="container light-bg">';
     echo '<div class="discover-controller">';
     echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__icon'].'</a></div>';
     echo '</div>';
@@ -721,11 +695,6 @@ if(!$top_i__id && !$i_drip_mode){
             //COMMENT
             $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m2['m__icon'].'<span class="nav-counter css__title en-type-counter-12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
-        } elseif($e__id==12991 && !$in_my_discoveries){
-
-            //BACK
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : home_url() ).'\')">'.$m2['m__icon'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
-
         } elseif($e__id==12211){
 
             //NEXT
@@ -742,7 +711,7 @@ if(!$top_i__id && !$i_drip_mode){
     }
 
     if($buttons_found > 0){
-        echo '<div class="container light-bg fixed-bottom">';
+        echo '<div class="container light-bg">';
         echo '<div class="discover-controller">';
         echo $buttons_ui;
         echo '</div>';
