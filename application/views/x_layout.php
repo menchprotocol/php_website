@@ -21,19 +21,18 @@ $is_next = $this->X_model->fetch(array(
 
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
-$in_my_discoveries = ( $top_i__id && $top_i__id==$i_focus['i__id'] );
-$top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
-$i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383')) && count($messages)>1 && (!$top_i__id || !count($x_completes)) && member_setting(14485)==14383;
-$drip_msg_counter = 0;
-$is_discovarable = true;
-
 $x_completes = ($top_i__id ? $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
     'x__source' => $x__source,
     'x__left' => $i_focus['i__id'],
 )) : array() );
+$in_my_discoveries = ( $top_i__id && $top_i__id==$i_focus['i__id'] );
+$top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
+$i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
+$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383')) && count($messages)>1 && (!$top_i__id || !count($x_completes)) && member_setting(14485)==14383;
+$drip_msg_counter = 0;
+$is_discovarable = true;
 
 
 
