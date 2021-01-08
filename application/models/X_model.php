@@ -1119,13 +1119,13 @@ class X_model extends CI_Model
 
             //Did we find it?
             if($i_previous['i__id']==$top_i__id){
-                return array(intval($i_previous['i__id']));
+                return array($i_previous);
             }
 
             //Keep looking:
             $top_search = $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id']);
             if(count($top_search)){
-                array_push($top_search, intval($i_previous['i__id']));
+                array_push($top_search, $i_previous);
                 return $top_search;
             }
         }
