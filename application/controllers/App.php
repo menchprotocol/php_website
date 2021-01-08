@@ -55,7 +55,7 @@ class App extends CI_Controller
         //MEMBER REDIRECT?
         if($member_e && in_array($app_e__id, $this->config->item('n___14639'))){
             //Should redirect them:
-            return redirect_message('/@'.$member_e['e__id'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>App @'.$app_e__id.' is for guests only</div>', true);
+            return redirect_message('/@'.$member_e['e__id']);
         } elseif(!$member_e && in_array($app_e__id, $this->config->item('n___14740'))){
             //Should redirect them:
             return redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>App @'.$app_e__id.' is for members only</div>', true);

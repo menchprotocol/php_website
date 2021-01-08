@@ -1122,11 +1122,13 @@ class X_model extends CI_Model
             //Did we find it?
             if($i_previous['i__id']==$top_i__id){
                 return $top_line;
+            } else {
+                //Keep looking:
+                $top_search = $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id'], $top_line);
+                if(count($top_search)){
+                    return $top_search;
+                }
             }
-
-            //Keep looking:
-            return $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id'], $top_line);
-
         }
 
         //Did not find any parents:
