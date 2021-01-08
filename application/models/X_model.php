@@ -138,183 +138,6 @@ class X_model extends CI_Model
             ));
         }
 
-        //Do we need to check for source tagging after discover success?
-        if(in_array($add_fields['x__type'] , $this->config->item('n___6255')) && in_array($add_fields['x__status'] , $this->config->item('n___7359')) && $add_fields['x__left'] > 0 && $add_fields['x__source'] > 0){
-
-
-            //AUTO COMPLETES?
-            $is_next_autoscan = array();
-            $is = $this->I_model->fetch(array(
-                'i__id' => $add_fields['x__left'],
-            ));
-
-
-            if(in_array($is[0]['i__type'], $this->config->item('n___7712'))){
-
-                //IDEA TYPE SELECT NEXT
-                $is_next_autoscan = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVER ANSWERED
-                    'x__source' => $add_fields['x__source'],
-                    'x__left' => $is[0]['i__id'],
-                    'x__right >' => 0, //With an answer
-                ), array('x__right'), 0);
-
-            } elseif(in_array($is[0]['i__type'], $this->config->item('n___13022'))){
-
-                //IDEA TYPE ALL NEXT
-                $is_next_autoscan = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'x__left' => $is[0]['i__id'],
-                ), array('x__right'), 0);
-
-            }
-
-            foreach($is_next_autoscan as $next_i){
-
-                //IS IT EMPTY?
-                if(
-
-                    //Auto completable type?
-                    in_array($next_i['i__type'], $this->config->item('n___12330')) &&
-
-                    //No Messages
-                    !count($this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 4231, //IDEA NOTES Messages
-                        'x__right' => $next_i['i__id'],
-                    ))) &&
-
-                    //One or less next
-                    count($this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                        'x__left' => $next_i['i__id'],
-                    ))) <= 1 &&
-
-                    //Not Already Completed:
-                    !count($this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-                        'x__source' => $add_fields['x__source'],
-                        'x__left' => $next_i['i__id'],
-                    )))){
-
-                    //Mark as complete:
-                    $this->X_model->mark_complete($next_i, array(
-                        'x__type' => 4559, //DISCOVER MESSAGES
-                        'x__source' => $add_fields['x__source'],
-                    ));
-
-                }
-            }
-
-
-            //SOURCE APPEND?
-            $detected_x_type = x_detect_type($add_fields['x__message']);
-            if ($detected_x_type['status']) {
-
-                foreach($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 7545, //CERTIFICATES
-                    'x__right' => $is[0]['i__id'],
-                )) as $x_tag){
-
-                    //Generate stats:
-                    $x_added = 0;
-                    $x_edited = 0;
-                    $x_deleted = 0;
-
-
-                    //Assign tag if parent/child transaction NOT previously assigned:
-                    $existing_x = $this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                        'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
-                        'x__down' => $add_fields['x__source'],
-                    ));
-
-                    if(count($existing_x)){
-
-                        //Transaction previously exists, see if content value is the same:
-                        if($existing_x[0]['x__message'] == $add_fields['x__message'] && $existing_x[0]['x__type'] == $detected_x_type['x__type']){
-
-                            //Everything is the same, nothing to do here:
-                            continue;
-
-                        } else {
-
-                            $x_edited++;
-
-                            //Content value has changed, update the transaction:
-                            $this->X_model->update($existing_x[0]['x__id'], array(
-                                'x__message' => $add_fields['x__message'],
-                            ), $add_fields['x__source'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
-
-                            //Also, did the transaction type change based on the content change?
-                            if($existing_x[0]['x__type'] != $detected_x_type['x__type']){
-                                $this->X_model->update($existing_x[0]['x__id'], array(
-                                    'x__type' => $detected_x_type['x__type'],
-                                ), $add_fields['x__source'], 10659 /* Member Transaction Updated Type */);
-                            }
-
-                        }
-
-                    } else {
-
-                        //See if we need to delete single selectable transactions:
-                        foreach($this->config->item('n___6204') as $single_select_e__id){
-                            $single_selectable = $this->config->item('n___'.$single_select_e__id);
-                            if(is_array($single_selectable) && count($single_selectable) && in_array($x_tag['x__up'], $single_selectable)){
-                                //Delete other siblings, if any:
-                                foreach($this->X_model->fetch(array(
-                                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                                    'x__up IN (' . join(',', $single_selectable) . ')' => null,
-                                    'x__up !=' => $x_tag['x__up'],
-                                    'x__down' => $add_fields['x__source'],
-                                )) as $single_selectable_siblings_preset){
-                                    $x_deleted += $this->X_model->update($single_selectable_siblings_preset['x__id'], array(
-                                        'x__status' => 6173, //Transaction Deleted
-                                    ), $add_fields['x__source'], 10673 /* Member Transaction Unpublished */);
-                                }
-                            }
-                        }
-
-                        //Create transaction:
-                        $x_added++;
-                        $this->X_model->create(array(
-                            'x__type' => $detected_x_type['x__type'],
-                            'x__message' => $add_fields['x__message'],
-                            'x__source' => $add_fields['x__source'],
-                            'x__up' => $x_tag['x__up'],
-                            'x__down' => $add_fields['x__source'],
-                        ));
-
-                    }
-
-                    //Track Tag:
-                    $this->X_model->create(array(
-                        'x__type' => 12197, //Tag Member
-                        'x__source' => $add_fields['x__source'],
-                        'x__up' => $x_tag['x__up'],
-                        'x__down' => $add_fields['x__source'],
-                        'x__left' => $is[0]['i__id'],
-                        'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
-                    ));
-
-                    if($x_added>0 || $x_edited>0 || $x_deleted>0){
-                        //See if Session needs to be updated:
-                        $member_e = superpower_unlocked();
-                        if($member_e && $member_e['e__id']==$add_fields['x__source']){
-                            //Yes, update session:
-                            $this->E_model->activate_session($member_e, true);
-                        }
-                    }
-                }
-            }
-        }
 
 
         //See if this transaction type has any subscribers:
@@ -1094,8 +917,6 @@ class X_model extends CI_Model
     function find_previous($e__id, $top_i__id, $i__id)
     {
 
-        //TODO Improve this function to return the shortest path between $top_i__id & $i__id
-
         //Fetch parents:
         foreach($this->X_model->fetch(array(
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -1107,7 +928,7 @@ class X_model extends CI_Model
             //Validate Selection:
             $is_or_i = in_array($i_previous['i__type'], $this->config->item('n___6193'));
             $is_fixed_x = in_array($i_previous['x__type'], $this->config->item('n___12840'));
-            if(($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
+            if($e__id>0 && ($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER EXPANSIONS
                     'x__left' => $i_previous['i__id'],
@@ -1191,31 +1012,17 @@ class X_model extends CI_Model
         }
 
 
-
         if ($search_up && $top_i__id!=$i['i__id']) {
-
             //Check Previous/Up
             $current_previous = $i['i__id'];
-            $u_x_ids = $this->X_model->ids($e__id);
-            $top_tree = $this->I_model->recursive_parents($i['i__id'], true, true);
-            foreach ($top_tree as $grand_parent_ids) {
-                foreach (array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
-                    foreach ($grand_parent_ids as $previous_i__id) {
-
-                        //Find the next siblings:
-                        $is_this = $this->I_model->fetch(array(
-                            'i__id' => $previous_i__id,
-                        ));
-                        $found_next = $this->X_model->find_next($e__id, $top_i__id, $is_this[0], $current_previous, false, $top_completed);
-                        if ($found_next) {
-                            return $found_next;
-                        }
-                        $current_previous = $previous_i__id;
-
-                    }
+            foreach (array_reverse($this->X_model->find_previous($e__id, $top_i__id, $i['i__id'])) as $p_i) {
+                //Find the next siblings:
+                $found_next = $this->X_model->find_next($e__id, $top_i__id, $p_i, $current_previous, false, $top_completed);
+                if ($found_next) {
+                    return $found_next;
                 }
+                $current_previous = $p_i['i__id'];
             }
-
         }
 
 
@@ -1282,7 +1089,7 @@ class X_model extends CI_Model
             if(in_array($is[0]['i__type'], $this->config->item('n___12330'))){
 
                 //YES, Mark as complete:
-                $this->X_model->mark_complete($is[0], array(
+                $this->X_model->mark_complete($is[0]['i__id'], $is[0], array(
                     'x__type' => 4559, //DISCOVER MESSAGES
                     'x__source' => $e__id,
                 ));
@@ -1318,7 +1125,7 @@ class X_model extends CI_Model
 
 
 
-    function completion_recursive_up($e__id, $i, $is_bottom_level = true){
+    function completion_recursive_up($e__id, $top_i__id, $i, $is_bottom_level = true){
 
         /*
          *
@@ -1326,8 +1133,7 @@ class X_model extends CI_Model
          *
          * */
 
-
-        //First let's make sure this entire Idea completed by the u:
+        //First let's make sure this entire Idea completed by member:
         $completion_rate = $this->X_model->completion_progress($e__id, $i);
 
 
@@ -1349,6 +1155,7 @@ class X_model extends CI_Model
                 'x__left' => $i['i__id'],
                 'x__right IN (' . join(',', $i__metadata['i___6283'][$i['i__id']]) . ')' => null, //Limit to cached answers
             ));
+
             if(count($existing_expansions) > 0){
 
                 //Oh we do have an expansion that previously happened! So skip this:
@@ -1375,7 +1182,6 @@ class X_model extends CI_Model
 
             //Yes, Let's calculate u's score for this idea:
             $u_marks = $this->X_model->completion_marks($e__id, $i);
-
 
 
 
@@ -1440,57 +1246,14 @@ class X_model extends CI_Model
                     ),
                 ));
             }
-
         }
 
 
         //Now go up since we know there are more levels...
         if($is_bottom_level){
-
-            //Fetch member ideas:
-            $u_x_ids = $this->X_model->ids($e__id);
-
-            //Prevent duplicate processes even if on multiple parent ideas:
-            $parents_checked = array();
-
-            //Go through parents ideas and detect intersects with member ideas. WARNING: Logic duplicated. Search for "ELEPHANT" to see.
-            foreach($this->I_model->recursive_parents($i['i__id']) as $grand_parent_ids) {
-
-                //Does this parent and its grandparents have an intersection with the member ideas?
-                if(!array_intersect($grand_parent_ids, $u_x_ids)){
-                    //Parent idea is NOT part of their Discoveries:
-                    continue;
-                }
-
-                //Let's go through until we hit their intersection
-                foreach($grand_parent_ids as $p_id){
-
-                    //Make sure not duplicated:
-                    if(in_array($p_id , $parents_checked)){
-                        continue;
-                    }
-
-                    array_push($parents_checked, $p_id);
-
-                    //Fetch parent idea:
-                    $previous_i = $this->I_model->fetch(array(
-                        'i__id' => $p_id,
-                        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                    ));
-
-                    //Now see if this child completion resulted in a full parent completion:
-                    if(count($previous_i) > 0){
-
-                        //Fetch parent completion:
-                        $this->X_model->completion_recursive_up($e__id, $previous_i[0], false);
-
-                    }
-
-                    //Terminate if we reached the Top Discovery:
-                    if(in_array($p_id , $u_x_ids)){
-                        break;
-                    }
-                }
+            //Go through parents ideas and detect intersects with member ideas
+            foreach(array_reverse($this->X_model->find_previous($e__id, $top_i__id, $i['i__id'])) as $p_i) {
+                $this->X_model->completion_recursive_up($e__id, $top_i__id, $p_i, false);
             }
         }
 
@@ -1594,7 +1357,7 @@ class X_model extends CI_Model
 
 
 
-    function mark_complete($i, $add_fields) {
+    function mark_complete($top_i__id, $i, $add_fields) {
 
         //Always add Idea to x__left
         $add_fields['x__left'] = $i['i__id'];
@@ -1602,8 +1365,179 @@ class X_model extends CI_Model
         //Log completion transaction:
         $new_x = $this->X_model->create($add_fields);
 
+
+        //Check Auto Completes:
+        $is_next_autoscan = array();
+        if(in_array($i['i__type'], $this->config->item('n___7712'))){
+
+            //IDEA TYPE SELECT NEXT
+            $is_next_autoscan = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVER ANSWERED
+                'x__source' => $add_fields['x__source'],
+                'x__left' => $i['i__id'],
+                'x__right >' => 0, //With an answer
+            ), array('x__right'), 0);
+
+        } elseif(in_array($i['i__type'], $this->config->item('n___13022'))){
+
+            //IDEA TYPE ALL NEXT
+            $is_next_autoscan = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                'x__left' => $i['i__id'],
+            ), array('x__right'), 0);
+
+        }
+
+        foreach($is_next_autoscan as $next_i){
+
+            //IS IT EMPTY?
+            if(
+
+                //Auto completable type?
+                in_array($next_i['i__type'], $this->config->item('n___12330')) &&
+
+                //No Messages
+                !count($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type' => 4231, //IDEA NOTES Messages
+                    'x__right' => $next_i['i__id'],
+                ))) &&
+
+                //One or less next
+                count($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'x__left' => $next_i['i__id'],
+                ))) <= 1 &&
+
+                //Not Already Completed:
+                !count($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
+                    'x__source' => $add_fields['x__source'],
+                    'x__left' => $next_i['i__id'],
+                )))){
+
+                //Mark as complete:
+                $this->X_model->mark_complete($top_i__id, $next_i, array(
+                    'x__type' => 4559, //DISCOVER MESSAGES
+                    'x__source' => $add_fields['x__source'],
+                ));
+
+            }
+        }
+
+
+        //SOURCE APPEND?
+        $detected_x_type = x_detect_type($add_fields['x__message']);
+        if ($detected_x_type['status']) {
+
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 7545, //CERTIFICATES
+                'x__right' => $i['i__id'],
+            )) as $x_tag){
+
+                //Generate stats:
+                $x_added = 0;
+                $x_edited = 0;
+                $x_deleted = 0;
+
+
+                //Assign tag if parent/child transaction NOT previously assigned:
+                $existing_x = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
+                    'x__down' => $add_fields['x__source'],
+                ));
+
+                if(count($existing_x)){
+
+                    //Transaction previously exists, see if content value is the same:
+                    if($existing_x[0]['x__message'] == $add_fields['x__message'] && $existing_x[0]['x__type'] == $detected_x_type['x__type']){
+
+                        //Everything is the same, nothing to do here:
+                        continue;
+
+                    } else {
+
+                        $x_edited++;
+
+                        //Content value has changed, update the transaction:
+                        $this->X_model->update($existing_x[0]['x__id'], array(
+                            'x__message' => $add_fields['x__message'],
+                        ), $add_fields['x__source'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
+
+                        //Also, did the transaction type change based on the content change?
+                        if($existing_x[0]['x__type'] != $detected_x_type['x__type']){
+                            $this->X_model->update($existing_x[0]['x__id'], array(
+                                'x__type' => $detected_x_type['x__type'],
+                            ), $add_fields['x__source'], 10659 /* Member Transaction Updated Type */);
+                        }
+
+                    }
+
+                } else {
+
+                    //See if we need to delete single selectable transactions:
+                    foreach($this->config->item('n___6204') as $single_select_e__id){
+                        $single_selectable = $this->config->item('n___'.$single_select_e__id);
+                        if(is_array($single_selectable) && count($single_selectable) && in_array($x_tag['x__up'], $single_selectable)){
+                            //Delete other siblings, if any:
+                            foreach($this->X_model->fetch(array(
+                                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                                'x__up IN (' . join(',', $single_selectable) . ')' => null,
+                                'x__up !=' => $x_tag['x__up'],
+                                'x__down' => $add_fields['x__source'],
+                            )) as $single_selectable_siblings_preset){
+                                $x_deleted += $this->X_model->update($single_selectable_siblings_preset['x__id'], array(
+                                    'x__status' => 6173, //Transaction Deleted
+                                ), $add_fields['x__source'], 10673 /* Member Transaction Unpublished */);
+                            }
+                        }
+                    }
+
+                    //Create transaction:
+                    $x_added++;
+                    $this->X_model->create(array(
+                        'x__type' => $detected_x_type['x__type'],
+                        'x__message' => $add_fields['x__message'],
+                        'x__source' => $add_fields['x__source'],
+                        'x__up' => $x_tag['x__up'],
+                        'x__down' => $add_fields['x__source'],
+                    ));
+
+                }
+
+                //Track Tag:
+                $this->X_model->create(array(
+                    'x__type' => 12197, //Tag Member
+                    'x__source' => $add_fields['x__source'],
+                    'x__up' => $x_tag['x__up'],
+                    'x__down' => $add_fields['x__source'],
+                    'x__left' => $i['i__id'],
+                    'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
+                ));
+
+
+                if($x_added>0 || $x_edited>0 || $x_deleted>0){
+                    //See if Session needs to be updated:
+                    $member_e = superpower_unlocked();
+                    if($member_e && $member_e['e__id']==$add_fields['x__source']){
+                        //Yes, update session:
+                        $this->E_model->activate_session($member_e, true);
+                    }
+                }
+            }
+        }
+
+
         //Process completion automations:
-        $this->X_model->completion_recursive_up($add_fields['x__source'], $i);
+        $this->X_model->completion_recursive_up($add_fields['x__source'], $top_i__id, $i);
 
         return $new_x;
 
@@ -2011,7 +1945,7 @@ class X_model extends CI_Model
 
 
 
-    function answer($e__id, $question_i__id, $answer_i__ids){
+    function x_answer($e__id, $top_i__id, $question_i__id, $answer_i__ids){
 
         $is = $this->I_model->fetch(array(
             'i__id' => $question_i__id,
@@ -2093,7 +2027,7 @@ class X_model extends CI_Model
         }
 
         //Issue DISCOVER/IDEA COIN:
-        $this->X_model->mark_complete($is[0], array(
+        $this->X_model->mark_complete($top_i__id, $is[0], array(
             'x__type' => $x__type,
             'x__source' => $e__id,
         ));

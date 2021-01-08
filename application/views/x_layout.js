@@ -181,6 +181,7 @@ function x_upload(droppedFiles, uploadType) {
 
         ajaxData.append('upload_type', uploadType);
         ajaxData.append('i__id', $('#focus_i__id').val());
+        ajaxData.append('top_i__id', $('#top_i__id').val());
 
         $.ajax({
             url: '/x/x_upload',
@@ -214,6 +215,7 @@ function x_upload(droppedFiles, uploadType) {
 function x_reply(go_next_url){
     $.post("/x/x_reply", {
         i__id:$('#focus_i__id').val(),
+        top_i__id:$('#top_i__id').val(),
         x_reply:$('#x_reply').val(),
     }, function (data) {
         if (data.status) {
@@ -242,6 +244,7 @@ function x_select(go_next_url){
     //Show Loading:
     $.post("/x/x_select", {
         focus_i__id:$('#focus_i__id').val(),
+        top_i__id:$('#top_i__id').val(),
         selection_i__id:selection_i__id
     }, function (data) {
         if (data.status) {

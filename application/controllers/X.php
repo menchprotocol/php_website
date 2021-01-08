@@ -393,7 +393,7 @@ class X extends CI_Controller
             )))){
 
             //Mark as discover If not previously:
-            $this->X_model->mark_complete($is[0], array(
+            $this->X_model->mark_complete($top_i__id, $is[0], array(
                 'x__type' => 4559, //DISCOVER MESSAGES
                 'x__source' => $member_e['e__id'],
             ));
@@ -627,6 +627,13 @@ class X extends CI_Controller
                 'message' => 'Missing IDEA',
             ));
 
+        } elseif (!isset($_POST['top_i__id'])) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Top IDEA',
+            ));
+
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
 
             return view_json(array(
@@ -697,7 +704,7 @@ class X extends CI_Controller
 
         //Save new answer:
         $new_message = '@'.$cdn_status['cdn_e']['e__id'];
-        $this->X_model->mark_complete($is[0], array(
+        $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
             'x__type' => 12117,
             'x__source' => $member_e['e__id'],
             'x__message' => $new_message,
@@ -726,6 +733,11 @@ class X extends CI_Controller
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea ID.',
+            ));
+        } elseif (!isset($_POST['top_i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Top idea ID.',
             ));
         } elseif (!isset($_POST['x_reply']) || !strlen($_POST['x_reply'])) {
             return view_json(array(
@@ -759,7 +771,7 @@ class X extends CI_Controller
         }
 
         //Save new answer:
-        $this->X_model->mark_complete($is[0], array(
+        $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
             'x__type' => 6144,
             'x__source' => $member_e['e__id'],
             'x__message' => $_POST['x_reply'],
@@ -787,6 +799,11 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing idea id.',
             ));
+        } elseif (!isset($_POST['top_i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Top idea id.',
+            ));
         } elseif (!isset($_POST['selection_i__id']) || !is_array($_POST['selection_i__id']) || !count($_POST['selection_i__id'])) {
             return view_json(array(
                 'status' => 0,
@@ -795,7 +812,7 @@ class X extends CI_Controller
         }
 
         //Save answer:
-        return view_json($this->X_model->answer($member_e['e__id'], $_POST['focus_i__id'], $_POST['selection_i__id']));
+        return view_json($this->X_model->x_answer($member_e['e__id'], $_POST['top_i__id'], $_POST['focus_i__id'], $_POST['selection_i__id']));
 
     }
 

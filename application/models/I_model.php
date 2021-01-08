@@ -456,13 +456,13 @@ class I_model extends CI_Model
 
                 //Tree Check if Next
                 if($x__type==13542){
-                    foreach($this->I_model->recursive_parents($focus_i[0]['i__id']) as $grand_parent_ids) {
-                        if (in_array($link_i[0]['i__id'], $grand_parent_ids)) {
-                            return array(
-                                'status' => 0,
-                                'message' => 'Idea previously set as parent, so it cannot be added as child',
-                            );
-                        }
+                    //Must not be added as previous:
+                    if(count($this->X_model->find_previous(0, $link_i[0]['i__id'], $focus_i[0]['i__id']))){
+                        //TODO VALIDATE THIS
+                        return array(
+                            'status' => 0,
+                            'message' => 'Idea previously set as parent, so it cannot be added as child',
+                        );
                     }
                 }
 
@@ -628,75 +628,6 @@ class I_model extends CI_Model
 
     }
 
-
-    function recursive_parents($i__id, $first_level = true, $public_only = true)
-    {
-
-        $grand_parents = array();
-
-        //Fetch parents:
-        foreach($this->X_model->fetch(array(
-            'i__type IN (' . join(',', $this->config->item(($public_only ? 'n___7355' : 'n___7356'))) . ')' => null,
-            'x__status IN (' . join(',', $this->config->item(($public_only ? 'n___7359' : 'n___7360'))) . ')' => null,
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__right' => $i__id,
-        ), array('x__left')) as $i_previous) {
-
-            //Prep ID:
-            $p_id = intval($i_previous['i__id']);
-
-            //Add to appropriate array:
-            if (!$first_level) {
-                array_push($grand_parents, $p_id);
-            }
-
-
-            //Fetch parents of parents:
-            $top_tree = $this->I_model->recursive_parents($p_id, false);
-
-            if (count($top_tree) > 0) {
-                if ($first_level) {
-                    array_push($grand_parents, array_merge(array($p_id), $top_tree));
-                } else {
-                    $grand_parents = array_merge($grand_parents, $top_tree);
-                }
-            } elseif ($first_level) {
-                array_push($grand_parents, array($p_id));
-            }
-
-        }
-
-
-        if ($first_level) {
-
-            //Now we must break down the array:
-            $duplicate_detectors = array();
-            $top_tree = array();
-            $index = 0;
-            foreach($grand_parents as $grand_parent_ids) {
-                foreach($grand_parent_ids as $grand_parent_id) {
-
-                    if (in_array($grand_parent_id, $duplicate_detectors)) {
-                        $index++;
-                    } else {
-                        array_push($duplicate_detectors, intval($grand_parent_id));
-                    }
-
-                    if (!isset($top_tree[$index])) {
-                        $top_tree[$index] = array();
-                    }
-                    array_push($top_tree[$index], intval($grand_parent_id));
-                }
-            }
-
-            //Only the first one for now:
-            return $top_tree;
-
-        } else {
-            return $grand_parents;
-        }
-
-    }
 
 
     function recursive_child_ids($i__id, $first_level = true){

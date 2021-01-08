@@ -36,7 +36,6 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
         //List the idea:
         view_json(array(
             'I_model' => array(
-                'recursive_parents' => $this->I_model->recursive_parents($is[0]['i__id']),
                 'metadata_common_base' => $this->I_model->metadata_common_base($is[0]),
             ),
             'X_model' => array(

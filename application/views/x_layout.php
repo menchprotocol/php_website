@@ -1,7 +1,6 @@
 <?php
 
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-$e___13544 = $this->config->item('e___13544'); //IDEA TREE COUNT
 
 //Messages:
 $messages = $this->X_model->fetch(array(
@@ -19,125 +18,52 @@ $is_next = $this->X_model->fetch(array(
     'x__left' => $i_focus['i__id'],
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
-$top_i__id = ( $i_top ? $i_top['i__id'] : 0 );
+
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
-$completion_rate['completion_percentage'] = 0;
-$in_my_x = $top_i__id && $this->X_model->ids($x__source, $top_i__id);
-$u_x_ids = ( $top_i__id ? array($top_i__id) : array() ); //TODO Remove
-$sitemap_raw = array();
-$sitemap_items = array();
-$i = array(); //Assume main intent not yet completed, unless proven otherwise...
-$top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
-$i_completion_percentage = 0; //Assume main intent not yet completed, unless proven otherwise...
-$i_completion_rate = array();
+$top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
 $in_my_discoveries = ( $top_i__id && $top_i__id==$i_focus['i__id'] );
-$previous_level_id = 0; //The ID of the Idea one level up, if any
-$superpower_10939 = superpower_active(10939, true);
-$x_completes = array();
-
-if($in_my_x){
-    //Fetch progress history:
-    $x_completes = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-        'x__source' => $x__source,
-        'x__left' => $i_focus['i__id'],
-    ));
-}
-
+$top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$i_is_drip = in_array($i_focus['i__type'], $this->config->item('n___14383'));
-$i_drip_mode = $i_is_drip && count($messages)>1 && (!$in_my_x || !count($x_completes)) && member_setting(14485)==14383;
+$i_drip_mode = in_array($i_focus['i__type'], $this->config->item('n___14383')) && count($messages)>1 && (!$top_i__id || !count($x_completes)) && member_setting(14485)==14383;
 $drip_msg_counter = 0;
-$drip_msg_total = count($messages) + 1 /* For Title */;
+$is_discovarable = true;
+
+$x_completes = ($top_i__id ? $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
+    'x__source' => $x__source,
+    'x__left' => $i_focus['i__id'],
+)) : array() );
+
+
+
 
 ?>
 
 <script>
     var focus_i__type = <?= $i_focus['i__type'] ?>;
-    var drip_msg_total = <?= $drip_msg_total ?>;
+    var drip_msg_total = <?= count($messages) + 1 /* For Title */ ?>;
     var i_drip_pointer = 1; //Start at the first message
     var i_drip_mode_js = <?= intval($i_drip_mode) ?>;
 </script>
 
 <input type="hidden" id="focus_i__id" value="<?= $i_focus['i__id'] ?>" />
+<input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
 <script src="/application/views/x_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 <?php
 
-echo '<div class="container hideIfEmpty">';
+echo '<div class="container">';
+
+if($top_i__id){
 
 
-if($in_my_x){
+    $is_this = $this->I_model->fetch(array(
+        'i__id' => $top_i__id,
+    ));
+    $i_completion_rate = $this->X_model->completion_progress($x__source, $is_this[0]);
+    $top_completed = $i_completion_rate['completion_percentage'] >= 100;
 
-    //Add Current Discovery
-    if($i_drip_mode){
-        array_push($sitemap_items, view_i(14451, $top_i__id, null, $i_focus, $in_my_x, null, false));
-    }
-
-    //Fetch Parents all the way to the Discovery Item
-    if(!$in_my_discoveries){
-
-        //Find it:
-        $top_tree = $this->I_model->recursive_parents($i_focus['i__id'], true, true);
-
-        foreach($top_tree as $grand_parent_ids) {
-            foreach(array_intersect($grand_parent_ids, $u_x_ids) as $intersect) {
-                foreach($grand_parent_ids as $count => $previous_i__id) {
-
-                    if(filter_array($sitemap_raw, 'i__id', $previous_i__id)){
-                        //Already There
-                        break;
-                    }
-
-                    if($count==0){
-                        //Reuse the first parent for the back button:
-                        $previous_level_id = $previous_i__id;
-                    }
-
-
-                    $is_this = $this->I_model->fetch(array(
-                        'i__id' => $previous_i__id,
-                    ));
-
-                    $completion_rate = $this->X_model->completion_progress($x__source, $is_this[0]);
-                    array_push($sitemap_raw, array(
-                        'i__id' => $previous_i__id,
-                        'i' => $is_this[0],
-                        'completion_rate' => $completion_rate,
-                    ));
-
-
-                    if(in_array($previous_i__id, $u_x_ids)){
-                        //We reached the top-level discovery:
-                        $top_completed = $completion_rate['completion_percentage'] >= 100;
-                        $i_completion_percentage = $completion_rate['completion_percentage'];
-                        $i_completion_rate = $completion_rate;
-                        $i = $is_this[0];
-                        break;
-                    }
-                }
-            }
-        }
-
-        foreach($sitemap_raw as $si) {
-            array_push($sitemap_items, view_i(14450, $top_i__id, null, $si['i'],  $in_my_x,null, false, $si['completion_rate']));
-        }
-
-    }
-}
-
-
-
-if ($in_my_x) {
-
-    // % DONE
-    $completion_rate = $this->X_model->completion_progress($x__source, $i_focus);
-    if($in_my_discoveries){
-        $top_completed = $completion_rate['completion_percentage'] >= 100;
-        $i_completion_percentage = $completion_rate['completion_percentage'];
-        $i_completion_rate = $completion_rate;
-    }
 
 
     if($i_type_meet_requirement){
@@ -168,7 +94,7 @@ if ($in_my_x) {
             if($x_completion_type_id > 0){
 
                 //Yes, Issue coin:
-                array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
+                array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i_focus, array(
                     'x__type' => $x_completion_type_id,
                     'x__source' => $x__source,
                 )));
@@ -195,7 +121,7 @@ if ($in_my_x) {
             if(!count($unlock_paths)){
 
                 //No path found:
-                array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
+                array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i_focus, array(
                     'x__type' => 7492, //TERMINATE
                     'x__source' => $x__source,
                 )));
@@ -203,15 +129,6 @@ if ($in_my_x) {
             }
         }
     }
-}
-
-
-
-
-
-//Determine next path:
-$is_discovarable = true;
-if($in_my_x){
 
     $go_next_url = ( $top_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i_focus['i__id'];
 
@@ -242,29 +159,25 @@ if($in_my_x){
         }
 
     }
+
 }
 
 
 
 
-
-$show_percentage = $completion_rate['completion_percentage']>0 /* && $completion_rate['completion_percentage']<100 */ ;
-
-
-
-
-//Idea Map:
-echo '<div class="row">';
-echo join('', array_reverse($sitemap_items));
-echo '</div>';
-
-
-/*
-if($in_my_x && count($x_completes) && $i_drip_mode){
-    //Show Discovery time:
-    echo '<div class="headline"><span class="icon-block">'.$e___11035[14457]['m__icon'].'</span>'.str_replace('%S',view_time_difference(strtotime($x_completes[0]['x__time'])), $e___11035[14457]['m__title']).'</div>';
+//Sitemap
+if($top_i__id){
+    echo '<div class="row">';
+    foreach($this->X_model->find_previous($member_e['e__id'], $_GET['top_i__id'], $_GET['i__id']) as $sitemap_i){
+        echo view_i(14450, $top_i__id, null, $sitemap_i);
+    }
+    if($i_drip_mode){
+        echo view_i(14451, $top_i__id, null, $i_focus, $top_i__id);
+    }
+    echo '</div>';
 }
-*/
+
+
 
 
 if(!$i_drip_mode) {
@@ -326,7 +239,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 ).'</div>';
         }
 
-        if($i_drip_mode){ //|| (!$i_drip_mode && $i_is_drip)
+        if($i_drip_mode){
             $drip_msg_counter++;
             $ui .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.( $i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
             $ui .= '<div class="headline" style="padding: 0;"><span class="icon-block">'.$e___11035[14384]['m__icon'].'</span>'.$e___11035[14384]['m__title'].'</div>';
@@ -375,7 +288,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
         /*
-        if($in_my_x && count($this->X_model->fetch(array(
+        if($top_i__id && count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type' => 4983, //IDEA SOURCES
                 'x__up' => 12896, //SAVE THIS IDEA
@@ -399,7 +312,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         //IDAS
         $ui .= '<div class="drip_msg drip_msg_'.$drip_msg_counter.' '.($i_drip_mode && $drip_msg_counter>1 ? ' hidden ' : '' ).'">';
-        if($in_my_x) {
+        if($top_i__id) {
 
             //PREVIOUSLY UNLOCKED:
             $unlocked_x = $this->X_model->fetch(array(
@@ -412,7 +325,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             //Did we have any steps unlocked?
             if (count($unlocked_x) > 0) {
-                $ui .= view_i_list(13978, $top_i__id, $in_my_x, $i_focus, $unlocked_x, $member_e);
+                $ui .= view_i_list(13978, $top_i__id, $top_i__id, $i_focus, $unlocked_x, $member_e);
             }
 
 
@@ -434,12 +347,12 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 if (!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)) {
 
                     //List Unlock paths:
-                    $ui .= view_i_list(13979, $top_i__id, $in_my_x, $i_focus, $unlock_paths, $member_e);
+                    $ui .= view_i_list(13979, $top_i__id, $top_i__id, $i_focus, $unlock_paths, $member_e);
 
                 }
 
                 //List Children if any:
-                $ui .= view_i_list(12211, $top_i__id, $in_my_x, $i_focus, $is_next, $member_e);
+                $ui .= view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
 
 
             } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
@@ -457,7 +370,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         'x__left' => $i_focus['i__id'],
                     )))) {
 
-                        array_push($x_completes, $this->X_model->mark_complete($i_focus, array(
+                        array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i_focus, array(
                             'x__type' => 4559, //DISCOVER MESSAGES
                             'x__source' => $x__source,
                         )));
@@ -491,7 +404,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                         $ui .= '<div class="edit_select_answer">';
 
                         //List answers:
-                        $ui .= view_i_list(13980, $top_i__id, $in_my_x, $i_focus, $x_selects, $member_e);
+                        $ui .= view_i_list(13980, $top_i__id, $top_i__id, $i_focus, $x_selects, $member_e);
 
                         $ui .= '<div class="doclear">&nbsp;</div>';
 
@@ -589,7 +502,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             } elseif (in_array($i_focus['i__type'], $this->config->item('n___4559'))) {
 
                 //DISCOVER ONLY
-                $ui .= view_i_list(12211, $top_i__id, $in_my_x, $i_focus, $is_next, $member_e, ( count($is_next) > 1 ? view_i_time($i_stats, true) : '' ));
+                $ui .= view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e, ( count($is_next) > 1 ? view_i_time($i_stats, true) : '' ));
 
             } elseif ($i_focus['i__type'] == 6683) {
 
@@ -601,7 +514,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
                 if (count($x_completes)) {
                     //Next Ideas:
-                    $ui .= view_i_list(12211, $top_i__id, $in_my_x, $i_focus, $is_next, $member_e);
+                    $ui .= view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
                 }
 
                 $ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
@@ -627,7 +540,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                     $ui .= '</div>';
 
                     //Any child ideas?
-                    $ui .= view_i_list(12211, $top_i__id, $in_my_x, $i_focus, $is_next, $member_e);
+                    $ui .= view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
 
                 } else {
 
@@ -649,7 +562,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         } else {
 
             //NEXT IDEAS
-            $ui .= view_i_list(12211, $top_i__id, $in_my_x, $i_focus, $is_next, $member_e, ( count($is_next) ? view_i_time($i_stats, true) : '' )); //13542
+            $ui .= view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e, ( count($is_next) ? view_i_time($i_stats, true) : '' )); //13542
 
             //IDEA PREVIOUS
             /*
@@ -662,7 +575,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             ), array('x__left'), 0);
             if(count($is_previous)){
                 $ui .= '<div style="padding-top: 34px;">';
-                $ui .= view_i_list(12991, $top_i__id, $in_my_x, $i_focus, $is_previous, $member_e);
+                $ui .= view_i_list(12991, $top_i__id, $top_i__id, $i_focus, $is_previous, $member_e);
                 $ui .= '</div>';
             }
             */
@@ -766,7 +679,7 @@ echo '</div>'; //CLOSE CONTAINER
 
 
 
-if(!$in_my_x && !$i_drip_mode){
+if(!$top_i__id && !$i_drip_mode){
 
     $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
@@ -792,7 +705,7 @@ if(!$in_my_x && !$i_drip_mode){
 
         $control_btn = '';
 
-        if($e__id==13877 && $in_my_x && !$in_my_discoveries){
+        if($e__id==13877 && $top_i__id && !$in_my_discoveries){
 
             //Is Saved already by this member?
             $is_saves = $this->X_model->fetch(array(
@@ -812,7 +725,7 @@ if(!$in_my_x && !$i_drip_mode){
         } elseif($e__id==12991 && !$in_my_discoveries){
 
             //BACK
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : ( $previous_level_id > 0 ? '/x/x_previous/'.$previous_level_id.'/'.$i_focus['i__id'] : home_url() ) ).'\')">'.$m2['m__icon'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_previous(\''.( isset($_GET['previous_x']) && $_GET['previous_x']>0 ? '/'.$_GET['previous_x'] : home_url() ).'\')">'.$m2['m__icon'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
         } elseif($e__id==12211){
 
