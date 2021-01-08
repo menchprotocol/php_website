@@ -12,5 +12,5 @@ echo '</form>';
 
 if(isset($_GET['i__id']) && isset($_GET['top_i__id'])){
     echo '<br /><br /><div class="mini-header">Results:</div>';
-    print_r($this->X_model->find_previous($member_e['e__id'], $_GET['top_i__id'], $_GET['i__id']));
+    echo nl2br(str_replace(' ','&nbsp;', print_r($this->X_model->find_previous($member_e['e__id'], $_GET['top_i__id'], $_GET['i__id']), true)));
 }
