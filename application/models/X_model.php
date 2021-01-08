@@ -212,7 +212,9 @@ class X_model extends CI_Model
 
                         //SOURCE
                         $es = $this->E_model->fetch(array( 'e__id' => $add_fields[$var_index[$e__id]] ));
-                        $html_message .= '<div>' . $m['m__title'] . ': <a href="'.$this->config->item('base_url').'/@' . $es[0]['e__id'] . '" target="_parent">@'.$es[0]['e__id'].' '.$es[0]['e__title'].'</a></div>';
+                        if(count($es)){
+                            $html_message .= '<div>' . $m['m__title'] . ': <a href="'.$this->config->item('base_url').'/@' . $es[0]['e__id'] . '" target="_parent">@'.$es[0]['e__id'].' '.$es[0]['e__title'].'</a></div>';
+                        }
 
                     } elseif (in_array(4367 , $m['m__profile'])) {
 
