@@ -11,10 +11,17 @@ echo '</form>';
 
 
 if(isset($_GET['i__id']) && isset($_GET['top_i__id'])){
-    echo '<div class="mini-header">Results:</div>';
+    echo '<div class="mini-header top-margin">Results:</div>';
     echo '<div class="row">';
-    foreach($this->X_model->find_previous($member_e['e__id'], $_GET['top_i__id'], $_GET['i__id']) as $i){
-        echo view_i(14450, intval($_GET['top_i__id']), null, $i);
+    $top_tree = $this->X_model->find_previous($member_e['e__id'], $_GET['top_i__id'], $_GET['i__id']);
+    if(count($top_tree)){
+        foreach($top_tree as $i){
+            echo view_i(14450, intval($_GET['top_i__id']), null, $i);
+        }
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_GET['i__id'],
+        ));
+        echo '<h1>' . view_i_title($is[0]) . '</h1>';
     }
     echo '</div>';
 }
