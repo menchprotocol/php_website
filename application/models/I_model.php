@@ -456,10 +456,14 @@ class I_model extends CI_Model
 
                 //Tree Check if Next
                 if($x__type==13542 && count($this->X_model->find_previous(0, $link_i[0]['i__id'], $focus_i[0]['i__id']))){
-                    //TODO VALIDATE THIS
                     return array(
                         'status' => 0,
-                        'message' => 'Idea previously set as parent, so it cannot be added as child',
+                        'message' => 'Idea already added as previous so it cannot be added as next',
+                    );
+                } elseif($x__type==11019 && count($this->X_model->find_previous(0, $focus_i[0]['i__id'], $link_i[0]['i__id']))){
+                    return array(
+                        'status' => 0,
+                        'message' => 'Idea already added as next so it cannot be added as previous',
                     );
                 }
 
