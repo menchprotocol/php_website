@@ -11,6 +11,10 @@ echo '</form>';
 
 
 if(isset($_GET['i__id']) && isset($_GET['top_i__id'])){
-    echo '<br /><br /><div class="mini-header">Results:</div>';
-    echo nl2br(str_replace(' ','&nbsp;', print_r($this->X_model->find_previous($member_e['e__id'], $_GET['top_i__id'], $_GET['i__id']), true)));
+    echo '<div class="mini-header">Results:</div>';
+    echo '<div class="row">';
+    foreach($this->X_model->find_previous($member_e['e__id'], $_GET['top_i__id'], $_GET['i__id']) as $i){
+        echo view_i(14450, intval($_GET['top_i__id']), null, $i);
+    }
+    echo '</div>';
 }
