@@ -455,15 +455,12 @@ class I_model extends CI_Model
                 }
 
                 //Tree Check if Next
-                if($x__type==13542){
-                    //Must not be added as previous:
-                    if(count($this->X_model->find_previous(0, $link_i[0]['i__id'], $focus_i[0]['i__id']))){
-                        //TODO VALIDATE THIS
-                        return array(
-                            'status' => 0,
-                            'message' => 'Idea previously set as parent, so it cannot be added as child',
-                        );
-                    }
+                if($x__type==13542 && count($this->X_model->find_previous(0, $focus_i[0]['i__id'], $link_i[0]['i__id']))){
+                    //TODO VALIDATE THIS
+                    return array(
+                        'status' => 0,
+                        'message' => 'Idea previously set as parent, so it cannot be added as child',
+                    );
                 }
 
             } elseif($x__type==13550){
