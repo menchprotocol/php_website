@@ -167,7 +167,7 @@ if($top_i__id){
 //Sitemap
 if($top_i__id){
     echo '<div class="row">';
-    foreach($this->X_model->find_previous($member_e['e__id'], $_GET['top_i__id'], $_GET['i__id']) as $sitemap_i){
+    foreach($this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']) as $sitemap_i){
         echo view_i(14450, $top_i__id, null, $sitemap_i);
     }
     if($i_drip_mode){
