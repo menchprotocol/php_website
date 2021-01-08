@@ -347,7 +347,7 @@ class I_model extends CI_Model
 
     }
 
-    function create_or_link($x__type, $top_i__id, $i__title, $x__source, $focus__id, $link_i__id = 0)
+    function create_or_link($x__type, $i__title, $x__source, $focus__id, $link_i__id = 0)
     {
 
         /*
