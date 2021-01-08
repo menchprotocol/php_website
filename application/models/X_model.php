@@ -1091,7 +1091,7 @@ class X_model extends CI_Model
 
 
 
-    function find_previous($e__id, $top_i__id, $i__id, $top_line = array())
+    function find_previous($e__id, $top_i__id, $i__id)
     {
 
         //TODO Improve this function to return the shortest path between $top_i__id & $i__id
@@ -1117,16 +1117,14 @@ class X_model extends CI_Model
                 continue;
             }
 
-            array_push($top_line, intval($i_previous['i__id']));
-
             //Did we find it?
             if($i_previous['i__id']==$top_i__id){
-                return $top_line;
+                return array(intval($i_previous['i__id']));
             } else {
                 //Keep looking:
-                $top_search = $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id'], $top_line);
+                $top_search = $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id']);
                 if(count($top_search)){
-                    return $top_search;
+                    return array_push($top_search, intval($i_previous['i__id']));
                 }
             }
         }
