@@ -1091,6 +1091,52 @@ class X_model extends CI_Model
 
 
 
+    function find_previous($e__id, $top_i__id, $i__id, $top_line = array())
+    {
+
+        //TODO Improve this function to return the shortest path between $top_i__id & $i__id
+
+        //Fetch parents:
+        foreach($this->X_model->fetch(array(
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__right' => $i__id,
+        ), array('x__left')) as $i_previous) {
+
+            //Validate Selection:
+            $is_or_i = in_array($i_previous['i__type'], $this->config->item('n___6193'));
+            $is_fixed_x = in_array($i_previous['x__type'], $this->config->item('n___12840'));
+            if(($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVER EXPANSIONS
+                    'x__left' => $i_previous['i__id'],
+                    'x__right' => $i__id,
+                    'x__source' => $e__id,
+                )))){
+                continue;
+            }
+
+            array_push($top_line, intval($i_previous['i__id']));
+
+            //Did we find it?
+            if($i_previous['i__id']==$top_i__id){
+                return $top_line;
+            }
+
+            //Keep looking:
+            return $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id'], $top_line);
+
+        }
+
+        //Did not find any parents:
+        return array();
+
+    }
+
+
+
+
     function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false)
     {
 
