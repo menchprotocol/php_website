@@ -1682,7 +1682,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         if($i_title){
             if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
                 //Editable title:
-                $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1));
+                $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1), true);
             } elseif(!$is_any_lock){
                 $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
             } else {
