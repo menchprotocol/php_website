@@ -2094,9 +2094,7 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
 
         $focus_element = '<textarea name="'.$name.'" onkeyup="view_input_text_count('.$cache_e__id.','.$s__id.')" placeholder="'.$e___12112[$cache_e__id]['m__title'].'" '.$attributes.'>'.$current_value.'</textarea>';
         $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$s__id.' hidden grey css__title doupper" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$s__id.'">0</span>/'.view_memory(6404,$cache_e__id).' CHARACTERS</div>';
-        if($e__icon){
-            $icon = '<span class="icon-block title-icon">'.$e__icon.'</span>';
-        }
+        $icon = ($e__icon ? '<span class="icon-block title-icon">'.$e__icon.'</span>' : null);
 
     } else {
 
