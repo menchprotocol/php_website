@@ -319,20 +319,18 @@ $(document).ready(function () {
 
     //Member Setting Modal Shortcut:
     $(window).keypress(function(event) {
-        if(event.ctrlKey){
-            if (event.which == 90){ //z
-                //SETTING
-                $('#modal6225').modal('show');
-            } else if (event.which == 88){ //x
-                //SUGGEST
-                $('#modal14393').modal('show');
-            } else if (event.which == 67){ //c
-                //SHARE
-                $('#modal13024').modal('show');
-            } else if (event.which == 86){ //v
-                //APPS
-                $('#modal6287').modal('show');
-            }
+        if (event.ctrlKey && event.which == 90){ //z
+            //SETTING
+            $('#modal6225').modal('show');
+        } else if (event.ctrlKey && event.which == 88){ //x
+            //SUGGEST
+            $('#modal14393').modal('show');
+        } else if (event.ctrlKey && event.which == 67){ //c
+            //SHARE
+            $('#modal13024').modal('show');
+        } else if (event.ctrlKey && event.which == 86){ //v
+            //APPS
+            $('#modal6287').modal('show');
         }
     });
 
