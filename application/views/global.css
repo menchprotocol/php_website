@@ -1437,6 +1437,7 @@ label {
 .btn-source { border-color:#007AFD !important; }
 .btn.btn-source {
     border: 3px solid #007AFD;
+    color: #007AFD;
 }
 
 
@@ -1450,6 +1451,7 @@ label {
 .btn-discover { border-color:#FC1B44 !important; }
 .btn.btn-discover {
     border: 3px solid #FC1B44;
+    color: #FC1B44;
 }
 
 
@@ -1463,6 +1465,7 @@ label {
 .btn-idea { border-color:#FFC500 !important; }
 .btn.btn-idea {
     border: 3px solid #FFC500;
+    color: #FFC500;
 }
 .btn-lrg i { color: #222222 !important; }
 
