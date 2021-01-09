@@ -1943,9 +1943,10 @@ i, .btn .show-max {
 }
 
 .cover-content .inner-content {
+    margin: 0 5px;
     padding: 0 3px;
     line-height: 120%;
-    font-size: 1.1em; /* 0.80em IF 6xIdeas/Row */
+    font-size: 1.1em;
     display: block;
     text-align: center;
     border-top-left-radius: 10px;
