@@ -2145,6 +2145,17 @@ i, .btn .show-max {
     }
 }
 
+.inner-content .texttype__lg {
+    font-size: 1em;
+    width: 100%;
+    margin: 0;
+    background-color: transparent;
+    color: #FFF;
+    line-height: 110%;
+    margin-top: 3px;
+}
+
+
 .texttransparent{
     color:transparent;
 }

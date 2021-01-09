@@ -335,6 +335,7 @@ $(document).ready(function () {
     init_remove();
     lazy_load();
     set_autosize($('#sugg_note'));
+    set_autosize($('.texttype__lg'));
     watch_for_note_e_clicks();
 
     if(js_pl_id > 1){

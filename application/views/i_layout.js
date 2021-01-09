@@ -76,8 +76,6 @@ $(document).ready(function () {
     }
 
 
-    set_autosize($('.text__4736_'+$('#focus_i__id').val()));
-
     //Activate Source-Only Inputs:
     $(".e-only-7551").each(function () {
         e_e_only_search_7551($(this).attr('note_type_id'));
