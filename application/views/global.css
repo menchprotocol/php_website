@@ -1944,7 +1944,7 @@ i, .btn .show-max {
 
 .cover-content .inner-content {
     margin: 0 5px;
-    padding: 0 3px;
+    padding: 2px 3px 0;
     line-height: 120%;
     font-size: 1.1em;
     display: block;
@@ -2151,8 +2151,7 @@ i, .btn .show-max {
     margin: 0;
     background-color: transparent;
     color: #FFFFFF !important;
-    line-height: 110%;
-    margin-top: 2px;
+    line-height: 120%;
 }
 
 
