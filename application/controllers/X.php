@@ -412,20 +412,25 @@ class X extends CI_Controller
             return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
         }
 
+
         //Should we check for auto next redirect if empty? Only if this is a selection:
-        if(in_array($is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
-                'x__source' => $member_e['e__id'],
-                'x__left' => $is[0]['i__id'],
-            )))){
-
-            //Mark as discover If not previously:
-            $this->X_model->mark_complete($top_i__id, $is[0], array(
-                'x__type' => 4559, //DISCOVER MESSAGES
-                'x__source' => $member_e['e__id'],
-            ));
-
+        if(!count($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVER COMPLETE
+            'x__source' => $member_e['e__id'],
+            'x__left' => $is[0]['i__id'],
+        )))){
+            //Not yet completed, should we complete?
+            if(in_array($is[0]['i__type'], $this->config->item('n___4559'))){
+                //Yes we can:
+                $this->X_model->mark_complete($top_i__id, $is[0], array(
+                    'x__type' => 4559, //DISCOVER MESSAGES
+                    'x__source' => $member_e['e__id'],
+                ));
+            } else {
+                //We can't, so this is the next idea:
+                return redirect_message('/'.$top_i__id.'/'.$is[0]['i__id'] );
+            }
         }
 
         //Go to Next Idea:
