@@ -364,7 +364,7 @@ class X extends CI_Controller
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$i__id_added);
+        return redirect_message('/'.$i__id_added.'/'.$i__id_added);
 
     }
 
