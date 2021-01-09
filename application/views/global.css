@@ -1851,6 +1851,11 @@ i, .btn .show-max {
 .form-check{
     padding: 8px 0 8px 60px;
 }
+.title-editor{
+    font-size: 0.5em;
+    margin-left: 5px;
+    display: inline-block;
+}
 .cover-link {
     border:0;
     width: 100%;

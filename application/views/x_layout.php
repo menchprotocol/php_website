@@ -170,7 +170,7 @@ if($top_i__id){
 
 
 //IDEA TITLE
-echo '<h1>' . view_i_title($i_focus) . '<span class="'.superpower_active(10939).'">&nbsp;<a href="/~'.$i_focus['i__id'].'" title="'.$e___11035[13563]['m__title'].'">'.$e___11035[13563]['m__icon'].'</a></span></h1>';
+echo '<h1>' . view_i_title($i_focus) . '<span class="title-editor '.superpower_active(10939).'"><a href="/~'.$i_focus['i__id'].'" title="'.$e___11035[13563]['m__title'].'">'.$e___11035[13563]['m__icon'].'</a></span></h1>';
 
 
 
