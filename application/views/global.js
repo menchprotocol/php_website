@@ -317,6 +317,12 @@ $(document).ready(function () {
         }
     });
 
+    //Member Setting Modal Shortcut:
+    $(window).keypress(function(event) {
+        if (event.which == 115 && event.ctrlKey){
+            $('#modal6225').modal('show');
+        }
+    });
 
     init_remove();
     lazy_load();

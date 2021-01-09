@@ -10,7 +10,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     ?>
 
-    <!-- ACCOUNT Modal -->
+    <!-- ACCOUNT SETTINGS Modal -->
     <div class="modal fade indifferent" id="modal6225" tabindex="-1" role="dialog" aria-labelledby="modal6225Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

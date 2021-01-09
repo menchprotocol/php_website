@@ -1563,9 +1563,6 @@ function view_i_select($i, $x__source, $previously_selected){
         $ui .= '<div class="cover-content"><div class="inner-content"><a '.$href.'>'.$i_title.'</a></div></div>';
     }
 
-    if($i_stats['i___6162'] >= view_memory(6404,14735)){
-        $ui .= '<div class="cover-text css__title">'.view_i_time($i_stats).'</div>';
-    }
     $ui .= '</div>';
 
     return $ui;
@@ -1612,6 +1609,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $previous_is_lock = ($previous_i && in_array($previous_i['i__type'], $CI->config->item('n___14488')));
     $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($previous_is_lock && $discovery_mode);
     $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
+    $show_duration = in_array($x__type, $CI->config->item('n___14743'));
     $is_soft_lock = $locking_enabled && ($is_hard_lock || $previous_is_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
     $is_sortable = !$is_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
     $i_stats = i_stats($i['i__metadata']);
@@ -1748,7 +1746,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<div class="cover-text css__title">';
 
         //Always Show Time
-        if($i_stats['i___6162'] >= view_memory(6404,14735)) {
+        if($show_duration) {
             $ui .= '<div class="inline-block" ' . ($idea_editing && !$superpower_12700 ? ' style="min-width: 38px; padding-right: 10px; margin-left: -4px;" ' : '') . '>' . view_i_time($i_stats, false, $idea_editing) . '</div>';
         }
 
@@ -1818,7 +1816,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     } else {
 
-        if($i_stats['i___6162'] >= view_memory(6404,14735)) {
+        if($show_duration) {
             $ui .= '<div class="cover-text css__title">' . view_i_time($i_stats) . '</div>';
         }
     }
