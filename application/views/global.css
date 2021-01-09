@@ -2754,6 +2754,8 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .active_selected,
 .custom_ui_13884_13886 .active_selected{
     border: 3px solid #FC1B44 !important;
+    margin-top: -3px;
+    margin-bottom: 3px;
 }
 .active_selected .inside-btn > .fas {
     color: #FC1B44 !important;
