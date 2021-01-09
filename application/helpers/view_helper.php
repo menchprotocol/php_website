@@ -1590,13 +1590,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $load_completion = in_array($x__type, $CI->config->item('n___14501'));
     $is_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];
 
-    /*
-    if($focus_e && (!$member_session || $member_session['e__id']!=$focus_e['e__id']) && !superpower_active(12701, true)){
-        //Do not allow to see this member's info:
-        $focus_e = false;
-    }
-    */
-
     if(!$focus_e){
         $focus_e = $user_session;
     }
@@ -1630,7 +1623,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
     } elseif(strlen($e___13369[$x__type]['m__message'])){
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
-    } elseif(in_array($x__type, $CI->config->item('n___14742')) && $previous_i){
+    } elseif(in_array($x__type, $CI->config->item('n___14742')) && $previous_i && $user_session){
         //Complete if not already:
         $href = '/x/complete_next/'.$top_i__id.'/'.$previous_i['i__id'].'/'.$i['i__id'];
     } elseif($discovery_mode){
