@@ -110,7 +110,7 @@ if(!$member_e){
 
             function go_to_next(){
                 setTimeout(function () {
-                    window.location = '<?= $e___14709[14721]['m__message'] ?>';
+                    window.location = '/@'+js_pl_id+'?focus_tab=6255';
                 }, 1597);
             }
 
