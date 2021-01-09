@@ -79,7 +79,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="x_suggestion()" class="btn btn-source">SUBMIT</button>
+                    <button type="button" onclick="x_suggestion()" class="btn btn-default">SUBMIT</button>
                 </div>
             </div>
         </div>
@@ -269,7 +269,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="e_modify_save()" class="btn btn-source">SAVE</button>
+                    <button type="button" onclick="e_modify_save()" class="btn btn-default">SAVE</button>
                 </div>
             </div>
         </div>

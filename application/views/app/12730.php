@@ -74,5 +74,5 @@ if($replace_with_set){
 }
 
 
-echo '<input type="submit" class="btn btn-source" value="GO">';
+echo '<input type="submit" class="btn btn-default" value="GO">';
 echo '</form>';

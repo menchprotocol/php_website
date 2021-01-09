@@ -1297,7 +1297,7 @@ function view_e_settings($list_id, $show_accordion){
         } elseif ($acc_e__id == 13025 /* Full Name */) {
 
             $tab_ui .= '<span><input type="text" id="e_name" class="form-control border dotransparent doupper" value="' . $member_e['e__title'] . '" /></span>
-                <a href="javascript:void(0)" onclick="e_name()" class="btn btn-source">Save</a>
+                <a href="javascript:void(0)" onclick="e_name()" class="btn btn-default">Save</a>
                 <span class="saving-account save_name"></span>';
 
         } elseif ($acc_e__id == 3288 /* Email */) {
@@ -1310,13 +1310,13 @@ function view_e_settings($list_id, $show_accordion){
             ));
 
             $tab_ui .= '<span><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($u_emails) > 0 ? $u_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
-                <a href="javascript:void(0)" onclick="e_email()" class="btn btn-source">Save</a>
+                <a href="javascript:void(0)" onclick="e_email()" class="btn btn-default">Save</a>
                 <span class="saving-account save_email"></span>';
 
         } elseif ($acc_e__id == 3286 /* Password */) {
 
             $tab_ui .= '<span><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
-                <a href="javascript:void(0)" onclick="e_password()" class="btn btn-source">Save</a>
+                <a href="javascript:void(0)" onclick="e_password()" class="btn btn-default">Save</a>
                 <span class="saving-account save_password"></span>';
 
         } elseif ($is_multi_selectable || $is_single_selectable) {

@@ -265,7 +265,7 @@ $profiles = $this->X_model->fetch(array(
 
                 $ui .= $input_options;
 
-                $ui .= '<div><input type="submit" value="APPLY" class="btn btn-source inline-block"></div>';
+                $ui .= '<div><input type="submit" value="APPLY" class="btn btn-default inline-block"></div>';
 
                 $ui .= '</form>';
 
