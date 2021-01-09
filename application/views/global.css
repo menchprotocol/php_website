@@ -1846,7 +1846,7 @@ i, .btn .show-max {
 
 .cover-wrapper {
     border:0;
-    margin:0 3px;
+    margin:0 5px;
 }
 .form-check{
     padding: 8px 0 8px 60px;
@@ -1913,7 +1913,7 @@ i, .btn .show-max {
     padding: 5px 0;
 }
 .cover-text {
-    margin: -3px 0 13px;
+    margin: 0 0 13px;
     text-align: center;
 }
 .cover-progress{
