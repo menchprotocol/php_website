@@ -108,7 +108,7 @@ function select_answer(i__id){
     }
 
     //Is setected?
-    if($('.x_select_'+i__id+' i').hasClass('fas')){
+    if($('.x_select_'+i__id+' .check-icon i').hasClass('fas')){
 
         //Previously Selected, delete selection:
         if(i__type == 7231){
@@ -206,7 +206,7 @@ function x_select(go_next_url){
     var selection_i__id = [];
     $(".answer-item").each(function () {
         var selection_i__id_this = parseInt($(this).attr('selection_i__id'));
-        if ($('.x_select_'+selection_i__id_this+' i').hasClass('fas')) {
+        if ($('.x_select_'+selection_i__id_this+' .check-icon i').hasClass('fas')) {
             selection_i__id.push(selection_i__id_this);
         }
     });
