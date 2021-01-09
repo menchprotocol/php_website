@@ -2304,6 +2304,8 @@ function i_add(x__type, link_i__id, focus__id) {
             //Lookout for textinput updates
             x_set_start_text();
 
+            set_autosize($('.texttype__lg'));
+
         } else {
             //Show errors:
             alert(data.message);
