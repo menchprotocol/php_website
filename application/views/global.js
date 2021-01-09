@@ -936,6 +936,7 @@ function x_save(i__id){
         //Add:
         $.post("/x/x_save", {
             i__id:i__id,
+            top_i__id:$('#top_i__id').val(),
         }, function (data) {
             if (!data.status) {
                 alert(data.message);
