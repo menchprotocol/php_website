@@ -1630,6 +1630,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
     } elseif(strlen($e___13369[$x__type]['m__message'])){
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
+    } elseif(in_array($x__type, $CI->config->item('n___14742')) && $previous_i){
+        //Complete if not already:
+        $href = '/x/complete_next/'.$top_i__id.'/'.$previous_i['i__id'].'/'.$i['i__id'];
     } elseif($discovery_mode){
         $href = '/'.$top_i__id.'/'.$i['i__id'];
     } else {
