@@ -379,20 +379,20 @@ class X extends CI_Controller
         }
 
         //Add this Idea to their Discovery If not there:
-        $i__id_added = $i__id;
+        $next_i__id = $i__id;
 
         if(!in_array($i__id, $this->X_model->ids($member_e['e__id']))){
 
-            $i__id_added = $this->X_model->start($member_e['e__id'], $i__id);
+            $next_i__id = $this->X_model->start($member_e['e__id'], $i__id);
 
-            if(!$i__id_added){
+            if(!$next_i__id){
                 //Failed to add to Discovery:
                 return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>FAILED to add to '.$e___11035[12969]['m__title'].'.</div>', true);
             }
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$i__id_added.'/'.$i__id_added);
+        return redirect_message('/'.$i__id.'/'.$next_i__id);
 
     }
 
