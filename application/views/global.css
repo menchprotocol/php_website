@@ -2138,10 +2138,10 @@ i, .btn .show-max {
 @media (max-width:576px) {
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
-        font-size: 2.4em;
+        font-size: 2em;
     }
     h2{
-        font-size: 1.9em;
+        font-size: 1.5em;
     }
 }
 
