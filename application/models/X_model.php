@@ -1358,6 +1358,10 @@ class X_model extends CI_Model
         //Always add Idea to x__left
         $add_fields['x__left'] = $i['i__id'];
 
+        if (!isset($add_fields['x__message'])) {
+            $add_fields['x__message'] = null;
+        }
+
         //Log completion transaction:
         $new_x = $this->X_model->create($add_fields);
 
