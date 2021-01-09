@@ -121,6 +121,38 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
+    <!-- APP Modal -->
+    <div class="modal fade indifferent" id="modal6287" tabindex="-1" role="dialog" aria-labelledby="modal6287Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[6287]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[6287]['m__icon'].' '.$e___11035[6287]['m__title'] ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    if(superpower_active(12699, true)){
+                        echo '<div class="list-group">';
+                        foreach($this->config->item('e___6287') as $e__id => $m) {
+                            echo '<a href="/-'.$e__id.'" class="list-group-item no-side-padding">';
+                            echo '<span class="icon-block">' . view_e__icon($m['m__icon']) . '</span>';
+                            echo '<b class="css__title '.extract_icon_color($m['m__icon']).'">'.$m['m__title'].'</b>';
+                            echo ( strlen($m['m__message']) ? '&nbsp;'.$m['m__message'] : '' );
+                            echo '</a>';
+                        }
+                        echo '</div>';
+                    } else {
+                        echo '<p><a href="">Refresh your browser</a> to load all apps.</p>';
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 
 
@@ -268,38 +300,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     </div>
 
 
-
-
-    <!-- APP Modal -->
-    <div class="modal fade indifferent" id="modal6287" tabindex="-1" role="dialog" aria-labelledby="modal6287Label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[6287]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[6287]['m__icon'].' '.$e___11035[6287]['m__title'] ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <?php
-                    if(superpower_active(12699, true)){
-                        echo '<div class="list-group">';
-                        foreach($this->config->item('e___6287') as $e__id => $m) {
-                            echo '<a href="/-'.$e__id.'" class="list-group-item no-side-padding">';
-                            echo '<span class="icon-block">' . view_e__icon($m['m__icon']) . '</span>';
-                            echo '<b class="css__title '.extract_icon_color($m['m__icon']).'">'.$m['m__title'].'</b>';
-                            echo ( strlen($m['m__message']) ? '&nbsp;'.$m['m__message'] : '' );
-                            echo '</a>';
-                        }
-                        echo '</div>';
-                    } else {
-                        echo '<p><a href="">Refresh your browser</a> to load all apps.</p>';
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
-    </div>
     <?php
 
 }
