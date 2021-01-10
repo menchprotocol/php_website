@@ -863,7 +863,7 @@ class X_model extends CI_Model
 
             $on_its_own_line = false;
             $new_lines = 0;
-            if($e_appendix){
+            if($e_appendix || 1){
                 foreach(explode("\n", $message_input) as $line){
                     if(strlen($line) > 0){
                         $new_lines++;
