@@ -542,7 +542,7 @@ function i_fetch_cover($i__id, $html_format = false){
                         break;
                     } elseif($e_image['x__type']==4257){
                         //Embed:
-                        $video_id = extract_youtube_id($url);
+                        $video_id = extract_youtube_id($e_image['x__message']);
                         if($video_id){
                             //Use the YouTube video image:
                             $found_image = 'https://img.youtube.com/vi/'.$video_id.'/maxresdefault.jpg';
