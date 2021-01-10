@@ -306,16 +306,17 @@ function copyTextToClipboard(text) {
 
 //Member Setting Modal Shortcut:
 $(window).keypress(function(event) {
-    if (event.ctrlKey && event.which == 90){ //z
+    var code = (event.keyCode ? event.keyCode : event.which);
+    if (event.ctrlKey && code == 90){ //z
         //SETTING
         $('#modal6225').modal('show');
-    } else if (event.ctrlKey && event.which == 88){ //x
+    } else if (event.ctrlKey && code == 88){ //x
         //SUGGEST
         $('#modal14393').modal('show');
-    } else if (event.ctrlKey && event.which == 67){ //c
+    } else if (event.ctrlKey && code == 67){ //c
         //SHARE
         $('#modal13024').modal('show');
-    } else if (event.ctrlKey && event.which == 86){ //v
+    } else if (event.ctrlKey && code == 86){ //v
         //APPS
         $('#modal6287').modal('show');
     }
