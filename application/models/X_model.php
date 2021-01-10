@@ -829,7 +829,6 @@ class X_model extends CI_Model
 
                     } elseif($e_profile['x__type'] == 4256 /* URL */) {
 
-                        $e_media_count++;
                         array_push($e_urls, $e_profile['x__message']);
                         $e_appendix .= '<div class="e-appendix paddingup inline-block"><a href="'.$e_profile['x__message'].'" target="_blank" class="ignore-click" title="' . $e_profile['e__title'] . '" data-toggle="tooltip" data-placement="top"><span class="icon-block-xs">'.view_e__icon($e_profile['e__icon']).'</span></a></div>';
 
@@ -849,7 +848,7 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $is_single_link = ( count($e_urls)==1 && $e_media_count==1 );
+            $is_single_link = ( count($e_urls)==1 );
 
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' );
             $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
@@ -863,7 +862,7 @@ class X_model extends CI_Model
 
             $on_its_own_line = false;
             $new_lines = 0;
-            if($e_appendix || 1){
+            if($e_media_count > 0){
                 foreach(explode("\n", $message_input) as $line){
                     if(strlen($line) > 0){
                         $new_lines++;
