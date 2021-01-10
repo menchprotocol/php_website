@@ -534,11 +534,21 @@ function i_fetch_cover($i__id, $html_format = false){
                 //See if this source has a photo:
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 4260, //IMAGES ONLY
+                    'x__type IN (' . join(',', $CI->config->item('n___14756')) . ')' => null, //SOURCE LINK IMAGE HOLDERS
                     'x__down' => $fetched_e[$e_ref_field],
                 )) as $e_image) {
-                    $found_image = $e_image['x__message'];
-                    break;
+                    if($e_image['x__type']==4260){
+                        $found_image = $e_image['x__message'];
+                        break;
+                    } elseif($e_image['x__type']==4257){
+                        //Embed:
+                        $video_id = extract_youtube_id($url);
+                        if($video_id){
+                            //Use the YouTube video image:
+                            $found_image = 'https://img.youtube.com/vi/'.$video_id.'/maxresdefault.jpg';
+                            break;
+                        }
+                    }
                 }
                 if($found_image){
                     break;
