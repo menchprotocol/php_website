@@ -848,7 +848,7 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $is_single_link = ( count($e_urls)==1 );
+            $is_single_link = ( count($e_urls)==1 && !$e_media_count );
 
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' );
             $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
