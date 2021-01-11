@@ -15,7 +15,7 @@ $stats = array(
 
 if(!$obj || $obj==12273){
 
-    //Update the weights for blogs and sources
+    //Update the weights for ideas and sources
     foreach($this->I_model->fetch(array(
         'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     )) as $in) {
@@ -23,14 +23,14 @@ if(!$obj || $obj==12273){
         $stats['i_updated'] += i__spectrum_calculator($in);
     }
 
-    //Now addup weights starting from primary Blog:
+    //Now addup weights starting from primary Idea:
     $stats['i_total_weights'] = $this->I_model->weight(view_memory(6404,14002));
 
 }
 
 
 if(!$obj || $obj==12274){
-    //Update the weights for blogs and sources
+    //Update the weights for ideas and sources
     foreach($this->E_model->fetch(array(
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     )) as $en) {

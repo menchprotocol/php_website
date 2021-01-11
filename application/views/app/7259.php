@@ -1,6 +1,6 @@
 <?php
 
-//Blog Title Search & Replace
+//Idea Title Search & Replace
 
 echo '<form method="GET" action="">';
 
@@ -62,7 +62,7 @@ if($search_for_set){
             }
 
             if($replace_with_confirmed && $i__title_validation['status']){
-                //Update blog:
+                //Update idea:
                 $this->I_model->update($in['i__id'], array(
                     'i__title' => $i__title_validation['i_clean_title'],
                 ), true, $member_e['e__id']);
@@ -70,7 +70,7 @@ if($search_for_set){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_cache(4737 /* Blog Status */, $in['i__type'], true, 'right').' <a href="/i/i_go/'.$in['i__id'].'">'.$in['i__title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__type'], true, 'right').' <a href="/i/i_go/'.$in['i__id'].'">'.$in['i__title'].'</a></td>';
 
             if($replace_with_set){
 
@@ -82,11 +82,11 @@ if($search_for_set){
 
 
                 //Loop through parents:
-                $e___4737 = $this->config->item('e___4737'); // Blog Status
+                $e___4737 = $this->config->item('e___4737'); // Idea Status
                 foreach($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                     'x__right' => $in['i__id'],
                 ), array('x__left')) as $i_previous) {
                     echo '<span class="next_i_icon_' . $i_previous['i__id'] . '"><a href="/i/i_go/' . $i_previous['i__id'] . '" data-toggle="tooltip" title="' . $i_previous['i__title'] . '" data-placement="bottom">' . $e___4737[$i_previous['i__type']]['m__icon'] . '</a> &nbsp;</span>';
@@ -127,5 +127,5 @@ if($replace_with_set && !$completed_replacements){
 }
 
 
-echo '<input type="submit" class="btn btn-blog" value="Go">';
+echo '<input type="submit" class="btn btn-idea" value="Go">';
 echo '</form>';

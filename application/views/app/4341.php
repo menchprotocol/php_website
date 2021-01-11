@@ -12,8 +12,8 @@ $parent_tr_filter = ( isset($_GET['x__reference']) && $_GET['x__reference'] > 0 
 
 //Apply filters:
 if(isset($_GET['i__type']) && strlen($_GET['i__type']) > 0){
-    if(isset($_GET['x__type']) && $_GET['x__type']==4250){ //BLOG created
-        //Filter blog status based on
+    if(isset($_GET['x__type']) && $_GET['x__type']==4250){ //IDEA created
+        //Filter idea status based on
         $joined_by = array('x__right');
 
         if (substr_count($_GET['i__type'], ',') > 0) {
@@ -30,7 +30,7 @@ if(isset($_GET['i__type']) && strlen($_GET['i__type']) > 0){
 if(isset($_GET['e__type']) && strlen($_GET['e__type']) > 0){
     if(isset($_GET['x__type']) && $_GET['x__type']==4251){ //SOURCE Created
 
-        //Filter blog status based on
+        //Filter idea status based on
         $joined_by = array('x__down');
 
         if (substr_count($_GET['e__type'], ',') > 0) {
@@ -220,15 +220,15 @@ echo '<form action="" method="GET">';
 
 echo '<table class="table table-sm maxout"><tr>';
 
-//ANY BLOG
+//ANY IDEA
 echo '<td><div style="padding-right:5px;">';
-echo '<span class="mini-header">ANY BLOG:</span>';
+echo '<span class="mini-header">ANY IDEA:</span>';
 echo '<input type="text" name="any_i__id" value="' . ((isset($_GET['any_i__id'])) ? $_GET['any_i__id'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">BLOG PREVIOUS:</span><input type="text" name="x__left" value="' . ((isset($_GET['x__left'])) ? $_GET['x__left'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="x__left" value="' . ((isset($_GET['x__left'])) ? $_GET['x__left'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">BLOG NEXT:</span><input type="text" name="x__right" value="' . ((isset($_GET['x__right'])) ? $_GET['x__right'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="x__right" value="' . ((isset($_GET['x__right'])) ? $_GET['x__right'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -365,9 +365,9 @@ if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
 
 echo '</div>';
 
-//Optional BLOG/SOURCE status filter ONLY IF READ Type = Create New BLOG/SOURCE
+//Optional IDEA/SOURCE status filter ONLY IF READ Type = Create New IDEA/SOURCE
 
-echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">BLOG Type(es)</span><input type="text" name="i__type" value="' . ((isset($_GET['i__type'])) ? $_GET['i__type'] : '') . '" class="form-control border"></div>';
+echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(es)</span><input type="text" name="i__type" value="' . ((isset($_GET['i__type'])) ? $_GET['i__type'] : '') . '" class="form-control border"></div>';
 
 echo '<div class="filter-statuses e_status_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__type" value="' . ((isset($_GET['e__type'])) ? $_GET['e__type'] : '') . '" class="form-control border"></div>';
 

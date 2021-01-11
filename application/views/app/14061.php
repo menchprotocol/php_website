@@ -38,7 +38,7 @@ foreach($custom_query as $x){
             'x__message' => $new_message,
         ), 1, 10679);
 
-        echo '<div class="blog css__title">REPLACED WITH: '.$new_message.'</div>';
+        echo '<div class="idea css__title">REPLACED WITH: '.$new_message.'</div>';
 
     } else {
         echo '<div class="read css__title">MISMATCH</div>';

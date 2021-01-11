@@ -23,10 +23,10 @@ $superpower_14005 = superpower_active(14005, true);
 $e_focus_found = false; //Used to determine the first tab to be opened
 $is_north_star = $i_focus['i__id']==view_memory(6404,14002);
 $show_previous = $e_of_i && $is_active && !$is_north_star;
-$is_in_my_blogs = count($this->X_model->fetch(array(
+$is_in_my_ideas = count($this->X_model->fetch(array(
     'x__up' => $member_e['e__id'],
     'x__right' => $i_focus['i__id'],
-    'x__type' => 10573, //MY BLOGS
+    'x__type' => 10573, //MY IDEAS
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 )));
 
@@ -53,7 +53,7 @@ if(!$e_of_i){
 
     } else {
 
-        echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this blog, yet. <span class="inline-block '.superpower_active(10939).'"><a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block css__title">REQUEST TO JOIN</a></span></div>';
+        echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <span class="inline-block '.superpower_active(10939).'"><a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block css__title">REQUEST TO JOIN</a></span></div>';
 
     }
 }
@@ -79,7 +79,7 @@ echo '<div id="list-in-11019" class="row top-margin grey-list hideIfEmpty">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
     echo view_i(11019, 0, null, $previous_i, $e_of_i);
@@ -107,21 +107,21 @@ if(isset($_GET['load__e']) && $superpower_14005){
 
 
 
-//BLOG TYPE
-echo '<div class="inline-block">'.view_input_dropdown(4737, $i_focus['i__type'], 'blog', $e_of_i, true, $i_focus['i__id'], 0).'</div>';
+//IDEA TYPE
+echo '<div class="inline-block">'.view_input_dropdown(4737, $i_focus['i__type'], 'idea', $e_of_i, true, $i_focus['i__id'], 0).'</div>';
 
-//BLOG TIME
+//IDEA TIME
 echo '<div class="inline-block left-half-margin '.superpower_active(12700).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div>';
 
 
 
-//BLOG TITLE
+//IDEA TITLE
 echo '<div class="top-margin">';
 echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true); //, view_i_icon($i_focus)
 echo '</div>';
 
 
-//BLOG MESSAGES:
+//IDEA MESSAGES:
 echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 4231,
@@ -141,7 +141,7 @@ echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
 
 
 
-//BLOG LAYOUT
+//IDEA LAYOUT
 $i_stats = i_stats($i_focus['i__metadata']);
 $counter_i = $i_stats['i___6170'];
 $tab_group = 11018;
@@ -209,18 +209,18 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12273){
 
-        //BLOGS
+        //IDEAS
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i_focus['i__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($is_next);
 
         if(superpower_active(12700, true)){
 
-            //BLOG LIST EDITOR
+            //IDEA LIST EDITOR
             $ui .= '<div class="action-left-btn grey toggle_12589"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m__icon'].'</a></div>';
 
 
@@ -253,7 +253,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
                 } elseif(in_array($action_e__id, array(12611, 12612))){
 
                     //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Blogs..." class="form-control algolia_search i_text_search border css__title">';
+                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_search i_text_search border css__title">';
 
                     //We don't need the second value field here:
                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -273,7 +273,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             $ui .= $input_options;
 
-            $ui .= '<div><input type="submit" value="APPLY" class="btn btn-blog inline-block"></div>';
+            $ui .= '<div><input type="submit" value="APPLY" class="btn btn-idea inline-block"></div>';
 
             $ui .= '</form>';
             $ui .= '</div>';
@@ -336,7 +336,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12274 || in_array($x__type, $this->config->item('n___4485'))){
 
-        //BLOG NOTES
+        //IDEA NOTES
         $note_x__type = ($x__type==12274 ? 4983 : $x__type );
         $i_notes = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE

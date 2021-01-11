@@ -36,7 +36,7 @@ if(!$member_e){
     //Fetch their reads:
     if($completion_rate['completion_percentage'] < 100){
 
-        $error_message = 'Blog not yet completed. Redirecting now...';
+        $error_message = 'Idea not yet completed. Redirecting now...';
         $this->X_model->create(array(
             'x__source' => $member_e['e__id'],
             'x__type' => 4246, //Platform Bug Reports

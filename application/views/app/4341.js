@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     check_i_e__type();
 
-    //Watch for Blog status change:
+    //Watch for Idea status change:
     $("#x__type").change(function () {
         check_i_e__type();
     });
@@ -17,8 +17,8 @@ $(document).ready(function () {
 
 
 function check_i_e__type(){
-    //Checks to see if the Blog/Source status filter should be visible
-    //Would only make visible if Transaction type is Created Blog/Member
+    //Checks to see if the Idea/Source status filter should be visible
+    //Would only make visible if Transaction type is Created Idea/Member
 
     //Hide both in/en status:
     $(".filter-statuses").addClass('hidden');

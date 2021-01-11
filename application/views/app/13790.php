@@ -10,7 +10,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                         <input style="padding-left:3px; min-width:56px;" type="number" name="i__id" value="'.( isset($_GET['i__id']) ? $_GET['i__id'] : '' ).'" class="form-control">
                         
                         <br />
-                        <span class="input-group-addon addon-lean addon-grey" style="color:#222222; font-weight: 300;">Blog Tree #</span>
+                        <span class="input-group-addon addon-lean addon-grey" style="color:#222222; font-weight: 300;">Idea Tree #</span>
                         <input style="padding-left:3px; min-width:56px;" type="number" name="i__tree_id" value="'.( isset($_GET['i__tree_id']) ? $_GET['i__tree_id'] : '' ).'" class="form-control">
                         
                         <br />
@@ -19,17 +19,17 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
                     </div>
                 </div>
-                <input type="submit" class="btn btn-blog" value="Go" style="display: inline-block; margin-top: -41px;" />';
+                <input type="submit" class="btn btn-idea" value="Go" style="display: inline-block; margin-top: -41px;" />';
     echo '</form>';
 
 } else {
 
-    //Fetch Main Blog:
+    //Fetch Main Idea:
     $is = $this->I_model->fetch(array(
         'i__id' => $_GET['i__id'],
     ));
     if(!count($is)){
-        die('Invalid Blog ID');
+        die('Invalid Idea ID');
     }
 
 
@@ -43,21 +43,21 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC'));
 
 
-    $column_blogs = array();
+    $column_ideas = array();
     if(isset($_GET['i__tree_id']) && strlen($_GET['i__tree_id'])){
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $_GET['i__tree_id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $x){
-            array_push($column_blogs, $x);
+            array_push($column_ideas, $x);
         }
     }
 
 
 
-    echo '<table style="width:'.( ( count($column_blogs) * 200 ) + ( count($column_sources) * 200 ) + 480  ).'px;">';
+    echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 480  ).'px;">';
 
     echo '<tr style="font-weight:bold;">';
     echo '<td style="width:200px;">MEMBER</td>';
@@ -65,7 +65,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     foreach($column_sources as $e){
         echo '<td style="width:200px;"><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a></td>';
     }
-    foreach($column_blogs as $i){
+    foreach($column_ideas as $i){
         echo '<td style="width:200px;"><a href="/i/i_go/'.$i['i__id'].'">'.$i['i__title'].'</a></td>';
     }
     echo '<td style="width:200px;">STARTED</td>';
@@ -100,8 +100,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             echo '<td>'.( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '' ).'</td>';
         }
 
-        //BLOGS
-        foreach($column_blogs as $i){
+        //IDEAS
+        foreach($column_ideas as $i){
             $reads = $this->X_model->fetch(array(
                 'x__left' => $i['i__id'],
                 'x__source' => $x['e__id'],

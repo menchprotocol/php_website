@@ -2,8 +2,8 @@
 
 /*
  *
- * Updates blog insights (like min/max blogs, time & cost)
- * based on its common and expansion blog.
+ * Updates idea insights (like min/max ideas, time & cost)
+ * based on its common and expansion idea.
  *
  * */
 
@@ -14,7 +14,7 @@ if(isset($_GET['i__id'])){
 } else {
     //All Orphans:
     $query_filters = array(
-        ' NOT EXISTS (SELECT 1 FROM mench__x WHERE i__id=x__right AND x__type IN (' . join(',', $this->config->item('n___4486')) /* BLOG LINKS */ . ') AND x__status IN ('.join(',', $this->config->item('n___7360')) /* ACTIVE */.')) ' => null,
+        ' NOT EXISTS (SELECT 1 FROM mench__x WHERE i__id=x__right AND x__type IN (' . join(',', $this->config->item('n___4486')) /* IDEA LINKS */ . ') AND x__status IN ('.join(',', $this->config->item('n___7360')) /* ACTIVE */.')) ' => null,
         'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     );
 }

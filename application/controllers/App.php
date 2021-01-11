@@ -210,7 +210,7 @@ class App extends CI_Controller
         if (!isset($_POST['x__source']) || !isset($_POST['i__id']) || !isset($_POST['update_x__id']) || !isset($_POST['rating_e__id']) || !isset($_POST['feedback_text'])){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Starting Blog',
+                'message' => 'Missing Starting Idea',
             ));
         }
 
@@ -260,7 +260,7 @@ class App extends CI_Controller
         } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Starting Blog',
+                'message' => 'Missing Starting Idea',
             ));
         } elseif (!isset($_POST['depth_levels']) || intval($_POST['depth_levels']) < 1) {
             return view_json(array(
@@ -269,7 +269,7 @@ class App extends CI_Controller
             ));
         }
 
-        //Fetch/Validate blog:
+        //Fetch/Validate idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -277,13 +277,13 @@ class App extends CI_Controller
         if(count($is) != 1){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Could not find blog #'.$_POST['i__id'],
+                'message' => 'Could not find idea #'.$_POST['i__id'],
             ));
         }
 
 
-        //Load AND/OR Blogs:
-        $e___4737 = $this->config->item('e___4737'); // Blog Status
+        //Load AND/OR Ideas:
+        $e___4737 = $this->config->item('e___4737'); // Idea Status
 
 
         //Return report:

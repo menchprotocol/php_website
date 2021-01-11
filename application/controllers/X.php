@@ -114,7 +114,7 @@ class X extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif($_POST['cache_e__id']==4736 /* BLOG TITLE */){
+        } elseif($_POST['cache_e__id']==4736 /* IDEA TITLE */){
 
             $is = $this->I_model->fetch(array(
                 'i__id' => $_POST['s__id'],
@@ -123,12 +123,12 @@ class X extends CI_Controller
             if(!count($is)){
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Blog ID.',
+                    'message' => 'Invalid Idea ID.',
                     'original_val' => '',
                 ));
             }
 
-            //Validate Blog Outcome:
+            //Validate Idea Outcome:
             $i__title_validation = i__title_validate($_POST['field_value']);
             if(!$i__title_validation['status']){
                 //We had an error, return it:
@@ -196,7 +196,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Blog ID.',
+                    'message' => 'Invalid Idea ID.',
                     'original_val' => '',
                 ));
 
@@ -213,7 +213,7 @@ class X extends CI_Controller
                 $hours = rtrim(number_format((view_memory(6404,4356)/3600), 1), '.0');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.view_memory(6404,4356).' Seconds long. You can break down your blog into smaller blogs.',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.view_memory(6404,4356).' Seconds long. You can break down your idea into smaller ideas.',
                     'original_val' => $is[0]['i__duration'],
                 ));
 
@@ -221,7 +221,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' should be at-least '.view_memory(6404,12427).' Seconds long. It takes time to read blogs ;)',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' should be at-least '.view_memory(6404,12427).' Seconds long. It takes time to read ideas ;)',
                     'original_val' => $is[0]['i__duration'],
                 ));
 
@@ -244,7 +244,7 @@ class X extends CI_Controller
             $x = $this->X_model->fetch(array(
                 'x__id' => $_POST['s__id'],
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             ));
             $x__metadata = unserialize($x[0]['x__metadata']);
             if(!$x__metadata){
@@ -274,7 +274,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         'tr__assessment_points' => intval($_POST['field_value']),
                     )),
-                ), $member_e['e__id'], 10663 /* Blog Transaction updated Marks */, $e___12112[$_POST['cache_e__id']]['m__title'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
+                ), $member_e['e__id'], 10663 /* Idea Transaction updated Marks */, $e___12112[$_POST['cache_e__id']]['m__title'].' updated'.( isset($x__metadata['tr__assessment_points']) ? ' from [' . $x__metadata['tr__assessment_points']. ']' : '' ).' to [' . $_POST['field_value']. ']');
 
                 return view_json(array(
                     'status' => 1,
@@ -288,7 +288,7 @@ class X extends CI_Controller
             $x = $this->X_model->fetch(array(
                 'x__id' => $_POST['s__id'],
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             ));
             $x__metadata = ( strlen($x[0]['x__metadata']) && is_array(unserialize($x[0]['x__metadata'])) ? unserialize($x[0]['x__metadata']) : array() );
             $field_name = ( $_POST['cache_e__id']==4735 ? 'tr__conditional_score_min' : 'tr__conditional_score_max' );
@@ -316,7 +316,7 @@ class X extends CI_Controller
                     'x__metadata' => array_merge($x__metadata, array(
                         $field_name => intval($_POST['field_value']),
                     )),
-                ), $member_e['e__id'], 10664 /* Blog Transaction updated Score */, $e___12112[$_POST['cache_e__id']]['m__title'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
+                ), $member_e['e__id'], 10664 /* Idea Transaction updated Score */, $e___12112[$_POST['cache_e__id']]['m__title'].' updated'.( isset($x__metadata[$field_name]) ? ' from [' . $x__metadata[$field_name].']' : '' ).' to [' . $_POST['field_value'].']');
 
                 return view_json(array(
                     'status' => 1,
@@ -340,7 +340,7 @@ class X extends CI_Controller
 
     function complete_next($top_i__id, $previous_i__id, $i__id){
 
-        //Marks an blog as complete if the member decides to navigate out of order:
+        //Marks an idea as complete if the member decides to navigate out of order:
 
         $member_e = superpower_unlocked();
         $is = $this->I_model->fetch(array(
@@ -368,7 +368,7 @@ class X extends CI_Controller
 
     function x_start($i__id){
 
-        //Adds Blog to the Members read
+        //Adds Idea to the Members read
 
         $member_e = superpower_unlocked();
         $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
@@ -378,7 +378,7 @@ class X extends CI_Controller
             return redirect_message('/-4269?i__id='.$i__id);
         }
 
-        //Add this Blog to their read If not there:
+        //Add this Idea to their read If not there:
         $next_i__id = $i__id;
 
         if(!in_array($i__id, $this->X_model->ids($member_e['e__id']))){
@@ -391,7 +391,7 @@ class X extends CI_Controller
             }
         }
 
-        //Go to this newly added blog:
+        //Go to this newly added idea:
         return redirect_message('/'.$i__id.'/'.$next_i__id);
 
     }
@@ -407,9 +407,9 @@ class X extends CI_Controller
         if(!$member_e){
             return redirect_message('/-4269?i__id='.$top_i__id);
         } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This blog is not added to your reads yet</div>', true);
+            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not added to your reads yet</div>', true);
         } elseif(!count($is)) {
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This blog is not published yet</div>');
+            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
         }
 
 
@@ -428,12 +428,12 @@ class X extends CI_Controller
                     'x__source' => $member_e['e__id'],
                 ));
             } else {
-                //We can't, so this is the next blog:
+                //We can't, so this is the next idea:
                 return redirect_message('/'.$top_i__id.'/'.$is[0]['i__id'] );
             }
         }
 
-        //Go to Next Blog:
+        //Go to Next Idea:
         $next_i__id = $this->X_model->find_next($member_e['e__id'], $top_i__id, $is[0]);
         if($next_i__id > 0){
 
@@ -455,7 +455,7 @@ class X extends CI_Controller
                 'x__source' => $member_e['e__id'],
                 'x__type' => 14730, //COMPLETED 100%
                 'x__right' => $top_i__id,
-                //TODO Maybe log additional details like total blogs, time, etc...
+                //TODO Maybe log additional details like total ideas, time, etc...
             ));
 
 
@@ -473,7 +473,7 @@ class X extends CI_Controller
                 ));
 
                 //Home Page:
-                return redirect_message('/@'.$member_e['e__id'], '<div class="msg alert alert-danger" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You read all blogs for '.$top_is[0]['i__title'].' & will be notified of future updates.</div></div>');
+                return redirect_message('/@'.$member_e['e__id'], '<div class="msg alert alert-danger" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You read all ideas for '.$top_is[0]['i__title'].' & will be notified of future updates.</div></div>');
 
             }
         }
@@ -491,12 +491,12 @@ class X extends CI_Controller
         if(!$member_e){
             return redirect_message('/-4269?i__id='.$top_i__id);
         } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This blog is not added to your reads yet</div>', true);
+            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not added to your reads yet</div>', true);
         } elseif(!count($is)) {
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This blog is not published yet</div>');
+            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
         }
 
-        //Go to Next Blog:
+        //Go to Next Idea:
         $next_i__id = $this->X_model->find_next($member_e['e__id'], $top_i__id, $is[0], 0, true, true);
         if($next_i__id > 0){
 
@@ -517,16 +517,16 @@ class X extends CI_Controller
 
         $current_i__id = $previous_level_id;
 
-        //Make sure not a select blog:
+        //Make sure not a select idea:
         if(!count($this->I_model->fetch(array(
             'i__id' => $current_i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //SELECT BLOG
+            'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //SELECT IDEA
         )))){
-            //FIND NEXT BLOGS
+            //FIND NEXT IDEAS
             foreach($this->X_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__left' => $previous_level_id,
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i){
                 if($next_i['i__id']==$i__id){
@@ -550,7 +550,7 @@ class X extends CI_Controller
 
         /*
          *
-         * Enables a Member to READ a BLOG
+         * Enables a Member to READ a IDEA
          * on the public web
          *
          * */
@@ -573,19 +573,19 @@ class X extends CI_Controller
         //Make sure we found it:
         if ( $top_i__id > 0 && !count($top_is) ) {
 
-            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Top Blog ID ' . $top_i__id . ' not found</div>', true);
+            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>', true);
 
         } elseif ( !count($is) ) {
 
-            return redirect_message( ( $top_i__id > 0 ? '/'.$top_is[0]['i__id'] : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Blog ID ' . $i__id . ' not found</div>', true);
+            return redirect_message( ( $top_i__id > 0 ? '/'.$top_is[0]['i__id'] : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Idea ID ' . $i__id . ' not found</div>', true);
 
         } elseif($top_i__id > 0 && !in_array($top_is[0]['i__type'], $this->config->item('n___7355') /* PUBLIC */)){
 
-            return redirect_message((superpower_unlocked(10939) ? '/~' . $top_i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This top blog is not published yet.</div>');
+            return redirect_message((superpower_unlocked(10939) ? '/~' . $top_i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This top idea is not published yet.</div>');
 
         } elseif(!in_array($is[0]['i__type'], $this->config->item('n___7355') /* PUBLIC */)){
 
-            return redirect_message((superpower_unlocked(10939) ? '/~' . $i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This blog is not published yet.</div>');
+            return redirect_message((superpower_unlocked(10939) ? '/~' . $i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not published yet.</div>');
 
         }
 
@@ -657,14 +657,14 @@ class X extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing BLOG',
+                'message' => 'Missing IDEA',
             ));
 
         } elseif (!isset($_POST['top_i__id'])) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Top BLOG',
+                'message' => 'Missing Top IDEA',
             ));
 
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
@@ -690,7 +690,7 @@ class X extends CI_Controller
 
         }
 
-        //Validate Blog:
+        //Validate Idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -698,7 +698,7 @@ class X extends CI_Controller
         if(count($is)<1){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Blog ID',
+                'message' => 'Invalid Idea ID',
             ));
         }
 
@@ -765,12 +765,12 @@ class X extends CI_Controller
         } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing blog ID.',
+                'message' => 'Missing idea ID.',
             ));
         } elseif (!isset($_POST['top_i__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Top blog ID.',
+                'message' => 'Missing Top idea ID.',
             ));
         } elseif (!isset($_POST['x_reply']) || !strlen($_POST['x_reply'])) {
             return view_json(array(
@@ -779,7 +779,7 @@ class X extends CI_Controller
             ));
         }
 
-        //Validate/Fetch blog:
+        //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -787,7 +787,7 @@ class X extends CI_Controller
         if(count($is) < 1){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Blog not published.',
+                'message' => 'Idea not published.',
             ));
         }
 
@@ -830,12 +830,12 @@ class X extends CI_Controller
         } elseif (!isset($_POST['focus_i__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing blog id.',
+                'message' => 'Missing idea id.',
             ));
         } elseif (!isset($_POST['top_i__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Top blog id.',
+                'message' => 'Missing Top idea id.',
             ));
         } elseif (!isset($_POST['selection_i__id']) || !is_array($_POST['selection_i__id']) || !count($_POST['selection_i__id'])) {
             return view_json(array(
@@ -912,21 +912,21 @@ class X extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Blog ID',
+                'message' => 'Missing Idea ID',
             ));
 
         } elseif (!isset($_POST['top_i__id'])) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Top Blog ID',
+                'message' => 'Missing Top Idea ID',
             ));
 
         } elseif(!$this->X_model->ids($member_e['e__id'], $_POST['top_i__id'])){
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Top Blog not in your reads',
+                'message' => 'Top Idea not in your reads',
             ));
 
         }
@@ -938,11 +938,11 @@ class X extends CI_Controller
         if (!count($is)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Blog ID',
+                'message' => 'Invalid Idea ID',
             ));
         }
 
-        //Save BLOG:
+        //Save IDEA:
         $x = $this->X_model->create(array(
             'x__source' => $member_e['e__id'],
             'x__up' => $member_e['e__id'],
@@ -979,8 +979,8 @@ class X extends CI_Controller
         /*
          *
          * When members indicate they want to stop
-         * a BLOG this function saves the changes
-         * necessary and delete the blog from their
+         * a IDEA this function saves the changes
+         * necessary and delete the idea from their
          * reads.
          *
          * */
@@ -1000,7 +1000,7 @@ class X extends CI_Controller
         }
 
 
-        //Remove Blog
+        //Remove Idea
         $delete_result = $this->X_model->delete($_POST['x__id']);
 
 
@@ -1022,7 +1022,7 @@ class X extends CI_Controller
 
         /*
          *
-         * Saves the order of read blogs based on
+         * Saves the order of read ideas based on
          * member preferences.
          *
          * */
@@ -1037,7 +1037,7 @@ class X extends CI_Controller
         } elseif (!isset($_POST['new_x_order']) || !is_array($_POST['new_x_order']) || count($_POST['new_x_order']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing sorting blogs',
+                'message' => 'Missing sorting ideas',
             ));
         } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___4603'))) {
             return view_json(array(
@@ -1062,7 +1062,7 @@ class X extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => $updated.' Blogs Sorted',
+            'message' => $updated.' Ideas Sorted',
         ));
     }
 

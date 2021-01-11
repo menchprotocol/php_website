@@ -5,16 +5,16 @@ $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 //Messages:
 $messages = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 4231, //BLOG NOTES Messages
+    'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $i_focus['i__id'],
 ), array(), 0, 0, array('x__spectrum' => 'ASC'));
 
 
-//NEXT BLOGS
+//NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
+    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
     'x__left' => $i_focus['i__id'],
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
@@ -99,7 +99,7 @@ if($top_i__id){
                 $this->X_model->create(array(
                     'x__type' => 4246, //Platform Bug Reports
                     'x__source' => $x__source,
-                    'x__message' => 'x_layout() found blog connector ['.$unlocked_connections[0]['x__type'].'] without a valid unlock method @12327',
+                    'x__message' => 'x_layout() found idea connector ['.$unlocked_connections[0]['x__type'].'] without a valid unlock method @12327',
                     'x__left' => $i_focus['i__id'],
                     'x__reference' => $unlocked_connections[0]['x__id'],
                 ));
@@ -135,7 +135,7 @@ if($top_i__id){
 
     } else {
 
-        //Try to find the top registrable blog:
+        //Try to find the top registrable idea:
         $top_startable = $this->I_model->top_startable($i_focus);
         if(count($top_startable)){
 
@@ -169,7 +169,7 @@ if($top_i__id){
 
 
 
-//BLOG TITLE
+//IDEA TITLE
 echo '<h1>' . view_i_title($i_focus) . '<span class="title-editor '.superpower_active(10939).'"><a href="/~'.$i_focus['i__id'].'" title="'.$e___11035[13563]['m__title'].'">'.$e___11035[13563]['m__icon'].'</a></span></h1>';
 
 
@@ -224,8 +224,8 @@ if(count($fetch_13865)){
 /*
 if($top_i__id && count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type' => 4983, //BLOG SOURCES
-        'x__up' => 12896, //SAVE THIS BLOG
+        'x__type' => 4983, //IDEA SOURCES
+        'x__up' => 12896, //SAVE THIS IDEA
         'x__right' => $i_focus['i__id'],
     ))) && !count($this->X_model->fetch(array(
         'x__up' => $x__source,
@@ -234,8 +234,8 @@ if($top_i__id && count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     )))){
 
-    //Recommended to Save This Blog:
-    echo '<div class="msg alert no-margin space-left">Save blog for quick access? <span class="inline-block">Tap <i class="far fa-bookmark black"></i></span></div>';
+    //Recommended to Save This Idea:
+    echo '<div class="msg alert no-margin space-left">Save idea for quick access? <span class="inline-block">Tap <i class="far fa-bookmark black"></i></span></div>';
 
 }
 */
@@ -264,10 +264,10 @@ if($top_i__id) {
 
     /*
      *
-     * BLOG TYPE INPUT CONTROLLER
+     * IDEA TYPE INPUT CONTROLLER
      * Now let's show the appropriate
      * inputs that correspond to the
-     * blog type that enable the member
+     * idea type that enable the member
      * to move forward.
      *
      * */
@@ -317,13 +317,13 @@ if($top_i__id) {
             foreach ($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
+                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $i_focus['i__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
                 //See if this answer was seleted:
                 if (count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //READ BLOG LINK
+                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //READ IDEA LINK
                     'x__left' => $i_focus['i__id'],
                     'x__right' => $x['i__id'],
                     'x__source' => $x__source,
@@ -446,7 +446,7 @@ if($top_i__id) {
         echo '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
 
         if (count($x_completes)) {
-            //Next Blogs:
+            //Next Ideas:
             echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
         }
 
@@ -472,7 +472,7 @@ if($top_i__id) {
 
             echo '</div>';
 
-            //Any child blogs?
+            //Any child ideas?
             echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
 
         } else {
@@ -494,7 +494,7 @@ if($top_i__id) {
 
 } else {
 
-    //NEXT BLOGS
+    //NEXT IDEAS
     echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e, ( count($is_next) ? view_i_time($i_stats, true) : '' ));
 
 }

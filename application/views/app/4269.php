@@ -57,7 +57,7 @@ if(superpower_unlocked()) {
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
     $this_attempt = array(
-        'x__type' => ( $sign_i__id > 0 ? 7560 /* Member Signin Blog Channel Choose */ : 7561 /* Member Signin on Website */ ),
+        'x__type' => ( $sign_i__id > 0 ? 7560 /* Member Signin Idea Channel Choose */ : 7561 /* Member Signin on Website */ ),
         'x__left' => $sign_i__id,
     );
 
@@ -120,8 +120,8 @@ if(superpower_unlocked()) {
                 <?php
 
 
-                //Back only if coming from an blog:
-                $intro_message = $e___4269[7561]['m__message']; //Assume No Blog
+                //Back only if coming from an idea:
+                $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
                 if ($sign_i__id > 0) {
                     $sign_i = $this->I_model->fetch(array(
                         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC

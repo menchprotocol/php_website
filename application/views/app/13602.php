@@ -9,11 +9,11 @@ foreach($this->config->item('e___2738') as $x__type => $m) {
 
     if($x__type==12273){
 
-        //BLOGS
+        //IDEAS
         $unique = $this->X_model->fetch(array(
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE BLOGS
+            'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
         ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
 
     } elseif($x__type==12274){
@@ -51,11 +51,11 @@ foreach($this->config->item('e___2738') as $x__type => $m) {
 
         if($x__type==12273){
 
-            //BLOGS
+            //IDEAS
             $query = $this->X_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE BLOGS
+                'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
             ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');

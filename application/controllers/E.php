@@ -309,7 +309,7 @@ class E extends CI_Controller
         //Archive Transaction:
         $this->X_model->update($_POST['x__id'], array(
             'x__status' => 6173,
-        ), $member_e['e__id'], 10673 /* BLOG NOTES Unpublished */);
+        ), $member_e['e__id'], 10673 /* IDEA NOTES Unpublished */);
 
         return view_json(array(
             'status' => 1,
@@ -364,12 +364,12 @@ class E extends CI_Controller
         } elseif (intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Blog ID',
+                'message' => 'Invalid Idea ID',
             ));
         } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___7551'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Blog Note Type ID',
+                'message' => 'Invalid Idea Note Type ID',
             ));
         } elseif (!isset($_POST['e_existing_id']) || !isset($_POST['e_new_string']) || (intval($_POST['e_existing_id']) < 1 && strlen($_POST['e_new_string']) < 1)) {
             return view_json(array(
@@ -379,7 +379,7 @@ class E extends CI_Controller
         }
 
 
-        //Validate Blog
+        //Validate Idea
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -387,7 +387,7 @@ class E extends CI_Controller
         if (count($is) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Blog',
+                'message' => 'Invalid Idea',
             ));
         }
 
@@ -420,7 +420,7 @@ class E extends CI_Controller
                 $e___7551 = $this->config->item('e___7551');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $es[0]['e__title'].' is already added as blog '.$e___7551[$_POST['note_type_id']]['m__title'],
+                    'message' => $es[0]['e__title'].' is already added as idea '.$e___7551[$_POST['note_type_id']]['m__title'],
                 ));
             }
 
@@ -835,18 +835,18 @@ class E extends CI_Controller
 
 
 
-            //Count source references in BLOG NOTES:
+            //Count source references in IDEA NOTES:
             $i_notes = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //BLOG NOTES
+                'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
                 'x__up' => $_POST['e__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             if(count($i_notes) && !$_POST['do_13527']){
-                //Cannot delete this source until Blog references are deleted:
+                //Cannot delete this source until Idea references are deleted:
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'You can delete source after removing all its BLOG NOTES references',
+                    'message' => 'You can delete source after removing all its IDEA NOTES references',
                 ));
             }
 
@@ -1653,7 +1653,7 @@ class E extends CI_Controller
         } elseif (!isset($_POST['sign_i__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing blog referrer',
+                'message' => 'Missing idea referrer',
             ));
         }
 
@@ -1873,7 +1873,7 @@ class E extends CI_Controller
 
 
         if(intval($_POST['sign_i__id']) > 0){
-            //Fetch the blog:
+            //Fetch the idea:
             $referrer_i = $this->I_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'i__id' => $_POST['sign_i__id'],

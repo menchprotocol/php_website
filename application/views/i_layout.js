@@ -1,7 +1,7 @@
 /*
 *
-* Functions related to modifying blogs
-* and managing BLOG NOTES.
+* Functions related to modifying ideas
+* and managing IDEA NOTES.
 *
 * */
 
@@ -82,7 +82,7 @@ $(document).ready(function () {
     });
 
 
-    //Load top/bottom blog searches:
+    //Load top/bottom idea searches:
     i_load_search(11019, $('#focus_i__id').val());
     i_load_search(13542, $('#focus_i__id').val());
 

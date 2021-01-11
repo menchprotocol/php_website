@@ -29,11 +29,11 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
     if(count($is) < 1){
 
-        echo 'Public Blog not found';
+        echo 'Public Idea not found';
 
     } else {
 
-        //List the blog:
+        //List the idea:
         view_json(array(
             'I_model' => array(
                 'metadata_common_base' => $this->I_model->metadata_common_base($is[0]),

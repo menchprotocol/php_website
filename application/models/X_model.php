@@ -126,7 +126,7 @@ class X_model extends CI_Model
             ));
         }
 
-        //BLOG SYNC Status
+        //IDEA SYNC Status
         if(in_array($add_fields['x__type'] , $this->config->item('n___12400'))){
             if($add_fields['x__right'] > 0){
                 $i__id = $add_fields['x__right'];
@@ -204,7 +204,7 @@ class X_model extends CI_Model
 
                     if (in_array(6202 , $m['m__profile'])) {
 
-                        //BLOG
+                        //IDEA
                         $is = $this->I_model->fetch(array( 'i__id' => $add_fields[$var_index[$e__id]] ));
                         $html_message .= '<div>' . $m['m__title'] . ': <a href="'.$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id'] . '" target="_parent">#'.$is[0]['i__id'].' '.$is[0]['i__title'].'</a></div>';
 
@@ -241,7 +241,7 @@ class X_model extends CI_Model
                         'x__source' => $to_e__id, //Sent to this u
                         'x__reference' => $add_fields['x__id'], //Save transaction
 
-                        //Import potential Blog/source connections from transaction:
+                        //Import potential Idea/source connections from transaction:
                         'x__right' => $add_fields['x__right'],
                         'x__left' => $add_fields['x__left'],
                         'x__down' => $add_fields['x__down'],
@@ -385,7 +385,7 @@ class X_model extends CI_Model
 
                         } elseif(in_array($key, array('x__left', 'x__right'))) {
 
-                            //Fetch new/old Blog outcomes:
+                            //Fetch new/old Idea outcomes:
                             $before_i = $this->I_model->fetch(array(
                                 'i__id' => $before_data[0][$key],
                             ));
@@ -580,7 +580,7 @@ class X_model extends CI_Model
 
         /*
          *
-         * This function is used to validate BLOG NOTES.
+         * This function is used to validate IDEA NOTES.
          *
          * See message_view() for more information on input variables.
          *
@@ -666,11 +666,11 @@ class X_model extends CI_Model
         if($strict_validation && $message_type_e__id > 0){
 
             if(in_array($message_type_e__id, $this->config->item('n___4986'))){
-                //BLOG NOTES 2X SOURCE REFERENCES ALLOWED
+                //IDEA NOTES 2X SOURCE REFERENCES ALLOWED
                 $min_e = 0;
                 $max_e = 2;
             } elseif(in_array($message_type_e__id, $this->config->item('n___7551'))){
-                //BLOG NOTES 1X SOURCE REFERENCE REQUIRED
+                //IDEA NOTES 1X SOURCE REFERENCE REQUIRED
                 $min_e = 1;
                 $max_e = 1;
             } else {
@@ -916,7 +916,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
         ), array('x__left')) as $i_previous) {
 
@@ -961,7 +961,7 @@ class X_model extends CI_Model
         $found_trigger = false;
         foreach ($this->X_model->fetch(array(
             'x__left' => $i['i__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i) {
@@ -1050,7 +1050,7 @@ class X_model extends CI_Model
 
     function start($e__id, $i__id, $recommender_i__id = 0){
 
-        //Validate Blog ID:
+        //Validate Idea ID:
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -1073,14 +1073,14 @@ class X_model extends CI_Model
             //Not added to their reads so far, let's go ahead and add it:
             $i_rank = 1;
             $home = $this->X_model->create(array(
-                'x__type' => ( $recommender_i__id > 0 ? 7495 /* Member Blog Recommended */ : 4235 /* Member Blog Set */ ),
+                'x__type' => ( $recommender_i__id > 0 ? 7495 /* Member Idea Recommended */ : 4235 /* Member Idea Set */ ),
                 'x__source' => $e__id, //Belongs to this Member
-                'x__left' => $is[0]['i__id'], //The Blog they are adding
-                'x__right' => $recommender_i__id, //Store the recommended blog
+                'x__left' => $is[0]['i__id'], //The Idea they are adding
+                'x__right' => $recommender_i__id, //Store the recommended idea
                 'x__spectrum' => $i_rank, //Always place at the top of their reads
             ));
 
-            //Can we auto complete since they have already read this blog?
+            //Can we auto complete since they have already read this idea?
             if(in_array($is[0]['i__type'], $this->config->item('n___12330'))){
 
                 //YES, Mark as complete:
@@ -1089,13 +1089,13 @@ class X_model extends CI_Model
                     'x__source' => $e__id,
                 ));
 
-                //Now find next blog:
+                //Now find next idea:
                 $next_i__id = $this->X_model->find_next($e__id, $is[0]['i__id'], $is[0]);
             }
 
-            //Move other blogs down in the read List:
+            //Move other ideas down in the read List:
             foreach($this->X_model->fetch(array(
-                'x__id !=' => $home['x__id'], //Not the newly added blog
+                'x__id !=' => $home['x__id'], //Not the newly added idea
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY READS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__source' => $e__id, //Belongs to this Member
@@ -1107,7 +1107,7 @@ class X_model extends CI_Model
                 //Update order:
                 $this->X_model->update($current_i['x__id'], array(
                     'x__spectrum' => $i_rank,
-                ), $e__id, 10681 /* Blogs Ordered Automatically  */);
+                ), $e__id, 10681 /* Ideas Ordered Automatically  */);
 
             }
 
@@ -1128,7 +1128,7 @@ class X_model extends CI_Model
          *
          * */
 
-        //First let's make sure this entire Blog completed by member:
+        //First let's make sure this entire Idea completed by member:
         $completion_rate = $this->X_model->completion_progress($e__id, $i);
 
 
@@ -1138,7 +1138,7 @@ class X_model extends CI_Model
         }
 
 
-        //Look at Conditional Blog Transactions ONLY at this level:
+        //Look at Conditional Idea Transactions ONLY at this level:
         $i__metadata = unserialize($i['i__metadata']);
         if(isset($i__metadata['i___6283'][$i['i__id']]) && count($i__metadata['i___6283'][$i['i__id']]) > 0){
 
@@ -1175,7 +1175,7 @@ class X_model extends CI_Model
             }
 
 
-            //Yes, Let's calculate u's score for this blog:
+            //Yes, Let's calculate u's score for this idea:
             $u_marks = $this->X_model->completion_marks($e__id, $i);
 
 
@@ -1186,7 +1186,7 @@ class X_model extends CI_Model
             $locked_x = $this->X_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //BLOG LINKS ONE-WAY
+                'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
                 'x__left' => $i['i__id'],
                 'x__right IN (' . join(',', $i__metadata['i___6283'][$i['i__id']]) . ')' => null, //Limit to cached answers
             ), array('x__right'), 0, 0);
@@ -1246,7 +1246,7 @@ class X_model extends CI_Model
 
         //Now go up since we know there are more levels...
         if($is_bottom_level){
-            //Go through parents blogs and detect intersects with member blogs
+            //Go through parents ideas and detect intersects with member ideas
             foreach(array_reverse($this->X_model->find_previous($e__id, $top_i__id, $i['i__id'])) as $p_i) {
                 $this->X_model->completion_recursive_up($e__id, $top_i__id, $p_i, false);
             }
@@ -1260,7 +1260,7 @@ class X_model extends CI_Model
     function unlock_locked_step($e__id, $i){
 
         /*
-         * A function that starts from a locked blog and checks:
+         * A function that starts from a locked idea and checks:
          *
          * 1. List members who have completed ALL/ANY (Depending on AND/OR Lock) of its children
          * 2. If > 0, then goes up recursively to see if these completions unlock other completions
@@ -1270,7 +1270,7 @@ class X_model extends CI_Model
         if(!i_unlockable($i)){
             return array(
                 'status' => 0,
-                'message' => 'Not a valid locked blog type and status',
+                'message' => 'Not a valid locked idea type and status',
             );
         }
 
@@ -1278,13 +1278,13 @@ class X_model extends CI_Model
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i['i__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
         if(count($is_next) < 1){
             return array(
                 'status' => 0,
-                'message' => 'Blog has no child blogs',
+                'message' => 'Idea has no child ideas',
             );
         }
 
@@ -1292,13 +1292,13 @@ class X_model extends CI_Model
 
         /*
          *
-         * Now we need to determine blog completion method.
+         * Now we need to determine idea completion method.
          *
          * It's one of these two cases:
          *
-         * AND Blogs are completed when all their children are completed
+         * AND Ideas are completed when all their children are completed
          *
-         * OR Blogs are completed when a single child is completed
+         * OR Ideas are completed when a single child is completed
          *
          * */
         $requires_all_children = in_array($i['i__type'], $this->config->item('n___13987') /* REQUIRE ALL CHILDREN */ );
@@ -1354,7 +1354,7 @@ class X_model extends CI_Model
 
     function mark_complete($top_i__id, $i, $add_fields) {
 
-        //Always add Blog to x__left
+        //Always add Idea to x__left
         $add_fields['x__left'] = $i['i__id'];
 
         if (!isset($add_fields['x__message'])) {
@@ -1369,7 +1369,7 @@ class X_model extends CI_Model
         $is_next_autoscan = array();
         if(in_array($i['i__type'], $this->config->item('n___7712'))){
 
-            //BLOG TYPE SELECT NEXT
+            //IDEA TYPE SELECT NEXT
             $is_next_autoscan = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //READ ANSWERED
@@ -1380,10 +1380,10 @@ class X_model extends CI_Model
 
         } elseif(in_array($i['i__type'], $this->config->item('n___13022'))){
 
-            //BLOG TYPE ALL NEXT
+            //IDEA TYPE ALL NEXT
             $is_next_autoscan = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
+                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0);
 
@@ -1400,14 +1400,14 @@ class X_model extends CI_Model
                 //No Messages
                 !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 4231, //BLOG NOTES Messages
+                    'x__type' => 4231, //IDEA NOTES Messages
                     'x__right' => $next_i['i__id'],
                 ))) &&
 
                 //One or less next
                 count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
+                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $next_i['i__id'],
                 ))) <= 1 &&
 
@@ -1545,7 +1545,7 @@ class X_model extends CI_Model
     function completion_marks($e__id, $i, $top_level = true)
     {
 
-        //Fetch/validate read Common Blogs:
+        //Fetch/validate read Common Ideas:
         $i__metadata = unserialize($i['i__metadata']);
         if(!isset($i__metadata['i___6168'])){
 
@@ -1566,7 +1566,7 @@ class X_model extends CI_Model
         //Calculate common steps and expansion steps recursively for this u:
         $metadata_this = array(
             //Generic assessment marks stats:
-            'steps_question_count' => 0, //The parent blog
+            'steps_question_count' => 0, //The parent idea
             'steps_marks_min' => 0,
             'steps_marks_max' => 0,
 
@@ -1582,7 +1582,7 @@ class X_model extends CI_Model
         //Process Answer ONE:
         if(isset($i__metadata['i___6228']) && count($i__metadata['i___6228']) > 0){
 
-            //We need expansion steps (OR Blogs) to calculate question/answers:
+            //We need expansion steps (OR Ideas) to calculate question/answers:
             //To save all the marks for specific answers:
             $question_i__ids = array();
             $answer_marks_index = array();
@@ -1600,7 +1600,7 @@ class X_model extends CI_Model
                 foreach($this->X_model->fetch(array(
                     'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
+                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $question_i__id,
                     'x__right IN (' . join(',', $answers_i__ids) . ')' => null, //Limit to cached answers
                 ), array('x__right')) as $i_answer){
@@ -1664,7 +1664,7 @@ class X_model extends CI_Model
         //Process Answer SOME:
         if(isset($i__metadata['i___12885']) && count($i__metadata['i___12885']) > 0){
 
-            //We need expansion steps (OR Blogs) to calculate question/answers:
+            //We need expansion steps (OR Ideas) to calculate question/answers:
             //To save all the marks for specific answers:
             $question_i__ids = array();
             $answer_marks_index = array();
@@ -1682,7 +1682,7 @@ class X_model extends CI_Model
                 foreach($this->X_model->fetch(array(
                     'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
+                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $question_i__id,
                     'x__right IN (' . join(',', $answers_i__ids) . ')' => null, //Limit to cached answers
                 ), array('x__right')) as $i_answer){
@@ -1771,10 +1771,10 @@ class X_model extends CI_Model
             return false;
         }
 
-        //Fetch/validate reads Common Blogs:
+        //Fetch/validate reads Common Ideas:
         $i__metadata = unserialize($i['i__metadata']);
         if(!isset($i__metadata['i___6168'])){
-            //Since it's not there yet we assume the blog it self only!
+            //Since it's not there yet we assume the idea it self only!
             $i__metadata['i___6168'] = array($i['i__id']);
         }
 
@@ -1910,7 +1910,7 @@ class X_model extends CI_Model
 
     function ids($e__id, $i__id = 0){
 
-        //Simply returns all the blog IDs for a u's reads:
+        //Simply returns all the idea IDs for a u's reads:
         if($i__id > 0){
 
             if(!$e__id){
@@ -1957,7 +1957,7 @@ class X_model extends CI_Model
         if (!count($is)) {
             return array(
                 'status' => 0,
-                'message' => 'Invalid blog ID',
+                'message' => 'Invalid idea ID',
             );
         } elseif (!count($es)) {
             return array(
@@ -1967,7 +1967,7 @@ class X_model extends CI_Model
         } elseif (!in_array($is[0]['i__type'], $this->config->item('n___7712'))) {
             return array(
                 'status' => 0,
-                'message' => 'Invalid Blog type [Must be Answer]',
+                'message' => 'Invalid Idea type [Must be Answer]',
             );
         } elseif (!count($answer_i__ids)) {
             return array(
@@ -2025,7 +2025,7 @@ class X_model extends CI_Model
             );
         }
 
-        //Issue READ/BLOG COIN:
+        //Issue READ/IDEA COIN:
         $this->X_model->mark_complete($top_i__id, $is[0], array(
             'x__type' => $x__type,
             'x__source' => $e__id,

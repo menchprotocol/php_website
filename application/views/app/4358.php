@@ -1,6 +1,6 @@
 <?php
 
-//BLOG MARKS LIST ALL
+//IDEA MARKS LIST ALL
 
 echo '<p>Below are all the Conditional Step Transactions:</p>';
 echo '<table class="table table-sm table-striped maxout" style="text-align: left;">';
@@ -16,7 +16,7 @@ $total_count = 0;
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //BLOG LINKS ONE-WAY
+    'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
     'LENGTH(x__metadata) > 0' => null,
 ), array('x__right'), 0, 0) as $i_x) {
     //Echo HTML format of this message:
@@ -24,7 +24,7 @@ foreach($this->X_model->fetch(array(
     $mark = view_i_marks($i_x);
     if($mark){
 
-        //Fetch parent Blog:
+        //Fetch parent Idea:
         $previous_i = $this->I_model->fetch(array(
             'i__id' => $i_x['x__left'],
         ));
@@ -48,8 +48,8 @@ foreach($this->X_model->fetch(array(
 
         if(count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__type NOT IN (' . join(',', $this->config->item('n___7309')) . ')' => null, //BLOG TYPE MEET REQUIREMENT
-                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+                'i__type NOT IN (' . join(',', $this->config->item('n___7309')) . ')' => null, //IDEA TYPE MEET REQUIREMENT
+                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__right' => $i_x['i__id'],
             ), array('x__left'))) > 1 || $i_x['i__type'] != 6677){
 
@@ -95,7 +95,7 @@ if(1){
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
+        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'LENGTH(x__metadata) > 0' => null,
     ), array('x__right'), 0, 0) as $i_x) {
         //Echo HTML format of this message:
@@ -103,7 +103,7 @@ if(1){
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         if($tr__assessment_points!=0){
 
-            //Fetch parent Blog:
+            //Fetch parent Idea:
             $previous_i = $this->I_model->fetch(array(
                 'i__id' => $i_x['x__left'],
             ));

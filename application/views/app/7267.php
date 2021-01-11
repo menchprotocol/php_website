@@ -30,7 +30,7 @@ if(isset($_GET['search_for'])){
     } elseif(substr_count($es[0]['e__icon'], '<i ') && substr_count($es[0]['e__icon'], 'class="')){
 
         $icon_keyword = one_two_explode('class="','"',$es[0]['e__icon']);
-        foreach(array('blog', 'source', 'read', 'fas', 'far', 'fad', 'fal') as $remove_class){
+        foreach(array('idea', 'source', 'read', 'fas', 'far', 'fad', 'fal') as $remove_class){
             $icon_keyword = str_replace($remove_class, '', $icon_keyword);
         }
         $icon_keyword = trim($icon_keyword);
@@ -48,7 +48,7 @@ echo '<form method="GET" action="">';
 
 echo '<div class="mini-header">Search String:</div>';
 echo '<input type="text" class="form-control border maxout" name="search_for" value="'.$icon_keyword.'"><br />';
-echo '<input type="submit" class="btn btn-blog" value="Search">';
+echo '<input type="submit" class="btn btn-idea" value="Search">';
 
 
 if($icon_keyword){
@@ -101,7 +101,7 @@ if($icon_keyword){
 
     echo '<div class="mini-header">Replace With:</div>';
     echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
-    echo '<input type="submit" name="do_replace" class="btn btn-blog" value="Replace">';
+    echo '<input type="submit" name="do_replace" class="btn btn-idea" value="Replace">';
 }
 
 

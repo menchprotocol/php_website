@@ -33,7 +33,7 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
 
     //Has Time
     $CI =& get_instance();
-    $e___13544 = $CI->config->item('e___13544'); //BLOG TREE COUNT
+    $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
     $ui = null;
     $full_sec = ' SEC.';
     $full_min = ' MIN';
@@ -81,7 +81,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $is_read_m
      * Displays Source Transactions @4592
      *
      * $full_message Would be the entire message
-     * in an blog message that would be passed down
+     * in an idea message that would be passed down
      * to the source profile $x__message value.
      *
      * */
@@ -111,7 +111,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $is_read_m
     } elseif ($x__type == 4261 /* File URL */) {
 
         $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
-        return '<a href="' . $x__message . '" class="btn btn-blog" target="_blank" class="ignore-click">'.$e___11035[13573]['m__icon'].' '.$e___11035[13573]['m__title'].'</a>';
+        return '<a href="' . $x__message . '" class="btn btn-idea" target="_blank" class="ignore-click">'.$e___11035[13573]['m__icon'].' '.$e___11035[13573]['m__title'].'</a>';
 
     } elseif(strlen($x__message) > 0) {
 
@@ -228,7 +228,7 @@ function view_i_title($i, $common_prefix = null, $is_cover = false){
     $CI =& get_instance();
     $hide_title = $is_cover && count($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE BLOGS
+            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i['i__id'],
             '(x__up = 14362 OR x__down = 14362)' => null,
         )));
@@ -258,12 +258,12 @@ function view_i_note($x__type, $is_read_mode, $x, $note_e = false)
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();
-    $e___4485 = $CI->config->item('e___4485'); //BLOG NOTES
+    $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___11035 = $CI->config->item('e___11035');
     $color_code = trim(extract_icon_color($e___4485[$x__type]['m__icon']));
     $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
-    $referenced_blogs = (in_array($x__type, $CI->config->item('n___13550')));
+    $referenced_ideas = (in_array($x__type, $CI->config->item('n___13550')));
     $editable_read = (in_array($x__type, $CI->config->item('n___14043')));
 
 
@@ -503,10 +503,10 @@ function view_x($x, $is_x__reference = false)
 
             } elseif(in_array(6202 , $m['m__profile'])){
 
-                //BLOG
+                //IDEA
                 $is = $CI->I_model->fetch(array('i__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__icon']. '</span><span class="icon-block">'.view_cache(4737 /* Blog Status */, $is[0]['i__type'], true, 'right', $is[0]['i__id']).'</span>'.view_i_title($is[0], null).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__icon']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Status */, $is[0]['i__type'], true, 'right', $is[0]['i__id']).'</span>'.view_i_title($is[0], null).'</a></div>';
 
             } elseif(in_array(4367 , $m['m__profile'])){
 
@@ -661,14 +661,14 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
     } elseif($x__type==12273){
 
-        //BLOGS
+        //IDEAS
         $limit = view_memory(6404,13958);
         $join_objects = array('x__right');
-        $order_columns = array('i__spectrum' => 'DESC'); //BEST BLOGS
+        $order_columns = array('i__spectrum' => 'DESC'); //BEST IDEAS
         $query_filters = array(
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE BLOGS
+            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
         );
         if(count($i_exclude)){
@@ -728,7 +728,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
     /*
      *
-     * Loads Blog MENCH
+     * Loads Idea MENCH
      *
      * */
 
@@ -739,19 +739,19 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
         //SOURCES
         $query = $CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE BLOGS
+            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i['i__id'],
-            '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE BLOG COINS
+            '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
 
     } elseif($x__type==12273){
 
-        //BLOGS
+        //IDEAS
         $query = $CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //BLOG LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i['i__id'],
         ), array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
@@ -799,13 +799,13 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
     $CI =& get_instance();
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___4486 = $CI->config->item('e___4486');
-    $e___4737 = $CI->config->item('e___4737'); // Blog Status
+    $e___4737 = $CI->config->item('e___4737'); // Idea Status
 
 
     $ui = null;
     foreach($CI->X_model->fetch(array(
         'x__left' => $i__id,
-        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //BLOG LINKS
+        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
     ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i_x){
@@ -815,20 +815,20 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         $messages = $CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4231, //BLOG NOTES Messages
+            'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $i_x['i__id'],
         ), array(), 0, 0, array('x__spectrum' => 'ASC'));
 
         //Display block:
         $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Transaction Type: '.$e___4486[$i_x['x__type']]['m__title'].'">'. $e___4486[$i_x['x__type']]['m__icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Transaction Status: '.$e___6186[$i_x['x__status']]['m__title'].'">'. $e___6186[$i_x['x__status']]['m__icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Type: '.$e___4486[$i_x['x__type']]['m__title'].'">'. $e___4486[$i_x['x__type']]['m__icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Status: '.$e___6186[$i_x['x__status']]['m__title'].'">'. $e___6186[$i_x['x__status']]['m__icon'] . '</span>';
 
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Type: '.$e___4737[$i_x['i__type']]['m__title'].'">'. $e___4737[$i_x['i__type']]['m__icon'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Blog Status: '.$e___4737[$i_x['i__type']]['m__title'].'">'. $e___4737[$i_x['i__type']]['m__icon']. '</span>';
-        $ui .= '<a href="?i__id='.$i_x['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this blog"><u>' .   view_i_title($i_x, null) . '</u></a>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$e___4737[$i_x['i__type']]['m__title'].'">'. $e___4737[$i_x['i__type']]['m__icon'] . '</span>';
+        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$e___4737[$i_x['i__type']]['m__title'].'">'. $e___4737[$i_x['i__type']]['m__icon']. '</span>';
+        $ui .= '<a href="?i__id='.$i_x['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_x, null) . '</u></a>';
 
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_x['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('n___6193') /* OR Blogs */ )) || ($i_x['x__type'] == 4229) ? view_i_marks($i_x) : '' ).'</span>]';
+        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_x['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('n___6193') /* OR Ideas */ )) || ($i_x['x__type'] == 4229) ? view_i_marks($i_x) : '' ).'</span>]';
 
         if(count($messages) > 0){
             $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$i_x['i__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
@@ -1007,7 +1007,7 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
-    $e___4485 = $CI->config->item('e___4485'); //BLOG NOTES
+    $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
     $handles_url = (in_array($x__type, $CI->config->item('n___7551')) || in_array($x__type, $CI->config->item('n___4986')));
@@ -1062,8 +1062,8 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
                     //UPLOAD
                     $tab_ui .= '<td class="table-btn first_btn indifferent">';
                     $tab_ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
-                    $tab_ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileBlogType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
-                    $tab_ui .= '<input class="inputfile hidden" type="file" name="file" id="fileBlogType'.$x__type.'" />';
+                    $tab_ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
+                    $tab_ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
                     $tab_ui .= '</td>';
 
                     //GIF
@@ -1154,8 +1154,8 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
                 //UPLOAD
                 $ui .= '<td class="table-btn first_btn">';
                 $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
-                $ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileBlogType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
-                $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileBlogType'.$x__type.'" />';
+                $ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__icon'].'</span></label>';
+                $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
                 $ui .= '</td>';
 
                 //GIF
@@ -1173,7 +1173,7 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
 
 
             //File counter:
-            $ui .= '<td style="padding:10px 0 0 0;"><span id="blogNoteNewCount' . $x__type . '" class="hidden some-text"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).' CHARACTERS</span></td>';
+            $ui .= '<td style="padding:10px 0 0 0;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden some-text"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).' CHARACTERS</span></td>';
             $ui .= '</tr></table>';
             $ui .= '</form>';
             $ui .= '</div>';
@@ -1446,7 +1446,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
         $query_filters = array(
             'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE BLOGS
+            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
         );
         if(count($i_exclude)){
@@ -1467,7 +1467,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
                 $count_query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
                 if($count_query[0]['totals'] > $limit){
                     //Yes, we have more, show this:
-                    $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Blogs"><span class="icon-block">'.$m['m__icon'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
+                    $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><span class="icon-block">'.$m['m__icon'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
                 }
             }
 
@@ -1536,7 +1536,7 @@ function view_info_box($e__id){
 function view_i_select($i, $x__source, $previously_selected){
 
 
-    //Search to see if an blog has a thumbnail:
+    //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     $i_fetch_cover = i_fetch_cover($i['i__id']);
     $is_valid_url = filter_var($i_fetch_cover, FILTER_VALIDATE_URL);
@@ -1578,18 +1578,18 @@ function view_i_select($i, $x__source, $previously_selected){
 
 function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabled = false, $message_input = null, $focus_e = false, $completion_rate = null, $extra_class = null){
 
-    //Search to see if an blog has a thumbnail:
+    //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     if(!in_array($x__type, $CI->config->item('n___13369'))){
         return 'Invalid x__type '.$x__type;
     }
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
-    $e___13369 = $CI->config->item('e___13369'); //BLOG LIST
+    $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $e_of_i = e_of_i($i['i__id']);
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
     $read_mode = in_array($x__type, $CI->config->item('n___14378')); //READ MODE
-    $blog_editing = in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //BLOG EDITING
+    $idea_editing = in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
     $load_completion = in_array($x__type, $CI->config->item('n___14501'));
     $is_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];
 
@@ -1688,7 +1688,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         if($i_title){
             if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
                 //Editable title:
-                $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $blog_editing, (($i['x__spectrum']*100)+1), true);
+                $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1), true);
             } elseif(!$is_any_lock){
                 $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
             } else {
@@ -1711,9 +1711,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
         //TOOLBAR
-        if($blog_editing && superpower_active(12673, true)){
+        if($idea_editing && superpower_active(12673, true)){
 
-            //Blog Toolbar
+            //Idea Toolbar
             $ui .= '<div style="text-align: center;">';
 
             $ui .= view_coins_i(12274,  $i).'&nbsp;';
@@ -1723,24 +1723,24 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
                 $x__metadata = unserialize($i['x__metadata']);
 
-                //BLOG LINK BAR
+                //IDEA LINK BAR
                 $ui .= '<span class="' . superpower_active(12700) . '">';
 
                 //LINK TYPE
-                $ui .= view_input_dropdown(4486, $i['x__type'], null, $blog_editing, false, $i['i__id'], $i['x__id']);
+                $ui .= view_input_dropdown(4486, $i['x__type'], null, $idea_editing, false, $i['i__id'], $i['x__id']);
 
                 //LINK MARKS
                 $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
-                $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $blog_editing, ($i['x__spectrum']*10)+2 );
+                $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+2 );
                 $ui .='</span>';
 
 
                 //LINK CONDITIONAL RANGE
                 $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
                 //MIN
-                $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $blog_editing, ($i['x__spectrum']*10)+3);
+                $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+3);
                 //MAX
-                $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $blog_editing, ($i['x__spectrum']*10)+4);
+                $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+4);
                 $ui .= '</span>';
                 $ui .= '</span>';
 
@@ -1751,42 +1751,42 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         }
 
 
-        //BLOG TYPE
+        //IDEA TYPE
         $ui .= '<div class="cover-text css__title">';
 
         //Always Show Time
         if($show_duration) {
-            $ui .= '<div class="inline-block" ' . ($blog_editing && !$superpower_12700 ? ' style="min-width: 38px; padding-right: 10px; margin-left: -4px;" ' : '') . '>' . view_i_time($i_stats, false, $blog_editing) . '</div>';
+            $ui .= '<div class="inline-block" ' . ($idea_editing && !$superpower_12700 ? ' style="min-width: 38px; padding-right: 10px; margin-left: -4px;" ' : '') . '>' . view_i_time($i_stats, false, $idea_editing) . '</div>';
         }
 
 
-        if($blog_editing) {
+        if($idea_editing) {
 
-            $e___4737 = $CI->config->item('e___4737'); // Blog Status
+            $e___4737 = $CI->config->item('e___4737'); // Idea Status
             $first_segment = $CI->uri->segment(1);
             $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
 
             if($superpower_12700){
 
-                //Previous Blogs:
+                //Previous Ideas:
                 $is_previous = $CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //BLOG LINKS
+                    'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
                     'x__right' => $i['i__id'],
                 ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
 
                 if(count($is_previous)){
                     $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">';
-                    $ui .= '<button type="button" class="btn no-left-padding no-right-padding blog icon-block-xs" id="nextBlogs'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
-                    $ui .= '<div class="dropdown-menu btn-blog" aria-labelledby="nextBlogs'.$i['i__id'].'">';
+                    $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea icon-block-xs" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
+                    $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                     foreach($is_previous as $previous_i) {
                         $ui .= '<a href="/~'.$previous_i['i__id'].'" class="dropdown-item css__title '.( $previous_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block i__type_'.$previous_i['i__id'].'" title="'.$e___4737[$previous_i['i__type']]['m__title'].'">'.$e___4737[$previous_i['i__type']]['m__icon'].'</span>'.view_i_title($previous_i).'</a>';
                     }
                     $ui .= '</div>';
                     $ui .= '</div>';
                 } else {
-                    $ui .= '<div class="icon-block-xs blog css__title" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">0</div>';
+                    $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">0</div>';
                 }
 
             }
@@ -1794,21 +1794,21 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
             //Type Dropdown:
-            $ui .= view_input_dropdown(4737, $i['i__type'], null, $blog_editing, false, $i['i__id']);
+            $ui .= view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']);
 
 
 
-            //Next Blogs:
+            //Next Ideas:
             $is_next = $CI->X_model->fetch(array(
                 'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //BLOG LINKS
+                'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             if(count($is_next)){
                 $ui .= '<div class="dropdown inline-block" title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="right">';
-                $ui .= '<button type="button" class="btn no-left-padding no-right-padding blog icon-block-xs" id="nextBlogs'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
-                $ui .= '<div class="dropdown-menu btn-blog" aria-labelledby="nextBlogs'.$i['i__id'].'">';
+                $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea icon-block-xs" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
+                $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                 foreach($is_next as $next_i) {
                     $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block i__type_'.$next_i['i__id'].'" title="'.$e___4737[$next_i['i__type']]['m__title'].'">'.$e___4737[$next_i['i__type']]['m__icon'].'</span>'.view_i_title($next_i).'</a>';
 
@@ -1816,7 +1816,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 $ui .= '</div>';
                 $ui .= '</div>';
             } else {
-                $ui .= '<div class="icon-block-xs blog css__title" title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="right">0</div>';
+                $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="right">0</div>';
             }
 
         }
@@ -1848,7 +1848,7 @@ function view_x_progress($completion_rate, $i){
         return '<div class="progress-bg-list progress_'.$i['i__id'].'"><div class="progress-done" style="width:0%"></div></div>';
     }
 
-    return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$completion_rate['completion_percentage'].'% COMPLETED: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' BLOGS READ" data-toggle="tooltip" data-placement="top"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+    return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$completion_rate['completion_percentage'].'% COMPLETED: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS READ" data-toggle="tooltip" data-placement="top"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
 
 }
 
@@ -2147,7 +2147,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
 
         } else{
 
-            //Blog Dropdown updater:
+            //Idea Dropdown updater:
             $anchor_url = 'href="javascript:void();" new-en-id="'.$e__id.'" onclick="i_set_dropdown('.$cache_e__id.', '.$e__id.', '.$i__id.', '.$x__id.', '.intval($show_full_name).')"';
 
         }

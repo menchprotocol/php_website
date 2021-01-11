@@ -41,7 +41,7 @@ if($search_for_set){
                 $new_outcome = str_replace(strtoupper($_GET['search_for']),strtoupper($_GET['replace_with']),$en['e__title']).$append_text;
 
                 if($replace_with_confirmed){
-                    //Update blog:
+                    //Update idea:
                     $res = $this->E_model->update($en['e__id'], array(
                         'e__title' => $new_outcome,
                     ), true, $member_e['e__id']);

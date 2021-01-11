@@ -43,23 +43,23 @@ class I extends CI_Controller {
 
     function i_layout($i__id){
 
-        //Validate/fetch Blog:
+        //Validate/fetch Idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
         ));
         if ( count($is) < 1) {
-            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>BLOG #' . $i__id . ' Not Found</div>', true);
+            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>IDEA #' . $i__id . ' Not Found</div>', true);
         }
 
 
-        $member_e = superpower_unlocked(10939); //Blog Pen?
+        $member_e = superpower_unlocked(10939); //Idea Pen?
         $is_public = in_array($is[0]['i__type'], $this->config->item('n___7355'));
 
         if(!$member_e){
             if($is_public){
                 return redirect_message('/'.$i__id);
             } else {
-                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>BLOG #' . $i__id . ' is not published yet.</div>');
+                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__id . ' is not published yet.</div>');
             }
         }
 
@@ -81,7 +81,7 @@ class I extends CI_Controller {
             $this->session->set_userdata('session_page_count', $new_order);
             $this->X_model->create(array(
                 'x__source' => $member_e['e__id'],
-                'x__type' => 4993, //Member Opened Blog
+                'x__type' => 4993, //Member Opened Idea
                 'x__right' => $i__id,
                 'x__spectrum' => $new_order,
             ));
@@ -116,7 +116,7 @@ class I extends CI_Controller {
 
             //They can instantly join:
             $this->X_model->create(array(
-                'x__type' => 4983, //BLOG SOURCES
+                'x__type' => 4983, //IDEA SOURCES
                 'x__source' => $member_e['e__id'],
                 'x__up' => $member_e['e__id'],
                 'x__message' => '@'.$member_e['e__id'],
@@ -142,7 +142,7 @@ class I extends CI_Controller {
 
         }
 
-        //Go back to blog:
+        //Go back to idea:
         return redirect_message('/~'.$i__id, $success_message);
 
     }
@@ -158,7 +158,7 @@ class I extends CI_Controller {
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $previous_i__id,
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i){
             if($action=='next'){
@@ -185,7 +185,7 @@ class I extends CI_Controller {
         if($previous_i__id > 0){
             return redirect_message('/~' .$previous_i__id );
         } else {
-            die('Could not find matching blog');
+            die('Could not find matching idea');
         }
 
     }
@@ -194,7 +194,7 @@ class I extends CI_Controller {
 
     function i_set_dropdown(){
 
-        //Maintain a manual index as a hack for the Blog/Source tables for now:
+        //Maintain a manual index as a hack for the Idea/Source tables for now:
         $var_index = var_index();
         $deletion_redirect = null;
         $delete_element = null;
@@ -209,12 +209,12 @@ class I extends CI_Controller {
         } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Target Blog ID',
+                'message' => 'Missing Target Idea ID',
             ));
         } elseif (!isset($_POST['focus_i__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Loaded Blog ID',
+                'message' => 'Missing Loaded Idea ID',
             ));
         } elseif (!isset($_POST['x__id'])) {
             return view_json(array(
@@ -260,10 +260,10 @@ class I extends CI_Controller {
 
         } else {
 
-            //See if Blog is being deleted:
+            //See if Idea is being deleted:
             if($_POST['element_id']==4737){
 
-                //Delete all blog transactions?
+                //Delete all idea transactions?
                 if(!in_array($_POST['new_e__id'], $this->config->item('n___7356'))){
 
                     //Determine what to do after deleted:
@@ -273,7 +273,7 @@ class I extends CI_Controller {
                         foreach($this->X_model->fetch(array(
                             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+                            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                             'x__right' => $_POST['i__id'],
                         ), array('x__left'), 1) as $previous_i) {
                             $deletion_redirect = '/~'.$previous_i['i__id'];
@@ -284,7 +284,7 @@ class I extends CI_Controller {
                             foreach($this->X_model->fetch(array(
                                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
+                                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                                 'x__right' => $_POST['i__id'],
                             ), array('x__left'), 1) as $previous_i) {
                                 $deletion_redirect = '/~'.$previous_i['i__id'];
@@ -313,7 +313,7 @@ class I extends CI_Controller {
                 }
             }
 
-            //Update Blog:
+            //Update Idea:
             $this->I_model->update($_POST['i__id'], array(
                 $var_index[$_POST['element_id']] => $_POST['new_e__id'],
             ), true, $member_e['e__id']);
@@ -321,7 +321,7 @@ class I extends CI_Controller {
         }
 
 
-        //Fetch Blog Again:
+        //Fetch Idea Again:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
         ));
@@ -341,8 +341,8 @@ class I extends CI_Controller {
 
         /*
          *
-         * Either creates a BLOG transaction between focus__id & link_i__id
-         * OR will create a new blog with outcome i__title and then transaction it
+         * Either creates a IDEA transaction between focus__id & link_i__id
+         * OR will create a new idea with outcome i__title and then transaction it
          * to focus__id (In this case link_i__id=0)
          *
          * */
@@ -357,22 +357,22 @@ class I extends CI_Controller {
         } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14685'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invaid Blog Add Type',
+                'message' => 'Invaid Idea Add Type',
             ));
         } elseif (!isset($_POST['focus__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Parent Blog ID',
+                'message' => 'Missing Parent Idea ID',
             ));
         } elseif (!isset($_POST['i__title']) || !isset($_POST['link_i__id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['link_i__id']) < 1)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing either Blog Outcome OR Child Blog ID',
+                'message' => 'Missing either Idea Outcome OR Child Idea ID',
             ));
         } elseif (strlen($_POST['i__title']) > view_memory(6404,4736)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Blog outcome cannot be longer than '.view_memory(6404,4736).' characters',
+                'message' => 'Idea outcome cannot be longer than '.view_memory(6404,4736).' characters',
             ));
         }
 
@@ -380,21 +380,21 @@ class I extends CI_Controller {
         $x_i = array();
 
         if($_POST['link_i__id'] > 0){
-            //Fetch transaction blog to determine blog type:
+            //Fetch transaction idea to determine idea type:
             $x_i = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['link_i__id']),
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
             if(count($x_i)==0){
-                //validate Blog:
+                //validate Idea:
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Blog #'.$_POST['link_i__id'].' is not active',
+                    'message' => 'Idea #'.$_POST['link_i__id'].' is not active',
                 ));
             }
         }
 
-        //All seems good, go ahead and try to create/link the Blog:
+        //All seems good, go ahead and try to create/link the Idea:
         return view_json($this->I_model->create_or_link($_POST['x__type'], trim($_POST['i__title']), $member_e['e__id'], $_POST['focus__id'], $_POST['link_i__id']));
 
     }
@@ -418,7 +418,7 @@ class I extends CI_Controller {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Blog ID',
+                'message' => 'Invalid Idea ID',
             ));
 
         } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___4485'))) {
@@ -431,7 +431,7 @@ class I extends CI_Controller {
         }
 
 
-        //Fetch/Validate the blog:
+        //Fetch/Validate the idea:
         $is = $this->I_model->fetch(array(
             'i__id' => intval($_POST['i__id']),
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -439,7 +439,7 @@ class I extends CI_Controller {
         if(count($is)<1){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Blog',
+                'message' => 'Invalid Idea',
             ));
         }
 
@@ -497,7 +497,7 @@ class I extends CI_Controller {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing BLOG',
+                'message' => 'Missing IDEA',
             ));
 
         } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___12359'))) {
@@ -544,14 +544,14 @@ class I extends CI_Controller {
 
         }
 
-        //Validate Blog:
+        //Validate Idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
         ));
         if(count($is)<1){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Blog ID',
+                'message' => 'Invalid Idea ID',
             ));
         }
 
@@ -640,7 +640,7 @@ class I extends CI_Controller {
                 //Log update and give credit to the session Member:
                 $this->X_model->update($x__id, array(
                     'x__spectrum' => intval($x__spectrum),
-                ), $member_e['e__id'], 10676 /* BLOG NOTES Ordered */);
+                ), $member_e['e__id'], 10676 /* IDEA NOTES Ordered */);
             }
         }
 
@@ -676,18 +676,18 @@ class I extends CI_Controller {
         } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Blog ID',
+                'message' => 'Invalid Idea ID',
             ));
         }
 
-        //Validate Blog:
+        //Validate Idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
         ));
         if (count($is) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Blog Not Found',
+                'message' => 'Idea Not Found',
             ));
         }
 
@@ -721,7 +721,7 @@ class I extends CI_Controller {
                 'x__up' => $msg_validation['x__up'],
                 'x__down' => $msg_validation['x__down'],
 
-            ), $member_e['e__id'], 10679 /* BLOG NOTES updated Content */, update_description($messages[0]['x__message'], $msg_validation['clean_message']));
+            ), $member_e['e__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['x__message'], $msg_validation['clean_message']));
 
         }
 
@@ -755,7 +755,7 @@ class I extends CI_Controller {
             ));
         }
 
-        //New status is no longer active, so delete the BLOG NOTES:
+        //New status is no longer active, so delete the IDEA NOTES:
         $affected_rows = $this->X_model->update(intval($_POST['x__id']), array(
             'x__status' => 6173,
         ), $member_e['e__id'], 13579);
@@ -812,7 +812,7 @@ class I extends CI_Controller {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Blog ID',
+                'message' => 'Missing Idea ID',
                 'input_clean' => $_POST['field_value'],
             ));
 
@@ -825,7 +825,7 @@ class I extends CI_Controller {
         if(!count($is)){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Blog ID',
+                'message' => 'Invalid Idea ID',
                 'input_clean' => $_POST['field_value'],
             ));
         }
