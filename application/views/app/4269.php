@@ -57,7 +57,7 @@ if(superpower_unlocked()) {
     $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 
     $this_attempt = array(
-        'x__type' => ( $sign_i__id > 0 ? 7560 /* Member Signin Idea Channel Choose */ : 7561 /* Member Signin on Website */ ),
+        'x__type' => ( $sign_i__id > 0 ? 7560 /* Member Signin Blog Channel Choose */ : 7561 /* Member Signin on Website */ ),
         'x__left' => $sign_i__id,
     );
 
@@ -120,8 +120,8 @@ if(superpower_unlocked()) {
                 <?php
 
 
-                //Back only if coming from an idea:
-                $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
+                //Back only if coming from an blog:
+                $intro_message = $e___4269[7561]['m__message']; //Assume No Blog
                 if ($sign_i__id > 0) {
                     $sign_i = $this->I_model->fetch(array(
                         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -151,7 +151,7 @@ if(superpower_unlocked()) {
 
                 <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__icon'].'</span>'.$e___4269[3288]['m__title'] ?></span>
                 <div class="form-group"><input type="email" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
-                <div id="email_errors" class="discover margin-top-down hideIfEmpty"></div>
+                <div id="email_errors" class="read margin-top-down hideIfEmpty"></div>
                 <span id="step2buttons" class="<?= isset($_GET['input_email']) ? '' : ' hidden ' ?>" >
                     <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
                 <div class="doclear">&nbsp;</div>
@@ -174,7 +174,7 @@ if(superpower_unlocked()) {
 
                 <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m__icon'].'</span>'.$e___4269[3286]['m__title'] ?></span>
                 <div class="form-group"><input type="password" id="input_password" class="form-control border white-border"></div>
-                <div id="password_errors" class="discover margin-top-down hideIfEmpty"></div>
+                <div id="password_errors" class="read margin-top-down hideIfEmpty"></div>
 
                 <div class="doclear">&nbsp;</div>
 
@@ -217,7 +217,7 @@ if(superpower_unlocked()) {
 
 
                 <!-- Signup Buttons -->
-                <div id="new_account_errors" class="discover margin-top-down hideIfEmpty"></div>
+                <div id="new_account_errors" class="read margin-top-down hideIfEmpty"></div>
                 <span>
                     <a href="javascript:void(0)" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
                     <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>

@@ -9,11 +9,11 @@ foreach($this->config->item('e___2738') as $x__type => $m) {
 
     if($x__type==12273){
 
-        //IDEAS
+        //BLOGS
         $unique = $this->X_model->fetch(array(
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
+            'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE BLOGS
         ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
 
     } elseif($x__type==12274){
@@ -27,10 +27,10 @@ foreach($this->config->item('e___2738') as $x__type => $m) {
 
     } elseif($x__type==6255){
 
-        //DISCOVER
+        //READ
         $unique = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //READ COIN
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     }
@@ -51,11 +51,11 @@ foreach($this->config->item('e___2738') as $x__type => $m) {
 
         if($x__type==12273){
 
-            //IDEAS
+            //BLOGS
             $query = $this->X_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
+                'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE BLOGS
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
             ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -73,10 +73,10 @@ foreach($this->config->item('e___2738') as $x__type => $m) {
 
         } elseif($x__type==6255){
 
-            //DISCOVER
+            //READ
             $query = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //READ COIN
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');

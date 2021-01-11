@@ -3,7 +3,7 @@ $e___6177 = $this->config->item('e___6177'); //Source Status
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $source_of_e = source_of_e($e['e__id']);
 $source_is_e = $e['e__id']==$member_e['e__id'];
-$superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEATION
+$superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF BLOGGING
 $superpower_13422 = superpower_active(13422, true); //SUPERPOWER OF SOURCING
 $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF GLASSES
 $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
@@ -87,10 +87,10 @@ $profiles = $this->X_model->fetch(array(
 
 
     if(($counter__i>0 && !($source_is_e && !$superpower_10939)) || ($source_is_e && $superpower_10939)){
-        //IDEAS
+        //BLOGS
         $active_x__type = 12273;
     } elseif($counter__x > 0 || $source_is_e){
-        //DISCOVERIES
+        //READS
         $active_x__type = 6255;
     } elseif($counter__e > 0){
         //SOURCES
@@ -352,20 +352,20 @@ $profiles = $this->X_model->fetch(array(
 
         } elseif($x__type==12273){
 
-            //IDEAS
+            //BLOGS
             $counter = $counter__i;
             $i_exclude = array();
 
-            //My Ideas
+            //My Blogs
             $i_bookmarks = $this->X_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 10573, //BOOKMARKED IDEAS
+                'x__type' => 10573, //BOOKMARKED BLOGS
                 'x__up' => $e['e__id'],
             ), array('x__right'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
 
 
-            //Any Ideas?
+            //Any Blogs?
             if(count($i_bookmarks) || $source_is_e){
 
                 $ui .= '<div class="headline top-margin"><span class="icon-block">' . $e___11035[10573]['m__icon'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
@@ -382,17 +382,17 @@ $profiles = $this->X_model->fetch(array(
 
             }
 
-            //Add Idea:
+            //Add Blog:
             if($superpower_10939 && $source_is_e){
 
-                //Give Option to Add New Idea:
+                //Give Option to Add New Blog:
                 $ui .= '<div class="new-list-10573 list-group"><div class="list-group-item list-adder">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14015]['m__icon'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newBlogTitle\').focus();"><span class="icon-block">'.$e___11035[14015]['m__icon'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,4736) . '"
-                               id="newIdeaTitle"
+                               id="newBlogTitle"
                                placeholder="'.$e___11035[14015]['m__title'].'">
                     </div></div></div>';
 
@@ -401,7 +401,7 @@ $profiles = $this->X_model->fetch(array(
             }
 
 
-            //Referenced Ideas
+            //Referenced Blogs
             $list_i = view_coins_e(12273, $e['e__id'], 1, true, $i_exclude);
 
             if(count($list_i) || $superpower_10939){
@@ -417,13 +417,13 @@ $profiles = $this->X_model->fetch(array(
                 foreach($list_i as $count => $item){
 
                     if(!$show_all_i_btn && $max_i__spectrum>0 && $item['i__spectrum']>0 && (($max_i__spectrum * $drop_limit) > $item['i__spectrum'])){
-                        $ui .= '<div class="col-md-3 col-sm-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__icon'].'</div><div class="cover-head '.extract_icon_color($e___11035[14684]['m__icon']).'">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
+                        $ui .= '<div class="col-md-3 col-sm-4 col-6 no-padding show_all_blogs"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_blogs\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__icon'].'</div><div class="cover-head '.extract_icon_color($e___11035[14684]['m__icon']).'">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
                         $show_all_i_btn = true;
                     }
 
                     $max_i__spectrum = $item['i__spectrum'];
                     $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-                    $ui .= view_i(13550, 0, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, ( $show_all_i_btn ? ' show_all_ideas hidden ' : null ));
+                    $ui .= view_i(13550, 0, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, ( $show_all_i_btn ? ' show_all_blogs hidden ' : null ));
 
                 }
                 $ui .= '</div>';
@@ -437,14 +437,14 @@ $profiles = $this->X_model->fetch(array(
 
             if($superpower_10939 && !$source_is_e){
 
-                //Give Option to Add New Idea:
+                //Give Option to Add New Blog:
                 $ui .= '<div class="new-list-13550 list-group"><div class="list-group-item list-adder">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14016]['m__icon'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newBlogTitle\').focus();"><span class="icon-block">'.$e___11035[14016]['m__icon'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,4736) . '"
-                               id="newIdeaTitle"
+                               id="newBlogTitle"
                                placeholder="'.$e___11035[14016]['m__title'].'">
                     </div></div></div>';
 
@@ -455,11 +455,11 @@ $profiles = $this->X_model->fetch(array(
 
         } elseif($x__type==6255){
 
-            //DISCOVERIES
+            //READS
             $counter = $counter__x;
             $my_x_ids = array();
 
-            //Show My Discoveries
+            //Show My reads
             if($counter){
 
                 $list_x  = view_coins_e(6255, $e['e__id'], 1);
@@ -499,17 +499,17 @@ $profiles = $this->X_model->fetch(array(
 
                 }
 
-                //FEATURED IDEAS
+                //FEATURED BLOGS
                 $ui .= view_i_featured(0, $my_x_ids);
 
                 //Info Boxes:
-                $ui .= view_info_box(14340); //Discover
+                $ui .= view_info_box(14340); //Read
 
             }
 
         } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
-            //IDEA NOTES
+            //BLOG NOTES
             $i_notes_filters = array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE

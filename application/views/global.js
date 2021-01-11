@@ -111,7 +111,7 @@ function load_editor(){
                     return view_s_js(suggestion);
                 },
                 empty: function (data) {
-                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
+                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i> No Blogs Found</div>';
                 },
             }
         }]);
@@ -124,10 +124,10 @@ function js_extract_icon_color(e__icon){
 
     //NOTE: Has a twin PHP function
 
-    if(e__icon.includes('discover')){
-        return ' discover ';
-    } else if(e__icon.includes( 'idea')){
-        return ' idea ';
+    if(e__icon.includes('read')){
+        return ' read ';
+    } else if(e__icon.includes( 'blog')){
+        return ' blog ';
     } else if(e__icon.includes('source') || !e__icon.length){
         return ' source ';
     } else {
@@ -144,9 +144,9 @@ function view_s_js(algolia_object){
 
     if(algolia_object.s__type==12274 || 1){
         //SOURCE
-        return '<span class="icon-block">'+ ( algolia_object.s__type==12274 ? algolia_object.s__icon : '<i class="fas fa-circle idea"></i>' ) +'</span><span class="css__title '+ ( algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__icon) : '' ) +'">' + view_s__title(algolia_object) + '</span>';
+        return '<span class="icon-block">'+ ( algolia_object.s__type==12274 ? algolia_object.s__icon : '<i class="fas fa-circle blog"></i>' ) +'</span><span class="css__title '+ ( algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__icon) : '' ) +'">' + view_s__title(algolia_object) + '</span>';
     } else {
-        //IDEA
+        //BLOG
         //return '<div class="col-md-3 col-sm-4 col-6 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__icon + '\')"></div></div><div class="cover-content"><div class="inner-content css__title">'+view_s__title(algolia_object)+'</div></div></div>';
     }
 }
@@ -440,7 +440,7 @@ $(document).ready(function () {
 
                         } else {
 
-                            //Guest can search ideas only by default as they start typing;
+                            //Guest can search blogs only by default as they start typing;
                             if(search_filters.length>0){
                                 search_filters += ' AND ';
                             }
@@ -493,7 +493,7 @@ $(document).ready(function () {
                             return e_fetch_canonical(data.query, true);
                         } else if($("#mench_search").val().charAt(0)=='#'){
                             if(isNaN($("#mench_search").val().substr(1))){
-                                return '<div class="not-found css__title"><span class="icon-block-xs"><i class="fas fa-exclamation-circle"></i></span>No IDEA found</div>';
+                                return '<div class="not-found css__title"><span class="icon-block-xs"><i class="fas fa-exclamation-circle"></i></span>No BLOG found</div>';
                             }
                         } else if($("#mench_search").val().charAt(0)=='@'){
                             if(isNaN($("#mench_search").val().substr(1))) {
@@ -641,7 +641,7 @@ function e_modify_save() {
         }
     }
 
-    //Prepare data to be modified for this idea:
+    //Prepare data to be modified for this blog:
     var modify_data = {
         e_focus_id: ( typeof e_focus_id !== 'undefined' ? e_focus_id : 0 ),
         do_13527:do_13527,
@@ -668,10 +668,10 @@ function e_modify_save() {
             if(data.delete_from_ui){
 
                 //need to delete this source:
-                //Idea has been either deleted OR Unpublished:
+                //Blog has been either deleted OR Unpublished:
                 if (data.delete_redirect_url) {
 
-                    //move up 1 level as this was the focus idea:
+                    //move up 1 level as this was the focus blog:
                     window.location = data.delete_redirect_url;
 
                 } else {
@@ -710,10 +710,10 @@ function e_modify_save() {
                 $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
 
 
-                //Did we have ideas to update?
+                //Did we have blogs to update?
                 if (modify_data['x__id'] > 0) {
 
-                    //Yes, update the ideas:
+                    //Yes, update the blogs:
                     $(".x__message_" + modify_data['x__id']).html(data.x__message);
 
                     //Did the content get modified? (Likely for a domain URL):
@@ -735,7 +735,7 @@ function e_modify_save() {
 
         } else {
             //Ooops there was an error!
-            $('#modal13571 .save_results').html('<span class="discover css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
+            $('#modal13571 .save_results').html('<span class="read css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
         }
 
     });
@@ -825,7 +825,7 @@ function x_type_preview() {
     //Shows the transaction type based on the transaction message
     $('#x__type_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
-    //Fetch Idea Data to load modify widget:
+    //Fetch Blog Data to load modify widget:
     $.post("/x/x_type_preview", {
         x__message: $('#x__message').val(),
         x__id: $('#modal13571 .modal_x__id').val(),
@@ -841,7 +841,7 @@ function x_type_preview() {
         } else {
 
             //Show Error:
-            $('#x__type_preview').html('<b class="discover">' + data.message+'</b>');
+            $('#x__type_preview').html('<b class="read">' + data.message+'</b>');
 
         }
 
@@ -1048,7 +1048,7 @@ function i_load_search(x__type, focus__id) {
         alert('Search is currently disabled');
         return false;
     } else if(!js_n___14685.includes(x__type)){
-        alert('Idea Type not supported to be added');
+        alert('Blog Type not supported to be added');
         return false;
     }
 
@@ -1098,7 +1098,7 @@ function i_load_search(x__type, focus__id) {
                 return view_s_js(suggestion);
             },
             header: function (data) {
-                return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0,'+focus__id+')" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
+                return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0,'+focus__id+')" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle blog add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
             },
             empty: function (data) {
                 return '';
@@ -1277,16 +1277,16 @@ function x_set_text(this_handler){
 
 /*
 *
-* IDEA NOTES
+* BLOG NOTES
 *
 * */
 function i_note_activate(){
-    //Loop through all new idea inboxes:
+    //Loop through all new blog inboxes:
     $(".new-note").each(function () {
 
         var note_type_id = parseInt($(this).attr('note_type_id'));
 
-        //Initiate @ search for all idea text areas:
+        //Initiate @ search for all blog text areas:
         i_note_e_search($(this));
 
         set_autosize($(this));
@@ -1371,9 +1371,9 @@ function i_note_count_new(note_type_id) {
 
     //Only show counter if getting close to limit:
     if(len > ( js_e___6404[4485]['m__message'] * js_e___6404[12088]['m__message'] )){
-        $('#ideaNoteNewCount' + note_type_id).removeClass('hidden');
+        $('#blogNoteNewCount' + note_type_id).removeClass('hidden');
     } else {
-        $('#ideaNoteNewCount' + note_type_id).addClass('hidden');
+        $('#blogNoteNewCount' + note_type_id).addClass('hidden');
     }
 
 }
@@ -1558,7 +1558,7 @@ function i_note_update_text(x__id, note_type_id) {
         } else {
 
             //ERROR
-            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="read css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
 
         }
 
@@ -1628,7 +1628,7 @@ function i_note_end_adding(result, note_type_id) {
 
     } else {
 
-        $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+result.message);
+        $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'+result.message);
 
     }
 }
@@ -1781,7 +1781,7 @@ function x_sort_load(x__type){
     var element_key = null;
     var theobject = document.getElementById("list-in-" + x__type);
     if (!theobject) {
-        //due to duplicate ideas belonging in this idea:
+        //due to duplicate blogs belonging in this blog:
         console.log(x__type+' failed to find sortable object');
         return false;
     }
@@ -2009,7 +2009,7 @@ function e_email(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_email').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_email').html('<b class="read css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -2044,7 +2044,7 @@ function e_name(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_name').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_name').html('<b class="read css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -2078,7 +2078,7 @@ function e_password(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_password').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_password').html('<b class="read css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -2121,7 +2121,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         return false;
     }
 
-    //Changing Idea Status?
+    //Changing Blog Status?
     if(element_id==4737){
 
         var is_i_active = (new_e__id in js_e___7356);
@@ -2130,22 +2130,22 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         //Deleting?
         if(!is_i_active){
             //Seems to be deleting, confirm:
-            var r = confirm("Are you sure you want to delete this idea and unlink it from all other ideas?");
+            var r = confirm("Are you sure you want to delete this blog and unlink it from all other blogs?");
             if (r == false) {
                 return false;
             }
         }
 
 
-        //Discoveries Setting:
+        //reads Setting:
         if(is_i_public){
 
-            //Enable Discoveries:
+            //Enable reads:
             $('.i-x').removeClass('hidden');
 
         } else {
 
-            //Disable Discoveries:
+            //Disable reads:
             $('.i-x').addClass('hidden');
 
         }
@@ -2186,14 +2186,14 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id).attr('selected-val' , new_e__id);
 
-            //Update micro icons, if any: (Idea status has it)
+            //Update micro icons, if any: (Blog status has it)
             $('.this_i__icon_'+i__id+'>span').html(data.new_i__icon);
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
-                //Go to main idea page:
+                //Go to main blog page:
                 window.location = data.deletion_redirect;
             } else if( data.delete_element && data.delete_element.length > 0 ){
-                //Go to main idea page:
+                //Go to main blog page:
                 setTimeout(function () {
                     //Restore background:
                     $( data.delete_element ).fadeOut();
@@ -2230,8 +2230,8 @@ function i_add(x__type, link_i__id, focus__id) {
 
     /*
      *
-     * Either creates an IDEA transaction between focus__id & link_i__id
-     * OR will create a new idea based on input text and then transaction it
+     * Either creates an BLOG transaction between focus__id & link_i__id
+     * OR will create a new blog based on input text and then transaction it
      * to focus__id (In this case link_i__id=0)
      *
      * */
@@ -2247,16 +2247,16 @@ function i_add(x__type, link_i__id, focus__id) {
     var i__title = input_field.val();
 
 
-    //We either need the idea name (to create a new idea) or the link_i__id>0 to create an IDEA transaction:
+    //We either need the blog name (to create a new blog) or the link_i__id>0 to create an BLOG transaction:
     if (!link_i__id && i__title.length < 1) {
-        alert('Missing Idea Title');
+        alert('Missing Blog Title');
         input_field.focus();
         return false;
     }
 
     //Set processing status:
     input_field.addClass('dynamic_saving').prop("disabled", true);
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="col-md-3 col-sm-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin idea"></i></div></div></div></div>', js_n___14686.includes(x__type));
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="col-md-3 col-sm-4 col-6 no-padding show_all_blogs"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin blog"></i></div></div></div></div>', js_n___14686.includes(x__type));
 
 
     //Update backend:
@@ -2275,7 +2275,7 @@ function i_add(x__type, link_i__id, focus__id) {
         if (data.status) {
 
             if(x__type==13542){
-                //Next Ideas map to ideas so increment counter:
+                //Next Blogs map to blogs so increment counter:
                 i_note_counter(12273, +1);
             }
 

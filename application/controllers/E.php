@@ -36,7 +36,7 @@ class E extends CI_Controller
     function e_layout($e__id)
     {
 
-        //Make sure not a private discover:
+        //Make sure not a private transaction:
         if(in_array($e__id, $this->config->item('n___4755'))){
             $member_e = superpower_unlocked(12701, true);
         } else {
@@ -309,7 +309,7 @@ class E extends CI_Controller
         //Archive Transaction:
         $this->X_model->update($_POST['x__id'], array(
             'x__status' => 6173,
-        ), $member_e['e__id'], 10673 /* IDEA NOTES Unpublished */);
+        ), $member_e['e__id'], 10673 /* BLOG NOTES Unpublished */);
 
         return view_json(array(
             'status' => 1,
@@ -364,12 +364,12 @@ class E extends CI_Controller
         } elseif (intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Idea ID',
+                'message' => 'Invalid Blog ID',
             ));
         } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___7551'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Idea Note Type ID',
+                'message' => 'Invalid Blog Note Type ID',
             ));
         } elseif (!isset($_POST['e_existing_id']) || !isset($_POST['e_new_string']) || (intval($_POST['e_existing_id']) < 1 && strlen($_POST['e_new_string']) < 1)) {
             return view_json(array(
@@ -379,7 +379,7 @@ class E extends CI_Controller
         }
 
 
-        //Validate Idea
+        //Validate Blog
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -387,7 +387,7 @@ class E extends CI_Controller
         if (count($is) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Idea',
+                'message' => 'Invalid Blog',
             ));
         }
 
@@ -420,7 +420,7 @@ class E extends CI_Controller
                 $e___7551 = $this->config->item('e___7551');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $es[0]['e__title'].' is already added as idea '.$e___7551[$_POST['note_type_id']]['m__title'],
+                    'message' => $es[0]['e__title'].' is already added as blog '.$e___7551[$_POST['note_type_id']]['m__title'],
                 ));
             }
 
@@ -835,18 +835,18 @@ class E extends CI_Controller
 
 
 
-            //Count source references in IDEA NOTES:
+            //Count source references in BLOG NOTES:
             $i_notes = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
+                'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //BLOG NOTES
                 'x__up' => $_POST['e__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             if(count($i_notes) && !$_POST['do_13527']){
-                //Cannot delete this source until Idea references are deleted:
+                //Cannot delete this source until Blog references are deleted:
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'You can delete source after removing all its IDEA NOTES references',
+                    'message' => 'You can delete source after removing all its BLOG NOTES references',
                 ));
             }
 
@@ -896,7 +896,7 @@ class E extends CI_Controller
             if (count($e_x) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'INVALID DISCOVER ID',
+                    'message' => 'INVALID READ ID',
                 ));
             }
 
@@ -1653,7 +1653,7 @@ class E extends CI_Controller
         } elseif (!isset($_POST['sign_i__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing idea referrer',
+                'message' => 'Missing blog referrer',
             ));
         }
 
@@ -1790,7 +1790,7 @@ class E extends CI_Controller
         $html_message = '<div>Hi '.one_two_explode('',' ',$u_emails[0]['e__title']).' 👋</div><br /><br />';
 
         $magic_x_expiry_hours = (view_memory(6404,11065)/3600);
-        $html_message .= '<div>Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).( $has_i ? ' to discover '.$is[0]['i__title'] : '' ).':</div>';
+        $html_message .= '<div>Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).( $has_i ? ' to read '.$is[0]['i__title'] : '' ).':</div>';
         $magic_url = $this->config->item('base_url').'/e/e_magic_sign/' . $reset_x['x__id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank" class="ignore-click">' . $magic_url . '</a></div>';
 
@@ -1816,10 +1816,10 @@ class E extends CI_Controller
         //Validate email:
         if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/-4269', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>', true);
+            return redirect_message('/-4269', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Missing Email</div>', true);
         }
 
-        //Validate DISCOVER ID and matching email:
+        //Validate READ ID and matching email:
         $validate_x = $this->X_model->fetch(array(
             'x__id' => $x__id,
             'x__message' => $_GET['email'],
@@ -1827,10 +1827,10 @@ class E extends CI_Controller
         )); //The member making the request
         if(count($validate_x) < 1){
             //Probably previously completed the reset password:
-            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>', true);
+            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Invalid data source</div>', true);
         } elseif(strtotime($validate_x[0]['x__time']) + view_memory(6404,11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic transaction has expired. Try again.</div>');
+            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Magic transaction has expired. Try again.</div>');
         }
 
 
@@ -1840,7 +1840,7 @@ class E extends CI_Controller
             'e__id' => $validate_x[0]['x__source'],
         ));
         if(count($es) < 1){
-            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Member not found</div>', true);
+            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Member not found</div>', true);
         }
 
 
@@ -1848,7 +1848,7 @@ class E extends CI_Controller
         $this->E_model->activate_session($es[0]);
 
 
-        //Take them to DISCOVER HOME
+        //Take them to READ HOME
         return redirect_message(($validate_x[0]['x__left'] > 0 ? '/x/x_start/'.$validate_x[0]['x__left'] : home_url() ), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
 
     }
@@ -1873,7 +1873,7 @@ class E extends CI_Controller
 
 
         if(intval($_POST['sign_i__id']) > 0){
-            //Fetch the idea:
+            //Fetch the blog:
             $referrer_i = $this->I_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'i__id' => $_POST['sign_i__id'],

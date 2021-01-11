@@ -63,7 +63,7 @@ $(document).ready(function () {
         update_demo_icon();
     });
 
-    //Lookout for idea transaction related changes:
+    //Lookout for blog transaction related changes:
     $('#x__status').change(function () {
         if (parseInt($('#x__status').find(":selected").val()) == 6173 /* DELETED */ ) {
             //About to delete? Notify them:
@@ -143,7 +143,7 @@ $(document).ready(function () {
 
 function x_reset_all(){
     //Confirm First:
-    var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE discovery history. This action cannot be undone and you will lose all your discovery coins.");
+    var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE read history. This action cannot be undone and you will lose all your read coins.");
     if (r == true) {
         $('.x_reset_all').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">REMOVING ALL...</b>');
 
@@ -263,7 +263,7 @@ function e__add(x__type, e_existing_id) {
 
         if (data.status) {
 
-            //Raw input to make it discovers for next URL:
+            //Raw input to make it ready for next URL:
             input.focus();
 
             //Add new object to list:
@@ -448,7 +448,7 @@ function e_sort_save() {
     var sort_rank = 0;
 
     $("#list-in-11029 .en-item").each(function () {
-        //Fetch variables for this idea:
+        //Fetch variables for this blog:
         var e__id = parseInt($(this).attr('e__id'));
         var x__id = parseInt($(this).attr('x__id'));
 
@@ -501,7 +501,7 @@ function e_sort_portfolio_load() {
     var element_key = null;
     var theobject = document.getElementById("list-in-11029");
     if (!theobject) {
-        //due to duplicate ideas belonging in this idea:
+        //due to duplicate blogs belonging in this blog:
         return false;
     }
 

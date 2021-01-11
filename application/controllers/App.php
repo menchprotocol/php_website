@@ -210,7 +210,7 @@ class App extends CI_Controller
         if (!isset($_POST['x__source']) || !isset($_POST['i__id']) || !isset($_POST['update_x__id']) || !isset($_POST['rating_e__id']) || !isset($_POST['feedback_text'])){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Starting Idea',
+                'message' => 'Missing Starting Blog',
             ));
         }
 
@@ -221,14 +221,14 @@ class App extends CI_Controller
             $this->X_model->update($_POST['update_x__id'], array(
                 'x__up' => $_POST['rating_e__id'],
                 'x__message' => $_POST['feedback_text'],
-            ), $_POST['x__source'], 14733); //Update Discovery Rating
+            ), $_POST['x__source'], 14733); //Update read Rating
 
         } else {
 
             //Create:
             $this->X_model->create(array(
                 'x__source' => $_POST['x__source'],
-                'x__type' => 14709, //RATE DISCOVERY
+                'x__type' => 14709, //RATE READ
                 'x__right' => $_POST['i__id'],
                 //Feedback Info:
                 'x__up' => $_POST['rating_e__id'],
@@ -260,7 +260,7 @@ class App extends CI_Controller
         } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Starting Idea',
+                'message' => 'Missing Starting Blog',
             ));
         } elseif (!isset($_POST['depth_levels']) || intval($_POST['depth_levels']) < 1) {
             return view_json(array(
@@ -269,7 +269,7 @@ class App extends CI_Controller
             ));
         }
 
-        //Fetch/Validate idea:
+        //Fetch/Validate blog:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -277,13 +277,13 @@ class App extends CI_Controller
         if(count($is) != 1){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Could not find idea #'.$_POST['i__id'],
+                'message' => 'Could not find blog #'.$_POST['i__id'],
             ));
         }
 
 
-        //Load AND/OR Ideas:
-        $e___4737 = $this->config->item('e___4737'); // Idea Status
+        //Load AND/OR Blogs:
+        $e___4737 = $this->config->item('e___4737'); // Blog Status
 
 
         //Return report:
@@ -358,7 +358,7 @@ class App extends CI_Controller
 
             //Do we have more to show?
             if($has_more_x){
-                $message .= '<div id="x_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-discover" onclick="app_4341(x_filters, x_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Page '.$next_page.'</a></div>';
+                $message .= '<div id="x_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="app_4341(x_filters, x_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
                 $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$x_count[0]['total_count'].' transactions have been loaded</div>';

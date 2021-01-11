@@ -12,10 +12,10 @@
 $this->db->query("TRUNCATE TABLE public.gephi_edges CONTINUE IDENTITY RESTRICT;");
 $this->db->query("TRUNCATE TABLE public.gephi_nodes CONTINUE IDENTITY RESTRICT;");
 
-//Load IDEA LINKS:
+//Load BLOG LINKS:
 $e___4593 = $this->config->item('e___4593');
 
-//To make sure Idea/source IDs are unique:
+//To make sure Blog/source IDs are unique:
 $id_prefix = array(
     12273 => 100,
     12274 => 200,
@@ -28,7 +28,7 @@ $node_size = array(
     'msg' => 1,
 );
 
-//Add Ideas:
+//Add Blogs:
 $is = $this->I_model->fetch(array(
     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
 ));
@@ -37,13 +37,13 @@ foreach($is as $in){
     //Prep metadata:
     $i__metadata = ( strlen($in['i__metadata']) > 0 ? unserialize($in['i__metadata']) : array());
 
-    //Add Idea node:
+    //Add Blog node:
     $this->db->insert('gephi_nodes', array(
         'id' => $id_prefix[12273].$in['i__id'],
         'label' => $in['i__title'],
         //'size' => ( isset($i__metadata['i___6162']) ? round(($i__metadata['i___6162']/3600),0) : 0 ), //Max time
         'size' => $node_size[12273],
-        'node_type' => 1, //Idea
+        'node_type' => 1, //Blog
         'node_status' => $in['i__type'],
     ));
 
@@ -51,7 +51,7 @@ foreach($is as $in){
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0) as $next_i){
 
@@ -107,7 +107,7 @@ foreach($es as $en){
 $messages = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
+    'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //BLOG NOTES
 ), array('x__right'), 0, 0);
 foreach($messages as $message) {
 
@@ -120,20 +120,20 @@ foreach($messages as $message) {
         'node_status' => $message['x__status'],
     ));
 
-    //Add child idea transaction:
+    //Add child blog transaction:
     $this->db->insert('gephi_edges', array(
         'source' => $message['x__id'],
         'target' => $id_prefix[12273].$message['x__right'],
-        'label' => 'Child Idea',
+        'label' => 'Child Blog',
         'weight' => 1,
     ));
 
-    //Add parent idea transaction?
+    //Add parent blog transaction?
     if ($message['x__left'] > 0) {
         $this->db->insert('gephi_edges', array(
             'source' => $id_prefix[12273].$message['x__left'],
             'target' => $message['x__id'],
-            'label' => 'Parent Idea',
+            'label' => 'Parent Blog',
             'weight' => 1,
         ));
     }
@@ -150,4 +150,4 @@ foreach($messages as $message) {
 
 }
 
-echo count($is).' ideas & '.count($es).' sources & '.count($messages).' messages synced.';
+echo count($is).' blogs & '.count($es).' sources & '.count($messages).' messages synced.';

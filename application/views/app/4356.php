@@ -1,12 +1,12 @@
 <?php
 
-//Update Idea Transaction Time:
+//Update Blog Transaction Time:
 $i__id = ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 );
 $total_time = 0;
 $total_scanned = 0;
 $total_updated = 0;
 $e___12822 = $this->config->item('e___12822');
-$e___12955 = $this->config->item('e___12955'); //Idea Type Completion Time
+$e___12955 = $this->config->item('e___12955'); //Blog Type Completion Time
 $filters = array();
 if($i__id > 0){
     $filters['i__id'] = $i__id;
@@ -37,7 +37,7 @@ foreach($this->I_model->fetch($filters) as $in){
     $estimated_time = 0;
 
 
-    //Idea Type Has Time?
+    //Blog Type Has Time?
     if(array_key_exists($in['i__type'], $e___12955)){
         //Yes, add Extra Time:
         $extra_time = intval($e___12955[$in['i__type']]['m__message']);
@@ -49,11 +49,11 @@ foreach($this->I_model->fetch($filters) as $in){
     }
 
 
-    //Then count the title of next ideas:
+    //Then count the title of next blogs:
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $is_next){
         $this_time = words_to_seconds($is_next['i__title']);
@@ -68,7 +68,7 @@ foreach($this->I_model->fetch($filters) as $in){
     //Fetch All Messages for this:
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 4231, //IDEA NOTES Messages
+        'x__type' => 4231, //BLOG NOTES Messages
         'x__right' => $in['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message){
 
@@ -151,4 +151,4 @@ foreach($this->I_model->fetch($filters) as $in){
 }
 
 //Return results:
-echo $total_updated.' of '.$total_scanned.' Ideas Updated with new estimated times totalling '.round(($total_time/3600), 1).' Hours.';
+echo $total_updated.' of '.$total_scanned.' Blogs Updated with new estimated times totalling '.round(($total_time/3600), 1).' Hours.';

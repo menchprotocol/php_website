@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     check_i_e__type();
 
-    //Watch for Idea status change:
+    //Watch for Blog status change:
     $("#x__type").change(function () {
         check_i_e__type();
     });
@@ -17,8 +17,8 @@ $(document).ready(function () {
 
 
 function check_i_e__type(){
-    //Checks to see if the Idea/Source status filter should be visible
-    //Would only make visible if Transaction type is Created Idea/Member
+    //Checks to see if the Blog/Source status filter should be visible
+    //Would only make visible if Transaction type is Created Blog/Member
 
     //Hide both in/en status:
     $(".filter-statuses").addClass('hidden');
@@ -47,7 +47,7 @@ function app_4341(x_filters, x_joined_by, page_num){
     }, function (data) {
         if (!data.status) {
             //Show Error:
-            $('#x_page_'+page_num).html('<span class="discover">'+ data.message +'</span>');
+            $('#x_page_'+page_num).html('<span class="read">'+ data.message +'</span>');
         } else {
             //Load Report:
             $('#x_page_'+page_num).html(data.message);

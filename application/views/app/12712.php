@@ -3,7 +3,7 @@
 if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
     echo 'Missing source ID (Append ?e__id=SOURCE_ID in URL)';
 } else {
-    //Fetch Idea:
+    //Fetch Blog:
     $es = $this->E_model->fetch(array(
         'e__id' => intval($_GET['e__id']),
     ));

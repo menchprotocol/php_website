@@ -6,12 +6,12 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
 if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
-    //List this members Discoveries so they can choose:
-    echo '<div>Choose one of your Discoveries to debug:</div><br />';
+    //List this members reads so they can choose:
+    echo '<div>Choose one of your reads to debug:</div><br />';
 
     $u_x = $this->X_model->fetch(array(
         'x__source' => $_GET['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+        'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY READS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     ), array('x__left'), 0, 0, array('x__spectrum' => 'ASC'));
@@ -29,11 +29,11 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
     if(count($is) < 1){
 
-        echo 'Public Idea not found';
+        echo 'Public Blog not found';
 
     } else {
 
-        //List the idea:
+        //List the blog:
         view_json(array(
             'I_model' => array(
                 'metadata_common_base' => $this->I_model->metadata_common_base($is[0]),

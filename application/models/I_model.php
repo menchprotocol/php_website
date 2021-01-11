@@ -5,7 +5,7 @@ class I_model extends CI_Model
 
     /*
      *
-     * Idea related database functions
+     * Blog related database functions
      *
      * */
 
@@ -18,7 +18,7 @@ class I_model extends CI_Model
     function create($add_fields, $x__source = 0)
     {
 
-        //What is required to create a new Idea?
+        //What is required to create a new Blog?
         if (detect_missing_columns($add_fields, array('i__title', 'i__type'), $x__source)) {
             return false;
         }
@@ -39,19 +39,19 @@ class I_model extends CI_Model
 
             if ($x__source > 0) {
 
-                //Log transaction new Idea:
+                //Log transaction new Blog:
                 $this->X_model->create(array(
                     'x__source' => $x__source,
                     'x__right' => $add_fields['i__id'],
                     'x__message' => $add_fields['i__title'],
-                    'x__type' => 4250, //New Idea Created
+                    'x__type' => 4250, //New Blog Created
                 ));
 
                 //Also add as source:
                 $this->X_model->create(array(
                     'x__source' => $x__source,
                     'x__up' => $x__source,
-                    'x__type' => 4983, //IDEA SOURCES
+                    'x__type' => 4983, //BLOG SOURCES
                     'x__message' => '@'.$x__source,
                     'x__right' => $add_fields['i__id'],
                 ), true);
@@ -77,7 +77,7 @@ class I_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->X_model->create(array(
-                'x__message' => 'i->create() failed to create a new idea',
+                'x__message' => 'i->create() failed to create a new blog',
                 'x__type' => 4246, //Platform Bug Reports
                 'x__source' => $x__source,
                 'x__metadata' => $add_fields,
@@ -90,7 +90,7 @@ class I_model extends CI_Model
     function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
     {
 
-        //The basic fetcher for Ideas
+        //The basic fetcher for Blogs
         $this->db->select($select);
         $this->db->from('mench__i');
 
@@ -121,7 +121,7 @@ class I_model extends CI_Model
             return false;
         }
 
-        //Fetch current Idea filed values so we can compare later on after we've updated it:
+        //Fetch current Blog filed values so we can compare later on after we've updated it:
         if($x__source > 0){
             $before_data = $this->I_model->fetch(array('i__id' => $id));
         }
@@ -155,20 +155,20 @@ class I_model extends CI_Model
 
                 if($key=='i__title') {
 
-                    $x__type = 10644; //Idea updated Outcome
+                    $x__type = 10644; //Blog updated Outcome
                     $x__message = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='i__type'){
 
-                    $x__type = 10648; //Idea updated Status
-                    $e___4737 = $this->config->item('e___4737'); //Idea Status
+                    $x__type = 10648; //Blog updated Status
+                    $e___4737 = $this->config->item('e___4737'); //Blog Status
                     $x__message = view_db_field($key) . ' updated from [' . $e___4737[$before_data[0][$key]]['m__title'] . '] to [' . $e___4737[$value]['m__title'] . ']';
                     $x__up = $value;
                     $x__down = $before_data[0][$key];
 
                 } elseif($key=='i__duration') {
 
-                    $x__type = 10650; //Idea updated Completion Time
+                    $x__type = 10650; //Blog updated Completion Time
                     $x__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
@@ -222,31 +222,31 @@ class I_model extends CI_Model
 
     function remove($i__id, $x__source = 0){
 
-        //REMOVE IDEA LINKS
+        //REMOVE BLOG LINKS
         $x_deleted = 0;
-        foreach($this->X_model->fetch(array( //Idea Transactions
+        foreach($this->X_model->fetch(array( //Blog Transactions
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
             '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
         ), array(), 0) as $x){
             //Delete this transaction:
             $x_deleted += $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
-            ), $x__source, 13579 /* Idea Transaction Unpublished */);
+            ), $x__source, 13579 /* Blog Transaction Unpublished */);
         }
 
 
         //REMOVE NOTES:
-        $i_notes = $this->X_model->fetch(array( //Idea Transactions
+        $i_notes = $this->X_model->fetch(array( //Blog Transactions
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
+            'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //BLOG NOTES
             'x__right' => $i__id,
         ), array(), 0);
         foreach($i_notes as $i_note){
             //Delete this transaction:
             $x_deleted += $this->X_model->update($i_note['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
-            ), $x__source, 13579 /* Idea Transaction Unpublished */);
+            ), $x__source, 13579 /* Blog Transaction Unpublished */);
         }
 
 
@@ -262,7 +262,7 @@ class I_model extends CI_Model
 
         //STATS
         $stats = array(
-            'x__type' => 4250, //Idea Created
+            'x__type' => 4250, //Blog Created
             'scanned' => 0,
             'missing_creation_fix' => 0,
             'status_sync' => 0,
@@ -273,7 +273,7 @@ class I_model extends CI_Model
 
             $stats['scanned']++;
 
-            //Find creation discover:
+            //Find creation transaction:
             $x = $this->X_model->fetch(array(
                 'x__type' => $stats['x__type'],
                 'x__right' => $i['i__id'],
@@ -310,11 +310,11 @@ class I_model extends CI_Model
         $top_startable = array();
 
 
-        //Return the first top startable idea:
+        //Return the first top startable blog:
         $previous_is = $this->X_model->fetch(array(
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
             'x__right' => $i['i__id'],
         ), array('x__left'), 0);
         if(!count($previous_is)){
@@ -323,7 +323,7 @@ class I_model extends CI_Model
         }
 
 
-        //Try to find a startable parent idea:
+        //Try to find a startable parent blog:
         foreach($previous_is as $previous_i) {
             if(i_is_startable($previous_i)){
                 array_push($top_startable, $previous_i);
@@ -335,7 +335,7 @@ class I_model extends CI_Model
         }
 
 
-        //Recursively go up and try to find startable idea:
+        //Recursively go up and try to find startable blog:
         foreach($previous_is as $previous_i) {
             $top_startable_recursive = $this->I_model->top_startable($previous_i);
             if(count($top_startable_recursive)){
@@ -352,22 +352,22 @@ class I_model extends CI_Model
 
         /*
          *
-         * The main idea creation function that would create
-         * appropriate transactions and return the idea view.
+         * The main blog creation function that would create
+         * appropriate transactions and return the blog view.
          *
-         * Either creates an IDEA transaction between $focus__id & $link_i__id
-         * (IF $link_i__id>0) OR will create a new idea with outcome $i__title
+         * Either creates an BLOG transaction between $focus__id & $link_i__id
+         * (IF $link_i__id>0) OR will create a new blog with outcome $i__title
          * and transaction it to $focus__id (In this case $link_i__id will be 0)
          *
-         * p.s. Inputs have previously been validated via ideas/i_add() function
+         * p.s. Inputs have previously been validated via blogs/i_add() function
          *
          * */
 
-        //Valid Idea Addition?
+        //Valid Blog Addition?
         if(!in_array($x__type, $this->config->item('n___14685'))){
             return array(
                 'status' => 0,
-                'message' => 'Invalid Idea Creation Method',
+                'message' => 'Invalid Blog Creation Method',
             );
         } elseif($focus__id < 1){
             return array(
@@ -378,14 +378,14 @@ class I_model extends CI_Model
 
         $is_upwards = in_array($x__type, $this->config->item('n___14686'));
 
-        //Validate Original idea
+        //Validate Original blog
         if(in_array($x__type, $this->config->item('n___11020'))){
 
             if ($focus__id > 0 && $link_i__id==$focus__id) {
                 //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
-                    'message' => 'You cannot add idea to itself.',
+                    'message' => 'You cannot add blog to itself.',
                 );
             }
 
@@ -397,7 +397,7 @@ class I_model extends CI_Model
             if (count($focus_i) < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'Invalid Focus Idea',
+                    'message' => 'Invalid Focus Blog',
                 );
             }
 
@@ -422,9 +422,9 @@ class I_model extends CI_Model
         //Linking to Existing or Creating New?
         if ($link_i__id > 0) {
 
-            //Linking to $link_i__id (NOT creating any new ideas)
+            //Linking to $link_i__id (NOT creating any new blogs)
 
-            //Fetch more details on the child idea we're about to transaction:
+            //Fetch more details on the child blog we're about to transaction:
             $link_i = $this->I_model->fetch(array(
                 'i__id' => $link_i__id,
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -432,11 +432,11 @@ class I_model extends CI_Model
             if (count($link_i) < 1) {
                 return array(
                     'status' => 0,
-                    'message' => 'Invalid Link Idea',
+                    'message' => 'Invalid Link Blog',
                 );
             }
 
-            //Determine which is parent Idea, and which is child
+            //Determine which is parent Blog, and which is child
             if(in_array($x__type, $this->config->item('n___11020'))){
 
                 //PREVIOUS or NEXT
@@ -445,12 +445,12 @@ class I_model extends CI_Model
                 if (count($this->X_model->fetch(array(
                         'x__left' => ( $is_upwards ? $link_i[0]['i__id'] : $focus_i[0]['i__id'] ),
                         'x__right' => ( $is_upwards ? $focus_i[0]['i__id'] : $link_i[0]['i__id'] ),
-                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     ))) > 0) {
                     return array(
                         'status' => 0,
-                        'message' => 'Idea is already linked here.',
+                        'message' => 'Blog is already linked here.',
                     );
                 }
 
@@ -458,12 +458,12 @@ class I_model extends CI_Model
                 if($x__type==13542 && count($this->X_model->find_previous(0, $link_i[0]['i__id'], $focus_i[0]['i__id']))){
                     return array(
                         'status' => 0,
-                        'message' => 'Idea already added as previous so it cannot be added as next',
+                        'message' => 'Blog already added as previous so it cannot be added as next',
                     );
                 } elseif($x__type==11019 && count($this->X_model->find_previous(0, $focus_i[0]['i__id'], $link_i[0]['i__id']))){
                     return array(
                         'status' => 0,
-                        'message' => 'Idea already added as next so it cannot be added as previous',
+                        'message' => 'Blog already added as next so it cannot be added as previous',
                     );
                 }
 
@@ -474,30 +474,30 @@ class I_model extends CI_Model
                 //Duplicate Check:
                 if(count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE BLOGS
                     '(x__up = '.$focus_e[0]['e__id'].' OR x__down = '.$focus_e[0]['e__id'].')' => null,
                     'x__right' => $link_i[0]['i__id'],
                 )))){
                     return array(
                         'status' => 0,
-                        'message' => 'Idea already referenced to this source',
+                        'message' => 'Blog already referenced to this source',
                     );
                 }
 
             } elseif($x__type==10573){
 
-                //My Ideas
+                //My Blogs
 
                 //Duplicate Check:
                 if(count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 10573, //BOOKMARKED IDEAS
+                    'x__type' => 10573, //BOOKMARKED BLOGS
                     'x__up' => $focus_e[0]['e__id'],
                     'x__right' => $link_i[0]['i__id'],
                 )))){
                     return array(
                         'status' => 0,
-                        'message' => 'Idea already in My Ideas',
+                        'message' => 'Blog already in My Blogs',
                     );
                 }
 
@@ -505,7 +505,7 @@ class I_model extends CI_Model
                 if ($x__source!=$focus_e[0]['e__id']) {
                     return array(
                         'status' => 0,
-                        'message' => 'You can only add My Ideas for yourself, not other members.',
+                        'message' => 'You can only add My Blogs for yourself, not other members.',
                     );
                 }
 
@@ -516,9 +516,9 @@ class I_model extends CI_Model
 
         } else {
 
-            //We are NOT adding an existing Idea, but instead, we're creating a new Idea
+            //We are NOT adding an existing Blog, but instead, we're creating a new Blog
 
-            //Validate Idea Outcome:
+            //Validate Blog Outcome:
             $i__title_validation = i__title_validate($i__title);
             if(!$i__title_validation['status']){
                 //We had an error, return it:
@@ -526,16 +526,16 @@ class I_model extends CI_Model
             }
 
 
-            //Create new Idea:
+            //Create new Blog:
             $i_new = $this->I_model->create(array(
                 'i__title' => $i__title_validation['i_clean_title'],
-                'i__type' => 6677, //New Default Ideas
+                'i__type' => 6677, //New Default Blogs
             ), $x__source);
 
         }
 
 
-        //Create Idea Transaction:
+        //Create Blog Transaction:
         $new_i_html = null;
 
 
@@ -544,12 +544,12 @@ class I_model extends CI_Model
             //PREVIOUS or NEXT
             $relation = $this->X_model->create(array(
                 'x__source' => $x__source,
-                'x__type' => 4228, //Idea Transaction Regular Discovery
+                'x__type' => 4228, //Blog Transaction Regular read
                 ( $is_upwards ? 'x__right' : 'x__left' ) => $focus__id,
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
                         'x__left' => ( $is_upwards ? $i_new['i__id'] : $focus__id ),
                     )),
             ), true);
@@ -558,7 +558,7 @@ class I_model extends CI_Model
             $new_i = $this->X_model->fetch(array(
                 ( $is_upwards ? 'x__right' : 'x__left' ) => $focus__id,
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ), array(($is_upwards ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
@@ -569,14 +569,14 @@ class I_model extends CI_Model
 
             //Add References
             $this->X_model->create(array(
-                'x__type' => 4983, //IDEA SOURCES
+                'x__type' => 4983, //BLOG SOURCES
                 'x__source' => $x__source,
                 'x__up' => $focus_e[0]['e__id'],
                 'x__message' => '@'.$focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
                 'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type' => 4983, //IDEA SOURCES
+                        'x__type' => 4983, //BLOG SOURCES
                         'x__right' => $i_new['i__id'],
                     )),
             ));
@@ -584,7 +584,7 @@ class I_model extends CI_Model
             //Fetch Complete References:
             $new_i = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 4983, //IDEA SOURCES
+                'x__type' => 4983, //BLOG SOURCES
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
             ), array('x__right'));
@@ -593,18 +593,18 @@ class I_model extends CI_Model
 
         } elseif($x__type == 10573){
 
-            //My Ideas
+            //My Blogs
 
-            //Add to top of my ideas:
+            //Add to top of my blogs:
             $this->X_model->create(array(
-                'x__type' => 10573, //MY IDEAS
+                'x__type' => 10573, //MY BLOGS
                 'x__source' => $x__source,
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
                 'x__message' => '@'.$focus_e[0]['e__id'],
                 'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type' => 10573, //MY IDEAS
+                        'x__type' => 10573, //MY BLOGS
                         'x__up' => $focus_e[0]['e__id'],
                     )),
             ), true);
@@ -612,7 +612,7 @@ class I_model extends CI_Model
             $new_i = $this->X_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 10573, //BOOKMARKED IDEAS
+                'x__type' => 10573, //BOOKMARKED BLOGS
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
             ), array('x__right'));
@@ -639,7 +639,7 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
             'x__left' => $i__id,
         ), array('x__right')) as $next_i){
 
@@ -666,46 +666,46 @@ class I_model extends CI_Model
     function metadata_common_base($focus_in){
 
         //Set variables:
-        $is_first_in = ( !isset($focus_in['x__id']) ); //First idea does not have a transaction, just the idea
-        $select_one = in_array($focus_in['i__type'] , $this->config->item('n___12883')); //IDEA TYPE SELECT ONE
-        $select_some = in_array($focus_in['i__type'] , $this->config->item('n___12884')); //IDEA TYPE SELECT SOME
+        $is_first_in = ( !isset($focus_in['x__id']) ); //First blog does not have a transaction, just the blog
+        $select_one = in_array($focus_in['i__type'] , $this->config->item('n___12883')); //BLOG TYPE SELECT ONE
+        $select_some = in_array($focus_in['i__type'] , $this->config->item('n___12884')); //BLOG TYPE SELECT SOME
         $select_one_children = array(); //To be populated only if $focus_in is select one
         $select_some_children = array(); //To be populated only if $focus_in is select some
-        $conditional_x = array(); //To be populated only for Conditional Ideas
+        $conditional_x = array(); //To be populated only for Conditional Blogs
         $metadata_this = array(
-            'p___6168' => array(), //The idea structure that would be shared with all members regardless of their quick replies (OR Idea Answers)
-            'p___6228' => array(), //Ideas that may exist as a transaction to expand Discovery by answering OR ideas
-            'p___12885' => array(), //Ideas that allows members to select one or more
-            'p___6283' => array(), //Ideas that may exist as a transaction to expand Discovery via Conditional Idea transactions
+            'p___6168' => array(), //The blog structure that would be shared with all members regardless of their quick replies (OR Blog Answers)
+            'p___6228' => array(), //Blogs that may exist as a transaction to expand read by answering OR blogs
+            'p___12885' => array(), //Blogs that allows members to select one or more
+            'p___6283' => array(), //Blogs that may exist as a transaction to expand read via Conditional Blog transactions
         );
 
         //Fetch children:
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
             'x__left' => $focus_in['i__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i){
 
-            //Determine action based on parent idea type:
+            //Determine action based on parent blog type:
             if(in_array($next_i['x__type'], $this->config->item('n___12842'))){
 
-                //Conditional Idea Transaction:
+                //Conditional Blog Transaction:
                 array_push($conditional_x, intval($next_i['i__id']));
 
             } elseif($select_one){
 
-                //OR parent Idea with Fixed Idea Transaction:
+                //OR parent Blog with Fixed Blog Transaction:
                 array_push($select_one_children, intval($next_i['i__id']));
 
             } elseif($select_some){
 
-                //OR parent Idea with Fixed Idea Transaction:
+                //OR parent Blog with Fixed Blog Transaction:
                 array_push($select_some_children, intval($next_i['i__id']));
 
             } else {
 
-                //AND parent Idea with Fixed Idea Transaction:
+                //AND parent Blog with Fixed Blog Transaction:
                 array_push($metadata_this['p___6168'], intval($next_i['i__id']));
 
                 //Go recursively down:
@@ -758,7 +758,7 @@ class I_model extends CI_Model
         //Save common base:
         if($is_first_in){
 
-            //Make sure to add main idea to common idea:
+            //Make sure to add main blog to common blog:
             if(count($metadata_this['p___6168']) > 0){
                 $metadata_this['p___6168'] = array_merge( array(intval($focus_in['i__id'])) , array($metadata_this['p___6168']));
             } else {
@@ -804,7 +804,7 @@ class I_model extends CI_Model
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown Idea. Format must be: #123 Idea Title',
+                'message' => 'Unknown Blog. Format must be: #123 Blog Title',
             );
 
         }
@@ -820,7 +820,7 @@ class I_model extends CI_Model
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
             'x__left' => $i__id,
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
@@ -836,7 +836,7 @@ class I_model extends CI_Model
                 $e__profile_id = intval(one_two_explode('@',' ',$action_command1));
                 $i_has_e = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE BLOGS
                     'x__right' => $next_i['i__id'],
                     '(x__up = '.$e__profile_id.' OR x__down = '.$e__profile_id.')' => null,
                 ));
@@ -847,7 +847,7 @@ class I_model extends CI_Model
                     $this->X_model->create(array(
                         'x__source' => $x__source,
                         'x__up' => $e__profile_id,
-                        'x__type' => 4983, //IDEA SOURCES
+                        'x__type' => 4983, //BLOG SOURCES
                         'x__message' => '@'.$e__profile_id,
                         'x__right' => $next_i['i__id'],
                     ), true);
@@ -859,7 +859,7 @@ class I_model extends CI_Model
                     //Has and must be deleted:
                     $this->X_model->update($i_has_e[0]['x__id'], array(
                         'x__status' => 6173,
-                    ), $x__source, 10673 /* IDEA NOTES Unpublished */);
+                    ), $x__source, 10673 /* BLOG NOTES Unpublished */);
 
                     $applied_success++;
 
@@ -872,7 +872,7 @@ class I_model extends CI_Model
 
                 $is_previous = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
                     'x__left' => $focus_i__id,
                     'x__right' => $next_i['i__id'],
                 ), array(), 0);
@@ -890,7 +890,7 @@ class I_model extends CI_Model
                     //Remove Source:
                     $this->X_model->update($is_previous[0]['x__id'], array(
                         'x__status' => 6173,
-                    ), $x__source, 13579 /* IDEA NOTES Unpublished */);
+                    ), $x__source, 13579 /* BLOG NOTES Unpublished */);
 
                     $applied_success++;
 
@@ -918,7 +918,7 @@ class I_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'message' => $applied_success . ' of ' . count($is_next) . ' ideas updated',
+            'message' => $applied_success . ' of ' . count($is_next) . ' blogs updated',
         );
 
     }
@@ -939,7 +939,7 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
             'x__left' => $i__id,
         ), array('x__right'), 0, 0, array(), 'i__id, i__spectrum') as $next_i){
             $total_child_weights += $next_i['i__spectrum'] + $this->I_model->weight($next_i['i__id']);
@@ -962,8 +962,8 @@ class I_model extends CI_Model
 
         /*
          *
-         * Generates Idea Tree Insights like
-         * min/max ideas, time & referenced
+         * Generates Blog Tree Insights like
+         * min/max blogs, time & referenced
          * expert sources/channels.
          *
          * */
@@ -979,11 +979,11 @@ class I_model extends CI_Model
         );
 
 
-        //AGGREGATE IDEA SOURCES
+        //AGGREGATE BLOG SOURCES
         foreach($this->X_model->fetch(array(
             //Already for for x__up & x__down
             'x__right' => $i['i__id'],
-            'x__type IN (' . join(',', $this->config->item('n___13550')).')' => null, //SOURCE IDEAS
+            'x__type IN (' . join(',', $this->config->item('n___13550')).')' => null, //SOURCE BLOGS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $fetched_e) {
 
@@ -1033,11 +1033,11 @@ class I_model extends CI_Model
             'localp___6162'=> null,
         );
 
-        //NEXT IDEAS
+        //NEXT BLOGS
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //BLOG LINKS
             'x__left' => $i['i__id'],
         ), array('x__right'), 0) as $is_next){
 
@@ -1165,7 +1165,7 @@ class I_model extends CI_Model
          * */
 
 
-        //Validate this locked idea:
+        //Validate this locked blog:
         if(!i_unlockable($i)){
             return array();
         }
@@ -1173,10 +1173,10 @@ class I_model extends CI_Model
         $child_unlock_paths = array();
 
 
-        //Discovery 1: Is there an OR parent that we can simply answer and unlock?
+        //read 1: Is there an OR parent that we can simply answer and unlock?
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
             'x__right' => $i['i__id'],
             'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null,
         ), array('x__left'), 0) as $i_or_parent){
@@ -1186,11 +1186,11 @@ class I_model extends CI_Model
         }
 
 
-        //Discovery 2: Are there any locked transaction parents that the member might be able to unlock?
+        //read 2: Are there any locked transaction parents that the member might be able to unlock?
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
+            'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //BLOG LINKS ONE-WAY
             'x__right' => $i['i__id'],
         ), array('x__left'), 0) as $i_locked_parent){
             if(i_unlockable($i_locked_parent)){
@@ -1208,16 +1208,16 @@ class I_model extends CI_Model
 
         //Return if we have options for step 1 OR step 2:
         if(count($child_unlock_paths) > 0){
-            //Return OR parents for unlocking this idea:
+            //Return OR parents for unlocking this blog:
             return $child_unlock_paths;
         }
 
 
-        //Discovery 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
+        //read 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //BLOG LINKS TWO-WAY
             'x__left' => $i['i__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
         if(count($is_next) < 1){

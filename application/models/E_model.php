@@ -174,7 +174,7 @@ class E_model extends CI_Model
     function create($add_fields, $external_sync = false, $x__source = 0)
     {
 
-        //What is required to create a new Idea?
+        //What is required to create a new Blog?
         if (detect_missing_columns($add_fields, array('e__type', 'e__title'), $x__source)) {
             return false;
         }
@@ -304,7 +304,7 @@ class E_model extends CI_Model
                     continue;
                 }
 
-                //FYI: Unlike Ideas, we cannot log parent/child source relations since the child source slot is previously taken...
+                //FYI: Unlike Blogs, we cannot log parent/child source relations since the child source slot is previously taken...
 
                 if($key=='e__title') {
 
@@ -570,7 +570,7 @@ class E_model extends CI_Model
 
             $stats['scanned']++;
 
-            //Find creation discover:
+            //Find creation read:
             $x = $this->X_model->fetch(array(
                 'x__type' => $stats['x__type'],
                 'x__down' => $e['e__id'],

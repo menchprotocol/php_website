@@ -1,7 +1,7 @@
 /*
 *
-* Functions related to modifying ideas
-* and managing IDEA NOTES.
+* Functions related to modifying blogs
+* and managing BLOG NOTES.
 *
 * */
 
@@ -82,7 +82,7 @@ $(document).ready(function () {
     });
 
 
-    //Load top/bottom idea searches:
+    //Load top/bottom blog searches:
     i_load_search(11019, $('#focus_i__id').val());
     i_load_search(13542, $('#focus_i__id').val());
 
@@ -131,7 +131,7 @@ function i_note_poweredit_save(note_type_id){
             $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon'] + ' ' + js_e___11035[14422]['m__title']);
 
             //Show Errors:
-            $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span> Message not saved because:<br />'+data.message);
+            $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span> Message not saved because:<br />'+data.message);
 
         } else {
 
@@ -204,7 +204,7 @@ function e_add_only_7551(e_existing_id, note_type_id) {
 
             i_note_counter(note_type_id, +1);
 
-            //Raw input to make it discovers for next URL:
+            //Raw input to make it ready for next URL:
             input.focus();
 
             //Add new object to list:

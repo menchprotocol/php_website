@@ -220,7 +220,7 @@ function current_mench(){
 
         return array(
             'c__id' => 12273,
-            'c__class' => 'idea',
+            'c__class' => 'blog',
             'c__m' => $e___2738[12273],
         );
 
@@ -228,7 +228,7 @@ function current_mench(){
 
         return array(
             'c__id' => 6255,
-            'c__class' => 'discover',
+            'c__class' => 'read',
             'c__m' => $e___2738[6255],
         );
 
@@ -253,7 +253,7 @@ function i_is_featured($i)
     $CI =& get_instance();
     return in_array($i['i__type'], $CI->config->item('n___7355')) && count($CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE BLOGS
         'x__right' => $i['i__id'],
         '(x__up IN (' . join(',', $CI->config->item('n___4235')) . ') OR x__down IN (' . join(',', $CI->config->item('n___4235')) . '))' => null,
     )));
@@ -281,7 +281,7 @@ function i_is_startable($i)
                 superpower_active(10939, true) &&
                 in_array($i['i__type'], $CI->config->item('n___7355')) &&
                 count($CI->X_model->fetch(array(
-                    'x__type' => 10573, //MY IDEAS
+                    'x__type' => 10573, //MY BLOGS
                     'x__right' => $i['i__id'],
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))
@@ -295,7 +295,7 @@ function x_detect_type($string)
 
     /*
      * Detect what type of Source URL type should we create
-     * based on options listed in this idea: @4227
+     * based on options listed in this blog: @4227
      * */
 
     $string = trim($string);
@@ -370,7 +370,7 @@ function current_link(){
 }
 
 function words_to_seconds($text){
-    //Average discovering speed assumed to be 250 words/minute
+    //Average reading speed assumed to be 250 words/minute
     return ( strlen($text) ? round( (substr_count($text, ' ') + 1) / 250 * 60 , 4 ) : 0 );
 }
 
@@ -505,11 +505,11 @@ function i_fetch_cover($i__id, $html_format = false){
     $found_image = null;
     $first_source_icon = null;
     $first_source_id = 0;
-    foreach($CI->X_model->fetch(array( //IDEA SOURCE
+    foreach($CI->X_model->fetch(array( //BLOG SOURCE
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE BLOGS
         'x__right' => $i__id,
-        '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+        '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE BLOG COINS
     ), array(), 0, 0, array(
         'x__type' => 'ASC', //Messages First, Sources Second
         'x__spectrum' => 'ASC', //Sort by message order
@@ -599,7 +599,7 @@ function i_fetch_description($i__id){
     $CI =& get_instance();
     foreach($CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 4231, //IDEA NOTES Messages
+        'x__type' => 4231, //BLOG NOTES Messages
         'x__right' => $i__id,
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $fetched_e){
         if(substr_count($fetched_e['x__message'], ' ')>=2){ //Require 3+ words
@@ -622,7 +622,7 @@ function i_fetch_description($i__id){
 
 function i__spectrum_calculator($i){
 
-    //DISCOVERIES
+    //READ
     $CI =& get_instance();
 
     //Set Weight to Max Time for now:
@@ -635,14 +635,14 @@ function i__spectrum_calculator($i){
         '(x__right='.$i['i__id'].' OR x__left='.$i['i__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
-    //IDEAS
+    //BLOGS
     $counts = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
+        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //BLOG LINKS
         '(x__right='.$i['i__id'].' OR x__left='.$i['i__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
-    //Returns the weight of a idea:
+    //Returns the weight of a blog:
     $weight = ( $count_x[0]['totals'] * view_memory(6404,12568) )
         + ( $counts[0]['totals'] * view_memory(6404,12565) );
 
@@ -661,7 +661,7 @@ function i__spectrum_calculator($i){
 
 function e__spectrum_calculator($e){
 
-    //DISCOVERIES
+    //READS
     $CI =& get_instance();
 
     $count_x = $CI->X_model->fetch(array(
@@ -669,7 +669,7 @@ function e__spectrum_calculator($e){
         '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__source='.$e['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
-    //IDEAS
+    //BLOGS
     $counts = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -891,10 +891,10 @@ function extract_icon_color($e__icon, $return_coin = false){
 
     //NOTE: Has a twin JS function
 
-    if(substr_count($e__icon, 'discover')>0){
-        return ( $return_coin ? '🔴' : ' discover ' );
-    } elseif(substr_count($e__icon, 'idea')>0){
-        return ( $return_coin ? '🟡' : ' idea ' );
+    if(substr_count($e__icon, 'read')>0){
+        return ( $return_coin ? '🔴' : ' read ' );
+    } elseif(substr_count($e__icon, 'blog')>0){
+        return ( $return_coin ? '🟡' : ' blog ' );
     } elseif(substr_count($e__icon, 'source')>0 || !$e__icon){
         return ( $return_coin ? '🔵' : ' source ' );
     } else {
@@ -926,18 +926,18 @@ function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null
 
     } elseif($x__type==12273){
 
-        //IDEAS
+        //BLOGS
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
+            'x__type IN (' . join(',', $CI->config->item('n___13480')) . ')' => null, //UNIQUE BLOGS
         );
 
     } elseif($x__type==6255){
 
-        //DISCOVERIES
+        //READS
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVER COIN
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //READ COIN
         );
 
     } else {
@@ -987,7 +987,7 @@ function i_stats($i__metadata){
     //Return stats:
     return array(
 
-        //IDEAS
+        //BLOGS
         'i___6169' => ( isset($metadata['i___6169']) && $metadata['i___6169']>=2 ? $metadata['i___6169']-1 : 0 ),
         'i___6170' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? $metadata['i___6170']-1 : 0 ),
 
@@ -1049,7 +1049,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>', true);
+        return redirect_message($goto_url, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>', true);
     }
 
 }
@@ -1093,14 +1093,14 @@ function i_calc_common_prefix($child_list, $child_field){
     $CI =& get_instance();
 
     if(count($child_list) < 2){
-        return null; //Cannot do this for less than 2 Ideas
+        return null; //Cannot do this for less than 2 Blogs
     }
 
     //Go through each child one by one and see if each word exists in all:
     $common_prefix = '';
     foreach(explode(' ', $child_list[0][$child_field]) as $word_pos=>$word){
 
-        //Make sure this is the same word across all ideas:
+        //Make sure this is the same word across all blogs:
         $all_the_same = true;
         foreach($child_list as $child_item){
             $child_words = explode(' ', $child_item[$child_field]);
@@ -1484,21 +1484,21 @@ function e_of_i($i__id, $member_e = array()){
         return false;
     }
 
-    //Ways a member can modify an idea:
+    //Ways a member can modify an blog:
     $CI =& get_instance();
     return (
         superpower_active(12700, true) || //WALKIE TALKIE
         (
             superpower_active(10939, true) && //PEN
             (
-                count($CI->X_model->fetch(array( //Member created the idea
-                    'x__type' => 4250, //IDEA CREATOR
+                count($CI->X_model->fetch(array( //Member created the blog
+                    'x__type' => 4250, //BLOG CREATOR
                     'x__right' => $i__id,
                     'x__source' => $member_e['e__id'],
                 ))) ||
-                count($CI->X_model->fetch(array( //IDEA SOURCE
+                count($CI->X_model->fetch(array( //BLOG SOURCE
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE BLOGS
                     'x__right' => $i__id,
                     '(x__up = '.$member_e['e__id'].' OR x__down = '.$member_e['e__id'].')' => null,
                 )))
@@ -1509,7 +1509,7 @@ function e_of_i($i__id, $member_e = array()){
 }
 
 function status_converter($status_id){
-    //Create a map of statuses between transactions and ideas/sources:
+    //Create a map of statuses between transactions and blogs/sources:
     $status_converter = array();
     $CI =& get_instance();
     foreach($CI->config->item('n___6186') as $e__id) {
@@ -1580,7 +1580,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
     }
 
 
-    $e___4737 = $CI->config->item('e___4737'); //Idea Status
+    $e___4737 = $CI->config->item('e___4737'); //Blog Status
 
     //Define the support objects indexed on algolia:
     $s__id = intval($s__id);
@@ -1610,7 +1610,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
     } else {
 
-        //Do both ideas and sources:
+        //Do both blogs and sources:
         $fetch_objects = $CI->config->item('n___12761');
         $batch_command = array(); //TODO To be populated:
         /*
@@ -1771,8 +1771,8 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
             } elseif ($loop_obj == 12273) {
 
-                //IDEAS
-                //See if this idea has a time-range:
+                //BLOGS
+                //See if this blog has a time-range:
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['i__id']);
                 $export_row['s__url'] = '/i/i_go/' . $s['i__id'];
@@ -1785,7 +1785,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__keywords'] = '';
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $CI->config->item('n___4485')) . ')' => null, //IDEA NOTES
+                    'x__type IN (' . join(',', $CI->config->item('n___4485')) . ')' => null, //BLOG NOTES
                     'x__right' => $s['i__id'],
                 ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $keyword) {
                     $export_row['s__keywords'] .= $keyword['x__message'] . ' ';
@@ -1797,12 +1797,12 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
-                //Is SOURCE for any IDEA?
+                //Is SOURCE for any BLOG?
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE BLOGS
                     'x__right' => $s['i__id'],
-                    '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+                    '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE BLOG COINS
                 ), array(), 0) as $e){
                     if($e['x__up']>0){
                         array_push($export_row['_tags'], 'alg_e_' . $e['x__up']);
@@ -1843,7 +1843,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be deleted?
-        if (in_array($all_db_rows[0][$focus_field_status], array(6178 /* Member Deleted */, 6182 /* Idea Deleted */))) {
+        if (in_array($all_db_rows[0][$focus_field_status], array(6178 /* Member Deleted */, 6182 /* Blog Deleted */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
@@ -1940,9 +1940,9 @@ function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
      *
      * Enables the easy manipulation of the text metadata field which holds cache data for developers
      *
-     * $s__type:           DISCOVER, SOURCE OR IDEA
+     * $s__type:           READ, SOURCE OR BLOG
      *
-     * $obj:                    The Member, Idea or Transaction itself.
+     * $obj:                    The Member, Blog or Transaction itself.
      *                          We're looking for the $obj ID and METADATA
      *
      * $new_fields:             The new array of metadata fields to be Set,

@@ -2,7 +2,7 @@
 
 /*
  *
- * Updates common base metadata for published ideas
+ * Updates common base metadata for published blogs
  *
  * */
 
@@ -24,7 +24,7 @@ $total_time = time() - $start_time;
 
 //Show json:
 view_json(array(
-    'message' => 'Common Base Metadata updated for '.count($published_i).' published idea'.view__s(count($published_i)).'.',
+    'message' => 'Common Base Metadata updated for '.count($published_i).' published blog'.view__s(count($published_i)).'.',
     'total_time' => view_time_hours($total_time),
     'item_time' => round(($total_time/count($published_i)),1).' Seconds',
     'last_item' => $i,

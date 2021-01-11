@@ -35,7 +35,7 @@ $(document).ready(function () {
 
 function goto_step(this_count){
 
-    //Update discover count:
+    //Update read count:
     step_count = this_count;
 
     $('.signup-steps').addClass('hidden');
@@ -85,12 +85,12 @@ function search_email(){
             $('.focus_email').html(data.clean_email_input);
             $('#email_errors').html('');
 
-            //Go to next discovers:
+            //Go to next read:
             goto_step(( data.email_existed_previously ? 3 /* To ask for password */ : 4 /* To check their email and create new account */ ));
 
         } else {
             //Show errors:
-            $('#email_errors').html('<b class="css__title discover"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+            $('#email_errors').html('<b class="css__title read"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
             $('#input_email').focus();
         }
     });
@@ -125,7 +125,7 @@ function add_account(){
             $('#new_account_errors').html('');
 
             setTimeout(function () {
-                //Redirect to next discovers:
+                //Redirect to next read:
                 window.location = data.sign_url;
             }, 377);
 
@@ -143,7 +143,7 @@ function add_account(){
             }
 
             //Show errors:
-            $('#new_account_errors').html('<b class="css__title discover"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+            $('#new_account_errors').html('<b class="css__title read"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
         }
 
     });
@@ -187,7 +187,7 @@ function e_signin_password(){
             $('#input_password').prop('disabled', false).focus();
 
             //Show errors:
-            $('#password_errors').html('<b class="css__title discover"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+            $('#password_errors').html('<b class="css__title read"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
         }
 
     });
@@ -209,7 +209,7 @@ function e_magic_email(){
             $('.magic_result').html('<div><span class="icon-block"><i class="fas fa-eye"></i></span>Check Your Email (Also Spam Folder)</div>').hide().fadeIn();
         } else {
             //Show errors:
-            $('.magic_result').html('<div class="discover css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</div>').hide().fadeIn();
+            $('.magic_result').html('<div class="read css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</div>').hide().fadeIn();
         }
     });
 }
