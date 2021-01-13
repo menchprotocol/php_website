@@ -652,7 +652,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $query_filters = array(
             'x__up' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $CI->config->item(( superpower_active(13422, true) ? 'n___7360' /* ACTIVE */ : 'n___7359' /* PUBLIC */ ))) . ')' => null,
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
         if(count($i_exclude)){
