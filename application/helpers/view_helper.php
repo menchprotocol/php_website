@@ -1513,7 +1513,7 @@ function view_info_box($e__id){
     $counter = 0;
     foreach($CI->config->item('e___'.$e__id) as $m) {
         $title_parts = explode(' ', $m['m__title'], 2);
-        $ui .= '<div class="col-12 col-sm-4 '.( $counter>=3 ? ' extra_info_box hidden ' : '' ).'">';
+        $ui .= '<div class="col-12 col-sm-6 col-md-4 '.( $counter>=3 ? ' extra_info_box hidden ' : '' ).'">';
             $ui .= '<div class="info_box">';
                 $ui .= '<div class="info_box_cover">'.$m['m__icon'].'</div>';
                 $ui .= '<div class="info_box_title css__title">'.$title_parts[0].'<br />'.$title_parts[1].'</div>';
