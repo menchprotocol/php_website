@@ -1510,7 +1510,8 @@ function view_info_box($e__id){
     $ui .= '<h2 class="info_box_header css__title">' . $e___11035[$e__id]['m__title'] . '</h2>';
     //if(strlen($e___11035[$e__id]['m__message'])){ $ui .= '<div class="info_box_message" style="margin-bottom: 89px;">'.$e___11035[$e__id]['m__message'].'</div>'; }
     $ui .= '<div class="row">';
-    foreach($CI->config->item('e___'.$e__id) as $counter => $m) {
+    $counter = 0;
+    foreach($CI->config->item('e___'.$e__id) as $m) {
         $ui .= '<div class="col-12 col-sm-4 '.( $counter>=3 ? ' extra_info_box hidden ' : '' ).'">';
             $ui .= '<div class="info_box">';
                 $ui .= '<div class="info_box_cover">'.$m['m__icon'].'</div>';
@@ -1518,6 +1519,7 @@ function view_info_box($e__id){
                 $ui .= '<div class="info_box_message">'.$m['m__message'].'</div>';
             $ui .= '</div>';
         $ui .= '</div>';
+        $counter++;
     }
     $ui .= '</div>';
 
