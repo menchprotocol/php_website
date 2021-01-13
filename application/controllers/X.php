@@ -396,7 +396,11 @@ class X extends CI_Controller
 
     }
 
-    function x_next($top_i__id, $i__id){
+    function x_next($top_i__id, $i__id = 0){
+
+        if(!$i__id){
+            die('missing valid ID');
+        }
 
         $member_e = superpower_unlocked();
         $is = $this->I_model->fetch(array(
