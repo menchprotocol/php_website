@@ -37,7 +37,7 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
     $ui = '<div class="css__title doupper grey inline-block" style="font-size:0.89em;">';
 
     if(!$micro_sign && $i_stats['i___6170']>0){
-        $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' '.$e___13544[12273]['m__title'].' &middot; ';
+        $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' IDEA'.view__s($i_stats['i___6170']).' &middot; ';
     }
 
     if($is_micro){
