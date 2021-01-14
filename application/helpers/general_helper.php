@@ -499,7 +499,7 @@ function e_count_6194($e__id, $specific_id = 0){
 }
 
 
-function i_fetch_cover($i__id, $html_format = false){
+function i_cover($i__id, $html_format = false){
 
     $CI =& get_instance();
     $found_image = null;
@@ -519,8 +519,8 @@ function i_fetch_cover($i__id, $html_format = false){
 
             if($fetched_e[$e_ref_field] > 0){
 
-                //Set the first icon only once:
-                if(!$first_source_icon){
+                //Set the first icon only once, if allowed:
+                if(!$first_source_icon && in_array($fetched_e['x__type'], $CI->config->item('n___14819'))){
                     $es = $CI->E_model->fetch(array(
                         'e__id' => $fetched_e[$e_ref_field],
                         'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -593,7 +593,7 @@ function i_fetch_cover($i__id, $html_format = false){
 
 
 
-function i_fetch_description($i__id){
+function i_description($i__id){
 
 
     $CI =& get_instance();
@@ -1777,7 +1777,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__id'] = intval($s['i__id']);
                 $export_row['s__url'] = '/i/i_go/' . $s['i__id'];
                 $export_row['s__status'] = intval($s['i__type']);
-                $export_row['s__icon'] = i_fetch_cover($s['i__id'], true);
+                $export_row['s__icon'] = i_cover($s['i__id'], true);
                 $export_row['s__title'] = $s['i__title'];
                 $export_row['s___weight'] = intval($s['i__spectrum']);
 

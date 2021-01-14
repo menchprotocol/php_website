@@ -1543,8 +1543,8 @@ function view_i_select($i, $x__source, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
-    $i_fetch_cover = i_fetch_cover($i['i__id']);
-    $is_valid_url = filter_var($i_fetch_cover, FILTER_VALIDATE_URL);
+    $i_cover = i_cover($i['i__id']);
+    $is_valid_url = filter_var($i_cover, FILTER_VALIDATE_URL);
     $completion_rate = $CI->X_model->completion_progress($x__source, $i);
     $i_title = view_i_title($i, null, true);
     $i_stats = i_stats($i['i__metadata']);
@@ -1552,11 +1552,11 @@ function view_i_select($i, $x__source, $previously_selected){
 
     $ui  = '<div class="i_cover col-md-3 col-sm-4 col-6 no-padding">';
     $ui .= '<div class="cover-wrapper">';
-    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' active_selected ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_fetch_cover.'\');"' : '' ).'>';
+    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' active_selected ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
     //ICON?
     if(!$is_valid_url){
-        $ui .= '<div class="cover-btn">'.$i_fetch_cover.'</div>';
+        $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
     }
 
     //LEFT
@@ -1646,15 +1646,15 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
-    $i_fetch_cover = i_fetch_cover($i['i__id']);
-    $is_valid_url = filter_var($i_fetch_cover, FILTER_VALIDATE_URL);
+    $i_cover = i_cover($i['i__id']);
+    $is_valid_url = filter_var($i_cover, FILTER_VALIDATE_URL);
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_fetch_cover.'\');"' : '' ).'>';
+    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
 
     //ICON?
     if(!$is_valid_url){
-        $ui .= '<div class="cover-btn">'.$i_fetch_cover.'</div>';
+        $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
     }
 
 
