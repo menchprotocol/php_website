@@ -1853,7 +1853,9 @@ function view_x_progress($completion_rate, $i){
         return '<div class="progress-bg-list progress_'.$i['i__id'].'"><div class="progress-done" style="width:0%"></div></div>';
     }
 
-    return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$completion_rate['completion_percentage'].'% COMPLETED: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS READ" data-toggle="tooltip" data-placement="top"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+    return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$completion_rate['completion_percentage'].'% COMPLETED"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+    //: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS READ
+    //data-toggle="tooltip" data-placement="top"
 
 }
 
