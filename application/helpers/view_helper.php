@@ -34,10 +34,10 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
     //Has Time
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
-    $ui = '<div class="css__title doupper grey inline-block">';
+    $ui = '<div class="css__title doupper grey inline-block" style="font-size:0.8em;">';
 
     if(!$micro_sign && $i_stats['i___6170']>0){
-        $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'-' : '' ).view_number($i_stats['i___6170']).' '.$e___13544[12273]['m__title'].' ';//&middot;
+        $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'-' : '' ).view_number($i_stats['i___6170']).' '.$e___13544[12273]['m__title'].' &middot; ';
     }
 
     if($is_micro){
