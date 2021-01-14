@@ -1653,7 +1653,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //ICON?
-    if(!$is_valid_url){
+    if(!$is_valid_url && $i_cover){
         $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
     }
 

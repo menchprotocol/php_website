@@ -571,7 +571,7 @@ function i_cover($i__id, $html_format = false){
             //Return with HTML code as is:
             return '<span class="e_ui_icon_'.$first_source_id.'">'.$first_source_icon.'</span>';
         } else {
-            return '<img src="'.view_memory(6404,12904).'" class="cover-image" />';
+            return null;
         }
     } else {
         //RAW Background usage:
@@ -586,7 +586,7 @@ function i_cover($i__id, $html_format = false){
                 return '<span class="e_ui_icon_'.$first_source_id.'">'.$first_source_icon.'</span>';
             }
         } else {
-            return view_memory(6404,12904);
+            return null;
         }
     }
 }
