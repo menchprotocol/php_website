@@ -520,7 +520,7 @@ function i_cover($i__id, $html_format = false){
             if($fetched_e[$e_ref_field] > 0){
 
                 //Set the first icon only once, if allowed:
-                if(!$first_source_icon && in_array($fetched_e['x__type'], $CI->config->item('n___14819'))){
+                if(!$first_source_icon && in_array($fetched_e['x__type'], $CI->config->item('n___14818'))){
                     $es = $CI->E_model->fetch(array(
                         'e__id' => $fetched_e[$e_ref_field],
                         'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
