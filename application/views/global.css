@@ -1932,7 +1932,7 @@ i, .btn .show-max {
     left: 0;
     padding: 0;
     width: 100% !important;
-    max-height: 70%;
+    max-height: 63%;
     position: absolute;
     overflow-x: hidden;
     overflow-y: auto;
