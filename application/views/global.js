@@ -229,7 +229,7 @@ function init_remove(){
 
 
 function i_note_poweredit_has_changed(note_type_id){
-    return htmlEntities($('.input_note_'+note_type_id).val().trim()) != $('#current_text_'+note_type_id).html().trim();
+    return $('.input_note_'+note_type_id).val().trim() != $('#current_text_'+note_type_id).html().trim();
 }
 
 function i_note_poweredit_has_text(note_type_id){
