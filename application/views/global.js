@@ -227,8 +227,12 @@ function init_remove(){
     });
 }
 
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function i_note_poweredit_has_changed(note_type_id){
-    return $('.input_note_'+note_type_id).val().trim() != $('#current_text_'+note_type_id).text().trim();
+    return htmlEntities($('.input_note_'+note_type_id).val().trim()) != $('#current_text_'+note_type_id).text().trim();
 }
 
 function i_note_poweredit_has_text(note_type_id){
