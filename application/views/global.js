@@ -229,7 +229,11 @@ function init_remove(){
 
 
 function i_note_poweredit_has_changed(note_type_id){
-    return $('.input_note_'+note_type_id).val().trim() != $('#current_text_'+note_type_id).html().trim();
+    var text_editor = $('.input_note_'+note_type_id).val().trim();
+    var text_preview = $('#current_text_'+note_type_id).html().trim();
+    console.log(text_editor);
+    console.log(text_preview);
+    return  text_editor != text_preview;
 }
 
 function i_note_poweredit_has_text(note_type_id){
