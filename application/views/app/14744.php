@@ -5,7 +5,7 @@ $search_item = null;
 if(isset($_GET['e__id'])){
 
     $es = $this->E_model->fetch(array(
-        'e__id' => $e__id,
+        'e__id' => $_GET['e__id'],
     ));
     if(count($es)){
         $search_item = $es[0]['e__title'];
