@@ -1498,6 +1498,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
 function view_info_box($e__id){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //MENCH NAVIGATION
+    $max_limit = view_memory(6404,14339);
     $ui = '';
     //$ui .= '<div class="info_box_icon">' . $e___11035[$e__id]['m__icon'] . '</div>';
     $ui .= '<h2 class="info_box_header css__title">' . $e___11035[$e__id]['m__title'] . '</h2>';
@@ -1506,7 +1507,7 @@ function view_info_box($e__id){
     $counter = 0;
     foreach($CI->config->item('e___'.$e__id) as $m) {
         $title_parts = explode(' ', $m['m__title'], 2);
-        $ui .= '<div class="col-12 col-sm-6 col-md-4 '.( $counter>=3 ? ' extra_info_box hidden ' : '' ).'">';
+        $ui .= '<div class="col-12 col-sm-6 col-md-4 '.( $counter>=$max_limit ? ' extra_info_box hidden ' : '' ).'">';
             $ui .= '<div class="info_box">';
                 $ui .= '<div class="info_box_cover">'.$m['m__icon'].'</div>';
                 $ui .= '<div class="info_box_title css__title">'.$title_parts[0].'<br />'.$title_parts[1].'</div>';
@@ -1518,7 +1519,7 @@ function view_info_box($e__id){
     $ui .= '</div>';
 
     //Show option to expand:
-    if($counter >= 3){
+    if($counter >= $max_limit){
         $ui .= '<div class="row extra_info_box">';
             $ui .= '<div class="col-12">';
                 $ui .= '<div class="info_box_message"><a href="javascript:void(0);" onclick="$(\'.extra_info_box\').toggleClass(\'hidden\');">See More...</a></div>';
