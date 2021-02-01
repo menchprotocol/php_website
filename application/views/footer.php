@@ -224,8 +224,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </div>
                     <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
                         <div class="input-group border">
-                            <input type="text" id="e__icon" name="e__icon" value="" data-lpignore="true" placeholder="" class="form-control" style="margin-bottom: 0;">
                             <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
+                            <input type="text" id="e__icon" name="e__icon" value="" data-lpignore="true" placeholder="" class="form-control" style="margin-bottom: 0;">
                         </div>
                     </div>
 
