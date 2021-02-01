@@ -21,7 +21,7 @@ foreach($this->I_model->fetch($filters) as $in){
     if(count($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 10650,
-            'x__right' => $i__id,
+            'x__right' => $in['i__id'],
         ))) && $in['i__duration']!=view_memory(6404,12176)){
         //Yes, so we ignore:
         if($i__id){
