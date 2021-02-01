@@ -1504,7 +1504,7 @@ class E extends CI_Controller
         }
 
         $es = $this->E_model->fetch(array(
-            'e__id' => $_POST['e__id'],
+            'e__id' => intval($_POST['e__id']),
         ));
         if(!count($es)){
             return view_json(array(
