@@ -1458,6 +1458,7 @@ function source_of_e($e__id, $member_e = array()){
 
         //Member has Advance source editing superpower
         || superpower_active(13422, true)
+        || superpower_active(10939, true)
 
         //Member created the source
         || count($CI->X_model->fetch(array(
