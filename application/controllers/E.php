@@ -1480,11 +1480,11 @@ class E extends CI_Controller
 
     function e_modify_load(){
 
-        $member_e = superpower_unlocked();
+        $member_e = superpower_unlocked(10939);
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => view_unauthorized_message(10939),
             ));
         } elseif(!source_of_e($_POST['e__id'], $member_e)){
             return view_json(array(

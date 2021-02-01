@@ -1439,6 +1439,7 @@ function e__title_validate($string, $x__type = 0){
 
 function source_of_e($e__id, $member_e = array()){
 
+    return true;
 
     if(!$member_e){
         //Fetch from session:
@@ -1457,8 +1458,8 @@ function source_of_e($e__id, $member_e = array()){
         $e__id==$member_e['e__id']
 
         //Member has Advance source editing superpower
-        || superpower_active(13422, true)
         || superpower_active(10939, true)
+        || superpower_active(13422, true)
 
         //Member created the source
         || count($CI->X_model->fetch(array(
