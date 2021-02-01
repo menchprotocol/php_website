@@ -857,7 +857,8 @@ class X_model extends CI_Model
             $edit_btn = null;
             if(!$is_read_mode && source_of_e($es[0]['e__id'])){
                 $e___11035 = $this->config->item('e___11035');
-                $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click icon-block-img trigger_13571_edit mini-grey" title="'.$e___11035[13571]['m__title'].'">'.view_e__icon($es[0]['e__icon']).'</span> ';
+                $tooltip_class .= ' class="ignore-click trigger_13571_edit" ';
+                $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click icon-block-img trigger_13571_edit" title="'.$e___11035[13571]['m__title'].'">'.view_e__icon($es[0]['e__icon']).'</span> ';
             }
 
             $on_its_own_line = false;
