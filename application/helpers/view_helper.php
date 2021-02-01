@@ -1760,11 +1760,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         //IDEA TYPE
         $ui .= '<div class="cover-text css__title">';
 
-        //Always Show Time
-        if($show_duration) {
-            $ui .= '<div class="inline-block" ' . ($idea_editing && !$superpower_12700 ? ' style="min-width: 38px; padding-right: 10px; margin-left: -4px;" ' : '') . '>' . view_i_time($i_stats, false) . '</div>';
-        }
-
 
         if($idea_editing) {
 
@@ -1825,6 +1820,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="right">0</div>';
             }
 
+        }
+
+        //Always Show Time
+        if($show_duration) {
+            $ui .= '<div class="inline-block" ' . ($idea_editing && !$superpower_12700 ? ' style="min-width: 38px; padding-right: 10px; margin-left: -4px;" ' : '') . '>' . view_i_time($i_stats, false) . '</div>';
         }
 
         $ui .= '</div>';
