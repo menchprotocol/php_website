@@ -519,18 +519,6 @@ function i_cover($i__id, $html_format = false){
 
             if($fetched_e[$e_ref_field] > 0){
 
-                //Set the first icon only once, if allowed:
-                if(!$first_source_icon && in_array($fetched_e['x__type'], $CI->config->item('n___14818'))){
-                    $es = $CI->E_model->fetch(array(
-                        'e__id' => $fetched_e[$e_ref_field],
-                        'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-                    ));
-                    if(count($es) && strlen($es[0]['e__icon']) > 0){
-                        $first_source_icon = $es[0]['e__icon'];
-                        $first_source_id = $es[0]['e__id'];
-                    }
-                }
-
                 //See if this source has a photo:
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -540,7 +528,7 @@ function i_cover($i__id, $html_format = false){
                     if($e_image['x__type']==4260){
                         $found_image = $e_image['x__message'];
                         break;
-                    } elseif($e_image['x__type']==4257){
+                    } elseif($e_image['x__type']==4257 /* Currently excluded from @14756 */){
                         //Embed:
                         $video_id = extract_youtube_id($e_image['x__message']);
                         if($video_id){
@@ -552,13 +540,29 @@ function i_cover($i__id, $html_format = false){
                 }
                 if($found_image){
                     break;
+                } else {
+                    //Set the first icon only once, if allowed:
+                    if(!$first_source_icon && in_array($fetched_e['x__type'], $CI->config->item('n___14818'))){
+                        $es = $CI->E_model->fetch(array(
+                            'e__id' => $fetched_e[$e_ref_field],
+                            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+                        ));
+                        if(count($es) && strlen($es[0]['e__icon']) > 0){
+                            $first_source_icon = $es[0]['e__icon'];
+                            $first_source_id = $es[0]['e__id'];
+                        }
+                    }
+
+                    if($first_source_icon){
+                        break;
+                    }
                 }
             }
-            if($found_image){
+            if($found_image || $first_source_icon){
                 break;
             }
         }
-        if($found_image){
+        if($found_image || $first_source_icon){
             break;
         }
     }
