@@ -1486,6 +1486,11 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
+        } elseif(!isset($_POST['e__id'])){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing e__id',
+            ));
         } elseif(!source_of_e($_POST['e__id'], $member_e)){
             return view_json(array(
                 'status' => 0,
