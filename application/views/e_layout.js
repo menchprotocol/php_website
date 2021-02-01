@@ -58,11 +58,6 @@ $(document).ready(function () {
     //Load search for mass update function:
     load_editor();
 
-    //Keep an eye for icon change:
-    $('#e__icon').keyup(function() {
-        update_demo_icon();
-    });
-
     //Lookout for idea transaction related changes:
     $('#x__status').change(function () {
         if (parseInt($('#x__status').find(":selected").val()) == 6173 /* DELETED */ ) {

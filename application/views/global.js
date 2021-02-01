@@ -318,6 +318,11 @@ $(document).ready(function () {
         }
     });
 
+    //Keep an eye for icon change:
+    $('#e__icon').keyup(function() {
+        update_demo_icon();
+    });
+
     init_remove();
     lazy_load();
     set_autosize($('#sugg_note'));
