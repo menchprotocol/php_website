@@ -194,7 +194,7 @@ if(!$basic_header_footer){
                     } else {
 
                         //Domain Source
-                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="icon-block">'.$e___14870[getenv('DOMAIN_SOURCE')]['m_icon'].'</span><b class="css__title text-logo text__6197_'.getenv('DOMAIN_SOURCE').'">'.$e___14870[getenv('DOMAIN_SOURCE')]['m_title'].'</b></a>';
+                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="icon-block">'.$e___14870[getenv('DOMAIN_SOURCE')]['m__icon'].'</span><b class="css__title text-logo text__6197_'.getenv('DOMAIN_SOURCE').'">'.$e___14870[getenv('DOMAIN_SOURCE')]['m__title'].'</b></a>';
 
                     }
 
