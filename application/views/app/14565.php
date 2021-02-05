@@ -1,7 +1,7 @@
 <?php
 
 $is = $this->I_model->fetch(array(
-    'i__id' => view_memory(6404,14002),
+    'i__id' => getenv('DOMAIN_IDEA'),
 ));
 
 //IDEA TITLE

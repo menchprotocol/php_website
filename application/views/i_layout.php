@@ -21,7 +21,7 @@ $superpower_14005 = superpower_active(14005, true);
 <?php
 
 $e_focus_found = false; //Used to determine the first tab to be opened
-$is_north_star = $i_focus['i__id']==view_memory(6404,14002);
+$is_north_star = $i_focus['i__id']==getenv('DOMAIN_IDEA');
 $show_previous = $e_of_i && $is_active && !$is_north_star;
 $is_in_my_ideas = count($this->X_model->fetch(array(
     'x__up' => $member_e['e__id'],

@@ -5,6 +5,8 @@ $first_segment = $this->uri->segment(1);
 $i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
 $e___13479 = $this->config->item('e___13479');
+$e___14870 = $this->config->item('e___14870'); //MENCH DOMAINS
+
 $superpower_10939 = superpower_active(10939, true);
 $current_mench = current_mench();
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
@@ -191,15 +193,15 @@ if(!$basic_header_footer){
 
                     } else {
 
-                        //Mench
-                        echo '<a href="'.home_url($current_mench['c__id']).'"><img src="/img/mench.png" class="mench-logo mench-spin" /><b class="css__title text-logo text__6197_2738">MENCH</b></a>';
+                        //Domain Source
+                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="icon-block">'.$e___14870[getenv('DOMAIN_SOURCE')]['m_icon'].'</span><b class="css__title text-logo text__6197_'.getenv('DOMAIN_SOURCE').'">'.$e___14870[getenv('DOMAIN_SOURCE')]['m_title'].'</b></a>';
 
                     }
 
                     echo '</div>';
 
                     //SEARCH
-                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].' ['.getenv('VARRR').']"></form></div>';
+                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
 
                     echo '</div>';
                     echo '</td>';
