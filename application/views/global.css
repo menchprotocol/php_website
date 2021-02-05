@@ -1628,6 +1628,11 @@ i, .btn .show-max {
     float: left;
 }
 
+.mench-logo.icon-adder{
+    margin-right: 0px !important;
+    margin-top: 8px;
+}
+
 .mench-circle{
     line-height: 100%;
     width: 41px !important;
