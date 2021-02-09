@@ -1495,7 +1495,7 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
     return $visible_ui;
 }
 
-function view_info_box($e__id){
+function view_info_box(){
 
     $e__id = 14340;
     $CI =& get_instance();
