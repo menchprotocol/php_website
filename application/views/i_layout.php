@@ -1,6 +1,6 @@
     <?php
-$e___2738 = $this->config->item('e___2738');
-$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+$e___14874 = $this->config->item('e___14874');
+$e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
 $e_of_i = e_of_i($i_focus['i__id']);
 $is_active = in_array($i_focus['i__type'], $this->config->item('n___7356'));
@@ -21,7 +21,7 @@ $superpower_14005 = superpower_active(14005, true);
 <?php
 
 $e_focus_found = false; //Used to determine the first tab to be opened
-$is_north_star = $i_focus['i__id']==getenv('DOMAIN_IDEA');
+$is_north_star = $i_focus['i__id']==get_domain_setting(14002);
 $show_previous = $e_of_i && $is_active && !$is_north_star;
 $is_in_my_ideas = count($this->X_model->fetch(array(
     'x__up' => $member_e['e__id'],
@@ -329,8 +329,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         } else {
 
             //No Results:
-            $e___2738 = $this->config->item('e___2738'); //MENCH
-            //$ui .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___2738[6255]['m__title'].' yet</div>';
+            $e___14874 = $this->config->item('e___14874'); //COINS
+            //$ui .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> No '.$e___14874[6255]['m__title'].' yet</div>';
 
         }
 

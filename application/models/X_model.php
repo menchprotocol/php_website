@@ -71,7 +71,7 @@ class X_model extends CI_Model
         }
 
         //Lets log:
-        $this->db->insert('mench__x', $add_fields);
+        $this->db->insert('table__x', $add_fields);
 
 
         //Fetch inserted id:
@@ -159,7 +159,7 @@ class X_model extends CI_Model
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__up' => 3288, //Mench Email
+                    'x__up' => 3288, //Email
                     'x__down' => $subscriber_e__id,
                 ), array('x__down')) as $e_email){
                     if(filter_var($e_email['x__message'], FILTER_VALIDATE_EMAIL)){
@@ -175,7 +175,7 @@ class X_model extends CI_Model
             if(count($sub_e__ids) > 0){
 
                 //yes, start drafting email to be sent to them...
-                $u_name = 'MENCH';
+                $u_name = get_domain('m__title');
                 if($add_fields['x__source'] > 0){
                     //Fetch member details:
                     $add_e = $this->E_model->fetch(array(
@@ -260,24 +260,24 @@ class X_model extends CI_Model
     {
 
         $this->db->select($select);
-        $this->db->from('mench__x');
+        $this->db->from('table__x');
 
         //IDA JOIN?
         if (in_array('x__left', $join_objects)) {
-            $this->db->join('mench__i', 'x__left=i__id','left');
+            $this->db->join('table__i', 'x__left=i__id','left');
         } elseif (in_array('x__right', $join_objects)) {
-            $this->db->join('mench__i', 'x__right=i__id','left');
+            $this->db->join('table__i', 'x__right=i__id','left');
         }
 
         //SOURCE JOIN?
         if (in_array('x__up', $join_objects)) {
-            $this->db->join('mench__e', 'x__up=e__id','left');
+            $this->db->join('table__e', 'x__up=e__id','left');
         } elseif (in_array('x__down', $join_objects)) {
-            $this->db->join('mench__e', 'x__down=e__id','left');
+            $this->db->join('table__e', 'x__down=e__id','left');
         } elseif (in_array('x__type', $join_objects)) {
-            $this->db->join('mench__e', 'x__type=e__id','left');
+            $this->db->join('table__e', 'x__type=e__id','left');
         } elseif (in_array('x__source', $join_objects)) {
-            $this->db->join('mench__e', 'x__source=e__id','left');
+            $this->db->join('table__e', 'x__source=e__id','left');
         }
 
         foreach($query_filters as $key => $value) {
@@ -338,7 +338,7 @@ class X_model extends CI_Model
 
         //Update:
         $this->db->where('x__id', $id);
-        $this->db->update('mench__x', $update_columns);
+        $this->db->update('table__x', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
@@ -449,7 +449,7 @@ class X_model extends CI_Model
 
         //Fetches the maximum order value
         $this->db->select('MAX(x__spectrum) as largest_order');
-        $this->db->from('mench__x');
+        $this->db->from('table__x');
         foreach($query_filters as $key => $value) {
             $this->db->where($key, $value);
         }

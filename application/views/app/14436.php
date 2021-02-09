@@ -9,9 +9,9 @@ require 'vendor/autoload.php';
 use Auth0\SDK\Auth0;
 $auth0 = new Auth0([
     'domain' => 'mench.auth0.com',
-    'client_id' => 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi',
-    'client_secret' => $this->config->item('cred_auth0_client_secret'),
-    'redirect_uri' => 'https://mench.com/-14564',
+    'client_id' => get_domain_setting(14881),
+    'client_secret' => get_domain_setting(14882),
+    'redirect_uri' => 'https://'.get_domain('m__message').'/-14564',
     'scope' => 'openid profile email',
 ]);
 

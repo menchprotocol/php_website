@@ -24,7 +24,7 @@ if(!$obj || $obj==12273){
     }
 
     //Now addup weights starting from primary Idea:
-    $stats['i_total_weights'] = $this->I_model->weight(getenv('DOMAIN_IDEA'));
+    $stats['i_total_weights'] = $this->I_model->weight(get_domain_setting(14002));
 
 }
 

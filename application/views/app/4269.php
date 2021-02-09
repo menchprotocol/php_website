@@ -9,10 +9,10 @@ if(superpower_unlocked()) {
     //Lead member and above, go to console:
     js_redirect($next_url, 13);
 
-} elseif(isset($_COOKIE['mench_login'])){
+} elseif(isset($_COOKIE['login_cookie'])){
 
     //Authenticate Cookie:
-    $cookie_parts = explode('ABCEFG',$_COOKIE['mench_login']);
+    $cookie_parts = explode('ABCEFG',$_COOKIE['login_cookie']);
 
     $es = $this->E_model->fetch(array(
         'e__id' => $cookie_parts[0],
@@ -20,7 +20,7 @@ if(superpower_unlocked()) {
     $u_emails = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__up' => 3288, //Mench Email
+        'x__up' => 3288, //Email
         'x__down' => $cookie_parts[0],
     ));
 
@@ -54,7 +54,7 @@ if(superpower_unlocked()) {
 
 
     $e___4269 = $this->config->item('e___4269');
-    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+    $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
     $this_attempt = array(
         'x__type' => ( $sign_i__id > 0 ? 7560 /* Member Signin Idea Channel Choose */ : 7561 /* Member Signin on Website */ ),
@@ -110,7 +110,7 @@ if(superpower_unlocked()) {
 
     <div class="center-info">
 
-        <div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>
+        <div class="text-center"><img src="/img/logos/<?= get_domain_setting(0) ?>.svg" class="fa-spin-slow platform-large" /></div>
 
         <div class="login-content" style="margin-top:41px;">
 

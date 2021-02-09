@@ -151,7 +151,7 @@ if(!$member_e){
             }
 
 
-            var new_url = "https://mench.com/<?= $is[0]['i__id'] ?>";
+            var new_url = "https://<?= get_domain('m__message') ?>/<?= $is[0]['i__id'] ?>";
 
             $(document).ready(function () {
                 addthis.update('share', 'url', new_url);
@@ -187,7 +187,7 @@ if(!$member_e){
 
 
         echo '<div class="saving_feedback hidden top-margin">';
-        echo '<div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>';
+        echo '<div class="text-center"><img src="/img/logos/'.get_domain_setting(0).'.svg" class="fa-spin-slow platform-large" /></div>';
         echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
         echo '</div>';
 

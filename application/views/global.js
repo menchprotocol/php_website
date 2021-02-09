@@ -312,7 +312,7 @@ var algolia_index = false;
 $(document).ready(function () {
 
     //For the S shortcut to load search:
-    $("#mench_search").focus(function() {
+    $("#top_search").focus(function() {
         if(!search_on){
             toggle_search();
         }
@@ -406,9 +406,9 @@ $(document).ready(function () {
 
     if(parseInt(js_e___6404[12678]['m__message'])){
 
-        $("#mench_search").on('autocomplete:selected', function (event, suggestion, dataset) {
+        $("#top_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            $('#mench_search').val('Loading...');
+            $('#top_search').val('Loading...');
 
             window.location = suggestion.s__url;
 
@@ -417,11 +417,11 @@ $(document).ready(function () {
                 source: function (q, cb) {
 
                     //Members can filter search with first word:
-                    var search_only_e = $("#mench_search").val().charAt(0) == '@';
-                    var search_only_in = $("#mench_search").val().charAt(0) == '#';
+                    var search_only_e = $("#top_search").val().charAt(0) == '@';
+                    var search_only_in = $("#top_search").val().charAt(0) == '#';
 
                     //Do not search if specific command ONLY:
-                    if (( search_only_in || search_only_e ) && !isNaN($("#mench_search").val().substr(1)) ) {
+                    if (( search_only_in || search_only_e ) && !isNaN($("#top_search").val().substr(1)) ) {
 
                         cb([]);
                         return;
@@ -482,13 +482,13 @@ $(document).ready(function () {
 
                             return e_fetch_canonical(data.query, false);
 
-                        } else if($("#mench_search").val().charAt(0)=='#' || $("#mench_search").val().charAt(0)=='@'){
+                        } else if($("#top_search").val().charAt(0)=='#' || $("#top_search").val().charAt(0)=='@'){
 
                             //See what follows the @/# sign to determine if we should create OR redirect:
-                            var search_body = $("#mench_search").val().substr(1);
+                            var search_body = $("#top_search").val().substr(1);
                             if(!isNaN(search_body)){
                                 //Valid Integer, Give option to go there:
-                                return '<a href="' + ( $("#mench_search").val().charAt(0)=='#' ? '/i/i_go/' : '/@' ) + search_body + '" class="suggestion css__title"><span class="icon-block"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
+                                return '<a href="' + ( $("#top_search").val().charAt(0)=='#' ? '/i/i_go/' : '/@' ) + search_body + '" class="suggestion css__title"><span class="icon-block"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
                             }
 
                         }
@@ -499,12 +499,12 @@ $(document).ready(function () {
                     empty: function (data) {
                         if(validURL(data.query)){
                             return e_fetch_canonical(data.query, true);
-                        } else if($("#mench_search").val().charAt(0)=='#'){
-                            if(isNaN($("#mench_search").val().substr(1))){
+                        } else if($("#top_search").val().charAt(0)=='#'){
+                            if(isNaN($("#top_search").val().substr(1))){
                                 return '<div class="not-found css__title"><span class="icon-block-xs"><i class="fas fa-exclamation-circle"></i></span>No IDEA found</div>';
                             }
-                        } else if($("#mench_search").val().charAt(0)=='@'){
-                            if(isNaN($("#mench_search").val().substr(1))) {
+                        } else if($("#top_search").val().charAt(0)=='@'){
+                            if(isNaN($("#top_search").val().substr(1))) {
                                 return '<div class="not-found css__title"><span class="icon-block-xs"><i class="fas fa-exclamation-circle"></i></span>No SOURCE found</div>';
                             }
                         } else {
@@ -559,7 +559,7 @@ function e__title_word_count() {
 
 function update_demo_icon(){
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_e___2738[12274]['m__icon'] ));
+    $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_e___14874[12274]['m__icon'] ));
 }
 
 function e_modify_load(e__id, x__id) {
@@ -582,7 +582,7 @@ function e_modify_load(e__id, x__id) {
 
         if (data.status) {
 
-            var source_url = 'https://mench.com/@'+e__id;
+            var source_url = base_url+'/@'+e__id;
             $('#source_url').html('<u>'+source_url+'</u> <i class="far fa-external-link"></i>').attr('href',source_url);
             $("#modal13571 .save_results").html('');
             $('#modal13571').modal('show');
@@ -712,7 +712,7 @@ function e_modify_save() {
                 var icon_set = ( modify_data['e__icon'].length > 0 ? 1 : 0 );
                 if(!icon_set){
                     //Set source default icon:
-                    modify_data['e__icon'] = js_e___2738[12274]['m__icon'];
+                    modify_data['e__icon'] = js_e___14874[12274]['m__icon'];
                 }
                 $('.e_ui_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
                 $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
@@ -914,7 +914,7 @@ function toggle_search(){
 
         //Switch to Menu:
         search_on = false; //Reverse
-        $('.mench_nav').removeClass('hidden');
+        $('.top_nav').removeClass('hidden');
 
     } else {
 
@@ -923,10 +923,10 @@ function toggle_search(){
         $('.search_nav').removeClass('hidden');
 
         //Focus:
-        $('#mench_search').focus();
+        $('#top_search').focus();
         setTimeout(function () {
             //One more time to make sure it also works in mobile:
-            $('#mench_search').focus();
+            $('#top_search').focus();
         }, 144);
 
     }
@@ -1157,7 +1157,7 @@ function gif_search(q){
             for (var index in data){
                 counter++;
                 var gifObject = data[index];
-                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+",'"+gifObject.id+"','"+gifObject.title.replace("'",'')+"')\"><img src='/img/mench.png' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.id+"/200w.gif' /></a></div>";
+                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+",'"+gifObject.id+"','"+gifObject.title.replace("'",'')+"')\"><img src='/img/logos/"+base_source+".svg' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.id+"/200w.gif' /></a></div>";
                 if(!Math.fmod(counter, 3)){
                     //output += "</div><div class=\"row\">";
                 }

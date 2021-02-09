@@ -14,28 +14,6 @@ class X extends CI_Controller
 
     }
 
-    function index(){
-
-        $member_e = superpower_unlocked();
-        if($member_e){
-            redirect_message('/@'.$member_e['e__id']);
-        }
-
-        $is = $this->I_model->fetch(array(
-            'i__id' => getenv('DOMAIN_IDEA'),
-        ));
-
-        //Load header:
-        $this->load->view('header', array(
-            'title' => $is[0]['i__title'],
-        ));
-        $this->load->view('x/home', array(
-            'i' => $is[0],
-        ));
-        $this->load->view('footer');
-
-    }
-
     function x_create(){
         return view_json($this->X_model->create($_POST));
     }
@@ -371,7 +349,7 @@ class X extends CI_Controller
         //Adds Idea to the Members read
 
         $member_e = superpower_unlocked();
-        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
         //Check to see if added to read for logged-in members:
         if(!$member_e){
@@ -559,7 +537,7 @@ class X extends CI_Controller
          *
          * */
 
-        if($i__id==getenv('DOMAIN_IDEA')){
+        if($i__id==get_domain_setting(14002)){
             return redirect_message(home_url());
         }
 
@@ -577,11 +555,11 @@ class X extends CI_Controller
         //Make sure we found it:
         if ( $top_i__id > 0 && !count($top_is) ) {
 
-            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>', true);
+            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
 
         } elseif ( !count($is) ) {
 
-            return redirect_message( ( $top_i__id > 0 ? '/'.$top_is[0]['i__id'] : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Idea ID ' . $i__id . ' not found</div>', true);
+            return redirect_message( ( $top_i__id > 0 ? '/'.$top_is[0]['i__id'] : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Idea ID ' . $i__id . ' not found</div>');
 
         } elseif($top_i__id > 0 && !in_array($top_is[0]['i__type'], $this->config->item('n___7355') /* PUBLIC */)){
 
@@ -713,7 +691,7 @@ class X extends CI_Controller
         move_uploaded_file($_FILES[$_POST['upload_type']]['tmp_name'], $temp_local);
 
 
-        //Attempt to store in Mench Cloud on Amazon S3:
+        //Attempt to store in Cloud on Amazon S3:
         if (isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type']) > 0) {
             $mime = $_FILES[$_POST['upload_type']]['type'];
         } else {

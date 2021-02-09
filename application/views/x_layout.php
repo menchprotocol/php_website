@@ -1,6 +1,6 @@
 <?php
 
-$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+$e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
 //Messages:
 $messages = $this->X_model->fetch(array(

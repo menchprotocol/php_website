@@ -241,7 +241,7 @@ class E extends CI_Controller
         move_uploaded_file($_FILES[$_POST['upload_type']]['tmp_name'], $temp_local);
 
 
-        //Attempt to store in Mench Cloud on Amazon S3:
+        //Attempt to store in Cloud on Amazon S3:
         if (isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type']) > 0) {
             $mime = $_FILES[$_POST['upload_type']]['type'];
         } else {
@@ -933,7 +933,7 @@ class E extends CI_Controller
 
                     return view_json($detected_x_type);
 
-                } elseif (in_array($detected_x_type['x__type'], $this->config->item('n___4537')) && isset($detected_x_type['url_root']) /* This prevents issues with /mench_urls that start with / */) {
+                } elseif (in_array($detected_x_type['x__type'], $this->config->item('n___4537')) && isset($detected_x_type['url_root']) /* This prevents issues with /local_urls that start with / */) {
 
                     //This is a URL, validate modification:
 
@@ -1281,7 +1281,7 @@ class E extends CI_Controller
             $duplicates = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__up' => 3288, //Mench Email
+                'x__up' => 3288, //Email
                 'x__down !=' => $member_e['e__id'],
                 'LOWER(x__message)' => $_POST['e_email'],
             ));
@@ -1300,7 +1300,7 @@ class E extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $member_e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3288, //Mench Email
+            'x__up' => 3288, //Email
         ));
         if (count($u_emails) > 0) {
 
@@ -1344,7 +1344,7 @@ class E extends CI_Controller
                 'x__source' => $member_e['e__id'],
                 'x__down' => $member_e['e__id'],
                 'x__type' => e_x__type($_POST['e_email']),
-                'x__up' => 3288, //Mench Email
+                'x__up' => 3288, //Email
                 'x__message' => $_POST['e_email'],
             ), true);
 
@@ -1611,7 +1611,7 @@ class E extends CI_Controller
         $this->X_model->create(array(
             'x__type' => e_x__type($hash),
             'x__message' => $hash,
-            'x__up' => 3286, //Mench Password
+            'x__up' => 3286, //Password
             'x__source' => $member_result['e']['e__id'],
             'x__down' => $member_result['e']['e__id'],
         ));
@@ -1628,7 +1628,7 @@ class E extends CI_Controller
 
         }
 
-        //Created account via Mench:
+        //Created account:
         return view_json(array(
             'status' => 1,
             'sign_url' => $sign_url,
@@ -1768,7 +1768,7 @@ class E extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3288, //Mench Email
+            'x__up' => 3288, //Email
         ), array('x__down'));
         if(count($u_emails) < 1){
             return view_json(array(
@@ -1788,8 +1788,8 @@ class E extends CI_Controller
         //This is a new email, send invitation to join:
 
         ##Email Subject
-        $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
-        $subject = $e___11035[11068]['m__title'].' | MENCH';
+        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+        $subject = $e___11035[11068]['m__title'].' | '.get_domain('m__title');
 
         ##Email Body
         $html_message = '<div>Hi '.one_two_explode('',' ',$u_emails[0]['e__title']).' 👋</div><br /><br />';
@@ -1801,7 +1801,7 @@ class E extends CI_Controller
 
         $html_message .= '<br /><br />';
         $html_message .= '<div>'.view_shuffle_message(12691).'</div>';
-        $html_message .= '<div>MENCH</div>';
+        $html_message .= '<div>'.get_domain('m__title').'</div>';
 
         //Send email:
         $this->X_model->email_sent(array($_POST['input_email']), $subject, $html_message);
@@ -1893,7 +1893,7 @@ class E extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3288, //Mench Email
+            'x__up' => 3288, //Email
         ), array('x__down'));
 
         if(count($u_emails) > 0){

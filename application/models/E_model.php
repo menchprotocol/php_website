@@ -41,14 +41,14 @@ class E_model extends CI_Model
                 $u_emails = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__up' => 3288, //Mench Email
+                    'x__up' => 3288, //Email
                     'x__down' => $e['e__id'],
                 ));
 
                 //Create Cookie:
                 $cookie_time = time();
                 $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.md5($e['e__id'].$u_emails[0]['x__message'].$cookie_time.$this->config->item('cred_password_salt'));
-                setcookie('mench_login', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
+                setcookie('login_cookie', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
 
             }
 
@@ -138,7 +138,7 @@ class E_model extends CI_Model
 
         //Add Member:
         $this->X_model->create(array(
-            'x__up' => 4430, //MENCH MEMBERS
+            'x__up' => 4430, //MEMBERS
             'x__type' => e_x__type(),
             'x__source' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
@@ -146,7 +146,7 @@ class E_model extends CI_Model
         $this->X_model->create(array(
             'x__type' => e_x__type(trim(strtolower($email))),
             'x__message' => trim(strtolower($email)),
-            'x__up' => 3288, //Mench Email
+            'x__up' => 3288, //Email
             'x__source' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
         ));
@@ -189,7 +189,7 @@ class E_model extends CI_Model
         }
 
         //Lets now add:
-        $this->db->insert('mench__e', $add_fields);
+        $this->db->insert('table__e', $add_fields);
 
         //Fetch inserted id:
         if (!isset($add_fields['e__id'])) {
@@ -238,7 +238,7 @@ class E_model extends CI_Model
 
         //Fetch the target sources:
         $this->db->select($select);
-        $this->db->from('mench__e');
+        $this->db->from('table__e');
         foreach($query_filters as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
@@ -285,7 +285,7 @@ class E_model extends CI_Model
 
         //Update:
         $this->db->where('e__id', $id);
-        $this->db->update('mench__e', $update_columns);
+        $this->db->update('table__e', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?

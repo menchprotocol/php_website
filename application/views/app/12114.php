@@ -1,7 +1,7 @@
 <?php
 
 //Calculates the weekly coins issued:
-$e___2738 = $this->config->item('e___2738'); //MENCH
+$e___14874 = $this->config->item('e___14874'); //COINS
 $last_x_days = 7;
 
 $x__time_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
@@ -15,7 +15,7 @@ $html_message = '<br />';
 $html_message .= '<div>In the last '.$last_x_days.' day'.view__s($last_x_days).' we grew:</div>';
 $html_message .= '<br />';
 
-foreach($this->config->item('e___2738') as $x__type => $m) {
+foreach($this->config->item('e___14874') as $x__type => $m) {
 
     //Calculate Growth Rate:
     $icon = extract_icon_color($m['m__icon'], true);
@@ -34,7 +34,7 @@ foreach($this->config->item('e___2738') as $x__type => $m) {
 
 $html_message .= '<br />';
 $html_message .= '<div>'.view_shuffle_message(12691).'</div>';
-$html_message .= '<div>MENCH</div>';
+$html_message .= '<div>'.get_domain('m__title').'</div>';
 
 
 
@@ -71,7 +71,7 @@ if($is_u_request && !isset($_GET['send_email'])){
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3288, //Mench Email
+            'x__up' => 3288, //Email
             'x__down' => $subscribed_u['e__id'],
         )) as $e_email){
             if(filter_var($e_email['x__message'], FILTER_VALIDATE_EMAIL)){

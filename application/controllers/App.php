@@ -42,7 +42,7 @@ class App extends CI_Controller
         if($memory_detected && $is_u_request){
             //Needs superpowers?
             $member_e = superpower_unlocked();
-            $e___6287 = $this->config->item('e___6287'); //MENCH APP
+            $e___6287 = $this->config->item('e___6287'); //APP
             $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__profile']);
             if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 die(view_unauthorized_message(end($superpower_actives)));
@@ -70,7 +70,7 @@ class App extends CI_Controller
         $cache_x__time = null;
         if($memory_detected){
 
-            $e___6287 = $this->config->item('e___6287'); //MENCH APP
+            $e___6287 = $this->config->item('e___6287'); //APP
             $title = $e___6287[$app_e__id]['m__title'];
 
             if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
@@ -131,7 +131,7 @@ class App extends CI_Controller
         //Log App Load:
         $log_data = array(
             'x__source' => $x__source,
-            'x__type' => 14067, //MENCH APP LOADED
+            'x__type' => 14067, //APP LOADED
             'x__up' => $app_e__id,
             'x__reference' => $cache_x__id,
         );
@@ -189,7 +189,7 @@ class App extends CI_Controller
                 //Regular UI:
                 //Load App:
                 echo $this->load->view('header', array(
-                    'title' => $title.' | MENCH',
+                    'title' => $title.' | '.get_domain('m__title'),
                     'basic_header_footer' => $basic_header,
                 ), true);
                 echo $ui;
@@ -325,7 +325,7 @@ class App extends CI_Controller
         if($total_items_loaded > 0){
 
             if($page_num==1){
-                $message .= view_mench_coins();
+                $message .= view_coins();
             }
 
             //Subsequent messages:

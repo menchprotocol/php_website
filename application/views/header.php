@@ -3,21 +3,26 @@
 $member_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
 $i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
-$e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+$e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13479 = $this->config->item('e___13479');
-$e___14870 = $this->config->item('e___14870'); //MENCH DOMAINS
 
 $superpower_10939 = superpower_active(10939, true);
-$current_mench = current_mench();
+$current_coin = current_coin();
+$base_source = get_domain_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
 ?><!doctype html>
 <html lang="en" >
 <head>
 
     <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/img/<?= ( !$first_segment || substr($first_segment, 0, 1)=='-' ? 'mench' : $current_mench['c__class'] ) ?>.png">
+
+
+    <meta name="theme-color" content="#f0f0f0">
+    <link rel="icon" href="/img/logos/<?= $base_source ?>.svg">
+    <link rel="mask-icon" href="/img/logos/<?= $base_source ?>.svg" color="#000000">
+
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?= ( isset($title) ? $title : 'MENCH' ) ?></title>
+    <title><?= ( isset($title) ? $title : get_domain('m__title') ) ?></title>
 
     <script type="text/javascript">
         (function(c,l,a,r,i,t,y){
@@ -33,9 +38,11 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
         echo ' var superpower_js_10939 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(10939, $this->session->userdata('session_superpowers_activated'))) . '; ';
         echo ' var superpower_js_12701 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(12701, $this->session->userdata('session_superpowers_activated'))) . '; ';
         echo ' var superpower_js_13422 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(13422, $this->session->userdata('session_superpowers_activated'))) . '; ';
+
         echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
         echo ' var js_pl_name = \'' . ( $member_e ? $member_e['e__title'] : '' ) . '\'; ';
         echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
+        echo ' var base_source = ' . $base_source . '; ';
 
         //JAVASCRIPT PLATFORM MEMORY
         foreach($this->config->item('e___11054') as $x__type => $m){
@@ -110,7 +117,7 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
 
 <?php
 //Generate Body Class String:
-$body_class = 'mench-'.$current_mench['c__class']; //Always append current mench
+$body_class = 'platform-'.$current_coin['c__class']; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
 }
@@ -174,34 +181,34 @@ if(!$basic_header_footer){
     //Do not show for /sign view
     ?>
 
-    <!-- MENCH LINE -->
+    <!-- LINE -->
     <div class="container fixed-top" style="padding-bottom: 0 !important;">
         <div class="row">
-            <table class="mench-navigation">
+            <table class="platform-navigation">
                 <tr>
                     <?php
 
                     echo '<td>';
                     echo '<div class="max_width">';
 
-                    echo '<div class="left_nav mench_nav">';
+                    echo '<div class="left_nav top_nav">';
 
                     if($member_e){
 
                         //My Source
-                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="mench-circle e_ui_icon_'.$member_e['e__id'].'">'.$member_e['e__icon'].'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_mench['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
+                        echo '<a href="'.home_url($current_coin['c__id']).'"><span class="platform-circle e_ui_icon_'.$member_e['e__id'].'">'.$member_e['e__icon'].'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
 
                     } else {
 
                         //Domain Source
-                        echo '<a href="'.home_url($current_mench['c__id']).'"><span class="icon-block mench-logo">'.$e___14870[getenv('DOMAIN_SOURCE')]['m__icon'].'</span><b class="css__title text-logo text__6197_'.getenv('DOMAIN_SOURCE').'">'.$e___14870[getenv('DOMAIN_SOURCE')]['m__title'].'</b></a>';
+                        echo '<a href="'.home_url($current_coin['c__id']).'"><span class="icon-block platform-logo">'.get_domain('m__icon').'</span><b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b></a>';
 
                     }
 
                     echo '</div>';
 
                     //SEARCH
-                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="mench_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
+                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
 
                     echo '</div>';
                     echo '</td>';
@@ -235,7 +242,7 @@ if(!$basic_header_footer){
 
                         } elseif(in_array($x__type, $this->config->item('n___6287'))){
 
-                            //Mench APP
+                            //APP
                             $href = 'href="/-'.$x__type.( $x__type==4269 ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ).'"';
 
                         } else {

@@ -3,7 +3,7 @@
 $member_e = superpower_unlocked();
 if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
-    $e___11035 = $this->config->item('e___11035'); //MENCH NAVIGATION
+    $e___11035 = $this->config->item('e___11035'); //NAVIGATION
     $e___14393 = $this->config->item('e___14393'); //SUGGEST
     $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
     $e___6198 = $this->config->item('e___6198'); //SOURCE ICON
@@ -215,7 +215,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Source Icon -->
                     <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6198]['m__icon'].'</span>'.$e___13571[6198]['m__title'] ?>
 
-                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<img src=&quot;https://mench.com/img/mench.png&quot; />' );update_demo_icon();" title="<?= $e___6198[4260]['m__title'].': '.$e___6198[4260]['m__message'] ?>"><?= $e___6198[4260]['m__icon'] ?></a>
+                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<img src=&quot;/img/logos/<?= get_domain_setting(0) ?>.svg&quot; />' );update_demo_icon();" title="<?= $e___6198[4260]['m__title'].': '.$e___6198[4260]['m__message'] ?>"><?= $e___6198[4260]['m__icon'] ?></a>
 
                         <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();" title="<?= $e___6198[13577]['m__title'].': '.$e___6198[13577]['m__message'] ?>"><?= $e___6198[13577]['m__icon'] ?></a>
 

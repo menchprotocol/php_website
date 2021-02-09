@@ -16,7 +16,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
 
     echo '<div class="center-info">';
-    echo '<div class="text-center"><img src="/img/mench.png" class="mench-spin mench-large" /></div>';
+    echo '<div class="text-center"><img src="/img/logos/'.get_domain_setting(0).'.svg" class="fa-spin-slow platform-large" /></div>';
     echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
     echo '</div>';
 
@@ -28,7 +28,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
             'x__message' => 'Failed to find URL',
             'x__type' => 4246, //Platform Bug Reports
             'x__source' => ( $member_e ? $member_e['e__id'] : 0 ),
-            'x__up' => 7146,
+            'x__up' => 14904,
             'x__down' => $_GET['e__id'],
         ));
 

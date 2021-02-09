@@ -505,7 +505,7 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= view_i_featured(0, $my_x_ids);
 
                 //Info Boxes:
-                $ui .= view_info_box(14340); //Read
+                $ui .= view_info_box();
 
             }
 

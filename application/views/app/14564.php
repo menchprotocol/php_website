@@ -9,9 +9,9 @@ header("Pragma: no-cache");
 require 'vendor/autoload.php';
 $auth0 = new Auth0\SDK\Auth0([
     'domain' => 'mench.auth0.com',
-    'client_id' => 'ExW9bFiMnJX21vogqcbKCLn08djYWnsi',
-    'client_secret' => $this->config->item('cred_auth0_client_secret'),
-    'redirect_uri' => 'https://mench.com/-14564',
+    'client_id' => get_domain_setting(14881),
+    'client_secret' => get_domain_setting(14882),
+    'redirect_uri' => 'https://'.get_domain('m__message').'/-14564',
     'scope' => 'openid profile email',
 ]);
 
@@ -47,7 +47,7 @@ if($userInfo){
     $member_emails = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
-        'x__up' => 3288, //Mench Email
+        'x__up' => 3288, //Email
         'x__message' => $userInfo['email'],
     ), array('x__down'));
 

@@ -1,7 +1,7 @@
 <?php
 
 $is = $this->I_model->fetch(array(
-    'i__id' => getenv('DOMAIN_IDEA'),
+    'i__id' => get_domain_setting(14002),
 ));
 
 //IDEA TITLE
@@ -18,7 +18,7 @@ foreach($this->X_model->fetch(array(
 }
 
 //Show Stats:
-//echo view_mench_coins();
+//echo view_coins();
 
 
 //FEATURED IDEAS
@@ -26,6 +26,6 @@ echo view_i_featured();
 
 
 //Info Boxes:
-echo view_info_box(14340);
+echo view_info_box();
 
 ?>

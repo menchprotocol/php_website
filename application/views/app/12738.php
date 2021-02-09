@@ -14,8 +14,8 @@ if(isset($_GET['update_u_icons'])){
     }
 
     $updated = 0;
-    foreach($this->X_model->fetch($base_filters, array('x__down'), 0) as $mench_u){
-        $updated += $this->E_model->update($mench_u['e__id'], array(
+    foreach($this->X_model->fetch($base_filters, array('x__down'), 0) as $x){
+        $updated += $this->E_model->update($x['e__id'], array(
             'e__icon' => random_avatar(),
         ));
     }

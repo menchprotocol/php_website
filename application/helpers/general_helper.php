@@ -192,11 +192,11 @@ function e_x__type($string = null){
     return 0;
 }
 
-function current_mench(){
+function current_coin(){
 
     /*
      *
-     * Detects which of the Mench
+     * Detects which of the coins
      * coins is focused on based on
      * the URL which reflects the
      * logic in routes.php
@@ -206,14 +206,14 @@ function current_mench(){
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
     $first_letter = substr($first_segment, 0, 1);
-    $e___2738 = $CI->config->item('e___2738'); //MENCH
+    $e___14874 = $CI->config->item('e___14874'); //COINS
 
     if($first_letter=='@' || $first_letter=='-' || $first_segment=='e' || $first_segment=='app'){
 
         return array(
             'c__id' => 12274,
             'c__class' => 'source',
-            'c__m' => $e___2738[12274],
+            'c__m' => $e___14874[12274],
         );
 
     } elseif($first_letter=='~' || $first_segment=='i'){
@@ -221,7 +221,7 @@ function current_mench(){
         return array(
             'c__id' => 12273,
             'c__class' => 'idea',
-            'c__m' => $e___2738[12273],
+            'c__m' => $e___14874[12273],
         );
 
     } else {
@@ -229,7 +229,7 @@ function current_mench(){
         return array(
             'c__id' => 6255,
             'c__class' => 'read',
-            'c__m' => $e___2738[6255],
+            'c__m' => $e___14874[6255],
         );
 
     }
@@ -324,7 +324,7 @@ function x_detect_type($string)
 
     } elseif (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//' && !$has_space) {
 
-        //Relative Mench URL
+        //Relative URL
         return array(
             'status' => 1,
             'x__type' => 14728,
@@ -474,8 +474,8 @@ function e_count_6194($e__id, $specific_id = 0){
     $CI =& get_instance();
     $e___6194 = $CI->config->item('e___6194');
     $query_index = array(
-        4364 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__source=',
-        4593 => 'SELECT count(x__id) as totals FROM mench__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__type=',
+        4364 => 'SELECT count(x__id) as totals FROM table__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__source=',
+        4593 => 'SELECT count(x__id) as totals FROM table__x WHERE x__status IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__type=',
     );
 
     foreach($query_index as $e_app_id => $query){
@@ -812,8 +812,8 @@ function session_delete(){
 }
 
 function cookie_delete(){
-    unset($_COOKIE['mench_login']);
-    setcookie('mench_login', null, -1, '/');
+    unset($_COOKIE['login_cookie']);
+    setcookie('login_cookie', null, -1, '/');
 }
 
 function cookie_check() {
@@ -822,7 +822,7 @@ function cookie_check() {
     $first_segment = $CI->uri->segment(1);
     if(
         !superpower_unlocked()
-        && isset($_COOKIE['mench_login'])
+        && isset($_COOKIE['login_cookie'])
         && !(substr($first_segment, 0, 1)=='-' && in_array(intval(substr($first_segment, 1)), $CI->config->item('n___14582')))
     ) {
         header("Location: " . '/-4269?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
@@ -840,7 +840,7 @@ function email_template($template_id, $member, $member_email){
     $html_message .= '<div>'.nl2br($e___7569[$template_id]['m__message']).'</div>';
     $html_message .= '<br /><br />';
     $html_message .= '<div>'.view_shuffle_message(12691).'</div>';
-    $html_message .= '<div>MENCH</div>';
+    $html_message .= '<div>'.get_domain('m__title').'</div>';
 
     //Send email:
     $email_result = $CI->X_model->email_sent(array($member_email), $e___7569[$template_id]['m__title'], $html_message);
@@ -910,12 +910,6 @@ function extract_icon_color($e__icon, $return_coin = false){
 
 function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null){
 
-    /*
-     *
-     * Counts Unique MENCH
-     *
-     * */
-
     $CI =& get_instance();
 
     //We need to count this:
@@ -965,7 +959,7 @@ function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null
 
 
 function var_index(){
-    //Returns a simplified index of all Mench variables @6212
+    //Returns a simplified index of all variables @6212
     $CI =& get_instance();
     $var_index = array();
     foreach($CI->config->item('e___6212') as $e__id => $m){
@@ -1070,7 +1064,7 @@ function fetch_cookie_order($cookie_name){
     $CI->input->set_cookie(array(
         'name'   => $cookie_name,
         'value'  => $new_order_value."", //Cast to string
-        'domain' => '.mench.com',
+        'domain' => '.'.get_domain('m__message'),
         'expire' => '2592000', //1 Week
         'secure' => FALSE,
     ));
@@ -1197,7 +1191,7 @@ function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__source' => $x__source,
-            'x__message' => 'upload_to_cdn() Failed to upload file to Mench CDN',
+            'x__message' => 'upload_to_cdn() Failed to upload file to CDN',
             'x__metadata' => array(
                 'file_url' => $file_url,
                 'x__metadata' => $x__metadata,
@@ -1206,7 +1200,7 @@ function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local
         ));
         return array(
             'status' => 0,
-            'message' => 'Failed to upload file to Mench CDN',
+            'message' => 'Failed to upload file to CDN',
         );
     }
 
@@ -1436,6 +1430,43 @@ function e__title_validate($string, $x__type = 0){
 }
 
 
+function get_domain_setting($setting_id = 0){
+
+    $CI =& get_instance();
+    $no_domain = 14923; //No Domain ID
+    $source_id = $no_domain; //Assume no domain unless found below...
+    if(strlen($_SERVER['HTTP_HOST'])){
+        foreach($this->config->item('e___14870') as $x__type => $m) {
+            if (strpos($_SERVER['HTTP_HOST'], $m['m__message']) !== false){
+                $source_id = $x__type;
+                break;
+            }
+        }
+    }
+
+    if(!$setting_id){
+        return $source_id;
+    } elseif($source_id==$no_domain) {
+        //We have a setting for No Domain
+        return false;
+    } else {
+        //No Domain detected
+        $e___domain = $CI->config->item('e___'.$source_id); //DOMAINS
+        return $e___domain[$setting_id]['m__message'];
+    }
+}
+
+function get_domain($var_field){
+    $CI =& get_instance();
+    $domain_source = get_domain_setting(0);
+    $e___14870 = $CI->config->item('e___14870'); //DOMAINS
+    if(isset($e___14870[$domain_source])){
+        return $e___14870[$domain_source][$var_field];
+    } else {
+        //No Domain detected
+        return $e___14870[14923][$var_field];
+    }
+}
 
 function source_of_e($e__id, $member_e = array()){
 
@@ -1956,7 +1987,7 @@ function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
      *
      * */
 
-    if (!in_array($s__type, $CI->config->item('n___2738')) || $s__id < 1 || count($new_fields) < 1) {
+    if (!in_array($s__type, $CI->config->item('n___14874')) || $s__id < 1 || count($new_fields) < 1) {
         return false;
     }
 

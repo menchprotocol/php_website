@@ -568,7 +568,7 @@ class I extends CI_Controller {
         move_uploaded_file($_FILES[$_POST['upload_type']]['tmp_name'], $temp_local);
 
 
-        //Attempt to store in Mench Cloud on Amazon S3:
+        //Attempt to store in Cloud on Amazon S3:
         if (isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type']) > 0) {
             $mime = $_FILES[$_POST['upload_type']]['type'];
         } else {
