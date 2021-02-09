@@ -1436,7 +1436,7 @@ function get_domain_setting($setting_id = 0){
     $no_domain = 14923; //No Domain ID
     $source_id = $no_domain; //Assume no domain unless found below...
     if(strlen($_SERVER['HTTP_HOST'])){
-        foreach($this->config->item('e___14870') as $x__type => $m) {
+        foreach($CI->config->item('e___14870') as $x__type => $m) {
             if (strpos($_SERVER['HTTP_HOST'], $m['m__message']) !== false){
                 $source_id = $x__type;
                 break;
