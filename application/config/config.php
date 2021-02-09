@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  |
  */
 
-$config['base_url']                 = 'https://'.get_domain('m__message');
+$config['base_url']                 = 'https://'.$_SERVER['HTTP_HOST'];
 
 
 /*
