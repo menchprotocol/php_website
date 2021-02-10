@@ -50,6 +50,11 @@ class X_model extends CI_Model
             $add_fields['x__message'] = null;
         }
 
+        //Set some defaults:
+        if (!isset($add_fields['x__domain'])) {
+            $add_fields['x__domain'] = get_domain_setting(0);
+        }
+
 
         if (!isset($add_fields['x__time']) || is_null($add_fields['x__time'])) {
             //Time with milliseconds:
