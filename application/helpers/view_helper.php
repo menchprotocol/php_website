@@ -1322,7 +1322,7 @@ function view_e_settings($list_id, $show_accordion){
 
             //Switch if part of domain settings:
             if(in_array($acc_e__id, $CI->config->item('n___14925'))){
-                $domain_specific_id = intval(get_domain_setting(14002));
+                $domain_specific_id = intval(get_domain_setting($acc_e__id));
                 if($domain_specific_id){
                     //Replace with domain specific:
                     $acc_e__id = $domain_specific_id;
