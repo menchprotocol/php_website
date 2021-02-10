@@ -1198,6 +1198,7 @@ function view_e_settings($list_id, $show_accordion){
     if(!$member_e || !$CI->config->item('e___'.$list_id)){
         return $ui;
     }
+
     if($show_accordion){
         $ui .= '<div class="accordion" id="MyAccountAccordion'.$list_id.'">';
     }
@@ -1212,6 +1213,17 @@ function view_e_settings($list_id, $show_accordion){
         $is_multi_selectable = in_array(6122, $acc_detail['m__profile']);
         $is_single_selectable = in_array(6204, $acc_detail['m__profile']);
         $tab_ui = null;
+
+        //Switch if part of domain settings:
+        if(in_array($acc_e__id, $CI->config->item('n___14925'))){
+            $domain_specific_id = intval(get_domain_setting($acc_e__id));
+            if($domain_specific_id){
+                //Replace with domain specific:
+                $acc_e__id = $domain_specific_id;
+            } else {
+                continue;
+            }
+        }
 
         //Append description if any:
         if(strlen($acc_detail['m__message']) > 0){
@@ -1319,15 +1331,6 @@ function view_e_settings($list_id, $show_accordion){
                 <span class="saving-account save_password"></span>';
 
         } elseif ($is_multi_selectable || $is_single_selectable) {
-
-            //Switch if part of domain settings:
-            if(in_array($acc_e__id, $CI->config->item('n___14925'))){
-                $domain_specific_id = intval(get_domain_setting($acc_e__id));
-                if($domain_specific_id){
-                    //Replace with domain specific:
-                    $acc_e__id = $domain_specific_id;
-                }
-            }
 
             $tab_ui .= view_radio_e($acc_e__id, $member_e['e__id'], ($is_multi_selectable ? 1 : 0));
 
