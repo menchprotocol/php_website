@@ -23,6 +23,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body">
                     <?php
                     foreach($this->config->item('e___6225') as $e__id => $m) {
+                        $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
+
                         echo '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
                         echo view_e_settings($e__id, true);
                     }
@@ -54,7 +56,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <?php
 
                     //Current URL:
-                    echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
+                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14927]['m__icon'].'</span>'.$e___14393[14927]['m__title'].'</div>';
                     echo '<div class="current_url padded hideIfEmpty inline-block"></div>';
 
 
@@ -106,7 +108,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <?php
                     //URL
                     $current_link = current_link();
-                    echo '<div class="headline"><span class="icon-block">'.$e___14393[10876]['m__icon'].'</span>'.$e___14393[10876]['m__title'].'</div>';
+                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14927]['m__icon'].'</span>'.$e___14393[14927]['m__title'].'</div>';
                     echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(\''.$current_link.'\');">'.$current_link.'&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
 
                     //Add This

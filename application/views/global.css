@@ -1907,6 +1907,7 @@ i, .btn .show-max {
     border-bottom: 1px dotted #999999;
 }
 .subtle-line{
+    display: block;
     line-height: 110%;
     padding: 5px 0;
 }

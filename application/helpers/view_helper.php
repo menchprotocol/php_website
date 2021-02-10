@@ -1743,47 +1743,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if(!$is_any_lock){
 
 
-        //TOOLBAR
-        if($idea_editing && superpower_active(12673, true)){
-
-            //Idea Toolbar
-            $ui .= '<div style="text-align: center;">';
-
-            $ui .= view_coins_i(12274,  $i).'&nbsp;';
-            $ui .= view_coins_i(6255,  $i).'&nbsp;';
-
-            if(isset($i['x__id'])){
-
-                $x__metadata = unserialize($i['x__metadata']);
-
-                //IDEA LINK BAR
-                $ui .= '<span class="' . superpower_active(12700) . '">';
-
-                //LINK TYPE
-                $ui .= view_input_dropdown(4486, $i['x__type'], null, $idea_editing, false, $i['i__id'], $i['x__id']);
-
-                //LINK MARKS
-                $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
-                $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+2 );
-                $ui .='</span>';
-
-
-                //LINK CONDITIONAL RANGE
-                $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
-                //MIN
-                $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+3);
-                //MAX
-                $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+4);
-                $ui .= '</span>';
-                $ui .= '</span>';
-
-            }
-
-            $ui .= '</div>';
-
-        }
-
-
         //IDEA TYPE
         $ui .= '<div class="cover-text css__title">';
 
@@ -1855,6 +1814,48 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         }
 
         $ui .= '</div>';
+
+
+        //TOOLBAR
+        if($idea_editing && superpower_active(12673, true)){
+
+            //Idea Toolbar
+            $ui .= '<div style="text-align: center;">';
+
+            $ui .= view_coins_i(12274,  $i).'&nbsp;';
+            $ui .= view_coins_i(6255,  $i).'&nbsp;';
+
+            if(isset($i['x__id'])){
+
+                $x__metadata = unserialize($i['x__metadata']);
+
+                //IDEA LINK BAR
+                $ui .= '<span class="' . superpower_active(12700) . '">';
+
+                //LINK TYPE
+                $ui .= view_input_dropdown(4486, $i['x__type'], null, $idea_editing, false, $i['i__id'], $i['x__id']);
+
+                //LINK MARKS
+                $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
+                $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+2 );
+                $ui .='</span>';
+
+
+                //LINK CONDITIONAL RANGE
+                $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
+                //MIN
+                $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+3);
+                //MAX
+                $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+4);
+                $ui .= '</span>';
+                $ui .= '</span>';
+
+            }
+
+            $ui .= '</div>';
+
+        }
+
 
 
     } else {
