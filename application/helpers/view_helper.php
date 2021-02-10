@@ -857,7 +857,7 @@ function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_m
 
     $ui = '<div class="list-group list-radio-select radio-'.$parent_e__id.'">';
 
-    if(!count($CI->config->item('n___'.$parent_e__id))){
+    if(!is_array($CI->config->item('n___'.$parent_e__id)) || !count($CI->config->item('n___'.$parent_e__id))){
         return false;
     }
 
