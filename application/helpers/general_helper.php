@@ -366,7 +366,7 @@ function x_detect_type($string)
 }
 
 function current_link(){
-    return 'https://' .( isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '' ) . ( isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '' );
+    return 'https://' .( isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '' ) . ( isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '' );
 }
 
 function words_to_seconds($text){
@@ -1064,7 +1064,7 @@ function fetch_cookie_order($cookie_name){
     $CI->input->set_cookie(array(
         'name'   => $cookie_name,
         'value'  => $new_order_value."", //Cast to string
-        'domain' => '.'.$_SERVER['HTTP_HOST'],
+        'domain' => '.'.$_SERVER['SERVER_NAME'],
         'expire' => '2592000', //1 Week
         'secure' => FALSE,
     ));
@@ -1435,9 +1435,9 @@ function get_domain_setting($setting_id = 0){
     $CI =& get_instance();
     $no_domain = 14923; //No Domain ID
     $source_id = $no_domain; //Assume no domain unless found below...
-    if(strlen($_SERVER['HTTP_HOST'])){
+    if(strlen($_SERVER['SERVER_NAME'])){
         foreach($CI->config->item('e___14870') as $x__type => $m) {
-            if ($_SERVER['HTTP_HOST'] == $m['m__message']){
+            if ($_SERVER['SERVER_NAME'] == $m['m__message']){
                 $source_id = $x__type;
                 break;
             }
