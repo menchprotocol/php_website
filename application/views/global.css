@@ -1600,7 +1600,7 @@ i, .btn .show-max {
     margin-bottom: 5px;
 }
 .platform-large i{
-    font-size: 4em;
+    font-size: 8em !important;
 }
 
 
