@@ -1531,17 +1531,19 @@ function view_info_box(){
             $ui .= '</div>';
         }
         $ui .= '</div>';
-    }
 
-
-    //Show option to expand:
-    if($counter > $max_limit){
-        $ui .= '<div class="row extra_info_box">';
+        //Show option to expand:
+        if($counter > $max_limit){
+            $ui .= '<div class="row extra_info_box">';
             $ui .= '<div class="col-12">';
-                $ui .= '<div class="info_box_message"><a href="javascript:void(0);" onclick="$(\'.extra_info_box\').toggleClass(\'hidden\');">See More...</a></div>';
+            $ui .= '<div class="info_box_message"><a href="javascript:void(0);" onclick="$(\'.extra_info_box\').toggleClass(\'hidden\');">See More...</a></div>';
             $ui .= '</div>';
-        $ui .= '</div>';
+            $ui .= '</div>';
+        }
     }
+
+
+
 
 
     //SOCIAL FOOTER
