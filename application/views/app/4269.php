@@ -110,7 +110,7 @@ if(superpower_unlocked()) {
 
     <div class="center-info">
 
-        <div class="text-center platform-large">'.get_domain('m__icon').'</div>
+        <div class="text-center platform-large"><?= get_domain('m__icon') ?></div>
 
         <div class="login-content" style="margin-top:41px;">
 
