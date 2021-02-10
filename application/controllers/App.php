@@ -16,8 +16,15 @@ class App extends CI_Controller
 
     function index(){
         //App directory is a modal, redirect for now:
-        $this->load(view_memory(6404,6287));
+        $home_app = intval(get_domain_setting(14879));
+        if($home_app){
+            $this->load($home_app);
+        } else {
+            //Redirect to key idea:
+            return redirect_message('/'.get_domain_setting(14002));
+        }
     }
+
 
     function load($app_e__id = 14563 /* Error if none provided */){
 
@@ -399,8 +406,22 @@ class App extends CI_Controller
             die('Error creating a new account: '.$member_result['message']);
         }
 
-        header('Location: /-14517' . ($sign_i__id > 0 ? '?i__id='.$sign_i__id : ( isset($_GET['url']) ? '?url='.$_GET['url'] : '' ) ));
+        header('Location: '.new_member_redirect($sign_i__id));
 
+    }
+
+    function new_member_redirect($sign_i__id){
+        //Is there a redirect app?
+        $new_member_app = intval(get_domain_setting(14880));
+        if($new_member_app) {
+            return '/-' . $new_member_app . ($sign_i__id > 0 ? '?i__id='.$sign_i__id : ( isset($_GET['url']) ? '?url='.$_GET['url'] : '' ) );
+        } elseif($sign_i__id) {
+            return '/' . $sign_i__id;
+        } elseif(isset($_GET['url'])) {
+            return $_GET['url'];
+        } else {
+            return '/';
+        }
     }
 
 }

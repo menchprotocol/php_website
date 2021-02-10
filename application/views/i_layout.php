@@ -21,8 +21,7 @@ $superpower_14005 = superpower_active(14005, true);
 <?php
 
 $e_focus_found = false; //Used to determine the first tab to be opened
-$is_north_star = $i_focus['i__id']==get_domain_setting(14002);
-$show_previous = $e_of_i && $is_active && !$is_north_star;
+$show_previous = $e_of_i && $is_active;
 $is_in_my_ideas = count($this->X_model->fetch(array(
     'x__up' => $member_e['e__id'],
     'x__right' => $i_focus['i__id'],
@@ -59,10 +58,6 @@ if(!$e_of_i){
 }
 
 
-
-if($is_north_star) {
-    echo '<div class="headline"><span class="icon-block">'.$e___11035[14002]['m__icon'].'</span>'.$e___11035[14002]['m__title'].'</div>';
-}
 
 
 if($show_previous){
@@ -171,12 +166,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     if($x__type==13562) {
 
-        if (!$is_north_star) {
-            $href = 'href="/' . $i_focus['i__id'] . '"';
-        } else {
-            //Cannot preview North Star:
-            continue;
-        }
+        $href = 'href="/' . $i_focus['i__id'] . '"';
 
     } elseif(in_array($x__type, $this->config->item('n___7551'))){
 

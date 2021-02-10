@@ -1320,6 +1320,15 @@ function view_e_settings($list_id, $show_accordion){
 
         } elseif ($is_multi_selectable || $is_single_selectable) {
 
+            //Switch if part of domain settings:
+            if(in_array($acc_e__id, $CI->config->item('n___14925'))){
+                $domain_specific_id = intval(get_domain_setting(14002));
+                if($domain_specific_id){
+                    //Replace with domain specific:
+                    $acc_e__id = $domain_specific_id;
+                }
+            }
+
             $tab_ui .= view_radio_e($acc_e__id, $member_e['e__id'], ($is_multi_selectable ? 1 : 0));
 
         }
@@ -1418,24 +1427,28 @@ function view__load__e($e){
 }
 
 
-function view_i_featured($e__id_limit = 0, $i_exclude = array()){
+function view_i_featured($i_exclude = array()){
+
+
+    $topic_id = intval(get_domain_setting(14877));
+    if(!$topic_id){
+        //No topic for this domain:
+        return false;
+    }
 
     $CI =& get_instance();
     $visible_ui = '';
     $hidden_ui = '';
-    $limit = ( $e__id_limit ? 0 : view_memory(6404,12138) );
+    $limit = view_memory(6404,14877);
     $max_visible = view_memory(6404,14435);
     $member_e = superpower_unlocked();
     $loaded_topics = 0;
-    $my_topics = ( $member_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___12138')) : array() );
+    $my_topics = ( $member_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___'.$topic_id)) : array() );
 
 
     //Go through Featured Categories:
-    foreach($CI->config->item('e___12138') as $e__id => $m) {
+    foreach($CI->config->item('e___'.$topic_id) as $e__id => $m) {
 
-        if($e__id_limit && $e__id_limit!=$e__id){
-            continue;
-        }
         $query_filters = array(
             'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1455,20 +1468,18 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
 
             //We need to check if we have more than this?
             $see_all_link = '<span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'];
-            if(!$e__id_limit){
-                //We might have more, let's check:
-                $count_query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
-                if($count_query[0]['totals'] > $limit){
-                    //Yes, we have more, show this:
-                    $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><span class="icon-block">'.$m['m__icon'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
-                }
+            //We might have more, let's check:
+            $count_query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
+            if($count_query[0]['totals'] > $limit){
+                //Yes, we have more, show this:
+                $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><span class="icon-block">'.$m['m__icon'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
             }
 
             $ui = '<div class="'.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';
             $ui .= '<div class="headline top-margin">'.$see_all_link.'</div>';
             $ui .= '<div class="row margin-top-down-half">';
             foreach($query as $i){
-                $ui .= view_i(12138, 0, null, $i);
+                $ui .= view_i(14877, 0, null, $i);
                 if(!in_array($i['i__id'], $i_exclude)){
                     array_push($i_exclude, $i['i__id']);
                 }
@@ -1497,28 +1508,31 @@ function view_i_featured($e__id_limit = 0, $i_exclude = array()){
 
 function view_info_box(){
 
-    $e__id = 14340;
     $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $max_limit = view_memory(6404,14339);
-    $ui = '';
-    //$ui .= '<div class="info_box_icon">' . $e___11035[$e__id]['m__icon'] . '</div>';
-    $ui .= '<h2 class="info_box_header css__title">' . $e___11035[$e__id]['m__title'] . '</h2>';
-    //if(strlen($e___11035[$e__id]['m__message'])){ $ui .= '<div class="info_box_message" style="margin-bottom: 89px;">'.$e___11035[$e__id]['m__message'].'</div>'; }
-    $ui .= '<div class="row">';
-    $counter = 0;
-    foreach($CI->config->item('e___'.$e__id) as $m) {
-        $counter++;
-        $title_parts = explode(' ', $m['m__title'], 2);
-        $ui .= '<div class="col-12 col-sm-6 col-md-4 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
+    $e__id = intval(get_domain_setting(14903));
+    if($e__id){
+        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+        $max_limit = view_memory(6404,14903);
+        $ui = '';
+        //$ui .= '<div class="info_box_icon">' . $e___11035[$e__id]['m__icon'] . '</div>';
+        $ui .= '<h2 class="info_box_header css__title">' . $e___11035[$e__id]['m__title'] . '</h2>';
+        //if(strlen($e___11035[$e__id]['m__message'])){ $ui .= '<div class="info_box_message" style="margin-bottom: 89px;">'.$e___11035[$e__id]['m__message'].'</div>'; }
+        $ui .= '<div class="row">';
+        $counter = 0;
+        foreach($CI->config->item('e___'.$e__id) as $m) {
+            $counter++;
+            $title_parts = explode(' ', $m['m__title'], 2);
+            $ui .= '<div class="col-12 col-sm-6 col-md-4 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
             $ui .= '<div class="info_box">';
-                $ui .= '<div class="info_box_cover">'.$m['m__icon'].'</div>';
-                $ui .= '<div class="info_box_title css__title">'.$title_parts[0].'<br />'.$title_parts[1].'</div>';
-                $ui .= '<div class="info_box_message">'.$m['m__message'].'</div>';
+            $ui .= '<div class="info_box_cover">'.$m['m__icon'].'</div>';
+            $ui .= '<div class="info_box_title css__title">'.$title_parts[0].'<br />'.$title_parts[1].'</div>';
+            $ui .= '<div class="info_box_message">'.$m['m__message'].'</div>';
             $ui .= '</div>';
+            $ui .= '</div>';
+        }
         $ui .= '</div>';
     }
-    $ui .= '</div>';
+
 
     //Show option to expand:
     if($counter > $max_limit){
@@ -1531,11 +1545,15 @@ function view_info_box(){
 
 
     //SOCIAL FOOTER
-    $ui .= '<ul class="social-footer">';
-    foreach($CI->config->item('e___7146') as $e__id => $m) {
-        $ui .= '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__icon'].'</a></li>';
+    $social_id = intval(get_domain_setting(14904));
+    if($social_id){
+        $ui .= '<ul class="social-footer">';
+        foreach($CI->config->item('e___'.$social_id) as $e__id => $m) {
+            $ui .= '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__icon'].'</a></li>';
+        }
+        $ui .= '</ul>';
     }
-    $ui .= '</ul>';
+
 
 
     return $ui;

@@ -537,10 +537,6 @@ class X extends CI_Controller
          *
          * */
 
-        if($i__id==get_domain_setting(14002)){
-            return redirect_message(home_url());
-        }
-
         //Fetch data:
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,

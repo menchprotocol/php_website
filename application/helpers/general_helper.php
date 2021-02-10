@@ -1429,6 +1429,9 @@ function e__title_validate($string, $x__type = 0){
     }
 }
 
+function new_member_app(){
+
+}
 
 function get_domain_setting($setting_id = 0){
 
