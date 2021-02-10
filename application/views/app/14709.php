@@ -151,7 +151,7 @@ if(!$member_e){
             }
 
 
-            var new_url = "https://<?= get_domain('m__message') ?>/<?= $is[0]['i__id'] ?>";
+            var new_url = "https://<?= $_SERVER['HTTP_HOST'] ?>/<?= $is[0]['i__id'] ?>";
 
             $(document).ready(function () {
                 addthis.update('share', 'url', new_url);

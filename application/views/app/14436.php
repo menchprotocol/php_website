@@ -11,7 +11,7 @@ $auth0 = new Auth0([
     'domain' => 'mench.auth0.com',
     'client_id' => get_domain_setting(14881),
     'client_secret' => get_domain_setting(14882),
-    'redirect_uri' => 'https://'.get_domain('m__message').'/-14564',
+    'redirect_uri' => 'https://'.$_SERVER['HTTP_HOST'].'/-14564',
     'scope' => 'openid profile email',
 ]);
 

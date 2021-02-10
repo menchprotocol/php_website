@@ -1064,7 +1064,7 @@ function fetch_cookie_order($cookie_name){
     $CI->input->set_cookie(array(
         'name'   => $cookie_name,
         'value'  => $new_order_value."", //Cast to string
-        'domain' => '.'.get_domain('m__message'),
+        'domain' => '.'.$_SERVER['HTTP_HOST'],
         'expire' => '2592000', //1 Week
         'secure' => FALSE,
     ));
