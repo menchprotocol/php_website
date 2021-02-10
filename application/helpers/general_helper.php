@@ -1446,7 +1446,7 @@ function get_domain_setting($setting_id = 0){
 
     if(!$setting_id){
         return $source_id;
-    } elseif($source_id==$no_domain) {
+    } elseif($setting_id && $source_id==$no_domain) {
         //We have a setting for No Domain
         return false;
     } else {
@@ -1460,12 +1460,7 @@ function get_domain($var_field){
     $CI =& get_instance();
     $domain_source = get_domain_setting(0);
     $e___14870 = $CI->config->item('e___14870'); //DOMAINS
-    if(isset($e___14870[$domain_source])){
-        return $e___14870[$domain_source][$var_field];
-    } else {
-        //No Domain detected
-        return $e___14870[14923][$var_field];
-    }
+    return $e___14870[$domain_source][$var_field];
 }
 
 function source_of_e($e__id, $member_e = array()){
