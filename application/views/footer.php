@@ -23,7 +23,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body">
                     <?php
                     foreach($this->config->item('e___6225') as $e__id => $m) {
-                        $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
+                        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
 
                         echo '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
                         echo view_e_settings($e__id, true);
