@@ -1208,8 +1208,13 @@ function view_e_settings($list_id, $show_accordion){
     foreach($CI->config->item('e___'.$list_id) as $acc_e__id => $acc_detail) {
 
         //Skip if missing superpower:
-        $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__profile']);
+        $hosted_domains = array_intersect($CI->config->item('n___14870'), $acc_detail['m__profile']);
+        if(count($hosted_domains) && !in_array(get_domain_setting(0), $hosted_domains)){
+            continue;
+        }
+
         //Print account fields that are either Single Selectable or Multi Selectable:
+        $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__profile']);
         $is_multi_selectable = in_array(6122, $acc_detail['m__profile']);
         $is_single_selectable = in_array(6204, $acc_detail['m__profile']);
         $tab_ui = null;
