@@ -1510,10 +1510,12 @@ function view_info_box(){
 
     $CI =& get_instance();
     $e__id = intval(get_domain_setting(14903));
+    $ui = '';
+
     if($e__id){
+
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
         $max_limit = view_memory(6404,14903);
-        $ui = '';
         //$ui .= '<div class="info_box_icon">' . $e___11035[$e__id]['m__icon'] . '</div>';
         $ui .= '<h2 class="info_box_header css__title">' . $e___11035[$e__id]['m__title'] . '</h2>';
         //if(strlen($e___11035[$e__id]['m__message'])){ $ui .= '<div class="info_box_message" style="margin-bottom: 89px;">'.$e___11035[$e__id]['m__message'].'</div>'; }
