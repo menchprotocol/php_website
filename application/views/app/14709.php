@@ -187,7 +187,7 @@ if(!$member_e){
 
 
         echo '<div class="saving_feedback hidden top-margin">';
-        echo '<div class="text-center"><img src="/img/logos/'.get_domain_setting(0).'.svg" class="fa-spin-slow platform-large" /></div>';
+        echo '<div class="text-center platform-large">'.get_domain('m__icon').'</div>';
         echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
         echo '</div>';
 
