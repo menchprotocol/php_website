@@ -1918,7 +1918,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $source_of_e = $control_enabled && $member_e && ($source_of_e || $superpower_13422);
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $is_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
-    $show_text_editor = $source_of_e && $is_e_link;
+    $show_text_editor = $source_of_e && $control_enabled;
 
     $e_url = '/@'.$e['e__id'];
     $focus_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
@@ -1966,7 +1966,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'">';
 
 
-    if($source_of_e && ($is_e_link || $is_note)){
+    if($source_of_e && $control_enabled){
 
         //RIGHT EDITING:
         $ui .= '<div class="note-editor edit-off">';
