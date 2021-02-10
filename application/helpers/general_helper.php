@@ -1435,12 +1435,10 @@ function get_domain_setting($setting_id = 0){
     $CI =& get_instance();
     $no_domain = 14923; //No Domain ID
     $source_id = $no_domain; //Assume no domain unless found below...
-    if(strlen($_SERVER['SERVER_NAME'])){
-        foreach($CI->config->item('e___14870') as $x__type => $m) {
-            if ($_SERVER['SERVER_NAME'] == $m['m__message']){
-                $source_id = $x__type;
-                break;
-            }
+    foreach($CI->config->item('e___14870') as $x__type => $m) {
+        if ($_SERVER['SERVER_NAME'] == $m['m__message']){
+            $source_id = $x__type;
+            break;
         }
     }
 
@@ -1448,7 +1446,7 @@ function get_domain_setting($setting_id = 0){
         return $source_id;
     } elseif($setting_id && $source_id==$no_domain) {
         //We have a setting for No Domain
-        return false;
+        return 0;
     } else {
         //No Domain detected
         $e___domain = $CI->config->item('e___'.$source_id); //DOMAINS
