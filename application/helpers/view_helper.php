@@ -1966,12 +1966,11 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'">';
 
 
-    if($source_of_e && $control_enabled){
+    if($source_of_e && $control_enabled && $is_e_link){
 
         //RIGHT EDITING:
         $ui .= '<div class="note-editor edit-off">';
         $ui .= '<span class="show-on-hover">';
-
 
         if(($source_of_e && $is_sortable) || $superpower_13422){
 
@@ -1980,18 +1979,14 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
         }
 
-
-        if($is_e_link){
-
-            //Sort
-            if($is_sortable && $superpower_10939){
-                $ui .= '<span title="'.$e___11035[13911]['m__title'].'" class="'.superpower_active(13422).' sort_e hidden">'.$e___11035[13911]['m__icon'].'</span>';
-            }
-
-            //Edit Raw Source
-            $ui .= '<span class="btn-third '.superpower_active(13422).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</a></span>';
-
+        //Sort
+        if($is_sortable && $superpower_10939){
+            $ui .= '<span title="'.$e___11035[13911]['m__title'].'" class="'.superpower_active(13422).' sort_e hidden">'.$e___11035[13911]['m__icon'].'</span>';
         }
+
+        //Edit Raw Source
+        $ui .= '<span class="btn-third '.superpower_active(13422).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</a></span>';
+
 
         //HARD DELETE SOURCE
         $ui .= '<span class="btn-fourth '.superpower_active(14683).'"><a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
