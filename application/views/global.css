@@ -780,6 +780,10 @@ label:focus,
     line-height: 100%;
 }
 
+textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    line-height: 110%;
+}
+
 
 
 
@@ -1912,7 +1916,7 @@ i, .btn .show-max {
     border-bottom: 1px dotted #999999;
 }
 .subtle-line{
-    display: block;
+    display: inline-block;
     line-height: 110%;
     padding: 5px 0;
 }
@@ -2255,7 +2259,7 @@ i, .btn .show-max {
 }
 
 .cover-btn{
-    font-size: 5em; /* 3em */
+    font-size: 6em;
     text-align: center;
     margin-top: -100%;
 }
