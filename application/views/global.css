@@ -1620,7 +1620,7 @@ i, .btn .show-max {
     font-size: 1.4em; /* For Emojis ony */
 }
 .platform-logo i{
-    font-size: 0.72em; /* Adjust for Font Awesome */
+    font-size: 0.72em !important; /* Adjust for Font Awesome */
 }
 
 .platform-logo img{
