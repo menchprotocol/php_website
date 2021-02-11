@@ -34,11 +34,6 @@ $(document).ready(function () {
     $('.en-type-counter-11030').text($('#list-in-11030 .en-item').not(".hidden").length);
 
 
-    //Lookout for textinput updates
-    x_set_start_text();
-
-
-
 
 
     $('#new_11030').focus(function() {

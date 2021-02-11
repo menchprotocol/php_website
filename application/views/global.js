@@ -311,6 +311,11 @@ function copyTextToClipboard(text) {
 var algolia_index = false;
 $(document).ready(function () {
 
+
+    //Lookout for textinput updates
+    x_set_start_text();
+
+
     //For the S shortcut to load search:
     $("#top_search").focus(function() {
         if(!search_on){

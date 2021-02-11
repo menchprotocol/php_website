@@ -1599,7 +1599,7 @@ i, .btn .show-max {
     width:128px;
     margin-bottom: 5px;
 }
-.platform-large i{
+.platform-large{
     font-size: 8em !important;
 }
 
@@ -2135,9 +2135,11 @@ i, .btn .show-max {
     font-size: 1em;
     width: 100%;
     margin: 0;
-    background-color: transparent;
     color: #FFFFFF !important;
     line-height: 120%;
+}
+.inner-content .form-control {
+    background-color: transparent !important;
 }
 
 

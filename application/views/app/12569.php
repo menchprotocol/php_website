@@ -15,7 +15,7 @@ $stats = array(
 
 if(!$obj || $obj==12273){
 
-    //Update the weights for ideas and sources
+    //Update the weights for active ideas
     foreach($this->I_model->fetch(array(
         'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     )) as $in) {
@@ -35,7 +35,7 @@ if(!$obj || $obj==12273){
 
 
 if(!$obj || $obj==12274){
-    //Update the weights for ideas and sources
+    //Update the weights for active sources:
     foreach($this->E_model->fetch(array(
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     )) as $en) {

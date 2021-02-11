@@ -874,7 +874,7 @@ function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_m
     if(!count($already_selected) && in_array($parent_e__id, $CI->config->item('n___6204'))){
         //FIND DEFAULT:
         foreach($CI->config->item('e___'.$parent_e__id) as $e__id2 => $m2){
-            if(in_array($e__id2, $CI->config->item('n___13889') /* ACCOUNT DEFAULTS */ )){
+            if(in_array($e__id2, $CI->config->item('n___'.get_domain_setting(14926)) /* ACCOUNT DEFAULTS */ )){
                 $already_selected = array($e__id2);
                 break;
             }

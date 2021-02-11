@@ -105,7 +105,7 @@ class E_model extends CI_Model
         foreach($this->config->item('e___13890') as $e__id => $m){
             if(!$session_data['session_custom_ui_'.$e__id]){
                 foreach($this->config->item('e___'.$e__id) as $e__id2 => $m2){
-                    if(in_array($e__id2, $this->config->item('n___13889') /* ACCOUNT DEFAULTS */ )){
+                    if(in_array($e__id2, $this->config->item('n___'.get_domain_setting(14926)) /* ACCOUNT DEFAULTS */ )){
                         $session_data['session_custom_ui_'.$e__id] = $e__id2;
                         break;
                     }
@@ -155,8 +155,11 @@ class E_model extends CI_Model
         update_algolia(12274,  $added_e['new_e']['e__id']);
 
 
-        //Send Welcome Email:
-        email_template(14044, $added_e['new_e'], $email);
+        //Send Welcome Email if any:
+        $welcome_email = intval(get_domain_setting(14929));
+        if($welcome_email){
+            email_template($welcome_email, $added_e['new_e'], $email);
+        }
 
 
         //Assign session & log login transaction:

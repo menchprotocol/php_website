@@ -835,21 +835,21 @@ function email_template($template_id, $member, $member_email){
     $CI =& get_instance();
 
     ##Email Body
-    $e___7569 = $CI->config->item('e___7569'); //RECEIVED ON EMAIL
+    $e___14929 = $CI->config->item('e___14929'); //RECEIVED ON EMAIL
     $html_message = '<div>Hi '.one_two_explode('', ' ', $member['e__title']).' 👋</div><br /><br />';
-    $html_message .= '<div>'.nl2br($e___7569[$template_id]['m__message']).'</div>';
+    $html_message .= '<div>'.nl2br($e___14929[$template_id]['m__message']).'</div>';
     $html_message .= '<br /><br />';
     $html_message .= '<div>'.view_shuffle_message(12691).'</div>';
     $html_message .= '<div>'.get_domain('m__title').'</div>';
 
     //Send email:
-    $email_result = $CI->X_model->email_sent(array($member_email), $e___7569[$template_id]['m__title'], $html_message);
+    $email_result = $CI->X_model->email_sent(array($member_email), $e___14929[$template_id]['m__title'], $html_message);
 
     //Log Email Sending:
     $CI->X_model->create(array(
         'x__source' => $member['e__id'],
         'x__type' => $template_id,
-        'x__message' => $e___7569[$template_id]['m__message'],
+        'x__message' => $e___14929[$template_id]['m__message'],
         'x__metadata' => array(
             'email' => $member_email,
             'result' => $email_result,
@@ -1077,7 +1077,7 @@ function member_setting($e__id){
     $session_var = $CI->session->userdata('session_custom_ui_'.$e__id);
     if(!$session_var){
         //Find the default value:
-        $account_defaults = array_intersect($CI->config->item('n___13889'), $CI->config->item('n___'.$e__id));
+        $account_defaults = array_intersect($CI->config->item('n___'.get_domain_setting(14926)), $CI->config->item('n___'.$e__id));
         if(count($account_defaults)){
             //We should find it by now:
             $session_var = end($account_defaults);

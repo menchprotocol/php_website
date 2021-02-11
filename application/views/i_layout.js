@@ -15,9 +15,6 @@ $(document).ready(function () {
     //Load search for mass update function:
     load_editor();
 
-    //Lookout for textinput updates
-    x_set_start_text();
-
     $('.editor_preview.editor_preview_4231').click(function (e) {
 
         if(!click_has_class($(e.target), '.ignore-click')){
