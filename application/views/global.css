@@ -1601,7 +1601,7 @@ i, .btn .show-max {
 }
 .platform-large{
     font-size: 8em !important;
-    padding: 21px 0;
+    padding:0 0 13px 0;
 }
 
 
