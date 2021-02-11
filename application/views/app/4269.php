@@ -133,10 +133,7 @@ if(superpower_unlocked()) {
                 }
 
 
-
-                echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
                 echo '<p style="margin-top:13px; text-align: center; padding-bottom: 34px;">'.$intro_message.'</p>';
-
 
 
                 //SOCIAL BUTTON:
