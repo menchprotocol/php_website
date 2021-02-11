@@ -1112,12 +1112,12 @@ textarea.note-textarea{
 }
 .text-logo{
     font-size: 1.4em;
-    display: block;
+    display: inline-block;
     float: left;
     padding-top: 5px;
     padding-left: 0;
     font-weight: bold;
-    width: calc(100% - 43px);
+    max-width: calc(100% - 43px);
     height: 34px;
     overflow: hidden;
     line-height: 144%;
@@ -1617,7 +1617,10 @@ i, .btn .show-max {
     border-radius:0 !important;
     display: block;
     float: left;
-    font-size: 1.4em;
+    font-size: 1.4em; /* For Emojis ony */
+}
+.platform-logo i{
+    font-size: 0.72em; /* Adjust for Font Awesome */
 }
 
 .platform-logo img{
