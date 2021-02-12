@@ -569,4 +569,5 @@ $profiles = $this->X_model->fetch(array(
     }
 
     echo '</div>';
+
     ?>
