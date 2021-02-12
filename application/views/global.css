@@ -835,6 +835,14 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     padding:0;
 }
 
+.tab-group-11018, .tab-group-11089 {
+    border: 3px solid #000;
+    border-top: 0;
+    margin-top: -13px;
+    border-bottom-left-radius: 13px;
+    border-bottom-right-radius: 13px;
+}
+
 
 
 .msg-nav {
