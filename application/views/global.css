@@ -841,6 +841,8 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     margin-top: -13px;
     border-bottom-left-radius: 13px;
     border-bottom-right-radius: 13px;
+    min-height: 34px;
+    padding-top: 5px;
 }
 
 
@@ -1744,7 +1746,7 @@ i, .btn .show-max {
 }
 .action-left-btn{
     margin: 0;
-    padding: 10px;
+    padding: 5px 10px 10px;
 }
 .texttype__lg::placeholder, .alert a {
     font-weight: bold;
