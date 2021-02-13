@@ -60,16 +60,6 @@ if(!$e_of_i){
 
 
 
-if($show_previous){
-    echo '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
-                    <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14014]['m__icon'].'</span></a>
-                        <input type="text"
-                               class="form-control form-control-thick add-input algolia_search dotransparent"
-                               maxlength="' . view_memory(6404,4736) . '"
-                               placeholder="'.$e___11035[14014]['m__title'].'">
-                    </div></div>';
-}
 echo '<div id="list-in-11019" class="row top-margin grey-list hideIfEmpty">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -80,7 +70,16 @@ foreach($this->X_model->fetch(array(
     echo view_i(11019, 0, null, $previous_i, $e_of_i);
 }
 echo '</div>';
-
+if($show_previous){
+    echo '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14014]['m__icon'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick add-input algolia_search dotransparent"
+                               maxlength="' . view_memory(6404,4736) . '"
+                               placeholder="'.$e___11035[14014]['m__title'].'">
+                    </div></div>';
+}
 
 
 

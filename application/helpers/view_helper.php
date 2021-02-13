@@ -1769,6 +1769,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
 
                 if(count($is_previous)){
+
                     $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">';
                     $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea icon-block-xs" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
                     $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
@@ -1777,8 +1778,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                     }
                     $ui .= '</div>';
                     $ui .= '</div>';
+
                 } else {
-                    $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">0</div>';
+                    //$ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">0</div>';
                 }
 
             }
