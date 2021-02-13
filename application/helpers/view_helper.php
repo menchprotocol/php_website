@@ -2136,7 +2136,7 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
 
     } else {
 
-        $focus_element = '<input type="text" name="'.$name.'" placeholder="__" value="'.$current_value.'" '.$attributes.' />';
+        $focus_element = '<input type="text" name="'.$name.'" data-lpignore="true" placeholder="__" value="'.$current_value.'" '.$attributes.' />';
         $character_counter = ''; //None
         $icon = $e__icon;
 
