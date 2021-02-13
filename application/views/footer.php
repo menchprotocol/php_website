@@ -183,15 +183,15 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <!-- Source Title -->
-                    <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6197]['m__icon'].'</span>'.$e___13571[6197]['m__title'] ?> <span class="source_title_counter hidden">[<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= view_memory(6404,6197) ?></span>]</span></div>
-                    <textarea class="form-control text-edit border css__title doupper" id="e__title" name="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
+                    <div class="headline no-left-padding"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[6197]['m__title'] ?> <span class="source_title_counter hidden">[<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= view_memory(6404,6197) ?></span>]</span></div>
+                    <textarea class="form-control text-edit border css__title doupper border-dotted add_notes_form" id="e__title" name="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
 
 
 
 
 
                     <!-- Source Icon -->
-                    <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[14937]['m__icon'].'</span>'.$e___13571[14937]['m__title'] ?>
+                    <div class="headline no-left-padding"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[14937]['m__title'] ?>
 
                         <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<img src=&quot;/img/logos/<?= get_domain_setting(0) ?>.svg&quot; />' );update_demo_icon();" title="<?= $e___14937[14936]['m__title'].': '.$e___14937[14936]['m__message'] ?>"><?= $e___14937[14936]['m__icon'] ?></a>
 
@@ -203,24 +203,18 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
                         <div class="input-group border">
                             <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
-                            <input type="text" id="e__icon" name="e__icon" value="" data-lpignore="true" placeholder="" class="form-control" style="margin-bottom: 0;">
+                            <input type="text" id="e__icon" name="e__icon" value="" data-lpignore="true" placeholder="Icon or Icon Code" class="form-control border-dotted">
                         </div>
                     </div>
 
 
 
-                    <?php
 
-                    //Source URL:
-                    echo '<div class="headline"><span class="icon-block">'.$e___13571[13433]['m__icon'].'</span>'.$e___13571[13433]['m__title'].'</div>';
-                    echo '<div class="padded"><a id="source_url" href="#" target="_blank"></a></div>';
-
-                    ?>
 
                     <div class="<?= superpower_active(13422) ?>">
 
                         <!-- Source Status -->
-                        <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6177]['m__icon'].'</span>'.$e___13571[6177]['m__title'] ?></div>
+                        <div class="headline no-left-padding"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[6177]['m__title'] ?></div>
                         <select class="form-control border" id="e__type" name="e__type">
                             <?php
                             foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
@@ -236,14 +230,19 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </div>
 
                     </div>
+                    <?php
 
+                    //Source URL:
+                    echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___13571[13433]['m__title'].'</div>';
+                    echo '<div class="padded"><a id="source_url" href="#" target="_blank"></a></div>';
 
+                    ?>
 
 
 
                     <div class="e_has_link">
 
-                        <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6186]['m__icon'].'</span>'.$e___13571[6186]['m__title'] ?></div>
+                        <div class="headline no-left-padding"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[6186]['m__title'] ?></div>
                         <select class="form-control border" id="x__status" name="x__status">
                             <?php
                             foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type => $m){
@@ -259,7 +258,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                         <!-- Transaction Message -->
-                        <div class="headline no-left-padding" style="margin-top: 20px;"><?= '<span class="icon-block">'.$e___13571[4372]['m__icon'].'</span>'.$e___13571[4372]['m__title'] ?></div>
+                        <div class="headline no-left-padding" style="margin-top: 20px;"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[4372]['m__title'] ?></div>
                         <form class="drag-box" method="post" enctype="multipart/form-data">
 
                             <textarea class="form-control text-edit border" id="x__message" name="x__message" data-lpignore="true" placeholder="<?= $e___13571[4372]['m__message'] ?>"></textarea>
@@ -305,16 +304,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <input type="hidden" class="modal__i__id" value="0" />
 
-                    <!-- Source Icon -->
-                    <div class="headline no-left-padding">
+                    <!-- Idea Cover -->
 
-                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#i__cover').val( '<img src=&quot;/img/logos/<?= get_domain_setting(0) ?>.svg&quot; />' );update_demo_icon();" title="<?= $e___14937[14936]['m__title'].': '.$e___14937[14936]['m__message'] ?>"><?= $e___14937[14936]['m__icon'] ?></a>
-
-                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#i__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();" title="<?= $e___14937[13577]['m__title'].': '.$e___14937[13577]['m__message'] ?>"><?= $e___14937[13577]['m__icon'] ?></a>
-
-                        <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" title="<?= $e___14937[13578]['m__title'].': '.$e___14937[13578]['m__message'] ?>"><?= $e___14937[13578]['m__icon'] ?></a>
-
-                    </div>
 
                     <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
                         <div class="input-group border">

@@ -1707,6 +1707,11 @@ i, .btn .show-max {
     margin-bottom: 5px;
     width: 100%;
 }
+.border-dotted {
+    margin-bottom: 0;
+    border-bottom: 1px dotted #999 !important;
+    border-radius: 0 !important;
+}
 
 
 .i-left {
