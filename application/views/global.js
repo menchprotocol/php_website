@@ -554,11 +554,20 @@ function x_type_preview_load(){
 
 function e__title_word_count() {
     var len = $('#e__title').val().length;
+
     if (len > js_e___6404[6197]['m__message']) {
         $('#charEnNum').addClass('overload').text(len);
     } else {
         $('#charEnNum').removeClass('overload').text(len);
     }
+
+    //Only show counter if getting close to limit:
+    if(len > ( js_e___6404[6197]['m__message'] * js_e___6404[12088]['m__message'] )){
+        $('.source_title_counter').removeClass('hidden');
+    } else {
+        $('.source_title_counter').addClass('hidden');
+    }
+
 }
 
 
