@@ -104,8 +104,8 @@ echo '<table class="table table-sm table-striped maxout" style="text-align: left
 
 echo '<tr style="font-weight: bold;">';
 echo '<td width="50%" style="text-align: left;"><div class="inline-block">'.view_input_dropdown(4737, $i_focus['i__type'], 'idea', $e_of_i, true, $i_focus['i__id'], 0).'</div></td>';
-echo '<td width="25%" style="text-align: right;">'.$e___11035[4356]['m__icon'].'<div class="inline-block left-half-margin '.superpower_active(12700).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div></td>';
-echo '<td width="25%" style="text-align: right; padding-right: 5px;"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m__icon'].' '.$e___11035[12589]['m__title'].'</a></td>';
+echo '<td width="25%" style="text-align: left;">'.$e___11035[4356]['m__icon'].'<div class="inline-block left-half-margin '.superpower_active(12700).'">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div></td>';
+echo '<td width="25%" style="text-align: left; padding-right: 5px;"><a href="javascript:void(0);" class="css__title" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');">'.$e___11035[14819]['m__icon'].' '.$e___11035[14819]['m__title'].'</a></td>';
 echo '</tr>';
 
 echo '</table>';
