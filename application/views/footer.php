@@ -178,33 +178,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="save_results margin-top-down-half hideIfEmpty"></div>
 
 
-                    <?php
-
-                    //Source URL:
-                    echo '<div class="headline"><span class="icon-block">'.$e___13571[13433]['m__icon'].'</span>'.$e___13571[13433]['m__title'].'</div>';
-                    echo '<div class="padded"><a id="source_url" href="#" target="_blank"></a></div>';
-
-                    ?>
-
-                    <div class="<?= superpower_active(13422) ?>">
-
-                        <!-- Source Status -->
-                        <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6177]['m__icon'].'</span>'.$e___13571[6177]['m__title'] ?></div>
-                        <select class="form-control border" id="e__type" name="e__type">
-                            <?php
-                            foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
-                                echo '<option value="' . $x__type . '" title="' . $m['m__message'] . '">' . $m['m__title'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                        <div class="notify_e_delete hidden">
-
-                            <input type="hidden" id="e_x_count" value="0" />
-                            <div class="msg alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Saving will delete source & <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
-
-                        </div>
-
-                    </div>
 
 
 
@@ -233,6 +206,37 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <input type="text" id="e__icon" name="e__icon" value="" data-lpignore="true" placeholder="" class="form-control" style="margin-bottom: 0;">
                         </div>
                     </div>
+
+
+
+                    <?php
+
+                    //Source URL:
+                    echo '<div class="headline"><span class="icon-block">'.$e___13571[13433]['m__icon'].'</span>'.$e___13571[13433]['m__title'].'</div>';
+                    echo '<div class="padded"><a id="source_url" href="#" target="_blank"></a></div>';
+
+                    ?>
+
+                    <div class="<?= superpower_active(13422) ?>">
+
+                        <!-- Source Status -->
+                        <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6177]['m__icon'].'</span>'.$e___13571[6177]['m__title'] ?></div>
+                        <select class="form-control border" id="e__type" name="e__type">
+                            <?php
+                            foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
+                                echo '<option value="' . $x__type . '" title="' . $m['m__message'] . '">' . $m['m__title'] . '</option>';
+                            }
+                            ?>
+                        </select>
+                        <div class="notify_e_delete hidden">
+
+                            <input type="hidden" id="e_x_count" value="0" />
+                            <div class="msg alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Saving will delete source & <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
+
+                        </div>
+
+                    </div>
+
 
 
 
