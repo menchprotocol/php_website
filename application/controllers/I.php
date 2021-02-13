@@ -336,7 +336,7 @@ class I extends CI_Controller {
             'status' => 1,
             'deletion_redirect' => $deletion_redirect,
             'delete_element' => $delete_element,
-            'new_i__icon' => view_i_icon($is[0]),
+            'new_i__cover' => view_i_icon($is[0]),
         ));
 
     }

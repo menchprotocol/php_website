@@ -917,7 +917,7 @@ function view_i_marks($i_x){
 
 function view_i_icon($i){
 
-    return '<span class="this_i__icon_'.$i['i__id'].'">'.view_cache(4737, $i['i__type'], true, 'right', $i['i__id']).'</span>';
+    return '<span class="this_i__cover_'.$i['i__id'].'">'.view_cache(4737, $i['i__type'], true, 'right', $i['i__id']).'</span>';
 
 }
 

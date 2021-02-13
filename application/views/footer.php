@@ -6,7 +6,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     $e___11035 = $this->config->item('e___11035'); //NAVIGATION
     $e___14393 = $this->config->item('e___14393'); //SUGGEST
     $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
-    $e___6198 = $this->config->item('e___6198'); //SOURCE ICON
+    $e___14937 = $this->config->item('e___14937'); //SOURCE ICON
 
     ?>
 
@@ -218,13 +218,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <!-- Source Icon -->
-                    <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[6198]['m__icon'].'</span>'.$e___13571[6198]['m__title'] ?>
+                    <div class="headline no-left-padding"><?= '<span class="icon-block">'.$e___13571[14937]['m__icon'].'</span>'.$e___13571[14937]['m__title'] ?>
 
-                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<img src=&quot;/img/logos/<?= get_domain_setting(0) ?>.svg&quot; />' );update_demo_icon();" title="<?= $e___6198[4260]['m__title'].': '.$e___6198[4260]['m__message'] ?>"><?= $e___6198[4260]['m__icon'] ?></a>
+                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<img src=&quot;/img/logos/<?= get_domain_setting(0) ?>.svg&quot; />' );update_demo_icon();" title="<?= $e___14937[14936]['m__title'].': '.$e___14937[14936]['m__message'] ?>"><?= $e___14937[14936]['m__icon'] ?></a>
 
-                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();" title="<?= $e___6198[13577]['m__title'].': '.$e___6198[13577]['m__message'] ?>"><?= $e___6198[13577]['m__icon'] ?></a>
+                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();" title="<?= $e___14937[13577]['m__title'].': '.$e___14937[13577]['m__message'] ?>"><?= $e___14937[13577]['m__icon'] ?></a>
 
-                        <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" title="<?= $e___6198[13578]['m__title'].': '.$e___6198[13578]['m__message'] ?>"><?= $e___6198[13578]['m__icon'] ?></a>
+                        <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" title="<?= $e___14937[13578]['m__title'].': '.$e___14937[13578]['m__message'] ?>"><?= $e___14937[13578]['m__icon'] ?></a>
 
                     </div>
                     <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
@@ -304,18 +304,18 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Source Icon -->
                     <div class="headline no-left-padding">
 
-                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#i__icon').val( '<img src=&quot;/img/logos/<?= get_domain_setting(0) ?>.svg&quot; />' );update_demo_icon();" title="<?= $e___6198[4260]['m__title'].': '.$e___6198[4260]['m__message'] ?>"><?= $e___6198[4260]['m__icon'] ?></a>
+                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#i__cover').val( '<img src=&quot;/img/logos/<?= get_domain_setting(0) ?>.svg&quot; />' );update_demo_icon();" title="<?= $e___14937[14936]['m__title'].': '.$e___14937[14936]['m__message'] ?>"><?= $e___14937[14936]['m__icon'] ?></a>
 
-                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#i__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();" title="<?= $e___6198[13577]['m__title'].': '.$e___6198[13577]['m__message'] ?>"><?= $e___6198[13577]['m__icon'] ?></a>
+                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#i__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();" title="<?= $e___14937[13577]['m__title'].': '.$e___14937[13577]['m__message'] ?>"><?= $e___14937[13577]['m__icon'] ?></a>
 
-                        <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" title="<?= $e___6198[13578]['m__title'].': '.$e___6198[13578]['m__message'] ?>"><?= $e___6198[13578]['m__icon'] ?></a>
+                        <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" title="<?= $e___14937[13578]['m__title'].': '.$e___14937[13578]['m__message'] ?>"><?= $e___14937[13578]['m__icon'] ?></a>
 
                     </div>
 
                     <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
                         <div class="input-group border">
                             <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
-                            <input type="text" id="i__icon" name="i__icon" value="" data-lpignore="true" placeholder="" class="form-control" style="margin-bottom: 0;">
+                            <input type="text" id="i__cover" name="i__cover" value="" data-lpignore="true" placeholder="" class="form-control" style="margin-bottom: 0;">
                         </div>
                     </div>
 
