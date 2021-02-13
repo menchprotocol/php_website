@@ -1133,7 +1133,7 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
             $ui .= '<div class="add_notes_form">';
             $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea regular_editor dotransparent algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" style="margin-top: 10px;" placeholder="Write'.( $handles_url ? ' or Paste URL' : '' ).'"></textarea>';
+            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea regular_editor dotransparent algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" style="margin-top: 10px;" placeholder="Write..."></textarea>';
 
             //Response result:
             $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty read msg alert alert-danger" style="margin:8px 0;"></div>';

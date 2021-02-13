@@ -43,6 +43,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
+
     <!-- SUGGEST Modal -->
     <div class="modal fade indifferent" id="modal14393" tabindex="-1" role="dialog" aria-labelledby="modal14393Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -277,6 +278,51 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="e_modify_save()" class="btn btn-default">SAVE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- IDEA COVER Modal -->
+    <div class="modal fade" id="modal14819" tabindex="-1" role="dialog" aria-labelledby="modal14819Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[14819]['m__icon']) ?>" id="modal14819Label"><?= $e___11035[14819]['m__icon'].' '.$e___11035[14819]['m__title'] ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" class="modal__i__id" value="0" />
+
+                    <!-- Source Icon -->
+                    <div class="headline no-left-padding">
+
+                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#i__icon').val( '<img src=&quot;/img/logos/<?= get_domain_setting(0) ?>.svg&quot; />' );update_demo_icon();" title="<?= $e___6198[4260]['m__title'].': '.$e___6198[4260]['m__message'] ?>"><?= $e___6198[4260]['m__icon'] ?></a>
+
+                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#i__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();" title="<?= $e___6198[13577]['m__title'].': '.$e___6198[13577]['m__message'] ?>"><?= $e___6198[13577]['m__icon'] ?></a>
+
+                        <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" title="<?= $e___6198[13578]['m__title'].': '.$e___6198[13578]['m__message'] ?>"><?= $e___6198[13578]['m__icon'] ?></a>
+
+                    </div>
+
+                    <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
+                        <div class="input-group border">
+                            <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
+                            <input type="text" id="i__icon" name="i__icon" value="" data-lpignore="true" placeholder="" class="form-control" style="margin-bottom: 0;">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="alert('saved')" class="btn btn-default">SAVE</button>
                 </div>
             </div>
         </div>

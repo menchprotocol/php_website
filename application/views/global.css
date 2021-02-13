@@ -844,6 +844,9 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     min-height: 34px;
     padding-top: 5px;
 }
+.no-border{
+    border: 0 !important;
+}
 
 
 
