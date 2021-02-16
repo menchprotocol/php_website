@@ -219,7 +219,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 function view_i_title($i, $common_prefix = null, $is_cover = false){
 
     $CI =& get_instance();
-
+    $hide_title = false;
     /*
     $hide_title = $is_cover && count($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
