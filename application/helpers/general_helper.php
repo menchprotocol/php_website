@@ -830,6 +830,7 @@ function cookie_check() {
     }
 }
 
+
 function email_template($template_id, $member, $member_email){
 
     $CI =& get_instance();

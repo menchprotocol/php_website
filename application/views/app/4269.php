@@ -136,7 +136,16 @@ if(superpower_unlocked()) {
                 echo '<p style="margin-top:13px; text-align: center; padding-bottom: 34px;">'.$intro_message.'</p>';
 
 
-                //SOCIAL BUTTON:
+                //GUEST LOGIN:
+                if($sign_i__id){
+                    echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" class="btn btn-large btn-default">';
+                    echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__icon'];
+                    echo '</a></div>';
+                    echo '<div class="mid-text-line"><span>OR</span></div>';
+                }
+
+
+                //SOCIAL LOGIN:
                 echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
                 echo $e___11035[14436]['m__title'];
                 foreach($this->config->item('e___14436') as $e__id => $m) {

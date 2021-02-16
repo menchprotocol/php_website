@@ -179,33 +179,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
-
-
-
                     <!-- Source Title -->
                     <div class="headline no-left-padding"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[6197]['m__title'] ?> <span class="source_title_counter hidden">[<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= view_memory(6404,6197) ?></span>]</span></div>
                     <textarea class="form-control text-edit border css__title doupper border-dotted add_notes_form" id="e__title" name="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
-
-
-
-
-
-                    <!-- Source Icon -->
-                    <div class="headline no-left-padding"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[14937]['m__title'] ?>
-
-                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<img src=&quot;/img/logos/<?= get_domain_setting(0) ?>.svg&quot; />' );update_demo_icon();" title="<?= $e___14937[14936]['m__title'].': '.$e___14937[14936]['m__message'] ?>"><?= $e___14937[14936]['m__icon'] ?></a>
-
-                        <a href="javascript:void(0);" style="margin-left: 5px;" onclick="$('#e__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();" title="<?= $e___14937[13577]['m__title'].': '.$e___14937[13577]['m__message'] ?>"><?= $e___14937[13577]['m__icon'] ?></a>
-
-                        <a href="https://fontawesome.com/icons" style="margin-left: 5px;" target="_blank" title="<?= $e___14937[13578]['m__title'].': '.$e___14937[13578]['m__message'] ?>"><?= $e___14937[13578]['m__icon'] ?></a>
-
-                    </div>
-                    <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
-                        <div class="input-group border">
-                            <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
-                            <input type="text" id="e__icon" name="e__icon" value="" data-lpignore="true" placeholder="Icon or Icon Code" class="form-control border-dotted">
-                        </div>
-                    </div>
 
 
 
@@ -290,30 +266,117 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
-    <!-- IDEA COVER Modal -->
-    <div class="modal fade" id="modal14819" tabindex="-1" role="dialog" aria-labelledby="modal14819Label" aria-hidden="true">
+    <!-- SET COVER Modal -->
+    <div class="modal fade" id="modal14937" tabindex="-1" role="dialog" aria-labelledby="modal14937Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[14819]['m__icon']) ?>" id="modal14819Label"><?= $e___11035[14819]['m__icon'].' '.$e___11035[14819]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[14937]['m__icon']) ?>" id="modal14937Label"><?= $e___11035[14937]['m__icon'].' '.$e___11035[14937]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
 
-                    <input type="hidden" class="modal__i__id" value="0" />
+                    <!-- Title dunamically loads here -->
+                    <h2></h2>
 
-                    <!-- Idea Cover -->
+                    <div class="row">
+                        <div class="col-6">
+
+                            <!-- PREVIEW -->
+                            <div class="cover-wrapper"><div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div></div>
+
+                        </div>
+                        <div class="col-6">
+
+                            <!-- EDIT -->
+
+                            <?php
+                            $current_icon = trim($current_icon);
+                            $tab_group = 14937;
+                            $tab_content = '';
+                            $tab_nav = '<ul class="nav nav-tabs nav-sm">';
+
+                            foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
+
+                                $ui = '';
+                                if(strlen($m['m__message']) > 0){
+                                    $ui .= '<div style="padding-bottom: 13px;"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>'.$m['m__message'].'</div>';
+                                }
+
+                                if($x__type==14073) {
+
+                                    //GIF
+                                    //$default_active = $image_src && substr($image_src, -4)=='.gif';
+
+                                    $ui .= '<input type="text" class="form-control text-edit border css__title" id="gif_query" name="gif_query" placeholder="Search GIFs..." onkeyup="gif_search(\'\')" data-lpignore="true" />';
+                                    $ui .= '<div id="gif_results" class="margin-top-down hideIfEmpty"></div>';
+
+                                } elseif($x__type==14936){
+
+                                    //UPLOAD IMAGE
+                                    //$default_active = $image_src && substr($image_src, -4)=='.gif';
+                                    $ui .= 'UPLOAD HERE';
+
+                                } elseif($x__type==13577){
+
+                                    //FONT AWESOME ICON
+                                    //$default_active = substr($current_icon, 0, 3)=='<i ';
+                                    $ui .= 'FONT AWESOME';
+
+                                } elseif($x__type==14038){
+
+                                    //EMOJI
+                                    //$default_active = substr($current_icon, 0, 1)!='<' && strlen($current_icon)>0;
 
 
-                    <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
-                        <div class="input-group border">
-                            <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
-                            <input type="text" id="i__cover" name="i__cover" value="" data-lpignore="true" placeholder="" class="form-control" style="margin-bottom: 0;">
+                                } elseif($x__type==14939){
+
+                                    //REFERENCE
+                                    //$default_active = !strlen($current_icon);
+
+
+                                    //Find Current Reference:
+                                    $ui .= 'HAS X Reference : Set this reference action button';
+
+                                } else {
+
+                                    //Not supported via here:
+                                    continue;
+
+                                }
+
+                                $tab_nav .= '<li class="nav-item"><a href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__icon'].'</a></li>';
+
+
+                                $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
+                                $tab_content .= $ui;
+                                $tab_content .= '</div>';
+
+                            }
+
+                            $tab_nav .= '</ul>';
+
+                            return $tab_nav.$tab_content;
+
+                            //JS $('#cover__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
+
+                            ?>
+
+
+                            <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
+                                <div class="input-group border">
+                                    <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
+                                    <input type="text" id="cover__icon" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
+                                    <input type="hidden" id="cover__type" value="0" />
+                                    <input type="hidden" id="cover__id" value="0" />
+                                </div>
+                                
+                            </div>
+
                         </div>
                     </div>
-
 
                 </div>
                 <div class="modal-footer">

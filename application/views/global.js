@@ -324,7 +324,7 @@ $(document).ready(function () {
     });
 
     //Keep an eye for icon change:
-    $('#e__icon').keyup(function() {
+    $('#cover__icon').keyup(function() {
         update_demo_icon();
     });
 
@@ -573,7 +573,7 @@ function e__title_word_count() {
 
 function update_demo_icon(){
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#e__icon').val().length > 0 ? $('#e__icon').val() : js_e___14874[12274]['m__icon'] ));
+    $('.icon-demo').html(($('#cover__icon').val().length > 0 ? $('#cover__icon').val() : js_e___14874[12274]['m__icon'] ));
 }
 
 function e_modify_load(e__id, x__id) {
@@ -611,11 +611,11 @@ function e_modify_load(e__id, x__id) {
 
             $('#e__title').val(data.e__title);
             $('#e__type').val(data.e__type);
-            $('#e__icon').val(data.e__icon);
+
+            $('#cover__icon').val(data.e__icon); update_demo_icon();
 
             set_autosize($('#e__title'));
             e__title_word_count();
-            update_demo_icon();
 
             setTimeout(function () {
                 $('#e__title').focus();
@@ -669,7 +669,7 @@ function e_modify_save() {
         do_13527:do_13527,
         e__id: $('#modal13571 .modal_e__id').val(),
         e__title: $('#e__title').val().toUpperCase(),
-        e__icon: $('#e__icon').val(),
+        e__icon: $('#cover__icon').val(),
         e__type: $('#e__type').val(), //The new status (might not have changed too)
         //Transaction data:
         x__id: $('#modal13571 .modal_x__id').val(),
