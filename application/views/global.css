@@ -1960,8 +1960,6 @@ i, .btn .show-max {
     font-size: 1.1em;
     display: block;
     text-align: center;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
 }
 .cover-link {
     border:0;
@@ -1979,12 +1977,13 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    border-radius: 34px;
-    padding: 8px 10px;
+    border-top-left-radius: 21px;
+    border-top-right-radius: 21px;
+    padding: 8px 8px 3px;
 }
 .cover-link {
     padding-top: 100%;
-    border-radius: 34px;
+    border-radius: 21px;
     margin-bottom: 0px;
     margin-top: 0px;
 }
@@ -2024,12 +2023,12 @@ i, .btn .show-max {
 }
 
 .inside-btn.left-btn {
-    bottom: 13px;
-    left: 13px;
+    bottom: 10px;
+    left: 10px;
 }
 .inside-btn.right-btn {
-    bottom: 13px;
-    right: 13px;
+    bottom: 10px;
+    right: 10px;
 }
 
 .wrap-idea .inside-btn {
