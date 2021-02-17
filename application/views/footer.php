@@ -278,9 +278,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
                 <div class="modal-body">
 
-                    <!-- Title dunamically loads here -->
-                    <h2></h2>
-
                     <div class="row">
                         <div class="col-4">
 
@@ -310,7 +307,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 $ui = '';
                                 if(strlen($m['m__message']) > 0){
-                                    $ui .= '<div style="padding-bottom: 13px;"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>'.$m['m__message'].'</div>';
+                                    $ui .= '<div style="padding-bottom: 13px;">'.$m['m__message'].'</div>';
                                 }
 
                                 if($x__type==14073) {
@@ -355,7 +352,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 }
 
-                                $tab_nav .= '<li class="nav-item"><a href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__icon'].'</a></li>'; //( $default_active ? ' active ' : '' )
+                                $tab_nav .= '<li class="nav-item"><a href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;</a></li>'; //( $default_active ? ' active ' : '' )
 
 
                                 $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.' hidden">'; //( $default_active ? '' : ' hidden ' )

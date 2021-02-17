@@ -1979,7 +1979,7 @@ i, .btn .show-max {
     overflow: hidden;
 }
 
-/* Cover Circle Override:
+/* Cover Circle Override: */
 .cover-content .inner-content {
     border-radius: 8px;
 }
@@ -1989,7 +1989,7 @@ i, .btn .show-max {
     margin-bottom: 2px;
     margin-top: 34px;
 }
-*/
+
 
 .cover-content .inner-content .css__title {
     padding-top:3px;
