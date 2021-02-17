@@ -284,6 +284,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <!-- PREVIEW -->
                             <div class="cover-wrapper"><div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div></div>
 
+                            <div style="padding: 10px; text-align: center;"><button type="button" onclick="alert('saved')" class="btn btn-default">SAVE</button></div>
+
                         </div>
                         <div class="col-8">
 
@@ -371,10 +373,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         </div>
                     </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" onclick="alert('saved')" class="btn btn-default">SAVE</button>
                 </div>
             </div>
         </div>

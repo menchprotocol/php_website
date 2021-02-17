@@ -1953,6 +1953,10 @@ i, .btn .show-max {
     display: block;
 }
 
+.i_cover{
+    padding: 21px 0;
+}
+
 .cover-content .inner-content {
     margin: 0 5px;
     padding: 2px 3px 0;
