@@ -282,18 +282,17 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <h2></h2>
 
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-4">
 
                             <!-- PREVIEW -->
                             <div class="cover-wrapper"><div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div></div>
 
                         </div>
-                        <div class="col-6">
+                        <div class="col-8">
 
                             <!-- EDIT -->
 
                             <?php
-                            $current_icon = trim($current_icon);
                             $tab_group = 14937;
                             $tab_content = '';
                             $tab_nav = '<ul class="nav nav-tabs nav-sm">';
@@ -358,7 +357,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             $tab_nav .= '</ul>';
 
-                            return $tab_nav.$tab_content;
+                            echo $tab_nav.$tab_content;
 
                             //JS $('#cover__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
 
@@ -372,7 +371,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <input type="hidden" id="cover__type" value="0" />
                                     <input type="hidden" id="cover__id" value="0" />
                                 </div>
-                                
+
                             </div>
 
                         </div>
