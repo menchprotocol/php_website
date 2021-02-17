@@ -1987,7 +1987,7 @@ i, .btn .show-max {
     padding-top: 100%;
     border-radius: 50%;
     margin-bottom: 2px;
-    margin-top: 34px;
+    margin-top: 21px;
 }
 
 
@@ -2297,9 +2297,9 @@ i, .btn .show-max {
 }
 
 .cover-btn{
-    font-size: 6em;
+    font-size: 7em;
     text-align: center;
-    margin-top: -100%;
+    margin-top: -83%;
 }
 .cover-head{
     font-size: 0.8em;
