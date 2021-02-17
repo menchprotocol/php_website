@@ -291,6 +291,15 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-8">
 
                             <!-- EDIT -->
+                            <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
+                                <div class="input-group border">
+                                    <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
+                                    <input type="text" id="cover__icon" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
+                                    <input type="hidden" id="cover__type" value="0" />
+                                    <input type="hidden" id="cover__id" value="0" />
+                                </div>
+
+                            </div>
 
                             <?php
                             $tab_group = 14937;
@@ -349,7 +358,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 $tab_nav .= '<li class="nav-item"><a href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__icon'].'</a></li>'; //( $default_active ? ' active ' : '' )
 
 
-                                $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.'">'; //( $default_active ? '' : ' hidden ' )
+                                $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.' hidden">'; //( $default_active ? '' : ' hidden ' )
                                 $tab_content .= $ui;
                                 $tab_content .= '</div>';
 
@@ -362,17 +371,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             //JS $('#cover__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
 
                             ?>
-
-
-                            <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
-                                <div class="input-group border">
-                                    <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
-                                    <input type="text" id="cover__icon" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
-                                    <input type="hidden" id="cover__type" value="0" />
-                                    <input type="hidden" id="cover__id" value="0" />
-                                </div>
-
-                            </div>
 
                         </div>
                     </div>
