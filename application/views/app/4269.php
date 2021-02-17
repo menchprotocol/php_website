@@ -136,14 +136,6 @@ if(superpower_unlocked()) {
                 echo '<p style="margin-top:13px; text-align: center; padding-bottom: 34px;">'.$intro_message.'</p>';
 
 
-                //GUEST LOGIN:
-                if($sign_i__id){
-                    echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" class="btn btn-large btn-default">';
-                    echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__icon'];
-                    echo '</a></div>';
-                    echo '<div class="mid-text-line"><span>OR</span></div>';
-                }
-
 
                 //SOCIAL LOGIN:
                 echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
@@ -161,6 +153,17 @@ if(superpower_unlocked()) {
                 <span id="step2buttons" class="<?= isset($_GET['input_email']) ? '' : ' hidden ' ?>" >
                     <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
                 <div class="doclear">&nbsp;</div>
+
+
+                <?php
+                //GUEST LOGIN:
+                if($sign_i__id){
+                    echo '<div class="mid-text-line"><span>OR</span></div>';
+                    echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" class="btn btn-large btn-default">';
+                    echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__icon'];
+                    echo '</a></div>';
+                }
+                ?>
 
 
 
