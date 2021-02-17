@@ -158,10 +158,10 @@ if(superpower_unlocked()) {
 
                 //GUEST LOGIN:
                 if($sign_i__id){
+                    echo '<div class="mid-text-line"><span>OR</span></div>';
                     echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" class="btn btn-large btn-default">';
                     echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__icon'];
                     echo '</a></div>';
-                    echo '<div class="mid-text-line"><span>OR</span></div>';
                 }
                 ?>
 
