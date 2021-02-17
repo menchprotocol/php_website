@@ -1979,13 +1979,14 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    border-radius: 8px;
+    border-radius: 34px;
+    padding: 8px 10px;
 }
 .cover-link {
     padding-top: 100%;
-    border-radius: 50%;
-    margin-bottom: 2px;
-    margin-top: 21px;
+    border-radius: 34px;
+    margin-bottom: 0px;
+    margin-top: 0px;
 }
 
 
@@ -2024,11 +2025,11 @@ i, .btn .show-max {
 
 .inside-btn.left-btn {
     bottom: 13px;
-    left: 5px;
+    left: 13px;
 }
 .inside-btn.right-btn {
     bottom: 13px;
-    right: 5px;
+    right: 13px;
 }
 
 .wrap-idea .inside-btn {
