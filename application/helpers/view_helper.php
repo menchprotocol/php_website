@@ -1812,7 +1812,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     } else {
 
         if($show_duration) {
-            $ui .= '<div class="cover-text css__title">' . view_i_time($i_stats) . '</div>';
+            $view_i_time = view_i_time($i_stats);
+            $ui .= '<div class="cover-text css__title">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</div>';
         }
     }
 
