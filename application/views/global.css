@@ -2081,6 +2081,12 @@ i, .btn .show-max {
     font-size: 1.4em;
 }
 
+.cover-btn span i {
+    margin-top: -75px;
+    font-size: 0.95em !important;
+    display: block;
+}
+
 /* RESPONSIVE */
 @media (max-width:767px) {
 
