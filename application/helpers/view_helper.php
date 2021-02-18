@@ -1724,7 +1724,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                     $ui .= '</div>';
 
                 } else {
-                    //$ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">0</div>';
+                    $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">&nbsp;</div>';
                 }
 
             }
@@ -1754,7 +1754,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 $ui .= '</div>';
                 $ui .= '</div>';
             } else {
-                //$ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="right">0</div>';
+                $ui .= '<div class="icon-block-xs idea css__title" title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="right">&nbsp;</div>';
             }
 
         }
