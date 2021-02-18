@@ -2071,6 +2071,12 @@ i, .btn .show-max {
     display: block;
 }
 
+.cover-btn{
+    font-size: 7em;
+    text-align: center;
+    margin-top: -80%;
+}
+
 /* RESPONSIVE */
 @media (max-width:767px) {
 
@@ -2304,11 +2310,7 @@ i, .btn .show-max {
     border: 3px solid transparent;
 }
 
-.cover-btn{
-    font-size: 7em;
-    text-align: center;
-    margin-top: -80%;
-}
+
 .cover-head{
     font-size: 0.8em;
     text-align: center;
