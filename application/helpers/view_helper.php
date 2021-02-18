@@ -1631,7 +1631,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $user_session = superpower_unlocked();
     $read_mode = in_array($x__type, $CI->config->item('n___14378')); //READ MODE
     $idea_editing = in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
-    $load_completion = in_array($x__type, $CI->config->item('n___14501'));
+    $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__id > 0;
     $is_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];
 
     if(!$focus_e){
