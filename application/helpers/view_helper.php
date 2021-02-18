@@ -1684,41 +1684,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     $i_cover = i_cover($i['i__id']);
     $is_valid_url = filter_var($i_cover, FILTER_VALIDATE_URL);
-    $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
-
-
-    //ICON?
-    if(!$is_valid_url && $i_cover){
-        $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
-    }
-
-
-    //LEFT
-    if($is_sortable && $control_enabled){
-        //SORTABLE
-        $ui .= '<div class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div>';
-    } elseif(in_array($x__type, $CI->config->item('n___14452'))){
-        //Show Self Icon
-        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</div>';
-    } elseif($is_soft_lock){
-        //LOCKED
-        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</div>';
-    } elseif($completion_rate['completion_percentage']>=100){
-        //100% COMPLETE
-        //$ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div>';
-    }
-
-    //RIGHT
-    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-        //UNLINK
-        $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
-    }
-
-
-
-    $ui .= ( $is_any_lock ? '</div>' : '</a>' );
-    $ui .= '</div>';
 
 
 
@@ -1850,6 +1815,44 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         }
     }
 
+
+
+
+    $ui .= '<div class="cover-wrapper">';
+    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
+
+
+    //ICON?
+    if(!$is_valid_url && $i_cover){
+        $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
+    }
+
+
+    //LEFT
+    if($is_sortable && $control_enabled){
+        //SORTABLE
+        $ui .= '<div class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div>';
+    } elseif(in_array($x__type, $CI->config->item('n___14452'))){
+        //Show Self Icon
+        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</div>';
+    } elseif($is_soft_lock){
+        //LOCKED
+        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</div>';
+    } elseif($completion_rate['completion_percentage']>=100){
+        //100% COMPLETE
+        //$ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div>';
+    }
+
+    //RIGHT
+    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
+        //UNLINK
+        $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
+    }
+
+
+
+    $ui .= ( $is_any_lock ? '</div>' : '</a>' );
+    $ui .= '</div>';
 
 
     if($message_input || $i_title || $load_completion){
