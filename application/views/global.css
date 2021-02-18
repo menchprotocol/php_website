@@ -1954,7 +1954,7 @@ i, .btn .show-max {
 }
 
 .i_cover{
-    padding: 21px 0;
+    margin: 13px 0 !important;
 }
 
 .cover-content .inner-content {
@@ -2074,6 +2074,9 @@ i, .btn .show-max {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    .cover-btn{
+        font-size: 5.5em;
+    }
     .title-icon{
         margin-top: 5px;
     }
@@ -2177,6 +2180,9 @@ i, .btn .show-max {
     }
     h2{
         font-size: 1.5em;
+    }
+    .cover-btn{
+        font-size: 4.5em;
     }
 }
 
@@ -2301,7 +2307,7 @@ i, .btn .show-max {
 .cover-btn{
     font-size: 7em;
     text-align: center;
-    margin-top: -83%;
+    margin-top: -80%;
 }
 .cover-head{
     font-size: 0.8em;
