@@ -1715,17 +1715,21 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
     }
 
-    //PROGRESS?
-    if($load_completion){
-        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
-    }
+
 
     $ui .= ( $is_any_lock ? '</div>' : '</a>' );
     $ui .= '</div>';
 
 
-    if($message_input || $i_title){
+    if($message_input || $i_title || $load_completion){
+
         $ui .= '<div class="cover-content"><div class="inner-content">';
+
+        //PROGRESS?
+        if($load_completion){
+            $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
+        }
+
         if($i_title){
             if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
                 //Editable title:

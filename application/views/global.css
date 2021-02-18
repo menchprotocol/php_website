@@ -1981,13 +1981,12 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    border-top-left-radius: 21px;
-    border-top-right-radius: 21px;
-    padding: 8px 8px 3px;
+    padding: 5px 5px 3px;
+    border-radius: 10px;
 }
 .cover-link {
     padding-top: 100%;
-    border-radius: 21px;
+    border-radius: 50%;
     margin-bottom: 0px;
     margin-top: 0px;
 }
