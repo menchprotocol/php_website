@@ -772,7 +772,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     //Return Results:
     if($append_coin_icon){
         $e___14874 = $CI->config->item('e___14874'); //COINS
-        return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'">'.$e___14874[$x__type]['m__icon'].'&nbsp;'.view_number($count_query).'</span>' : null);
+        return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'"><span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>'.view_number($count_query).'</span>' : null);
     } else {
         return intval($count_query);
     }
@@ -1698,6 +1698,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         if($idea_editing) {
 
+            $ui .= view_coins_i(12274,  $i).'&nbsp;&nbsp;';
+            $ui .= '&nbsp;&nbsp;'.view_coins_i(6255,  $i);
+
             $e___4737 = $CI->config->item('e___4737'); // Idea Status
             $first_segment = $CI->uri->segment(1);
             $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
@@ -1766,9 +1769,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
             //Idea Toolbar
             //$ui .= '<div style="text-align: center;">';
-
-            //$ui .= view_coins_i(12274,  $i).'&nbsp;';
-            //$ui .= view_coins_i(6255,  $i).'&nbsp;';
 
             if(isset($i['x__id'])){
 
