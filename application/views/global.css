@@ -625,7 +625,7 @@ label:focus,
     width: 100%;
     background-color: #999999 !important;
 }
-.inner-content .progress-bg-list{
+.cover-content .progress-bg-list{
     margin-left:5px;
     width: calc(100% - 10px);
 }
@@ -1940,9 +1940,9 @@ i, .btn .show-max {
     text-align: center;
 }
 .cover-progress{
-    width: 100%;
-    bottom: 0;
-    left: 0;
+    width:calc(100% - 10px);
+    top: 0;
+    left: 5px;
     position: absolute;
 }
 .cover-content{
