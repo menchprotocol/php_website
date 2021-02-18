@@ -1684,6 +1684,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     $i_cover = i_cover($i['i__id']);
     $is_valid_url = filter_var($i_cover, FILTER_VALIDATE_URL);
+    $toolbar = $idea_editing && superpower_active(12673, true);
 
 
 
@@ -1692,7 +1693,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
         //IDEA TYPE
-        $ui .= '<div class="cover-text css__title">';
+        $ui .= '<div class="cover-text css__title" '.( $toolbar ? ' style="margin-top:-19px;" ' : '' ).'>';
 
 
         if($idea_editing) {
@@ -1767,7 +1768,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
         //TOOLBAR
-        if($idea_editing && superpower_active(12673, true)){
+        if($toolbar){
 
             //Idea Toolbar
             $ui .= '<div style="text-align: center;">';

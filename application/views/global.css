@@ -1942,7 +1942,7 @@ i, .btn .show-max {
     position: absolute;
 }
 .cover-content{
-    top: 19px;
+    top: 18px;
     left: 0;
     padding: 0;
     width: 100% !important;
@@ -2062,6 +2062,7 @@ i, .btn .show-max {
 .gif-col img{
     width: 100%;
     border-radius: 13px;
+
 }
 .avatar-type-group{
     margin: 20px auto;
