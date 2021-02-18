@@ -2025,12 +2025,12 @@ i, .btn .show-max {
 }
 
 .inside-btn.left-btn {
-    bottom: 10px;
-    left: 10px;
+    top: 60px;
+    left: 7px;
 }
 .inside-btn.right-btn {
-    bottom: 10px;
-    right: 10px;
+    top: 60px;
+    right: 7px;
 }
 
 .wrap-idea .inside-btn {
