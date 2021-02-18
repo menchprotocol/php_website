@@ -1950,8 +1950,8 @@ i, .btn .show-max {
     width: 100% !important;
     max-height: 63%;
     position: absolute;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow-x: visible; /*hidden*/
+    overflow-y: visible; /*auto*/
     display: block;
 }
 .i_cover{
