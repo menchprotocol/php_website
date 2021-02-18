@@ -1934,6 +1934,9 @@ i, .btn .show-max {
 .cover-text {
     text-align: center;
 }
+.mini-font{
+    font-size:0.8em !important;
+}
 .cover-progress{
     width:calc(100% - 10px);
     top: 0;
