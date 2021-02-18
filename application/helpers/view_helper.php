@@ -1723,12 +1723,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     if($message_input || $i_title || $load_completion){
 
-        $ui .= '<div class="cover-content"><div class="inner-content">';
-
-        //PROGRESS?
-        if($load_completion){
-            $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
-        }
+        $ui .= '<div class="cover-content">'.($load_completion ? '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>' : '').'<div class="inner-content">';
 
         if($i_title){
             if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
