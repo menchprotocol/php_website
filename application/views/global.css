@@ -2075,6 +2075,11 @@ i, .btn .show-max {
     text-align: center;
     margin-top: -88%;
 }
+.cover-btn span{
+    padding-top: 83px;
+    display: block;
+    font-size: 1.4em;
+}
 
 /* RESPONSIVE */
 @media (max-width:767px) {
