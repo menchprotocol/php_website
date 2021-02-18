@@ -312,8 +312,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $e___4485 = $this->config->item('e___4485'); //NAVIGATION
 
         //IDEA MESSAGES:
-        echo '<div class="headline"><span class="icon-block">'.$e___4485[4231]['m__icon'].'</span>'.$e___4485[4231]['m__title'].'</div>';
-        echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
+        $ui .= '<div class="headline"><span class="icon-block">'.$e___4485[4231]['m__icon'].'</span>'.$e___4485[4231]['m__title'].'</div>';
+        $ui .= view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4231,
             'x__right' => $i_focus['i__id'],
@@ -321,8 +321,8 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
         //IDEA MESSAGES:
-        echo '<div class="headline"><span class="icon-block">'.$e___4485[4983]['m__icon'].'</span>'.$e___4485[4983]['m__title'].'</div>';
-        echo view_i_note_list(4983, false, $i_focus, $this->X_model->fetch(array(
+        $ui .= '<div class="headline"><span class="icon-block">'.$e___4485[4983]['m__icon'].'</span>'.$e___4485[4983]['m__title'].'</div>';
+        $ui .= view_i_note_list(4983, false, $i_focus, $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4983,
             'x__right' => $i_focus['i__id'],
