@@ -1721,31 +1721,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= '</div>';
 
 
-    if($message_input || $i_title || $load_completion){
 
-        $ui .= '<div class="cover-content">'.($load_completion ? '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>' : '').'<div class="inner-content">';
-
-        if($i_title){
-            if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
-                //Editable title:
-                $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1), true);
-            } elseif(!$is_any_lock){
-                $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
-            } else {
-                $ui .= $i_title;
-            }
-        }
-        if($message_input){
-            if(!$is_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
-                //No HTML Tags, add link:
-                $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
-            } else {
-                //Leave as is so HTML tags work:
-                $ui .= $message_input;
-            }
-        }
-        $ui .= '</div></div>';
-    }
 
     if(!$is_any_lock){
 
@@ -1873,6 +1849,35 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             $ui .= '<div class="cover-text css__title">' . view_i_time($i_stats) . '</div>';
         }
     }
+
+
+
+    if($message_input || $i_title || $load_completion){
+
+        $ui .= '<div class="cover-content">'.($load_completion ? '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>' : '').'<div class="inner-content">';
+
+        if($i_title){
+            if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
+                //Editable title:
+                $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1), true);
+            } elseif(!$is_any_lock){
+                $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
+            } else {
+                $ui .= $i_title;
+            }
+        }
+        if($message_input){
+            if(!$is_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
+                //No HTML Tags, add link:
+                $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
+            } else {
+                //Leave as is so HTML tags work:
+                $ui .= $message_input;
+            }
+        }
+        $ui .= '</div></div>';
+    }
+
 
     if($is_self && !$read_mode && !$e_of_i){
         $ui .= '<div class="cover-text css__title grey" style="margin-top: -15px;">[Not a Source Yet]</div>';

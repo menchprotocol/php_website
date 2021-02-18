@@ -619,14 +619,14 @@ label:focus,
 .progress-bg-list{
     margin: 0;
     position: relative !important;
-    height:8px;
+    height:5px;
     cursor: default;
     overflow: hidden;
     width: 100%;
     background-color: #999999 !important;
 }
 .progress-done{
-    height:8px;
+    height:5px;
     background-color: #FC1B44;
 }
 
@@ -1872,7 +1872,7 @@ i, .btn .show-max {
 
 .cover-wrapper {
     border:0;
-    margin:0 5px;
+    margin:34px 5px 0;
 }
 .form-check{
     padding: 8px 0 8px 60px;
@@ -1981,8 +1981,7 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    padding: 10px 5px 5px;
-    border-radius: 10px;
+    padding: 8px 5px 5px;
 }
 .cover-link {
     padding-top: 100%;
