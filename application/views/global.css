@@ -625,10 +625,6 @@ label:focus,
     width: 100%;
     background-color: #999999 !important;
 }
-.cover-content .progress-bg-list{
-    margin-left:5px;
-    width: calc(100% - 10px);
-}
 .progress-done{
     height:8px;
     background-color: #FC1B44;
@@ -1985,7 +1981,7 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    padding: 5px 5px 10px;
+    padding: 10px 5px 5px;
     border-radius: 10px;
 }
 .cover-link {
