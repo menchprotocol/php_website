@@ -1656,7 +1656,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $previous_is_lock = ($previous_i && in_array($previous_i['i__type'], $CI->config->item('n___14488')));
     $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($previous_is_lock && $read_mode);
     $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
-    $show_duration = in_array($x__type, $CI->config->item('n___14743'));
     $is_soft_lock = $locking_enabled && ($is_hard_lock || $previous_is_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
     $is_sortable = !$is_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
     $i_stats = i_stats($i['i__metadata']);
@@ -1699,7 +1698,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         if($idea_editing) {
 
             $ui .= view_coins_i(12274,  $i).'&nbsp;&nbsp;';
-            $ui .= '&nbsp;&nbsp;'.view_coins_i(6255,  $i);
 
             $e___4737 = $CI->config->item('e___4737'); // Idea Status
             $first_segment = $CI->uri->segment(1);
@@ -1760,7 +1758,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 $ui .= '<div class="icon-block-xs idea " title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="right">&nbsp;</div>';
             }
 
+
+            $ui .= '&nbsp;&nbsp;'.view_coins_i(6255,  $i);
+
+
         }
+        $ui .= '</div>';
 
 
 
@@ -1768,7 +1771,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         if($toolbar){
 
             //Idea Toolbar
-            //$ui .= '<div style="text-align: center;">';
+            $ui .= '<div style="text-align: center; margin-top:-45px;">';
 
             if(isset($i['x__id'])){
 
@@ -1797,12 +1800,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
             }
 
-            //$ui .= '</div>';
+            $ui .= '</div>';
 
         }
-
-        $ui .= '</div>';
-
 
     }
 
@@ -1859,10 +1859,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             }
         }
 
-        if($show_duration) {
-            $view_i_time = view_i_time($i_stats);
-            $ui .= '<div class="cover-text">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</div>';
-        }
+
+        $view_i_time = view_i_time($i_stats);
+        $ui .= '<div class="cover-text">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</div>';
+
 
         if($is_self && !$read_mode && !$e_of_i){
             $ui .= '<div class="cover-text mini-font">[Not a Source Yet]</div>';
