@@ -416,7 +416,7 @@ img.no-radius {
 .nav-tabs {
     margin:0 0 13px 0;
     padding-left: 41px !important;
-    padding-top: 27px;
+    padding-top: 0;
 }
 
 
@@ -1957,7 +1957,7 @@ i, .btn .show-max {
 }
 .coin-block{
     background: rgba(34,34,34,0.75);
-    margin: -25px 5px -19px;
+    margin:0 5px;
 }
 
 .i_cover{
