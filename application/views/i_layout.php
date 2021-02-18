@@ -119,25 +119,6 @@ echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && 
 echo '</div>';
 
 
-//IDEA MESSAGES:
-echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'x__type' => 4231,
-    'x__right' => $i_focus['i__id'],
-), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i, false);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //IDEA LAYOUT
 $i_stats = i_stats($i_focus['i__metadata']);
@@ -328,15 +309,36 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12274 || in_array($x__type, $this->config->item('n___4485'))){
 
+        $e___4485 = $this->config->item('e___4485'); //NAVIGATION
+
+        //IDEA MESSAGES:
+        echo '<div class="headline"><span class="icon-block">'.$e___4485[4231]['m__icon'].'</span>'.$e___4485[4231]['m__title'].'</div>';
+        echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 4231,
+            'x__right' => $i_focus['i__id'],
+        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i, false);
+
+
+        //IDEA MESSAGES:
+        echo '<div class="headline"><span class="icon-block">'.$e___4485[4983]['m__icon'].'</span>'.$e___4485[4983]['m__title'].'</div>';
+        echo view_i_note_list(4983, false, $i_focus, $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 4983,
+            'x__right' => $i_focus['i__id'],
+        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i, false);
+
+
+    } elseif(in_array($x__type, $this->config->item('n___4485'))){
+
         //IDEA NOTES
-        $note_x__type = ($x__type==12274 ? 4983 : $x__type );
         $i_notes = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => $note_x__type,
+            'x__type' => $x__type,
             'x__right' => $i_focus['i__id'],
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($i_notes);
-        $ui .= view_i_note_list($note_x__type, false, $i_focus, $i_notes, $e_of_i, false);
+        $ui .= view_i_note_list($x__type, false, $i_focus, $i_notes, $e_of_i, false);
 
     } elseif($x__type==12969){
 
