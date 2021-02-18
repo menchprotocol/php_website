@@ -1900,7 +1900,7 @@ i, .btn .show-max {
     border-radius: 10px;
     line-height: 125%;
 }
-.cover-link .inside-btn {
+.inside-btn {
     position:  absolute;
     text-align: center;
     font-size: 25px;
@@ -2549,7 +2549,7 @@ font-weight: bold !important;
 }
 
 .custom_ui_13884_13886 .light-bg,
-.cover-link .inside-btn,
+.inside-btn,
 .cover-content .inner-content,
 .media-info {
     background: rgba(34,34,34,0.75);
