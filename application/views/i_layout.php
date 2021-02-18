@@ -309,6 +309,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12274 || in_array($x__type, $this->config->item('n___4485'))){
 
+        $i_notes = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', array(4231, 4983)) . ')' => null, //The Two Sources here... TODO fix later...
+            'x__right' => $i_focus['i__id'],
+        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
+        $counter = count($i_notes);
+
         $e___4485 = $this->config->item('e___4485'); //NAVIGATION
 
         //IDEA MESSAGES:
