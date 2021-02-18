@@ -1767,8 +1767,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             //Idea Toolbar
             //$ui .= '<div style="text-align: center;">';
 
-            $ui .= view_coins_i(12274,  $i).'&nbsp;';
-            $ui .= view_coins_i(6255,  $i).'&nbsp;';
+            //$ui .= view_coins_i(12274,  $i).'&nbsp;';
+            //$ui .= view_coins_i(6255,  $i).'&nbsp;';
 
             if(isset($i['x__id'])){
 
