@@ -1759,14 +1759,13 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         }
 
-        $ui .= '</div>';
 
 
         //TOOLBAR
         if($toolbar){
 
             //Idea Toolbar
-            $ui .= '<div style="text-align: center;">';
+            //$ui .= '<div style="text-align: center;">';
 
             $ui .= view_coins_i(12274,  $i).'&nbsp;';
             $ui .= view_coins_i(6255,  $i).'&nbsp;';
@@ -1798,9 +1797,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
             }
 
-            $ui .= '</div>';
+            //$ui .= '</div>';
 
         }
+
+        $ui .= '</div>';
+
 
     }
 
