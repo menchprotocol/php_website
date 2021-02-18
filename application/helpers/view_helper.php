@@ -220,18 +220,6 @@ function view_i_title($i, $common_prefix = null, $is_cover = false){
 
     $CI =& get_instance();
     $hide_title = false;
-    /*
-    $hide_title = $is_cover && count($CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $i['i__id'],
-            '(x__up = 14362 OR x__down = 14362)' => null,
-        )));
-
-    if($hide_title){
-        return false;
-    }
-    */
 
     if(strlen($common_prefix) > 0){
         $i['i__title'] = trim(substr($i['i__title'], strlen($common_prefix)));
@@ -1606,10 +1594,17 @@ function view_i_select($i, $x__source, $previously_selected){
     $ui .= '</a>';
     $ui .= '</div>';
 
-    if($i_title){
-        $ui .= '<div class="cover-content"><div class="inner-content"><a '.$href.'>'.$i_title.'</a></div></div>';
+    $ui .= '<div class="cover-content"><div class="inner-content">';
+
+    //Title
+    $ui .= '<a '.$href.'>'.$i_title.'</a>';
+
+    $view_i_time = view_i_time($i_stats);
+    if($view_i_time){
+        $ui .= '<div class="cover-text">' . $view_i_time . '</div>';
     }
 
+    $ui .= '</div></div>';
     $ui .= '</div>';
 
     return $ui;
@@ -1853,21 +1848,19 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= '<div class="inner-content">';
 
 
-    if($i_title){
-        if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
-            //Editable title:
-            $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1), true);
-        } elseif(!$is_any_lock){
-            $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
-        } else {
-            $ui .= $i_title;
-        }
+    if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
+        //Editable title:
+        $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1), true);
+    } elseif(!$is_any_lock){
+        $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
+    } else {
+        $ui .= $i_title;
     }
 
 
     $view_i_time = view_i_time($i_stats);
-    if($view_i_time || 1){
-        $ui .= '<div class="cover-text">' . ( $view_i_time ? $view_i_time : '/' ) . '</div>';
+    if($view_i_time){
+        $ui .= '<div class="cover-text">' . $view_i_time . '</div>';
     }
 
 
