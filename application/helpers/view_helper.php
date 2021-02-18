@@ -34,7 +34,7 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
     //Has Time
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
-    $ui = '<div class="css__title doupper grey inline-block" style="font-size:0.89em;">';
+    $ui = '<div class="doupper inline-block" style="font-size:0.80em;">'; //css__title grey
 
     if(!$micro_sign && $i_stats['i___6170']>0){
         $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' IDEA'.view__s($i_stats['i___6170']).' &middot; ';
