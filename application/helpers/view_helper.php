@@ -1861,7 +1861,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
         $view_i_time = view_i_time($i_stats);
-        $ui .= '<div class="cover-text">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</div>';
+        if($view_i_time){
+            $ui .= '<div class="cover-text">' . $view_i_time . '</div>';
+        }
 
 
         if($is_self && !$read_mode && !$e_of_i){
