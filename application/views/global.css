@@ -1954,9 +1954,6 @@ i, .btn .show-max {
     overflow-y: auto;
     display: block;
 }
-.dropdown .btn {
-    margin-top: -7px;
-}
 .i_cover{
     margin: 8px 0 21px !important;
 }

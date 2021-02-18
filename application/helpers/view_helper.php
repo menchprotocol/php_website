@@ -1690,7 +1690,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         if($idea_editing) {
 
             $ui .= '<div class="row" '.( $idea_editing ? ' style="margin-top:-19px;" ' : '' ).'>';
-            $ui .= '<div class="col-4 center">'.view_coins_i(12274,  $i).'</div>';
+            $ui .= '<div class="col-4 center" style="margin-top: 9px;">'.view_coins_i(12274,  $i).'</div>';
             $ui .= '<div class="col-4 center">';
 
 
@@ -1754,7 +1754,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             }
 
             $ui .= '</div>';
-            $ui .= '<div class="col-4 center">'.view_coins_i(6255,  $i).'</div>';
+            $ui .= '<div class="col-4 center" style="margin-top: 9px;">'.view_coins_i(6255,  $i).'</div>';
 
             $ui .= '</div>';
 
