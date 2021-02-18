@@ -1693,7 +1693,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
         //IDEA TYPE
-        $ui .= '<div class="cover-text css__title" '.( $toolbar ? ' style="margin-top:-19px;" ' : '' ).'>';
+        $ui .= '<div class="cover-text css__title" '.( $idea_editing ? ' style="margin-top:-19px;" ' : '' ).'>';
 
 
         if($idea_editing) {
