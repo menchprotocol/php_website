@@ -1687,12 +1687,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
         //IDEA TYPE
-        $ui .= '<div class="cover-text " '.( $idea_editing ? ' style="margin-top:-19px;" ' : '' ).'>';
-
-
         if($idea_editing) {
 
-            $ui .= view_coins_i(12274,  $i).'&nbsp;&nbsp;';
+            $ui .= '<div class="row" '.( $idea_editing ? ' style="margin-top:-19px;" ' : '' ).'>';
+            $ui .= '<div class="col-4 center">'.view_coins_i(12274,  $i).'</div>';
+            $ui .= '<div class="col-4 center">';
+
 
             $e___4737 = $CI->config->item('e___4737'); // Idea Status
             $first_segment = $CI->uri->segment(1);
@@ -1753,12 +1753,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 $ui .= '<div class="icon-block-xs idea " title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="right">&nbsp;</div>';
             }
 
+            $ui .= '</div>';
+            $ui .= '<div class="col-4 center">'.view_coins_i(6255,  $i).'</div>';
 
-            $ui .= '&nbsp;&nbsp;'.view_coins_i(6255,  $i);
-
+            $ui .= '</div>';
 
         }
-        $ui .= '</div>';
 
 
 
