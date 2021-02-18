@@ -2030,6 +2030,10 @@ i, .btn .show-max {
     bottom: 10px;
     left: 10px;
 }
+.inside-btn.center-btn{
+    bottom: 10px;
+    left: 55px;
+}
 .inside-btn.right-btn {
     bottom: 10px;
     right: 10px;
