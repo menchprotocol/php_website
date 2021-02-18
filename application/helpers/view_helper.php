@@ -1864,7 +1864,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
-    if($is_self && !$read_mode && !$e_of_i){
+    if(!$read_mode && !$e_of_i){
         $ui .= '<div class="cover-text mini-font">[Not a Source Yet]</div>';
     }
 
