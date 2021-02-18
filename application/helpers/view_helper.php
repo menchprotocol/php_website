@@ -1830,6 +1830,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
+    $ui .= ( $is_any_lock ? '</div>' : '</a>' );
+
     //LEFT
     if($is_sortable && $control_enabled){
         //SORTABLE
@@ -1852,8 +1854,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
-
-    $ui .= ( $is_any_lock ? '</div>' : '</a>' );
     $ui .= '</div>';
 
 
