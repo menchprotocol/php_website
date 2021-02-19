@@ -1683,6 +1683,8 @@ i, .btn .show-max {
 .text_e_4736, .text_e_6197 {
     width:calc(100% - 46px);
     margin-bottom: 0;
+}
+.text_e_4736 {
     text-align: center;
 }
 
@@ -1940,7 +1942,7 @@ i, .btn .show-max {
 }
 .cover-progress{
     width:calc(100% - 10px);
-    top: 0;
+    bottom: 0;
     left: 5px;
     position: absolute;
 }
@@ -1957,7 +1959,7 @@ i, .btn .show-max {
 }
 .coin-block{
     background: rgba(34,34,34,0.75);
-    margin: -25px 5px -19px;
+    margin: -20px 5px -43px;
 }
 
 .i_cover{
@@ -1971,6 +1973,7 @@ i, .btn .show-max {
     font-size: 1.1em;
     display: block;
     text-align: center;
+    border-radius: 5px;
 }
 .cover-link {
     border:0;
@@ -1988,7 +1991,7 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    padding: 8px 5px 5px;
+    padding: 3px 5px 5px;
 }
 .cover-link {
     padding-top: 100%;

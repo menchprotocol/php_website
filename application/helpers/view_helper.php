@@ -1683,6 +1683,88 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
+    $ui .= '<div class="cover-wrapper">';
+    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
+
+
+    //ICON?
+    if(!$is_valid_url && $i_cover){
+        $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
+    }
+
+
+    $ui .= ( $is_any_lock ? '</div>' : '</a>' );
+
+    //LEFT
+    if($is_sortable && $control_enabled){
+        //SORTABLE
+        $ui .= '<div class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div>';
+    } elseif(in_array($x__type, $CI->config->item('n___14452'))){
+        //Show Self Icon
+        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</div>';
+    } elseif($is_soft_lock){
+        //LOCKED
+        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</div>';
+    } elseif($completion_rate['completion_percentage']>=100){
+        //100% COMPLETE
+        //$ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div>';
+    }
+
+    //RIGHT
+    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
+        //UNLINK
+        $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
+    }
+
+
+    $ui .= '</div>';
+
+
+
+    //Title Cover
+    $ui .= '<div class="cover-content">';
+    if($load_completion){
+        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
+    }
+    $ui .= '<div class="inner-content">';
+
+
+    if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
+        //Editable title:
+        $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1), true);
+    } elseif(!$is_any_lock){
+        $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
+    } else {
+        $ui .= $i_title;
+    }
+
+
+    $view_i_time = view_i_time($i_stats);
+    if($view_i_time){
+        $ui .= '<div class="cover-text">' . $view_i_time . '</div>';
+    }
+
+
+    if(!$read_mode && !$e_of_i){
+        $ui .= '<div class="cover-text mini-font">[Not a Source Yet]</div>';
+    }
+
+
+
+    if($message_input){
+        if(!$is_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
+            //No HTML Tags, add link:
+            $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
+        } else {
+            //Leave as is so HTML tags work:
+            $ui .= $message_input;
+        }
+    }
+    $ui .= '</div></div>';
+
+
+
+    //Coin Block
     if(!$is_any_lock){
 
 
@@ -1800,86 +1882,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         }
 
     }
-
-
-    $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
-
-
-    //ICON?
-    if(!$is_valid_url && $i_cover){
-        $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
-    }
-
-
-    $ui .= ( $is_any_lock ? '</div>' : '</a>' );
-
-    //LEFT
-    if($is_sortable && $control_enabled){
-        //SORTABLE
-        $ui .= '<div class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div>';
-    } elseif(in_array($x__type, $CI->config->item('n___14452'))){
-        //Show Self Icon
-        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</div>';
-    } elseif($is_soft_lock){
-        //LOCKED
-        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</div>';
-    } elseif($completion_rate['completion_percentage']>=100){
-        //100% COMPLETE
-        //$ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div>';
-    }
-
-    //RIGHT
-    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-        //UNLINK
-        $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
-    }
-
-
-    $ui .= '</div>';
-
-
-
-    //Title Cover
-    $ui .= '<div class="cover-content">';
-    if($load_completion){
-        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
-    }
-    $ui .= '<div class="inner-content">';
-
-
-    if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
-        //Editable title:
-        $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1), true);
-    } elseif(!$is_any_lock){
-        $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
-    } else {
-        $ui .= $i_title;
-    }
-
-
-    $view_i_time = view_i_time($i_stats);
-    if($view_i_time){
-        $ui .= '<div class="cover-text">' . $view_i_time . '</div>';
-    }
-
-
-    if(!$read_mode && !$e_of_i){
-        $ui .= '<div class="cover-text mini-font">[Not a Source Yet]</div>';
-    }
-
-
-
-    if($message_input){
-        if(!$is_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
-            //No HTML Tags, add link:
-            $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
-        } else {
-            //Leave as is so HTML tags work:
-            $ui .= $message_input;
-        }
-    }
-    $ui .= '</div></div>';
 
 
     $ui .= '</div>';
