@@ -373,7 +373,7 @@ $profiles = $this->X_model->fetch(array(
                 //Need 2 or more to sort...
                 $ui .= ( count($i_bookmarks) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
 
-                $ui .= '<div class="row top-margin hideIfEmpty" id="list-in-10573">';
+                $ui .= '<div class="row hideIfEmpty" id="list-in-10573">';
                 foreach($i_bookmarks as $item){
                     array_push($i_exclude, $item['i__id']);
                     $ui .= view_i(10573, 0, null, $item, $control_enabled,null, $e);
