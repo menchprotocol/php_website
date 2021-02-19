@@ -760,7 +760,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     //Return Results:
     if($append_coin_icon){
         $e___14874 = $CI->config->item('e___14874'); //COINS
-        return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'"><span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>'.view_number($count_query).'</span>' : null);
+        return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'"><span class="icon-block">'.$e___14874[$x__type]['m__icon'].'</span>'.view_number($count_query).'</span>' : null);
     } else {
         return intval($count_query);
     }
@@ -2182,7 +2182,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
 
     $ui .= '<button type="button" '.( $e_of_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'"' ).' >';
 
-    $ui .= '<span class="icon-block-xs">' .$e___this[$selected_e__id]['m__icon'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' );
+    $ui .= '<span class="icon-block">' .$e___this[$selected_e__id]['m__icon'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' );
 
     $ui .= '</button>';
 
