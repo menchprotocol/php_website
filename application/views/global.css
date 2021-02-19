@@ -2370,6 +2370,11 @@ padding: 2px;
 font-weight: bold !important;
 }
 
+.ignore-click .fa-gif-wrap {
+    font-size: .80em !important;
+    margin: 0px 5px;
+}
+
 
 
 
