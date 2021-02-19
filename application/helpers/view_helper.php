@@ -1688,7 +1688,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $i_cover = i_cover($i['i__id']);
     $is_valid_url = filter_var($i_cover, FILTER_VALIDATE_URL);
     $toolbar = $idea_editing && superpower_active(12673, true);
-
+    $e___4737 = $CI->config->item('e___4737'); // Idea Status
+    $first_segment = $CI->uri->segment(1);
+    $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
 
 
 
@@ -1843,10 +1845,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<div class="col-4 center" style="margin-top: 9px;">'.view_coins_i(12274,  $i).'</div>';
         $ui .= '<div class="col-4 center" '.( !$idea_editing ? ' style="margin-top: 2px;" ' : '' ).'>';
 
-
-        $e___4737 = $CI->config->item('e___4737'); // Idea Status
-        $first_segment = $CI->uri->segment(1);
-        $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
 
         //Type Dropdown:
         $ui .= view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']);
