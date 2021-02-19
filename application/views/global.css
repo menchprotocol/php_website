@@ -619,14 +619,14 @@ label:focus,
 .progress-bg-list{
     margin: 0;
     position: relative !important;
-    height:5px;
+    height:3px;
     cursor: default;
     overflow: hidden;
     width: 100%;
     background-color: #999999 !important;
 }
 .progress-done{
-    height:5px;
+    height:3px;
     background-color: #FC1B44;
 }
 
@@ -1959,11 +1959,13 @@ i, .btn .show-max {
 }
 .coin-block{
     background: rgba(34,34,34,0.75);
-    margin: -20px 5px -43px;
+    margin: 0px 5px -40px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .i_cover{
-    margin: 21px 0 55px !important;
+    margin: 8px 0 55px !important;
 }
 
 .cover-content .inner-content {

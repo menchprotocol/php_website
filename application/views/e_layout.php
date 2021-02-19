@@ -410,7 +410,7 @@ $profiles = $this->X_model->fetch(array(
                     $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
                 }
 
-                $ui .= '<div class="row margin-top-down-half hideIfEmpty" id="list-in-13550">';
+                $ui .= '<div class="row hideIfEmpty" id="list-in-13550">';
                 $drop_limit = doubleval(view_memory(6404,14684));
                 $max_seconds = intval(view_memory(6404,14684));
                 $max_i__spectrum = 0;
@@ -467,7 +467,7 @@ $profiles = $this->X_model->fetch(array(
                 $list_x  = view_coins_e(6255, $e['e__id'], 1);
 
                 $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>'.$e___11035[12969]['m__title'].'</div>';
-                $ui .= '<div class="row margin-top-down-half hideIfEmpty" id="list-in-12969">';
+                $ui .= '<div class="row hideIfEmpty" id="list-in-12969">';
                 foreach($list_x as $item){
                     $ui .= view_i(12969, $item['i__id'], null, $item,$control_enabled,null, $e);
                     array_push($my_x_ids, $item['i__id']);
@@ -491,7 +491,7 @@ $profiles = $this->X_model->fetch(array(
                 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'x__id' => 'DESC'));
                 if(count($i_notes_query)){
                     $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__icon'].'</span>'.$e___11035[12896]['m__title'].'</div>';
-                    $ui .= '<div class="row margin-top-down-half hideIfEmpty" id="list-in-12896">';
+                    $ui .= '<div class="row hideIfEmpty" id="list-in-12896">';
                     foreach($i_notes_query as $count => $i_notes) {
                         $ui .= view_i(12896, $i_notes['x__left'], null, $i_notes, $control_enabled);
                     }
