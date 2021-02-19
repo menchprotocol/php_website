@@ -954,12 +954,21 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $is_next, $member_e, $r
     $CI =& get_instance();
 
     //List children so they know what's ahead:
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $common_prefix = i_calc_common_prefix($is_next, 'i__title');
     $ui = '';
     $ui .= '<div>';
     $ui .= '<div class="pull-left">';
-    $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__icon'].'</span>'.$e___11035[$x__type]['m__title'].'</div>';
+
+    //Show idea type?
+    if(in_array($x__type, $this->config->item('n___14945'))){
+        //IDEA TYPE
+        $e___4737 = $CI->config->item('e___4737'); //IDEA TYPE
+        $ui .= '<div class="headline"><span class="icon-block">'.$e___4737[$i['i__type']]['m__icon'].'</span>'.$e___4737[$i['i__type']]['m__title'].'</div>';
+    } else {
+        //LIST TYPE
+        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+        $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__icon'].'</span>'.$e___11035[$x__type]['m__title'].'</div>';
+    }
     $ui .= '</div>';
     if($right_content){
         $ui .= '<div class="pull-right" style="text-align: right; padding:10px 0 0 0;">'.$right_content.'</div>';
