@@ -1802,7 +1802,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 if(count($is_previous)){
 
                     $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'">';
-                    $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea icon-block-xs" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
+                    $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
                     $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                     foreach($is_previous as $previous_i) {
                         $ui .= '<a href="/~'.$previous_i['i__id'].'" class="dropdown-item  '.( $previous_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block i__type_'.$previous_i['i__id'].'" title="'.$e___4737[$previous_i['i__type']]['m__title'].'">'.$e___4737[$previous_i['i__type']]['m__icon'].'</span>'.view_i_title($previous_i).'</a>';
@@ -1811,7 +1811,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                     $ui .= '</div>';
 
                 } else {
-                    $ui .= '<div class="icon-block-xs idea" title="'.$e___11035[11019]['m__title'].'">&nbsp;</div>';
+                    //$ui .= '<div class="icon-block-xs idea" title="'.$e___11035[11019]['m__title'].'">&nbsp;</div>';
                 }
 
             }
@@ -1832,7 +1832,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             if(count($is_next)){
                 $ui .= '<div class="dropdown inline-block" title="'.$e___11035[13542]['m__title'].'">';
-                $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea icon-block-xs" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
+                $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
                 $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                 foreach($is_next as $next_i) {
                     $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item  '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block i__type_'.$next_i['i__id'].'" title="'.$e___4737[$next_i['i__type']]['m__title'].'">'.$e___4737[$next_i['i__type']]['m__icon'].'</span>'.view_i_title($next_i).'</a>';
@@ -1841,7 +1841,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 $ui .= '</div>';
                 $ui .= '</div>';
             } else {
-                $ui .= '<div class="icon-block-xs idea " title="'.$e___11035[13542]['m__title'].'">&nbsp;</div>';
+                //$ui .= '<div class="icon-block-xs idea " title="'.$e___11035[13542]['m__title'].'">&nbsp;</div>';
             }
 
             $ui .= '</div>';
@@ -2182,7 +2182,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
 
     $ui .= '<button type="button" '.( $e_of_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'"' ).' >';
 
-    $ui .= '<span class="'.( $show_full_name ? 'icon-block' : '' ).'">' .$e___this[$selected_e__id]['m__icon'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' );
+    $ui .= '<span class="'.( $show_full_name && 0 ? 'icon-block' : '' ).'">' .$e___this[$selected_e__id]['m__icon'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' );
 
     $ui .= '</button>';
 
