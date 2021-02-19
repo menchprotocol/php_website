@@ -629,7 +629,9 @@ label:focus,
     height:3px;
     background-color: #FC1B44;
 }
-
+.doblock{
+    display: block !important;
+}
 
 .progress-micro{
     width:160px !important;
