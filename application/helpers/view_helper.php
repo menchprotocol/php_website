@@ -1735,7 +1735,75 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if($load_completion){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
+
+
     $ui .= '<div class="inner-content '.( !$is_any_lock ? ' inner-no-border ' : '' ).'">';
+
+
+
+
+    //TOOLBAR
+    if(!$is_any_lock && $toolbar && $superpower_12700){
+
+        //Idea Toolbar
+        $ui .= '<div class="center">';
+
+
+
+        //Previous Ideas:
+        $is_previous = $CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__right' => $i['i__id'],
+        ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
+
+        if(count($is_previous)){
+
+            $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'">';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
+            $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
+            foreach($is_previous as $previous_i) {
+                $ui .= '<a href="/~'.$previous_i['i__id'].'" class="dropdown-item  '.( $previous_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block i__type_'.$previous_i['i__id'].'" title="'.$e___4737[$previous_i['i__type']]['m__title'].'">'.$e___4737[$previous_i['i__type']]['m__icon'].'</span>'.view_i_title($previous_i).'</a>';
+            }
+            $ui .= '</div>';
+            $ui .= '</div>';
+
+        } else {
+            //$ui .= '<div class="icon-block-xs idea" title="'.$e___11035[11019]['m__title'].'">&nbsp;</div>';
+        }
+
+
+        if(isset($i['x__id'])){
+
+            $x__metadata = unserialize($i['x__metadata']);
+
+            //IDEA LINK BAR
+            $ui .= '<span class="' . superpower_active(12700) . '">';
+
+            //LINK TYPE
+            $ui .= view_input_dropdown(4486, $i['x__type'], null, $idea_editing, false, $i['i__id'], $i['x__id']);
+
+            //LINK MARKS
+            $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
+            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+2 );
+            $ui .='</span>';
+
+
+            //LINK CONDITIONAL RANGE
+            $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
+            //MIN
+            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+3);
+            //MAX
+            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+4);
+            $ui .= '</span>';
+            $ui .= '</span>';
+
+        }
+
+        $ui .= '</div>';
+
+    }
 
 
     if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
@@ -1809,72 +1877,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '</div>';
         $ui .= '<div class="col-4 center" style="margin-top: 9px;">'.view_coins_i(6255,  $i).'</div>';
 
-        $ui .= '</div>';
-
-    }
-
-
-    //TOOLBAR
-    if(!$is_any_lock && $toolbar && $superpower_12700){
-
-        //Idea Toolbar
-        $ui .= '<div class="row coin-block second-block">';
-        $ui .= '<div class="col-12 center">';
-
-
-
-        //Previous Ideas:
-        $is_previous = $CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__right' => $i['i__id'],
-        ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
-
-        if(count($is_previous)){
-
-            $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
-            $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
-            foreach($is_previous as $previous_i) {
-                $ui .= '<a href="/~'.$previous_i['i__id'].'" class="dropdown-item  '.( $previous_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block i__type_'.$previous_i['i__id'].'" title="'.$e___4737[$previous_i['i__type']]['m__title'].'">'.$e___4737[$previous_i['i__type']]['m__icon'].'</span>'.view_i_title($previous_i).'</a>';
-            }
-            $ui .= '</div>';
-            $ui .= '</div>';
-
-        } else {
-            //$ui .= '<div class="icon-block-xs idea" title="'.$e___11035[11019]['m__title'].'">&nbsp;</div>';
-        }
-
-
-        if(isset($i['x__id'])){
-
-            $x__metadata = unserialize($i['x__metadata']);
-
-            //IDEA LINK BAR
-            $ui .= '<span class="' . superpower_active(12700) . '">';
-
-            //LINK TYPE
-            $ui .= view_input_dropdown(4486, $i['x__type'], null, $idea_editing, false, $i['i__id'], $i['x__id']);
-
-            //LINK MARKS
-            $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
-            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+2 );
-            $ui .='</span>';
-
-
-            //LINK CONDITIONAL RANGE
-            $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
-            //MIN
-            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+3);
-            //MAX
-            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $idea_editing, ($i['x__spectrum']*10)+4);
-            $ui .= '</span>';
-            $ui .= '</span>';
-
-        }
-
-        $ui .= '</div>';
         $ui .= '</div>';
 
     }
