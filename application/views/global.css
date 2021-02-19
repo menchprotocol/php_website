@@ -1965,10 +1965,14 @@ i, .btn .show-max {
 }
 .coin-block{
     background: rgba(34,34,34,0.75);
-    margin: 0px 5px -40px;
+    margin: 0px 5px -43px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     min-height: 43px;
+}
+.inner-no-border{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .i_cover{

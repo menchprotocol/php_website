@@ -1735,7 +1735,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if($load_completion){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
-    $ui .= '<div class="inner-content">';
+    $ui .= '<div class="inner-content '.( !$is_any_lock ? ' inner-no-border ' : '' ).'">';
 
 
     if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
