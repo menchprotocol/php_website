@@ -1768,7 +1768,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     if(!$read_mode && !$e_of_i){
-        $ui .= '<div class="row coin-block"><div class="col-12 center coin-item">[Not a Source Yet]</div></div>';
+        $ui .= '<div class="row coin-block"><div class="col-12 center coin-item" style="font-size: 0.8em;">[You are not a source yet]</div></div>';
     }
 
     //Coin Block
