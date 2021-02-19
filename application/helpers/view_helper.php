@@ -1754,11 +1754,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
-    if(!$read_mode && !$e_of_i){
-        $ui .= '<div class="cover-text mini-font">[Not a Source Yet]</div>';
-    }
-
-
 
     if($message_input){
         if(!$is_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
@@ -1772,9 +1767,13 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= '</div></div>';
 
 
+    if(!$read_mode && !$e_of_i){
+        $ui .= '<div class="row coin-block">[Not a Source Yet]</div>';
+    }
 
     //Coin Block
     if(!$is_any_lock){
+
 
 
         //IDEA TYPE
