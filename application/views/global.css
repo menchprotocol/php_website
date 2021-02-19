@@ -629,6 +629,10 @@ label:focus,
     height:3px;
     background-color: #FC1B44;
 }
+.coin-item{
+    padding: 12px 0 11px;
+    color: #FFFFFF !important;
+}
 .doblock{
     display: block !important;
 }
