@@ -760,7 +760,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     //Return Results:
     if($append_coin_icon){
         $e___14874 = $CI->config->item('e___14874'); //COINS
-        return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'"><span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>'.view_number($count_query).'</span>' : null);
+        return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'"><span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>'.view_number($count_query).'</span>' : null);
     } else {
         return intval($count_query);
     }
@@ -1801,7 +1801,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
                 if(count($is_previous)){
 
-                    $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">';
+                    $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'">';
                     $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea icon-block-xs" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
                     $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                     foreach($is_previous as $previous_i) {
@@ -1811,7 +1811,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                     $ui .= '</div>';
 
                 } else {
-                    $ui .= '<div class="icon-block-xs idea" title="'.$e___11035[11019]['m__title'].'" data-toggle="tooltip" data-placement="right">&nbsp;</div>';
+                    $ui .= '<div class="icon-block-xs idea" title="'.$e___11035[11019]['m__title'].'">&nbsp;</div>';
                 }
 
             }
@@ -1831,7 +1831,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             if(count($is_next)){
-                $ui .= '<div class="dropdown inline-block" title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="right">';
+                $ui .= '<div class="dropdown inline-block" title="'.$e___11035[13542]['m__title'].'">';
                 $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea icon-block-xs" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
                 $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
                 foreach($is_next as $next_i) {
@@ -1841,7 +1841,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 $ui .= '</div>';
                 $ui .= '</div>';
             } else {
-                $ui .= '<div class="icon-block-xs idea " title="'.$e___11035[13542]['m__title'].'" data-toggle="tooltip" data-placement="right">&nbsp;</div>';
+                $ui .= '<div class="icon-block-xs idea " title="'.$e___11035[13542]['m__title'].'">&nbsp;</div>';
             }
 
             $ui .= '</div>';
@@ -2178,7 +2178,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
     $e___12079 = $CI->config->item('e___12079');
     $e___4527 = $CI->config->item('e___4527');
 
-    $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$i__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'" title="'.$e___12079[$cache_e__id]['m__title'].'" data-toggle="tooltip" data-placement="right">'; //dropup
+    $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$i__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'" title="'.$e___12079[$cache_e__id]['m__title'].'">';
 
     $ui .= '<button type="button" '.( $e_of_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'"' ).' >';
 
