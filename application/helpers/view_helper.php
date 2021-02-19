@@ -1840,7 +1840,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Coin Block
-    if(!$is_any_lock && ( $idea_editing || !$read_mode )){
+    if(!$is_any_lock && ( $idea_editing || $superpower_10939 )){
 
 
         $ui .= '<div class="row coin-block">';
