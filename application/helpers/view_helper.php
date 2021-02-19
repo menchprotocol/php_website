@@ -1768,7 +1768,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     if(!$read_mode && !$e_of_i){
-        $ui .= '<div class="row coin-block">[Not a Source Yet]</div>';
+        $ui .= '<div class="row coin-block"><div class="col-12 center mini-grey">[Not a Source Yet]</div></div>';
     }
 
     //Coin Block
