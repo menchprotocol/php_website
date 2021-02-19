@@ -2784,7 +2784,7 @@ font-weight: bold !important;
 }
 .custom_ui_13491_13492 .msg i,
 .custom_ui_13491_13492 .regtext i {
-    font-size:1.6em !important;
+    font-size:1.6em;
 }
 
 
@@ -2795,7 +2795,7 @@ font-weight: bold !important;
 }
 .custom_ui_13491_13493 .msg i,
 .custom_ui_13491_13493 .regtext i{
-    font-size:1.31em !important;
+    font-size:1.31em;
 } /* To get to 1.44em*/
 
 
@@ -2807,7 +2807,7 @@ font-weight: bold !important;
 }
 .custom_ui_13491_13494 .msg i,
 .custom_ui_13491_13494 .regtext i {
-    font-size:0.96em !important;
+    font-size:0.96em;
 }
 
 
