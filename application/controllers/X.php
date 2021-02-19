@@ -455,7 +455,7 @@ class X extends CI_Controller
                 ));
 
                 //Home Page:
-                return redirect_message('/@'.$member_e['e__id'], '<div class="msg alert alert-danger" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You read all ideas for '.$top_is[0]['i__title'].' & will be notified of future updates.</div></div>');
+                return redirect_message('/@'.$member_e['e__id'], '<div class="msg alert" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You read all ideas for '.$top_is[0]['i__title'].' & will be notified of future updates.</div></div>');
 
             }
         }
