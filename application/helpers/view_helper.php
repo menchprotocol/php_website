@@ -1753,6 +1753,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
         //Previous Ideas:
+        /*
         $is_previous = $CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -1774,6 +1775,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         } else {
             //$ui .= '<div class="icon-block-xs idea" title="'.$e___11035[11019]['m__title'].'">&nbsp;</div>';
         }
+        */
 
 
         if(isset($i['x__id'])){
