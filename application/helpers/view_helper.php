@@ -1840,7 +1840,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Coin Block
-    if(!$is_any_lock){
+    if(!$is_any_lock && ( $idea_editing || !$read_mode )){
 
 
         $ui .= '<div class="row coin-block">';
@@ -1850,7 +1850,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         //Type Dropdown:
         $ui .= view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']);
-
 
 
         //Next Ideas:
