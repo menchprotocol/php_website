@@ -967,7 +967,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $is_next, $member_e, $r
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
 
-    $ui .= '<div class="row top-margin">';
+    $ui .= '<div class="row">';
     $found_next_read = false;
     foreach($is_next as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
