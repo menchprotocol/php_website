@@ -1691,6 +1691,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
+    $show_coins = !$is_any_lock && ( $idea_editing || $superpower_10939 );
 
 
 
@@ -1739,7 +1740,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
-    $ui .= '<div class="inner-content '.( !$is_any_lock ? ' inner-no-border ' : '' ).'">';
+    $ui .= '<div class="inner-content '.( $show_coins ? ' inner-no-border ' : '' ).'">';
 
 
 
@@ -1840,7 +1841,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Coin Block
-    if(!$is_any_lock && ( $idea_editing || $superpower_10939 )){
+    if($show_coins){
 
 
         $ui .= '<div class="row coin-block">';
