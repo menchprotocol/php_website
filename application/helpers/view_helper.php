@@ -960,7 +960,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $is_next, $member_e, $r
     $ui .= '<div class="pull-left">';
 
     //Show idea type?
-    if(in_array($x__type, $this->config->item('n___14945'))){
+    if(in_array($x__type, $CI->config->item('n___14945'))){
         //IDEA TYPE
         $e___4737 = $CI->config->item('e___4737'); //IDEA TYPE
         $ui .= '<div class="headline"><span class="icon-block">'.$e___4737[$i['i__type']]['m__icon'].'</span>'.$e___4737[$i['i__type']]['m__title'].'</div>';
