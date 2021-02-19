@@ -1,6 +1,7 @@
     <?php
 $e___14874 = $this->config->item('e___14874');
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$e___4485 = $this->config->item('e___4485'); //NAVIGATION
 
 $e_of_i = e_of_i($i_focus['i__id']);
 $is_active = in_array($i_focus['i__type'], $this->config->item('n___7356'));
@@ -118,6 +119,14 @@ echo '<div class="top-margin">';
 echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true); //, view_i_icon($i_focus)
 echo '</div>';
 
+
+
+//IDEA MESSAGES:
+echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'x__type' => 4231,
+    'x__right' => $i_focus['i__id'],
+), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i, false);
 
 
 //IDEA LAYOUT
@@ -307,7 +316,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
         }
 
-    } elseif($x__type==12274 || in_array($x__type, $this->config->item('n___4485'))){
+    } elseif($x__type==12274){
 
         $i_notes = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -316,19 +325,9 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($i_notes);
 
-        $e___4485 = $this->config->item('e___4485'); //NAVIGATION
 
-        //IDEA MESSAGES:
-        $ui .= '<div class="headline"><span class="icon-block">'.$e___4485[4231]['m__icon'].'</span>'.$e___4485[4231]['m__title'].'</div>';
-        $ui .= view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4231,
-            'x__right' => $i_focus['i__id'],
-        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i, false);
-
-
-        //IDEA MESSAGES:
-        $ui .= '<div class="headline"><span class="icon-block">'.$e___4485[4983]['m__icon'].'</span>'.$e___4485[4983]['m__title'].'</div>';
+        //IDEA REFERENCES:
+        //$ui .= '<div class="headline"><span class="icon-block">'.$e___4485[4983]['m__icon'].'</span>'.$e___4485[4983]['m__title'].'</div>';
         $ui .= view_i_note_list(4983, false, $i_focus, $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4983,
