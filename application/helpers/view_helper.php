@@ -1719,6 +1719,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         //$ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div>';
     }
 
+    //CENTER
+    if($idea_editing){
+        $ui .= '<div class="inside-btn center-btn" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</div>';
+    }
+
     //RIGHT
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
         //UNLINK

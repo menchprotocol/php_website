@@ -105,7 +105,7 @@ echo '<table class="table table-sm table-striped maxout" style="text-align: left
 echo '<tr style="font-weight: bold;">';
 echo '<td width="55%" style="text-align: left;">'.view_input_dropdown(4737, $i_focus['i__type'], null, $e_of_i, true, $i_focus['i__id'], 0).'</td>';
 echo '<td width="21%" style="text-align: center;" class="'.superpower_active(12700).'">'.$e___11035[4356]['m__icon'].'<div class="inline-block left-half-margin">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div></td>';
-echo '<td style="text-align: right;"><a href="javascript:void(0);" class="css__title" onclick="$(\'#modal14937\').modal(\'show\');">'.$e___11035[14937]['m__title'].'<span class="icon-block">'.$e___11035[14937]['m__icon'].'</span></a></td>';
+echo '<td style="text-align: right;"><a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" class="css__title" >'.$e___11035[14937]['m__title'].'<span class="icon-block">'.$e___11035[14937]['m__icon'].'</span></a></td>';
 echo '</tr>';
 
 echo '</table>';
