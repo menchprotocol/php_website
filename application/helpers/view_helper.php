@@ -1849,7 +1849,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if($show_coins){
 
 
-        $ui .= '<div class="row coin-block">';
+        $ui .= '<div class="row coin-block" style="margin:57px 5px -75px;">';
         $ui .= '<div class="col-4 center" style="margin-top: 9px;">'.view_coins_i(12274,  $i).'</div>';
         $ui .= '<div class="col-4 center" '.( !$idea_editing ? ' style="margin-top: 2px;" ' : '' ).'>';
 
