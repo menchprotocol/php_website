@@ -1953,7 +1953,7 @@ i, .btn .show-max {
     position: absolute;
 }
 .cover-content{
-    bottom: 0;
+    bottom: -31px;
     left: 0;
     padding: 0;
     width: 100% !important;
