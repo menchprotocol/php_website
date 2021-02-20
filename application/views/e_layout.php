@@ -250,7 +250,7 @@ $profiles = $this->X_model->fetch(array(
                 }
 
 
-                $ui .= '<div class="action-left-btn grey toggle_4997"><a href="javascript:void(0);" onclick="$(\'.toggle_4997\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m__icon'].'</a></div>';
+                $ui .= '<div class="action-middle-btn grey toggle_4997"><a href="javascript:void(0);" onclick="$(\'.toggle_4997\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m__icon'].'</a></div>';
 
 
 

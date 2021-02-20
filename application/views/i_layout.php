@@ -203,7 +203,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         if(superpower_active(12700, true)){
 
             //IDEA LIST EDITOR
-            $ui .= '<div class="action-left-btn grey toggle_12589"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m__icon'].'</a></div>';
+            $ui .= '<div class="action-middle-btn grey toggle_12589"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m__icon'].'</a></div>';
 
 
             $ui .= '<div class="toggle_12589 hidden" style="margin-bottom:41px;">';

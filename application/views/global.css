@@ -599,11 +599,11 @@ label:focus,
     right: 4px;
     bottom: 45px;
 }
-.media-info.right-btn{
+.media-info.bottom-btn{
     right: 4px;
     top: 5px;
 }
-.media-info.left-btn{
+.media-info.middle-btn{
     left: 4px;
     top: 5px;
 }
@@ -1764,7 +1764,7 @@ i, .btn .show-max {
 .title-icon img{
     margin-top: -5px;
 }
-.action-left-btn{
+.action-middle-btn{
     margin: 0;
     padding: 5px 10px 10px;
 }
@@ -2050,17 +2050,17 @@ i, .btn .show-max {
     font-size: 0.8em !important;
 }
 
-.inside-btn.left-btn {
-    top: 10px;
-    left: 10px;
+.inside-btn.middle-btn {
+    top: 4px;
+    right: 18px;
 }
-.inside-btn.center-btn{
-    top: -13px;
-    left: 39px;
+.inside-btn.top-btn{
+    top: -17px;
+    right: 48px;
 }
-.inside-btn.right-btn {
-    top: 10px;
-    right: 10px;
+.inside-btn.bottom-btn {
+    top: 32px;
+    right: -6px;
 }
 
 .wrap-idea .inside-btn {

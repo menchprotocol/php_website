@@ -1593,7 +1593,7 @@ function view_i_select($i, $x__source, $previously_selected){
     }
 
     //LEFT
-    $ui .= '<div class="inside-btn center-btn check-icon"><i class="' . ($previously_selected ? 'fas fa-check-circle' : 'far fa-circle') . '"></i></div>';
+    $ui .= '<div class="inside-btn top-btn check-icon"><i class="' . ($previously_selected ? 'fas fa-check-circle' : 'far fa-circle') . '"></i></div>';
 
     //PROGRESS?
     if($completion_rate['completion_percentage'] > 0){
@@ -1710,27 +1710,27 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //LEFT
     if($is_sortable && $control_enabled){
         //SORTABLE
-        $ui .= '<div class="inside-btn left-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div>';
+        $ui .= '<div class="inside-btn middle-btn x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div>';
     } elseif($is_soft_lock){
         //LOCKED
-        $ui .= '<div class="inside-btn left-btn" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</div>';
+        $ui .= '<div class="inside-btn middle-btn" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</div>';
     } elseif($completion_rate['completion_percentage']>=100){
         //100% COMPLETE
-        //$ui .= '<div class="inside-btn left-btn" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div>';
+        //$ui .= '<div class="inside-btn middle-btn" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div>';
     }
 
     //CENTER
     if($idea_editing){
-        $ui .= '<div class="inside-btn center-btn" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</div>';
+        $ui .= '<div class="inside-btn top-btn" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</div>';
     }
 
     //RIGHT
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
         //UNLINK
-        $ui .= '<div class="inside-btn right-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
+        $ui .= '<div class="inside-btn bottom-btn x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div>';
     } elseif(in_array($x__type, $CI->config->item('n___14452'))){
         //Show Self Icon
-        $ui .= '<div class="inside-btn right-btn" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</div>';
+        $ui .= '<div class="inside-btn bottom-btn" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</div>';
     }
 
 
