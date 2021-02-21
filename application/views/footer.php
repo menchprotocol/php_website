@@ -181,7 +181,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <!-- Source Title -->
                     <div class="headline no-left-padding"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[6197]['m__title'] ?> <span class="source_title_counter hidden">[<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= view_memory(6404,6197) ?></span>]</span></div>
-                    <textarea class="form-control text-edit border css__title doupper border-dotted add_notes_form" id="e__title" name="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
+                    <textarea class="form-control text-edit border css__title border-dotted add_notes_form" id="e__title" name="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
 
 
 

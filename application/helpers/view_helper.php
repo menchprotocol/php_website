@@ -34,7 +34,7 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
     //Has Time
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
-    $ui = '<div class="doupper inline-block mini-font">'; //css__title grey
+    $ui = '<div class="inline-block mini-font">'; //css__title grey
 
     if(!$micro_sign && $i_stats['i___6170']>0){
         $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' IDEA'.view__s($i_stats['i___6170']).' &middot; ';
@@ -1312,7 +1312,7 @@ function view_e_settings($list_id, $show_accordion){
 
         } elseif ($acc_e__id == 13025 /* Full Name */) {
 
-            $tab_ui .= '<span><input type="text" id="e_name" class="form-control border dotransparent doupper" value="' . $member_e['e__title'] . '" /></span>
+            $tab_ui .= '<span><input type="text" id="e_name" class="form-control border dotransparent" value="' . $member_e['e__title'] . '" /></span>
                 <a href="javascript:void(0)" onclick="e_name()" class="btn btn-default">Save</a>
                 <span class="saving-account save_name"></span>';
 
@@ -1349,7 +1349,7 @@ function view_e_settings($list_id, $show_accordion){
                 $ui .= '<div class="card '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">
 <div class="card-header" id="heading' . $acc_e__id . '">
 <button class="btn btn-block" type="button" data-toggle="collapse" data-target="#openEn' . $acc_e__id . '" aria-expanded="false" aria-controls="openEn' . $acc_e__id . '">
-  <span class="icon-block">' . $acc_detail['m__icon'] . '</span><b class="css__title doupper ' . extract_icon_color($acc_detail['m__icon']) . '">' . $acc_detail['m__title'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
+  <span class="icon-block">' . $acc_detail['m__icon'] . '</span><b class="css__title ' . extract_icon_color($acc_detail['m__icon']) . '">' . $acc_detail['m__title'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
 </button>
 </div>
 
@@ -2160,7 +2160,7 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
     if($extra_large){
 
         $focus_element = '<textarea name="'.$name.'" onkeyup="view_input_text_count('.$cache_e__id.','.$s__id.')" placeholder="'.$e___12112[$cache_e__id]['m__title'].'" '.$attributes.'>'.$current_value.'</textarea>';
-        $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$s__id.' hidden grey css__title doupper" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$s__id.'">0</span>/'.view_memory(6404,$cache_e__id).' CHARACTERS</div>';
+        $character_counter = '<div class="title_counter title_counter_'.$cache_e__id.'_'.$s__id.' hidden grey css__title" style="text-align: right;"><span id="current_count_'.$cache_e__id.'_'.$s__id.'">0</span>/'.view_memory(6404,$cache_e__id).' CHARACTERS</div>';
         $icon = ($e__icon ? '<span class="icon-block title-icon">'.$e__icon.'</span>' : null);
 
     } else {
@@ -2217,7 +2217,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
 
         }
 
-        $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' css__title optiond_'.$e__id.'_'.$i__id.'_'.$x__id.' doupper '.( $e__id==$selected_e__id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.$anchor_url.' title="'.$m['m__message'].'"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</a>'; //Used to show desc but caused JS click conflict sp retired for now: ( strlen($m['m__message']) && !$is_url_desc ? 'title="'.$m['m__message'].'" data-toggle="tooltip" data-placement="right"' : '' )
+        $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' css__title optiond_'.$e__id.'_'.$i__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.$anchor_url.' title="'.$m['m__message'].'"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</a>'; //Used to show desc but caused JS click conflict sp retired for now: ( strlen($m['m__message']) && !$is_url_desc ? 'title="'.$m['m__message'].'" data-toggle="tooltip" data-placement="right"' : '' )
 
     }
 

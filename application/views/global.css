@@ -210,14 +210,7 @@ li a {
     margin-bottom: 10px;
 }
 
-/*
-.doupper, .text_e_6197 {
-    text-transform: uppercase !important;
-}
-*/
-
 .btn {
-    text-transform: uppercase;
     font-size: 1em !important;
     border-radius: 0 !important;
 }

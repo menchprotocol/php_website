@@ -91,7 +91,7 @@ class App extends CI_Controller
                 ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                     $ui = $latest_cache['x__message'];
                     $cache_x__id = $latest_cache['x__id'];
-                    $cache_x__time = '<div class="texttransparent center css__title doupper">Updated ' . view_time_difference(strtotime($latest_cache['x__time'])) . ' Ago</div>';
+                    $cache_x__time = '<div class="texttransparent center css__title">Updated ' . view_time_difference(strtotime($latest_cache['x__time'])) . ' Ago</div>';
                 }
                 if(!$ui){
                     //No recent cache found, create a new one:

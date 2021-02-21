@@ -153,7 +153,7 @@ $profiles = $this->X_model->fetch(array(
 
                     $editor_counter++;
                     $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m__title'] . '</option>';
-                    $is_upper = ( in_array($action_e__id, $this->config->item('n___12577') /* SOURCE UPDATER UPPERCASE */) ? ' css__title doupper ' : false );
+                    $is_upper = ( in_array($action_e__id, $this->config->item('n___12577') /* SOURCE UPDATER UPPERCASE */) ? ' css__title ' : false );
 
 
                     //Start with the input wrapper:
