@@ -1692,16 +1692,19 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
     $show_coins = !$is_any_lock && $idea_editing;
+    $show_custom_image = !$is_valid_url && $i_cover;
 
 
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
+    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( !$show_custom_image ? 'circle-spin' : '' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
+    //Circle
+    $ui .= '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="enable-background:new -580 439 577.9 194;" xml:space="preserve"><circle cx="50" cy="50" r="40" /></svg>';
 
     //ICON?
-    if(!$is_valid_url && $i_cover){
-        $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
+    if($show_custom_image){
+        $ui .= '<div class="cover-btn circle-spin">'.$i_cover.'</div>';
     }
 
 
