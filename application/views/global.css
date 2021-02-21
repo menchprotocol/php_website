@@ -2563,9 +2563,6 @@ font-weight: bold !important;
     color: #FFFFFF;
 }
 
-.custom_ui_13884_13886 .cover-link {
-    border-color: #222222 !important;
-}
 .custom_ui_13884_13886 .btn-source,
 .custom_ui_13884_13886 .btn.btn-source,
 .custom_ui_13884_13886 .nav-tabs,
@@ -2679,10 +2676,6 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .btn.btn-default,
 .custom_ui_13884_13885 .btn:hover{
     color: #222222;
-}
-.custom_ui_13884_13885 .cover-link
-{
-    border-color: #f0f0f0 !important; /* WAS WHITE */
 }
 
 
