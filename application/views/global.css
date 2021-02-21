@@ -1589,10 +1589,6 @@ i, .btn .show-max {
     font-size: 1.44em !important;
 }
 
-.inside-btn i {
-    font-size: 0.80em !important;
-}
-
 .btn-lrg i, .controller-nav i {
     font-size: 1em !important;
 }
@@ -1912,23 +1908,6 @@ i, .btn .show-max {
     border-radius: 10px;
     line-height: 125%;
 }
-.inside-btn {
-    position:  absolute;
-    text-align: center;
-    font-size: 25px;
-    color:#FFFFFF;
-    border-radius: 50%;
-    width:34px;
-    height: 34px;
-}
-.inside-btn>i, .inside-btn-alt>i {
-    margin-top: 7px;
-    color: #FFFFFF !important;
-}
-.inside-btn .btn {
-    padding: 0 !important;
-    margin-left: -3px !important;
-}
 .modal-body{
     padding: 10px;
 }
@@ -2029,7 +2008,9 @@ i, .btn .show-max {
 .cover-content * {
     color: #FFFFFF;
 }
-
+.item-selected{
+    padding: 10px 0;
+}
 .full-width-btn {
     padding: 0 3px;
 }
@@ -2058,10 +2039,6 @@ i, .btn .show-max {
     padding: 0px;
 }
 
-.inside-btn.top-btn{
-    top: -17px;
-    right: 48px;
-}
 .doright{
     text-align: right !important;
     float: right !important;
@@ -2071,9 +2048,6 @@ i, .btn .show-max {
     float: left !important;
 }
 
-.wrap-idea .inside-btn {
-    background-color: #FFC500 !important;
-}
 
 .islocked{
     cursor: not-allowed !important;
@@ -2585,7 +2559,6 @@ font-weight: bold !important;
 }
 
 .custom_ui_13884_13886 .light-bg,
-.inside-btn,
 .cover-content .inner-content,
 .media-info {
     background: rgba(34,34,34,0.75);
@@ -2845,12 +2818,6 @@ font-weight: bold !important;
     background-color: transparent !important;
 }
 
-
-
-
-.answer-item .inside-btn {
-    display: none !important;
-}
 
 
 

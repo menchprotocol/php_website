@@ -355,7 +355,7 @@ if($top_i__id) {
 
             //HTML:
             $e___4737 = $this->config->item('e___4737'); //Idea Types
-            echo '<div class="pull-left headline"><span class="icon-block">'.$e___4737[$i_focus['i__type']]['m__icon'].'</span>'.$e___4737[$i_focus['i__type']]['m__title'].'</div>';
+            echo '<div class="pull-left headline"><span class="icon-block">'.$e___4737[$i_focus['i__type']]['m__icon'].'</span>'.$e___4737[$i_focus['i__type']]['m__title'].':</div>';
 
 
             /*
@@ -394,7 +394,7 @@ if($top_i__id) {
 
 
                 echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-                echo '<td class="icon-block check-icon" style="padding: 0 !important;"><i class="' . ($previously_selected ? 'fas fa-check-circle read' : 'far fa-circle read') . '"></i></td>';
+                echo '<td class="icon-block item-selected" style="padding: 0 !important;"><i class="' . ($previously_selected ? 'fas fa-check-circle read' : 'far fa-circle read') . '"></i></td>';
 
                 echo '<td style="width:100%; padding: 0 !important;">';
                 echo '<b class="css__title i-url" style="margin-left:0;">' . view_i_title($next_i) . '</b>';

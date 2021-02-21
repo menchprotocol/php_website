@@ -101,24 +101,24 @@ function select_answer(i__id){
     //Clear all if single selection:
     if(i__type == 6684){
         //Single Selection, clear all:
-        $('.check-icon i').removeClass('fas fa-check-circle').addClass('far fa-circle');
+        $('.item-selected').addClass('hidden');
         $('.answer-item').removeClass('coin-selected');
     }
 
     //Is setected?
-    if($('.x_select_'+i__id+' .check-icon i').hasClass('fas')){
+    if(!$('.x_select_'+i__id+' .item-selected').hasClass('hidden')){
 
         //Previously Selected, delete selection:
         if(i__type == 7231){
             //Multi Selection
-            $('.x_select_'+i__id+' .check-icon i').removeClass('fas fa-check-circle').addClass('far fa-circle');
+            $('.x_select_'+i__id+' .item-selected').addClass('hidden');
             $('.x_select_'+i__id).removeClass('coin-selected');
         }
 
     } else {
 
-        //Previously Selected, delete selection:
-        $('.x_select_'+i__id+' .check-icon i').removeClass('far fa-circle').addClass('fas fa-check-circle');
+        //Not selected, select now:
+        $('.x_select_'+i__id+' .item-selected').removeClass('hidden');
         $('.x_select_'+i__id).addClass('coin-selected');
 
     }
@@ -204,7 +204,7 @@ function x_select(go_next_url){
     var selection_i__id = [];
     $(".answer-item").each(function () {
         var selection_i__id_this = parseInt($(this).attr('selection_i__id'));
-        if ($('.x_select_'+selection_i__id_this+' .check-icon i').hasClass('fas')) {
+        if (!$('.x_select_'+selection_i__id_this+' .item-selected').hasClass('hidden')) {
             selection_i__id.push(selection_i__id_this);
         }
     });

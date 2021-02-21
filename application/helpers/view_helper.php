@@ -1592,9 +1592,6 @@ function view_i_select($i, $x__source, $previously_selected){
         $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
     }
 
-    //LEFT
-    $ui .= '<div class="inside-btn top-btn check-icon"><i class="' . ($previously_selected ? 'fas fa-check-circle' : 'far fa-circle') . '"></i></div>';
-
     //PROGRESS?
     if($completion_rate['completion_percentage'] > 0){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
@@ -1604,6 +1601,9 @@ function view_i_select($i, $x__source, $previously_selected){
     $ui .= '</div>';
 
     $ui .= '<div class="cover-content"><div class="inner-content">';
+
+    //LEFT
+    $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . ' read"><span class="icon-block"><i class="fas fa-check read"></i></span>SELECTED</div>';
 
     //Title
     $ui .= '<a '.$href.'>'.$i_title.'</a>';
