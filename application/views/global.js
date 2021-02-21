@@ -668,7 +668,7 @@ function e_modify_save() {
         e_focus_id: ( typeof e_focus_id !== 'undefined' ? e_focus_id : 0 ),
         do_13527:do_13527,
         e__id: $('#modal13571 .modal_e__id').val(),
-        e__title: $('#e__title').val().toUpperCase(),
+        e__title: $('#e__title').val(),
         e__icon: $('#cover__icon').val(),
         e__type: $('#e__type').val(), //The new status (might not have changed too)
         //Transaction data:
@@ -1246,7 +1246,7 @@ function view_input_text_count(cache_e__id, s__id) {
 
 function update_text_name(cache_e__id, e__id, e__title){
     if(cache_e__id==6197){
-        e__title = e__title.toUpperCase();
+        e__title = e__title;
     }
     $(".text__"+cache_e__id+"_" + e__id).val(e__title).text(e__title).attr('old-value', e__title);
 }
