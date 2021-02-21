@@ -113,6 +113,7 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
         gtag('config', 'UA-92774608-1');
     </script>
 
+
     <?php
     //Hide Mench Coins:
     if(!$member_e || !$superpower_10939){
