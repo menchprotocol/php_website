@@ -354,23 +354,18 @@ if($top_i__id) {
             echo '<div class="doclear">&nbsp;</div>';
 
             //HTML:
-            if ($i_focus['i__type'] == 6684) {
-
-                echo '<div class="pull-left headline"><span class="icon-block">'.$e___11035[13981]['m__icon'].'</span>'.$e___11035[13981]['m__title'].'</div>';
-
-            } elseif ($i_focus['i__type'] == 7231) {
+            $e___4737 = $this->config->item('e___4737'); //Idea Types
+            echo '<div class="pull-left headline"><span class="icon-block">'.$e___4737[$i_focus['i__type']]['m__icon'].'</span>'.$e___4737[$i_focus['i__type']]['m__title'].'</div>';
 
 
-                echo '<div class="pull-left headline"><span class="icon-block">'.$e___11035[13982]['m__icon'].'</span>'.$e___11035[13982]['m__title'].'</div>';
-
+            /*
+            if ($i_focus['i__type'] == 7231) {
                 //Give option to Select None/All
-                /*
-
                 echo '<div class="doclear">&nbsp;</div>';
                 echo '<div class="pull-right right-adj inline-block" data-toggle="tooltip" data-placement="top" title="SELECT ALL OR NONE"><a href="javascript:void(0);" onclick="$(\'.answer-item i\').removeClass(\'far fa-circle\').addClass(\'fas fa-check-circle\');" style="text-decoration: underline;" title="'.$e___11035[13692]['m__title'].'">'.$e___11035[13692]['m__icon'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.answer-item i\').removeClass(\'fas fa-check-circle\').addClass(\'far fa-circle\');" style="text-decoration: underline;" title="'.$e___11035[13693]['m__title'].'">'.$e___11035[13693]['m__icon'].'</a></div>';
-                */
-
             }
+            */
+
 
             echo '<div class="doclear">&nbsp;</div>';
 
