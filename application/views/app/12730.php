@@ -2,7 +2,7 @@
 
 //Fix sources:
 foreach($this->E_model->fetch(array()) as $e){
-    echo $e['e__title'].' => '.ucwords($e['e__title']).'<br />';
+    echo $e['e__title'].' => '.ucwords(strtolower($e['e__title'])).'<br />';
     /*
     $updated += $this->E_model->update($e['e__id'], array(
         'e__title' => ucwords($e['e__title']),
