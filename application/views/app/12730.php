@@ -1,12 +1,5 @@
 <?php
 
-//Fix sources:
-foreach($this->E_model->fetch() as $e){
-    $this->E_model->update($e['e__id'], array(
-        'e__title' => ucwords(strtolower($e['e__title'])),
-    ));
-}
-
 //UI to compose a test message:
 echo '<form method="GET" action="">';
 
