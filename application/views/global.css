@@ -2592,7 +2592,7 @@ font-weight: bold !important;
 }
 
 .custom_ui_13884_13886 .black-background {
-    border:3px solid #222222 !important;
+    border:3px solid #222222;
 }
 .black-background i{
     color: #FFFFFF;
@@ -2682,7 +2682,7 @@ font-weight: bold !important;
 }
 
 .custom_ui_13884_13885 .black-background {
-    border:3px solid #f0f0f0 !important;
+    border:3px solid #f0f0f0;
 }
 .btn-tiny{
     font-size: 0.55em !important;
