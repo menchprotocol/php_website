@@ -1684,6 +1684,7 @@ i, .btn .show-max {
 }
 .text_e_4736 {
     text-align: center;
+    padding: 0 3px;
 }
 
 .texttype__sm{
@@ -1999,7 +2000,7 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    padding: 3px 5px 5px;
+    padding: 3px 0 5px;
 }
 .cover-link {
     padding-top: 100%;
@@ -2044,9 +2045,6 @@ i, .btn .show-max {
 }
 .toprow .col{
     padding: 0px;
-}
-.toprow i{
-    font-size: 1em !important;
 }
 
 .inside-btn.top-btn{
