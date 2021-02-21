@@ -1,5 +1,15 @@
 <?php
 
+//Fix sources:
+foreach($this->E_model->fetch(array()) as $e){
+    echo $e['e__title'].' => '.ucwords($e['e__title']).'<br />';
+    /*
+    $updated += $this->E_model->update($e['e__id'], array(
+        'e__title' => ucwords($e['e__title']),
+    ));
+    */
+}
+
 //UI to compose a test message:
 echo '<form method="GET" action="">';
 
@@ -16,7 +26,7 @@ if($search_for_set){
 
     $matching_results = $this->E_model->fetch(array(
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'e__title LIKE \'%'.strtoupper($_GET['search_for']).'%\'' => null,
+        'LOWER(e__title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
 
     //List the matching search:
@@ -38,7 +48,7 @@ if($search_for_set){
             if($replace_with_set){
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $new_outcome = str_replace(strtoupper($_GET['search_for']),strtoupper($_GET['replace_with']),$en['e__title']).$append_text;
+                $new_outcome = str_replace(strtolower($_GET['search_for']),strtolower($_GET['replace_with']),$en['e__title']).$append_text;
 
                 if($replace_with_confirmed){
                     //Update idea:

@@ -98,8 +98,6 @@ function select_answer(i__id){
     //Allow answer to be saved/updated:
     var i__type = parseInt($('.list-answers').attr('i__type'));
 
-    console.log('Type is '+i__type);
-
     //Clear all if single selection:
     if(i__type == 6684){
         //Single Selection, clear all:

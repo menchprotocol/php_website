@@ -190,9 +190,7 @@ li a {
 }
 
 
-.doupper, .text_e_6197 {
-    text-transform: uppercase !important;
-}
+
 .add-input{
     margin-bottom: 0;
     padding: 5px 0 5px 41px !important;
@@ -211,6 +209,12 @@ li a {
     order-bottom: 1px solid #FC1B44;
     margin-bottom: 10px;
 }
+
+/*
+.doupper, .text_e_6197 {
+    text-transform: uppercase !important;
+}
+*/
 
 .btn {
     text-transform: uppercase;
@@ -896,7 +900,6 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     border: 1px solid transparent;
     display: block;
     padding: .5rem .2rem;
-    text-transform: uppercase;
 }
 
 
@@ -1473,9 +1476,7 @@ label {
 }
 .btn-lrg i { color: #222222 !important; }
 
-.x-micro-data {
-    text-transform: uppercase;
-}
+
 
 .x-history-msg{
     padding: 5px;
@@ -1809,7 +1810,6 @@ i, .btn .show-max {
 
 .headline, .headline a, .headline i {
     color: #999999 !important;
-    text-transform: uppercase;
 }
 
 .x-info-topic{
@@ -1991,7 +1991,7 @@ i, .btn .show-max {
     display: block;
     text-align: center;
     border-radius: 5px;
-    min-height: 57px;
+    min-height: 88px;
     vertical-align: middle;
 }
 .cover-link {
@@ -2109,9 +2109,9 @@ i, .btn .show-max {
 }
 
 .cover-btn{
-    font-size: 8em;
+    font-size: 8.2em;
     text-align: center;
-    margin-top: -88%;
+    margin-top: -91%;
 }
 .cover-btn span{
     padding-top: 83px;
@@ -2129,8 +2129,8 @@ i, .btn .show-max {
 @media (max-width:767px) {
 
     .cover-btn{
-        font-size: 6em;
-        margin-top: -76%;
+        font-size: 9em !important;
+        margin-top: -85%;
     }
     .title-icon{
         margin-top: 5px;
@@ -2237,8 +2237,8 @@ i, .btn .show-max {
         font-size: 1.5em;
     }
     .cover-btn{
-        font-size: 5em;
-        margin-top: -72%;
+        font-size: 6em !important;
+        margin-top: -93%;
     }
 }
 
