@@ -484,7 +484,7 @@ img.no-radius {
 .coin-idea{
     border: 3px solid #FFC500 !important;
 }
-.coin-read{
+.coin-read, .coin-selected{
     border: 3px solid #FC1B44 !important;
 }
 
@@ -2845,9 +2845,6 @@ font-weight: bold !important;
 
 .answer-item .inside-btn {
     display: none !important;
-}
-.coin-read .inside-btn {
-    display: inline-block !important;
 }
 
 
