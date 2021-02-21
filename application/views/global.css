@@ -2029,9 +2029,6 @@ i, .btn .show-max {
 .cover-content .msg, .cover-content .msg>span {
     line-height: 125% !important;
 }
-.cover-content .icon-block-xs {
-    display: none;
-}
 .cover-content .icon-block-xs img {
     margin: 1px 0 0 3px !important;
 }
