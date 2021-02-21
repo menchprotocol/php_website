@@ -595,17 +595,9 @@ label:focus,
     right: 4px;
     bottom: 5px;
 }
-.media-info.mid-right{
+.media-info.mid-right {
     right: 4px;
     bottom: 45px;
-}
-.media-info.bottom-btn{
-    right: 4px;
-    top: 5px;
-}
-.media-info.middle-btn{
-    left: 4px;
-    top: 5px;
 }
 
 .progress-title{
@@ -2050,17 +2042,17 @@ i, .btn .show-max {
     font-size: 0.8em !important;
 }
 
-.inside-btn.middle-btn {
-    top: 4px;
-    right: 18px;
-}
 .inside-btn.top-btn{
     top: -17px;
     right: 48px;
 }
-.inside-btn.bottom-btn {
-    top: 32px;
-    right: -6px;
+.doright{
+    text-align: right !important;
+    float: right !important;
+}
+.doleft{
+    text-align: left !important;
+    float: left !important;
 }
 
 .wrap-idea .inside-btn {
