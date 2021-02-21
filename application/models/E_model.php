@@ -183,7 +183,7 @@ class E_model extends CI_Model
         }
 
         //Transform text:
-        $add_fields['e__title'] = strtoupper($add_fields['e__title']);
+        $add_fields['e__title'] = $add_fields['e__title'];
 
         if (isset($add_fields['e__metadata'])) {
             $add_fields['e__metadata'] = serialize($add_fields['e__metadata']);
@@ -278,7 +278,7 @@ class E_model extends CI_Model
 
         //Transform text:
         if(isset($update_columns['e__title'])){
-            $update_columns['e__title'] = strtoupper($update_columns['e__title']);
+            $update_columns['e__title'] = $update_columns['e__title'];
         }
 
         //Cleanup metadata if needed:
@@ -681,7 +681,7 @@ class E_model extends CI_Model
             //We have File Title in URL:
             $e__title = one_two_explode('e__title=','&',$url);
             $url = rtrim(rtrim(str_replace('e__title='.$e__title,'',$url), '?'), '&');
-            $page_title = strtoupper(urldecode($e__title));
+            $page_title = urldecode($e__title);
         }
 
         //Initially assume Generic URL unless we can prove otherwise:
@@ -1061,10 +1061,10 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5000 && substr_count($x['e__title'], strtoupper($action_command1)) > 0) { //Replace Member Matching Name
+            } elseif ($action_e__id == 5000 && substri_count($x['e__title'], $action_command1) > 0) { //Replace Member Matching Name
 
                 $this->E_model->update($x['e__id'], array(
-                    'e__title' => str_replace(strtoupper($action_command1), strtoupper($action_command2), $x['e__title']),
+                    'e__title' => str_ireplace($action_command1, $action_command2, $x['e__title']),
                 ), true, $x__source);
 
                 $applied_success++;

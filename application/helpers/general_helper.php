@@ -1409,7 +1409,7 @@ function e__title_validate($string, $x__type = 0){
 
     }
 
-    $e__title_clean = strtoupper(trim($e__title_clean));
+    $e__title_clean = trim($e__title_clean);
 
     //Just the clean name?
     if($x__type){
