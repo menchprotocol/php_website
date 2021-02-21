@@ -759,9 +759,9 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
     //Return Results:
     if($append_coin_icon){
+        $e___14874 = $CI->config->item('e___14874'); //COINS
         $e_icon = '<span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>';
         $e_count = view_number($count_query);
-        $e___14874 = $CI->config->item('e___14874'); //COINS
         return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'">'.( $x__type==6255 ? $e_count.$e_icon  : $e_icon.$e_count ).'</span>' : null);
     } else {
         return intval($count_query);
