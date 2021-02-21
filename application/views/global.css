@@ -2038,6 +2038,10 @@ i, .btn .show-max {
 .cover-content .msg{
     font-size: 0.8em !important;
 }
+
+.toprow{
+    padding-bottom: 5px;
+}
 .toprow .col{
     padding: 0px;
 }
