@@ -207,12 +207,12 @@ if(!$basic_header_footer){
                     if($member_e){
 
                         //My Source
-                        echo '<a href="'.home_url($current_coin['c__id']).'"><span class="platform-circle e_ui_icon_'.$member_e['e__id'].'">'.$member_e['e__icon'].'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
+                        echo '<a href="'.home_url().'"><span class="platform-circle e_ui_icon_'.$member_e['e__id'].'">'.$member_e['e__icon'].'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
 
                     } else {
 
                         //Domain Source
-                        echo '<a href="'.home_url($current_coin['c__id']).'"><span class="icon-block platform-logo">'.get_domain('m__icon').'</span><b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b></a>';
+                        echo '<a href="'.home_url().'"><span class="icon-block platform-logo">'.get_domain('m__icon').'</span><b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b></a>';
 
                     }
 

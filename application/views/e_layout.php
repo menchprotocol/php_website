@@ -545,7 +545,7 @@ $profiles = $this->X_model->fetch(array(
 
 
 
-        $default_active = ( (!isset($_GET['focus_tab']) && $x__type==$active_x__type) || ( isset($_GET['focus_tab']) && $_GET['focus_tab']==$x__type));
+        $default_active = $x__type==$active_x__type;
 
         $tab_nav .= '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
 
