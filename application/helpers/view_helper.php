@@ -760,7 +760,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     //Return Results:
     if($append_coin_icon){
         $e___14874 = $CI->config->item('e___14874'); //COINS
-        return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'"><span class="icon-block">'.$e___14874[$x__type]['m__icon'].'</span>'.view_number($count_query).'</span>' : null);
+        return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'"><span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>'.view_number($count_query).'</span>' : null);
     } else {
         return intval($count_query);
     }
@@ -1730,21 +1730,21 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $center_btn = null;
     if($is_soft_lock){
         //LOCKED
-        $center_btn .= '<div class="col center"><span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
+        $center_btn .= '<div class="col center"><span class="icon-block" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
     } elseif($idea_editing){
-        $center_btn .= '<div class="col center"><a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
+        $center_btn .= '<div class="col center"><a class="icon-block" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
     } elseif(in_array($x__type, $CI->config->item('n___14452'))){
         //Show Self Icon
-        $center_btn .= '<div class="col center"><span title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</span></div>';
+        $center_btn .= '<div class="col center"><span class="icon-block" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</span></div>';
     } elseif($completion_rate['completion_percentage']>=100){
         //100% COMPLETE
-        //$center_btn .= '<div class="col doleft"><span title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div></div>';
+        //$center_btn .= '<div class="col doleft"><span class="icon-block" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div></div>';
     }
 
     //LEFT
     if($is_sortable && $control_enabled){
         //SORTABLE
-        $ui .= '<div class="col doleft"><div class="x_sort inline-block" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
+        $ui .= '<div class="col doleft"><div class="x_sort icon-block" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
     } elseif($center_btn){
         $ui .= '<div class="col doleft">&nbsp;</div>';
     }
@@ -1756,7 +1756,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //RIGHT
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
         //UNLINK
-        $ui .= '<div class="col doright"><div class="x_remove inline-block" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
+        $ui .= '<div class="col doright"><div class="x_remove icon-block" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
     } elseif($center_btn){
         $ui .= '<div class="col doright">&nbsp;</div>';
     }
@@ -2192,7 +2192,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
 
     $ui .= '<button type="button" '.( $e_of_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'"' ).' >';
 
-    $ui .= '<span class="icon-block">' .$e___this[$selected_e__id]['m__icon'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' );
+    $ui .= '<span class="'.( $show_full_name ? 'icon-block' : 'icon-block-xs' ).'">' .$e___this[$selected_e__id]['m__icon'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' );
 
     $ui .= '</button>';
 
