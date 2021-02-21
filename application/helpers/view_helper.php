@@ -1730,21 +1730,21 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $center_btn = null;
     if($is_soft_lock){
         //LOCKED
-        $center_btn .= '<div class="col center"><span class="icon-block" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
+        $center_btn .= '<div class="col center"><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
     } elseif($idea_editing){
-        $center_btn .= '<div class="col center"><a class="icon-block" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
+        $center_btn .= '<div class="col center"><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
     } elseif(in_array($x__type, $CI->config->item('n___14452'))){
         //Show Self Icon
-        $center_btn .= '<div class="col center"><span class="icon-block" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</span></div>';
+        $center_btn .= '<div class="col center"><span class="icon-block-xs" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</span></div>';
     } elseif($completion_rate['completion_percentage']>=100){
         //100% COMPLETE
-        //$center_btn .= '<div class="col doleft"><span class="icon-block" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div></div>';
+        //$center_btn .= '<div class="col doleft"><span class="icon-block-xs" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div></div>';
     }
 
     //LEFT
     if($is_sortable && $control_enabled){
         //SORTABLE
-        $ui .= '<div class="col doleft"><div class="x_sort icon-block" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
+        $ui .= '<div class="col doleft"><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
     } elseif($center_btn){
         $ui .= '<div class="col doleft">&nbsp;</div>';
     }
@@ -1756,7 +1756,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //RIGHT
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
         //UNLINK
-        $ui .= '<div class="col doright"><div class="x_remove icon-block" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
+        $ui .= '<div class="col doright"><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
     } elseif($center_btn){
         $ui .= '<div class="col doright">&nbsp;</div>';
     }
