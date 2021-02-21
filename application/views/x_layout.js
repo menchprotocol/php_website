@@ -49,7 +49,7 @@ function go_next(go_next_url){
         //SELECT ONE/SOME
         return x_select(go_next_url);
 
-    } else if (focus_i__type==7637 && !$('.file_saving_result').html().length ) {
+    } else if (focus_i__type==7637 && !($('.file_saving_result').html().length) ) {
 
         //Must upload file first:
         alert('You must upload file before going next.');
@@ -106,7 +106,7 @@ function select_answer(i__id){
     }
 
     //Is setected?
-    if(!$('.x_select_'+i__id+' .item-selected').hasClass('hidden')){
+    if(!($('.x_select_'+i__id+' .item-selected').hasClass('hidden'))){
 
         //Previously Selected, delete selection:
         if(i__type == 7231){
@@ -204,7 +204,7 @@ function x_select(go_next_url){
     var selection_i__id = [];
     $(".answer-item").each(function () {
         var selection_i__id_this = parseInt($(this).attr('selection_i__id'));
-        if (!$('.x_select_'+selection_i__id_this+' .item-selected').hasClass('hidden')) {
+        if (!($('.x_select_'+selection_i__id_this+' .item-selected').hasClass('hidden'))) {
             selection_i__id.push(selection_i__id_this);
         }
     });

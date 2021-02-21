@@ -360,7 +360,7 @@ $(document).ready(function () {
         e.preventDefault();
         var hash = $(this).attr('href').replace('#', '');
 
-        if (hash.length > 0 && $('#tab' + hash).length && !$('#tab' + hash).hasClass("hidden")) {
+        if (hash.length > 0 && $('#tab' + hash).length && !($('#tab' + hash).hasClass("hidden"))) {
             //Adjust Header:
             $('#topnav>li').removeClass('active');
             $('#nav_' + hash).addClass('active');
@@ -1848,7 +1848,7 @@ function x_sort_load(x__type){
 function account_toggle_all(is_enabled){
     //Turn all superpowers on/off:
     $(".btn-superpower").each(function () {
-        if ((is_enabled && !$(this).hasClass('active')) || (!is_enabled && $(this).hasClass('active'))) {
+        if ((is_enabled && !($(this).hasClass('active'))) || (!is_enabled && $(this).hasClass('active'))) {
             e_toggle_superpower(parseInt($(this).attr('en-id')));
         }
     });

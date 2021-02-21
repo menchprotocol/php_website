@@ -68,7 +68,7 @@ $(document).ready(function () {
     });
 
     //Put focus on messages if no message:
-    if(!$('#i_notes_list_4231 .note_sortable').length){
+    if(!($('#i_notes_list_4231 .note_sortable').length)){
         $('.input_note_4231').focus();
     }
 

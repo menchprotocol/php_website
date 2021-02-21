@@ -1602,7 +1602,6 @@ function view_i_select($i, $x__source, $previously_selected){
 
     $ui .= '<div class="cover-content"><div class="inner-content">';
 
-    //LEFT
     $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . ' read"><span class="icon-block"><i class="fas fa-check read"></i></span>SELECTED</div>';
 
     //Title
