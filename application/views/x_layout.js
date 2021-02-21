@@ -104,7 +104,7 @@ function select_answer(i__id){
     if(i__type == 6684){
         //Single Selection, clear all:
         $('.check-icon i').removeClass('fas fa-check-circle').addClass('far fa-circle');
-        $('.answer-item').removeClass('active_selected');
+        $('.answer-item').removeClass('coin-read');
     }
 
     //Is setected?
@@ -114,14 +114,14 @@ function select_answer(i__id){
         if(i__type == 7231){
             //Multi Selection
             $('.x_select_'+i__id+' .check-icon i').removeClass('fas fa-check-circle').addClass('far fa-circle');
-            $('.x_select_'+i__id).removeClass('active_selected');
+            $('.x_select_'+i__id).removeClass('coin-read');
         }
 
     } else {
 
         //Previously Selected, delete selection:
         $('.x_select_'+i__id+' .check-icon i').removeClass('far fa-circle').addClass('fas fa-check-circle');
-        $('.x_select_'+i__id).addClass('active_selected');
+        $('.x_select_'+i__id).addClass('coin-read');
 
     }
 

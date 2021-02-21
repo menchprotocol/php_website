@@ -1585,7 +1585,7 @@ function view_i_select($i, $x__source, $previously_selected){
 
     $ui  = '<div class="i_cover col-md-4 col-6 no-padding">';
     $ui .= '<div class="cover-wrapper">';
-    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' active_selected ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
+    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' coin-read ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
     //ICON?
     if(!$is_valid_url){
@@ -1697,14 +1697,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( !$show_custom_image ? 'circle-spin' : '' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
+    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $read_mode ? ' coin-read ' : ' coin-idea ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
-    //Circle
-    $ui .= '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="enable-background:new -580 439 577.9 194;" xml:space="preserve"><circle cx="50" cy="50" r="40" /></svg>';
 
     //ICON?
     if($show_custom_image){
-        $ui .= '<div class="cover-btn circle-spin">'.$i_cover.'</div>';
+        $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
     }
 
 
