@@ -1721,7 +1721,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
-    $ui .= '<div class="row hideIfEmpty">';
+    $ui .= '<div class="row hideIfEmpty toprow">';
 
 
     //LEFT

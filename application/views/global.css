@@ -2041,6 +2041,15 @@ i, .btn .show-max {
 .cover-content .msg{
     font-size: 0.8em !important;
 }
+.toprow{
+    padding-bottom: 8px;
+}
+.toprow .col{
+    padding: 0px;
+}
+.toprow i{
+    font-size: 0.89em;
+}
 
 .inside-btn.top-btn{
     top: -17px;
