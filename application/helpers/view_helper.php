@@ -759,15 +759,15 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
     //Return Results:
     if($append_coin_icon){
+        $e_icon = '<span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>';
+        $e_count = view_number($count_query);
         $e___14874 = $CI->config->item('e___14874'); //COINS
-        return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'"><span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>'.view_number($count_query).'</span>' : null);
+        return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'">'.( $x__type==6255 ? $e_count.$e_icon  : $e_icon.$e_count ).'</span>' : null);
     } else {
         return intval($count_query);
     }
 
 }
-
-
 
 function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $previous_i__type){
 
