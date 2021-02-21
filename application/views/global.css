@@ -2009,7 +2009,10 @@ i, .btn .show-max {
     color: #FFFFFF;
 }
 .item-selected{
-    padding: 10px 0;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    font-size: 3em;
 }
 .full-width-btn {
     padding: 0 3px;

@@ -1592,7 +1592,7 @@ function view_i_select($i, $x__source, $previously_selected){
         $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
     }
 
-    $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . ' read"><span class="icon-block"><i class="fas fa-check read"></i></span>SELECTED</div>';
+    $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . ' read"><i class="fas fa-check-circle read"></i></div>';
 
 
     //PROGRESS?
