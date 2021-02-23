@@ -2,7 +2,7 @@
 
 //Fix sources:
 
-foreach($this->X_model->fetch(array('x__type IN (12419,14104,4983,4231,14322) and x__down>0' => null)) as $counter => $x){
+foreach($this->X_model->fetch(array('x__type IN (12419,14104,4983,4231,14322) and x__down>0' => null), array(), 0) as $counter => $x){
 
     echo $counter.') '.$x['x__message'].'<hr />';
     /*
