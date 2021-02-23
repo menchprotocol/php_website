@@ -653,7 +653,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
+            'x__up' => $e__id,
         );
         if(count($i_exclude)){
             $query_filters['i__id NOT IN (' . join(',', $i_exclude) . ')'] = null;
@@ -725,7 +725,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i['i__id'],
-            '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+            'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
 
@@ -1461,7 +1461,7 @@ function view_i_featured($i_exclude = array()){
             'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            '(x__up = '.$e__id.' OR x__down = '.$e__id.')' => null,
+            'x__up' => $e__id,
         );
         if(count($i_exclude)){
             $query_filters['i__id NOT IN (' . join(',', $i_exclude) . ')'] = null;

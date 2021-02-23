@@ -1,5 +1,17 @@
 <?php
 
+//Fix sources:
+
+foreach($this->X_model->fetch(array('x__type IN (12419,14104,4983,4231,14322) and x__down>0' => null)) as $counter => $x){
+
+    echo $counter.') '.$x['x__message'].'<hr />';
+    /*
+    $this->X_model->update($x['x__id'], array(
+        'e__title' => ucwords(strtolower($e['e__title'])),
+    ));
+    */
+}
+
 //UI to compose a test message:
 echo '<form method="GET" action="">';
 

@@ -255,7 +255,7 @@ function i_is_featured($i)
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__right' => $i['i__id'],
-        '(x__up IN (' . join(',', $CI->config->item('n___4235')) . ') OR x__down IN (' . join(',', $CI->config->item('n___4235')) . '))' => null,
+        'x__up IN (' . join(',', $CI->config->item('n___4235')) => null,
     )));
 
 }
@@ -509,7 +509,7 @@ function i_cover($i__id, $html_format = false){
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__right' => $i__id,
-        '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+        'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
     ), array(), 0, 0, array(
         'x__type' => 'ASC', //Messages First, Sources Second
         'x__spectrum' => 'ASC', //Sort by message order
@@ -1534,7 +1534,7 @@ function e_of_i($i__id, $member_e = array()){
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $i__id,
-                    '(x__up = '.$member_e['e__id'].' OR x__down = '.$member_e['e__id'].')' => null,
+                    'x__up' => $member_e['e__id'],
                 )))
             )
         )
@@ -1836,7 +1836,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $s['i__id'],
-                    '(x__up > 0 OR x__down > 0)' => null, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+                    'x__up > ' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
                 ), array(), 0) as $e){
                     if($e['x__up']>0){
                         array_push($export_row['_tags'], 'alg_e_' . $e['x__up']);

@@ -475,7 +475,7 @@ class I_model extends CI_Model
                 if(count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                    '(x__up = '.$focus_e[0]['e__id'].' OR x__down = '.$focus_e[0]['e__id'].')' => null,
+                    'x__up' => $focus_e[0]['e__id'],
                     'x__right' => $link_i[0]['i__id'],
                 )))){
                     return array(
@@ -838,7 +838,7 @@ class I_model extends CI_Model
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $next_i['i__id'],
-                    '(x__up = '.$e__profile_id.' OR x__down = '.$e__profile_id.')' => null,
+                    'x__up' => $e__profile_id,
                 ));
 
                 if($action_e__id==12591 && !count($i_has_e)){
