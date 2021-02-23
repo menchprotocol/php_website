@@ -670,10 +670,14 @@ class X_model extends CI_Model
 
         if($strict_validation && $message_type_e__id > 0){
 
-            if(in_array($message_type_e__id, $this->config->item('n___4986'))){
-                //IDEA NOTES 2X SOURCE REFERENCES ALLOWED
+            if(in_array($message_type_e__id, $this->config->item('n___14311'))){
+                //POWER EDITOR UNLIMITED SOURCES
                 $min_e = 0;
-                $max_e = 2;
+                $max_e = 99;
+            } elseif(in_array($message_type_e__id, $this->config->item('n___4986'))){
+                //IDEA NOTES 1X SOURCE REFERENCES ALLOWED
+                $min_e = 0;
+                $max_e = 1;
             } elseif(in_array($message_type_e__id, $this->config->item('n___7551'))){
                 //IDEA NOTES 1X SOURCE REFERENCE REQUIRED
                 $min_e = 1;

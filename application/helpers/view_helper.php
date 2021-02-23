@@ -1003,9 +1003,9 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
-    $handles_url = (in_array($x__type, $CI->config->item('n___7551')) || in_array($x__type, $CI->config->item('n___4986')));
     $member_e = superpower_unlocked();
     $ui = '';
+
 
     if($show_empty_error && !count($i_notes) && $e_of_i){
         $ui .= '<div class="no_notes_' . $x__type .'" style="margin:21px 0;">';

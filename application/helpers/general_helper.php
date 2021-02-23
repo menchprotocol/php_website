@@ -255,7 +255,7 @@ function i_is_featured($i)
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__right' => $i['i__id'],
-        'x__up IN (' . join(',', $CI->config->item('n___4235')) => null,
+        'x__up IN (' . join(',', $CI->config->item('n___4235')).')' => null,
     )));
 
 }
