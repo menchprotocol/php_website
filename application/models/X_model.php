@@ -598,7 +598,7 @@ class X_model extends CI_Model
             ), array(), 0) as $delete_x) {
                 $this->X_model->update($delete_x['x__id'], array(
                     'x__status' => 6173,
-                ), $x__source, 14948 /* Note Extra Source Removed */);
+                ));
             }
         }
 
