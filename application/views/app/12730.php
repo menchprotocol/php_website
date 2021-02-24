@@ -6,14 +6,11 @@ $fixed = 0;
 foreach($this->X_model->fetch(array('x__type IN (12419,14104,4983,4231,14322) and x__down>0' => null), array(), 0) as $counter => $x){
 
     //Remove x__down:
-    $this->X_model->update($delete_x['x__id'], array(
+    $this->X_model->update($x['x__id'], array(
         'x__down' => 0,
     ));
 
-    $this->X_model->save_note_extra_sources($x['x__id'], $x['x__source'], array($x['x__up'],$x['x__down']), $x['x__right'], false);
-
     $fixed++;
-
 
 }
 
