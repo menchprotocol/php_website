@@ -1,21 +1,5 @@
 <?php
 
-//Fix sources:
-
-$fixed = 0;
-foreach($this->X_model->fetch(array('x__type IN (12419,14104,4983,4231,14322) and x__down>0' => null), array(), 0) as $counter => $x){
-
-    //Remove x__down:
-    $this->X_model->update($x['x__id'], array(
-        'x__down' => 0,
-    ));
-
-    $fixed++;
-
-}
-
-echo $fixed.' Fixed';
-
 //UI to compose a test message:
 echo '<form method="GET" action="">';
 
