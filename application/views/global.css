@@ -474,14 +474,12 @@ img.no-radius {
 .coin-source{
     border: 3px solid #007AFD !important;
 }
-.coin-idea, .coin-selected{
+.coin-idea{
     border: 3px solid #FFC500 !important;
 }
-/*
 .coin-read, .coin-selected{
     border: 3px solid #FC1B44 !important;
 }
-*/
 
 textarea:hover,
 input:hover,
