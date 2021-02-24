@@ -883,9 +883,13 @@ class I extends CI_Controller {
             'x__type' => $_POST['note_type_id'],
             'x__right' => $is[0]['i__id'],
         ), array(), 0) as $x) {
+            //Remove Note:
             $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173,
             ), $member_e['e__id'], 13579);
+
+            //Remove Extra References:
+            $this->X_model->save_note_extra_sources($x['x__id'], $member_e['e__id'], array(), $is[0]['i__id'], true);
         }
 
 
