@@ -580,6 +580,44 @@ class X_model extends CI_Model
     }
 
 
+    function save_note_extra_sources($x__id, $x__source, $note_references, $i__id, $delete_previous){
+
+        if(!$x__id){
+            return false;
+        }
+
+        //Remove first one as already saved:
+        array_shift($note_references);
+
+        //Also remove all current extra sources:
+        if($delete_previous){
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__type' => 14947, //Note Extra Sources
+                'x__reference' => $x__id,
+            ), array(), 0) as $delete_x) {
+                $this->X_model->update($delete_x['x__id'], array(
+                    'x__status' => 6173,
+                ), $x__source, 14948 /* Note Extra Source Removed */);
+            }
+        }
+
+        //Now see if any more left to save?
+        if(count($note_references)){
+            //Yes we have more than one which means we need to store them separately:
+            foreach($note_references as $extra_references){
+                $this->X_model->create(array(
+                    'x__source' => $x__source,
+                    'x__type' => 14947, //Note Extra Source
+                    'x__right' => $i__id,
+                    'x__reference' => $x__id,
+                    'x__up' => $extra_references,
+                ));
+            }
+        }
+
+    }
+
     function message_compile($message_input, $is_read_mode, $member_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true, $simple_version = false)
     {
 
@@ -759,22 +797,7 @@ class X_model extends CI_Model
         $message_input .= ' ';//Helps with accurate source reference replacement
         $output_body_message = htmlentities($message_input);
         $string_references = extract_e_references($message_input); //Do it again since it may be updated
-        $referenced_key = 0;
-        $e_reference_keys = array(
-            0 => 'x__up',
-            1 => 'x__down',
-        );
-        $e_reference_fields = array(
-            'x__up'   => 0,
-            'x__down' => 0,
-        );
-
-        if(count($string_references['ref_e']) > 2){
-            return array(
-                'status' => 0,
-                'message' => 'You referenced '.count($string_references['ref_e']).' sources which is more than the allowed 2 references per line',
-            );
-        }
+        $note_references = array();
 
         foreach($string_references['ref_e'] as $referenced_e){
 
@@ -791,8 +814,7 @@ class X_model extends CI_Model
             }
 
             //Set as source reference:
-            $e_reference_key_val = $e_reference_keys[$referenced_key];
-            $e_reference_fields[$e_reference_key_val] = intval($referenced_e);
+            array_push($note_references, intval($referenced_e));
 
 
             //See if this source has any parent transactions to be shown in this appendix
@@ -900,9 +922,6 @@ class X_model extends CI_Model
                 }
 
             }
-
-
-            $referenced_key++;
         }
 
 
@@ -911,9 +930,7 @@ class X_model extends CI_Model
             'status' => 1,
             'clean_message' => trim($message_input),
             'output_messages' => ( strlen($output_body_message) ? '<div class="msg"><span>' . nl2br($output_body_message) . '</span></div>' : null ),
-            //Source References:
-            'x__up' => $e_reference_fields['x__up'],
-            'x__down' => $e_reference_fields['x__down'],
+            'note_references' => $note_references,
         );
     }
 

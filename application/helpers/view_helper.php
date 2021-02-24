@@ -1070,7 +1070,7 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
                 }
 
                 //SAVE Button:
-                $tab_ui .= '<td class="table-btn first_btn indifferent save_button save_button_'.$x__type.' hidden"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;" title="Shortcut: Ctrl + Enter" data-toggle="tooltip" data-placement="bottom">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
+                $tab_ui .= '<td class="table-btn first_btn indifferent save_button save_button_'.$x__type.' hidden"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__icon'].' '.$e___11035[14422]['m__title'].'</a></td>';
 
 
                 $tab_ui .= '<td style="padding:10px 0 0 0;">&nbsp;</td>';
@@ -1162,7 +1162,7 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
             }
 
             //Add
-            $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_add_text('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;" data-toggle="tooltip" data-placement="bottom" title="Shortcut: Ctrl + Enter" data-toggle="tooltip" data-placement="bottom">'.$e___11035[14421]['m__icon'].' '.$e___11035[14421]['m__title'].'</a></td>';
+            $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_add_text('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;" data-toggle="tooltip" data-placement="bottom" title="Shortcut: Ctrl + Enter">'.$e___11035[14421]['m__icon'].' '.$e___11035[14421]['m__title'].'</a></td>';
 
 
             //File counter:

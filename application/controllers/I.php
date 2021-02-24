@@ -469,10 +469,12 @@ class I extends CI_Controller {
             'x__type' => intval($_POST['note_type_id']),
             'x__right' => intval($_POST['i__id']),
             'x__message' => $msg_validation['clean_message'],
-            //Source References:
-            'x__up' => $msg_validation['x__up'],
-            'x__down' => $msg_validation['x__down'],
+            'x__up' => ( count($msg_validation['note_references']) ? $msg_validation['note_references'][0] : 0 ),
         ), true);
+
+
+        //Save Extra References if any:
+        $this->X_model->save_note_extra_sources($x['x__id'], $member_e['e__id'], $msg_validation['note_references'], intval($_POST['i__id']), false);
 
 
         //Print the challenge:
@@ -720,14 +722,12 @@ class I extends CI_Controller {
 
             //Now update the DB:
             $this->X_model->update(intval($_POST['x__id']), array(
-
                 'x__message' => $msg_validation['clean_message'],
-
-                //Source References:
-                'x__up' => $msg_validation['x__up'],
-                'x__down' => $msg_validation['x__down'],
-
+                'x__up' => ( count($msg_validation['note_references']) ? $msg_validation['note_references'][0] : 0 ),
             ), $member_e['e__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['x__message'], $msg_validation['clean_message']));
+
+            //Update extra references:
+            $this->X_model->save_note_extra_sources($x['x__id'], $member_e['e__id'], $msg_validation['note_references'], $messages['x__right'], true);
 
         }
 
@@ -892,17 +892,17 @@ class I extends CI_Controller {
         foreach($msg_validations as $count => $msg_validation) {
 
             //SAVE this message:
-            $this->X_model->create(array(
+            $x = $this->X_model->create(array(
                 'x__source' => $member_e['e__id'],
                 'x__spectrum' => ($count + 1),
-                //Referencing attributes:
                 'x__type' => intval($_POST['note_type_id']),
                 'x__right' => $is[0]['i__id'],
                 'x__message' => $msg_validation['clean_message'],
-                //Source References:
-                'x__up' => $msg_validation['x__up'],
-                'x__down' => $msg_validation['x__down'],
+                'x__up' => ( count($msg_validation['note_references']) ? $msg_validation['note_references'][0] : 0 ),
             ));
+
+            //Update extra references:
+            $this->X_model->save_note_extra_sources($x['x__id'], $member_e['e__id'], $msg_validation['note_references'], $is[0]['i__id'], false);
 
             //GENERATE New Preview:
             $textarea_content .= $this->X_model->message_view($msg_validation['clean_message'], false, $member_e, $is[0]['i__id']);
