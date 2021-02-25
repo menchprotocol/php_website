@@ -2107,6 +2107,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
 
+    return $ui;
 
 
 
@@ -2238,7 +2239,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
     $ui .= '</div>';
-
 
     return $ui;
 
