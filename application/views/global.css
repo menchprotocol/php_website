@@ -1993,8 +1993,7 @@ i, .btn .show-max {
 
 
 .cover-content .inner-content .css__title {
-    padding-top:3px;
-    padding-bottom:3px;
+    padding:3px;
     display: block;
 }
 
