@@ -1928,7 +1928,7 @@ i, .btn .show-max {
     position: absolute;
 }
 .cover-content{
-    bottom: -60px;
+    bottom: -64px;
     left: 0;
     padding: 0;
     width: 100% !important;
@@ -1937,6 +1937,9 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
+}
+.adj-coin{
+    margin: 89px 5px -107px;
 }
 .coin-block{
     background: rgba(34,34,34,0.75);
@@ -1952,7 +1955,7 @@ i, .btn .show-max {
 
 
 .i_cover{
-    margin: 8px 0 100px !important;
+    margin: 10px 0 110px !important;
 }
 
 .cover-content .inner-content {

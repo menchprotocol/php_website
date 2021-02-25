@@ -1863,7 +1863,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if($show_coins){
 
 
-        $ui .= '<div class="row coin-block" style="margin:85px 5px -103px;">';
+        $ui .= '<div class="row coin-block adj-coin">';
         $ui .= '<div class="col-4 doleft" style="margin-top: 9px;">'.view_coins_i(12274,  $i).'</div>';
         $ui .= '<div class="col-4 center" '.( !$idea_editing ? ' style="margin-top: 2px;" ' : '' ).'>';
 
@@ -2231,7 +2231,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
     //Coin Block
-    $ui .= '<div class="row coin-block" style="margin:85px 5px -103px;">';
+    $ui .= '<div class="row coin-block adj-coin">';
     $ui .= '<div class="col-4 doleft" style="margin-top: 9px;">'.view_coins_e(12274,  $e['e__id']).'</div>';
     $ui .= '<div class="col-4 doright" style="margin-top: 9px;">'.view_coins_e(12273,  $e['e__id']).'</div>';
     $ui .= '<div class="col-4 doright" style="margin-top: 9px;">'.view_coins_e(6255,  $e['e__id']).'</div>';
