@@ -1939,7 +1939,7 @@ i, .btn .show-max {
     display: block;
 }
 .adj-coin{
-    margin: 89px 5px -107px;
+    margin: 89px 5px -107px !important;
 }
 .coin-block{
     background: rgba(34,34,34,0.75);
