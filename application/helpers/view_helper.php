@@ -1962,11 +1962,12 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
     //Allow source to see all their own transactions:
-    $is_private = (!$member_e || $member_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
+    $lock_notice = 4755; //Only locked if private Source
+    $is_hard_lock = (!$member_e || $member_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
     $is_public = in_array($e['e__id'], $public_sources) || in_array($focus_e__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
 
 
-    if(($is_private && !$superpower_12701) || (!$is_public && !$source_of_e && !$superpower_13422)){
+    if(($is_hard_lock && !$superpower_12701) || (!$is_public && !$source_of_e && !$superpower_13422)){
         //PRIVATE SOURCE:
         return ( $superpower_13422 || in_array($x__type, $CI->config->item('n___14691')) ? '<div class="list-group-item itemsource no-side-padding '. $extra_class  . '"><span class="icon-block">'.$e___11035[4755]['m__icon'].'</span>'.$e___11035[4755]['m__title'].'</div>' : null );
     }
@@ -2114,19 +2115,17 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
 
-
-
-    $ui  = '<div '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="i_cover col-md-4 col-6 no-padding i_line_'.$e['i__id'].' '.( $es_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $is_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+    $ui  = '<div '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="i_cover col-md-4 col-6 no-padding e_line_'.$e['e__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $is_hard_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_hard_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $read_mode ? ' coin-read ' : ' coin-idea ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
+    $ui .= ( $is_hard_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $read_mode ? ' coin-read ' : ' coin-source ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
     //ICON?
     if($show_custom_image){
         $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
     }
 
-    $ui .= ( $is_any_lock ? '</div>' : '</a>' );
+    $ui .= ( $is_hard_lock ? '</div>' : '</a>' );
     $ui .= '</div>';
 
 
@@ -2209,7 +2208,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
         //Editable title:
         $ui .= view_input_text(4736, $e['i__title'], $e['i__id'], $idea_editing, (($e['x__spectrum']*100)+1), true);
-    } elseif(!$is_any_lock){
+    } elseif(!$is_hard_lock){
         $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
         $ui .= $i_title;
@@ -2218,7 +2217,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
     if($message_input){
-        if(!$is_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
+        if(!$is_hard_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
             //No HTML Tags, add link:
             $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
         } else {
