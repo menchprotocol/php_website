@@ -102,7 +102,7 @@ function select_answer(i__id){
     if(i__type == 6684){
         //Single Selection, clear all:
         $('.item-selected').addClass('hidden');
-        $('.answer-item').removeClass('coin-selected');
+        $('.answer-item').removeClass('coin-discover');
     }
 
     //Is setected?
@@ -112,14 +112,14 @@ function select_answer(i__id){
         if(i__type == 7231){
             //Multi Selection
             $('.x_select_'+i__id+' .item-selected').addClass('hidden');
-            $('.x_select_'+i__id).removeClass('coin-selected');
+            $('.x_select_'+i__id).removeClass('coin-discover');
         }
 
     } else {
 
         //Not selected, select now:
         $('.x_select_'+i__id+' .item-selected').removeClass('hidden');
-        $('.x_select_'+i__id).addClass('coin-selected');
+        $('.x_select_'+i__id).addClass('coin-discover');
 
     }
 
