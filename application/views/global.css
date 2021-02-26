@@ -1395,7 +1395,9 @@ label {
     padding: 10px;
     border-radius:13px !important;
 }
-
+.dropdown .btn{
+    padding:0px;
+}
 .btn.dropdown-toggle{
     border: 0 !important;
     padding:15px 15px 15px 0 !important;
