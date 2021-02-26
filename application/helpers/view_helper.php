@@ -1730,6 +1730,23 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
+    //IDEAs and Time
+    $view_i_time = view_i_time($i_stats);
+    if($view_i_time){
+        $ui .= '<div class="cover-text"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
+    }
+
+
+    //Message
+    if($message_input){
+        if(!$is_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
+            //No HTML Tags, add link:
+            $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
+        } else {
+            //Leave as is so HTML tags work:
+            $ui .= $message_input;
+        }
+    }
 
 
 
@@ -1845,23 +1862,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
-    //IDEAs and Time
-    $view_i_time = view_i_time($i_stats);
-    if($view_i_time){
-        $ui .= '<div class="cover-text"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
-    }
-
-
-
-    if($message_input){
-        if(!$is_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
-            //No HTML Tags, add link:
-            $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
-        } else {
-            //Leave as is so HTML tags work:
-            $ui .= $message_input;
-        }
-    }
     $ui .= '</div></div>';
 
 
