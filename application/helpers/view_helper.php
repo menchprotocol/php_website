@@ -37,7 +37,7 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
     $ui = '<div class="inline-block mini-font">'; //css__title grey
 
     if(!$micro_sign && $i_stats['i___6170']>0){
-        $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' IDEA'.view__s($i_stats['i___6170']).' &middot; ';
+        $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' Idea'.view__s($i_stats['i___6170']).'<span class="mid-range">&middot;</span>';
     }
 
     if($is_micro){
@@ -45,7 +45,7 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
         $ui .= ( $has_notable_diff && !$micro_sign ? $i_stats['i___6161'].'<span class="mid-range">-</span>' : '' ).$i_stats['i___6162'].( $micro_sign ? '"' : ' SEC.' );
     } else {
         //MINUTES
-        $ui .= ( $has_notable_diff && !$micro_sign ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>' : '' ).round_minutes($i_stats['i___6162']).( $micro_sign ? '\'' : ' MIN' );
+        $ui .= ( $has_notable_diff && !$micro_sign ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>' : '' ).round_minutes($i_stats['i___6162']).( $micro_sign ? '\'' : ' min' );
     }
 
     if($show_icon){
@@ -1719,10 +1719,23 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
+    //TITLE
+    if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
+        //Editable title:
+        $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1), true);
+    } elseif(!$is_any_lock){
+        $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
+    } else {
+        $ui .= $i_title;
+    }
+
+
+
+
+
+
+
     $ui .= '<div class="row hideIfEmpty toprow">';
-
-
-
 
     //CENTER
     $center_btn = null;
@@ -1760,6 +1773,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
     $ui .= '</div>';
+
 
 
 
@@ -1830,16 +1844,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
-    if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
-        //Editable title:
-        $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $idea_editing, (($i['x__spectrum']*100)+1), true);
-    } elseif(!$is_any_lock){
-        $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
-    } else {
-        $ui .= $i_title;
-    }
 
-
+    //IDEAs and Time
     $view_i_time = view_i_time($i_stats);
     if($view_i_time){
         $ui .= '<div class="cover-text"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
