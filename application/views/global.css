@@ -2214,7 +2214,6 @@ i, .btn .show-max {
     font-size: 1em;
     width: 100%;
     margin: 0;
-    color: #FFFFFF !important;
     line-height: 120%;
 }
 .inner-content .form-control {
@@ -2524,7 +2523,8 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .controller-nav,
 .custom_ui_13884_13886 .grey-background,
 .custom_ui_13884_13886 .grey-background i,
-.custom_ui_13884_13886 .cover-content * {
+.custom_ui_13884_13886 .cover-content *,
+.custom_ui_13884_13886 .inner-content .texttype__lg {
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .icon-block i,
@@ -2679,7 +2679,8 @@ font-weight: bold !important;
 {
     border-color: #222222 !important;
 }
-.custom_ui_13884_13885 .cover-content * {
+.custom_ui_13884_13885 .cover-content *,
+.custom_ui_13884_13885 .inner-content .texttype__lg {
     border-color: #000000 !important;
 }
 .custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
