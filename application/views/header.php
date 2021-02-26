@@ -226,10 +226,8 @@ if(!$basic_header_footer){
                     echo '</td>';
 
                     if(intval(view_memory(6404,12678))){
-
                         //Search button
                         echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m__icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__icon'].'</span></a></td>';
-
                     }
 
                     //MENU
@@ -237,7 +235,7 @@ if(!$basic_header_footer){
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    echo '<span class="icon-block">' .$e___13479[$menu_type]['m__icon'].'</span>';
+                    echo '<span class="icon-block">' . ( $superpower_10939 ? '<i class="fas fa-circle '.$current_coin['c__class'].'"></i>' : $e___13479[$menu_type]['m__icon'] ).'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
