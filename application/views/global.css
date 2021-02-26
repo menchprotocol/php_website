@@ -1942,7 +1942,6 @@ i, .btn .show-max {
     margin: 89px 5px -107px !important;
 }
 .coin-block{
-    background: rgba(34,34,34,0.75);
     margin: 0px 5px -43px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -2000,9 +1999,6 @@ i, .btn .show-max {
     display: block;
 }
 
-.cover-content * {
-    color: #FFFFFF;
-}
 .item-selected{
     position: absolute;
     top: 0px;
@@ -2484,6 +2480,12 @@ font-weight: bold !important;
 
 
 /* DARK */
+.custom_ui_13884_13886 .coin-block,
+.custom_ui_13884_13886 .light-bg,
+.custom_ui_13884_13886 .inner-content,
+.custom_ui_13884_13886 .media-info {
+    background: rgba(239,239,239,0.80);
+}
 .custom_ui_13884_13886,
 .custom_ui_13884_13886 .container,
 .custom_ui_13884_13886 .table-striped tbody tr,
@@ -2521,7 +2523,8 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .controller-nav i,
 .custom_ui_13884_13886 .controller-nav,
 .custom_ui_13884_13886 .grey-background,
-.custom_ui_13884_13886 .grey-background i{
+.custom_ui_13884_13886 .grey-background i,
+.custom_ui_13884_13886 .cover-content * {
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .icon-block i,
@@ -2556,11 +2559,6 @@ font-weight: bold !important;
     border-bottom-color: #222222 !important;
 }
 
-.custom_ui_13884_13886 .light-bg,
-.cover-content .inner-content,
-.media-info {
-    background: rgba(34,34,34,0.75);
-}
 
 .custom_ui_13884_13886 .black-background {
     border:3px solid #222222;
@@ -2606,7 +2604,15 @@ font-weight: bold !important;
     padding-bottom: 5px !important;
 }
 
+
 /* WHITE */
+.custom_ui_13884_13885 .coin-block,
+.custom_ui_13884_13885 .light-bg,
+.custom_ui_13884_13885 .inner-content,
+.custom_ui_13884_13885 .media-info {
+    background: rgba(34,34,34,0.80);
+}
+
 .custom_ui_13884_13885,
 .custom_ui_13884_13885 .container,
 .custom_ui_13884_13885 .chat-title span,
@@ -2673,14 +2679,14 @@ font-weight: bold !important;
 {
     border-color: #222222 !important;
 }
+.custom_ui_13884_13885 .cover-content * {
+    border-color: #000000 !important;
+}
 .custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
 .custom_ui_13884_13885 .nav-tabs .nav-x.active,
 .custom_ui_13884_13885 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover {
     border-bottom-color: #f0f0f0 !important; /* WAS WHITE */
-}
-.custom_ui_13884_13885 .light-bg {
-    background: rgba(240,240,240, 0.75);
 }
 .custom_ui_13884_13885 .doabsolute{
     background-color:#FFFFFF !important;
