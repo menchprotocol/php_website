@@ -30,7 +30,7 @@ if(isset($_GET['search_for'])){
     } elseif(substr_count($es[0]['e__icon'], '<i ') && substr_count($es[0]['e__icon'], 'class="')){
 
         $icon_keyword = one_two_explode('class="','"',$es[0]['e__icon']);
-        foreach(array('idea', 'source', 'read', 'fas', 'far', 'fad', 'fal') as $remove_class){
+        foreach(array('idea', 'source', 'discover', 'fas', 'far', 'fad', 'fal') as $remove_class){
             $icon_keyword = str_replace($remove_class, '', $icon_keyword);
         }
         $icon_keyword = trim($icon_keyword);

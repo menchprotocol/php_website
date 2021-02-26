@@ -124,8 +124,8 @@ function js_extract_icon_color(e__icon){
 
     //NOTE: Has a twin PHP function
 
-    if(e__icon.includes('read')){
-        return ' read ';
+    if(e__icon.includes('discover')){
+        return ' discover ';
     } else if(e__icon.includes( 'idea')){
         return ' idea ';
     } else if(e__icon.includes('source') || !e__icon.length){
@@ -757,7 +757,7 @@ function e_modify_save() {
 
         } else {
             //Ooops there was an error!
-            $('#modal13571 .save_results').html('<span class="read css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
+            $('#modal13571 .save_results').html('<span class="discover css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
         }
 
     });
@@ -863,7 +863,7 @@ function x_type_preview() {
         } else {
 
             //Show Error:
-            $('#x__type_preview').html('<b class="read">' + data.message+'</b>');
+            $('#x__type_preview').html('<b class="discover">' + data.message+'</b>');
 
         }
 
@@ -1580,7 +1580,7 @@ function i_note_update_text(x__id, note_type_id) {
         } else {
 
             //ERROR
-            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="read css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
 
         }
 
@@ -1650,7 +1650,7 @@ function i_note_end_adding(result, note_type_id) {
 
     } else {
 
-        $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'+result.message);
+        $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+result.message);
 
     }
 }
@@ -2031,7 +2031,7 @@ function e_email(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_email').html('<b class="read css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_email').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -2066,7 +2066,7 @@ function e_name(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_name').html('<b class="read css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_name').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -2100,7 +2100,7 @@ function e_password(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_password').html('<b class="read css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_password').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -2159,15 +2159,15 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         }
 
 
-        //reads Setting:
+        //discoveries Setting:
         if(is_i_public){
 
-            //Enable reads:
+            //Enable discoveries:
             $('.i-x').removeClass('hidden');
 
         } else {
 
-            //Disable reads:
+            //Disable discoveries:
             $('.i-x').addClass('hidden');
 
         }

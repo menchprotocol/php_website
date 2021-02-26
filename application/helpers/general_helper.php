@@ -228,7 +228,7 @@ function current_coin(){
 
         return array(
             'c__id' => 6255,
-            'c__class' => 'read',
+            'c__class' => 'discover',
             'c__m' => $e___14874[6255],
         );
 
@@ -626,7 +626,7 @@ function i_description($i__id){
 
 function i__spectrum_calculator($i){
 
-    //READ
+    //DISCOVERY
     $CI =& get_instance();
 
     //Set Weight to Max Time for now:
@@ -665,7 +665,7 @@ function i__spectrum_calculator($i){
 
 function e__spectrum_calculator($e){
 
-    //READS
+    //DISCOVERIES
     $CI =& get_instance();
 
     $count_x = $CI->X_model->fetch(array(
@@ -896,8 +896,8 @@ function extract_icon_color($e__icon, $return_coin = false){
 
     //NOTE: Has a twin JS function
 
-    if(substr_count($e__icon, 'read')>0){
-        return ( $return_coin ? '🔴' : ' read ' );
+    if(substr_count($e__icon, 'discover')>0){
+        return ( $return_coin ? '🔴' : ' discover ' );
     } elseif(substr_count($e__icon, 'idea')>0){
         return ( $return_coin ? '🟡' : ' idea ' );
     } elseif(substr_count($e__icon, 'source')>0 || !$e__icon){
@@ -933,10 +933,10 @@ function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null
 
     } elseif($x__type==6255){
 
-        //READS
+        //DISCOVERIES
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //READ COIN
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
         );
 
     } else {
@@ -1048,7 +1048,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
+        return redirect_message($goto_url, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
     }
 
 }
@@ -1974,7 +1974,7 @@ function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
      *
      * Enables the easy manipulation of the text metadata field which holds cache data for developers
      *
-     * $s__type:           READ, SOURCE OR IDEA
+     * $s__type:           DISCOVERY, SOURCE OR IDEA
      *
      * $obj:                    The Member, Idea or Transaction itself.
      *                          We're looking for the $obj ID and METADATA

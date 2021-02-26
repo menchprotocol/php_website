@@ -12,7 +12,7 @@ $(document).ready(function () {
     }, function (data) {
         if (!data.status) {
             //Show Errors:
-            $('#app_7264').html('<span class="read">'+ data.message +'</span>');
+            $('#app_7264').html('<span class="discover">'+ data.message +'</span>');
         } else {
             //Load Report:
             $('#app_7264').html(data.message);

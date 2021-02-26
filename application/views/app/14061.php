@@ -25,11 +25,11 @@ foreach($custom_query as $x){
     if(count($parts)==3 && second_calc($parts[1])>=0 && second_calc($parts[2])>0){
 
         if($parts[1]>=60){
-            echo '<div class="read css__title">1 NEED ADJUSTMENT!!!!!!!!</div>';
+            echo '<div class="discover css__title">1 NEED ADJUSTMENT!!!!!!!!</div>';
             $x['x__message'] = str_replace(':'. $parts[1],':'.floor($parts[1]/60) .'.'. ( fmod($parts[1],60)<10 ? '0' : '' ) . fmod($parts[1],60),$x['x__message']);
         }
         if($parts[2]>=60){
-            echo '<div class="read css__title">2 NEED ADJUSTMENT!!!!!!!!</div>';
+            echo '<div class="discover css__title">2 NEED ADJUSTMENT!!!!!!!!</div>';
             $x['x__message'] = str_replace(':'. $parts[2],':'.floor($parts[2]/60) .'.'. ( fmod($parts[2],60)<10 ? '0' : '' ).fmod($parts[2],60),$x['x__message']);
         }
 
@@ -41,7 +41,7 @@ foreach($custom_query as $x){
         echo '<div class="idea css__title">REPLACED WITH: '.$new_message.'</div>';
 
     } else {
-        echo '<div class="read css__title">MISMATCH</div>';
+        echo '<div class="discover css__title">MISMATCH</div>';
     }
 }
 echo '</div>';

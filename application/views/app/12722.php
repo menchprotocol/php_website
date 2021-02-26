@@ -2,7 +2,7 @@
 
 if(!isset($_GET['x__id']) || !intval($_GET['x__id'])){
 
-    echo 'Missing READ ID (Append ?x__id=TRANSACTION_ID in URL)';
+    echo 'Missing TRANSACTION ID (Append ?x__id=TRANSACTION_ID in URL)';
 
 } else {
 

@@ -78,7 +78,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     //Return UI:
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //READ COIN
+        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
         'x__left' => $_GET['i__id'],
     ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $count => $x){
 
@@ -102,13 +102,13 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         //IDEAS
         foreach($column_ideas as $i){
-            $reads = $this->X_model->fetch(array(
+            $discoveries = $this->X_model->fetch(array(
                 'x__left' => $i['i__id'],
                 'x__source' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //READ COIN
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
-            echo '<td>'.( count($reads) ? ( strlen($reads[0]['x__message']) > 0 ? $reads[0]['x__message'] : '✅' )  : '').'</td>';
+            echo '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').'</td>';
         }
 
         echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';

@@ -90,7 +90,7 @@ $profiles = $this->X_model->fetch(array(
         //IDEAS
         $active_x__type = 12273;
     } elseif($counter__x > 0 || $source_is_e){
-        //READS
+        //DISCOVERIES
         $active_x__type = 6255;
     } elseif($counter__e > 0){
         //SOURCES
@@ -457,11 +457,11 @@ $profiles = $this->X_model->fetch(array(
 
         } elseif($x__type==6255){
 
-            //READS
+            //DISCOVERIES
             $counter = $counter__x;
             $my_x_ids = array();
 
-            //Show My reads
+            //Show My discoveries
             if($counter){
 
                 $list_x  = view_coins_e(6255, $e['e__id'], 1);

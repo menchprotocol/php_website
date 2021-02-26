@@ -11,7 +11,7 @@ $is = $this->I_model->fetch(array(
 
 if(!$member_e){
 
-    echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Must be signed in.</div>';
+    echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Must be signed in.</div>';
     js_redirect('/', 13);
 
 } elseif(!count($is)){
@@ -33,7 +33,7 @@ if(!$member_e){
 
     $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $is[0]);
 
-    //Fetch their reads:
+    //Fetch their discoveries:
     if($completion_rate['completion_percentage'] < 100){
 
         $error_message = 'Idea not yet completed. Redirecting now...';
@@ -44,7 +44,7 @@ if(!$member_e){
             'x__left' => $is[0]['i__id'],
             'x__message' => $error_message,
         ));
-        echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>'.$error_message.'</div>';
+        echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.$error_message.'</div>';
         js_redirect('/'.$is[0]['i__id'], 2584);
 
     } else {
@@ -52,7 +52,7 @@ if(!$member_e){
         //See if submitted before?
         $was_sibmitted = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 14709, //RATE READ
+            'x__type' => 14709, //RATE DISCOVERY
             'x__source' => $member_e['e__id'],
             'x__right' => $is[0]['i__id'],
         ), array());
@@ -69,7 +69,7 @@ if(!$member_e){
 
         if(count($was_sibmitted)){
             //Editing, let them know:
-            echo '<div class="padded">You first submitted your feedback for this read ' . view_time_difference(strtotime($was_sibmitted[0]['x__time'])) . ' Ago</div>';
+            echo '<div class="padded">You first submitted your feedback for this discover ' . view_time_difference(strtotime($was_sibmitted[0]['x__time'])) . ' Ago</div>';
         }
 
 
@@ -179,7 +179,7 @@ if(!$member_e){
 
 
         //SAVE & NEXT
-        echo '<div class="read-controller"><div><a class="controller-nav btn btn-lrg btn-read go-next top-margin" href="javascript:void();" onclick="save_feedback()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__icon'].'</a></div></div>';
+        echo '<div class="discover-controller"><div><a class="controller-nav btn btn-lrg btn-discover go-next top-margin" href="javascript:void();" onclick="save_feedback()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__icon'].'</a></div></div>';
 
 
         echo '</div>';

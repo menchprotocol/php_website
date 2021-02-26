@@ -3,7 +3,7 @@
 $stats = array(
     'source' => 0,
     'user' => 0,
-    'read' => 0,
+    'discover' => 0,
     'x_not_e_count' => 0,
     'e_not_x_count' => 0,
     'e_not_x_home' => array(),
@@ -27,7 +27,7 @@ foreach($this->E_model->fetch() as $en) {
         $stats['user']++;
     }
     if($is_x){
-        $stats['read']++;
+        $stats['discover']++;
     }
     if($is_u && !$is_x){
         $stats['e_not_x_count']++;

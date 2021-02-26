@@ -283,7 +283,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==6255) {
 
-        //READS
+        //DISCOVERIES
         $counter = view_coins_i(6255,  $i_focus, false);
 
         //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
@@ -291,7 +291,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             $query_filters = array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //READ COIN
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                 'x__left' => $i_focus['i__id'],
             );
             if(isset($_GET['load__e']) && $superpower_14005){
@@ -351,7 +351,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
         $u_x = $this->X_model->fetch(array(
             'x__left' => $i_focus['i__id'],
-            'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY READS
+            'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__source'), 0, 0, array(), 'COUNT(x__id) as totals');
         $counter = $u_x[0]['totals'];
@@ -360,7 +360,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $ui .= '<div class="list-group">';
             foreach($this->X_model->fetch(array(
                 'x__left' => $i_focus['i__id'],
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY READS
+                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array('x__source')) as $u){
                 $ui .= view_e(12969, $u);

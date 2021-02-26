@@ -22,7 +22,7 @@ foreach($this->I_model->fetch(array(
 
         $x_coins = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //READ COIN
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
             'x__left' => $child_or['i__id'],
         ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
 
@@ -31,7 +31,7 @@ foreach($this->I_model->fetch(array(
 
         echo '<li>';
         echo '<a href="/~'.$child_or['i__id'].'">'.view_i_title($child_or).'</a>';
-        echo ( $x_coins[0]['totals'] > 0 ? ' <span class="read css__title"><i class="fas fa-circle read"></i> '.$x_coins[0]['totals'].'</span>' : '' );
+        echo ( $x_coins[0]['totals'] > 0 ? ' <span class="discover css__title"><i class="fas fa-circle discover"></i> '.$x_coins[0]['totals'].'</span>' : '' );
         echo '</li>';
 
     }
@@ -39,5 +39,5 @@ foreach($this->I_model->fetch(array(
     echo '<hr />';
 }
 
-echo 'READ: '.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_children.' answers';
+echo 'DISCOVERY: '.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_children.' answers';
 

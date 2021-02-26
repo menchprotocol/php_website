@@ -260,7 +260,7 @@ echo '</tr></table>';
 
 echo '<table class="table table-sm maxout"><tr>';
 
-//ANY READ
+//ANY DISCOVERY
 echo '<td><div style="padding-right:5px;">';
 echo '<span class="mini-header">ANY TRANSACTION:</span>';
 echo '<input type="text" name="any_x__id" value="' . ((isset($_GET['any_x__id'])) ? $_GET['any_x__id'] : '') . '" class="form-control border">';
@@ -298,7 +298,7 @@ if(isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0){
 
 
 
-//READ Type Filter Groups
+//DISCOVERY Type Filter Groups
 echo '<td></td>';
 
 
@@ -351,7 +351,7 @@ if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
 
         //Load all fast:
         echo '<option value="0">ALL TRANSACTION TYPES</option>';
-        foreach($this->config->item('e___4593') /* READ Types */ as $e__id => $m){
+        foreach($this->config->item('e___4593') /* DISCOVERY Types */ as $e__id => $m){
             //Echo drop down:
             echo '<option value="' . $e__id . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $e__id) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
         }
@@ -365,7 +365,7 @@ if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
 
 echo '</div>';
 
-//Optional IDEA/SOURCE status filter ONLY IF READ Type = Create New IDEA/SOURCE
+//Optional IDEA/SOURCE status filter ONLY IF DISCOVERY Type = Create New IDEA/SOURCE
 
 echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(es)</span><input type="text" name="i__type" value="' . ((isset($_GET['i__type'])) ? $_GET['i__type'] : '') . '" class="form-control border"></div>';
 
@@ -383,7 +383,7 @@ echo '</tr></table>';
 
 
 
-echo '<input type="submit" class="btn btn-read" value="Apply" />';
+echo '<input type="submit" class="btn btn-discover" value="Apply" />';
 
 if($has_filters){
     echo ' &nbsp;<a href="/-4341" style="font-size: 0.8em;">Remove Filters</a>';

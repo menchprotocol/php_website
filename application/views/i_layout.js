@@ -128,7 +128,7 @@ function i_note_poweredit_save(note_type_id){
             $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon'] + ' ' + js_e___11035[14422]['m__title']);
 
             //Show Errors:
-            $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span> Message not saved because:<br />'+data.message);
+            $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span> Message not saved because:<br />'+data.message);
 
         } else {
 
@@ -138,7 +138,7 @@ function i_note_poweredit_save(note_type_id){
             //Reset errors:
             $(".note_error_"+note_type_id).html('');
 
-            //Update READ:
+            //Update DISCOVERY:
             $('.editor_preview_'+note_type_id).html(data.message);
 
             //Tooltips:

@@ -896,7 +896,7 @@ class E extends CI_Controller
             if (count($e_x) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'INVALID READ ID',
+                    'message' => 'INVALID TRANSACTION ID',
                 ));
             }
 
@@ -1795,7 +1795,7 @@ class E extends CI_Controller
         $html_message = '<div>Hi '.one_two_explode('',' ',$u_emails[0]['e__title']).' 👋</div><br /><br />';
 
         $magic_x_expiry_hours = (view_memory(6404,11065)/3600);
-        $html_message .= '<div>Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).( $has_i ? ' to read '.$is[0]['i__title'] : '' ).':</div>';
+        $html_message .= '<div>Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).( $has_i ? ' to discover '.$is[0]['i__title'] : '' ).':</div>';
         $magic_url = $this->config->item('base_url').'/e/e_magic_sign/' . $reset_x['x__id'] . '?email='.$_POST['input_email'];
         $html_message .= '<div><a href="'.$magic_url.'" target="_blank" class="ignore-click">' . $magic_url . '</a></div>';
 
@@ -1821,10 +1821,10 @@ class E extends CI_Controller
         //Validate email:
         if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
             //Missing email input:
-            return redirect_message('/-4269', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Missing Email</div>', true);
+            return redirect_message('/-4269', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Missing Email</div>', true);
         }
 
-        //Validate READ ID and matching email:
+        //Validate DISCOVERY ID and matching email:
         $validate_x = $this->X_model->fetch(array(
             'x__id' => $x__id,
             'x__message' => $_GET['email'],
@@ -1832,10 +1832,10 @@ class E extends CI_Controller
         )); //The member making the request
         if(count($validate_x) < 1){
             //Probably previously completed the reset password:
-            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Invalid data source</div>', true);
+            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Invalid data source</div>', true);
         } elseif(strtotime($validate_x[0]['x__time']) + view_memory(6404,11065) < time()){
             //Probably previously completed the reset password:
-            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Magic transaction has expired. Try again.</div>');
+            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Magic transaction has expired. Try again.</div>');
         }
 
 
@@ -1845,7 +1845,7 @@ class E extends CI_Controller
             'e__id' => $validate_x[0]['x__source'],
         ));
         if(count($es) < 1){
-            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Member not found</div>', true);
+            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Member not found</div>', true);
         }
 
 
@@ -1853,7 +1853,7 @@ class E extends CI_Controller
         $this->E_model->activate_session($es[0]);
 
 
-        //Take them to READ HOME
+        //Take them to DISCOVERY HOME
         return redirect_message(($validate_x[0]['x__left'] > 0 ? '/x/x_start/'.$validate_x[0]['x__left'] : home_url() ), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
 
     }

@@ -223,14 +223,14 @@ class X_model extends CI_Model
 
                     } elseif (in_array(4367 , $m['m__profile'])) {
 
-                        //READ
+                        //DISCOVERY
                         $html_message .= '<div>' . $m['m__title'] . ' ID: <a href="'.$this->config->item('base_url').'/-12722?x__id=' . $add_fields[$var_index[$e__id]] . '" target="_parent">'.$add_fields[$var_index[$e__id]].'</a></div>';
 
                     }
 
                 }
 
-                //Finally append READ ID:
+                //Finally append DISCOVERY ID:
                 $html_message .= '<div>TRANSACTION ID: <a href="'.$this->config->item('base_url').'/-12722?x__id=' . $add_fields['x__id'] . '">' . $add_fields['x__id'] . '</a></div>';
 
                 //Inform how to change settings:
@@ -523,7 +523,7 @@ class X_model extends CI_Model
     }
 
 
-    function message_view($message_input, $is_read_mode, $member_e = array(), $message_i__id = 0, $simple_version = false)
+    function message_view($message_input, $is_discovery_mode, $member_e = array(), $message_i__id = 0, $simple_version = false)
     {
 
         /*
@@ -553,7 +553,7 @@ class X_model extends CI_Model
         }
 
         //Validate message:
-        $msg_validation = $this->X_model->message_compile($message_input, $is_read_mode, $member_e, 0, $message_i__id, false, $simple_version);
+        $msg_validation = $this->X_model->message_compile($message_input, $is_discovery_mode, $member_e, 0, $message_i__id, false, $simple_version);
 
 
         //Did we have ane error in message validation?
@@ -618,7 +618,7 @@ class X_model extends CI_Model
 
     }
 
-    function message_compile($message_input, $is_read_mode, $member_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true, $simple_version = false)
+    function message_compile($message_input, $is_discovery_mode, $member_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true, $simple_version = false)
     {
 
         /*
@@ -856,7 +856,7 @@ class X_model extends CI_Model
 
                         //SOURCE LINK VISUAL
                         $e_media_count++;
-                        $e_appendix .= '<div class="e-appendix paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input, $is_read_mode) . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input, $is_discovery_mode) . '</div>';
 
                     } elseif($e_profile['x__type'] == 4256 /* URL */) {
 
@@ -886,7 +886,7 @@ class X_model extends CI_Model
 
 
             $edit_btn = null;
-            if(!$is_read_mode && source_of_e($es[0]['e__id'])){
+            if(!$is_discovery_mode && source_of_e($es[0]['e__id'])){
                 $e___11035 = $this->config->item('e___11035');
                 $tooltip_class .= ' class="ignore-click grey trigger_13571_edit" e__id="' . $es[0]['e__id'] . '" ';
                 $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click icon-block-img trigger_13571_edit" title="'.$e___11035[13571]['m__title'].'">'.view_e__icon($es[0]['e__icon']).'</span> ';
@@ -952,7 +952,7 @@ class X_model extends CI_Model
             $is_fixed_x = in_array($i_previous['x__type'], $this->config->item('n___12840'));
             if($e__id>0 && ($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //READ EXPANSIONS
+                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i_previous['i__id'],
                     'x__right' => $i__id,
                     'x__source' => $e__id,
@@ -1005,7 +1005,7 @@ class X_model extends CI_Model
             $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___12840'));
             if(($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //READ EXPANSIONS
+                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
                     'x__source' => $e__id,
@@ -1017,7 +1017,7 @@ class X_model extends CI_Model
             //Return this if everything is completed, or if this is incomplete:
             if($top_completed || !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //READ COMPLETE
+                    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                     'x__source' => $e__id,
                     'x__left' => $next_i['i__id'],
                 )))){
@@ -1089,22 +1089,22 @@ class X_model extends CI_Model
         $next_i__id = $i__id;
 
 
-        //Make sure not previously added to this Member's reads:
+        //Make sure not previously added to this Member's discoveries:
         if(!count($this->X_model->fetch(array(
                 'x__source' => $e__id,
                 'x__left' => $i__id,
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY READS
+                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
 
-            //Not added to their reads so far, let's go ahead and add it:
+            //Not added to their discoveries so far, let's go ahead and add it:
             $i_rank = 1;
             $home = $this->X_model->create(array(
                 'x__type' => ( $recommender_i__id > 0 ? 7495 /* Member Idea Recommended */ : 4235 /* Member Idea Set */ ),
                 'x__source' => $e__id, //Belongs to this Member
                 'x__left' => $is[0]['i__id'], //The Idea they are adding
                 'x__right' => $recommender_i__id, //Store the recommended idea
-                'x__spectrum' => $i_rank, //Always place at the top of their reads
+                'x__spectrum' => $i_rank, //Always place at the top of their discoveries
             ));
 
             //Can we auto complete since they have already read this idea?
@@ -1112,7 +1112,7 @@ class X_model extends CI_Model
 
                 //YES, Mark as complete:
                 $this->X_model->mark_complete($is[0]['i__id'], $is[0], array(
-                    'x__type' => 4559, //READ MESSAGES
+                    'x__type' => 4559, //DISCOVERY MESSAGES
                     'x__source' => $e__id,
                 ));
 
@@ -1123,7 +1123,7 @@ class X_model extends CI_Model
             //Move other ideas down in the read List:
             foreach($this->X_model->fetch(array(
                 'x__id !=' => $home['x__id'], //Not the newly added idea
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY READS
+                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__source' => $e__id, //Belongs to this Member
             ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $current_i){
@@ -1172,7 +1172,7 @@ class X_model extends CI_Model
             //Make sure previous transaction unlocks have NOT happened before:
             $existing_expansions = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 6140, //READ UNLOCK LINK
+                'x__type' => 6140, //DISCOVERY UNLOCK LINK
                 'x__source' => $e__id,
                 'x__left' => $i['i__id'],
                 'x__right IN (' . join(',', $i__metadata['i___6283'][$i['i__id']]) . ')' => null, //Limit to cached answers
@@ -1240,7 +1240,7 @@ class X_model extends CI_Model
 
                     //Unlock read:
                     $this->X_model->create(array(
-                        'x__type' => 6140, //READ UNLOCK LINK
+                        'x__type' => 6140, //DISCOVERY UNLOCK LINK
                         'x__source' => $e__id,
                         'x__left' => $i['i__id'],
                         'x__right' => $locked_x['i__id'],
@@ -1342,7 +1342,7 @@ class X_model extends CI_Model
                 //Always add all the first members to the full list:
                 $qualified_completed = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //READ COIN
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                     'x__left' => $next_i['i__id'],
                 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -1359,7 +1359,7 @@ class X_model extends CI_Model
                     //Update list of qualified members:
                     $qualified_completed = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //READ COIN
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                         'x__left' => $next_i['i__id'],
                     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -1399,7 +1399,7 @@ class X_model extends CI_Model
             //IDEA TYPE SELECT NEXT
             $is_next_autoscan = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //READ ANSWERED
+                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY ANSWERED
                 'x__source' => $add_fields['x__source'],
                 'x__left' => $i['i__id'],
                 'x__right >' => 0, //With an answer
@@ -1441,14 +1441,14 @@ class X_model extends CI_Model
                 //Not Already Completed:
                 !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //READ COMPLETE
+                    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                     'x__source' => $add_fields['x__source'],
                     'x__left' => $next_i['i__id'],
                 )))){
 
                 //Mark as complete:
                 $this->X_model->mark_complete($top_i__id, $next_i, array(
-                    'x__type' => 4559, //READ MESSAGES
+                    'x__type' => 4559, //DISCOVERY MESSAGES
                     'x__source' => $add_fields['x__source'],
                 ));
 
@@ -1578,7 +1578,7 @@ class X_model extends CI_Model
 
             //Should not happen, log error:
             $this->X_model->create(array(
-                'x__message' => 'completion_marks() Detected user reads without i___6168 value!',
+                'x__message' => 'completion_marks() Detected member discoveries without i___6168 value!',
                 'x__type' => 4246, //Platform Bug Reports
                 'x__source' => $e__id,
                 'x__left' => $i['i__id'],
@@ -1661,7 +1661,7 @@ class X_model extends CI_Model
             //Now let's check member answers to see what they have done:
             $total_completion = $this->X_model->fetch(array(
                 'x__source' => $e__id, //Belongs to this Member
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //READ COMPLETE
+                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 0, 0, array(), 'COUNT(x__id) as total_completions');
@@ -1672,7 +1672,7 @@ class X_model extends CI_Model
             //Go through answers:
             foreach($this->X_model->fetch(array(
                 'x__source' => $e__id, //Belongs to this Member
-                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //READ EXPANSIONS
+                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -1741,7 +1741,7 @@ class X_model extends CI_Model
             //Now let's check member answers to see what they have done:
             $total_completion = $this->X_model->fetch(array(
                 'x__source' => $e__id, //Belongs to this Member
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //READ COMPLETE
+                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 0, 0, array(), 'COUNT(x__id) as total_completions');
@@ -1752,7 +1752,7 @@ class X_model extends CI_Model
             //Go through answers:
             foreach($this->X_model->fetch(array(
                 'x__source' => $e__id, //Belongs to this Member
-                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //READ EXPANSIONS
+                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -1798,7 +1798,7 @@ class X_model extends CI_Model
             return false;
         }
 
-        //Fetch/validate reads Common Ideas:
+        //Fetch/validate discoveries Common Ideas:
         $i__metadata = unserialize($i['i__metadata']);
         if(!isset($i__metadata['i___6168'])){
             //Since it's not there yet we assume the idea it self only!
@@ -1819,7 +1819,7 @@ class X_model extends CI_Model
 
         //Count completed so far:
         $common_completed = $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //READ COMPLETE
+            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
             'x__source' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1849,7 +1849,7 @@ class X_model extends CI_Model
 
             //Now let's check member answers to see what they have done:
             foreach($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //READ EXPANSIONS
+                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
                 'x__source' => $e__id, //Belongs to this Member
                 'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
                 'x__right IN (' . join(',', $answer_array) . ')' => null,
@@ -1874,7 +1874,7 @@ class X_model extends CI_Model
 
             //Now let's check if member has unlocked any Miletones:
             foreach($this->X_model->fetch(array(
-                'x__type' => 6140, //READ UNLOCK LINK
+                'x__type' => 6140, //DISCOVERY UNLOCK LINK
                 'x__source' => $e__id, //Belongs to this Member
                 'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
                 'x__right IN (' . join(',', array_flatten($i__metadata['i___6283'])) . ')' => null,
@@ -1899,7 +1899,7 @@ class X_model extends CI_Model
 
             /*
              *
-             * Completing an reads depends on two factors:
+             * Completing an discoveries depends on two factors:
              *
              * 1) number of steps (some may have 0 time estimate)
              * 2) estimated seconds (usual ly accurate)
@@ -1937,7 +1937,7 @@ class X_model extends CI_Model
 
     function ids($e__id, $i__id = 0){
 
-        //Simply returns all the idea IDs for a u's reads:
+        //Simply returns all the idea IDs for a u's discoveries:
         if($i__id > 0){
 
             if(!$e__id){
@@ -1947,7 +1947,7 @@ class X_model extends CI_Model
             return count($this->X_model->fetch(array(
                 'x__left' => $i__id,
                 'x__source' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY READS
+                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
@@ -1957,7 +1957,7 @@ class X_model extends CI_Model
             if($e__id > 0){
                 foreach($this->X_model->fetch(array(
                     'x__source' => $e__id,
-                    'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY READS
+                    'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )) as $u_in){
                     array_push($u_x_ids, intval($u_in['x__left']));
@@ -2022,13 +2022,13 @@ class X_model extends CI_Model
         //Delete ALL previous answers:
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //READ ANSWERED
+            'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY ANSWERED
             'x__source' => $e__id,
             'x__left' => $is[0]['i__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
-            ), $e__id, 12129 /* READ ANSWER DELETED */);
+            ), $e__id, 12129 /* DISCOVERY ANSWER DELETED */);
         }
 
         //Add New Answers
@@ -2052,7 +2052,7 @@ class X_model extends CI_Model
             );
         }
 
-        //Issue READ/IDEA COIN:
+        //Issue DISCOVERY/IDEA COIN:
         $this->X_model->mark_complete($top_i__id, $is[0], array(
             'x__type' => $x__type,
             'x__source' => $e__id,

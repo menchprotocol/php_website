@@ -54,7 +54,7 @@ class I extends CI_Controller {
             'i__id' => $i__id,
         ));
         if ( count($is) < 1) {
-            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>IDEA #' . $i__id . ' Not Found</div>', true);
+            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>IDEA #' . $i__id . ' Not Found</div>', true);
         }
 
 
@@ -250,7 +250,7 @@ class I extends CI_Controller {
                 ));
             }
 
-            //Find the single read type in parent transactions:
+            //Find the single discover type in parent transactions:
             $x_update_types = array_intersect($this->config->item('n___4593'), $e___4527[$_POST['element_id']]['m__profile']);
             if(count($x_update_types)!=1){
                 return view_json(array(
@@ -674,7 +674,7 @@ class I extends CI_Controller {
         } elseif (!isset($_POST['x__id']) || intval($_POST['x__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing READ ID',
+                'message' => 'Missing TRANSACTION ID',
             ));
         } elseif (!isset($_POST['x__message'])) {
             return view_json(array(
@@ -757,7 +757,7 @@ class I extends CI_Controller {
         } elseif (!isset($_POST['x__id']) || intval($_POST['x__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing READ ID',
+                'message' => 'Missing TRANSACTION ID',
             ));
         }
 

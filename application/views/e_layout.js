@@ -133,7 +133,7 @@ $(document).ready(function () {
 
 function x_reset_all(){
     //Confirm First:
-    var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE read history. This action cannot be undone and you will lose all your read coins.");
+    var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE discovery history. This action cannot be undone and you will lose all your discovery coins.");
     if (r == true) {
         $('.x_reset_all').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">REMOVING ALL...</b>');
 

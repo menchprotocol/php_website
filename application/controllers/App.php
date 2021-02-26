@@ -236,7 +236,7 @@ class App extends CI_Controller
             //Create:
             $this->X_model->create(array(
                 'x__source' => $_POST['x__source'],
-                'x__type' => 14709, //RATE READ
+                'x__type' => 14709, //RATE DISCOVERY
                 'x__right' => $_POST['i__id'],
                 //Feedback Info:
                 'x__up' => $_POST['rating_e__id'],
@@ -366,7 +366,7 @@ class App extends CI_Controller
 
             //Do we have more to show?
             if($has_more_x){
-                $message .= '<div id="x_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-read" onclick="app_4341(x_filters, x_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Page '.$next_page.'</a></div>';
+                $message .= '<div id="x_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-discover" onclick="app_4341(x_filters, x_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
                 $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$x_count[0]['total_count'].' transactions have been loaded</div>';

@@ -573,7 +573,7 @@ class E_model extends CI_Model
 
             $stats['scanned']++;
 
-            //Find creation read:
+            //Find creation discover:
             $x = $this->X_model->fetch(array(
                 'x__type' => $stats['x__type'],
                 'x__down' => $e['e__id'],

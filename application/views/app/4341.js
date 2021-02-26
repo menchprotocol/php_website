@@ -47,7 +47,7 @@ function app_4341(x_filters, x_joined_by, page_num){
     }, function (data) {
         if (!data.status) {
             //Show Error:
-            $('#x_page_'+page_num).html('<span class="read">'+ data.message +'</span>');
+            $('#x_page_'+page_num).html('<span class="discover">'+ data.message +'</span>');
         } else {
             //Load Report:
             $('#x_page_'+page_num).html(data.message);

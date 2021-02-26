@@ -7,5 +7,5 @@ $route['404_override']              = 'app/load';           //Page not found
 $route['-(:num)']                   = "app/load/$1";        //App
 $route['@(:num)']                   = "e/e_layout/$1";      //Source
 $route['~(:num)']                   = "i/i_layout/$1";      //Summarize
-$route['(:num)']                    = "x/x_layout/0/$1";    //Read Preview
-$route['(:num)/(:num)']             = "x/x_layout/$1/$2";   //Read Started
+$route['(:num)']                    = "x/x_layout/0/$1";    //Discovery Preview
+$route['(:num)/(:num)']             = "x/x_layout/$1/$2";   //Discovery Started

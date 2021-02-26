@@ -6,12 +6,12 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
 if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
-    //List this members reads so they can choose:
-    echo '<div>Choose one of your reads to debug:</div><br />';
+    //List this members discoveries so they can choose:
+    echo '<div>Choose one of your discoveries to debug:</div><br />';
 
     $u_x = $this->X_model->fetch(array(
         'x__source' => $_GET['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY READS
+        'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     ), array('x__left'), 0, 0, array('x__spectrum' => 'ASC'));

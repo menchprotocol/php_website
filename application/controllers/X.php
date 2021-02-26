@@ -163,7 +163,7 @@ class X extends CI_Controller
                 'status' => 1,
             ));
 
-        } elseif($_POST['cache_e__id']==4356 /* READ TIME */){
+        } elseif($_POST['cache_e__id']==4356 /* DISCOVERY TIME */){
 
             $is = $this->I_model->fetch(array(
                 'i__id' => $_POST['s__id'],
@@ -199,7 +199,7 @@ class X extends CI_Controller
 
                 return view_json(array(
                     'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' should be at-least '.view_memory(6404,12427).' Seconds long. It takes time to read ideas ;)',
+                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' should be at-least '.view_memory(6404,12427).' Seconds long. It takes time to discover ideas ;)',
                     'original_val' => $is[0]['i__duration'],
                 ));
 
@@ -216,7 +216,7 @@ class X extends CI_Controller
 
             }
 
-        } elseif($_POST['cache_e__id']==4358 /* READ MARKS */){
+        } elseif($_POST['cache_e__id']==4358 /* DISCOVERY MARKS */){
 
             //Fetch/Validate Transaction:
             $x = $this->X_model->fetch(array(
@@ -329,12 +329,12 @@ class X extends CI_Controller
         //Mark this as complete since there is no child to choose from:
         if ($member_e && count($is) && in_array($is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //READ COMPLETE
+            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
             'x__source' => $member_e['e__id'],
             'x__left' => $previous_i__id,
         )))) {
             $this->X_model->mark_complete($top_i__id, $is[0], array(
-                'x__type' => 4559, //READ MESSAGES
+                'x__type' => 4559, //DISCOVERY MESSAGES
                 'x__source' => $member_e['e__id'],
             ));
         }
@@ -389,7 +389,7 @@ class X extends CI_Controller
         if(!$member_e){
             return redirect_message('/-4269?i__id='.$top_i__id);
         } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not added to your reads yet</div>', true);
+            return redirect_message('/'.$top_i__id);
         } elseif(!count($is)) {
             return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
         }
@@ -398,7 +398,7 @@ class X extends CI_Controller
         //Should we check for auto next redirect if empty? Only if this is a selection:
         if(!count($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //READ COMPLETE
+            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
             'x__source' => $member_e['e__id'],
             'x__left' => $is[0]['i__id'],
         )))){
@@ -406,7 +406,7 @@ class X extends CI_Controller
             if(in_array($is[0]['i__type'], $this->config->item('n___4559'))){
                 //Yes we can:
                 $this->X_model->mark_complete($top_i__id, $is[0], array(
-                    'x__type' => 4559, //READ MESSAGES
+                    'x__type' => 4559, //DISCOVERY MESSAGES
                     'x__source' => $member_e['e__id'],
                 ));
             } else {
@@ -455,7 +455,7 @@ class X extends CI_Controller
                 ));
 
                 //Home Page:
-                return redirect_message('/@'.$member_e['e__id'], '<div class="msg alert" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You read all ideas for '.$top_is[0]['i__title'].' & will be notified of future updates.</div></div>');
+                return redirect_message('/@'.$member_e['e__id'], '<div class="msg alert" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You discovered all ideas for '.$top_is[0]['i__title'].' & will be notified of future updates.</div></div>');
 
             }
         }
@@ -473,7 +473,7 @@ class X extends CI_Controller
         if(!$member_e){
             return redirect_message('/-4269?i__id='.$top_i__id);
         } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not added to your reads yet</div>', true);
+            return redirect_message('/'.$top_i__id);
         } elseif(!count($is)) {
             return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
         }
@@ -532,7 +532,7 @@ class X extends CI_Controller
 
         /*
          *
-         * Enables a Member to READ a IDEA
+         * Enables a Member to DISCOVER an IDEA
          * on the public web
          *
          * */
@@ -551,11 +551,11 @@ class X extends CI_Controller
         //Make sure we found it:
         if ( $top_i__id > 0 && !count($top_is) ) {
 
-            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
+            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
 
         } elseif ( !count($is) ) {
 
-            return redirect_message( ( $top_i__id > 0 ? '/'.$top_is[0]['i__id'] : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Idea ID ' . $i__id . ' not found</div>');
+            return redirect_message( ( $top_i__id > 0 ? '/'.$top_is[0]['i__id'] : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Idea ID ' . $i__id . ' not found</div>');
 
         } elseif($top_i__id > 0 && !in_array($top_is[0]['i__type'], $this->config->item('n___7355') /* PUBLIC */)){
 
@@ -592,10 +592,10 @@ class X extends CI_Controller
         $member_e = superpower_unlocked();
 
         if($member_e) {
-            //VIEW READ
+            //VIEW DISCOVERY
             $this->X_model->create(array(
                 'x__source' => $member_e['e__id'],
-                'x__type' => 7610, //MEMBER VIEWED READ
+                'x__type' => 7610, //MEMBER VIEWED DISCOVERY
                 'x__left' => ( $top_i__id > 0 ? $top_is[0]['i__id'] : 0 ),
                 'x__right' => $is[0]['i__id'],
                 'x__spectrum' => fetch_cookie_order('7610_' . $is[0]['i__id']),
@@ -704,13 +704,13 @@ class X extends CI_Controller
         //Delete previous answer(s):
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //READ COIN
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
             'x__left' => $is[0]['i__id'],
             'x__source' => $member_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Transaction Removed
-            ), $member_e['e__id'], 12129 /* READ ANSWER DELETED */);
+            ), $member_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
         }
 
         //Save new answer:
@@ -772,13 +772,13 @@ class X extends CI_Controller
         //Delete previous answer(s):
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //READ COIN
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
             'x__left' => $is[0]['i__id'],
             'x__source' => $member_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Transaction Removed
-            ), $member_e['e__id'], 12129 /* READ ANSWER DELETED */);
+            ), $member_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
         }
 
         //Save new answer:
@@ -846,7 +846,7 @@ class X extends CI_Controller
         if(count($progress_x) > 0){
 
             //Yes they did have some:
-            $message = 'Deleted all '.count($progress_x).' reads';
+            $message = 'Deleted all '.count($progress_x).' discoveries';
 
             //Log transaction:
             $clear_all_x = $this->X_model->create(array(
@@ -860,7 +860,7 @@ class X extends CI_Controller
                 $this->X_model->update($progress_x['x__id'], array(
                     'x__status' => 6173, //Transaction Removed
                     'x__reference' => $clear_all_x['x__id'], //To indicate when it was deleted
-                ), $u_id, 6415 /* Reset All reads */);
+                ), $u_id, 6415 /* Reset All discoveries */);
             }
 
         } else {
@@ -904,7 +904,7 @@ class X extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Top Idea not in your reads',
+                'message' => 'Top Idea not in your discoveries',
             ));
 
         }
@@ -959,7 +959,7 @@ class X extends CI_Controller
          * When members indicate they want to stop
          * a IDEA this function saves the changes
          * necessary and delete the idea from their
-         * reads.
+         * discoveries.
          *
          * */
 
@@ -1024,7 +1024,7 @@ class X extends CI_Controller
             ));
         }
 
-        //Update the order of their reads:
+        //Update the order of their discoveries:
         $updated = 0;
         $results = array();
         foreach($_POST['new_x_order'] as $x__spectrum => $x__id){

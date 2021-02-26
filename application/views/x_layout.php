@@ -23,14 +23,14 @@ $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
 $x_completes = ($top_i__id ? $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //READ COMPLETE
+    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
     'x__source' => $x__source,
     'x__left' => $i_focus['i__id'],
 )) : array() );
-$in_my_reads = ( $top_i__id && $top_i__id==$i_focus['i__id'] );
+$in_my_discoveries = ( $top_i__id && $top_i__id==$i_focus['i__id'] );
 $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$is_readable = true;
+$is_discovarable = true;
 $i_stats = i_stats($i_focus['i__metadata']);
 
 
@@ -66,7 +66,7 @@ if($top_i__id){
         $unlocked_connections = $this->X_model->fetch(array(
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //READ EXPANSIONS
+            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
             'x__right' => $i_focus['i__id'],
             'x__source' => $x__source,
         ), array('x__left'), 1);
@@ -75,9 +75,9 @@ if($top_i__id){
 
             //They previously have unlocked a path here!
 
-            //Determine READ COIN type based on it's connection type's parents that will hold the appropriate read coin.
+            //Determine DISCOVERY COIN type based on it's connection type's parents that will hold the appropriate read coin.
             $x_completion_type_id = 0;
-            foreach($this->config->item('e___12327') /* READ UNLOCKS */ as $e__id => $m2){
+            foreach($this->config->item('e___12327') /* DISCOVERY UNLOCKS */ as $e__id => $m2){
                 if(in_array($unlocked_connections[0]['x__type'], $m2['m__profile'])){
                     $x_completion_type_id = $e__id;
                     break;
@@ -141,7 +141,7 @@ if($top_i__id){
 
             foreach($top_startable as $start_i){
                 //OPEN TO REGISTER
-                $is_readable = false;
+                $is_discovarable = false;
                 $go_next_url = '/'.$start_i['i__id'];
                 break; //Ignore other possible pathways
             }
@@ -158,7 +158,7 @@ if($top_i__id){
 
 
 
-//PREVIOUS READS
+//PREVIOUS DISCOVERIES
 if($top_i__id){
     echo '<div class="row">';
     foreach($this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']) as $sitemap_i){
@@ -251,7 +251,7 @@ if($top_i__id) {
     $unlocked_x = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        'x__type' => 6140, //READ UNLOCK LINK
+        'x__type' => 6140, //DISCOVERY UNLOCK LINK
         'x__source' => $x__source,
         'x__left' => $i_focus['i__id'],
     ), array('x__right'), 0);
@@ -298,13 +298,13 @@ if($top_i__id) {
             //Mark this as complete since there is no child to choose from:
             if (!count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //READ COMPLETE
+                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                 'x__source' => $x__source,
                 'x__left' => $i_focus['i__id'],
             )))) {
 
                 array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i_focus, array(
-                    'x__type' => 4559, //READ MESSAGES
+                    'x__type' => 4559, //DISCOVERY MESSAGES
                     'x__source' => $x__source,
                 )));
 
@@ -323,7 +323,7 @@ if($top_i__id) {
                 //See if this answer was seleted:
                 if (count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //READ IDEA LINK
+                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY IDEA LINK
                     'x__left' => $i_focus['i__id'],
                     'x__right' => $x['i__id'],
                     'x__source' => $x__source,
@@ -342,7 +342,7 @@ if($top_i__id) {
                 echo '<div class="doclear">&nbsp;</div>';
 
                 //EDIT ANSWER:
-                echo '<div class="margin-top-down btn-five"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__icon'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
+                echo '<div class="margin-top-down btn-five"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__icon'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -380,7 +380,7 @@ if($top_i__id) {
                 //Has this been previously selected?
                 $previously_selected = count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //READ EXPANSIONS
+                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i_focus['i__id'],
                     'x__right' => $next_i['i__id'],
                     'x__source' => $x__source,
@@ -416,10 +416,10 @@ if($top_i__id) {
             if (count($x_selects) > 0) {
 
                 //Cancel:
-                echo '<div class="inline-block margin-top-down btn-five"><a class="btn btn-read" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__icon'] . '</a></div>';
+                echo '<div class="inline-block margin-top-down btn-five"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__icon'] . '</a></div>';
 
                 //Save Answers:
-                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-read" href="javascript:void(0);" onclick="x_select(\'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__icon'] . '</a></div>';
+                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__icon'] . '</a></div>';
 
             }
 
@@ -429,7 +429,7 @@ if($top_i__id) {
 
     } elseif (in_array($i_focus['i__type'], $this->config->item('n___4559'))) {
 
-        //READ ONLY
+        //DISCOVERY ONLY
         echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e, ( count($is_next) > 1 ? view_i_time($i_stats, true) : '' ));
 
     } elseif ($i_focus['i__type'] == 6683) {
@@ -478,7 +478,7 @@ if($top_i__id) {
         }
 
         //UPLOAD BUTTON:
-        echo '<div class="margin-top-down"><label class="btn btn-read inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__icon'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
+        echo '<div class="margin-top-down"><label class="btn btn-discover inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__icon'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
 
 
         echo '<div class="doclear">&nbsp;</div>';
@@ -523,12 +523,12 @@ echo '</div>'; //CLOSE CONTAINER
 
 if(!$top_i__id){
 
-    $read_e = ( $is_readable ? 4235 : 14022 );
+    $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
     //Get Started
     echo '<div class="container light-bg">';
-    echo '<div class="read-controller">';
-    echo '<div><a class="controller-nav btn btn-lrg btn-read go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$read_e]['m__title'].' '.$e___11035[$read_e]['m__icon'].'</a></div>';
+    echo '<div class="discover-controller">';
+    echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__icon'].'</a></div>';
     echo '</div>';
     echo '</div>';
 
@@ -547,7 +547,7 @@ if(!$top_i__id){
 
         $control_btn = '';
 
-        if($e__id==13877 && $top_i__id && !$in_my_reads){
+        if($e__id==13877 && $top_i__id && !$in_my_discoveries){
 
             //Is Saved already by this member?
             $is_saves = $this->X_model->fetch(array(
@@ -581,7 +581,7 @@ if(!$top_i__id){
 
     if($buttons_found > 0){
         echo '<div class="container light-bg">';
-        echo '<div class="read-controller">';
+        echo '<div class="discover-controller">';
         echo $buttons_ui;
         echo '</div>';
         echo '</div>';

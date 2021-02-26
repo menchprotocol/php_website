@@ -201,7 +201,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="notify_e_delete hidden">
 
                             <input type="hidden" id="e_x_count" value="0" />
-                            <div class="msg alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Saving will delete source & <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
+                            <div class="msg alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete source & <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
 
                         </div>
 
@@ -228,7 +228,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </select>
 
                         <div class="notify_unx_e hidden">
-                            <div class="msg alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle read"></i></span>Saving will remove source</div>
+                            <div class="msg alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will remove source</div>
                         </div>
 
 

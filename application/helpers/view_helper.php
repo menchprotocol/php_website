@@ -66,7 +66,7 @@ function view_db_field($field_name){
 }
 
 
-function view_x__message($x__message, $x__type, $full_message = null, $is_read_mode = false)
+function view_x__message($x__message, $x__type, $full_message = null, $is_discovery_mode = false)
 {
 
     /*
@@ -91,7 +91,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $is_read_m
 
     } elseif ($x__type == 4260 /* Image URL */) {
 
-        return '<img '.( $is_read_mode ? ' src="' . $x__message . '" class="content-image" ' : ' data-src="' . $x__message . '" src="/img/logos/'.get_domain_setting(0).'.svg" class="content-image lazyimage" ' ).' alt="IMAGE" />';
+        return '<img '.( $is_discovery_mode ? ' src="' . $x__message . '" class="content-image" ' : ' data-src="' . $x__message . '" src="/img/logos/'.get_domain_setting(0).'.svg" class="content-image lazyimage" ' ).' alt="IMAGE" />';
 
     } elseif ($x__type == 4259 /* Audio URL */) {
 
@@ -228,7 +228,7 @@ function view_i_title($i, $common_prefix = null, $is_cover = false){
 }
 
 
-function view_i_note($x__type, $is_read_mode, $x, $note_e = false)
+function view_i_note($x__type, $is_discovery_mode, $x, $note_e = false)
 {
 
     /*
@@ -248,7 +248,7 @@ function view_i_note($x__type, $is_read_mode, $x, $note_e = false)
     $color_code = trim(extract_icon_color($e___4485[$x__type]['m__icon']));
     $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
     $referenced_ideas = (in_array($x__type, $CI->config->item('n___13550')));
-    $editable_read = (in_array($x__type, $CI->config->item('n___14043')));
+    $editable_discovery = (in_array($x__type, $CI->config->item('n___14043')));
 
 
     //Build the HTML UI:
@@ -256,14 +256,14 @@ function view_i_note($x__type, $is_read_mode, $x, $note_e = false)
     $ui .= '<div class="list-group-item item'.$color_code.' is-msg note_sortable msg_e_type_' . $x['x__type'] . '" id="ul-nav-' . $x['x__id'] . '" x__id="' . $x['x__id'] . '">'; //title="'.$x['e__title'].' Posted On '.substr($x['x__time'], 0, 19).'" data-toggle="tooltip" data-placement="top"
     $ui .= '<div style="overflow:visible !important;">';
 
-    if($editable_read && isset($x['e__id'])){
+    if($editable_discovery && isset($x['e__id'])){
         //Show member:
         $ui .= view_e(14672, $x);
     }
 
     //Type & Delivery Method:
     $ui .= '<div class="text_message edit-off" id="msgbody_' . $x['x__id'] . '">';
-    $ui .= $CI->X_model->message_view($x['x__message'], $is_read_mode, $member_e, $x['x__right']);
+    $ui .= $CI->X_model->message_view($x['x__message'], $is_discovery_mode, $member_e, $x['x__right']);
     $ui .= '</div>';
 
     //Editing menu:
@@ -397,7 +397,7 @@ function view_x($x, $is_x__reference = false)
     $e___4341 = $CI->config->item('e___4341'); //Transaction Table
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $member_e = superpower_unlocked();
-    $superpower_css_12701 = superpower_active(12701); //SUPERPOWER OF READ GLASSES
+    $superpower_css_12701 = superpower_active(12701); //SUPERPOWER OF DISCOVERY GLASSES
     $add_e = $CI->E_model->fetch(array(
         'e__id' => $x['x__source'],
     ));
@@ -494,7 +494,7 @@ function view_x($x, $is_x__reference = false)
 
             } elseif(in_array(4367 , $m['m__profile'])){
 
-                //PARENT READ
+                //PARENT DISCOVERY
                 $xs = $CI->X_model->fetch(array('x__id' => $x[$var_index[$e__id]]));
 
                 if(count($xs)){
@@ -661,7 +661,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
     } elseif($x__type==6255){
 
-        //READS
+        //DISCOVERIES
         $join_objects = array('x__left');
         $limit = view_memory(6404,11064);
 
@@ -669,15 +669,15 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             $order_columns = array('x__spectrum' => 'ASC');
             $query_filters = array(
                 'x__source' => $e__id,
-                'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //MY READS
+                'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             );
         } else {
-            $order_columns = array('x__id' => 'DESC'); //LATEST READS
+            $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
             $query_filters = array(
                 'x__source' => $e__id,
-                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //READ COIN
+                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             );
@@ -744,7 +744,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //READ COIN
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
             'x__left' => $i['i__id'],
         );
 
@@ -977,11 +977,11 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $is_next, $member_e, $r
     $ui .= '<div class="doclear">&nbsp;</div>';
 
     $ui .= '<div class="row">';
-    $found_next_read = false;
+    $found_next_discovery = false;
     foreach($is_next as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
-        if($in_my_x && $x__type==12211 && !$found_next_read && $completion_rate['completion_percentage']<100){
-            $found_next_read = true;
+        if($in_my_x && $x__type==12211 && !$found_next_discovery && $completion_rate['completion_percentage']<100){
+            $found_next_discovery = true;
             $x__type_to_pass = 14455; //The Immediate Next
         } else {
             $x__type_to_pass = $x__type;
@@ -996,7 +996,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $is_next, $member_e, $r
 }
 
 
-function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_empty_error = false){
+function view_i_note_list($x__type, $is_discovery_mode, $i, $i_notes, $e_of_i, $show_empty_error = false){
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
@@ -1041,7 +1041,7 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
                 $tab_ui .= '<div id="current_text_'.$x__type.'" class="hidden">'.$textarea_content.'</div>';
 
                 //Response result:
-                $tab_ui .= '<div class="note_error_'.$x__type.' hideIfEmpty read msg alert alert-danger indifferent" style="margin:8px 0;"></div>';
+                $tab_ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger indifferent" style="margin:8px 0;"></div>';
 
 
                 //CONTROLLER
@@ -1090,7 +1090,7 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
                 //PREVIEW
                 $tab_ui .= '<div class="list-group '.( $e_of_i ? ' editor_preview ' : '' ).' editor_preview_'.$x__type.'">';
                 foreach($i_notes as $i_note) {
-                    $tab_ui .= $CI->X_model->message_view($i_note['x__message'], $is_read_mode, $member_e, $i['i__id']);
+                    $tab_ui .= $CI->X_model->message_view($i_note['x__message'], $is_discovery_mode, $member_e, $i['i__id']);
                 }
                 $tab_ui .= '</div>';
 
@@ -1121,7 +1121,7 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
 
         //List current notes:
         foreach($i_notes as $i_note) {
-            $ui .= view_i_note($x__type, $is_read_mode, $i_note, ($i_note['x__source']==$member_e['e__id'] || $e_of_i));
+            $ui .= view_i_note($x__type, $is_discovery_mode, $i_note, ($i_note['x__source']==$member_e['e__id'] || $e_of_i));
         }
 
         //ADD NEW:
@@ -1136,7 +1136,7 @@ function view_i_note_list($x__type, $is_read_mode, $i, $i_notes, $e_of_i, $show_
             $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea regular_editor dotransparent algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" style="margin-top: 10px;" placeholder="'.$e___4485[$x__type]['m__title'].'..."></textarea>';
 
             //Response result:
-            $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty read msg alert alert-danger" style="margin:8px 0;"></div>';
+            $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
 
 
             //CONTROLLER
@@ -1592,7 +1592,7 @@ function view_i_select($i, $x__source, $previously_selected){
         $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
     }
 
-    $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . ' read"><i class="fad fa-check-circle read"></i></div>';
+    $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . ' discover"><i class="fad fa-check-circle discover"></i></div>';
 
 
     //PROGRESS?
@@ -1633,7 +1633,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $e_of_i = e_of_i($i['i__id']);
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
-    $read_mode = in_array($x__type, $CI->config->item('n___14378')); //READ MODE
+    $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $idea_editing = in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
     $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__id > 0;
     $is_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];
@@ -1645,7 +1645,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if($load_completion){ //Load Completion Bar
         if(is_null($completion_rate)){
             $completion_rate['completion_percentage'] = 0; //Assume no progress
-            if($focus_e && $read_mode){
+            if($focus_e && $discovery_mode){
                 $completion_rate = $CI->X_model->completion_progress($focus_e['e__id'], $i);
             }
         }
@@ -1658,7 +1658,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12700 = superpower_active(12700, true);
     $previous_is_lock = ($previous_i && in_array($previous_i['i__type'], $CI->config->item('n___14488')));
-    $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($previous_is_lock && $read_mode);
+    $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($previous_is_lock && $discovery_mode);
     $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
     $is_soft_lock = $locking_enabled && ($is_hard_lock || $previous_is_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
     $is_sortable = !$is_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
@@ -1674,7 +1674,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     } elseif(in_array($x__type, $CI->config->item('n___14742')) && $previous_i && $user_session){
         //Complete if not already:
         $href = '/x/complete_next/'.$top_i__id.'/'.$previous_i['i__id'].'/'.$i['i__id'];
-    } elseif($read_mode){
+    } elseif($discovery_mode){
         $href = '/'.$top_i__id.'/'.$i['i__id'];
     } else {
         $href = '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
@@ -1696,7 +1696,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_cover col-md-4 col-6 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $read_mode ? ' coin-read ' : ' coin-idea ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
+    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $discovery_mode ? ' coin-discover ' : ' coin-idea ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
     //ICON?
     if($show_custom_image){
@@ -1914,7 +1914,7 @@ function view_x_progress($completion_rate, $i){
     }
 
     return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$completion_rate['completion_percentage'].'% COMPLETED"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
-    //: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS READ
+    //: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERY
     //data-toggle="tooltip" data-placement="top"
 
 }
@@ -1982,7 +1982,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
         $box_items_list .= '<span class="inline-block e__type_' . $e['e__id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$e['e__type']]['m__title'].' @'.$e['e__type'].'">' . $e___6177[$e['e__type']]['m__icon'] . '</span>&nbsp;</span>';
     }
 
-    //READ STATUS
+    //DISCOVERY STATUS
     if($x__id > 0 && !in_array($e['x__status'], $CI->config->item('n___7359'))){
         $e___6186 = $CI->config->item('e___6186'); //Transaction Status
         $box_items_list .= '<span class="inline-block x__status_' . $x__id .'"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$e['x__status']]['m__title'].' @'.$e['x__status'].'">' . $e___6186[$e['x__status']]['m__icon'] . '</span>&nbsp;</span>';
@@ -2056,7 +2056,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
 
-    //READ TOOLBAR
+    //DISCOVERY TOOLBAR
     if($is_x_progress && superpower_active(13758, true)){
 
         $ui .= '<div class="message_content paddingup x__message block '.superpower_active(13758).'">';
@@ -2090,7 +2090,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
         } elseif($is_x_progress && strlen($e['x__message'])){
 
-            //READ PROGRESS
+            //DISCOVERY PROGRESS
             $ui .= '<div class="message_content paddingup" style="margin-left: 0;">';
             $ui .= $CI->X_model->message_view($e['x__message'], false);
             $ui .= '</div>';
@@ -2118,7 +2118,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $ui  = '<div '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="i_cover col-md-4 col-6 no-padding e_line_'.$e['e__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $is_hard_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_hard_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_hard_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $read_mode ? ' coin-read ' : ' coin-source ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
+    $ui .= ( $is_hard_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $discovery_mode ? ' coin-discover ' : ' coin-source ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
     //ICON?
     if($show_custom_image){
