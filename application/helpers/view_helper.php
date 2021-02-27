@@ -37,12 +37,12 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
     $ui = '<div class="inline-block mini-font">'; //css__title grey
 
     if(!$micro_sign && $i_stats['i___6170']>0){
-        $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' Idea'.view__s($i_stats['i___6170']).'<span class="mid-range">&middot;</span>';
+        $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' idea'.view__s($i_stats['i___6170']).'<span class="mid-range">&middot;</span>';
     }
 
     if($is_micro){
         //SECONDS
-        $ui .= ( $has_notable_diff && !$micro_sign ? $i_stats['i___6161'].'<span class="mid-range">-</span>' : '' ).$i_stats['i___6162'].( $micro_sign ? '"' : ' SEC.' );
+        $ui .= ( $has_notable_diff && !$micro_sign ? $i_stats['i___6161'].'<span class="mid-range">-</span>' : '' ).$i_stats['i___6162'].( $micro_sign ? '"' : ' sec' );
     } else {
         //MINUTES
         $ui .= ( $has_notable_diff && !$micro_sign ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>' : '' ).round_minutes($i_stats['i___6162']).( $micro_sign ? '\'' : ' min' );
