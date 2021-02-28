@@ -1744,7 +1744,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Action Bar:
-    $ui .= '<div class="row hideIfEmpty toprow grey">';
+    $ui .= '<div class="row hideIfEmpty toprow '.( $discovery_mode ? ' discover ' : ' idea ' ).'">';
 
     //CENTER
     $center_btn = null;
