@@ -1635,24 +1635,20 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $user_session = superpower_unlocked();
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $idea_editing = in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
-    $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__id > 0;
+    $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__id > 0 && $focus_e && $discovery_mode;
     $is_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];
 
     if(!$focus_e){
         $focus_e = $user_session;
     }
 
-    if($load_completion){ //Load Completion Bar
-        if(is_null($completion_rate)){
-            $completion_rate['completion_percentage'] = 0; //Assume no progress
-            if($focus_e && $discovery_mode){
-                $completion_rate = $CI->X_model->completion_progress($focus_e['e__id'], $i);
-            }
-        }
+    if($load_completion && is_null($completion_rate)){ //Load Completion Bar
+        $completion_rate = $CI->X_model->completion_progress($focus_e['e__id'], $i);
     } else {
-        //Completion rate not supported:
-        $completion_rate['completion_percentage'] = 0; //Assume no progress
+        //set zero:
+        $completion_rate['completion_percentage'] = 0;
     }
+
 
 
     $superpower_10939 = superpower_active(10939, true);
@@ -1787,7 +1783,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Coin Face
-    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $discovery_mode ? ' coin-discover ' : ' coin-idea ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
+    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $completion_rate['completion_percentage']>=100 ? ' coin-discover ' : ' coin-idea ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
     //ICON?
     if($show_custom_image){
@@ -1801,7 +1797,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //Title Cover
     $ui .= '<div class="cover-content">';
-    if($load_completion){
+    if($load_completion && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
 
