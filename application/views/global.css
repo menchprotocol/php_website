@@ -1930,7 +1930,7 @@ i, .btn .show-max {
     position: absolute;
 }
 .cover-content{
-    bottom: -64px;
+    bottom: -29px;
     left: 0;
     padding: 0;
     width: 100% !important;
@@ -1956,7 +1956,7 @@ i, .btn .show-max {
 
 
 .i_cover{
-    margin: 10px 0 110px !important;
+    margin: 8px 0 89px !important;
 }
 
 .cover-content .inner-content {
@@ -1967,7 +1967,6 @@ i, .btn .show-max {
     display: block;
     text-align: center;
     border-radius: 5px;
-    min-height: 89px;
     vertical-align: middle;
 }
 .cover-link {
@@ -2031,6 +2030,7 @@ i, .btn .show-max {
     position: absolute;
     top: 0;
     width: 100%;
+    z-index: 9999;
 }
 .toprow .col{
     padding: 0px;
