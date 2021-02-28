@@ -1696,7 +1696,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_cover col-md-4 col-6 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="coin-idea black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
+    $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $discovery_mode ? ' coin-discover ' : ' coin-idea ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
     //ICON?
     if($show_custom_image){
@@ -1943,6 +1943,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $superpower_12706 = superpower_active(12706, true);
     $superpower_13422 = superpower_active(13422, true);
     $superpower_12701 = superpower_active(12701, true);
+    $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
 
     $control_enabled = in_array($x__type, $CI->config->item('n___14696'));
     $is_sortable = in_array($x__type, $CI->config->item('n___13911'));
@@ -2124,7 +2125,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $ui  = '<div '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="i_cover col-md-4 col-6 no-padding e_line_'.$e['e__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $is_hard_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_hard_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_hard_lock ? '<div' : '<a href="'.$href.'"' ).' class="coin-source black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
+    $ui .= ( $is_hard_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $discovery_mode ? ' coin-discover ' : ' coin-source ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
     //ICON?
     if($show_custom_image){
