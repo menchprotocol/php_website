@@ -1943,7 +1943,7 @@ i, .btn .show-max {
 .coin-block{
     position: absolute;
     width: 100%;
-    top:-30px;
+    top:-23px;
 }
 .inner-no-border{
     border-bottom-left-radius: 0 !important;
@@ -2024,9 +2024,9 @@ i, .btn .show-max {
 
 .toprow{
     position: absolute;
-    top: 0;
+    top: 5px;
     width: 100%;
-    z-index: 9999;
+    z-index: 999;
 }
 .toprow .col{
     padding: 0px;

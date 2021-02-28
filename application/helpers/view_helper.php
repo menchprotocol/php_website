@@ -1744,7 +1744,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Action Bar:
-    $ui .= '<div class="row hideIfEmpty toprow">';
+    $ui .= '<div class="row hideIfEmpty toprow grey">';
 
     //CENTER
     $center_btn = null;
@@ -2153,7 +2153,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
 
-    $ui .= '<div class="row hideIfEmpty toprow">';
+    $ui .= '<div class="row hideIfEmpty toprow grey">';
 
 
 
