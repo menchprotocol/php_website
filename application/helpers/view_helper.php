@@ -1809,11 +1809,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= '<div class="inner-content '.( $show_coins ? ' inner-no-border ' : '' ).'">';
 
 
-    //IDEAs and Time
-    $view_i_time = view_i_time($i_stats);
-    if($view_i_time){
-        $ui .= '<div class="cover-text"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
-    }
 
     //TITLE
     if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
@@ -1826,6 +1821,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
+    //IDEAs and Time
+    $view_i_time = view_i_time($i_stats);
+    if($view_i_time){
+        $ui .= '<div class="cover-text"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
+    }
 
 
     //Message
