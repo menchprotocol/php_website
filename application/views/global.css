@@ -1940,14 +1940,10 @@ i, .btn .show-max {
     overflow-y: auto;
     display: block;
 }
-.adj-coin{
-    margin: 89px 5px -107px !important;
-}
 .coin-block{
-    margin: 0px 5px -43px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    min-height: 43px;
+    position: absolute;
+    width: 100%;
+    top:-30px;
 }
 .inner-no-border{
     border-bottom-left-radius: 0 !important;
