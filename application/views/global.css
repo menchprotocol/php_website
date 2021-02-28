@@ -2031,7 +2031,6 @@ i, .btn .show-max {
     position: absolute;
     top: 0;
     width: 100%;
-    display: block !important;
 }
 .toprow .col{
     padding: 0px;
