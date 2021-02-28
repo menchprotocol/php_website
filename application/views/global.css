@@ -1986,7 +1986,7 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    padding: 3px 0 5px;
+    padding: 0 0 5px;
 }
 .cover-link {
     padding-top: 100%;
@@ -2028,8 +2028,10 @@ i, .btn .show-max {
 }
 
 .toprow{
-    padding-bottom: 3px;
-    padding-top: 2px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: block !important;
 }
 .toprow .col{
     padding: 0px;

@@ -1696,6 +1696,52 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="i_cover col-md-4 col-6 no-padding i_line_'.$i['i__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $is_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
+
+
+    //Action Bar:
+    $ui .= '<div class="row hideIfEmpty toprow">';
+
+    //CENTER
+    $center_btn = null;
+    if($is_soft_lock){
+        //LOCKED
+        $center_btn .= '<div class="col center"><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
+    } elseif($idea_editing){
+        $center_btn .= '<div class="col center"><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
+    } elseif(in_array($x__type, $CI->config->item('n___14452'))){
+        //Show Self Icon
+        $center_btn .= '<div class="col center"><span class="icon-block-xs" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</span></div>';
+    } elseif($completion_rate['completion_percentage']>=100){
+        //100% COMPLETE
+        //$center_btn .= '<div class="col doleft"><span class="icon-block-xs" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div></div>';
+    }
+
+    //LEFT
+    if($is_sortable && $control_enabled){
+        //SORTABLE
+        $ui .= '<div class="col doleft"><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
+    } elseif($center_btn){
+        $ui .= '<div class="col doleft">&nbsp;</div>';
+    }
+
+    if($center_btn){
+        $ui .= $center_btn;
+    }
+
+    //RIGHT
+    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
+        //UNLINK
+        $ui .= '<div class="col doright"><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
+    } elseif($center_btn){
+        $ui .= '<div class="col doright">&nbsp;</div>';
+    }
+
+    $ui .= '</div>';
+
+
+
+
+    //Coin Face
     $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $discovery_mode ? ' coin-discover ' : ' coin-idea ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
     //ICON?
@@ -1747,50 +1793,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             $ui .= $message_input;
         }
     }
-
-
-
-
-
-    $ui .= '<div class="row hideIfEmpty toprow">';
-
-    //CENTER
-    $center_btn = null;
-    if($is_soft_lock){
-        //LOCKED
-        $center_btn .= '<div class="col center"><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
-    } elseif($idea_editing){
-        $center_btn .= '<div class="col center"><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
-    } elseif(in_array($x__type, $CI->config->item('n___14452'))){
-        //Show Self Icon
-        $center_btn .= '<div class="col center"><span class="icon-block-xs" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</span></div>';
-    } elseif($completion_rate['completion_percentage']>=100){
-        //100% COMPLETE
-        //$center_btn .= '<div class="col doleft"><span class="icon-block-xs" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div></div>';
-    }
-
-    //LEFT
-    if($is_sortable && $control_enabled){
-        //SORTABLE
-        $ui .= '<div class="col doleft"><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
-    } elseif($center_btn){
-        $ui .= '<div class="col doleft">&nbsp;</div>';
-    }
-
-    if($center_btn){
-        $ui .= $center_btn;
-    }
-
-    //RIGHT
-    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-        //UNLINK
-        $ui .= '<div class="col doright"><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
-    } elseif($center_btn){
-        $ui .= '<div class="col doright">&nbsp;</div>';
-    }
-
-    $ui .= '</div>';
-
 
 
 
