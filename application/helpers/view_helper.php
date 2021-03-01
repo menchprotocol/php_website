@@ -765,7 +765,8 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
         }
 
         $e___14874 = $CI->config->item('e___14874'); //COINS
-        $ui = '<div class="dropdown inline-block" title="'.$e___11035[13542]['m__title'].'">';
+
+        $ui = '<div class="dropdown inline-block">';
         $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>'.view_number($count_query).'</button>';
         $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
         if($x__type==12274){
