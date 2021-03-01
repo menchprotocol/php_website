@@ -1756,9 +1756,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $button_count += 2;
     }
 
-    //UNLINK
-    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-        $button_ui .= '<div><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
+    //LOCKED
+    if($is_any_lock){
+        $button_ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
         $button_count += 1;
     }
 
@@ -1768,16 +1768,16 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $button_count += 1;
     }
 
-    //LOCKED
-    if($is_any_lock){
-        $button_ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
+    //UNLINK
+    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
+        $button_ui .= '<div><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
         $button_count += 1;
     }
 
 
     if($button_count > 0){
         $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
-        for($c=0; $c<(6-$button_count);$c++){
+        for($c=0; $c<(5-$button_count);$c++){
             $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
         }
         $ui .= $button_ui;
