@@ -1950,6 +1950,8 @@ i, .btn .show-max {
 }
 .coin-cover>div {
     padding: 1px 0;
+    height: 25px;
+    vertical-align: middle;
 }
 .coin-cover-left{
     left:2px;

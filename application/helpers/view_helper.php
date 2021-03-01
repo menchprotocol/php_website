@@ -1743,46 +1743,39 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Action Bar:
-    $button_ui = '';
-    $button_count = 0;
+    $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
+
+    //SORTABLE
+    if($is_sortable && $control_enabled){
+        $ui .= '<div><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
+        $button_count += 1;
+    }
+
+    //UNLINK
+    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
+        $ui .= '<div><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
+        $button_count += 1;
+    }
 
     if($idea_editing){
         //IDAE TYPE:
-        $button_ui .= '<div>'.view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']).'</div>';
+        $ui .= '<div>'.view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']).'</div>';
 
         //COIN COVER
-        $button_ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
+        $ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
 
         $button_count += 2;
     }
 
     //LOCKED
     if($is_any_lock){
-        $button_ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
-        $button_count += 1;
-    }
-
-    //SORTABLE
-    if($is_sortable && $control_enabled){
-        $button_ui .= '<div><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
-        $button_count += 1;
-    }
-
-    //UNLINK
-    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-        $button_ui .= '<div><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
+        $ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
         $button_count += 1;
     }
 
 
-    if($button_count > 0){
-        $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
-        for($c=0; $c<(6-$button_count);$c++){
-            $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-        }
-        $ui .= $button_ui;
-        $ui .= '</div>';
-    }
+
+    $ui .= '</div>';
 
 
 
