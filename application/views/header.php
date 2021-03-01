@@ -6,7 +6,7 @@ $i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13479 = $this->config->item('e___13479');
 
-$superpower_10939 = superpower_active(10939, true);
+$superpower_10939 = $member_e && superpower_active(10939, true);
 $current_coin = current_coin();
 $base_source = get_domain_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
@@ -16,7 +16,6 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
 
     <meta charset="utf-8" />
 
-
     <meta name="theme-color" content="#f0f0f0">
     <link rel="icon" href="/img/logos/<?= $base_source ?>.svg">
     <link rel="mask-icon" href="/img/logos/<?= $base_source ?>.svg" color="#000000">
@@ -24,37 +23,7 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title : get_domain('m__title') ) ?></title>
 
-    <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "59riunqvfm");
-    </script>
-    <script type="text/javascript">
-        <?php
-        //MEMBER VARIABLES
-        echo ' var js_session_superpowers_activated = ' . json_encode( ($member_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
-        echo ' var superpower_js_10939 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(10939, $this->session->userdata('session_superpowers_activated'))) . '; ';
-        echo ' var superpower_js_12701 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(12701, $this->session->userdata('session_superpowers_activated'))) . '; ';
-        echo ' var superpower_js_13422 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(13422, $this->session->userdata('session_superpowers_activated'))) . '; ';
-
-        echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
-        echo ' var js_pl_name = \'' . ( $member_e ? $member_e['e__title'] : '' ) . '\'; ';
-        echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
-        echo ' var base_source = ' . $base_source . '; ';
-
-        //JAVASCRIPT PLATFORM MEMORY
-        foreach($this->config->item('e___11054') as $x__type => $m){
-            if(is_array($this->config->item('e___'.$x__type)) && count($this->config->item('e___'.$x__type))){
-                echo ' var js_e___'.$x__type.' = ' . json_encode($this->config->item('e___'.$x__type)) . ';';
-                echo ' var js_n___'.$x__type.' = ' . json_encode($this->config->item('n___'.$x__type)) . ';';
-            }
-        }
-        ?>
-    </script>
-
-
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 
@@ -62,6 +31,7 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@15.1.1/dist/lazyload.min.js"></script>
     <script type="module">
+
         import { EmojiButton } from 'https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@latest/dist/index.min.js';
 
         $(".emoji-input").each(function () {
@@ -85,6 +55,7 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
             });
             trigger.addEventListener('click', () => picker.togglePicker(trigger));
         });
+
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.js"></script>
@@ -101,17 +72,40 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
-
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
     <link href="/application/views/global.css?v=<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
-    <script type="text/javascript">
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-92774608-1');
-    </script>
+    <?php
+    echo '<script type="text/javascript">';
+    //MEMBER VARIABLES
+    echo ' var js_session_superpowers_activated = ' . json_encode( ($member_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
+    echo ' var superpower_js_10939 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(10939, $this->session->userdata('session_superpowers_activated'))) . '; ';
+    echo ' var superpower_js_12701 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(12701, $this->session->userdata('session_superpowers_activated'))) . '; ';
+    echo ' var superpower_js_13422 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(13422, $this->session->userdata('session_superpowers_activated'))) . '; ';
+
+    echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
+    echo ' var js_pl_name = \'' . ( $member_e ? $member_e['e__title'] : '' ) . '\'; ';
+    echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
+    echo ' var base_source = ' . $base_source . '; ';
+
+    //JAVASCRIPT PLATFORM MEMORY
+    foreach($this->config->item('e___11054') as $x__type => $m){
+        if(is_array($this->config->item('e___'.$x__type)) && count($this->config->item('e___'.$x__type))){
+            echo ' var js_e___'.$x__type.' = ' . json_encode($this->config->item('e___'.$x__type)) . ';';
+            echo ' var js_n___'.$x__type.' = ' . json_encode($this->config->item('n___'.$x__type)) . ';';
+        }
+    }
+
+    echo '</script>';
+
+
+    echo '<style>';
+    if(!$superpower_10939){
+        //Don't show Source/Idea coin colors unless contributor:
+        echo ' .coin-source, .coin-idea { border: 0 !important; } ';
+    }
+    echo '</style>';
+    ?>
 
 </head>
 

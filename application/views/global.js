@@ -1,6 +1,22 @@
 
 
-function load_fullstory(){
+//Microsoft Clarity:
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "59riunqvfm");
+
+
+//Google Analytics
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-92774608-1');
+
+
+//Full Story
+if(js_pl_id > 1){ //Any user other than Shervin
     window['_fs_debug'] = false;
     window['_fs_host'] = 'fullstory.com';
     window['_fs_script'] = 'edge.fullstory.com/s/fs.js';
@@ -31,6 +47,7 @@ function load_fullstory(){
             profileURL: base_url+'/@'+js_pl_id
         });
     }
+
 }
 
 
@@ -333,11 +350,6 @@ $(document).ready(function () {
     set_autosize($('#sugg_note'));
     set_autosize($('.texttype__lg'));
     watch_for_note_e_clicks();
-
-    if(js_pl_id > 1){
-        //For any logged in member except shervin:
-        load_fullstory();
-    }
 
     $('.trigger_modal').click(function (e) {
         var note_type_id = parseInt($(this).attr('note_type_id'));
