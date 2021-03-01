@@ -744,6 +744,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
     } elseif($x__type==6255){
 
+        //DISCOVERIES
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
@@ -1863,7 +1864,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i['i__id'],
-        ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
+            'x__left !=' => $current_i,
+    ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
             $ui .= '<span class="icon-block-img"><a href="/~'.$previous_i['i__id'].'" data-toggle="tooltip" title="' . $previous_i['i__title'] . '" data-placement="bottom">' . $e___4737[$previous_i['i__type']]['m__icon'] . '</a></span> ';
         }
         $ui .= '</div>';
