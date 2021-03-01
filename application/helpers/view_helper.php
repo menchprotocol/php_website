@@ -1817,6 +1817,19 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= '<div class="inner-content '.( $show_coins ? ' inner-no-border ' : '' ).'">';
 
 
+    //Previous Ideas
+    $ui .= '<div class="hideIfEmpty">';
+    foreach($CI->X_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
+        'x__right' => $i['i__id'],
+        'x__left !=' => $current_i,
+    ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
+        $ui .= '<span class="icon-block-img"><a href="/~'.$previous_i['i__id'].'" data-toggle="tooltip" title="' . $previous_i['i__title'] . '" data-placement="bottom">' . $e___4737[$previous_i['i__type']]['m__icon'] . '</a></span> ';
+    }
+    $ui .= '</div>';
+
 
     //TITLE
     if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
@@ -1855,20 +1868,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         //Idea Toolbar
         $ui .= '<div class="center">';
-
-
-        //Previous Ideas
-        $ui .= '<div class="hideIfEmpty">';
-        foreach($CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__right' => $i['i__id'],
-            'x__left !=' => $current_i,
-    ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
-            $ui .= '<span class="icon-block-img"><a href="/~'.$previous_i['i__id'].'" data-toggle="tooltip" title="' . $previous_i['i__title'] . '" data-placement="bottom">' . $e___4737[$previous_i['i__type']]['m__icon'] . '</a></span> ';
-        }
-        $ui .= '</div>';
 
 
         //Idea Link Controller
