@@ -1934,7 +1934,7 @@ i, .btn .show-max {
     left: 0;
     padding: 0;
     width: 100% !important;
-    max-height: 104%;
+    max-height: 89%;
     position: absolute;
     overflow-x: hidden;
     overflow-y: auto;
@@ -1942,8 +1942,10 @@ i, .btn .show-max {
 }
 .coin-block{
     position: absolute;
-    width: 100%;
-    top:-26px;
+    top: 0;
+    left:0;
+    z-index: 999;
+    border-radius: 3px;
 }
 .inner-no-border{
     border-bottom-left-radius: 0 !important;
@@ -2024,9 +2026,11 @@ i, .btn .show-max {
 
 .toprow{
     position: absolute;
-    top: 5px;
-    width: 100%;
+    top: 0;
+    right: 0;
+    max-width: 80px;
     z-index: 999;
+    border-radius: 3px;
 }
 .toprow .col{
     padding: 0px;

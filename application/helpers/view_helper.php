@@ -971,7 +971,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $is_next, $member_e, $r
     }
     $ui .= '</div>';
     if($right_content){
-        $ui .= '<div class="pull-right" style="text-align: right; padding:13px 0 0 0;">'.$right_content.'</div>';
+        $ui .= '<div class="pull-right" style="text-align: right; padding:10px 0 0 0;">'.$right_content.'</div>';
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
@@ -1702,11 +1702,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //Coin Block
     if($show_coins){
 
-
-        $ui .= '<div class="row coin-block">';
-        $ui .= '<div class="col-4 doleft">'.view_coins_i(12274,  $i).'</div>';
-        $ui .= '<div class="col-4 center" '.( !$idea_editing ? ' style="margin-top: 2px;" ' : '' ).'>';
-
+        $ui .= '<div class="coin-block">';
+        $ui .= '<div>'.view_coins_i(12274,  $i).'</div>';
+        $ui .= '<div>';
 
         //Type Dropdown:
         $ui .= view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']);
@@ -1734,7 +1732,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         }
 
         $ui .= '</div>';
-        $ui .= '<div class="col-4 doright">'.view_coins_i(6255,  $i).'</div>';
+        $ui .= '<div>'.view_coins_i(6255,  $i).'</div>';
 
         $ui .= '</div>';
 
