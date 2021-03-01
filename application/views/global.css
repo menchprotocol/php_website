@@ -1945,15 +1945,19 @@ i, .btn .show-max {
     position: absolute;
     z-index: 999;
     border-radius: 5px;
-    padding: 3px;
 }
 .cover-top-left{
     top: 0;
     left:0;
+    padding: 3px 3px 3px 0px;
 }
 .cover-top-right{
     top: 0;
     right: 0;
+    padding: 0;
+}
+.cover-top-right>div{
+    padding: 3px 1px;
 }
 .inner-no-border{
     border-bottom-left-radius: 0 !important;
