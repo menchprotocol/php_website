@@ -1781,7 +1781,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if($button_count > 0){
         $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
         for($i=0; $i<(6-$button_count);$i++){
-            $ui .= '<div>&nbsp;</div>';
+            $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
         }
         $ui .= $button_ui;
         $ui .= '</div>';
