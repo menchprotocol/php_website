@@ -1944,20 +1944,16 @@ i, .btn .show-max {
 .coin-cover{
     position: absolute;
     border-radius: 5px;
-    z-index: 999;
-}
-.dropdown{
+    top: -47px;
 }
 .coin-cover div {
     padding: 1px 0;
 }
 .coin-cover-left{
-    top: 0;
     left:0;
     padding: 3px 3px 3px 0px;
 }
 .coin-cover-right{
-    top: 0;
     right: 0;
     padding: 0;
     max-width: 70px;
@@ -1973,7 +1969,7 @@ i, .btn .show-max {
 
 
 .i_cover{
-    margin:3px 0 44px !important;
+    margin:55px 0 34px !important;
 }
 
 .cover-content .inner-content {
