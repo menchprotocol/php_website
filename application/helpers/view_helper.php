@@ -721,37 +721,37 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     if($x__type==12274){
 
         //SOURCES
-        $query = $CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        $query_filters = array(
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i['i__id'],
             'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-        ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
+        );
+        $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
 
     } elseif($x__type==12273){
 
         //IDEAS
-        $query = $CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
+        $query_filters = array(
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i['i__id'],
-        ), array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
+        );
+        $query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
 
     } elseif($x__type==6255){
 
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
             'x__left' => $i['i__id'],
         );
-
         if(isset($_GET['load__e'])){
             $query_filters['x__source'] = intval($_GET['load__e']);
         }
-
         $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
 
@@ -759,11 +759,43 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
     //Return Results:
     if($append_coin_icon){
+
+        if(!$count_query){
+            return null;
+        }
+
         $e___14874 = $CI->config->item('e___14874'); //COINS
-        $e_icon = '<span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>';
-        $e_count = view_number($count_query);
-        return ( $count_query > 0 ? '<span title="'.$e___14874[$x__type]['m__title'].'" class="css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'">'.$e_icon.$e_count.'</span>' : null);
+        $ui = '<div class="dropdown inline-block" title="'.$e___11035[13542]['m__title'].'">';
+        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>'.view_number($count_query).'</button>';
+        $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
+        if($x__type==12274){
+            //SOURCES
+            $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
+            foreach($CI->X_model->fetch($query_filters, array('x__up'), 10, 0, array('x__type' => 'ASC', 'x__spectrum' => 'ASC')) as $source_e) {
+                $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item  '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_e__icon($source_e['e__icon']).'</span>'.$source_e['e__title'].'</a>';
+            }
+        } elseif($x__type==12273){
+            //IDEAS
+            //TODO Update with Idea Cover and remove Idea Type icon
+            $e___4737 = $CI->config->item('e___4737'); // Idea Status
+            $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
+            foreach($CI->X_model->fetch($query_filters, array('x__right'), 10, 0, array('x__spectrum' => 'ASC')) as $next_i) {
+                $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item  '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.$e___4737[$next_i['i__type']]['m__icon'].'</span>'.view_i_title($next_i).'</a>';
+            }
+        } elseif($x__type==6255){
+            //DISCOVERIES / SOURCS
+            $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
+            foreach($CI->X_model->fetch($query_filters, array('x__source'), 10, 0, array('x__id' => 'DESC')) as $source_e) {
+                $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item  '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_e__icon($source_e['e__icon']).'</span>'.$source_e['e__title'].'</a>';
+            }
+        }
+        $ui .= '</div>';
+        $ui .= '</div>';
+
+        return $ui;
+
     } else {
+        //Just the count:
         return intval($count_query);
     }
 
@@ -1694,41 +1726,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //Coin Block
     if($show_coins){
-
         $ui .= '<div class="coin-cover coin-cover-left">';
-        $ui .= '<div>'.view_coins_i(12274,  $i).'</div>';
-        $ui .= '<div>';
-
-        //Type Dropdown:
-        $ui .= view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']);
-
-
-        //Next Ideas:
-        $is_next = $CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__left' => $i['i__id'],
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
-        if(count($is_next)){
-            $ui .= '<div class="dropdown inline-block" title="'.$e___11035[13542]['m__title'].'">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_next).'</button>';
-            $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
-            foreach($is_next as $next_i) {
-                $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item  '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block i__type_'.$next_i['i__id'].'" title="'.$e___4737[$next_i['i__type']]['m__title'].'">'.$e___4737[$next_i['i__type']]['m__icon'].'</span>'.view_i_title($next_i).'</a>';
-
-            }
-            $ui .= '</div>';
-            $ui .= '</div>';
-        } else {
-            //$ui .= '<div class="icon-block-xs idea " title="'.$e___11035[13542]['m__title'].'">&nbsp;</div>';
-        }
-
+            $ui .= '<div>'.view_coins_i(12274,  $i).'</div>';
+            $ui .= '<div>'.view_coins_i(12273,  $i).'</div>';
+            $ui .= '<div>'.view_coins_i(6255,  $i).'</div>';
         $ui .= '</div>';
-        $ui .= '<div>'.view_coins_i(6255,  $i).'</div>';
-
-        $ui .= '</div>';
-
     }
 
 
@@ -1747,14 +1749,16 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<div><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
     }
 
-    //COIN COVER
     if($idea_editing){
+        //IDAE TYPE:
+        $ui .= '<div>'.view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']).'</div>';
+
+        //COIN COVER
         $ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
     }
 
     //LOCKED
     if($is_any_lock){
-        //LOCKED
         $ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
     }
 
@@ -1763,7 +1767,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
-    //Coin Face
+    //Coin Cover
     $ui .= ( $is_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $completion_rate['completion_percentage']>=100 ? ' coin-discover ' : ' coin-idea ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
 
     //ICON?
@@ -1826,33 +1830,20 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<div class="center">';
 
 
-
-        //Previous Ideas:
-        /*
-        $is_previous = $CI->X_model->fetch(array(
+        //Previous Ideas
+        $ui .= '<div class="hideIfEmpty">';
+        foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i['i__id'],
-        ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
-
-        if(count($is_previous)){
-
-            $ui .= '<div class="dropdown inline-block" title="'.$e___11035[11019]['m__title'].'">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding idea" id="nextIdeas'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.count($is_previous).'</button>';
-            $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="nextIdeas'.$i['i__id'].'">';
-            foreach($is_previous as $previous_i) {
-                $ui .= '<a href="/~'.$previous_i['i__id'].'" class="dropdown-item  '.( $previous_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block i__type_'.$previous_i['i__id'].'" title="'.$e___4737[$previous_i['i__type']]['m__title'].'">'.$e___4737[$previous_i['i__type']]['m__icon'].'</span>'.view_i_title($previous_i).'</a>';
-            }
-            $ui .= '</div>';
-            $ui .= '</div>';
-
-        } else {
-            //$ui .= '<div class="icon-block-xs idea" title="'.$e___11035[11019]['m__title'].'">&nbsp;</div>';
+        ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
+            $ui .= '<span class="icon-block-img"><a href="/~'.$previous_i['i__id'].'" data-toggle="tooltip" title="' . $previous_i['i__title'] . '" data-placement="bottom">' . $e___4737[$previous_i['i__type']]['m__icon'] . '</a></span> ';
         }
-        */
+        $ui .= '</div>';
 
 
+        //Idea Link Controller
         if(isset($i['x__id'])){
 
             $x__metadata = unserialize($i['x__metadata']);

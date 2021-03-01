@@ -2209,7 +2209,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
             if(element_id==4737){
                 //Update dropdown menu:
-                $('.i__type_'+i__id).html(data_object[new_e__id]['m__icon']);
+                //$('.i__type_'+i__id).html(data_object[new_e__id]['m__icon']);
             }
 
             //Update on page:
