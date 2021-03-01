@@ -1685,6 +1685,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12700 = superpower_active(12700, true);
+    $superpower_12673 = superpower_active(12673, true);
     $previous_is_lock = ($previous_i && in_array($previous_i['i__type'], $CI->config->item('n___14488')));
     $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($previous_is_lock && $discovery_mode);
     $is_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
@@ -1711,7 +1712,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     $i_cover = i_cover($i['i__id']);
     $is_valid_url = filter_var($i_cover, FILTER_VALIDATE_URL);
-    $toolbar = $idea_editing && superpower_active(12673, true);
+    $toolbar = $idea_editing && $superpower_12673;
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
@@ -1818,17 +1819,20 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Previous Ideas
-    $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
-    foreach($CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-        'x__right' => $i['i__id'],
-        'x__left !=' => $current_i,
-    ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
-        $ui .= '<span class="icon-block-img"><a href="/~'.$previous_i['i__id'].'" data-toggle="tooltip" title="' . $previous_i['i__title'] . '" data-placement="bottom">' . $e___4737[$previous_i['i__type']]['m__icon'] . '</a></span> ';
+    if($superpower_12673){
+        $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
+        foreach($CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__right' => $i['i__id'],
+            'x__left !=' => $current_i,
+        ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
+            $ui .= '<span class="icon-block-img"><a href="/~'.$previous_i['i__id'].'" data-toggle="tooltip" title="' . $previous_i['i__title'] . '" data-placement="bottom">' . $e___4737[$previous_i['i__type']]['m__icon'] . '</a></span> ';
+        }
+        $ui .= '</div>';
     }
-    $ui .= '</div>';
+
 
 
     //TITLE
