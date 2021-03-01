@@ -761,7 +761,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     if($append_coin_icon){
 
         if(!$count_query){
-            return null;
+            return '&nbsp;';
         }
 
         $e___14874 = $CI->config->item('e___14874'); //COINS
@@ -1731,12 +1731,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $view_coins_i_12274 = view_coins_i(12274,  $i);
         $view_coins_i_12273 = view_coins_i(12273,  $i);
         $view_coins_i_6255 = view_coins_i(6255,  $i);
-        $button_count = ( $view_coins_i_12274 ? 1 : 0 ) + ( $view_coins_i_12273 ? 1 : 0 ) + ( $view_coins_i_6255 ? 1 : 0 );
 
         $ui .= '<div class="coin-cover coin-cover-left">';
-            for($c=0; $c<(3-$button_count);$c++){
-                $ui .= '<div>&nbsp;</div>';
-            }
             $ui .= '<div>'.$view_coins_i_12274.'</div>';
             $ui .= '<div>'.$view_coins_i_12273.'</div>';
             $ui .= '<div>'.$view_coins_i_6255.'</div>';
