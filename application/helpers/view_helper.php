@@ -1747,29 +1747,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //Action Bar:
     $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
 
-    if($editing_enabled){
-        //IDAE TYPE:
-        $ui .= '<div>'.view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']).'</div>';
-
-        //COIN COVER
-        $ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
-    } else {
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-    }
-
-
-
-    //LOCKED
-    if($has_any_lock){
-        $ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
-    } else {
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-    }
-
-    //EMPTY
-    $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-
 
     //UNLINK
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
@@ -1784,6 +1761,27 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     } else {
         $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
     }
+
+    if($editing_enabled){
+        //IDAE TYPE:
+        $ui .= '<div>'.view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']).'</div>';
+
+        //COIN COVER
+        $ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
+    } else {
+        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+    }
+
+    //LOCKED
+    if($has_any_lock){
+        $ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
+    } else {
+        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+    }
+
+    //EMPTY
+    $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
 
 
     $ui .= '</div>';
