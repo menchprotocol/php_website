@@ -977,16 +977,9 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $is_next, $member_e, $r
     $ui .= '<div class="doclear">&nbsp;</div>';
 
     $ui .= '<div class="row">';
-    $found_next_discovery = false;
     foreach($is_next as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
-        if($in_my_x && $x__type==12211 && !$found_next_discovery && $completion_rate['completion_percentage']<100){
-            $found_next_discovery = true;
-            $x__type_to_pass = 14455; //The Immediate Next
-        } else {
-            $x__type_to_pass = $x__type;
-        }
-        $ui .= view_i($x__type_to_pass, $top_i__id, $i, $next_i, $in_my_x, null, $member_e, $completion_rate);
+        $ui .= view_i($x__type, $top_i__id, $i, $next_i, $in_my_x, null, $member_e, $completion_rate);
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
@@ -1744,39 +1737,25 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //Action Bar:
     $ui .= '<div class="coin-cover cover-top-right hideIfEmpty">';
 
-    //CENTER
-    $center_btn = null;
-    if($is_soft_lock){
+    //LOCKED
+    if($is_any_lock){
         //LOCKED
-        $center_btn .= '<div class="col center"><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
-    } elseif($idea_editing){
-        $center_btn .= '<div class="col center"><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
-    } elseif(in_array($x__type, $CI->config->item('n___14452'))){
-        //Show Self Icon
-        $center_btn .= '<div class="col center"><span class="icon-block-xs" title="'.$e___11035[$x__type]['m__title'].'">'.$e___11035[$x__type]['m__icon'].'</span></div>';
-    } elseif($completion_rate['completion_percentage']>=100){
-        //100% COMPLETE
-        //$center_btn .= '<div class="col doleft"><span class="icon-block-xs" title="'.$e___11035[14459]['m__title'].'">'.$e___11035[14459]['m__icon'].'</div></div>';
+        $ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
     }
 
-    //LEFT
+    //COIN COVER
+    if($idea_editing){
+        $ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
+    }
+
+    //SORTABLE
     if($is_sortable && $control_enabled){
-        //SORTABLE
-        $ui .= '<div class="col doleft"><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
-    } elseif($center_btn){
-        $ui .= '<div class="col doleft">&nbsp;</div>';
+        $ui .= '<div><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
     }
 
-    if($center_btn){
-        $ui .= $center_btn;
-    }
-
-    //RIGHT
+    //UNLINK
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-        //UNLINK
-        $ui .= '<div class="col doright"><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
-    } elseif($center_btn){
-        $ui .= '<div class="col doright">&nbsp;</div>';
+        $ui .= '<div><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
     }
 
     $ui .= '</div>';
