@@ -1946,7 +1946,7 @@ i, .btn .show-max {
     border-radius: 5px;
     top: -52px;
 }
-.coin-cover div {
+.coin-cover>div {
     padding: 1px 0;
 }
 .coin-cover-left{
