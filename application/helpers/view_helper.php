@@ -1695,7 +1695,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //Coin Block
     if($show_coins){
 
-        $ui .= '<div class="coin-cover cover-top-left">';
+        $ui .= '<div class="coin-cover coin-cover-left">';
         $ui .= '<div>'.view_coins_i(12274,  $i).'</div>';
         $ui .= '<div>';
 
@@ -1735,7 +1735,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Action Bar:
-    $ui .= '<div class="coin-cover cover-top-right hideIfEmpty">';
+    $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
 
     //UNLINK
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
