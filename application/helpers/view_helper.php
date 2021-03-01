@@ -1745,6 +1745,15 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //Action Bar:
     $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
 
+    if($idea_editing){
+        //IDAE TYPE:
+        $ui .= '<div>'.view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']).'</div>';
+
+        //COIN COVER
+        $ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
+    }
+
+
     //UNLINK
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
         $ui .= '<div><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
@@ -1755,13 +1764,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<div><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
     }
 
-    if($idea_editing){
-        //IDAE TYPE:
-        $ui .= '<div>'.view_input_dropdown(4737, $i['i__type'], null, $idea_editing, false, $i['i__id']).'</div>';
-
-        //COIN COVER
-        $ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
-    }
 
     //LOCKED
     if($is_any_lock){
