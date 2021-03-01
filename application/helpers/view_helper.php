@@ -1734,7 +1734,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $button_count = ( $view_coins_i_12274 ? 1 : 0 ) + ( $view_coins_i_12273 ? 1 : 0 ) + ( $view_coins_i_6255 ? 1 : 0 );
 
         $ui .= '<div class="coin-cover coin-cover-left">';
-            for($i=0; $i<(3-$button_count);$i++){
+            for($c=0; $c<(3-$button_count);$c++){
                 $ui .= '<div>&nbsp;</div>';
             }
             $ui .= '<div>'.$view_coins_i_12274.'</div>';
@@ -1780,7 +1780,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     if($button_count > 0){
         $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
-        for($i=0; $i<(6-$button_count);$i++){
+        for($c=0; $c<(6-$button_count);$c++){
             $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
         }
         $ui .= $button_ui;
