@@ -1943,7 +1943,7 @@ i, .btn .show-max {
 }
 .coin-cover{
     position: absolute;
-    z-index: 999;
+    z-index: 995;
     border-radius: 5px;
 }
 .cover-top-left{
