@@ -1940,6 +1940,7 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
+    min-height: 54px;
 }
 .coin-cover{
     position: absolute;
