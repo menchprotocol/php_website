@@ -1955,9 +1955,12 @@ i, .btn .show-max {
     top: 0;
     right: 0;
     padding: 0;
+    max-width: 70px;
 }
 .cover-top-right>div{
-    padding: 3px 1px;
+    padding: 3px 0;
+    display: inline-block;
+    float: right;
 }
 .inner-no-border{
     border-bottom-left-radius: 0 !important;
