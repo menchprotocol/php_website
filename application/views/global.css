@@ -1944,9 +1944,9 @@ i, .btn .show-max {
 .coin-cover{
     position: absolute;
     border-radius: 5px;
+    z-index: 999;
 }
 .dropdown{
-    z-index: 999;
 }
 .coin-cover div {
     padding: 1px 0;
