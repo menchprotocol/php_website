@@ -768,7 +768,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
         $first_segment = $CI->uri->segment(1);
         $ui = '<div class="dropdown inline-block">';
         $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.extract_icon_color($e___14874[$x__type]['m__icon']).'" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs">'.$e___14874[$x__type]['m__icon'].'</span>'.view_number($count_query).'</button>';
-        $ui .= '<div class="dropdown-menu btn-idea" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
+        $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
         if($x__type==12274){
             //SOURCES
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
