@@ -2275,7 +2275,7 @@ function i_add(x__type, link_i__id, focus__id) {
     }
 
     i_is_adding = true;
-    var sort_handler = ".i_cover";
+    var sort_handler = ".coin_cover";
     var sort_list_id = "list-in-" + x__type;
     var input_field = $('.new-list-'+x__type+' .add-input');
     var i__title = input_field.val();
