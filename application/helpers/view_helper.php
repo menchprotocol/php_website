@@ -761,7 +761,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     if($append_coin_icon){
 
         if(!$count_query){
-            return null;
+            return '&nbsp;';
         }
 
         $e___14874 = $CI->config->item('e___14874'); //COINS
@@ -1736,19 +1736,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
-
     //Action Bar:
     $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
-
-    //UNLINK
-    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-        $ui .= '<div><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
-    }
-
-    //SORTABLE
-    if($is_sortable && $control_enabled){
-        $ui .= '<div><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
-    }
 
     if($idea_editing){
         //IDAE TYPE:
@@ -1756,6 +1745,24 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         //COIN COVER
         $ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
+    } else {
+        $ui .= '<div>&nbsp;</div>';
+        $ui .= '<div>&nbsp;</div>';
+    }
+
+
+    //UNLINK
+    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
+        $ui .= '<div><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
+    } else {
+        $ui .= '<div>&nbsp;</div>';
+    }
+
+    //SORTABLE
+    if($is_sortable && $control_enabled){
+        $ui .= '<div><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
+    } else {
+        $ui .= '<div>&nbsp;</div>';
     }
 
     //LOCKED
