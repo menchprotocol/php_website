@@ -797,7 +797,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 }
 .dropdown-menu {
     border:3px solid transparent;
-    border-radius: 13px;
+    border-radius: 5px;
 }
 
 
@@ -1944,6 +1944,9 @@ i, .btn .show-max {
 .coin-cover{
     position: absolute;
     border-radius: 5px;
+}
+.coin-cover *{
+    z-index: 9999 !important;
 }
 .coin-cover div {
     padding: 1px 0;
