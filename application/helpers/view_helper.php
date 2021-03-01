@@ -1778,11 +1778,15 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
-    if(!$show_coins && $button_count<=2){
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+    if(!$show_coins){
+        if($button_count<=4){
+            $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+            $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+        }
+        if($button_count<=2){
+            $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+            $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+        }
     }
     $ui .= $button_ui;
     $ui .= '</div>';
