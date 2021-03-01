@@ -1702,7 +1702,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //Coin Block
     if($show_coins){
 
-        $ui .= '<div class="coin-block">';
+        $ui .= '<div class="coin-cover cover-top-left">';
         $ui .= '<div>'.view_coins_i(12274,  $i).'</div>';
         $ui .= '<div>';
 
@@ -1742,7 +1742,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Action Bar:
-    $ui .= '<div class="row hideIfEmpty toprow">';
+    $ui .= '<div class="coin-cover cover-top-right hideIfEmpty">';
 
     //CENTER
     $center_btn = null;
@@ -2117,137 +2117,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
 
-
-    return $ui;
-
-
-
-
-
-
-    $ui  = '<div '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="i_cover col-md-4 col-6 no-padding e_line_'.$e['e__id'].' '.( $is_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $is_hard_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $is_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $is_hard_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
-
-    $ui .= '<div class="cover-wrapper">';
-    $ui .= ( $is_hard_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $discovery_mode ? ' coin-discover ' : ' coin-source ' ).' black-background cover-link" '.( $is_valid_url ? 'style="background-image:url(\''.$i_cover.'\');"' : '' ).'>';
-
-    //ICON?
-    if($show_custom_image){
-        $ui .= '<div class="cover-btn">'.$i_cover.'</div>';
-    }
-
-    $ui .= ( $is_hard_lock ? '</div>' : '</a>' );
-    $ui .= '</div>';
-
-
-
-    //Title Cover
-    $ui .= '<div class="cover-content">';
-    if($load_completion){
-        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $e).'</div>';
-    }
-
-
-    $ui .= '<div class="inner-content '.( $show_coins ? ' inner-no-border ' : '' ).'">';
-
-
-
-    $ui .= '<div class="row hideIfEmpty toprow grey">';
-
-
-
-
-    if($source_of_e && $control_enabled && $is_e_link){
-
-        //RIGHT EDITING:
-        $ui .= '<div class="note-editor edit-off">';
-        $ui .= '<span class="show-on-hover">';
-
-        if(($source_of_e && $is_sortable) || $superpower_13422){
-
-            //UNLINK SOURCE
-            $ui .= '<span class="'.superpower_active(10939).'"><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m__title'].'">'.$e___11035[10673]['m__icon'].'</a></span>';
-
-        }
-
-        //Sort
-        if($is_sortable && $superpower_10939){
-            $ui .= '<span title="'.$e___11035[13911]['m__title'].'" class="'.superpower_active(13422).' sort_e hidden">'.$e___11035[13911]['m__icon'].'</span>';
-        }
-
-        //Edit Raw Source
-        $ui .= '<span class="btn-third '.superpower_active(13422).'"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m__title'].'">'.$e___11035[13571]['m__icon'].'</a></span>';
-
-
-        //HARD DELETE SOURCE
-        $ui .= '<span class="btn-fourth '.superpower_active(14683).'"><a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'">'.$e___11035[14601]['m__icon'].'</a></span>';
-
-        $ui .= '</span>';
-        $ui .= '</div>';
-
-    }
-
-
-    //LEFT
-    if($is_sortable && $control_enabled){
-        //SORTABLE
-        $ui .= '<div class="col doleft"><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
-    } else {
-        $ui .= '<div class="col doleft">&nbsp;</div>';
-    }
-
-
-    //CENTER RIGHT
-    $ui .= '<div class="col center"><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
-
-
-    //RIGHT
-    if($control_enabled && isset($e['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-        //UNLINK
-        $ui .= '<div class="col doright"><div class="x_remove icon-block-xs" i__id="'.$e['i__id'].'" x__id="'.$e['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
-    } else {
-        $ui .= '<div class="col doright">&nbsp;</div>';
-    }
-
-
-    $ui .= '</div>';
-
-
-
-
-
-    if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
-        //Editable title:
-        $ui .= view_input_text(4736, $e['i__title'], $e['i__id'], $idea_editing, (($e['x__spectrum']*100)+1), true);
-    } elseif(!$is_hard_lock){
-        $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
-    } else {
-        $ui .= $i_title;
-    }
-
-
-
-    if($message_input){
-        if(!$is_hard_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
-            //No HTML Tags, add link:
-            $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
-        } else {
-            //Leave as is so HTML tags work:
-            $ui .= $message_input;
-        }
-    }
-    $ui .= '</div></div>';
-
-
-
-    //Coin Block
-    $ui .= '<div class="row coin-block">';
-    $ui .= '<div class="col-4 doleft">'.view_coins_e(12274,  $e['e__id']).'</div>';
-    $ui .= '<div class="col-4 doright">'.view_coins_e(12273,  $e['e__id']).'</div>';
-    $ui .= '<div class="col-4 doright">'.view_coins_e(6255,  $e['e__id']).'</div>';
-    $ui .= '</div>';
-
-
-    $ui .= '</div>';
 
     return $ui;
 
