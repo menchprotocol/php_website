@@ -2493,7 +2493,7 @@ font-weight: bold !important;
     background: rgba(239,239,239,0.80);
 }
 .custom_ui_13884_13886 .coin-cover i {
-    color: #FFFFFF;
+    color: #000000;
 }
 .custom_ui_13884_13886 .light-bg,
 .custom_ui_13884_13886 .inner-content,
@@ -2625,7 +2625,7 @@ font-weight: bold !important;
     background: rgba(34,34,34,0.80);
 }
 .custom_ui_13884_13885 .coin-cover i {
-    color: #000000;
+    color: #FFFFFF;
 }
 .custom_ui_13884_13885 .light-bg,
 .custom_ui_13884_13885 .inner-content,
