@@ -1945,11 +1945,8 @@ i, .btn .show-max {
     position: absolute;
     border-radius: 5px;
 }
-.coin-cover {
-    z-index: 9999 !important;
-}
-.coin-cover *{
-    z-index: 9998 !important;
+.dropdown{
+    z-index: 999;
 }
 .coin-cover div {
     padding: 1px 0;
