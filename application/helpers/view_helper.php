@@ -1754,8 +1754,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         //COIN COVER
         $ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
     } else {
-        $ui .= '<div>&nbsp;</div>';
-        $ui .= '<div>&nbsp;</div>';
+        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
     }
 
 
@@ -1764,25 +1764,25 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if($has_any_lock){
         $ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
     } else {
-        $ui .= '<div>&nbsp;</div>';
+        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
     }
 
     //EMPTY
-    $ui .= '<div>&nbsp;</div>';
+    $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
 
 
     //UNLINK
     if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
         $ui .= '<div><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
     } else {
-        $ui .= '<div>&nbsp;</div>';
+        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
     }
 
     //SORTABLE
     if($has_sortable && $control_enabled){
         $ui .= '<div><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
     } else {
-        $ui .= '<div>&nbsp;</div>';
+        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
     }
 
 
