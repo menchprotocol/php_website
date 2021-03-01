@@ -1946,6 +1946,9 @@ i, .btn .show-max {
     z-index: 995;
     border-radius: 5px;
 }
+.coin-cover div {
+    padding: 3px 0;
+}
 .cover-top-left{
     top: 0;
     left:0;
@@ -1958,7 +1961,6 @@ i, .btn .show-max {
     max-width: 70px;
 }
 .cover-top-right>div{
-    padding: 3px 0;
     display: inline-block;
     float: right;
 }
