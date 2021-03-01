@@ -82,7 +82,7 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.js"></script>
-    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5febba6d9845bb2b"></script>
+    <?php /* <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5febba6d9845bb2b"></script> */ ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.37.0/autocomplete.jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.35.1/algoliasearch.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js" type="text/javascript"></script>
