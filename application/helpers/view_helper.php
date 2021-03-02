@@ -1930,7 +1930,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //Coin Block
     if($show_coins){
-        $ui .= '<table style="width: 100%"><tr>';
+        $ui .= '<table style="width: 100%; position: absolute; bottom: -60px;"><tr>';
         $ui .= '<td width="33%" class="center">'.view_coins_i(12274,  $i).'</td>';
         $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
         $ui .= '<td width="33%" class="center">'.view_coins_i(6255,  $i).'</td>';
