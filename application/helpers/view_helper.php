@@ -762,7 +762,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     if($append_coin_icon){
 
         if(!$count_query){
-            return '&nbsp;';
+            return false;
         }
 
         $e___14874 = $CI->config->item('e___14874'); //COINS
@@ -1728,7 +1728,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
-    //Coin Block
+    //Left Sorting
     if($show_coins){
         $ui .= '<div class="coin-cover coin-cover-left">';
             $ui .= '<div>'.view_coins_i(12274,  $i).'</div>';
@@ -1739,8 +1739,36 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
-    //Action Bar:
-    $ui .= '<div class="coin-cover grey coin-cover-right hideIfEmpty">';
+
+    //Right Action Menu
+    $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
+    $ui .= '<div class="dropdown inline-block">';
+    $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs">'.$e___14874[$x__type]['m__cover'].'</span></button>';
+    $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
+
+    if($x__type==12274){
+        //SOURCES
+        $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
+        foreach($CI->X_model->fetch($query_filters, array('x__up'), 10, 0, array('x__type' => 'ASC', 'x__spectrum' => 'ASC')) as $source_e) {
+            $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_e__cover($source_e['e__cover']).'</span>'.$source_e['e__title'].'</a>';
+        }
+    } elseif($x__type==12273){
+        //IDEAS
+        //TODO Update with Idea Cover and remove Idea Type icon
+        $e___4737 = $CI->config->item('e___4737'); // Idea Status
+        $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
+        foreach($CI->X_model->fetch($query_filters, array('x__right'), 10, 0, array('x__spectrum' => 'ASC')) as $next_i) {
+            $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.$e___4737[$next_i['i__type']]['m__cover'].'</span>'.view_i_title($next_i).'</a>';
+        }
+    } elseif($x__type==6255){
+        //DISCOVERIES / SOURCS
+        $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
+        foreach($CI->X_model->fetch($query_filters, array('x__source'), 10, 0, array('x__id' => 'DESC')) as $source_e) {
+            $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_e__cover($source_e['e__cover']).'</span>'.$source_e['e__title'].'</a>';
+        }
+    }
+    $ui .= '</div>';
+    $ui .= '</div>';
 
     if(!$has_any_lock){
         $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
@@ -1893,6 +1921,16 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         $ui .= '</div>';
 
+    }
+
+
+    //Coin Block
+    if($show_coins){
+        $ui .= '<table><tr>';
+            $ui .= '<td width="33%" class="center">'.view_coins_i(12274,  $i).'</td>';
+            $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
+            $ui .= '<td width="33%" class="center">'.view_coins_i(6255,  $i).'</td>';
+        $ui .= '</tr></table>';
     }
 
 

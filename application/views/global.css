@@ -2078,6 +2078,7 @@ i, .btn .show-max {
     margin-top: -75px;
     font-size: 0.95em !important;
     display: block;
+    color: #FFFFFF !important;
 }
 
 /* RESPONSIVE */
@@ -2192,8 +2193,8 @@ i, .btn .show-max {
         font-size: 1.5em;
     }
     .cover-btn{
-        font-size: 6em !important;
-        margin-top: -93%;
+        font-size: 5em !important;
+        margin-top: -87%;
     }
 }
 
