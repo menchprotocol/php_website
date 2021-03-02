@@ -1740,10 +1740,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     $ui .= '<div class="coin-cover coin-cover-right">';
 
-    $ui .= '</div>';
-
-
-
     //LOCKED
     if($has_any_lock){
 
@@ -1778,6 +1774,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs"><i class="far fa-ellipsis-h"></i></span></button>';
             $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
             $ui .= $action_buttons;
+            $ui .= '</div>';
             $ui .= '</div>';
             $ui .= '</div>';
         }
