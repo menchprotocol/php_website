@@ -1736,7 +1736,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     if($has_sortable && $control_enabled){
         $ui .= '<div class="coin-cover coin-cover-right2">';
-        $ui .= '<div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</div>';
+        $ui .= '<div class="x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</div>';
         $ui .= '</div>';
     }
 
@@ -1745,7 +1745,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         //LOCKED
         if($has_any_lock){
 
-            $ui .= '<span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
+            $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
         } else {
 
