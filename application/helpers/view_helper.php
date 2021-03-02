@@ -1947,8 +1947,8 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $show_text_editor = $source_of_e && $control_enabled;
     $editing_enabled = $source_of_e;
     $e__title = ( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] );
-    $is_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
-    $is_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
+    $has_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
+    $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
 
     $href = '/@'.$e['e__id'];
     $focus_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
@@ -1974,7 +1974,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $has_public = in_array($e['e__id'], $public_sources) || in_array($focus_e__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
     $has_soft_lock = ($has_hard_lock && !$superpower_12701) || (!$has_public && !$source_of_e && !$superpower_13422);
     $has_any_lock = $has_soft_lock || $has_hard_lock;
-    $is_sortable = !$is_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
+    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
 
 
     //Source UI
@@ -1995,7 +1995,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
     //Action Bar:
     $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
-    if($source_of_e && ($is_e_link || $is_note)) {
+    if($source_of_e && ($has_e_link || $has_note)) {
         if($editing_enabled){
             //SOURCE TYPE:
             $ui .= '<div>'.view_input_dropdown(6177, $e['e__type'], null, $editing_enabled, false, 0).'</div>';
@@ -2019,12 +2019,12 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
         //Edit Message
-        if($is_e_link){
+        if($has_e_link){
             $ui .= '<div><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m__title'].'"><span class="icon-block-xs '.superpower_active(13422).'">'.$e___11035[13571]['m__cover'].'</span></a></div>';
         }
 
         //UNLINK
-        if(($source_of_e && $is_sortable) || $superpower_13422){
+        if(($source_of_e && $has_sortable) || $superpower_13422){
             //UNLINK SOURCE
             $ui .= '<div><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m__title'].'"><span class="icon-block-xs '.superpower_active(10939).'">'.$e___11035[10673]['m__cover'].'</span></a></div>';
         } else {
@@ -2032,7 +2032,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
         }
 
         //SORTABLE
-        if($is_e_link && $is_sortable && $superpower_10939){
+        if($has_e_link && $has_sortable && $superpower_10939){
             $ui .= '<div><div class="sort_e '.superpower_active(13422).'  hidden icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</div></div>';
         } else {
             $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
