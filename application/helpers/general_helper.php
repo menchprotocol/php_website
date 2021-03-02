@@ -534,7 +534,7 @@ function coin_cover($o, $html_format = false){
 
 
 
-    if(!$found_image && !$first_source_icon){
+    if(!$found_image && (!$first_source_icon || !$is_idea)){
 
         //Have no image in the main cover, look elsewhere:
         if($is_idea){

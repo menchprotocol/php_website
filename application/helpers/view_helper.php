@@ -2070,21 +2070,23 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
     //TITLE
+    $ui .= '<div class="css__title">';
     if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
         //Editable title:
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $editing_enabled, (($e['x__spectrum']*100)+1), true);
     } elseif(!$has_any_lock){
-        $ui .= '<a href="'.$href.'">'.$e__title.'</a>';
+        $ui .= '<a href="'.$href.'" class="css__title">'.$e__title.'</a>';
     } else {
         $ui .= $e__title;
     }
+    $ui .= '</div>';
 
 
     //Message
     if ($x__id > 0) {
         if($has_e_link){
 
-            $ui .= view_x__message($e['x__message'] , $e['x__type']);
+            $ui .= '<span class="x__message hideIfEmpty x__message_' . $x__id . '">' .view_x__message($e['x__message'] , $e['x__type']).'</span>';
 
         } elseif($has_x_progress && strlen($e['x__message'])){
 
