@@ -2068,11 +2068,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
     //Title Cover
     $ui .= '<div class="cover-content">';
-    if($load_completion && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
-        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $e).'</div>';
-    }
-
-
     $ui .= '<div class="inner-content">';
 
     //Profile Sources
