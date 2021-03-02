@@ -1760,12 +1760,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             //Any Buttons?
             if($action_buttons){
                 //Right Action Menu
-                $ui .= '<div class="coin-cover hideIfEmpty">';
                 $ui .= '<div class="dropdown inline-block">';
                 $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs"><i class="far fa-ellipsis-h"></i></span></button>';
                 $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
                 $ui .= $action_buttons;
-                $ui .= '</div>';
                 $ui .= '</div>';
                 $ui .= '</div>';
             }
