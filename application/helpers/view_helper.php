@@ -1730,7 +1730,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     $ui .= '<div class="coin-cover coin-cover-left">';
-    $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '');
+    $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
     $ui .= '</div>';
 
 
