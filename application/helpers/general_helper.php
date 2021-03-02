@@ -595,51 +595,21 @@ function coin_cover($o, $html_format = false){
             //Source Profile Search:
             foreach($CI->X_model->fetch(array( //SOURCE PROFILE
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $CI->config->item('n___14756')) . ')' => null, //SOURCE LINK IMAGE HOLDERS
                 'x__down' => $o['e__id'], //This child source
-                'x__up' => 999, //Disabled for now
-            ), array('x__up'), 0, 0, array(
-                'x__type' => 'ASC', //Messages First, Sources Second
-                'x__spectrum' => 'ASC', //Sort by message order
-            )) as $fetched_e){
+            ), array('x__up'), 0, 0, array()) as $fetched_e){
 
-                //See if this source has a photo:
-                foreach($CI->X_model->fetch(array(
-                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___14756')) . ')' => null, //SOURCE LINK IMAGE HOLDERS
-                    'x__down' => $fetched_e['x__up'],
-                )) as $e_image) {
-                    if($e_image['x__type']==4260){
-                        $found_image = $e_image['x__message'];
-                        break;
-                    } elseif($e_image['x__type']==4257 /* Currently excluded from @14756 */){
-                        //Embed:
-                        $video_id = extract_youtube_id($e_image['x__message']);
-                        if($video_id){
-                            //Use the YouTube video image:
-                            $found_image = 'https://img.youtube.com/vi/'.$video_id.'/hqdefault.jpg';
-                            break;
-                        }
-                    }
-                }
-                if($found_image){
+                if($e_image['x__type']==4260){
+                    $found_image = $e_image['x__message'];
                     break;
-                } else {
-                    //Set the first icon only once, if allowed:
-                    if(!$first_source_icon && in_array($fetched_e['x__type'], $CI->config->item('n___14818'))){
-                        if(strlen($fetched_e['e__cover']) > 0){
-                            $first_source_icon = $fetched_e['e__cover'];
-                            $o_id = $fetched_e['e__id'];
-                        }
-                    }
-
-                    if($first_source_icon){
+                } elseif($e_image['x__type']==4257 /* Currently excluded from @14756 */){
+                    //Embed:
+                    $video_id = extract_youtube_id($e_image['x__message']);
+                    if($video_id){
+                        //Use the YouTube video image:
+                        $found_image = 'https://img.youtube.com/vi/'.$video_id.'/hqdefault.jpg';
                         break;
                     }
-                }
-
-                if($found_image || $first_source_icon){
-                    break;
                 }
             }
 
