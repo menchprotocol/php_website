@@ -711,13 +711,13 @@ function e_modify_save() {
                 } else {
 
                     //Delete from UI:
-                    $('.tr_' + modify_data['x__id']).html('<span><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Deleted</span>').fadeOut();
+                    $('.cover_x_' + modify_data['x__id']).html('<span><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Deleted</span>').fadeOut();
 
                     //Disappear in a while:
                     setTimeout(function () {
 
                         //Hide the editor & saving results:
-                        $('.tr_' + modify_data['x__id']).remove();
+                        $('.cover_x_' + modify_data['x__id']).remove();
 
                     }, 610);
 
@@ -805,9 +805,9 @@ function e_remove(x__id, note_type_id) {
             if (data.status) {
 
                 i_note_counter(note_type_id, -1);
-                $(".tr_" + x__id).fadeOut();
+                $(".cover_x_" + x__id).fadeOut();
                 setTimeout(function () {
-                    $(".tr_" + x__id).remove();
+                    $(".cover_x_" + x__id).remove();
                 }, 610);
 
             } else {
@@ -838,9 +838,9 @@ function e_nuclear_delete(e__id, note_type_id) {
 
                 console.log(data.message);
                 i_note_counter(note_type_id, -1);
-                $(".e__id_" + e__id).fadeOut();
+                $(".e_line_" + e__id).fadeOut();
                 setTimeout(function () {
-                    $(".e__id_" + e__id).remove();
+                    $(".e_line_" + e__id).remove();
                 }, 610);
 
             } else {

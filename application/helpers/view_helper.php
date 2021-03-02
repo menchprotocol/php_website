@@ -9,7 +9,7 @@ function view_e_load_more($x__type, $page, $limit, $list_e_count)
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
 
-    $ui = '<div class="load-more css__title list-group-item itemsource no-left-padding"><a href="javascript:void(0);" onclick="e_load_page('.$x__type.',' . $page . ', 0)">';
+    $ui = '<div class="load-more css__title list-group-item no-left-padding"><a href="javascript:void(0);" onclick="e_load_page('.$x__type.',' . $page . ', 0)">';
 
     //Regular section:
     $max_e = (($page + 1) * $limit);
@@ -916,7 +916,7 @@ function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_m
     //Did we have too many items?
     if($count>=$show_max){
         //Show "Show more" button
-        $ui .= '<a href="javascript:void(0);" class="list-group-item itemsource itemsetting css__title extra-items-'.$parent_e__id.'" onclick="$(\'.extra-items-'.$parent_e__id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Show '.($count-$show_max).' more</a>';
+        $ui .= '<a href="javascript:void(0);" class="list-group-item itemsetting css__title extra-items-'.$parent_e__id.'" onclick="$(\'.extra-items-'.$parent_e__id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Show '.($count-$show_max).' more</a>';
     }
 
     $ui .= '</div>';
@@ -1730,15 +1730,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //Coin Block
     if($show_coins){
-
-        $view_coins_i_12274 = view_coins_i(12274,  $i);
-        $view_coins_i_12273 = view_coins_i(12273,  $i);
-        $view_coins_i_6255 = view_coins_i(6255,  $i);
-
         $ui .= '<div class="coin-cover coin-cover-left">';
-            $ui .= '<div>'.$view_coins_i_12274.'</div>';
-            $ui .= '<div>'.$view_coins_i_12273.'</div>';
-            $ui .= '<div>'.$view_coins_i_6255.'</div>';
+            $ui .= '<div>'.view_coins_i(12274,  $i).'</div>';
+            $ui .= '<div>'.view_coins_i(12273,  $i).'</div>';
+            $ui .= '<div>'.view_coins_i(6255,  $i).'</div>';
         $ui .= '</div>';
     }
 
@@ -1808,7 +1803,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
-    $ui .= '<div class="inner-content '.( $show_coins ? ' inner-no-border ' : '' ).'">';
+    $ui .= '<div class="inner-content">';
 
 
     //Previous Ideas
@@ -1950,8 +1945,10 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $has_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
     $show_text_editor = $source_of_e && $control_enabled;
+    $editing_enabled = $source_of_e;
+    $e__title = ( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] );
 
-    $e_url = '/@'.$e['e__id'];
+    $href = '/@'.$e['e__id'];
     $focus_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $has_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
@@ -1966,228 +1963,86 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
 
 
-    //Allow source to see all their own transactions:
+    //Is Lock/Private?
     $lock_notice = 4755; //Only locked if private Source
     $has_hard_lock = (!$member_e || $member_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
     $has_public = in_array($e['e__id'], $public_sources) || in_array($focus_e__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
-
-
-    if(($has_hard_lock && !$superpower_12701) || (!$has_public && !$source_of_e && !$superpower_13422)){
-        //PRIVATE SOURCE:
-        return ( $superpower_13422 || in_array($x__type, $CI->config->item('n___14691')) ? '<div class="list-group-item itemsource no-side-padding '. $extra_class  . '"><span class="icon-block">'.$e___11035[4755]['m__icon'].'</span>'.$e___11035[4755]['m__title'].'</div>' : null );
-    }
-
-
-    //SOURCE INFO BAR
-    $box_items_list = '';
-
-    //SOURCE STATUS
-    if(!in_array($e['e__type'], $CI->config->item('n___7357'))){
-        $e___6177 = $CI->config->item('e___6177'); //Source Status
-        $box_items_list .= '<span class="inline-block e__type_' . $e['e__id'].'"><span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$e['e__type']]['m__title'].' @'.$e['e__type'].'">' . $e___6177[$e['e__type']]['m__icon'] . '</span>&nbsp;</span>';
-    }
-
-    //DISCOVERY STATUS
-    if($x__id > 0 && !in_array($e['x__status'], $CI->config->item('n___7359'))){
-        $e___6186 = $CI->config->item('e___6186'); //Transaction Status
-        $box_items_list .= '<span class="inline-block x__status_' . $x__id .'"><span data-toggle="tooltip" data-placement="right" title="'.$e___6186[$e['x__status']]['m__title'].' @'.$e['x__status'].'">' . $e___6186[$e['x__status']]['m__icon'] . '</span>&nbsp;</span>';
-    }
-
-
-    //ROW itemsource
-    $ui = '<div class="list-group-item no-side-padding itemsource en-item object_saved saved_e_'.$e['e__id'].' e__id_' . $e['e__id'] . ( $x__id > 0 ? ' tr_' . $e['x__id'].' ' : '' ) . ' '. $extra_class  . '" e__id="' . $e['e__id'] . '" x__id="'.$x__id.'">';
-
-    $ui .= '<div class="row">';
-
-
-        $ui .= '<div class="col-9 col-sm-10 col-md-8">';
-
-            //SOURCE ICON
-            $ui .= '<a href="'.$e_url.'" '.( $has_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__spectrum'].' WEIGHT '.$e['e__spectrum'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</span></a>';
-
-
-            //SOURCE TITLE TEXT EDITOR
-            if($show_text_editor && !$show_time){
-
-                $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, 0, false, null, extract_icon_color($e['e__icon']));
-
-            } else {
-
-                //SOURCE NAME with PREFIX
-                $ui .= '<a href="'.$e_url.'" class="title-block title-no-right css__title '.extract_icon_color($e['e__icon']).'">';
-                $ui .= $box_items_list;
-                $ui .= '<span class="text__6197_' . $e['e__id'] . '">'.( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] ).'</span>';
-
-                if($show_time && isset($e['x__time'])){
-                    $ui .= '<span class="headline-input doregular grey" data-toggle="tooltip" data-placement="top" title="'.substr($e['x__time'], 0, 19).' '.view_memory(6404,11079).'">'.view_time_difference(strtotime($e['x__time'])).' Ago</span>';
-                }
-                $ui .= '</a>';
-
-            }
-        $ui .= '</div>';
+    $has_soft_lock = ($has_hard_lock && !$superpower_12701) || (!$has_public && !$source_of_e && !$superpower_13422);
 
 
 
-        $ui .= '<div class="col-3 col-sm-2 col-md-4">';
-
-            //Coins
-            $ui .= '<div class="row">';
-                $ui .= '<div class="col-md-4 show-max">'.view_coins_e(12274, $e['e__id']).'</div>';
-                $ui .= '<div class="col-md-4 col">'.view_coins_e(12273, $e['e__id']).'</div>';
-                $ui .= '<div class="col-md-4 show-max">'.view_coins_e(6255, $e['e__id']).'</div>';
-            $ui .= '</div>';
-
-        $ui .= '</div>';
-
-    $ui .= '</div>';
-
-
-
-    if($show_text_editor && $box_items_list){
-        $ui .= '<div class="space-content" style="padding-top: 10px;">'.$box_items_list.'</div>';
-    }
-
-    if($superpower_12706 && $control_enabled){
-        //PROFILE
-        $ui .= '<div class="space-content hideIfEmpty '.superpower_active(12706).'">';
-        //PROFILE SOURCES:
-        $ui .= '<span class="paddingup inline-block hideIfEmpty">';
-        foreach($e__profiles as $e_profile) {
-            $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" data-toggle="tooltip" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '" data-placement="bottom">' . view_e__icon($e_profile['e__icon']) . '</a></span> ';
-        }
-        $ui .= '</span>';
-        $ui .= '</div>';
-    }
-
-
-
-    //DISCOVERY TOOLBAR
-    if($has_x_progress && superpower_active(13758, true)){
-
-        $ui .= '<div class="message_content paddingup x__message block '.superpower_active(13758).'">';
-
-        //Show Filter?
-        if(superpower_active(14005, true) && (!isset($_GET['load__e']) || $_GET['load__e']!=$e['e__id'])){
-            $ui .= '<a href="/'.$CI->uri->segment(1).'?load__e='.$e['e__id'].'" class="icon-block-xs" title="'.$e___11035[13670]['m__title'].'">'.$e___11035[13670]['m__icon'].'</a>';
-        }
-
-        //Total Progress
-        if(isset($_GET['progress'])){
-            $is = $CI->I_model->fetch(array(
-                'i__id' => $e['x__left'],
-            ));
-            $completion_rate = $CI->X_model->completion_progress($e['x__source'], $is[0]);
-            $ui .= '<span style="min-width:34px;" class="inline-block" title="'.$e['x__source'].'/'.$e['x__left'].'">' . $completion_rate['completion_percentage'] . '%</span>';
-        }
-
-        //Method & Time:
-        $ui .= '<span style="min-width:147px;" title="'.$e['x__time'].'" class="inline-block"><span class="icon-block-xs">'.view_cache(12227, $e['x__type']).'</span>' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span>';
-
-        $ui .= '</div>';
-    }
-
-
-    //MESSAGE
-    if ($x__id > 0) {
-        if($has_e_link){
-
-            $ui .= '<span class="message_content paddingup x__message hideIfEmpty x__message_' . $x__id . '">' . view_x__message($e['x__message'] , $e['x__type']) . '</span>';
-
-        } elseif($has_x_progress && strlen($e['x__message'])){
-
-            //DISCOVERY PROGRESS
-            $ui .= '<div class="message_content paddingup" style="margin-left: 0;">';
-            $ui .= $CI->X_model->message_view($e['x__message'], false);
-            $ui .= '</div>';
-
-        }
-    }
-
-    if($message_input){
-        $ui .= '<div class="message_content paddingup" style="margin-left:41px;">'.$message_input.'</div>';
-    }
-
-
-    $ui .= '</div>';
-
-
-
-
-    return $ui;
-
-
-
-
-    $ui  = '<div '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover col-md-4 col-6 no-padding e_line_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+    //Source UI
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover en-item col-md-4 col-6 no-padding e_line_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
 
 
 
-    //Coin Block
-    if($show_coins){
-
-        $view_coins_i_12274 = view_coins_i(12274,  $e);
-        $view_coins_i_12273 = view_coins_i(12273,  $e);
-        $view_coins_i_6255 = view_coins_i(6255,  $e);
-
-        $ui .= '<div class="coin-cover coin-cover-left">';
-        $ui .= '<div>'.$view_coins_i_12274.'</div>';
-        $ui .= '<div>'.$view_coins_i_12273.'</div>';
-        $ui .= '<div>'.$view_coins_i_6255.'</div>';
-        $ui .= '</div>';
-    }
+    //Coin Block: Always visible
+    $ui .= '<div class="coin-cover coin-cover-left">';
+        $ui .= '<div>'.view_coins_e(12274,  $e['e__id']).'</div>';
+        $ui .= '<div>'.view_coins_e(12273,  $e['e__id']).'</div>';
+        $ui .= '<div>'.view_coins_e(6255,  $e['e__id']).'</div>';
+    $ui .= '</div>';
 
 
 
     //Action Bar:
-    $button_ui = '';
-    $button_count = 0;
-
-    if($editing_enabled){
-        //IDAE TYPE:
-        $button_ui .= '<div>'.view_input_dropdown(4737, $e['i__type'], null, $editing_enabled, false, $e['i__id']).'</div>';
-        $button_count++;
-
-        //COIN COVER
-        $button_ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
-        $button_count++;
-    }
-
-
-    //UNLINK
-    if($control_enabled && isset($e['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-        $button_ui .= '<div><div class="x_remove icon-block-xs" i__id="'.$e['i__id'].'" x__id="'.$e['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__icon'].'</div></div>';
-        $button_count++;
-    }
-
-    //SORTABLE
-    if($has_sortable && $control_enabled){
-        $button_ui .= '<div><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
-        $button_count++;
-    }
-
-
-    //LOCKED
-    if($has_any_lock){
-        $button_ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
-        $button_count++;
-    }
-
-
     $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
-    if(!$show_coins){
-        if($button_count<=4){
+    if($source_of_e && ($is_e_link || $is_note)) {
+        if($editing_enabled){
+            //SOURCE TYPE:
+            $ui .= '<div>'.view_input_dropdown(6177, $e['e__type'], null, $editing_enabled, false, 0).'</div>';
+
+            //COIN COVER
+            $ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__icon'].'</a></div>';
+        } else {
             $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
             $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
         }
-        if($button_count<=2){
-            $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+
+
+        //Locked or Hard Delete
+        if($has_any_lock){
+            //LOCKED
+            $ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__icon'].'</span></div>';
+        } else {
+            //HARD DELETE SOURCE
+            $ui .= '<div><a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" title="'.$e___11035[14601]['m__title'].'"><span class="icon-block-xs '.superpower_active(14683).'">'.$e___11035[14601]['m__icon'].'</span></a></div>';
+        }
+
+
+        //Edit Message
+        if($is_e_link){
+            $ui .= '<div><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m__title'].'"><span class="icon-block-xs '.superpower_active(13422).'">'.$e___11035[13571]['m__icon'].'</span></a></div>';
+        }
+
+        //UNLINK
+        if(($source_of_e && $is_sortable) || $superpower_13422){
+            //UNLINK SOURCE
+            $ui .= '<div><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" title="'.$e___11035[10673]['m__title'].'"><span class="icon-block-xs '.superpower_active(10939).'">'.$e___11035[10673]['m__icon'].'</span></a></div>';
+        } else {
             $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
         }
+
+        //SORTABLE
+        if($is_e_link && $is_sortable && $superpower_10939){
+            $ui .= '<div><div class="sort_e '.superpower_active(13422).'  hidden icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__icon'].'</div></div>';
+        } else {
+            $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+        }
+
     }
-    $ui .= $button_ui;
     $ui .= '</div>';
+
+
+
+    //SOURCE ICON
+    $ui .= '<a href="'.$href.'" '.( $has_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__spectrum'].' WEIGHT '.$e['e__spectrum'].'" ' : '' ).'><span class="icon-block e_ui_icon_' . $e['e__id'] . ' e__icon_'.$e['e__id'].'">' . view_e__icon($e['e__icon']) . '</span></a>';
+
+
+
+
 
 
 
@@ -2211,43 +2066,42 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     }
 
 
-    $ui .= '<div class="inner-content '.( $show_coins ? ' inner-no-border ' : '' ).'">';
+    $ui .= '<div class="inner-content">';
 
-
-    //Previous Ideas
-    $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
-    foreach($CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-        'x__right' => $e['i__id'],
-        'x__left !=' => $current_i,
-    ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
-        $ui .= '<span class="icon-block-img"><a href="/~'.$previous_i['i__id'].'" data-toggle="tooltip" title="' . $previous_i['i__title'] . '" data-placement="top">' . $e___4737[$previous_i['i__type']]['m__icon'] . '</a></span> ';
+    //Profile Sources
+    if($superpower_12706 && $control_enabled){
+        $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
+        foreach($e__profiles as $e_profile) {
+            $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" data-toggle="tooltip" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '" data-placement="bottom">' . view_e__icon($e_profile['e__icon']) . '</a></span> ';
+        }
+        $ui .= '</div>';
     }
-    $ui .= '</div>';
-
 
 
     //TITLE
     if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
         //Editable title:
-        $ui .= view_input_text(4736, $e['i__title'], $e['i__id'], $editing_enabled, (($e['x__spectrum']*100)+1), true);
+        $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $editing_enabled, (($e['x__spectrum']*100)+1), true);
     } elseif(!$has_any_lock){
-        $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
+        $ui .= '<a href="'.$href.'">'.$e__title.'</a>';
     } else {
-        $ui .= $i_title;
-    }
-
-
-    //IDEAs and Time
-    $view_i_time = view_i_time($i_stats);
-    if($view_i_time){
-        $ui .= '<div class="cover-text"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
+        $ui .= $e__title;
     }
 
 
     //Message
+    if ($x__id > 0) {
+        if($has_e_link){
+
+            $ui .= view_x__message($e['x__message'] , $e['x__type']);
+
+        } elseif($has_x_progress && strlen($e['x__message'])){
+
+            //DISCOVERY PROGRESS
+            $ui .= $CI->X_model->message_view($e['x__message'], false);
+
+        }
+    }
     if($message_input){
         if(!$has_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
             //No HTML Tags, add link:
@@ -2259,8 +2113,33 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     }
 
 
-    $ui .= '</div></div>';
 
+    //Toolbar (Member Discoveries)
+    if($has_x_progress && superpower_active(13758, true)){
+
+        $ui .= '<div class="center">';
+
+        //Show Filter?
+        if(superpower_active(14005, true) && (!isset($_GET['load__e']) || $_GET['load__e']!=$e['e__id'])){
+            $ui .= '<a href="/'.$CI->uri->segment(1).'?load__e='.$e['e__id'].'" class="icon-block-xs" title="'.$e___11035[13670]['m__title'].'">'.$e___11035[13670]['m__icon'].'</a>';
+        }
+
+        //Total Progress
+        if(isset($_GET['progress'])){
+            $is = $CI->I_model->fetch(array(
+                'i__id' => $e['x__left'],
+            ));
+            $completion_rate = $CI->X_model->completion_progress($e['x__source'], $is[0]);
+            $ui .= '<span style="min-width:34px;" class="inline-block" title="'.$e['x__source'].'/'.$e['x__left'].'">' . $completion_rate['completion_percentage'] . '%</span>';
+        }
+
+        //Method & Time:
+        $ui .= '<span style="min-width:147px;" title="'.$e['x__time'].'" class="inline-block"><span class="icon-block-xs">'.view_cache(12227, $e['x__type']).'</span>' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span>';
+
+        $ui .= '</div>';
+    }
+
+    $ui .= '</div></div>';
 
     $ui .= '</div>';
 
