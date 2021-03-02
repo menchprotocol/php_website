@@ -1690,7 +1690,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($previous_is_lock && $discovery_mode);
     $has_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
     $has_soft_lock = $locking_enabled && ($has_hard_lock || $previous_is_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
-    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
+    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603')) && $control_enabled;
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i, null, !$message_input);
     $has_any_lock = $has_soft_lock || $has_hard_lock;
@@ -1734,14 +1734,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= '</div>';
 
 
-    if($has_sortable && $control_enabled){
-        $ui .= '<div class="coin-cover coin-cover-right2">';
-        $ui .= '<div class="x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</div>';
-        $ui .= '</div>';
-    }
 
-
-    $ui .= '<div class="coin-cover coin-cover-right1 hideIfEmpty">';
+    $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
         //LOCKED
         if($has_any_lock){
 
@@ -1766,14 +1760,17 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
             //Any Buttons?
+            $sort_button = '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</span>';
             if($action_buttons){
                 //Right Action Menu
                 $ui .= '<div class="dropdown inline-block">';
-                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs"><i class="far fa-ellipsis-h"></i></span></button>';
+                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $has_sortable ? $sort_button : '<i class="far fa-ellipsis-v"></i>' ).'</button>';
                 $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
                 $ui .= $action_buttons;
                 $ui .= '</div>';
                 $ui .= '</div>';
+            } elseif($has_sortable){
+                $ui .= $sort_button;
             }
 
         }

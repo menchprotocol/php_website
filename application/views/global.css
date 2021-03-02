@@ -1937,24 +1937,17 @@ i, .btn .show-max {
 }
 .coin-cover{
     position: absolute;
-    top: 5px;
+    top: 3px;
     width: 100%;
     overflow: visible;
 }
 
 .coin-cover-left{
-    left: 2px;
+    left: 3px;
 }
 
-.coin-cover-right1{
+.coin-cover-right{
     right: 3px;
-    width: 18px !important;
-    font-size: 0.8em;
-}
-.coin-cover-right2{
-    right: 21px;
-    width: 18px !important;
-    font-size: 0.8em;
 }
 
 .coin_cover{
