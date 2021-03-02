@@ -318,7 +318,7 @@ $profiles = $this->X_model->fetch(array(
             }
 
             //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[11029]['m__cover'].'</span>'.$e___11035[11029]['m__title'].'</div>';
-            $ui .= '<div id="list-in-11029" class="list-group hideIfEmpty">';
+            $ui .= '<div id="list-in-11029" class="row hideIfEmpty">';
 
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
 
