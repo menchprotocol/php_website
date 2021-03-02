@@ -2042,17 +2042,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $ui .= '</div>';
 
 
-
-    //SOURCE ICON
-    $ui .= '<a href="'.$href.'" '.( $has_e_link ? ' title="TRANSACTION ID '.$e['x__id'].' TYPE @'.$e['x__type'].' SORT '.$e['x__spectrum'].' WEIGHT '.$e['e__spectrum'].'" ' : '' ).'><span class="icon-block cover_icon_' . $e['e__id'] . ' e__cover_'.$e['e__id'].'">' . view_e__cover($e['e__cover']) . '</span></a>';
-
-
-
-
-
-
-
-
     //Coin Cover
     $ui .= ( $has_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( 0 ? ' coin-discover ' : ' coin-source ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$coin_cover.'\');"' : '' ).'>';
 
