@@ -765,7 +765,7 @@ class E extends CI_Controller
         //Auth member and check required variables:
         $member_e = superpower_unlocked(10939);
         $success_message = 'Saved'; //Default, might change based on what we do...
-        $is_valid_icon = is_valid_icon($_POST['e__icon']);
+        $is_valid_icon = is_valid_icon($_POST['e__cover']);
 
         //Fetch current data:
         $es = $this->E_model->fetch(array(
@@ -825,7 +825,7 @@ class E extends CI_Controller
         //Prepare data to be updated:
         $e__update = array(
             'e__title' => $e__title_validate['e__title_clean'],
-            'e__icon' => trim($_POST['e__icon']),
+            'e__cover' => trim($_POST['e__cover']),
             'e__type' => intval($_POST['e__type']),
         );
 
@@ -1220,7 +1220,7 @@ class E extends CI_Controller
         $icon_new_css = $_POST['type_css'].' '.$_POST['icon_css'];
         $validated = false;
         foreach($this->config->item('e___12279') as $e__id => $m) {
-            if(substr_count($m['m__icon'], $icon_new_css) == 1){
+            if(substr_count($m['m__cover'], $icon_new_css) == 1){
                 $validated = true;
                 break;
             }
@@ -1236,12 +1236,12 @@ class E extends CI_Controller
         //Update icon:
         $new_avatar = '<i class="'.$icon_new_css.'"></i>';
         $this->E_model->update($member_e['e__id'], array(
-            'e__icon' => $new_avatar,
+            'e__cover' => $new_avatar,
         ), true, $member_e['e__id']);
 
 
         //Update Session:
-        $member_e['e__icon'] = $new_avatar;
+        $member_e['e__cover'] = $new_avatar;
         $this->E_model->activate_session($member_e, true);
 
 
@@ -1516,7 +1516,7 @@ class E extends CI_Controller
             'status' => 1,
             'e__title' => $es[0]['e__title'],
             'e__type' => $es[0]['e__type'],
-            'e__icon' => $es[0]['e__icon'],
+            'e__cover' => $es[0]['e__cover'],
         );
 
         if($_POST['x__id'] > 0){

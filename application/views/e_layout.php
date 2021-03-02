@@ -43,7 +43,7 @@ $profiles = $this->X_model->fetch(array(
         echo '<div id="list-in-11030" class="list-group grey-list hideIfEmpty">';
         echo '<div id="new_11030" class="list-group-item list-adder no-side-padding '.superpower_active(13422).'">
                             <div class="input-group border">
-                                <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__icon'].'</span></a>
+                                <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
                                 <input type="text"
                                        class="form-control form-control-thick algolia_search dotransparent add-input"
                                        id="New11030input"
@@ -53,7 +53,7 @@ $profiles = $this->X_model->fetch(array(
         foreach($profiles as $e_profile) {
 
             if(!$see_more_button && $count==$show_max){
-                echo '<div class="list-group-item see_all_profiles no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_all_profiles\').toggleClass(\'hidden\')" class="block"><span class="icon-block">'.$e___11035[14538]['m__icon'].'</span><b class="css__title '.extract_icon_color($e___11035[14538]['m__icon']).'" style="text-decoration: none !important;">'.$e___11035[14538]['m__title'].'</b></a></div>';
+                echo '<div class="list-group-item see_all_profiles no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_all_profiles\').toggleClass(\'hidden\')" class="block"><span class="icon-block">'.$e___11035[14538]['m__cover'].'</span><b class="css__title '.extract_icon_color($e___11035[14538]['m__cover']).'" style="text-decoration: none !important;">'.$e___11035[14538]['m__title'].'</b></a></div>';
                 echo '<div class="list-group-item see_all_profiles no-height"></div>';
                 $see_more_button = true;
             }
@@ -69,13 +69,13 @@ $profiles = $this->X_model->fetch(array(
 
         //SOURCE DRAFTING?
         if(!in_array($e['e__type'], $this->config->item('n___7357'))){
-            echo '<div class="css__title '.extract_icon_color($e___6177[$e['e__type']]['m__icon']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__icon'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
+            echo '<div class="css__title '.extract_icon_color($e___6177[$e['e__type']]['m__cover']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__cover'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
         }
 
-        $icon_frame = '<span class="e_ui_icon_'.$e['e__id'].'">'.view_e__icon($e['e__icon']).'</span>';
+        $icon_frame = '<span class="cover_icon_'.$e['e__id'].'">'.view_e__cover($e['e__cover']).'</span>';
 
         //SOURCE NAME
-        echo '<div style="padding: 8px 0; margin-top:10px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, ($superpower_13422 ? '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m__title'].'">'.$icon_frame.'</a>' : $icon_frame ), extract_icon_color($e['e__icon'])).'</div>';
+        echo '<div style="padding: 8px 0; margin-top:10px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, ($superpower_13422 ? '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m__title'].'">'.$icon_frame.'</a>' : $icon_frame ), extract_icon_color($e['e__cover'])).'</div>';
 
     }
 
@@ -131,8 +131,8 @@ $profiles = $this->X_model->fetch(array(
             if(!$counter){
                 continue;
             }
-            //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
-            $ui .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m__icon'].' '.$m['m__title'].' '.number_format($counter, 0).' times.</div>';
+            //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
+            $ui .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m__cover'].' '.$m['m__title'].' '.number_format($counter, 0).' times.</div>';
 
         } elseif($x__type==12274){
 
@@ -250,12 +250,12 @@ $profiles = $this->X_model->fetch(array(
                 }
 
 
-                $ui .= '<div class="action-middle-btn grey toggle_4997"><a href="javascript:void(0);" onclick="$(\'.toggle_4997\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m__icon'].'</a></div>';
+                $ui .= '<div class="action-middle-btn grey toggle_4997"><a href="javascript:void(0);" onclick="$(\'.toggle_4997\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m__cover'].'</a></div>';
 
 
 
                 $ui .= '<div class="toggle_4997 hidden">';
-                $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[4997]['m__icon'].'</span>'.$e___11035[4997]['m__title'].'</div>';
+                $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[4997]['m__cover'].'</span>'.$e___11035[4997]['m__title'].'</div>';
                 $ui .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 41px;">';
 
                 //Drop Down
@@ -307,8 +307,8 @@ $profiles = $this->X_model->fetch(array(
                         //Show each specific filter based on DB counts:
                         foreach($child_e_filters as $c_c) {
                             $st = $e___6177[$c_c['e__type']];
-                            $extract_icon_color = extract_icon_color($st['m__icon']);
-                            $ui .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(11029, ' . $c_c['e__type'] . ')" class="nav-x nav-link e_filter_status_11029 en_status_11029_' . $c_c['e__type'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m__message'] . '">' . $st['m__icon'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m__title'] . '</span></a></li>';
+                            $extract_icon_color = extract_icon_color($st['m__cover']);
+                            $ui .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(11029, ' . $c_c['e__type'] . ')" class="nav-x nav-link e_filter_status_11029 en_status_11029_' . $c_c['e__type'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m__message'] . '">' . $st['m__cover'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m__title'] . '</span></a></li>';
                         }
 
                         $ui .= '</div>';
@@ -317,7 +317,7 @@ $profiles = $this->X_model->fetch(array(
                 }
             }
 
-            //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[11029]['m__icon'].'</span>'.$e___11035[11029]['m__title'].'</div>';
+            //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[11029]['m__cover'].'</span>'.$e___11035[11029]['m__title'].'</div>';
             $ui .= '<div id="list-in-11029" class="list-group hideIfEmpty">';
 
             $common_prefix = i_calc_common_prefix($list_e, 'e__title');
@@ -334,7 +334,7 @@ $profiles = $this->X_model->fetch(array(
 
                 $ui .= '<div id="new_11029" current-count="'.$counter.'" class="list-group-item list-adder no-side-padding '.superpower_active(10939).'">
                         <div class="input-group border">
-                            <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11029input\').focus();"><span class="icon-block">'.$e___11035[14054]['m__icon'].'</span></a>
+                            <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11029input\').focus();"><span class="icon-block">'.$e___11035[14054]['m__cover'].'</span></a>
                             <input type="text"
                                    class="form-control form-control-thick algolia_search dotransparent add-input"
                                    id="New11029input"
@@ -368,7 +368,7 @@ $profiles = $this->X_model->fetch(array(
             //Any Ideas?
             if(count($i_bookmarks) || $source_is_e){
 
-                $ui .= '<div class="headline top-margin"><span class="icon-block">' . $e___11035[10573]['m__icon'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
+                $ui .= '<div class="headline top-margin"><span class="icon-block">' . $e___11035[10573]['m__cover'] . '</span>' . $e___11035[10573]['m__title'] . '</div>';
 
                 //Need 2 or more to sort...
                 $ui .= ( count($i_bookmarks) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
@@ -388,7 +388,7 @@ $profiles = $this->X_model->fetch(array(
                 //Give Option to Add New Idea:
                 $ui .= '<div class="new-list-10573 list-group"><div class="list-group-item list-adder">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14015]['m__icon'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14015]['m__cover'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,4736) . '"
@@ -407,7 +407,7 @@ $profiles = $this->X_model->fetch(array(
             if(count($list_i) || $superpower_10939){
 
                 if(count($i_bookmarks) && count($list_i)){
-                    $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__icon'].'</span>'.$e___11035[13550]['m__title'].'</div>';
+                    $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__cover'].'</span>'.$e___11035[13550]['m__title'].'</div>';
                 }
 
                 $ui .= '<div class="row hideIfEmpty" id="list-in-13550">';
@@ -419,7 +419,7 @@ $profiles = $this->X_model->fetch(array(
 
                     $i_stats = i_stats($item['i__metadata']);
                     if(!$show_all_i_btn && $max_i__spectrum>0 && $item['i__spectrum']>0 && $i_stats['i___6162']<=$max_seconds && (($max_i__spectrum * $drop_limit) > $item['i__spectrum'])){
-                        $ui .= '<div class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__icon'].'</div><div class="cover-head '.extract_icon_color($e___11035[14684]['m__icon']).'">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
+                        $ui .= '<div class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__cover'].'</div><div class="cover-head '.extract_icon_color($e___11035[14684]['m__cover']).'">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
                         $show_all_i_btn = true;
                     }
 
@@ -432,7 +432,7 @@ $profiles = $this->X_model->fetch(array(
 
                 //Are there more?
                 if($counter > count($list_i)){
-                    $ui .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/-4341?x__source='.$member_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m__icon'].'</span>'.$e___11035[13913]['m__title'].' ['.$counter.']</a></div></div>';
+                    $ui .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/-4341?x__source='.$member_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m__cover'].'</span>'.$e___11035[13913]['m__title'].' ['.$counter.']</a></div></div>';
                 }
 
             }
@@ -442,7 +442,7 @@ $profiles = $this->X_model->fetch(array(
                 //Give Option to Add New Idea:
                 $ui .= '<div class="new-list-13550 list-group"><div class="list-group-item list-adder">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14016]['m__icon'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,4736) . '"
@@ -466,7 +466,7 @@ $profiles = $this->X_model->fetch(array(
 
                 $list_x  = view_coins_e(6255, $e['e__id'], 1);
 
-                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>'.$e___11035[12969]['m__title'].'</div>';
+                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__cover'].'</span>'.$e___11035[12969]['m__title'].'</div>';
                 $ui .= '<div class="row hideIfEmpty" id="list-in-12969">';
                 foreach($list_x as $item){
                     $ui .= view_i(12969, $item['i__id'], null, $item,$control_enabled,null, $e);
@@ -490,7 +490,7 @@ $profiles = $this->X_model->fetch(array(
                     'x__up' => $e['e__id'],
                 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'x__id' => 'DESC'));
                 if(count($i_notes_query)){
-                    $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__icon'].'</span>'.$e___11035[12896]['m__title'].'</div>';
+                    $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__cover'].'</span>'.$e___11035[12896]['m__title'].'</div>';
                     $ui .= '<div class="row hideIfEmpty" id="list-in-12896">';
                     foreach($i_notes_query as $count => $i_notes) {
                         $ui .= view_i(12896, $i_notes['x__left'], null, $i_notes, $control_enabled);
@@ -523,7 +523,7 @@ $profiles = $this->X_model->fetch(array(
             $item_counters = $this->X_model->fetch($i_notes_filters, array('x__right'), 0, 0, array(), 'COUNT(i__id) as totals');
             $counter = $item_counters[0]['totals'];
 
-            //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
+            //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
             $ui .= '<div class="row top-margin">';
             if($counter>0){
 
@@ -547,7 +547,7 @@ $profiles = $this->X_model->fetch(array(
 
         $default_active = $x__type==$active_x__type;
 
-        $tab_nav .= '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__icon']).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
+        $tab_nav .= '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__cover']).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
 
 
         $tab_content .= '<div class="tab-content tab-group-11089 tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).( $source_is_e ? ' no-border ' : '' ).'">';

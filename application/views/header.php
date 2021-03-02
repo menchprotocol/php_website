@@ -189,12 +189,12 @@ if(!$basic_header_footer){
                     if($member_e){
 
                         //My Source
-                        echo '<a href="'.home_url().'"><span class="platform-circle e_ui_icon_'.$member_e['e__id'].'">'.$member_e['e__icon'].'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
+                        echo '<a href="'.home_url().'"><span class="platform-circle cover_icon_'.$member_e['e__id'].'">'.$member_e['e__cover'].'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
 
                     } else {
 
                         //Domain Source
-                        echo '<a href="'.home_url().'"><span class="icon-block platform-logo">'.get_domain('m__icon').'</span><b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b></a>';
+                        echo '<a href="'.home_url().'"><span class="icon-block platform-logo">'.get_domain('m__cover').'</span><b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b></a>';
 
                     }
 
@@ -208,7 +208,7 @@ if(!$basic_header_footer){
 
                     if(intval(view_memory(6404,12678))){
                         //Search button
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m__icon'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__icon'].'</span></a></td>';
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m__cover'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__cover'].'</span></a></td>';
                     }
 
                     //MENU
@@ -216,7 +216,7 @@ if(!$basic_header_footer){
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    echo '<span class="icon-block">' . ( $superpower_10939 ? '<i class="fas fa-circle '.$current_coin['c__class'].'"></i>' : $e___13479[$menu_type]['m__icon'] ).'</span>';
+                    echo '<span class="icon-block">' . ( $superpower_10939 ? '<i class="fas fa-circle '.$current_coin['c__class'].'"></i>' : $e___13479[$menu_type]['m__cover'] ).'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
@@ -243,7 +243,7 @@ if(!$basic_header_footer){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' note_type_id="'.$x__type.'" class="dropdown-item css__title '.extract_icon_color($m['m__icon']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__icon'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<a '.$href.' note_type_id="'.$x__type.'" class="dropdown-item css__title '.extract_icon_color($m['m__cover']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
 

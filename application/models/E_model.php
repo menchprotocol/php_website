@@ -324,7 +324,7 @@ class E_model extends CI_Model
                     $e___6177 = $this->config->item('e___6177'); //Source Status
                     $x__message = view_db_field($key) . ' updated from [' . $e___6177[$before_data[0][$key]]['m__title'] . '] to [' . $e___6177[$value]['m__title'] . ']';
 
-                } elseif($key=='e__icon') {
+                } elseif($key=='e__cover') {
 
                     $x__type = 10653; //Member Updated Icon
                     $x__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
@@ -1048,15 +1048,15 @@ class E_model extends CI_Model
             } elseif ($action_e__id == 5943) { //Member Mass Update Member Icon
 
                 $this->E_model->update($x['e__id'], array(
-                    'e__icon' => $action_command1,
+                    'e__cover' => $action_command1,
                 ), true, $x__source);
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 12318 && !strlen($x['e__icon'])) { //Member Mass Update Member Icon
+            } elseif ($action_e__id == 12318 && !strlen($x['e__cover'])) { //Member Mass Update Member Icon
 
                 $this->E_model->update($x['e__id'], array(
-                    'e__icon' => $action_command1,
+                    'e__cover' => $action_command1,
                 ), true, $x__source);
 
                 $applied_success++;
@@ -1069,10 +1069,10 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 10625 && substr_count($x['e__icon'], $action_command1) > 0) { //Replace Member Matching Icon
+            } elseif ($action_e__id == 10625 && substr_count($x['e__cover'], $action_command1) > 0) { //Replace Member Matching Icon
 
                 $this->E_model->update($x['e__id'], array(
-                    'e__icon' => str_replace($action_command1, $action_command2, $x['e__icon']),
+                    'e__cover' => str_replace($action_command1, $action_command2, $x['e__cover']),
                 ), true, $x__source);
 
                 $applied_success++;
@@ -1155,7 +1155,7 @@ class E_model extends CI_Model
     }
 
 
-    function verify_create($e__title, $x__source = 0, $e__type = 6181, $e__icon = null){
+    function verify_create($e__title, $x__source = 0, $e__type = 6181, $e__cover = null){
 
         if(!in_array($e__type, $this->config->item('n___6177'))){
             //Invalid Status ID
@@ -1174,7 +1174,7 @@ class E_model extends CI_Model
         //Create
         $focus_e = $this->E_model->create(array(
             'e__title' => $e__title_validate['e__title_clean'],
-            'e__icon' => $e__icon,
+            'e__cover' => $e__cover,
             'e__type' => $e__type,
         ), true, $x__source);
 

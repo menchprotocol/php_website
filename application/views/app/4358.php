@@ -9,7 +9,7 @@ $e___6103 = $this->config->item('e___6103'); //Transaction Metadata
 $e___6186 = $this->config->item('e___6186'); //Transaction Status
 
 echo '<tr style="font-weight: bold;">';
-echo '<td colspan="4" style="text-align: left;">'.$e___6103[6402]['m__icon'].' '.$e___6103[6402]['m__title'].'</td>';
+echo '<td colspan="4" style="text-align: left;">'.$e___6103[6402]['m__cover'].' '.$e___6103[6402]['m__title'].'</td>';
 echo '</tr>';
 $counter = 0;
 $total_count = 0;
@@ -33,16 +33,16 @@ foreach($this->X_model->fetch(array(
         echo '<tr>';
         echo '<td style="width: 50px;">'.$counter.'</td>';
         echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_i_marks($i_x).'</td>';
-        echo '<td>'.$e___6186[$i_x['x__status']]['m__icon'].'</td>';
+        echo '<td>'.$e___6186[$i_x['x__status']]['m__cover'].'</td>';
         echo '<td style="text-align: left;">';
 
         echo '<div>';
-        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_i[0]['i__type']]['m__icon'].'</span>';
+        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_i[0]['i__type']]['m__cover'].'</span>';
         echo '<a href="/i/i_go/'.$previous_i[0]['i__id'].'">'.$previous_i[0]['i__title'].'</a>';
         echo '</div>';
 
         echo '<div>';
-        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$i_x['i__type']]['m__icon'].'</span>';
+        echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$i_x['i__type']]['m__cover'].'</span>';
         echo '<a href="/i/i_go/'.$i_x['i__id'].'">'.$i_x['i__title'].' [child]</a>';
         echo '</div>';
 
@@ -112,15 +112,15 @@ if(1){
             echo '<tr>';
             echo '<td style="width: 50px;">'.$counter.'</td>';
             echo '<td style="font-weight: bold; font-size: 1.3em; width: 100px;">'.view_i_marks($i_x).'</td>';
-            echo '<td>'.$e___6186[$i_x['x__status']]['m__icon'].'</td>';
+            echo '<td>'.$e___6186[$i_x['x__status']]['m__cover'].'</td>';
             echo '<td style="text-align: left;">';
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_i[0]['i__type']]['m__icon'].'</span>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$previous_i[0]['i__type']]['m__cover'].'</span>';
             echo '<a href="/i/i_go/'.$previous_i[0]['i__id'].'">'.$previous_i[0]['i__title'].'</a>';
             echo '</div>';
 
             echo '<div>';
-            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$i_x['i__type']]['m__icon'].'</span>';
+            echo '<span style="width:25px; display:inline-block; text-align:center;">'.$e___4737[$i_x['i__type']]['m__cover'].'</span>';
             echo '<a href="/i/i_go/'.$i_x['i__id'].'">'.$i_x['i__title'].'</a>';
             echo '</div>';
             echo '</td>';

@@ -61,7 +61,7 @@ class X extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'x__type_preview' => '<b class="css__title '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m__icon']).'">' . $e___4592[$detected_x_type['x__type']]['m__icon'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
+            'x__type_preview' => '<b class="css__title '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m__cover']).'">' . $e___4592[$detected_x_type['x__type']]['m__cover'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
             'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">'.view_x__message($_POST['x__message'], $detected_x_type['x__type'], null, true).'</span>' : ''),
         ));
 
@@ -365,7 +365,7 @@ class X extends CI_Controller
 
             if(!$next_i__id){
                 //Failed to add to read:
-                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m__icon'].'</span>FAILED to add to '.$e___11035[12969]['m__title'].'.</div>', true);
+                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m__cover'].'</span>FAILED to add to '.$e___11035[12969]['m__title'].'.</div>', true);
             }
         }
 
@@ -726,7 +726,7 @@ class X extends CI_Controller
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
         return view_json(array(
             'status' => 1,
-            'message' => '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__icon'].'</span>'.$e___11035[13980]['m__title'].'</div><div class="previous_answer">'.$this->X_model->message_view($new_message, true).'</div>',
+            'message' => '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__cover'].'</span>'.$e___11035[13980]['m__title'].'</div><div class="previous_answer">'.$this->X_model->message_view($new_message, true).'</div>',
         ));
 
     }

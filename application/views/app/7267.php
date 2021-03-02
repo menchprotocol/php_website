@@ -16,20 +16,21 @@ if(isset($_GET['search_for'])){
             'status' => 0,
             'message' => 'Invalid Source ID'
         ));
-    } elseif(!strlen($es[0]['e__icon'])) {
+    } elseif(!strlen($es[0]['e__cover'])) {
         return view_json(array(
             'status' => 0,
             'message' => 'Source Missing Icon'
         ));
     }
 
-    if(substr_count($es[0]['e__icon'], '<img ') && substr_count($es[0]['e__icon'], 'src="')){
+    //TODO: Remove as this is duplicate to coin_cover() function
+    if(substr_count($es[0]['e__cover'], '<img ') && substr_count($es[0]['e__cover'], 'src="')){
 
-        $icon_keyword = one_two_explode('src="','"',$es[0]['e__icon']);
+        $icon_keyword = one_two_explode('src="','"',$es[0]['e__cover']);
 
-    } elseif(substr_count($es[0]['e__icon'], '<i ') && substr_count($es[0]['e__icon'], 'class="')){
+    } elseif(substr_count($es[0]['e__cover'], '<i ') && substr_count($es[0]['e__cover'], 'class="')){
 
-        $icon_keyword = one_two_explode('class="','"',$es[0]['e__icon']);
+        $icon_keyword = one_two_explode('class="','"',$es[0]['e__cover']);
         foreach(array('idea', 'source', 'discover', 'fas', 'far', 'fad', 'fal') as $remove_class){
             $icon_keyword = str_replace($remove_class, '', $icon_keyword);
         }
@@ -37,7 +38,7 @@ if(isset($_GET['search_for'])){
 
     } else {
 
-        $icon_keyword = $es[0]['e__icon'];
+        $icon_keyword = $es[0]['e__cover'];
 
     }
 }
@@ -55,7 +56,7 @@ if($icon_keyword){
 
     $matching_results = $this->E_model->fetch(array(
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'LOWER(e__icon) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
+        'LOWER(e__cover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
     ));
 
     //List the matching search:
@@ -79,14 +80,14 @@ if($icon_keyword){
 
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
                 $replaced += $this->E_model->update($en['e__id'], array(
-                    'e__icon' => str_ireplace($icon_keyword, $_GET['replace_with'], $en['e__icon']),
+                    'e__cover' => str_ireplace($icon_keyword, $_GET['replace_with'], $en['e__cover']),
                 ), false, $member_e['e__id']);
 
             }
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__type'], true, 'right').' <span class="icon-block">'.view_e__icon($en['e__icon']).'</span><a href="/@'.$en['e__id'].'">'.$en['e__title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__type'], true, 'right').' <span class="icon-block">'.view_e__cover($en['e__cover']).'</span><a href="/@'.$en['e__id'].'">'.$en['e__title'].'</a></td>';
             echo '</tr>';
 
         }

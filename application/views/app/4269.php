@@ -100,7 +100,7 @@ if(superpower_unlocked()) {
     ?>
 
     <script>
-        var go_next_icon = '<?= $e___11035[12211]['m__icon'] ?>';
+        var go_next_icon = '<?= $e___11035[12211]['m__cover'] ?>';
         var sign_i__id = <?= $sign_i__id ?>;
         var referrer_url = '<?= @$_GET['url'] ?>';
     </script>
@@ -110,7 +110,7 @@ if(superpower_unlocked()) {
 
     <div class="center-info">
 
-        <div class="text-center platform-large"><?= get_domain('m__icon') ?></div>
+        <div class="text-center platform-large"><?= get_domain('m__cover') ?></div>
 
         <div class="login-content" style="margin-top:41px;">
 
@@ -140,17 +140,17 @@ if(superpower_unlocked()) {
                 echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
                 echo $e___11035[14436]['m__title'];
                 foreach($this->config->item('e___14436') as $e__id => $m) {
-                    echo '&nbsp;&nbsp;'.$m['m__icon'];
+                    echo '&nbsp;&nbsp;'.$m['m__cover'];
                 }
                 echo '</a></div>';
                 echo '<div class="mid-text-line"><span>OR</span></div>';
                 ?>
 
-                <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__icon'].'</span>'.$e___4269[3288]['m__title'] ?></span>
+                <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__cover'].'</span>'.$e___4269[3288]['m__title'] ?></span>
                 <div class="form-group"><input type="email" placeholder="your@email.com" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
                 <div id="email_errors" class="discover margin-top-down hideIfEmpty"></div>
                 <span id="step2buttons" class="<?= isset($_GET['input_email']) ? '' : ' hidden ' ?>" >
-                    <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                    <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__cover'] ?></a>
                 <div class="doclear">&nbsp;</div>
                 </span>
 
@@ -160,7 +160,7 @@ if(superpower_unlocked()) {
                 if($sign_i__id){
                     echo '<div class="mid-text-line"><span>OR</span></div>';
                     echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" class="btn btn-large btn-default">';
-                    echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__icon'];
+                    echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__cover'];
                     echo '</a></div>';
                 }
                 ?>
@@ -177,19 +177,19 @@ if(superpower_unlocked()) {
                 <!-- To be updated to >0 IF email was found -->
                 <input type="hidden" id="sign_e__id" value="0" />
 
-                <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m__icon'].'</span>'.$e___4269[3286]['m__title'] ?></span>
+                <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m__cover'].'</span>'.$e___4269[3286]['m__title'] ?></span>
                 <div class="form-group"><input type="password" id="input_password" class="form-control border white-border"></div>
                 <div id="password_errors" class="discover margin-top-down hideIfEmpty"></div>
 
                 <div class="doclear">&nbsp;</div>
 
                 <div id="step3buttons">
-                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
-                    <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__cover'] ?></a>
                 </div>
 
                 <div class="doclear">&nbsp;</div>
-                <div style="padding-top:13px;">No password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration:none;font-weight: bold;"><?= '<u>'.$e___11035[11068]['m__title'].'</u> '.$e___11035[11068]['m__icon'] ?></a></div>
+                <div style="padding-top:13px;">No password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration:none;font-weight: bold;"><?= '<u>'.$e___11035[11068]['m__title'].'</u> '.$e___11035[11068]['m__cover'] ?></a></div>
 
             </div>
 
@@ -202,21 +202,21 @@ if(superpower_unlocked()) {
 
                 <!-- pre-set Email -->
                 <div class="margin-top-down">
-                    <div class="css__title"><span class="icon-block"><?= $e___4269[14026]['m__icon'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
+                    <div class="css__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
                     <div style="padding:8px 0;"><span class="icon-block">&nbsp;</span><span class="focus_email"></span></div>
                 </div>
 
 
                 <!-- Full Name -->
                 <div class="margin-top-down">
-                    <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__icon'].'</span>'.$e___4269[13025]['m__title'] ?></span>
+                    <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
                     <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="input_name" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border"></div>
                 </div>
 
 
                 <!-- New Password -->
                 <div class="margin-top-down">
-                    <span class="css__title" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[14027]['m__icon'] ?></span><?= $e___4269[14027]['m__title'] ?></span>
+                    <span class="css__title" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[14027]['m__cover'] ?></span><?= $e___4269[14027]['m__title'] ?></span>
                     <div class="form-group"><input type="password" id="new_password" class="form-control border white-border"></div>
                 </div>
 
@@ -224,8 +224,8 @@ if(superpower_unlocked()) {
                 <!-- Signup Buttons -->
                 <div id="new_account_errors" class="discover margin-top-down hideIfEmpty"></div>
                 <span>
-                    <a href="javascript:void(0)" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__icon'] ?></a>
-                    <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__icon'] ?></a>
+                    <a href="javascript:void(0)" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__cover'] ?></a>
                     <div class="doclear">&nbsp;</div>
                 </span>
 

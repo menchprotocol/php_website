@@ -10,13 +10,13 @@ if(isset($_GET['update_u_icons'])){
     );
 
     if(!isset($_GET['force'])) {
-        $base_filters['(LENGTH(e__icon) < 1 OR e__icon IS NULL)'] = null;
+        $base_filters['(LENGTH(e__cover) < 1 OR e__cover IS NULL)'] = null;
     }
 
     $updated = 0;
     foreach($this->X_model->fetch($base_filters, array('x__down'), 0) as $x){
         $updated += $this->E_model->update($x['e__id'], array(
-            'e__icon' => random_avatar(),
+            'e__cover' => random_avatar(),
         ));
     }
     echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$updated.' Member profiles updated with new random animal icons';

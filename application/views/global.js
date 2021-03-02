@@ -137,15 +137,15 @@ function load_editor(){
 }
 
 
-function js_extract_icon_color(e__icon){
+function js_extract_icon_color(e__cover){
 
     //NOTE: Has a twin PHP function
 
-    if(e__icon.includes('discover')){
+    if(e__cover.includes('discover')){
         return ' discover ';
-    } else if(e__icon.includes( 'idea')){
+    } else if(e__cover.includes( 'idea')){
         return ' idea ';
-    } else if(e__icon.includes('source') || !e__icon.length){
+    } else if(e__cover.includes('source') || !e__cover.length){
         return ' source ';
     } else {
         return '';
@@ -161,10 +161,10 @@ function view_s_js(algolia_object){
 
     if(algolia_object.s__type==12274 || 1){
         //SOURCE
-        return '<span class="icon-block">'+ ( algolia_object.s__type==12274 ? algolia_object.s__icon : '<i class="fas fa-circle idea"></i>' ) +'</span><span class="css__title '+ ( algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__icon) : '' ) +'">' + view_s__title(algolia_object) + '</span>';
+        return '<span class="icon-block">'+ ( algolia_object.s__type==12274 ? algolia_object.s__cover : '<i class="fas fa-circle idea"></i>' ) +'</span><span class="css__title '+ ( algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__cover) : '' ) +'">' + view_s__title(algolia_object) + '</span>';
     } else {
         //IDEA
-        //return '<div class="col-md-4 col-6 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__icon + '\')"></div></div><div class="cover-content"><div class="inner-content css__title">'+view_s__title(algolia_object)+'</div></div></div>';
+        //return '<div class="col-md-4 col-6 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__cover + '\')"></div></div><div class="cover-content"><div class="inner-content css__title">'+view_s__title(algolia_object)+'</div></div></div>';
     }
 }
 
@@ -341,7 +341,7 @@ $(document).ready(function () {
     });
 
     //Keep an eye for icon change:
-    $('#cover__icon').keyup(function() {
+    $('#cover__cover').keyup(function() {
         update_demo_icon();
     });
 
@@ -585,7 +585,7 @@ function e__title_word_count() {
 
 function update_demo_icon(){
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#cover__icon').val().length > 0 ? $('#cover__icon').val() : js_e___14874[12274]['m__icon'] ));
+    $('.icon-demo').html(($('#cover__cover').val().length > 0 ? $('#cover__cover').val() : js_e___14874[12274]['m__cover'] ));
 }
 
 function e_modify_load(e__id, x__id) {
@@ -624,7 +624,7 @@ function e_modify_load(e__id, x__id) {
             $('#e__title').val(data.e__title);
             $('#e__type').val(data.e__type);
 
-            $('#cover__icon').val(data.e__icon); update_demo_icon();
+            $('#cover__cover').val(data.e__cover); update_demo_icon();
 
             set_autosize($('#e__title'));
             e__title_word_count();
@@ -681,7 +681,7 @@ function e_modify_save() {
         do_13527:do_13527,
         e__id: $('#modal13571 .modal_e__id').val(),
         e__title: $('#e__title').val(),
-        e__icon: $('#cover__icon').val(),
+        e__cover: $('#cover__cover').val(),
         e__type: $('#e__type').val(), //The new status (might not have changed too)
         //Transaction data:
         x__id: $('#modal13571 .modal_x__id').val(),
@@ -731,17 +731,17 @@ function e_modify_save() {
 
 
                 //Member Status:
-                $('.e__type_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__type']]["m__title"] + ': ' + js_e___6177[modify_data['e__type']]["m__message"] + '">' + js_e___6177[modify_data['e__type']]["m__icon"] + '</span>');
+                $('.e__type_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__type']]["m__title"] + ': ' + js_e___6177[modify_data['e__type']]["m__message"] + '">' + js_e___6177[modify_data['e__type']]["m__cover"] + '</span>');
 
 
                 //Member Icon:
-                var icon_set = ( modify_data['e__icon'].length > 0 ? 1 : 0 );
+                var icon_set = ( modify_data['e__cover'].length > 0 ? 1 : 0 );
                 if(!icon_set){
                     //Set source default icon:
-                    modify_data['e__icon'] = js_e___14874[12274]['m__icon'];
+                    modify_data['e__cover'] = js_e___14874[12274]['m__cover'];
                 }
-                $('.e_ui_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
-                $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__icon']);
+                $('.cover_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
+                $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
 
 
                 //Did we have ideas to update?
@@ -756,7 +756,7 @@ function e_modify_save() {
                     }
 
                     //Transaction Status:
-                    $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m__title"] + ': ' + js_e___6186[modify_data['x__status']]["m__message"] + '">' + js_e___6186[modify_data['x__status']]["m__icon"] + '</span>');
+                    $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m__title"] + ': ' + js_e___6186[modify_data['x__status']]["m__message"] + '">' + js_e___6186[modify_data['x__status']]["m__cover"] + '</span>');
 
                 }
 
@@ -1639,7 +1639,7 @@ function i_note_start_adding(note_type_id) {
 function i_note_end_adding(result, note_type_id) {
 
     //Update UI to unlock:
-    $('.save_notes_' + note_type_id).html(js_e___11035[14421]['m__icon']).attr('href', 'javascript:i_note_add_text('+note_type_id+');');
+    $('.save_notes_' + note_type_id).html(js_e___11035[14421]['m__cover']).attr('href', 'javascript:i_note_add_text('+note_type_id+');');
     $('.input_note_' + note_type_id).removeClass('dynamic_saving').focus();
     $('.remove_loading').fadeIn();
 
@@ -1721,7 +1721,7 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
                 }
 
                 //Adjust icon again:
-                $('.file_label_' + note_type_id).html('<span class="icon-block">'+js_e___11035[13572]['m__icon']+'</span>');
+                $('.file_label_' + note_type_id).html('<span class="icon-block">'+js_e___11035[13572]['m__cover']+'</span>');
             }
 
             if(js_n___14311.includes(note_type_id)){
@@ -1944,7 +1944,7 @@ function e_avatar(type_css, icon_css){
         $('.avatar-item.avatar-name-'+icon_css).addClass('active');
     }
 
-    $('.e_ui_icon_'+js_pl_id).html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('.cover_icon_'+js_pl_id).html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Update via call:
     $.post("/e/e_avatar", {
@@ -1960,7 +1960,7 @@ function e_avatar(type_css, icon_css){
         } else {
 
             //Delete message:
-            $('.e_ui_icon_'+js_pl_id).html(data.new_avatar);
+            $('.cover_icon_'+js_pl_id).html(data.new_avatar);
 
         }
     });
@@ -2048,7 +2048,7 @@ function e_email(){
         } else {
 
             //Show success:
-            $('.save_email').html(js_e___11035[14424]['m__icon'] + ' ' + data.message + '</span>').hide().fadeIn();
+            $('.save_email').html(js_e___11035[14424]['m__cover'] + ' ' + data.message + '</span>').hide().fadeIn();
 
             //Disappear in a while:
             setTimeout(function () {
@@ -2085,7 +2085,7 @@ function e_name(){
             update_text_name(modify_data['cache_e__id'], modify_data['s__id'], modify_data['field_value']);
 
             //Show success:
-            $('.save_name').html(js_e___11035[14424]['m__icon'] + ' ' + js_e___11035[14424]['m__title']).hide().fadeIn();
+            $('.save_name').html(js_e___11035[14424]['m__cover'] + ' ' + js_e___11035[14424]['m__title']).hide().fadeIn();
 
             //Disappear in a while:
             setTimeout(function () {
@@ -2117,7 +2117,7 @@ function e_password(){
         } else {
 
             //Show success:
-            $('.save_password').html(js_e___11035[14424]['m__icon'] + ' ' + data.message + '</span>').hide().fadeIn();
+            $('.save_password').html(js_e___11035[14424]['m__cover'] + ' ' + data.message + '</span>').hide().fadeIn();
 
             //Disappear in a while:
             setTimeout(function () {
@@ -2209,11 +2209,11 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
             if(element_id==4737){
                 //Update dropdown menu:
-                //$('.i__type_'+i__id).html(data_object[new_e__id]['m__icon']);
+                //$('.i__type_'+i__id).html(data_object[new_e__id]['m__cover']);
             }
 
             //Update on page:
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m__icon']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
 
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .dropi_' + element_id +'_'+i__id+ '_' + x__id).removeClass('active');
             $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .optiond_' + new_e__id+'_'+i__id+ '_' + x__id).addClass('active');
@@ -2248,7 +2248,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         } else {
 
             //Reset to default:
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m__icon']+'</span>' + ( show_full_name ? data_object[current_selected]['m__title'] : '' ));
+            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m__cover']+'</span>' + ( show_full_name ? data_object[current_selected]['m__title'] : '' ));
 
             //Show error:
             alert(data.message);

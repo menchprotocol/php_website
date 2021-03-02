@@ -16,11 +16,11 @@ foreach($this->config->item('e___12523') as $e__id => $m) {
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        '(LENGTH(e__icon) < 1 OR e__icon IS NULL)' => null, //Missing Icon
+        '(LENGTH(e__cover) < 1 OR e__cover IS NULL)' => null, //Missing Icon
     ), array('x__down'), 0) as $en) {
         $updated++;
         $this->E_model->update($en['e__id'], array(
-            'e__icon' => $m['m__icon'],
+            'e__cover' => $m['m__cover'],
         ), true);
     }
 
@@ -42,12 +42,12 @@ foreach($this->config->item('e___12968') as $e__id => $m) {
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        '(LENGTH(e__icon) < 1 OR e__icon IS NULL OR e__icon != \''.$m['m__icon'].'\')' => null, //Missing Icon
+        '(LENGTH(e__cover) < 1 OR e__cover IS NULL OR e__cover != \''.$m['m__cover'].'\')' => null, //Missing Icon
     ), array('x__down'), 0) as $en) {
         $updated++;
-        echo 'Different @'.$en['e__id'].' ['.htmlentities($en['e__icon']).'] to ['.htmlentities($m['m__icon']).']<br />';
+        echo 'Different @'.$en['e__id'].' ['.htmlentities($en['e__cover']).'] to ['.htmlentities($m['m__cover']).']<br />';
         $this->E_model->update($en['e__id'], array(
-            'e__icon' => $m['m__icon'],
+            'e__cover' => $m['m__cover'],
         ), true);
     }
 

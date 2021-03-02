@@ -3,8 +3,8 @@
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $load_max = view_memory(6404,13206);
 $show_max = view_memory(6404,14538);
-$select = 'COUNT(x__id) as totals, e__id, e__title, e__icon, e__metadata, e__type, e__spectrum';
-$group_by =                       'e__id, e__title, e__icon, e__metadata, e__type, e__spectrum';
+$select = 'COUNT(x__id) as totals, e__id, e__title, e__cover, e__metadata, e__type, e__spectrum';
+$group_by =                       'e__id, e__title, e__cover, e__metadata, e__type, e__spectrum';
 
 //SOURCE LEADERBOARD
 foreach($this->config->item('e___13207') as $e__id => $m) {
@@ -25,14 +25,14 @@ foreach($this->config->item('e___13207') as $e__id => $m) {
         continue;
     }
 
-    echo '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
+    echo '<div class="headline top-margin"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
     echo '<div class="list-group" style="padding-bottom:41px;">';
 
 
     foreach($e_list as $count=>$e) {
 
         if($count==$show_max){
-            echo '<div class="list-group-item see_more_who'.$e__id.' no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$e__id.'\').toggleClass(\'hidden\')" class="block"><span class="icon-block">'.$e___11035[14538]['m__icon'].'</span><b class="css__title '.extract_icon_color($e___11035[14538]['m__icon']).'" style="text-decoration: none !important;">'.$e___11035[14538]['m__title'].'</b></a></div>';
+            echo '<div class="list-group-item see_more_who'.$e__id.' no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$e__id.'\').toggleClass(\'hidden\')" class="block"><span class="icon-block">'.$e___11035[14538]['m__cover'].'</span><b class="css__title '.extract_icon_color($e___11035[14538]['m__cover']).'" style="text-decoration: none !important;">'.$e___11035[14538]['m__title'].'</b></a></div>';
             echo '<div class="list-group-item see_more_who'.$e__id.' no-height"></div>';
         }
 

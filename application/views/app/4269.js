@@ -121,7 +121,7 @@ function add_account(){
         if (data.status) {
 
             //Release field lock:
-            $('#add_acount_next').html(js_e___11035[14424]['m__icon']);
+            $('#add_acount_next').html(js_e___11035[14424]['m__cover']);
             $('#new_account_errors').html('');
 
             setTimeout(function () {
@@ -173,7 +173,7 @@ function e_signin_password(){
         if (data.status) {
 
             //Release field lock:
-            $('#password_check_next').html(js_e___11035[14424]['m__icon']);
+            $('#password_check_next').html(js_e___11035[14424]['m__cover']);
             $('#password_errors').html('');
 
             //Redirect

@@ -15,7 +15,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[6225]['m__icon']) ?>" id="modal6225Label"><?= $e___11035[6225]['m__icon'].' '.$e___11035[6225]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[6225]['m__cover']) ?>" id="modal6225Label"><?= $e___11035[6225]['m__cover'].' '.$e___11035[6225]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -27,7 +27,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         if(count($hosted_domains) && !in_array(get_domain_setting(0), $hosted_domains)){
                             continue;
                         }
-                        echo '<div class="headline top-margin"><span class="icon-block">'.$m['m__icon'].'</span>'.$m['m__title'].'</div>';
+                        echo '<div class="headline top-margin"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
                         echo view_e_settings($e__id, true);
                     }
                     ?>
@@ -49,7 +49,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[14393]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[14393]['m__icon'].' '.$e___11035[14393]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[14393]['m__cover']) ?>" id="modal14393Label"><?= $e___11035[14393]['m__cover'].' '.$e___11035[14393]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -59,13 +59,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <?php
 
                     //Current URL:
-                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14927]['m__icon'].'</span>'.$e___14393[14927]['m__title'].'</div>';
+                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14927]['m__cover'].'</span>'.$e___14393[14927]['m__title'].'</div>';
                     echo '<div class="current_url padded hideIfEmpty inline-block"></div>';
 
 
 
                     //Type
-                    echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14394]['m__icon'].'</span>'.$e___14393[14394]['m__title'].'</div>';
+                    echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14394]['m__cover'].'</span>'.$e___14393[14394]['m__title'].'</div>';
                     $counter_options = 0;
                     foreach($this->config->item('e___14394') /* SUGGESTION TYPE */ as $x__type => $m){
                         $counter_options++;
@@ -76,7 +76,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     }
 
                     //Details
-                    echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14395]['m__icon'].'</span>'.$e___14393[14395]['m__title'].'</div>';
+                    echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14395]['m__cover'].'</span>'.$e___14393[14395]['m__title'].'</div>';
                     echo '<div class="padded"><textarea class="form-control text-edit border" id="sugg_note" data-lpignore="true" placeholder="More details here..."></textarea></div>';
 
                     ?>
@@ -101,7 +101,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[13024]['m__icon']) ?>" id="modal13024Label"><?= $e___11035[13024]['m__icon'].' '.$e___11035[13024]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[13024]['m__cover']) ?>" id="modal13024Label"><?= $e___11035[13024]['m__cover'].' '.$e___11035[13024]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -111,7 +111,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <?php
                     //URL
                     $current_link = current_link();
-                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14927]['m__icon'].'</span>'.$e___14393[14927]['m__title'].'</div>';
+                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14927]['m__cover'].'</span>'.$e___14393[14927]['m__title'].'</div>';
                     echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(\''.$current_link.'\');">'.$current_link.'&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
 
                     //Add This
@@ -131,7 +131,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[6287]['m__icon']) ?>" id="modal14393Label"><?= $e___11035[6287]['m__icon'].' '.$e___11035[6287]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[6287]['m__cover']) ?>" id="modal14393Label"><?= $e___11035[6287]['m__cover'].' '.$e___11035[6287]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -142,8 +142,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         echo '<div class="list-group">';
                         foreach($this->config->item('e___6287') as $e__id => $m) {
                             echo '<a href="/-'.$e__id.'" class="list-group-item no-side-padding">';
-                            echo '<span class="icon-block">' . view_e__icon($m['m__icon']) . '</span>';
-                            echo '<b class="css__title '.extract_icon_color($m['m__icon']).'">'.$m['m__title'].'</b>';
+                            echo '<span class="icon-block">' . view_e__cover($m['m__cover']) . '</span>';
+                            echo '<b class="css__title '.extract_icon_color($m['m__cover']).'">'.$m['m__title'].'</b>';
                             echo ( strlen($m['m__message']) ? '&nbsp;'.$m['m__message'] : '' );
                             echo '</a>';
                         }
@@ -166,7 +166,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[13571]['m__icon']) ?>" id="modal13571Label"><?= $e___11035[13571]['m__icon'].' '.$e___11035[13571]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[13571]['m__cover']) ?>" id="modal13571Label"><?= $e___11035[13571]['m__cover'].' '.$e___11035[13571]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -245,7 +245,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
 
                             <div class="pull-right">
-                                <input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" title="<?= $e___11035[13572]['m__message'] ?>"><?= $e___11035[13572]['m__icon'] ?></label>
+                                <input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" title="<?= $e___11035[13572]['m__message'] ?>"><?= $e___11035[13572]['m__cover'] ?></label>
                             </div>
 
                             <div class="doclear">&nbsp;</div>
@@ -271,7 +271,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[14937]['m__icon']) ?>" id="modal14937Label"><?= $e___11035[14937]['m__icon'].' '.$e___11035[14937]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[14937]['m__cover']) ?>" id="modal14937Label"><?= $e___11035[14937]['m__cover'].' '.$e___11035[14937]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -293,7 +293,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
                                 <div class="input-group border">
                                     <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
-                                    <input type="text" id="cover__icon" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
+                                    <input type="text" id="cover__cover" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
                                     <input type="hidden" id="cover__type" value="0" />
                                     <input type="hidden" id="cover__id" value="0" />
                                 </div>
@@ -354,7 +354,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 }
 
-                                $tab_nav .= '<li class="nav-item"><a href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.extract_icon_color($m['m__icon']).'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__icon'].'&nbsp;</a></li>'; //( $default_active ? ' active ' : '' )
+                                $tab_nav .= '<li class="nav-item"><a href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.extract_icon_color($m['m__cover']).'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;</a></li>'; //( $default_active ? ' active ' : '' )
 
 
                                 $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.' hidden">'; //( $default_active ? '' : ' hidden ' )
@@ -367,7 +367,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             echo $tab_nav.$tab_content;
 
-                            //JS $('#cover__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
+                            //JS $('#cover__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
 
                             ?>
 
@@ -387,7 +387,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[14073]['m__icon']) ?>" id="modal14073Label"><?= $e___11035[14073]['m__icon'].' '.$e___11035[14073]['m__title'] ?></h5> <!-- &nbsp;&nbsp;<img class="giphy_logo" src="https://s3foundation.s3-us-west-2.amazonaws.com/5d8ebb9a080502d42a05e175265130d4.png" /> -->
+                    <h5 class="modal-title css__title <?= extract_icon_color($e___11035[14073]['m__cover']) ?>" id="modal14073Label"><?= $e___11035[14073]['m__cover'].' '.$e___11035[14073]['m__title'] ?></h5> <!-- &nbsp;&nbsp;<img class="giphy_logo" src="https://s3foundation.s3-us-west-2.amazonaws.com/5d8ebb9a080502d42a05e175265130d4.png" /> -->
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

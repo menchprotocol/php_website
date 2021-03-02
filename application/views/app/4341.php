@@ -206,7 +206,7 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 <?php
 
 
-echo '<div class="inline-block margin-top-down '.superpower_active(14005).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m__icon'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="css__title">'.$e___11035[12707]['m__title'].'</a></div>';
+echo '<div class="inline-block margin-top-down '.superpower_active(14005).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m__cover'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="css__title">'.$e___11035[12707]['m__title'].'</a></div>';
 
 
 echo '<div class="show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';

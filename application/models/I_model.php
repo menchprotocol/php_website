@@ -982,27 +982,17 @@ class I_model extends CI_Model
         //AGGREGATE IDEA SOURCES
         foreach($this->X_model->fetch(array(
             //Already for for x__up & x__down
+            'x__up >' => 0,
             'x__right' => $i['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___13550')).')' => null, //SOURCE IDEAS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array(), 0) as $fetched_e) {
+        ), array('x__up'), 0) as $fetched_e) {
 
-            //SOURCES?
-            foreach(array('x__up','x__down') as $e_ref_field){
-                if($fetched_e[$e_ref_field] > 0){
+            $e_metadata_leaderboard = $this->E_model->metadata_leaderboard($fetched_e);
 
-                    $ref_e = $this->E_model->fetch(array(
-                        'e__id' => $fetched_e[$e_ref_field],
-                    ));
-
-                    $e_metadata_leaderboard = $this->E_model->metadata_leaderboard($ref_e[0]);
-
-                    foreach($e_metadata_leaderboard['p___13207'] as $e__id) {
-                        if (!in_array($e__id, $metadata_this['p___13207'])) {
-                            array_push($metadata_this['p___13207'], intval($e__id));
-                        }
-                    }
-
+            foreach($e_metadata_leaderboard['p___13207'] as $e__id) {
+                if (!in_array($e__id, $metadata_this['p___13207'])) {
+                    array_push($metadata_this['p___13207'], intval($e__id));
                 }
             }
 

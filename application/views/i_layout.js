@@ -125,7 +125,7 @@ function i_note_poweredit_save(note_type_id){
 
         if (!data.status) {
 
-            $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon'] + ' ' + js_e___11035[14422]['m__title']);
+            $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__cover'] + ' ' + js_e___11035[14422]['m__title']);
 
             //Show Errors:
             $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span> Message not saved because:<br />'+data.message);
@@ -133,7 +133,7 @@ function i_note_poweredit_save(note_type_id){
         } else {
 
             //Show update success icon:
-            $('.save_notes_' + note_type_id).html(js_e___11035[14424]['m__icon']);
+            $('.save_notes_' + note_type_id).html(js_e___11035[14424]['m__cover']);
 
             //Reset errors:
             $(".note_error_"+note_type_id).html('');
@@ -158,7 +158,7 @@ function i_note_poweredit_save(note_type_id){
 
             setTimeout(function () {
                 $(input_textarea).focus();
-                $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__icon'] + ' ' + js_e___11035[14422]['m__title']);
+                $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__cover'] + ' ' + js_e___11035[14422]['m__title']);
             }, 987);
 
         }
