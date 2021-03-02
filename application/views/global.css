@@ -1937,14 +1937,14 @@ i, .btn .show-max {
 }
 .coin-cover{
     position: absolute;
-    top: -13px;
-    height: 13px;
+    top: -21px;
+    height: 21px;
     width: 100%;
     overflow: visible;
 }
 
 .coin_cover{
-    margin:0 0 100px !important;
+    margin:21px 0 100px !important;
 }
 
 .cover-content .inner-content {
