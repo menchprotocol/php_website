@@ -1727,83 +1727,61 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= '<div class="cover-wrapper">';
 
 
-
-    //Left Sorting
-    if($show_coins){
-        $ui .= '<div class="coin-cover coin-cover-left">';
-            $ui .= '<div>'.view_coins_i(12274,  $i).'</div>';
-            $ui .= '<div>'.view_coins_i(12273,  $i).'</div>';
-            $ui .= '<div>'.view_coins_i(6255,  $i).'</div>';
-        $ui .= '</div>';
-    }
-
-
-
-
-    //Right Action Menu
-    $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
-    $ui .= '<div class="dropdown inline-block">';
-    $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs">'.$e___11035[$x__type]['m__cover'].'</span></button>';
-    $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
-
-    if($x__type==12274){
-        //SOURCES
-        $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
-        foreach($CI->X_model->fetch($query_filters, array('x__up'), 10, 0, array('x__type' => 'ASC', 'x__spectrum' => 'ASC')) as $source_e) {
-            $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_e__cover($source_e['e__cover']).'</span>'.$source_e['e__title'].'</a>';
-        }
-    } elseif($x__type==12273){
-        //IDEAS
-        //TODO Update with Idea Cover and remove Idea Type icon
-        $e___4737 = $CI->config->item('e___4737'); // Idea Status
-        $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-        foreach($CI->X_model->fetch($query_filters, array('x__right'), 10, 0, array('x__spectrum' => 'ASC')) as $next_i) {
-            $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.$e___4737[$next_i['i__type']]['m__cover'].'</span>'.view_i_title($next_i).'</a>';
-        }
-    } elseif($x__type==6255){
-        //DISCOVERIES / SOURCS
-        $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
-        foreach($CI->X_model->fetch($query_filters, array('x__source'), 10, 0, array('x__id' => 'DESC')) as $source_e) {
-            $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_e__cover($source_e['e__cover']).'</span>'.$source_e['e__title'].'</a>';
-        }
-    }
-    $ui .= '</div>';
-    $ui .= '</div>';
-
-    if(!$has_any_lock){
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-    }
-
-    if($editing_enabled){
-        //IDAE TYPE:
-        $ui .= '<div>'.view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']).'</div>';
-
-        //COIN COVER
-        $ui .= '<div><a class="icon-block-xs" href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__cover'].'</a></div>';
-    } else {
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-    }
-
-    //LOCKED
-    if($has_any_lock){
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-        $ui .= '<div><span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span></div>';
-    }
-
-    //UNLINK
-    if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-        $ui .= '<div><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'">'.$e___11035[6155]['m__cover'].'</div></div>';
-    } else {
-        $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
-    }
-
     //SORTABLE
     if($has_sortable && $control_enabled){
+        $ui .= '<div class="coin-cover coin-cover-left">';
+        $ui .= '</div>';
+
         $ui .= '<div><div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</div></div>';
     } else {
         $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
+    }
+
+
+    $ui .= '<div class="coin-cover coin-cover-right">';
+
+    $ui .= '</div>';
+
+
+
+    //LOCKED
+    if($has_any_lock){
+
+        $ui .= '<span class="icon-block-xs" title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
+
+    } else {
+
+        $action_buttons = null;
+
+        //Action Menu?
+        if($editing_enabled){
+
+            //IDAE TYPE:
+            $action_buttons .= '<div class="dropdown-item">'.view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, true, $i['i__id']).'</div>';
+
+            //COIN COVER
+            $action_buttons .= '<div class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
+
+        }
+
+        //UNLINK
+        if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
+            $action_buttons .= '<div class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'"><span class="icon-block">'.$e___11035[6155]['m__cover'].'</span>'.$e___11035[6155]['m__title'].'</div></div>';
+        }
+
+
+        //Any Buttons?
+        if($action_buttons){
+            //Right Action Menu
+            $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
+            $ui .= '<div class="dropdown inline-block">';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs"><i class="far fa-ellipsis-h"></i></span></button>';
+            $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
+            $ui .= $action_buttons;
+            $ui .= '</div>';
+            $ui .= '</div>';
+        }
+
     }
 
 
