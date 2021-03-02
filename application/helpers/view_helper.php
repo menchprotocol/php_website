@@ -2085,22 +2085,22 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     if ($x__id > 0) {
         if($has_e_link){
 
-            $ui .= '<span class="x__message hideIfEmpty x__message_' . $x__id . '">' .view_x__message($e['x__message'] , $e['x__type']).'</span>';
+            $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
 
         } elseif($has_x_progress && strlen($e['x__message'])){
 
             //DISCOVERY PROGRESS
-            $ui .= $CI->X_model->message_view($e['x__message'], false);
+            $ui .= '<span class="mini-font">'.$CI->X_model->message_view($e['x__message'], false).'</span>';
 
         }
     }
     if($message_input){
         if(!$has_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
             //No HTML Tags, add link:
-            $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
+            $ui .= '<a href="'.$href.'" class="mini-font">'.$message_input.'</a>';
         } else {
             //Leave as is so HTML tags work:
-            $ui .= $message_input;
+            $ui .= '<span class="mini-font">'.$message_input.'</span>';
         }
     }
 

@@ -1677,10 +1677,7 @@ i, .btn .show-max {
     margin-bottom: 5px;
 }
 .text_e_4736, .text_e_6197 {
-    width:calc(100% - 46px);
     margin-bottom: 0;
-}
-.text_e_4736 {
     text-align: center;
     padding: 0 3px;
 }
@@ -1940,31 +1937,20 @@ i, .btn .show-max {
 .coin-cover{
     position: absolute;
     border-radius: 5px;
-    top: -55px;
+    top: 0;
     height: 82px;
     width: 70px;
 }
-.coin-cover>div {
-    padding: 1px 0;
-    height: 25px;
-    vertical-align: middle;
-}
 .coin-cover-left{
-    left:2px;
-    padding: 3px 3px 3px 0px;
+    left:1px;
 }
 .coin-cover-right{
-    right: 2px;
+    right: 1px;
     padding: 0;
-    max-width: 70px;
-}
-.coin-cover-right>div{
-    display: inline-block;
-    float: right;
 }
 
 .coin_cover{
-    margin:55px 0 89px !important;
+    margin:5px 0 55px !important;
 }
 
 .cover-content .inner-content {
