@@ -599,12 +599,12 @@ function coin_cover($o, $html_format = false){
                 'x__down' => $o['e__id'], //This child source
             ), array('x__up'), 0, 0, array()) as $fetched_e){
 
-                if($e_image['x__type']==4260){
-                    $found_image = $e_image['x__message'];
+                if($fetched_e['x__type']==4260){
+                    $found_image = $fetched_e['x__message'];
                     break;
-                } elseif($e_image['x__type']==4257 /* Currently excluded from @14756 */){
+                } elseif($fetched_e['x__type']==4257 /* Currently excluded from @14756 */){
                     //Embed:
-                    $video_id = extract_youtube_id($e_image['x__message']);
+                    $video_id = extract_youtube_id($fetched_e['x__message']);
                     if($video_id){
                         //Use the YouTube video image:
                         $found_image = 'https://img.youtube.com/vi/'.$video_id.'/hqdefault.jpg';
