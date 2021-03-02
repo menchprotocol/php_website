@@ -1937,10 +1937,10 @@ i, .btn .show-max {
 }
 .coin-cover{
     position: absolute;
-    top: -21px;
-    height: 21px;
+    top: 5px;
     width: 100%;
     overflow: visible;
+    z-index: 9999 !important;
 }
 
 .coin_cover{
@@ -2583,7 +2583,6 @@ font-weight: bold !important;
 
 
 /* WHITE */
-.custom_ui_13884_13885 .coin-cover,
 .custom_ui_13884_13885 .light-bg,
 .custom_ui_13884_13885 .inner-content,
 .custom_ui_13884_13885 .media-info {
