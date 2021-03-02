@@ -1943,7 +1943,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $source_of_e = $control_enabled && $member_e && ($source_of_e || $superpower_13422);
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $has_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
-    $show_text_editor = $source_of_e && $control_enabled;
     $editing_enabled = $source_of_e;
     $e__title = ( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] );
     $has_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
@@ -1974,6 +1973,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $has_soft_lock = ($has_hard_lock && !$superpower_12701) || (!$has_public && !$source_of_e && !$superpower_13422);
     $has_any_lock = $has_soft_lock || $has_hard_lock;
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911'));
+    $show_text_editor = $source_of_e && $control_enabled && !$has_any_lock;
 
 
     //Source UI
@@ -2059,7 +2059,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $ui .= '<div class="inner-content">';
 
     //Profile Sources
-    if($superpower_12706 && $control_enabled){
+    if($superpower_12706){
         $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
         foreach($e__profiles as $e_profile) {
             $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" data-toggle="tooltip" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '" data-placement="bottom">' . view_e__cover($e_profile['e__cover']) . '</a></span> ';
@@ -2070,7 +2070,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
     //TITLE
     $ui .= '<div class="css__title">';
-    if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
+    if($show_text_editor){
         //Editable title:
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $editing_enabled, (($e['x__spectrum']*100)+1), true);
     } elseif(!$has_any_lock){
