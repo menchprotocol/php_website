@@ -1939,7 +1939,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
 
     $control_enabled = in_array($x__type, $CI->config->item('n___14696'));
-    $has_sortable = in_array($x__type, $CI->config->item('n___13911'));
     $show_time = in_array($x__type, $CI->config->item('n___14706'));
     $source_of_e = $control_enabled && $member_e && ($source_of_e || $superpower_13422);
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
@@ -1974,7 +1973,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $has_public = in_array($e['e__id'], $public_sources) || in_array($focus_e__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
     $has_soft_lock = ($has_hard_lock && !$superpower_12701) || (!$has_public && !$source_of_e && !$superpower_13422);
     $has_any_lock = $has_soft_lock || $has_hard_lock;
-    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
+    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911'));
 
 
     //Source UI
