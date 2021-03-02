@@ -1740,7 +1740,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Action Bar:
-    $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
+    $ui .= '<div class="coin-cover grey coin-cover-right hideIfEmpty">';
 
     if(!$has_any_lock){
         $ui .= '<div><span class="icon-block-xs">&nbsp;</span></div>';
@@ -1994,7 +1994,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
     //Action Bar:
-    $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
+    $ui .= '<div class="coin-cover grey coin-cover-right hideIfEmpty">';
     if($source_of_e && ($has_e_link || $has_note)) {
         if($editing_enabled){
             //SOURCE TYPE:
