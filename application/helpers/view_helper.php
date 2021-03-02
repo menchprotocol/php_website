@@ -1731,9 +1731,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     $ui .= '<div class="coin-cover">';
     $ui .= '<table style="width: 100%;"><tr>';
-    $ui .= '<td width="33%" style="text-align: left;">'.($has_sortable && $control_enabled ? '<div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</div>' : '').'</td>';
-    $ui .= '<td width="34%" style="text-align: center;">'.($editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</td>';
-    $ui .= '<td width="33%" style="text-align: right;">';
+    $ui .= '<td style="text-align: left; width:33px;">'.($has_sortable && $control_enabled ? '<div class="x_sort icon-block-xs" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</div>' : '').'</td>';
+    $ui .= '<td style="text-align: center;">'.($editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</td>';
+    $ui .= '<td style="text-align: right; width:33px;">';
         //LOCKED
         if($has_any_lock){
 
