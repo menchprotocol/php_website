@@ -1924,7 +1924,7 @@ i, .btn .show-max {
     position: absolute;
 }
 .cover-content{
-    bottom: -29px;
+    bottom: -55px;
     left: 0;
     padding: 0;
     width: 100% !important;
@@ -1933,7 +1933,7 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    min-height: 54px;
+    min-height: 55px;
 }
 .coin-cover{
     position: absolute;
