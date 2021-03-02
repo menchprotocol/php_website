@@ -1940,7 +1940,6 @@ i, .btn .show-max {
     top: 5px;
     width: 100%;
     overflow: visible;
-    z-index: 9999 !important;
 }
 
 .coin-cover-left{
@@ -1948,13 +1947,14 @@ i, .btn .show-max {
 }
 
 .coin-cover-right1{
-    right: 2px;
-    width: 33px !important;
+    right: 0;
+    width: 30px !important;
+    font-size: 0.8em;
 }
 .coin-cover-right2{
-    right: 35px;
-    width: 33px !important;
-    z-index: 9999 !important;
+    right: 30px;
+    width: 30px !important;
+    font-size: 0.8em;
 }
 
 .coin_cover{
