@@ -1743,7 +1743,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //Right Action Menu
     $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
     $ui .= '<div class="dropdown inline-block">';
-    $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs">'.$e___14874[$x__type]['m__cover'].'</span></button>';
+    $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs">'.$e___11035[$x__type]['m__cover'].'</span></button>';
     $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
 
     if($x__type==12274){
