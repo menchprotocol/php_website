@@ -1925,7 +1925,6 @@ i, .btn .show-max {
 }
 .cover-content{
     bottom: -55px;
-    left: 0;
     padding: 0;
     width: 100% !important;
     max-height: 100%;
@@ -1937,17 +1936,18 @@ i, .btn .show-max {
 }
 .coin-cover{
     position: absolute;
-    top: 2px;
     width: 24px;
     overflow: visible;
 }
 
 .coin-cover-left{
-    left: 2px;
+    top: 10px;
+    left: 10px;
 }
 
 .coin-cover-right{
-    right: 2px;
+    top: 10px;
+    right: 15px;
 }
 
 .coin_cover{
@@ -2083,6 +2083,16 @@ i, .btn .show-max {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .coin-cover-left{
+        top: 3px;
+        left: 3px;
+    }
+
+    .coin-cover-right{
+        top: 3px;
+        right: 3px;
+    }
 
     .cover-btn{
         font-size: 9em !important;
