@@ -514,7 +514,7 @@ function coin_cover($o, $html_format = false){
         $coin_set = $o['e__cover'];
     }
 
-    if($coin_set){
+    if(strlen($coin_set) > 0){
         //See what we have here:
         if(substr_count($coin_set, '<img ') && substr_count($coin_set, 'src="')){
 
