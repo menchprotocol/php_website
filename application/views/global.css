@@ -1943,8 +1943,22 @@ i, .btn .show-max {
     z-index: 9999 !important;
 }
 
+.coin-cover-left{
+    left: 2px;
+}
+
+.coin-cover-right1{
+    right: 2px;
+    width: 33px !important;
+}
+.coin-cover-right2{
+    right: 35px;
+    width: 33px !important;
+    z-index: 9999 !important;
+}
+
 .coin_cover{
-    margin:21px 0 100px !important;
+    margin:3px 0 100px !important;
 }
 
 .cover-content .inner-content {
