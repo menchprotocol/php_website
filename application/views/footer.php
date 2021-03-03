@@ -282,10 +282,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <table style="width: 100%; position: absolute; bottom: -89px;"><tr>
                         <td width="255px" class="center">
 
-                            <div class="coin-cover coin-cover-left"><a href="javascript:void(0);" onclick="alert('saved closed')" title="<?= $e___11035[13572]['m__cover'] ?>"><?= $e___11035[13572]['m__cover'] ?></a></div>
-                            <div class="coin-cover coin-cover-right"><a href="javascript:void(0);" onclick="alert('saved closed')" title="<?= $e___11035[13502]['m__cover'] ?>"><?= $e___11035[13502]['m__cover'] ?></a></div>
-                            <div class="cover-wrapper"><div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div></div>
-                            <div class="cover-content"><div class="inner-content"><textarea placeholder="Title" id="cover__title" class="form-control css__title inline-block texttype__lg"></textarea></div></div>
+                            <div class="coin_cover">
+                                <div class="cover-wrapper">
+                                    <div class="coin-cover coin-cover-left"><a href="javascript:void(0);" onclick="alert('saved closed')" title="<?= $e___11035[13572]['m__cover'] ?>"><?= $e___11035[13572]['m__cover'] ?></a></div>
+                                    <div class="coin-cover coin-cover-right"><a href="javascript:void(0);" onclick="alert('saved closed')" title="<?= $e___11035[13502]['m__cover'] ?>"><?= $e___11035[13502]['m__cover'] ?></a></div>
+                                    <div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div>
+                                </div>
+                                <div class="cover-content"><div class="inner-content"><textarea placeholder="Title" id="cover__title" class="form-control css__title inline-block texttype__lg"></textarea></div></div>
+                            </div>
 
                         </td>
                         <td>
