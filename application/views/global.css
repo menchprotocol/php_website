@@ -1953,6 +1953,11 @@ i, .btn .show-max {
     top: 11px;
     right: 17px;
 }
+.coin_coins{
+    width: 100%;
+    position: absolute;
+    bottom: -89px;
+}
 
 .coin_cover{
     position: relative;

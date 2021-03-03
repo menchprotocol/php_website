@@ -697,15 +697,55 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     } else {
         $count_query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         if($append_coin_icon){
+
+            if(!$count_query[0]['totals']){
+                return false;
+            }
+
             $e___14874 = $CI->config->item('e___14874'); //COINS
-            return ( $count_query[0]['totals'] > 0 ? '<span class="css__title '.extract_icon_color($e___14874[$x__type]['m__cover']).'" title="'.number_format($count_query[0]['totals'], 0).' '.$e___14874[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___14874[$x__type]['m__cover'].'&nbsp;'.view_number($count_query[0]['totals']).'</span>' : null);
+            $first_segment = $CI->uri->segment(1);
+
+            $ui = '<div class="dropdown inline-block">';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.extract_icon_color($e___14874[$x__type]['m__cover']).'" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs">'.$e___14874[$x__type]['m__cover'].'</span>'.view_number($count_query).'</button>';
+            $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$e__id.'">';
+
+            if($x__type==12274){
+                //SOURCES
+                $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
+                foreach($CI->X_model->fetch($query_filters, $join_objects, 20, 0, array(
+                    'x__spectrum' => 'ASC',
+                    'e__title' => 'ASC'
+                )) as $source_e) {
+                    $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_e__cover($source_e['e__cover']).'</span>'.$source_e['e__title'].'</a>';
+                }
+            } elseif($x__type==12273){
+                //IDEAS
+                //TODO Update with Idea Cover and remove Idea Type icon
+                $e___4737 = $CI->config->item('e___4737'); // Idea Status
+                $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
+                foreach($CI->X_model->fetch($query_filters, $join_objects, 0, 0, array('x__spectrum' => 'DESC')) as $next_i) {
+                    $ui .= '<a href="/i/i_go/'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.$e___4737[$next_i['i__type']]['m__cover'].'</span>'.view_i_title($next_i).'</a>';
+                }
+            } elseif($x__type==6255){
+                //DISCOVERIES / IDEAS
+                //TODO Update with Idea Cover and remove Idea Type icon
+                $e___4737 = $CI->config->item('e___4737'); // Idea Status
+                $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
+                foreach($CI->X_model->fetch($query_filters, $join_objects, 20, 0, array('x__id' => 'DESC')) as $x_i) {
+                    $ui .= '<a href="/i/i_go/'.$x_i['i__id'].'" class="dropdown-item css__title '.( $x_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.$e___4737[$x_i['i__type']]['m__cover'].'</span>'.view_i_title($x_i).'</a>';
+                }
+            }
+            $ui .= '</div>';
+            $ui .= '</div>';
+
+            return $ui;
+
         } else {
             return intval($count_query[0]['totals']);
         }
     }
 
 }
-
 
 
 function view_coins_i($x__type, $i, $append_coin_icon = true){
@@ -761,12 +801,13 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     //Return Results:
     if($append_coin_icon){
 
-        if(!$count_query){
+        if(!$count_query[0]['totals']){
             return false;
         }
 
         $e___14874 = $CI->config->item('e___14874'); //COINS
         $first_segment = $CI->uri->segment(1);
+
         $ui = '<div class="dropdown inline-block">';
         $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.extract_icon_color($e___14874[$x__type]['m__cover']).'" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs">'.$e___14874[$x__type]['m__cover'].'</span>'.view_number($count_query).'</button>';
         $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
@@ -1896,7 +1937,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //Coin Block
     if($show_coins){
-        $ui .= '<table style="width: 100%; position: absolute; bottom: -89px;"><tr>';
+        $ui .= '<table class="coin_coins"><tr>';
         $ui .= '<td width="33%" class="center">'.view_coins_i(12274,  $i).'</td>';
         $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
         $ui .= '<td width="33%" class="center">'.view_coins_i(6255,  $i).'</td>';
@@ -2048,16 +2089,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $ui .= '</div>';
 
 
-
-
-    //Coin Block: Always visible
-    $ui .= '<div class="coin-cover">';
-        $ui .= '<div>'.view_coins_e(12274,  $e['e__id']).'</div>';
-        $ui .= '<div>'.view_coins_e(12273,  $e['e__id']).'</div>';
-        $ui .= '<div>'.view_coins_e(6255,  $e['e__id']).'</div>';
-    $ui .= '</div>';
-
-
     //Coin Cover
     $ui .= ( $has_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( 0 ? ' coin-discover ' : ' coin-source ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$coin_cover.'\');"' : '' ).'>';
 
@@ -2149,6 +2180,18 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     }
 
     $ui .= '</div></div>';
+
+
+
+
+
+    //Coin Block
+    $ui .= '<table class="coin_coins"><tr>';
+    $ui .= '<td width="33%" class="center">'.view_coins_e(12274,  $e['e__id']).'</td>';
+    $ui .= '<td width="34%" class="center">'.view_coins_e(12273,  $e['e__id']).'</td>';
+    $ui .= '<td width="33%" class="center">'.view_coins_e(6255,  $e['e__id']).'</td>';
+    $ui .= '</tr></table>';
+
 
     $ui .= '</div>';
 
