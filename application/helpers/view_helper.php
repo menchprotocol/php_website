@@ -2059,8 +2059,8 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
         }
 
         //Edit Message
-        if($has_e_link){
-            $ui .= '<div><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')" title="'.$e___11035[13571]['m__title'].'"><span class="icon-block-xs '.superpower_active(13422).'">'.$e___11035[13571]['m__cover'].'</span></a></div>';
+        if($has_e_link && $superpower_13422){
+            $action_buttons .= '<div class="dropdown-item"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><span class="icon-block">'.$e___11035[13571]['m__cover'].'</span>'.$e___11035[13571]['m__title'].'</a></div>';
         }
 
         //SORT
