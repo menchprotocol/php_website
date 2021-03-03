@@ -1770,7 +1770,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             if($action_buttons){
                 //Right Action Menu
                 $ui .= '<div class="dropdown inline-block">';
-                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title x_sort" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-ellipsis-v"></i></button>';
+                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title x_sort" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-ellipsis-h"></i></button>';
                 $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
                 $ui .= $action_buttons;
                 $ui .= '</div>';
