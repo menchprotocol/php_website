@@ -1728,10 +1728,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
+    if(!$discovery_mode){
+        $ui .= '<div class="coin-cover coin-cover-left">';
+        $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
+        $ui .= '</div>';
+    }
 
-    $ui .= '<div class="coin-cover coin-cover-left">';
-    $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
-    $ui .= '</div>';
 
 
 
@@ -1755,22 +1757,24 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
             //UNLINK
             if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-                $action_buttons .= '<div class="dropdown-item css__title"><div class="x_remove icon-block-xs" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'"><span class="icon-block">'.$e___11035[6155]['m__cover'].'</span>'.$e___11035[6155]['m__title'].'</div></div>';
+                $action_buttons .= '<div class="dropdown-item css__title"><div class="x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'"><span class="icon-block">'.$e___11035[6155]['m__cover'].'</span>'.$e___11035[6155]['m__title'].'</div></div>';
+            }
+
+            //UNLINK
+            if($has_sortable){
+                $action_buttons .= '<div class="dropdown-item"><div class="x_sort css__title"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span>'.$e___11035[4603]['m__title'].'</div></div>';
             }
 
 
             //Any Buttons?
-            $sort_button = '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</span>';
             if($action_buttons){
                 //Right Action Menu
                 $ui .= '<div class="dropdown inline-block">';
-                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $has_sortable ? $sort_button : '<i class="far fa-ellipsis-v"></i>' ).'</button>';
+                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title x_sort" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-ellipsis-v"></i></button>';
                 $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
                 $ui .= $action_buttons;
                 $ui .= '</div>';
                 $ui .= '</div>';
-            } elseif($has_sortable){
-                $ui .= $sort_button;
             }
 
         }
