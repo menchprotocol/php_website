@@ -1751,13 +1751,13 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             if($editing_enabled){
 
                 //COIN COVER
-                $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
+                $action_buttons .= '<div class="dropdown-item"><a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" class="css__title"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
 
             }
 
             //UNLINK
             if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-                $action_buttons .= '<div class="dropdown-item css__title"><div class="x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'"><span class="icon-block">'.$e___11035[6155]['m__cover'].'</span>'.$e___11035[6155]['m__title'].'</div></div>';
+                $action_buttons .= '<div class="dropdown-item"><div class="x_remove css__title" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'" title="'.$e___11035[6155]['m__title'].'"><span class="icon-block">'.$e___11035[6155]['m__cover'].'</span>'.$e___11035[6155]['m__title'].'</div></div>';
             }
 
             //UNLINK
