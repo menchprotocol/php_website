@@ -74,7 +74,7 @@ $profiles = $this->X_model->fetch(array(
 
         //SOURCE TITLE
         $icon_frame = '<span class="cover_icon_'.$e['e__id'].'">'.view_e__cover($e['e__cover']).'</span>';
-        echo '<div style="padding: 8px 0; margin-top:10px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, ($superpower_13422 ? '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m__title'].'">'.$icon_frame.'</a>' : $icon_frame ), extract_icon_color($e['e__cover'])).'</div>';
+        echo '<div style="padding: 8px 0; margin-top:10px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, $icon_frame, extract_icon_color($e['e__cover'])).'</div>';
 
     }
 

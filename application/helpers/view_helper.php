@@ -14,7 +14,7 @@ function view_e_load_more($x__type, $page, $limit, $list_e_count)
     //Regular section:
     $max_e = (($page + 1) * $limit);
     $max_e = ($max_e > $list_e_count ? $list_e_count : $max_e);
-    $ui .= '<span class="icon-block">'.$e___11035[14538]['m__cover'].'</span><b class="css__title '.extract_icon_color($e___11035[14538]['m__cover']).'">'.$e___11035[14538]['m__title'].'</b>';
+    $ui .= '<span class="icon-block">'.$e___11035[14538]['m__cover'].'</span><b class="css__title">'.$e___11035[14538]['m__title'].'</b>';
     $ui .= '</a></div>';
 
     return $ui;
@@ -1726,16 +1726,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     $ui .= '<div class="cover-wrapper">';
 
-
-
     if(!$discovery_mode && $editing_enabled){
         $ui .= '<div class="coin-cover coin-cover-left">';
         $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
         $ui .= '</div>';
     }
-
-
-
 
     $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
         //LOCKED
@@ -1791,7 +1786,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
     $ui .= ( $has_any_lock ? '</div>' : '</a>' );
-    $ui .= '</div>';
+    $ui .= '</div>'; //cover-wrapper
 
 
 
