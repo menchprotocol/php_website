@@ -1678,8 +1678,11 @@ i, .btn .show-max {
 }
 .text_e_4736, .text_e_6197 {
     margin-bottom: 0;
-    text-align: center;
     padding: 0 3px;
+}
+
+.inner-content .text_e_4736, .inner-content .text_e_6197 {
+    text-align: center;
 }
 
 .texttype__sm{
