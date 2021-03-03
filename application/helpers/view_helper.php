@@ -695,10 +695,12 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         return $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
 
     } else {
-        $count_query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
+        $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
+        $count_query = $query[0]['totals'];
+
         if($append_coin_icon){
 
-            if(!$count_query[0]['totals']){
+            if(!$count_query){
                 return false;
             }
 
@@ -741,7 +743,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             return $ui;
 
         } else {
-            return intval($count_query[0]['totals']);
+            return intval($count_query);
         }
     }
 
@@ -801,7 +803,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     //Return Results:
     if($append_coin_icon){
 
-        if(!$count_query[0]['totals']){
+        if(!$count_query){
             return false;
         }
 
@@ -1546,10 +1548,12 @@ function view_i_featured($i_exclude = array()){
             //We need to check if we have more than this?
             $see_all_link = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
             //We might have more, let's check:
-            $count_query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
-            if($count_query[0]['totals'] > $limit){
+            $query2 = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
+            $count_query = $query2[0]['totals'];
+
+            if($count_query > $limit){
                 //Yes, we have more, show this:
-                $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query[0]['totals'], 0).' Ideas"><span class="icon-block">'.$m['m__cover'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
+                $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query, 0).' Ideas"><span class="icon-block">'.$m['m__cover'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
             }
 
             $ui = '<div class="'.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';
