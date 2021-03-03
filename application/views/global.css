@@ -425,6 +425,7 @@ img.no-radius {
 
 .modal-footer{
     display: block;
+    border-top: 0;
 }
 
 .x-info{
