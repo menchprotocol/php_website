@@ -1791,18 +1791,18 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             if($editing_enabled){
 
                 //COIN COVER
-                $action_buttons .= '<div class="dropdown-item"><a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" class="css__title"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
+                $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
 
             }
 
             //SORT
             if($has_sortable){
-                $action_buttons .= '<div class="dropdown-item"><div class="x_sort css__title"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span>'.$e___11035[4603]['m__title'].'</div></div>';
+                $action_buttons .= '<div class="dropdown-item x_sort css__title"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span>'.$e___11035[4603]['m__title'].'</div>';
             }
 
             //UNLINK
             if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-                $action_buttons .= '<div class="dropdown-item"><div class="x_remove css__title" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'"><span class="icon-block">'.$e___11035[6155]['m__cover'].'</span>'.$e___11035[6155]['m__title'].'</div></div>';
+                $action_buttons .= '<div class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'"><span class="icon-block">'.$e___11035[6155]['m__cover'].'</span>'.$e___11035[6155]['m__title'].'</div>';
             }
 
 
@@ -2054,28 +2054,28 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
         if($source_of_e){
 
             //COIN COVER
-            $action_buttons .= '<div class="dropdown-item"><a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');" class="css__title"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
+            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
 
         }
 
         //Edit Message
         if($has_e_link && $superpower_13422){
-            $action_buttons .= '<div class="dropdown-item"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><span class="icon-block">'.$e___11035[13571]['m__cover'].'</span>'.$e___11035[13571]['m__title'].'</a></div>';
+            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><span class="icon-block">'.$e___11035[13571]['m__cover'].'</span>'.$e___11035[13571]['m__title'].'</a></div>';
         }
 
         //SORT
-        if($has_sortable){
-            $action_buttons .= '<div class="dropdown-item"><div class="sort_e '.superpower_active(13422).'  hidden"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span>'.$e___11035[4603]['m__title'].'</div></div>';
+        if($has_sortable && $superpower_13422){
+            $action_buttons .= '<div class="dropdown-item css__title sort_e hidden"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span>'.$e___11035[4603]['m__title'].'</div>';
         }
 
         //UNLINK
         if($has_sortable || $superpower_13422){
-            $action_buttons .= '<div class="dropdown-item"><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')"><span class="icon-block">'.$e___11035[10673]['m__cover'].'</span>'.$e___11035[10673]['m__title'].'</a></div>';
+            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')"><span class="icon-block">'.$e___11035[10673]['m__cover'].'</span>'.$e___11035[10673]['m__title'].'</a></div>';
         }
 
         //NUCLEAR DELETE
         if(!$has_any_lock && superpower_active(14683, true)){
-            $action_buttons .= '<div class="dropdown-item"><a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')"><span class="icon-block">'.$e___11035[14601]['m__cover'].'</span>'.$e___11035[14601]['m__title'].'</a></div>';
+            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')"><span class="icon-block">'.$e___11035[14601]['m__cover'].'</span>'.$e___11035[14601]['m__title'].'</a></div>';
         }
 
         //Any Buttons?
