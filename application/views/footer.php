@@ -277,7 +277,100 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </button>
                 </div>
                 <div class="modal-body">
-                    hiiii
+
+                    <!-- PREVIEW -->
+                    <table style="width: 100%; position: absolute; bottom: -89px;"><tr>
+                        <td style="width: 255px;" class="center">
+
+                            aaa
+
+                        </td>
+                        <td>
+                            <!-- EDIT -->
+                            <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
+                                <div class="input-group border">
+                                    <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
+                                    <input type="text" id="cover__icon" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
+                                    <div style="padding: 10px; text-align: center;"><button type="button" onclick="alert('saved')" class="btn btn-default">SAVE</button> or <button type="button" onclick="alert('saved closed')" class="btn btn-default">SAVE & Close</button></div>
+
+                                    <input type="hidden" id="cover__type" value="0" />
+                                    <input type="hidden" id="cover__id" value="0" />
+                                </div>
+
+                            </div>
+
+                            <?php
+                            $tab_group = 14937;
+                            $tab_content = '';
+                            $tab_nav = '<ul class="nav nav-tabs nav-sm">';
+
+                            foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
+
+                                $ui = '';
+                                if(strlen($m['m__message']) > 0){
+                                    $ui .= '<div style="padding-bottom: 13px;">'.$m['m__message'].'</div>';
+                                }
+
+                                if($x__type==14073) {
+
+                                    //GIF
+                                    //$default_active = $image_src && substr($image_src, -4)=='.gif';
+
+                                    $ui .= '<input type="text" class="form-control text-edit border css__title" id="gif_query" name="gif_query" placeholder="Search GIFs..." onkeyup="gif_search(\'\')" data-lpignore="true" />';
+                                    $ui .= '<div id="gif_results" class="margin-top-down hideIfEmpty"></div>';
+
+                                } elseif($x__type==14936){
+
+                                    //UPLOAD IMAGE
+                                    //$default_active = $image_src && substr($image_src, -4)=='.gif';
+                                    $ui .= 'UPLOAD HERE';
+
+                                } elseif($x__type==13577){
+
+                                    //FONT AWESOME ICON
+                                    //$default_active = substr($current_icon, 0, 3)=='<i ';
+                                    $ui .= 'FONT AWESOME';
+
+                                } elseif($x__type==14038){
+
+                                    //EMOJI
+                                    //$default_active = substr($current_icon, 0, 1)!='<' && strlen($current_icon)>0;
+
+
+                                } elseif($x__type==14939){
+
+                                    //REFERENCE
+                                    //$default_active = !strlen($current_icon);
+
+
+                                    //Find Current Reference:
+                                    $ui .= 'HAS X Reference : Set this reference action button';
+
+                                } else {
+
+                                    //Not supported via here:
+                                    continue;
+
+                                }
+
+                                $tab_nav .= '<li class="nav-item"><a href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.extract_icon_color($m['m__cover']).'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;</a></li>'; //( $default_active ? ' active ' : '' )
+
+
+                                $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.' hidden">'; //( $default_active ? '' : ' hidden ' )
+                                $tab_content .= $ui;
+                                $tab_content .= '</div>';
+
+                            }
+
+                            $tab_nav .= '</ul>';
+
+                            echo $tab_nav.$tab_content;
+
+                            //JS $('#cover__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
+
+                            ?>
+                        </td>
+                    </tr></table>
                 </div>
             </div>
         </div>
