@@ -359,23 +359,21 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             //JS $('#cover__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
 
                             ?>
-
-
-                            <!-- EDIT -->
-                            <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
-                                <div class="input-group border">
-                                    <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
-                                    <input type="text" id="cover__icon" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
-                                    <div style="padding: 10px; text-align: center;"><button type="button" onclick="alert('saved closed')" class="btn btn-default">SAVE & Close</button></div>
-
-                                    <input type="hidden" id="cover__type" value="0" />
-                                    <input type="hidden" id="cover__id" value="0" />
-                                </div>
-
-                            </div>
-
                         </td>
                     </tr></table>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
+                        <div class="input-group border">
+                            <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
+                            <input type="text" id="cover__icon" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
+                            <div style="padding: 10px; text-align: center;"><button type="button" onclick="alert('saved closed')" class="btn btn-default">SAVE & Close</button></div>
+
+                            <input type="hidden" id="cover__type" value="0" />
+                            <input type="hidden" id="cover__id" value="0" />
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
