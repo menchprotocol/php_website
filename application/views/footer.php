@@ -284,25 +284,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             <div class="coin_cover">
                                 <div class="cover-wrapper"><div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div></div>
-                                <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="cover__title" class="form-control css__title inline-block texttype__lg" style="overflow: hidden;overflow-wrap: break-word;resize: none;height: 42px;"></textarea></span></div></div>
+                                <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="cover__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;resize: none;height: 42px;"></textarea></span></div></div>
                             </div>
 
                         </td>
-                        <td>
-
-                            <!-- EDIT -->
-                            <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
-                                <div class="input-group border">
-                                    <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
-                                    <input type="text" id="cover__icon" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
-                                    <div style="padding: 10px; text-align: center;"><button type="button" onclick="alert('saved')" class="btn btn-default">SAVE</button> or <button type="button" onclick="alert('saved closed')" class="btn btn-default">SAVE & Close</button></div>
-
-                                    <input type="hidden" id="cover__type" value="0" />
-                                    <input type="hidden" id="cover__id" value="0" />
-                                </div>
-
-                            </div>
-
+                        <td style="vertical-align: top;">
                             <?php
                             $tab_group = 14937;
                             $tab_content = '';
@@ -373,6 +359,21 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             //JS $('#cover__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
 
                             ?>
+
+
+                            <!-- EDIT -->
+                            <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
+                                <div class="input-group border">
+                                    <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
+                                    <input type="text" id="cover__icon" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
+                                    <div style="padding: 10px; text-align: center;"><button type="button" onclick="alert('saved closed')" class="btn btn-default">SAVE & Close</button></div>
+
+                                    <input type="hidden" id="cover__type" value="0" />
+                                    <input type="hidden" id="cover__id" value="0" />
+                                </div>
+
+                            </div>
+
                         </td>
                     </tr></table>
                 </div>

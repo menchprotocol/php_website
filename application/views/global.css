@@ -1955,6 +1955,7 @@ i, .btn .show-max {
 }
 
 .coin_cover{
+    position: relative;
     margin:0 0 100px !important;
 }
 
