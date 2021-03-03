@@ -68,8 +68,9 @@ $profiles = $this->X_model->fetch(array(
         echo '</div>';
 
 
+
         //SOURE STATUS
-        echo view_input_dropdown(6177, $e['e__type'], null, $source_of_e, true);
+        echo view_input_dropdown(6177, $e['e__type'], null, $source_of_e, true, $e['e__id']);
 
         //SOURCE TITLE
         $icon_frame = '<span class="cover_icon_'.$e['e__id'].'">'.view_e__cover($e['e__cover']).'</span>';
