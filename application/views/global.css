@@ -1941,17 +1941,17 @@ i, .btn .show-max {
 }
 
 .coin-cover-left{
-    top: 13px;
-    left: 13px;
+    top: 11px;
+    left: 11px;
 }
 
 .coin-cover-right{
-    top: 13px;
-    right: 19px;
+    top: 11px;
+    right: 17px;
 }
 
 .coin_cover{
-    margin:3px 0 144px !important;
+    margin:0 0 89px !important;
 }
 
 .cover-content .inner-content {
