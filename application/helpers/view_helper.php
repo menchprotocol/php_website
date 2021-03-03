@@ -1806,7 +1806,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Previous Ideas
-    if(!$discovery_mode && $editing_enabled){
+    if(!$discovery_mode && $editing_enabled && $superpower_12673){
         $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
