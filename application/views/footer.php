@@ -281,7 +281,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- PREVIEW -->
                     <div class="row extra_info_box">
                         <div class="col-12 col-md-4">
-                            <div class="coin_cover" style="width: 255px !important; margin: -21px auto 50px !important;">
+                            <div class="coin_cover" style="width: 255px !important; margin: -21pxtexttype__sm auto 50px !important;">
                                 <div class="cover-wrapper"><div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div></div>
                                 <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="cover__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;resize: none;height: 42px;"></textarea></span></div></div>
                             </div>
