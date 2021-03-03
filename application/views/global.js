@@ -341,7 +341,7 @@ $(document).ready(function () {
     });
 
     //Keep an eye for icon change:
-    $('#cover__cover').keyup(function() {
+    $('#cover__icon').keyup(function() {
         update_demo_icon();
     });
 
@@ -585,7 +585,7 @@ function e__title_word_count() {
 
 function update_demo_icon(){
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#cover__cover').val().length > 0 ? $('#cover__cover').val() : js_e___14874[12274]['m__cover'] ));
+    $('.icon-demo').html(($('#cover__icon').val().length > 0 ? $('#cover__icon').val() : js_e___14874[12274]['m__cover'] ));
 }
 
 function e_modify_load(e__id, x__id) {
@@ -624,7 +624,7 @@ function e_modify_load(e__id, x__id) {
             $('#e__title').val(data.e__title);
             $('#e__type').val(data.e__type);
 
-            $('#cover__cover').val(data.e__cover); update_demo_icon();
+            $('#cover__icon').val(data.e__cover); update_demo_icon();
 
             set_autosize($('#e__title'));
             e__title_word_count();
@@ -681,7 +681,7 @@ function e_modify_save() {
         do_13527:do_13527,
         e__id: $('#modal13571 .modal_e__id').val(),
         e__title: $('#e__title').val(),
-        e__cover: $('#cover__cover').val(),
+        e__cover: $('#cover__icon').val(),
         e__type: $('#e__type').val(), //The new status (might not have changed too)
         //Transaction data:
         x__id: $('#modal13571 .modal_x__id').val(),

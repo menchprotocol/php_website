@@ -67,14 +67,12 @@ $profiles = $this->X_model->fetch(array(
         }
         echo '</div>';
 
-        //SOURCE DRAFTING?
-        if(!in_array($e['e__type'], $this->config->item('n___7357'))){
-            echo '<div class="css__title '.extract_icon_color($e___6177[$e['e__type']]['m__cover']).' top-margin"><span class="icon-block">' . $e___6177[$e['e__type']]['m__cover'] . '</span>'.$e___6177[$e['e__type']]['m__title'].'</div>';
-        }
 
+        //SOURE STATUS
+        echo view_input_dropdown(6177, $e['e__type'], null, $source_of_e, true);
+
+        //SOURCE TITLE
         $icon_frame = '<span class="cover_icon_'.$e['e__id'].'">'.view_e__cover($e['e__cover']).'</span>';
-
-        //SOURCE NAME
         echo '<div style="padding: 8px 0; margin-top:10px;">'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, ($superpower_13422 ? '<a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',0)" class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13571]['m__title'].'">'.$icon_frame.'</a>' : $icon_frame ), extract_icon_color($e['e__cover'])).'</div>';
 
     }

@@ -278,22 +278,27 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
                 <div class="modal-body">
 
-                    <div class="row">
-                        <div class="col-4">
+                    <table style="width: 100%; position: absolute; bottom: -89px;"><tr>
+                        <td width="255px" class="center">
 
                             <!-- PREVIEW -->
-                            <div class="cover-wrapper"><div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div></div>
+                            <div class="cover-wrapper">
+                                <div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div>
+                            </div>
+                            <div class="cover-content">
+                                <div class="inner-content">
+                                    <textarea placeholder="Title" id="cover__title" class="form-control css__title inline-block texttype__lg"></textarea>
+                            </div>
 
-                            <div style="padding: 10px; text-align: center;"><button type="button" onclick="alert('saved')" class="btn btn-default">SAVE</button></div>
-
-                        </div>
-                        <div class="col-8">
-
+                        </td>
+                        <td>
                             <!-- EDIT -->
                             <div class="form-group" style="margin:0 0 13px; border-radius: 10px;">
                                 <div class="input-group border">
                                     <span class="input-group-addon addon-lean addon-grey icon-demo icon-block" style="padding-top:8px;"></span>
-                                    <input type="text" id="cover__cover" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
+                                    <input type="text" id="cover__icon" value="" data-lpignore="true" placeholder="Icon or HTML here" class="form-control border-dotted">
+                                    <div style="padding: 10px; text-align: center;"><button type="button" onclick="alert('saved')" class="btn btn-default">SAVE</button> or <button type="button" onclick="alert('saved closed')" class="btn btn-default">SAVE & Close</button></div>
+
                                     <input type="hidden" id="cover__type" value="0" />
                                     <input type="hidden" id="cover__id" value="0" />
                                 </div>
@@ -367,12 +372,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             echo $tab_nav.$tab_content;
 
-                            //JS $('#cover__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
+                            //JS $('#cover__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
 
                             ?>
-
-                        </div>
-                    </div>
+                        </td>
+                    </tr></table>
                 </div>
             </div>
         </div>
