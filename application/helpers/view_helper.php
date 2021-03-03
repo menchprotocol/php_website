@@ -725,7 +725,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
                 //TODO Update with Idea Cover and remove Idea Type icon
                 $e___4737 = $CI->config->item('e___4737'); // Idea Status
                 $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-                foreach($CI->X_model->fetch($query_filters, $join_objects, 0, 0, array('x__spectrum' => 'DESC')) as $next_i) {
+                foreach($CI->X_model->fetch($query_filters, $join_objects, 20, 0, array('x__spectrum' => 'DESC')) as $next_i) {
                     $ui .= '<a href="/i/i_go/'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.$e___4737[$next_i['i__type']]['m__cover'].'</span>'.view_i_title($next_i).'</a>';
                 }
             } elseif($x__type==6255){
