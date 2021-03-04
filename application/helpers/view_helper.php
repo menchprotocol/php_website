@@ -2025,7 +2025,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover coin_source en-item col-md-4 col-6 no-padding e_line_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_any_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ).'>';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover coin_source en-item col-md-4 col-6 no-padding e_line_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
 
     $ui .= '<div class="cover-wrapper">';
 
@@ -2136,7 +2136,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
         if(strlen($e['x__message']) && $has_any_lock && !superpower_active(12701, true)){
 
             //PRIVATE INFO
-            //$ui .= '<span class="mini-font">***HIDDEN***</span>';
+            $ui .= '<span class="mini-font">***'.$e___11035[$lock_notice]['m__title'].'***</span>';
 
         } elseif($has_e_link){
 
