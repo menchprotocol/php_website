@@ -1957,10 +1957,6 @@ i, .btn .show-max {
     width: 100%;
     position: absolute;
     bottom: -89px;
-    font-size: 0.89em;
-}
-.coin_coins .icon-block-xs {
-    width: 21px;
 }
 
 .coin_cover{
@@ -2097,6 +2093,13 @@ i, .btn .show-max {
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .coin_coins{
+        font-size: 0.89em;
+    }
+    .coin_coins .icon-block-xs {
+        width: 21px !important;
+    }
 
     .coin-cover-left{
         top: 3px;
