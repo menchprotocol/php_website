@@ -86,7 +86,6 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
     <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.35.1/algoliasearch.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js" type="text/javascript"></script>
 
-    <script src="/application/views/global.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:500|Montserrat:800|Rubik|Bitter:800|Roboto+Slab:400|Righteous|Lato&display=swap" rel="stylesheet">
 
@@ -95,7 +94,9 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
-    <link href="/application/views/global.css?v=<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
+
+    <link href="/application/views/global.css?v=a<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
+    <script src="/application/views/global.js?v=a<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
     <?php
     echo '<style>';

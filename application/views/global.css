@@ -1928,7 +1928,6 @@ i, .btn .show-max {
     position: absolute;
 }
 .cover-content{
-    bottom: -55px;
     padding: 0;
     width: 100% !important;
     max-height: 100%;
@@ -1936,8 +1935,8 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    min-height: 55px;
 }
+
 .coin_idea .cover-content{
     bottom: -58px;
     min-height: 55px;
@@ -2111,7 +2110,7 @@ i, .btn .show-max {
         font-size: 0.89em;
     }
     .coin_coins .icon-block-xs {
-        width: 21px !important;
+        width: 22px !important;
     }
 
     .coin-cover-left{
