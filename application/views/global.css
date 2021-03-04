@@ -1224,8 +1224,9 @@ textarea.note-textarea{
 }
 
 .edit-locked{
-    padding: 10px 0;
+    padding: 10px 0 !important;
 }
+
 .edit-locked, .edit-locked *{
     cursor:default !important;
     background-color: transparent !important;
