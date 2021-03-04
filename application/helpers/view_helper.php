@@ -2048,8 +2048,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
         $action_buttons = null;
 
-
-
         //Action Menu?
         if($source_of_e){
 
@@ -2135,7 +2133,12 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
     //Message
     if ($x__id > 0) {
-        if($has_e_link){
+        if(strlen($e['x__message']) && $has_any_lock && !superpower_active(12701, true)){
+
+            //PRIVATE INFO
+            $ui .= '<span class="mini-font">***HIDDEN***</span>';
+
+        } elseif($has_e_link){
 
             $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
 
