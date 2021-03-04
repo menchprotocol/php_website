@@ -2133,7 +2133,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
     //Message
     if ($x__id > 0) {
-        if(strlen($e['x__message']) && $has_any_lock && !superpower_active(12701, true)){
+        if($has_any_lock && !superpower_active(12701, true)){
 
             //PRIVATE INFO
             $ui .= '<span class="mini-font">***'.$e___11035[$lock_notice]['m__title'].'***</span>';
