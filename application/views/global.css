@@ -1938,6 +1938,14 @@ i, .btn .show-max {
     display: block;
     min-height: 55px;
 }
+.coin_idea .cover-content{
+    bottom: -55px;
+    min-height: 55px;
+}
+.coin_source .cover-content{
+    bottom: -29px;
+    min-height: 25px;
+}
 .coin-cover{
     position: absolute;
     width: 24px;
@@ -1956,7 +1964,12 @@ i, .btn .show-max {
 .coin_coins{
     width: 100%;
     position: absolute;
+}
+.coin_idea .coin_coins{
     bottom: -89px;
+}
+.coin_source .coin_coins{
+    bottom: -61px;
 }
 
 .coin_cover{
