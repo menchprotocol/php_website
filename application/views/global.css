@@ -1223,7 +1223,9 @@ textarea.note-textarea{
     text-align: center;
 }
 
-
+.edit-locked{
+    padding: 10px 0;
+}
 .edit-locked, .edit-locked *{
     cursor:default !important;
     background-color: transparent !important;

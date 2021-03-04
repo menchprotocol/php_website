@@ -1518,7 +1518,6 @@ function get_domain($var_field){
 
 function source_of_e($e__id, $member_e = array()){
 
-
     if(!$member_e){
         //Fetch from session:
         $member_e = superpower_unlocked();
