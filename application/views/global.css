@@ -1973,10 +1973,10 @@ i, .btn .show-max {
 .coin_cover{
     position: relative;
 }
-.coin_idea .coin_cover{
+.coin_idea {
     margin:0 0 110px !important;
 }
-.coin_source .coin_cover{
+.coin_source {
     margin:0 0 80px !important;
 }
 
