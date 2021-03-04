@@ -2232,7 +2232,7 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
 
     }
 
-    return '<span class="span__'.$cache_e__id.' '.( !$e_of_i ? 'edit-locked' : '' ).'">'.( $e_of_i && in_array($cache_e__id, array(4736,6197)) ? '<a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');">'.$icon.'</a>' : $icon ).$focus_element.'</span>'.$character_counter;
+    return '<span class="span__'.$cache_e__id.' '.( !$e_of_i ? ' edit-locked ' : '' ).'">'.( $e_of_i && in_array($cache_e__id, array(4736,6197)) ? '<a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');">'.$icon.'</a>' : $icon ).$focus_element.'</span>'.$character_counter;
 }
 
 
