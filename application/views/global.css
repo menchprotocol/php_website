@@ -1970,10 +1970,14 @@ i, .btn .show-max {
 .coin_source .coin_coins{
     bottom: -61px;
 }
-
 .coin_cover{
     position: relative;
-    margin:0 0 100px !important;
+}
+.coin_idea .coin_cover{
+    margin:0 0 110px !important;
+}
+.coin_source .coin_cover{
+    margin:0 0 80px !important;
 }
 
 .cover-content .inner-content {
