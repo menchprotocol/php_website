@@ -2136,7 +2136,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
         if(strlen($e['x__message']) && $has_any_lock && !superpower_active(12701, true)){
 
             //PRIVATE INFO
-            $ui .= '<span class="mini-font">***HIDDEN***</span>';
+            //$ui .= '<span class="mini-font">***HIDDEN***</span>';
 
         } elseif($has_e_link){
 
