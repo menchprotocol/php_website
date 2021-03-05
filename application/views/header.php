@@ -95,8 +95,8 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
 
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
 
-    <link href="/application/views/global.css?v=a<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
-    <script src="/application/views/global.js?v=a<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+    <link href="/application/views/global.css?v=b<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
+    <script src="/application/views/global.js?v=b<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
     <?php
     echo '<style>';
