@@ -2639,6 +2639,9 @@ font-weight: bold !important;
     border-radius: 10px !important;
 }
 
+.editing-mode{
+    background-color: #fff5bc !important;
+}
 .doabsolute {
     border-radius: 10px !important;
     padding-top: 5px !important;
