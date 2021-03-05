@@ -60,6 +60,7 @@ if(!$e_of_i){
 
 
 
+echo '<div id="list-in-11019" class="row dominHeight">';
 if($show_previous){
     echo '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
@@ -70,7 +71,6 @@ if($show_previous){
                                placeholder="'.$e___11035[14014]['m__title'].'">
                     </div></div>';
 }
-echo '<div id="list-in-11019" class="row hideIfEmpty">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE

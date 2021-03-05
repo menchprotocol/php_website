@@ -1956,6 +1956,9 @@ i, .btn .show-max {
     }
 }
 
+.dominHeight{
+    min-height: 100px;
+}
 .coin-cover-left{
     top: 11px;
     left: 11px;

@@ -40,7 +40,7 @@ $profiles = $this->X_model->fetch(array(
         $show_max = view_memory(6404,14538);
         $see_more_button = false;
 
-        echo '<div id="list-in-11030" class="row grey-list hideIfEmpty">';
+        echo '<div id="list-in-11030" class="row grey-list dominHeight">';
 
         if($superpower_13422){
             echo '<div id="new_11030" class="list-group-item list-adder no-side-padding">
