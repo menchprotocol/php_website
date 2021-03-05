@@ -1937,6 +1937,7 @@ i, .btn .show-max {
     display: block;
     bottom: -55px;
     min-height: 25px;
+    min-height: 47px;
 }
 
 
@@ -1967,7 +1968,7 @@ i, .btn .show-max {
 .coin_coins{
     width: 100%;
     position: absolute;
-    bottom: -81px;
+    bottom: -85px;
 }
 
 .cover-text {
