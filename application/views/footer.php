@@ -304,7 +304,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //GIF
                                     //$default_active = $image_src && substr($image_src, -4)=='.gif';
 
-                                    $ui .= '<input type="text" class="form-control text-edit border css__title" id="gif_query" name="gif_query" placeholder="Search GIFs..." onkeyup="gif_search(\'\')" data-lpignore="true" />';
+                                    $ui .= '<input type="text" class="form-control text-edit border css__title" id="gif_query_this" name="gif_query_this" placeholder="Search GIFs..." onkeyup="gif_search(\'\')" data-lpignore="true" />';
                                     $ui .= '<div id="gif_results" class="margin-top-down hideIfEmpty"></div>';
 
                                 } elseif($x__type==14936){

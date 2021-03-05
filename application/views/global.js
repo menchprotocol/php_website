@@ -747,7 +747,7 @@ function e_modify_save() {
 
     //Prepare data to be modified for this idea:
     var modify_data = {
-        focus__id: ( typeof focus__id !== 'undefined' ? focus__id : 0 ),
+        focus__id: $('#focus__id').val(),
         do_13527:do_13527,
         e__id: $('#modal13571 .modal_e__id').val(),
         e__title: $('#e__title').val(),
@@ -1146,7 +1146,7 @@ jQuery.fn.extend({
 
 
 
-function i_load_search(x__type, focus__id) {
+function i_load_search(x__type) {
 
     if(!parseInt(js_e___6404[12678]['m__message'])){
         alert('Search is currently disabled');
@@ -1170,12 +1170,12 @@ function i_load_search(x__type, focus__id) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             e.preventDefault();
-            return i_add(x__type, 0, focus__id);
+            return i_add(x__type, 0, $('#focus__id').val());
         }
 
     }).on('autocomplete:selected', function (event, suggestion, dataset) {
 
-        i_add(x__type, suggestion.s__id, focus__id);
+        i_add(x__type, suggestion.s__id);
 
     }).autocomplete({hint: false, minLength: 1, keyboardShortcuts: [js_e___14685[x__type]['m__message']]}, [{
         source: function (q, cb) {
@@ -1202,7 +1202,7 @@ function i_load_search(x__type, focus__id) {
                 return view_s_js(suggestion);
             },
             header: function (data) {
-                return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0,'+focus__id+')" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
+                return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
             },
             empty: function (data) {
                 return '';
@@ -2308,13 +2308,13 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
 
 var i_is_adding = false;
-function i_add(x__type, link_i__id, focus__id) {
+function i_add(x__type, link_i__id) {
 
     /*
      *
      * Either creates an IDEA transaction between focus__id & link_i__id
      * OR will create a new idea based on input text and then transaction it
-     * to focus__id (In this case link_i__id=0)
+     * to $('#focus__id').val() (In this case link_i__id=0)
      *
      * */
 
@@ -2344,7 +2344,7 @@ function i_add(x__type, link_i__id, focus__id) {
     //Update backend:
     $.post("/i/i_add", {
         x__type: x__type,
-        focus__id: focus__id,
+        focus__id: $('#focus__id').val(),
         i__title: i__title,
         link_i__id: link_i__id
     }, function (data) {

@@ -398,7 +398,7 @@ $profiles = $this->X_model->fetch(array(
                                placeholder="'.$e___11035[14015]['m__title'].'">
                     </div></div></div>';
 
-                $ui .= '<script> $(document).ready(function () { i_load_search(10573, '.$e['e__id'].'); }); </script>';
+                $ui .= '<script> $(document).ready(function () { i_load_search(10573); }); </script>';
 
             }
 
@@ -452,7 +452,7 @@ $profiles = $this->X_model->fetch(array(
                                placeholder="'.$e___11035[14016]['m__title'].'">
                     </div></div></div>';
 
-                $ui .= '<script> $(document).ready(function () { i_load_search(13550, '.$e['e__id'].'); }); </script>';
+                $ui .= '<script> $(document).ready(function () { i_load_search(13550); }); </script>';
 
             }
 
