@@ -99,7 +99,7 @@ if(isset($_GET['load__e']) && $superpower_14005){
 
 
 
-echo '<table class="table table-sm table-striped maxout" style="text-align: left; margin-bottom: 10px;">';
+echo '<table class="table table-sm table-striped maxout" style="text-align: left; margin-bottom: 13px;">';
 
 echo '<tr style="font-weight: bold;">';
 echo '<td width="60%" style="text-align: left;">'.view_input_dropdown(4737, $i_focus['i__type'], null, $e_of_i, true, $i_focus['i__id']).'</td>';
