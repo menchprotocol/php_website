@@ -1653,6 +1653,11 @@ function view_i_select($i, $x__source, $previously_selected){
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' coin-discover ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$coin_cover.'\');"' : '' ).'>';
 
+    $view_i_time = view_i_time($i_stats);
+    if($view_i_time){
+        $ui .= '<div class="cover-text coin-hover">' . $view_i_time . '</div>';
+    }
+
     //ICON?
     if(!$has_valid_url){
         $ui .= '<div class="cover-btn">'.$coin_cover.'</div>';
@@ -1670,15 +1675,7 @@ function view_i_select($i, $x__source, $previously_selected){
     $ui .= '</div>';
 
     $ui .= '<div class="cover-content"><div class="inner-content">';
-
-    //Title
     $ui .= '<a '.$href.'>'.$i_title.'</a>';
-
-    $view_i_time = view_i_time($i_stats);
-    if($view_i_time){
-        $ui .= '<div class="cover-text">' . $view_i_time . '</div>';
-    }
-
     $ui .= '</div></div>';
     $ui .= '</div>';
 
@@ -1763,6 +1760,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover coin_idea col-md-4 col-6 no-padding i_line_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
+
+    //IDEAs and Time
+    $view_i_time = view_i_time($i_stats);
+    if($view_i_time){
+        $ui .= '<div class="cover-text coin-hover"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
+    }
 
     if(!$discovery_mode && $editing_enabled){
         $ui .= '<div class="coin-hover coin-cover coin-cover-left">';
@@ -1864,13 +1867,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
         $ui .= $i_title;
-    }
-
-
-    //IDEAs and Time
-    $view_i_time = view_i_time($i_stats);
-    if($view_i_time){
-        //$ui .= '<div class="cover-text coin-hover"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
     }
 
 

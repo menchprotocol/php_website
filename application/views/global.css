@@ -1919,6 +1919,11 @@ i, .btn .show-max {
 }
 .cover-text {
     text-align: center;
+    position: absolute;
+    width: 100%;
+    height: 13px;
+    left: 0;
+    top: 0;
 }
 .mini-font{
     font-size:0.8em !important;
@@ -1986,12 +1991,7 @@ i, .btn .show-max {
 }
 .coin_cover{
     position: relative;
-}
-.coin_idea {
-    margin:0 0 89px !important;
-}
-.coin_source {
-    margin:0 0 75px !important;
+    margin:13px 0 77px !important;
 }
 
 .cover-content .inner-content {
