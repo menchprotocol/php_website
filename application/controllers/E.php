@@ -788,7 +788,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid ID',
             ));
-        } elseif (!isset($_POST['e_focus_id'])) {
+        } elseif (!isset($_POST['focus__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Focus ID',
@@ -853,7 +853,7 @@ class E extends CI_Controller
 
 
             //Delete SOURCE LINKS:
-            if($_POST['e__id'] == $_POST['e_focus_id']){
+            if($_POST['e__id'] == $_POST['focus__id']){
 
                 //Fetch parents to redirect to:
                 $e__profiles = $this->X_model->fetch(array(
@@ -871,7 +871,7 @@ class E extends CI_Controller
             $x_adjusted = $this->E_model->remove($_POST['e__id'], $member_e['e__id']);
 
             //Show appropriate message based on action:
-            if($_POST['e__id'] == $_POST['e_focus_id']){
+            if($_POST['e__id'] == $_POST['focus__id']){
                 if(count($e__profiles)){
                     $delete_redirect_url = '/@' . $e__profiles[0]['e__id'];
                 } else {
@@ -1478,7 +1478,7 @@ class E extends CI_Controller
 
 
 
-    function e_modify_load(){
+    function e_message_load(){
 
         $member_e = superpower_unlocked(10939);
         if (!$member_e) {

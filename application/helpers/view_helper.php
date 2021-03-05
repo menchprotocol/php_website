@@ -636,7 +636,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $query_filters = array(
             'x__up' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $CI->config->item(( superpower_active(13422, true) ? 'n___7360' /* ACTIVE */ : 'n___7359' /* PUBLIC */ ))) . ')' => null,
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
         if(count($i_exclude)){
@@ -695,6 +695,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         return $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
 
     } else {
+
         $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
 
@@ -764,7 +765,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
         //SOURCES
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i['i__id'],
             'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
@@ -776,7 +777,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
         //IDEAS
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i['i__id'],
@@ -788,7 +789,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
         //DISCOVERIES
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
             'x__left' => $i['i__id'],
         );
@@ -982,14 +983,6 @@ function view_i_marks($i_x){
     return ( $i_x['x__type'] == 4228 ? ( !isset($x__metadata['tr__assessment_points']) || $x__metadata['tr__assessment_points'] == 0 ? '' : '<span class="score-range">[<span style="'.( $x__metadata['tr__assessment_points']>0 ? 'font-weight:bold;' : ( $x__metadata['tr__assessment_points'] < 0 ? 'font-weight:bold;' : '' )).'">' . ( $x__metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $x__metadata['tr__assessment_points'].'</span>]</span>' ) : '<span class="score-range">['.$x__metadata['tr__conditional_score_min'] . ( $x__metadata['tr__conditional_score_min']==$x__metadata['tr__conditional_score_max'] ? '' : '-'.$x__metadata['tr__conditional_score_max'] ).'%]</span>' );
 
 }
-
-
-function view_i_icon($i){
-
-    return '<span class="this_i__cover_'.$i['i__id'].'">'.view_cache(4737, $i['i__type'], true, 'right', $i['i__id']).'</span>';
-
-}
-
 
 
 
@@ -1997,7 +1990,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
 
     $href = '/@'.$e['e__id'];
-    $focus_e__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
+    $focus__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $has_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
     $public_sources = $CI->config->item('n___14603');
@@ -2007,7 +2000,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
     $e__profiles = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__up !=' => $focus_e__id, //Do Not Fetch Current Source
+        'x__up !=' => $focus__id, //Do Not Fetch Current Source
         'x__down' => $e['e__id'], //This child source
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -2016,8 +2009,8 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
     //Is Lock/Private?
     $lock_notice = 4755; //Only locked if private Source
-    $has_hard_lock = !$superpower_12701 && (!$member_e || $member_e['e__id']!=$focus_e__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
-    $has_public = in_array($e['e__id'], $public_sources) || in_array($focus_e__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
+    $has_hard_lock = !$superpower_12701 && (!$member_e || $member_e['e__id']!=$focus__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
+    $has_public = in_array($e['e__id'], $public_sources) || in_array($focus__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
     $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$has_public && !$source_of_e && !$superpower_13422));
     $has_any_lock = !$superpower_12701 && ($has_soft_lock || $has_hard_lock);
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $has_e_link && $superpower_10939;
@@ -2058,7 +2051,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
         //Edit Message
         if($has_e_link && $superpower_13422){
-            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="e_modify_load(' . $e['e__id'] . ',' . $x__id . ')"><span class="icon-block">'.$e___11035[13571]['m__cover'].'</span>'.$e___11035[13571]['m__title'].'</a></div>';
+            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="e_message_load(' . $e['e__id'] . ',' . $x__id . ')"><span class="icon-block">'.$e___11035[13571]['m__cover'].'</span>'.$e___11035[13571]['m__title'].'</a></div>';
         }
 
         //SORT
@@ -2238,19 +2231,19 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
 
 
 
-function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i = true, $show_full_name = true, $i__id = 0, $x__id = 0){
+function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
+    $e___12079 = $CI->config->item('e___12079');
 
-    if(!$selected_e__id || !isset($e___this[$selected_e__id])){
+    if(!$selected_e__id || !isset($e___this[$selected_e__id]) || !isset($e___12079[$cache_e__id])){
         return false;
     }
 
-    $e___12079 = $CI->config->item('e___12079');
     $e___4527 = $CI->config->item('e___4527');
 
-    $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$i__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'" title="'.$e___12079[$cache_e__id]['m__title'].'">';
+    $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'" title="'.$e___12079[$cache_e__id]['m__title'].'">';
 
     $ui .= '<button type="button" '.( $e_of_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'"' ).' >';
 
@@ -2275,11 +2268,11 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
             } else{
 
                 //Idea Dropdown updater:
-                $anchor_url = 'href="javascript:void();" new-en-id="'.$e__id.'" onclick="i_set_dropdown('.$cache_e__id.', '.$e__id.', '.$i__id.', '.$x__id.', '.intval($show_full_name).')"';
+                $anchor_url = 'href="javascript:void();" new-en-id="'.$e__id.'" onclick="update_dropdown('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"';
 
             }
 
-            $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$i__id.'_'.$x__id.' css__title optiond_'.$e__id.'_'.$i__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.$anchor_url.' title="'.$m['m__message'].'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>'; //Used to show desc but caused JS click conflict sp retired for now: ( strlen($m['m__message']) && !$has_url_desc ? 'title="'.$m['m__message'].'" data-toggle="tooltip" data-placement="right"' : '' )
+            $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' css__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.$anchor_url.' title="'.$m['m__message'].'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>'; //Used to show desc but caused JS click conflict sp retired for now: ( strlen($m['m__message']) && !$has_url_desc ? 'title="'.$m['m__message'].'" data-toggle="tooltip" data-placement="right"' : '' )
 
         }
 

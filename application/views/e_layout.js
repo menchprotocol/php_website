@@ -17,7 +17,7 @@ $(document).ready(function () {
         e_sort_portfolio_load();
     }
 
-    set_autosize($('.texttype__lg.text__6197_'+e_focus_id));
+    set_autosize($('.texttype__lg.text__6197_'+$('#focus__id').val()));
 
     $("#input__6197, #e__title").keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -245,7 +245,7 @@ function e__add(x__type, e_existing_id) {
     $.post("/e/e__add", {
 
         x__type: x__type,
-        e__id: e_focus_id,
+        e__id: $('#focus__id').val(),
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
 
@@ -301,7 +301,7 @@ function e_load_page(x__type, page, load_new_filter) {
     $.post("/e/e_load_page", {
         x__type: x__type,
         page: page,
-        parent_e__id: e_focus_id,
+        parent_e__id: $('#focus__id').val(),
         e_focus_filter: e_focus_filter,
     }, function (data) {
 
@@ -451,7 +451,7 @@ function e_sort_save() {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/e/e_sort_save", {e__id: e_focus_id, new_x__spectrums: new_x__spectrums}, function (data) {
+        $.post("/e/e_sort_save", {e__id: $('#focus__id').val(), new_x__spectrums: new_x__spectrums}, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -468,7 +468,7 @@ function e_sort_reset(){
 
         //Update via call:
         $.post("/e/e_sort_reset", {
-            e__id: e_focus_id
+            e__id: $('#focus__id').val()
         }, function (data) {
 
             if (!data.status) {
@@ -479,7 +479,7 @@ function e_sort_reset(){
             } else {
 
                 //Refresh page:
-                window.location = '/@' + e_focus_id;
+                window.location = '/@' + $('#focus__id').val();
 
             }
         });

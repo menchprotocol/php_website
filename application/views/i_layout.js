@@ -80,8 +80,8 @@ $(document).ready(function () {
 
 
     //Load top/bottom idea searches:
-    i_load_search(11019, $('#focus_i__id').val());
-    i_load_search(13542, $('#focus_i__id').val());
+    i_load_search(11019, $('#focus__id').val());
+    i_load_search(13542, $('#focus__id').val());
 
     //Load Sortable:
     x_sort_load(13542);
@@ -108,7 +108,7 @@ function i_note_poweredit_save(note_type_id){
     $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
 
     $.post("/i/i_note_poweredit_save", {
-        i__id: $('#focus_i__id').val(),
+        i__id: $('#focus__id').val(),
         note_type_id: note_type_id,
         field_value: $(input_textarea).val().trim()
     }, function (data) {
@@ -154,7 +154,7 @@ function i_note_poweredit_save(note_type_id){
                 loadtab(14418, 14420); //Load Preview tab
             }
 
-            watch_for_note_e_clicks();
+            watch_for_coin_cover_clicks();
 
             setTimeout(function () {
                 $(input_textarea).focus();
@@ -190,7 +190,7 @@ function e_add_only_7551(e_existing_id, note_type_id) {
     //Add via Ajax:
     $.post("/e/e_add_only_7551", {
 
-        i__id: $('#focus_i__id').val(),
+        i__id: $('#focus__id').val(),
         note_type_id: note_type_id,
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
@@ -226,7 +226,7 @@ function e_e_only_search_7551(note_type_id) {
 
     var element_focus = ".e-i-"+note_type_id;
 
-    var base_creator_url = '/e/create/'+$('#focus_i__id').val()+'/?content_title=';
+    var base_creator_url = '/e/create/'+$('#focus__id').val()+'/?content_title=';
 
     $(element_focus + ' .add-input').focus(function() {
         $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');

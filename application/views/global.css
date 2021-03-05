@@ -1948,10 +1948,21 @@ i, .btn .show-max {
     bottom: -30px;
     min-height: 25px;
 }
+
+
 .coin-cover{
     position: absolute;
     width: 24px;
     overflow: visible;
+}
+
+@media (hover: hover) {
+    .coin-cover{
+        display: none;
+    }
+    .coin_cover:hover .coin-cover{
+        display: block;
+    }
 }
 
 .coin-cover-left{

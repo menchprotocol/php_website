@@ -349,7 +349,7 @@ $(document).ready(function () {
     lazy_load();
     set_autosize($('#sugg_note'));
     set_autosize($('.texttype__lg'));
-    watch_for_note_e_clicks();
+    watch_for_coin_cover_clicks();
 
     $('.trigger_modal').click(function (e) {
         var note_type_id = parseInt($(this).attr('note_type_id'));
@@ -588,7 +588,7 @@ function update_demo_icon(){
     $('.icon-demo').html(($('#cover__icon').val().length > 0 ? $('#cover__icon').val() : js_e___14874[12274]['m__cover'] ));
 }
 
-function e_modify_load(e__id, x__id) {
+function load_coincover(o__type, o__id) {
 
     x_create({
         x__source: js_pl_id,
@@ -599,7 +599,77 @@ function e_modify_load(e__id, x__id) {
     });
 
     //Load current Source:
-    $.post("/e/e_modify_load", {
+    $.post("/e/e_message_load", {
+
+        e__id: e__id,
+        x__id: x__id,
+
+    }, function (data) {
+
+        if (data.status) {
+
+            var source_url = base_url+'/@'+e__id;
+            $('#source_url').html('<u>'+source_url+'</u> <i class="far fa-external-link"></i>').attr('href',source_url);
+            $("#modal13571 .save_results").html('');
+            $('#modal13571').modal('show');
+            $('.notify_e_delete, .notify_unx_e').addClass('hidden'); //Cannot be deleted OR Unpublished as this would not load, so delete them
+
+            //Update variables:
+            $('#modal13571 .modal_x__id').val(x__id);
+            $('#modal13571 .modal_e__id').val(e__id);
+
+            $('#modal13571 .save_results').html('');
+            $('.e_delete_stats').html('');
+
+            $('#e__title').val(data.e__title);
+            $('#e__type').val(data.e__type);
+
+            $('#cover__icon').val(data.e__cover); update_demo_icon();
+
+            set_autosize($('#e__title'));
+            e__title_word_count();
+
+            setTimeout(function () {
+                $('#e__title').focus();
+            }, 144);
+
+            if (x__id > 0) {
+
+                $('#x__status').val(data.x__status);
+                $('#x__message').val(data.x__message);
+                $('#e_x_count').val(0);
+                $('.remove-e, .e_has_link').removeClass('hidden');
+                set_autosize($('#x__message'));
+                x_type_preview();
+
+            } else {
+
+                //Hide the section and clear it:
+                $('.remove-e, .e_has_link').addClass('hidden');
+
+            }
+
+        } else {
+
+            alert(data.message);
+
+        }
+    });
+}
+
+
+function e_message_load(e__id, x__id) {
+
+    x_create({
+        x__source: js_pl_id,
+        x__type: 14576, //MODAL VIEWED
+        x__up: 13571,
+        x__down: e__id,
+        x__reference: x__id,
+    });
+
+    //Load current Source:
+    $.post("/e/e_message_load", {
 
         e__id: e__id,
         x__id: x__id,
@@ -677,7 +747,7 @@ function e_modify_save() {
 
     //Prepare data to be modified for this idea:
     var modify_data = {
-        e_focus_id: ( typeof e_focus_id !== 'undefined' ? e_focus_id : 0 ),
+        focus__id: ( typeof focus__id !== 'undefined' ? focus__id : 0 ),
         do_13527:do_13527,
         e__id: $('#modal13571 .modal_e__id').val(),
         e__title: $('#e__title').val(),
@@ -1147,7 +1217,7 @@ function gif_modal(x__type){
         x__source: js_pl_id,
         x__type: 14576, //MODAL VIEWED
         x__up: 14073,
-        x__right: $('#focus_i__id').val(),
+        x__right: $('#focus__id').val(),
     });
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
@@ -1575,7 +1645,7 @@ function i_note_update_text(x__id, note_type_id) {
 
     var modify_data = {
         x__id: parseInt(x__id),
-        i__id: parseInt($('#focus_i__id').val()),
+        i__id: parseInt($('#focus__id').val()),
         x__message: $("#ul-nav-" + x__id + " textarea").val(),
     };
 
@@ -1655,7 +1725,7 @@ function i_note_end_adding(result, note_type_id) {
         //Load Images:
         lazy_load();
 
-        watch_for_note_e_clicks();
+        watch_for_coin_cover_clicks();
 
         //Hide any errors:
         $(".note_error_"+note_type_id).html('');
@@ -1689,7 +1759,7 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
     }
 
     ajaxData.append('upload_type', uploadType);
-    ajaxData.append('i__id', $('#focus_i__id').val());
+    ajaxData.append('i__id', $('#focus__id').val());
     ajaxData.append('note_type_id', note_type_id);
 
     $.ajax({
@@ -1741,10 +1811,10 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
 
 }
 
-function watch_for_note_e_clicks(){
+function watch_for_coin_cover_clicks(){
     //Watchout for source clicks if they have the superpower:
-    $('.trigger_13571_edit').click(function (e) {
-        e_modify_load(parseInt($(this).attr('e__id')), 0);
+    $('.trigger_coincover_edit').click(function (e) {
+        e_message_load(parseInt($(this).attr('e__id')), 0);
     });
 }
 
@@ -1762,7 +1832,7 @@ function i_note_add_text(note_type_id) {
     //Update backend:
     $.post("/i/i_note_add_text", {
 
-        i__id: $('#focus_i__id').val(), //Synonymous
+        i__id: $('#focus__id').val(), //Synonymous
         x__message: $('.input_note_' + note_type_id).val(),
         note_type_id: note_type_id,
 
@@ -2134,7 +2204,7 @@ function e_password(){
 
 
 
-function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
+function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
     /*
     *
@@ -2148,7 +2218,7 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
     *
     * */
 
-    var current_selected = parseInt($('.dropi_'+element_id+'_'+i__id+'_'+x__id+'.active').attr('new-en-id'));
+    var current_selected = parseInt($('.dropi_'+element_id+'_'+o__id+'_'+x__id+'.active').attr('new-en-id'));
     new_e__id = parseInt(new_e__id);
     if(current_selected == new_e__id){
         //Nothing changed:
@@ -2194,34 +2264,28 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
 
     //Show Loading...
     var data_object = eval('js_e___'+element_id);
-    $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
+    if(!data_object[new_e__id]){
+        alert('Invalid element ID');
+        return false;
+    }
+    $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
-    $.post("/i/i_set_dropdown", {
-
-        i__id: i__id,
-        x__id: x__id,
-        focus_i__id:$('#focus_i__id').val(),
+    $.post("/x/update_dropdown", {
+        focus__id:$('#focus__id').val(),
+        o__id: o__id,
         element_id: element_id,
-        new_e__id: new_e__id
-
+        new_e__id: new_e__id,
+        x__id: x__id
     }, function (data) {
         if (data.status) {
 
-            if(element_id==4737){
-                //Update dropdown menu:
-                //$('.i__type_'+i__id).html(data_object[new_e__id]['m__cover']);
-            }
-
             //Update on page:
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
+            $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
 
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .dropi_' + element_id +'_'+i__id+ '_' + x__id).removeClass('active');
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .optiond_' + new_e__id+'_'+i__id+ '_' + x__id).addClass('active');
+            $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .dropi_' + element_id +'_'+o__id+ '_' + x__id).removeClass('active');
+            $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .optiond_' + new_e__id+'_'+o__id+ '_' + x__id).addClass('active');
 
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id).attr('selected-val' , new_e__id);
-
-            //Update micro icons, if any: (Idea status has it)
-            $('.this_i__cover_'+i__id+'>span').html(data.new_i__cover);
+            $('.dropd_'+element_id+'_'+o__id+'_'+x__id).attr('selected-val' , new_e__id);
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
                 //Go to main idea page:
@@ -2248,7 +2312,8 @@ function i_set_dropdown(element_id, new_e__id, i__id, x__id, show_full_name){
         } else {
 
             //Reset to default:
-            $('.dropd_'+element_id+'_'+i__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[current_selected]['m__cover']+'</span>' + ( show_full_name ? data_object[current_selected]['m__title'] : '' ));
+            var current_class = $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn span').attr('class');
+            $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="'+current_class+'">'+data_object[current_selected]['m__cover']+'</span>' + ( show_full_name ? data_object[current_selected]['m__title'] : '' ));
 
             //Show error:
             alert(data.message);

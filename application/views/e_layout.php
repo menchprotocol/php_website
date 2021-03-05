@@ -21,9 +21,8 @@ $profiles = $this->X_model->fetch(array(
 <script>
     //Set global variables:
     var e_focus_filter = -1; //No filter, show all
-    var e_focus_id = <?= $e['e__id'] ?>;
 </script>
-<input type="hidden" id="focus_i__id" value="0" />
+<input type="hidden" id="focus__id" value="<?= $e['e__id'] ?>" />
 <script src="/application/views/e_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
     <?php
@@ -40,16 +39,9 @@ $profiles = $this->X_model->fetch(array(
         $count = 0;
         $show_max = view_memory(6404,14538);
         $see_more_button = false;
+
         echo '<div id="list-in-11030" class="row grey-list hideIfEmpty">';
-        echo '<div id="new_11030" class="list-group-item list-adder no-side-padding '.superpower_active(13422).'">
-                            <div class="input-group border">
-                                <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
-                                <input type="text"
-                                       class="form-control form-control-thick algolia_search dotransparent add-input"
-                                       id="New11030input"
-                                       maxlength="' . view_memory(6404,6197) . '"
-                                       placeholder="'.$e___11035[13914]['m__title'].'">
-                            </div></div>';
+
         foreach($profiles as $e_profile) {
 
             if(!$see_more_button && $count==$show_max){
@@ -65,6 +57,19 @@ $profiles = $this->X_model->fetch(array(
                 $count++;
             }
         }
+
+        if($superpower_13422){
+            echo '<div id="new_11030" class="list-group-item list-adder no-side-padding">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               id="New11030input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="'.$e___11035[13914]['m__title'].'">
+                    </div></div>';
+        }
+
         echo '</div>';
 
 

@@ -797,6 +797,168 @@ class X extends CI_Controller
     }
 
 
+
+
+    function update_dropdown(){
+
+        //Maintain a manual index as a hack for the Idea/Source tables for now:
+        $e___12079 = $this->config->item('e___12079');
+
+        //Authenticate Member:
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['o__id']) || intval($_POST['o__id']) < 1) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Target ID',
+            ));
+        } elseif (!isset($_POST['focus__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Loaded ID',
+            ));
+        } elseif (!isset($_POST['x__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Transaction ID',
+            ));
+        } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !count($this->config->item('n___'.$_POST['element_id'])) || !isset($e___12079[$_POST['element_id']])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Variable ID ['.$_POST['element_id'].']',
+            ));
+        } elseif (!isset($_POST['new_e__id']) || intval($_POST['new_e__id']) < 1 || !in_array($_POST['new_e__id'], $this->config->item('n___'.$_POST['element_id']))) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Value ID',
+            ));
+        }
+
+
+        //See if anything is being deleted:
+        $deletion_redirect = null;
+        $delete_element = null;
+
+
+        if($_POST['element_id']==4486 && $_POST['x__id'] > 0){
+
+            //IDEA LINK TYPE
+            $this->X_model->update($_POST['x__id'], array(
+                'x__type' => $_POST['new_e__id'],
+            ), $member_e['e__id'], 13962);
+
+        } elseif($_POST['element_id']==6177){
+
+            //SOURCE TYPE
+
+            //Delete?
+            if(!in_array($_POST['new_e__id'], $this->config->item('n___7358'))){
+
+                //Determine what to do after deleted:
+                if($_POST['o__id'] == $_POST['focus__id']){
+
+                    //Find Published Parents:
+                    foreach($this->X_model->fetch(array(
+                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                        'x__down' => $_POST['o__id'],
+                    ), array('x__up'), 1, 0, array('e__spectrum' => 'DESC')) as $profile_e) {
+                        $deletion_redirect = '/@'.$profile_e['e__id'];
+                    }
+
+                    //If still not found, go to main page if no parent found:
+                    if(!$deletion_redirect){
+                        $deletion_redirect = home_url();
+                    }
+
+                } else {
+
+                    //Just delete from UI using JS:
+                    $delete_element = '.e_line_' . $_POST['o__id'];
+
+                }
+
+                //Delete all transactions:
+                $this->E_model->remove($_POST['o__id'], $member_e['e__id']);
+
+            }
+
+            //Update:
+            $this->E_model->update($_POST['o__id'], array(
+                'e__type' => $_POST['new_e__id'],
+            ), true, $member_e['e__id']);
+
+        } elseif($_POST['element_id']==4737){
+
+            //IDEA TYPE
+
+            //Delete?
+            if(!in_array($_POST['new_e__id'], $this->config->item('n___7356'))){
+
+                //Determine what to do after deleted:
+                if($_POST['o__id'] == $_POST['focus__id']){
+
+                    //Find Published Parents:
+                    foreach($this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                        'x__right' => $_POST['o__id'],
+                    ), array('x__left'), 1) as $previous_i) {
+                        $deletion_redirect = '/~'.$previous_i['i__id'];
+                    }
+
+                    //If not found, find active parents:
+                    if(!$deletion_redirect){
+                        foreach($this->X_model->fetch(array(
+                            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                            'x__right' => $_POST['o__id'],
+                        ), array('x__left'), 1) as $previous_i) {
+                            $deletion_redirect = '/~'.$previous_i['i__id'];
+                        }
+                    }
+
+                    //If still not found, go to main page if no parent found:
+                    if(!$deletion_redirect){
+                        $deletion_redirect = home_url();
+                    }
+
+                } else {
+
+                    //Just delete from UI using JS:
+                    $delete_element = '.i_line_' . $_POST['o__id'];
+
+                }
+
+                //Delete all transactions:
+                $this->I_model->remove($_POST['o__id'] , $member_e['e__id']);
+
+            }
+
+            //Update Idea:
+            $this->I_model->update($_POST['o__id'], array(
+                'i__type' => $_POST['new_e__id'],
+            ), true, $member_e['e__id']);
+
+        }
+
+        return view_json(array(
+            'status' => 1,
+            'deletion_redirect' => $deletion_redirect,
+            'delete_element' => $delete_element,
+        ));
+
+    }
+
+
+
     function x_select(){
 
         $member_e = superpower_unlocked();
@@ -805,25 +967,40 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['focus_i__id'])) {
+        } elseif (!isset($_POST['focus__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing idea id.',
+            ));
+        } elseif (!isset($_POST['focus_i__type'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing idea type.',
             ));
         } elseif (!isset($_POST['top_i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Top idea id.',
             ));
-        } elseif (!isset($_POST['selection_i__id']) || !is_array($_POST['selection_i__id']) || !count($_POST['selection_i__id'])) {
+        } elseif (!isset($_POST['selection_i__id']) || !is_array($_POST['selection_i__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Select an answer before going next.',
+                'message' => 'Missing answers.',
+            ));
+        } elseif (in_array($_POST['focus_i__type'], $this->config->item('n___14958')) && !count($_POST['selection_i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'You must select an answer before going next.',
+            ));
+        } elseif (!count($_POST['selection_i__id'])) {
+            return view_json(array(
+                'status' => 1, //All good here
+                'message' => 'Nothing to save...',
             ));
         }
 
-        //Save answer:
-        return view_json($this->X_model->x_answer($member_e['e__id'], $_POST['top_i__id'], $_POST['focus_i__id'], $_POST['selection_i__id']));
+        //We have something to save:
+        return view_json($this->X_model->x_answer($member_e['e__id'], $_POST['top_i__id'], $_POST['focus__id'], $_POST['selection_i__id']));
 
     }
 

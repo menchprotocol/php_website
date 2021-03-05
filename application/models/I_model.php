@@ -667,10 +667,11 @@ class I_model extends CI_Model
 
         //Set variables:
         $is_first_in = ( !isset($focus_in['x__id']) ); //First idea does not have a transaction, just the idea
-        $select_one = in_array($focus_in['i__type'] , $this->config->item('n___12883')); //IDEA TYPE SELECT ONE
-        $select_some = in_array($focus_in['i__type'] , $this->config->item('n___12884')); //IDEA TYPE SELECT SOME
-        $select_one_children = array(); //To be populated only if $focus_in is select one
-        $select_some_children = array(); //To be populated only if $focus_in is select some
+        $select_12883 = in_array($focus_in['i__type'] , $this->config->item('n___12883')); //IDEA TYPE SELECT ONE
+        $select_12884 = in_array($focus_in['i__type'] , $this->config->item('n___12884')); //IDEA TYPE SELECT SOME
+        $select_14862 = in_array($focus_in['i__type'] , $this->config->item('n___14862')); //IDEA TYPE SELECT ANY or NONE
+        $children_one = array(); //To be populated only if $focus_in is select one
+        $children_some = array(); //To be populated only if $focus_in is select some
         $conditional_x = array(); //To be populated only for Conditional Ideas
         $metadata_this = array(
             'p___6168' => array(), //The idea structure that would be shared with all members regardless of their quick replies (OR Idea Answers)
@@ -693,15 +694,15 @@ class I_model extends CI_Model
                 //Conditional Idea Transaction:
                 array_push($conditional_x, intval($next_i['i__id']));
 
-            } elseif($select_one){
+            } elseif($select_12883){
 
                 //OR parent Idea with Fixed Idea Transaction:
-                array_push($select_one_children, intval($next_i['i__id']));
+                array_push($children_one, intval($next_i['i__id']));
 
-            } elseif($select_some){
+            } elseif($select_12884 || $select_14862){
 
                 //OR parent Idea with Fixed Idea Transaction:
-                array_push($select_some_children, intval($next_i['i__id']));
+                array_push($children_some, intval($next_i['i__id']));
 
             } else {
 
@@ -744,11 +745,11 @@ class I_model extends CI_Model
 
 
         //Was this an OR branch that needs it's children added to the array?
-        if($select_one && count($select_one_children) > 0){
-            $metadata_this['p___6228'][$focus_in['i__id']] = $select_one_children;
+        if($select_12883 && count($children_one) > 0){
+            $metadata_this['p___6228'][$focus_in['i__id']] = $children_one;
         }
-        if($select_some && count($select_some_children) > 0){
-            $metadata_this['p___12885'][$focus_in['i__id']] = $select_some_children;
+        if(($select_12884 || $select_14862) && count($children_some) > 0){
+            $metadata_this['p___12885'][$focus_in['i__id']] = $children_some;
         }
         if(count($conditional_x) > 0){
             $metadata_this['p___6283'][$focus_in['i__id']] = $conditional_x;
@@ -868,19 +869,19 @@ class I_model extends CI_Model
             } elseif(in_array($action_e__id , array(12611, 12612))){
 
                 //Check if it hs this item:
-                $focus_i__id = intval(one_two_explode('#',' ',$action_command1));
+                $focus__id = intval(one_two_explode('#',' ',$action_command1));
 
                 $is_previous = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                    'x__left' => $focus_i__id,
+                    'x__left' => $focus__id,
                     'x__right' => $next_i['i__id'],
                 ), array(), 0);
 
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
-                    $this->I_model->create_or_link(11019, '', $x__source, $focus_i__id, $next_i['i__id']);
+                    $this->I_model->create_or_link(11019, '', $x__source, $focus__id, $next_i['i__id']);
 
                     //Add Source since not there:
                     $applied_success++;
@@ -1040,7 +1041,7 @@ class I_model extends CI_Model
             $metadata_recursion = $this->I_model->metadata_e_insights($is_next);
 
 
-            //MERGE (3 SCENARIOS)
+            //CONDITIONAL OR SELECT ONE
             if(in_array($is_next['x__type'], $this->config->item('n___12842')) || in_array($i['i__type'], $this->config->item('n___12883'))){
 
                 //ONE
@@ -1063,7 +1064,7 @@ class I_model extends CI_Model
 
             } elseif(in_array($i['i__type'], $this->config->item('n___12884'))){
 
-                //SOME
+                //SELECT SOME
 
                 //MIN
                 if(is_null($metadata_local['localp___6169']) || $metadata_recursion['p___6169'] < $metadata_local['localp___6169']){
@@ -1072,6 +1073,18 @@ class I_model extends CI_Model
                 if(is_null($metadata_local['localp___6161']) || $metadata_recursion['p___6161'] < $metadata_local['localp___6161']){
                     $metadata_local['localp___6161'] = $metadata_recursion['p___6161'];
                 }
+
+                //MAX
+                $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
+                $metadata_this['p___6162'] += intval($metadata_recursion['p___6162']);
+
+            } elseif(in_array($i['i__type'], $this->config->item('n___14862'))){
+
+                //SELECT ANY OR NONE
+
+                //MIN: They can select none
+                $metadata_local['localp___6169'] = 0;
+                $metadata_local['localp___6161'] = 0;
 
                 //MAX
                 $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
