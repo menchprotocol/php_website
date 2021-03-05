@@ -2128,7 +2128,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
         } elseif($has_e_link){
 
-            $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
+            $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
 
         } elseif($has_x_progress && strlen($e['x__message'])){
 
