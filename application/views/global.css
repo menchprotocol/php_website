@@ -1971,13 +1971,14 @@ i, .btn .show-max {
 }
 
 .cover-text {
-    margin: 5px 0;
     line-height: 120%;
     text-align: center;
 }
-.cover-text span {
+.cover-text .light-bg {
     padding: 0 5px 1px;
-    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight: bold !important;
 }
 .coin_cover{
     position: relative;
