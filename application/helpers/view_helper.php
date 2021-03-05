@@ -1765,12 +1765,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= '<div class="cover-wrapper">';
 
     if(!$discovery_mode && $editing_enabled){
-        $ui .= '<div class="coin-cover coin-cover-left">';
+        $ui .= '<div class="coin-hover coin-cover coin-cover-left">';
         $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
         $ui .= '</div>';
     }
 
-    $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
+    $ui .= '<div class="coin-hover coin-cover coin-cover-right hideIfEmpty">';
         //LOCKED
         if($has_any_lock){
 
@@ -1934,7 +1934,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //Coin Block
     if($show_coins){
-        $ui .= '<table class="coin_coins"><tr>';
+        $ui .= '<table class="coin_coins coin-hover"><tr>';
         $ui .= '<td width="33%" style="text-align: right;">'.view_coins_i(12274,  $i).'</td>';
         $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
         $ui .= '<td width="33%" style="text-align: left;">'.view_coins_i(6255,  $i).'</td>';
@@ -2025,13 +2025,13 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
     if($source_of_e){
-        $ui .= '<div class="coin-cover coin-cover-left">';
+        $ui .= '<div class="coin-hover coin-cover coin-cover-left">';
         $ui .= view_input_dropdown(6177, $e['e__type'], null, $source_of_e, false, $e['e__id']);
         $ui .= '</div>';
     }
 
 
-    $ui .= '<div class="coin-cover coin-cover-right hideIfEmpty">';
+    $ui .= '<div class="coin-hover coin-cover coin-cover-right hideIfEmpty">';
     //LOCKED
     if($has_any_lock){
 
@@ -2051,7 +2051,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
         //Edit Message
         if($has_e_link && $superpower_13422){
-            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="e_message_load(' . $e['e__id'] . ',' . $x__id . ')"><span class="icon-block">'.$e___11035[13571]['m__cover'].'</span>'.$e___11035[13571]['m__title'].'</a></div>';
+            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')"><span class="icon-block">'.$e___11035[13571]['m__cover'].'</span>'.$e___11035[13571]['m__title'].'</a></div>';
         }
 
         //SORT
@@ -2186,7 +2186,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
     //Coin Block
-    $ui .= '<table class="coin_coins"><tr>';
+    $ui .= '<table class="coin_coins coin-hover"><tr>';
     $ui .= '<td width="33%" style="text-align: right;">'.view_coins_e(12274,  $e['e__id']).'</td>';
     $ui .= '<td width="34%" class="center">'.view_coins_e(12273,  $e['e__id']).'</td>';
     $ui .= '<td width="33%" style="text-align: left;">'.view_coins_e(6255,  $e['e__id']).'</td>';

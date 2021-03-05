@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     set_autosize($('.texttype__lg.text__6197_'+$('#focus__id').val()));
 
-    $("#input__6197, #e__title").keypress(function (e) {
+    $("#input__6197").keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
             e.preventDefault();
@@ -33,99 +33,14 @@ $(document).ready(function () {
     //Update Profile counters to account for sources that member may not be able to see due to missing permissions...
     $('.en-type-counter-11030').text($('#list-in-11030 .en-item').not(".hidden").length);
 
-
-
-
-    $('#new_11030').focus(function() {
-        $('#new_11030 .pad_expand').removeClass('hidden');
-    }).focusout(function() {
-        $('#new_11030 .pad_expand').addClass('hidden');
-    });
-
-    $('#new_11029').focus(function() {
-        $('#new_11029 .pad_expand').removeClass('hidden');
-    }).focusout(function() {
-        $('#new_11029 .pad_expand').addClass('hidden');
-    });
-
-
-
     //Load search for mass update function:
     load_editor();
-
-    //Lookout for idea transaction related changes:
-    $('#x__status').change(function () {
-        if (parseInt($('#x__status').find(":selected").val()) == 6173 /* DELETED */ ) {
-            //About to delete? Notify them:
-            $('.notify_unx_e').removeClass('hidden');
-        } else {
-            $('.notify_unx_e').addClass('hidden');
-        }
-    });
-
-    $('#e__type').change(function () {
-
-        if (parseInt($('#e__type').find(":selected").val()) == 6178 /* Member Deleted */) {
-
-            //Notify Member:
-            $('.notify_e_delete').removeClass('hidden');
-            $('.e_delete_stats').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
-
-            //About to delete... Fetch total transactions:
-            $.post("/e/e_count_deletion", { e__id: parseInt($('#modal13571 .modal_e__id').val()) }, function (data) {
-
-                if(data.status){
-                    $('.e_delete_stats').html('<b>'+data.e_x_count+'</b>');
-                    $('#e_x_count').val(data.e_x_count); //This would require a confirmation upon saving...
-                }
-
-            });
-
-        } else {
-
-            $('.notify_e_delete').addClass('hidden');
-            $('.e_delete_stats').html('');
-            $('#e_x_count').val(0);
-
-        }
-    });
-
+    x_type_preview_load();
 
     //SEARCH
     e_load_search(11030);
     e_load_search(11029);
 
-
-    //UPLOAD
-    $('.drag-box').find('input[type="file"]').change(function () {
-        e_upload_file(droppedFiles, 'file');
-    });
-
-    //Should we auto start?
-    if (isAdvancedUpload) {
-
-        $('.drag-box').addClass('has-advanced-upload');
-        var droppedFiles = false;
-
-        $('.drag-box').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        })
-            .on('dragover dragenter', function () {
-                $('.e_has_link').addClass('dynamic_saving');
-            })
-            .on('dragleave dragend drop', function () {
-                $('.e_has_link').removeClass('dynamic_saving');
-            })
-            .on('drop', function (e) {
-                droppedFiles = e.originalEvent.dataTransfer.files;
-                e.preventDefault();
-                e_upload_file(droppedFiles, 'drop');
-            });
-
-    }
-
-    x_type_preview_load();
 
 });
 
@@ -157,6 +72,12 @@ function e_load_search(x__type) {
         alert('Invalid Source Creation Type: ' + x__type);
         return false;
     }
+
+    $('#new_'+x__type).focus(function() {
+        $('#new_'+x__type+' .pad_expand').removeClass('hidden');
+    }).focusout(function() {
+        $('#new_'+x__type+' .pad_expand').addClass('hidden');
+    });
 
 
     var element_focus = '#new_'+x__type;
@@ -348,7 +269,7 @@ function e_x_form_unlock(result){
     //Unlock either way:
     $('#x__message').prop("disabled", false);
 
-    $('.btn-save').removeClass('grey').attr('href', 'javascript:e_modify_save();').html('Save');
+    $('.btn-save').removeClass('grey').attr('href', 'javascript:x_message_save();').html('Save');
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();

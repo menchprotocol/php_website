@@ -1957,10 +1957,10 @@ i, .btn .show-max {
 }
 
 @media (hover: hover) {
-    .coin-cover{
+    .coin-hover{
         display: none;
     }
-    .coin_cover:hover .coin-cover{
+    .coin_cover:hover .coin-hover{
         display: block;
     }
 }

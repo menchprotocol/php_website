@@ -593,7 +593,6 @@ class I extends CI_Controller {
         //Print the challenge:
         return view_json(array(
             'status' => 1,
-            'delete_from_ui' => 0,
             'message' => $this->X_model->message_view($msg_validation['clean_message'], false, $member_e, $_POST['i__id']),
         ));
 

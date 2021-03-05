@@ -564,93 +564,41 @@ function x_type_preview_load(){
 
 
 
-
-function e__title_word_count() {
-    var len = $('#e__title').val().length;
-
-    if (len > js_e___6404[6197]['m__message']) {
-        $('#charEnNum').addClass('overload').text(len);
-    } else {
-        $('#charEnNum').removeClass('overload').text(len);
-    }
-
-    //Only show counter if getting close to limit:
-    if(len > ( js_e___6404[6197]['m__message'] * js_e___6404[12088]['m__message'] )){
-        $('.source_title_counter').removeClass('hidden');
-    } else {
-        $('.source_title_counter').addClass('hidden');
-    }
-
-}
-
-
 function update_demo_icon(){
     //Update demo icon based on icon input value:
     $('.icon-demo').html(($('#coin__cover').val().length > 0 ? $('#coin__cover').val() : js_e___14874[12274]['m__cover'] ));
 }
 
-function e_message_load(e__id, x__id) {
 
-    console.log(e__id+'/'+x__id);
+function x_message_load(x__id) {
 
     x_create({
         x__source: js_pl_id,
         x__type: 14576, //MODAL VIEWED
         x__up: 13571,
-        x__down: e__id,
         x__reference: x__id,
     });
 
     //Load current Source:
-    $.post("/e/e_message_load", {
+    $.post("/x/x_message_load", {
 
-        e__id: e__id,
         x__id: x__id,
 
     }, function (data) {
 
         if (data.status) {
 
-            var source_url = base_url+'/@'+e__id;
-            $('#source_url').html('<u>'+source_url+'</u> <i class="far fa-external-link"></i>').attr('href',source_url);
-            $("#modal13571 .save_results").html('');
             $('#modal13571').modal('show');
-            $('.notify_e_delete, .notify_unx_e').addClass('hidden'); //Cannot be deleted OR Unpublished as this would not load, so delete them
 
             //Update variables:
             $('#modal13571 .modal_x__id').val(x__id);
-            $('#modal13571 .modal_e__id').val(e__id);
-
             $('#modal13571 .save_results').html('');
-            $('.e_delete_stats').html('');
-
-            $('#e__title').val(data.e__title);
-            $('#e__type').val(data.e__type);
-
-            $('#coin__cover').val(data.e__cover); update_demo_icon();
-
-            set_autosize($('#e__title'));
-            e__title_word_count();
-
+            $('#x__message').val(data.x__message);
+            set_autosize($('#x__message'));
+            x_type_preview();
             setTimeout(function () {
-                $('#e__title').focus();
+                $('#x__message').focus();
             }, 144);
-
-            if (x__id > 0) {
-
-                $('#x__status').val(data.x__status);
-                $('#x__message').val(data.x__message);
-                $('#e_x_count').val(0);
-                $('.remove-e, .e_has_link').removeClass('hidden');
-                set_autosize($('#x__message'));
-                x_type_preview();
-
-            } else {
-
-                //Hide the section and clear it:
-                $('.remove-e, .e_has_link').addClass('hidden');
-
-            }
 
         } else {
 
@@ -661,6 +609,14 @@ function e_message_load(e__id, x__id) {
 }
 
 function coin__load(coin__type, coin__id){
+
+    x_create({
+        x__source: js_pl_id,
+        x__type: 14576, //MODAL VIEWED
+        x__up: 14937,
+        x__down: ( coin__type==12274 ? coin__id : 0 ),
+        x__right: ( coin__type==12273 ? coin__id : 0 ),
+    });
 
     $('#modal14937').modal('show');
     $('#coin__title').val('LOADING...');
@@ -725,105 +681,37 @@ function coin__update(){
 }
 
 
-function e_modify_save() {
-
-    //Are we about to delete an source with a lot of transactions?
-    var x_count= parseInt($('#e_x_count').val());
+function x_message_save() {
 
     //Prepare data to be modified for this idea:
     var modify_data = {
-        focus__id: $('#focus__id').val(),
-        e__id: $('#modal13571 .modal_e__id').val(),
-        e__title: $('#e__title').val(),
-        e__cover: $('#coin__cover').val(),
-        e__type: $('#e__type').val(), //The new status (might not have changed too)
-        //Transaction data:
         x__id: $('#modal13571 .modal_x__id').val(),
         x__message: $('#x__message').val(),
-        x__status: $('#x__status').val(),
     };
 
     //Show spinner:
     $('#modal13571 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695) +  '').hide().fadeIn();
 
 
-    $.post("/e/e_modify_save", modify_data, function (data) {
+    $.post("/x/x_message_save", modify_data, function (data) {
 
         if (data.status) {
 
             $('#modal13571').modal('hide');
 
-            if(data.delete_from_ui){
+            //Yes, update the ideas:
+            $(".x__message_" + modify_data['x__id']).html(data.x__message);
 
-                //need to delete this source:
-                //Idea has been either deleted OR Unpublished:
-                if (data.delete_redirect_url) {
-
-                    //move up 1 level as this was the focus idea:
-                    window.location = data.delete_redirect_url;
-
-                } else {
-
-                    //Delete from UI:
-                    $('.cover_x_' + modify_data['x__id']).html('<span><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Deleted</span>').fadeOut();
-
-                    //Disappear in a while:
-                    setTimeout(function () {
-
-                        //Hide the editor & saving results:
-                        $('.cover_x_' + modify_data['x__id']).remove();
-
-                    }, 610);
-
-                }
-
-            } else {
-
-                //Reflect changed:
-                //Might be in an INPUT or a DIV based on active superpowers:
-                update_text_name(6197, modify_data['e__id'], modify_data['e__title']);
-
-
-                //Member Status:
-                $('.e__type_' + modify_data['e__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6177[modify_data['e__type']]["m__title"] + ': ' + js_e___6177[modify_data['e__type']]["m__message"] + '">' + js_e___6177[modify_data['e__type']]["m__cover"] + '</span>');
-
-
-                //Member Icon:
-                var icon_set = ( modify_data['e__cover'].length > 0 ? 1 : 0 );
-                if(!icon_set){
-                    //Set source default icon:
-                    modify_data['e__cover'] = js_e___14874[12274]['m__cover'];
-                }
-                $('.cover_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
-                $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
-
-
-                //Did we have ideas to update?
-                if (modify_data['x__id'] > 0) {
-
-                    //Yes, update the ideas:
-                    $(".x__message_" + modify_data['x__id']).html(data.x__message);
-
-                    //Did the content get modified? (Likely for a domain URL):
-                    if(!(data.x__message_final==modify_data['x__message'])){
-                        $('#x__message').val(data.x__message_final).hide().fadeIn('slow');
-                    }
-
-                    //Transaction Status:
-                    $('.x__status_' + modify_data['x__id']).html('<span data-toggle="tooltip" data-placement="right" title="' + js_e___6186[modify_data['x__status']]["m__title"] + ': ' + js_e___6186[modify_data['x__status']]["m__message"] + '">' + js_e___6186[modify_data['x__status']]["m__cover"] + '</span>');
-
-                }
-
-                //Update source timestamp:
-                $('#modal13571 .save_results').html(data.message);
-
-                //Reload Tooltip again:
-                $('[data-toggle="tooltip"]').tooltip();
+            //Did the content get modified? (Likely for a domain URL):
+            if(!(data.x__message_final==modify_data['x__message'])){
+                $('#x__message').val(data.x__message_final).hide().fadeIn('slow');
             }
 
         } else {
+
             //Ooops there was an error!
             $('#modal13571 .save_results').html('<span class="discover css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
+
         }
 
     });

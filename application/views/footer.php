@@ -161,7 +161,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
-    <!-- SOURCE EDITOR Modal -->
+    <!-- EDIT MESSAGE Modal -->
     <div class="modal fade" id="modal13571" tabindex="-1" role="dialog" aria-labelledby="modal13571Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -172,91 +172,22 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </button>
                 </div>
                 <div class="modal-body">
-
-                    <input type="hidden" class="modal_e__id" value="0" />
-                    <input type="hidden" class="modal_x__id" value="0" />
+                    <textarea class="form-control text-edit border" id="x__message" name="x__message" data-lpignore="true" placeholder="<?= $e___13571[4372]['m__message'] ?>"></textarea>
                     <div class="save_results margin-top-down-half hideIfEmpty"></div>
-
-
-
-                    <!-- Source Title -->
-                    <div class="headline no-left-padding"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[6197]['m__title'] ?> <span class="source_title_counter hidden">[<span style="margin:0 0 10px 0;"><span id="charEnNum">0</span>/<?= view_memory(6404,6197) ?></span>]</span></div>
-                    <textarea class="form-control text-edit border css__title border-dotted add_notes_form" id="e__title" name="e__title" onkeyup="e__title_word_count()" data-lpignore="true"></textarea>
-
-
-
-
-
-                    <div class="<?= superpower_active(13422) ?>">
-
-                        <!-- Source Status -->
-                        <div class="headline no-left-padding"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[6177]['m__title'] ?></div>
-                        <select class="form-control border" id="e__type" name="e__type">
-                            <?php
-                            foreach($this->config->item('e___6177') /* Source Status */ as $x__type => $m){
-                                echo '<option value="' . $x__type . '" title="' . $m['m__message'] . '">' . $m['m__title'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                        <div class="notify_e_delete hidden">
-
-                            <input type="hidden" id="e_x_count" value="0" />
-                            <div class="msg alert alert-danger"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will delete source & <span class="e_delete_stats" style="display:inline-block; padding: 0;"></span> links</div>
-
-                        </div>
-
-                    </div>
-                    <?php
-
-                    //Source URL:
-                    echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___13571[13433]['m__title'].'</div>';
-                    echo '<div class="padded"><a id="source_url" href="#" target="_blank"></a></div>';
-
-                    ?>
-
-
-
-                    <div class="e_has_link">
-
-                        <div class="headline no-left-padding"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[6186]['m__title'] ?></div>
-                        <select class="form-control border" id="x__status" name="x__status">
-                            <?php
-                            foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type => $m){
-                                echo '<option value="' . $x__type . '" title="' . $m['m__message'] . '">' . $m['m__title'] . '</option>';
-                            }
-                            ?>
-                        </select>
-
-                        <div class="notify_unx_e hidden">
-                            <div class="msg alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Saving will remove source</div>
-                        </div>
-
-
-
-                        <!-- Transaction Message -->
-                        <div class="headline no-left-padding" style="margin-top: 20px;"><?= '<span class="icon-block">&nbsp;</span>'.$e___13571[4372]['m__title'] ?></div>
-                        <form class="drag-box" method="post" enctype="multipart/form-data">
-
-                            <textarea class="form-control text-edit border" id="x__message" name="x__message" data-lpignore="true" placeholder="<?= $e___13571[4372]['m__message'] ?>"></textarea>
-
-                            <div class="pull-left">
-                                <div id="x__type_preview" class="hideIfEmpty"></div>
-                                <div id="x__message_preview" class="hideIfEmpty" style="width: 377px;"></div>
-                            </div>
-
-                            <div class="pull-right">
-                                <input class="inputfile" type="file" name="file" id="enFile" /><label class="" for="enFile" title="<?= $e___11035[13572]['m__message'] ?>"><?= $e___11035[13572]['m__cover'] ?></label>
-                            </div>
-
-                            <div class="doclear">&nbsp;</div>
-
-                        </form>
-
-                    </div>
-
+                    <input type="hidden" class="modal_x__id" value="0" />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="e_modify_save()" class="btn btn-default">SAVE</button>
+                    <table style="width: 100%;">
+                        <tr>
+                            <td width="100%">
+                                <div id="x__type_preview" class="hideIfEmpty"></div>
+                                <div id="x__message_preview" class="hideIfEmpty" style="width: 377px;"></div>
+                            </td>
+                            <td>
+                                <button type="button" onclick="x_message_save()" class="btn btn-default">SAVE</button>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

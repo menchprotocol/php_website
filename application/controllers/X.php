@@ -799,6 +799,173 @@ class X extends CI_Controller
 
 
 
+
+
+    function x_message_load(){
+
+        $member_e = superpower_unlocked(10939);
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(10939),
+            ));
+        } elseif (!isset($_POST['x__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing core inputs',
+            ));
+        }
+
+        $fetch_xs = $this->X_model->fetch(array(
+            'x__id' => $_POST['x__id'],
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ));
+        if(!count($fetch_xs)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Transaction ID',
+            ));
+        }
+
+        return view_json(array(
+            'status' => 1,
+            'x__message' => $fetch_xs[0]['x__message'],
+        ));
+
+    }
+
+
+
+
+
+    function x_message_save()
+    {
+
+
+        //Auth member and check required variables:
+        $member_e = superpower_unlocked(10939);
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(10939),
+            ));
+        } elseif (!isset($_POST['x__id']) || !isset($_POST['x__message']) || !intval($_POST['x__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing source transaction data',
+            ));
+        }
+
+
+        //Yes, first validate source transaction:
+        $e_x = $this->X_model->fetch(array(
+            'x__id' => $_POST['x__id'],
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ));
+        if (count($e_x) < 1) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'INVALID TRANSACTION ID',
+            ));
+        }
+
+        //Transaction content change?
+        if ($e_x[0]['x__message'] == $_POST['x__message']) {
+
+            //Transaction content has not changed:
+            $x__message_type = $e_x[0]['x__type'];
+            $x__message = $e_x[0]['x__message'];
+
+        } else {
+
+            //Transaction content has changed:
+            $detected_x_type = x_detect_type($_POST['x__message']);
+
+            if (!$detected_x_type['status']) {
+
+                return view_json($detected_x_type);
+
+            } elseif (in_array($detected_x_type['x__type'], $this->config->item('n___4537')) && isset($detected_x_type['url_root']) /* This prevents issues with /local_urls that start with / */) {
+
+                //This is a URL, validate modification:
+
+                if ($detected_x_type['url_root']) {
+
+                    if ($e_x[0]['x__up'] == 1326) {
+
+                        //Override with the clean domain for consistency:
+                        $_POST['x__message'] = $detected_x_type['url_clean_domain'];
+
+                    } else {
+
+                        //Domains can only be added to the domain source:
+                        return view_json(array(
+                            'status' => 0,
+                            'message' => 'Domain URLs requires <b>@1326 Domains</b> in profile',
+                        ));
+
+                    }
+
+                } else {
+
+                    if ($e_x[0]['x__up'] == 1326) {
+
+                        return view_json(array(
+                            'status' => 0,
+                            'message' => 'Only domain URLs can be connected to Domain source.',
+                        ));
+
+                    } elseif ($detected_x_type['e_domain']) {
+                        //We do have the domain saved! Is this connected to the domain source as its parent?
+                        if ($detected_x_type['e_domain']['e__id'] != $e_x[0]['x__up']) {
+                            return view_json(array(
+                                'status' => 0,
+                                'message' => 'Must have <b>@' . $detected_x_type['e_domain']['e__id'] . ' ' . $detected_x_type['e_domain']['e__title'] . '</b> in profile',
+                            ));
+                        }
+                    } else {
+                        //We don't have the domain saved, this is for sure not allowed:
+                        return view_json(array(
+                            'status' => 0,
+                            'message' => 'Requires a new parent source for <b>' . $detected_x_type['url_tld'] . '</b>. Add by pasting URL into the [Add @Source] input field.',
+                        ));
+                    }
+
+                }
+
+            }
+
+            //Update variables:
+            $x__message = $_POST['x__message'];
+            $x__message_type = $detected_x_type['x__type'];
+
+
+            $this->X_model->update($_POST['x__id'], array(
+                'x__message' => $x__message,
+            ), $member_e['e__id'], 10657 /* SOURCE LINK CONTENT UPDATE */);
+
+
+            //Also, did the transaction type change based on the content change?
+            if($x__message_type!=$e_x[0]['x__type']){
+                $this->X_model->update($_POST['x__id'], array(
+                    'x__type' => $x__message_type,
+                ), $member_e['e__id'], 10659 /* Member Transaction updated Type */);
+            }
+
+        }
+
+
+        //Show success:
+        return view_json(array(
+            'status' => 1,
+            'x__message' => view_x__message($x__message, $x__message_type),
+            'x__message_final' => $x__message, //In case content was updated
+            'x__message_type' => intval($x__message_type),
+        ));
+
+    }
+
+
     function update_dropdown(){
 
         //Maintain a manual index as a hack for the Idea/Source tables for now:
