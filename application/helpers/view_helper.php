@@ -1840,7 +1840,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //Previous Ideas
     if(!$discovery_mode && $editing_enabled && $superpower_12673){
-        $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
+        $ui .= '<div class="hideIfEmpty coin-hover" style="padding-top:5px;">';
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -1870,7 +1870,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //IDEAs and Time
     $view_i_time = view_i_time($i_stats);
     if($view_i_time){
-        $ui .= '<div class="cover-text"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
+        $ui .= '<div class="cover-text coin-hover"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
     }
 
 
@@ -1892,7 +1892,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if(!$has_any_lock && $toolbar && $superpower_12700){
 
         //Idea Toolbar
-        $ui .= '<div class="center">';
+        $ui .= '<div class="center coin-hover">';
 
 
         //Idea Link Controller

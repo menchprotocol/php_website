@@ -160,7 +160,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
-
     <!-- EDIT MESSAGE Modal -->
     <div class="modal fade" id="modal13571" tabindex="-1" role="dialog" aria-labelledby="modal13571Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
