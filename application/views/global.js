@@ -2225,40 +2225,23 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
         return false;
     }
 
-    //Changing Idea Status?
-    if(element_id==4737){
 
-        var is_i_active = (new_e__id in js_e___7356);
-        var is_i_public = (new_e__id in js_e___7355);
 
-        //Deleting?
-        if(!is_i_active){
-            //Seems to be deleting, confirm:
-            var r = confirm("Are you sure you want to delete this idea and unlink it from all other ideas?");
-            if (r == false) {
-                return false;
-            }
+    //Deleting Anything?
+    if(element_id==4737 && !(new_e__id in js_e___7356)){
+        //Deleting Idea:
+        var r = confirm("Are you sure you want to delete this idea and unlink it from all other coins?");
+        if (r == false) {
+            return false;
         }
-
-
-        //discoveries Setting:
-        if(is_i_public){
-
-            //Enable discoveries:
-            $('.i-x').removeClass('hidden');
-
-        } else {
-
-            //Disable discoveries:
-            $('.i-x').addClass('hidden');
-
+    } else if(element_id==6177 && !(new_e__id in js_e___7358)){
+        //Deleting Source:
+        var r = confirm("Are you sure you want to delete this source and unlink it from all other coins?");
+        if (r == false) {
+            return false;
         }
-
     }
 
-
-
-    //Is Status Public?
 
 
 
