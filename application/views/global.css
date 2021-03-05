@@ -1973,11 +1973,14 @@ i, .btn .show-max {
 .cover-text {
     line-height: 120%;
     text-align: center;
+    margin-bottom: 2px;
 }
 .cover-text .light-bg {
     padding: 0 5px 1px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+}
+.cover-text .mini-font {
     font-weight: bold !important;
 }
 .coin_cover{
