@@ -729,6 +729,10 @@ function e_message_load(e__id, x__id) {
 
 function coin__load(coin__type, coin__id){
 
+    $('#modal14937').modal('show');
+    $('#coin__title').val('LOADING...');
+    $('#coin__cover').val('LOADING...');
+
     $.post("/e/coin__load", {
         coin__type: $('#coin__type').val(),
         coin__id: $('#coin__id').val()

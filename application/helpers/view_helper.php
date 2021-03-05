@@ -1784,7 +1784,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             if($editing_enabled){
 
                 //COIN COVER
-                $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
+                $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
 
             }
 
@@ -2045,7 +2045,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
         if($source_of_e){
 
             //COIN COVER
-            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
+            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
 
         }
 
@@ -2225,7 +2225,7 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
 
     }
 
-    return '<span class="span__'.$cache_e__id.' '.( !$e_of_i ? ' edit-locked ' : '' ).'">'.( $e_of_i && in_array($cache_e__id, array(4736,6197)) ? '<a href="javascript:void(0);" onclick="$(\'#modal14937\').modal(\'show\');">'.$icon.'</a>' : $icon ).$focus_element.'</span>'.$character_counter;
+    return '<span class="span__'.$cache_e__id.' '.( !$e_of_i ? ' edit-locked ' : '' ).'">'.( $e_of_i && in_array($cache_e__id, array(4736,6197)) ? '<a href="javascript:void(0);" onclick="coin__load('.( substr_count($e___12112[$cache_e__id]['m__cover'], ' idea') ? 12273 : 12274 ).','.$s__id.')">'.$icon.'</a>' : $icon ).$focus_element.'</span>'.$character_counter;
 }
 
 
