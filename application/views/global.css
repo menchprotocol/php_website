@@ -1917,14 +1917,6 @@ i, .btn .show-max {
     line-height: 110%;
     padding: 5px 0;
 }
-.cover-text {
-    text-align: center;
-    position: absolute;
-    width: 100%;
-    height: 20px;
-    left: 0;
-    top: -20px;
-}
 .mini-font{
     font-size:0.8em !important;
     line-height: 100%;
@@ -1943,13 +1935,6 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-}
-
-.coin_idea .cover-content{
-    bottom: -58px;
-    min-height: 55px;
-}
-.coin_source .cover-content{
     bottom: -30px;
     min-height: 25px;
 }
@@ -1982,16 +1967,18 @@ i, .btn .show-max {
 .coin_coins{
     width: 100%;
     position: absolute;
-}
-.coin_idea .coin_coins{
-    bottom: -89px;
-}
-.coin_source .coin_coins{
     bottom: -61px;
+}
+
+.cover-text {
+    width: 100%;
+    position: absolute;
+    bottom:-80px;
+    text-align: center;
 }
 .coin_cover{
     position: relative;
-    margin:20px 0 75px !important;
+    margin:5px 0 80px !important;
 }
 
 .cover-content .inner-content {
