@@ -62,7 +62,7 @@ if(!$e_of_i){
 
 echo '<div id="list-in-11019" class="row dominHeight">';
 if($show_previous){
-    echo '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
+    echo '<div class="col-12 new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14014]['m__cover'].'</span></a>
                         <input type="text"

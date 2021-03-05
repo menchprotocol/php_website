@@ -40,10 +40,10 @@ $profiles = $this->X_model->fetch(array(
         $show_max = view_memory(6404,14538);
         $see_more_button = false;
 
-        echo '<div id="list-in-11030" class="row grey-list dominHeight">';
+        echo '<div id="list-in-11030" class="row dominHeight">';
 
         if($superpower_13422){
-            echo '<div id="new_11030" class="list-group-item list-adder no-side-padding">
+            echo '<div id="new_11030" class="col-12 list-group-item list-adder no-side-padding">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
                         <input type="text"
