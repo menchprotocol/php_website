@@ -2619,6 +2619,8 @@ font-weight: bold !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
     margin:0 41px;
+    border-radius: 10px;
+    border:1px solid #999;
 }
 .editor_preview .msg, .padded .msg {
     margin-left: 0 !important;
