@@ -1856,6 +1856,14 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
+    //IDEAs and Time
+    $view_i_time = view_i_time($i_stats);
+    if($view_i_time){
+        $ui .= '<div class="cover-text coin-hover"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
+    }
+
+
+
     //TITLE
     if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
         //Editable title:
@@ -1864,13 +1872,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
         $ui .= $i_title;
-    }
-
-
-    //IDEAs and Time
-    $view_i_time = view_i_time($i_stats);
-    if($view_i_time){
-        $ui .= '<div class="cover-text coin-hover"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
     }
 
 
