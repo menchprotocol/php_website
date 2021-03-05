@@ -734,8 +734,8 @@ function coin__load(coin__type, coin__id){
     $('#coin__cover').val('LOADING...');
 
     $.post("/e/coin__load", {
-        coin__type: $('#coin__type').val(),
-        coin__id: $('#coin__id').val()
+        coin__type: coin__type,
+        coin__id: coin__id
     }, function (data) {
 
         if (data.status) {
