@@ -2617,10 +2617,10 @@ font-weight: bold !important;
 
 .editor_preview{
     padding-top: 5px !important;
-    padding-bottom: 5px !important;
-    margin:0 41px;
-    border-radius: 10px;
-    border:1px solid #999;
+    padding-bottom: 27px !important;
+    margin: 0 41px;
+    border-radius: 10px !important;
+    margin-bottom: 76px;
 }
 .editor_preview .msg, .padded .msg {
     margin-left: 0 !important;
