@@ -283,7 +283,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-12 col-md-4">
                             <div class="coin_cover coin_idea" style="width: 255px !important; margin: -21px auto 50px !important;">
                                 <div class="cover-wrapper"><div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div></div>
-                                <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="cover__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;resize: none;height: 42px;"></textarea></span></div></div>
+                                <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="coin__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;resize: none;height: 42px;"></textarea></span></div></div>
                             </div>
                         </div>
                         <div class="col-12 col-md-8">
@@ -354,7 +354,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             echo $tab_nav.$tab_content;
 
-                            //JS $('#cover__icon').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
+                            //JS $('#coin__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
 
                             ?>
                         </div>
@@ -365,11 +365,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="form-group">
                         <div class="input-group border">
                             <span class="input-group-addon hidden addon-lean addon-grey icon-demo icon-block" style="padding-top:13px;"></span>
-                            <input type="text" id="cover__icon" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;">
-                            <div style="padding: 10px; text-align: center;"><button type="button" onclick="alert('saved closed')" class="btn btn-default">SAVE</button></div>
+                            <input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;">
+                            <div style="padding: 10px; text-align: center;"><button type="button" onclick="coin__update()" class="btn btn-default">SAVE</button></div>
 
-                            <input type="hidden" id="cover__type" value="0" />
-                            <input type="hidden" id="cover__id" value="0" />
+                            <input type="hidden" id="coin__type" value="0" />
+                            <input type="hidden" id="coin__id" value="0" />
                         </div>
 
                     </div>

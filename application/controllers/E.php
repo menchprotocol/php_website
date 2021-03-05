@@ -757,6 +757,112 @@ class E extends CI_Controller
     }
 
 
+    function coin__load()
+    {
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['coin__type']) || in_array($_POST['coin__type'] , $this->config->item('n___12761'))) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Coin Type',
+            ));
+        } elseif (!isset($_POST['coin__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Coin ID',
+            ));
+        }
+
+        if($_POST['coin__type']==12273){
+            //IDEA
+            $is = $this->I_model->fetch(array(
+                'i__id' => $_POST['coin__id'],
+            ));
+            if(count($is)){
+                return view_json(array(
+                    'status' => 1,
+                    'coin__title' => $is[0]['i__title'],
+                    'coin__cover' => $is[0]['i__cover'],
+                ));
+            }
+        } elseif($_POST['coin__type']==12274){
+            //SOURCE
+            $es = $this->E_model->fetch(array(
+                'e__id' => $_POST['coin__id'],
+            ));
+            if(count($es)){
+                return view_json(array(
+                    'status' => 1,
+                    'coin__title' => $es[0]['e__title'],
+                    'coin__cover' => $es[0]['e__cover'],
+                ));
+            }
+        }
+
+        //Could not find:
+        return view_json(array(
+            'status' => 0,
+            'message' => 'Could not find coin',
+        ));
+    }
+
+    function coin__update()
+    {
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['coin__type']) || in_array($_POST['coin__type'] , $this->config->item('n___12761'))) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Coin Type',
+            ));
+        } elseif (!isset($_POST['coin__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Coin ID',
+            ));
+        } elseif (!isset($_POST['coin__title'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Coin Title',
+            ));
+        } elseif (!isset($_POST['coin__cover'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Coin Cover',
+            ));
+        }
+
+        if($_POST['coin__type']==12273){
+
+            //IDEA
+            $this->I_model->update($_POST['coin__id'], array(
+                'i__title' => trim($_POST['coin__title']),
+                'i__cover' => trim($_POST['coin__cover']),
+            ), true, $member_e['e__id']);
+
+        } elseif($_POST['coin__type']==12274){
+
+            //SOURCE
+            $this->E_model->update($_POST['coin__id'], array(
+                'e__title' => trim($_POST['coin__title']),
+                'e__cover' => trim($_POST['coin__cover']),
+            ), true, $member_e['e__id']);
+
+        }
+
+        return view_json(array(
+            'status' => 1,
+        ));
+
+    }
 
 
     function e_modify_save()
@@ -809,12 +915,6 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => $is_valid_icon['message'],
             ));
-        } elseif($_POST['do_13527'] && !superpower_active(13422, true)){
-            //Check if valid icon:
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(13422),
-            ));
         }
 
 
@@ -828,62 +928,6 @@ class E extends CI_Controller
             'e__cover' => trim($_POST['e__cover']),
             'e__type' => intval($_POST['e__type']),
         );
-
-        //Is this being deleted?
-        if (!in_array($e__update['e__type'], $this->config->item('n___7358') /* ACTIVE */) && !($e__update['e__type'] == $es[0]['e__type'])) {
-
-
-
-
-            //Count source references in IDEA NOTES:
-            $i_notes = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
-                'x__up' => $_POST['e__id'],
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
-            if(count($i_notes) && !$_POST['do_13527']){
-                //Cannot delete this source until Idea references are deleted:
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'You can delete source after removing all its IDEA NOTES references',
-                ));
-            }
-
-
-
-            //Delete SOURCE LINKS:
-            if($_POST['e__id'] == $_POST['focus__id']){
-
-                //Fetch parents to redirect to:
-                $e__profiles = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__down' => $_POST['e__id'],
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                ), array('x__up'), 1);
-
-            }
-
-
-            $_POST['x__id'] = 0; //Do not consider the transaction as the source is being Deleted
-            $delete_from_ui = 1; //Removing source
-            $x_adjusted = $this->E_model->remove($_POST['e__id'], $member_e['e__id']);
-
-            //Show appropriate message based on action:
-            if($_POST['e__id'] == $_POST['focus__id']){
-                if(count($e__profiles)){
-                    $delete_redirect_url = '/@' . $e__profiles[0]['e__id'];
-                } else {
-                    //Is the app activated?
-                    $delete_redirect_url = home_url();
-                }
-            }
-
-            //Display proper message:
-            $success_message = 'Source deleted & removed ' . $x_adjusted . ' Transactions.';
-
-        }
 
 
         if (intval($_POST['x__id']) > 0) { //DO we have a transaction to update?

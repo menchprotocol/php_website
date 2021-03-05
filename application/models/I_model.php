@@ -171,13 +171,17 @@ class I_model extends CI_Model
                     $x__type = 10650; //Idea updated Completion Time
                     $x__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
+                } elseif($key=='i__cover') {
+
+                    $x__type = 14962; //Idea updated Cover
+                    $x__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
+
                 } else {
 
                     //Should not log updates since not specifically programmed:
                     continue;
 
                 }
-
 
                 //Value has changed, log transaction:
                 $this->X_model->create(array(

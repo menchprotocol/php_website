@@ -341,7 +341,7 @@ $(document).ready(function () {
     });
 
     //Keep an eye for icon change:
-    $('#cover__icon').keyup(function() {
+    $('#coin__cover').keyup(function() {
         update_demo_icon();
     });
 
@@ -585,7 +585,7 @@ function e__title_word_count() {
 
 function update_demo_icon(){
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#cover__icon').val().length > 0 ? $('#cover__icon').val() : js_e___14874[12274]['m__cover'] ));
+    $('.icon-demo').html(($('#coin__cover').val().length > 0 ? $('#coin__cover').val() : js_e___14874[12274]['m__cover'] ));
 }
 
 function load_coincover(o__type, o__id) {
@@ -624,7 +624,7 @@ function load_coincover(o__type, o__id) {
             $('#e__title').val(data.e__title);
             $('#e__type').val(data.e__type);
 
-            $('#cover__icon').val(data.e__cover); update_demo_icon();
+            $('#coin__cover').val(data.e__cover); update_demo_icon();
 
             set_autosize($('#e__title'));
             e__title_word_count();
@@ -694,7 +694,7 @@ function e_message_load(e__id, x__id) {
             $('#e__title').val(data.e__title);
             $('#e__type').val(data.e__type);
 
-            $('#cover__icon').val(data.e__cover); update_demo_icon();
+            $('#coin__cover').val(data.e__cover); update_demo_icon();
 
             set_autosize($('#e__title'));
             e__title_word_count();
@@ -727,31 +727,78 @@ function e_message_load(e__id, x__id) {
     });
 }
 
+function coin__load(coin__type, coin__id){
+
+    $.post("/e/coin__load", {
+        coin__type: $('#coin__type').val(),
+        coin__id: $('#coin__id').val()
+    }, function (data) {
+
+        if (data.status) {
+
+            $('#coin__type').val(coin__type);
+            $('#coin__id').val(coin__id);
+            $('#coin__title').val(data.coin__title);
+            $('#coin__cover').val(data.coin__cover);
+            //TODO LOad Icon in demo UI
+
+        } else {
+
+            //Ooops there was an error!
+            alert(data.message);
+
+        }
+
+    });
+
+}
+
+function coin__update(){
+
+    $.post("/e/coin__update", {
+        coin__type: $('#coin__type').val(),
+        coin__id: $('#coin__id').val(),
+        coin__title: $('#coin__title').val(),
+        coin__cover: $('#coin__cover').val()
+    }, function (data) {
+
+        if (data.status) {
+
+            //Update Icon/Title on Page:
+            alert('Updating icon now...');
+            /*
+            var icon_set = ( modify_data['e__cover'].length > 0 ? 1 : 0 );
+            if(!icon_set){
+                //Set source default icon:
+                modify_data['e__cover'] = js_e___14874[12274]['m__cover'];
+            }
+            $('.cover_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
+            $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
+            */
+
+        } else {
+
+            //Ooops there was an error!
+            alert(data.message);
+
+        }
+
+    });
+
+}
+
 
 function e_modify_save() {
 
     //Are we about to delete an source with a lot of transactions?
     var x_count= parseInt($('#e_x_count').val());
-    var do_13527 = 0;
-    if(x_count >= 1){
-        //Yes, confirm before doing so:
-        var confirm_removal = prompt("Delete  "+x_count+" links?! Type \"delete\" to confirm.", "");
-        do_13527 = ( confirm_removal=='destroy' ? 1 : 0 );
-
-        if (!(confirm_removal == 'delete') && !do_13527) {
-            //Abandon process:
-            alert('Source will not be deleted.');
-            return false;
-        }
-    }
 
     //Prepare data to be modified for this idea:
     var modify_data = {
         focus__id: $('#focus__id').val(),
-        do_13527:do_13527,
         e__id: $('#modal13571 .modal_e__id').val(),
         e__title: $('#e__title').val(),
-        e__cover: $('#cover__icon').val(),
+        e__cover: $('#coin__cover').val(),
         e__type: $('#e__type').val(), //The new status (might not have changed too)
         //Transaction data:
         x__id: $('#modal13571 .modal_x__id').val(),
