@@ -18,18 +18,20 @@ foreach($this->E_model->fetch(array()) as $e){
         $emoji++;
         $type = 'EMOJI: ';
         $new_cover = $e['e__cover'];
+        echo $new_cover.'<br />';
+
     } else {
         $none++;
         $type = 'NONE: ';
         $new_cover = null;
     }
 
-    echo $type.$e['e__cover'].' ('.$new_cover.')<br />';
+    //echo $type.$e['e__cover'].' ('.$new_cover.')<br />';
 
     //$this->E_model->update($e['e__id'], array('e__cover' => $new_cover), true);
 }
 
-echo 'Images ('.$images.') Fontawesome ('.$fontawesome.') Emoji ('.$emoji.') None ('.$none.')<br />';
+echo '<br /><br />Images ('.$images.') Fontawesome ('.$fontawesome.') Emoji ('.$emoji.') None ('.$none.')<br />';
 
 
 //UI to compose a test message:
