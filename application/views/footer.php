@@ -173,6 +173,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
                 <div class="modal-body">
                     <textarea class="form-control text-edit border" id="x__message" name="x__message" data-lpignore="true" placeholder="<?= $e___13571[4372]['m__message'] ?>"></textarea>
+                    <div id="x__message_preview" class="hideIfEmpty" style="width: 377px;"></div>
                     <div class="save_results margin-top-down-half hideIfEmpty"></div>
                     <input type="hidden" class="modal_x__id" value="0" />
                 </div>
@@ -181,7 +182,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <tr>
                             <td width="100%">
                                 <div id="x__type_preview" class="hideIfEmpty"></div>
-                                <div id="x__message_preview" class="hideIfEmpty" style="width: 377px;"></div>
                             </td>
                             <td>
                                 <button type="button" onclick="x_message_save()" class="btn btn-default">SAVE</button>
@@ -211,13 +211,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <!-- PREVIEW -->
                     <div class="row extra_info_box">
-                        <div class="col-12 col-md-4">
+                        <div class="col-12">
                             <div class="coin_cover coin_idea" style="width: 255px !important; margin: -21px auto 50px !important;">
                                 <div class="cover-wrapper"><div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div></div>
                                 <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="coin__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;resize: none;height: 42px;"></textarea></span></div></div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-8">
+                        <div class="col-12">
                             <?php
                             $tab_group = 14937;
                             $tab_content = '';
