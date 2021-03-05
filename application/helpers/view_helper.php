@@ -1674,7 +1674,7 @@ function view_i_select($i, $x__source, $previously_selected){
 
     $view_i_time = view_i_time($i_stats);
     if($view_i_time){
-        $ui .= '<div class="cover-text coin-hover">' . $view_i_time . '</div>';
+        $ui .= '<div class="cover-text coin-hover"><span class="light-bg">' . $view_i_time . '</span></div>';
     }
 
     $ui .= '</div>';
@@ -1832,6 +1832,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
+    //IDEAs and Time
+    $view_i_time = view_i_time($i_stats);
+    if($view_i_time){
+        $ui .= '<div class="cover-text coin-hover"><a href="'.$href.'" class="doblock"><span class="light-bg">' . $view_i_time . '</span></a></div>';
+    }
+
     $ui .= '<div class="inner-content">';
 
 
@@ -1849,7 +1855,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         }
         $ui .= '</div>';
     }
-
 
 
 
@@ -1929,12 +1934,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<td width="33%" style="text-align: left;">'.view_coins_i(6255,  $i).'</td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
-    }
-
-    //IDEAs and Time
-    $view_i_time = view_i_time($i_stats);
-    if($view_i_time){
-        $ui .= '<div class="cover-text coin-hover"><a href="'.$href.'" class="doblock">' . $view_i_time . '</a></div>';
     }
 
 
