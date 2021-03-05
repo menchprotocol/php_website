@@ -31,7 +31,7 @@ foreach($this->config->item('e___13207') as $e__id => $m) {
     foreach($e_list as $count=>$e) {
 
         if($count==$show_max){
-            echo '<div class="coin_cover coin_source col-md-4 col-6 no-padding see_more_who'.$e__id.'">
+            echo '<div class="coin_cover coin_source coin_reverse col-md-4 col-6 no-padding see_more_who'.$e__id.'">
                                 <div class="cover-wrapper"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$e__id.'\').toggleClass(\'hidden\')" class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'🇦</div></a></div>
                                 <div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$e__id.'\').toggleClass(\'hidden\')"><span>'.$e___11035[14538]['m__title'].': '.( count($e_list) - $show_max ).'</span></a></div></div>
                             </div>';
