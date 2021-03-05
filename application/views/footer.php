@@ -284,7 +284,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             echo $tab_nav.$tab_content;
 
-                            //JS $('#coin__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_demo_icon();
+                            //JS $('#coin__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_cover_icon();
 
                             ?>
                         </div>
@@ -294,9 +294,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-footer" style="padding: 0;">
                     <div class="form-group">
                         <div class="input-group border">
-                            <span class="input-group-addon hidden addon-lean addon-grey icon-demo icon-block" style="padding-top:13px;"></span>
                             <input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;">
-                            <div style="padding: 10px; text-align: center;"><button type="button" onclick="coin__update()" class="btn btn-default">SAVE</button></div>
+                            <div style="padding: 10px; text-align: center;"><button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button></div>
 
                             <input type="hidden" id="coin__type" value="0" />
                             <input type="hidden" id="coin__id" value="0" />

@@ -785,61 +785,6 @@ class E extends CI_Controller
         ));
     }
 
-    function coin__update()
-    {
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['coin__type']) || !in_array($_POST['coin__type'] , $this->config->item('n___12761'))) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Coin Type',
-            ));
-        } elseif (!isset($_POST['coin__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Coin ID',
-            ));
-        } elseif (!isset($_POST['coin__title'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Coin Title',
-            ));
-        } elseif (!isset($_POST['coin__cover'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Coin Cover',
-            ));
-        }
-
-        if($_POST['coin__type']==12273){
-
-            //IDEA
-            $this->I_model->update($_POST['coin__id'], array(
-                'i__title' => trim($_POST['coin__title']),
-                'i__cover' => trim($_POST['coin__cover']),
-            ), true, $member_e['e__id']);
-
-        } elseif($_POST['coin__type']==12274){
-
-            //SOURCE
-            $this->E_model->update($_POST['coin__id'], array(
-                'e__title' => trim($_POST['coin__title']),
-                'e__cover' => trim($_POST['coin__cover']),
-            ), true, $member_e['e__id']);
-
-        }
-
-        return view_json(array(
-            'status' => 1,
-        ));
-
-    }
-
-
 
     function e_fetch_canonical(){
 

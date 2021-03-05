@@ -343,7 +343,7 @@ $(document).ready(function () {
 
     //Keep an eye for icon change:
     $('#coin__cover').keyup(function() {
-        update_demo_icon();
+        update_cover_icon(null, null, null, $(this).val());
     });
 
     init_remove();
@@ -564,9 +564,26 @@ function x_type_preview_load(){
 
 
 
-function update_demo_icon(){
+function update_cover_icon(coin__type, coin__id, coin__title, coin__cover){
+
     //Update demo icon based on icon input value:
     $('.icon-demo').html(($('#coin__cover').val().length > 0 ? $('#coin__cover').val() : js_e___14874[12274]['m__cover'] ));
+
+    /*
+    var icon_set = ( modify_data['e__cover'].length > 0 ? 1 : 0 );
+    if(!icon_set){
+        //Set source default icon:
+        modify_data['e__cover'] = js_e___14874[12274]['m__cover'];
+    }
+    $('.cover_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
+    $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
+
+        coin__type: $('#coin__type').val(),
+        coin__id: $('#coin__id').val(),
+        coin__title: $('#coin__title').val(),
+        coin__cover
+    */
+
 }
 
 
@@ -633,7 +650,7 @@ function coin__load(coin__type, coin__id){
             $('#coin__id').val(coin__id);
             $('#coin__title').val(data.coin__title);
             $('#coin__cover').val(data.coin__cover);
-            //TODO LOad Icon in demo UI
+            update_cover_icon(null, null, data.coin__title, data.coin__cover);
 
         } else {
 
@@ -646,9 +663,9 @@ function coin__load(coin__type, coin__id){
 
 }
 
-function coin__update(){
+function coin__save(){
 
-    $.post("/e/coin__update", {
+    $.post("/e/coin__save", {
         coin__type: $('#coin__type').val(),
         coin__id: $('#coin__id').val(),
         coin__title: $('#coin__title').val(),
@@ -658,16 +675,9 @@ function coin__update(){
         if (data.status) {
 
             //Update Icon/Title on Page:
-            alert('Updating icon now...');
-            /*
-            var icon_set = ( modify_data['e__cover'].length > 0 ? 1 : 0 );
-            if(!icon_set){
-                //Set source default icon:
-                modify_data['e__cover'] = js_e___14874[12274]['m__cover'];
-            }
-            $('.cover_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
-            $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
-            */
+            $('#modal14937').modal('hide');
+
+            update_cover_icon($('#coin__type').val(), $('#coin__id').val(), $('#coin__title').val(), $('#coin__cover').val());
 
         } else {
 

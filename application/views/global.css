@@ -1658,9 +1658,6 @@ i, .btn .show-max {
     text-align: center;
 }
 
-.icon-demo img {
-    border-radius: 0% !important;
-}
 .icon-block-lg img {
     width: 46px !important;
     height: 46px !important;
@@ -1971,7 +1968,7 @@ i, .btn .show-max {
 .coin_coins{
     width: 100%;
     position: absolute;
-    bottom: -83px;
+    bottom: -86px;
 }
 
 .cover-text {
