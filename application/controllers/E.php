@@ -818,7 +818,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['coin__type']) || in_array($_POST['coin__type'] , $this->config->item('n___12761'))) {
+        } elseif (!isset($_POST['coin__type']) || !in_array($_POST['coin__type'] , $this->config->item('n___12761'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Coin Type',
