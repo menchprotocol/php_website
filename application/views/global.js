@@ -1,12 +1,13 @@
 
 
 //Microsoft Clarity:
+/*
 (function(c,l,a,r,i,t,y){
     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
     t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 })(window, document, "clarity", "script", "59riunqvfm");
-
+*/
 
 //Google Analytics
 window.dataLayer = window.dataLayer || [];
@@ -588,77 +589,9 @@ function update_demo_icon(){
     $('.icon-demo').html(($('#coin__cover').val().length > 0 ? $('#coin__cover').val() : js_e___14874[12274]['m__cover'] ));
 }
 
-function load_coincover(o__type, o__id) {
-
-    x_create({
-        x__source: js_pl_id,
-        x__type: 14576, //MODAL VIEWED
-        x__up: 13571,
-        x__down: e__id,
-        x__reference: x__id,
-    });
-
-    //Load current Source:
-    $.post("/e/e_message_load", {
-
-        e__id: e__id,
-        x__id: x__id,
-
-    }, function (data) {
-
-        if (data.status) {
-
-            var source_url = base_url+'/@'+e__id;
-            $('#source_url').html('<u>'+source_url+'</u> <i class="far fa-external-link"></i>').attr('href',source_url);
-            $("#modal13571 .save_results").html('');
-            $('#modal13571').modal('show');
-            $('.notify_e_delete, .notify_unx_e').addClass('hidden'); //Cannot be deleted OR Unpublished as this would not load, so delete them
-
-            //Update variables:
-            $('#modal13571 .modal_x__id').val(x__id);
-            $('#modal13571 .modal_e__id').val(e__id);
-
-            $('#modal13571 .save_results').html('');
-            $('.e_delete_stats').html('');
-
-            $('#e__title').val(data.e__title);
-            $('#e__type').val(data.e__type);
-
-            $('#coin__cover').val(data.e__cover); update_demo_icon();
-
-            set_autosize($('#e__title'));
-            e__title_word_count();
-
-            setTimeout(function () {
-                $('#e__title').focus();
-            }, 144);
-
-            if (x__id > 0) {
-
-                $('#x__status').val(data.x__status);
-                $('#x__message').val(data.x__message);
-                $('#e_x_count').val(0);
-                $('.remove-e, .e_has_link').removeClass('hidden');
-                set_autosize($('#x__message'));
-                x_type_preview();
-
-            } else {
-
-                //Hide the section and clear it:
-                $('.remove-e, .e_has_link').addClass('hidden');
-
-            }
-
-        } else {
-
-            alert(data.message);
-
-        }
-    });
-}
-
-
 function e_message_load(e__id, x__id) {
+
+    console.log(e__id+'/'+x__id);
 
     x_create({
         x__source: js_pl_id,
@@ -1865,7 +1798,7 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
 function watch_for_coin_cover_clicks(){
     //Watchout for source clicks if they have the superpower:
     $('.trigger_coincover_edit').click(function (e) {
-        e_message_load(parseInt($(this).attr('e__id')), 0);
+        coin__load(parseInt($(this).attr('coin__type')), parseInt($(this).attr('coin__id')));
     });
 }
 

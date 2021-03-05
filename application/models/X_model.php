@@ -888,8 +888,8 @@ class X_model extends CI_Model
             $edit_btn = null;
             if(!$is_discovery_mode && source_of_e($es[0]['e__id'])){
                 $e___11035 = $this->config->item('e___11035');
-                $tooltip_class .= ' class="ignore-click grey trigger_coincover_edit" e__id="' . $es[0]['e__id'] . '" ';
-                $edit_btn = '<span e__id="' . $es[0]['e__id'] . '" class="ignore-click icon-block-img trigger_coincover_edit" title="'.$e___11035[13571]['m__title'].'">'.view_e__cover($es[0]['e__cover']).'</span> ';
+                $tooltip_class .= ' class="ignore-click grey trigger_coincover_edit" coin__type="12274" coin__id="' . $es[0]['e__id'] . '" ';
+                $edit_btn = '<span class="ignore-click icon-block-img" title="'.$e___11035[13571]['m__title'].'">'.view_e__cover($es[0]['e__cover']).'</span> ';
             }
 
             $on_its_own_line = false;
