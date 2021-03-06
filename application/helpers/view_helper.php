@@ -1942,9 +1942,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $coins_6255 = view_coins_i(6255,  $i);
         $ui .= '<div class="coin-hover">';
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.( $coins_12274 ? $coins_12274 : '<div class="dropdown inline-block">&nbsp;</div>' ).'</td>';
-        $ui .= '<td width="34%" class="center">'.( $coins_12273 ? $coins_12273 : '<div class="dropdown inline-block">&nbsp;</div>' ).'</td>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: left;">'.( $coins_6255 ? $coins_6255 : '<div class="dropdown inline-block">&nbsp;</div>' ).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.( $coins_12274 ? $coins_12274 : '<div class="emptycoin">&nbsp;</div>' ).'</td>';
+        $ui .= '<td width="34%" class="center">'.( $coins_12273 ? $coins_12273 : '<div class="emptycoin">&nbsp;</div>' ).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: left;">'.( $coins_6255 ? $coins_6255 : '<div class="emptycoin">&nbsp;</div>' ).'</td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
     }
