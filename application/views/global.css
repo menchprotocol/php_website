@@ -2344,7 +2344,7 @@ i, .btn .show-max {
 
 
 .form-group, .form-control:focus {
-    background-color: transparent;
+    /*background-color: transparent;*/
 }
 
 .custom_ui_13884_13886 .white-border {
