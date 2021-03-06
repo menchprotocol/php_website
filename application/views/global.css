@@ -2119,9 +2119,17 @@ i, .btn .show-max {
     font-size: 0.95em !important;
     display: block;
 }
+.list-coins i{
+    font-size: 8em !important;
+    display: block;
+}
 
 /* RESPONSIVE */
 @media (max-width:767px) {
+
+    .list-coins i{
+        font-size: 5em !important;
+    }
 
     .mid-range { padding:0; }
 
@@ -2633,10 +2641,6 @@ font-weight: bold !important;
     margin:0 2px 0 !important;
     text-align: center !important;
     padding-bottom: 3px !important;
-}
-.list-coins i{
-    font-size: 8em;
-    display: block;
 }
 
 .editor_preview:hover{
