@@ -1,6 +1,18 @@
 <?php
 
-function view_e_load_more($x__type, $page, $limit, $list_e_count)
+
+function view_show_more($class, $count_more = 0){
+    $CI =& get_instance();
+    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    $href = 'href="javascript:void(0);" onclick="$(\''.$class.'\').toggleClass(\'hidden\')"';
+    return '<div class="'.$class.'"><div class="coin_cover coin_reverse col-md-4 col-6 no-padding">
+                                <div class="cover-wrapper"><a '.$href.' class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
+                                <div class="cover-content"><div class="inner-content"><a '.$href.' class="css__title"><span>'.( $count_more > 0 ? str_replace(' ',' '.$count_more.' ',$e___11035[14538]['m__title']) : $e___11035[14538]['m__title'] ).'</span></a></div></div>
+                            </div></div>';
+}
+
+
+function view_load_more($x__type, $page, $limit, $list_e_count)
 {
     /*
      * Gives an option to "Load More" sources when we have too many to show in one go
@@ -1948,15 +1960,6 @@ function view_x_progress($completion_rate, $i){
     //: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERY
     //data-toggle="tooltip" data-placement="top"
 
-}
-
-function view_more($class, $count_more = 0){
-    $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    return '<div class="coin_cover coin_reverse col-md-4 col-6 no-padding '.$class.'">
-                                <div class="cover-wrapper"><a href="javascript:void(0);" onclick="$(\''.$class.'\').toggleClass(\'hidden\')" class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
-                                <div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="$(\''.$class.'\').toggleClass(\'hidden\')" class="css__title"><span>'.( $count_more > 0 ? str_replace(' ',' '.$count_more.' ',$e___11035[14538]['m__title']) : $e___11035[14538]['m__title'] ).'</span></a></div></div>
-                            </div>';
 }
 
 function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common_prefix = null, $message_input = null)

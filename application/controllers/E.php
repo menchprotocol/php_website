@@ -284,7 +284,7 @@ class E extends CI_Controller
 
         //Do we need another load more button?
         if ($child_e_count[0]['totals'] > (($page * $items_per_page) + count($child_e))) {
-            echo view_e_load_more($_POST['x__type'], ($page + 1), $items_per_page, $child_e_count[0]['totals']);
+            echo view_load_more($_POST['x__type'], ($page + 1), $items_per_page, $child_e_count[0]['totals']);
         }
 
     }

@@ -57,7 +57,7 @@ $profiles = $this->X_model->fetch(array(
         foreach($profiles as $e_profile) {
 
             if(!$see_more_button && $count==$show_max_14538){
-                echo view_more('.see_all_profiles', (count($e_profile)-$show_max_14538));
+                echo view_show_more('.see_all_profiles', (count($e_profile)-$show_max_14538));
                 $see_more_button = true;
             }
 
@@ -327,7 +327,7 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= view_e(11029, $e_portfolio,null,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
             }
             if ($counter > count($list_e)) {
-                $ui .= view_e_load_more(11029, 1, view_memory(6404,11064), $counter);
+                $ui .= view_load_more(11029, 1, view_memory(6404,11064), $counter);
             }
 
             //Input to add new child:
