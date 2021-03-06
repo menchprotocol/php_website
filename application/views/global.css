@@ -472,13 +472,13 @@ img.no-radius {
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#222222 !important; }
 
 .coin-source{
-    border: 3px solid #007AFD !important;
+    border: 5px solid #007AFD !important;
 }
 .coin-idea{
-    border: 3px solid #FFC500 !important;
+    border: 5px solid #FFC500 !important;
 }
 .coin-discover{
-    border: 3px solid #FC1B44 !important;
+    border: 5px solid #FC1B44 !important;
 }
 
 textarea:hover,
