@@ -709,7 +709,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         if($append_coin_icon){
 
             if(!$count_query){
-                return false;
+                return '<div class="emptycoin">&nbsp;</div>';
             }
 
             $e___14874 = $CI->config->item('e___14874'); //COINS
@@ -814,7 +814,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
     if($append_coin_icon){
 
         if(!$count_query){
-            return false;
+            return '<div class="emptycoin">&nbsp;</div>';
         }
 
         $e___14874 = $CI->config->item('e___14874'); //COINS
@@ -1937,14 +1937,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //Coin Block
     if($show_coins){
-        $coins_12274 = view_coins_i(12274,  $i);
-        $coins_12273 = view_coins_i(12273,  $i);
-        $coins_6255 = view_coins_i(6255,  $i);
         $ui .= '<div class="coin-hover">';
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.( $coins_12274 ? $coins_12274 : '<div class="emptycoin">&nbsp;</div>' ).'</td>';
-        $ui .= '<td width="34%" class="center">'.( $coins_12273 ? $coins_12273 : '<div class="emptycoin">&nbsp;</div>' ).'</td>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: left;">'.( $coins_6255 ? $coins_6255 : '<div class="emptycoin">&nbsp;</div>' ).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.view_coins_i(12274,  $i).'</td>';
+        $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: left;">'.view_coins_i(6255,  $i).'</td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
     }
