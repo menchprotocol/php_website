@@ -1101,7 +1101,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
 
 
                 $tab_ui .= '<div class="power-editor-'.$x__type.'">';
-                $tab_ui .= '<textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="'.$e___4485[$x__type]['m__title'].'..." style="margin:0 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
+                $tab_ui .= '<textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode doabsolute emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="'.$e___4485[$x__type]['m__title'].'..." style="margin:0 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>';
                 $tab_ui .= '<div id="current_text_'.$x__type.'" class="hidden">'.$textarea_content.'</div>';
 
                 //Response result:
