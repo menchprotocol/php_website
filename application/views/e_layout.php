@@ -37,7 +37,7 @@ $profiles = $this->X_model->fetch(array(
     if(!$source_is_e || $superpower_13422){
 
         $count = 0;
-        $show_max = view_memory(6404,14538);
+        $show_max_14538 = view_memory(6404,14538);
         $see_more_button = false;
 
         echo '<div id="list-in-11030" class="row dominHeight">';
@@ -56,13 +56,12 @@ $profiles = $this->X_model->fetch(array(
 
         foreach($profiles as $e_profile) {
 
-            if(!$see_more_button && $count==$show_max){
-                echo '<div class="list-group-item see_all_profiles no-side-padding"><a href="javascript:void(0);" onclick="$(\'.see_all_profiles\').toggleClass(\'hidden\')" class="block"><span class="icon-block">'.$e___11035[14538]['m__cover'].'</span><b class="css__title '.extract_icon_color($e___11035[14538]['m__cover']).'" style="text-decoration: none !important;">'.$e___11035[14538]['m__title'].'</b></a></div>';
-                echo '<div class="list-group-item see_all_profiles no-height"></div>';
+            if(!$see_more_button && $count==$show_max_14538){
+                echo view_more('.see_all_profiles', (count($e_profile)-$show_max_14538));
                 $see_more_button = true;
             }
 
-            $view_e = view_e(11030, $e_profile, ( $count<$show_max ? '' : 'see_all_profiles hidden'),  ($source_of_e || ($member_e && ($member_e['e__id']==$e_profile['x__source']))));
+            $view_e = view_e(11030, $e_profile, ( $count<$show_max_14538 ? '' : 'see_all_profiles hidden'),  ($source_of_e || ($member_e && ($member_e['e__id']==$e_profile['x__source']))));
 
             if($view_e){
                 echo $view_e;

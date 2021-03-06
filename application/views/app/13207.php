@@ -2,7 +2,7 @@
 
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $load_max = view_memory(6404,13206);
-$show_max = view_memory(6404,14538);
+$show_max_14538 = view_memory(6404,14538);
 $group_by = 'e__id, e__title, e__cover, e__metadata, e__type, e__spectrum';
 
 //SOURCE LEADERBOARD
@@ -29,16 +29,10 @@ foreach($this->config->item('e___13207') as $e__id => $m) {
 
 
     foreach($e_list as $count=>$e) {
-
-        if($count==$show_max){
-            echo '<div class="coin_cover coin_reverse col-md-4 col-6 no-padding see_more_who'.$e__id.'">
-                                <div class="cover-wrapper"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$e__id.'\').toggleClass(\'hidden\')" class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
-                                <div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="$(\'.see_more_who'.$e__id.'\').toggleClass(\'hidden\')" class="css__title"><span>'.$e___11035[14538]['m__title'].'</span></a></div></div>
-                            </div>';
+        if($count==$show_max_14538){
+            echo view_more('.see_more_who'.$e__id, (count($e_list)-$show_max_14538));
         }
-
-        echo view_e(13207, $e, ( $count<$show_max ? '' : ' see_more_who'.$e__id.' hidden '), true);
-
+        echo view_e(13207, $e, ( $count<$show_max_14538 ? '' : ' see_more_who'.$e__id.' hidden '), true);
     }
 
     echo '</div>';

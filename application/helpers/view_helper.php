@@ -8,16 +8,11 @@ function view_e_load_more($x__type, $page, $limit, $list_e_count)
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
-
-    $ui = '<div class="load-more css__title list-group-item no-left-padding"><a href="javascript:void(0);" onclick="e_load_page('.$x__type.',' . $page . ', 0)">';
-
-    //Regular section:
-    $max_e = (($page + 1) * $limit);
-    $max_e = ($max_e > $list_e_count ? $list_e_count : $max_e);
-    $ui .= '<span class="icon-block">'.$e___11035[14538]['m__cover'].'</span><b class="css__title">'.$e___11035[14538]['m__title'].'</b>';
-    $ui .= '</a></div>';
-
-    return $ui;
+    $href = 'href="javascript:void(0);" onclick="e_load_page('.$x__type.',' . $page . ', 0)"';
+    return '<div class="coin_cover coin_reverse col-md-4 col-6 no-padding load-more">
+                                <div class="cover-wrapper"><a '.$href.' class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
+                                <div class="cover-content"><div class="inner-content"><a '.$href.' class="css__title"><span>'.( $count_more > 0 ? str_replace(' ',' '.$count_more.' ',$e___11035[14538]['m__title']) : $e___11035[14538]['m__title'] ).'</span></a></div></div>
+                            </div>';
 }
 
 function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
@@ -916,7 +911,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
     return ($ui ? $ui : false);
 }
 
-function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_max = 25){
+function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_max_14538 = 25){
 
     /*
      * Print UI for
@@ -952,15 +947,15 @@ function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_m
     }
 
     foreach($CI->config->item('e___'.$parent_e__id) as $e__id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m__cover']).' list-group-item css__title itemsetting item-'.$e__id.' '.( $count>=$show_max ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
+        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m__cover']).' list-group-item css__title itemsetting item-'.$e__id.' '.( $count>=$show_max_14538 ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
         $count++;
     }
 
 
     //Did we have too many items?
-    if($count>=$show_max){
+    if($count>=$show_max_14538){
         //Show "Show more" button
-        $ui .= '<a href="javascript:void(0);" class="list-group-item itemsetting css__title extra-items-'.$parent_e__id.'" onclick="$(\'.extra-items-'.$parent_e__id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Show '.($count-$show_max).' more</a>';
+        $ui .= '<a href="javascript:void(0);" class="list-group-item itemsetting css__title extra-items-'.$parent_e__id.'" onclick="$(\'.extra-items-'.$parent_e__id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Show '.($count-$show_max_14538).' more</a>';
     }
 
     $ui .= '</div>';
@@ -1757,7 +1752,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover col-md-4 col-6 no-padding i_line_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover col-md-4 col-6 no-padding coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
 
@@ -1955,7 +1950,14 @@ function view_x_progress($completion_rate, $i){
 
 }
 
-
+function view_more($class, $count_more = 0){
+    $CI =& get_instance();
+    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    return '<div class="coin_cover coin_reverse col-md-4 col-6 no-padding '.$class.'">
+                                <div class="cover-wrapper"><a href="javascript:void(0);" onclick="$(\''.$class.'\').toggleClass(\'hidden\')" class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
+                                <div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="$(\''.$class.'\').toggleClass(\'hidden\')" class="css__title"><span>'.( $count_more > 0 ? str_replace(' ',' '.$count_more.' ',$e___11035[14538]['m__title']) : $e___11035[14538]['m__title'] ).'</span></a></div></div>
+                            </div>';
+}
 
 function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common_prefix = null, $message_input = null)
 {
@@ -2013,7 +2015,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
 
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover en-item col-md-4 col-6 no-padding e_line_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover en-item col-md-4 col-6 no-padding coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
 
     $ui .= '<div class="cover-wrapper">';
 

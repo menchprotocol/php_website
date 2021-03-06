@@ -566,8 +566,14 @@ function x_type_preview_load(){
 
 function update_cover_icon(coin__type, coin__id, coin__title, coin__cover){
 
+    if(coin__type && coin__id){
+        var the_obj = '.icon-demo';
+    } else {
+        var the_obj = '.coin___'+coin__type+'_'+coin__id+'';
+    }
+
     //Update demo icon based on icon input value:
-    $('.icon-demo').html(($('#coin__cover').val().length > 0 ? $('#coin__cover').val() : js_e___14874[12274]['m__cover'] ));
+    $(the_obj).html(($('#coin__cover').val().length > 0 ? $('#coin__cover').val() : js_e___14874[12274]['m__cover'] ));
 
     /*
     var icon_set = ( modify_data['e__cover'].length > 0 ? 1 : 0 );
@@ -790,9 +796,9 @@ function e_nuclear_delete(e__id, note_type_id) {
 
                 console.log(data.message);
                 i_note_counter(note_type_id, -1);
-                $(".e_line_" + e__id).fadeOut();
+                $(".coin___12274_" + e__id).fadeOut();
                 setTimeout(function () {
-                    $(".e_line_" + e__id).remove();
+                    $(".coin___12274_" + e__id).remove();
                 }, 610);
 
             } else {
