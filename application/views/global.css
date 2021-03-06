@@ -1932,7 +1932,7 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    bottom: -75px;
+    bottom: -70px;
     min-height: 25px;
     min-height: 47px;
 }
@@ -1980,6 +1980,7 @@ i, .btn .show-max {
     line-height: 120%;
     text-align: center;
     min-height: 21px;
+    margin-top: -5px;
 }
 .cover-text .mini-font {
     font-weight: bold !important;
