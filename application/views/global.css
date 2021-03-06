@@ -2120,7 +2120,7 @@ i, .btn .show-max {
     display: block;
 }
 .list-coins .col {
-    padding-bottom: 34px !important;
+    padding-bottom:8px !important;
 }
 .list-coins div {
     padding: 13px 3px 0;
