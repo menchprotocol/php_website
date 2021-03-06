@@ -2551,7 +2551,7 @@ font-weight: bold !important;
 }
 
 
-.custom_ui_13884_13886 .new-note,
+.custom_ui_13884_13886 .new-note:not(.editing-mode),
 .custom_ui_13884_13886 .some-text{
     background-color:transparent !important;
     color: #FFFFFF !important;
@@ -2685,7 +2685,7 @@ font-weight: bold !important;
 }
 
 .alert a, .alert i, .custom_ui_13884_13885 .btn-default i,
-.custom_ui_13884_13885 .new-note,
+.custom_ui_13884_13885 .new-note:not(.editing-mode),
 .custom_ui_13884_13885 .controller-nav i,
 .custom_ui_13884_13885 .controller-nav,
 .custom_ui_13884_13885 .grey-background,
