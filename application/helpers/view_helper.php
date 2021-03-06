@@ -1934,9 +1934,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if($show_coins){
         $ui .= '<div class="coin-hover">';
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" style="text-align: right;">'.view_coins_i(12274,  $i).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.view_coins_i(12274,  $i).'</td>';
         $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
-        $ui .= '<td width="33%" style="text-align: left;">'.view_coins_i(6255,  $i).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: left;">'.view_coins_i(6255,  $i).'</td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
     }
@@ -2186,9 +2186,9 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     //Coin Block
     $ui .= '<div class="coin-hover">';
     $ui .= '<table class="coin_coins"><tr>';
-    $ui .= '<td width="33%" style="text-align: right;">'.view_coins_e(12274,  $e['e__id']).'</td>';
+    $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.view_coins_e(12274,  $e['e__id']).'</td>';
     $ui .= '<td width="34%" class="center">'.view_coins_e(12273,  $e['e__id']).'</td>';
-    $ui .= '<td width="33%" style="text-align: left;">'.view_coins_e(6255,  $e['e__id']).'</td>';
+    $ui .= '<td width="33%" class="push_down" style="text-align: left;">'.view_coins_e(6255,  $e['e__id']).'</td>';
     $ui .= '</tr></table>';
     $ui .= '</div>';
 

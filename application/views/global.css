@@ -1970,7 +1970,9 @@ i, .btn .show-max {
     position: absolute;
     top: -38px;
 }
-
+.push_down .btn {
+    margin-bottom: -21px !important;
+}
 .cover-text {
     line-height: 120%;
     text-align: center;
