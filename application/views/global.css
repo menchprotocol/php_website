@@ -2119,6 +2119,9 @@ i, .btn .show-max {
     font-size: 0.95em !important;
     display: block;
 }
+.list-coins div {
+    padding: 0 8px;
+}
 .list-coins i{
     font-size: 8em !important;
     display: block;
