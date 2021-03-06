@@ -2607,6 +2607,7 @@ font-weight: bold !important;
 }
 .custom_ui_13884_13886 .doabsolute, .black-background {
     background-color: #000000 !important;
+    color: #FFFFFF !important;
 }
 .grey-background {
     background-color: transparent !important;
@@ -2732,6 +2733,7 @@ font-weight: bold !important;
 }
 .custom_ui_13884_13885 .doabsolute {
     background-color:#FFFFFF !important;
+    color: #000000 !important;
 }
 .btn-grey .fa-gif-wrap {
     border-color: #999999 !important;
