@@ -7,7 +7,6 @@ function view_show_more($class){
     $href = 'href="javascript:void(0);" onclick="$(\'.'.$class.'\').toggleClass(\'hidden\')"';
     return '<div class="coin_cover coin_reverse col-md-4 col-6 no-padding '.$class.'">
                                 <div class="cover-wrapper"><a '.$href.' class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
-                                <div class="cover-content"><div class="inner-content"><a '.$href.' class="css__title"><span>'.$e___11035[14538]['m__title'].'</span></a></div></div>
                             </div>';
 }
 
@@ -23,7 +22,6 @@ function view_load_more($x__type, $page, $limit, $list_e_count)
     $href = 'href="javascript:void(0);" onclick="e_load_page('.$x__type.',' . $page . ', 0)"';
     return '<div class="coin_cover coin_reverse col-md-4 col-6 no-padding load-more">
                                 <div class="cover-wrapper"><a '.$href.' class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
-                                <div class="cover-content"><div class="inner-content"><a '.$href.' class="css__title"><span>'.$e___11035[14538]['m__title'].'</span></a></div></div>
                             </div>';
 }
 
