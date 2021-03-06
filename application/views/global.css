@@ -176,7 +176,6 @@ li a {
 .css__title, .headline, .btn {
     font-weight: bold;
     text-decoration: none;
-    margin-left: 0 !important;
 }
 .e-appendix a, .e-appendix a .url_truncate {
     text-decoration: underline;
@@ -2126,7 +2125,7 @@ i, .btn .show-max {
 .list-coins .col div {
     padding: 13px 3px 0;
     display: block;
-    max-width: 233px;
+    max-width: 250px;
     margin: 0 auto;
 }
 .list-coins i{
