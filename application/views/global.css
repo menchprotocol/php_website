@@ -2530,8 +2530,8 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .accordion .card,
 .custom_ui_13884_13886 .btn-block,
 .custom_ui_13884_13886 textarea:not(.editing-mode),
+.custom_ui_13884_13886 .form-control:not(.editing-mode),
 .custom_ui_13884_13886 .modal-content,
-.custom_ui_13884_13886 .form-control,
 .custom_ui_13884_13886 .form-control:disabled,
 .custom_ui_13884_13886 .edit-locked span,
 .custom_ui_13884_13886 .chat-title span,
@@ -2691,7 +2691,7 @@ font-weight: bold !important;
 
 .custom_ui_13884_13885 a,
 .custom_ui_13884_13885 .platform-navigation a,
-.custom_ui_13884_13885 .form-control,
+.custom_ui_13884_13885 .form-control:not(.editing-mode),
 .custom_ui_13884_13885 .form-control:disabled,
 .custom_ui_13884_13885 .fa-gif-wrap,
 .custom_ui_13884_13885 .btn,
