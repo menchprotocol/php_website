@@ -1975,6 +1975,7 @@ i, .btn .show-max {
     line-height: 120%;
     text-align: center;
     margin-bottom: 2px;
+    min-height: 20px;
 }
 .cover-text .light-bg {
     padding: 0 5px 1px;
