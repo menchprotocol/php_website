@@ -2642,6 +2642,7 @@ font-weight: bold !important;
 .editing-mode{
     background-color: #fff5bc !important;
     padding-top: 5px !important;
+    border-radius: 10px !important;
 }
 .doabsolute {
     border-radius: 10px !important;
