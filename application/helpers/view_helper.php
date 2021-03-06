@@ -612,7 +612,7 @@ function view_coins(){
     $ui .= '<div class="row margin-top-down list-coins">';
     foreach($CI->config->item('e___14874') as $e__id => $m) {
         $count = count_unique_coins($e__id);
-        $ui .= '<div class="col-4" style="text-align: center">'.$m['m__cover'].'<div class="css__title '.extract_icon_color($m['m__cover']).'">'.number_format($count, 0).' '.$m['m__title'].'</div><p>'.$m['m__message'].'</p></div>';
+        $ui .= '<div class="col-12 col-sm-4" style="text-align: center; padding: 0 5px;">'.$m['m__cover'].'<div class="css__title '.extract_icon_color($m['m__cover']).'">'.number_format($count, 0).' '.$m['m__title'].'</div><p>'.$m['m__message'].'</p></div>';
     }
     $ui .= '</div>';
 
