@@ -98,7 +98,7 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
     <link href="/application/views/global.css?v=de<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
     <script src="/application/views/global.js?v=de<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
-    <?phpd
+    <?php
     echo '<style>';
     //Don't show Source/Idea coin colors unless contributor:
     //if(!$superpower_10939){ echo ' .coin-source, .coin-idea { border: 0 !important; } '; }
