@@ -2529,7 +2529,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .x-list,
 .custom_ui_13884_13886 .accordion .card,
 .custom_ui_13884_13886 .btn-block,
-.custom_ui_13884_13886 textarea,
+.custom_ui_13884_13886 textarea:not(.editing-mode),
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 .form-control,
 .custom_ui_13884_13886 .form-control:disabled,
@@ -2669,7 +2669,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .dropdown-menu,
 .custom_ui_13884_13885 .algolia-autocomplete .aa-dropdown-menu,
 .custom_ui_13884_13885 .aa-dropdown-menu .aa-suggestion, .suggestion,
-.custom_ui_13884_13885 textarea,
+.custom_ui_13884_13885 textarea:not(.editing-mode),
 .custom_ui_13884_13885 .modal-content {
     background-color:#f0f0f0; /* WAS WHITE */
     color: #222222;
