@@ -57,7 +57,7 @@ $profiles = $this->X_model->fetch(array(
         foreach($profiles as $e_profile) {
 
             if(!$see_more_button && $count==$show_max_14538){
-                echo view_show_more('.see_all_profiles', (count($e_profile)-$show_max_14538));
+                echo view_show_more('see_all_profiles', (count($e_profile)-$show_max_14538));
                 $see_more_button = true;
             }
 
