@@ -526,7 +526,7 @@ if(!$top_i__id){
     $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
     //Get Started
-    echo '<div class="container light-bg">';
+    echo '<div class="container light-bg top-margin">';
     echo '<div class="discover-controller">';
     echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
     echo '</div>';
@@ -580,7 +580,7 @@ if(!$top_i__id){
     }
 
     if($buttons_found > 0){
-        echo '<div class="container light-bg">';
+        echo '<div class="container light-bg top-margin">';
         echo '<div class="discover-controller">';
         echo $buttons_ui;
         echo '</div>';

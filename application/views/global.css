@@ -1975,12 +1975,7 @@ i, .btn .show-max {
     line-height: 120%;
     text-align: center;
     margin-bottom: 2px;
-    min-height: 20px;
-}
-.cover-text .light-bg {
-    padding: 0 5px 1px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    min-height: 22px;
 }
 .cover-text .mini-font {
     font-weight: bold !important;
@@ -2288,10 +2283,6 @@ i, .btn .show-max {
 .i-next{
     min-width:50px;
     display: inline-block;
-}
-
-.light-bg{
-    margin-top: 34px;
 }
 
 .hideIfEmpty:empty {
