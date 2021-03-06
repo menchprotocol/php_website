@@ -1936,6 +1936,9 @@ i, .btn .show-max {
     min-height: 25px;
     min-height: 47px;
 }
+.source_cover .cover-content{
+    min-height: 73px;
+}
 
 
 .coin-cover{
