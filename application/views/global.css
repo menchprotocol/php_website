@@ -1960,12 +1960,12 @@ i, .btn .show-max {
     min-height: 144px;
 }
 .coin-cover-left{
-    top: 8px;
+    top: 10px;
     left: 5px;
 }
 
 .coin-cover-right{
-    top: 10px;
+    top: 12px;
     right: 13px;
 }
 .coin_coins{
