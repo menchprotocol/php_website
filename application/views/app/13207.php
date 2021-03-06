@@ -30,7 +30,7 @@ foreach($this->config->item('e___13207') as $e__id => $m) {
 
     foreach($e_list as $count=>$e) {
         if($count==$show_max_14538){
-            echo view_show_more('see_more_who'.$e__id, (count($e_list)-$show_max_14538));
+            echo view_show_more('see_more_who'.$e__id);
         }
         echo view_e(13207, $e, ( $count<$show_max_14538 ? '' : ' see_more_who'.$e__id.' hidden '), true);
     }
