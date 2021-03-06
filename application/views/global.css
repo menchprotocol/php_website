@@ -2123,16 +2123,12 @@ i, .btn .show-max {
     padding: 13px 3px 0;
 }
 .list-coins i{
-    font-size: 8em !important;
+    font-size: 15.7em !important;
     display: block;
 }
 
 /* RESPONSIVE */
 @media (max-width:767px) {
-
-    .list-coins i{
-        font-size: 5em !important;
-    }
 
     .mid-range { padding:0; }
 
