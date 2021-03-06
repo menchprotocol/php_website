@@ -2639,11 +2639,6 @@ font-weight: bold !important;
     border-radius: 10px !important;
 }
 
-.editing-mode{
-    background-color: #fff5bc !important;
-    padding-top: 5px !important;
-    border-radius: 10px !important;
-}
 .doabsolute {
     border-radius: 10px !important;
     padding-top: 5px !important;
@@ -2845,4 +2840,10 @@ font-weight: bold !important;
 .ignore-click .fa-gif-wrap {
     font-size: .80em !important;
     margin: 0px 5px;
+}
+.editing-mode{
+    background-color: #fff5bc !important;
+    padding-top: 5px !important;
+    border-radius: 10px !important;
+    color: #000000 !important;
 }
