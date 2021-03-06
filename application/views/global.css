@@ -2120,7 +2120,8 @@ i, .btn .show-max {
     display: block;
 }
 .list-coins .col {
-    padding-bottom:8px !important;
+    text-align: center;
+    padding: 0 8px !important;
 }
 .list-coins div {
     padding: 13px 3px 0;
