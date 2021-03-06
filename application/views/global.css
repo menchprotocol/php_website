@@ -1932,7 +1932,7 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    bottom: -75px;
+    bottom: -55px;
     min-height: 25px;
     min-height: 47px;
 }
@@ -1968,7 +1968,7 @@ i, .btn .show-max {
 .coin_coins{
     width: 100%;
     position: absolute;
-    bottom: -106px;
+    bottom: -86px;
 }
 
 .cover-text {
@@ -1981,7 +1981,7 @@ i, .btn .show-max {
 }
 .coin_cover{
     position: relative;
-    margin:0 0 100px !important;
+    margin:0 0 89px !important;
 }
 
 .cover-content .inner-content {
