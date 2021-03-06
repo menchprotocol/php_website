@@ -1957,13 +1957,13 @@ i, .btn .show-max {
     min-height: 144px;
 }
 .coin-cover-left{
-    top: 11px;
-    left: 11px;
+    top: 8px;
+    left: 5px;
 }
 
 .coin-cover-right{
-    top: 11px;
-    right: 17px;
+    top: 8px;
+    right: 8px;
 }
 .coin_coins{
     width: 100%;
