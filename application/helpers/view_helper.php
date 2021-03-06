@@ -714,9 +714,11 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
             $e___14874 = $CI->config->item('e___14874'); //COINS
             $first_segment = $CI->uri->segment(1);
+            $coin_icon = '<span class="icon-block-xs">'.$e___14874[$x__type]['m__cover'].'</span>';
+            $coin_count = view_number($count_query);
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.extract_icon_color($e___14874[$x__type]['m__cover']).'" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs">'.$e___14874[$x__type]['m__cover'].'</span>'.view_number($count_query).'</button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.extract_icon_color($e___14874[$x__type]['m__cover']).'" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $x__type==12274 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
             $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$e__id.'">';
 
             if($x__type==12274){
@@ -817,9 +819,11 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
 
         $e___14874 = $CI->config->item('e___14874'); //COINS
         $first_segment = $CI->uri->segment(1);
+        $coin_icon = '<span class="icon-block-xs">'.$e___14874[$x__type]['m__cover'].'</span>';
+        $coin_count = view_number($count_query);
 
         $ui = '<div class="dropdown inline-block">';
-        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.extract_icon_color($e___14874[$x__type]['m__cover']).'" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon-block-xs">'.$e___14874[$x__type]['m__cover'].'</span>'.view_number($count_query).'</button>';
+        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.extract_icon_color($e___14874[$x__type]['m__cover']).'" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $x__type==12274 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
         $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
 
         if($x__type==12274){
@@ -1930,13 +1934,17 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     $ui .= '</div></div>';
 
+
     //Coin Block
     if($show_coins){
+        $coins_12274 = view_coins_i(12274,  $i);
+        $coins_12273 = view_coins_i(12273,  $i);
+        $coins_6255 = view_coins_i(6255,  $i);
         $ui .= '<div class="coin-hover">';
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.view_coins_i(12274,  $i).'</td>';
-        $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: left;">'.view_coins_i(6255,  $i).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.( $coins_12274 ? $coins_12274 : '<div class="dropdown inline-block">&nbsp;</div>' ).'</td>';
+        $ui .= '<td width="34%" class="center">'.( $coins_12273 ? $coins_12273 : '<div class="dropdown inline-block">&nbsp;</div>' ).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: left;">'.( $coins_6255 ? $coins_6255 : '<div class="dropdown inline-block">&nbsp;</div>' ).'</td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
     }
