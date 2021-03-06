@@ -2123,6 +2123,8 @@ i, .btn .show-max {
 /* RESPONSIVE */
 @media (max-width:767px) {
 
+    .mid-range { padding:0; }
+
     .coin_coins{
         font-size: 0.89em;
     }
@@ -2629,10 +2631,13 @@ font-weight: bold !important;
 
 .cover-content .msg {
     margin:0 2px 0 !important;
-    text-align: left !important;
+    text-align: center !important;
     padding-bottom: 3px !important;
 }
-
+.list-coins i{
+    font-size: 8em;
+    display: block;
+}
 
 .editor_preview:hover{
     cursor: text !important;

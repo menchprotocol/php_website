@@ -609,7 +609,7 @@ function view_coins(){
     $ui = '';
 
     //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[14874]['m__cover'].'</span>'.$e___11035[14874]['m__title'].'</div>';
-    $ui .= '<div class="row margin-top-down">';
+    $ui .= '<div class="row margin-top-down list-coins">';
     foreach($CI->config->item('e___14874') as $e__id => $m) {
         $count = count_unique_coins($e__id);
         $ui .= '<div class="col-4" style="text-align: center"><span class="css__title '.extract_icon_color($m['m__cover']).'" title="'.number_format($count, 0).' '.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'&nbsp;'.view_number($count).' <span class="block-if-mini">'.$m['m__title'].'</span></span></div>';
