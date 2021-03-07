@@ -2146,9 +2146,8 @@ i, .btn .show-max {
     line-height: 110%;
     font-size: 0.45em !important;
 }
-.the_counter b{
-    display:block;
-    min-height: 80px;
+.the_counter .min-height{
+    min-height: 40px;
 }
 .the_counter b i{
     font-size: 1em !important;
