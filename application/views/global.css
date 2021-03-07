@@ -2150,6 +2150,10 @@ i, .btn .show-max {
 }
 
 @media (max-width:576px) {
+    .the_counter{
+        margin-top: 28px;
+        font-size: 0.21em !important;
+    }
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
         font-size: 2em;
