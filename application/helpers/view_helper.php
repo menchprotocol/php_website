@@ -330,7 +330,7 @@ function view_cover($cover_code)
 
         return '<img src="'.$cover_code.'"'.( substr_count($cover_code, 'class=') ? ' class="'.str_replace(',',' ',one_two_explode('class=','&', $cover_code)).'" ' : '' ).'/>';
 
-    } elseif (substr($cover_code, 0, 2)=='fa') {
+    } elseif (string_is_icon($cover_code)) {
 
         return '<i class="'.$cover_code.'"></i>';
 

@@ -13,7 +13,7 @@ foreach($this->config->item('e___12523') as $e__id => $m) {
 
     //Only supports icons:
     $icon_code = one_two_explode('class="','"',$m['m__cover']);
-    if(!$icon_code || substr($icon_code, 0, 2)!='fa'){
+    if(!$icon_code || !string_is_icon($icon_code)){
         continue;
     }
 

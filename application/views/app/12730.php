@@ -1,17 +1,12 @@
 <?php
 
-
+/*
 $images = 0;
 $fontawesome = 0;
 $emoji = 0;
 $none = 0;
 
 foreach($this->E_model->fetch(array()) as $e){
-
-    if(substr_count($e['e__cover'],'fa-') && substr($e['e__cover'], 0, 2)!='fa'){
-        echo $e['e__id'].',';
-    }
-    continue;
 
     if(substr_count($e['e__cover'],'<img ') && substr_count($e['e__cover'],'src=')){
         $images++;
@@ -37,7 +32,7 @@ foreach($this->E_model->fetch(array()) as $e){
 }
 
 echo '<br /><br />Images ('.$images.') Fontawesome ('.$fontawesome.') Emoji ('.$emoji.') None ('.$none.')<br />';
-
+*/
 
 //UI to compose a test message:
 echo '<form method="GET" action="">';

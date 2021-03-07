@@ -23,7 +23,7 @@ if(isset($_GET['search_for'])){
         ));
     }
 
-    if(substr($es[0]['e__cover'], 0, 2)=='fa'){
+    if(string_is_icon($es[0]['e__cover'])){
 
         //Exclude Icon settings:
         $icon_keyword = 'fa-'.one_two_explode('fa-',' ',$es[0]['e__cover']);
