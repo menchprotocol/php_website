@@ -342,8 +342,12 @@ function view_cover($cover_code)
                         'no' => 'no-radius',
                     ),
                 ) as $get_var => $append_class){
-            if(isset($_GET[$get_var]) && isset($append_class[$_GET[$get_var]])){
-                $append_all .= ' '.$append_class[$_GET[$get_var]].' ';
+            if(substr_count($cover_code, $get_var.'=')==1){
+                foreach($append_class as $val=>$class){
+                    if(substr_count($cover_code, $get_var.'='.$val)==1){
+                        $append_all .= ' '.$class.' ';
+                    }
+                }
             }
         }
 
