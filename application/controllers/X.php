@@ -968,7 +968,7 @@ class X extends CI_Controller
 
     function load_coin_count(){
         $return_array = array();
-        foreach($CI->config->item('e___14874') as $e__id => $m) {
+        foreach($this->config->item('e___14874') as $e__id => $m) {
             $return_array['count__'.$e__id] = number_format(count_unique_coins($e__id), 0);
         }
         return view_json($return_array);
