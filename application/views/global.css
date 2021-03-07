@@ -2151,7 +2151,7 @@ i, .btn .show-max {
     min-height: 40px;
 }
 .the_counter b i{
-    font-size: 0.45em !important;
+    font-size: 1em !important;
 }
 
 @media (max-width:767px) {
@@ -2280,7 +2280,7 @@ i, .btn .show-max {
 @media (max-width:576px) {
     .the_counter{
         margin-top: 21px;
-        font-size: 0.21em !important;
+        font-size: 0.8em !important;
     }
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
