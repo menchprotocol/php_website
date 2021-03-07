@@ -2287,6 +2287,9 @@ i, .btn .show-max {
 
 }
 @media (max-width:576px) {
+    .the_counter{
+        margin-top: 18px;
+    }
     .coin_cover_6255 {
         margin-top:-72px !important;
     }
