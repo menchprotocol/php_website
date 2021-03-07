@@ -144,14 +144,7 @@ function view_s__title(algolia_object){
 
 
 function view_s_js(algolia_object){
-
-    if(algolia_object.s__type==12274 || 1){
-        //SOURCE
-        return '<span class="icon-block">'+ ( algolia_object.s__type==12274 ? algolia_object.s__cover : '<i class="fas fa-circle idea"></i>' ) +'</span><span class="css__title">' + view_s__title(algolia_object) + '</span>';
-    } else {
-        //IDEA
-        //return '<div class="col-md-4 col-6 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__cover + '\')"></div></div><div class="cover-content"><div class="inner-content css__title">'+view_s__title(algolia_object)+'</div></div></div>';
-    }
+    return '<span class="icon-block">'+ algolia_object.s__cover +'</span><span class="css__title">' + view_s__title(algolia_object) + '</span>';
 }
 
 

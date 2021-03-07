@@ -1735,7 +1735,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__id'] = intval($s['e__id']);
                 $export_row['s__url'] = '/@' . $s['e__id'];
                 $export_row['s__status'] = intval($s['e__type']);
-                $export_row['s__cover'] = fetch_cover($s);
+                $export_row['s__cover'] = view_cover(fetch_cover($s));
                 $export_row['s__title'] = $s['e__title'];
                 $export_row['s___weight'] = intval($s['e__spectrum']);
 
@@ -1781,7 +1781,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__id'] = intval($s['i__id']);
                 $export_row['s__url'] = '/i/i_go/' . $s['i__id'];
                 $export_row['s__status'] = intval($s['i__type']);
-                $export_row['s__cover'] = fetch_cover($s);
+                $export_row['s__cover'] = view_cover(fetch_cover($s));
                 $export_row['s__title'] = $s['i__title'];
                 $export_row['s___weight'] = intval($s['i__spectrum']);
 
