@@ -2142,13 +2142,13 @@ i, .btn .show-max {
     padding: 0 8px !important;
 }
 .the_counter{
-    margin-top: 34px;
+    margin-top: 53px;
     line-height: 110%;
     font-size: 0.45em !important;
 }
 .the_counter b{
     display:block;
-    min-height: 40px;
+    min-height: 80px;
 }
 .the_counter b i{
     font-size: 1em !important;
