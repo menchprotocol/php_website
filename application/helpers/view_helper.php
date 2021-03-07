@@ -611,7 +611,7 @@ function view_coins(){
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $ui = '<div class="row margin-top-down list-coins">';
     foreach($CI->config->item('e___14874') as $e__id => $m) {
-        $ui .= '<div class="col '.( $e__id==6255 ? ' col-12 ' : ' col-6 ' ).'">'.$m['m__cover'].'<div class="css__title" style="font-size: 2.7em; line-height: 110%;"><div class="coin_count_'.$e__id.'"><i class="far fa-yin-yang fa-spin"></i></div>'.$m['m__title'].'</div>'.( strlen($m['m__message']) ? '<div>'.$m['m__message'].'</div>' : '' ).'</div>';
+        $ui .= '<div class="col '.( $e__id==6255 ? ' col-12 ' : ' col-6 ' ).'">'.$m['m__cover'].'<div class="css__title" style="font-size: 2.7em; line-height: 110%;"><b class="coin_count_'.$e__id.'"><i class="far fa-yin-yang fa-spvin"></i></b>'.$m['m__title'].'</div>'.( strlen($m['m__message']) ? '<div>'.$m['m__message'].'</div>' : '' ).'</div>';
     }
     $ui .= '</div>';
     return $ui;
@@ -1780,7 +1780,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //ICON?
     if($show_custom_image){
-        $ui .= '<div class="cover-btn">'.$coin_cover.'</div>';
+        $ui .= '<div class="cover-btn">'.view_cover($coin_cover).'</div>';
     }
 
     $ui .= ( $has_any_lock ? '</div>' : '</a>' );
@@ -2045,7 +2045,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //ICON?
     if($show_custom_image){
-        $ui .= '<div class="cover-btn">'.$coin_cover.'</div>';
+        $ui .= '<div class="cover-btn">'.view_cover($coin_cover).'</div>';
     }
 
     $ui .= ( $has_any_lock ? '</div>' : '</a>' );
