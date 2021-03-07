@@ -142,7 +142,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         echo '<div class="list-group">';
                         foreach($this->config->item('e___6287') as $e__id => $m) {
                             echo '<a href="/-'.$e__id.'" class="list-group-item no-side-padding">';
-                            echo '<span class="icon-block">' . view_e__cover($m['m__cover']) . '</span>';
+                            echo '<span class="icon-block">' . view_cover($m['m__cover']) . '</span>';
                             echo '<b class="css__title '.extract_icon_color($m['m__cover']).'">'.$m['m__title'].'</b>';
                             echo ( strlen($m['m__message']) ? '&nbsp;'.$m['m__message'] : '' );
                             echo '</a>';

@@ -581,7 +581,6 @@ function update_cover_icon(coin__type, coin__id, coin__title, coin__cover){
         //Set source default icon:
         modify_data['e__cover'] = js_e___14874[12274]['m__cover'];
     }
-    $('.cover_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
     $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
 
         coin__type: $('#coin__type').val(),

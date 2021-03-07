@@ -75,10 +75,12 @@ $profiles = $this->X_model->fetch(array(
         //SOURE STATUS
         echo '<div>'.view_input_dropdown(6177, $e['e__type'], null, $source_of_e, true, $e['e__id']).'</div>';
 
-        //SOURCE TITLE
-        echo '<div>'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, '<span class="cover_icon_'.$e['e__id'].'">'.view_e__cover($e['e__cover']).'</span>').'</div>';
-
     }
+
+
+    //SOURCE TITLE
+    echo '<div>'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, view_cover($e['e__cover'])).'</div>';
+
 
     //Determine Focus Tab:
     $counter__e = view_coins_e(12274, $e['e__id'], 0, false);

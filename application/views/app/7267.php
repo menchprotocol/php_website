@@ -23,18 +23,10 @@ if(isset($_GET['search_for'])){
         ));
     }
 
-    //TODO: Remove as this is duplicate to coin_cover() function
-    if(substr_count($es[0]['e__cover'], '<img ') && substr_count($es[0]['e__cover'], 'src="')){
+    if(substr($es[0]['e__cover'], 0, 2)=='fa'){
 
-        $icon_keyword = one_two_explode('src="','"',$es[0]['e__cover']);
-
-    } elseif(substr_count($es[0]['e__cover'], '<i ') && substr_count($es[0]['e__cover'], 'class="')){
-
-        $icon_keyword = one_two_explode('class="','"',$es[0]['e__cover']);
-        foreach(array('idea', 'source', 'discover', 'fas', 'far', 'fad', 'fal') as $remove_class){
-            $icon_keyword = str_replace($remove_class, '', $icon_keyword);
-        }
-        $icon_keyword = trim($icon_keyword);
+        //Exclude Icon settings:
+        $icon_keyword = 'fa-'.one_two_explode('fa-',' ',$es[0]['e__cover']);
 
     } else {
 
@@ -87,7 +79,7 @@ if($icon_keyword){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__type'], true, 'right').' <span class="icon-block">'.view_e__cover($en['e__cover']).'</span><a href="/@'.$en['e__id'].'">'.$en['e__title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__type'], true, 'right').' <span class="icon-block">'.view_cover($en['e__cover']).'</span><a href="/@'.$en['e__id'].'">'.$en['e__title'].'</a></td>';
             echo '</tr>';
 
         }

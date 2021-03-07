@@ -861,7 +861,7 @@ class X_model extends CI_Model
                     } elseif($e_profile['x__type'] == 4256 /* URL */) {
 
                         array_push($e_urls, $e_profile['x__message']);
-                        $e_appendix .= '<div class="e-appendix paddingup inline-block"><a href="'.$e_profile['x__message'].'" target="_blank" class="ignore-click" title="' . $e_profile['e__title'] . '" data-toggle="tooltip" data-placement="top"><span class="icon-block-xs">'.view_e__cover($e_profile['e__cover']).'</span></a></div>';
+                        $e_appendix .= '<div class="e-appendix paddingup inline-block"><a href="'.$e_profile['x__message'].'" target="_blank" class="ignore-click" title="' . $e_profile['e__title'] . '" data-toggle="tooltip" data-placement="top"><span class="icon-block-xs">'.view_cover($e_profile['e__cover']).'</span></a></div>';
 
                     } else {
 
@@ -889,7 +889,7 @@ class X_model extends CI_Model
             if(!$is_discovery_mode && source_of_e($es[0]['e__id'])){
                 $e___11035 = $this->config->item('e___11035');
                 $tooltip_class .= ' class="ignore-click grey trigger_coincover_edit" coin__type="12274" coin__id="' . $es[0]['e__id'] . '" ';
-                $edit_btn = '<span class="ignore-click icon-block-img" title="'.$e___11035[13571]['m__title'].'">'.view_e__cover($es[0]['e__cover']).'</span> ';
+                $edit_btn = '<span class="ignore-click icon-block-img" title="'.$e___11035[13571]['m__title'].'">'.view_cover($es[0]['e__cover']).'</span> ';
             }
 
             $on_its_own_line = false;

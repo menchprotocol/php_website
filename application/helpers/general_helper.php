@@ -174,13 +174,13 @@ function is_valid_date($string)
 
 
 
-function detect_fav_icon($url_clean_domain, $return_icon = false){
+function detect_fav_icon($url_clean_domain){
     //Does this domain have a Favicon?
     $fav_icon = str_replace('http://','https://',$url_clean_domain) . '/favicon.ico';
     if (@file_get_contents($fav_icon)) {
-        return '<img src="'.$fav_icon.'">';
+        return $fav_icon;
     } else {
-        return ( $return_icon ? view_e__cover() : null );
+        return null;
     }
 }
 
@@ -499,7 +499,7 @@ function e_count_6194($e__id, $specific_id = 0){
 }
 
 
-function coin_cover($o, $html_format = false){
+function fetch_cover($o){
 
     $CI =& get_instance();
     $is_idea = isset($o['i__id']);
@@ -516,19 +516,11 @@ function coin_cover($o, $html_format = false){
 
     if(strlen($coin_set) > 0){
         //See what we have here:
-        if(substr_count($coin_set, '<img ') && substr_count($coin_set, 'src="')){
-
-            //IMAGE
-            $url = one_two_explode('src="','"',$coin_set);
-            if(filter_var($url, FILTER_VALIDATE_URL)){
-                $found_image = $url;
-            }
-
+        if(filter_var($coin_set, FILTER_VALIDATE_URL)){
+            $found_image = $url;
         } else {
-
-            //EMOJI
+            //EMOJI/ICON
             $first_source_icon = $coin_set;
-
         }
     }
 
@@ -618,31 +610,19 @@ function coin_cover($o, $html_format = false){
 
 
 
-    //Return something:
-    if($html_format){
-        if($found_image){
-            return '<img src="'.$found_image.'" class="cover-image" />';
-        } elseif($first_source_icon){
-            //Return with HTML code as is:
-            return '<span class="cover_icon_'.$o_id.'">'.$first_source_icon.'</span>';
+    //RAW Background usage:
+    if($found_image){
+        return $found_image;
+    } elseif($first_source_icon){
+        if(substr_count($first_source_icon, '<img') > 0 && substr_count($first_source_icon, 'src="') > 0){
+            //Simplify since Icon is an image:
+            return one_two_explode('src="','"',$first_source_icon);
         } else {
-            return null;
+            //This is EMOJI OR FONTAWESOME HTML COde:
+            return $first_source_icon;
         }
     } else {
-        //RAW Background usage:
-        if($found_image){
-            return $found_image;
-        } elseif($first_source_icon){
-            if(substr_count($first_source_icon, '<img') > 0 && substr_count($first_source_icon, 'src="') > 0){
-                //Simplify since Icon is an image:
-                return one_two_explode('src="','"',$first_source_icon);
-            } else {
-                //This is EMOJI OR FONTAWESOME HTML COde:
-                return '<span class="cover_icon_'.$o_id.'">'.$first_source_icon.'</span>';
-            }
-        } else {
-            return null;
-        }
+        return null;
     }
 }
 
@@ -1814,7 +1794,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__id'] = intval($s['e__id']);
                 $export_row['s__url'] = '/@' . $s['e__id'];
                 $export_row['s__status'] = intval($s['e__type']);
-                $export_row['s__cover'] = view_e__cover($s['e__cover']);
+                $export_row['s__cover'] = fetch_cover($s);
                 $export_row['s__title'] = $s['e__title'];
                 $export_row['s___weight'] = intval($s['e__spectrum']);
 
@@ -1860,7 +1840,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__id'] = intval($s['i__id']);
                 $export_row['s__url'] = '/i/i_go/' . $s['i__id'];
                 $export_row['s__status'] = intval($s['i__type']);
-                $export_row['s__cover'] = coin_cover($s, true);
+                $export_row['s__cover'] = fetch_cover($s);
                 $export_row['s__title'] = $s['i__title'];
                 $export_row['s___weight'] = intval($s['i__spectrum']);
 
