@@ -2148,6 +2148,7 @@ i, .btn .show-max {
 }
 .the_counter b{
     display:block;
+    min-height: 40px;
 }
 .the_counter b i{
     font-size: 0.45em !important;
@@ -2171,6 +2172,10 @@ i, .btn .show-max {
 }
 @media (max-width:767px) {
 
+    .the_counter{
+        margin-top: 26px;
+        font-size: 0.34em !important;
+    }
     .mid-range { padding:0; }
 
     .coin_coins{
