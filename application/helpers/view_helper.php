@@ -328,7 +328,26 @@ function view_cover($cover_code)
     //A simple function to display the Member Icon OR the default icon if not available:
     if(filter_var($cover_code, FILTER_VALIDATE_URL)){
 
-        return '<img src="'.$cover_code.'" />';
+        $append_all = '';
+        foreach(array(
+                    'spin' => array(
+                        'slow' => 'fa-spin-slow',
+                        'medium' => 'fa-spin-med',
+                        'fast' => 'fa-spin',
+                        'revslow' => 'fa-spin-reverse-slow',
+                        'revmedium' => 'fa-spin-reverse-med',
+                        'revfast' => 'fa-spin-reverse',
+                    ),
+                    'radius' => array(
+                        'no' => 'no-radius',
+                    ),
+                ) as $get_var => $append_class){
+            if(isset($_GET[$get_var]) && isset($append_class[$_GET[$get_var]])){
+                $append_all .= ' '.$append_class[$_GET[$get_var]].' ';
+            }
+        }
+
+        return '<img src="'.$cover_code.'" class="'.$append_all.'" />';
 
     } elseif (substr($cover_code, 0, 2)=='fa') {
 
@@ -2082,12 +2101,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //Message
     if ($x__id > 0) {
-        if($has_any_lock){
-
-            //PRIVATE INFO
-            $ui .= '<span class="mini-font">***'.$e___11035[$lock_notice]['m__title'].'***</span>';
-
-        } elseif($has_e_link){
+        if(!$has_any_lock && $has_e_link){
 
             $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
 
