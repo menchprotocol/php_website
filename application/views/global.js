@@ -138,21 +138,6 @@ function load_editor(){
 }
 
 
-function js_extract_icon_color(e__cover){
-
-    //NOTE: Has a twin PHP function
-
-    if(e__cover.includes('discover')){
-        return ' discover ';
-    } else if(e__cover.includes( 'idea')){
-        return ' idea ';
-    } else if(e__cover.includes('source') || !e__cover.length){
-        return ' source ';
-    } else {
-        return '';
-    }
-}
-
 function view_s__title(algolia_object){
     return htmlentitiesjs( algolia_object._highlightResult && algolia_object._highlightResult.s__title.value ? algolia_object._highlightResult.s__title.value : algolia_object.s__title );
 }
@@ -162,7 +147,7 @@ function view_s_js(algolia_object){
 
     if(algolia_object.s__type==12274 || 1){
         //SOURCE
-        return '<span class="icon-block">'+ ( algolia_object.s__type==12274 ? algolia_object.s__cover : '<i class="fas fa-circle idea"></i>' ) +'</span><span class="css__title '+ ( algolia_object.s__type==12274 ? js_extract_icon_color(algolia_object.s__cover) : '' ) +'">' + view_s__title(algolia_object) + '</span>';
+        return '<span class="icon-block">'+ ( algolia_object.s__type==12274 ? algolia_object.s__cover : '<i class="fas fa-circle idea"></i>' ) +'</span><span class="css__title">' + view_s__title(algolia_object) + '</span>';
     } else {
         //IDEA
         //return '<div class="col-md-4 col-6 no-padding"><div class="cover-wrapper"><div class="cover-link" style="background-image:url(\'' + algolia_object.s__cover + '\')"></div></div><div class="cover-content"><div class="inner-content css__title">'+view_s__title(algolia_object)+'</div></div></div>';
@@ -325,9 +310,24 @@ function copyTextToClipboard(text) {
     });
 }
 
+function load_coin_count(){
+    $.post("/x/load_coin_count", {}, function (data) {
+        $(".coin_count_12273").html(data.count__12273).hide().fadeIn();
+        $(".coin_count_12274").html(data.count__12274).hide().fadeIn();
+        $(".coin_count_6255").html(data.count__6255).hide().fadeIn();
+    });
+}
 
 var algolia_index = false;
 $(document).ready(function () {
+
+
+    if ($(".list-coins")[0]){
+        //Update mench coins every 3 seconds:
+        $(function () {
+            setInterval(randomQuote, 3000);
+        });
+    }
 
 
     //Lookout for textinput updates
@@ -574,20 +574,6 @@ function update_cover_icon(coin__type, coin__id, coin__title, coin__cover){
 
     //Update demo icon based on icon input value:
     $(the_obj).html(($('#coin__cover').val().length > 0 ? $('#coin__cover').val() : js_e___14874[12274]['m__cover'] ));
-
-    /*
-    var icon_set = ( modify_data['e__cover'].length > 0 ? 1 : 0 );
-    if(!icon_set){
-        //Set source default icon:
-        modify_data['e__cover'] = js_e___14874[12274]['m__cover'];
-    }
-    $('.e_child_icon_' + modify_data['e__id']).html(modify_data['e__cover']);
-
-        coin__type: $('#coin__type').val(),
-        coin__id: $('#coin__id').val(),
-        coin__title: $('#coin__title').val(),
-        coin__cover
-    */
 
 }
 
@@ -1868,63 +1854,6 @@ function e_toggle_superpower(superpower_id){
 
 
 
-function account_update_avatar_type(type_css){
-
-    //Find active avatar:
-    var selected_avatar = $('.avatar-item.active i').attr('class').split(' ');
-
-    //Adjust menu:
-    $('.avatar-type-group .btn').removeClass('active');
-    $('.avatar-type-group .btn-'+type_css).addClass('active');
-
-
-    //Show correct avatars:
-    $('.avatar-item').addClass('hidden').removeClass('active');
-    $('.avatar-type-'+type_css).removeClass('hidden');
-
-    //Update Selection:
-    $('.avatar-type-'+type_css+'.avatar-name-'+selected_avatar[1]).addClass('active');
-
-    //Update Icon:
-    e_avatar(type_css, null);
-
-}
-
-function e_avatar(type_css, icon_css){
-
-    //Detect current icon type:
-    if(!icon_css){
-        icon_css = $('.avatar-item.active').attr('icon-css');
-    } else {
-        //Set Proper Focus:
-        $('.avatar-item').removeClass('active');
-        $('.avatar-item.avatar-name-'+icon_css).addClass('active');
-    }
-
-    $('.cover_icon_'+js_pl_id).html('<i class="far fa-yin-yang fa-spin"></i>');
-
-    //Update via call:
-    $.post("/e/e_avatar", {
-        type_css: type_css,
-        icon_css: icon_css,
-    }, function (data) {
-
-        if (!data.status) {
-
-            //Ooops there was an error!
-            alert(data.message);
-
-        } else {
-
-            //Delete message:
-            $('.cover_icon_'+js_pl_id).html(data.new_avatar);
-
-        }
-    });
-
-}
-
-
 var current_focus = 0;
 
 function remove_ui_class(item, index) {
@@ -2013,44 +1942,6 @@ function e_email(){
             }, 1597);
 
         }
-    });
-
-}
-
-
-
-function e_name(){
-
-    //Show spinner:
-    $('.save_name').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
-
-    modify_data = {
-        s__id: js_pl_id,
-        cache_e__id: 6197,
-        field_value: $('#e_name').val().trim()
-    };
-
-    $.post("/x/x_set_text", modify_data, function (data) {
-
-        if (!data.status) {
-
-            //Ooops there was an error!
-            $('.save_name').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
-
-        } else {
-
-            update_text_name(modify_data['cache_e__id'], modify_data['s__id'], modify_data['field_value']);
-
-            //Show success:
-            $('.save_name').html(js_e___11035[14424]['m__cover'] + ' ' + js_e___11035[14424]['m__title']).hide().fadeIn();
-
-            //Disappear in a while:
-            setTimeout(function () {
-                $('.save_name').html('');
-            }, 1597);
-
-        }
-
     });
 
 }

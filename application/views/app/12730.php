@@ -26,7 +26,7 @@ foreach($this->E_model->fetch(array()) as $e){
 
     echo $type.$e['e__cover'].' ('.$new_cover.') @'.$e['e__id'].'<br />';
 
-    //$this->E_model->update($e['e__id'], array('e__cover' => $new_cover), true);
+    $this->E_model->update($e['e__id'], array('e__cover' => $new_cover));
 }
 
 echo '<br /><br />Images ('.$images.') Fontawesome ('.$fontawesome.') Emoji ('.$emoji.') None ('.$none.')<br />';
@@ -80,7 +80,7 @@ if($search_for_set){
                 }
             }
 
-            echo view_e(12730, $en, null,  true, null, ( $replace_with_set ? $new_outcome . ( $replace_with_confirmed ? ' [UPDATED]' : '') : null ));
+            echo view_e(12730, $en, null,  true);
         }
         echo '</div>';
 

@@ -866,7 +866,7 @@ class X_model extends CI_Model
                     } else {
 
                         //Text and Percentage, etc...
-                        $e_appendix .= '<div class="e-appendix paddingup"><span class="icon-block-xs">' . $e_profile['e__cover'].'</span>' . $e_profile['e__title'].': ' . $e_profile['x__message'] . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup"><span class="icon-block-xs">' . view_cover($e_profile['e__cover']).'</span>' . $e_profile['e__title'].': ' . $e_profile['x__message'] . '</div>';
 
                     }
                 }

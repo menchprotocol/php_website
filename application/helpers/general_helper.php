@@ -517,7 +517,7 @@ function fetch_cover($o){
     if(strlen($coin_set) > 0){
         //See what we have here:
         if(filter_var($coin_set, FILTER_VALIDATE_URL)){
-            $found_image = $url;
+            $found_image = $coin_set;
         } else {
             //EMOJI/ICON
             $first_source_icon = $coin_set;
@@ -608,22 +608,8 @@ function fetch_cover($o){
         }
     }
 
-
-
-    //RAW Background usage:
-    if($found_image){
-        return $found_image;
-    } elseif($first_source_icon){
-        if(substr_count($first_source_icon, '<img') > 0 && substr_count($first_source_icon, 'src="') > 0){
-            //Simplify since Icon is an image:
-            return one_two_explode('src="','"',$first_source_icon);
-        } else {
-            //This is EMOJI OR FONTAWESOME HTML COde:
-            return $first_source_icon;
-        }
-    } else {
-        return null;
-    }
+    //Image preferred, if not any icon is returned:
+    return ($found_image ? $found_image : $first_source_icon);
 }
 
 
@@ -745,8 +731,12 @@ function update_description($before_string, $after_string){
 
 function random_avatar(){
     $CI =& get_instance();
-    $e___10956 = $CI->config->item('e___10956');
-    return $e___10956[array_rand($e___10956)]['m__cover'];
+    $e___13533 = $CI->config->item('e___13533'); //Icon Types
+    $e___14941 = $CI->config->item('e___14941'); //Icon Color
+    $e___12279 = $CI->config->item('e___12279'); //Animal Avatars
+    return $e___13533[array_rand($e___13533)]['m__message'].' '. //Random Type
+        one_two_explode('fa-',' ',$e___12279[array_rand($e___12279)]['m__cover']).' '. //Random Icon
+        $e___14941[array_rand($e___14941)]['m__message']; //Random Color
 }
 
 function format_percentage($percent){
@@ -921,21 +911,6 @@ function superpower_active($superpower_e__id, $boolean_only = false){
 function round_minutes($seconds){
     $minutes = round($seconds/60);
     return ($minutes <= 1 ? 1 : $minutes );
-}
-
-function extract_icon_color($e__cover, $return_coin = false){
-
-    //NOTE: Has a twin JS function
-
-    if(substr_count($e__cover, 'discover')>0){
-        return ( $return_coin ? '🔴' : ' discover ' );
-    } elseif(substr_count($e__cover, 'idea')>0){
-        return ( $return_coin ? '🟡' : ' idea ' );
-    } elseif(substr_count($e__cover, 'source')>0 || !$e__cover){
-        return ( $return_coin ? '🔵' : ' source ' );
-    } else {
-        return '';
-    }
 }
 
 
@@ -1116,40 +1091,6 @@ function member_setting($e__id){
         }
     }
     return $session_var;
-}
-
-function i_calc_common_prefix($child_list, $child_field){
-
-    $CI =& get_instance();
-
-    if(count($child_list) < 2){
-        return null; //Cannot do this for less than 2 Ideas
-    }
-
-    //Go through each child one by one and see if each word exists in all:
-    $common_prefix = '';
-    foreach(explode(' ', $child_list[0][$child_field]) as $word_pos=>$word){
-
-        //Make sure this is the same word across all ideas:
-        $all_the_same = true;
-        foreach($child_list as $child_item){
-            $child_words = explode(' ', $child_item[$child_field]);
-
-            if(!isset($child_words[$word_pos]) || $child_words[$word_pos]!=$word){
-                //Not the same:
-                $all_the_same = false;
-                break;
-            }
-        }
-
-        if($all_the_same){
-            $common_prefix .= $word.' ';
-        } else {
-            break;
-        }
-    }
-
-    return trim($common_prefix);
 }
 
 function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local = false, $page_title = null)

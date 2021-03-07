@@ -208,7 +208,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $input_options = '';
             $this_counter = 0;
 
-            //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
             foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
 
                 $this_counter++;
@@ -259,7 +258,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
 
-        //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[13542]['m__cover'].'</span>'.$e___11035[13542]['m__title'].'</div>';
         $ui .= '<div id="list-in-13542" class="row hideIfEmpty">';
         foreach($is_next as $next_i) {
             $ui .= view_i(13542, 0, $i_focus, $next_i, $e_of_i);
@@ -282,7 +280,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         //DISCOVERIES
         $counter = view_coins_i(6255,  $i_focus, false);
 
-        //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
         if($counter){
 
             $query_filters = array(
@@ -323,7 +320,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
         //IDEA REFERENCES:
-        //$ui .= '<div class="headline"><span class="icon-block">'.$e___4485[4983]['m__cover'].'</span>'.$e___4485[4983]['m__title'].'</div>';
         $ui .= view_i_note_list(4983, false, $i_focus, $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4983,
@@ -344,7 +340,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     } elseif($x__type==12969){
 
-        //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
         $u_x = $this->X_model->fetch(array(
             'x__left' => $i_focus['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
@@ -380,7 +375,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     $default_active = in_array($x__type, $this->config->item('n___12675'));
 
-    echo '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__cover']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
+    echo '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';

@@ -193,7 +193,7 @@ if(!$basic_header_footer){
                             echo $site_logo;
                         } else {
                             //My Source
-                            echo '<a href="'.home_url().'"><span class="platform-circle">'.$member_e['e__cover'].'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
+                            echo '<a href="'.home_url().'"><span class="platform-circle">'.view_cover($member_e['e__cover']).'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
                         }
 
                     } else {
@@ -248,7 +248,7 @@ if(!$basic_header_footer){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' note_type_id="'.$x__type.'" class="dropdown-item css__title '.extract_icon_color($m['m__cover']).( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<a '.$href.' note_type_id="'.$x__type.'" class="dropdown-item css__title '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
 

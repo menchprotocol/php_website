@@ -134,7 +134,6 @@ $profiles = $this->X_model->fetch(array(
             if(!$counter){
                 continue;
             }
-            //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
             $ui .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m__cover'].' '.$m['m__title'].' '.number_format($counter, 0).' times.</div>';
 
         } elseif($x__type==12274){
@@ -310,8 +309,7 @@ $profiles = $this->X_model->fetch(array(
                         //Show each specific filter based on DB counts:
                         foreach($child_e_filters as $c_c) {
                             $st = $e___6177[$c_c['e__type']];
-                            $extract_icon_color = extract_icon_color($st['m__cover']);
-                            $ui .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(11029, ' . $c_c['e__type'] . ')" class="nav-x nav-link e_filter_status_11029 en_status_11029_' . $c_c['e__type'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m__message'] . '">' . $st['m__cover'] . '<span class="' . $extract_icon_color . '">&nbsp;' . $c_c['totals'] . '</span><span class="show-max '.$extract_icon_color.'">&nbsp;' . $st['m__title'] . '</span></a></li>';
+                            $ui .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(11029, ' . $c_c['e__type'] . ')" class="nav-x nav-link e_filter_status_11029 en_status_11029_' . $c_c['e__type'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m__message'] . '">' . $st['m__cover'] . '&nbsp;' . $c_c['totals'] . '<span class="show-max">&nbsp;' . $st['m__title'] . '</span></a></li>';
                         }
 
                         $ui .= '</div>';
@@ -320,13 +318,10 @@ $profiles = $this->X_model->fetch(array(
                 }
             }
 
-            //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[11029]['m__cover'].'</span>'.$e___11035[11029]['m__title'].'</div>';
             $ui .= '<div id="list-in-11029" class="row hideIfEmpty">';
 
-            $common_prefix = i_calc_common_prefix($list_e, 'e__title');
-
             foreach($list_e as $e_portfolio) {
-                $ui .= view_e(11029, $e_portfolio,null,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_portfolio['x__source']))), $common_prefix);
+                $ui .= view_e(11029, $e_portfolio,null,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_portfolio['x__source']))));
             }
             if ($counter > count($list_e)) {
                 $ui .= view_load_more(11029, 1, view_memory(6404,11064), $counter);
@@ -422,7 +417,7 @@ $profiles = $this->X_model->fetch(array(
 
                     $i_stats = i_stats($item['i__metadata']);
                     if(!$show_all_i_btn && $max_i__spectrum>0 && $item['i__spectrum']>0 && $i_stats['i___6162']<=$max_seconds && (($max_i__spectrum * $drop_limit) > $item['i__spectrum'])){
-                        $ui .= '<div class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__cover'].'</div><div class="cover-head '.extract_icon_color($e___11035[14684]['m__cover']).'">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
+                        $ui .= '<div class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__cover'].'</div><div class="cover-head">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
                         $show_all_i_btn = true;
                     }
 
@@ -526,7 +521,6 @@ $profiles = $this->X_model->fetch(array(
             $item_counters = $this->X_model->fetch($i_notes_filters, array('x__right'), 0, 0, array(), 'COUNT(i__id) as totals');
             $counter = $item_counters[0]['totals'];
 
-            //$ui .= '<div class="headline"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
             $ui .= '<div class="row top-margin">';
             if($counter>0){
 
@@ -550,7 +544,7 @@ $profiles = $this->X_model->fetch(array(
 
         $default_active = $x__type==$active_x__type;
 
-        $tab_nav .= '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__cover']).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
+        $tab_nav .= '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
 
 
         $tab_content .= '<div class="tab-content tab-group-11089 tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).( $source_is_e ? ' no-border ' : '' ).'">';

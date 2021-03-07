@@ -1061,7 +1061,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5000 && substri_count($x['e__title'], $action_command1) > 0) { //Replace Member Matching Name
+            } elseif ($action_e__id == 5000 && substr_count(strtolower($x['e__title']), strtolower($action_command1)) > 0) { //Replace Member Matching Name
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => str_ireplace($action_command1, $action_command2, $x['e__title']),

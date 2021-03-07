@@ -61,7 +61,7 @@ class X extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'x__type_preview' => '<b class="css__title '.extract_icon_color($e___4592[$detected_x_type['x__type']]['m__cover']).'">' . $e___4592[$detected_x_type['x__type']]['m__cover'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
+            'x__type_preview' => '<b class="css__title">' . $e___4592[$detected_x_type['x__type']]['m__cover'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
             'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">'.view_x__message($_POST['x__message'], $detected_x_type['x__type'], null, true).'</span>' : ''),
         ));
 
@@ -966,6 +966,13 @@ class X extends CI_Controller
     }
 
 
+    function load_coin_count(){
+        $return_array = array();
+        foreach($CI->config->item('e___14874') as $e__id => $m) {
+            $return_array['count__'.$e__id] = number_format(count_unique_coins($e__id), 0);
+        }
+        return view_json($return_array);
+    }
 
     function coin__save()
     {

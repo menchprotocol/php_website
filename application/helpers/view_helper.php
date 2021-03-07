@@ -221,14 +221,10 @@ function view_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function view_i_title($i, $common_prefix = null, $has_cover = false){
+function view_i_title($i){
 
     $CI =& get_instance();
     $hide_title = false;
-
-    if(strlen($common_prefix) > 0){
-        $i['i__title'] = trim(substr($i['i__title'], strlen($common_prefix)));
-    }
     return '<span class="text__4736_'.$i['i__id'].' css__title '.( $hide_title ? ' hidden ' : '').'">'.htmlentities(trim($i['i__title'])).'</span>';
 }
 
@@ -250,7 +246,6 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___11035 = $CI->config->item('e___11035');
-    $color_code = trim(extract_icon_color($e___4485[$x__type]['m__cover']));
     $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
     $referenced_ideas = (in_array($x__type, $CI->config->item('n___13550')));
     $editable_discovery = (in_array($x__type, $CI->config->item('n___14043')));
@@ -258,7 +253,7 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 
     //Build the HTML UI:
     $ui = '';
-    $ui .= '<div class="list-group-item item'.$color_code.' is-msg note_sortable msg_e_type_' . $x['x__type'] . '" id="ul-nav-' . $x['x__id'] . '" x__id="' . $x['x__id'] . '">'; //title="'.$x['e__title'].' Posted On '.substr($x['x__time'], 0, 19).'" data-toggle="tooltip" data-placement="top"
+    $ui .= '<div class="list-group-item is-msg note_sortable msg_e_type_' . $x['x__type'] . '" id="ul-nav-' . $x['x__id'] . '" x__id="' . $x['x__id'] . '">'; //title="'.$x['e__title'].' Posted On '.substr($x['x__time'], 0, 19).'" data-toggle="tooltip" data-placement="top"
     $ui .= '<div style="overflow:visible !important;">';
 
     if($editable_discovery && isset($x['e__id'])){
@@ -303,7 +298,7 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 
 
         //SAVE
-        $ui .= '<td class="table-btn"><a class="btn btn-'.$color_code.'" href="javascript:i_note_update_text(' . $x['x__id'] . ',' . $x['x__type'] . ');" title="'.$e___11035[14039]['m__title'].'">'.$e___11035[14039]['m__cover'].'</a></td>';
+        $ui .= '<td class="table-btn"><a class="btn" href="javascript:i_note_update_text(' . $x['x__id'] . ',' . $x['x__type'] . ');" title="'.$e___11035[14039]['m__title'].'">'.$e___11035[14039]['m__cover'].'</a></td>';
 
         //CANCEL
         $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" title="'.$e___11035[13502]['m__title'].'" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__cover'].'</a></td>';
@@ -328,26 +323,26 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 }
 
 
-function view_cover($cover_icon = null)
+function view_cover($cover_code)
 {
     //A simple function to display the Member Icon OR the default icon if not available:
-    if(filter_var($cover_icon, FILTER_VALIDATE_URL)){
+    if(filter_var($cover_code, FILTER_VALIDATE_URL)){
 
-        return '<img src="'.$cover_icon.'" />';
+        return '<img src="'.$cover_code.'" />';
 
-    } elseif (substr($cover_icon, 0, 2)=='fa') {
+    } elseif (substr($cover_code, 0, 2)=='fa') {
 
-        return '<i class="'.$cover_icon.'"></i>';
+        return '<i class="'.$cover_code.'"></i>';
 
-    } elseif (strlen($cover_icon)) {
+    } elseif(strlen($cover_code)) {
 
-        return $cover_icon;
+        return $cover_code;
 
     } else {
-        //Return default icon for sources:
-        $CI =& get_instance();
-        $e___14874 = $CI->config->item('e___14874'); //COINS
-        return $e___14874[12274]['m__cover'];
+
+        //Standard Icon if none:
+        return '<i class="fas fa-circle"></i>';
+
     }
 }
 
@@ -456,11 +451,11 @@ function view_x($x, $has_x__reference = false)
 
 
     //STATUS
-    $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/@'.$x['x__status'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m__title'].( strlen($e___6186[$x['x__status']]['m__message']) ? ': '.$e___6186[$x['x__status']]['m__message'] : '' ).'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[6186]['m__cover']. '</span><span class="icon-block">'.$e___6186[$x['x__status']]['m__cover'].'</span><span class="'.extract_icon_color($e___6186[$x['x__status']]['m__cover']).'">'.$e___6186[$x['x__status']]['m__title'].'</span></a></div>';
+    $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/@'.$x['x__status'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m__title'].( strlen($e___6186[$x['x__status']]['m__message']) ? ': '.$e___6186[$x['x__status']]['m__message'] : '' ).'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[6186]['m__cover']. '</span><span class="icon-block">'.$e___6186[$x['x__status']]['m__cover'].'</span>'.$e___6186[$x['x__status']]['m__title'].'</a></div>';
 
 
     //TYPE
-    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m__title'].( strlen($e___4593[$x['x__type']]['m__message']) ? ': '.$e___4593[$x['x__type']]['m__message'] : '' ).'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4593]['m__cover']. '</span><span class="icon-block">'. $e___4593[$x['x__type']]['m__cover'] . '</span><span class="'.extract_icon_color($e___4593[$x['x__type']]['m__cover']).'">' . $e___4593[$x['x__type']]['m__title'] . '</span></a></div>';
+    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m__title'].( strlen($e___4593[$x['x__type']]['m__message']) ? ': '.$e___4593[$x['x__type']]['m__message'] : '' ).'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4593]['m__cover']. '</span><span class="icon-block">'. $e___4593[$x['x__type']]['m__cover'] . '</span>' . $e___4593[$x['x__type']]['m__title'] . '</a></div>';
 
 
     //Order
@@ -496,14 +491,14 @@ function view_x($x, $has_x__reference = false)
                 //SOURCE
                 $es = $CI->E_model->fetch(array('e__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span>'.'<span class="icon-block">'.view_cover($es[0]['e__cover']). '</span><span class="'.extract_icon_color($es[0]['e__cover']).'">'.$es[0]['e__title'].'</span></a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span>'.'<span class="icon-block">'.view_cover($es[0]['e__cover']). '</span>'.$es[0]['e__title'].'</a></div>';
 
             } elseif(in_array(6202 , $m['m__profile'])){
 
                 //IDEA
                 $is = $CI->I_model->fetch(array('i__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Status */, $is[0]['i__type'], true, 'right', $is[0]['i__id']).'</span>'.view_i_title($is[0], null).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Status */, $is[0]['i__type'], true, 'right', $is[0]['i__id']).'</span>'.view_i_title($is[0]).'</a></div>';
 
             } elseif(in_array(4367 , $m['m__profile'])){
 
@@ -614,16 +609,11 @@ function view_cache($parent, $e__id, $micro_status = true, $data_placement = 'to
 function view_coins(){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $ui = '';
-
-    //$ui .= '<div class="headline"><span class="icon-block">'.$e___11035[14874]['m__cover'].'</span>'.$e___11035[14874]['m__title'].'</div>';
-    $ui .= '<div class="row margin-top-down list-coins">';
+    $ui = '<div class="row margin-top-down list-coins">';
     foreach($CI->config->item('e___14874') as $e__id => $m) {
-        $count = count_unique_coins($e__id);
-        $ui .= '<div class="col '.( $e__id==6255 ? ' col-12 col-md-4 ' : ' col-6 col-md-4 ' ).'">'.$m['m__cover'].'<div class="css__title '.extract_icon_color($m['m__cover']).'">'.number_format($count, 0).' '.$m['m__title'].'</div><div>'.$m['m__message'].'</div></div>';
+        $ui .= '<div class="col '.( $e__id==6255 ? ' col-12 ' : ' col-6 ' ).'">'.$m['m__cover'].'<div class="css__title" style="font-size: 2.7em; line-height: 110%;"><div class="coin_count_'.$e__id.'"></div>'.$m['m__title'].'</div>'.( strlen($m['m__message']) ? '<div>'.$m['m__message'].'</div>' : '' ).'</div>';
     }
     $ui .= '</div>';
-
     return $ui;
 }
 
@@ -724,7 +714,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             $coin_count = view_number($count_query);
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.extract_icon_color($e___14874[$x__type]['m__cover']).'" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $x__type==12274 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $x__type==12274 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
             $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$e__id.'">';
 
             if($x__type==12274){
@@ -829,7 +819,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
         $coin_count = view_number($count_query);
 
         $ui = '<div class="dropdown inline-block">';
-        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.extract_icon_color($e___14874[$x__type]['m__cover']).'" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $x__type==12274 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
+        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $x__type==12274 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
         $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
 
         if($x__type==12274){
@@ -906,7 +896,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
 
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$e___4737[$i_x['i__type']]['m__title'].'">'. $e___4737[$i_x['i__type']]['m__cover'] . '</span>';
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$e___4737[$i_x['i__type']]['m__title'].'">'. $e___4737[$i_x['i__type']]['m__cover']. '</span>';
-        $ui .= '<a href="?i__id='.$i_x['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_x, null) . '</u></a>';
+        $ui .= '<a href="?i__id='.$i_x['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_x) . '</u></a>';
 
         $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_x['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('n___6193') /* OR Ideas */ )) || ($i_x['x__type'] == 4229) ? view_i_marks($i_x) : '' ).'</span>]';
 
@@ -969,7 +959,7 @@ function view_radio_e($parent_e__id, $child_e__id, $enable_mulitiselect, $show_m
     }
 
     foreach($CI->config->item('e___'.$parent_e__id) as $e__id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="item'.extract_icon_color($m['m__cover']).' list-group-item css__title itemsetting item-'.$e__id.' '.( $count>=$show_max_14538 ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
+        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$parent_e__id.','.$e__id.','.$enable_mulitiselect.')" class="list-group-item css__title itemsetting item-'.$e__id.' '.( $count>=$show_max_14538 ? 'extra-items-'.$parent_e__id.' hidden ' : '' ).( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
         $count++;
     }
 
@@ -1023,7 +1013,7 @@ function view_caret($e__id, $m, $s__id){
             $href = 'href="' . $m2['m__message'] . $s__id . '"';
         }
 
-        $ui .= '<a '.$href.' class="dropdown-item css__title '.extract_icon_color($m2['m__cover']).' '.( count($superpower_actives2) ? superpower_active(end($superpower_actives2)) : '' ).'"><span class="icon-block">'.view_cover($m2['m__cover']).'</span> '.$m2['m__title'].'</a>';
+        $ui .= '<a '.$href.' class="dropdown-item css__title '.( count($superpower_actives2) ? superpower_active(end($superpower_actives2)) : '' ).'"><span class="icon-block">'.$m2['m__cover'].'</span> '.$m2['m__title'].'</a>';
     }
     $ui .= '</div>';
     $ui .= '</li>';
@@ -1042,7 +1032,6 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e, $
     $CI =& get_instance();
 
     //List children so they know what's ahead:
-    $common_prefix = i_calc_common_prefix($has_next, 'i__title');
     $ui = '';
     $ui .= '<div>';
     $ui .= '<div class="pull-left">';
@@ -1178,7 +1167,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
             }
 
 
-            $tab_nav .= '<li class="nav-item"><a href="javascript:void(0);" onclick="loadtab(14418,'.$x__type2.');" class="nav-x tab-nav-14418 tab-head-'.$x__type2.' '.( $default_active ? ' active ' : '' ).extract_icon_color($m['m__cover']).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;</a></li>';
+            $tab_nav .= '<li class="nav-item"><a href="javascript:void(0);" onclick="loadtab(14418,'.$x__type2.');" class="nav-x tab-nav-14418 tab-head-'.$x__type2.' '.( $default_active ? ' active ' : '' ).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;</a></li>';
 
 
             $tab_content .= '<div class="tab-content tab-group-14418 tab-data-'.$x__type2.' power-editor-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
@@ -1207,8 +1196,6 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
 
         //ADD NEW:
         if(!in_array($x__type, $CI->config->item('n___12677')) && $e_of_i){
-
-            $color_code = trim(extract_icon_color($e___4485[$x__type]['m__cover']));
 
             $ui .= '<div class="no-padding add_notes_' . $x__type .'">';
             $ui .= '<div class="add_notes_form">';
@@ -1270,6 +1257,7 @@ function view_shuffle_message($e__id){
     return $line_messages[rand(0, (count($line_messages) - 1))];
 }
 
+
 function view_e_settings($list_id, $show_accordion){
 
     $CI =& get_instance();
@@ -1316,39 +1304,8 @@ function view_e_settings($list_id, $show_accordion){
             $tab_ui .= '<div class="regtext" style="text-align: left; padding:0 0 21px 0;">' . $acc_detail['m__message'] . '</div>';
         }
 
-        if ($acc_e__id == 12289) {
 
-            $e__cover_parts = explode(' ',one_two_explode('class="', '"', $member_e['e__cover']));
-
-            //List avatars:
-            $tab_ui .= '<div class="row">';
-            foreach($CI->config->item('e___12279') as $x__type3 => $m3) {
-
-                $avatar_icon_parts = explode(' ',one_two_explode('class="', '"', $m3['m__cover']));
-                $avatar_match = ($e__cover_parts[1] == $avatar_icon_parts[1]);
-                $avatar_type_match = ($e__cover_parts[0] == $avatar_icon_parts[0]);
-                $superpower_actives3 = array_intersect($CI->config->item('n___10957'), $m3['m__profile']);
-
-                if(!$avatar_match && count($superpower_actives3) && !superpower_active(end($superpower_actives3), true)){
-                    //Missing needed superpower, skip:
-                    continue;
-                }
-
-                $tab_ui .= '<a href="javascript:void(0);" onclick="e_avatar(\'' . $avatar_icon_parts[0] . '\', \'' . $avatar_icon_parts[1] . '\')" icon-css="' . $avatar_icon_parts[1] . '" class="col-3 col-md-2 list-group-item avatar-item avatar-type-'.$avatar_icon_parts[0].' avatar-name-'.$avatar_icon_parts[1].' ' .( $avatar_type_match ? '' : ' hidden ' ). ( $avatar_type_match && $e__cover_parts[1] == $avatar_icon_parts[1] ? ' active ' : '') . '"><div class="avatar-icon">' . $m3['m__cover'] . '</div></a>';
-
-            }
-            $tab_ui .= '</div>';
-
-
-            //Toggle Avatar Type
-            $tab_ui .= '<div class="'.superpower_active(10939).'"><div class="doclear">&nbsp;</div><div class="btn-group avatar-type-group" role="group">';
-            foreach($CI->config->item('e___13533') as $m3) {
-                $tab_ui .= '<a href="javascript:void(0)" onclick="account_update_avatar_type(\''.$m3['m__message'].'\')" class="btn btn-'.$m3['m__message'].' '.( $e__cover_parts[0]==$m3['m__message'] ? ' active ' : '' ).'" title="'.$m3['m__title'].'">'.$m3['m__cover'].'</a>';
-            }
-            $tab_ui .= '</div><div class="doclear">&nbsp;</div></div>';
-
-
-        } elseif ($acc_e__id == 10957 /* Superpowers */) {
+        if ($acc_e__id == 10957 /* Superpowers */) {
 
             if(count($CI->session->userdata('session_superpowers_unlocked')) >= 2){
                 //Mass Toggle Option:
@@ -1364,8 +1321,7 @@ function view_e_settings($list_id, $show_accordion){
 
                 $has_unlocked = in_array($superpower_e__id, $CI->session->userdata('session_superpowers_unlocked'));
                 $public_link = in_array($superpower_e__id, $CI->config->item('n___6404'));
-                $extract_icon_color = extract_icon_color($m3['m__cover']);
-                $anchor = '<span class="icon-block main-icon '.$extract_icon_color.'" title="@'.$superpower_e__id.'">'.$m3['m__cover'].'</span><b class="css__title '.$extract_icon_color.'">'.$m3['m__title'].'</b><span class="superpower-message">'.$m3['m__message'].'</span>';
+                $anchor = '<span class="icon-block main-icon" title="@'.$superpower_e__id.'">'.$m3['m__cover'].'</span><b class="css__title">'.$m3['m__title'].'</b><span class="superpower-message">'.$m3['m__message'].'</span>';
 
                 if($has_unlocked){
 
@@ -1390,12 +1346,6 @@ function view_e_settings($list_id, $show_accordion){
             }
 
             $tab_ui .= '</div>';
-
-        } elseif ($acc_e__id == 13025 /* Full Name */) {
-
-            $tab_ui .= '<span><input type="text" id="e_name" class="form-control border dotransparent" value="' . $member_e['e__title'] . '" /></span>
-                <a href="javascript:void(0)" onclick="e_name()" class="btn btn-default">Save</a>
-                <span class="saving-account save_name"></span>';
 
         } elseif ($acc_e__id == 3288 /* Email */) {
 
@@ -1430,7 +1380,7 @@ function view_e_settings($list_id, $show_accordion){
                 $ui .= '<div class="card '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">
 <div class="card-header" id="heading' . $acc_e__id . '">
 <button class="btn btn-block" type="button" data-toggle="collapse" data-target="#openEn' . $acc_e__id . '" aria-expanded="false" aria-controls="openEn' . $acc_e__id . '">
-  <span class="icon-block">' . $acc_detail['m__cover'] . '</span><b class="css__title ' . extract_icon_color($acc_detail['m__cover']) . '">' . $acc_detail['m__title'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
+  <span class="icon-block">' . $acc_detail['m__cover'] . '</span><b class="css__title">' . $acc_detail['m__title'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
 </button>
 </div>
 
@@ -1512,7 +1462,7 @@ function view_time_hours($total_seconds, $hide_hour = false){
 function view__load__e($e){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
-    return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__cover'].'</span>' . view_cover($e['e__cover']) . '&nbsp;<a href="/@'.$e['e__id'].'" class="'.extract_icon_color($e['e__cover']).'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__cover'].'</a></div>';
+    return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__cover'].'</span>' . view_cover($e['e__cover']) . '&nbsp;<a href="/@'.$e['e__id'].'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__cover'].'</a></div>';
 }
 
 
@@ -1607,9 +1557,7 @@ function view_info_box(){
 
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
         $max_limit = view_memory(6404,14903);
-        //$ui .= '<div class="info_box_icon">' . $e___11035[$e__id]['m__cover'] . '</div>';
         $ui .= '<h2 class="info_box_header css__title">' . $e___11035[$e__id]['m__title'] . '</h2>';
-        //if(strlen($e___11035[$e__id]['m__message'])){ $ui .= '<div class="info_box_message" style="margin-bottom: 89px;">'.$e___11035[$e__id]['m__message'].'</div>'; }
         $ui .= '<div class="row">';
         $counter = 0;
         foreach($CI->config->item('e___'.$e__id) as $m) {
@@ -1662,7 +1610,7 @@ function view_i_select($i, $x__source, $previously_selected){
     $coin_cover = fetch_cover($i);
     $has_valid_url = filter_var($coin_cover, FILTER_VALIDATE_URL);
     $completion_rate = $CI->X_model->completion_progress($x__source, $i);
-    $i_title = view_i_title($i, null, true);
+    $i_title = view_i_title($i);
     $i_stats = i_stats($i['i__metadata']);
     $href = 'href="javascript:void(0);" onclick="select_answer(' . $i['i__id'] . ')"';
 
@@ -1742,7 +1690,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $has_soft_lock = $locking_enabled && ($has_hard_lock || $previous_is_lock || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603')) && $control_enabled;
     $i_stats = i_stats($i['i__metadata']);
-    $i_title = view_i_title($i, null, !$message_input);
+    $i_title = view_i_title($i);
     $has_any_lock = $has_soft_lock || $has_hard_lock;
     $lock_notice = (  $previous_is_lock ? 14488 : 14377 );
 
@@ -1971,7 +1919,7 @@ function view_x_progress($completion_rate, $i){
 
 }
 
-function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common_prefix = null, $message_input = null)
+function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 {
 
 
@@ -1994,7 +1942,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
     $source_of_e = $control_enabled && $member_e && ($source_of_e || $superpower_13422);
     $x__id = (isset($e['x__id']) ? $e['x__id'] : 0);
     $has_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
-    $e__title = ( $common_prefix ? str_replace($common_prefix, '', $e['e__title']) : $e['e__title'] );
     $has_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
 
@@ -2126,9 +2073,9 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
         //Editable title:
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, (($e['x__spectrum']*100)+1), true);
     } elseif(!$has_any_lock){
-        $ui .= '<a href="'.$href.'" class="css__title">'.$e__title.'</a>';
+        $ui .= '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>';
     } else {
-        $ui .= $e__title;
+        $ui .= $e['e__title'];
     }
     $ui .= '</div>';
 
@@ -2149,15 +2096,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $common
             //DISCOVERY PROGRESS
             $ui .= '<span class="mini-font">'.$CI->X_model->message_view($e['x__message'], false).'</span>';
 
-        }
-    }
-    if($message_input){
-        if(!$has_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
-            //No HTML Tags, add link:
-            $ui .= '<a href="'.$href.'" class="mini-font">'.$message_input.'</a>';
-        } else {
-            //Leave as is so HTML tags work:
-            $ui .= '<span class="mini-font">'.$message_input.'</span>';
         }
     }
 

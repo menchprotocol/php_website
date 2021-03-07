@@ -18,7 +18,14 @@ $html_message .= '<br />';
 foreach($this->config->item('e___14874') as $x__type => $m) {
 
     //Calculate Growth Rate:
-    $icon = extract_icon_color($m['m__cover'], true);
+    if(substr_count($m['m__cover'], 'discover')>0){
+        $icon = '🔴';
+    } elseif(substr_count($m['m__cover'], 'idea')>0){
+        $icon = '🟡';
+    } else {
+        $icon = '🔵';
+    }
+
     $unique = count_unique_coins($x__type, null, $x__time_end);
     $growth = format_percentage(($unique / ( $unique - count_unique_coins($x__type, $x__time_start, $x__time_end) ) * 100) - 100);
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';

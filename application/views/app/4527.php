@@ -39,9 +39,6 @@ foreach($this->X_model->fetch(array(
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
 
-    //Find common base, if allowed:
-    $common_prefix = i_calc_common_prefix($children, 'e__title');
-
     //Generate raw IDs:
     $child_ids = array();
     foreach($children as $child){
@@ -52,11 +49,6 @@ foreach($this->X_model->fetch(array(
     $memory_text .= '$config[\'n___'.$en['x__down'].'\'] = array('.join(',',$child_ids).');'."\n";
     $memory_text .= '$config[\'e___'.$en['x__down'].'\'] = array('."\n";
     foreach($children as $child){
-
-        //Do we have an omit command?
-        if(strlen($common_prefix) > 0){
-            $child['e__title'] = trim(substr($child['e__title'], strlen($common_prefix)));
-        }
 
         //Fetch all parents for this child:
         $child_parent_ids = array(); //To be populated soon
@@ -73,7 +65,7 @@ foreach($this->X_model->fetch(array(
         $memory_text .= '     '.$child['e__id'].' => array('."\n";
         $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',$child['e__title'])).'\','."\n";
         $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$child['x__message'])).'\','."\n";
-        $memory_text .= '        \'m__cover\' => \''.($child['e__cover']).'\','."\n";
+        $memory_text .= '        \'m__cover\' => \''.view_cover(fetch_cover($child)).'\','."\n";
         $memory_text .= '        \'m__profile\' => array('.join(',',$child_parent_ids).'),'."\n";
         $memory_text .= '     ),'."\n";
 
