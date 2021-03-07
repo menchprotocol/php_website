@@ -2153,23 +2153,7 @@ i, .btn .show-max {
 .the_counter b i{
     font-size: 0.45em !important;
 }
-@media (max-width:576px) {
-    .the_counter{
-        margin-top: 21px;
-        font-size: 0.21em !important;
-    }
-    .col2nd { padding-left: 41px !important; padding-top: 8px; }
-    h1{
-        font-size: 2em;
-    }
-    h2{
-        font-size: 1.5em;
-    }
-    .cover-btn{
-        font-size: 5em !important;
-        margin-top: -87%;
-    }
-}
+
 @media (max-width:767px) {
 
     .the_counter{
@@ -2293,7 +2277,23 @@ i, .btn .show-max {
     }
 
 }
-
+@media (max-width:576px) {
+    .the_counter{
+        margin-top: 21px;
+        font-size: 0.21em !important;
+    }
+    .col2nd { padding-left: 41px !important; padding-top: 8px; }
+    h1{
+        font-size: 2em;
+    }
+    h2{
+        font-size: 1.5em;
+    }
+    .cover-btn{
+        font-size: 5em !important;
+        margin-top: -87%;
+    }
+}
 
 
 
