@@ -312,9 +312,15 @@ function copyTextToClipboard(text) {
 
 function load_coin_count(){
     $.post("/x/load_coin_count", {}, function (data) {
-        $(".coin_count_12273").html(data.count__12273).hide().fadeIn();
-        $(".coin_count_12274").html(data.count__12274).hide().fadeIn();
-        $(".coin_count_6255").html(data.count__6255).hide().fadeIn();
+        if($(".coin_count_12273:first").text()!=data.count__12273){
+            $(".coin_count_12273").text(data.count__12273).hide().fadeIn().hide().fadeIn();
+        }
+        if($(".coin_count_12274:first").text()!=data.count__12274){
+            $(".coin_count_12274").text(data.count__12274).hide().fadeIn().hide().fadeIn();
+        }
+        if($(".coin_count_6255:first").text()!=data.count__6255){
+            $(".coin_count_6255").text(data.count__6255).hide().fadeIn().hide().fadeIn();
+        }
     });
 }
 
