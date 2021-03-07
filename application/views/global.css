@@ -1523,14 +1523,7 @@ label {
     padding: 8px 0 !important;
     margin: 3px 3px 0 0;
 }
-.the_counter{
-    margin-top: 50px;
-    line-height: 110%;
-    font-size: 0.5em !important;
-}
-.the_counter b{
-    display:block;
-}
+
 
 .editor-discover > span > span, .bg6255 {
     background-color: #FC1B44 !important;
@@ -2148,10 +2141,17 @@ i, .btn .show-max {
     text-align: center;
     padding: 0 8px !important;
 }
-
+.the_counter{
+    margin-top: 34px;
+    line-height: 110%;
+    font-size: 0.55em !important;
+}
+.the_counter b{
+    display:block;
+}
 @media (max-width:576px) {
     .the_counter{
-        margin-top: 28px;
+        margin-top: 21px;
         font-size: 0.21em !important;
     }
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
