@@ -1523,12 +1523,23 @@ label {
     padding: 8px 0 !important;
     margin: 3px 3px 0 0;
 }
-.editor-discover > span > span {
+.the_counter{
+    margin-top: 10px;
+}
+.the_counter b{
+    display:block;
+}
+
+.editor-discover > span > span, .bg6255 {
     background-color: #FC1B44 !important;
 }
-.editor-idea > span > span {
+.editor-idea > span > span, .bg12273 {
     background-color: #FFC500 !important;
 }
+.editor-source > span > span, .bg12274 {
+    background-color: #007AFD !important;
+}
+
 .note-btn i {
     color: #222222 !important;
 }
@@ -2131,32 +2142,12 @@ i, .btn .show-max {
     font-size: 0.95em !important;
     display: block;
 }
-.list-coins .col {
+.list-coins .coin_cover {
     text-align: center;
     padding: 0 8px !important;
 }
-.list-coins .col>div {
-    padding: 13px 3px 0;
-    display: block;
-    max-width: 250px;
-    margin: 0 auto;
-    margin: -167px auto 147px;
-}
-.list-coins .col div b{
-    font-size: 15.7em !important;
-    display: block;
-}
-.list-coins .col div b i {
-    font-size: 1em !important;
-}
 
 @media (max-width:576px) {
-    .list-coins .col div b i{
-        font-size: 10em !important;
-    }
-    .list-coins .col>div {
-        margin: -127px auto 107px;
-    }
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
         font-size: 2em;
