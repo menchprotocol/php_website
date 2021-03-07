@@ -328,30 +328,7 @@ function view_cover($cover_code)
     //A simple function to display the Member Icon OR the default icon if not available:
     if(filter_var($cover_code, FILTER_VALIDATE_URL)){
 
-        $append_all = '';
-        foreach(array(
-                    'spin' => array(
-                        'slow' => 'fa-spin-slow',
-                        'medium' => 'fa-spin-med',
-                        'fast' => 'fa-spin',
-                        'revslow' => 'fa-spin-reverse-slow',
-                        'revmedium' => 'fa-spin-reverse-med',
-                        'revfast' => 'fa-spin-reverse',
-                    ),
-                    'radius' => array(
-                        'no' => 'no-radius',
-                    ),
-                ) as $get_var => $append_class){
-            if(substr_count($cover_code, $get_var.'=')==1){
-                foreach($append_class as $val=>$class){
-                    if(substr_count($cover_code, $get_var.'='.$val)==1){
-                        $append_all .= ' '.$class.' ';
-                    }
-                }
-            }
-        }
-
-        return '<img src="'.$cover_code.'" class="'.$append_all.'" />';
+        return '<img src="'.$cover_code.'"'.( substr_count($cover_code, 'class=') ? ' class="'.str_replace(',',' ',one_two_explode($cover_code,'class=','&')).'" ' : '').'/>';
 
     } elseif (substr($cover_code, 0, 2)=='fa') {
 

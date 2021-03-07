@@ -232,7 +232,7 @@ a.btn, .btn.dropdown-toggle, label.btn {
 }
 
 
-img.no-radius {
+img.no_frame {
     border-radius:0 !important;
 }
 
