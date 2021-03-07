@@ -611,7 +611,7 @@ function view_coins(){
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $ui = '<div class="row margin-top-down list-coins">';
     foreach($CI->config->item('e___14874') as $e__id => $m) {
-        $ui .= '<div class="coin_cover no-padding col-6 '.( $e__id==6255 ? ' offset-3 ' : '  ' ).'"><div class="cover-wrapper"><div class="bg'.$e__id.' coinType'.$e__id.' cover-link"><div class="cover-btn"><div class="the_counter css__title"><b class="coin_count_'.$e__id.'"><i class="far fa-yin-yang fa-spin"></i></b>'.$m['m__title'].'</div></div></div></div></div>';
+        $ui .= '<div class="coin_cover no-padding col-6 '.( $e__id==6255 ? ' offset-lg-3 ' : '  ' ).'"><div class="cover-wrapper"><div class="bg'.$e__id.' coinType'.$e__id.' cover-link"><div class="cover-btn"><div class="the_counter css__title"><b class="coin_count_'.$e__id.'"><i class="far fa-yin-yang fa-spin"></i></b>'.$m['m__title'].'</div></div></div></div></div>';
     }
     $ui .= '</div>';
     return $ui;
