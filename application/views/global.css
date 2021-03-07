@@ -2007,6 +2007,9 @@ i, .btn .show-max {
     position: relative;
     margin:30px 0 70px !important;
 }
+.coin_cover_6255 {
+    margin-top:-99px !important;
+}
 
 .cover-content .inner-content {
     margin: 0 5px;
@@ -2155,6 +2158,10 @@ i, .btn .show-max {
 
 @media (max-width:767px) {
 
+    .coin_cover_6255 {
+        margin-top:-89px !important;
+    }
+
     .the_counter{
         margin-top: 26px;
         font-size: 0.3em !important;
@@ -2280,6 +2287,9 @@ i, .btn .show-max {
 
 }
 @media (max-width:576px) {
+    .coin_cover_6255 {
+        margin-top:-72px !important;
+    }
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
         font-size: 2em;
