@@ -2144,10 +2144,13 @@ i, .btn .show-max {
 .the_counter{
     margin-top: 34px;
     line-height: 110%;
-    font-size: 0.55em !important;
+    font-size: 0.45em !important;
 }
 .the_counter b{
     display:block;
+}
+.the_counter b i{
+    font-size: 0.45em !important;
 }
 @media (max-width:576px) {
     .the_counter{
