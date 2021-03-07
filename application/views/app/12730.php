@@ -27,7 +27,7 @@ foreach($this->E_model->fetch(array()) as $e){
 
     echo $type.$e['e__cover'].' ('.$new_cover.') @'.$e['e__id'].'<br />';
 
-    $this->E_model->update($e['e__id'], array('e__cover' => $new_cover));
+    //$this->E_model->update($e['e__id'], array('e__cover' => $new_cover));
 }
 
 echo '<br /><br />Images ('.$images.') Fontawesome ('.$fontawesome.') Emoji ('.$emoji.') None ('.$none.')<br />';

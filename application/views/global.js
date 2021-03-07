@@ -325,7 +325,7 @@ $(document).ready(function () {
     if ($(".list-coins")[0]){
         //Update mench coins every 3 seconds:
         $(function () {
-            setInterval(randomQuote, 3000);
+            setInterval(load_coin_count, 3000);
         });
     }
 
