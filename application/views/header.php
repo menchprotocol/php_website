@@ -101,7 +101,7 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
     <?php
     echo '<style>';
     //Don't show Source/Idea coin colors unless contributor:
-    //if(!$superpower_10939){ echo ' .coin-source, .coin-idea { border: 0 !important; } '; }
+    //if(!$superpower_10939){ echo ' .coinType12274, .coinType12273 { border: 0 !important; } '; }
     echo '</style>';
     ?>
 

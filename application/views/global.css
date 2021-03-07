@@ -471,13 +471,13 @@ img.no-frame {
 .grey, .grey i, .grey .source, .grey .idea, .grey .discover, .headline .source, .headline .idea, .headline .discover, .btn-grey, .btn-grey i, .mini-grey { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#222222 !important; }
 
-.coin-source{
+.coinType12274{
     border: 3px solid #007AFD !important;
 }
-.coin-idea{
+.coinType12273{
     border: 3px solid #FFC500 !important;
 }
-.coin-discover{
+.coinType6255{
     border: 3px solid #FC1B44 !important;
 }
 
@@ -1524,7 +1524,9 @@ label {
     margin: 3px 3px 0 0;
 }
 .the_counter{
-    margin-top: 10px;
+    margin-top: 50px;
+    line-height: 110%;
+    font-size: 0.5em !important;
 }
 .the_counter b{
     display:block;
