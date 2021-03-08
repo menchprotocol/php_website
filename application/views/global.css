@@ -2141,12 +2141,12 @@ i, .btn .show-max {
     padding: 0 8px !important;
 }
 .the_counter{
-    margin-top: 53px;
+    margin-top: -35px;
     line-height: 110%;
-    font-size: 0.45em !important;
+    font-size: 0.3em !important;
 }
 .the_counter .min-height{
-    min-height: 55px;
+    min-height: 60px;
 }
 .the_counter b i{
     font-size: 1em !important;
@@ -2159,8 +2159,8 @@ i, .btn .show-max {
     }
 
     .the_counter{
-        margin-top: 26px;
-        font-size: 0.3em !important;
+        margin-top: -21px;
+        font-size: 0.21em !important;
     }
     .the_counter .min-height{
         min-height: 34px;
@@ -2281,7 +2281,7 @@ i, .btn .show-max {
 }
 @media (max-width:576px) {
     .the_counter{
-        margin-top: 18px;
+        margin-top: -30px;
     }
     .coin_cover_6255 {
         margin-top:-72px !important;

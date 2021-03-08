@@ -1722,13 +1722,14 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     $ui .= '<div class="coin-hover coin-cover coin-cover-right hideIfEmpty">';
         //LOCKED
+        $action_buttons = null;
+
         if($has_any_lock){
 
             $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
         } else {
 
-            $action_buttons = null;
             foreach($CI->config->item('e___14955') as $e__id => $m) {
 
                 $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
