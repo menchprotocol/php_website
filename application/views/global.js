@@ -1125,9 +1125,9 @@ function gif_modal(x__type){
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
     $('.gif_results').html('');
-    $('#gif_query').val('');
+    $('.gif_query').val('');
     setTimeout(function () {
-        $('#gif_query').focus();
+        $('.gif_query').focus();
     }, 610);
 }
 
@@ -1137,7 +1137,7 @@ var current_q = '';
 function gif_search(q){
 
     if(!q.length){
-        q = encodeURI($('#gif_query').val());
+        q = encodeURI($('.gif_query').val());
     }
 
     if(q==current_q){
