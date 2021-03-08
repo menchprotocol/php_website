@@ -184,6 +184,9 @@ foreach($messages as $message_x) {
 }
 
 
+
+
+
 $fetch_13865 = $this->X_model->fetch(array(
     'x__right' => $i_focus['i__id'],
     'x__type' => 13865, //PREREQUISITES
@@ -239,6 +242,17 @@ if($top_i__id && count($this->X_model->fetch(array(
 
 }
 */
+
+if(!$top_i__id){
+
+    $discovery_e = ( $is_discovarable ? 4235 : 14022 );
+
+    //Get Started
+    echo '<div class="discover-controller margin-top-down"><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
+
+}
+
+
 
 
 
@@ -512,18 +526,7 @@ echo '</div>'; //CLOSE CONTAINER
 
 
 
-if(!$top_i__id){
-
-    $discovery_e = ( $is_discovarable ? 4235 : 14022 );
-
-    //Get Started
-    echo '<div class="container light-bg top-margin">';
-    echo '<div class="discover-controller">';
-    echo '<div><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
-    echo '</div>';
-    echo '</div>';
-
-} else {
+if($top_i__id){
 
     $buttons_found = 0;
     $buttons_ui = '';

@@ -25,7 +25,7 @@ function view_load_more($x__type, $page, $limit, $list_e_count)
                             </div>';
 }
 
-function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
+function view_i_time($i_stats, $give_right_space = false, $micro_sign = false){
 
     //TIME STATS
     if(!$i_stats['i___6161']){
@@ -39,7 +39,7 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
     //Has Time
     $CI =& get_instance();
     $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
-    $ui = '<div class="inline-block '.( $show_icon ? ' css__title grey ' : ' mini-font ' ).'">';
+    $ui = '<div class="inline-block '.( $give_right_space ? ' css__title grey ' : ' mini-font ' ).'">';
 
     if(!$micro_sign && $i_stats['i___6170']>0){
         $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' idea'.view__s($i_stats['i___6170']).'<span class="mid-range">&middot;</span>';
@@ -53,8 +53,8 @@ function view_i_time($i_stats, $show_icon = false, $micro_sign = false){
         $ui .= ( $has_notable_diff && !$micro_sign ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>' : '' ).round_minutes($i_stats['i___6162']).( $micro_sign ? '\'' : ' min' );
     }
 
-    if($show_icon){
-        $ui .= '<span class="icon-block">'.$e___13544[13292]['m__cover'].'</span>';
+    if($give_right_space){
+        $ui .= '<span class="icon-block">&nbsp;</span>';
     }
 
     $ui .= '</div>';
@@ -1035,11 +1035,11 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e, $
     if(in_array($x__type, $CI->config->item('n___14945'))){
         //IDEA TYPE
         $e___4737 = $CI->config->item('e___4737'); //IDEA TYPE
-        $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___4737[$i['i__type']]['m__title'].'</div>';
+        $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___4737[$i['i__type']]['m__title'].':</div>';
     } else {
         //LIST TYPE
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-        $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[$x__type]['m__title'].'</div>';
+        $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[$x__type]['m__title'].':</div>';
     }
     $ui .= '</div>';
     if($right_content){
