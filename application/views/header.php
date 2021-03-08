@@ -10,7 +10,7 @@ $superpower_10939 = $member_e && superpower_active(10939, true);
 $current_coin = current_coin();
 $base_source = get_domain_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
-$logo = ( $base_source!=2738 || !strlen($first_segment) ? '/img/logos/'.$base_source.'.svg' : '/img/'.$current_coin['c__class'].'.png' );
+$logo = ( !strlen($first_segment) ? '/img/logos/'.$base_source.'.svg' : '/img/'.$current_coin['c__class'].'.png' );
 ?><!doctype html>
 <html lang="en" >
 <head>
