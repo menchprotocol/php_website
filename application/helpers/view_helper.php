@@ -1988,7 +1988,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>'; //Edit Message
             } elseif($e__id==4603 && $has_sortable && $superpower_13422){
                 $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden">'.$anchor.'</a>'; //SORT
-            } elseif($e__id==10673 && $has_sortable || $superpower_13422){
+            } elseif($e__id==10673 && ($has_sortable || $superpower_13422)){
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</span></a>'; //UNLINK
             } elseif($e__id==14601 && !$has_any_lock && superpower_active(14683, true)){
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //NUCLEAR DELETE
