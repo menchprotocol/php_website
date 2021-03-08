@@ -2127,7 +2127,7 @@ i, .btn .show-max {
 .cover-btn{
     font-size: 10em;
     position: absolute;
-    top: 45%;
+    top: 43%;
     width: 100%;
     text-align: center;
 }
@@ -2293,6 +2293,10 @@ i, .btn .show-max {
     }
     h2{
         font-size: 1.5em;
+    }
+    .cover-btn{
+        font-size: 8em;
+        top: 42%;
     }
 }
 
