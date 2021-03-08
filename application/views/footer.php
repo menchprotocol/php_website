@@ -211,8 +211,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- PREVIEW -->
                     <div class="row extra_info_box">
                         <div class="col-12">
-                            <div class="coin_cover" style="width: 255px !important; margin: -21px auto 50px !important;">
-                                <div class="cover-wrapper"><div class="black-background cover-link" style="background-image:url('https://mench.com/img/logos/2738.svg');"><div class="cover-btn">🇨🇦</div></div></div>
+                            <div class="coin_cover demo_cover" style="width: 255px !important; margin: -21px auto 50px !important;">
+                                <div class="cover-wrapper"><div class="black-background cover-link" style=""><div class="cover-btn"></div></div></div>
                                 <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="coin__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;resize: none;height: 42px;"></textarea></span></div></div>
                             </div>
                         </div>
@@ -284,7 +284,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             echo $tab_nav.$tab_content;
 
-                            //JS $('#coin__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_cover_icon();
+                            //JS $('#coin__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_cover_main($('#coin__cover').val(), '.demo_cover');
 
                             ?>
                         </div>
