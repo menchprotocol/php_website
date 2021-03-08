@@ -27,7 +27,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         if(count($hosted_domains) && !in_array(get_domain_setting(0), $hosted_domains)){
                             continue;
                         }
-                        echo '<div class="headline top-margin"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
+                        echo '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$m['m__title'].'</div>';
                         echo view_e_settings($e__id, true);
                     }
                     ?>
@@ -59,13 +59,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <?php
 
                     //Current URL:
-                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14927]['m__cover'].'</span>'.$e___14393[14927]['m__title'].'</div>';
+                    echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___14393[14927]['m__title'].'</div>';
                     echo '<div class="current_url padded hideIfEmpty inline-block"></div>';
 
 
 
                     //Type
-                    echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14394]['m__cover'].'</span>'.$e___14393[14394]['m__title'].'</div>';
+                    echo '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$e___14393[14394]['m__title'].'</div>';
                     $counter_options = 0;
                     foreach($this->config->item('e___14394') /* SUGGESTION TYPE */ as $x__type => $m){
                         $counter_options++;
@@ -76,7 +76,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     }
 
                     //Details
-                    echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14395]['m__cover'].'</span>'.$e___14393[14395]['m__title'].'</div>';
+                    echo '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$e___14393[14395]['m__title'].'</div>';
                     echo '<div class="padded"><textarea class="form-control text-edit border" id="sugg_note" data-lpignore="true" placeholder="More details here..."></textarea></div>';
 
                     ?>
@@ -111,7 +111,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <?php
                     //URL
                     $current_link = current_link();
-                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14927]['m__cover'].'</span>'.$e___14393[14927]['m__title'].'</div>';
+                    echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___14393[14927]['m__title'].'</div>';
                     echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(\''.$current_link.'\');">'.$current_link.'&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
 
                     //Add This

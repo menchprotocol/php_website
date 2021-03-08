@@ -194,7 +194,7 @@ $meets_13865 = !count($fetch_13865);
 
 if(count($fetch_13865)){
 
-    echo '<div class="headline" style="margin-top: 41px;"><span class="icon-block">'.$e___11035[13865]['m__cover'].'</span>'.$e___11035[13865]['m__title'].'</div>';
+    echo '<div class="headline" style="margin-top: 41px;"><span class="icon-block">&nbsp;</span>'.$e___11035[13865]['m__title'].'</div>';
 
     $missing_13865 = 0;
     $e___13865 = $this->config->item('e___13865'); //PREREQUISITES
@@ -355,7 +355,7 @@ if($top_i__id) {
 
             //HTML:
             $e___4737 = $this->config->item('e___4737'); //Idea Types
-            echo '<div class="pull-left headline"><span class="icon-block">'.$e___4737[$i_focus['i__type']]['m__cover'].'</span>'.$e___4737[$i_focus['i__type']]['m__title'].':</div>';
+            echo '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>'.$e___4737[$i_focus['i__type']]['m__title'].':</div>';
 
 
             echo '<div class="doclear">&nbsp;</div>';
@@ -426,7 +426,7 @@ if($top_i__id) {
     } elseif ($i_focus['i__type'] == 6683) {
 
         //TEXT RESPONSE
-        echo '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__cover'].'</span>'.$e___11035[13980]['m__title'].'</div>';
+        echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[13980]['m__title'].'</div>';
 
         //Write `skip` if you prefer not to answer...
         echo '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
@@ -452,7 +452,7 @@ if($top_i__id) {
 
             echo '<div class="file_saving_result">';
 
-            echo '<div class="headline"><span class="icon-block">'.$e___11035[13980]['m__cover'].'</span>'.$e___11035[13977]['m__title'].'</div>';
+            echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[13977]['m__title'].'</div>';
 
             echo '<div class="previous_answer">' . $this->X_model->message_view($x_completes[0]['x__message'], true) . '</div>';
 
@@ -492,7 +492,7 @@ if($top_i__id) {
 //DISCUSSIONS:
 echo '<div class="view-discussions hidden">';
 echo '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
-echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12419]['m__cover'].'</span>'.$e___11035[12419]['m__title'].'</div>';
+echo '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$e___11035[12419]['m__title'].'</div>';
 $comments = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 12419,

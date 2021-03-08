@@ -201,7 +201,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
 
             $ui .= '<div class="toggle_12589 hidden" style="margin-bottom:41px;">';
-            $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[12589]['m__cover'].'</span>'.$e___11035[12589]['m__title'].'</div>';
+            $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[12589]['m__title'].'</div>';
             $dropdown_options = '';
             $input_options = '';
             $this_counter = 0;
