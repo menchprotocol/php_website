@@ -42,8 +42,28 @@ $profiles = $this->X_model->fetch(array(
 
         echo '<div id="list-in-11030" class="row dominHeight">';
 
+        $trigger_hide = null;
+        foreach($profiles as $e_profile) {
+
+            if(!$see_more_button && $count==$show_max_14538){
+                echo view_show_more('see_all_profiles');
+                $see_more_button = true;
+            }
+
+            if($count<$show_max_14538){
+                $trigger_hide = 'see_all_profiles hidden';
+            }
+
+            $view_e = view_e(11030, $e_profile, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_profile['x__source']))));
+
+            if($view_e){
+                echo $view_e;
+                $count++;
+            }
+        }
+
         if($superpower_13422){
-            echo '<div id="new_11030" class="col-12 list-group-item list-adder no-side-padding">
+            echo '<div id="new_11030" class="col-12 list-group-item list-adder no-side-padding '.$trigger_hide.'">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
                         <input type="text"
@@ -52,21 +72,6 @@ $profiles = $this->X_model->fetch(array(
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[13914]['m__title'].'">
                     </div></div>';
-        }
-
-        foreach($profiles as $e_profile) {
-
-            if(!$see_more_button && $count==$show_max_14538){
-                echo view_show_more('see_all_profiles');
-                $see_more_button = true;
-            }
-
-            $view_e = view_e(11030, $e_profile, ( $count<$show_max_14538 ? '' : 'see_all_profiles hidden'),  ($source_of_e || ($member_e && ($member_e['e__id']==$e_profile['x__source']))));
-
-            if($view_e){
-                echo $view_e;
-                $count++;
-            }
         }
 
         echo '</div>';

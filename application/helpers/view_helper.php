@@ -1732,31 +1732,24 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         } else {
 
             $action_buttons = null;
+            foreach($CI->config->item('e___14955') as $e__id => $m) {
 
-            //Action Menu?
-            if($editing_enabled){
+                $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
 
-                //COIN COVER
-                $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
-
+                if($e__id==14937 && $editing_enabled){
+                    $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$anchor.'</a></div>'; //COIN COVER
+                } elseif($e__id==4603 && $has_sortable){
+                    $action_buttons .= '<div class="dropdown-item x_sort css__title">'.$anchor.'</div>'; //SORT
+                } elseif($e__id==6155 && $control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
+                    $action_buttons .= '<div class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'">'.$anchor.'</div>'; //UNLINK
+                }
             }
-
-            //SORT
-            if($has_sortable){
-                $action_buttons .= '<div class="dropdown-item x_sort css__title"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span>'.$e___11035[4603]['m__title'].'</div>';
-            }
-
-            //UNLINK
-            if($control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
-                $action_buttons .= '<div class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'"><span class="icon-block">'.$e___11035[6155]['m__cover'].'</span>'.$e___11035[6155]['m__title'].'</div>';
-            }
-
 
             //Any Buttons?
             if($action_buttons){
                 //Right Action Menu
                 $ui .= '<div class="dropdown inline-block">';
-                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.( $has_sortable ? ' x_sort ' : '' ).'" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-ellipsis-h"></i></button>';
+                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.( $has_sortable ? ' x_sort ' : '' ).'" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14955]['m__cover'].'</button>';
                 $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
                 $ui .= $action_buttons;
                 $ui .= '</div>';
@@ -1987,40 +1980,28 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     } elseif($source_of_e && ($has_e_link || $has_note)) {
 
         $action_buttons = null;
-
-        //Action Menu?
-        if($source_of_e){
-
-            //COIN COVER
-            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')"><span class="icon-block">'.$e___11035[14937]['m__cover'].'</span>'.$e___11035[14937]['m__title'].'</a></div>';
-
+        foreach($CI->config->item('e___14956') as $e__id => $m) {
+            $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
+            if($e__id==14937 && $source_of_e){
+                $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$anchor.'</a></div>'; //COIN COVER
+            } elseif($e__id==13571 && $has_e_link && $superpower_13422){
+                $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')">'.$anchor.'</a></div>'; //Edit Message
+            } elseif($e__id==4603 && $has_sortable && $superpower_13422){
+                $action_buttons .= '<div class="dropdown-item css__title sort_e hidden">'.$anchor.'</div>'; //SORT
+            } elseif($e__id==10673 && $has_sortable || $superpower_13422){
+                $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')">'.$anchor.'</span>'.$e___11035[10673]['m__title'].'</a></div>'; //UNLINK
+            } elseif($e__id==14601 && !$has_any_lock && superpower_active(14683, true)){
+                $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')">'.$anchor.'</a></div>'; //NUCLEAR DELETE
+            }
         }
 
-        //Edit Message
-        if($has_e_link && $superpower_13422){
-            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')"><span class="icon-block">'.$e___11035[13571]['m__cover'].'</span>'.$e___11035[13571]['m__title'].'</a></div>';
-        }
 
-        //SORT
-        if($has_sortable && $superpower_13422){
-            $action_buttons .= '<div class="dropdown-item css__title sort_e hidden"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span>'.$e___11035[4603]['m__title'].'</div>';
-        }
-
-        //UNLINK
-        if($has_sortable || $superpower_13422){
-            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')"><span class="icon-block">'.$e___11035[10673]['m__cover'].'</span>'.$e___11035[10673]['m__title'].'</a></div>';
-        }
-
-        //NUCLEAR DELETE
-        if(!$has_any_lock && superpower_active(14683, true)){
-            $action_buttons .= '<div class="dropdown-item css__title"><a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')"><span class="icon-block">'.$e___11035[14601]['m__cover'].'</span>'.$e___11035[14601]['m__title'].'</a></div>';
-        }
 
         //Any Buttons?
         if($action_buttons){
             //Right Action Menu
             $ui .= '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.( $has_sortable ? ' sort_e ' : '' ).'" id="action_menu_e_'.$e['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-ellipsis-h"></i></button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.( $has_sortable ? ' sort_e ' : '' ).'" id="action_menu_e_'.$e['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14956]['m__cover'].'</button>';
             $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
             $ui .= $action_buttons;
             $ui .= '</div>';
