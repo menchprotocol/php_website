@@ -2133,7 +2133,8 @@ i, .btn .show-max {
 }
 
 .cover-btn i {
-    font-size: 0.95em !important;
+    margin-top: -32%;
+    font-size: 0.89em !important;
 }
 .list-coins .coin_cover {
     text-align: center;
