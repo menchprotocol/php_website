@@ -1124,7 +1124,7 @@ function gif_modal(x__type){
     });
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
-    $('#gif_results').html('');
+    $('.gif_results').html('');
     $('#gif_query').val('');
     setTimeout(function () {
         $('#gif_query').focus();
@@ -1146,7 +1146,7 @@ function gif_search(q){
 
     current_q = q;
     var x__type = $('#modal_x__type').val();
-    $('#gif_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
+    $('.gif_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     $.get({
         url: js_e___6404[14073]['m__message']+current_q,
         success: function(result) {
@@ -1169,7 +1169,7 @@ function gif_search(q){
                 //No results found:
                 output = "<div style=\"margin:5px 0;\">No GIFs found</div>";
             }
-            $("#gif_results").html(output);
+            $(".gif_results").html(output);
             lazy_load();
         },
         error: function(error) {
