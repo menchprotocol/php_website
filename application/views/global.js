@@ -342,7 +342,7 @@ $(document).ready(function () {
 
     //Keep an eye for icon change:
     $('#coin__cover').keyup(function() {
-        update_cover_main($('#coin__cover').val(), '.demo_cover');
+        update_cover_main($(this).val(), '.demo_cover');
     });
 
     init_remove();
@@ -693,7 +693,7 @@ function coin__save(){
             update_text_name(text_field, $('#coin__id').val(), $('#coin__title').val());
 
             //Update Mini Icon:
-            update_cover_mini($('#coin__cover').val(), '.mini_'+$('#coin__id').val());
+            update_cover_mini($('#coin__cover').val(), '.mini_'+text_field+'_'+$('#coin__id').val());
 
 
             //Update Main Icons:

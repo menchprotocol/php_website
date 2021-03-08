@@ -186,14 +186,14 @@ if(!$basic_header_footer){
                     echo '<div class="left_nav top_nav">';
 
 
-                    $site_logo = '<span class="icon-block platform-logo">'.get_domain('m__cover').'</span><b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b>';
+                    $site_logo = '<span class="icon-block platform-logo mini_6197_'.get_domain_setting(0).'">'.get_domain('m__cover').'</span><b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b>';
                     if($member_e){
 
                         if($first_segment=='@'.$member_e['e__id']){
                             echo $site_logo;
                         } else {
                             //My Source
-                            echo '<a href="'.home_url().'"><span class="platform-circle">'.view_cover($member_e['e__cover']).'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
+                            echo '<a href="'.home_url().'"><span class="platform-circle mini_6197_'.$member_e['e__id'].'">'.view_cover($member_e['e__cover']).'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
                         }
 
                     } else {
