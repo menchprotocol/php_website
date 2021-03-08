@@ -329,11 +329,11 @@ $profiles = $this->X_model->fetch(array(
             if ($counter > count($list_e)) {
                 $ui .= view_load_more(11029, 1, view_memory(6404,11064), $counter);
             }
-
+            $ui .= '</div>';
             //Input to add new child:
             if($superpower_13422){
 
-                $ui .= '<div id="new_11029" current-count="'.$counter.'" class="list-group-item list-adder no-side-padding '.superpower_active(10939).'">
+                $ui .= '<div id="new_11029" current-count="'.$counter.'" class="list-adder '.superpower_active(10939).'">
                         <div class="input-group border">
                             <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11029input\').focus();"><span class="icon-block">'.$e___11035[14054]['m__cover'].'</span></a>
                             <input type="text"
@@ -348,8 +348,6 @@ $profiles = $this->X_model->fetch(array(
                 $ui .= '<div id="new_11029" class="hideIfEmpty"></div>';
 
             }
-
-            $ui .= '</div>';
 
         } elseif($x__type==12273){
 
