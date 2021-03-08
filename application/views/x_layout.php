@@ -160,9 +160,14 @@ if($top_i__id){
 
 //PREVIOUS DISCOVERIES
 if($top_i__id){
-    echo '<div class="row justify-content-center">';
-    foreach($this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']) as $sitemap_i){
-        echo view_i(14450, $top_i__id, null, $sitemap_i);
+
+    $show_max_14538 = view_memory(6404,14538);
+    echo '<div class="row margin-top-down justify-content-center">';
+    foreach($this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']) as $count => $sitemap_i){
+        if(!$see_more_button && $count==$show_max_14538){
+            echo view_show_more('see_all_discoveries');
+        }
+        echo view_i(14450, $top_i__id, null, $sitemap_i, false, null, false, null, ($count>=$show_max_14538 ? 'see_all_discoveries hidden' : ''));
     }
     echo '</div>';
 }
