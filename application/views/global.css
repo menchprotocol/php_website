@@ -2141,7 +2141,7 @@ i, .btn .show-max {
     padding: 0 8px !important;
 }
 .the_counter{
-    margin-top: -35px;
+    margin-top: -40px;
     line-height: 110%;
     font-size: 0.3em !important;
 }
@@ -2281,7 +2281,8 @@ i, .btn .show-max {
 }
 @media (max-width:576px) {
     .the_counter{
-        margin-top: -30px;
+        margin-top: -24px;
+        font-size: 0.16em !important;
     }
     .coin_cover_6255 {
         margin-top:-72px !important;
