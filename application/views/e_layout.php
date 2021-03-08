@@ -40,8 +40,18 @@ $profiles = $this->X_model->fetch(array(
         $show_max_14538 = view_memory(6404,14538);
         $see_more_button = false;
 
+        if($superpower_13422){
+            echo '<div id="new_11030" class="list-adder '.$trigger_hide.'">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               id="New11030input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="'.$e___11035[13914]['m__title'].'">
+                    </div></div>';
+        }
         echo '<div id="list-in-11030" class="row dominHeight">';
-
         $trigger_hide = null;
         foreach($profiles as $e_profile) {
 
@@ -62,17 +72,6 @@ $profiles = $this->X_model->fetch(array(
             }
         }
         echo '</div>';
-        if($superpower_13422){
-            echo '<div id="new_11030" class="list-adder '.$trigger_hide.'">
-                    <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               id="New11030input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[13914]['m__title'].'">
-                    </div></div>';
-        }
 
 
         //SOURE STATUS
