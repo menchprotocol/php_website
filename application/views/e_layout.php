@@ -50,7 +50,7 @@ $profiles = $this->X_model->fetch(array(
                 $see_more_button = true;
             }
 
-            if($count<$show_max_14538){
+            if($count>=$show_max_14538){
                 $trigger_hide = 'see_all_profiles hidden';
             }
 
