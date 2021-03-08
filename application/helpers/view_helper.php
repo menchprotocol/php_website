@@ -1747,7 +1747,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             if($action_buttons){
                 //Right Action Menu
                 $ui .= '<div class="dropdown inline-block">';
-                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.( $has_sortable ? ' x_sort ' : '' ).'" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14955]['m__cover'].'</button>';
+                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14955]['m__cover'].'</button>';
                 $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
                 $ui .= $action_buttons;
                 $ui .= '</div>';
@@ -1998,7 +1998,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         if($action_buttons){
             //Right Action Menu
             $ui .= '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title '.( $has_sortable ? ' sort_e ' : '' ).'" id="action_menu_e_'.$e['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14956]['m__cover'].'</button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_e_'.$e['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14956]['m__cover'].'</button>';
             $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
             $ui .= $action_buttons;
             $ui .= '</div>';

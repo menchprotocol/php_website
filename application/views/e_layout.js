@@ -230,13 +230,14 @@ function e_load_page(x__type, page, load_new_filter) {
         $('.load-more').remove();
 
         if (load_new_filter) {
+
             $('#list-in-'+x__type).html(data + '<div id="new_'+x__type+'" class="list-group-item no-side-padding grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
             e_load_search(x__type);
 
         } else {
             //Update UI to confirm with member:
-            $(data).insertBefore('#new_'+x__type);
+            $(data).append('#list-in-'+x__type);
         }
 
         lazy_load();
