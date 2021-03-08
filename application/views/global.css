@@ -2125,9 +2125,11 @@ i, .btn .show-max {
 }
 
 .cover-btn{
-    font-size: 7em;
+    font-size: 10em;
+    position: absolute;
+    top: 45%;
+    width: 100%;
     text-align: center;
-    margin-top: -83%;
 }
 .cover-btn span{
     padding-top: 83px;
@@ -2189,10 +2191,7 @@ i, .btn .show-max {
         right: 3px;
     }
 
-    .cover-btn{
-        font-size: 9em !important;
-        margin-top: -85%;
-    }
+
     .title-icon{
         margin-top: 5px;
     }
@@ -2299,10 +2298,6 @@ i, .btn .show-max {
     }
     h2{
         font-size: 1.5em;
-    }
-    .cover-btn{
-        font-size: 5em !important;
-        margin-top: -87%;
     }
 }
 
