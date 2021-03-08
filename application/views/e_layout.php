@@ -40,18 +40,8 @@ $profiles = $this->X_model->fetch(array(
         $show_max_14538 = view_memory(6404,14538);
         $see_more_button = false;
 
-        if($superpower_13422){
-            echo '<div id="new_11030" class="list-adder '.$trigger_hide.'">
-                    <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               id="New11030input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[13914]['m__title'].'">
-                    </div></div>';
-        }
-        echo '<div id="list-in-11030" class="row dominHeight">';
+
+        $profile_ui = '<div id="list-in-11030" class="row dominHeight">';
         $trigger_hide = null;
         foreach($profiles as $e_profile) {
 
@@ -67,11 +57,25 @@ $profiles = $this->X_model->fetch(array(
             $view_e = view_e(11030, $e_profile, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_profile['x__source']))));
 
             if($view_e){
-                echo $view_e;
+                $profile_ui .= $view_e;
                 $count++;
             }
         }
-        echo '</div>';
+        $profile_ui .= '</div>';
+
+
+        if($superpower_13422){
+            echo '<div id="new_11030" class="list-adder '.$trigger_hide.'">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               id="New11030input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="'.$e___11035[13914]['m__title'].'">
+                    </div></div>';
+        }
+        echo $profile_ui;
 
 
         //SOURE STATUS
