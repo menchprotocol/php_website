@@ -1619,9 +1619,7 @@ function view_i_select($i, $x__source, $previously_selected){
     $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' coinType6255 ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$coin_cover.'\');"' : '' ).'>';
 
     //ICON?
-    if(!$has_valid_url){
-        $ui .= '<div class="cover-btn">'.$coin_cover.'</div>';
-    }
+    $ui .= '<div class="cover-btn">'.(!$has_valid_url ? $coin_cover : '').'</div>';
 
     $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . ' discover"><i class="fad fa-check-circle discover"></i></div>';
 
@@ -1779,9 +1777,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= ( $has_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $completion_rate['completion_percentage']>=100 ? ' coinType6255 ' : ' coinType12273 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$coin_cover.'\');"' : '' ).'>';
 
     //ICON?
-    if($show_custom_image){
-        $ui .= '<div class="cover-btn">'.view_cover($coin_cover).'</div>';
-    }
+    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($coin_cover) : '').'</div>';
 
     $ui .= ( $has_any_lock ? '</div>' : '</a>' );
     $ui .= '</div>'; //cover-wrapper
@@ -2044,9 +2040,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $ui .= ( $has_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( 0 ? ' coinType6255 ' : ' coinType12274 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$coin_cover.'\');"' : '' ).'>';
 
     //ICON?
-    if($show_custom_image){
-        $ui .= '<div class="cover-btn">'.view_cover($coin_cover).'</div>';
-    }
+    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($coin_cover) : '' ).'</div>';
 
     $ui .= ( $has_any_lock ? '</div>' : '</a>' );
     $ui .= '</div>';
