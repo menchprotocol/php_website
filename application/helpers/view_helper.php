@@ -1794,7 +1794,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             'x__right' => $i['i__id'],
             'x__left !=' => $current_i,
         ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
-            $ui .= '<span class="icon-block-img"><a href="/~'.$previous_i['i__id'].'" data-toggle="tooltip" title="' . $previous_i['i__title'] . '" data-placement="top">' . $e___4737[$previous_i['i__type']]['m__cover'] . '</a></span> ';
+            $ui .= '<span class="icon-block-img"><a href="/~'.$previous_i['i__id'].'" title="' . $previous_i['i__title'] . '">' . $e___4737[$previous_i['i__type']]['m__cover'] . '</a></span> ';
         }
         $ui .= '</div>';
     }
@@ -2050,7 +2050,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     if($superpower_12706){
         $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
         foreach($e__profiles as $e_profile) {
-            $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" data-toggle="tooltip" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '" data-placement="bottom">' . view_cover($e_profile['e__cover']) . '</a></span> ';
+            $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '">' . view_cover($e_profile['e__cover']) . '</a></span> ';
         }
         $ui .= '</div>';
     }
