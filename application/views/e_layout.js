@@ -237,7 +237,7 @@ function e_load_page(x__type, page, load_new_filter) {
 
         } else {
             //Update UI to confirm with member:
-            $(data).append('#list-in-'+x__type);
+            $('#list-in-'+x__type).append(data);
         }
 
         lazy_load();
