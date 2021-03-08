@@ -160,7 +160,7 @@ if($top_i__id){
 
 //PREVIOUS DISCOVERIES
 if($top_i__id){
-    echo '<div class="row margin-top-down justify-content-center">';
+    echo '<div class="row justify-content-center">';
     foreach($this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']) as $sitemap_i){
         echo view_i(14450, $top_i__id, null, $sitemap_i);
     }

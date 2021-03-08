@@ -25,7 +25,7 @@ foreach($this->config->item('e___13207') as $e__id => $m) {
     }
 
     echo '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$m['m__title'].'</div>';
-    echo '<div class="row margin-top-down justify-content-center" style="padding-bottom:41px;">';
+    echo '<div class="row justify-content-center" style="padding-bottom:41px;">';
 
 
     foreach($e_list as $count=>$e) {

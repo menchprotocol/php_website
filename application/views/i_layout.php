@@ -293,7 +293,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $query = $this->X_model->fetch($query_filters, array('x__source'), view_memory(6404,11064), 0, array('x__id' => 'DESC'));
 
             //Return UI:
-            $ui .= '<div class="row margin-top-down justify-content-center">';
+            $ui .= '<div class="row justify-content-center">';
             foreach($query as $item){
                 $ui .= view_e(6255, $item);
             }
@@ -346,7 +346,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = $u_x[0]['totals'];
         if($counter > 0){
 
-            $ui .= '<div class="row margin-top-down justify-content-center">';
+            $ui .= '<div class="row justify-content-center">';
             foreach($this->X_model->fetch(array(
                 'x__left' => $i_focus['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES

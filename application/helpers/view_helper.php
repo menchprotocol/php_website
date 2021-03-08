@@ -1048,7 +1048,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e, $
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
 
-    $ui .= '<div class="row margin-top-down justify-content-center">';
+    $ui .= '<div class="row justify-content-center">';
     foreach($has_next as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
         $ui .= view_i($x__type, $top_i__id, $i, $next_i, $in_my_x, null, $member_e, $completion_rate);
@@ -1553,7 +1553,7 @@ function view_info_box(){
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
         $max_limit = view_memory(6404,14903);
         $ui .= '<h2 class="info_box_header css__title">' . $e___11035[$e__id]['m__title'] . '</h2>';
-        $ui .= '<div class="row margin-top-down justify-content-center">';
+        $ui .= '<div class="row justify-content-center">';
         $counter = 0;
         foreach($CI->config->item('e___'.$e__id) as $m) {
             $counter++;
