@@ -69,8 +69,9 @@ foreach($this->X_model->fetch(array(
 ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
     echo view_i(11019, 0, null, $previous_i, $e_of_i);
 }
+echo '</div>';
 if($show_previous){
-    echo '<div class="col-12 new-list-11019 list-adder '.superpower_active(10939).'">
+    echo '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14014]['m__cover'].'</span></a>
                         <input type="text"
@@ -79,8 +80,6 @@ if($show_previous){
                                placeholder="'.$e___11035[14014]['m__title'].'">
                     </div></div>';
 }
-echo '</div>';
-
 
 
 if(isset($_GET['load__e']) && $superpower_14005){

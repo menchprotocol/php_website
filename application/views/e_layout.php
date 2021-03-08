@@ -61,9 +61,9 @@ $profiles = $this->X_model->fetch(array(
                 $count++;
             }
         }
-
+        echo '</div>';
         if($superpower_13422){
-            echo '<div id="new_11030" class="col-12 list-group-item list-adder no-side-padding '.$trigger_hide.'">
+            echo '<div id="new_11030" class="list-adder '.$trigger_hide.'">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
                         <input type="text"
@@ -73,8 +73,6 @@ $profiles = $this->X_model->fetch(array(
                                placeholder="'.$e___11035[13914]['m__title'].'">
                     </div></div>';
         }
-
-        echo '</div>';
 
 
         //SOURE STATUS
