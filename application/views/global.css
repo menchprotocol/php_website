@@ -2131,16 +2131,9 @@ i, .btn .show-max {
     width: 100%;
     text-align: center;
 }
-.cover-btn span{
-    padding-top: 83px;
-    display: block;
-    font-size: 1.4em;
-}
 
-.cover-btn span i {
-    margin-top: -75px;
+.cover-btn i {
     font-size: 0.95em !important;
-    display: block;
 }
 .list-coins .coin_cover {
     text-align: center;
