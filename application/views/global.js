@@ -568,12 +568,12 @@ function update_cover_main(cover_code, target_css){
     if(validURL(cover_code)){
         $(target_css+' .cover-link').css('background-image','url('+cover_code+')');
         $(target_css+' .cover-btn').html('');
-    } else if(cover_code.indexOf('fa-')) {
+    } else if(cover_code.indexOf('fa-')>-1) {
         $(target_css+' .cover-link').css('background-image','');
         $(target_css+' .cover-btn').html('<i class="'+cover_code+'"></i>');
-    } else if(cover_code.length) {
+    } else if(cover_code.length > 0) {
         $(target_css+' .cover-link').css('background-image','');
-        $(target_css+' .cover-btn').html(cover_code);
+        $(target_css+' .cover-btn').text(cover_code);
     } else {
         $(target_css+' .cover-link').css('background-image','');
         $(target_css+' .cover-btn').html('');
@@ -584,7 +584,7 @@ function update_cover_mini(cover_code, target_css){
     //Update:
     if(validURL(cover_code)){
         $(target_css).html('<img src="'+cover_code+'" />');
-    } else if(cover_code.indexOf('fa-')) {
+    } else if(cover_code.indexOf('fa-')>-1) {
         $(target_css).html('<i class="'+cover_code+'"></i>');
     } else if(cover_code.length) {
         $(target_css).html(cover_code);
