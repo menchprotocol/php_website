@@ -69,7 +69,7 @@ if($show_previous){
                                placeholder="'.$e___11035[14014]['m__title'].'">
                     </div></div>';
 }
-echo '<div id="list-in-11019" class="row dominHeight">';
+echo '<div id="list-in-11019" class="row justify-content-center dominHeight">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -165,7 +165,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($i_notes);
 
-        $ui .= '<div id="add-e-' .$x__type . '" class="row e-adder" style="margin-bottom:41px;">';
+        $ui .= '<div id="add-e-' .$x__type . '" class="row justify-content-center e-adder" style="margin-bottom:41px;">';
         foreach($i_notes as $i_note) {
             $ui .= view_e($x__type, $i_note,  null, $e_of_i && $is_active);
         }
@@ -256,7 +256,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         }
 
 
-        $ui .= '<div id="list-in-13542" class="row hideIfEmpty">';
+        $ui .= '<div id="list-in-13542" class="row justify-content-center hideIfEmpty">';
         foreach($is_next as $next_i) {
             $ui .= view_i(13542, 0, $i_focus, $next_i, $e_of_i);
         }
@@ -293,7 +293,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $query = $this->X_model->fetch($query_filters, array('x__source'), view_memory(6404,11064), 0, array('x__id' => 'DESC'));
 
             //Return UI:
-            $ui .= '<div class="row">';
+            $ui .= '<div class="row margin-top-down justify-content-center">';
             foreach($query as $item){
                 $ui .= view_e(6255, $item);
             }
@@ -346,7 +346,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         $counter = $u_x[0]['totals'];
         if($counter > 0){
 
-            $ui .= '<div class="row">';
+            $ui .= '<div class="row margin-top-down justify-content-center">';
             foreach($this->X_model->fetch(array(
                 'x__left' => $i_focus['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES

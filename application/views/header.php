@@ -175,7 +175,7 @@ if(!$basic_header_footer){
 
     <!-- LINE -->
     <div class="container fixed-top" style="padding-bottom: 0 !important;">
-        <div class="row">
+        <div class="row margin-top-down justify-content-center">
             <table class="platform-navigation">
                 <tr>
                     <?php

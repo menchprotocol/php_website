@@ -160,7 +160,7 @@ if($top_i__id){
 
 //PREVIOUS DISCOVERIES
 if($top_i__id){
-    echo '<div class="row">';
+    echo '<div class="row margin-top-down justify-content-center">';
     foreach($this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']) as $sitemap_i){
         echo view_i(14450, $top_i__id, null, $sitemap_i);
     }
@@ -248,7 +248,7 @@ if(!$top_i__id){
     $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
     //Get Started
-    echo '<div class="discover-controller margin-top-down"><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
+    echo '<div class="discover-controller margin-top-down center"><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
 
 }
 
@@ -376,7 +376,7 @@ if($top_i__id) {
 
 
             //Open for list to be printed:
-            echo '<div class="row top-margin list-answers" i__type="' . $i_focus['i__type'] . '">';
+            echo '<div class="row justify-content-center top-margin list-answers" i__type="' . $i_focus['i__type'] . '">';
 
 
             //List children to choose from:

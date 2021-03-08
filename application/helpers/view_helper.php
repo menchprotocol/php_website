@@ -1048,7 +1048,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e, $
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
 
-    $ui .= '<div class="row">';
+    $ui .= '<div class="row margin-top-down justify-content-center">';
     foreach($has_next as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
         $ui .= view_i($x__type, $top_i__id, $i, $next_i, $in_my_x, null, $member_e, $completion_rate);
@@ -1513,7 +1513,7 @@ function view_i_featured($i_exclude = array()){
 
             $ui = '<div class="'.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';
             $ui .= '<div class="headline top-margin">'.$see_all_link.'</div>';
-            $ui .= '<div class="row margin-top-down-half">';
+            $ui .= '<div class="row justify-content-center margin-top-down-half">';
             foreach($query as $i){
                 $ui .= view_i(14877, 0, null, $i);
                 if(!in_array($i['i__id'], $i_exclude)){
@@ -1553,7 +1553,7 @@ function view_info_box(){
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
         $max_limit = view_memory(6404,14903);
         $ui .= '<h2 class="info_box_header css__title">' . $e___11035[$e__id]['m__title'] . '</h2>';
-        $ui .= '<div class="row">';
+        $ui .= '<div class="row margin-top-down justify-content-center">';
         $counter = 0;
         foreach($CI->config->item('e___'.$e__id) as $m) {
             $counter++;
@@ -1566,16 +1566,13 @@ function view_info_box(){
             $ui .= '</div>';
             $ui .= '</div>';
         }
-        $ui .= '</div>';
 
         //Show option to expand:
         if($counter > $max_limit){
-            $ui .= '<div class="row extra_info_box">';
-            $ui .= '<div class="col-12">';
-            $ui .= '<div class="info_box_message"><a href="javascript:void(0);" onclick="$(\'.extra_info_box\').toggleClass(\'hidden\');">See More...</a></div>';
-            $ui .= '</div>';
-            $ui .= '</div>';
+            $ui .= '<div class="col-6 info_box_message"><a href="javascript:void(0);" onclick="$(\'.extra_info_box\').toggleClass(\'hidden\');">See More...</a></div>';
         }
+
+        $ui .= '</div>';
     }
 
 

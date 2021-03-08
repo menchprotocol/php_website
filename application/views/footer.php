@@ -209,7 +209,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body">
 
                     <!-- PREVIEW -->
-                    <div class="row extra_info_box">
+                    <div class="row justify-content-center extra_info_box">
                         <div class="col-12">
                             <div class="coin_cover demo_cover" style="width: 255px !important; margin: -21px auto 50px !important;">
                                 <div class="cover-wrapper"><div class="black-background cover-link" style=""><div class="cover-btn"></div></div></div>
