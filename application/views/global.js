@@ -568,7 +568,7 @@ function update_cover_main(cover_code, target_css){
     if(validURL(cover_code)){
         $(target_css+' .cover-link').css('background-image','url('+cover_code+')');
         $(target_css+' .cover-btn').html('');
-    } else if(cover_code.indexOf('fa')>=2 && cover_code.indexOf('fa-')>=1) {
+    } else if(cover_code.indexOf('fa') && cover_code.indexOf('fa-')) {
         $(target_css+' .cover-link').css('background-image','');
         $(target_css+' .cover-btn').html('<i class="'+cover_code+'"></i>');
     } else if(cover_code.length) {
