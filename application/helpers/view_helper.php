@@ -2048,7 +2048,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Message
-    $ui .= '<div style="min-height: 20px;">';
+    $ui .= '<div style="min-height: 21px;">';
     if ($x__id > 0) {
         if(!$has_any_lock && $has_e_link){
 
