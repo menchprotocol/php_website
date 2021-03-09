@@ -94,7 +94,7 @@ $logo = ( !strlen($first_segment) ? '/img/logos/'.$base_source.'.svg' : '/img/'.
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="<?= view_memory(6404,14983) ?>" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?= view_memory(6404,13577) ?>" crossorigin="anonymous">
 
     <link href="/application/views/global.css?v=dir3<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
     <script src="/application/views/global.js?v=dir3<?= view_memory(6404,11060) ?>" type="text/javascript"></script>

@@ -39,18 +39,18 @@ $profiles = $this->X_model->fetch(array(
         $count = 0;
         $show_max_14538 = view_memory(6404,14538);
         $see_more_button = false;
-
+        $has_more = count($profiles)>$show_max_14538;
 
         $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
         $trigger_hide = null;
         foreach($profiles as $e_profile) {
 
-            if(!$see_more_button && $count==$show_max_14538){
+            if(!$see_more_button && $count==$show_max_14538 && $has_more){
                 $profile_ui .= view_show_more('see_all_profiles');
                 $see_more_button = true;
             }
 
-            if($count>=$show_max_14538){
+            if($count>=$show_max_14538 && $has_more){
                 $trigger_hide = 'see_all_profiles hidden';
             }
 
