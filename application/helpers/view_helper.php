@@ -1613,7 +1613,7 @@ function view_i_select($i, $x__source, $previously_selected){
     //ICON?
     $ui .= '<div class="cover-btn">'.(!$has_valid_url && $coin_cover ? view_cover($coin_cover) : '').'</div>';
 
-    $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . '"><i class="fad fa-check-circle idea"></i></div>';
+    $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . '"><i class="fad fa-check-circle discover"></i></div>';
 
     $ui .= '</a>';
     $ui .= '</div>';
