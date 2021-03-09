@@ -1995,11 +1995,6 @@ class X_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid Idea type [Must be Answer]',
             );
-        } elseif (!count($answer_i__ids)) {
-            return array(
-                'status' => 0,
-                'message' => 'Missing Answer',
-            );
         }
 
 
@@ -2032,23 +2027,16 @@ class X_model extends CI_Model
 
         //Add New Answers
         $answers_newly_added = 0;
-        foreach($answer_i__ids as $answer_i__id){
-            $answers_newly_added++;
-            $this->X_model->create(array(
-                'x__type' => $i_x__type,
-                'x__source' => $e__id,
-                'x__left' => $is[0]['i__id'],
-                'x__right' => $answer_i__id,
-            ));
-        }
-
-
-        //Ensure we logged an answer:
-        if(!$answers_newly_added){
-            return array(
-                'status' => 0,
-                'message' => 'No answers saved.',
-            );
+        if(count($answer_i__ids)){
+            foreach($answer_i__ids as $answer_i__id){
+                $answers_newly_added++;
+                $this->X_model->create(array(
+                    'x__type' => $i_x__type,
+                    'x__source' => $e__id,
+                    'x__left' => $is[0]['i__id'],
+                    'x__right' => $answer_i__id,
+                ));
+            }
         }
 
         //Issue DISCOVERY/IDEA COIN:

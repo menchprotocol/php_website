@@ -1194,7 +1194,7 @@ class X extends CI_Controller
     function x_select(){
 
         $member_e = superpower_unlocked();
-        $nothing_seected = !$_POST['selection_i__id'] || !count($_POST['selection_i__id']);
+        $nothing_seected = !isset($_POST['selection_i__id']) || !count($_POST['selection_i__id']);
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
@@ -1219,11 +1219,6 @@ class X extends CI_Controller
             return view_json(array(
                 'status' => 0,
                 'message' => 'You must select an answer before going next.',
-            ));
-        } elseif ($nothing_seected) {
-            return view_json(array(
-                'status' => 1, //All good here
-                'message' => 'Nothing to save...',
             ));
         }
 
