@@ -229,6 +229,218 @@ if(count($fetch_13865)){
     $meets_13865 = !$missing_13865;
 }
 
+
+
+
+
+
+
+if($top_i__id) {
+    //LOCKED
+    if ($i_type_meet_requirement) {
+
+        //Requirement lock
+        if (!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)) {
+
+            //List Unlock paths:
+            echo view_i_list(13979, $top_i__id, $top_i__id, $i_focus, $unlock_paths, $member_e);
+
+        }
+
+        //List Children if any:
+        echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
+
+
+    } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
+
+        //SELECT ANSWER
+
+        //Has no children:
+        if (!count($is_next)) {
+
+            //Mark this as complete since there is no child to choose from:
+            if (!count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+                'x__source' => $x__source,
+                'x__left' => $i_focus['i__id'],
+            )))) {
+
+                array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i_focus, array(
+                    'x__type' => 4559, //DISCOVERY MESSAGES
+                    'x__source' => $x__source,
+                )));
+
+            }
+
+        } else {
+
+            //First fetch answers based on correct order:
+            $x_selects = array();
+            foreach ($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                'x__left' => $i_focus['i__id'],
+            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+                //See if this answer was seleted:
+                if (count($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY IDEA LINK
+                    'x__left' => $i_focus['i__id'],
+                    'x__right' => $x['i__id'],
+                    'x__source' => $x__source,
+                )))) {
+                    array_push($x_selects, $x);
+                }
+            }
+
+            if (count($x_selects) > 0) {
+                //MODIFY ANSWER
+                echo '<div class="edit_select_answer">';
+
+                //List answers:
+                echo view_i_list(13980, $top_i__id, $top_i__id, $i_focus, $x_selects, $member_e);
+
+                echo '<div class="doclear">&nbsp;</div>';
+
+                //EDIT ANSWER:
+                echo '<div class="margin-top-down btn-five"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
+
+                echo '<div class="doclear">&nbsp;</div>';
+
+                echo '</div>';
+            }
+
+
+            echo '<div class="edit_select_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
+            echo '<div class="doclear">&nbsp;</div>';
+
+            //HTML:
+            $e___4737 = $this->config->item('e___4737'); //Idea Types
+            echo '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>' . $e___4737[$i_focus['i__type']]['m__title'] . ':</div>';
+
+
+            echo '<div class="doclear">&nbsp;</div>';
+
+
+            //Open for list to be printed:
+            echo '<div class="row justify-content-center top-margin list-answers" i__type="' . $i_focus['i__type'] . '">';
+
+
+            //List children to choose from:
+            foreach ($is_next as $key => $next_i) {
+
+                //Has this been previously selected?
+                $previously_selected = count($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
+                    'x__left' => $i_focus['i__id'],
+                    'x__right' => $next_i['i__id'],
+                    'x__source' => $x__source,
+                )));
+
+                echo view_i_select($next_i, $x__source, $previously_selected);
+
+                /*
+
+                echo '<a href="javascript:void(0);" onclick="select_answer(' . $next_i['i__id'] . ')" selection_i__id="' . $next_i['i__id'] . '" class="x_select_' . $next_i['i__id'] . ' answer-item list-group-item itemread no-left-padding">';
+
+
+                echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
+                echo '<td class="icon-block item-selected" style="padding: 0 !important;"><i class="' . ($previously_selected ? 'fas fa-check-circle read' : 'far fa-circle read') . '"></i></td>';
+
+                echo '<td style="width:100%; padding: 0 !important;">';
+                echo '<b class="css__title i-url" style="margin-left:0;">' . view_i_title($next_i) . '</b>';
+                echo '</td>';
+
+                echo '</tr></table>';
+
+                echo '</a>';
+
+                */
+            }
+
+
+            echo '</div>';
+
+
+            if (count($x_selects) > 0) {
+
+                //Cancel:
+                echo '<div class="inline-block margin-top-down btn-five"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a></div>';
+
+                //Save Answers:
+                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i_focus['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
+
+            }
+
+            echo '</div>';
+
+        }
+
+    } elseif ($i_focus['i__type'] == 6683) {
+
+        //TEXT RESPONSE
+        echo '<div class="headline"><span class="icon-block">&nbsp;</span>' . $e___11035[13980]['m__title'] . '</div>';
+
+        //Write `skip` if you prefer not to answer...
+        echo '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
+
+        if (count($x_completes)) {
+            //Next Ideas:
+            echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
+        }
+
+        echo '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
+
+
+    } elseif ($i_focus['i__type'] == 7637) {
+
+        //FILE UPLOAD
+        echo '<div class="userUploader">';
+        echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
+
+        echo '<input class="inputfile" type="file" name="file" id="fileType' . $i_focus['i__type'] . '" />';
+
+
+        if (count($x_completes)) {
+
+            echo '<div class="file_saving_result">';
+
+            echo '<div class="headline"><span class="icon-block">&nbsp;</span>' . $e___11035[13977]['m__title'] . '</div>';
+
+            echo '<div class="previous_answer">' . $this->X_model->message_view($x_completes[0]['x__message'], true) . '</div>';
+
+            echo '</div>';
+
+            //Any child ideas?
+            echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
+
+        } else {
+
+            //for when added:
+            echo '<div class="file_saving_result"></div>';
+
+        }
+
+        //UPLOAD BUTTON:
+        echo '<div class="margin-top-down"><label class="btn btn-discover inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
+
+
+        echo '<div class="doclear">&nbsp;</div>';
+        echo '</form>';
+        echo '</div>';
+
+    }
+
+}
+
+
+
+
+
+
 /*
 if($top_i__id && count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -247,6 +459,7 @@ if($top_i__id && count($this->X_model->fetch(array(
 
 }
 */
+
 
 
 //DISCUSSIONS:
@@ -359,210 +572,9 @@ if($top_i__id) {
      *
      * */
 
-
-    //LOCKED
-    if ($i_type_meet_requirement) {
-
-        //Requirement lock
-        if (!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)) {
-
-            //List Unlock paths:
-            echo view_i_list(13979, $top_i__id, $top_i__id, $i_focus, $unlock_paths, $member_e);
-
-        }
-
-        //List Children if any:
-        echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
-
-
-    } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
-
-        //SELECT ANSWER
-
-        //Has no children:
-        if (!count($is_next)) {
-
-            //Mark this as complete since there is no child to choose from:
-            if (!count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
-                'x__source' => $x__source,
-                'x__left' => $i_focus['i__id'],
-            )))) {
-
-                array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i_focus, array(
-                    'x__type' => 4559, //DISCOVERY MESSAGES
-                    'x__source' => $x__source,
-                )));
-
-            }
-
-        } else {
-
-            //First fetch answers based on correct order:
-            $x_selects = array();
-            foreach ($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                'x__left' => $i_focus['i__id'],
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
-                //See if this answer was seleted:
-                if (count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY IDEA LINK
-                    'x__left' => $i_focus['i__id'],
-                    'x__right' => $x['i__id'],
-                    'x__source' => $x__source,
-                )))) {
-                    array_push($x_selects, $x);
-                }
-            }
-
-            if (count($x_selects) > 0) {
-                //MODIFY ANSWER
-                echo '<div class="edit_select_answer">';
-
-                //List answers:
-                echo view_i_list(13980, $top_i__id, $top_i__id, $i_focus, $x_selects, $member_e);
-
-                echo '<div class="doclear">&nbsp;</div>';
-
-                //EDIT ANSWER:
-                echo '<div class="margin-top-down btn-five"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
-
-                echo '<div class="doclear">&nbsp;</div>';
-
-                echo '</div>';
-            }
-
-
-            echo '<div class="edit_select_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
-            echo '<div class="doclear">&nbsp;</div>';
-
-            //HTML:
-            $e___4737 = $this->config->item('e___4737'); //Idea Types
-            echo '<div class="pull-left headline"><span class="icon-block">&nbsp;</span>'.$e___4737[$i_focus['i__type']]['m__title'].':</div>';
-
-
-            echo '<div class="doclear">&nbsp;</div>';
-
-
-            //Open for list to be printed:
-            echo '<div class="row justify-content-center top-margin list-answers" i__type="' . $i_focus['i__type'] . '">';
-
-
-            //List children to choose from:
-            foreach ($is_next as $key => $next_i) {
-
-                //Has this been previously selected?
-                $previously_selected = count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
-                    'x__left' => $i_focus['i__id'],
-                    'x__right' => $next_i['i__id'],
-                    'x__source' => $x__source,
-                )));
-
-                echo view_i_select($next_i, $x__source, $previously_selected);
-
-                /*
-
-                echo '<a href="javascript:void(0);" onclick="select_answer(' . $next_i['i__id'] . ')" selection_i__id="' . $next_i['i__id'] . '" class="x_select_' . $next_i['i__id'] . ' answer-item list-group-item itemread no-left-padding">';
-
-
-                echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-                echo '<td class="icon-block item-selected" style="padding: 0 !important;"><i class="' . ($previously_selected ? 'fas fa-check-circle read' : 'far fa-circle read') . '"></i></td>';
-
-                echo '<td style="width:100%; padding: 0 !important;">';
-                echo '<b class="css__title i-url" style="margin-left:0;">' . view_i_title($next_i) . '</b>';
-                echo '</td>';
-
-                echo '</tr></table>';
-
-                echo '</a>';
-
-                */
-            }
-
-
-            echo '</div>';
-
-
-
-
-            if (count($x_selects) > 0) {
-
-                //Cancel:
-                echo '<div class="inline-block margin-top-down btn-five"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a></div>';
-
-                //Save Answers:
-                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
-
-            }
-
-            echo '</div>';
-
-        }
-
-    } elseif (in_array($i_focus['i__type'], $this->config->item('n___4559'))) {
-
+    if (in_array($i_focus['i__type'], $this->config->item('n___4559'))) {
         //DISCOVERY ONLY
-        echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e, ( count($is_next) > 1 ? view_i_time($i_stats, true) : '' ));
-
-    } elseif ($i_focus['i__type'] == 6683) {
-
-        //TEXT RESPONSE
-        echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[13980]['m__title'].'</div>';
-
-        //Write `skip` if you prefer not to answer...
-        echo '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
-
-        if (count($x_completes)) {
-            //Next Ideas:
-            echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
-        }
-
-        echo '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
-
-
-    } elseif ($i_focus['i__type'] == 7637) {
-
-        //FILE UPLOAD
-        echo '<div class="userUploader">';
-        echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
-
-        echo '<input class="inputfile" type="file" name="file" id="fileType' . $i_focus['i__type'] . '" />';
-
-
-        if (count($x_completes)) {
-
-            echo '<div class="file_saving_result">';
-
-            echo '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[13977]['m__title'].'</div>';
-
-            echo '<div class="previous_answer">' . $this->X_model->message_view($x_completes[0]['x__message'], true) . '</div>';
-
-            echo '</div>';
-
-            //Any child ideas?
-            echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
-
-        } else {
-
-            //for when added:
-            echo '<div class="file_saving_result"></div>';
-
-        }
-
-        //UPLOAD BUTTON:
-        echo '<div class="margin-top-down"><label class="btn btn-discover inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
-
-
-        echo '<div class="doclear">&nbsp;</div>';
-        echo '</form>';
-        echo '</div>';
-
+        echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e, (count($is_next) > 1 ? view_i_time($i_stats, true) : ''));
     }
 
 } else {
