@@ -39,7 +39,7 @@ $profiles = $this->X_model->fetch(array(
         $count = 0;
         $show_max_14538 = view_memory(6404,14538);
         $see_more_button = false;
-        $has_more = count($profiles)>$show_max_14538;
+        $has_more = count($profiles)>($show_max_14538+1);
 
         $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
         $trigger_hide = null;

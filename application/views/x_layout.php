@@ -163,7 +163,7 @@ if($top_i__id){
 
     $show_max_14538 = view_memory(6404,14538);
     $previous_x = $this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']);
-    $has_more = count($previous_x)>$show_max_14538;
+    $has_more = (count($previous_x)>$show_max_14538+1);
     echo '<div class="row margin-top-down justify-content-center">';
     foreach($previous_x as $count => $sitemap_i){
         if($count==$show_max_14538 && $has_more){

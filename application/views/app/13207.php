@@ -27,7 +27,7 @@ foreach($this->config->item('e___13207') as $e__id => $m) {
     echo '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$m['m__title'].'</div>';
     echo '<div class="row justify-content-center" style="padding-bottom:41px;">';
 
-    $has_more = count($e_list)>$show_max_14538;
+    $has_more = count($e_list)>($show_max_14538+1);
     foreach($e_list as $count=>$e) {
         if($count==$show_max_14538 && $has_more){
             echo view_show_more('see_more_who'.$e__id);
