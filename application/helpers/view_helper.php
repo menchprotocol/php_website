@@ -1611,7 +1611,7 @@ function view_i_select($i, $x__source, $previously_selected){
     $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' coinType6255 ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$coin_cover.'\');"' : '' ).'>';
 
     //ICON?
-    $ui .= '<div class="cover-btn">'.(!$has_valid_url ? $coin_cover : '').'</div>';
+    $ui .= '<div class="cover-btn">'.(!$has_valid_url && $coin_cover ? view_cover($coin_cover) : '').'</div>';
 
     $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . ' discover"><i class="fad fa-check-circle discover"></i></div>';
 
