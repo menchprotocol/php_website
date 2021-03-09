@@ -1628,7 +1628,7 @@ function view_i_select($i, $x__source, $previously_selected){
         $ui .= '<a '.$href.' class="doblock"><span class="coin-hover">' . $view_i_time . '</span></a>';
     }
     //PROGRESS?
-    if($completion_rate['completion_percentage'] > 0){
+    if($completion_rate['completion_percentage'] > 0 && $completion_rate['completion_percentage'] < 100){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
     $ui .= '</div>';
