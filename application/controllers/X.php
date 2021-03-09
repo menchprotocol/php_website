@@ -1194,6 +1194,7 @@ class X extends CI_Controller
     function x_select(){
 
         $member_e = superpower_unlocked();
+        $nothing_seected = !$_POST['selection_i__id'] || !count($_POST['selection_i__id']);
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
@@ -1214,17 +1215,12 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Top idea id.',
             ));
-        } elseif (!isset($_POST['selection_i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing answers.',
-            ));
-        } elseif (in_array($_POST['focus_i__type'], $this->config->item('n___14958')) && !count($_POST['selection_i__id'])) {
+        } elseif (in_array($_POST['focus_i__type'], $this->config->item('n___14958')) && $nothing_seected) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You must select an answer before going next.',
             ));
-        } elseif (!count($_POST['selection_i__id'])) {
+        } elseif ($nothing_seected) {
             return view_json(array(
                 'status' => 1, //All good here
                 'message' => 'Nothing to save...',
