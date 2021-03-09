@@ -1615,20 +1615,25 @@ function view_i_select($i, $x__source, $previously_selected){
 
     $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . '"><i class="fad fa-check-circle idea"></i></div>';
 
-    //PROGRESS?
-    if($completion_rate['completion_percentage'] > 0){
-        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
-    }
-
     $ui .= '</a>';
     $ui .= '</div>';
 
     $ui .= '<div class="cover-content"><div class="inner-content">';
     $ui .= '<a '.$href.'>'.$i_title.'</a>';
     $view_i_time = view_i_time($i_stats);
+
+    $ui .= '<div class="cover-text">';
+    //TIME
     if($view_i_time){
-        $ui .= '<div class="cover-text"><a '.$href.' class="doblock"><span class="coin-hover">' . $view_i_time . '</span></a></div>';
+        $ui .= '<a '.$href.' class="doblock"><span class="coin-hover">' . $view_i_time . '</span></a>';
     }
+    //PROGRESS?
+    if($completion_rate['completion_percentage'] > 0){
+        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
+    }
+    $ui .= '</div>';
+
+
     $ui .= '</div></div>';
     $ui .= '</div>';
 
