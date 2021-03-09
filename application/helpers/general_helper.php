@@ -613,7 +613,7 @@ function fetch_cover($o){
 }
 
 function string_is_icon($icon_code){
-    return ( substr_count($icon_code,'fa')>=2 && substr_count($icon_code,'fa-')>=1 );
+    return substr_count($icon_code,'fa-');
 }
 
 function i_description($i__id){
