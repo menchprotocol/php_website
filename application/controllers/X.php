@@ -1214,7 +1214,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Top idea id.',
             ));
-        } elseif (!isset($_POST['selection_i__id']) || !is_array($_POST['selection_i__id'])) {
+        } elseif (!isset($_POST['selection_i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing answers.',
