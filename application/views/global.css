@@ -2876,15 +2876,15 @@ font-weight: bold !important;
 }
 
 
-.btn-lrg.btn-source, .source_cover .black-background{
+.btn-lrg.btn-source, .source_cover .black-background, .source_cover .black-background i{
     background-color: #007AFD !important;
     color: #222222 !important;
 }
-.btn-lrg.btn-discover, .discover_cover .black-background{
+.btn-lrg.btn-discover, .discover_cover .black-background, .discover_cover .black-background i{
     background-color: #FC1B44 !important;
     color: #222222 !important;
 }
-.btn-lrg.btn-idea, .idea_cover .black-background{
+.btn-lrg.btn-idea, .idea_cover .black-background , .idea_cover .black-background i{
     background-color: #FFC500 !important;
     color: #222222 !important;
 }
