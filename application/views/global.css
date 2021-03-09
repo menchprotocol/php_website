@@ -2876,17 +2876,26 @@ font-weight: bold !important;
 }
 
 
-.btn-lrg.btn-source, .coinType12274, .coinType12274 i{
+.btn-lrg.btn-source, .coinType12274 {
     background-color: #007AFD !important;
     color: #222222 !important;
 }
-.btn-lrg.btn-discover, .coinType6255, .coinType6255 i{
+.coinType12274 i{
+    color: #222222;
+}
+.btn-lrg.btn-discover, .coinType6255{
     background-color: #FC1B44 !important;
     color: #222222 !important;
 }
-.btn-lrg.btn-idea, .coinType12273, .coinType12273 i{
+.coinType6255 i{
+    color: #222222;
+}
+.btn-lrg.btn-idea, .coinType12273{
     background-color: #FFC500 !important;
     color: #222222 !important;
+}
+.coinType12273 i{
+    color: #222222;
 }
 
 .btn-superpower.active .fas.source, .btn-superpower.active .far.source, .btn-superpower.active .fal.source, .btn-superpower.active .fad.source {
