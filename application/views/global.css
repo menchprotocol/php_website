@@ -471,15 +471,7 @@ img.no-frame {
 .grey, .grey i, .grey .source, .grey .idea, .grey .discover, .headline .source, .headline .idea, .headline .discover, .btn-grey, .btn-grey i, .mini-grey { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#222222 !important; }
 
-.coinType12274{
-    border: 3px solid #007AFD !important;
-}
-.coinType12273{
-    border: 3px solid #FFC500 !important;
-}
-.coinType6255{
-    border: 3px solid #FC1B44 !important;
-}
+
 
 textarea:hover,
 input:hover,
@@ -1935,7 +1927,7 @@ i, .btn .show-max {
     min-height: 25px;
     min-height: 47px;
 }
-.source_cover .cover-content{
+.coinType12274 .cover-content{
     min-height: 73px;
 }
 
@@ -2876,19 +2868,28 @@ font-weight: bold !important;
 }
 
 
-.btn-lrg.btn-source, .source_cover .black-background, .source_cover .black-background i{
+.btn-lrg.btn-source, .coinType12274 .black-background, .coinType12274 .black-background i{
     background-color: #007AFD !important;
     color: #222222 !important;
 }
-.btn-lrg.btn-discover, .discover_cover .black-background, .discover_cover .black-background i{
+.btn-lrg.btn-discover, .coinType6255 .black-background, .coinType6255 .black-background i{
     background-color: #FC1B44 !important;
     color: #222222 !important;
 }
-.btn-lrg.btn-idea, .idea_cover .black-background , .idea_cover .black-background i{
+.btn-lrg.btn-idea, .coinType12273 .black-background , .coinType12273 .black-background i{
     background-color: #FFC500 !important;
     color: #222222 !important;
 }
 
+.coinType12274{
+    border: 3px solid #007AFD !important;
+}
+.coinType6255{
+    border: 3px solid #FC1B44 !important;
+}
+.coinType12273{
+    border: 3px solid #FFC500 !important;
+}
 
 .btn-superpower.active .fas.source, .btn-superpower.active .far.source, .btn-superpower.active .fal.source, .btn-superpower.active .fad.source {
     color:#007AFD !important;

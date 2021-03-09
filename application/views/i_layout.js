@@ -205,7 +205,7 @@ function e_add_only_7551(e_existing_id, note_type_id) {
             input.focus();
 
             //Add new object to list:
-            add_to_list(list_id, '.source_cover', data.e_new_echo, false);
+            add_to_list(list_id, '.coinType12274', data.e_new_echo, false);
 
         } else {
             //We had an error:
