@@ -109,7 +109,7 @@ function select_answer(i__id){
     if(!($('.x_select_'+i__id+' .item-selected').hasClass('hidden'))){
 
         //Previously Selected, delete selection:
-        if(i__type == 7231){
+        if(i__type == 7231 || i__type == 14861){
             //Multi Selection
             $('.x_select_'+i__id+' .item-selected').addClass('hidden');
             $('.x_select_'+i__id).removeClass('coinType12273');

@@ -2011,7 +2011,7 @@ class X_model extends CI_Model
             $x__type = 6157; //Award Coin
             $i_x__type = 12336; //Save Answer
 
-        } elseif($is[0]['i__type'] == 7231){
+        } elseif($is[0]['i__type'] == 7231 || $is[0]['i__type'] == 14861){
 
             //SOME ANSWERS
             $x__type = 7489; //Award Coin
