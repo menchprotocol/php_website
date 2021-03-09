@@ -336,7 +336,7 @@ function view_cover($cover_code)
 
     } elseif(strlen($cover_code)) {
 
-        return $cover_code;
+        return '['.$cover_code.']';
 
     } else {
 
