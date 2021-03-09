@@ -208,7 +208,7 @@ function current_coin(){
     $first_letter = substr($first_segment, 0, 1);
     $e___14874 = $CI->config->item('e___14874'); //COINS
 
-    if(is_numeric($first_segment)){
+    if(!$first_letter=='-' && is_numeric($first_segment)){
 
         //DISCOVERY
         return array(
