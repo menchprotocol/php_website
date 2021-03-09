@@ -1958,9 +1958,17 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $has_e_link && $superpower_10939;
     $show_text_editor = $source_of_e && $control_enabled && !$has_any_lock;
 
+    $coinface = 'coinface-12274'; //Source as default
+
+    //Hack for the two other Mench coins:
+    if (substr_count($coin_cover, 'fas fa-circle zq12273')) {
+        $coinface = 'coinface-12273';
+    } elseif (substr_count($coin_cover, 'fas fa-circle zq6255')) {
+        $coinface = 'coinface-6255';
+    }
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover source_coin col-md-4 col-6 no-padding coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="'.$coinface.' coin_cover col-md-4 col-6 no-padding coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
 
     $ui .= '<div class="cover-wrapper">';
 

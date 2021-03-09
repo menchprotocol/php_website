@@ -31,7 +31,7 @@ $(document).ready(function () {
 
 
     //Update Profile counters to account for sources that member may not be able to see due to missing permissions...
-    $('.en-type-counter-11030').text($('#list-in-11030 .source_coin').not(".hidden").length);
+    $('.en-type-counter-11030').text($('#list-in-11030 .coinface-12274').not(".hidden").length);
 
     //Load search for mass update function:
     load_editor();
@@ -178,7 +178,7 @@ function e__add(x__type, e_existing_id) {
             input.focus();
 
             //Add new object to list:
-            add_to_list(list_id, '.source_coin', data.e_new_echo, js_n___14686.includes(x__type));
+            add_to_list(list_id, '.coinface-12274', data.e_new_echo, js_n___14686.includes(x__type));
 
             //Allow inline editing if enabled:
             x_set_start_text();
@@ -359,7 +359,7 @@ function e_sort_save() {
     var new_x__spectrums = [];
     var sort_rank = 0;
 
-    $("#list-in-11029 .source_coin").each(function () {
+    $("#list-in-11029 .coinface-12274").each(function () {
         //Fetch variables for this idea:
         var e__id = parseInt($(this).attr('e__id'));
         var x__id = parseInt($(this).attr('x__id'));
@@ -422,7 +422,7 @@ function e_sort_portfolio_load() {
 
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: ".source_coin", // Specifies which items inside the element should be sortable
+        draggable: ".coinface-12274", // Specifies which items inside the element should be sortable
         handle: ".sort_e", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
             e_sort_save();
