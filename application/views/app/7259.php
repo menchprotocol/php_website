@@ -127,5 +127,5 @@ if($replace_with_set && !$completed_replacements){
 }
 
 
-echo '<input type="submit" class="btn btn-idea" value="Go">';
+echo '<input type="submit" class="btn btn-12273" value="Go">';
 echo '</form>';

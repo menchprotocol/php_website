@@ -208,28 +208,28 @@ function current_coin(){
     $first_letter = substr($first_segment, 0, 1);
     $e___14874 = $CI->config->item('e___14874'); //COINS
 
-    if($first_letter=='@' || $first_letter=='-' || $first_segment=='e' || $first_segment=='app'){
+    if(is_numeric($first_segment)){
 
+        //DISCOVERY
         return array(
-            'c__id' => 12274,
-            'c__class' => 'source',
-            'c__m' => $e___14874[12274],
+            'c__id' => 6255,
+            'c__m' => $e___14874[6255],
         );
 
-    } elseif($first_letter=='~' || $first_segment=='i'){
+    } elseif($first_letter=='~'){
 
+        //IDEATION
         return array(
             'c__id' => 12273,
-            'c__class' => 'idea',
             'c__m' => $e___14874[12273],
         );
 
     } else {
 
+        //SOURCE
         return array(
-            'c__id' => 6255,
-            'c__class' => 'discover',
-            'c__m' => $e___14874[6255],
+            'c__id' => 12274,
+            'c__m' => $e___14874[12274],
         );
 
     }
@@ -1056,7 +1056,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
+        return redirect_message($goto_url, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
     }
 
 }

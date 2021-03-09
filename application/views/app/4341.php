@@ -383,7 +383,7 @@ echo '</tr></table>';
 
 
 
-echo '<input type="submit" class="btn btn-discover" value="Apply" />';
+echo '<input type="submit" class="btn btn-6255" value="Apply" />';
 
 if($has_filters){
     echo ' &nbsp;<a href="/-4341" style="font-size: 0.8em;">Remove Filters</a>';

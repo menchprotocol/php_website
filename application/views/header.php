@@ -10,7 +10,7 @@ $superpower_10939 = $member_e && superpower_active(10939, true);
 $current_coin = current_coin();
 $base_source = get_domain_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
-$logo = ( !strlen($first_segment) ? '/img/logos/'.$base_source.'.svg' : '/img/'.$current_coin['c__class'].'.png' );
+$logo = ( !strlen($first_segment) ? '/img/logos/'.$base_source.'.svg' : '/img/'.$current_coin['c__id'].'.png' );
 ?><!doctype html>
 <html lang="en" >
 <head>
@@ -110,7 +110,7 @@ $logo = ( !strlen($first_segment) ? '/img/logos/'.$base_source.'.svg' : '/img/'.
 
 <?php
 //Generate Body Class String:
-$body_class = 'platform-'.$current_coin['c__class']; //Always append current coin
+$body_class = 'platform-'.$current_coin['c__id']; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
 }
@@ -222,7 +222,7 @@ if(!$basic_header_footer){
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    echo '<span class="icon-block">' . ( $superpower_10939 ? '<i class="fas fa-circle '.$current_coin['c__class'].'"></i>' : $e___13479[$menu_type]['m__cover'] ).'</span>';
+                    echo '<span class="icon-block">' . ( $superpower_10939 ? '<i class="fas fa-circle zq'.$current_coin['c__id'].'"></i>' : $e___13479[$menu_type]['m__cover'] ).'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {

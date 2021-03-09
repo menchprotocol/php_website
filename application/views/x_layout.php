@@ -307,7 +307,7 @@ if($top_i__id) {
                 echo '<div class="doclear">&nbsp;</div>';
 
                 //EDIT ANSWER:
-                echo '<div class="margin-top-down btn-five"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
+                echo '<div class="margin-top-down btn-five"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
 
                 echo '<div class="doclear">&nbsp;</div>';
 
@@ -370,10 +370,10 @@ if($top_i__id) {
             if (count($x_selects) > 0) {
 
                 //Cancel:
-                echo '<div class="inline-block margin-top-down btn-five"><a class="btn btn-discover" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a></div>';
+                echo '<div class="inline-block margin-top-down btn-five"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a></div>';
 
                 //Save Answers:
-                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-discover" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i_focus['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
+                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i_focus['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
 
             }
 
@@ -427,7 +427,7 @@ if($top_i__id) {
         }
 
         //UPLOAD BUTTON:
-        echo '<div class="margin-top-down"><label class="btn btn-discover inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
+        echo '<div class="margin-top-down"><label class="btn btn-6255 inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
 
 
         echo '<div class="doclear">&nbsp;</div>';
@@ -483,7 +483,7 @@ if(!$top_i__id){
     $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
     //Get Started
-    echo '<div class="discover-controller margin-top-down center"><a class="controller-nav btn btn-lrg btn-discover go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
+    echo '<div class="nav-controller margin-top-down center"><a class="controller-nav btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
 
 } else {
 
@@ -533,7 +533,7 @@ if(!$top_i__id){
     }
 
     if($buttons_found > 0){
-        echo '<div class="discover-controller margin-top-down">';
+        echo '<div class="nav-controller margin-top-down">';
         echo $buttons_ui;
         echo '</div>';
     }

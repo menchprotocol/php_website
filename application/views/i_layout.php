@@ -49,11 +49,11 @@ if(!$e_of_i){
 
     if(count($request_history)){
 
-        echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You submitted your request to join ' . view_time_difference(strtotime($request_history[0]['x__time'])) . ' ago. You will be notified soon.</span></div>';
+        echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle zq12274"></i></span>You submitted your request to join ' . view_time_difference(strtotime($request_history[0]['x__time'])) . ' ago. You will be notified soon.</span></div>';
 
     } else {
 
-        echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle source"></i></span>You are not a source for this idea, yet. <span class="inline-block '.superpower_active(10939).'"><a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block css__title">REQUEST TO JOIN</a></span></div>';
+        echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle zq12274"></i></span>You are not a source for this idea, yet. <span class="inline-block '.superpower_active(10939).'"><a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block css__title">REQUEST TO JOIN</a></span></div>';
 
     }
 }
@@ -248,7 +248,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
             $ui .= $input_options;
 
-            $ui .= '<div><input type="submit" value="APPLY" class="btn btn-idea inline-block"></div>';
+            $ui .= '<div><input type="submit" value="APPLY" class="btn btn-12273 inline-block"></div>';
 
             $ui .= '</form>';
             $ui .= '</div>';

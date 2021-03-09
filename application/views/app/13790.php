@@ -19,7 +19,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
                     </div>
                 </div>
-                <input type="submit" class="btn btn-idea" value="Go" style="display: inline-block; margin-top: -41px;" />';
+                <input type="submit" class="btn btn-12273" value="Go" style="display: inline-block; margin-top: -41px;" />';
     echo '</form>';
 
 } else {

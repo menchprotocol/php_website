@@ -740,7 +740,7 @@ function x_message_save() {
         } else {
 
             //Ooops there was an error!
-            $('#modal13571 .save_results').html('<span class="discover css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
+            $('#modal13571 .save_results').html('<span class="zq6255 css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</span>').hide().fadeIn();
 
         }
 
@@ -847,7 +847,7 @@ function x_type_preview() {
         } else {
 
             //Show Error:
-            $('#x__type_preview').html('<b class="discover">' + data.message+'</b>');
+            $('#x__type_preview').html('<b class="zq6255">' + data.message+'</b>');
 
         }
 
@@ -1104,7 +1104,7 @@ function i_load_search(x__type) {
                 return view_s_js(suggestion);
             },
             header: function (data) {
-                return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle idea add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
+                return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle zq12273 add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
             },
             empty: function (data) {
                 return '';
@@ -1564,7 +1564,7 @@ function i_note_update_text(x__id, note_type_id) {
         } else {
 
             //ERROR
-            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
+            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="zq6255 css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
 
         }
 
@@ -1634,7 +1634,7 @@ function i_note_end_adding(result, note_type_id) {
 
     } else {
 
-        $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'+result.message);
+        $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'+result.message);
 
     }
 }
@@ -1958,7 +1958,7 @@ function e_email(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_email').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_email').html('<b class="zq6255 css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -1989,7 +1989,7 @@ function e_password(){
         if (!data.status) {
 
             //Ooops there was an error!
-            $('.save_password').html('<b class="discover css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
+            $('.save_password').html('<b class="zq6255 css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
 
         } else {
 
@@ -2145,7 +2145,7 @@ function i_add(x__type, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving').prop("disabled", true);
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin idea"></i></div></div></div></div>', js_n___14686.includes(x__type));
+    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>', js_n___14686.includes(x__type));
 
 
     //Update backend:

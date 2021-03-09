@@ -11,7 +11,7 @@ $is = $this->I_model->fetch(array(
 
 if(!$member_e){
 
-    echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>Must be signed in.</div>';
+    echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Must be signed in.</div>';
     js_redirect('/', 13);
 
 } elseif(!count($is)){
@@ -44,7 +44,7 @@ if(!$member_e){
             'x__left' => $is[0]['i__id'],
             'x__message' => $error_message,
         ));
-        echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span>'.$error_message.'</div>';
+        echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'.$error_message.'</div>';
         js_redirect('/'.$is[0]['i__id'], 2584);
 
     } else {
@@ -103,7 +103,7 @@ if(!$member_e){
 
 
         //Apply
-        echo '<div class="discover-controller"><div><button type="submit" class="controller-nav btn btn-lrg btn-discover go-next top-margin" value="GO">UPDATE</button></div></div>';
+        echo '<div class="nav-controller"><div><button type="submit" class="controller-nav btn btn-lrg btn-6255 go-next top-margin" value="GO">UPDATE</button></div></div>';
 
 
         echo '</div>';

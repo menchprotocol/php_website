@@ -128,7 +128,7 @@ function i_note_poweredit_save(note_type_id){
             $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__cover'] + ' ' + js_e___11035[14422]['m__title']);
 
             //Show Errors:
-            $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle discover"></i></span> Message not saved because:<br />'+data.message);
+            $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Message not saved because:<br />'+data.message);
 
         } else {
 
@@ -266,11 +266,11 @@ function e_e_only_search_7551(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">Create "' + data.query + '"</b></a>';
+                        return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span><b class="zq12274">Create "' + data.query + '"</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span><b class="zq12274">' + data.query + '</b></a>';
                 },
             }
         }]);

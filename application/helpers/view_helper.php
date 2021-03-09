@@ -109,7 +109,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
     } elseif ($x__type == 4261 /* File URL */) {
 
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-        return '<a href="' . $x__message . '" class="btn btn-idea" target="_blank" class="ignore-click">'.$e___11035[13573]['m__cover'].' '.$e___11035[13573]['m__title'].'</a>';
+        return '<a href="' . $x__message . '" class="btn btn-12273" target="_blank" class="ignore-click">'.$e___11035[13573]['m__cover'].' '.$e___11035[13573]['m__title'].'</a>';
 
     } elseif(strlen($x__message) > 0) {
 
@@ -1106,7 +1106,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
                 $tab_ui .= '<div id="current_text_'.$x__type.'" class="hidden">'.$textarea_content.'</div>';
 
                 //Response result:
-                $tab_ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger indifferent" style="margin:8px 0;"></div>';
+                $tab_ui .= '<div class="note_error_'.$x__type.' hideIfEmpty zq6255 msg alert alert-danger indifferent" style="margin:8px 0;"></div>';
 
 
                 //CONTROLLER
@@ -1199,7 +1199,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
             $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea regular_editor dotransparent algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" style="margin-top: 10px;" placeholder="'.$e___4485[$x__type]['m__title'].'..."></textarea>';
 
             //Response result:
-            $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty discover msg alert alert-danger" style="margin:8px 0;"></div>';
+            $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty zq6255 msg alert alert-danger" style="margin:8px 0;"></div>';
 
 
             //CONTROLLER
@@ -1613,7 +1613,7 @@ function view_i_select($i, $x__source, $previously_selected){
     //ICON?
     $ui .= '<div class="cover-btn">'.(!$has_valid_url && $coin_cover ? view_cover($coin_cover) : '').'</div>';
 
-    $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . '"><i class="fad fa-check-circle discover"></i></div>';
+    $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . '"><i class="fad fa-check-circle zq6255"></i></div>';
 
     $ui .= '</a>';
     $ui .= '</div>';

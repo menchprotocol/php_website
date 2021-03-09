@@ -125,14 +125,14 @@ function e_load_search(x__type) {
             header: function (data) {
                 if (!data.isEmpty) {
                     if(superpower_js_13422){
-                        return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span>' + '<b class="source css__title">Create "' + data.query + '"</b>' + '</a>';
+                        return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span>' + '<b class="zq12274 css__title">Create "' + data.query + '"</b>' + '</a>';
                     } else {
                         return '';
                     }
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus source"></i></span><b class="source">' + data.query + '</b></a>';
+                return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span><b class="zq12274">' + data.query + '</b></a>';
             },
         }
     }]);
