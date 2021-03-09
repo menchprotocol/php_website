@@ -1223,7 +1223,7 @@ class X extends CI_Controller
         }
 
         //We have something to save:
-        return view_json($this->X_model->x_answer($member_e['e__id'], $_POST['top_i__id'], $_POST['focus__id'], $_POST['selection_i__id']));
+        return view_json($this->X_model->x_answer($member_e['e__id'], $_POST['top_i__id'], $_POST['focus__id'], ( $nothing_seected ? array() : $_POST['selection_i__id'] )));
 
     }
 
