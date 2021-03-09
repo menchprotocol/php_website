@@ -565,25 +565,6 @@ label:focus,
     font-size: 2em !important;
     border: 0 !important;
 }
-.btn-lrg.btn-source{
-    background-color: #007AFD !important;
-    color: #222222 !important;
-}
-.btn-lrg.btn-discover{
-    background-color: #FC1B44 !important;
-    color: #222222 !important;
-}
-
-
-.btn-superpower.active .fas.source, .btn-superpower.active .far.source, .btn-superpower.active .fal.source, .btn-superpower.active .fad.source {
-    color:#007AFD !important;
-}
-.btn-superpower.active .fas.idea, .btn-superpower.active .far.idea, .btn-superpower.active .fal.idea, .btn-superpower.active .fad.idea {
-    color:#FFC500 !important;
-}
-.btn-superpower.active .fas.discover, .btn-superpower.active .far.discover, .btn-superpower.active .fal.discover, .btn-superpower.active .fad.discover {
-    color:#FC1B44 !important;
-}
 
 
 .click-info {
@@ -2892,4 +2873,29 @@ font-weight: bold !important;
 .editing-mode{
     padding-top: 5px !important;
     border-radius: 10px !important;
+}
+
+
+.btn-lrg.btn-source, .source_cover .black-background{
+    background-color: #007AFD !important;
+    color: #222222 !important;
+}
+.btn-lrg.btn-discover, .discover_cover .black-background{
+    background-color: #FC1B44 !important;
+    color: #222222 !important;
+}
+.btn-lrg.btn-idea, .idea_cover .black-background{
+    background-color: #FFC500 !important;
+    color: #222222 !important;
+}
+
+
+.btn-superpower.active .fas.source, .btn-superpower.active .far.source, .btn-superpower.active .fal.source, .btn-superpower.active .fad.source {
+    color:#007AFD !important;
+}
+.btn-superpower.active .fas.idea, .btn-superpower.active .far.idea, .btn-superpower.active .fal.idea, .btn-superpower.active .fad.idea {
+    color:#FFC500 !important;
+}
+.btn-superpower.active .fas.discover, .btn-superpower.active .far.discover, .btn-superpower.active .fal.discover, .btn-superpower.active .fad.discover {
+    color:#FC1B44 !important;
 }
