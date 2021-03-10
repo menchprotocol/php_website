@@ -323,7 +323,7 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 }
 
 
-function view_cover($cover_code)
+function view_cover($coin__type, $cover_code)
 {
     //A simple function to display the Member Icon OR the default icon if not available:
     if(filter_var($cover_code, FILTER_VALIDATE_URL)){
@@ -341,7 +341,7 @@ function view_cover($cover_code)
     } else {
 
         //Standard Icon if none:
-        return '<i class="fas fa-circle"></i>';
+        return '<img src="/img/'.$coin__type.'.png" />';
 
     }
 }
@@ -422,7 +422,7 @@ function view_x($x, $has_x__reference = false)
 
 
     //SOURCE
-    $ui .= '<div class="simple-line"><a href="/@'.$add_e[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4364]['m__cover']. '</span><span class="icon-block">'.view_cover($add_e[0]['e__cover']) . '</span>' . $add_e[0]['e__title'] . '</a></div>';
+    $ui .= '<div class="simple-line"><a href="/@'.$add_e[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4364]['m__cover']. '</span><span class="icon-block">'.view_cover(12274,$add_e[0]['e__cover']) . '</span>' . $add_e[0]['e__title'] . '</a></div>';
 
 
     //HIDE PRIVATE INFO?
@@ -491,7 +491,7 @@ function view_x($x, $has_x__reference = false)
                 //SOURCE
                 $es = $CI->E_model->fetch(array('e__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span>'.'<span class="icon-block">'.view_cover($es[0]['e__cover']). '</span>'.$es[0]['e__title'].'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$es[0]['e__cover']). '</span>'.$es[0]['e__title'].'</a></div>';
 
             } elseif(in_array(6202 , $m['m__profile'])){
 
@@ -724,19 +724,19 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
                     'x__spectrum' => 'ASC',
                     'e__title' => 'ASC'
                 )) as $source_e) {
-                    $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover($source_e['e__cover']).'</span>'.$source_e['e__title'].'</a>';
+                    $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12274,$source_e['e__cover']).'</span>'.$source_e['e__title'].'</a>';
                 }
             } elseif($x__type==12273){
                 //IDEAS
                 $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
                 foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array('x__spectrum' => 'DESC')) as $next_i) {
-                    $ui .= '<a href="/i/i_go/'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover($next_i['i__cover']).'</span>'.view_i_title($next_i).'</a>';
+                    $ui .= '<a href="/i/i_go/'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12273,$next_i['i__cover']).'</span>'.view_i_title($next_i).'</a>';
                 }
             } elseif($x__type==6255){
                 //DISCOVERIES / IDEAS
                 $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
                 foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array('x__id' => 'DESC')) as $x_i) {
-                    $ui .= '<a href="/i/i_go/'.$x_i['i__id'].'" class="dropdown-item css__title '.( $x_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover($x_i['i__cover']).'</span>'.view_i_title($x_i).'</a>';
+                    $ui .= '<a href="/i/i_go/'.$x_i['i__id'].'" class="dropdown-item css__title '.( $x_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12273,$x_i['i__cover']).'</span>'.view_i_title($x_i).'</a>';
                 }
             }
             $ui .= '</div>';
@@ -822,20 +822,20 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
             //SOURCES
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__up'), 10, 0, array('x__type' => 'ASC', 'x__spectrum' => 'ASC')) as $source_e) {
-                $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover($source_e['e__cover']).'</span>'.$source_e['e__title'].'</a>';
+                $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12274,$source_e['e__cover']).'</span>'.$source_e['e__title'].'</a>';
             }
         } elseif($x__type==12273){
             //IDEAS
             //TODO Update with Idea Cover and remove Idea Type icon
             $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i) {
-                $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover($next_i['i__cover']).'</span>'.view_i_title($next_i).'</a>';
+                $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12273,$next_i['i__cover']).'</span>'.view_i_title($next_i).'</a>';
             }
         } elseif($x__type==6255){
             //DISCOVERIES / SOURCS
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__source'), 10, 0, array('x__id' => 'DESC')) as $source_e) {
-                $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover($source_e['e__cover']).'</span>'.$source_e['e__title'].'</a>';
+                $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12274,$source_e['e__cover']).'</span>'.$source_e['e__title'].'</a>';
             }
         }
         $ui .= '</div>';
@@ -1458,7 +1458,7 @@ function view_time_hours($total_seconds, $hide_hour = false){
 function view__load__e($e){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
-    return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__cover'].'</span>' . view_cover($e['e__cover']) . '&nbsp;<a href="/@'.$e['e__id'].'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__cover'].'</a></div>';
+    return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__cover'].'</span>' . view_cover(12274,$e['e__cover']) . '&nbsp;<a href="/@'.$e['e__id'].'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__cover'].'</a></div>';
 }
 
 
@@ -1600,8 +1600,7 @@ function view_i_select($i, $x__source, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
-    $coin_cover = fetch_cover($i);
-    $has_valid_url = filter_var($coin_cover, FILTER_VALIDATE_URL);
+    $has_valid_url = filter_var($i['i__cover'], FILTER_VALIDATE_URL);
     $completion_rate = $CI->X_model->completion_progress($x__source, $i);
     $i_title = view_i_title($i);
     $i_stats = i_stats($i['i__metadata']);
@@ -1609,10 +1608,10 @@ function view_i_select($i, $x__source, $previously_selected){
 
     $ui  = '<div class="coin_cover col-md-4 col-6 no-padding">';
     $ui .= '<div class="cover-wrapper">';
-    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' coinType12273 ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$coin_cover.'\');"' : '' ).'>';
+    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' coinType12273 ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
     //ICON?
-    $ui .= '<div class="cover-btn">'.(!$has_valid_url && $coin_cover ? view_cover($coin_cover) : '').'</div>';
+    $ui .= '<div class="cover-btn">'.(!$has_valid_url && $i['i__cover'] ? view_cover(12273,$i['i__cover']) : '').'</div>';
 
     $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . '"><i class="fad fa-check-circle zq6255"></i></div>';
 
@@ -1704,14 +1703,13 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
-    $coin_cover = fetch_cover($i);
-    $has_valid_url = filter_var($coin_cover, FILTER_VALIDATE_URL);
+    $has_valid_url = filter_var($i['i__cover'], FILTER_VALIDATE_URL);
     $toolbar = $editing_enabled && $superpower_12673;
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
     $show_coins = !$has_any_lock && $editing_enabled;
-    $show_custom_image = !$has_valid_url && $coin_cover;
+    $show_custom_image = !$has_valid_url && $i['i__cover'];
 
 
 
@@ -1766,10 +1764,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Coin Cover
-    $ui .= ( $has_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $completion_rate['completion_percentage']>=100 ? ' coinType6255 ' : ' coinType12273 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$coin_cover.'\');"' : '' ).'>';
+    $ui .= ( $has_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $completion_rate['completion_percentage']>=100 ? ' coinType6255 ' : ' coinType12273 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
     //ICON?
-    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($coin_cover) : '').'</div>';
+    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12273,$i['i__cover']) : '').'</div>';
 
     $ui .= ( $has_any_lock ? '</div>' : '</a>' );
     $ui .= '</div>'; //cover-wrapper
@@ -1937,9 +1935,8 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $has_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
     $public_sources = $CI->config->item('n___14603');
-    $coin_cover = fetch_cover($e);
-    $has_valid_url = filter_var($coin_cover, FILTER_VALIDATE_URL);
-    $show_custom_image = !$has_valid_url && $coin_cover;
+    $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
+    $show_custom_image = !$has_valid_url && $e['e__cover'];
 
     $e__profiles = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -2015,17 +2012,17 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //Determine coin type:
     $cointype = 'coinType12274';
-    if ($discovery_mode || substr_count($coin_cover, 'fas fa-circle zq6255')) {
+    if ($discovery_mode || substr_count($e['e__cover'], 'fas fa-circle zq6255')) {
         $cointype = 'coinType6255';
-    } elseif (substr_count($coin_cover, 'fas fa-circle zq12273')) {
+    } elseif (substr_count($e['e__cover'], 'fas fa-circle zq12273')) {
         $cointype = 'coinType12273'; //Hack to make a source like an idea only for the source idea!
     }
 
     //Coin Cover
-    $ui .= ( $has_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.$cointype.' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$coin_cover.'\');"' : '' ).'>';
+    $ui .= ( $has_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.$cointype.' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
 
     //ICON?
-    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($coin_cover) : '' ).'</div>';
+    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover']) : '' ).'</div>';
 
     $ui .= ( $has_any_lock ? '</div>' : '</a>' );
     $ui .= '</div>';
@@ -2040,7 +2037,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     if($superpower_12706){
         $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
         foreach($e__profiles as $e_profile) {
-            $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '">' . view_cover($e_profile['e__cover']) . '</a></span> ';
+            $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '">' . view_cover(12274,$e_profile['e__cover']) . '</a></span> ';
         }
         $ui .= '</div>';
     }

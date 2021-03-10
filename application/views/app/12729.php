@@ -34,7 +34,7 @@ foreach($this->X_model->fetch(array(
     $direction = filter_cache_group($x['e__id'], 14874);
 
     echo '<tr class="panel-title down-border">';
-    echo '<td style="text-align: left;"><span class="icon-block">'.view_cover($x['e__cover']).'</span><a href="/@'.$x['e__id'].'" class="css__title">'.$x['e__title'].'</a></td>';
+    echo '<td style="text-align: left;"><span class="icon-block">'.view_cover(12274,$x['e__cover']).'</span><a href="/@'.$x['e__id'].'" class="css__title">'.$x['e__title'].'</a></td>';
     echo '<td style="text-align: left;"><span class="icon-block">'.$direction['m__cover'].'</span>'.number_format($x['total_x'], 0).'</td>';
     echo '</tr>';
 

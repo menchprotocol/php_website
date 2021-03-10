@@ -1755,7 +1755,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 }
 
                 //Is this an image?
-                if(filter_var($export_row['s__cover'], FILTER_VALIDATE_URL)){
+                if(filter_var($s['e__cover'], FILTER_VALIDATE_URL)){
                     array_push($export_row['_tags'], 'has_image');
                 }
 
@@ -1809,7 +1809,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 }
 
                 //Is this an image?
-                if(filter_var($export_row['s__cover'], FILTER_VALIDATE_URL)){
+                if(filter_var($s['i__cover'], FILTER_VALIDATE_URL)){
                     array_push($export_row['_tags'], 'has_image');
                 }
 

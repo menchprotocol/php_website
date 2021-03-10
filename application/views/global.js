@@ -144,7 +144,7 @@ function view_s__title(algolia_object){
 
 
 function view_s_js(algolia_object){
-    return '<span class="icon-block">'+ algolia_object.s__cover +'</span><span class="css__title">' + view_s__title(algolia_object) + '</span>';
+    return '<span class="icon-block">'+ view_cover_js(algolia_object.s__type, algolia_object.s__cover) +'</span><span class="css__title">' + view_s__title(algolia_object) + '</span>';
 }
 
 
@@ -578,19 +578,21 @@ function update_cover_main(cover_code, target_css){
     }
 }
 
-function update_cover_mini(cover_code, target_css){
-
-    //Set default:
-    $(target_css).html('<i class="fas fa-circle"></i>');
-
-    //Update:
+function view_cover_js(coin__type, cover_code){
     if(validURL(cover_code)){
-        $(target_css).html('<img src="'+cover_code+'" />');
+        return '<img src="'+cover_code+'" />';
     } else if(cover_code.indexOf('fa-')>=0) {
-        $(target_css).html('<i class="'+cover_code+'"></i>');
-    } else if(cover_code.length) {
-        $(target_css).text(cover_code);
+        return '<i class="'+cover_code+'"></i>';
+    } else if(cover_code.length > 0) {
+        return cover_code;
+    } else {
+        return '<img src="/img/'+coin__type+'.png" />';
     }
+}
+
+function update_cover_mini(coin__type, cover_code, target_css){
+    //Update:
+    $(target_css).html(view_cover_js(coin__type, cover_code));
 }
 
 
@@ -693,7 +695,7 @@ function coin__save(){
             update_text_name(text_field, $('#coin__id').val(), $('#coin__title').val());
 
             //Update Mini Icon:
-            update_cover_mini($('#coin__cover').val(), '.mini_'+text_field+'_'+$('#coin__id').val());
+            update_cover_mini($('#coin__type').val(), $('#coin__cover').val(), '.mini_'+text_field+'_'+$('#coin__id').val());
 
 
             //Update Main Icons:

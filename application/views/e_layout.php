@@ -78,7 +78,7 @@ $profiles = $this->X_model->fetch(array(
 
 
     //SOURCE TITLE
-    echo '<div>'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, view_cover($e['e__cover'])).'</div>';
+    echo '<div>'.view_input_text(6197, $e['e__title'], $e['e__id'], ($source_of_e && in_array($e['e__type'], $this->config->item('n___7358'))), 0, true, view_cover(12274,$e['e__cover'])).'</div>';
 
 
     //Determine Focus Tab:
