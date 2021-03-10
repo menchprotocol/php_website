@@ -340,7 +340,7 @@ $profiles = $this->X_model->fetch(array(
 
             if ($counter > count($list_e)) {
                 //Load even more if there...
-                $ui .= '<div class="'.$trigger_hide.'">'.view_load_more(11029, 1, view_memory(6404,11064), $counter).'</div>';
+                $ui .= view_load_more(11029, 1, view_memory(6404,11064), $counter, $trigger_hide);
             }
 
             $ui .= '</div>';
