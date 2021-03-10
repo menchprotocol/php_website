@@ -327,7 +327,7 @@ $profiles = $this->X_model->fetch(array(
             foreach($list_e as $e_link) {
 
                 if($count==$show_max_14435 && $has_more){
-                    $profile_ui .= view_show_more(14435, 'see_all_11029');
+                    $ui .= view_show_more(14435, 'see_all_11029');
                 }
 
                 if($count>=$show_max_14435 && $has_more){
