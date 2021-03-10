@@ -10,7 +10,7 @@ foreach($emojis as $count => $emoji_html){
     }
     $emoji_name = ucwords(one_two_explode('<td class=\'name\'>','</td>',$emoji_html));
     $emoji_icon = one_two_explode('','</td>',$emoji_html);
-    $emoji_flag = substr_count($emoji_html,'Flag: ');
+    $emoji_flag = substr_count(strtolower($emoji_html),'flag:') > 0;
     foreach(array('Flag: ','"',':',',') as $remove){
         $emoji_name = str_replace($remove, '', $emoji_name);
     }
