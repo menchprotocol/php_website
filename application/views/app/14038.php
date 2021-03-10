@@ -27,7 +27,7 @@ foreach($emojis as $count => $emoji_html){
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => 14038,
-    ), array(), 0);
+    ), array('x__down'), 0);
 
     if(!count($emoji_exists)){
 
