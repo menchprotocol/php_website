@@ -8,8 +8,9 @@ foreach($emojis as $count => $emoji_html){
     if(!$count){
         continue;
     }
-    $emoji_icon = one_two_explode('','</td>',$emoji_html);
     $emoji_name = ucwords(one_two_explode('<td class=\'name\'>','</td>',$emoji_html));
+    $emoji_icon = one_two_explode('','</td>',$emoji_html);
+    $emoji_flag = substr_count($emoji_html,'Flag: ');
     foreach(array('Flag: ','"',':',',') as $remove){
         $emoji_name = str_replace($remove, '', $emoji_name);
     }
@@ -28,7 +29,7 @@ foreach($emojis as $count => $emoji_html){
     }
 
 
-    echo $count.') ['.$emoji_icon.'] '.$emoji_name.( count($es) ? '[FOUND '.count($es).': @'.$es[0]['e__id'].']' : '' ).'<br />';
+    echo $count.') ['.$emoji_icon.'] '.$emoji_name.( $emoji_flag ? ' [FLAG]' : '' ).( count($es) ? ' [FOUND '.count($es).': @'.$es[0]['e__id'].']' : '' ).'<br />';
 
 
 }
