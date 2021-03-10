@@ -14,12 +14,11 @@ foreach($emojis as $count => $emoji_html){
     }
     $emoji_name = ucwords(one_two_explode('<td class=\'name\'>','</td>',$emoji_html));
     $emoji_icon = one_two_explode('','</td>',$emoji_html);
-    $emoji_flag = substr_count(strtolower($emoji_html),'flag:') > 0;
     foreach(array('Flag: ','"',':',',') as $remove){
         $emoji_name = str_replace($remove, '', $emoji_name);
     }
 
-    $list .= $count.') ['.$emoji_icon.'] '.$emoji_name.( $emoji_flag ? ' [COUNTRY]' : '' );
+    $list .= $count.') ['.$emoji_icon.'] '.$emoji_name;
 
     $emoji_exists = $this->X_model->fetch(array(
         'e__cover' => $emoji_icon,
@@ -47,16 +46,6 @@ foreach($emojis as $count => $emoji_html){
                 'x__source' => $member_e['e__id'],
                 'x__type' => e_x__type(),
             ));
-
-            if($emoji_flag){
-                //Add to countries as well:
-                $this->X_model->create(array(
-                    'x__up' => 3089, //Countries
-                    'x__down' => $new_emoji['e__id'],
-                    'x__source' => $member_e['e__id'],
-                    'x__type' => e_x__type(),
-                ));
-            }
 
             $added++;
             $list .= ' [ADDED]';
