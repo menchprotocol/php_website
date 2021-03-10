@@ -20,6 +20,12 @@ foreach($emojis as $count => $emoji_html){
         'e__cover' => $emoji_icon,
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
+    if(!count($es)){
+        $es = $this->E_model->fetch(array(
+            'e__cover' => $emoji_icon,
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        ));
+    }
 
 
     echo $count.') ['.$emoji_icon.'] '.$emoji_name.( count($es) ? '[FOUND '.count($es).': @'.$es[0]['e__id'].']' : '' ).'<br />';
