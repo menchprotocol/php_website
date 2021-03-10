@@ -322,7 +322,7 @@ $profiles = $this->X_model->fetch(array(
             ////////
             $count = 0;
             $show_max_14435 = view_memory(6404,14435);
-            $has_more = count($profiles)>($show_max_14435+1);
+            $has_more = count($list_e)>($show_max_14435+1);
             $trigger_hide = null;
             foreach($list_e as $e_link) {
 
