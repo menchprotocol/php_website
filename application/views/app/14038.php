@@ -31,17 +31,20 @@ foreach($emojis as $count => $emoji_html){
 
     if(!count($emoji_exists)){
 
+        $added++;
+        $list .= ' [ADDED]';
+
         //Add Emoji:
         /*
+         *
         $new_emoji = $this->E_model->create(array(
             'e__title' => $emoji_name,
             'e__cover' => $emoji_icon,
             'e__type' => 6178,
         ), true, $member_e['e__id']);
-        */
 
         if(count($new_emoji)){
-            /*
+
             //Add Link:
             $this->X_model->create(array(
                 'x__up' => 14038,
@@ -59,15 +62,13 @@ foreach($emojis as $count => $emoji_html){
                     'x__type' => e_x__type(),
                 ));
             }
-            */
 
-            $added++;
-            $list .= ' [ADDED]';
 
         } else {
             $error++;
             $list .= ' [ERROR]';
         }
+            */
     } else {
         $there++;
         $list .= ' [THRER]';
