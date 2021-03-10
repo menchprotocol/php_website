@@ -1642,6 +1642,9 @@ i, .btn .show-max {
     line-height: 100%;
     margin-bottom: 0 !important;
     margin-top: 9px;
+    display: block;
+    float: left;
+    text-align: center;
 }
 
 .icon-block-lg img {
