@@ -35,7 +35,7 @@ foreach($emojis as $count => $emoji_html){
         $new_emoji = $this->E_model->create(array(
             'e__title' => $emoji_name,
             'e__cover' => $emoji_icon,
-            'e__type' => 6178,
+            'e__type' => 6181,
         ), true, $member_e['e__id']);
 
         if(count($new_emoji)){
