@@ -234,7 +234,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //GIF
                                     //$default_active = $image_src && substr($image_src, -4)=='.gif';
 
-                                    $ui .= '<input type="text" class="form-control text-edit border css__title gif_query" placeholder="Search GIFs..." onkeyup="gif_search(\'\')" data-lpignore="true" />';
+                                    $ui .= '<input type="text" class="form-control text-edit border css__title gif_query" placeholder="Search GIFs..." onkeyup="gif_search()" data-lpignore="true" />';
                                     $ui .= '<div class="gif_results margin-top-down hideIfEmpty"></div>';
 
                                 } elseif($x__type==14936){
@@ -324,7 +324,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body">
                     <input type="hidden" id="modal_i__id" value="0" />
                     <input type="hidden" id="modal_x__type" value="0" />
-                    <input type="text" class="form-control text-edit border css__title gif_query" placeholder="Search GIFs..." onkeyup="gif_search('')" data-lpignore="true" />
+                    <input type="text" class="form-control text-edit border css__title gif_query" placeholder="Search GIFs..." onkeyup="gif_search()" data-lpignore="true" />
                     <div class="gif_results margin-top-down hideIfEmpty"></div>
                 </div>
             </div>

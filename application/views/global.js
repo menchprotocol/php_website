@@ -1133,11 +1133,9 @@ function gif_modal(x__type){
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
 
 var current_q = '';
-function gif_search(q){
+function gif_search(){
 
-    if(!q.length){
-        q = encodeURI($('.gif_query').val());
-    }
+    q = encodeURI($('.gif_query').val());
 
     if(q==current_q){
         return false;
