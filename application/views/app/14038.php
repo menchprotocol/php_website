@@ -75,7 +75,6 @@ foreach($emojis as $count => $emoji_html){
     }
 
 
-    $list .= $count.') ['.$emoji_icon.'] '.$emoji_name.( $emoji_flag ? ' [FLAG]' : '' ).( count($es) ? ' [FOUND '.count($es).': @'.$es[0]['e__id'].']' : '' );
     $list .= '<br />';
 
 }
