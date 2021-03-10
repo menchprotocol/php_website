@@ -1039,7 +1039,8 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e, $
     } else {
         //LIST TYPE
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-        $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[$x__type]['m__title'].':</div>';
+        $edit_button = ( $x__type==13980 ? '<a class="btn btn-6255" style="margin-left:13px;" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a>' : null );
+        $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[$x__type]['m__title'].':'.$edit_button.'</div>';
     }
     $ui .= '</div>';
     if($right_content){

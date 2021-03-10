@@ -300,17 +300,7 @@ if($top_i__id) {
             if (count($x_selects) > 0) {
                 //MODIFY ANSWER
                 echo '<div class="edit_select_answer">';
-
-                //List answers:
                 echo view_i_list(13980, $top_i__id, $top_i__id, $i_focus, $x_selects, $member_e);
-
-                echo '<div class="doclear">&nbsp;</div>';
-
-                //EDIT ANSWER:
-                echo '<div class="margin-top-down btn-five"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
-
-                echo '<div class="doclear">&nbsp;</div>';
-
                 echo '</div>';
             }
 
