@@ -1737,10 +1737,9 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__id'] = intval($s['e__id']);
                 $export_row['s__url'] = '/@' . $s['e__id'];
                 $export_row['s__status'] = intval($s['e__type']);
-                $export_row['s__cover'] = view_cover(fetch_cover($s));
+                $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];
                 $export_row['s___weight'] = intval($s['e__spectrum']);
-                $export_row['s___image'] = '';
 
                 //Add source as their own author:
                 array_push($export_row['_tags'], 'alg_e_' . $s['x__source']);
@@ -1755,6 +1754,10 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
+                //Is this an image?
+                if(filter_var($export_row['s__cover'], FILTER_VALIDATE_URL)){
+                    array_push($export_row['_tags'], 'has_image');
+                }
 
                 //Fetch Profiles:
                 $export_row['s__keywords'] = '';
@@ -1770,14 +1773,8 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
                     //Add content to keywords if any:
                     if (strlen($x['x__message']) > 0) {
-
                         //Add to keywords:
                         $export_row['s__keywords'] .= $x['x__message'] . ' ';
-
-                        //Is this an image?
-                        if(!$export_row['s___image'] && $x['x__type']==4260){
-                            $export_row['s___image'] = $x['x__message'];
-                        }
                     }
 
                 }
@@ -1791,10 +1788,9 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__id'] = intval($s['i__id']);
                 $export_row['s__url'] = '/i/i_go/' . $s['i__id'];
                 $export_row['s__status'] = intval($s['i__type']);
-                $export_row['s__cover'] = view_cover(fetch_cover($s));
+                $export_row['s__cover'] =  $s['i__cover'];
                 $export_row['s__title'] = $s['i__title'];
                 $export_row['s___weight'] = intval($s['i__spectrum']);
-                $export_row['s___image'] = '';
 
                 //Add keywords:
                 $export_row['s__keywords'] = '';
@@ -1810,6 +1806,11 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 //Featured?
                 if (i_is_featured($s)) {
                     array_push($export_row['_tags'], 'is_featured');
+                }
+
+                //Is this an image?
+                if(filter_var($export_row['s__cover'], FILTER_VALIDATE_URL)){
+                    array_push($export_row['_tags'], 'has_image');
                 }
 
                 //Is SOURCE for any IDEA?
