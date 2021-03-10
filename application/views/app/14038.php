@@ -31,12 +31,7 @@ foreach($emojis as $count => $emoji_html){
 
     if(!count($emoji_exists)){
 
-        $added++;
-        $list .= ' [ADDED]';
-
         //Add Emoji:
-        /*
-         *
         $new_emoji = $this->E_model->create(array(
             'e__title' => $emoji_name,
             'e__cover' => $emoji_icon,
@@ -63,12 +58,14 @@ foreach($emojis as $count => $emoji_html){
                 ));
             }
 
+            $added++;
+            $list .= ' [ADDED]';
 
         } else {
             $error++;
             $list .= ' [ERROR]';
         }
-            */
+
     } else {
         $there++;
         $list .= ' [THRER]';
