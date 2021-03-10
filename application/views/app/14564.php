@@ -77,7 +77,7 @@ if($userInfo){
 
     } else {
 
-        header('Location: /app/auth0_create/'.$sign_i__id.'?name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&url='.urlencode($redirect_url));
+        header('Location: /app/auth0_create/'.$sign_i__id.'?name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&image_url='.urlencode($userInfo['picture']).'&url='.urlencode($redirect_url));
 
     }
 
