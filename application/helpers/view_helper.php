@@ -246,7 +246,7 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___11035 = $CI->config->item('e___11035');
-    $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
+    $supports_emoji = (in_array($x__type, $CI->config->item('n___14990')));
     $referenced_ideas = (in_array($x__type, $CI->config->item('n___13550')));
     $editable_discovery = (in_array($x__type, $CI->config->item('n___14043')));
 
@@ -1066,7 +1066,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
     $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
-    $supports_emoji = (in_array($x__type, $CI->config->item('n___14038')));
+    $supports_emoji = (in_array($x__type, $CI->config->item('n___14990')));
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
     $member_e = superpower_unlocked();
     $ui = '';

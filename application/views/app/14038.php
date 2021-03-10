@@ -3,6 +3,10 @@
 //Update Emojis
 $emoji_list = file_get_contents('https://unicode.org/emoji/charts/full-emoji-list.html');
 $emojis = explode('<td class=\'chars\'>',$emoji_list);
+$added = 0;
+$there = 0;
+$error = 0;
+$list = '';
 
 foreach($emojis as $count => $emoji_html){
     if(!$count){
@@ -15,25 +19,69 @@ foreach($emojis as $count => $emoji_html){
         $emoji_name = str_replace($remove, '', $emoji_name);
     }
 
-    //See if we have it:
-    $es = $this->E_model->fetch(array(
-        'LOWER(e__title)' => strtolower($emoji_name),
+    $list .= $count.') ['.$emoji_icon.'] '.$emoji_name.( $emoji_flag ? ' [COUNTRY]' : '' );
+
+    $emoji_exists = $this->X_model->fetch(array(
         'e__cover' => $emoji_icon,
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    ));
-    if(!count($es)){
-        $es = $this->E_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__up' => 14038,
+    ), array(), 0);
+
+    if(!count($emoji_exists)){
+
+        //Add Emoji:
+        /*
+        $new_emoji = $this->E_model->create(array(
+            'e__title' => $emoji_name,
             'e__cover' => $emoji_icon,
-            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ));
+            'e__type' => 6178,
+        ), true, $member_e['e__id']);
+        */
+
+        if(count($new_emoji)){
+            /*
+            //Add Link:
+            $this->X_model->create(array(
+                'x__up' => 14038,
+                'x__down' => $new_emoji['e__id'],
+                'x__source' => $member_e['e__id'],
+                'x__type' => e_x__type(),
+            ));
+
+            if($emoji_flag){
+                //Add to countries as well:
+                $this->X_model->create(array(
+                    'x__up' => 3089, //Countries
+                    'x__down' => $new_emoji['e__id'],
+                    'x__source' => $member_e['e__id'],
+                    'x__type' => e_x__type(),
+                ));
+            }
+            */
+
+            $added++;
+            $list .= ' [ADDED]';
+
+        } else {
+            $error++;
+            $list .= ' [ERROR]';
+        }
+    } else {
+        $there++;
+        $list .= ' [THRER]';
     }
 
 
-    echo $count.') ['.$emoji_icon.'] '.$emoji_name.( $emoji_flag ? ' [FLAG]' : '' ).( count($es) ? ' [FOUND '.count($es).': @'.$es[0]['e__id'].']' : '' ).'<br />';
-
+    $list .= $count.') ['.$emoji_icon.'] '.$emoji_name.( $emoji_flag ? ' [FLAG]' : '' ).( count($es) ? ' [FOUND '.count($es).': @'.$es[0]['e__id'].']' : '' );
+    $list .= '<br />';
 
 }
 
-
-
+echo 'Error: '.$error.'<br />';
+echo 'New: '.$added.'<br />';
+echo 'There: '.$there.'<br />';
+echo 'Total: '.number_format(($there + $added), 0).'<br /><hr />';
+echo $list;
 
