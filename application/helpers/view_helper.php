@@ -2150,7 +2150,7 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
 
     }
 
-    $coin__type = ( substr_count($e___12112[$cache_e__id]['m__cover'], ' idea') ? 12273 : 12274 );
+    $coin__type = ( substr_count($e___12112[$cache_e__id]['m__cover'], 12273) ? 12273 : 12274 );
     return '<span class="span__'.$cache_e__id.' '.( !$e_of_i ? ' edit-locked ' : '' ).'">'.( $e_of_i && in_array($cache_e__id, array(4736,6197)) ? '<a href="javascript:void(0);" onclick="coin__load('.$coin__type.','.$s__id.')">'.$icon.'</a>' : $icon ).$focus_element.'</span>'.$character_counter;
 }
 
