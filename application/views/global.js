@@ -570,7 +570,7 @@ function update_cover_main(cover_code, target_css){
 
     //Update:
     if(validURL(cover_code)){
-        $(target_css+' .cover-link').css('background-image','url('+cover_code+')');
+        $(target_css+' .cover-link').css('background-image','url('+encodeURI(cover_code)+')');
     } else if(cover_code.indexOf('fa-')>=0) {
         $(target_css+' .cover-btn').html('<i class="'+cover_code+'"></i>');
     } else if(cover_code.length > 0) {
@@ -585,7 +585,7 @@ function update_cover_mini(cover_code, target_css){
 
     //Update:
     if(validURL(cover_code)){
-        $(target_css).html('<img src="'+cover_code+'" />');
+        $(target_css).html('<img src="'+encodeURI(cover_code)+'" />');
     } else if(cover_code.indexOf('fa-')>=0) {
         $(target_css).html('<i class="'+cover_code+'"></i>');
     } else if(cover_code.length) {
