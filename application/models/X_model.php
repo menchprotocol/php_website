@@ -806,10 +806,9 @@ class X_model extends CI_Model
                 'e__id' => $referenced_e,
             ));
             if (count($es) < 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'The referenced source @' . $referenced_e . ' not found',
-                );
+                //Remove Source:
+
+                continue;
             }
 
             //Set as source reference:
