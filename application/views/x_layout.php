@@ -167,7 +167,7 @@ if($top_i__id){
     echo '<div class="row margin-top-down justify-content-center">';
     foreach($previous_x as $count => $sitemap_i){
         if($count==$show_max_14538 && $has_more){
-            echo view_show_more('see_all_discoveries');
+            echo view_show_more(14538, 'see_all_discoveries');
         }
         echo view_i(14450, $top_i__id, null, $sitemap_i, false, null, false, null, ($count>=$show_max_14538 && $has_more ? 'see_all_discoveries hidden' : ''));
     }

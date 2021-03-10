@@ -1,12 +1,12 @@
 <?php
 
 
-function view_show_more($class){
+function view_show_more($see_more_type, $class){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $href = 'href="javascript:void(0);" onclick="$(\'.'.$class.'\').toggleClass(\'hidden\')"';
     return '<div class="coin_cover coin_reverse col-md-4 col-6 no-padding '.$class.'">
-                                <div class="cover-wrapper"><a '.$href.' class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
+                                <div class="cover-wrapper"><a '.$href.' class="black-background cover-link"><div class="cover-btn">'.$e___11035[$see_more_type]['m__cover'].'</div></a></div>
                             </div>';
 }
 
@@ -1475,7 +1475,7 @@ function view_i_featured($i_exclude = array()){
     $visible_ui = '';
     $hidden_ui = '';
     $limit = view_memory(6404,14877);
-    $max_visible = view_memory(6404,14435);
+    $show_max_14435 = view_memory(6404,14435);
     $member_e = superpower_unlocked();
     $loaded_topics = 0;
     $my_topics = ( $member_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___'.$topic_id)) : array() );
@@ -1498,7 +1498,7 @@ function view_i_featured($i_exclude = array()){
 
         if(count($query)){
 
-            $should_be_hidden = ( !count($my_topics) && $loaded_topics>=$max_visible ) || ( count($my_topics) && !in_array($e__id, $my_topics) );
+            $should_be_hidden = ( !count($my_topics) && $loaded_topics>=$show_max_14435 ) || ( count($my_topics) && !in_array($e__id, $my_topics) );
             $loaded_topics++;
 
             //We need to check if we have more than this?

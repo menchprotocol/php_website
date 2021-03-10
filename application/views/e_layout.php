@@ -31,35 +31,28 @@ $profiles = $this->X_model->fetch(array(
 
 
 
-
-
     //PROFILE
     if(!$source_is_e || $superpower_13422){
 
+        $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
+
         $count = 0;
         $show_max_14538 = view_memory(6404,14538);
-        $see_more_button = false;
         $has_more = count($profiles)>($show_max_14538+1);
-
-        $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
         $trigger_hide = null;
-        foreach($profiles as $e_profile) {
+        foreach($profiles as $e_link) {
 
-            if(!$see_more_button && $count==$show_max_14538 && $has_more){
-                $profile_ui .= view_show_more('see_all_profiles');
-                $see_more_button = true;
+            if($count==$show_max_14538 && $has_more){
+                $profile_ui .= view_show_more(14538, 'see_all_11030');
             }
 
             if($count>=$show_max_14538 && $has_more){
-                $trigger_hide = 'see_all_profiles hidden';
+                $trigger_hide = 'see_all_11030 hidden';
             }
 
-            $view_e = view_e(11030, $e_profile, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_profile['x__source']))));
+            $profile_ui .= view_e(11030, $e_link, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_link['x__source']))));
+            $count++;
 
-            if($view_e){
-                $profile_ui .= $view_e;
-                $count++;
-            }
         }
         $profile_ui .= '</div>';
 
@@ -326,12 +319,30 @@ $profiles = $this->X_model->fetch(array(
 
             $ui .= '<div id="list-in-11029" class="row justify-content-center hideIfEmpty">';
 
-            foreach($list_e as $e_portfolio) {
-                $ui .= view_e(11029, $e_portfolio,null,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_portfolio['x__source']))));
+            ////////
+            $count = 0;
+            $show_max_14435 = view_memory(6404,14435);
+            $has_more = count($profiles)>($show_max_14435+1);
+            $trigger_hide = null;
+            foreach($list_e as $e_link) {
+
+                if($count==$show_max_14435 && $has_more){
+                    $profile_ui .= view_show_more(14435, 'see_all_11029');
+                }
+
+                if($count>=$show_max_14435 && $has_more){
+                    $trigger_hide = 'see_all_11029 hidden';
+                }
+
+                $ui .= view_e(11029, $e_link, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_link['x__source']))));
+                $count++;
             }
+
             if ($counter > count($list_e)) {
-                $ui .= view_load_more(11029, 1, view_memory(6404,11064), $counter);
+                //Load even more if there...
+                $ui .= '<div class="'.$trigger_hide.'">'.view_load_more(11029, 1, view_memory(6404,11064), $counter).'</div>';
             }
+
             $ui .= '</div>';
             //Input to add new child:
             if($superpower_13422){
