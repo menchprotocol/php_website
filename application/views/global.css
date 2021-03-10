@@ -1640,12 +1640,8 @@ i, .btn .show-max {
 
 .platform-circle{
     line-height: 100%;
-    width: 41px !important;
     margin-bottom: 0 !important;
     margin-top: 9px;
-    display: block;
-    float: left;
-    text-align: center;
 }
 
 .icon-block-lg img {

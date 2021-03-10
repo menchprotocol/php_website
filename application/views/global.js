@@ -1114,7 +1114,7 @@ function i_load_search(x__type) {
 
 }
 
-function gif_modal(x__type){
+function images_modal(x__type){
     x_create({
         x__source: js_pl_id,
         x__type: 14576, //MODAL VIEWED
@@ -1123,19 +1123,19 @@ function gif_modal(x__type){
     });
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
-    $('.gif_results').html('');
-    $('.gif_query').val('');
+    $('.images_results').html('');
+    $('.images_query').val('');
     setTimeout(function () {
-        $('.gif_query').focus();
+        $('.images_query').focus();
     }, 610);
 }
 
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
 
 var current_q = '';
-function gif_search(){
+function images_search(){
 
-    q = encodeURI($('.gif_query').val());
+    q = encodeURI($('.images_query').val());
 
     if(q==current_q){
         return false;
@@ -1143,9 +1143,9 @@ function gif_search(){
 
     current_q = q;
     var x__type = $('#modal_x__type').val();
-    $('.gif_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
+    $('.images_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     $.get({
-        url: js_e___6404[14073]['m__message']+current_q,
+        url: js_e___6404[6293]['m__message']+current_q,
         success: function(result) {
             var data = result.data;
             var output = "";
@@ -1153,7 +1153,7 @@ function gif_search(){
             for (var index in data){
                 counter++;
                 var gifObject = data[index];
-                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"gif_add("+x__type+",'"+gifObject.id+"','"+gifObject.title.replace("'",'')+"')\"><img src='/img/logos/"+base_source+".svg' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.id+"/200w.gif' /></a></div>";
+                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"images_add("+x__type+",'"+gifObject.id+"','"+gifObject.title.replace("'",'')+"')\"><img src='/img/logos/"+base_source+".svg' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.id+"/200w.gif' /></a></div>";
                 if(!Math.fmod(counter, 3)){
                     //output += "</div><div class=\"row\">";
                 }
@@ -1166,7 +1166,7 @@ function gif_search(){
                 //No results found:
                 output = "<div style=\"margin:5px 0;\">No GIFs found</div>";
             }
-            $(".gif_results").html(output);
+            $(".images_results").html(output);
             lazy_load();
         },
         error: function(error) {
@@ -1176,7 +1176,7 @@ function gif_search(){
 
 }
 
-function gif_add(note_type_id, giphy_id, giphy_title){
+function images_add(note_type_id, giphy_id, giphy_title){
 
     var current_value = $('.input_note_' + note_type_id).val();
     $('#modal14073').modal('hide');

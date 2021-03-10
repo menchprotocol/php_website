@@ -194,7 +194,7 @@ if(!$basic_header_footer){
                             echo $site_logo;
                         } else {
                             //My Source
-                            echo '<a href="'.home_url().'"><span class="platform-circle mini_6197_'.$member_e['e__id'].'">'.view_cover($member_e['e__cover']).'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
+                            echo '<a href="'.home_url().'"><span class="platform-circle icon-block mini_6197_'.$member_e['e__id'].'">'.view_cover($member_e['e__cover']).'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
                         }
 
                     } else {
