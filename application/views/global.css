@@ -2653,7 +2653,7 @@ font-weight: bold !important;
     padding-bottom: 5px !important;
 }
 .editor_preview{
-    padding-top: 25px !important;
+    padding:25px 13px 0 !important;
     margin: 0 41px;
     border-radius: 10px !important;
     margin-bottom: 76px;
