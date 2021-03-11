@@ -83,7 +83,7 @@ echo '<br /><br />'.$ideas_scanned.' Ideas scanned.<br />';
 
 
 //SOURCES
-$sources_scanned
+$sources_scanned = 0;
 foreach($this->E_model->fetch(array()) as $o) {
 
     $sources_scanned++;
