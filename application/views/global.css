@@ -2886,9 +2886,9 @@ font-weight: bold !important;
 }
 
 .move_away{
-    margin-right: 34px;
+    margin-right: 21px;
 }
-.move_away .fa-right-arrow {
+.move_away .fa-arrow-right {
     float:right;
 }
 
