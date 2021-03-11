@@ -2631,13 +2631,7 @@ font-weight: bold !important;
     background-color: #999999 !important;
 }
 
-.editor_preview{
-    padding-top: 5px !important;
-    padding-bottom: 27px !important;
-    margin: 0 41px;
-    border-radius: 10px !important;
-    margin-bottom: 76px;
-}
+
 .editor_preview .msg, .padded .msg {
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -2651,7 +2645,6 @@ font-weight: bold !important;
 
 .editor_preview:hover{
     cursor: text !important;
-    border-radius: 10px !important;
 }
 
 .doabsolute {
@@ -2659,7 +2652,12 @@ font-weight: bold !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
 }
-
+.editor_preview{
+    padding-top: 25px !important;
+    margin: 0 41px;
+    border-radius: 10px !important;
+    margin-bottom: 76px;
+}
 
 /* WHITE */
 .custom_ui_13884_13885 .light-bg,
