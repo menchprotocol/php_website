@@ -27,9 +27,6 @@ $profiles = $this->X_model->fetch(array(
 
     <?php
 
-    echo '<div class="container">';
-
-
 
     //PROFILE
     if(!$source_is_e || $superpower_13422){
@@ -319,7 +316,7 @@ $profiles = $this->X_model->fetch(array(
 
             $ui .= '<div id="list-in-11029" class="row justify-content-center hideIfEmpty">';
 
-            ////////
+
             $count = 0;
             $show_max_14435 = view_memory(6404,14435);
             $has_more = count($list_e)>($show_max_14435+1);
@@ -559,7 +556,7 @@ $profiles = $this->X_model->fetch(array(
 
         $default_active = $x__type==$active_x__type;
 
-        $tab_nav .= '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
+        $tab_nav .= '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
 
 
         $tab_content .= '<div class="tab-content tab-group-11089 tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).( $source_is_e ? ' no-border ' : '' ).'">';
@@ -579,7 +576,5 @@ $profiles = $this->X_model->fetch(array(
         echo $tab_content;
 
     }
-
-    echo '</div>';
 
     ?>

@@ -42,7 +42,7 @@ function view_i_time($i_stats, $give_right_space = false, $micro_sign = false){
     $ui = '<div class="inline-block '.( $give_right_space ? ' css__title grey ' : ' mini-font ' ).'">';
 
     if(!$micro_sign && $i_stats['i___6170']>0){
-        $ui .= ( $has_any_diff && !$micro_sign ? $i_stats['i___6169'].'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' idea'.view__s($i_stats['i___6170']).'<span class="mid-range">&middot;</span>';
+        $ui .= ( $has_any_diff && !$micro_sign ? view_number($i_stats['i___6169']).'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' idea'.view__s($i_stats['i___6170']).'<span class="mid-range">&middot;</span>';
     }
 
     if($has_micro){
@@ -178,7 +178,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
                     $embed_html_code .= '<div class="css__title subtle-line mini-grey"><span class="icon-block-xs">'.$e___11035[13292]['m__cover'].'</span>'.( $seconds<60 ? $seconds.' SEC.' : round_minutes($seconds).' MIN' ).' <span class="inline-block">FROM '.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).'</span></div>';
                 }
 
-                $embed_html_code .= '<div class="media-content ignore-click"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe id="youtubeplayer'.$video_id.'"  src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div>';
+                $embed_html_code .= '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe id="youtubeplayer'.$video_id.'"  src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div>';
 
             }
 
@@ -190,7 +190,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
             //This should be an integer!
             if (intval($video_id) == $video_id) {
                 $clean_url = 'https://vimeo.com/' . $video_id;
-                $embed_html_code = '<div class="media-content ignore-click"><div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://user.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="vm-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div><div class="doclear">&nbsp;</div></div>';
+                $embed_html_code = '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="https://user.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="vm-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div><div class="doclear">&nbsp;</div></div>';
             }
 
         } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
@@ -711,7 +711,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             $e___14874 = $CI->config->item('e___14874'); //COINS
             $first_segment = $CI->uri->segment(1);
             $coin_icon = '<span class="icon-block-xs">'.$e___14874[$x__type]['m__cover'].'</span>';
-            $coin_count = view_number($count_query);
+            $coin_count = number_format($count_query, 0);
 
             $ui = '<div class="dropdown inline-block">';
             $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $x__type==12274 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
@@ -812,7 +812,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
         $e___14874 = $CI->config->item('e___14874'); //COINS
         $first_segment = $CI->uri->segment(1);
         $coin_icon = '<span class="icon-block-xs">'.$e___14874[$x__type]['m__cover'].'</span>';
-        $coin_count = view_number($count_query);
+        $coin_count = number_format($count_query, 0);
 
         $ui = '<div class="dropdown inline-block">';
         $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $x__type==12274 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
@@ -1654,6 +1654,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $e_of_i = e_of_i($i['i__id']);
     $user_input = $focus_e;
     $user_session = superpower_unlocked();
+    $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $editing_enabled = in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
     $has_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];

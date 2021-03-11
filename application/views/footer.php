@@ -1,4 +1,6 @@
 
+</div><!-- Container -->
+
 <?php
 $member_e = superpower_unlocked();
 if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
@@ -140,12 +142,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <?php
                     if(superpower_active(12699, true)){
                         echo '<div class="list-group">';
-                        foreach($this->config->item('e___6287') as $e__id => $m) {
-                            echo '<a href="/-'.$e__id.'" class="list-group-item no-side-padding">';
-                            echo '<span class="icon-block">' . $m['m__cover'] . '</span>';
-                            echo '<b class="css__title">'.$m['m__title'].'</b>';
-                            echo ( strlen($m['m__message']) ? '&nbsp;'.$m['m__message'] : '' );
-                            echo '</a>';
+                        foreach(view_coins_e(12274, 6287, 1) as $app) {
+                            echo view_e(6287, $app);
                         }
                         echo '</div>';
                     } else {

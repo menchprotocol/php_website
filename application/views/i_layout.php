@@ -33,10 +33,6 @@ $is_in_my_ideas = count($this->X_model->fetch(array(
 
 
 
-echo '<div class="container">';
-
-
-
 if(!$e_of_i){
 
     //DO they already have a request?
@@ -373,7 +369,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     $default_active = in_array($x__type, $this->config->item('n___12675'));
 
-    echo '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.view_number($counter).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
+    echo '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
@@ -386,5 +382,3 @@ echo '</ul>';
 
 //Show All Tab Content:
 echo $tab_content;
-
-echo '</div>';

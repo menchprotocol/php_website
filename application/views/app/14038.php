@@ -35,7 +35,7 @@ foreach($emojis as $count => $emoji_html){
             'e__title' => $emoji_name,
             'e__cover' => $emoji_icon,
             'e__type' => 6181,
-        ), true, $member_e['e__id']);
+        ), true);
 
         if(count($new_emoji)){
 
@@ -43,7 +43,6 @@ foreach($emojis as $count => $emoji_html){
             $this->X_model->create(array(
                 'x__up' => 14038,
                 'x__down' => $new_emoji['e__id'],
-                'x__source' => $member_e['e__id'],
                 'x__type' => e_x__type(),
             ));
 

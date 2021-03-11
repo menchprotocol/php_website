@@ -264,3 +264,5 @@ if(!$basic_header_footer){
     </div>
 
 <?php } ?>
+
+<div class="container">

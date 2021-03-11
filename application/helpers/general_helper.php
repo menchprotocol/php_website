@@ -498,118 +498,15 @@ function e_count_6194($e__id, $specific_id = 0){
 
 }
 
-
-function fetch_cover($o){
-
-    $CI =& get_instance();
-    $is_idea = isset($o['i__id']);
-    $coin_set = null;
-    $found_image = null;
-    $first_source_icon = null;
-    $o_id = ( $is_idea ? $o['i__id'] : $o['e__id'] );
-
-    if($is_idea && strlen($o['i__cover'])){
-        $coin_set = $o['i__cover'];
-    } elseif(!$is_idea && strlen($o['e__cover'])){
-        $coin_set = $o['e__cover'];
+function cover_can_update($icon_code){
+    //Decides if a coin cover can be auto updated:
+    if(filter_var($icon_code, FILTER_VALIDATE_URL)){
+        //Cannot update if its an image:
+        return false;
+    } else{
+        //Can update if not set:
+        return !strlen($icon_code);
     }
-
-    if(strlen($coin_set) > 0){
-        //See what we have here:
-        if(filter_var($coin_set, FILTER_VALIDATE_URL)){
-            $found_image = $coin_set;
-        } else {
-            //EMOJI/ICON
-            $first_source_icon = $coin_set;
-        }
-    }
-
-
-
-    if(!$found_image && (!$first_source_icon || !$is_idea)){
-
-        //Have no image in the main cover, look elsewhere:
-        if($is_idea){
-
-            foreach($CI->X_model->fetch(array( //IDEA SOURCE
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $o['i__id'],
-                'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-            ), array('x__up'), 0, 0, array(
-                'x__type' => 'ASC', //Messages First, Sources Second
-                'x__spectrum' => 'ASC', //Sort by message order
-            )) as $fetched_e){
-
-                //See if this source has a photo:
-                foreach($CI->X_model->fetch(array(
-                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___14756')) . ')' => null, //SOURCE LINK IMAGE HOLDERS
-                    'x__down' => $fetched_e['x__up'],
-                )) as $e_image) {
-                    if($e_image['x__type']==4260){
-                        $found_image = $e_image['x__message'];
-                        break;
-                    } elseif($e_image['x__type']==4257 /* Currently excluded from @14756 */){
-                        //Embed:
-                        $video_id = extract_youtube_id($e_image['x__message']);
-                        if($video_id){
-                            //Use the YouTube video image:
-                            $found_image = 'https://img.youtube.com/vi/'.$video_id.'/hqdefault.jpg';
-                            break;
-                        }
-                    }
-                }
-
-                if($found_image){
-                    break;
-                } else {
-                    //Set the first icon only once, if allowed:
-                    if(!$first_source_icon && in_array($fetched_e['x__type'], $CI->config->item('n___14818'))){
-                        if(strlen($fetched_e['e__cover']) > 0){
-                            $first_source_icon = $fetched_e['e__cover'];
-                            $o_id = $fetched_e['e__id'];
-                        }
-                    }
-
-                    if($first_source_icon){
-                        break;
-                    }
-                }
-
-                if($found_image || $first_source_icon){
-                    break;
-                }
-            }
-
-        } else {
-
-            //Source Profile Search:
-            foreach($CI->X_model->fetch(array( //SOURCE PROFILE
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___14756')) . ')' => null, //SOURCE LINK IMAGE HOLDERS
-                'x__down' => $o['e__id'], //This child source
-            ), array('x__up'), 0, 0, array()) as $fetched_e){
-
-                if($fetched_e['x__type']==4260){
-                    $found_image = $fetched_e['x__message'];
-                    break;
-                } elseif($fetched_e['x__type']==4257 /* Currently excluded from @14756 */){
-                    //Embed:
-                    $video_id = extract_youtube_id($fetched_e['x__message']);
-                    if($video_id){
-                        //Use the YouTube video image:
-                        $found_image = 'https://img.youtube.com/vi/'.$video_id.'/hqdefault.jpg';
-                        break;
-                    }
-                }
-            }
-
-        }
-    }
-
-    //Image preferred, if not any icon is returned:
-    return ($found_image ? $found_image : $first_source_icon);
 }
 
 function string_is_icon($icon_code){

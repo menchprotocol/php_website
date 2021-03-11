@@ -47,7 +47,6 @@ $i_stats = i_stats($i_focus['i__metadata']);
 
 <?php
 
-echo '<div class="container">';
 
 if($top_i__id){
 
@@ -579,7 +578,5 @@ if($top_i__id) {
 
 
 
-
-echo '</div>'; //CLOSE CONTAINER
 
 ?>
