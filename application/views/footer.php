@@ -141,7 +141,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body">
                     <?php
                     if(superpower_active(12699, true)){
-                        echo '<div class="list-group">';
+                        echo '<div class="row">';
                         foreach(view_coins_e(12274, 6287, 1) as $app) {
                             echo view_e(6287, $app);
                         }

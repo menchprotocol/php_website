@@ -1931,7 +1931,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $has_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
 
-    $href = '/@'.$e['e__id'];
+    $href = ( $x__type==6278 ? '/-'.$e['e__id'] : '/@'.$e['e__id'] );
     $focus__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $has_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
