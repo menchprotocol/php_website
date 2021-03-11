@@ -1711,7 +1711,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
     $show_coins = !$has_any_lock && $editing_enabled;
     $show_custom_image = !$has_valid_url && $i['i__cover'];
-
+    $can_click = !$has_any_lock;
 
 
 
@@ -1765,12 +1765,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Coin Cover
-    $ui .= ( $has_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.( $completion_rate['completion_percentage']>=100 ? ' coinType6255 ' : ' coinType12273 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $completion_rate['completion_percentage']>=100 ? ' coinType6255 ' : ' coinType12273 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12273,$i['i__cover']) : '').'</div>';
 
-    $ui .= ( $has_any_lock ? '</div>' : '</a>' );
+    $ui .= ( !$can_click ? '</div>' : '</a>' );
     $ui .= '</div>'; //cover-wrapper
 
 
@@ -1801,7 +1801,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
         //Editable title:
         $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $editing_enabled, (($i['x__spectrum']*100)+1), true);
-    } elseif(!$has_any_lock){
+    } elseif($can_click){
         $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
         $ui .= $i_title;
@@ -1956,6 +1956,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $has_any_lock = !$superpower_12701 && ($has_soft_lock || $has_hard_lock);
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $has_e_link && $superpower_10939;
     $show_text_editor = $source_of_e && $control_enabled && !$has_any_lock;
+    $can_click = !$has_any_lock || 1; //Allow clicking for all
 
     //Source UI
     $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coinface-12274 coin_cover col-md-4 col-6 no-padding coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
@@ -2019,13 +2020,14 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         $cointype = 'coinType12273'; //Hack to make a source like an idea only for the source idea!
     }
 
+
     //Coin Cover
-    $ui .= ( $has_any_lock ? '<div' : '<a href="'.$href.'"' ).' class="'.$cointype.' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.$cointype.' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover']) : '' ).'</div>';
 
-    $ui .= ( $has_any_lock ? '</div>' : '</a>' );
+    $ui .= ( !$can_click ? '</div>' : '</a>' );
     $ui .= '</div>';
 
 
@@ -2049,7 +2051,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     if($show_text_editor){
         //Editable title:
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, (($e['x__spectrum']*100)+1), true);
-    } elseif(!$has_any_lock){
+    } elseif($can_click){
         $ui .= '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>';
     } else {
         $ui .= $e['e__title'];
@@ -2060,7 +2062,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     //Message
     $ui .= '<div style="min-height: 21px;">';
     if ($x__id > 0) {
-        if(!$has_any_lock && $has_e_link){
+        if($can_click && $has_e_link){
 
             $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
 
