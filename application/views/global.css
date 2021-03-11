@@ -2885,6 +2885,13 @@ font-weight: bold !important;
     color: #222222;
 }
 
+.move_away{
+    margin-right: 34px;
+}
+.move_away .fa-right-arrow {
+    float:right;
+}
+
 .btn-superpower.active .fas.zq12274, .btn-superpower.active .far.zq12274, .btn-superpower.active .fal.zq12274, .btn-superpower.active .fad.zq12274 {
     color:#007AFD !important;
 }
