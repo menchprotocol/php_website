@@ -6,6 +6,15 @@ $memory_text .= "<?php\n\n";
 $memory_text .= '//UPDATED: '.$update_time."\n\n";
 $memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'."\n\n";
 
+
+//Add Coin Count:
+foreach($this->config->item('e___14874') as $e__id => $m) {
+    $memory_text .= '$config[\'k___'.$e__id.'\'] = '.count_unique_coins($e__id).';'."\n";
+}
+
+
+
+
 if($memory_detected){
 
     //EASY:
