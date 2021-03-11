@@ -724,19 +724,19 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
                     'x__spectrum' => 'ASC',
                     'e__title' => 'ASC'
                 )) as $source_e) {
-                    $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12274,$source_e['e__cover']).'</span>'.$source_e['e__title'].' <i class="far fa-arrow-right"></i></a>';
+                    $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12274,$source_e['e__cover']).'</span>'.$source_e['e__title'].' <i class="far fa-arrow-right" style="float:right"></i></a>';
                 }
             } elseif($x__type==12273){
                 //IDEAS
                 $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
                 foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array('x__spectrum' => 'DESC')) as $next_i) {
-                    $ui .= '<a href="/i/i_go/'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12273,$next_i['i__cover']).'</span>'.view_i_title($next_i).' <i class="far fa-arrow-right"></i></a>';
+                    $ui .= '<a href="/i/i_go/'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12273,$next_i['i__cover']).'</span>'.view_i_title($next_i).' <i class="far fa-arrow-right" style="float:right"></i></a>';
                 }
             } elseif($x__type==6255){
                 //DISCOVERIES / IDEAS
                 $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
                 foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array('x__id' => 'DESC')) as $x_i) {
-                    $ui .= '<a href="/i/i_go/'.$x_i['i__id'].'" class="dropdown-item css__title '.( $x_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12273,$x_i['i__cover']).'</span>'.view_i_title($x_i).' <i class="far fa-arrow-right"></i></a>';
+                    $ui .= '<a href="/i/i_go/'.$x_i['i__id'].'" class="dropdown-item css__title '.( $x_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12273,$x_i['i__cover']).'</span>'.view_i_title($x_i).' <i class="far fa-arrow-right" style="float:right"></i></a>';
                 }
             }
             $ui .= '</div>';
@@ -822,20 +822,20 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
             //SOURCES
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__up'), 10, 0, array('x__type' => 'ASC', 'x__spectrum' => 'ASC')) as $source_e) {
-                $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12274,$source_e['e__cover']).'</span>'.$source_e['e__title'].' <i class="far fa-arrow-right"></i></a>';
+                $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12274,$source_e['e__cover']).'</span>'.$source_e['e__title'].' <i class="far fa-arrow-right" style="float:right"></i></a>';
             }
         } elseif($x__type==12273){
             //IDEAS
             //TODO Update with Idea Cover and remove Idea Type icon
             $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i) {
-                $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12273,$next_i['i__cover']).'</span>'.view_i_title($next_i).' <i class="far fa-arrow-right"></i></a>';
+                $ui .= '<a href="/~'.$next_i['i__id'].'" class="dropdown-item css__title '.( $next_i['i__id']==$current_i ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12273,$next_i['i__cover']).'</span>'.view_i_title($next_i).' <i class="far fa-arrow-right" style="float:right"></i></a>';
             }
         } elseif($x__type==6255){
             //DISCOVERIES / SOURCS
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__source'), 10, 0, array('x__id' => 'DESC')) as $source_e) {
-                $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12274,$source_e['e__cover']).'</span>'.$source_e['e__title'].' <i class="far fa-arrow-right"></i></a>';
+                $ui .= '<a href="/@'.$source_e['e__id'].'" class="dropdown-item css__title '.( $source_e['e__id']==$current_e ? ' active ' : '' ).'"><span class="icon-block">'.view_cover(12274,$source_e['e__cover']).'</span>'.$source_e['e__title'].' <i class="far fa-arrow-right" style="float:right"></i></a>';
             }
         }
         $ui .= '</div>';
