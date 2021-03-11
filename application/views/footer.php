@@ -139,17 +139,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?php
-                    if(superpower_active(12699, true)){
-                        echo '<div class="row">';
-                        foreach(view_coins_e(12274, 6287, 1) as $app) {
-                            echo view_e(6287, $app);
-                        }
-                        echo '</div>';
-                    } else {
-                        echo '<p><a href="">Refresh your browser</a> to load all apps.</p>';
-                    }
-                    ?>
+                    <!-- Loads dynamically -->
+                    <i class="far fa-yin-yang fa-spin"></i> Loading...
                 </div>
             </div>
         </div>

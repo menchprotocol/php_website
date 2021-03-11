@@ -362,6 +362,11 @@ $(document).ready(function () {
         if(note_type_id==14393){
             //Current
             $('.current_url').text(window.location.href);
+        } else if(note_type_id==6287){
+            //Load App Modal:
+            $.post("/app/load_index", {}, function (data) {
+                $('#modal6287 .modal-body').html(data.status ? data.load_index : data.message );
+            });
         }
     });
 

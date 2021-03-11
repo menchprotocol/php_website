@@ -388,7 +388,29 @@ class App extends CI_Controller
     }
 
 
+    function load_index(){
 
+        $member_e = superpower_unlocked(12699);
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(12699),
+            ));
+        }
+
+
+        $ui = '<div class="row">';
+        foreach (view_coins_e(12274, 6287, 1) as $app) {
+            $ui .= view_e(6287, $app);
+        }
+        $ui .= '</div>';
+
+        return view_json(array(
+            'status' => 1,
+            'load_index' => $ui,
+        ));
+
+    }
 
     function auth0_create($sign_i__id){
 
