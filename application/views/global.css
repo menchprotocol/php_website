@@ -2886,7 +2886,8 @@ font-weight: bold !important;
 }
 
 .move_away{
-    margin-right: 21px;
+    margin-right: 34px;
+    padding: 8px 8px 8px 0px;
 }
 .move_away .fa-arrow-right {
     float:right;
