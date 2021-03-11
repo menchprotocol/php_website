@@ -4,12 +4,15 @@
 
 
 //IDEAS
+$ideas_scanned = 0;
 foreach($this->I_model->fetch(array()) as $o){
 
+    $ideas_scanned++;
     if(cover_can_update($o['i__cover']) && strlen($o['i__cover'])){
         echo $o['i__id'].' ['.$o['i__cover'].']<br />';
     }
     continue;
+
 
 
     if(!cover_can_update($o['i__cover'])){
@@ -75,6 +78,22 @@ foreach($this->I_model->fetch(array()) as $o){
         ));
     }
 }
+echo '<br /><br />'.$ideas_scanned.' Ideas scanned.<br />';
+
+
+
+//SOURCES
+$sources_scanned
+foreach($this->E_model->fetch(array()) as $o) {
+
+    $sources_scanned++;
+    if (cover_can_update($o['e__cover']) && strlen($o['e__cover'])) {
+        echo $o['e__id'] . ' [' . $o['e__cover'] . ']<br />';
+    }
+    continue;
+}
+echo '<br /><br />'.$sources_scanned.' Ideas scanned.<br />';
+
 
 /*
 $o_id = ( $is_idea ? $o['i__id'] : $o['e__id'] );
