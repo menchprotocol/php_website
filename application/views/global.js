@@ -1126,7 +1126,7 @@ function images_modal(x__type){
     });
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
-    $('.images_results').html('');
+    $('.new_images').html('');
     $('.images_query').val('');
     setTimeout(function () {
         $('.images_query').focus();
@@ -1134,6 +1134,12 @@ function images_modal(x__type){
 }
 
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
+
+
+
+function cover_search(){
+    q = encodeURI($('.cover_query').val());
+}
 
 var current_q = '';
 function images_search(){
@@ -1146,7 +1152,7 @@ function images_search(){
 
     current_q = q;
     var x__type = $('#modal_x__type').val();
-    $('.images_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
+    $('.new_images').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     $.get({
         url: js_e___6404[6293]['m__message']+current_q,
         success: function(result) {
@@ -1169,7 +1175,7 @@ function images_search(){
                 //No results found:
                 output = "<div style=\"margin:5px 0;\">No GIFs found</div>";
             }
-            $(".images_results").html(output);
+            $(".new_images").html(output);
             lazy_load();
         },
         error: function(error) {

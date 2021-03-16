@@ -35,7 +35,7 @@ foreach($this->I_model->fetch(array('i__cover IS NULL' => null)) as $o){
                 $found_image = $e_image['x__message'];
                 break;
             } elseif($e_image['x__type']==4257){
-                //Embed:
+                //Embed: [DISABLED FOR NOW - Duplicated code: search "TIGER"]
                 $video_id = extract_youtube_id($e_image['x__message']);
                 if($video_id){
                     //Use the YouTube video image:
@@ -103,7 +103,7 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
             $found_image = $fetched_e['x__message'];
             break;
         } elseif($fetched_e['x__type']==4257){
-            //Embed:
+            //Embed: [DISABLED FOR NOW - Duplicated code: search "TIGER"]
             $video_id = extract_youtube_id($fetched_e['x__message']);
             if($video_id){
                 //Use the YouTube video image:
@@ -115,12 +115,33 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
 
     if(!$found_image && !$found_icon){
         //Idea References:
-        foreach(view_coins_e(12273, $o['e__id'], 1) as $i_e){
-            if(strlen($i_e['i__cover'])){
-                if(filter_var($i_e['i__cover'], FILTER_VALIDATE_URL)){
-                    $found_image = $i_e['i__cover'];
+        foreach(view_coins_e(12273, $o['e__id'], 1) as $linked_i){
+            if(strlen($linked_i['i__cover'])){
+                if(filter_var($linked_i['i__cover'], FILTER_VALIDATE_URL)){
+                    $found_image = $linked_i['i__cover'];
                 } elseif(!$found_icon) {
-                    $found_icon = $i_e['i__cover'];
+                    $found_icon = $linked_i['i__cover'];
+                }
+            }
+            if($found_image){
+                break;
+            }
+        }
+    }
+
+    if(!$found_image && !$found_icon){
+        //Parent Sources:
+        foreach($this->X_model->fetch(array(
+            'x__down' => $o['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        ), array('x__up'), 0, 0, array('LENGTH(x__message)' => 'DESC', 'e__spectrum' => 'DESC')) as $linked_e){
+            if(strlen($linked_e['e__cover'])){
+                if(filter_var($linked_e['e__cover'], FILTER_VALIDATE_URL)){
+                    $found_image = $linked_e['e__cover'];
+                } elseif(!$found_icon) {
+                    $found_icon = $linked_e['e__cover'];
                 }
             }
             if($found_image){

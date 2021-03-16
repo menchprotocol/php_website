@@ -209,10 +209,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <?php
 
                             //GIF
-                            //$default_active = $image_src && substr($image_src, -4)=='.gif';
 
-                            echo '<input type="text" class="form-control text-edit border css__title images_query" placeholder="Search GIFs..." onkeyup="images_search()" data-lpignore="true" />';
-                            echo '<div class="images_results margin-top-down hideIfEmpty"></div>';
+                            echo '<input type="text" class="form-control text-edit border css__title cover_query" placeholder="Search Covers..." onkeyup="cover_search()" data-lpignore="true" />';
+
+                            echo '<div class="current_covers margin-top-down hideIfEmpty inline-block"></div>';
+                            echo '<div class="new_images margin-top-down hideIfEmpty inline-block"></div>';
 
                             //JS $('#coin__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_cover_main($('#coin__cover').val(), '.demo_cover');
 
@@ -255,7 +256,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <input type="hidden" id="modal_i__id" value="0" />
                     <input type="hidden" id="modal_x__type" value="0" />
                     <input type="text" class="form-control text-edit border css__title images_query" placeholder="Search GIFs..." onkeyup="images_search()" data-lpignore="true" />
-                    <div class="images_results margin-top-down hideIfEmpty"></div>
+                    <div class="new_images margin-top-down hideIfEmpty"></div>
                 </div>
             </div>
         </div>

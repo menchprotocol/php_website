@@ -535,7 +535,7 @@ class E_model extends CI_Model
         } elseif ($x__source) {
 
             //Yes, let's add a new source:
-            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $x__source, detect_fav_icon($url_analysis['url_clean_domain']));
+            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $x__source);
             $e_domain = $added_e['new_e'];
 
             //And transaction source to the domains source:

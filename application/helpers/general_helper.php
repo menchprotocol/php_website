@@ -173,17 +173,6 @@ function is_valid_date($string)
 }
 
 
-
-function detect_fav_icon($url_clean_domain){
-    //Does this domain have a Favicon?
-    $fav_icon = str_replace('http://','https://',$url_clean_domain) . '/favicon.ico';
-    if (@file_get_contents($fav_icon)) {
-        return $fav_icon;
-    } else {
-        return null;
-    }
-}
-
 function e_x__type($string = null){
     $detected_x_type = x_detect_type($string);
     if ($detected_x_type['status']){
