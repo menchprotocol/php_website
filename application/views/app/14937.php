@@ -113,6 +113,22 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
         }
     }
 
+    //Idea References:
+    if(!$found_image && !$found_icon){
+        foreach(view_coins_e(12273, $o['e__id'], 1) as $i_e){
+            if(strlen($i_e['i__cover'])){
+                if(filter_var($i_e['i__cover'], FILTER_VALIDATE_URL)){
+                    $found_image = $i_e['i__cover'];
+                } elseif(!$found_icon) {
+                    $found_icon = $i_e['i__cover'];
+                }
+            }
+            if($found_image){
+                break;
+            }
+        }
+    }
+
 
     if($found_image){
         $sources_inherit_image++;
