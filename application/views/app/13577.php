@@ -1,16 +1,19 @@
 <?php
 
-if(strlen($_GET['fa_regular'])){
+if(isset($_GET['fa_regular']) && strlen($_GET['fa_regular'])){
     $detected = 0;
     $added = 0;
 
-    $detected = substr_count($_GET['fa_regular'], "\n");
+    foreach(explode("\n", $_GET['fa_regular']) as $line){
+        $detected++;
+        echo $line.'<hr />';
+    }
 
     echo 'REGULAR: Detected '.$detected.' icons and added '.$added.' of them.<br />';
 }
 
 
-if(strlen($_GET['fa_brand'])){
+if(isset($_GET['fa_brand']) && strlen($_GET['fa_brand'])){
 
 }
 
@@ -28,7 +31,7 @@ echo '<p>Copy <a href="https://fontawesome.com/cheatsheet/pro/brands" target="_b
 echo '<textarea class="form-control text-edit border no-padding" name="fa_brand" data-lpignore="true" placeholder="Paste Cheatsheet..."></textarea><br />';
 
 //Apply
-echo '<div class="nav-controller"><div><button type="submit" class="controller-nav btn btn-lrg btn-6255 go-next top-margin" value="GO">UPDATE</button></div></div>';
+echo '<button type="submit" class="controller-nav btn btn-lrg btn-6255 go-next top-margin" value="GO">UPDATE</button>';
 
 
 echo '</form>';
