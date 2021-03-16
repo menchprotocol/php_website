@@ -74,12 +74,9 @@ foreach($this->I_model->fetch(array()) as $o){
     $new_icon = ( $found_image ? $found_image : $found_icon );
     if(strlen($new_icon)){
         echo '<a href="/~'.$o['i__id'].'">NEW</a> ['.$new_icon.']<br />';
-        $ideas_inherit++;
-        /*
         $ideas_inherit += $this->I_model->update($o['i__id'], array(
             'i__cover' => $new_icon,
         ), false, ( $member_e ? $member_e['e__id'] : 7274 ), 18148);
-        */
     }
 
 }
@@ -87,6 +84,7 @@ echo '<br /><br />';
 echo $ideas_untouchable.' Ideas are untouchable.<br />';
 echo $ideas_scanned.' Ideas scanned.<br />';
 echo $ideas_inherit.' Ideas inherited, of which '.$ideas_inherit_image.' had images.<br />';
+echo '<br /><br />';
 
 
 
@@ -135,12 +133,9 @@ foreach($this->E_model->fetch(array()) as $o) {
     $new_icon = ( $found_image ? $found_image : $found_icon );
     if(strlen($new_icon)){
         echo '<a href="/@'.$o['e__id'].'">NEW</a> ['.$new_icon.']<br />';
-        $sources_inherit++;
-        /*
-        $ideas_inherit += $this->E_model->update($o['e__id'], array(
+        $sources_inherit += $this->E_model->update($o['e__id'], array(
             'e__cover' => $new_icon,
         ), false, ( $member_e ? $member_e['e__id'] : 7274 ), 18148);
-        */
     }
 
 }
@@ -148,3 +143,4 @@ echo '<br /><br />';
 echo $sources_untouchable.' Sources are untouchable.<br />';
 echo $sources_scanned.' Sources scanned.<br />';
 echo $sources_inherit.' Sources inherited, of which '.$sources_inherit_image.' had images.<br />';
+echo '<br /><br />';
