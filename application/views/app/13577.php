@@ -73,7 +73,7 @@ if(!$processed){
     echo '<textarea class="form-control text-edit border no-padding" style="height: 100px;" name="fab" data-lpignore="true" placeholder="Paste Cheatsheet..."></textarea><br /><br />';
 
     //Apply
-    echo '<button type="submit" class="controller-nav btn btn-lrg btn-6255 go-next top-margin" value="GO">UPDATE</button>';
+    echo '<button type="submit" class="controller-nav btn btn-lrg btn-6255 go-next top-margin">UPDATE</button>';
 
 
     echo '</form>';
