@@ -811,7 +811,7 @@ class E extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'url_previously_existed' => 1,
-                'algolia_object' => update_algolia(12274, $url_e['e_url']['e__id'], 1),
+                'suggestion' => update_algolia(12274, $url_e['e_url']['e__id'], 1),
             ));
         } else {
             return view_json(array(

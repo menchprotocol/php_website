@@ -138,13 +138,13 @@ function load_editor(){
 }
 
 
-function view_s__title(algolia_object){
-    return htmlentitiesjs( algolia_object._highlightResult && algolia_object._highlightResult.s__title.value ? algolia_object._highlightResult.s__title.value : algolia_object.s__title );
+function view_s__title(suggestion){
+    return htmlentitiesjs( suggestion._highlightResult && suggestion._highlightResult.s__title.value ? suggestion._highlightResult.s__title.value : suggestion.s__title );
 }
 
 
-function view_s_js(algolia_object){
-    return '<span class="icon-block">'+ view_cover_js(algolia_object.s__type, algolia_object.s__cover) +'</span><span class="css__title">' + view_s__title(algolia_object) + '</span>';
+function view_s_js(suggestion){
+    return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span>';
 }
 
 
@@ -985,7 +985,7 @@ function e_fetch_canonical(query_string, not_found){
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-e-suggest').remove();
-            $('.not-found').html('<a href="/@'+searchdata.algolia_object.s__id+'" class="suggestion css__title">' + view_s_js(searchdata.algolia_object)+'</a>');
+            $('.not-found').html('<a href="/@'+searchdata.suggestion.s__id+'" class="suggestion css__title">' + view_s_js(searchdata.suggestion)+'</a>');
         }
     });
 
@@ -1436,7 +1436,7 @@ function i_note_e_search(obj) {
                         });
                 },
                 template: function (suggestion) {
-                    return view_s_js(suggestion);
+                    return view_s_js(suggestion) + '<span class="css__title">&nbsp;@' + suggestion.s__id + '</span>';
                 },
                 replace: function (suggestion) {
                     setTimeout(function () {
