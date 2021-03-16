@@ -10,7 +10,7 @@ if(isset($_POST['fa_regular']) && strlen($_POST['fa_regular'])){
 
     foreach(explode("\n", $_POST['fa_regular']) as $line){
         $words = explode('	', $line);
-        if(count($words)==3 && strlen($words[2])==4){
+        if(count($words)==3 ){
 
             $detected++;
             $icon_title = ucwords(str_replace('-',' ',$words[1]));
