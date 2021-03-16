@@ -1923,13 +1923,14 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $superpower_12701 = superpower_active(12701, true);
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
 
+    $coins_visible = in_array($x__type, $CI->config->item('n___20410'));
     $control_enabled = in_array($x__type, $CI->config->item('n___14696'));
     $show_time = in_array($x__type, $CI->config->item('n___14706'));
+
     $source_of_e = $source_of_e && $control_enabled && $member_e;
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $supports_messages = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___20409')));
-    $coins_visible = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___20410')));
 
     $is_app = $x__type==6287;
 
