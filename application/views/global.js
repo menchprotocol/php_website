@@ -993,7 +993,7 @@ function e_fetch_canonical(query_string, not_found){
 
 
 function validURL(str) {
-    return str.substring(0, 4)=='http';
+    return str.length && str.substring(0, 4)=='http';
 }
 
 
@@ -1422,6 +1422,9 @@ function i_note_e_search(obj) {
                             if (content.query === query) {
                                 callback(content.hits);
                             }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
                         });
                 },
                 template: function (suggestion) {
