@@ -2,21 +2,23 @@
 
 $processed = false;
 
-if(isset($_GET['fa_regular']) && strlen($_GET['fa_regular'])){
+if(isset($_POST['fa_regular']) && strlen($_POST['fa_regular'])){
 
     $processed = true;
     $detected = 0;
     $added = 0;
 
-    foreach(explode("\n", $_GET['fa_regular']) as $line){
+    foreach(explode("\n", $_POST['fa_regular']) as $line){
+        $words = explode(' ',$line);
         $detected++;
-        echo $line.'<hr />';
+        echo '['.$words[1].']<hr />';
     }
 
     echo 'REGULAR: Detected '.$detected.' icons and added '.$added.' of them.<br />';
+
 }
 
-if(isset($_GET['fa_brand']) && strlen($_GET['fa_brand'])) {
+if(isset($_POST['fa_brand']) && strlen($_POST['fa_brand'])) {
 
     $processed = true;
     $detected = 0;
