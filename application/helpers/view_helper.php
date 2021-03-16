@@ -1925,7 +1925,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     $control_enabled = in_array($x__type, $CI->config->item('n___14696'));
     $show_time = in_array($x__type, $CI->config->item('n___14706'));
-    $source_of_e = $control_enabled && $member_e && ($source_of_e || $superpower_13422);
+    $source_of_e = $source_of_e && $control_enabled && $member_e;
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $has_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
@@ -1977,7 +1977,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
         $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
-    } elseif(1 || $source_of_e && $x__id) {
+    } elseif($source_of_e && $x__id > 0) {
 
         $action_buttons = null;
 
@@ -1992,7 +1992,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden">'.$anchor.'</a>'; //SORT
             } elseif($e__id==10673 && $source_of_e){
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</span></a>'; //UNLINK
-            } elseif($e__id==14601 && !$has_any_lock && superpower_active(14683, true)){
+            } elseif($e__id==14601 && !$has_any_lock && $source_of_e && superpower_active(14683, true)){
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //NUCLEAR DELETE
             }
         }
