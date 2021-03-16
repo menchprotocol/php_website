@@ -1929,6 +1929,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $supports_messages = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___20409')));
+    $coins_visible = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___20410')));
 
     $is_app = $x__type==6287;
 
@@ -2110,7 +2111,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //Coin Block
     if(!$is_app){
-        $ui .= '<div class="coin-hover">';
+        $ui .= '<div class="'.( $coins_visible ? '' : ' coin-hover ' ).'">';
         $ui .= '<table class="coin_coins"><tr>';
         $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.view_coins_e(12274,  $e['e__id']).'</td>';
         $ui .= '<td width="34%" class="center">'.view_coins_e(12273,  $e['e__id']).'</td>';
