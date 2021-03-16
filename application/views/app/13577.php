@@ -24,13 +24,20 @@ if(isset($_POST['fa_regular']) && strlen($_POST['fa_regular'])){
                 'e__cover' => $icon_code,
             ), array('x__down')))){
                 $added++;
-                echo '<span class="icon-block" title="'.$icon_title.'"><i class="'.$icon_code.'"></i></span>';
+                echo '<span class="icon-block" title="'.$icon_title.' ['.$words[2].']"><i class="'.$icon_code.'"></i></span>';
                 //ADD NEW:
+                /*
+                $this->E_model->create(array(
+                    'e__title' => $icon_title,
+                    'e__cover' => $icon_code,
+                    'e__type' => 6181,
+                ), true, ( $member_e ? $member_e['e__id'] : 7274 ));
+                */
             }
         }
     }
 
-    echo '<br /><br />REGULAR: Detected '.$detected.' icons and added '.$added.' of them.<br />';
+    echo '<br /><br />'.$added.'/'.$detected.' REGULAR icons added.<br />';
 
 }
 
