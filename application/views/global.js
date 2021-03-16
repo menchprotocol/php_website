@@ -1422,9 +1422,6 @@ function i_note_e_search(obj) {
                             if (content.query === query) {
                                 callback(content.hits);
                             }
-                        })
-                        .catch(function searchFailure(err) {
-                            console.error(err);
                         });
                 },
                 template: function (suggestion) {
