@@ -10,11 +10,13 @@ if(isset($_POST['fa_regular']) && strlen($_POST['fa_regular'])){
 
     foreach(explode("\n", $_POST['fa_regular']) as $line){
         $words = explode('	', $line);
-        $detected++;
-        echo '['.print_r($words, true).']<hr />';
+        if(count($words)==3){
+            $detected++;
+            echo '<i class="far fa-'.$words[1].'"> ';
+        }
     }
 
-    echo 'REGULAR: Detected '.$detected.' icons and added '.$added.' of them.<br />';
+    echo '<br /><br />REGULAR: Detected '.$detected.' icons and added '.$added.' of them.<br />';
 
 }
 
