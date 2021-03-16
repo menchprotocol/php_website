@@ -584,12 +584,14 @@ function update_cover_main(cover_code, target_css){
 }
 
 function view_cover_js(coin__type, cover_code){
-    if(validURL(cover_code)){
-        return '<img src="'+cover_code+'" />';
-    } else if(cover_code.indexOf('fa-')>=0) {
-        return '<i class="'+cover_code+'"></i>';
-    } else if(cover_code.length > 0) {
-        return cover_code;
+    if(cover_code && cover_code.length){
+        if(validURL(cover_code)){
+            return '<img src="'+cover_code+'" />';
+        } else if(cover_code.indexOf('fa-')>=0) {
+            return '<i class="'+cover_code+'"></i>';
+        } else {
+            return cover_code;
+        }
     } else {
         return '<img src="/img/'+coin__type+'.png" />';
     }
