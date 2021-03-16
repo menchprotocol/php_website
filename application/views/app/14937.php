@@ -34,7 +34,7 @@ foreach($this->I_model->fetch(array()) as $o){
         //See if this source has a photo:
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //SOURCE LINK IMAGE HOLDERS
+            'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //Idea Inherit Cover
             'x__down' => $fetched_e['e__id'],
         )) as $e_image) {
             if($e_image['x__type']==4260){
@@ -110,7 +110,7 @@ foreach($this->E_model->fetch(array()) as $o) {
     //Source Profile Search:
     foreach($this->X_model->fetch(array( //SOURCE PROFILE
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //SOURCE LINK IMAGE HOLDERS
+        'x__type IN (' . join(',', $this->config->item('n___18149')) . ')' => null, //Source Inherit Cover
         'x__down' => $o['e__id'], //This child source
     ), array('x__up'), 0, 0, array()) as $fetched_e){
 
