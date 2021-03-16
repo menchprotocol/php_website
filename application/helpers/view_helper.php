@@ -1928,7 +1928,8 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $source_of_e = $source_of_e && $control_enabled && $member_e;
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
-    $has_e_link = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4592')));
+    $supports_messages = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___20409')));
+
     $is_app = $x__type==6287;
 
     $href = ( $is_app ? '/-'.$e['e__id'] : '/@'.$e['e__id'] );
@@ -1953,7 +1954,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $has_public = in_array($e['e__id'], $public_sources) || in_array($focus__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
     $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$has_public && !$source_of_e && !$superpower_13422));
     $has_any_lock = !$superpower_12701 && ($has_soft_lock || $has_hard_lock);
-    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $has_e_link && $superpower_10939;
+    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $supports_messages && $superpower_10939;
     $show_text_editor = $source_of_e && $control_enabled && !$has_any_lock;
     $can_click = !$has_any_lock || 1; //Allow clicking for all
 
@@ -1986,7 +1987,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
             $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
             if($e__id==14937 && $source_of_e){
                 $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
-            } elseif($e__id==13571 && ( $has_e_link || $e['x__type']==4983 /* Can have a message */ ) && $superpower_13422){
+            } elseif($e__id==13571 && $supports_messages && $superpower_13422){
                 $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>'; //Edit Message
             } elseif($e__id==4603 && $has_sortable && $superpower_13422){
                 $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden">'.$anchor.'</a>'; //SORT
@@ -2061,7 +2062,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     //Message
     $ui .= '<div style="min-height: 21px;">';
     if ($x__id > 0) {
-        if($can_click && $has_e_link){
+        if($can_click && $supports_messages){
 
             $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
 
