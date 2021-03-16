@@ -73,7 +73,7 @@ foreach($this->I_model->fetch(array()) as $o){
     }
     $new_icon = ( $found_image ? $found_image : $found_icon );
     if(strlen($new_icon)){
-        echo 'NEW ['.$new_icon.']<br />';
+        echo '<a href="/~'.$o['i__id'].'">NEW</a> ['.$new_icon.']<br />';
         $ideas_inherit++;
         /*
         $ideas_inherit += $this->I_model->update($o['i__id'], array(
@@ -134,7 +134,7 @@ foreach($this->E_model->fetch(array()) as $o) {
     }
     $new_icon = ( $found_image ? $found_image : $found_icon );
     if(strlen($new_icon)){
-        echo 'NEW ['.$new_icon.']<br />';
+        echo '<a href="/@'.$o['e__id'].'">NEW</a> ['.$new_icon.']<br />';
         $sources_inherit++;
         /*
         $ideas_inherit += $this->E_model->update($o['e__id'], array(
