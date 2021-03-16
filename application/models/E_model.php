@@ -125,7 +125,7 @@ class E_model extends CI_Model
     function add_member($full_name, $email, $image_url = null){
 
         //All good, create new source:
-        $added_e = $this->E_model->verify_create($full_name, 0, 6181, ( filter_var($image_url, FILTER_VALIDATE_URL) ? $image_url : random_avatar() ));
+        $added_e = $this->E_model->verify_create($full_name, 0, ( filter_var($image_url, FILTER_VALIDATE_URL) ? $image_url : random_avatar() ));
         if(!$added_e['status']){
             //We had an error, return it:
             return $added_e;
@@ -535,7 +535,7 @@ class E_model extends CI_Model
         } elseif ($x__source) {
 
             //Yes, let's add a new source:
-            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $x__source, 6181, detect_fav_icon($url_analysis['url_clean_domain']));
+            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $x__source, detect_fav_icon($url_analysis['url_clean_domain']));
             $e_domain = $added_e['new_e'];
 
             //And transaction source to the domains source:
@@ -814,7 +814,7 @@ class E_model extends CI_Model
                 }
 
                 //Create a new source for this URL ONLY If member source is provided...
-                $added_e = $this->E_model->verify_create($page_title, $x__source, 6181);
+                $added_e = $this->E_model->verify_create($page_title, $x__source);
                 if($added_e['status']){
 
                     //All good:
@@ -1159,15 +1159,7 @@ class E_model extends CI_Model
     }
 
 
-    function verify_create($e__title, $x__source = 0, $e__type = 6181, $e__cover = null){
-
-        if(!in_array($e__type, $this->config->item('n___6177'))){
-            //Invalid Status ID
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Source Status',
-            );
-        }
+    function verify_create($e__title, $x__source = 0, $e__cover = null){
 
         //Validate Title
         $e__title_validate = e__title_validate($e__title);
@@ -1179,7 +1171,7 @@ class E_model extends CI_Model
         $focus_e = $this->E_model->create(array(
             'e__title' => $e__title_validate['e__title_clean'],
             'e__cover' => $e__cover,
-            'e__type' => $e__type,
+            'e__type' => 6181,
         ), true, $x__source);
 
         //Return success:

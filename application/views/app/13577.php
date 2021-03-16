@@ -1,5 +1,6 @@
 <?php
 
+$x__source = ( $member_e ? $member_e['e__id'] : 7274 );
 $processed = false;
 foreach(array(
     'far' => 14986,
@@ -26,25 +27,28 @@ foreach(array(
                     'x__up' => $type_id,
                     'e__cover' => $icon_code,
                 ), array('x__down')))){
-                    $added++;
-                    echo '<span class="icon-block" title="'.$icon_title.'"><i class="'.$icon_code.'"></i></span>';
-                    //ADD NEW:
-                    /*
 
-                    $this->E_model->create(array(
-                        'e__title' => $icon_title,
-                        'e__cover' => $icon_code,
-                        'e__type' => 6181,
-                    ), true, ( $member_e ? $member_e['e__id'] : 7274 ));
+                    //ADD NEW Source:
+                    $added_e = $this->E_model->verify_create($icon_title, $x__source, $icon_code);
+                    if($added_e['status']){
 
+                        //Link to proper folder:
+                        $this->X_model->create(array(
+                            'x__up' => $type_id, //MEMBERS
+                            'x__type' => e_x__type(),
+                            'x__source' => $x__source,
+                            'x__down' => $added_e['new_e']['e__id'],
+                        ));
 
+                        $added++;
+                        echo '<span class="icon-block" title="'.$icon_title.'"><i class="'.$icon_code.'"></i></span>';
 
-                    */
+                    }
                 }
             }
         }
 
-        echo '<br /><br />'.$added.'/'.$detected.' REGULAR icons added.<br />';
+        echo '<br /><br />'.$added.'/'.$detected.' '.strtoupper($key).' icons added.<br /><br />';
 
     }
 }
