@@ -9,9 +9,9 @@ if(isset($_POST['fa_regular']) && strlen($_POST['fa_regular'])){
     $added = 0;
 
     foreach(explode("\n", $_POST['fa_regular']) as $line){
-        $words = explode(' ',$line);
+        $words = explode(' ', $line);
         $detected++;
-        echo '['.$words[1].']<hr />';
+        echo '['.$words[0].']<hr />';
     }
 
     echo 'REGULAR: Detected '.$detected.' icons and added '.$added.' of them.<br />';
