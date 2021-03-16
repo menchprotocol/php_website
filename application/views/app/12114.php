@@ -18,11 +18,11 @@ $html_message .= '<br />';
 foreach($this->config->item('e___14874') as $x__type => $m) {
 
     //Calculate Growth Rate:
-    if(substr_count($m['m__cover'], 'discover')>0){
+    if(substr_count($m['m__cover'], 'zq6255')>0){
         $icon = '🔴';
-    } elseif(substr_count($m['m__cover'], 'idea')>0){
+    } elseif(substr_count($m['m__cover'], 'zq12273')>0){
         $icon = '🟡';
-    } else {
+    } elseif(substr_count($m['m__cover'], 'zq12274')>0){
         $icon = '🔵';
     }
 
@@ -37,6 +37,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
     if(in_array($x__type, $this->config->item('n___13776'))){
         $subject = $icon.' '.$m['m__title'].' '.$growth.' for the Week of '.date("M jS", $x__time_start_timestamp);
     }
+
 }
 
 $html_message .= '<br />';

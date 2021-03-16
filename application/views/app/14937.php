@@ -5,20 +5,17 @@
 
 //IDEAS
 $ideas_scanned = 0;
+$ideas_untouchable = 0;
+$ideas_inherit = 0;
+$ideas_inherit_image = 0;
 foreach($this->I_model->fetch(array()) as $o){
 
-    $ideas_scanned++;
-    if(cover_can_update($o['i__cover']) && strlen($o['i__cover'])){
-        echo $o['i__id'].' ['.$o['i__cover'].']<br />';
-    }
-    continue;
-
-
-
     if(!cover_can_update($o['i__cover'])){
+        $ideas_untouchable++;
         continue; //Can't update this
     }
 
+    $ideas_scanned++;
 
     $found_image = null;
     $found_icon = null;
@@ -38,7 +35,7 @@ foreach($this->I_model->fetch(array()) as $o){
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //SOURCE LINK IMAGE HOLDERS
-            'x__down' => $fetched_e['x__up'],
+            'x__down' => $fetched_e['e__id'],
         )) as $e_image) {
             if($e_image['x__type']==4260){
                 $found_image = $e_image['x__message'];
@@ -59,79 +56,95 @@ foreach($this->I_model->fetch(array()) as $o){
         }
 
         //Try to find Icon:
-        if(!$found_icon && in_array($fetched_e['x__type'], $this->config->item('n___14818'))){
-            if(strlen($fetched_e['e__cover']) > 0){
-                $found_icon = $fetched_e['e__cover'];
-                $o_id = $fetched_e['e__id'];
-            }
+        if(!$found_icon && in_array($fetched_e['x__type'], $this->config->item('n___14818')) && strlen($fetched_e['e__cover'])){
+            $found_icon = $fetched_e['e__cover'];
+            $o_id = $fetched_e['e__id'];
         }
+
         if($found_icon){
             break;
         }
+
     }
 
 
-    $new_icon = ( strlen($found_image) ? $found_image : $found_icon );
+    if($found_image){
+        $ideas_inherit_image++;
+    }
+    $new_icon = ( $found_image ? $found_image : $found_icon );
     if(strlen($new_icon)){
-        $this->I_model->update($o['i__id'], array(
+        echo 'NEW ['.$new_icon.']<br />';
+        $ideas_inherit++;
+        /*
+        $ideas_inherit += $this->I_model->update($o['i__id'], array(
             'i__cover' => $new_icon,
-        ));
+        ), false, ( $member_e ? $member_e['e__id'] : 7274 ), 18148);
+        */
     }
+
 }
-echo '<br /><br />'.$ideas_scanned.' Ideas scanned.<br />';
+echo '<br /><br />';
+echo $ideas_untouchable.' Ideas are untouchable.<br />';
+echo $ideas_scanned.' Ideas scanned.<br />';
+echo $ideas_inherit.' Ideas inherited, of which '.$ideas_inherit_image.' had images.<br />';
+
 
 
 
 //SOURCES
 $sources_scanned = 0;
+$sources_untouchable = 0;
+$sources_inherit = 0;
+$sources_inherit_image = 0;
 foreach($this->E_model->fetch(array()) as $o) {
 
-    $sources_scanned++;
-    if (cover_can_update($o['e__cover']) && strlen($o['e__cover'])) {
-        echo $o['e__id'] . ' [' . $o['e__cover'] . ']<br />';
+    if(!cover_can_update($o['e__cover'])){
+        $sources_untouchable++;
+        continue; //Can't update this
     }
-    continue;
-}
-echo '<br /><br />'.$sources_scanned.' Ideas scanned.<br />';
 
+    $sources_scanned++;
+    $found_image = null;
+    $found_icon = null;
 
-/*
-$o_id = ( $is_idea ? $o['i__id'] : $o['e__id'] );
+    //Source Profile Search:
+    foreach($this->X_model->fetch(array( //SOURCE PROFILE
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //SOURCE LINK IMAGE HOLDERS
+        'x__down' => $o['e__id'], //This child source
+    ), array('x__up'), 0, 0, array()) as $fetched_e){
 
-
-
-if(!$found_image && (!$found_icon || !$is_idea)){
-
-    //Have no image in the main cover, look elsewhere:
-    if($is_idea){
-
-
-
-    } else {
-
-        //Source Profile Search:
-        foreach($this->X_model->fetch(array( //SOURCE PROFILE
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //SOURCE LINK IMAGE HOLDERS
-            'x__down' => $o['e__id'], //This child source
-        ), array('x__up'), 0, 0, array()) as $fetched_e){
-
-            if($fetched_e['x__type']==4260){
-                $found_image = $fetched_e['x__message'];
+        if($fetched_e['x__type']==4260){
+            $found_image = $fetched_e['x__message'];
+            break;
+        } elseif($fetched_e['x__type']==4257){
+            //Embed:
+            $video_id = extract_youtube_id($fetched_e['x__message']);
+            if($video_id){
+                //Use the YouTube video image:
+                $found_image = 'https://img.youtube.com/vi/'.$video_id.'/hqdefault.jpg';
                 break;
-            } elseif($fetched_e['x__type']==4257){
-                //Embed:
-                $video_id = extract_youtube_id($fetched_e['x__message']);
-                if($video_id){
-                    //Use the YouTube video image:
-                    $found_image = 'https://img.youtube.com/vi/'.$video_id.'/hqdefault.jpg';
-                    break;
-                }
             }
         }
+    }
 
+
+    if($found_image){
+        $sources_inherit_image++;
+    }
+    $new_icon = ( $found_image ? $found_image : $found_icon );
+    if(strlen($new_icon)){
+        echo 'NEW ['.$new_icon.']<br />';
+        $sources_inherit++;
+        /*
+        $ideas_inherit += $this->E_model->update($o['e__id'], array(
+            'e__cover' => $new_icon,
+        ), false, ( $member_e ? $member_e['e__id'] : 7274 ), 18148);
+        */
     }
 
 }
-
-*/
+echo '<br /><br />';
+echo $sources_untouchable.' Sources are untouchable.<br />';
+echo $sources_scanned.' Sources scanned.<br />';
+echo $sources_inherit.' Sources inherited, of which '.$sources_inherit_image.' had images.<br />';

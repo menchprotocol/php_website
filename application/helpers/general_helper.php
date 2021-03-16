@@ -503,7 +503,7 @@ function cover_can_update($icon_code){
     if(filter_var($icon_code, FILTER_VALIDATE_URL)){
         //Cannot update if its an image:
         return false;
-    } else{
+    } else {
         //Can update if not set:
         return !strlen($icon_code);
     }

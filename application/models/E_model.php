@@ -263,7 +263,7 @@ class E_model extends CI_Model
         return $q->result_array();
     }
 
-    function update($id, $update_columns, $external_sync = false, $x__source = 0)
+    function update($id, $update_columns, $external_sync = false, $x__source = 0, $x__type = 0)
     {
 
         $id = intval($id);
@@ -309,7 +309,11 @@ class E_model extends CI_Model
 
                 //FYI: Unlike Ideas, we cannot log parent/child source relations since the child source slot is previously taken...
 
-                if($key=='e__title') {
+                if($x__type){
+
+                    $x__message = update_description($before_data[0][$key], $value);
+
+                } elseif($key=='e__title') {
 
                     $x__type = 10646; //Member Updated Name
                     $x__message = update_description($before_data[0][$key], $value);

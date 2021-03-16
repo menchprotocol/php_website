@@ -113,7 +113,7 @@ class I_model extends CI_Model
         return $q->result_array();
     }
 
-    function update($id, $update_columns, $external_sync = false, $x__source = 0)
+    function update($id, $update_columns, $external_sync = false, $x__source = 0, $x__type = 0)
     {
 
         $id = intval($id);
@@ -153,7 +153,11 @@ class I_model extends CI_Model
                 $x__up = 0;
 
 
-                if($key=='i__title') {
+                if($x__type) {
+
+                    $x__message = update_description($before_data[0][$key], $value);
+
+                } elseif($key=='i__title') {
 
                     $x__type = 10644; //Idea updated Outcome
                     $x__message = update_description($before_data[0][$key], $value);

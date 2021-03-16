@@ -207,71 +207,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </div>
                         <div class="col-12">
                             <?php
-                            $tab_group = 14937;
-                            $tab_content = '';
-                            $tab_nav = '<ul class="nav nav-tabs nav-sm">';
 
-                            foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
+                            //GIF
+                            //$default_active = $image_src && substr($image_src, -4)=='.gif';
 
-                                $ui = '';
-                                if(strlen($m['m__message']) > 0){
-                                    $ui .= '<div style="padding-bottom: 13px;">'.$m['m__message'].'</div>';
-                                }
-
-                                if($x__type==14073) {
-
-                                    //GIF
-                                    //$default_active = $image_src && substr($image_src, -4)=='.gif';
-
-                                    $ui .= '<input type="text" class="form-control text-edit border css__title images_query" placeholder="Search GIFs..." onkeyup="images_search()" data-lpignore="true" />';
-                                    $ui .= '<div class="images_results margin-top-down hideIfEmpty"></div>';
-
-                                } elseif($x__type==14936){
-
-                                    //UPLOAD IMAGE
-                                    //$default_active = $image_src && substr($image_src, -4)=='.gif';
-                                    $ui .= 'UPLOAD HERE';
-
-                                } elseif($x__type==13577){
-
-                                    //FONT AWESOME ICON
-                                    //$default_active = substr($current_icon, 0, 3)=='<i ';
-                                    $ui .= 'FONT AWESOME';
-
-                                } elseif($x__type==14038){
-
-                                    //EMOJI
-                                    //$default_active = substr($current_icon, 0, 1)!='<' && strlen($current_icon)>0;
-
-
-                                } elseif($x__type==14939){
-
-                                    //REFERENCE
-                                    //$default_active = !strlen($current_icon);
-
-
-                                    //Find Current Reference:
-                                    $ui .= 'HAS X Reference : Set this reference action button';
-
-                                } else {
-
-                                    //Not supported via here:
-                                    continue;
-
-                                }
-
-                                $tab_nav .= '<li class="nav-item"><a href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')" class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;</a></li>'; //( $default_active ? ' active ' : '' )
-
-
-                                $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.' hidden">'; //( $default_active ? '' : ' hidden ' )
-                                $tab_content .= $ui;
-                                $tab_content .= '</div>';
-
-                            }
-
-                            $tab_nav .= '</ul>';
-
-                            echo $tab_nav.$tab_content;
+                            echo '<input type="text" class="form-control text-edit border css__title images_query" placeholder="Search GIFs..." onkeyup="images_search()" data-lpignore="true" />';
+                            echo '<div class="images_results margin-top-down hideIfEmpty"></div>';
 
                             //JS $('#coin__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_cover_main($('#coin__cover').val(), '.demo_cover');
 
