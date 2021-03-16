@@ -9,13 +9,13 @@ $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF GLASSES
 $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 $control_enabled = $source_is_e || $superpower_10939;
 
-
 $profiles = $this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     'x__down' => $e['e__id'],
 ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
+
 ?>
 
 <script>
@@ -26,7 +26,6 @@ $profiles = $this->X_model->fetch(array(
 <script src="/application/views/e_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
     <?php
-
 
     //PROFILE
     if(!$source_is_e || $superpower_13422){
