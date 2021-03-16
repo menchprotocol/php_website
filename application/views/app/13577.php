@@ -10,9 +10,23 @@ if(isset($_POST['fa_regular']) && strlen($_POST['fa_regular'])){
 
     foreach(explode("\n", $_POST['fa_regular']) as $line){
         $words = explode('	', $line);
-        if(count($words)==3){
+        if(count($words)==3 && strlen($words[2])==4){
+
             $detected++;
-            echo '<span class="icon-block"><i class="far fa-'.$words[1].'"></i></span>';
+            $icon_title = ucwords(str_replace('-',' ',$words[1]));
+            $icon_code = 'far fa-'.$words[1];
+
+            //Check if exists:
+            if(!count($this->X_model->fetch(array( //SOURCE PROFILE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__up' => 14986, //REGULAR
+                'e__cover' => $icon_code,
+            ), array('x__down')))){
+                $added++;
+                echo '<span class="icon-block" title="'.$icon_title.'"><i class="'.$icon_code.'"></i></span>';
+                //ADD NEW:
+            }
         }
     }
 
