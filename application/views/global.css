@@ -359,7 +359,7 @@ img.no-frame {
 .suggestion {
     border:0;
     cursor: pointer;
-    padding: 7px 3px;
+    padding: 10px 3px;
     font-weight: 500;
     margin: 0;
     display: block;

@@ -1436,7 +1436,7 @@ function i_note_e_search(obj) {
                         });
                 },
                 template: function (suggestion) {
-                    return view_s_js(suggestion) + '<span class="css__title">&nbsp;@' + suggestion.s__id + '</span>';
+                    return view_s_js(suggestion) + '<span>&nbsp;&nbsp;@' + suggestion.s__id + '</span>';
                 },
                 replace: function (suggestion) {
                     setTimeout(function () {
