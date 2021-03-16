@@ -993,7 +993,7 @@ function e_fetch_canonical(query_string, not_found){
 
 
 function validURL(str) {
-    return str.length && str.substring(0, 4)=='http';
+    return str && str.length && str.substring(0, 4)=='http';
 }
 
 
