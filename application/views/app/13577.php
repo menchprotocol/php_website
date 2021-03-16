@@ -12,7 +12,7 @@ if(isset($_POST['fa_regular']) && strlen($_POST['fa_regular'])){
         $words = explode('	', $line);
         if(count($words)==3){
             $detected++;
-            echo '<i class="far fa-'.$words[1].'"> ';
+            echo '<span class="icon-block"><i class="far fa-'.$words[1].'"></i></span>';
         }
     }
 
