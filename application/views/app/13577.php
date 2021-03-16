@@ -60,14 +60,17 @@ if(!$processed){
     //SHow Form:
     echo '<form method="post" action="">';
 
+    //Latest version
+    echo '<p>Check <a href="https://fontawesome.com/pro" target="_blank"><u>Latest Version</u></a> in the middle of page & Update config value for <a href="/@13577" target="_blank"><u>@13577</u></a> ['.view_memory(6404,13577).']</p><br /><br />';
+
     //Regular
-    echo '<p>Copy <a href="https://fontawesome.com/cheatsheet/pro/regular" target="_blank">Regular Font Awesome Cheatsheet</a> here:</p>';
-    echo '<textarea class="form-control text-edit border no-padding" name="far" data-lpignore="true" placeholder="Paste Cheatsheet..."></textarea><br />';
+    echo '<p>Copy <a href="https://fontawesome.com/cheatsheet/pro/regular" target="_blank"><u>Regular Font Awesome Cheatsheet</u></a> here:</p>';
+    echo '<textarea class="form-control text-edit border no-padding" style="height: 100px;" name="far" data-lpignore="true" placeholder="Paste Cheatsheet..."></textarea><br /><br />';
 
 
     //Brands
-    echo '<p>Copy <a href="https://fontawesome.com/cheatsheet/pro/brands" target="_blank">Brand Font Awesome Cheatsheet</a> here:</p>';
-    echo '<textarea class="form-control text-edit border no-padding" name="fab" data-lpignore="true" placeholder="Paste Cheatsheet..."></textarea><br />';
+    echo '<p>Copy <a href="https://fontawesome.com/cheatsheet/pro/brands" target="_blank"><u>Brand Font Awesome Cheatsheet</u></a> here:</p>';
+    echo '<textarea class="form-control text-edit border no-padding" style="height: 100px;" name="fab" data-lpignore="true" placeholder="Paste Cheatsheet..."></textarea><br /><br />';
 
     //Apply
     echo '<button type="submit" class="controller-nav btn btn-lrg btn-6255 go-next top-margin" value="GO">UPDATE</button>';
