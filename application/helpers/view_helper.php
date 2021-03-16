@@ -1977,9 +1977,11 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
         $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
-    } elseif($source_of_e && $x__id) {
+    } elseif(1 || $source_of_e && $x__id) {
 
         $action_buttons = null;
+
+        //Generate Buttons:
         foreach($CI->config->item('e___14956') as $e__id => $m) {
             $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
             if($e__id==14937 && $source_of_e){
@@ -1988,14 +1990,12 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>'; //Edit Message
             } elseif($e__id==4603 && $has_sortable && $superpower_13422){
                 $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden">'.$anchor.'</a>'; //SORT
-            } elseif($e__id==10673 && $source_of_e){
+            } elseif($e__id==10673 ){ //&& $source_of_e
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</span></a>'; //UNLINK
             } elseif($e__id==14601 && !$has_any_lock && superpower_active(14683, true)){
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //NUCLEAR DELETE
             }
         }
-
-
 
         //Any Buttons?
         if($action_buttons){
