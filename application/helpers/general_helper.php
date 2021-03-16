@@ -498,16 +498,6 @@ function e_count_6194($e__id, $specific_id = 0){
 
 }
 
-function cover_can_update($icon_code){
-    //Decides if a coin cover can be auto updated:
-    if(filter_var($icon_code, FILTER_VALIDATE_URL)){
-        //Cannot update if its an image:
-        return false;
-    } else {
-        //Can update if not set:
-        return !strlen($icon_code);
-    }
-}
 
 function string_is_icon($icon_code){
     return substr_count($icon_code,'fa-');

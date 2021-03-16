@@ -5,15 +5,9 @@
 
 //IDEAS
 $ideas_scanned = 0;
-$ideas_untouchable = 0;
 $ideas_inherit = 0;
 $ideas_inherit_image = 0;
-foreach($this->I_model->fetch(array()) as $o){
-
-    if(!cover_can_update($o['i__cover'])){
-        $ideas_untouchable++;
-        continue; //Can't update this
-    }
+foreach($this->I_model->fetch(array('i__cover IS NULL' => null)) as $o){
 
     $ideas_scanned++;
 
@@ -34,13 +28,13 @@ foreach($this->I_model->fetch(array()) as $o){
         //See if this source has a photo:
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //Idea Inherit Cover
+            'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //Inherit Cover Types
             'x__down' => $fetched_e['e__id'],
         )) as $e_image) {
             if($e_image['x__type']==4260){
                 $found_image = $e_image['x__message'];
                 break;
-            } elseif($e_image['x__type']==4257 /* Currently excluded from @14756 */){
+            } elseif($e_image['x__type']==4257){
                 //Embed:
                 $video_id = extract_youtube_id($e_image['x__message']);
                 if($video_id){
@@ -81,7 +75,6 @@ foreach($this->I_model->fetch(array()) as $o){
 
 }
 echo '<br /><br />';
-echo $ideas_untouchable.' Ideas are untouchable.<br />';
 echo $ideas_scanned.' Ideas scanned.<br />';
 echo $ideas_inherit.' Ideas inherited, of which '.$ideas_inherit_image.' had images.<br />';
 echo '<br /><br />';
@@ -91,15 +84,9 @@ echo '<br /><br />';
 
 //SOURCES
 $sources_scanned = 0;
-$sources_untouchable = 0;
 $sources_inherit = 0;
 $sources_inherit_image = 0;
-foreach($this->E_model->fetch(array()) as $o) {
-
-    if(!cover_can_update($o['e__cover'])){
-        $sources_untouchable++;
-        continue; //Can't update this
-    }
+foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
 
     $sources_scanned++;
     $found_image = null;
@@ -108,7 +95,7 @@ foreach($this->E_model->fetch(array()) as $o) {
     //Source Profile Search:
     foreach($this->X_model->fetch(array( //SOURCE PROFILE
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___18149')) . ')' => null, //Source Inherit Cover
+        'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //Inherit Cover Types
         'x__down' => $o['e__id'], //This child source
     ), array('x__up'), 0, 0, array()) as $fetched_e){
 
@@ -140,7 +127,6 @@ foreach($this->E_model->fetch(array()) as $o) {
 
 }
 echo '<br /><br />';
-echo $sources_untouchable.' Sources are untouchable.<br />';
 echo $sources_scanned.' Sources scanned.<br />';
 echo $sources_inherit.' Sources inherited, of which '.$sources_inherit_image.' had images.<br />';
 echo '<br /><br />';
