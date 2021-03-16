@@ -10,7 +10,7 @@ if(isset($_POST['fa_regular']) && strlen($_POST['fa_regular'])){
 
     foreach(explode("\n", $_POST['fa_regular']) as $line){
         $words = explode('	', $line);
-        if(count($words)==3 ){
+        if(count($words)==3 && strlen(trim($words[2]))==4){
 
             $detected++;
             $icon_title = ucwords(str_replace('-',' ',$words[1]));
@@ -24,7 +24,7 @@ if(isset($_POST['fa_regular']) && strlen($_POST['fa_regular'])){
                 'e__cover' => $icon_code,
             ), array('x__down')))){
                 $added++;
-                echo '<span class="icon-block" title="'.$icon_title.' ['.$words[2].']"><i class="'.$icon_code.'"></i></span>';
+                echo '<span class="icon-block" title="'.$icon_title.'"><i class="'.$icon_code.'"></i></span>';
                 //ADD NEW:
                 /*
                 $this->E_model->create(array(
