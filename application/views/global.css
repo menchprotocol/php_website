@@ -2300,15 +2300,11 @@ textarea {
 }
 .node-coin .inner-content textarea {
     font-size: 2.2em;
+    line-height: 220%;
 }
 .node-coin .inner-content .css__title {
     font-size: 4.2em;
-}
-.node-coin .inner-content .css__title{
     line-height: 120%;
-}
-.node-coin .inner-content textarea{
-    line-height: 220%;
 }
 .node-coin .cover-content{
     bottom:-115px;
