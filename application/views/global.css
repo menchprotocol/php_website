@@ -1943,6 +1943,13 @@ i, .btn .show-max {
     .coin_cover:hover .coin-hover{
         display: block;
     }
+
+    .title-hover{
+        display: none;
+    }
+    .frame-title:hover .title-hover{
+        display: block;
+    }
 }
 
 .dominHeight{
@@ -2281,6 +2288,9 @@ textarea {
     width: 100%;
     margin: 0;
     line-height: 120%;
+}
+.node-coin .texttype__lg {
+    font-size: 4.2em;
 }
 .inner-content .form-control {
     background-color: transparent !important;

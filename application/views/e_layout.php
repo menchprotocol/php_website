@@ -81,18 +81,16 @@ $tab_content = '';
 foreach($this->config->item('e___11089') as $x__type => $m) {
 
     $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
-    if(count($superpower_actives)){
-        if(!superpower_active(end($superpower_actives), true) && !$source_is_e){
-            //Missing Superpower:
-            continue;
-        }
+    if(count($superpower_actives) && !superpower_active(end($superpower_actives), true) && !$source_is_e){
+        //Missing Superpower:
+        continue;
     }
 
     $counter = null;
     $ui = null;
 
     if($source_is_e && strlen($m['m__message']) > 0){
-        $ui .= '<div style="padding-bottom: 13px;"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>'.$m['m__message'].'</div>';
+        $ui .= '<div class="msg" style="padding-bottom: 13px;"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>'.$m['m__message'].'</div>';
     }
 
     if(in_array($x__type, $this->config->item('n___6194'))){
@@ -337,7 +335,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         //IDEAS
         $counter = view_coins_e(12273, $e['e__id'], 0, false);
-        $i_exclude = array();
 
         //My Ideas
         $i_bookmarks = $this->X_model->fetch(array(
@@ -357,7 +354,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
             $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-10573">';
             foreach($i_bookmarks as $item){
-                array_push($i_exclude, $item['i__id']);
                 $ui .= view_i(10573, 0, null, $item, $control_enabled,null, $e);
             }
             $ui .= '</div>';
@@ -383,41 +379,37 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         }
 
 
-        //Referenced Ideas
-        $list_i = view_coins_e(12273, $e['e__id'], 1, true, $i_exclude);
+    } elseif($x__type==12273){
 
-        if(count($list_i) || $superpower_10939){
+        //IDEAS (Referenced)
+        $list_i = view_coins_e(12273, $e['e__id'], 1, true);
 
-            if(count($i_bookmarks) && count($list_i)){
-                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__cover'].'</span>'.$e___11035[13550]['m__title'].'</div>';
+        $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-13550">';
+        $drop_limit = doubleval(view_memory(6404,14684));
+        $max_seconds = intval(view_memory(6404,14684));
+        $max_i__spectrum = 0;
+        $show_all_i_btn = false;
+        foreach($list_i as $count => $item){
+
+            $i_stats = i_stats($item['i__metadata']);
+            if(!$show_all_i_btn && $max_i__spectrum>0 && $item['i__spectrum']>0 && $i_stats['i___6162']<=$max_seconds && (($max_i__spectrum * $drop_limit) > $item['i__spectrum'])){
+                $ui .= '<div class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__cover'].'</div><div class="cover-head">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
+                $show_all_i_btn = true;
             }
 
-            $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-13550">';
-            $drop_limit = doubleval(view_memory(6404,14684));
-            $max_seconds = intval(view_memory(6404,14684));
-            $max_i__spectrum = 0;
-            $show_all_i_btn = false;
-            foreach($list_i as $count => $item){
-
-                $i_stats = i_stats($item['i__metadata']);
-                if(!$show_all_i_btn && $max_i__spectrum>0 && $item['i__spectrum']>0 && $i_stats['i___6162']<=$max_seconds && (($max_i__spectrum * $drop_limit) > $item['i__spectrum'])){
-                    $ui .= '<div class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__cover'].'</div><div class="cover-head">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
-                    $show_all_i_btn = true;
-                }
-
-                $max_i__spectrum = $item['i__spectrum'];
-                $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-                $ui .= view_i(13550, 0, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, ( $show_all_i_btn ? ' show_all_ideas hidden ' : null ));
-
-            }
-            $ui .= '</div>';
-
-            //Are there more?
-            if($counter > count($list_i)){
-                $ui .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/-4341?x__source='.$member_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m__cover'].'</span>'.$e___11035[13913]['m__title'].' ['.$counter.']</a></div></div>';
-            }
+            $max_i__spectrum = $item['i__spectrum'];
+            $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
+            $ui .= view_i(13550, 0, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, ( $show_all_i_btn ? ' show_all_ideas hidden ' : null ));
 
         }
+        $ui .= '</div>';
+
+        //Are there more?
+        if($counter > count($list_i)){
+            $ui .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/-4341?x__source='.$member_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m__cover'].'</span>'.$e___11035[13913]['m__title'].' ['.$counter.']</a></div></div>';
+        }
+
+
 
         if($superpower_10939 && !$source_is_e){
 
@@ -437,11 +429,33 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         }
 
 
+    } elseif($x__type==12896){
+
+        //SAVED DISCOVERIES
+        $i_notes_query = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__type' => 12896,
+            'x__up' => $e['e__id'],
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'x__id' => 'DESC'));
+        $counter = count($i_notes_query);
+
+        if($counter > 0){
+
+            $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12896">';
+            foreach($i_notes_query as $count => $i_notes) {
+                $ui .= view_i(12896, $i_notes['x__left'], null, $i_notes, $control_enabled);
+            }
+            $ui .= '</div>';
+
+            $ui .= ( $counter >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12896)}); </script>' : '<style> #list-in-12896 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+
+        }
+
     } elseif($x__type==6255){
 
         //DISCOVERIES
         $counter = view_coins_e( 6255, $e['e__id'], 0, false);
-        $my_x_ids = array();
 
         //Show My discoveries
         if($counter){
@@ -452,7 +466,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12969">';
             foreach($list_x as $item){
                 $ui .= view_i(12969, $item['i__id'], null, $item,$control_enabled,null, $e);
-                array_push($my_x_ids, $item['i__id']);
             }
             $ui .= '</div>';
 
@@ -460,36 +473,8 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         }
 
-
-
-        if($source_is_e){
-
-            //SAVED
-            $i_notes_query = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__type' => 12896,
-                'x__up' => $e['e__id'],
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'x__id' => 'DESC'));
-            if(count($i_notes_query)){
-                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__cover'].'</span>'.$e___11035[12896]['m__title'].'</div>';
-                $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12896">';
-                foreach($i_notes_query as $count => $i_notes) {
-                    $ui .= view_i(12896, $i_notes['x__left'], null, $i_notes, $control_enabled);
-                }
-                $ui .= '</div>';
-
-                $ui .= ( count($i_notes_query) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12896)}); </script>' : '<style> #list-in-12896 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
-
-            }
-
-            //FEATURED IDEAS
-            $ui .= view_i_featured($my_x_ids);
-
-            //Info Boxes:
-            $ui .= view_info_box();
-
-        }
+        //Add New Discovery Button:
+        echo '<div class="margin-top-down center"><a class="btn btn-lrg btn-6255" href="/">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
@@ -520,8 +505,15 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
     }
 
     if($ui){
+
+        echo '<div class="frame-title">';
+        echo '<div class="headline margin-top-down"><span class="title-hover"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</span></div>';
+        echo $ui;
+        echo '</div>';
+
+        /*
         echo '<div class="accordion" id="AccordionFor'.$x__type.'">';
-        echo '<div class="card '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">
+        echo '<div class="card">
 <div class="card-header" id="heading' . $x__type . '">
 <button class="btn btn-block" title="'.$m['m__message'].'" type="button" data-toggle="collapse" data-target="#openEn' . $x__type . '" aria-expanded="false" aria-controls="openEn' . $x__type . '">
   <span class="icon-block">' . $m['m__cover'] . '</span><b class="css__title">' . number_format($counter, 0) . ' ' . $m['m__title'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
@@ -532,6 +524,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         echo $ui;
         echo '</div></div></div>';
         echo '</div>';
+        */
     }
 
 }

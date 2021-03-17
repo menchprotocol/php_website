@@ -620,7 +620,7 @@ function view_coins(){
 
 
 
-function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true, $i_exclude = array()){
+function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true){
 
     /*
      *
@@ -642,9 +642,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
-        if(count($i_exclude)){
-            $query_filters['e__id NOT IN (' . join(',', $i_exclude) . ')'] = null;
-        }
 
     } elseif($x__type==12273){
 
@@ -658,9 +655,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $e__id,
         );
-        if(count($i_exclude)){
-            $query_filters['i__id NOT IN (' . join(',', $i_exclude) . ')'] = null;
-        }
 
     } elseif($x__type==6255){
 
@@ -684,10 +678,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             );
-        }
-
-        if(count($i_exclude)){
-            $query_filters['i__id NOT IN (' . join(',', $i_exclude) . ')'] = null;
         }
 
     }
@@ -1432,7 +1422,7 @@ function view__load__e($e){
 }
 
 
-function view_i_featured($i_exclude = array()){
+function view_i_featured(){
 
 
     $topic_id = intval(get_domain_setting(14877));
@@ -1460,9 +1450,6 @@ function view_i_featured($i_exclude = array()){
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $e__id,
         );
-        if(count($i_exclude)){
-            $query_filters['i__id NOT IN (' . join(',', $i_exclude) . ')'] = null;
-        }
 
         $query = $CI->X_model->fetch($query_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC'));
 
@@ -1487,9 +1474,6 @@ function view_i_featured($i_exclude = array()){
             $ui .= '<div class="row justify-content-center margin-top-down-half">';
             foreach($query as $i){
                 $ui .= view_i(14877, 0, null, $i);
-                if(!in_array($i['i__id'], $i_exclude)){
-                    array_push($i_exclude, $i['i__id']);
-                }
             }
             $ui .= '</div>';
             $ui .= '</div>';
