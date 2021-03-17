@@ -1929,7 +1929,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $has_any_lock = !$superpower_12701 && ($has_soft_lock || $has_hard_lock);
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $supports_messages && $superpower_10939;
     $show_text_editor = $source_of_e && $control_enabled && !$has_any_lock;
-    $can_click = !$has_any_lock || 1; //Allow clicking for all
+    $can_click = !$node_coin; //Allow clicking for all
 
     //Source UI
     $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coinface-12274 '.( $node_coin ? ' node-coin col-md-8 col-10 ' : ' edge-coin col-md-4 col-6 ' ).' coin_cover no-padding coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
@@ -1950,7 +1950,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
         $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
-    } elseif($source_of_e && $x__id > 0) {
+    } elseif($source_of_e) {
 
         $action_buttons = null;
 
@@ -1958,27 +1958,52 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         foreach($CI->config->item(( $node_coin ? 'e___12887' : 'e___14956' )) as $e__id => $m) {
 
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
-            $superpower_css = ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' );
+            if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+                //Missing Superpower
+                continue;
+            }
             $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
 
             if($e__id==14937 && $source_of_e){
-                $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>'; //COIN COVER
-            } elseif($e__id==13571 && $supports_messages && $superpower_13422){
-                $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>'; //Edit Message
-            } elseif($e__id==4603 && $has_sortable && $superpower_13422){
-                $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden '.$superpower_css.'">'.$anchor.'</a>'; //SORT
-            } elseif($e__id==10673 && $source_of_e){
-                $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</span></a>'; //UNLINK
+
+                //COIN COVER
+                $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
+
+            } elseif($e__id==13571 && $supports_messages && $superpower_13422 && $x__id > 0){
+
+                //Edit Message
+                $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>';
+
+            } elseif($e__id==4603 && $has_sortable && $superpower_13422 && $x__id > 0){
+
+                //SORT
+                $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden">'.$anchor.'</a>';
+
+            } elseif($e__id==10673 && $source_of_e && $x__id > 0){
+
+                //UNLINK
+                $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</span></a>';
+
             } elseif($e__id==14601 && !$has_any_lock && $source_of_e && superpower_active(14683, true)){
-                $action_buttons .= '<a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>'; //NUCLEAR DELETE
 
+                //NUCLEAR DELETE
+                $action_buttons .= '<a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
-            } elseif($e__id==13007){
-                $action_buttons .= '<a href="javascript:void(0);" onclick="e_sort_reset()" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>';
-            } elseif($e__id==6415){
-                $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_all()" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>';
-            } else {
-                $action_buttons .= '<a href="' . $m['m__message'] . $e['e__id'] . '" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>';
+            } elseif($e__id==13007 && $node_coin){
+
+                //Reset Alphabetic order
+                $action_buttons .= '<a href="javascript:void(0);" onclick="e_sort_reset()" class="dropdown-item css__title">'.$anchor.'</a>';
+
+            } elseif($e__id==6415 && $member_e['e__id']==$e['e__id']){
+
+                //Reset my discoveries
+                $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_all()" class="dropdown-item css__title">'.$anchor.'</a>';
+
+            } elseif(substr($m['m__message'], 0, 1)=='/') {
+
+                //Custom Anchor
+                $action_buttons .= '<a href="' . $m['m__message'] . $e['e__id'] . '" class="dropdown-item css__title">'.$anchor.'</a>';
+
             }
         }
 
@@ -2020,8 +2045,9 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';
 
+
     //Profile Sources
-    if($superpower_12706){
+    if(!$node_coin && $superpower_12706){
         $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
         foreach($e__profiles as $e_profile) {
             $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '">' . view_cover(12274,$e_profile['e__cover']) . '</a></span> ';
