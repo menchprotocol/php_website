@@ -1979,7 +1979,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
             } elseif($e__id==6415){
                 $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_all()" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>';
             } else {
-                $action_buttons .= '<a href="' . $m2['m__message'] . $s__id . '" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>';
+                $action_buttons .= '<a href="' . $m['m__message'] . $e['e__id'] . '" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>';
             }
         }
 
