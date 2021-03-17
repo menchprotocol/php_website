@@ -277,7 +277,7 @@ img.no-frame {
 }
 .card-body{
     margin: 0;
-    padding: 10px 0 20px 35px;
+    padding: 0;
 }
 .card-body .padded, .card-body .list-group {
     margin: 0 0 13px;
