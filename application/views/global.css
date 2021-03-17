@@ -2312,6 +2312,9 @@ textarea {
 .node-coin .cover-content{
     bottom:-115px;
 }
+.node-coin.doedit .cover-content{
+    bottom:-210px;
+}
 .inner-content .form-control {
     background-color: transparent !important;
 }
