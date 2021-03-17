@@ -490,25 +490,20 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         //COUNT ONLY
         $item_counters = $this->X_model->fetch($i_notes_filters, array('x__right'), 0, 0, array(), 'COUNT(i__id) as totals');
         $counter = $item_counters[0]['totals'];
-
-        $ui .= '<div class="row justify-content-center top-margin">';
         if($counter>0){
-
+            $ui .= '<div class="row justify-content-center top-margin">';
             $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), view_memory(6404,11064), 0, array('i__spectrum' => 'DESC'));
             foreach($i_notes_query as $count => $i_notes) {
                 $ui .= view_i(4485, 0, null, $i_notes, $control_enabled);
             }
-
+            $ui .= '</div>';
         }
-
-        $ui .= '</div>';
-
     }
 
     if($ui){
 
         echo '<div class="frame-title">';
-        echo '<div class="headline"><span class="title-hover"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].' ['.strlen($ui).']</span></div>';
+        echo '<div class="headline"><span class="title-hover"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].'</span></div>';
         echo $ui;
         echo '</div>';
 
