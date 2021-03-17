@@ -2110,6 +2110,9 @@ i, .btn .show-max {
     width: 100%;
     text-align: center;
 }
+.node-coin .cover-btn {
+    font-size: 21em;
+}
 
 .cover-btn i {
     margin-top: -32%;
@@ -2280,6 +2283,11 @@ textarea {
         font-size: 8em;
         top: 42%;
     }
+    .node-coin .cover-btn{
+        font-size: 13em;
+        top: 42%;
+    }
+
 }
 
 
