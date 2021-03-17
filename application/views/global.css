@@ -2298,11 +2298,17 @@ textarea {
     margin: 0;
     line-height: 120%;
 }
-.node-coin .inner-content .css__title {
+.node-coin .inner-content textarea {
     font-size: 2.2em;
 }
-.node-coin .inner-content{
+.node-coin .inner-content .css__title {
+    font-size: 4.2em;
+}
+.node-coin .inner-content .css__title{
     line-height: 420%;
+}
+.node-coin .inner-content textarea{
+    line-height: 220%;
 }
 .node-coin .cover-content{
     bottom:-256px;

@@ -2040,16 +2040,14 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //TITLE
-    $ui .= '<div class="css__title">';
     if($show_text_editor){
         //Editable title:
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, ( isset($e['x__spectrum']) ? ($e['x__spectrum']*100)+1 : 0  ), true);
     } elseif($can_click){
-        $ui .= '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>';
+        $ui .= '<div class="css__title"><a href="'.$href.'" class="css__title">'.$e['e__title'].'</a></div>';
     } else {
-        $ui .= $e['e__title'];
+        $ui .= '<div class="css__title">'.$e['e__title'].'</div>';
     }
-    $ui .= '</div>';
 
 
     //Message
