@@ -1782,9 +1782,9 @@ i, .btn .show-max {
 }
 
 .headline{
-    padding: 21px 0;
+    padding: 0;
     font-size: 2.1em;
-    min-height: 89px;
+    min-height: 30px;
 }
 .headline i{
     font-size: 0.89em !important;
