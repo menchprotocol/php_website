@@ -2292,6 +2292,9 @@ textarea {
 .node-coin .texttype__lg, .node-coin .inner-content .css__title {
     font-size: 4.2em;
 }
+.node-coin .inner-content{
+    line-height: 420%;
+}
 .inner-content .form-control {
     background-color: transparent !important;
 }
