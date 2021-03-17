@@ -76,8 +76,6 @@ echo '</div>';
 
 
 
-echo '<div class="accordion" id="">';
-
 $tab_nav = '';
 $tab_content = '';
 foreach($this->config->item('e___11089') as $x__type => $m) {
@@ -522,21 +520,21 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
     }
 
     if($ui){
-        //Accordion header:
+        echo '<div class="accordion" id="AccordionFor'.$x__type.'">';
         echo '<div class="card '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">
 <div class="card-header" id="heading' . $x__type . '">
 <button class="btn btn-block" title="'.$m['m__message'].'" type="button" data-toggle="collapse" data-target="#openEn' . $x__type . '" aria-expanded="false" aria-controls="openEn' . $x__type . '">
   <span class="icon-block">' . $m['m__cover'] . '</span><b class="css__title">' . number_format($counter, 0) . ' ' . $m['m__title'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
 </button>
 </div>
-<div id="openEn' . $x__type . '" class="collapse" aria-labelledby="heading' . $x__type . '" data-parent="#">
+<div id="openEn' . $x__type . '" class="collapse" aria-labelledby="heading' . $x__type . '" data-parent="#AccordionFor'.$x__type.'">
 <div class="card-body">';
         echo $ui;
         echo '</div></div></div>';
+        echo '</div>';
     }
 
 }
 
-echo '</div>'; //End of accordion
 
 ?>
