@@ -115,13 +115,8 @@ $profiles = $this->X_model->fetch(array(
             $ui .= '<div style="padding-bottom: 13px;"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>'.$m['m__message'].'</div>';
         }
 
-        //Is this a caret menu?
-        if(in_array(11040 , $m['m__profile'])){
 
-            $tab_nav .= view_caret($x__type, $m, $e['e__id']);
-            continue;
-
-        } elseif(in_array($x__type, $this->config->item('n___6194'))){
+        if(in_array($x__type, $this->config->item('n___6194'))){
 
             //SOURCE REFERENCE:
             $e_count_6194 = e_count_6194($e['e__id'], $x__type);
@@ -377,7 +372,6 @@ $profiles = $this->X_model->fetch(array(
             //Any Ideas?
             if(count($i_bookmarks) || $source_is_e){
 
-                $ui .= '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>' . $e___11035[10573]['m__title'] . '</div>';
 
                 //Need 2 or more to sort...
                 $ui .= ( count($i_bookmarks) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
@@ -553,10 +547,14 @@ $profiles = $this->X_model->fetch(array(
 
 
 
-        $default_active = $x__type==$active_x__type;
+        $default_active = in_array($x__type, $this->config->item('n___12574'));
 
-        $tab_nav .= '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
+        $tab_nav .= '<li class="nav-item'.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a class="nav-x tab-nav-11089 tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" href="javascript:void(0);" onclick="loadtab(11089, '.$x__type.')" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
 
+
+
+
+        $tab_content .= '<div class="headline '.extract_cover_type($m['m__cover'], true).' top-margin"><span class="icon-block">'.$m['m__cover'].'</span>'.number_format($counter, 0).' ' . $m['m__title'] . '</div>';
 
         $tab_content .= '<div class="tab-content tab-group-11089 tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).( $source_is_e ? ' no-border ' : '' ).'">';
         $tab_content .= $ui;

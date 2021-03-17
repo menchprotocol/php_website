@@ -987,36 +987,6 @@ function view_i_marks($i_x){
 }
 
 
-
-function view_caret($e__id, $m, $s__id){
-    //Display drop down menu:
-    $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-
-    $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
-    $ui = '<li class="nav-item dropdown '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'" title="'.$m['m__title'].'">';
-    $ui .= '<a class="nav-x dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></a>';
-    $ui .= '<div class="dropdown-menu">';
-    foreach($CI->config->item('e___'.$e__id) as $e__id => $m2){
-        $superpower_actives2 = array_intersect($CI->config->item('n___10957'), $m2['m__profile']);
-
-        if($e__id==13007){
-            $href = 'href="javascript:void(0);" onclick="e_sort_reset()"';
-        } elseif($e__id==6415){
-            $href = 'href="javascript:void(0);" onclick="x_reset_all()"';
-        } else {
-            $href = 'href="' . $m2['m__message'] . $s__id . '"';
-        }
-
-        $ui .= '<a '.$href.' class="dropdown-item css__title '.( count($superpower_actives2) ? superpower_active(end($superpower_actives2)) : '' ).'"><span class="icon-block">'.$m2['m__cover'].'</span> '.$m2['m__title'].'</a>';
-    }
-    $ui .= '</div>';
-    $ui .= '</li>';
-
-    return $ui;
-}
-
-
 function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e, $right_content = null){
 
     //If no list just return the next step:
@@ -1657,6 +1627,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $editing_enabled = in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
+    $node_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $has_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];
 
     if(!$focus_e){
@@ -1922,7 +1893,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $superpower_13422 = superpower_active(13422, true);
     $superpower_12701 = superpower_active(12701, true);
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
-
+    $node_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $coins_visible = in_array($x__type, $CI->config->item('n___20410'));
     $control_enabled = in_array($x__type, $CI->config->item('n___14696'));
     $show_time = in_array($x__type, $CI->config->item('n___14706'));
@@ -1985,18 +1956,30 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         $action_buttons = null;
 
         //Generate Buttons:
-        foreach($CI->config->item('e___14956') as $e__id => $m) {
+        foreach($CI->config->item(( $node_coin ? 'e___12887' : 'e___14956' )) as $e__id => $m) {
+
+            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
+            $superpower_css = ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' );
             $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
+
             if($e__id==14937 && $source_of_e){
-                $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
+                $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>'; //COIN COVER
             } elseif($e__id==13571 && $supports_messages && $superpower_13422){
-                $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>'; //Edit Message
+                $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>'; //Edit Message
             } elseif($e__id==4603 && $has_sortable && $superpower_13422){
-                $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden">'.$anchor.'</a>'; //SORT
+                $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden '.$superpower_css.'">'.$anchor.'</a>'; //SORT
             } elseif($e__id==10673 && $source_of_e){
-                $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</span></a>'; //UNLINK
+                $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</span></a>'; //UNLINK
             } elseif($e__id==14601 && !$has_any_lock && $source_of_e && superpower_active(14683, true)){
-                $action_buttons .= '<a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //NUCLEAR DELETE
+                $action_buttons .= '<a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>'; //NUCLEAR DELETE
+
+
+            } elseif($e__id==13007){
+                $action_buttons .= '<a href="javascript:void(0);" onclick="e_sort_reset()" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>';
+            } elseif($e__id==6415){
+                $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_all()" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>';
+            } else {
+                $action_buttons .= '<a href="' . $m2['m__message'] . $s__id . '" class="dropdown-item css__title '.$superpower_css.'">'.$anchor.'</a>';
             }
         }
 

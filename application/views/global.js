@@ -144,7 +144,7 @@ function view_s__title(suggestion){
 
 
 function view_s_js(suggestion){
-    return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span>';
+    return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
 }
 
 
@@ -1436,7 +1436,7 @@ function i_note_e_search(obj) {
                         });
                 },
                 template: function (suggestion) {
-                    return view_s_js(suggestion) + '<span>&nbsp;@' + suggestion.s__id + '</span>';
+                    return view_s_js(suggestion);
                 },
                 replace: function (suggestion) {
                     setTimeout(function () {

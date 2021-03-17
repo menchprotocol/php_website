@@ -172,6 +172,14 @@ function is_valid_date($string)
     }
 }
 
+function extract_cover_type($cover_code, $append_zq){
+    $CI =& get_instance();
+    foreach($CI->config->item('e___14874') as $e__id => $m) {
+        if(substr_count($cover_code, 'zq'.$e__id)){
+            return ( $append_zq ? 'zq' : '' ).$e__id;
+        }
+    }
+}
 
 function e_x__type($string = null){
     $detected_x_type = x_detect_type($string);

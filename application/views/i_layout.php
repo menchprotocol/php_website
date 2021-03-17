@@ -128,24 +128,15 @@ $tab_content = '';
 echo '<ul class="nav nav-tabs nav-sm">';
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
-
-    //Is this a caret menu?
-    if(in_array(11040 , $m['m__profile'])){
-        echo view_caret($x__type, $m, $i_focus['i__id']);
-        continue;
-    }
-
     //Have Needed Superpowers?
     $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
     if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
         continue;
     }
 
-
     $counter = null; //Assume no counters
     $ui = '';
     $href = 'href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')"';
-
 
     if($x__type==13562) {
 
@@ -369,7 +360,7 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     $default_active = in_array($x__type, $this->config->item('n___12675'));
 
-    echo '<li class="nav-item'.( in_array($x__type, $this->config->item('n___14655')) ? ' pull-right ' : '' ).''.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
+    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
 
 
     $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
