@@ -1005,12 +1005,12 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e, $
     if(in_array($x__type, $CI->config->item('n___14945'))){
         //IDEA TYPE
         $e___4737 = $CI->config->item('e___4737'); //IDEA TYPE
-        $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___4737[$i['i__type']]['m__title'].':</div>';
+        $ui .= '<div class="headline"><span class="icon-block">'.$e___4737[$i['i__type']]['m__cover'].'</span>'.$e___4737[$i['i__type']]['m__title'].':</div>';
     } else {
         //LIST TYPE
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
         $edit_button = ( $x__type==13980 ? '<a class="btn btn-6255" style="margin-left:13px;" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a>' : null );
-        $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[$x__type]['m__title'].':'.$edit_button.'</div>';
+        $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__cover'].'</span>'.$e___11035[$x__type]['m__title'].':'.$edit_button.'</div>';
     }
     $ui .= '</div>';
     if($right_content){
@@ -1361,7 +1361,7 @@ function view_e_settings($list_id, $show_accordion){
             } else {
 
                 //Show Title only:
-                $ui .= '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$acc_detail['m__title'].'</div>';
+                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$acc_detail['m__cover'].'</span>'.$acc_detail['m__title'].'</div>';
 
                 //TAB CONTENT
                 $ui .= '<div class="padded">'.$tab_ui.'</div>';
@@ -1479,7 +1479,7 @@ function view_i_featured($i_exclude = array()){
 
             if($count_query > $limit){
                 //Yes, we have more, show this:
-                $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query, 0).' Ideas"><span class="icon-block">&nbsp;</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
+                $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query, 0).' Ideas"><span class="icon-block">'.$m['m__cover'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
             }
 
             $ui = '<div class="'.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';

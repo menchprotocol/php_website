@@ -226,7 +226,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
 
             $ui .= '<div class="toggle_4997 hidden">';
-            $ui .= '<div class="headline"><span class="icon-block">&nbsp;</span>'.$e___11035[4997]['m__title'].'</div>';
+            $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[4997]['m__cover'].'</span>'.$e___11035[4997]['m__title'].'</div>';
             $ui .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 41px;">';
 
             //Drop Down
@@ -389,7 +389,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         if(count($list_i) || $superpower_10939){
 
             if(count($i_bookmarks) && count($list_i)){
-                $ui .= '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$e___11035[13550]['m__title'].'</div>';
+                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[13550]['m__cover'].'</span>'.$e___11035[13550]['m__title'].'</div>';
             }
 
             $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-13550">';
@@ -448,7 +448,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
             $list_x  = view_coins_e(6255, $e['e__id'], 1);
 
-            $ui .= '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$e___11035[12969]['m__title'].'</div>';
+            $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__cover'].'</span>'.$e___11035[12969]['m__title'].'</div>';
             $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12969">';
             foreach($list_x as $item){
                 $ui .= view_i(12969, $item['i__id'], null, $item,$control_enabled,null, $e);
@@ -472,7 +472,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                 'x__up' => $e['e__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'x__id' => 'DESC'));
             if(count($i_notes_query)){
-                $ui .= '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$e___11035[12896]['m__title'].'</div>';
+                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12896]['m__cover'].'</span>'.$e___11035[12896]['m__title'].'</div>';
                 $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12896">';
                 foreach($i_notes_query as $count => $i_notes) {
                     $ui .= view_i(12896, $i_notes['x__left'], null, $i_notes, $control_enabled);

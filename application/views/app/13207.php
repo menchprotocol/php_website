@@ -24,7 +24,7 @@ foreach($this->config->item('e___13207') as $e__id => $m) {
         continue;
     }
 
-    echo '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$m['m__title'].'</div>';
+    echo '<div class="headline top-margin"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
     echo '<div class="row justify-content-center" style="padding-bottom:41px;">';
 
     $has_more = count($e_list)>($show_max_14538+1);

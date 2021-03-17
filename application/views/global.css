@@ -1782,7 +1782,8 @@ i, .btn .show-max {
 }
 
 .headline{
-    padding:10px 0;
+    padding: 21px 0;
+    font-size: 2.1em;
 }
 
 .x-info-topic{
@@ -2755,7 +2756,8 @@ font-weight: bold !important;
 
 
 /* TEXT ALIGN LEFT */
-.custom_ui_14541_14542 .msg{
+.custom_ui_14541_14542 .msg,
+.custom_ui_14541_14542 .headline{
     text-align: left;
 }
 .custom_ui_14541_14542 .e-appendix{
@@ -2770,7 +2772,8 @@ font-weight: bold !important;
 
 
 /* TEXT ALIGN CENTER */
-.custom_ui_14541_14543 .msg {
+.custom_ui_14541_14543 .msg,
+.custom_ui_14541_14543 .headline{
     text-align: center;
 }
 .custom_ui_14541_14543 .e-appendix{
@@ -2786,7 +2789,8 @@ font-weight: bold !important;
 
 
 /* TEXT ALIGN RIGHT */
-.custom_ui_14541_14544 .msg {
+.custom_ui_14541_14544 .msg,
+.custom_ui_14541_14544 .headline{
     text-align: right;
 }
 .custom_ui_14541_14544 .e-appendix{
