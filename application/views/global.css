@@ -1784,6 +1784,7 @@ i, .btn .show-max {
 .headline{
     padding: 21px 0;
     font-size: 2.1em;
+    min-height: 75px;
 }
 .headline i{
     font-size: 0.89em !important;
@@ -2294,6 +2295,9 @@ textarea {
 }
 .node-coin .inner-content{
     line-height: 420%;
+}
+.node-coin .cover-content{
+    bottom:-100px;
 }
 .inner-content .form-control {
     background-color: transparent !important;
