@@ -1214,27 +1214,6 @@ function x_set_start_text(){
     });
 }
 
-function view_input_text_count(cache_e__id, s__id) {
-
-    //Count text area characters:
-
-    //Update count:
-    var len = $('.text__'+cache_e__id+'_'+s__id).val().length;
-    if (len > js_e___6404[cache_e__id]['m__message']) {
-        $('#current_count_'+cache_e__id+'_'+s__id).addClass('overload').text(len);
-    } else {
-        $('#current_count_'+cache_e__id+'_'+s__id).removeClass('overload').text(len);
-    }
-
-    //Only show counter if getting close to limit:
-    if(len > ( js_e___6404[cache_e__id]['m__message'] * js_e___6404[12088]['m__message'] )){
-        $('.title_counter_'+cache_e__id+'_'+s__id).removeClass('hidden');
-    } else {
-        $('.title_counter_'+cache_e__id+'_'+s__id).addClass('hidden');
-    }
-
-}
-
 function update_text_name(cache_e__id, e__id, e__title){
     if(cache_e__id==6197){
         e__title = e__title;

@@ -107,7 +107,7 @@ echo '</table>';
 
 //IDEA TITLE
 echo '<div class="">';
-echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true, view_cover(12273,$i_focus['i__cover']));
+echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true);
 echo '</div>';
 
 
