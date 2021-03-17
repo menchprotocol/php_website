@@ -1932,10 +1932,9 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $can_click = !$has_any_lock || 1; //Allow clicking for all
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coinface-12274 '.( $node_coin ? ' node-coin col-12 ' : ' edge-coin col-md-4 col-6 ' ).' coin_cover no-padding coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coinface-12274 '.( $node_coin ? ' node-coin col-md-8 col-10 ' : ' edge-coin col-md-4 col-6 ' ).' coin_cover no-padding coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
 
     $ui .= '<div class="cover-wrapper">';
-
 
 
     if($source_of_e){
