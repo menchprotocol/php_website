@@ -1472,7 +1472,7 @@ function view_i_featured($i_exclude = array()){
             $loaded_topics++;
 
             //We need to check if we have more than this?
-            $see_all_link = '<span class="icon-block">&nbsp;</span>'.$m['m__title'];
+            $see_all_link = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
             //We might have more, let's check:
             $query2 = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
             $count_query = $query2[0]['totals'];

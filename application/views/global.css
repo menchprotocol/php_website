@@ -1786,7 +1786,7 @@ i, .btn .show-max {
     font-size: 2.1em;
 }
 .headline i{
-    font-size: 0.55em;
+    font-size: 0.89em !important;
 }
 
 .x-info-topic{
@@ -1979,7 +1979,7 @@ i, .btn .show-max {
     margin:30px 0 90px !important;
 }
 .coin_cover_6255 {
-    margin-top:-99px !important;
+    margin-top:-119px !important;
 }
 
 .cover-content .inner-content {
@@ -2132,7 +2132,7 @@ textarea {
 @media (max-width:767px) {
 
     .coin_cover_6255 {
-        margin-top:-89px !important;
+        margin-top:-109px !important;
     }
 
     .the_counter{
@@ -2256,10 +2256,10 @@ textarea {
 @media (max-width:576px) {
     .the_counter{
         margin-top: -24px;
-        font-size: 0.21em !important;
+        font-size: 0.18em !important;
     }
     .coin_cover_6255 {
-        margin-top:-72px !important;
+        margin-top:-96px !important;
     }
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
