@@ -69,7 +69,11 @@ if(!$source_is_e || $superpower_13422){
 }
 
 
+
+echo '<div class="row justify-content-center">';
 echo view_e(4251, $e, null, $source_of_e);
+echo '</div>';
+
 
 
 echo '<div class="accordion" id="eAccordion">';
