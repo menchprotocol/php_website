@@ -89,7 +89,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
     $counter = null;
     $ui = null;
 
-    if($source_is_e && strlen($m['m__message']) > 0){
+    if(strlen($m['m__message']) > 0){
         $ui .= '<div class="msg" style="padding-bottom: 13px;"><span class="icon-block"><i class="fas fa-info-circle black"></i></span>'.$m['m__message'].'</div>';
     }
 
@@ -98,10 +98,9 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         //SOURCE REFERENCE:
         $e_count_6194 = e_count_6194($e['e__id'], $x__type);
         $counter = ( isset($e_count_6194[$x__type]) ? $e_count_6194[$x__type] : 0 );
-        if(!$counter){
-            continue;
+        if($counter){
+            $ui .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m__cover'].' '.$m['m__title'].' '.number_format($counter, 0).' times.</div>';
         }
-        $ui .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m__cover'].' '.$m['m__title'].' '.number_format($counter, 0).' times.</div>';
 
     } elseif($x__type==12274){
 
@@ -473,8 +472,10 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         }
 
-        //Add New Discovery Button:
-        echo '<div class="margin-top-down center"><a class="btn btn-lrg btn-6255" href="/">Discover New Ideas <i class="far fa-arrow-right"></i></a></div>';
+        if($source_is_e){
+            //Add New Discovery Button:
+            echo '<div class="margin-top-down center"><a class="btn btn-lrg btn-6255" href="/">Discover New Ideas <i class="far fa-arrow-right"></i></a></div>';
+        }
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
@@ -507,7 +508,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
     if($ui){
 
         echo '<div class="frame-title">';
-        echo '<div class="headline"><span class="title-hover"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].'</span></div>';
+        echo '<div class="headline"><span class="title-hover"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].' ['.strlen($ui).']</span></div>';
         echo $ui;
         echo '</div>';
 
