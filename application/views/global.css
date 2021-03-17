@@ -1785,6 +1785,9 @@ i, .btn .show-max {
     padding: 21px 0;
     font-size: 2.1em;
 }
+.headline i{
+    font-size: 0.55em;
+}
 
 .x-info-topic{
     margin: -10px 0 30px;
