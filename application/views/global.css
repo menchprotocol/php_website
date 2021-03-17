@@ -2289,7 +2289,7 @@ textarea {
     margin: 0;
     line-height: 120%;
 }
-.node-coin .texttype__lg {
+.node-coin .texttype__lg, .node-coin .inner-content .css__title {
     font-size: 4.2em;
 }
 .inner-content .form-control {
