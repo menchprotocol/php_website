@@ -474,7 +474,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         }
 
         //Add New Discovery Button:
-        echo '<div class="margin-top-down center"><a class="btn btn-lrg btn-6255" href="/">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
+        echo '<div class="margin-top-down center"><a class="btn btn-lrg btn-6255" href="/">Discover New Ideas <i class="far fa-arrow-right"></i></a></div>';
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
