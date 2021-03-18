@@ -2045,7 +2045,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         //Editable title:
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, ( isset($e['x__spectrum']) ? ($e['x__spectrum']*100)+1 : 0  ), true);
     } elseif($can_click){
-        $ui .= '<div class="css__title" '.( isset($e['totals']) ? ' title="'.$e['totals'].'" ' : '' ).'><a href="'.$href.'" class="css__title">'.$e['e__title'].'</a></div>';
+        $ui .= '<div class="css__title"><a href="'.$href.'" class="css__title">'.$e['e__title'].'</a></div>';
     } else {
         $ui .= '<div class="css__title">'.$e['e__title'].'</div>';
     }
@@ -2100,7 +2100,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //Coin Block
     if(!$is_app && !$node_coin){
-        $ui .= '<div class="'.( $coins_visible ? '' : ' coin-hover ' ).'">';
+        $ui .= '<div class="'.( $coins_visible ? '' : ' coin-hover ' ).'" '.( isset($e['totals']) ? ' title="'.$e['totals'].'" ' : '' ).'>';
         $ui .= '<table class="coin_coins"><tr>';
         $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.view_coins_e(12274,  $e['e__id']).'</td>';
         $ui .= '<td width="34%" class="center">'.view_coins_e(12273,  $e['e__id']).'</td>';
