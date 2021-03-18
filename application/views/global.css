@@ -1784,7 +1784,6 @@ i, .btn .show-max {
 .headline{
     padding: 0;
     font-size: 2.1em;
-    min-height: 30px;
 }
 .headline i{
     font-size: 0.77em !important;
@@ -1935,6 +1934,10 @@ i, .btn .show-max {
     position: absolute;
     width: 24px;
     overflow: visible;
+}
+.title-hover{
+    min-height: 30px;
+    display: block;
 }
 
 @media (hover: hover) {
