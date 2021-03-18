@@ -148,12 +148,12 @@ function view_s_js(suggestion){
 }
 
 function toggle_headline(headline_id){
-    if($('.headline_title_' + headline_id).hasClass('fa-minus-circle')){
+    if($('.headline_title_' + headline_id + ' i').hasClass('fa-minus-circle')){
         //Must be closed:
-        $('.headline_title_' + headline_id).removeClass('fa-minus-circle').addClass('fa-plus-circle');
+        $('.headline_title_' + headline_id+ ' i').removeClass('fa-minus-circle').addClass('fa-plus-circle');
         $('.headline_body_' + headline_id).addClass('hidden');
     } else {
-        $('.headline_title_' + headline_id).removeClass('fa-plus-circle').addClass('fa-minus-circle');
+        $('.headline_title_' + headline_id+ ' i').removeClass('fa-plus-circle').addClass('fa-minus-circle');
         $('.headline_body_' + headline_id).removeClass('hidden');
     }
 }
