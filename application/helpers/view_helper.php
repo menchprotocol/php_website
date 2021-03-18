@@ -1466,7 +1466,7 @@ function view_i_featured(){
 
             if($count_query > $limit){
                 //Yes, we have more, show this:
-                $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query, 0).' Ideas"><span class="icon-block">'.$m['m__cover'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
+                $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query, 0).' Ideas"><span class="icon-block">'.$m['m__cover'].'</span><u>'.$m['m__title'].'</u></a>'; //&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i>
             }
 
 
