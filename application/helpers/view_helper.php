@@ -2041,18 +2041,17 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //TITLE
     if($show_text_editor){
-        //Editable title:
+        //Editable:
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, ( isset($e['x__spectrum']) ? ($e['x__spectrum']*100)+1 : 0  ), true);
-    } elseif($can_click){
-        $ui .= '<div class="css__title"><a href="'.$href.'" class="css__title">'.$e['e__title'].'</a></div>';
     } else {
-        $ui .= '<div class="css__title">'.$e['e__title'].'</div>';
+        //Static:
+        $ui .= '<div class="css__title">'.( $can_click ? '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
     }
 
 
     //Message
     if ($x__id > 0) {
-        if($can_click && $supports_messages){
+        if(!$has_any_lock && $supports_messages){
 
             $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
 
