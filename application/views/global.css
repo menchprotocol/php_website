@@ -1003,6 +1003,10 @@ a.headline {
     cursor: pointer;
     display: block;
 }
+.headlineTitle{
+    float: right;
+    margin-right: 8px;
+}
 
 
 
