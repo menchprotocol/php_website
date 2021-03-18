@@ -1919,7 +1919,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $ui .= '<div class="cover-wrapper">';
 
 
-    if($source_of_e){
+    if($source_of_e && $superpower_13422){
         $ui .= '<div class="coin-hover coin-cover coin-cover-left">';
         $ui .= view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']);
         $ui .= '</div>';
