@@ -512,11 +512,9 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
     if($ui){
 
-        echo '<div class="frame-title">';
         echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].' <i class="far fa-minus-circle headline_title_'.$x__type.'"></i></a>';
         echo '<div class="headlinebody headline_body_'.$x__type.'">';
         echo $ui;
-        echo '</div>';
         echo '</div>';
 
     }

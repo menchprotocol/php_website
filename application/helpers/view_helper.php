@@ -1470,7 +1470,7 @@ function view_i_featured(){
             }
 
 
-            $ui = '<div class="frame-title '.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';
+            $ui = '<div class="'.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';
             $ui .= '<div class="headline top-margin">'.$see_all_link.'</div>';
             $ui .= '<div class="row justify-content-center margin-top-down-half">';
             foreach($query as $i){
