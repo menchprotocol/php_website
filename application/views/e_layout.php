@@ -500,6 +500,10 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         }
     }
 
+    if(!$counter && !$superpower_10939){
+        continue;
+    }
+
     if($ui){
 
         echo '<div class="frame-title">';
