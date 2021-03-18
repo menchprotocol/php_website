@@ -444,6 +444,7 @@ class E_model extends CI_Model
         $adjusted_count = 0;
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type !=' => 10673, //Member Transaction Unpublished
             '(x__down = ' . $e__id . ' OR x__up = ' . $e__id . ' OR x__source = ' . $e__id . ')' => null,
         ), array(), 0) as $adjust_tr){
             //Delete this transaction:

@@ -234,6 +234,7 @@ class I_model extends CI_Model
         $x_deleted = 0;
         foreach($this->X_model->fetch(array( //Idea Transactions
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type !=' => 13579, //Idea Transaction Unpublished
             '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
         ), array(), 0) as $x){
             //Delete this transaction:
