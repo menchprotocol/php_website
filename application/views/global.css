@@ -2181,7 +2181,7 @@ textarea {
 }
 
 .inline-dropdown .btn i {
-    font-size: 0.89em;
+    font-size: 1em !important;
     color: #999;
     margin: 0 5px;
 }
