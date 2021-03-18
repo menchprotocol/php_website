@@ -2045,7 +2045,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         //Editable title:
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, ( isset($e['x__spectrum']) ? ($e['x__spectrum']*100)+1 : 0  ), true);
     } elseif($can_click){
-        $ui .= '<div class="css__title"><a href="'.$href.'" class="css__title">'.$e['e__title'].'</a></div>';
+        $ui .= '<div class="css__title" '.( isset($e['totals']) ? ' title="'.$e['totals'].'" ' : '' ).'><a href="'.$href.'" class="css__title">'.$e['e__title'].'</a></div>';
     } else {
         $ui .= '<div class="css__title">'.$e['e__title'].'</div>';
     }
