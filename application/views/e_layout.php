@@ -36,7 +36,7 @@ if(!$source_is_e || $superpower_13422){
     $trigger_hide = null;
 
 
-    $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight headline_body_11030">';
+    $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
 
     $counter = 0; //Recount
     foreach($profiles as $e_link) {
@@ -57,9 +57,11 @@ if(!$source_is_e || $superpower_13422){
 
 
 
+    echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline(11030)"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].' <i class="far fa-minus-circle headline_title_11030"></i></a>';
+    echo '<div class="headlinebody headline_body_11030">';
+
     if($superpower_13422){
-        echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline(11030)"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].' <i class="far fa-minus-circle headline_title_11030"></i></a>';
-        echo '<div class="headline_body_11030"><div class="'.$trigger_hide.'"><div class="headline-height"><div id="new_11030" class="list-adder">
+        echo '<div class="'.$trigger_hide.'"><div class="headline-height"><div id="new_11030" class="list-adder">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                     <input type="text"
@@ -67,10 +69,13 @@ if(!$source_is_e || $superpower_13422){
                            id="New11030input"
                            maxlength="' . view_memory(6404,6197) . '"
                            placeholder="'.$e___11035[14055]['m__title'].'">
-                </div></div></div></div></div>';
+                </div></div></div></div>';
     }
 
     echo $profile_ui;
+
+    echo '</div>';
+
 
 }
 
@@ -509,7 +514,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         echo '<div class="frame-title">';
         echo '<div class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].' <i class="far fa-minus-circle headline_title_'.$x__type.'"></i></div>';
-        echo '<div class="headline_body_'.$x__type.'">';
+        echo '<div class="headlinebody headline_body_'.$x__type.'">';
         echo $ui;
         echo '</div>';
         echo '</div>';
