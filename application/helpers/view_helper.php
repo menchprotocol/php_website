@@ -1929,7 +1929,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     $ui .= '<div class="'.( !$source_is_e ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
     //LOCKED
-    if($has_any_lock){
+    if($has_any_lock && !$node_coin){
 
         $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
