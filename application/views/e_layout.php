@@ -56,10 +56,8 @@ if(!$source_is_e || $superpower_13422){
     $profile_ui .= '</div>';
 
 
-
-    echo '<div class="headline"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'</div>';
-
     if($superpower_13422){
+        echo '<div class="headline"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'</div>';
         echo '<div class="'.$trigger_hide.'"><div class="headline-height"><div id="new_11030" class="list-adder">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
