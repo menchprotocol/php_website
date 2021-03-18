@@ -1946,14 +1946,6 @@ i, .btn .show-max {
     .coin_cover:hover .coin-hover{
         display: block;
     }
-    /*
-    .title-hover{
-        display: none;
-    }
-    .frame-title:hover .title-hover{
-        display: block;
-    }
-    */
 }
 
 .frame-title {

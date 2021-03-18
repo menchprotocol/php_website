@@ -65,7 +65,7 @@ class App extends CI_Controller
             return redirect_message('/@'.$member_e['e__id']);
         } elseif(!$member_e && in_array($app_e__id, $this->config->item('n___14740'))){
             //Should redirect them:
-            return redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>App @'.$app_e__id.' is for members only</div>', true);
+            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>App @'.$app_e__id.' is for members only</div>', true);
         }
 
 
@@ -440,7 +440,7 @@ class App extends CI_Controller
         } elseif(isset($_GET['url'])) {
             return $_GET['url'];
         } else {
-            return '/';
+            return home_url();
         }
     }
 

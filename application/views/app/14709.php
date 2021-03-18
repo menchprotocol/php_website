@@ -12,7 +12,7 @@ $is = $this->I_model->fetch(array(
 if(!$member_e){
 
     echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Must be signed in.</div>';
-    js_redirect('/', 13);
+    js_redirect(home_url(), 13);
 
 } elseif(!count($is)){
 

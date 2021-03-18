@@ -1471,7 +1471,7 @@ function view_i_featured(){
 
 
             $ui = '<div class="frame-title '.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';
-            $ui .= '<div class="headline top-margin"><span class="title-hover">'.$see_all_link.'</span></div>';
+            $ui .= '<div class="headline top-margin">'.$see_all_link.'</div>';
             $ui .= '<div class="row justify-content-center margin-top-down-half">';
             foreach($query as $i){
                 $ui .= view_i(14877, 0, null, $i);
@@ -1923,7 +1923,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     if($source_of_e){
         $ui .= '<div class="coin-hover coin-cover coin-cover-left">';
-        $ui .= view_input_dropdown(6177, $e['e__type'], null, $source_of_e, false, $e['e__id']);
+        $ui .= view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']);
         $ui .= '</div>';
     }
 

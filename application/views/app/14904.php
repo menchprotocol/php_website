@@ -31,7 +31,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
             'x__down' => $_GET['e__id'],
         ));
 
-        js_redirect('/', 1597);
+        js_redirect(home_url(), 1597);
 
     } else {
 

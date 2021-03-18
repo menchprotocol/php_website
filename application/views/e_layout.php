@@ -503,7 +503,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
     if($ui){
 
         echo '<div class="frame-title">';
-        echo '<div class="headline"><span class="title-hover"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].'</span></div>';
+        echo '<div class="headline"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].'</div>';
         echo $ui;
         echo '</div>';
 
