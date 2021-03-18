@@ -1912,7 +1912,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $has_any_lock = !$superpower_12701 && ($has_soft_lock || $has_hard_lock);
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $supports_messages && $superpower_10939;
     $show_text_editor = $source_of_e && $control_enabled && !$has_any_lock;
-    $can_click = !$node_coin && !$has_any_lock; //Allow clicking for all
+    $can_click = !$node_coin; //Allow clicking for all
 
     //Source UI
     $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coinface-12274 '.( $node_coin ? ' node-coin col-md-8 col-10 ' : ' edge-coin col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).' coin_cover no-padding coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
