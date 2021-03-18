@@ -367,7 +367,7 @@ class App extends CI_Controller
                 $message .= '<div id="x_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn btn-6255" onclick="app_4341(x_filters, x_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
-                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$x_count[0]['total_count'].' transactions have been loaded</div>';
+                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="fas fa-check-circle"></i></span>All '.$x_count[0]['total_count'].' transactions have been loaded</div>';
 
             }
 

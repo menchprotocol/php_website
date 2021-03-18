@@ -57,7 +57,7 @@ if(!$source_is_e || $superpower_13422){
 
 
 
-    echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline(11030)"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'<span class="icon-block pull-right headline_title_11030"><i class="far fa-chevron-up"></i></span></a>';
+    echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline(11030)"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'<span class="icon-block pull-right headline_title_11030"><i class="fas fa-chevron-up"></i></span></a>';
     echo '<div class="headlinebody headline_body_11030">';
 
     if($superpower_13422){
@@ -512,7 +512,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
     if($ui){
 
-        echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'"><i class="far fa-chevron-up"></i></span></a>';
+        echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'"><i class="fas fa-chevron-up"></i></span></a>';
         echo '<div class="headlinebody headline_body_'.$x__type.'">';
         echo $ui;
         echo '</div>';
