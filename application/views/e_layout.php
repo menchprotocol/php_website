@@ -30,24 +30,26 @@ $profiles = $this->X_model->fetch(array(
 //PROFILE
 if(!$source_is_e || $superpower_13422){
 
-    $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
-
-    $count = 0;
+    $counter = 0;
     $show_max_14538 = view_memory(6404,14538);
     $has_more = count($profiles)>($show_max_14538+1);
     $trigger_hide = null;
+
+
+
+    $profile_ui .= '<div id="list-in-11030" class="row justify-content-center dominHeight">';
     foreach($profiles as $e_link) {
 
-        if($count==$show_max_14538 && $has_more){
+        if($counter==$show_max_14538 && $has_more){
             $profile_ui .= view_show_more(14538, 'see_all_11030');
         }
 
-        if($count>=$show_max_14538 && $has_more){
+        if($counter>=$show_max_14538 && $has_more){
             $trigger_hide = 'see_all_11030 hidden';
         }
 
         $profile_ui .= view_e(11030, $e_link, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_link['x__source']))));
-        $count++;
+        $counter++;
 
     }
     $profile_ui .= '</div>';
@@ -64,9 +66,13 @@ if(!$source_is_e || $superpower_13422){
                            placeholder="'.$e___11035[13914]['m__title'].'">
                 </div></div>';
     }
+    echo '<div class="frame-title">';
+    echo '<div class="headline"><span class="title-hover"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'</span></div>';
     echo $profile_ui;
+    echo '</div>';
 
 }
+
 
 
 
@@ -223,7 +229,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
 
             $ui .= '<div class="toggle_4997 hidden">';
-            $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[4997]['m__cover'].'</span>'.$e___11035[4997]['m__title'].'</div>';
             $ui .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 41px;">';
 
             //Drop Down
@@ -288,16 +293,16 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
 
         $count = 0;
-        $show_max_14435 = view_memory(6404,14435);
-        $has_more = count($list_e)>($show_max_14435+1);
+        $show_max_14538 = view_memory(6404,14538);
+        $has_more = count($list_e)>($show_max_14538+1);
         $trigger_hide = null;
         foreach($list_e as $e_link) {
 
-            if($count==$show_max_14435 && $has_more){
-                $ui .= view_show_more(14435, 'see_all_11029');
+            if($count==$show_max_14538 && $has_more){
+                $ui .= view_show_more(14538, 'see_all_11029');
             }
 
-            if($count>=$show_max_14435 && $has_more){
+            if($count>=$show_max_14538 && $has_more){
                 $trigger_hide = 'see_all_11029 hidden';
             }
 
@@ -461,7 +466,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
             $list_x  = view_coins_e(6255, $e['e__id'], 1);
 
-            $ui .= '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12969]['m__cover'].'</span>'.$e___11035[12969]['m__title'].'</div>';
             $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12969">';
             foreach($list_x as $item){
                 $ui .= view_i(12969, $item['i__id'], null, $item,$control_enabled,null, $e);
@@ -507,20 +511,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         echo $ui;
         echo '</div>';
 
-        /*
-        echo '<div class="accordion" id="AccordionFor'.$x__type.'">';
-        echo '<div class="card">
-<div class="card-header" id="heading' . $x__type . '">
-<button class="btn btn-block" title="'.$m['m__message'].'" type="button" data-toggle="collapse" data-target="#openEn' . $x__type . '" aria-expanded="false" aria-controls="openEn' . $x__type . '">
-  <span class="icon-block">' . $m['m__cover'] . '</span><b class="css__title">' . number_format($counter, 0) . ' ' . $m['m__title'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
-</button>
-</div>
-<div id="openEn' . $x__type . '" class="collapse" aria-labelledby="heading' . $x__type . '" data-parent="#AccordionFor'.$x__type.'">
-<div class="card-body">';
-        echo $ui;
-        echo '</div></div></div>';
-        echo '</div>';
-        */
     }
 
 }
