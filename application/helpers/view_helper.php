@@ -1569,7 +1569,7 @@ function view_i_select($i, $x__source, $previously_selected){
     $ui .= '<div class="cover-btn">'.(!$has_valid_url && $i['i__cover'] ? view_cover(12273,$i['i__cover']) : '').'</div>';
 
     //TODO Maybe remove permanently?
-    //$ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . '"><i class="fad fa-check-circle zq6255"></i></div>';
+    $ui .= '<div class="item-selected center ' . ( !$previously_selected ? ' hidden ' : '' ) . '"></div>'; //<i class="fad fa-check-circle zq6255"></i>
 
     $ui .= '</a>';
     $ui .= '</div>';
