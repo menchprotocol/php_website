@@ -30,12 +30,16 @@ $profiles = $this->X_model->fetch(array(
 //PROFILE
 if(!$source_is_e || $superpower_13422){
 
-    $counter = 0;
+    $counter = count($profiles);
     $show_max_14538 = view_memory(6404,14538);
-    $has_more = count($profiles)>($show_max_14538+1);
+    $has_more = $counter>($show_max_14538+1);
     $trigger_hide = null;
 
-    $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
+
+    $profile_ui = '<div class="headline"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'</div>';
+    $profile_ui .= '<div id="list-in-11030" class="row justify-content-center dominHeight">';
+
+    $counter = 0; //Recount
     foreach($profiles as $e_link) {
 
         if($counter==$show_max_14538 && $has_more){
