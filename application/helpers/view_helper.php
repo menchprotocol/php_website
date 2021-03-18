@@ -1469,8 +1469,9 @@ function view_i_featured(){
                 $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query, 0).' Ideas"><span class="icon-block">'.$m['m__cover'].'</span><u>'.$m['m__title'].'</u>&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i></a>';
             }
 
-            $ui = '<div class="'.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';
-            $ui .= '<div class="headline top-margin">'.$see_all_link.'</div>';
+
+            $ui = '<div class="frame-title '.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';
+            $ui .= '<div class="headline top-margin"><span class="title-hover">'.$see_all_link.'</span></div>';
             $ui .= '<div class="row justify-content-center margin-top-down-half">';
             foreach($query as $i){
                 $ui .= view_i(14877, 0, null, $i);

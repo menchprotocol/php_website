@@ -24,6 +24,8 @@ if($ends_colon){
     echo view_coins();
 }
 
+
+
 //FEATURED IDEAS
 echo view_i_featured();
 
