@@ -2168,7 +2168,7 @@ textarea {
     bottom:-89px;
 }
 .node-coin.doedit .cover-content{
-    bottom:-153px;
+    bottom:-144px;
 }
 .inner-content .form-control {
     background-color: transparent !important;
@@ -2303,6 +2303,9 @@ textarea {
 @media (max-width:576px) {
     .node-coin .inner-content .css__title {
         font-size: 1.9em;
+    }
+    .node-coin.doedit .cover-content{
+        bottom:-105px;
     }
     .the_counter{
         margin-top: -24px;
