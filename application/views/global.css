@@ -2180,8 +2180,9 @@ textarea {
     background-color: transparent !important;
 }
 
-.inline-dropdown .btn {
+.inline-dropdown .btn i {
     font-size: 0.89em;
+    color: #999;
     margin: 0 5px;
 }
 
