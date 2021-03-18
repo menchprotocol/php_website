@@ -1893,6 +1893,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $public_sources = $CI->config->item('n___14603');
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
+    $source_is_e = $focus__id>0 && $member_e['e__id']==$focus__id;
 
     $e__profiles = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -1905,7 +1906,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //Is Lock/Private?
     $lock_notice = 4755; //Only locked if private Source
-    $has_hard_lock = !$superpower_12701 && (!$member_e || $member_e['e__id']!=$focus__id) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
+    $has_hard_lock = !$superpower_12701 && (!$member_e || !$source_is_e) && (filter_array($e__profiles, 'e__id', '4755') || in_array($e['e__id'], $CI->config->item('n___4755')));
     $has_public = in_array($e['e__id'], $public_sources) || in_array($focus__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources)) || filter_array($e__profiles, 'e__id', $public_sources);
     $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$has_public && !$source_of_e && !$superpower_13422));
     $has_any_lock = !$superpower_12701 && ($has_soft_lock || $has_hard_lock);
@@ -1926,7 +1927,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     }
 
 
-    $ui .= '<div class="coin-hover coin-cover coin-cover-right hideIfEmpty">';
+    $ui .= '<div class="'.( !$source_is_e ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
     //LOCKED
     if($has_any_lock){
 
