@@ -35,9 +35,7 @@ if(!$source_is_e || $superpower_13422){
     $has_more = count($profiles)>($show_max_14538+1);
     $trigger_hide = null;
 
-
-
-    $profile_ui .= '<div id="list-in-11030" class="row justify-content-center dominHeight">';
+    $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
     foreach($profiles as $e_link) {
 
         if($counter==$show_max_14538 && $has_more){
