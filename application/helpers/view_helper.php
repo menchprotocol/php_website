@@ -54,7 +54,7 @@ function view_i_time($i_stats, $give_right_space = false, $micro_sign = false){
     }
 
     if($give_right_space){
-        $ui .= '<span class="icon-block">&nbsp;</span>';
+        $ui .= '<span class="icon-block-xs">&nbsp;</span>';
     }
 
     $ui .= '</div>';
@@ -1004,7 +1004,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e, $
     }
     $ui .= '</div>';
     if($right_content){
-        $ui .= '<div class="pull-right" style="text-align: right; padding:10px 0 20px 0;">'.$right_content.'</div>';
+        $ui .= '<div class="pull-right" style="text-align: right; padding:3px 0;">'.$right_content.'</div>';
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
