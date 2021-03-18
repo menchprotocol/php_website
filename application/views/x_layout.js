@@ -101,24 +101,21 @@ function select_answer(i__id){
     //Clear all if single selection:
     if(i__type == 6684){
         //Single Selection, clear all:
-        $('.item-selected').addClass('hidden');
         $('.answer-item').removeClass('coinType12273');
     }
 
     //Is setected?
-    if(!($('.x_select_'+i__id+' .item-selected').hasClass('hidden'))){
+    if($('.x_select_'+i__id).hasClass('coinType12273')){
 
         //Previously Selected, delete selection:
         if(i__type == 7231 || i__type == 14861){
             //Multi Selection
-            $('.x_select_'+i__id+' .item-selected').addClass('hidden');
             $('.x_select_'+i__id).removeClass('coinType12273');
         }
 
     } else {
 
         //Not selected, select now:
-        $('.x_select_'+i__id+' .item-selected').removeClass('hidden');
         $('.x_select_'+i__id).addClass('coinType12273');
 
     }
@@ -204,7 +201,7 @@ function x_select(go_next_url){
     var selection_i__id = [];
     $(".answer-item").each(function () {
         var selection_i__id_this = parseInt($(this).attr('selection_i__id'));
-        if (!($('.x_select_'+selection_i__id_this+' .item-selected').hasClass('hidden'))) {
+        if ($('.x_select_'+selection_i__id_this).hasClass('coinType12273')) {
             selection_i__id.push(selection_i__id_this);
         }
     });

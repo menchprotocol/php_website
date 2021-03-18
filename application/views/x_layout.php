@@ -333,23 +333,6 @@ if($top_i__id) {
 
                 echo view_i_select($next_i, $x__source, $previously_selected);
 
-                /*
-
-                echo '<a href="javascript:void(0);" onclick="select_answer(' . $next_i['i__id'] . ')" selection_i__id="' . $next_i['i__id'] . '" class="x_select_' . $next_i['i__id'] . ' answer-item list-group-item itemread no-left-padding">';
-
-
-                echo '<table class="table table-sm" style="background-color: transparent !important; margin-bottom: 0;"><tr>';
-                echo '<td class="icon-block item-selected" style="padding: 0 !important;"><i class="' . ($previously_selected ? 'fas fa-check-circle read' : 'far fa-circle read') . '"></i></td>';
-
-                echo '<td style="width:100%; padding: 0 !important;">';
-                echo '<b class="css__title i-url" style="margin-left:0;">' . view_i_title($next_i) . '</b>';
-                echo '</td>';
-
-                echo '</tr></table>';
-
-                echo '</a>';
-
-                */
             }
 
 

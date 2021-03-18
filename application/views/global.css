@@ -2038,12 +2038,6 @@ i, .btn .show-max {
     min-height: 32px;
 }
 
-.item-selected{
-    position: absolute;
-    top: 0px;
-    width: 100%;
-    font-size: 5em;
-}
 .full-width-btn {
     padding: 0 3px;
 }
