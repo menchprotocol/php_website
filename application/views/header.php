@@ -191,7 +191,7 @@ if(!$basic_header_footer){
                     if($member_e){
 
                         if($first_segment=='@'.$member_e['e__id']){
-                            echo $site_logo;
+                            echo '<a href="/">'.$site_logo.'</a>';
                         } else {
                             //My Source
                             echo '<a href="'.home_url().'"><span class="platform-circle icon-block mini_6197_'.$member_e['e__id'].'">'.view_cover(12274,$member_e['e__cover']).'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
@@ -231,7 +231,14 @@ if(!$basic_header_footer){
                         $extra_class = null;
                         $text_class = null;
 
-                        if(in_array($x__type, $this->config->item('n___13566'))) {
+                        if($x__type==14870) {
+
+                            //Domain
+                            $e___14870 = $this->config->item('e___14870'); //DOMAINS
+                            $m = $e___14870[get_domain_setting(0)];
+                            $href = 'href="/"';
+
+                        } elseif(in_array($x__type, $this->config->item('n___13566'))) {
 
                             //MODAL
                             $href = 'href="javascript:void(0);"';
