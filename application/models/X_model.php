@@ -902,7 +902,7 @@ class X_model extends CI_Model
 
             //Add Dropdown frame IF any:
             if($e_dropdown){
-                $e_dropdown = '<div class="dropdown inline-block"><button type="button" class="btn no-left-padding no-right-padding css__title" id="externalRef'.$es[0]['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-external-link"></i></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">'.$e_dropdown.'</div></div>';
+                $e_dropdown = '<div class="dropdown inline-block"><button type="button" class="btn no-left-padding no-right-padding css__title ignore-click" id="externalRef'.$es[0]['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-external-link"></i></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">'.$e_dropdown.'</div></div>';
             }
 
 
