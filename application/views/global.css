@@ -1939,6 +1939,10 @@ i, .btn .show-max {
     overflow: visible;
 }
 
+.title-hover{
+    display: none;
+}
+
 @media (hover: hover) {
     .coin-hover{
         display: none;
@@ -1947,9 +1951,6 @@ i, .btn .show-max {
         display: block;
     }
 
-    .title-hover{
-        display: none;
-    }
     .frame-title:hover .title-hover{
         display: block;
     }
