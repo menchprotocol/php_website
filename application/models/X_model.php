@@ -816,10 +816,10 @@ class X_model extends CI_Model
 
 
             //See if this source has any parent transactions to be shown in this appendix
-            $e_urls = array();
             $e_media_count = 0;
             $e_count = 0;
             $e_appendix = null;
+            $e_dropdown = null;
             $first_segment = $this->uri->segment(1);
             $is_current_e = ( $first_segment == '@'.$referenced_e );
             $tooltip_info = null;
@@ -858,8 +858,7 @@ class X_model extends CI_Model
 
                     } elseif($e_profile['x__type'] == 4256 /* URL */) {
 
-                        array_push($e_urls, $e_profile['x__message']);
-                        $e_appendix .= '<div class="e-appendix paddingup inline-block"><a href="'.$e_profile['x__message'].'" target="_blank" class="ignore-click" title="' . $e_profile['e__title'] . '" data-toggle="tooltip" data-placement="top"><span class="icon-block-xs">'.view_cover(12274,$e_profile['e__cover']).'</span></a></div>';
+                        $e_dropdown .= '<a href="'.$e_profile['x__message'].'" class="dropdown-item move_away css__title"><span class="icon-block">'.view_cover(12274,$e_profile['e__cover']).'</span>'.$e_profile['e__title'].' <i class="far fa-arrow-right"></i></a>';
 
                     } else {
 
@@ -874,19 +873,16 @@ class X_model extends CI_Model
 
 
 
-
-
             //Append any appendix generated:
-            $is_single_link = ( count($e_urls)==1 && !$e_media_count );
-
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' );
-            $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom"' : '' );
+            $can_trigger_modal = ( !$is_discovery_mode && source_of_e($es[0]['e__id']) ? ' trigger_coincover_edit ' : false );
+            $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom" class="ignore-click underdot '.$can_trigger_modal.'" ' : ' class="ignore-click '.$can_trigger_modal.'" ' );
 
 
             $edit_btn = null;
-            if(!$is_discovery_mode && source_of_e($es[0]['e__id'])){
+            if($can_trigger_modal){
                 $e___11035 = $this->config->item('e___11035');
-                $tooltip_class .= ' class="ignore-click trigger_coincover_edit" coin__type="12274" coin__id="' . $es[0]['e__id'] . '" ';
+                $tooltip_class .= ' coin__type="12274" coin__id="' . $es[0]['e__id'] . '" ';
                 $edit_btn = '<span class="ignore-click icon-block-img mini_6197_'.$es[0]['e__id'].'" title="'.$e___11035[13571]['m__title'].'">'.view_cover(12274,$es[0]['e__cover']).'</span> ';
             }
 
@@ -903,23 +899,24 @@ class X_model extends CI_Model
                 }
             }
 
-            if($is_single_link){
 
-                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.'<a href="'.$e_urls[0].'" class="text__6197_'.$es[0]['e__id'].' ignore-click" target="_blank" ><u>' . $es[0]['e__title'] . '</u></a></span>', $output_body_message);
-
-            } else {
-
-                if($on_its_own_line){
-                    if($new_lines <= 1){
-                        $output_body_message = $e_appendix.str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.'<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message);
-                    } else {
-                        $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.'<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message).$e_appendix;
-                    }
-                } else {
-                    $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.'<span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span>', $output_body_message).$e_appendix;
-                }
-
+            //Add Dropdown frame IF any:
+            if($e_dropdown){
+                $e_dropdown = '<div class="dropdown inline-block"><button type="button" class="btn no-left-padding no-right-padding css__title" id="externalRef'.$es[0]['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-external-link"></i></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">'.$e_dropdown.'</div></div>';
             }
+
+
+            //Display:
+            if($on_its_own_line){
+                if($new_lines <= 1){
+                    $output_body_message = $e_appendix.str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.'<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message).$e_dropdown;
+                } else {
+                    $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.'<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span> ', $output_body_message).$e_dropdown.$e_appendix;
+                }
+            } else {
+                $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.'<span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span></span>', $output_body_message).$e_dropdown.$e_appendix;
+            }
+
         }
 
 
