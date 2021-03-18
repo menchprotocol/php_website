@@ -228,6 +228,15 @@ if(!$basic_header_footer){
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
 
                         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
+                        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+                            continue;
+                        }
+
+                        $hosted_domains = array_intersect($this->config->item('n___14870'), $m['m__profile']);
+                        if(count($hosted_domains) && !in_array(get_domain_setting(0), $hosted_domains)){
+                            continue;
+                        }
+
                         $extra_class = null;
                         $text_class = null;
 
@@ -254,7 +263,7 @@ if(!$basic_header_footer){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' note_type_id="'.$x__type.'" class="dropdown-item css__title '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<a '.$href.' note_type_id="'.$x__type.'" class="dropdown-item css__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
 
