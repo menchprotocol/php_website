@@ -404,11 +404,12 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         }
         $ui .= '</div>';
 
-        //Are there more?
+        //Are there more? TODO Fix later...
+        /*
         if($counter > count($list_i)){
             $ui .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/-4341?x__source='.$member_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m__cover'].'</span>'.$e___11035[13913]['m__title'].' ['.$counter.']</a></div></div>';
         }
-
+        */
 
 
         if($superpower_10939 && !$source_is_e){
