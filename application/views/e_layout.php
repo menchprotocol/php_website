@@ -335,29 +335,25 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         }
 
-    } elseif($x__type==12273){
+    } elseif($x__type==10573){
 
-        //IDEAS
-        $counter = view_coins_e(12273, $e['e__id'], 0, false);
-
-        //My Ideas
-        $i_bookmarks = $this->X_model->fetch(array(
+        //STARRED IDEAS
+        $i_stars = $this->X_model->fetch(array(
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 10573, //BOOKMARKED IDEAS
             'x__up' => $e['e__id'],
-        ), array('x__right'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
-
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+        $counter = count($i_stars);
 
         //Any Ideas?
-        if(count($i_bookmarks) || $source_is_e){
-
+        if($counter || $source_is_e){
 
             //Need 2 or more to sort...
-            $ui .= ( count($i_bookmarks) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
+            $ui .= ( count($i_stars) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
 
             $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-10573">';
-            foreach($i_bookmarks as $item){
+            foreach($i_stars as $item){
                 $ui .= view_i(10573, 0, null, $item, $control_enabled,null, $e);
             }
             $ui .= '</div>';
@@ -382,10 +378,10 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         }
 
-
     } elseif($x__type==12273){
 
         //IDEAS (Referenced)
+        $counter = view_coins_e(12273, $e['e__id'], 0, false);
         $list_i = view_coins_e(12273, $e['e__id'], 1, true);
 
         $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-13550">';
