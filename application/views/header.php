@@ -231,11 +231,9 @@ if(!$basic_header_footer){
                         $extra_class = null;
                         $text_class = null;
 
-                        if($x__type==14870) {
+                        if($x__type==18995) {
 
-                            //Domain
-                            $e___14870 = $this->config->item('e___14870'); //DOMAINS
-                            $m = $e___14870[get_domain_setting(0)];
+                            //Home
                             $href = 'href="/"';
 
                         } elseif(in_array($x__type, $this->config->item('n___13566'))) {
