@@ -53,8 +53,11 @@ if(!$source_is_e || $superpower_13422){
     $profile_ui .= '</div>';
 
 
+    echo '<div class="frame-title">';
+    echo '<div class="headline"><span class="title-hover"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'</span></div>';
+
     if($superpower_13422){
-        echo '<div id="new_11030" class="list-adder '.$trigger_hide.'">
+        echo '<div class="title-hover"><div id="new_11030" class="list-adder '.$trigger_hide.'">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
                     <input type="text"
@@ -62,10 +65,9 @@ if(!$source_is_e || $superpower_13422){
                            id="New11030input"
                            maxlength="' . view_memory(6404,6197) . '"
                            placeholder="'.$e___11035[13914]['m__title'].'">
-                </div></div>';
+                </div></div></div>';
     }
-    echo '<div class="frame-title">';
-    echo '<div class="headline"><span class="title-hover"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'</span></div>';
+
     echo $profile_ui;
     echo '</div>';
 
@@ -475,7 +477,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         if($source_is_e){
             //Add New Discovery Button:
-            $ui .= '<div class="center" style="padding-top:55px;"><a class="btn btn-lrg btn-6255" href="/">Browse <i class="far fa-arrow-right"></i></a></div>';
+            $ui .= '<div class="center" style="padding-top:55px;"><a class="btn btn-lrg btn-6255" href="/">Discover More <i class="far fa-arrow-right"></i></a></div>';
         }
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
