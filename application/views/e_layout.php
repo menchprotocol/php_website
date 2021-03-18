@@ -36,7 +36,7 @@ if(!$source_is_e || $superpower_13422){
     $trigger_hide = null;
 
 
-    $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
+    $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight headline_body_11030">';
 
     $counter = 0; //Recount
     foreach($profiles as $e_link) {
@@ -56,9 +56,10 @@ if(!$source_is_e || $superpower_13422){
     $profile_ui .= '</div>';
 
 
+
     if($superpower_13422){
-        echo '<div class="headline"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'</div>';
-        echo '<div class="'.$trigger_hide.'"><div class="headline-height"><div id="new_11030" class="list-adder">
+        echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline(11030)"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].' <i class="far fa-minus-circle headline_title_11030"></i></a>';
+        echo '<div class="headline_body_11030"><div class="'.$trigger_hide.'"><div class="headline-height"><div id="new_11030" class="list-adder">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                     <input type="text"
@@ -66,7 +67,7 @@ if(!$source_is_e || $superpower_13422){
                            id="New11030input"
                            maxlength="' . view_memory(6404,6197) . '"
                            placeholder="'.$e___11035[14055]['m__title'].'">
-                </div></div></div></div>';
+                </div></div></div></div></div>';
     }
 
     echo $profile_ui;
@@ -366,12 +367,12 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             //Give Option to Add New Idea:
             $ui .= '<div class="new-list-10573 list-group"><div class="list-group-item list-adder">
                 <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14015]['m__cover'].'</span></a>
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
                            id="newIdeaTitle"
-                           placeholder="'.$e___11035[14015]['m__title'].'">
+                           placeholder="'.$e___11035[14016]['m__title'].'">
                 </div></div></div>';
 
             $ui .= '<script> $(document).ready(function () { i_load_search(10573); }); </script>';
@@ -507,8 +508,10 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
     if($ui){
 
         echo '<div class="frame-title">';
-        echo '<div class="headline"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].'</div>';
+        echo '<div class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].' <i class="far fa-minus-circle headline_title_'.$x__type.'"></i></div>';
+        echo '<div class="headline_body_'.$x__type.'">';
         echo $ui;
+        echo '</div>';
         echo '</div>';
 
     }

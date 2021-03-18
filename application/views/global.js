@@ -147,6 +147,16 @@ function view_s_js(suggestion){
     return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
 }
 
+function toggle_headline(headline_id){
+    if($('.headline_title_' + headline_id).hasClass('fa-minus-circle')){
+        //Must be closed:
+        $('.headline_title_' + headline_id).removeClass('fa-minus-circle').addClass('fa-plus-circle');
+        $('.headline_body_' + headline_id).addClass('hidden');
+    } else {
+        $('.headline_title_' + headline_id).removeClass('fa-plus-circle').addClass('fa-minus-circle');
+        $('.headline_body_' + headline_id).removeClass('hidden');
+    }
+}
 
 function js_view_shuffle_message(e__id){
     var messages = js_e___12687[e__id]['m__message'].split("\n");
