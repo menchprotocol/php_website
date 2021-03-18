@@ -36,8 +36,7 @@ if(!$source_is_e || $superpower_13422){
     $trigger_hide = null;
 
 
-    $profile_ui = '<div class="headline"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'</div>';
-    $profile_ui .= '<div id="list-in-11030" class="row justify-content-center dominHeight">';
+    $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
 
     $counter = 0; //Recount
     foreach($profiles as $e_link) {
@@ -56,6 +55,9 @@ if(!$source_is_e || $superpower_13422){
     }
     $profile_ui .= '</div>';
 
+
+
+    echo '<div class="headline"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'</div>';
 
     if($superpower_13422){
         echo '<div class="'.$trigger_hide.'"><div class="headline-height"><div id="new_11030" class="list-adder">
