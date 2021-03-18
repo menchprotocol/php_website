@@ -2180,7 +2180,10 @@ textarea {
     background-color: transparent !important;
 }
 
-
+.inline-dropdown .btn {
+    font-size: 0.89em;
+    margin: 0 5px;
+}
 
 @media (max-width:767px) {
 
