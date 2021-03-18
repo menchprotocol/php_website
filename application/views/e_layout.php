@@ -57,7 +57,7 @@ if(!$source_is_e || $superpower_13422){
     echo '<div class="headline"><span class="title-hover"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'</span></div>';
 
     if($superpower_13422){
-        echo '<div class="title-hover"><div id="new_11030" class="list-adder '.$trigger_hide.'">
+        echo '<div class="headline-height"><div class="title-hover"><div id="new_11030" class="list-adder '.$trigger_hide.'">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
                     <input type="text"
@@ -65,7 +65,7 @@ if(!$source_is_e || $superpower_13422){
                            id="New11030input"
                            maxlength="' . view_memory(6404,6197) . '"
                            placeholder="'.$e___11035[13914]['m__title'].'">
-                </div></div></div>';
+                </div></div></div></div>';
     }
 
     echo $profile_ui;
