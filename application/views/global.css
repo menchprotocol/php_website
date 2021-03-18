@@ -1960,11 +1960,20 @@ i, .btn .show-max {
     top: 10px;
     left: 5px;
 }
+.node-coin .coin-cover-left {
+    top: 45px;
+    left: 45px;
+}
 
 .coin-cover-right{
     top: 12px;
     right: 13px;
 }
+.node-coin .coin-cover-left {
+    top: 45px;
+    right: 45px;
+}
+
 .coin_coins{
     width: 100%;
     position: absolute;
@@ -2192,12 +2201,19 @@ textarea {
         top: 3px;
         left: 3px;
     }
-
     .coin-cover-right{
         top: 3px;
         right: 3px;
     }
 
+    .node-coin .coin-cover-left{
+        top: 21px;
+        left: 21px;
+    }
+    .node-coin .coin-cover-right{
+        top: 21px;
+        right: 21px;
+    }
 
     .title-icon{
         margin-top: 5px;
