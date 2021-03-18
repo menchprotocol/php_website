@@ -1784,6 +1784,7 @@ i, .btn .show-max {
 .headline{
     padding: 0;
     font-size: 1.4em;
+    text-align: left;
 }
 .headline-height, .headline{
     min-height: 45px;
@@ -1924,7 +1925,7 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    bottom: -64px;
+    bottom: -69px;
     min-height: 25px;
     min-height: 47px;
 }
@@ -2001,6 +2002,7 @@ i, .btn .show-max {
     text-align: center;
     border-radius: 5px;
     vertical-align: middle;
+    min-height: 68px;
 }
 .cover-link {
     border:0;
@@ -2798,8 +2800,7 @@ font-weight: bold !important;
 
 
 /* TEXT ALIGN LEFT */
-.custom_ui_14541_14542 .msg,
-.custom_ui_14541_14542 .headline{
+.custom_ui_14541_14542 .msg{
     text-align: left;
 }
 .custom_ui_14541_14542 .e-appendix{
@@ -2814,8 +2815,7 @@ font-weight: bold !important;
 
 
 /* TEXT ALIGN CENTER */
-.custom_ui_14541_14543 .msg,
-.custom_ui_14541_14543 .headline{
+.custom_ui_14541_14543 .msg{
     text-align: center;
 }
 .custom_ui_14541_14543 .e-appendix{
@@ -2831,8 +2831,7 @@ font-weight: bold !important;
 
 
 /* TEXT ALIGN RIGHT */
-.custom_ui_14541_14544 .msg,
-.custom_ui_14541_14544 .headline{
+.custom_ui_14541_14544 .msg{
     text-align: right;
 }
 .custom_ui_14541_14544 .e-appendix{
@@ -2844,10 +2843,6 @@ font-weight: bold !important;
     float: right;
 }
 
-
-.headline{
-    text-align: left !important;
-}
 
 
 .coin_reverse .black-background {
