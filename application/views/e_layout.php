@@ -56,12 +56,12 @@ if(!$source_is_e || $superpower_13422){
     if($superpower_13422){
         echo '<div class="'.$trigger_hide.'"><div class="headline-height"><div id="new_11030" class="list-adder">
                 <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[13914]['m__cover'].'</span></a>
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            id="New11030input"
                            maxlength="' . view_memory(6404,6197) . '"
-                           placeholder="'.$e___11035[13914]['m__title'].'">
+                           placeholder="'.$e___11035[14055]['m__title'].'">
                 </div></div></div></div>';
     }
 
@@ -317,12 +317,12 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
             $ui .= '<div class="'.$trigger_hide.'"><div id="new_11029" current-count="'.$counter.'" class="list-adder '.superpower_active(10939).'">
                     <div class="input-group border '.$trigger_hide.'">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11029input\').focus();"><span class="icon-block">'.$e___11035[14054]['m__cover'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11029input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                id="New11029input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[14054]['m__title'].'">
+                               placeholder="'.$e___11035[14055]['m__title'].'">
                     </div><div class="algolia_pad_search hidden pad_expand">&nbsp;</div></div></div>';
 
         } else {
