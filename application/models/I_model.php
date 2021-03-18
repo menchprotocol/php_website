@@ -230,11 +230,10 @@ class I_model extends CI_Model
 
     function remove($i__id, $x__source = 0){
 
-        //REMOVE IDEA LINKS
+        //REMOVE TRANSACTIONS
         $x_deleted = 0;
         foreach($this->X_model->fetch(array( //Idea Transactions
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
         ), array(), 0) as $x){
             //Delete this transaction:
@@ -242,21 +241,6 @@ class I_model extends CI_Model
                 'x__status' => 6173, //Transaction Deleted
             ), $x__source, 13579 /* Idea Transaction Unpublished */);
         }
-
-
-        //REMOVE NOTES:
-        $i_notes = $this->X_model->fetch(array( //Idea Transactions
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
-            'x__right' => $i__id,
-        ), array(), 0);
-        foreach($i_notes as $i_note){
-            //Delete this transaction:
-            $x_deleted += $this->X_model->update($i_note['x__id'], array(
-                'x__status' => 6173, //Transaction Deleted
-            ), $x__source, 13579 /* Idea Transaction Unpublished */);
-        }
-
 
         //Return transactions deleted:
         return $x_deleted;

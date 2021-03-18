@@ -1,7 +1,6 @@
 <?php
 
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$load_max = view_memory(6404,13206);
 $show_max_14435 = view_memory(6404,14435);
 $group_by = 'e__id, e__title, e__cover, e__metadata, e__type, e__spectrum';
 
@@ -19,7 +18,7 @@ foreach($this->config->item('e___13207') as $e__id => $m) {
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__up > 0' => null,
         ' EXISTS (SELECT 1 FROM table__x WHERE e__id=x__down AND x__up='.$e__id.' AND x__type IN (' . join(',', $this->config->item('n___4592')) . ') AND x__status IN ('.join(',', $this->config->item('n___7359')) /* PUBLIC */.')) ' => null,
-    ), array('x__up'), $load_max, 0, array('totals' => 'DESC'), 'COUNT(x__id) as totals, '.$group_by, $group_by);
+    ), array('x__up'), 0, 0, array('totals' => 'DESC'), 'COUNT(x__id) as totals, '.$group_by, $group_by);
 
     if(!count($e_list)){
         continue;

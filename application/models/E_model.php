@@ -442,7 +442,6 @@ class E_model extends CI_Model
 
         //Fetch all SOURCE LINKS:
         $adjusted_count = 0;
-
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             '(x__down = ' . $e__id . ' OR x__up = ' . $e__id . ' OR x__source = ' . $e__id . ')' => null,
@@ -452,7 +451,6 @@ class E_model extends CI_Model
                 'x__status' => 6173, //Transaction Deleted
             ), $x__source, 10673 /* Member Transaction Unpublished */);
         }
-
         return $adjusted_count;
     }
 
