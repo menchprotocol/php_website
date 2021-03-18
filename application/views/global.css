@@ -1953,6 +1953,10 @@ i, .btn .show-max {
     }
 }
 
+.frame-title {
+    padding-bottom: 89px;
+}
+
 .dominHeight{
     min-height: 144px;
 }
