@@ -1924,7 +1924,7 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    bottom: -73px;
+    bottom: -60px;
     min-height: 25px;
     min-height: 47px;
 }
@@ -2852,6 +2852,9 @@ font-weight: bold !important;
 }
 
 
+.headline{
+    text-align: left !important;
+}
 
 
 .coin_reverse .black-background {
