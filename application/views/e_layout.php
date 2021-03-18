@@ -289,16 +289,16 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
 
         $count = 0;
-        $show_max_14538 = view_memory(6404,14538);
-        $has_more = count($list_e)>($show_max_14538+1);
+        $show_max_14435 = view_memory(6404,14435);
+        $has_more = count($list_e)>($show_max_14435+1);
         $trigger_hide = null;
         foreach($list_e as $e_link) {
 
-            if($count==$show_max_14538 && $has_more){
-                $ui .= view_show_more(14538, 'see_all_11029');
+            if($count==$show_max_14435 && $has_more){
+                $ui .= view_show_more(14435, 'see_all_11029');
             }
 
-            if($count>=$show_max_14538 && $has_more){
+            if($count>=$show_max_14435 && $has_more){
                 $trigger_hide = 'see_all_11029 hidden';
             }
 
