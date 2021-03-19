@@ -921,7 +921,7 @@ function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $pr
     return ($ui ? $ui : false);
 }
 
-function view_radio_e($focus__id, $child___id, $enable_mulitiselect, $show_max_14538 = 25){
+function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
 
     /*
      * Print UI for
@@ -939,7 +939,7 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect, $show_max_1
     $already_selected = array();
     foreach($CI->X_model->fetch(array(
         'x__up IN (' . join(',', $CI->config->item('n___'.$focus__id)) . ')' => null,
-        'x__down' => $focus__id,
+        'x__down' => $child___id,
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     )) as $sel){
@@ -957,15 +957,8 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect, $show_max_1
     }
 
     foreach($CI->config->item('e___'.$focus__id) as $e__id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$focus__id.','.$e__id.','.$enable_mulitiselect.')" class="list-group-item css__title itemsetting item-'.$e__id.' '.( $count>=$show_max_14538 ? 'extra-items-'.$focus__id.' hidden ' : '' ).( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
+        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$focus__id.','.$e__id.','.$enable_mulitiselect.')" class="list-group-item css__title itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
         $count++;
-    }
-
-
-    //Did we have too many items?
-    if($count>=$show_max_14538){
-        //Show "Show more" button
-        $ui .= '<a href="javascript:void(0);" class="list-group-item itemsetting css__title extra-items-'.$focus__id.'" onclick="$(\'.extra-items-'.$focus__id.'\').toggleClass(\'hidden\')"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Show '.($count-$show_max_14538).' more</a>';
     }
 
     $ui .= '</div>';

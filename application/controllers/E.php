@@ -829,7 +829,6 @@ class E extends CI_Controller
         /*
          *
          * Saves the radio selection of some account fields
-         * that are displayed using view_radio_e()
          *
          * */
 
