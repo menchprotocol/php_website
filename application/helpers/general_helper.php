@@ -617,8 +617,9 @@ function update_description($before_string, $after_string){
 
 function random_avatar(){
     $CI =& get_instance();
+    $e___13533 = $CI->config->item('e___13533'); //Icon Types
     $e___12279 = $CI->config->item('e___12279');
-    return one_two_explode('class="','"',$e___12279[array_rand($e___12279)]['m__cover']);
+    return $e___13533[array_rand($e___13533)]['m__message'].' '.one_two_explode('class="far ','"',$e___12279[array_rand($e___12279)]['m__cover']);
 }
 
 function format_percentage($percent){
