@@ -90,8 +90,6 @@ echo '</div>';
 
 
 
-$tab_nav = '';
-$tab_content = '';
 foreach($this->config->item('e___11089') as $x__type => $m) {
 
     $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);

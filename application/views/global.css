@@ -2129,7 +2129,8 @@ i, .btn .show-max {
     text-align: center;
 }
 .node-coin .cover-btn {
-    font-size: 21em;
+    font-size: 21.89em;
+    top: 48%;
 }
 
 .cover-btn i {

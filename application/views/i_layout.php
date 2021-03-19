@@ -127,27 +127,18 @@ echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
 
 
 //IDEA LAYOUT
-$i_stats = i_stats($i_focus['i__metadata']);
-$counter_i = $i_stats['i___6170'];
-$tab_group = 11018;
-$tab_content = '';
-foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
+foreach($this->config->item('e___11018') as $x__type => $m){
 
     //Have Needed Superpowers?
     $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
-    if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
+    if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives), true)){
         continue;
     }
 
     $counter = null; //Assume no counters
     $ui = '';
-    $href = 'href="javascript:void(0);" onclick="loadtab('.$tab_group.','.$x__type.')"';
 
-    if($x__type==13562) {
-
-        $href = 'href="/' . $i_focus['i__id'] . '"';
-
-    } elseif(in_array($x__type, $this->config->item('n___7551'))){
+    if(in_array($x__type, $this->config->item('n___7551'))){
 
         //Reference Sources Only:
         $i_notes = $this->X_model->fetch(array(
@@ -349,12 +340,6 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
             $ui .= '</div>';
 
         }
-
-    } else {
-
-        //Not supported via here:
-        continue;
-
     }
 
     if(!$counter && !in_array($x__type, $this->config->item('n___13530'))){
