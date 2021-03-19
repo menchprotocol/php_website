@@ -1875,7 +1875,6 @@ function view_x_progress($completion_rate, $i){
 function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 {
 
-
     $CI =& get_instance();
     if(!in_array($x__type, $CI->config->item('n___14690'))){
         //Not a valid Source List
@@ -1890,8 +1889,9 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $superpower_12701 = superpower_active(12701, true);
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $node_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
-    $coins_visible = in_array($x__type, $CI->config->item('n___20410'));
-    $control_enabled = in_array($x__type, $CI->config->item('n___14696'));
+    $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
+    $cache_app = in_array($x__type, $this->config->item('n___14599'));
+    $control_enabled = !$cache_app && in_array($x__type, $CI->config->item('n___14696'));
 
     $source_of_e = $source_of_e && $control_enabled && $member_e;
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
@@ -1907,7 +1907,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
     $source_is_e = $focus__id>0 && $e['e__id']==$focus__id;
-
     $e__profiles = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up !=' => $focus__id, //Do Not Fetch Current Source
@@ -1927,26 +1926,26 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $show_text_editor = $source_of_e && $control_enabled && !$has_any_lock;
     $can_click = !$node_coin; //Allow clicking for all
 
+
     //Source UI
     $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coinface-12274 '.( $node_coin ? ' node-coin col-md-8 col-10 ' : ' edge-coin col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).' coin_cover no-padding coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
 
     $ui .= '<div class="cover-wrapper">';
 
 
-    if($source_of_e && $superpower_13422){
-        $ui .= '<div class="coin-hover coin-cover coin-cover-left">';
+    if($source_of_e && $superpower_13422 && !$cache_app){
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-left">';
         $ui .= view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']);
         $ui .= '</div>';
     }
 
-
-    $ui .= '<div class="'.( !$source_is_e ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
+    $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
     //LOCKED
     if($has_any_lock && !$node_coin){
 
         $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
-    } elseif($source_of_e) {
+    } elseif($source_of_e && !$cache_app) {
 
         $action_buttons = null;
 
@@ -2043,7 +2042,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Profile Sources
-    if(!$node_coin && $superpower_12706){
+    if(!$node_coin && $superpower_12706 && !$cache_app){
         $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
         foreach($e__profiles as $e_profile) {
             $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '">' . view_cover(12274,$e_profile['e__cover']) . '</a></span> ';
@@ -2111,7 +2110,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //Coin Block
     if(!$is_app && !$node_coin){
-        $ui .= '<div class="'.( $coins_visible ? '' : ' coin-hover ' ).'" '.( isset($e['totals']) ? ' title="'.$e['totals'].'" ' : '' ).'>';
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'" '.( isset($e['totals']) ? ' title="'.$e['totals'].'" ' : '' ).'>';
         $ui .= '<table class="coin_coins"><tr>';
         $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.view_coins_e(12274,  $e['e__id']).'</td>';
         $ui .= '<td width="34%" class="center">'.view_coins_e(12273,  $e['e__id']).'</td>';
