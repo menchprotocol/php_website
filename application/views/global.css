@@ -2972,8 +2972,11 @@ font-weight: bold !important;
     color:#FC1B44 !important;
 }
 
-.coinType12273 .zq12273, .coinType12274 .zq12274, .coinType6255 .zq6255 {
+.coinType12274 .zq12274 {
     color: #FFFFFF !important;
+}
+.coinType12273 .zq12273, .coinType6255 .zq6255 {
+    color: #222222 !important;
 }
 .coinType12273 .zq12273.fa-circle.fas, .coinType12274 .zq12274.fa-circle.fas, .coinType6255 .zq6255.fa-circle.fas {
     color: transparent !important;
