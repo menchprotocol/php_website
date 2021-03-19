@@ -939,7 +939,7 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect, $show_max_1
     $already_selected = array();
     foreach($CI->X_model->fetch(array(
         'x__up IN (' . join(',', $CI->config->item('n___'.$focus__id)) . ')' => null,
-        'x__down' => $child_e__id,
+        'x__down' => $focus__id,
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     )) as $sel){
