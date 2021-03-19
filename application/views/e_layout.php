@@ -420,7 +420,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         if ($counter > count($list_i)) {
             //We have even more:
-            $ui .= e_load_page(13550, 1, $limit, $counter, $trigger_hide);
+            $ui .= i_load_page(13550, 1, $limit, $counter, $trigger_hide);
         }
 
         $ui .= '</div>';
