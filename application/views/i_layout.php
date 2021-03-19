@@ -357,26 +357,14 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     }
 
-
     if(!$counter && !in_array($x__type, $this->config->item('n___13530'))){
         //Hide since Zero:
         continue;
     }
 
-
     echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span><span class="en-type-counter-'.$x__type.'">' . number_format($counter, 0) . '</span> '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'"><i class="fas fa-chevron-up"></i></span></a>';
     echo '<div class="headlinebody headline_body_'.$x__type.'">';
     echo $ui;
     echo '</div>';
-
-
-    $default_active = in_array($x__type, $this->config->item('n___12675'));
-
-    echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
-
-
-    $tab_content .= '<div class="tab-content tab-group-'.$tab_group.' tab-data-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
-    $tab_content .= $ui;
-    $tab_content .= '</div>';
 
 }
