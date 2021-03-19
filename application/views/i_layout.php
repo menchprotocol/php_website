@@ -56,8 +56,13 @@ if(!$e_of_i){
 
 
 
-
-echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline(11019)"><span class="icon-block">'.$e___11035[11019]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11019]['m__title'].'<span class="icon-block pull-right headline_title_11019"><i class="fas fa-chevron-up"></i></span></a>';
+$previous_is = $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+    'x__right' => $i_focus['i__id'],
+), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
+echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline(11019)"><span class="icon-block">'.$e___11035[11019]['m__cover'].'</span>' . number_format(count($previous_is), 0) . ' '.$e___11035[11019]['m__title'].'<span class="icon-block pull-right headline_title_11019"><i class="fas fa-chevron-up"></i></span></a>';
 echo '<div class="headlinebody headline_body_11019">';
 
 if($show_previous){
@@ -71,12 +76,7 @@ if($show_previous){
                     </div></div>';
 }
 echo '<div id="list-in-11019" class="row justify-content-center dominHeight">';
-foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-    'x__right' => $i_focus['i__id'],
-), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
+foreach($previous_is as $previous_i) {
     echo view_i(11019, 0, null, $previous_i, $e_of_i);
 }
 echo '</div>';
