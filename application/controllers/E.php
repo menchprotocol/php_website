@@ -1289,7 +1289,7 @@ class E extends CI_Controller
         ));
 
 
-        if (strlen($_POST['referrer_url']) > 0) {
+        if (strlen(urldecode($_POST['referrer_url'])) > 1) {
 
             $sign_url = urldecode($_POST['referrer_url']);
 
@@ -1394,7 +1394,7 @@ class E extends CI_Controller
 
             $sign_url = '/x/x_start/'.$_POST['sign_i__id'];
 
-        } elseif (isset($_POST['referrer_url']) && strlen($_POST['referrer_url']) > 0) {
+        } elseif (isset($_POST['referrer_url']) && strlen(urldecode($_POST['referrer_url'])) > 1) {
 
             $sign_url = urldecode($_POST['referrer_url']);
 
