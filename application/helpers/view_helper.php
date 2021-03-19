@@ -1893,7 +1893,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $public_sources = $CI->config->item('n___14603');
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
-    $source_is_e = $focus__id>0 && $member_e['e__id']==$focus__id;
+    $source_is_e = $focus__id>0 && $e['e__id']==$focus__id;
 
     $e__profiles = $CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
