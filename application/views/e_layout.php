@@ -480,7 +480,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         if($source_is_e){
             //Add New Discovery Button:
-            $ui .= '<div class="center" style="padding-top:55px;"><a class="btn btn-lrg btn-6255" href="/">'.$e___11035[18995]['m__cover'].' '.$e___11035[18995]['m__title'].'</a></div>';
+            $ui .= '<div class="center" style="padding-top:55px;"><a class="btn btn-lrg btn-6255" href="/">'.$e___11035[18995]['m__cover'].' '.$e___11035[18995]['m__title'].' <i class="far fa-arrow-right"></i></a></div>';
         }
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
