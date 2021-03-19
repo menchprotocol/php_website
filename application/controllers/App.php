@@ -195,7 +195,7 @@ class App extends CI_Controller
                 //Regular UI:
                 //Load App:
                 echo $this->load->view('header', array(
-                    'title' => $title.' | App',
+                    'title' => '📱 '.$title,
                     'basic_header_footer' => $basic_header,
                 ), true);
                 echo $ui;
