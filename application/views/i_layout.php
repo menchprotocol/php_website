@@ -55,6 +55,11 @@ if(!$e_of_i){
 }
 
 
+
+
+echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline(11019)"><span class="icon-block">'.$e___11035[11019]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11019]['m__title'].'<span class="icon-block pull-right headline_title_11019"><i class="fas fa-chevron-up"></i></span></a>';
+echo '<div class="headlinebody headline_body_11019">';
+
 if($show_previous){
     echo '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
@@ -74,6 +79,7 @@ foreach($this->X_model->fetch(array(
 ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
     echo view_i(11019, 0, null, $previous_i, $e_of_i);
 }
+echo '</div>';
 echo '</div>';
 
 
@@ -125,7 +131,6 @@ $i_stats = i_stats($i_focus['i__metadata']);
 $counter_i = $i_stats['i___6170'];
 $tab_group = 11018;
 $tab_content = '';
-echo '<ul class="nav nav-tabs nav-sm">';
 foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
 
     //Have Needed Superpowers?
@@ -358,6 +363,13 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
         continue;
     }
 
+
+    echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span><span class="en-type-counter-'.$x__type.'">' . number_format($counter, 0) . '</span> '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'"><i class="fas fa-chevron-up"></i></span></a>';
+    echo '<div class="headlinebody headline_body_'.$x__type.'">';
+    echo $ui;
+    echo '</div>';
+
+
     $default_active = in_array($x__type, $this->config->item('n___12675'));
 
     echo '<li class="nav-item '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'"><a '.$href.' class="nav-x tab-nav-'.$tab_group.' tab-head-'.$x__type.' '.( $default_active ? ' active ' : '' ).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0).'</span>'.( intval($counter) ? '&nbsp;' : '' ).'</a></li>';
@@ -368,8 +380,3 @@ foreach($this->config->item('e___'.$tab_group) as $x__type => $m){
     $tab_content .= '</div>';
 
 }
-echo '</ul>';
-
-
-//Show All Tab Content:
-echo $tab_content;

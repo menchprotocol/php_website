@@ -8,6 +8,9 @@ $superpower_13422 = superpower_active(13422, true); //SUPERPOWER OF SOURCING
 $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF GLASSES
 $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
 $control_enabled = $source_is_e || $superpower_10939;
+$show_max_14435 = view_memory(6404,14435);
+$show_max_14538 = view_memory(6404,14538);
+$limit = view_memory(6404,11064);
 
 $profiles = $this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -31,7 +34,6 @@ $profiles = $this->X_model->fetch(array(
 if(!$source_is_e || $superpower_13422){
 
     $counter = count($profiles);
-    $show_max_14538 = view_memory(6404,14538);
     $has_more = $counter>($show_max_14538+1);
     $trigger_hide = null;
 
@@ -299,7 +301,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
 
         $count = 0;
-        $show_max_14435 = view_memory(6404,14435);
         $has_more = count($list_e)>($show_max_14435+1);
         $trigger_hide = null;
         foreach($list_e as $e_link) {
@@ -318,7 +319,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         if ($counter > count($list_e)) {
             //Load even more if there...
-            $ui .= view_load_more(11029, 1, view_memory(6404,11064), $counter, $trigger_hide);
+            $ui .= view_load_more(11029, 1, $limit, $counter, $trigger_hide);
         }
 
         $ui .= '</div>';
@@ -387,35 +388,42 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
     } elseif($x__type==12273){
 
         //IDEAS (Referenced)
+        $count = 0;
         $counter = view_coins_e(12273, $e['e__id'], 0, false);
         $list_i = view_coins_e(12273, $e['e__id'], 1, true);
+        $has_more = $counter>($show_max_14435+1);
+        $trigger_hide = null;
+        $drop_limit = doubleval(view_memory(6404,14684));
+        $max_seconds = intval(view_memory(6404,14841));
+        $max_i__spectrum = 0;
 
         $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-13550">';
-        $drop_limit = doubleval(view_memory(6404,14684));
-        $max_seconds = intval(view_memory(6404,14684));
-        $max_i__spectrum = 0;
-        $show_all_i_btn = false;
         foreach($list_i as $count => $item){
 
             $i_stats = i_stats($item['i__metadata']);
-            if(!$show_all_i_btn && $max_i__spectrum>0 && $item['i__spectrum']>0 && $i_stats['i___6162']<=$max_seconds && (($max_i__spectrum * $drop_limit) > $item['i__spectrum'])){
-                $ui .= '<div class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><a href="javascript:void();" onclick="$(\'.show_all_ideas\').toggleClass(\'hidden\');" class="grey-background cover-link"><div class="cover-btn">'.$e___11035[14684]['m__cover'].'</div><div class="cover-head">'.$e___11035[14684]['m__title'].'</div></a></div></div>';
-                $show_all_i_btn = true;
+            $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
+
+            //SHow or Hide?
+            if($has_more && !$trigger_hide && (($count==$show_max_14435) || ($max_i__spectrum && $item['i__spectrum']>0 && $i_stats['i___6162']<=$max_seconds && (($max_i__spectrum * $drop_limit) > $item['i__spectrum'])))){
+                if($count==$show_max_14435){
+                    $ui .= view_show_more(14435, 'see_all_13550');
+                    $trigger_hide = 'see_all_13550 hidden';
+                }
             }
 
+            //UI
+            $ui .= view_i(13550, 0, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, $trigger_hide);
+
             $max_i__spectrum = $item['i__spectrum'];
-            $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-            $ui .= view_i(13550, 0, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, ( $show_all_i_btn ? ' show_all_ideas hidden ' : null ));
 
         }
+
+        if ($counter > count($list_i)) {
+            //We have even more:
+            $ui .= view_load_more(13550, 1, $limit, $counter, $trigger_hide);
+        }
+
         $ui .= '</div>';
-
-        //Are there more? TODO Fix later...
-        /*
-        if($counter > count($list_i)){
-            $ui .= '<div style="padding: 13px 0;" class="'.superpower_active(12700).'"><div class="msg alert alert-warning" role="alert"><a href="/-4341?x__source='.$member_e['e__id'].'&x__type=4983&x__status='.join(',', $this->config->item('n___7359')).'"><span class="icon-block">'.$e___11035[13913]['m__cover'].'</span>'.$e___11035[13913]['m__title'].' ['.$counter.']</a></div></div>';
-        }
-        */
 
 
         if($superpower_10939 && !$source_is_e){
@@ -498,7 +506,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $counter = $item_counters[0]['totals'];
         if($counter>0){
             $ui .= '<div class="row justify-content-center top-margin">';
-            $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), view_memory(6404,11064), 0, array('i__spectrum' => 'DESC'));
+            $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC'));
             foreach($i_notes_query as $count => $i_notes) {
                 $ui .= view_i(4485, 0, null, $i_notes, $control_enabled);
             }
@@ -512,7 +520,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
     if($ui){
 
-        echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'"><i class="fas fa-chevron-up"></i></span></a>';
+        echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span><span class="en-type-counter-'.$x__type.'">' . number_format($counter, 0) . '</span> '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'"><i class="fas fa-chevron-up"></i></span></a>';
         echo '<div class="headlinebody headline_body_'.$x__type.'">';
         echo $ui;
         echo '</div>';
