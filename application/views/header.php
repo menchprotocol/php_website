@@ -20,6 +20,7 @@ $logo = ( !strlen($first_segment) || $first_segment=='@'.$base_source ? '/img/lo
     <meta name="theme-color" content="#f0f0f0">
     <link rel="icon" href="<?= $logo ?>">
     <link rel="mask-icon" href="<?= $logo ?>" color="#000000">
+    <link rel="canonical" href="https://mench.com/<?= $_SERVER['REQUEST_URI'] ?>" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title : get_domain('m__title') ) ?></title>
