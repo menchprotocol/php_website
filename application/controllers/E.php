@@ -1296,7 +1296,7 @@ class E extends CI_Controller
         } else {
 
             //Go to home page and let them continue from there:
-            $sign_url = new_member_redirect(intval($_POST['sign_i__id']));
+            $sign_url = new_member_redirect($member_result['e']['e__id'], intval($_POST['sign_i__id']));
 
         }
 

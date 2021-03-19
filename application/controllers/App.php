@@ -426,21 +426,21 @@ class App extends CI_Controller
             die('Error creating a new account: '.$member_result['message']);
         }
 
-        header('Location: '.new_member_redirect($sign_i__id));
+        header('Location: '.new_member_redirect($member_result['e']['e__id'], $sign_i__id));
 
     }
 
-    function new_member_redirect($sign_i__id){
+    function new_member_redirect($e__id, $sign_i__id){
         //Is there a redirect app?
         $new_member_app = intval(get_domain_setting(14880));
         if($new_member_app) {
             return '/-' . $new_member_app . ($sign_i__id > 0 ? '?i__id='.$sign_i__id : ( isset($_GET['url']) ? '?url='.$_GET['url'] : '' ) );
-        } elseif($sign_i__id) {
+        } elseif($sign_i__id > 0) {
             return '/' . $sign_i__id;
         } elseif(isset($_GET['url'])) {
             return $_GET['url'];
         } else {
-            return home_url();
+            return '/@'.$e__id;
         }
     }
 
