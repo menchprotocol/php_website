@@ -279,6 +279,9 @@ img.no-frame {
     margin: 0;
     padding: 0;
 }
+.accordion .card-body{
+    padding: 0 41px;
+}
 .card-body .padded, .card-body .list-group {
     margin: 0 0 13px;
 }
