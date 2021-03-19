@@ -2972,10 +2972,10 @@ font-weight: bold !important;
     color:#FC1B44 !important;
 }
 
-.coinType12274 .zq12274 {
+.coinType12274 i.zq12274 {
     color: #FFFFFF !important;
 }
-.coinType12273 .zq12273, .coinType6255 .zq6255, .btn-12273 .zq12273, .btn-6255 .zq6255 {
+.coinType12273 i.zq12273, .coinType6255 i.zq6255, .btn-12273 i.zq12273, .btn-6255 i.zq6255 {
     color: #222222 !important;
 }
 .coinType12273 .zq12273.fa-circle.fas, .coinType12274 .zq12274.fa-circle.fas, .coinType6255 .zq6255.fa-circle.fas {
