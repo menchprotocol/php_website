@@ -1940,6 +1940,9 @@ i, .btn .show-max {
     min-height: 25px;
     min-height: 47px;
 }
+.node-coin .cover-content{
+    min-height: 119px;
+}
 .coinType12274 .cover-content{
     min-height: 73px;
 }
