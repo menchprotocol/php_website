@@ -2183,7 +2183,7 @@ textarea {
 .inline-dropdown .btn i {
     font-size: 1em !important;
     color: #999;
-    margin: 0 5px;
+    margin-left:5px;
 }
 
 @media (max-width:767px) {

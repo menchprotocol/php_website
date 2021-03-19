@@ -858,7 +858,7 @@ class X_model extends CI_Model
 
                     } elseif($e_profile['x__type'] == 4256 /* URL */) {
 
-                        $e_dropdown .= '<a href="'.$e_profile['x__message'].'" class="dropdown-item move_away css__title"><span class="icon-block">'.view_cover(12274,$e_profile['e__cover']).'</span>'.$e_profile['e__title'].' <i class="far fa-arrow-right"></i></a>';
+                        $e_dropdown .= '<a href="'.$e_profile['x__message'].'" class="dropdown-item move_away css__title ignore-click"><span class="icon-block">'.view_cover(12274,$e_profile['e__cover']).'</span>'.$e_profile['e__title'].' <i class="far fa-arrow-right"></i></a>';
 
                     } else {
 
