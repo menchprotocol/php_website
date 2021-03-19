@@ -23,16 +23,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?php
-                    foreach($this->config->item('e___6225') as $e__id => $m) {
-                        $hosted_domains = array_intersect($this->config->item('n___14870'), $m['m__profile']);
-                        if(count($hosted_domains) && !in_array(get_domain_setting(0), $hosted_domains)){
-                            continue;
-                        }
-                        echo '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$m['m__title'].'</div>';
-                        echo view_e_settings($e__id, true);
-                    }
-                    ?>
+                    <?= view_e_settings(6225, false) ?>
                 </div>
             </div>
         </div>
