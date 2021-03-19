@@ -539,7 +539,7 @@ class I extends CI_Controller {
         }
 
         //Count total children:
-        $child_count = $this->X_model->fetch($query_filters, array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
+        $child_count = $this->X_model->fetch($query_filters, array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         //Do we need another load more button?
         if ($child_count[0]['totals'] > (($page * $items_per_page) + count($extra_items))) {
