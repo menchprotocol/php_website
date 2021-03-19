@@ -1890,7 +1890,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $node_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
-    $cache_app = in_array($x__type, $this->config->item('n___14599'));
+    $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $control_enabled = !$cache_app && in_array($x__type, $CI->config->item('n___14696'));
 
     $source_of_e = $source_of_e && $control_enabled && $member_e;
