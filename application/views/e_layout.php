@@ -512,14 +512,14 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         }
     }
 
-    if(!$counter && !$superpower_10939){
+    if(!$counter && !$superpower_10939 && !in_array($x__type, $this->config->item('n___14874'))){
         continue;
     }
 
     if($ui){
 
-        echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span><span class="en-type-counter-'.$x__type.'">' . number_format($counter, 0) . '</span> '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'"><i class="fas fa-chevron-up"></i></span></a>';
-        echo '<div class="headlinebody headline_body_'.$x__type.'">';
+        echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span><span class="en-type-counter-'.$x__type.'">' . number_format($counter, 0) . '</span> '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'">'.( !$counter ? '<i class="fas fa-chevron-down"></i>' : '<i class="fas fa-chevron-up"></i>' ).'</span></a>';
+        echo '<div class="headlinebody headline_body_'.$x__type.( !$counter ? ' hidden ' : '' ).'">';
         echo $ui;
         echo '</div>';
 
