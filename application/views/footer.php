@@ -29,7 +29,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         if(count($hosted_domains) && !in_array(get_domain_setting(0), $hosted_domains)){
                             continue;
                         }
-                        echo '<div class="headline top-margin"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</div>';
+                        echo '<div class="headline top-margin"><span class="icon-block">&nbsp;</span>'.$m['m__title'].'</div>';
                         echo view_e_settings($e__id, true);
                     }
                     ?>
