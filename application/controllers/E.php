@@ -1399,7 +1399,7 @@ class E extends CI_Controller
             $sign_url = urldecode($_POST['referrer_url']);
 
         } else {
-            $sign_url = home_url();
+            $sign_url = '/@'.$es[0]['e__id'];
         }
 
         return view_json(array(
