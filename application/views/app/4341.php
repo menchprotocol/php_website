@@ -1,7 +1,7 @@
 <?php
 
 //Construct filters based on GET variables:
-$filters = array();
+$query_filters = array();
 $joined_by = array();
 
 //We have a special OR filter when combined with any_e__id & any_i__id
@@ -18,9 +18,9 @@ if(isset($_GET['i__type']) && strlen($_GET['i__type']) > 0){
 
         if (substr_count($_GET['i__type'], ',') > 0) {
             //This is multiple:
-            $filters['( i__type IN (' . $_GET['i__type'] . '))'] = null;
+            $query_filters['( i__type IN (' . $_GET['i__type'] . '))'] = null;
         } else {
-            $filters['i__type'] = intval($_GET['i__type']);
+            $query_filters['i__type'] = intval($_GET['i__type']);
         }
     } else {
         unset($_GET['i__type']);
@@ -35,9 +35,9 @@ if(isset($_GET['e__type']) && strlen($_GET['e__type']) > 0){
 
         if (substr_count($_GET['e__type'], ',') > 0) {
             //This is multiple:
-            $filters['( e__type IN (' . $_GET['e__type'] . '))'] = null;
+            $query_filters['( e__type IN (' . $_GET['e__type'] . '))'] = null;
         } else {
-            $filters['e__type'] = intval($_GET['e__type']);
+            $query_filters['e__type'] = intval($_GET['e__type']);
         }
     } else {
         unset($_GET['e__type']);
@@ -47,18 +47,18 @@ if(isset($_GET['e__type']) && strlen($_GET['e__type']) > 0){
 if(isset($_GET['x__status']) && strlen($_GET['x__status']) > 0){
     if (substr_count($_GET['x__status'], ',') > 0) {
         //This is multiple:
-        $filters['( x__status IN (' . $_GET['x__status'] . '))'] = null;
+        $query_filters['( x__status IN (' . $_GET['x__status'] . '))'] = null;
     } else {
-        $filters['x__status'] = intval($_GET['x__status']);
+        $query_filters['x__status'] = intval($_GET['x__status']);
     }
 }
 
 if(isset($_GET['x__source']) && strlen($_GET['x__source']) > 0){
     if (substr_count($_GET['x__source'], ',') > 0) {
         //This is multiple:
-        $filters['( x__source IN (' . $_GET['x__source'] . '))'] = null;
+        $query_filters['( x__source IN (' . $_GET['x__source'] . '))'] = null;
     } elseif (intval($_GET['x__source']) > 0) {
-        $filters['x__source'] = $_GET['x__source'];
+        $query_filters['x__source'] = $_GET['x__source'];
     }
 }
 
@@ -66,54 +66,54 @@ if(isset($_GET['x__source']) && strlen($_GET['x__source']) > 0){
 if(isset($_GET['x__up']) && strlen($_GET['x__up']) > 0){
     if (substr_count($_GET['x__up'], ',') > 0) {
         //This is multiple:
-        $filters['( x__up IN (' . $_GET['x__up'] . '))'] = null;
+        $query_filters['( x__up IN (' . $_GET['x__up'] . '))'] = null;
     } elseif (intval($_GET['x__up']) > 0) {
-        $filters['x__up'] = $_GET['x__up'];
+        $query_filters['x__up'] = $_GET['x__up'];
     }
 }
 
 if(isset($_GET['x__down']) && strlen($_GET['x__down']) > 0){
     if (substr_count($_GET['x__down'], ',') > 0) {
         //This is multiple:
-        $filters['( x__down IN (' . $_GET['x__down'] . '))'] = null;
+        $query_filters['( x__down IN (' . $_GET['x__down'] . '))'] = null;
     } elseif (intval($_GET['x__down']) > 0) {
-        $filters['x__down'] = $_GET['x__down'];
+        $query_filters['x__down'] = $_GET['x__down'];
     }
 }
 
 if(isset($_GET['x__left']) && strlen($_GET['x__left']) > 0){
     if (substr_count($_GET['x__left'], ',') > 0) {
         //This is multiple:
-        $filters['( x__left IN (' . $_GET['x__left'] . '))'] = null;
+        $query_filters['( x__left IN (' . $_GET['x__left'] . '))'] = null;
     } elseif (intval($_GET['x__left']) > 0) {
-        $filters['x__left'] = $_GET['x__left'];
+        $query_filters['x__left'] = $_GET['x__left'];
     }
 }
 
 if(isset($_GET['x__right']) && strlen($_GET['x__right']) > 0){
     if (substr_count($_GET['x__right'], ',') > 0) {
         //This is multiple:
-        $filters['( x__right IN (' . $_GET['x__right'] . '))'] = null;
+        $query_filters['( x__right IN (' . $_GET['x__right'] . '))'] = null;
     } elseif (intval($_GET['x__right']) > 0) {
-        $filters['x__right'] = $_GET['x__right'];
+        $query_filters['x__right'] = $_GET['x__right'];
     }
 }
 
 if(isset($_GET['x__reference']) && strlen($_GET['x__reference']) > 0 && !$any_i_e_set){
     if (substr_count($_GET['x__reference'], ',') > 0) {
         //This is multiple:
-        $filters['( x__reference IN (' . $_GET['x__reference'] . '))'] = null;
+        $query_filters['( x__reference IN (' . $_GET['x__reference'] . '))'] = null;
     } elseif (intval($_GET['x__reference']) > 0) {
-        $filters['x__reference'] = $_GET['x__reference'];
+        $query_filters['x__reference'] = $_GET['x__reference'];
     }
 }
 
 if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0){
     if (substr_count($_GET['x__id'], ',') > 0) {
         //This is multiple:
-        $filters['( x__id IN (' . $_GET['x__id'] . '))'] = null;
+        $query_filters['( x__id IN (' . $_GET['x__id'] . '))'] = null;
     } elseif (intval($_GET['x__id']) > 0) {
-        $filters['x__id'] = $_GET['x__id'];
+        $query_filters['x__id'] = $_GET['x__id'];
     }
 }
 
@@ -121,9 +121,9 @@ if(isset($_GET['any_e__id']) && strlen($_GET['any_e__id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_e__id'], ',') > 0) {
         //This is multiple:
-        $filters['( x__down IN (' . $_GET['any_e__id'] . ') OR x__up IN (' . $_GET['any_e__id'] . ') OR x__source IN (' . $_GET['any_e__id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $query_filters['( x__down IN (' . $_GET['any_e__id'] . ') OR x__up IN (' . $_GET['any_e__id'] . ') OR x__source IN (' . $_GET['any_e__id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_e__id']) > 0) {
-        $filters['( x__down = ' . $_GET['any_e__id'] . ' OR x__up = ' . $_GET['any_e__id'] . ' OR x__source = ' . $_GET['any_e__id'] . $parent_tr_filter . ' )'] = null;
+        $query_filters['( x__down = ' . $_GET['any_e__id'] . ' OR x__up = ' . $_GET['any_e__id'] . ' OR x__source = ' . $_GET['any_e__id'] . $parent_tr_filter . ' )'] = null;
     }
 }
 
@@ -131,9 +131,9 @@ if(isset($_GET['any_i__id']) && strlen($_GET['any_i__id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_i__id'], ',') > 0) {
         //This is multiple:
-        $filters['( x__right IN (' . $_GET['any_i__id'] . ') OR x__left IN (' . $_GET['any_i__id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $query_filters['( x__right IN (' . $_GET['any_i__id'] . ') OR x__left IN (' . $_GET['any_i__id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_i__id']) > 0) {
-        $filters['( x__right = ' . $_GET['any_i__id'] . ' OR x__left = ' . $_GET['any_i__id'] . $parent_tr_filter . ')'] = null;
+        $query_filters['( x__right = ' . $_GET['any_i__id'] . ' OR x__left = ' . $_GET['any_i__id'] . $parent_tr_filter . ')'] = null;
     }
 }
 
@@ -141,22 +141,22 @@ if(isset($_GET['any_x__id']) && strlen($_GET['any_x__id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_x__id'], ',') > 0) {
         //This is multiple:
-        $filters['( x__id IN (' . $_GET['any_x__id'] . ') OR x__reference IN (' . $_GET['any_x__id'] . '))'] = null;
+        $query_filters['( x__id IN (' . $_GET['any_x__id'] . ') OR x__reference IN (' . $_GET['any_x__id'] . '))'] = null;
     } elseif (intval($_GET['any_x__id']) > 0) {
-        $filters['( x__id = ' . $_GET['any_x__id'] . ' OR x__reference = ' . $_GET['any_x__id'] . ')'] = null;
+        $query_filters['( x__id = ' . $_GET['any_x__id'] . ' OR x__reference = ' . $_GET['any_x__id'] . ')'] = null;
     }
 }
 
 if(isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0){
-    $filters['LOWER(x__message) LIKE'] = '%'.$_GET['x__message_search'].'%';
+    $query_filters['LOWER(x__message) LIKE'] = '%'.$_GET['x__message_search'].'%';
 }
 
 
 if(isset($_GET['start_range']) && is_valid_date($_GET['start_range'])){
-    $filters['x__time >='] = $_GET['start_range'].( strlen($_GET['start_range']) <= 10 ? ' 00:00:00' : '' );
+    $query_filters['x__time >='] = $_GET['start_range'].( strlen($_GET['start_range']) <= 10 ? ' 00:00:00' : '' );
 }
 if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
-    $filters['x__time <='] = $_GET['end_range'].( strlen($_GET['end_range']) <= 10 ? ' 23:59:59' : '' );
+    $query_filters['x__time <='] = $_GET['end_range'].( strlen($_GET['end_range']) <= 10 ? ' 23:59:59' : '' );
 }
 
 
@@ -168,7 +168,7 @@ if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
 
 //Fetch unique transaction types recorded so far:
 $ini_filter = array();
-foreach($filters as $key => $value){
+foreach($query_filters as $key => $value){
     if(!includes_any($key, array('i__type', 'e__type'))){
         $ini_filter[$key] = $value;
     }
@@ -181,9 +181,9 @@ if(isset($_GET['x__type'])){
 
     if (substr_count($_GET['x__type'], ',') > 0) {
         //This is multiple:
-        $filters['x__type IN (' . $_GET['x__type'] . ')'] = null;
+        $query_filters['x__type IN (' . $_GET['x__type'] . ')'] = null;
     } elseif (intval($_GET['x__type']) > 0) {
-        $filters['x__type'] = intval($_GET['x__type']);
+        $query_filters['x__type'] = intval($_GET['x__type']);
     }
 
 }
@@ -195,7 +195,7 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 ?>
 
 <script>
-    var x_filters = '<?= serialize(count($filters) > 0 ? $filters : array()) ?>';
+    var x_filters = '<?= serialize(count($query_filters) > 0 ? $query_filters : array()) ?>';
     var x_joined_by = '<?= serialize(count($joined_by) > 0 ? $joined_by : array()) ?>';
     var x__message_search = '<?= ( isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0 ? $_GET['x__message_search'] : '' ) ?>';
     var x__message_replace = '<?= ( isset($_GET['x__message_replace']) && strlen($_GET['x__message_replace']) > 0 ? $_GET['x__message_replace'] : '' ) ?>';

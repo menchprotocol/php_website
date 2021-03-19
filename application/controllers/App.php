@@ -311,7 +311,7 @@ class App extends CI_Controller
          *
          * */
 
-        $filters = unserialize($_POST['x_filters']);
+        $query_filters = unserialize($_POST['x_filters']);
         $joined_by = unserialize($_POST['x_joined_by']);
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
@@ -321,8 +321,8 @@ class App extends CI_Controller
         $message = '';
 
         //Fetch transactions and total transaction counts:
-        $x = $this->X_model->fetch($filters, $joined_by, view_memory(6404,11064), $query_offset);
-        $x_count = $this->X_model->fetch($filters, $joined_by, 0, 0, array(), 'COUNT(x__id) as total_count');
+        $x = $this->X_model->fetch($query_filters, $joined_by, view_memory(6404,11064), $query_offset);
+        $x_count = $this->X_model->fetch($query_filters, $joined_by, 0, 0, array(), 'COUNT(x__id) as total_count');
         $total_items_loaded = ($query_offset+count($x));
         $has_more_x = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
 

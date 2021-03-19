@@ -258,33 +258,33 @@ class E extends CI_Controller
     {
 
         $items_per_page = view_memory(6404,11064);
-        $parent_e__id = intval($_POST['parent_e__id']);
+        $focus__id = intval($_POST['focus__id']);
         $e_focus_filter = intval($_POST['e_focus_filter']);
-        $source_of_e = source_of_e($parent_e__id);
+        $source_of_e = source_of_e($focus__id);
         $page = intval($_POST['page']);
-        $filters = array(
-            'x__up' => $parent_e__id,
+        $query_filters = array(
+            'x__up' => $focus__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'e__type IN (' . join(',', ( $e_focus_filter<0 /* Remove Filters */ ? $this->config->item('n___7358') /* ACTIVE */ : array($e_focus_filter) /* This specific filter*/ )) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         );
 
         //Fetch & display next batch of children:
-        $child_e = $this->X_model->fetch($filters, array('x__down'), $items_per_page, ($page * $items_per_page), array(
+        $extra_items = $this->X_model->fetch($query_filters, array('x__down'), $items_per_page, ($page * $items_per_page), array(
             'x__spectrum' => 'ASC',
             'e__title' => 'ASC'
         ));
 
-        foreach($child_e as $e) {
+        foreach($extra_items as $e) {
             echo view_e($_POST['x__type'], $e, null, $source_of_e);
         }
 
         //Count total children:
-        $child_e_count = $this->X_model->fetch($filters, array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
+        $child_count = $this->X_model->fetch($query_filters, array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         //Do we need another load more button?
-        if ($child_e_count[0]['totals'] > (($page * $items_per_page) + count($child_e))) {
-            echo view_load_more($_POST['x__type'], ($page + 1), $items_per_page, $child_e_count[0]['totals']);
+        if ($child_count[0]['totals'] > (($page * $items_per_page) + count($extra_items))) {
+            echo e_load_page($_POST['x__type'], ($page + 1), $items_per_page, $child_count[0]['totals']);
         }
 
     }
@@ -840,7 +840,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['parent_e__id']) || intval($_POST['parent_e__id']) < 1) {
+        } elseif (!isset($_POST['focus__id']) || intval($_POST['focus__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing parent source',
@@ -862,8 +862,8 @@ class E extends CI_Controller
             //Since this is not a multi-select we want to delete all existing options...
 
             //Fetch all possible answers based on parent source:
-            $filters = array(
-                'x__up' => $_POST['parent_e__id'],
+            $query_filters = array(
+                'x__up' => $_POST['focus__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
@@ -871,12 +871,12 @@ class E extends CI_Controller
 
             if($_POST['enable_mulitiselect'] && $_POST['was_previously_selected']){
                 //Just delete this single item, not the other ones:
-                $filters['x__down'] = $_POST['selected_e__id'];
+                $query_filters['x__down'] = $_POST['selected_e__id'];
             }
 
             //List all possible answers:
             $possible_answers = array();
-            foreach($this->X_model->fetch($filters, array('x__down'), 0, 0) as $answer_e){
+            foreach($this->X_model->fetch($query_filters, array('x__down'), 0, 0) as $answer_e){
                 array_push($possible_answers, $answer_e['e__id']);
             }
 
@@ -913,7 +913,7 @@ class E extends CI_Controller
             'x__type' => 6224, //My Account updated
             'x__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
             'x__metadata' => $_POST,
-            'x__up' => $_POST['parent_e__id'],
+            'x__up' => $_POST['focus__id'],
             'x__down' => $_POST['selected_e__id'],
         ));
 

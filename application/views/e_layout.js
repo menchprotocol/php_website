@@ -207,52 +207,6 @@ function e_filter_status(x__type, new_val) {
 
 
 
-function e_load_page(x__type, page, load_new_filter) {
-
-    if (load_new_filter) {
-        //Replace load more with spinner:
-        var append_div = $('#new_'+x__type).html();
-        //The padding-bottom would delete the scrolling effect on the left side!
-        $('#list-in-'+x__type).html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
-    } else {
-        //Replace load more with spinner:
-        $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
-    }
-
-    $.post("/e/e_load_page", {
-        x__type: x__type,
-        page: page,
-        parent_e__id: $('#focus__id').val(),
-        e_focus_filter: e_focus_filter,
-    }, function (data) {
-
-        //Appending to existing content:
-        $('.load-more').remove();
-
-        if (load_new_filter) {
-
-            $('#list-in-'+x__type).html(data + '<div id="new_'+x__type+'" class="list-group-item no-side-padding grey-input">' + append_div + '</div>').hide().fadeIn();
-            //Reset search engine:
-            e_load_search(x__type);
-
-        } else {
-            //Update UI to confirm with member:
-            $('#list-in-'+x__type).append(data);
-        }
-
-        lazy_load();
-
-        x_set_start_text();
-
-        //Tooltips:
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-
-}
-
-
-
-
 function e_x_form_lock(){
     $('#x__message').prop("disabled", true);
 

@@ -7,14 +7,14 @@ $total_scanned = 0;
 $total_updated = 0;
 $e___12822 = $this->config->item('e___12822');
 $e___12955 = $this->config->item('e___12955'); //Idea Type Completion Time
-$filters = array();
+$query_filters = array();
 if($i__id > 0){
-    $filters['i__id'] = $i__id;
+    $query_filters['i__id'] = $i__id;
 } else {
-    $filters['i__type IN (' . join(',', $this->config->item('n___7355')) . ')'] = null; //PUBLIC
+    $query_filters['i__type IN (' . join(',', $this->config->item('n___7355')) . ')'] = null; //PUBLIC
 }
 
-foreach($this->I_model->fetch($filters) as $in){
+foreach($this->I_model->fetch($query_filters) as $in){
 
 
     //First see if manually updated:

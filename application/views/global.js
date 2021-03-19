@@ -158,6 +158,100 @@ function toggle_headline(headline_id){
     }
 }
 
+
+
+function i_load_page(x__type, page, load_new_filter) {
+
+    if (load_new_filter) {
+        //Replace load more with spinner:
+        var append_div = $('#new_'+x__type).html();
+        //The padding-bottom would delete the scrolling effect on the left side!
+        $('#list-in-'+x__type).html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+    } else {
+        //Replace load more with spinner:
+        $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+    }
+
+    $.post("/i/i_load_page", {
+        x__type: x__type,
+        page: page,
+        focus__id: $('#focus__id').val(),
+    }, function (data) {
+
+        //Appending to existing content:
+        $('.load-more').remove();
+
+        if (load_new_filter) {
+
+            $('#list-in-'+x__type).html(data + '<div id="new_'+x__type+'" class="list-group-item no-side-padding grey-input">' + append_div + '</div>').hide().fadeIn();
+            //Reset search engine:
+            e_load_search(x__type);
+
+        } else {
+            //Update UI to confirm with member:
+            $('#list-in-'+x__type).append(data);
+        }
+
+        lazy_load();
+
+        x_set_start_text();
+
+        //Tooltips:
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+}
+
+
+
+
+
+function e_load_page(x__type, page, load_new_filter) {
+
+    if (load_new_filter) {
+        //Replace load more with spinner:
+        var append_div = $('#new_'+x__type).html();
+        //The padding-bottom would delete the scrolling effect on the left side!
+        $('#list-in-'+x__type).html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+    } else {
+        //Replace load more with spinner:
+        $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+    }
+
+    $.post("/e/e_load_page", {
+        x__type: x__type,
+        page: page,
+        focus__id: $('#focus__id').val(),
+        e_focus_filter: e_focus_filter,
+    }, function (data) {
+
+        //Appending to existing content:
+        $('.load-more').remove();
+
+        if (load_new_filter) {
+
+            $('#list-in-'+x__type).html(data + '<div id="new_'+x__type+'" class="list-group-item no-side-padding grey-input">' + append_div + '</div>').hide().fadeIn();
+            //Reset search engine:
+            e_load_search(x__type);
+
+        } else {
+            //Update UI to confirm with member:
+            $('#list-in-'+x__type).append(data);
+        }
+
+        lazy_load();
+
+        x_set_start_text();
+
+        //Tooltips:
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+}
+
+
+
+
 function js_view_shuffle_message(e__id){
     var messages = js_e___12687[e__id]['m__message'].split("\n");
     if(messages.length == 1){
@@ -1886,9 +1980,9 @@ function remove_ui_class(item, index) {
     $('body').removeClass(the_class);
 }
 
-function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
+function e_radio(focus__id, selected_e__id, enable_mulitiselect){
 
-    var was_previously_selected = ( $('.radio-'+parent_e__id+' .item-'+selected_e__id).hasClass('active') ? 1 : 0 );
+    var was_previously_selected = ( $('.radio-'+focus__id+' .item-'+selected_e__id).hasClass('active') ? 1 : 0 );
 
     //Save the rest of the content:
     if(!enable_mulitiselect && was_previously_selected){
@@ -1897,33 +1991,33 @@ function e_radio(parent_e__id, selected_e__id, enable_mulitiselect){
     }
 
     //Updating Font?
-    if(js_n___13890.includes(parent_e__id)){
-        current_focus = parent_e__id;
-        $('body').removeClass('custom_ui_'+parent_e__id+'_');
-        window['js_n___'+parent_e__id].forEach(remove_ui_class); //Removes all Classes
-        $('body').addClass('custom_ui_'+parent_e__id+'_'+selected_e__id);
+    if(js_n___13890.includes(focus__id)){
+        current_focus = focus__id;
+        $('body').removeClass('custom_ui_'+focus__id+'_');
+        window['js_n___'+focus__id].forEach(remove_ui_class); //Removes all Classes
+        $('body').addClass('custom_ui_'+focus__id+'_'+selected_e__id);
     }
 
     //Show spinner on the notification element:
-    var notify_el = '.radio-'+parent_e__id+' .item-'+selected_e__id+' .change-results';
+    var notify_el = '.radio-'+focus__id+' .item-'+selected_e__id+' .change-results';
     var initial_icon = $(notify_el).html();
     $(notify_el).html('<i class="far fa-yin-yang fa-spin"></i>');
 
 
     if(!enable_mulitiselect){
         //Clear all selections:
-        $('.radio-'+parent_e__id+' .list-group-item').removeClass('active');
+        $('.radio-'+focus__id+' .list-group-item').removeClass('active');
     }
 
     //Enable currently selected:
     if(enable_mulitiselect && was_previously_selected){
-        $('.radio-'+parent_e__id+' .item-'+selected_e__id).removeClass('active');
+        $('.radio-'+focus__id+' .item-'+selected_e__id).removeClass('active');
     } else {
-        $('.radio-'+parent_e__id+' .item-'+selected_e__id).addClass('active');
+        $('.radio-'+focus__id+' .item-'+selected_e__id).addClass('active');
     }
 
     $.post("/e/e_radio", {
-        parent_e__id: parent_e__id,
+        focus__id: focus__id,
         selected_e__id: selected_e__id,
         enable_mulitiselect: enable_mulitiselect,
         was_previously_selected: was_previously_selected,

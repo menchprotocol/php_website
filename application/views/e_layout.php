@@ -269,7 +269,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             if(superpower_active(14005, true)){
 
                 $e_count = $this->E_model->child_count($e['e__id'], $this->config->item('n___7358') /* ACTIVE */);
-                $child_e_filters = $this->X_model->fetch(array(
+                $child__filters = $this->X_model->fetch(array(
                     'x__up' => $e['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -277,7 +277,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                 ), array('x__down'), 0, 0, array('e__type' => 'ASC'), 'COUNT(e__id) as totals, e__type', 'e__type');
 
                 //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
-                if (count($child_e_filters) > 0 && $child_e_filters[0]['totals'] < $e_count) {
+                if (count($child__filters) > 0 && $child__filters[0]['totals'] < $e_count) {
 
                     //Add 2nd Navigation to UI
                     $ui .= '<div class="nav nav-pills nav-sm">';
@@ -286,7 +286,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                     $ui .= '<li class="nav-item"><a href="#" onclick="e_filter_status(11029, -1)" class="nav-x e_filter_status_11029 active en_status_11029_-1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk zq12274"></i><span class="zq12274">&nbsp;' . $e_count . '</span></a></li>';
 
                     //Show each specific filter based on DB counts:
-                    foreach($child_e_filters as $c_c) {
+                    foreach($child__filters as $c_c) {
                         $st = $e___6177[$c_c['e__type']];
                         $ui .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(11029, ' . $c_c['e__type'] . ')" class="nav-x nav-link e_filter_status_11029 en_status_11029_' . $c_c['e__type'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m__message'] . '">' . $st['m__cover'] . '&nbsp;' . $c_c['totals'] . '<span class="show-max">&nbsp;' . $st['m__title'] . '</span></a></li>';
                     }
@@ -319,7 +319,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         if ($counter > count($list_e)) {
             //Load even more if there...
-            $ui .= view_load_more(11029, 1, $limit, $counter, $trigger_hide);
+            $ui .= e_load_page(11029, 1, $limit, $counter, $trigger_hide);
         }
 
         $ui .= '</div>';
@@ -420,7 +420,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         if ($counter > count($list_i)) {
             //We have even more:
-            $ui .= view_load_more(13550, 1, $limit, $counter, $trigger_hide);
+            $ui .= e_load_page(13550, 1, $limit, $counter, $trigger_hide);
         }
 
         $ui .= '</div>';

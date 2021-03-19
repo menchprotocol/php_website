@@ -517,6 +517,38 @@ class I extends CI_Controller {
 
 
 
+    function i_load_page()
+    {
+
+        $superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEAGING
+        $items_per_page = view_memory(6404,11064);
+        $focus__id = intval($_POST['focus__id']);
+        $page = intval($_POST['page']);
+        $query_filters = array(
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__up' => $focus__id,
+        );
+
+        //Fetch & display next batch of children:
+        $extra_items = $this->X_model->fetch($query_filters, array('x__right'), $items_per_page, ($page * $items_per_page), array('i__spectrum' => 'DESC'));
+
+        foreach($extra_items as $item) {
+            $ui .= view_i(13550, 0, null, $item, $superpower_10939, ( strlen($item['x__message']) ? $this->X_model->message_view($item['x__message'], true) : null));
+        }
+
+        //Count total children:
+        $child_count = $this->X_model->fetch($query_filters, array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
+
+        //Do we need another load more button?
+        if ($child_count[0]['totals'] > (($page * $items_per_page) + count($extra_items))) {
+            echo i_load_page($_POST['x__type'], ($page + 1), $items_per_page, $child_count[0]['totals']);
+        }
+
+    }
+
+
     function i_note_update_text()
     {
 

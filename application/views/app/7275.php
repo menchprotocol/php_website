@@ -7,14 +7,14 @@
  * */
 
 $start_time = time();
-$filters = array(
+$query_filters = array(
     'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
 );
 if(isset($_GET['i__id'])){
-    $filters['i__id'] = intval($_GET['i__id']);
+    $query_filters['i__id'] = intval($_GET['i__id']);
 }
 
-$published_i = $this->I_model->fetch($filters);
+$published_i = $this->I_model->fetch($query_filters);
 foreach($published_i as $published_in){
     $i = $this->I_model->metadata_common_base($published_in);
 }

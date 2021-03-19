@@ -980,13 +980,13 @@ class E_model extends CI_Model
             } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
 
                 //What member searched for:
-                $parent_e__id = intval(one_two_explode('@',' ',$action_command1));
+                $focus__id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child source has searched parent source:
                 $child_parent_e = $this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $x['e__id'], //This child source
-                    'x__up' => $parent_e__id,
+                    'x__up' => $focus__id,
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ));
 
@@ -996,7 +996,7 @@ class E_model extends CI_Model
                         'x__source' => $x__source,
                         'x__type' => e_x__type(),
                         'x__down' => $x['e__id'], //This child source
-                        'x__up' => $parent_e__id,
+                        'x__up' => $focus__id,
                     );
 
                     if($action_e__id==13441){
