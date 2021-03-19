@@ -280,7 +280,7 @@ img.no-frame {
     padding: 0;
 }
 .accordion .card-body{
-    padding: 0 41px;
+    padding: 13px 0 21px 41px;
 }
 .card-body .padded, .card-body .list-group {
     margin: 0 0 13px;
