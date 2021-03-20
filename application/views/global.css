@@ -1986,10 +1986,7 @@ i, .btn .show-max {
     top: -38px;
 }
 .push_down>div {
-    margin-top:21px !important;
-}
-.focus-coin .push_down>div {
-    margin-top:25px !important;
+    margin-bottom:-25px !important;
 }
 .text_e_4356{
     text-align: right;
