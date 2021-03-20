@@ -2006,7 +2006,7 @@ i, .btn .show-max {
     margin:30px 0 69px !important;
 }
 .node-coin{
-    margin:0 0 165px !important;
+    margin:0 0 144px !important;
 }
 .coin_cover_6255 {
     margin-top:-99px !important;
@@ -2175,9 +2175,6 @@ textarea {
 }
 .node-coin .cover-content{
     bottom:-69px;
-}
-.coin-12273.node-coin .cover-content{
-    bottom:-104px;
 }
 .node-coin.doedit .cover-content{
     bottom:-123px;
