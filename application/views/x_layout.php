@@ -549,13 +549,13 @@ if($top_i__id) {
 
     if (in_array($i_focus['i__type'], $this->config->item('n___4559'))) {
         //DISCOVERY ONLY
-        echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e, (count($is_next) > 1 ? view_i_time($i_stats, true) : ''));
+        echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
     }
 
 } else {
 
     //NEXT IDEAS
-    echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e, ( count($is_next) ? view_i_time($i_stats, true) : '' ));
+    echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
 
 }
 

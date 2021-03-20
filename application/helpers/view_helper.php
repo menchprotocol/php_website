@@ -983,7 +983,7 @@ function view_i_marks($i_x){
 }
 
 
-function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e, $right_content = null){
+function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e){
 
     //If no list just return the next step:
     if(!count($has_next)){
@@ -1009,9 +1009,6 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e, $
         $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__cover'].'</span>'.$e___11035[$x__type]['m__title'].':'.$edit_button.'</div>';
     }
     $ui .= '</div>';
-    if($right_content){
-        $ui .= '<div class="pull-right" style="text-align: right; padding:3px 0;">'.$right_content.'</div>';
-    }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
 
