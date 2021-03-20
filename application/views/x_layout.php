@@ -176,7 +176,7 @@ if($top_i__id){
 
 
 echo '<div class="row justify-content-center">';
-echo view_i(20417, 0, null, $i_focus, $e_of_i);
+echo view_i(20417, 0, null, $i_focus);
 echo '</div>';
 
 
