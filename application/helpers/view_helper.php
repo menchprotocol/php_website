@@ -1615,7 +1615,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $user_session = superpower_unlocked();
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
-    $editing_enabled = in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
+    $cache_app = in_array($x__type, $CI->config->item('n___14599'));
+    $editing_enabled = !$cache_app && in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
     $node_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $has_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];
 
@@ -1671,11 +1672,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
     $show_coins = !$has_any_lock && $editing_enabled;
     $show_custom_image = !$has_valid_url && $i['i__cover'];
-    $can_click = !$has_any_lock;
+    $can_click = !$has_any_lock && !$node_coin;
 
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $node_coin ? ' node-coin col-12 ' : ' edge-coin col-md-4 col-6 ' ).' no-padding coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $node_coin ? ' node-coin col-md-8 col-10 ' : ' edge-coin col-md-4 col-6 ' ).' no-padding coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
 
@@ -1689,11 +1690,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         //LOCKED
         $action_buttons = null;
 
-        if($has_any_lock){
+        if($has_any_lock && !$node_coin){
 
             $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
-        } else {
+        } elseif(!$cache_app) {
 
             foreach($CI->config->item('e___14955') as $e__id => $m) {
 
