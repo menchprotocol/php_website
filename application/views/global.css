@@ -1966,7 +1966,7 @@ i, .btn .show-max {
     top: 10px;
     left: 5px;
 }
-.node-coin .coin-cover-left {
+.focus-coin .coin-cover-left {
     top: 45px;
     left: 45px;
 }
@@ -1975,7 +1975,7 @@ i, .btn .show-max {
     top: 12px;
     right: 13px;
 }
-.node-coin .coin-cover-right {
+.focus-coin .coin-cover-right {
     top: 45px;
     right: 45px;
 }
@@ -1988,7 +1988,7 @@ i, .btn .show-max {
 .push_down .btn {
     margin-bottom: -21px !important;
 }
-.push_down a {
+.focus-coin .push_down a {
     margin-top: 21px !important;
     display: block;
 }
@@ -2005,7 +2005,7 @@ i, .btn .show-max {
     position: relative;
     margin:30px 0 69px !important;
 }
-.node-coin{
+.focus-coin{
     margin:0 0 144px !important;
 }
 .coin_cover_6255 {
@@ -2127,7 +2127,7 @@ i, .btn .show-max {
     width: 100%;
     text-align: center;
 }
-.node-coin .cover-btn {
+.focus-coin .cover-btn {
     font-size: 21.89em;
     top: 48%;
 }
@@ -2166,17 +2166,17 @@ textarea {
     margin: 0;
     line-height: 120%;
 }
-.node-coin .inner-content textarea {
+.focus-coin .inner-content textarea {
     line-height: 220%;
 }
-.node-coin .inner-content .css__title {
+.focus-coin .inner-content .css__title {
     font-size: 2.1em;
     line-height: 110%;
 }
-.node-coin .cover-content{
+.focus-coin .cover-content{
     bottom:-69px;
 }
-.node-coin.doedit .cover-content{
+.focus-coin.doedit .cover-content{
     bottom:-123px;
 }
 .inner-content .form-control {
@@ -2221,11 +2221,11 @@ textarea {
         right: 3px;
     }
 
-    .node-coin .coin-cover-left{
+    .focus-coin .coin-cover-left{
         top: 21px;
         left: 21px;
     }
-    .node-coin .coin-cover-right{
+    .focus-coin .coin-cover-right{
         top: 21px;
         right: 21px;
     }
@@ -2321,10 +2321,10 @@ textarea {
 
 }
 @media (max-width:576px) {
-    .node-coin .inner-content .css__title {
+    .focus-coin .inner-content .css__title {
         font-size: 1.9em;
     }
-    .node-coin.doedit .cover-content{
+    .focus-coin.doedit .cover-content{
         bottom:-84px;
     }
     .the_counter{
@@ -2345,7 +2345,7 @@ textarea {
         font-size: 8em;
         top: 42%;
     }
-    .node-coin .cover-btn{
+    .focus-coin .cover-btn{
         font-size: 13em;
         top: 42%;
     }
