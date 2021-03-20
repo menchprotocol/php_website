@@ -1615,9 +1615,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $user_session = superpower_unlocked();
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
+    $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $editing_enabled = !$cache_app && in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
-    $node_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
+    $focus_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $has_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];
 
     if(!$focus_e){
@@ -1672,25 +1673,25 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
     $show_coins = !$has_any_lock && $editing_enabled;
     $show_custom_image = !$has_valid_url && $i['i__cover'];
-    $can_click = !$has_any_lock && !$node_coin;
+    $can_click = !$has_any_lock && !$focus_coin;
 
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $node_coin ? ' node-coin col-md-8 col-10 ' : ' edge-coin col-md-4 col-6 ' ).' no-padding coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' node-coin col-md-8 col-10 ' : ' edge-coin col-md-4 col-6 ' ).' no-padding coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="bottom" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
 
     if(!$discovery_mode && $editing_enabled){
-        $ui .= '<div class="coin-hover coin-cover coin-cover-left">';
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-left">';
         $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
         $ui .= '</div>';
     }
 
-    $ui .= '<div class="coin-hover coin-cover coin-cover-right hideIfEmpty">';
+    $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
         //LOCKED
         $action_buttons = null;
 
-        if($has_any_lock && !$node_coin){
+        if($has_any_lock && !$focus_coin){
 
             $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
@@ -1837,14 +1838,32 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Coin Block
-    if($show_coins){
-        $ui .= '<div class="coin-hover">';
+    if($focus_coin){
+
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
+        $ui .= '<table class="coin_coins"><tr>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: right;">&nbsp;</td>';
+        $ui .= '<td width="34%" class="center '.superpower_active(12700).'">'.$e___11035[4356]['m__cover'].' '.view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0).'</td>';
+        $ui .= '<td width="33%" class="push_down '.superpower_active(10939).'" style="text-align: left;">';
+        if($discovery_mode){
+            $ui .= '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'">'.$e___11035[13563]['m__cover'].'</a>';
+        } else {
+            $ui .= '<a href="/'.$i['i__id'].'" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__cover'].'</a>';
+        }
+        $ui .= '</td>';
+        $ui .= '</tr></table>';
+        $ui .= '</div>';
+
+    } elseif($show_coins){
+
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
         $ui .= '<table class="coin_coins"><tr>';
         $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.view_coins_i(12274,  $i).'</td>';
         $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
         $ui .= '<td width="33%" class="push_down" style="text-align: left;">'.view_coins_i(6255,  $i).'</td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
+
     }
 
 
@@ -1882,7 +1901,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $superpower_13422 = superpower_active(13422, true);
     $superpower_12701 = superpower_active(12701, true);
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
-    $node_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
+    $focus_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $control_enabled = !$cache_app && in_array($x__type, $CI->config->item('n___14696'));
@@ -1918,11 +1937,11 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $has_any_lock = !$superpower_12701 && ($has_soft_lock || $has_hard_lock);
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $supports_messages && $superpower_10939;
     $show_text_editor = $source_of_e && $control_enabled && !$has_any_lock;
-    $can_click = !$node_coin; //Allow clicking for all
+    $can_click = !$focus_coin; //Allow clicking for all
 
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coinface-12274 '.( $node_coin ? ' node-coin col-md-8 col-10 ' : ' edge-coin col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).' coin_cover no-padding coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coinface-12274 '.( $focus_coin ? ' node-coin col-md-8 col-10 ' : ' edge-coin col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).' coin_cover no-padding coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
 
     $ui .= '<div class="cover-wrapper">';
 
@@ -1935,7 +1954,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
     //LOCKED
-    if($has_any_lock && !$node_coin){
+    if($has_any_lock && !$focus_coin){
 
         $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
@@ -1944,7 +1963,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         $action_buttons = null;
 
         //Generate Buttons:
-        foreach($CI->config->item(( $node_coin ? 'e___12887' : 'e___14956' )) as $e__id => $m) {
+        foreach($CI->config->item(( $focus_coin ? 'e___12887' : 'e___14956' )) as $e__id => $m) {
 
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
             if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
@@ -1978,7 +1997,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 //NUCLEAR DELETE
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
-            } elseif($e__id==13007 && $node_coin){
+            } elseif($e__id==13007 && $focus_coin){
 
                 //Reset Alphabetic order
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_sort_reset()" class="dropdown-item css__title">'.$anchor.'</a>';
@@ -2036,7 +2055,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Profile Sources
-    if(!$node_coin && $superpower_12706 && !$cache_app){
+    if(!$focus_coin && $superpower_12706 && !$cache_app){
         $ui .= '<div class="hideIfEmpty" style="padding-top:5px;">';
         foreach($e__profiles as $e_profile) {
             $ui .= '<span class="icon-block-img e_child_icon_' . $e_profile['e__id'] . '"><a href="/@' . $e_profile['e__id'] . '" title="' . $e_profile['e__title'] . (strlen($e_profile['x__message']) > 0 ? ' = ' . $e_profile['x__message'] : '') . '">' . view_cover(12274,$e_profile['e__cover']) . '</a></span> ';
@@ -2103,7 +2122,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Coin Block
-    if(!$is_app && !$node_coin){
+    if(!$is_app && !$focus_coin){
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'" '.( isset($e['totals']) ? ' title="'.$e['totals'].'" ' : '' ).'>';
         $ui .= '<table class="coin_coins"><tr>';
         $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.view_coins_e(12274,  $e['e__id']).'</td>';

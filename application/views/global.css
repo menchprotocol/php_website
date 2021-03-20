@@ -1881,11 +1881,6 @@ i, .btn .show-max {
 .form-check{
     padding: 8px 0 8px 60px;
 }
-.title-editor{
-    font-size: 0.34em;
-    margin-left: 8px;
-    display: inline-block;
-}
 
 .chat-title{
     position: fixed;

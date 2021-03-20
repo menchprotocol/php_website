@@ -97,23 +97,8 @@ if(isset($_GET['load__e']) && $superpower_14005){
 
 
 
-
-
-
-echo '<table class="table table-sm table-striped maxout" style="text-align: left; margin-bottom: 13px;">';
-
-echo '<tr style="font-weight: bold;">';
-echo '<td width="60%" style="text-align: left;">'.view_input_dropdown(4737, $i_focus['i__type'], null, $e_of_i, true, $i_focus['i__id']).'</td>';
-echo '<td width="40%" style="text-align: right;" class="'.superpower_active(12700).'">'.$e___11035[4356]['m__cover'].'<div class="inline-block left-half-margin">'.view_input_text(4356, $i_focus['i__duration'], $i_focus['i__id'], $e_of_i && $is_active, 0).'</div></td>';
-echo '</tr>';
-
-echo '</table>';
-
-
-
-//IDEA TITLE
-echo '<div class="">';
-echo view_input_text(4736, $i_focus['i__title'], $i_focus['i__id'], ($e_of_i && $is_active), 0, true);
+echo '<div class="row justify-content-center">';
+echo view_i(4250, 0, null, $i_focus, $e_of_i);
 echo '</div>';
 
 

@@ -175,8 +175,9 @@ if($top_i__id){
 
 
 
-//IDEA TITLE
-echo '<h1>' . view_i_title($i_focus) . '<span class="title-editor '.superpower_active(10939).'"><a href="/~'.$i_focus['i__id'].'" title="'.$e___11035[13563]['m__title'].'">'.$e___11035[13563]['m__cover'].'</a></span></h1>';
+echo '<div class="row justify-content-center">';
+echo view_i(20417, 0, null, $i_focus, $e_of_i);
+echo '</div>';
 
 
 
