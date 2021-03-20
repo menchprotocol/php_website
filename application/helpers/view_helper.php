@@ -1788,6 +1788,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 $ui .= $message_input;
             }
         }
+    } else {
+        $ui .= '<div class="cover-text">&nbsp;</div>';
     }
 
 
