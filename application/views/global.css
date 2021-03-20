@@ -2334,6 +2334,9 @@ textarea {
 
 }
 @media (max-width:576px) {
+    .focus-coin .cover-content{
+        min-height: 80px;
+    }
     .coin-12273.focus-coin .cover-content{
         bottom:-85px;
     }
