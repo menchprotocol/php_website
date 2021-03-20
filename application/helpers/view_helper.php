@@ -1839,15 +1839,15 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.( $discovery_mode || !superpower_active(12700, true) ? '&nbsp;' : $e___11035[4356]['m__cover'].' '.view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0) ).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.( $discovery_mode || !superpower_active(12700, true) ? '&nbsp;' : $e___11035[4356]['m__cover'].' '.view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0) ).'</div></td>';
         $ui .= '<td width="34%" class="center">&nbsp;</td>';
-        $ui .= '<td width="33%" class="push_down '.superpower_active(10939).'" style="text-align: left;">';
+        $ui .= '<td width="33%" class="push_down '.superpower_active(10939).'" style="text-align: left;"><div>';
         if($discovery_mode){
             $ui .= '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'">'.$e___11035[13563]['m__cover'].'</a>';
         } else {
             $ui .= '<a href="/'.$i['i__id'].'" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__cover'].'</a>';
         }
-        $ui .= '</td>';
+        $ui .= '</div></td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
 
@@ -1855,9 +1855,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.view_coins_i(12274,  $i).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.view_coins_i(12274,  $i).'</div></td>';
         $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: left;">'.view_coins_i(6255,  $i).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: left;"><div>'.view_coins_i(6255,  $i).'</div></td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
 
@@ -2122,9 +2122,9 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     if(!$is_app && !$focus_coin){
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'" '.( isset($e['totals']) ? ' title="'.$e['totals'].'" ' : '' ).'>';
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: right;">'.view_coins_e(12274,  $e['e__id']).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.view_coins_e(12274,  $e['e__id']).'</div></td>';
         $ui .= '<td width="34%" class="center">'.view_coins_e(12273,  $e['e__id']).'</td>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: left;">'.view_coins_e(6255,  $e['e__id']).'</td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: left;"><div>'.view_coins_e(6255,  $e['e__id']).'</div></td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
     }

@@ -1985,12 +1985,8 @@ i, .btn .show-max {
     position: absolute;
     top: -38px;
 }
-.push_down .btn {
+.push_down>div {
     margin-bottom: -21px !important;
-}
-.focus-coin .push_down a {
-    margin-top: 21px !important;
-    display: block;
 }
 .cover-text {
     line-height: 120%;
