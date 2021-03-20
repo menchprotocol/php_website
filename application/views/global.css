@@ -2011,7 +2011,7 @@ i, .btn .show-max {
     margin:13px 0 144px !important;
 }
 .coin-12273.focus-coin{
-    margin:13px 0 89px !important;
+    margin:13px 0 120px !important;
 }
 .coin_cover_6255 {
     margin-top:-99px !important;
@@ -2178,9 +2178,14 @@ textarea {
     font-size: 2.1em;
     line-height: 110%;
 }
+
 .focus-coin .cover-content{
     bottom:-69px;
 }
+.coin-12273.focus-coin .cover-content{
+    bottom:-105px;
+}
+
 .focus-coin.doedit .cover-content{
     bottom:-123px;
 }
