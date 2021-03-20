@@ -1839,7 +1839,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.( $discovery_mode || !superpower_active(12700, true) ? '&nbsp;' : $e___11035[4356]['m__cover'].' '.view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0) ).'</div></td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.( $discovery_mode || !superpower_active(12700, true) ? '&nbsp;' : view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0).' '.$e___11035[4356]['m__cover'] ).'</div></td>';
         $ui .= '<td width="34%" class="center">&nbsp;</td>';
         $ui .= '<td width="33%" class="push_down '.superpower_active(10939).'" style="text-align: left;"><div>';
         if($discovery_mode){
