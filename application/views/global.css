@@ -2331,6 +2331,9 @@ textarea {
 
 }
 @media (max-width:576px) {
+    .coin-12273.focus-coin .cover-content{
+        bottom:-85px;
+    }
     .focus-coin .inner-content .css__title {
         font-size: 1.4em;
     }
