@@ -1773,7 +1773,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //IDEAs and Time
     $view_i_time = view_i_time($i_stats);
-    $ui .= '<div class="cover-text"><span class="coin-hover">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</span></div>';
+    $ui .= '<div class="cover-text"><span class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</span></div>';
 
     if($load_completion && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
@@ -1843,7 +1843,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
         $ui .= '<table class="coin_coins"><tr>';
         $ui .= '<td width="33%" class="push_down" style="text-align: right;">&nbsp;</td>';
-        $ui .= '<td width="34%" class="center '.superpower_active(12700).'">'.$e___11035[4356]['m__cover'].' '.view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0).'</td>';
+        $ui .= '<td width="34%" class="center '.superpower_active(12700).'">'.( $discovery_mode ? '' : $e___11035[4356]['m__cover'].' '.view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0) ).'</td>';
         $ui .= '<td width="33%" class="push_down '.superpower_active(10939).'" style="text-align: left;">';
         if($discovery_mode){
             $ui .= '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'">'.$e___11035[13563]['m__cover'].'</a>';
