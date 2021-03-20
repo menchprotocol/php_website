@@ -1797,9 +1797,6 @@ i, .btn .show-max {
     text-align: left;
 }
 
-.headline-height, .headline{
-    min-height: 45px;
-}
 .headline i{
     font-size: 1em !important;
 }
@@ -2008,7 +2005,7 @@ i, .btn .show-max {
 }
 .coin_cover{
     position: relative;
-    margin:30px 0 69px !important;
+    margin:13px 0 69px !important;
 }
 .focus-coin{
     margin:13px 0 144px !important;
