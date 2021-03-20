@@ -1988,6 +1988,9 @@ i, .btn .show-max {
 .push_down>div {
     margin-bottom:-25px !important;
 }
+.focus-coin .push_down>div {
+    padding-top:25px !important;
+}
 .text_e_4356{
     text-align: right;
 }
