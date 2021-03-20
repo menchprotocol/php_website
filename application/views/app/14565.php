@@ -4,10 +4,8 @@ $is = $this->I_model->fetch(array(
     'i__id' => get_domain_setting(14002),
 ));
 
-
-echo '<div class="row justify-content-center">';
-echo view_i(14002, 0, null, $is[0]);
-echo '</div>';
+//IDEA TITLE
+echo '<h1>' . $is[0]['i__title'] . '</h1>';
 
 
 //MESSAGES
