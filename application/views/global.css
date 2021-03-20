@@ -1938,6 +1938,9 @@ i, .btn .show-max {
 .coinType12274 .cover-content{
     min-height: 73px;
 }
+.focus-coin .cover-content{
+    min-height: 99px;
+}
 
 
 .coin-cover{
