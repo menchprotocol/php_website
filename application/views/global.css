@@ -1986,7 +1986,10 @@ i, .btn .show-max {
     top: -38px;
 }
 .push_down>div {
-    margin-top:21px !important;
+    margin-top:25px !important;
+}
+.text_e_4356{
+    text-align: right;
 }
 .cover-text {
     line-height: 120%;
