@@ -1985,8 +1985,11 @@ i, .btn .show-max {
     position: absolute;
     top: -38px;
 }
-.push_down .btn, .push_down a {
+.push_down .btn {
     margin-bottom: -21px !important;
+}
+.push_down a {
+    margin-bottom: -34px !important;
     display: block;
 }
 .cover-text {
