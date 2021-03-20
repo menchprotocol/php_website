@@ -2005,6 +2005,9 @@ i, .btn .show-max {
     margin:30px 0 69px !important;
 }
 .focus-coin{
+    margin:13px 0 144px !important;
+}
+.coin-12273.focus-coin{
     margin:13px 0 89px !important;
 }
 .coin_cover_6255 {
@@ -2321,7 +2324,7 @@ textarea {
 }
 @media (max-width:576px) {
     .focus-coin .inner-content .css__title {
-        font-size: 1.9em;
+        font-size: 1.4em;
     }
     .focus-coin.doedit .cover-content{
         bottom:-84px;
