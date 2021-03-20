@@ -2003,6 +2003,9 @@ i, .btn .show-max {
 .cover-text .mini-font {
     font-weight: bold !important;
 }
+.headline-height, .headline{
+    min-height: 34px;
+}
 .coin_cover{
     position: relative;
     margin:13px 0 69px !important;
