@@ -1613,8 +1613,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
+    $hide_details = in_array($x__type, $CI->config->item('n___20420'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
-    $editing_enabled = !$cache_app && in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
+    $editing_enabled = !$cache_app && !$hide_details && in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
     $focus_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $has_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];
 
@@ -1692,7 +1693,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
             $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
-        } elseif(!$cache_app) {
+        } elseif(!$cache_app && !$hide_details) {
 
             foreach($CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' )) as $e__id => $m) {
 
@@ -1740,7 +1741,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Previous Ideas
-    if(!$discovery_mode && $editing_enabled && $superpower_12673){
+    if(!$discovery_mode && $editing_enabled && $superpower_12673 && !$hide_details){
         $ui .= '<div class="hideIfEmpty coin-hover" style="padding-top:5px;">';
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -1769,22 +1770,23 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //IDEAs and Time
-    $view_i_time = view_i_time($i_stats);
-    $ui .= '<div class="cover-text"><span class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</span></div>';
+    if(!$hide_details){
+        $view_i_time = view_i_time($i_stats);
+        $ui .= '<div class="cover-text"><span class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</span></div>';
 
-    if($load_completion && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
-        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
-    }
+        if($load_completion && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
+            $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
+        }
 
-
-    //Message
-    if($message_input){
-        if(!$has_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
-            //No HTML Tags, add link:
-            $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
-        } else {
-            //Leave as is so HTML tags work:
-            $ui .= $message_input;
+        //Message
+        if($message_input){
+            if(!$has_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
+                //No HTML Tags, add link:
+                $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
+            } else {
+                //Leave as is so HTML tags work:
+                $ui .= $message_input;
+            }
         }
     }
 
@@ -1792,7 +1794,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //TOOLBAR
-    if(!$has_any_lock && $toolbar && $superpower_12700){
+    if(!$has_any_lock && $toolbar && $superpower_12700 && !$hide_details){
 
         //Idea Toolbar
         $ui .= '<div class="center coin-hover">';
@@ -1835,34 +1837,35 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Coin Block
-    if($focus_coin){
+    if(!$hide_details){
+        if($focus_coin){
 
-        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
-        $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.( $discovery_mode || !superpower_active(12700, true) ? '&nbsp;' : view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0).' '.$e___11035[4356]['m__cover'] ).'</div></td>';
-        $ui .= '<td width="34%" class="center">&nbsp;</td>';
-        $ui .= '<td width="33%" class="push_down '.superpower_active(10939).'" style="text-align: left;"><div>';
-        if($discovery_mode){
-            $ui .= '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'">'.$e___11035[13563]['m__cover'].'</a>';
-        } else {
-            $ui .= '<a href="/'.$i['i__id'].'" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__cover'].'</a>';
+            $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
+            $ui .= '<table class="coin_coins"><tr>';
+            $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.( $discovery_mode || !superpower_active(12700, true) ? '&nbsp;' : view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0).' '.$e___11035[4356]['m__cover'] ).'</div></td>';
+            $ui .= '<td width="34%" class="center">&nbsp;</td>';
+            $ui .= '<td width="33%" class="push_down '.superpower_active(10939).'" style="text-align: left;"><div>';
+            if($discovery_mode){
+                $ui .= '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'">'.$e___11035[13563]['m__cover'].'</a>';
+            } else {
+                $ui .= '<a href="/'.$i['i__id'].'" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__cover'].'</a>';
+            }
+            $ui .= '</div></td>';
+            $ui .= '</tr></table>';
+            $ui .= '</div>';
+
+        } elseif($show_coins){
+
+            $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
+            $ui .= '<table class="coin_coins"><tr>';
+            $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.view_coins_i(12274,  $i).'</div></td>';
+            $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
+            $ui .= '<td width="33%" class="push_down" style="text-align: left;"><div>'.view_coins_i(6255,  $i).'</div></td>';
+            $ui .= '</tr></table>';
+            $ui .= '</div>';
+
         }
-        $ui .= '</div></td>';
-        $ui .= '</tr></table>';
-        $ui .= '</div>';
-
-    } elseif($show_coins){
-
-        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
-        $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.view_coins_i(12274,  $i).'</div></td>';
-        $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: left;"><div>'.view_coins_i(6255,  $i).'</div></td>';
-        $ui .= '</tr></table>';
-        $ui .= '</div>';
-
     }
-
 
     $ui .= '</div>';
 

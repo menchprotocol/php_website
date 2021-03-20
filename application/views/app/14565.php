@@ -6,7 +6,7 @@ $is = $this->I_model->fetch(array(
 
 
 echo '<div class="row justify-content-center">';
-echo view_i(20417, 0, null, $is[0]);
+echo view_i(14002, 0, null, $is[0]);
 echo '</div>';
 
 
