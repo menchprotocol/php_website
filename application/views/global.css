@@ -893,7 +893,8 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 
 .add_notes_form{
     margin-left: 41px;
-    padding-bottom: 13px;
+    margin-bottom: 21px;
+    background-color: #FFC500;
 }
 
 .info_box_icon{

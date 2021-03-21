@@ -307,7 +307,7 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 
 
         //Editing menu:
-        $ui .= '<table class="table table-condensed edit-on hidden" style="margin:10px 41px 0;"><tr>';
+        $ui .= '<table class="table table-condensed edit-on hidden" style="margin:0 41px 0;"><tr>';
 
 
         //SAVE
@@ -1077,7 +1077,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
                 $tab_ui .= '<div class="no-padding add_notes_' . $x__type .'">';
                 $tab_ui .= '<div class="add_notes_form">';
                 $tab_ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
-                $tab_ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
+                $tab_ui .= '<table class="table table-condensed"><tr>';
 
                 if($handles_uploads){
 
@@ -1167,7 +1167,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
 
 
             //CONTROLLER
-            $ui .= '<table class="table table-condensed" style="margin-top: 10px;"><tr>';
+            $ui .= '<table class="table table-condensed"><tr>';
 
             if($handles_uploads){
 
