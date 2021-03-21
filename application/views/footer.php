@@ -23,7 +23,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?= view_e_settings(6225, true) ?>
+                    <?= view_e_settings(6225, false) ?>
                 </div>
             </div>
         </div>

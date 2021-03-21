@@ -23,7 +23,7 @@ $i__id = ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 );
 <?php
 
 //Give them options to choose from:
-echo view_e_settings(14517, false);
+echo view_e_settings(14517, true);
 
 //CONTINUE:
 echo '<div class="nav-controller">';

@@ -83,7 +83,6 @@ $body .= '</div>';
 echo view_headline(11019, count($previous_is), $e___11035[11019], $body, count($previous_is) > 0);
 
 
-
 if(isset($_GET['load__e']) && $superpower_14005){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(

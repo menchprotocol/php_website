@@ -1217,20 +1217,15 @@ function view_shuffle_message($e__id){
 }
 
 
-function view_e_settings($list_id, $show_accordion){
+function view_e_settings($list_id, $is_open){
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();
     $e___14010 = $CI->config->item('e___14010');
     $ui = null;
-    if(!$member_e || !$CI->config->item('e___'.$list_id)){
-        return $ui;
+    if(!$member_e){
+        return false;
     }
-
-    if($show_accordion){
-        $ui .= '<div class="accordion" id="MyAccountAccordion'.$list_id.'">';
-    }
-
 
     //Display account fields ordered with their SOURCE LINKS:
     foreach($CI->config->item('e___'.$list_id) as $acc_e__id => $acc_detail) {
@@ -1331,50 +1326,8 @@ function view_e_settings($list_id, $show_accordion){
 
         }
 
-        if($tab_ui){
+        $ui .= view_headline($acc_e__id, null, $acc_detail, $tab_ui, $is_open);
 
-            if($show_accordion){
-
-                //Accordion header:
-                $ui .= '<div class="card '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">
-<div class="card-header" id="heading' . $acc_e__id . '">
-<button class="btn btn-block" type="button" data-toggle="collapse" data-target="#openEn' . $acc_e__id . '" aria-expanded="false" aria-controls="openEn' . $acc_e__id . '">
-  <span class="icon-block">' . $acc_detail['m__cover'] . '</span><b class="css__title">' . $acc_detail['m__title'] . '</b><span class="pull-right icon-block"><i class="fas fa-chevron-down"></i></span>
-</button>
-</div>
-
-<div class="doclear">&nbsp;</div>
-
-<div id="openEn' . $acc_e__id . '" class="collapse" aria-labelledby="heading' . $acc_e__id . '" data-parent="#MyAccountAccordion'.$list_id.'">
-<div class="card-body">';
-
-                //TAB CONTENT
-                $ui .= $tab_ui;
-
-            } else {
-
-                //Show Title only:
-                $ui .= '<div class="headline top-margin"><span class="icon-block">'.$acc_detail['m__cover'].'</span>'.$acc_detail['m__title'].'</div>';
-
-                //TAB CONTENT
-                $ui .= '<div class="padded">'.$tab_ui.'</div>';
-
-            }
-
-
-
-
-
-            //Print footer:
-            $ui .= '<div class="doclear">&nbsp;</div>';
-            if($show_accordion){
-                $ui .= '</div></div></div>';
-            }
-        }
-    }
-
-    if($show_accordion){
-        $ui .= '</div>'; //End of accordion
     }
 
     return $ui;
@@ -1871,8 +1824,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 function view_headline($x__type, $counter, $m, $ui, $is_open = true){
     if(!strlen($ui)){
         return false;
+    } else {
+        return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . ( !is_null($counter) ? '<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0) . '</span> ' : '' ).$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'">'.( $is_open ? '<i class="fas fa-chevron-up"></i>' : '<i class="fas fa-chevron-down"></i>' ).'</span></a>'.'<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
     }
-    return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'">'.( $is_open ? '<i class="fas fa-chevron-up"></i>' : '<i class="fas fa-chevron-down"></i>' ).'</span></a>'.'<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
 }
 
 function view_x_progress($completion_rate, $i){
