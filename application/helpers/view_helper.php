@@ -631,7 +631,7 @@ function view_coins(){
 }
 
 function view_coin_line($href, $is_current, $o__cover, $o__title){
-    return '<a href="'.( $is_current ? 'javascript:void(0);' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block">'.$o__cover.'</span>'.$o__title.'<span class="icon-block pull-right">'.( $is_current ? '<i class="fas fa-map-marker"></i>' : '<i class="far fa-arrow-right"></i>' ).'</span></a>';
+    return '<a href="'.( $is_current ? 'javascript:void(0);' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.( $is_current ? '<i class="fas fa-map-marker"></i>' : '<i class="far fa-arrow-right"></i>' ).'</span></a>';
 }
 
 function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true){
