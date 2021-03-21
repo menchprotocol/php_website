@@ -891,21 +891,6 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 
 
 
-.add_notes_form{
-    margin-left: 41px;
-    margin-bottom: 21px;
-    background-color: #FFC500;
-    border-bottom-left-radius: 10px !important;
-    border-bottom-right-radius: 10px !important;
-    text-align: center !important;
-}
-.add_notes_form i{
-    color: #000000 !important;
-}
-.add_notes_form .btn-default {
-    color: #000000 !important;
-    border-color:#000000 !important;
-}
 
 .info_box_icon{
     text-align: center;
@@ -3021,4 +3006,22 @@ font-weight: bold !important;
 }
 .coinType12273 .zq12273.fa-circle.fas, .coinType12274 .zq12274.fa-circle.fas, .coinType6255 .zq6255.fa-circle.fas {
     color: transparent !important;
+}
+
+
+
+.add_notes_form{
+    margin-left: 41px;
+    margin-bottom: 21px;
+    background-color: #FFC500;
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    text-align: center !important;
+}
+.add_notes_form i{
+    color: #000000 !important;
+}
+.add_notes_form .btn-default {
+    color: #000000 !important;
+    border-color:#000000 !important;
 }
