@@ -366,7 +366,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
             ));
-        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___7551'))) {
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___7551'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea Note Type ID',
@@ -414,13 +414,13 @@ class E extends CI_Controller
             if(count($this->X_model->fetch(array(
                 'x__right' => $is[0]['i__id'],
                 'x__up' => $_POST['e_existing_id'],
-                'x__type' => $_POST['note_type_id'],
+                'x__type' => $_POST['x__type'],
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
                 $e___7551 = $this->config->item('e___7551');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $es[0]['e__title'].' is already added as idea '.$e___7551[$_POST['note_type_id']]['m__title'],
+                    'message' => $es[0]['e__title'].' is already added as idea '.$e___7551[$_POST['x__type']]['m__title'],
                 ));
             }
 
@@ -453,14 +453,14 @@ class E extends CI_Controller
             $this->E_model->add_source($focus_e['e__id']);
 
             //Update Algolia:
-            update_algolia($_POST['note_type_id'], $focus_e['e__id']);
+            update_algolia($_POST['x__type'], $focus_e['e__id']);
 
         }
 
         //Create Note:
         $new_note = $this->X_model->create(array(
             'x__source' => $member_e['e__id'],
-            'x__type' => $_POST['note_type_id'],
+            'x__type' => $_POST['x__type'],
             'x__right' => $is[0]['i__id'],
             'x__up' => $focus_e['e__id'],
             'x__message' => '@'.$focus_e['e__id'],
@@ -469,7 +469,7 @@ class E extends CI_Controller
         //Return source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e($_POST['note_type_id'], array_merge($focus_e, $new_note),  null,  true),
+            'e_new_echo' => view_e($_POST['x__type'], array_merge($focus_e, $new_note),  null,  true),
         ));
 
     }

@@ -85,9 +85,19 @@ echo '</div>';
 
 foreach($this->config->item('e___11089') as $x__type => $m) {
 
-    $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
-    if(count($superpower_actives) && !superpower_active(end($superpower_actives), true) && !$source_is_e){
-        //Missing Superpower:
+
+    //Have Needed Superpowers?
+    $missing = 0;
+    $meeting = 0;
+    foreach(array_intersect($this->config->item('n___10957'), $m['m__profile']) as $superpower_required){
+        if(superpower_active($superpower_required, true)){
+            $meeting++;
+        } else {
+            $missing++;
+        }
+    }
+    if(!$meeting){
+        //RELAX: Meet any requirement and it would be shown
         continue;
     }
 

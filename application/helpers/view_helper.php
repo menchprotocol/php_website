@@ -1066,7 +1066,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
 
 
                 $tab_ui .= '<div class="power-editor-'.$x__type.'">';
-                $tab_ui .= '<textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode doabsolute emoji-input input_note_'.$x__type.'" note_type_id="' . $x__type . '" placeholder="'.$e___4485[$x__type]['m__title'].'..." style="margin:0 82px 0 41px; width:calc(100% - 82px); padding: 25px 13px 13px !important;">'.$textarea_content.'</textarea>';
+                $tab_ui .= '<textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode doabsolute emoji-input input_note_'.$x__type.'" x__type="' . $x__type . '" placeholder="'.$e___4485[$x__type]['m__title'].'..." style="margin:0 82px 0 41px; width:calc(100% - 82px); padding: 25px 13px 13px !important;">'.$textarea_content.'</textarea>';
                 $tab_ui .= '<div id="current_text_'.$x__type.'" class="hidden">'.$textarea_content.'</div>';
 
                 //Response result:
@@ -1155,7 +1155,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
             $ui .= '<div class="add_notes_form">';
             $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea regular_editor dotransparent algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" note_type_id="' . $x__type . '" style="margin-top: 10px;" placeholder="'.$e___4485[$x__type]['m__title'].'..."></textarea>';
+            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea regular_editor dotransparent algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" x__type="' . $x__type . '" style="margin-top: 10px;" placeholder="'.$e___4485[$x__type]['m__title'].'..."></textarea>';
 
             //Response result:
             $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty zq6255 msg alert alert-danger" style="margin:8px 0;"></div>';
@@ -1820,7 +1820,7 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
     if(!strlen($ui)){
         return false;
     } else {
-        return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . ( !is_null($counter) ? '<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0) . '</span> ' : '' ).$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'">'.( $is_open ? '<i class="fas fa-chevron-up"></i>' : '<i class="fas fa-chevron-down"></i>' ).'</span></a>'.'<div class="headlinebody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
+        return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . ( !is_null($counter) ? '<span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span> ' : '' ).$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'">'.( $is_open ? '<i class="fas fa-chevron-up"></i>' : '<i class="fas fa-chevron-down"></i>' ).'</span></a>'.'<div class="headlinebody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
     }
 }
 

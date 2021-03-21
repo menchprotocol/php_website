@@ -114,8 +114,17 @@ echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
 foreach($this->config->item('e___11018') as $x__type => $m){
 
     //Have Needed Superpowers?
-    $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
-    if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+    $missing = 0;
+    $meeting = 0;
+    foreach(array_intersect($this->config->item('n___10957'), $m['m__profile']) as $superpower_required){
+        if(superpower_active($superpower_required, true)){
+            $meeting++;
+        } else {
+            $missing++;
+        }
+    }
+    if($missing > 0){
+        //STRICT: Anything missing and it would be skipped!
         continue;
     }
 
@@ -139,7 +148,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         $ui .= '</div>';
 
         if($e_of_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {
-            $ui .= '<div class="list-adder e-only-7551 e-i-' . $x__type . '" note_type_id="' . $x__type . '">
+            $ui .= '<div class="list-adder e-only-7551 e-i-' . $x__type . '" x__type="' . $x__type . '">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new_e_' . $x__type . '\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                     <input type="text"

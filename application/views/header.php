@@ -60,11 +60,11 @@ $logo = ( !strlen($first_segment) || $first_segment=='@'.$base_source ? '/img/lo
         import { EmojiButton } from 'https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@latest/dist/index.min.js';
 
         $(".emoji-input").each(function () {
-            var note_type_id = $(this).attr('note_type_id');
+            var x__type = $(this).attr('x__type');
             const picker = new EmojiButton();
-            const trigger = document.querySelector('#emoji_pick_type'+note_type_id);
+            const trigger = document.querySelector('#emoji_pick_type'+x__type);
             picker.on('emoji', selection => {
-                append_value($('.input_note_'+note_type_id), ' ' + selection.emoji);
+                append_value($('.input_note_'+x__type), ' ' + selection.emoji);
                 set_autosize($(this));
             });
             trigger.addEventListener('click', () => picker.togglePicker(trigger));
@@ -264,7 +264,7 @@ if(!$basic_header_footer){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' note_type_id="'.$x__type.'" class="dropdown-item css__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<a '.$href.' x__type="'.$x__type.'" class="dropdown-item css__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
 

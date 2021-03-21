@@ -51,18 +51,18 @@ $(document).ready(function () {
 
     $('.power_editor').on('change keyup paste', function(e) {
 
-        var note_type_id = $(this).attr('note_type_id');
+        var x__type = $(this).attr('x__type');
 
         //Toggle save button based on changed:
-        if(i_note_poweredit_has_changed(note_type_id)){
-            $('.save_button_'+note_type_id).removeClass('hidden');
+        if(i_note_poweredit_has_changed(x__type)){
+            $('.save_button_'+x__type).removeClass('hidden');
         } else {
-            $('.save_button_'+note_type_id).addClass('hidden');
+            $('.save_button_'+x__type).addClass('hidden');
         }
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if (e.ctrlKey && code== 13) {
-            i_note_poweredit_save(note_type_id);
+            i_note_poweredit_save(x__type);
         }
 
     });
@@ -75,7 +75,7 @@ $(document).ready(function () {
 
     //Activate Source-Only Inputs:
     $(".e-only-7551").each(function () {
-        e_e_only_search_7551($(this).attr('note_type_id'));
+        e_e_only_search_7551($(this).attr('x__type'));
     });
 
 
@@ -94,63 +94,63 @@ $(document).ready(function () {
 
 
 
-function i_note_poweredit_save(note_type_id){
+function i_note_poweredit_save(x__type){
 
     //Only save if something changed:
-    if(!i_note_poweredit_has_changed(note_type_id)){
+    if(!i_note_poweredit_has_changed(x__type)){
         //Just revert to preview mode:
         loadtab(14418, 14420); //Load Preview tab
         return false;
     }
 
-    var input_textarea = '.input_note_'+note_type_id;
-    $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).addClass('dynamic_saving');
-    $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
+    var input_textarea = '.input_note_'+x__type;
+    $('.power-editor-' + x__type+', .tab-data-'+ x__type).addClass('dynamic_saving');
+    $('.save_notes_' + x__type).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
 
     $.post("/i/i_note_poweredit_save", {
         i__id: $('#focus__id').val(),
-        note_type_id: note_type_id,
+        x__type: x__type,
         field_value: $(input_textarea).val().trim()
     }, function (data) {
 
-        $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).removeClass('dynamic_saving');
-        $('.save_notes_' + note_type_id).attr('href', 'javascript:i_note_poweredit_save('+note_type_id+');');
+        $('.power-editor-' + x__type+', .tab-data-'+ x__type).removeClass('dynamic_saving');
+        $('.save_notes_' + x__type).attr('href', 'javascript:i_note_poweredit_save('+x__type+');');
 
         //Update raw text input:
         var new_text = data.input_clean.trim();
         $(input_textarea).val(new_text + ' ');
-        $('#current_text_'+note_type_id).text(new_text);
+        $('#current_text_'+x__type).text(new_text);
         autosize.update($(input_textarea));
         $(input_textarea).focus();
 
         if (!data.status) {
 
-            $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__cover'] + ' ' + js_e___11035[14422]['m__title']);
+            $('.save_notes_' + x__type).html(js_e___11035[14422]['m__cover'] + ' ' + js_e___11035[14422]['m__title']);
 
             //Show Errors:
-            $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Message not saved because:<br />'+data.message);
+            $(".note_error_"+x__type).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Message not saved because:<br />'+data.message);
 
         } else {
 
             //Show update success icon:
-            $('.save_notes_' + note_type_id).html(js_e___11035[14424]['m__cover']);
+            $('.save_notes_' + x__type).html(js_e___11035[14424]['m__cover']);
 
             //Reset errors:
-            $(".note_error_"+note_type_id).html('');
+            $(".note_error_"+x__type).html('');
 
             //Update DISCOVERY:
-            $('.editor_preview_'+note_type_id).html(data.message);
+            $('.editor_preview_'+x__type).html(data.message);
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
 
             //Hide Save BUtton:
-            $('.save_button_'+note_type_id).addClass('hidden');
+            $('.save_button_'+x__type).addClass('hidden');
 
             //Load Images:
             lazy_load();
 
-            if(note_type_id==4231 && new_text.length>0){
+            if(x__type==4231 && new_text.length>0){
                 loadtab(14418, 14420); //Load Preview tab
             }
 
@@ -158,7 +158,7 @@ function i_note_poweredit_save(note_type_id){
 
             setTimeout(function () {
                 $(input_textarea).focus();
-                $('.save_notes_' + note_type_id).html(js_e___11035[14422]['m__cover'] + ' ' + js_e___11035[14422]['m__title']);
+                $('.save_notes_' + x__type).html(js_e___11035[14422]['m__cover'] + ' ' + js_e___11035[14422]['m__title']);
             }, 987);
 
         }
@@ -167,15 +167,15 @@ function i_note_poweredit_save(note_type_id){
 
 
 
-function e_add_only_7551(e_existing_id, note_type_id) {
+function e_add_only_7551(e_existing_id, x__type) {
 
 
     //if e_existing_id>0 it means we're adding an existing source, in which case e_new_string should be null
     //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
 
     var e_new_string = null;
-    var input = $('.e-i-'+note_type_id+' .add-input');
-    var list_id = 'add-e-'+note_type_id;
+    var input = $('.e-i-'+x__type+' .add-input');
+    var list_id = 'add-e-'+x__type;
 
     if (e_existing_id == 0) {
 
@@ -191,7 +191,7 @@ function e_add_only_7551(e_existing_id, note_type_id) {
     $.post("/e/e_add_only_7551", {
 
         i__id: $('#focus__id').val(),
-        note_type_id: note_type_id,
+        x__type: x__type,
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
 
@@ -199,7 +199,7 @@ function e_add_only_7551(e_existing_id, note_type_id) {
 
         if (data.status) {
 
-            i_note_counter(note_type_id, +1);
+            i_note_counter(x__type, +1);
 
             //Raw input to make it ready for next URL:
             input.focus();
@@ -218,13 +218,13 @@ function e_add_only_7551(e_existing_id, note_type_id) {
 
 }
 
-function e_e_only_search_7551(note_type_id) {
+function e_e_only_search_7551(x__type) {
 
     if(!js_pl_id){
         return false;
     }
 
-    var element_focus = ".e-i-"+note_type_id;
+    var element_focus = ".e-i-"+x__type;
 
     var base_creator_url = '/e/create/'+$('#focus__id').val()+'/?content_title=';
 
@@ -235,7 +235,7 @@ function e_e_only_search_7551(note_type_id) {
     }).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return e_add_only_7551(0, note_type_id);
+            return e_add_only_7551(0, x__type);
         }
     });
 
@@ -243,7 +243,7 @@ function e_e_only_search_7551(note_type_id) {
 
         $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            e_add_only_7551(suggestion.s__id, note_type_id);
+            e_add_only_7551(suggestion.s__id, x__type);
 
         }).autocomplete({hint: false, minLength: 1}, [{
 
@@ -266,11 +266,11 @@ function e_e_only_search_7551(note_type_id) {
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span><b class="zq12274">Create "' + data.query + '"</b></a>';
+                        return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+x__type+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span><b class="zq12274">Create "' + data.query + '"</b></a>';
                     }
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+note_type_id+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span><b class="zq12274">' + data.query + '</b></a>';
+                    return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+x__type+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span><b class="zq12274">' + data.query + '</b></a>';
                 },
             }
         }]);

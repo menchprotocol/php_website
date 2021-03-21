@@ -438,16 +438,21 @@ if($top_i__id && count($this->X_model->fetch(array(
 
 
 //DISCUSSIONS:
-echo '<div class="view-discussions hidden">';
-echo '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
-echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[12419]['m__cover'].'</span>'.$e___11035[12419]['m__title'].'</div>';
 $comments = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 12419,
     'x__right' => $i_focus['i__id'],
 ), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
-echo view_i_note_list(12419, true, $i_focus, $comments, true, true);
-echo '</div>';
+
+//For now we have comments completely hidden:
+$headline_ui = '<div class="view-discussions hidden">';
+$headline_ui .= '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
+$headline_ui .= view_i_note_list(12419, true, $i_focus, $comments, true, true);
+$headline_ui .= '</div>';
+
+echo view_headline(12419, count($comments), $e___11035[12419], $headline_ui, true, true);
+
+
 
 
 
@@ -488,7 +493,7 @@ if(!$top_i__id){
         } elseif($e__id==14672){
 
             //COMMENT
-            $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m2['m__cover'].'<span class="nav-counter css__title en-type-counter-12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn" href="#comment" onclick="load_comments()">'.$m2['m__cover'].'<span class="nav-counter css__title xtypecounter12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
         } elseif($e__id==12211){
 

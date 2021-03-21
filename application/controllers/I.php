@@ -283,7 +283,7 @@ class I extends CI_Controller {
                 'message' => 'Invalid Idea ID',
             ));
 
-        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___4485'))) {
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___4485'))) {
 
             return view_json(array(
                 'status' => 0,
@@ -306,7 +306,7 @@ class I extends CI_Controller {
         }
 
         //Make sure message is all good:
-        $msg_validation = $this->X_model->message_compile($_POST['x__message'], false, $member_e, $_POST['note_type_id'], $_POST['i__id']);
+        $msg_validation = $this->X_model->message_compile($_POST['x__message'], false, $member_e, $_POST['x__type'], $_POST['i__id']);
 
         if (!$msg_validation['status']) {
             //There was some sort of an error:
@@ -318,11 +318,11 @@ class I extends CI_Controller {
             'x__source' => $member_e['e__id'],
             'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type' => intval($_POST['note_type_id']),
+                    'x__type' => intval($_POST['x__type']),
                     'x__right' => intval($_POST['i__id']),
                 )),
             //Referencing attributes:
-            'x__type' => intval($_POST['note_type_id']),
+            'x__type' => intval($_POST['x__type']),
             'x__right' => intval($_POST['i__id']),
             'x__message' => $msg_validation['clean_message'],
             'x__up' => ( count($msg_validation['note_references']) ? $msg_validation['note_references'][0] : 0 ),
@@ -336,7 +336,7 @@ class I extends CI_Controller {
         //Print the challenge:
         return view_json(array(
             'status' => 1,
-            'message' => view_i_note($_POST['note_type_id'], false, array_merge($member_e, $x, array(
+            'message' => view_i_note($_POST['x__type'], false, array_merge($member_e, $x, array(
                 'x__down' => $member_e['e__id'],
             )), true),
         ));
@@ -364,7 +364,7 @@ class I extends CI_Controller {
                 'message' => 'Missing IDEA',
             ));
 
-        } elseif (!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___12359'))) {
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___12359'))) {
 
             return view_json(array(
                 'status' => 0,
@@ -386,7 +386,7 @@ class I extends CI_Controller {
                 'x__message' => $error_message,
                 'x__source' => $member_e['e__id'],
                 'x__left' => $_POST['i__id'],
-                'x__up' => $_POST['note_type_id'],
+                'x__up' => $_POST['x__type'],
                 'x__type' => 4246, //Platform Bug Reports
                 'x__metadata' => array(
                     '$_FILES' => $_FILES,
@@ -443,12 +443,12 @@ class I extends CI_Controller {
         //Create message:
         $x = $this->X_model->create(array(
             'x__source' => $member_e['e__id'],
-            'x__type' => $_POST['note_type_id'],
+            'x__type' => $_POST['x__type'],
             'x__up' => $cdn_status['cdn_e']['e__id'],
             'x__right' => intval($_POST['i__id']),
             'x__message' => '@' . $cdn_status['cdn_e']['e__id'],
             'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
-                    'x__type' => $_POST['note_type_id'],
+                    'x__type' => $_POST['x__type'],
                     'x__right' => $_POST['i__id'],
                 )),
         ));
@@ -464,7 +464,7 @@ class I extends CI_Controller {
         view_json(array(
             'status' => 1,
             'new_source' => '@' . $cdn_status['cdn_e']['e__id'],
-            'message' => view_i_note($_POST['note_type_id'], false, array_merge($member_e, $new_messages[0], array(
+            'message' => view_i_note($_POST['x__type'], false, array_merge($member_e, $new_messages[0], array(
                 'x__down' => $member_e['e__id'],
             )), true),
         ));
@@ -692,7 +692,7 @@ class I extends CI_Controller {
                 'input_clean' => $_POST['field_value'],
             ));
 
-        } elseif(!isset($_POST['note_type_id']) || !in_array($_POST['note_type_id'], $this->config->item('n___14311'))){
+        } elseif(!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14311'))){
 
             //Not a power editor:
             return view_json(array(
@@ -767,7 +767,7 @@ class I extends CI_Controller {
         //DELETE all current notes, if any:
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => $_POST['note_type_id'],
+            'x__type' => $_POST['x__type'],
             'x__right' => $is[0]['i__id'],
         ), array(), 0) as $x) {
             //Remove Note:
@@ -786,7 +786,7 @@ class I extends CI_Controller {
             $x = $this->X_model->create(array(
                 'x__source' => $member_e['e__id'],
                 'x__spectrum' => ($count + 1),
-                'x__type' => intval($_POST['note_type_id']),
+                'x__type' => intval($_POST['x__type']),
                 'x__right' => $is[0]['i__id'],
                 'x__message' => $msg_validation['clean_message'],
                 'x__up' => ( count($msg_validation['note_references']) ? $msg_validation['note_references'][0] : 0 ),

@@ -191,7 +191,7 @@ li a {
 
 
 .add-input{
-    margin-bottom: 0;
+    margin-bottom: 13px;
     padding: 5px 0 5px 41px !important;
     width: 100%;
 }
@@ -2008,7 +2008,7 @@ i, .btn .show-max {
     font-weight: bold !important;
 }
 .headline-height, .headline{
-    min-height: 44px;
+    min-height: 34px;
 }
 .coin_cover{
     position: relative;

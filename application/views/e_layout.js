@@ -29,10 +29,6 @@ $(document).ready(function () {
     });
 
 
-
-    //Update Profile counters to account for sources that member may not be able to see due to missing permissions...
-    $('.en-type-counter-11030').text($('#list-in-11030 .coinface-12274').not(".hidden").length);
-
     //Load search for mass update function:
     load_editor();
     x_type_preview_load();

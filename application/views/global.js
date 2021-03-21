@@ -328,14 +328,14 @@ function init_remove(){
 }
 
 
-function i_note_poweredit_has_changed(note_type_id){
-    var text_editor = $('.input_note_'+note_type_id).val().trim();
-    var text_preview = $('#current_text_'+note_type_id).text().trim();
+function i_note_poweredit_has_changed(x__type){
+    var text_editor = $('.input_note_'+x__type).val().trim();
+    var text_preview = $('#current_text_'+x__type).text().trim();
     return  text_editor != text_preview;
 }
 
-function i_note_poweredit_has_text(note_type_id){
-    return $('.input_note_'+note_type_id).val().trim().length > 0;
+function i_note_poweredit_has_text(x__type){
+    return $('.input_note_'+x__type).val().trim().length > 0;
 }
 
 function revert_poweredit(){
@@ -455,18 +455,18 @@ $(document).ready(function () {
     watch_for_coin_cover_clicks();
 
     $('.trigger_modal').click(function (e) {
-        var note_type_id = parseInt($(this).attr('note_type_id'));
-        $('#modal'+note_type_id).modal('show');
+        var x__type = parseInt($(this).attr('x__type'));
+        $('#modal'+x__type).modal('show');
         x_create({
             x__source: js_pl_id,
             x__type: 14576, //MODAL VIEWED
-            x__up: note_type_id,
+            x__up: x__type,
         });
         //Log Viewed Transaction
-        if(note_type_id==14393){
+        if(x__type==14393){
             //Current
             $('.current_url').text(window.location.href);
-        } else if(note_type_id==6287){
+        } else if(x__type==6287){
             //Load App Modal:
             $.post("/app/load_index", {}, function (data) {
                 $('#modal6287 .modal-body').html(data.status ? data.load_index : data.message );
@@ -878,7 +878,7 @@ function click_has_class(target_el, target_class){
     return class_found;
 }
 
-function e_remove(x__id, note_type_id) {
+function e_remove(x__id, x__type) {
 
     var r = confirm("Remove this source?");
     if (r == true) {
@@ -889,7 +889,7 @@ function e_remove(x__id, note_type_id) {
         }, function (data) {
             if (data.status) {
 
-                i_note_counter(note_type_id, -1);
+                i_note_counter(x__type, -1);
                 $(".cover_x_" + x__id).fadeOut();
                 setTimeout(function () {
                     $(".cover_x_" + x__id).remove();
@@ -905,7 +905,7 @@ function e_remove(x__id, note_type_id) {
 }
 
 
-function e_nuclear_delete(e__id, note_type_id) {
+function e_nuclear_delete(e__id, x__type) {
 
     var confirm_removal = prompt("Nuclear Delete Source and all its related transactions? This cannot be undone! Type \"nuclear\" to confirm.", "");
     if (!(confirm_removal=='nuclear')) {
@@ -922,7 +922,7 @@ function e_nuclear_delete(e__id, note_type_id) {
             if (data.status) {
 
                 console.log(data.message);
-                i_note_counter(note_type_id, -1);
+                i_note_counter(x__type, -1);
                 $(".coin___12274_" + e__id).fadeOut();
                 setTimeout(function () {
                     $(".coin___12274_" + e__id).remove();
@@ -1289,19 +1289,19 @@ function images_search(){
 
 }
 
-function images_add(note_type_id, giphy_id, giphy_title){
+function images_add(x__type, giphy_id, giphy_title){
 
-    var current_value = $('.input_note_' + note_type_id).val();
+    var current_value = $('.input_note_' + x__type).val();
     $('#modal14073').modal('hide');
-    $('.input_note_' + note_type_id).val(( current_value.length ? current_value+"\n\n" : '' ) + 'https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
+    $('.input_note_' + x__type).val(( current_value.length ? current_value+"\n\n" : '' ) + 'https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
 
     //Save or Submit:
-    if(js_n___14311.includes(note_type_id)){
+    if(js_n___14311.includes(x__type)){
         //Power Editor:
-        i_note_poweredit_save(note_type_id);
+        i_note_poweredit_save(x__type);
     } else {
         //Regular Editor:
-        i_note_add_text(note_type_id);
+        i_note_add_text(x__type);
     }
 }
 
@@ -1380,7 +1380,7 @@ function i_note_activate(){
     //Loop through all new idea inboxes:
     $(".new-note").each(function () {
 
-        var note_type_id = parseInt($(this).attr('note_type_id'));
+        var x__type = parseInt($(this).attr('x__type'));
 
         //Initiate @ search for all idea text areas:
         i_note_e_search($(this));
@@ -1388,20 +1388,20 @@ function i_note_activate(){
         set_autosize($(this));
 
         //Activate sorting:
-        i_note_sort_load(note_type_id);
+        i_note_sort_load(x__type);
 
         var showFiles = function (files) {
             if(typeof files[0] !== 'undefined'){
-                $('.box' + note_type_id).find('label').text(files.length > 1 ? ($('.box' + note_type_id).find('input[type="file"]').attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
+                $('.box' + x__type).find('label').text(files.length > 1 ? ($('.box' + x__type).find('input[type="file"]').attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
             }
         };
 
-        $('.box' + note_type_id).find('input[type="file"]').on('drop', function (e) {
+        $('.box' + x__type).find('input[type="file"]').on('drop', function (e) {
             droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
             showFiles(droppedFiles);
         });
 
-        $('.box' + note_type_id).find('input[type="file"]').on('change', function (e) {
+        $('.box' + x__type).find('input[type="file"]').on('change', function (e) {
             showFiles(e.target.files);
         });
 
@@ -1409,67 +1409,67 @@ function i_note_activate(){
         $('.regular_editor').keydown(function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if (e.ctrlKey && code== 13) {
-                i_note_add_text($(this).attr('note_type_id'));
+                i_note_add_text($(this).attr('x__type'));
             }
         });
 
         //Watchout for file uplods:
-        $('.box' + note_type_id).find('input[type="file"]').change(function () {
-            i_note_add_file(droppedFiles, 'file', note_type_id);
+        $('.box' + x__type).find('input[type="file"]').change(function () {
+            i_note_add_file(droppedFiles, 'file', x__type);
         });
 
 
         //Should we auto start?
         if (isAdvancedUpload) {
 
-            $('.box' + note_type_id).addClass('has-advanced-upload');
+            $('.box' + x__type).addClass('has-advanced-upload');
             var droppedFiles = false;
 
-            $('.box' + note_type_id).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+            $('.box' + x__type).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).addClass('dynamic_saving');
+                $('.power-editor-' + x__type+', .tab-data-'+ x__type).addClass('dynamic_saving');
             })
                 /*
             .on('dragover dragenter', function () {
-                $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).addClass('dynamic_saving');
+                $('.power-editor-' + x__type+', .tab-data-'+ x__type).addClass('dynamic_saving');
             })
             .on('dragleave dragend drop', function () {
-                $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).removeClass('dynamic_saving');
+                $('.power-editor-' + x__type+', .tab-data-'+ x__type).removeClass('dynamic_saving');
             })
                 */
             .on('drop', function (e) {
                 droppedFiles = e.originalEvent.dataTransfer.files;
                 e.preventDefault();
-                i_note_add_file(droppedFiles, 'drop', note_type_id);
-                $('.power-editor-' + note_type_id+', .tab-data-'+ note_type_id).removeClass('dynamic_saving');
+                i_note_add_file(droppedFiles, 'drop', x__type);
+                $('.power-editor-' + x__type+', .tab-data-'+ x__type).removeClass('dynamic_saving');
             });
         }
 
     });
 }
 
-function i_note_counter(note_type_id, adjustment_count){
-    var current_count = parseInt( $('.en-type-counter-'+note_type_id).text().length ? $('.en-type-counter-'+note_type_id).text() : 0 );
+function i_note_counter(x__type, adjustment_count){
+    var current_count = parseInt( $('.xtypecounter'+x__type).text().length ? $('.xtypecounter'+x__type).text() : 0 );
     var new_count = current_count + adjustment_count;
-    $('.en-type-counter-'+note_type_id).text(new_count);
+    $('.xtypecounter'+x__type).text(new_count);
 }
 
-function i_note_count_new(note_type_id) {
+function i_note_count_new(x__type) {
 
     //Update count:
-    var len = $('.input_note_' + note_type_id).val().length;
+    var len = $('.input_note_' + x__type).val().length;
     if (len > js_e___6404[4485]['m__message']) {
-        $('#charNum' + note_type_id).addClass('overload').text(len);
+        $('#charNum' + x__type).addClass('overload').text(len);
     } else {
-        $('#charNum' + note_type_id).removeClass('overload').text(len);
+        $('#charNum' + x__type).removeClass('overload').text(len);
     }
 
     //Only show counter if getting close to limit:
     if(len > ( js_e___6404[4485]['m__message'] * js_e___6404[12088]['m__message'] )){
-        $('#ideaNoteNewCount' + note_type_id).removeClass('hidden');
+        $('#ideaNoteNewCount' + x__type).removeClass('hidden');
     } else {
-        $('#ideaNoteNewCount' + note_type_id).addClass('hidden');
+        $('#ideaNoteNewCount' + x__type).addClass('hidden');
     }
 
 }
@@ -1532,13 +1532,13 @@ function i_note_e_search(obj) {
     }
 }
 
-function i_note_sort_apply(note_type_id) {
+function i_note_sort_apply(x__type) {
 
     var new_x__spectrums = [];
     var sort_rank = 0;
     var this_x__id = 0;
 
-    $(".msg_e_type_" + note_type_id).each(function () {
+    $(".msg_e_type_" + x__type).each(function () {
         this_x__id = parseInt($(this).attr('x__id'));
         if (this_x__id > 0) {
             sort_rank++;
@@ -1558,10 +1558,10 @@ function i_note_sort_apply(note_type_id) {
     }
 }
 
-function i_note_sort_load(note_type_id) {
+function i_note_sort_load(x__type) {
 
 
-    var sotrable_div = document.getElementById("i_notes_list_" + note_type_id);
+    var sotrable_div = document.getElementById("i_notes_list_" + x__type);
     if(!sotrable_div){
         return false;
     }
@@ -1573,7 +1573,7 @@ function i_note_sort_load(note_type_id) {
         draggable: ".note_sortable", // Specifies which items inside the element should be sortable
         onUpdate: function (evt/**Event*/) {
             //Apply new sort:
-            i_note_sort_apply(note_type_id);
+            i_note_sort_apply(x__type);
         },
         //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
         onChoose: function (evt/**Event*/) {
@@ -1627,7 +1627,7 @@ function cancel_13574(x__id) {
     $("#ul-nav-" + x__id + ">div").css('width', 'inherit');
 }
 
-function i_note_update_text(x__id, note_type_id) {
+function i_note_update_text(x__id, x__type) {
 
     //Revert View:
     cancel_13574(x__id);
@@ -1666,7 +1666,7 @@ function i_note_update_text(x__id, note_type_id) {
 }
 
 
-function i_remove_note(x__id, note_type_id){
+function i_remove_note(x__id, x__type){
 
     var r = confirm("Remove this note?");
     if (r == true) {
@@ -1674,7 +1674,7 @@ function i_remove_note(x__id, note_type_id){
         $.post("/i/i_remove_note", { x__id: parseInt(x__id) }, function (data) {
             if (data.status) {
 
-                i_note_counter(note_type_id, -1);
+                i_note_counter(x__type, -1);
 
                 $("#ul-nav-" + x__id).fadeOut();
 
@@ -1691,25 +1691,25 @@ function i_remove_note(x__id, note_type_id){
     }
 }
 
-function i_note_start_adding(note_type_id) {
-    $('.save_notes_' + note_type_id).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
-    $('.no_notes_' + note_type_id).remove();
+function i_note_start_adding(x__type) {
+    $('.save_notes_' + x__type).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
+    $('.no_notes_' + x__type).remove();
     $('.remove_loading').hide();
 }
 
 
-function i_note_end_adding(result, note_type_id) {
+function i_note_end_adding(result, x__type) {
 
     //Update UI to unlock:
-    $('.save_notes_' + note_type_id).html(js_e___11035[14421]['m__cover']).attr('href', 'javascript:i_note_add_text('+note_type_id+');');
-    $('.input_note_' + note_type_id).removeClass('dynamic_saving').focus();
+    $('.save_notes_' + x__type).html(js_e___11035[14421]['m__cover']).attr('href', 'javascript:i_note_add_text('+x__type+');');
+    $('.input_note_' + x__type).removeClass('dynamic_saving').focus();
     $('.remove_loading').fadeIn();
 
     //What was the result?
     if (result.status) {
 
         //Append data:
-        $(result.message).insertBefore( ".add_notes_" + note_type_id );
+        $(result.message).insertBefore( ".add_notes_" + x__type );
 
         //Tooltips:
         $('[data-toggle="tooltip"]').tooltip();
@@ -1720,29 +1720,29 @@ function i_note_end_adding(result, note_type_id) {
         watch_for_coin_cover_clicks();
 
         //Hide any errors:
-        $(".note_error_"+note_type_id).html('');
+        $(".note_error_"+x__type).html('');
 
     } else {
 
-        $(".note_error_"+note_type_id).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'+result.message);
+        $(".note_error_"+x__type).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'+result.message);
 
     }
 }
 
-function i_note_add_file(droppedFiles, uploadType, note_type_id) {
+function i_note_add_file(droppedFiles, uploadType, x__type) {
 
     //Prevent multiple concurrent uploads:
-    if ($('.box' + note_type_id).hasClass('dynamic_saving') || !isAdvancedUpload) {
+    if ($('.box' + x__type).hasClass('dynamic_saving') || !isAdvancedUpload) {
         return false;
     }
 
     //Lock message:
-    i_note_start_adding(note_type_id);
+    i_note_start_adding(x__type);
 
-    var ajaxData = new FormData($('.box' + note_type_id).get(0));
+    var ajaxData = new FormData($('.box' + x__type).get(0));
     if (droppedFiles) {
         $.each(droppedFiles, function (i, file) {
-            var thename = $('.box' + note_type_id).find('input[type="file"]').attr('name');
+            var thename = $('.box' + x__type).find('input[type="file"]').attr('name');
             if (typeof thename == typeof undefined || thename == false) {
                 var thename = 'drop';
             }
@@ -1752,18 +1752,18 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
 
     ajaxData.append('upload_type', uploadType);
     ajaxData.append('i__id', $('#focus__id').val());
-    ajaxData.append('note_type_id', note_type_id);
+    ajaxData.append('x__type', x__type);
 
     $.ajax({
         url: '/i/i_note_add_file',
-        type: $('.box' + note_type_id).attr('method'),
+        type: $('.box' + x__type).attr('method'),
         data: ajaxData,
         dataType: 'json',
         cache: false,
         contentType: false,
         processData: false,
         complete: function () {
-            $('.box' + note_type_id).removeClass('dynamic_saving');
+            $('.box' + x__type).removeClass('dynamic_saving');
         },
         success: function (data) {
 
@@ -1773,23 +1773,23 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
 
             } else {
 
-                if(js_n___14311.includes(note_type_id)){
+                if(js_n___14311.includes(x__type)){
                     //Power Editor:
-                    var current_value = $('.input_note_' + note_type_id).val();
-                    $('.input_note_' + note_type_id).val(( current_value.length ? current_value+"\n\n" : '' ) + data.new_source);
+                    var current_value = $('.input_note_' + x__type).val();
+                    $('.input_note_' + x__type).val(( current_value.length ? current_value+"\n\n" : '' ) + data.new_source);
                 } else {
                     //Regular Editor:
-                    i_note_counter(note_type_id, +1);
+                    i_note_counter(x__type, +1);
                 }
 
                 //Adjust icon again:
-                $('.file_label_' + note_type_id).html('<span class="icon-block">'+js_e___11035[13572]['m__cover']+'</span>');
+                $('.file_label_' + x__type).html('<span class="icon-block">'+js_e___11035[13572]['m__cover']+'</span>');
             }
 
-            if(js_n___14311.includes(note_type_id)){
-                i_note_poweredit_save(note_type_id);
+            if(js_n___14311.includes(x__type)){
+                i_note_poweredit_save(x__type);
             } else {
-                i_note_end_adding(data, note_type_id);
+                i_note_end_adding(data, x__type);
             }
 
         },
@@ -1797,7 +1797,7 @@ function i_note_add_file(droppedFiles, uploadType, note_type_id) {
             var result = [];
             result.status = 0;
             result.message = data.responseText;
-            i_note_end_adding(result, note_type_id);
+            i_note_end_adding(result, x__type);
         }
     });
 
@@ -1811,7 +1811,7 @@ function watch_for_coin_cover_clicks(){
 }
 
 var currentlu_adding = false;
-function i_note_add_text(note_type_id) {
+function i_note_add_text(x__type) {
 
     if(currentlu_adding){
         return false;
@@ -1819,14 +1819,14 @@ function i_note_add_text(note_type_id) {
     currentlu_adding = true;
 
     //Lock message:
-    i_note_start_adding(note_type_id);
+    i_note_start_adding(x__type);
 
     //Update backend:
     $.post("/i/i_note_add_text", {
 
         i__id: $('#focus__id').val(), //Synonymous
-        x__message: $('.input_note_' + note_type_id).val(),
-        note_type_id: note_type_id,
+        x__message: $('.input_note_' + x__type).val(),
+        x__type: x__type,
 
     }, function (data) {
 
@@ -1834,16 +1834,16 @@ function i_note_add_text(note_type_id) {
         if (data.status) {
 
             //Reset input field:
-            $('.input_note_' + note_type_id).val("");
-            set_autosize($('.input_note_' + note_type_id));
+            $('.input_note_' + x__type).val("");
+            set_autosize($('.input_note_' + x__type));
 
-            i_note_count_new(note_type_id);
-            i_note_counter(note_type_id, +1);
+            i_note_count_new(x__type);
+            i_note_counter(x__type, +1);
 
         }
 
         //Unlock field:
-        i_note_end_adding(data, note_type_id);
+        i_note_end_adding(data, x__type);
 
         //Done adding:
         currentlu_adding = false;
