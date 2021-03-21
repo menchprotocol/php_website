@@ -1325,8 +1325,8 @@ label {
     margin-bottom: 0;
 }
 
-.dolight, .modal-title{
-    color: #999999;
+.dolight, .modal-title h5{
+    color: #999999 !important;
 }
 
 .dotransparent {
