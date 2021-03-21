@@ -62,11 +62,10 @@ $previous_is = $this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
-echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline(11019)"><span class="icon-block">'.$e___11035[11019]['m__cover'].'</span>' . number_format(count($previous_is), 0) . ' '.$e___11035[11019]['m__title'].'<span class="icon-block pull-right headline_title_11019"><i class="fas fa-chevron-up"></i></span></a>';
-echo '<div class="headlinebody headline_body_11019">';
 
+$body = '';
 if($show_previous){
-    echo '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
+    $body .= '<div class="new-list-'.$x__type.' list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
                         <input type="text"
@@ -75,12 +74,13 @@ if($show_previous){
                                placeholder="'.$e___11035[14016]['m__title'].'">
                     </div></div>';
 }
-echo '<div id="list-in-11019" class="row justify-content-center dominHeight">';
+$body .= '<div id="list-in-11019" class="row justify-content-center dominHeight">';
 foreach($previous_is as $previous_i) {
-    echo view_i(11019, 0, null, $previous_i, $e_of_i);
+    $body .= view_i(11019, 0, null, $previous_i, $e_of_i);
 }
-echo '</div>';
-echo '</div>';
+$body .= '</div>';
+
+echo view_headline(11019, count($previous_is), $e___11035[11019], $body, count($previous_is) > 0);
 
 
 
@@ -332,9 +332,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         continue;
     }
 
-    echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span><span class="en-type-counter-'.$x__type.'">' . number_format($counter, 0) . '</span> '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'"><i class="fas fa-chevron-up"></i></span></a>';
-    echo '<div class="headlinebody headline_body_'.$x__type.'">';
-    echo $ui;
-    echo '</div>';
+    //Show headline:
+    echo view_headline($x__type, $counter, $m, $ui, $counter > 0);
 
 }

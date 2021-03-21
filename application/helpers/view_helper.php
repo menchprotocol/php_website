@@ -1868,6 +1868,13 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 }
 
+function view_headline($x__type, $counter, $m, $ui, $is_open = true){
+    if(!strlen($ui)){
+        return false;
+    }
+    return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . number_format($counter, 0) . ' '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'">'.( $is_open ? '<i class="fas fa-chevron-up"></i>' : '<i class="fas fa-chevron-down"></i>' ).'</span></a>'.'<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
+}
+
 function view_x_progress($completion_rate, $i){
 
     if(!isset($completion_rate['steps_total'])){

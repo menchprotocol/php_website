@@ -38,7 +38,20 @@ if(!$source_is_e || $superpower_13422){
     $trigger_hide = null;
 
 
-    $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
+    $profile_ui = '';
+    if($superpower_13422){
+        $profile_ui .= '<div class="'.$trigger_hide.'"><div class="headline-height"><div id="new_11030" class="list-adder">
+                <div class="input-group border">
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                    <input type="text"
+                           class="form-control form-control-thick algolia_search dotransparent add-input"
+                           id="New11030input"
+                           maxlength="' . view_memory(6404,6197) . '"
+                           placeholder="'.$e___11035[14055]['m__title'].'">
+                </div></div></div></div>';
+    }
+
+    $profile_ui .= '<div id="list-in-11030" class="row justify-content-center dominHeight">';
 
     $counter = 0; //Recount
     foreach($profiles as $e_link) {
@@ -57,27 +70,7 @@ if(!$source_is_e || $superpower_13422){
     }
     $profile_ui .= '</div>';
 
-
-
-    echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline(11030)"><span class="icon-block">'.$e___11035[11030]['m__cover'].'</span>' . number_format($counter, 0) . ' '.$e___11035[11030]['m__title'].'<span class="icon-block pull-right headline_title_11030"><i class="fas fa-chevron-up"></i></span></a>';
-    echo '<div class="headlinebody headline_body_11030">';
-
-    if($superpower_13422){
-        echo '<div class="'.$trigger_hide.'"><div class="headline-height"><div id="new_11030" class="list-adder">
-                <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
-                    <input type="text"
-                           class="form-control form-control-thick algolia_search dotransparent add-input"
-                           id="New11030input"
-                           maxlength="' . view_memory(6404,6197) . '"
-                           placeholder="'.$e___11035[14055]['m__title'].'">
-                </div></div></div></div>';
-    }
-
-    echo $profile_ui;
-
-    echo '</div>';
-
+    echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, $counter > 0);
 
 }
 
@@ -516,14 +509,8 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         continue;
     }
 
-    if($ui){
 
-        echo '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span><span class="en-type-counter-'.$x__type.'">' . number_format($counter, 0) . '</span> '.$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'">'.( !$counter ? '<i class="fas fa-chevron-down"></i>' : '<i class="fas fa-chevron-up"></i>' ).'</span></a>';
-        echo '<div class="headlinebody headline_body_'.$x__type.( !$counter ? ' hidden ' : '' ).'">';
-        echo $ui;
-        echo '</div>';
-
-    }
+    echo view_headline($x__type, $counter, $m, $ui, $counter > 0);
 
 }
 
