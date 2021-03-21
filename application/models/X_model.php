@@ -905,6 +905,11 @@ class X_model extends CI_Model
                 $e_dropdown = '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn no-left-padding no-right-padding css__title ignore-click" id="externalRef'.$es[0]['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-external-link"></i></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">'.$e_dropdown.'</div></div>';
             }
 
+            if($es[0]['e__id']==14874){
+                //Add Coin Stats:
+                $e_appendix .= view_coins();
+            }
+
 
             //Display:
             if($on_its_own_line){

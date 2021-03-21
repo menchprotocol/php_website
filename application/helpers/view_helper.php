@@ -1718,7 +1718,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //IDEAs and Time
     $view_i_time = view_i_time($i_stats);
-    $ui .= '<div class="cover-text"><span class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</span></div>';
+    $ui .= '<div class="cover-text"><span class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</span></div>';
 
     if($load_completion && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
