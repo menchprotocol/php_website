@@ -3021,7 +3021,11 @@ font-weight: bold !important;
 .add_notes_form i{
     color: #000000 !important;
 }
-.add_notes_form .btn-default {
+.add_notes_form .btn.btn-default {
     color: #000000 !important;
     border-color:#000000 !important;
+}
+.add_notes_form .btn.btn-default i {
+    background-color: transparent !important;
+    color: #000000 !important;
 }
