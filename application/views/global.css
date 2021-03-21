@@ -3031,3 +3031,31 @@ font-weight: bold !important;
     background-color: transparent !important;
     color: #000000 !important;
 }
+
+
+
+
+.coinType12273 {
+    background: linear-gradient(to right, black 99.99%, transparent), linear-gradient(to bottom, black 99.99%, transparent), linear-gradient(to right, black 99.99%, transparent), linear-gradient(to bottom, black 99.99%, transparent);
+    background-size: 100% 5px, 5px 100%, 100% 5px, 5px 100%;
+    background-repeat: no-repeat;
+    animation: progress 4s linear forwards;
+    background-position: -500px 0px, 495px -300px, 500px 295px, 0px 300px;
+}
+@keyframes coinType12273 {
+    0% {
+        background-position: -500px 0px, 495px -300px, 500px 295px, 0px 300px;
+    }
+    25% {
+        background-position: 0px 0px, 495px -300px, 500px 295px, 0px 300px;
+    }
+    50% {
+        background-position: 0px 0px, 495px 0px, 500px 295px, 0px 300px;
+    }
+    75% {
+        background-position: 0px 0px, 495px 0px, 0px 295px, 0px 300px;
+    }
+    100% {
+        background-position: 0px 0px, 495px 0px, 0px 295px, 0px 0px;
+    }
+}
