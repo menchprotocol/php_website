@@ -1644,7 +1644,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
             foreach($CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' )) as $e__id => $m) {
 
-                $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
+                $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>';//.$m['m__title']
 
                 if($e__id==14937 && $editing_enabled){
                     $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
@@ -1921,7 +1921,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 //Missing Superpower
                 continue;
             }
-            $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
+            $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'; //.$m['m__title']
 
             if($e__id==14937 && $source_of_e){
 
