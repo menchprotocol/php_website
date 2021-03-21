@@ -3013,19 +3013,21 @@ font-weight: bold !important;
 .add_notes_form{
     margin-left: 41px;
     margin-bottom: 21px;
+}
+.nodes_pad{
     background-color: #FFC500;
     border-bottom-left-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
     text-align: center !important;
 }
-.add_notes_form i{
+.nodes_pad i{
     color: #000000 !important;
 }
-.add_notes_form .btn.btn-default {
+.nodes_pad .btn.btn-default {
     color: #000000 !important;
     border-color:#000000 !important;
 }
-.add_notes_form .btn.btn-default i {
+.nodes_pad .btn.btn-default i {
     background-color: transparent !important;
     color: #000000 !important;
 }

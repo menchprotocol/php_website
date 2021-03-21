@@ -1075,7 +1075,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
 
                 //CONTROLLER
                 $tab_ui .= '<div class="no-padding add_notes_' . $x__type .'">';
-                $tab_ui .= '<div class="add_notes_form">';
+                $tab_ui .= '<div class="add_notes_form nodes_pad">';
                 $tab_ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
                 if($handles_uploads){
