@@ -1712,7 +1712,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //TITLE
     if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
         //Editable title:
-        $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $editing_enabled, (($i['x__spectrum']*100)+1), true);
+        $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $editing_enabled, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
     } elseif($can_click){
         $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
