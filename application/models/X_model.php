@@ -671,27 +671,27 @@ class X_model extends CI_Model
          * Source Creation within Message?
          *
          * */
-        if($strict_validation && substr_count($message_input, '++')>0 && substr_count($message_input, '@')>=substr_count($message_input, '~')){
+        if($strict_validation && substr_count($message_input, '||')>0 && substr_count($message_input, '@')>=substr_count($message_input, '~')){
             //We Seem to have a creation mode:
-            $e__title = one_two_explode('@','++',$message_input);
+            $e__title = one_two_explode('@','||',$message_input);
             $added_e = $this->E_model->verify_create($e__title, $member_e['e__id']);
             if(!$added_e['status']){
                 return $added_e;
             } else {
                 //New source added, replace text:
-                $message_input = str_replace($e__title.'++', $added_e['new_e']['e__id'], $message_input);
+                $message_input = str_replace($e__title.'||', $added_e['new_e']['e__id'], $message_input);
             }
         }
         //Do we have a second source creation?
-        if($strict_validation && substr_count($message_input, '@')==2 && substr_count($message_input, '++')==1){
+        if($strict_validation && substr_count($message_input, '@')==2 && substr_count($message_input, '||')==1){
             //We Seem to have a creation mode:
-            $e__title = one_two_explode('@','++',$message_input);
+            $e__title = one_two_explode('@','||',$message_input);
             $added_e = $this->E_model->verify_create($e__title, $member_e['e__id']);
             if(!$added_e['status']){
                 return $added_e;
             } else {
                 //New source added, replace text:
-                $message_input = str_replace($e__title.'++', $added_e['new_e']['e__id'], $message_input);
+                $message_input = str_replace($e__title.'||', $added_e['new_e']['e__id'], $message_input);
             }
         }
 
