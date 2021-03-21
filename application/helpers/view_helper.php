@@ -1075,8 +1075,11 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
 
                 //CONTROLLER
                 $tab_ui .= '<div class="no-padding add_notes_' . $x__type .'">';
-                $tab_ui .= '<div class="add_notes_form nodes_pad indifferent">';
+                $tab_ui .= '<div class="add_notes_form note_pad indifferent">';
                 $tab_ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
+
+                $tab_ui .= '<div class="inline-block">Editing Mode ON:&nbsp;&nbsp;</div>';
+
 
                 if($handles_uploads){
 
@@ -1980,7 +1983,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     }
     $ui .= '</div>';
 
-    //Determine coin type:
+    //Determine coin type: (Hack removed)
     $cointype = 'coinType12274';
     if ($discovery_mode) { //|| substr_count($e['e__cover'], 'fas fa-circle zq6255')
         $cointype = 'coinType6255';

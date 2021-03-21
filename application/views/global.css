@@ -3011,20 +3011,20 @@ font-weight: bold !important;
     margin-left: 41px;
     margin-bottom: 21px;
 }
-.nodes_pad{
+.note_pad{
     background-color: #FFC500;
     border-bottom-left-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
     text-align: center !important;
 }
-.nodes_pad i{
+.note_pad i{
     color: #000000 !important;
 }
-.nodes_pad .btn.btn-default {
+.note_pad .btn.btn-default {
     color: #000000 !important;
     border-color:#000000 !important;
 }
-.nodes_pad .btn.btn-default i {
+.note_pad .btn.btn-default i {
     background-color: transparent !important;
     color: #000000 !important;
 }
