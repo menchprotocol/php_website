@@ -5,6 +5,7 @@ $first_segment = $this->uri->segment(1);
 $i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13479 = $this->config->item('e___13479');
+$e___14874 = $this->config->item('e___14874'); //COINS
 
 $superpower_10939 = $member_e && superpower_active(10939, true);
 $current_coin = current_coin();
@@ -220,10 +221,11 @@ if(!$basic_header_footer){
 
                     //MENU
                     $menu_type = ( $member_e ? 12500 : 14372 );
+                    $focus_menu = ( $superpower_10939 ? $e___14874[$current_coin['c__id']] : $e___13479[$menu_type] ); //Show Current Mench Coin
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    echo '<span class="icon-block">' . $e___13479[$menu_type]['m__cover'] .'</span>';
+                    echo '<span class="icon-block">' . $focus_menu['m__cover'] .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {

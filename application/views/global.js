@@ -426,7 +426,7 @@ $(document).ready(function () {
 
 
     if ($(".list-coins")[0]){
-        //Update mench coins every 3 seconds:
+        //Update COINS every 3 seconds:
         $(function () {
             setInterval(load_coin_count, js_e___6404[14874]['m__message']);
         });

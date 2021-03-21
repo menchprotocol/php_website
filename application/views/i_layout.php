@@ -1,5 +1,5 @@
     <?php
-$e___14874 = $this->config->item('e___14874');
+$e___14874 = $this->config->item('e___14874'); //COINS
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___4485 = $this->config->item('e___4485'); //NAVIGATION
 
