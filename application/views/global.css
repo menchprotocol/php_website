@@ -1959,6 +1959,13 @@ i, .btn .show-max {
     padding-bottom: 89px;
 }
 
+.headlinebody.leftPad {
+    padding-top: 13px;
+    padding-left: 41px;
+}
+
+
+
 .dominHeight{
     min-height: 144px;
 }

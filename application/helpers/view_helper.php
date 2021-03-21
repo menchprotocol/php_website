@@ -1326,7 +1326,7 @@ function view_e_settings($list_id, $is_open){
 
         }
 
-        $ui .= view_headline($acc_e__id, null, $acc_detail, $tab_ui, $is_open);
+        $ui .= view_headline($acc_e__id, null, $acc_detail, $tab_ui, $is_open, true);
 
     }
 
@@ -1821,11 +1821,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 }
 
-function view_headline($x__type, $counter, $m, $ui, $is_open = true){
+function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad = false){
     if(!strlen($ui)){
         return false;
     } else {
-        return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . ( !is_null($counter) ? '<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0) . '</span> ' : '' ).$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'">'.( $is_open ? '<i class="fas fa-chevron-up"></i>' : '<i class="fas fa-chevron-down"></i>' ).'</span></a>'.'<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
+        return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . ( !is_null($counter) ? '<span class="en-type-counter-'.$x__type.'">'.number_format($counter, 0) . '</span> ' : '' ).$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'">'.( $is_open ? '<i class="fas fa-chevron-up"></i>' : '<i class="fas fa-chevron-down"></i>' ).'</span></a>'.'<div class="headlinebody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
     }
 }
 
