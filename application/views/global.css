@@ -1325,7 +1325,7 @@ label {
     margin-bottom: 0;
 }
 
-.dolight{
+.dolight, .modal-title{
     color: #999999;
 }
 
