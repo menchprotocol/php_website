@@ -1998,7 +1998,6 @@ i, .btn .show-max {
     line-height: 120%;
     text-align: center;
     min-height: 21px;
-    margin-top: -5px;
 }
 .cover-text .mini-font {
     font-weight: bold !important;
@@ -2186,7 +2185,7 @@ textarea {
     bottom:-69px;
 }
 .coin-12273.focus-coin .cover-content{
-    bottom:-105px;
+    bottom:-108px;
 }
 
 .focus-coin.doedit .cover-content{
