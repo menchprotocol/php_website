@@ -225,7 +225,7 @@ if(!$basic_header_footer){
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    echo '<span class="icon-block">' . $focus_menu['m__cover'] .'</span>';
+                    echo '<span class="icon-block" '.( $superpower_10939 ? ' data-toggle="tooltip" data-placement="left" title="Viewing '.$focus_menu['m__title'].' Coin" ' : '' ).'>' . $focus_menu['m__cover'] .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
