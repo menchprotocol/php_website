@@ -897,6 +897,10 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     background-color: #FFC500;
     border-bottom-left-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
+    text-align: center !important;
+}
+.add_notes_form i{
+    color: #000000 !important;
 }
 
 .info_box_icon{
