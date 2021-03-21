@@ -895,6 +895,8 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     margin-left: 41px;
     margin-bottom: 21px;
     background-color: #FFC500;
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
 }
 
 .info_box_icon{
@@ -2958,6 +2960,8 @@ font-weight: bold !important;
 .editing-mode{
     padding-top: 5px !important;
     border-radius: 10px !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
 }
 
 

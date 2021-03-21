@@ -1084,18 +1084,18 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
                     //UPLOAD
                     $tab_ui .= '<td class="table-btn first_btn indifferent">';
                     $tab_ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
-                    $tab_ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
+                    $tab_ui .= '<label class="btn  btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
                     $tab_ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
                     $tab_ui .= '</td>';
 
                     //GIF
-                    $tab_ui .= '<td class="table-btn first_btn indifferent"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="images_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a></td>';
+                    $tab_ui .= '<td class="table-btn first_btn indifferent"><a class="btn btn-compact " href="javascript:void(0);" onclick="images_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a></td>';
 
                 }
 
                 if($supports_emoji){
                     //EMOJI
-                    $tab_ui .= '<td class="table-btn first_btn indifferent"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span></td>';
+                    $tab_ui .= '<td class="table-btn first_btn indifferent"><span class="btn btn-compact " id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span></td>';
                 }
 
                 //SAVE Button:
@@ -1174,18 +1174,18 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
                 //UPLOAD
                 $ui .= '<td class="table-btn first_btn">';
                 $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
-                $ui .= '<label class="btn btn-grey btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
+                $ui .= '<label class="btn  btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
                 $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
                 $ui .= '</td>';
 
                 //GIF
-                $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="images_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a></td>';
+                $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact " href="javascript:void(0);" onclick="images_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a></td>';
 
             }
 
             if($supports_emoji){
                 //EMOJI
-                $ui .= '<td class="table-btn first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span></td>';
+                $ui .= '<td class="table-btn first_btn"><span class="btn btn-compact " id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span></td>';
             }
 
             //Add
