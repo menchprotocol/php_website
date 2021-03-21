@@ -2347,6 +2347,7 @@ textarea {
     }
     .coin-12273.focus-coin .cover-content{
         bottom:-85px;
+        min-height: 85px;
     }
     .focus-coin .inner-content .css__title {
         font-size: 1.4em;
