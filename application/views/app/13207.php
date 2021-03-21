@@ -5,7 +5,7 @@ $show_max_14435 = view_memory(6404,14435);
 $group_by = 'e__id, e__title, e__cover, e__metadata, e__type, e__spectrum';
 
 //SOURCE LEADERBOARD
-$count = 0;
+$list_count = 0;
 foreach($this->config->item('e___13207') as $x__type => $m) {
 
     if($x__type==14874){
@@ -36,9 +36,9 @@ foreach($this->config->item('e___13207') as $x__type => $m) {
 
     $ui .= '</div>';
 
-    echo view_headline($x__type, view_coins_e(12274, $x__type, 0, false), $m, $ui, !$count);
+    echo view_headline($x__type, view_coins_e(12274, $x__type, 0, false), $m, $ui, !$list_count);
 
-    $count++;
+    $list_count++;
 
 }
 
