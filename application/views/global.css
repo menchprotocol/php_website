@@ -2984,9 +2984,6 @@ font-weight: bold !important;
     margin-right: 34px;
     padding: 8px 8px 8px 0px;
 }
-.move_away .fa-arrow-right {
-    float:right;
-}
 
 .btn-superpower.active .fas.zq12274, .btn-superpower.active .far.zq12274, .btn-superpower.active .fal.zq12274, .btn-superpower.active .fad.zq12274 {
     color:#007AFD !important;
