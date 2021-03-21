@@ -189,7 +189,7 @@ function e_x__type($string = null){
     return 0;
 }
 
-function current_coin(){
+function current_coin_id(){
 
     /*
      *
@@ -203,31 +203,21 @@ function current_coin(){
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
     $first_letter = substr($first_segment, 0, 1);
-    $e___14874 = $CI->config->item('e___14874'); //COINS
 
-    if(!$first_letter=='-' && is_numeric($first_segment)){
+    if($first_letter!='-' && is_numeric($first_segment)){
 
         //DISCOVERY
-        return array(
-            'c__id' => 6255,
-            'c__m' => $e___14874[6255],
-        );
+        return 6255;
 
     } elseif($first_letter=='~'){
 
         //IDEATION
-        return array(
-            'c__id' => 12273,
-            'c__m' => $e___14874[12273],
-        );
+        return 12273;
 
     } else {
 
         //SOURCE
-        return array(
-            'c__id' => 12274,
-            'c__m' => $e___14874[12274],
-        );
+        return 12274;
 
     }
 

@@ -8,10 +8,10 @@ $e___13479 = $this->config->item('e___13479');
 $e___14874 = $this->config->item('e___14874'); //COINS
 
 $superpower_10939 = $member_e && superpower_active(10939, true);
-$current_coin = current_coin();
+$current_coin_id = current_coin_id();
 $base_source = get_domain_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
-$logo = ( !strlen($first_segment) || $first_segment=='@'.$base_source ? '/img/logos/'.$base_source.'.svg' : '/img/'.$current_coin['c__id'].'.png' );
+$logo = ( !strlen($first_segment) || $first_segment=='@'.$base_source ? '/img/logos/'.$base_source.'.svg' : '/img/'.$current_coin_id.'.png' );
 ?><!doctype html>
 <html lang="en" >
 <head>
@@ -112,7 +112,7 @@ $logo = ( !strlen($first_segment) || $first_segment=='@'.$base_source ? '/img/lo
 
 <?php
 //Generate Body Class String:
-$body_class = 'platform-'.$current_coin['c__id']; //Always append current coin
+$body_class = 'platform-'.$current_coin_id; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
 }
@@ -196,7 +196,7 @@ if(!$basic_header_footer){
                             echo '<a href="/">'.$site_logo.'</a>';
                         } else {
                             //My Source
-                            echo '<a href="'.home_url().'"><span class="platform-circle icon-block mini_6197_'.$member_e['e__id'].'">'.view_cover(12274,$member_e['e__cover']).'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin['c__id'], $member_e['e__id']).'</span>' : '' ).'</span></a>';
+                            echo '<a href="'.home_url().'"><span class="platform-circle icon-block mini_6197_'.$member_e['e__id'].'">'.view_cover(12274,$member_e['e__cover']).'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin_id, $member_e['e__id']).'</span>' : '' ).'</span></a>';
                         }
 
                     } else {
@@ -221,7 +221,7 @@ if(!$basic_header_footer){
 
                     //MENU
                     $menu_type = ( $member_e ? 12500 : 14372 );
-                    $focus_menu = ( $superpower_10939 ? $e___14874[$current_coin['c__id']] : $e___13479[$menu_type] ); //Show Current Mench Coin
+                    $focus_menu = ( $superpower_10939 ? $e___14874[$current_coin_id] : $e___13479[$menu_type] ); //Show Current Mench Coin
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
