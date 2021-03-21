@@ -87,16 +87,18 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
 
     //Have Needed Superpowers?
+    $require = 0;
     $missing = 0;
     $meeting = 0;
     foreach(array_intersect($this->config->item('n___10957'), $m['m__profile']) as $superpower_required){
+        $require++;
         if(superpower_active($superpower_required, true)){
             $meeting++;
         } else {
             $missing++;
         }
     }
-    if(!$meeting){
+    if($require && !$meeting){
         //RELAX: Meet any requirement and it would be shown
         continue;
     }

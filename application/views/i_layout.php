@@ -114,16 +114,18 @@ echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
 foreach($this->config->item('e___11018') as $x__type => $m){
 
     //Have Needed Superpowers?
+    $require = 0;
     $missing = 0;
     $meeting = 0;
     foreach(array_intersect($this->config->item('n___10957'), $m['m__profile']) as $superpower_required){
+        $require++;
         if(superpower_active($superpower_required, true)){
             $meeting++;
         } else {
             $missing++;
         }
     }
-    if($missing > 0){
+    if($require && $missing){
         //STRICT: Anything missing and it would be skipped!
         continue;
     }
