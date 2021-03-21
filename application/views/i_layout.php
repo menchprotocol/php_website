@@ -65,7 +65,7 @@ $previous_is = $this->X_model->fetch(array(
 
 $body = '';
 if($show_previous){
-    $body .= '<div class="new-list-'.$x__type.' list-adder '.superpower_active(10939).'">
+    $body .= '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
                         <input type="text"
