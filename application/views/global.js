@@ -428,6 +428,9 @@ function update__cover(new_cover){
     $('#coin__cover').val( new_cover );
     update_cover_main(new_cover, '.demo_cover');
 }
+function image_cover(new_cover, new_title){
+    return '<a href="javascript:void();" onclick="update__cover('+new_cover+')">' + view_s_mini_js(12274, new_cover, new_title) + '</a>';
+}
 
 var algolia_index = false;
 $(document).ready(function () {
@@ -562,8 +565,7 @@ $(document).ready(function () {
                         var counter = 0;
                         for (var index in data){
                             counter++;
-                            new_cover = "https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif";
-                            output += '<a href="javascript:void();" onclick="update__cover('+encodeURI(new_cover)+')">' + view_s_mini_js(12274, new_cover, data[index].title.replace("'",'')) + '</a>';
+                            output += image_cover("https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif", data[index].title.replace("'",''));
                         }
                         $("#image_search").html(output);
                     },
@@ -588,12 +590,20 @@ $(document).ready(function () {
             templates: {
                 suggestion: function (suggestion) {
                     //Make sure not already returned:
-                    if(icons_listed.includes(suggestion.s__cover)){
+                    if(icons_listed.includes(suggestion.s__cover)) {
+
                         return false;
+
+                    } else if(validURL(suggestion.s__cover)) {
+
+                        $("#image_search").append(image_cover(suggestion.s__cover, suggestion.s__title));
+
                     } else {
+
                         //Add to list:
                         icons_listed.push(suggestion.s__cover);
                         return view_s_mini_js(suggestion.s__type, suggestion.s__cover, suggestion.s__title);
+
                     }
                 },
                 empty: function (data) {
