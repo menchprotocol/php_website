@@ -371,7 +371,6 @@ img.no-frame {
 
 .block_search_results .aa-dropdown-menu .aa-suggestion,
 .block_search_results .suggestion {
-    display: inline-block;
     float: left;
     padding: 0 !important;
 }
