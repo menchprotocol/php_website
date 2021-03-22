@@ -365,8 +365,9 @@ img.no-frame {
     padding: 10px 3px;
     font-weight: 500;
     margin: 0;
-    display: block;
+    display: inline-block;
     text-decoration: none;
+    float: left;
 }
 
 .aa-dropdown-menu .aa-suggestion.aa-cursor, .suggestion:hover {
