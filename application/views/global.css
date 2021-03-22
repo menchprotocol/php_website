@@ -369,10 +369,8 @@ img.no-frame {
     text-decoration: none;
 }
 
-.block_search_results .aa-dropdown-menu .aa-suggestion,
-.block_search_results .suggestion {
-    float: left;
-    padding: 0 !important;
+.block_search_results .aa-dropdown-menu {
+    display: none !important;
 }
 .block_search_results .block-icon {
     width:55px !important;
