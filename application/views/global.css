@@ -377,12 +377,13 @@ img.no-frame {
 .block_search_results .block-icon {
     width:55px !important;
     height:55px !important;
-    display: inline-block;
+    display: block;
+    float: left;
     text-align: center;
-    font-size: 3em;
+    font-size: 3em !important;
 }
 .block_search_results .block-icon i {
-    font-size: 0.7em;
+    font-size: 0.5em !important;
 }
 .block_search_results .block-icon img{
     border-radius: 50%;
