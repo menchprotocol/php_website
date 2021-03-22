@@ -557,7 +557,7 @@ $(document).ready(function () {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return view_s_mini_js(suggestion.s__type, suggestion.s__cover) + view_s_mini_js(suggestion.s__type, '😊');
+                    return view_s_mini_js(suggestion.s__type, suggestion.s__cover);
                 },
                 empty: function (data) {
                     //Nothing found:
