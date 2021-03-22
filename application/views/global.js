@@ -563,7 +563,7 @@ $(document).ready(function () {
                         for (var index in data){
                             counter++;
                             new_cover = "https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif";
-                            output += '<a href="javascript:void();" onclick="update__cover('+new_cover+')">' + view_s_mini_js(12274, new_cover, data[index].title.replace("'",'')) + '</a>';
+                            output += '<a href="javascript:void();" onclick="update__cover('+encodeURI(new_cover)+')">' + view_s_mini_js(12274, new_cover, data[index].title.replace("'",'')) + '</a>';
                         }
                         $("#image_search").html(output);
                     },
