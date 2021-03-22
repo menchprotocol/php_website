@@ -541,7 +541,7 @@ $(document).ready(function () {
             $('#coin__cover').val( suggestion.s__cover );
             update_cover_main(suggestion.s__cover, '.demo_cover');
 
-        }).autocomplete({hint: false, minLength: 2, container: $('.current_covers')}, [{
+        }).autocomplete({hint: false, minLength: 2}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {

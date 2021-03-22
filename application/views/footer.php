@@ -200,7 +200,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </div>
 
                     <!-- PREVIEW -->
-                    <div class="row justify-content-center extra_info_box">
+                    <div class="row justify-content-center current_covers">
                         <div class="col-12">
                             <div class="coin_cover demo_cover" style="width: 255px !important; margin: -21px auto 50px !important;">
                                 <div class="cover-wrapper"><div class="black-background cover-link" style=""><div class="cover-btn"></div></div></div>
@@ -209,8 +209,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </div>
                         <div class="col-12">
                             <input type="text" class="form-control text-edit border css__title cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
-                            <div class="current_covers margin-top-down hideIfEmpty inline-block"></div>
-                            <div class="new_images margin-top-down hideIfEmpty inline-block"></div>
                         </div>
                     </div>
 
