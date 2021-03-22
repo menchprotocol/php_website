@@ -545,7 +545,7 @@ $(document).ready(function () {
         var icons_listed = [];
 
         //COVER SEARCH
-        $('.cover_query').autocomplete({hint: false, minLength: 2}, [{
+        $('.cover_query').autocomplete({hint: false, minLength: 1}, [{
 
             source: function (q, cb) {
 
