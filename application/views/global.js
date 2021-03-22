@@ -146,8 +146,8 @@ function view_s__title(suggestion){
 function view_s_js(suggestion){
     return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
 }
-function view_s_mini_js(suggestion){
-    return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span>';
+function view_s_mini_js(s__type, s__cover){
+    return '<span class="icon-block">'+ view_cover_js(s__type, s__cover) +'</span>';
 }
 
 function toggle_headline(headline_id){
@@ -557,11 +557,11 @@ $(document).ready(function () {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return view_s_mini_js(suggestion);
+                    return view_s_mini_js(suggestion.s__type, suggestion.s__cover) + view_s_mini_js(suggestion.s__type, '😊');
                 },
                 empty: function (data) {
                     //Nothing found:
-                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i Nothing Found</div>';
+                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i> Nothing Found</div>';
                 },
             }
         }]);
