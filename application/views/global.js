@@ -543,12 +543,13 @@ $(document).ready(function () {
     if(parseInt(js_e___6404[12678]['m__message'])){
 
         var icons_listed = [];
-        $("#image_search").html('');
 
         //COVER SEARCH
         $('.cover_query').autocomplete({hint: false, minLength: 2}, [{
 
             source: function (q, cb) {
+
+                $("#image_search").html('');
 
                 if(validURL(q)){
                     //Must be an image URL:
