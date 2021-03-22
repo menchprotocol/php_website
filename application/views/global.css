@@ -381,9 +381,11 @@ img.no-frame {
     float: left;
     text-align: center;
     font-size: 3.4em !important;
+    padding-top: 5px;
 }
 .block_search_results .block-icon i {
-    font-size: 1em !important;
+    font-size: 0.89em !important;
+    margin-top: -10px;
 }
 .block_search_results .block-icon img{
     border-radius: 50%;
