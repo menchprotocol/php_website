@@ -188,6 +188,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
                 <div class="modal-body">
 
+                    <!-- Power Edit (Required Superpower) -->
+                    <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
+                    <input type="hidden" id="coin__type" value="0" />
+                    <input type="hidden" id="coin__id" value="0" />
+
+
+
                     <!-- SEARCH -->
                     <table style="width: 100%; margin-bottom: 34px;">
                         <tr>
@@ -200,12 +207,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </td>
                         </tr>
                     </table>
-
-
-                    <!-- Power Edit (Required Superpower) -->
-                    <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
-                    <input type="hidden" id="coin__type" value="0" />
-                    <input type="hidden" id="coin__id" value="0" />
 
 
                     <!-- PREVIEW -->

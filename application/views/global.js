@@ -146,8 +146,8 @@ function view_s__title(suggestion){
 function view_s_js(suggestion){
     return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
 }
-function view_s_mini_js(s__type, s__cover){
-    return '<span class="icon-block">'+ view_cover_js(s__type, s__cover) +'</span>';
+function view_s_mini_js(suggestion){
+    return '<span class="block-icon" title="'+suggestion.s__title+'">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span>';
 }
 
 function toggle_headline(headline_id){
@@ -566,7 +566,7 @@ $(document).ready(function () {
                     } else {
                         //Add to list:
                         icons_listed.push(suggestion.s__cover);
-                        return view_s_mini_js(suggestion.s__type, suggestion.s__cover);
+                        return view_s_mini_js(suggestion);
                     }
                 },
                 empty: function (data) {

@@ -374,6 +374,22 @@ img.no-frame {
     display: inline-block;
     float: left;
 }
+.block_search_results .block-icon {
+    width:55px !important;
+    height:55px !important;
+    display: inline-block;
+    text-align: center;
+    font-size: 2em;
+}
+.block_search_results .block-icon i {
+    font-size: 0.8em;
+}
+.block_search_results .block-icon img{
+    border-radius: 50%;
+    line-height: 100%;
+    width:55px !important;
+    height:55px !important;
+}
 
 .aa-dropdown-menu .aa-suggestion.aa-cursor, .suggestion:hover {
     background-color: #999999;
