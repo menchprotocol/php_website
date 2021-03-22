@@ -543,6 +543,7 @@ $(document).ready(function () {
     if(parseInt(js_e___6404[12678]['m__message'])){
 
         var icons_listed = [];
+        $("#image_search").html('');
 
         //COVER SEARCH
         $('.cover_query').autocomplete({hint: false, minLength: 2}, [{
@@ -550,7 +551,6 @@ $(document).ready(function () {
             source: function (q, cb) {
 
                 //ALso search and append GIFs:
-                $("#image_search").html('');
                 $.get({
                     url: js_e___6404[6293]['m__message']+q,
                     success: function(result) {
