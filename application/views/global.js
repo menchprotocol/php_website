@@ -557,7 +557,7 @@ $(document).ready(function () {
                         var counter = 0;
                         for (var index in data){
                             counter++;
-                            output += view_s_mini_js(12274, "https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif", data[index].title.replace("'",''));
+                            output += '<a href="">' + view_s_mini_js(12274, "https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif", data[index].title.replace("'",'')) + '</a>';
                         }
                         $("#image_search").html(output);
                         //lazy_load();

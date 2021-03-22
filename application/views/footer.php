@@ -195,7 +195,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <!-- New Image API Results -->
-                    <div id="image_search">&nbsp;</div>
+                    <div id="image_search" style="min-height: 277px;">&nbsp;</div>
 
                     <!-- SEARCH -->
                     <table style="width: 100%; margin-bottom: 34px;">

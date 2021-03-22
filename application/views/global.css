@@ -2036,7 +2036,7 @@ i, .btn .show-max {
 .cover-text .mini-font {
     font-weight: bold !important;
 }
-.headline-height, .headline, #image_search{
+.headline-height, .headline {
     min-height: 44px;
 }
 .coin_cover{
