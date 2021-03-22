@@ -545,12 +545,7 @@ $(document).ready(function () {
         var icons_listed = [];
 
         //COVER SEARCH
-        $('.cover_query').on('autocomplete:selected', function (event, suggestion, dataset) {
-
-            //Assign to image:
-            update__cover(suggestion.s__cover);
-
-        }).autocomplete({hint: false, minLength: 2}, [{
+        $('.cover_query').autocomplete({hint: false, minLength: 2}, [{
 
             source: function (q, cb) {
 
@@ -576,7 +571,7 @@ $(document).ready(function () {
                 icons_listed = [];
                 algolia_index.search(q, {
                     filters: ' _tags:alg_e_14988 OR _tags:alg_e_14038 OR _tags:alg_e_14986 OR _tags:alg_e_20425 OR _tags:alg_e_20426 OR _tags:alg_e_20427 OR _tags:has_image ',
-                    hitsPerPage: 200,
+                    hitsPerPage: 300,
                 }, function (error, content) {
                     if (error) {
                         cb([]);
@@ -584,25 +579,18 @@ $(document).ready(function () {
                     }
                     cb(content.hits, content);
                 });
+
             },
             templates: {
                 suggestion: function (suggestion) {
                     //Make sure not already returned:
-                    if(validURL(suggestion.s__cover)) {
-
-                        if(!icons_listed.includes(suggestion.s__cover)) {
-                            icons_listed.push(suggestion.s__cover);
-                            $("#image_search").append(image_cover(suggestion.s__cover, suggestion.s__title));
-                        }
-
+                    if(icons_listed.includes(suggestion.s__cover)) {
                         return false;
-
-                    } else {
-
-                        //Add to list:
-                        return view_s_mini_js(suggestion.s__type, suggestion.s__cover, suggestion.s__title);
-
                     }
+
+                    icons_listed.push(suggestion.s__cover);
+                    $("#image_search").prepend(image_cover(suggestion.s__cover, suggestion.s__title));
+                    return false;
                 },
                 empty: function (data) {
                     //Nothing found:
