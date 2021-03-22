@@ -211,7 +211,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- PREVIEW -->
                     <div class="row justify-content-center">
                         <div class="col-12">
-                            <div class="coin_cover demo_cover" style="width: 255px !important;">
+                            <div class="coin_cover demo_cover" style="width: 255px !important; margin-left: auto !important; margin-right: auto !important;">
                                 <div class="cover-wrapper">
                                     <div class="coin-cover coin-cover-left"><a href="javascript:void(0);"><i class="fas fa-upload"></i></a></div>
                                     <div class="coin-cover coin-cover-right"><a href="javascript:void(0);" onclick="$('#coin__cover').val('');update_cover_main('','.demo_cover');"><i class="fas fa-trash-alt"></i></a></div>
