@@ -546,7 +546,7 @@ $(document).ready(function () {
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: ' _tags:alg_e_14988 OR _tags:alg_e_14038 OR _tags:alg_e_14986 OR _tags:has_image ',
-                    hitsPerPage: 30,
+                    hitsPerPage: 200,
                 }, function (error, content) {
                     if (error) {
                         cb([]);
