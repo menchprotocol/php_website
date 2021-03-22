@@ -606,16 +606,10 @@ function update_description($before_string, $after_string){
 }
 
 
-function random_selection($e__id, $return_field = null){
+function random_cover($e__id){
     $CI =& get_instance();
     $fetch = $CI->config->item('e___'.$e__id);
-    if(!$return_field){
-        //Return entire array:
-        return $fetch[array_rand($fetch)];
-    } else {
-        //Return specific field:
-        return $fetch[array_rand($fetch)][$return_field];
-    }
+    return one_two_explode('class="','"',$fetch[array_rand($fetch)][$return_field]);
 }
 
 function format_percentage($percent){
