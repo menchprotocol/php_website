@@ -590,12 +590,12 @@ $(document).ready(function () {
                     //Make sure not already returned:
                     if(validURL(suggestion.s__cover)) {
 
-                        if(icons_listed.includes(suggestion.s__cover)) {
-                            return false;
-                        } else {
+                        if(!icons_listed.includes(suggestion.s__cover)) {
                             icons_listed.push(suggestion.s__cover);
                             $("#image_search").append(image_cover(suggestion.s__cover, suggestion.s__title));
                         }
+
+                        return false;
 
                     } else {
 
