@@ -369,8 +369,8 @@ img.no-frame {
     text-decoration: none;
 }
 
-.current_covers .aa-dropdown-menu .aa-suggestion,
-.current_covers .suggestion {
+.block_search_results .aa-dropdown-menu .aa-suggestion,
+.block_search_results .suggestion {
     display: inline-block;
     float: left;
 }

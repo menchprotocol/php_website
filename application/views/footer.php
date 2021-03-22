@@ -201,14 +201,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </div>
 
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer block_search_results">
 
                     <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
 
 
                     <table style="width: 100%;">
                         <tr>
-                            <td width="100%">
+                            <td>
                                 <input type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
 
                             </td>
