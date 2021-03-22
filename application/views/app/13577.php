@@ -3,12 +3,16 @@
 
 //fix:
 $count = 0;
+$animal = 0;
 foreach($this->X_model->fetch(array(
     'x__up' => 14986,
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
 ), array('x__down'), 0, 0) as $e){
+    if(in_array($e['e__id'], $this->config->item('n___12279'))){
+        $animal++;
+    }
     $count++;
     foreach(array(
                 'fal' => 20425,
@@ -19,7 +23,7 @@ foreach($this->X_model->fetch(array(
     }
 }
 
-echo $count.' Icons trippled.';
+echo $count.' Icons trippled, '.$animal.' animal icons detected.';
 
 
 $x__source = ( $member_e ? $member_e['e__id'] : 7274 );
