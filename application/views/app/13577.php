@@ -1,5 +1,27 @@
 <?php
 
+
+//fix:
+$count = 0;
+foreach($this->X_model->fetch(array(
+    'x__up' => 12279,
+    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+), array('x__down'), 0, 0) as $e){
+    $count++;
+    foreach(array(
+                'fal' => 20425,
+                'fas' => 20426,
+                'fad' => 20427,
+            ) as $prefix => $e__id){
+        echo '<span class="icon-block" title="'.$e['e__title'].' '.$e__id.'"><i class="'.str_replace('far ',$prefix.' ',$e['e__cover']).'"></i></span>';
+    }
+}
+
+echo $count.' Icons trippled.';
+
+
 $x__source = ( $member_e ? $member_e['e__id'] : 7274 );
 $processed = false;
 foreach(array(
