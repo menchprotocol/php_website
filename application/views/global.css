@@ -365,8 +365,13 @@ img.no-frame {
     padding: 10px 3px;
     font-weight: 500;
     margin: 0;
-    display: inline-block;
+    display: block;
     text-decoration: none;
+}
+
+.current_covers .aa-dropdown-menu .aa-suggestion,
+.current_covers .suggestion {
+    display: inline-block;
     float: left;
 }
 
