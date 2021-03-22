@@ -188,17 +188,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
                 <div class="modal-body">
 
-                    <div class="form-group">
-                        <div class="input-group border">
-                            <input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;">
-                            <div style="padding: 10px; text-align: center;"><button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button></div>
-
-                            <input type="hidden" id="coin__type" value="0" />
-                            <input type="hidden" id="coin__id" value="0" />
-                        </div>
-
-                    </div>
-
                     <!-- PREVIEW -->
                     <div class="row justify-content-center current_covers">
                         <div class="col-12">
@@ -208,10 +197,21 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
                         </div>
                         <div class="col-12">
-                            <input type="text" class="form-control text-edit border css__title cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
                         </div>
                     </div>
 
+                </div>
+                <div class="modal-footer">
+                    <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
+                    <div class="form-group">
+                        <div class="input-group border">
+                            <input type="text" class="form-control text-edit border css__title cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
+                            <div style="padding: 10px; text-align: center;"><button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button></div>
+                            <input type="hidden" id="coin__type" value="0" />
+                            <input type="hidden" id="coin__id" value="0" />
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
