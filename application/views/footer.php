@@ -181,35 +181,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+
+
                     <h5 class="modal-title css__title" id="modal14937Label"><?= $e___11035[14937]['m__cover'].' '.$e___11035[14937]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                </div>
-                <div class="modal-body block_search_results">
-
-                    <!-- Power Edit (Required Superpower) -->
-                    <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
-                    <input type="hidden" id="coin__type" value="0" />
-                    <input type="hidden" id="coin__id" value="0" />
-
-
-                    <!-- New Image API Results -->
-                    <div id="image_search" style="min-height: 277px;">&nbsp;</div>
-
-                    <!-- SEARCH -->
-                    <table style="width: 100%; margin-bottom: 34px;">
-                        <tr>
-                            <td style="width: 100%;">
-                                <input id="search_cover" type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
-
-                            </td>
-                            <td>
-                                <button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button>
-                            </td>
-                        </tr>
-                    </table>
-
 
                     <!-- PREVIEW -->
                     <div class="row justify-content-center">
@@ -226,6 +203,30 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-12">
                         </div>
                     </div>
+
+                </div>
+                <div class="modal-body block_search_results">
+
+                    <!-- Power Edit (Required Superpower) -->
+                    <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
+                    <input type="hidden" id="coin__type" value="0" />
+                    <input type="hidden" id="coin__id" value="0" />
+
+                    <!-- SEARCH -->
+                    <table style="width: 100%; margin-bottom: 34px;">
+                        <tr>
+                            <td style="width: 100%;">
+                                <input id="search_cover" type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
+
+                            </td>
+                            <td>
+                                <button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Search Results -->
+                    <div id="image_search">&nbsp;</div>
 
                 </div>
             </div>
