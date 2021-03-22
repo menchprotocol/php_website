@@ -186,7 +186,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body block_search_results">
 
                     <!-- Power Edit (Required Superpower) -->
                     <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
@@ -194,11 +194,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <input type="hidden" id="coin__id" value="0" />
 
 
+                    <!-- New Image API Results -->
+                    <div id="image_search"></div>
 
                     <!-- SEARCH -->
                     <table style="width: 100%; margin-bottom: 34px;">
                         <tr>
-                            <td style="width: 100%;" class="block_search_results">
+                            <td style="width: 100%;">
                                 <input id="search_cover" type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
 
                             </td>
@@ -247,7 +249,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body">
                     <input type="hidden" id="modal_i__id" value="0" />
                     <input type="hidden" id="modal_x__type" value="0" />
-                    <input type="text" class="form-control text-edit border css__title images_query" placeholder="Search GIFs..." onkeyup="images_search()" data-lpignore="true" />
+                    <input type="text" class="form-control text-edit border css__title images_query" placeholder="Search GIFs..." onkeyup="images_search($('.images_query').val())" data-lpignore="true" />
                     <div class="new_images margin-top-down hideIfEmpty"></div>
                 </div>
             </div>

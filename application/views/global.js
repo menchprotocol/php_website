@@ -146,8 +146,8 @@ function view_s__title(suggestion){
 function view_s_js(suggestion){
     return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
 }
-function view_s_mini_js(suggestion){
-    return '<span class="block-icon" title="'+suggestion.s__title+'">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span>';
+function view_s_mini_js(s__type,s__cover,s__title){
+    return '<span class="block-icon" title="'+s__title+'">'+ view_cover_js(s__type, s__cover) +'</span>';
 }
 
 function toggle_headline(headline_id){
@@ -546,6 +546,29 @@ $(document).ready(function () {
         }).autocomplete({hint: false, minLength: 2}, [{
 
             source: function (q, cb) {
+
+                //ALso search and append GIFs:
+                setTimeout(function () {
+                    $.get({
+                        url: js_e___6404[6293]['m__message']+q,
+                        success: function(result) {
+                            var data = result.data;
+                            var output = "";
+                            var counter = 0;
+                            for (var index in data){
+                                counter++;
+                                output += view_s_mini_js(12274, "https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif", data[index].title.replace("'",''));
+                            }
+                            $(".image_search").html(output);
+                            //lazy_load();
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                }, 3000);
+
+
                 icons_listed = [];
                 algolia_index.search(q, {
                     filters: ' _tags:alg_e_14988 OR _tags:alg_e_14038 OR _tags:alg_e_14986 OR _tags:alg_e_20425 OR _tags:alg_e_20426 OR _tags:alg_e_20427 OR _tags:has_image ',
@@ -566,7 +589,7 @@ $(document).ready(function () {
                     } else {
                         //Add to list:
                         icons_listed.push(suggestion.s__cover);
-                        return view_s_mini_js(suggestion);
+                        return view_s_mini_js(suggestion.s__type, suggestion.s__cover, suggestion.s__title);
                     }
                 },
                 empty: function (data) {
@@ -1289,9 +1312,9 @@ Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPreci
 
 
 var current_q = '';
-function images_search(){
+function images_search(query){
 
-    q = encodeURI($('.images_query').val());
+    q = encodeURI(query);
 
     if(q==current_q){
         return false;
