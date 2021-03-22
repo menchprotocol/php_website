@@ -555,7 +555,7 @@ $(document).ready(function () {
             source: function (q, cb) {
 
                 //ALso search and append GIFs:
-                $("#image_search").html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Searching GIFs...');
+                $("#image_search").html('');
                 $.get({
                     url: js_e___6404[6293]['m__message']+q,
                     success: function(result) {
@@ -588,18 +588,18 @@ $(document).ready(function () {
             templates: {
                 suggestion: function (suggestion) {
                     //Make sure not already returned:
-                    if(icons_listed.includes(suggestion.s__cover)) {
+                    if(validURL(suggestion.s__cover)) {
 
-                        return false;
-
-                    } else if(validURL(suggestion.s__cover)) {
-
-                        $("#image_search").append(image_cover(suggestion.s__cover, suggestion.s__title));
+                        if(icons_listed.includes(suggestion.s__cover)) {
+                            return false;
+                        } else {
+                            icons_listed.push(suggestion.s__cover);
+                            $("#image_search").append(image_cover(suggestion.s__cover, suggestion.s__title));
+                        }
 
                     } else {
 
                         //Add to list:
-                        icons_listed.push(suggestion.s__cover);
                         return view_s_mini_js(suggestion.s__type, suggestion.s__cover, suggestion.s__title);
 
                     }
