@@ -26,6 +26,7 @@ foreach($this->X_model->fetch(array(
             ) as $prefix => $e__id){
 
         //Create Icon:
+        /*
         $added_e = $this->E_model->verify_create($icon_title, $x__source, $icon_code);
         if($added_e['status']){
 
@@ -38,11 +39,11 @@ foreach($this->X_model->fetch(array(
             ));
 
             $added++;
-            echo '<span class="icon-block" title="'.$icon_title.$names[$prefix].'"><i class="'.$icon_code.'"></i></span>';
+            echo '<span class="icon-block" title="'.$icon_title.'"><i class="'.$icon_code.'"></i></span>';
 
         }
-
-        echo '<span class="icon-block" title="'.$e['e__title'].' '.$e__id.'"><i class="'.str_replace('far ',$prefix.' ',$e['e__cover']).'"></i></span>';
+        */
+        echo '<span class="icon-block" title="'.$e['e__title'].$names[$prefix].' '.$e__id.'"><i class="'.str_replace('far ',$prefix.' ',$e['e__cover']).'"></i></span>';
     }
 }
 
