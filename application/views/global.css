@@ -379,17 +379,20 @@ img.no-frame {
     height:55px !important;
     display: inline-block;
     text-align: center;
-    font-size: 2em;
+    font-size: 3em;
 }
 .block_search_results .block-icon i {
-    font-size: 0.8em;
+    font-size: 0.7em;
 }
 .block_search_results .block-icon img{
     border-radius: 50%;
     line-height: 100%;
     width:55px !important;
     height:55px !important;
+    margin-top: -13px !important;
 }
+
+
 
 .aa-dropdown-menu .aa-suggestion.aa-cursor, .suggestion:hover {
     background-color: #999999;
