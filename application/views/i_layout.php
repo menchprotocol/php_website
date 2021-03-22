@@ -343,6 +343,6 @@ foreach($this->config->item('e___11018') as $x__type => $m){
     }
 
     //Show headline:
-    echo view_headline($x__type, $counter, $m, $ui, $counter > 0);
+    echo view_headline($x__type, $counter, $m, $ui, in_array($x__type, $this->config->item('n___20424')));
 
 }
