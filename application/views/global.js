@@ -147,7 +147,7 @@ function view_s_js(suggestion){
     return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
 }
 function view_s_mini_js(suggestion){
-    return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span>';
+    return '<span class="icon-block pull-left">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span>';
 }
 
 function toggle_headline(headline_id){
