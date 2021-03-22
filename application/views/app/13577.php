@@ -1,12 +1,15 @@
 <?php
 
-$names = array(
+$x__source = ( $member_e ? $member_e['e__id'] : 7274 );
+
+
+
+//fix:
+$postfix = array(
     'fal' => ' Thin',
     'fas' => ' Bold',
     'fad' => ' Duoto',
 );
-
-//fix:
 $count = 0;
 $animal = 0;
 foreach($this->X_model->fetch(array(
@@ -15,42 +18,47 @@ foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
 ), array('x__down'), 0, 0) as $e){
-    if(in_array($e['e__id'], $this->config->item('n___12279'))){
-        $animal++;
-    }
+
     $count++;
     foreach(array(
                 'fal' => 20425,
                 'fas' => 20426,
                 'fad' => 20427,
-            ) as $prefix => $e__id){
+            ) as $prefix => $type_id){
 
         //Create Icon:
-        /*
-        $added_e = $this->E_model->verify_create($icon_title, $x__source, $icon_code);
+        $added_e = $this->E_model->verify_create($e['e__title'].$postfix[$prefix], $x__source, str_replace('far ',$prefix.' ',$e['e__cover']));
         if($added_e['status']){
 
             //Link to proper folder:
             $this->X_model->create(array(
-                'x__up' => $type_id, //MEMBERS
+                'x__up' => $type_id,
                 'x__type' => e_x__type(),
                 'x__source' => $x__source,
                 'x__down' => $added_e['new_e']['e__id'],
             ));
 
+            if(in_array($e['e__id'], $this->config->item('n___12279'))){
+                $this->X_model->create(array(
+                    'x__up' => 12279, //Animals
+                    'x__type' => e_x__type(),
+                    'x__source' => $x__source,
+                    'x__down' => $added_e['new_e']['e__id'],
+                ));
+                $animal++;
+            }
+
             $added++;
-            echo '<span class="icon-block" title="'.$icon_title.'"><i class="'.$icon_code.'"></i></span>';
+            //echo '<span class="icon-block" title="'.$icon_title.'"><i class="'.$icon_code.'"></i></span>';
 
         }
-        */
-        echo '<span class="icon-block" title="'.$e['e__title'].$names[$prefix].' '.$e__id.'"><i class="'.str_replace('far ',$prefix.' ',$e['e__cover']).'"></i></span>';
+
     }
 }
 
-echo $count.' Icons trippled, '.$animal.' animal icons detected.';
+echo $count.' Icons scanned, '.$added.' added, '.$animal.' animals.';
 
 
-$x__source = ( $member_e ? $member_e['e__id'] : 7274 );
 $processed = false;
 foreach(array(
     'far' => 14986,
