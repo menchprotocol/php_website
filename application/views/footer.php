@@ -197,7 +197,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
                         </div>
                         <div class="col-12">
-                            <input type="text" class="form-control text-edit border css__title cover_query" placeholder="Search Covers..." onkeyup="cover_search()" data-lpignore="true" />
+                            <input type="text" class="form-control text-edit border css__title cover_query algolia_search" placeholder="Search Covers..." onkeyup="cover_search()" data-lpignore="true" />
                             <div class="current_covers margin-top-down hideIfEmpty inline-block"></div>
                             <div class="new_images margin-top-down hideIfEmpty inline-block"></div>
                         </div>
