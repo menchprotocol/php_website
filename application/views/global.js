@@ -146,6 +146,9 @@ function view_s__title(suggestion){
 function view_s_js(suggestion){
     return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
 }
+function view_s_mini_js(suggestion){
+    return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span>';
+}
 
 function toggle_headline(headline_id){
     if($('.headline_title_' + headline_id + ' i').hasClass('fa-chevron-up')){
@@ -758,6 +761,8 @@ function coin__load(coin__type, coin__id){
     $('#modal14937').modal('show');
     $('#coin__title').val('LOADING...');
     $('#coin__cover').val('LOADING...');
+    $('#modal14937 .black-background').removeClass('zq12273').removeClass('zq12274').addClass('zq'+coin__type);
+
 
     $.post("/e/coin__load", {
         coin__type: coin__type,
@@ -1242,7 +1247,45 @@ Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPreci
 
 
 function cover_search(){
-    q = encodeURI($('.cover_query').val());
+
+    if(parseInt(js_e___6404[12678]['m__message'])){
+
+        $('.cover_query').on('autocomplete:selected', function (event, suggestion, dataset) {
+
+            //Assign to image:
+            $('#coin__cover').val( suggestion.s__cover );
+            update_cover_main(suggestion.s__cover, '.demo_cover');
+
+        }).autocomplete({hint: false, minLength: 2}, [{
+
+            source: function (q, cb) {
+                algolia_index.search(q, {
+                    filters: ' _tags:alg_e_14988 OR _tags:alg_e_14038 OR _tags:alg_e_14986 OR _tags:has_image ',
+                    hitsPerPage: 30,
+                }, function (error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            displayKey: function (suggestion) {
+                return '@' + suggestion.s__id + ' ' + suggestion.s__title;
+            },
+            templates: {
+                suggestion: function (suggestion) {
+                    return view_s_mini_js(suggestion);
+                },
+                empty: function (data) {
+                    //Nothing found:
+                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i Nothing Found</div>';
+                },
+            }
+        }]);
+
+    }
+
 }
 
 var current_q = '';

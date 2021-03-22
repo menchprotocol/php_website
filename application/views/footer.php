@@ -197,18 +197,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
                         </div>
                         <div class="col-12">
-                            <?php
-
-                            //GIF
-
-                            echo '<input type="text" class="form-control text-edit border css__title cover_query" placeholder="Search Covers..." onkeyup="cover_search()" data-lpignore="true" />';
-
-                            echo '<div class="current_covers margin-top-down hideIfEmpty inline-block"></div>';
-                            echo '<div class="new_images margin-top-down hideIfEmpty inline-block"></div>';
-
-                            //JS $('#coin__cover').val( '<i class=&quot;fas fa-laugh&quot;></i>' );update_cover_main($('#coin__cover').val(), '.demo_cover');
-
-                            ?>
+                            <input type="text" class="form-control text-edit border css__title cover_query" placeholder="Search Covers..." onkeyup="cover_search()" data-lpignore="true" />
+                            <div class="current_covers margin-top-down hideIfEmpty inline-block"></div>
+                            <div class="new_images margin-top-down hideIfEmpty inline-block"></div>
                         </div>
                     </div>
 
