@@ -424,6 +424,11 @@ function load_coin_count(){
     });
 }
 
+function update__cover(new_cover){
+    $('#coin__cover').val( new_cover );
+    update_cover_main(new_cover, '.demo_cover');
+}
+
 var algolia_index = false;
 $(document).ready(function () {
 
@@ -540,8 +545,7 @@ $(document).ready(function () {
         $('.cover_query').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             //Assign to image:
-            $('#coin__cover').val( suggestion.s__cover );
-            update_cover_main(suggestion.s__cover, '.demo_cover');
+            update__cover(suggestion.s__cover);
 
         }).autocomplete({hint: false, minLength: 2}, [{
 
@@ -554,13 +558,14 @@ $(document).ready(function () {
                     success: function(result) {
                         var data = result.data;
                         var output = "";
+                        var new_cover = "";
                         var counter = 0;
                         for (var index in data){
                             counter++;
-                            output += '<a href="">' + view_s_mini_js(12274, "https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif", data[index].title.replace("'",'')) + '</a>';
+                            new_cover = "https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif";
+                            output += '<a href="javascript:void();" onclick="update__cover('+new_cover+')">' + view_s_mini_js(12274, new_cover, data[index].title.replace("'",'')) + '</a>';
                         }
                         $("#image_search").html(output);
-                        //lazy_load();
                     },
                     error: function(error) {
                         console.log(error);
