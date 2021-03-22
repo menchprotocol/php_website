@@ -429,7 +429,7 @@ function update__cover(new_cover){
     update_cover_main(new_cover, '.demo_cover');
 }
 function image_cover(new_cover, new_title){
-    return '<a href="#preview" onclick="update__cover(\''+new_cover+'\')">' + view_s_mini_js(12274, new_cover, new_title) + '</a>';
+    return '<a href="#preview_cover" onclick="update__cover(\''+new_cover+'\')">' + view_s_mini_js(12274, new_cover, new_title) + '</a>';
 }
 
 var algolia_index = false;
@@ -549,6 +549,12 @@ $(document).ready(function () {
         $('.cover_query').autocomplete({hint: false, minLength: 2}, [{
 
             source: function (q, cb) {
+
+                if(validURL(q)){
+                    //Must be an image URL:
+                    update__cover(q);
+                    return true;
+                }
 
                 //ALso search and append GIFs:
                 $.get({
