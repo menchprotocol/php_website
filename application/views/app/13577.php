@@ -1,5 +1,10 @@
 <?php
 
+$names = array(
+    'fal' => ' Thin',
+    'fas' => ' Bold',
+    'fad' => ' Duoto',
+);
 
 //fix:
 $count = 0;
@@ -19,6 +24,24 @@ foreach($this->X_model->fetch(array(
                 'fas' => 20426,
                 'fad' => 20427,
             ) as $prefix => $e__id){
+
+        //Create Icon:
+        $added_e = $this->E_model->verify_create($icon_title, $x__source, $icon_code);
+        if($added_e['status']){
+
+            //Link to proper folder:
+            $this->X_model->create(array(
+                'x__up' => $type_id, //MEMBERS
+                'x__type' => e_x__type(),
+                'x__source' => $x__source,
+                'x__down' => $added_e['new_e']['e__id'],
+            ));
+
+            $added++;
+            echo '<span class="icon-block" title="'.$icon_title.$names[$prefix].'"><i class="'.$icon_code.'"></i></span>';
+
+        }
+
         echo '<span class="icon-block" title="'.$e['e__title'].' '.$e__id.'"><i class="'.str_replace('far ',$prefix.' ',$e['e__cover']).'"></i></span>';
     }
 }
