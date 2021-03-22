@@ -373,6 +373,7 @@ img.no-frame {
 .block_search_results .suggestion {
     display: inline-block;
     float: left;
+    padding: 0 !important;
 }
 .block_search_results .block-icon {
     width:55px !important;
@@ -381,7 +382,8 @@ img.no-frame {
     float: left;
     text-align: center;
     font-size: 3.4em !important;
-    padding-top: 5px;
+    padding:5px 0 0 0 !important;
+    margin: 0 !important;
 }
 .block_search_results .block-icon i {
     font-size: 0.78em !important;
