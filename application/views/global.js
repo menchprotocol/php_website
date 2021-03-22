@@ -548,25 +548,24 @@ $(document).ready(function () {
             source: function (q, cb) {
 
                 //ALso search and append GIFs:
-                setTimeout(function () {
-                    $.get({
-                        url: js_e___6404[6293]['m__message']+q,
-                        success: function(result) {
-                            var data = result.data;
-                            var output = "";
-                            var counter = 0;
-                            for (var index in data){
-                                counter++;
-                                output += view_s_mini_js(12274, "https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif", data[index].title.replace("'",''));
-                            }
-                            $(".image_search").html(output);
-                            //lazy_load();
-                        },
-                        error: function(error) {
-                            console.log(error);
+                $("#image_search").html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Searching GIFs...');
+                $.get({
+                    url: js_e___6404[6293]['m__message']+q,
+                    success: function(result) {
+                        var data = result.data;
+                        var output = "";
+                        var counter = 0;
+                        for (var index in data){
+                            counter++;
+                            output += view_s_mini_js(12274, "https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif", data[index].title.replace("'",''));
                         }
-                    });
-                }, 3000);
+                        $("#image_search").html(output);
+                        //lazy_load();
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
 
 
                 icons_listed = [];
