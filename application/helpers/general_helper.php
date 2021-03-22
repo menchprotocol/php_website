@@ -605,11 +605,17 @@ function update_description($before_string, $after_string){
     return 'Updated from ['.$before_string.'] to ['.$after_string.']';
 }
 
-function random_avatar(){
+
+function random_selection($e__id, $return_field = null){
     $CI =& get_instance();
-    $e___13533 = $CI->config->item('e___13533'); //Icon Types
-    $e___12279 = $CI->config->item('e___12279');
-    return $e___13533[array_rand($e___13533)]['m__message'].' '.one_two_explode('class="far ','"',$e___12279[array_rand($e___12279)]['m__cover']);
+    $fetch = $CI->config->item('e___'.$e__id);
+    if(!$return_field){
+        //Return entire array:
+        return $fetch[array_rand($fetch)];
+    } else {
+        //Return specific field:
+        return $fetch[array_rand($fetch)][$return_field];
+    }
 }
 
 function format_percentage($percent){

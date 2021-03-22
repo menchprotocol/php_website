@@ -16,12 +16,12 @@ if(isset($_GET['update_u_icons'])){
     $updated = 0;
     foreach($this->X_model->fetch($base_filters, array('x__down'), 0) as $x){
         $updated += $this->E_model->update($x['e__id'], array(
-            'e__cover' => random_avatar(),
+            'e__cover' => random_selection(12279, 'm__cover'),
         ));
     }
     echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$updated.' Member profiles updated with new random animal icons';
 }
 
 for($i=0;$i<750;$i++){
-    echo '<span class="icon-block">'.view_cover(12274,random_avatar()).'</span>';
+    echo '<span class="icon-block">'.view_cover(12274,random_selection(12279, 'm__cover')).'</span>';
 }
