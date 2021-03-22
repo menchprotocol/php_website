@@ -546,6 +546,7 @@ $(document).ready(function () {
         }).autocomplete({hint: false, minLength: 2}, [{
 
             source: function (q, cb) {
+                icons_listed = [];
                 algolia_index.search(q, {
                     filters: ' _tags:alg_e_14988 OR _tags:alg_e_14038 OR _tags:alg_e_14986 OR _tags:alg_e_20425 OR _tags:alg_e_20426 OR _tags:alg_e_20427 OR _tags:has_image ',
                     hitsPerPage: 200,
