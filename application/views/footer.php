@@ -188,6 +188,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <span aria-hidden="true">&times;</span>
                     </button>
 
+                    <div class="doclear">&nbsp;</div>
+
                     <!-- PREVIEW -->
                     <div class="row justify-content-center">
                         <div class="col-12">
@@ -203,10 +205,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-12">
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-body block_search_results">
 
+                    <!-- Search Results -->
+                    <div id="image_search">&nbsp;</div>
+
+                </div>
+                <div class="modal-footer">
                     <!-- Power Edit (Required Superpower) -->
                     <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
                     <input type="hidden" id="coin__type" value="0" />
@@ -224,10 +230,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </td>
                         </tr>
                     </table>
-
-                    <!-- Search Results -->
-                    <div id="image_search">&nbsp;</div>
-
                 </div>
             </div>
         </div>
