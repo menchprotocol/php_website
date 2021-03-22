@@ -534,6 +534,42 @@ $(document).ready(function () {
 
     if(parseInt(js_e___6404[12678]['m__message'])){
 
+        //COVER SEARCH
+        $('.cover_query').on('autocomplete:selected', function (event, suggestion, dataset) {
+
+            //Assign to image:
+            $('#coin__cover').val( suggestion.s__cover );
+            update_cover_main(suggestion.s__cover, '.demo_cover');
+
+        }).autocomplete({hint: false, minLength: 2}, [{
+
+            source: function (q, cb) {
+                algolia_index.search(q, {
+                    filters: ' _tags:alg_e_14988 OR _tags:alg_e_14038 OR _tags:alg_e_14986 OR _tags:has_image ',
+                    hitsPerPage: 30,
+                }, function (error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            displayKey: function (suggestion) {
+                return '@' + suggestion.s__id + ' ' + suggestion.s__title;
+            },
+            templates: {
+                suggestion: function (suggestion) {
+                    return view_s_mini_js(suggestion);
+                },
+                empty: function (data) {
+                    //Nothing found:
+                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i Nothing Found</div>';
+                },
+            }
+        }]);
+
+        //TOP SEARCH
         $("#top_search").on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $('#top_search').val('Loading...');
@@ -1245,48 +1281,6 @@ function images_modal(x__type){
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
 
 
-
-function cover_search(){
-
-    if(parseInt(js_e___6404[12678]['m__message'])){
-
-        $('.cover_query').on('autocomplete:selected', function (event, suggestion, dataset) {
-
-            //Assign to image:
-            $('#coin__cover').val( suggestion.s__cover );
-            update_cover_main(suggestion.s__cover, '.demo_cover');
-
-        }).autocomplete({hint: false, minLength: 2}, [{
-
-            source: function (q, cb) {
-                algolia_index.search(q, {
-                    filters: ' _tags:alg_e_14988 OR _tags:alg_e_14038 OR _tags:alg_e_14986 OR _tags:has_image ',
-                    hitsPerPage: 30,
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
-            },
-            displayKey: function (suggestion) {
-                return '@' + suggestion.s__id + ' ' + suggestion.s__title;
-            },
-            templates: {
-                suggestion: function (suggestion) {
-                    return view_s_mini_js(suggestion);
-                },
-                empty: function (data) {
-                    //Nothing found:
-                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i Nothing Found</div>';
-                },
-            }
-        }]);
-
-    }
-
-}
 
 var current_q = '';
 function images_search(){
