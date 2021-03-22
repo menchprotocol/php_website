@@ -429,7 +429,7 @@ function update__cover(new_cover){
     update_cover_main(new_cover, '.demo_cover');
 }
 function image_cover(new_cover, new_title){
-    return '<a href="javascript:void();" onclick="update__cover('+new_cover+')">' + view_s_mini_js(12274, new_cover, new_title) + '</a>';
+    return '<a href="javascript:void();" onclick="update__cover(\''+new_cover+'\')">' + view_s_mini_js(12274, new_cover, new_title) + '</a>';
 }
 
 var algolia_index = false;
