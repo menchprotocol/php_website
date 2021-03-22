@@ -670,29 +670,30 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             'x__up' => $e__id,
         );
 
+    } elseif($x__type==12969){
+
+        $join_objects = array('x__left');
+        $limit = view_memory(6404,11064);
+        $order_columns = array('x__spectrum' => 'ASC'); //Custom Sort
+        $query_filters = array(
+            'x__source' => $e__id,
+            'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //STARTED
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
+        );
+
     } elseif($x__type==6255){
 
         //DISCOVERIES
         $join_objects = array('x__left');
         $limit = view_memory(6404,11064);
-
-        if($page_num > 0){
-            $order_columns = array('x__spectrum' => 'ASC');
-            $query_filters = array(
-                'x__source' => $e__id,
-                'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
-            );
-        } else {
-            $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
-            $query_filters = array(
-                'x__source' => $e__id,
-                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
-            );
-        }
+        $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
+        $query_filters = array(
+            'x__source' => $e__id,
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
+        );
 
     }
 

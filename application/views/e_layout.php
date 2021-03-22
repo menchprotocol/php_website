@@ -469,29 +469,33 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         }
 
-    } elseif($x__type==6255){
+    } elseif($x__type==12969 || $x__type==6255){
 
-        //DISCOVERIES
-        $counter = view_coins_e( 6255, $e['e__id'], 0, false);
+        //STARTED & DISCOVERIES
+        $counter = view_coins_e($x__type, $e['e__id'], 0, false);
 
         //Show My discoveries
         if($counter){
 
-            $list_x  = view_coins_e(6255, $e['e__id'], 1);
+            $list_x  = view_coins_e($x__type, $e['e__id'], 1);
 
             $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12969">';
             foreach($list_x as $item){
-                $ui .= view_i(12969, $item['i__id'], null, $item,$control_enabled,null, $e);
+                $ui .= view_i($x__type, $item['i__id'], null, $item,$control_enabled,null, $e);
             }
             $ui .= '</div>';
 
-            $ui .= ( count($list_x) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list-in-12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
-
         }
 
-        if($source_is_e){
+        if($source_is_e && $x__type==12969){
+
+            //Sorting
+            $ui .= ( count($list_x) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list-in-12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+
+
             //Add New Discovery Button:
             $ui .= '<div class="center" style="padding-top:89px;"><a class="btn btn-lrg btn-6255" href="/">'.$e___11035[18995]['m__cover'].' '.$e___11035[18995]['m__title'].' <i class="far fa-arrow-right"></i></a></div>';
+
         }
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
