@@ -181,55 +181,49 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-
-
-                    <h5 class="modal-title css__title" id="modal14937Label"><?= $e___11035[14937]['m__cover'].' '.$e___11035[14937]['m__title'] ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                    <div class="doclear">&nbsp;</div>
-
                     <!-- PREVIEW -->
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center" style="width: 100%;">
                         <div class="col-12">
                             <div class="coin_cover demo_cover" style="width: 255px !important; margin-left: auto !important; margin-right: auto !important;">
                                 <div class="cover-wrapper">
                                     <div class="coin-cover coin-cover-left"><a href="javascript:void(0);"><i class="fas fa-upload"></i></a></div>
-                                    <div class="coin-cover coin-cover-right"><a href="javascript:void(0);" onclick="$('#coin__cover').val('');update_cover_main('','.demo_cover');"><i class="fas fa-trash-alt"></i></a></div>
+                                    <div class="coin-cover coin-cover-right"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="far fa-times"></i></span></button></div>
                                     <div class="black-background cover-link" style=""><div class="cover-btn"></div></div>
                                 </div>
                                 <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="coin__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>
+                                <table class="coin_coins">
+                                    <tr>
+                                        <td width="33%" class="push_down" style="text-align: right;"><div><a href="javascript:void(0);"><i class="fas fa-link"></i></a></div></td>
+                                        <td width="34%" class="center"></td>
+                                        <td width="33%" class="push_down" style="text-align: left;"><div><a href="javascript:void(0);" onclick="$('#coin__cover').val('');update_cover_main('','.demo_cover');"><i class="fas fa-trash-alt"></i></a></div></td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                         <div class="col-12">
+                            <!-- Power Edit (Required Superpower) -->
+                            <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
+                            <input type="hidden" id="coin__type" value="0" />
+                            <input type="hidden" id="coin__id" value="0" />
+
+                            <!-- SEARCH -->
+                            <table style="width: 100%; margin-bottom: 34px;">
+                                <tr>
+                                    <td style="width: 100%;">
+                                        <input id="search_cover" type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
+
+                                    </td>
+                                    <td>
+                                        <button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
+
                 <div class="modal-body block_search_results">
-
-                    <!-- Search Results -->
-                    <div id="image_search">&nbsp;</div>
-
-                </div>
-                <div class="modal-footer">
-                    <!-- Power Edit (Required Superpower) -->
-                    <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
-                    <input type="hidden" id="coin__type" value="0" />
-                    <input type="hidden" id="coin__id" value="0" />
-
-                    <!-- SEARCH -->
-                    <table style="width: 100%; margin-bottom: 34px;">
-                        <tr>
-                            <td style="width: 100%;">
-                                <input id="search_cover" type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
-
-                            </td>
-                            <td>
-                                <button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button>
-                            </td>
-                        </tr>
-                    </table>
+                    <div id="image_search"></div>
                 </div>
             </div>
         </div>
