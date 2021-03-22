@@ -147,7 +147,7 @@ function view_s_js(suggestion){
     return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
 }
 function view_s_mini_js(suggestion){
-    return '<div class="pull-left inline-block"><span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span></div>';
+    return '<div class="pull-left inline-block" style="margin:0; padding: 0; width: 50px; height: 50px;"><span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span></div>';
 }
 
 function toggle_headline(headline_id){
@@ -797,7 +797,7 @@ function coin__load(coin__type, coin__id){
     $('#modal14937').modal('show');
     $('#coin__title').val('LOADING...');
     $('#coin__cover').val('LOADING...');
-    $('#modal14937 .black-background').removeClass('zq12273').removeClass('zq12274').addClass('zq'+coin__type);
+    $('#modal14937 .black-background').removeClass('coinType12273').removeClass('coinType12274').addClass('coinType'+coin__type);
 
 
     $.post("/e/coin__load", {
