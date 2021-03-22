@@ -383,14 +383,14 @@ img.no-frame {
     font-size: 3.4em !important;
 }
 .block_search_results .block-icon i {
-    font-size: 0.82em !important;
+    font-size: 1em !important;
 }
 .block_search_results .block-icon img{
     border-radius: 50%;
     line-height: 100%;
     width:100%;
     height:100%;
-    margin-top: -8px !important;
+    margin-top: -13px !important;
 }
 
 
