@@ -555,9 +555,6 @@ $(document).ready(function () {
                     cb(content.hits, content);
                 });
             },
-            displayKey: function (suggestion) {
-                return '@' + suggestion.s__id + ' ' + suggestion.s__title;
-            },
             templates: {
                 suggestion: function (suggestion) {
                     return view_s_mini_js(suggestion);
