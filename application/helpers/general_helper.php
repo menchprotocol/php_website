@@ -609,7 +609,7 @@ function update_description($before_string, $after_string){
 function random_cover($e__id){
     $CI =& get_instance();
     $fetch = $CI->config->item('e___'.$e__id);
-    return one_two_explode('class="','"',$fetch[array_rand($fetch)][$return_field]);
+    return one_two_explode('class="','"',$fetch[array_rand($fetch)]['m__cover']);
 }
 
 function format_percentage($percent){
