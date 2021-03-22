@@ -4,7 +4,7 @@
 //fix:
 $count = 0;
 foreach($this->X_model->fetch(array(
-    'x__up' => 12279,
+    'x__up' => 14986,
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
