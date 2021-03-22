@@ -534,6 +534,8 @@ $(document).ready(function () {
 
     if(parseInt(js_e___6404[12678]['m__message'])){
 
+        var icons_listed = [];
+
         //COVER SEARCH
         $('.cover_query').on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -557,7 +559,14 @@ $(document).ready(function () {
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return view_s_mini_js(suggestion.s__type, suggestion.s__cover);
+                    //Make sure not already returned:
+                    if(!icons_listed.includes(suggestion.s__cover)){
+                        return false;
+                    } else {
+                        //Add to list:
+                        icons_listed.push(suggestion.s__cover);
+                        return view_s_mini_js(suggestion.s__type, suggestion.s__cover);
+                    }
                 },
                 empty: function (data) {
                     //Nothing found:

@@ -189,7 +189,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body">
 
                     <!-- SEARCH -->
-                    <table style="width: 100%;">
+                    <table style="width: 100%; margin-bottom: 34px;">
                         <tr>
                             <td style="width: 100%;" class="block_search_results">
                                 <input type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
@@ -211,7 +211,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- PREVIEW -->
                     <div class="row justify-content-center">
                         <div class="col-12">
-                            <div class="coin_cover demo_cover" style="width: 255px !important; margin:0 auto 55px !important;">
+                            <div class="coin_cover demo_cover" style="width: 255px !important;">
                                 <div class="cover-wrapper">
                                     <div class="coin-cover coin-cover-left"><a href="javascript:void(0);"><i class="fas fa-upload"></i></a></div>
                                     <div class="coin-cover coin-cover-right"><a href="javascript:void(0);" onclick="$('#coin__cover').val('');update_cover_main('','.demo_cover');"><i class="fas fa-trash-alt"></i></a></div>
