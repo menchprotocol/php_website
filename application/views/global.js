@@ -560,14 +560,12 @@ $(document).ready(function () {
                     url: js_e___6404[6293]['m__message']+q,
                     success: function(result) {
                         var data = result.data;
-                        var output = "";
                         var new_cover = "";
                         var counter = 0;
                         for (var index in data){
                             counter++;
-                            output += image_cover("https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif", data[index].title.replace("'",''));
+                            $("#image_search").append(image_cover("https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif", data[index].title.replace("'",'')));
                         }
-                        $("#image_search").html(output);
                     },
                     error: function(error) {
                         console.log(error);
