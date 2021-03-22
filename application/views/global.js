@@ -429,7 +429,7 @@ function update__cover(new_cover){
     update_cover_main(new_cover, '.demo_cover');
 }
 function image_cover(new_cover, new_title){
-    return '<a href="javascript:void();" onclick="update__cover(\''+new_cover+'\')">' + view_s_mini_js(12274, new_cover, new_title) + '</a>';
+    return '<a href="#preview" onclick="update__cover(\''+new_cover+'\')">' + view_s_mini_js(12274, new_cover, new_title) + '</a>';
 }
 
 var algolia_index = false;
@@ -584,22 +584,10 @@ $(document).ready(function () {
             templates: {
                 suggestion: function (suggestion) {
                     //Make sure not already returned:
-                    if(icons_listed.includes(suggestion.s__cover)) {
-                        return false;
-                    }
-
-                    icons_listed.push(suggestion.s__cover);
-                    $("#image_search").prepend(image_cover(suggestion.s__cover, suggestion.s__title));
-
-                    /*
-                    if(validURL(suggestion.s__cover)){
-                        $("#image_search").append(image_cover(suggestion.s__cover, suggestion.s__title));
-                    } else {
-                        //EMOJI & ICONS
+                    if(!icons_listed.includes(suggestion.s__cover)) {
+                        icons_listed.push(suggestion.s__cover);
                         $("#image_search").prepend(image_cover(suggestion.s__cover, suggestion.s__title));
                     }
-
-                    */
                     return false;
                 },
                 empty: function (data) {
