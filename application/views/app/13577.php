@@ -1,5 +1,7 @@
 <?php
 
+die('Must update code to consider multiple types when updating...');
+
 $x__source = ( $member_e ? $member_e['e__id'] : 7274 );
 
 
