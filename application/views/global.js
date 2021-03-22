@@ -589,12 +589,17 @@ $(document).ready(function () {
                     }
 
                     icons_listed.push(suggestion.s__cover);
+                    $("#image_search").prepend(image_cover(suggestion.s__cover, suggestion.s__title));
+
+                    /*
                     if(validURL(suggestion.s__cover)){
                         $("#image_search").append(image_cover(suggestion.s__cover, suggestion.s__title));
                     } else {
                         //EMOJI & ICONS
                         $("#image_search").prepend(image_cover(suggestion.s__cover, suggestion.s__title));
                     }
+
+                    */
                     return false;
                 },
                 empty: function (data) {

@@ -181,7 +181,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-
+                    <h5 class="modal-title css__title" id="modal14393Label"><?= $e___11035[14937]['m__cover'].' '.$e___11035[14937]['m__title'] ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
 
                 <div class="modal-body block_search_results">
@@ -206,10 +209,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             </td>
                             <td>
-                                <a class="icon-block" href="javascript:void(0);" onclick="$('#coin__cover').val('');update_cover_main('','.demo_cover');"><i class="fas fa-trash-alt"></i></a>
+                                <a class="icon-block" href="javascript:void(0);" title="Clear Cover" onclick="$('#coin__cover').val('');update_cover_main('','.demo_cover');"><i class="fas fa-trash-alt"></i></a>
                             </td>
                             <td>
-                                <a class="icon-block" href="javascript:void(0);"><i class="fas fa-upload"></i></a>
+                                <a class="icon-block" href="javascript:void(0);" title="Upload Image"><i class="fas fa-cloud-upload"></i></a>
                             </td>
                             <td>
                                 <button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button>
