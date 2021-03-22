@@ -199,7 +199,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <table style="width: 100%; margin-bottom: 34px;">
                         <tr>
                             <td style="width: 100%;" class="block_search_results">
-                                <input type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
+                                <input id="search_cover" type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
 
                             </td>
                             <td>

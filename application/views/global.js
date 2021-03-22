@@ -802,10 +802,9 @@ function coin__load(coin__type, coin__id){
     });
 
     $('#modal14937').modal('show');
-    $('#coin__title').val('LOADING...');
-    $('#coin__cover').val('LOADING...');
+    $('#search_cover').val('').focus();
+    $('#coin__title, #coin__cover').val('LOADING...');
     $('#modal14937 .black-background').removeClass('coinType12273').removeClass('coinType12274').addClass('coinType'+coin__type);
-
 
     $.post("/e/coin__load", {
         coin__type: coin__type,
