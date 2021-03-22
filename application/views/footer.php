@@ -202,16 +202,23 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                 </div>
                 <div class="modal-footer">
-                    <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
-                    <div class="form-group current_covers">
-                        <div class="input-group border">
-                            <input type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
-                            <div style="padding: 10px; text-align: center;"><button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button></div>
-                            <input type="hidden" id="coin__type" value="0" />
-                            <input type="hidden" id="coin__id" value="0" />
-                        </div>
 
-                    </div>
+                    <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
+
+
+                    <table style="width: 100%;">
+                        <tr>
+                            <td width="100%">
+                                <input type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
+
+                            </td>
+                            <td>
+                                <div style="padding: 10px; text-align: center;"><button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button></div>
+                                <input type="hidden" id="coin__type" value="0" />
+                                <input type="hidden" id="coin__id" value="0" />
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
