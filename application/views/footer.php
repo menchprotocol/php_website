@@ -189,7 +189,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body">
 
                     <!-- PREVIEW -->
-                    <div class="row justify-content-center current_covers">
+                    <div class="row justify-content-center">
                         <div class="col-12">
                             <div class="coin_cover demo_cover" style="width: 255px !important; margin: -21px auto 50px !important;">
                                 <div class="cover-wrapper"><div class="black-background cover-link" style=""><div class="cover-btn"></div></div></div>
@@ -203,9 +203,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
                 <div class="modal-footer">
                     <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
-                    <div class="form-group">
+                    <div class="form-group current_covers">
                         <div class="input-group border">
-                            <input type="text" class="form-control text-edit border css__title cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
+                            <input type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
                             <div style="padding: 10px; text-align: center;"><button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button></div>
                             <input type="hidden" id="coin__type" value="0" />
                             <input type="hidden" id="coin__id" value="0" />
