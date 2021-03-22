@@ -206,13 +206,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             </td>
                             <td>
-                                <button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button>
+                                <a class="icon-block" href="javascript:void(0);" onclick="$('#coin__cover').val('');update_cover_main('','.demo_cover');"><i class="fas fa-trash-alt"></i></a>
                             </td>
                             <td>
-                                <a href="javascript:void(0);" onclick="$('#coin__cover').val('');update_cover_main('','.demo_cover');"><i class="fas fa-trash-alt"></i></a>
-                            </td>
-                            <td>
-                                <a href="javascript:void(0);"><i class="fas fa-upload"></i></a>
+                                <a class="icon-block" href="javascript:void(0);"><i class="fas fa-upload"></i></a>
                             </td>
                             <td>
                                 <button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button>
