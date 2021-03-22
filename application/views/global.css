@@ -380,10 +380,10 @@ img.no-frame {
     display: block;
     float: left;
     text-align: center;
-    font-size: 3em !important;
+    font-size: 3.4em !important;
 }
 .block_search_results .block-icon i {
-    font-size: 0.5em !important;
+    font-size: 0.75em !important;
 }
 .block_search_results .block-icon img{
     border-radius: 50%;
