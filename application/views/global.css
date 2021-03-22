@@ -381,12 +381,12 @@ img.no-frame {
     float: left;
     text-align: center;
     font-size: 3.4em !important;
-    padding:8px 0 !important;
-    margin: 0 !important;
+    margin:8px 0 !important;
+    padding: 0 !important;
 }
 .block_search_results .block-icon i {
     font-size: 0.78em !important;
-    margin-top: -10px;
+    margin-top: -8px;
 }
 .block_search_results .block-icon img{
     border-radius: 50%;
