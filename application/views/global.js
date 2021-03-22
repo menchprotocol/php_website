@@ -560,7 +560,7 @@ $(document).ready(function () {
             templates: {
                 suggestion: function (suggestion) {
                     //Make sure not already returned:
-                    if(!icons_listed.includes(suggestion.s__cover)){
+                    if(icons_listed.includes(suggestion.s__cover)){
                         return false;
                     } else {
                         //Add to list:
