@@ -1353,8 +1353,12 @@ function images_modal(x__type){
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
 
 
-
+var current_q = '';
 function images_search(query){
+    if(query==current_q){
+        return false;
+    }
+    current_q = query;
     $('.new_images').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
     tenor_getasync(query, tenor_search_box);
 }
