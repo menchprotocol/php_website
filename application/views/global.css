@@ -1960,7 +1960,7 @@ i, .btn .show-max {
     min-height: 73px;
 }
 .focus-coin .cover-content{
-    min-height: 123px;
+    min-height: 74px;
 }
 .coin-12273.focus-coin .cover-content {
     min-height: 113px;
@@ -2366,9 +2366,6 @@ textarea {
 
 }
 @media (max-width:576px) {
-    .focus-coin .cover-content{
-        min-height: 80px;
-    }
     .coin-12273.focus-coin .cover-content{
         bottom:-85px;
         min-height: 85px;
