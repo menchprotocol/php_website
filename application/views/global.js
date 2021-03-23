@@ -597,14 +597,14 @@ $(document).ready(function () {
 
             source: function (q, cb) {
 
-                $("#img_results_icons, #img_results_emojis, #img_results_images, #img_results_local").html('');
-                $('.block_results').removeClass('hidden');
-
                 if(validURL(q)){
                     //Must be an image URL:
                     update__cover(q);
                     return true;
                 }
+
+                $("#img_results_icons, #img_results_emojis, #img_results_images, #img_results_local").html('');
+                $('.block_results').removeClass('hidden');
 
                 //Tenor:
                 tenor_getasync(q, tenor_search_cover);
@@ -887,7 +887,7 @@ function coin__load(coin__type, coin__id){
             $('#coin__id').val(coin__id);
             $('#coin__title').val(data.coin__title);
             $('#coin__cover').val(data.coin__cover);
-            update_cover_main($('#coin__cover').val(), '.demo_cover');
+            update_cover_main(data.coin__cover, '.demo_cover');
 
         } else {
 
