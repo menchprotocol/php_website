@@ -1418,7 +1418,7 @@ function view_i_featured(){
         }
         $ui .= '</div>';
 
-        $visible_ui .= view_headline($e__id, $counter, $m, $ui, !$counter);
+        $visible_ui .= view_headline($e__id, $query2[0]['totals'], $m, $ui, !$counter);
         $counter++;
     }
 
