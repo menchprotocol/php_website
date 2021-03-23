@@ -161,7 +161,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                 </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">&nbsp;</div></div>';
         }
 
-    } elseif($x__type==12273){
+    } elseif($x__type==13542){
 
         //IDEAS
         $is_next = $this->X_model->fetch(array(
