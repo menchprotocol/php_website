@@ -598,6 +598,7 @@ $(document).ready(function () {
             source: function (q, cb) {
 
                 $("#img_results_icons, #img_results_emojis, #img_results_images").html('');
+                $('.block_results').removeClass('hidden');
 
                 if(validURL(q)){
                     //Must be an image URL:
@@ -871,6 +872,7 @@ function coin__load(coin__type, coin__id){
     $('#modal14937').modal('show');
     $('#search_cover').val('').focus();
     $("#img_results_icons, #img_results_emojis, #img_results_images").html('');
+    $('.block_results').addClass('hidden');
     $('#coin__title, #coin__cover').val('LOADING...');
     $('#modal14937 .black-background').removeClass('coinType12273').removeClass('coinType12274').addClass('coinType'+coin__type);
 

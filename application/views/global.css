@@ -372,7 +372,15 @@ img.no-frame {
 .block_search_results .aa-dropdown-menu {
     display: none !important;
 }
-.block_search_results .block-icon {
+.icons_large .block-icon {
+    width:89px !important;
+    height:89px !important;
+    display: block;
+    float: left;
+    margin:5px 0 0 0 !important;
+    padding: 0 !important;
+}
+.icons_small .block-icon {
     width:55px !important;
     height:55px !important;
     display: block;
@@ -382,11 +390,11 @@ img.no-frame {
     margin:13px 0 0 0 !important;
     padding: 0 !important;
 }
-.block_search_results .block-icon i {
+.icons_small .block-icon i {
     font-size: 0.78em !important;
     margin-top: -8px;
 }
-.block_search_results .block-icon img{
+.icons_small .block-icon img{
     border-radius: 50%;
     line-height: 100%;
     width:100%;
@@ -1819,6 +1827,7 @@ i, .btn .show-max {
     padding: 0;
     font-size: 1.4em;
     text-align: left;
+    display: block;
 }
 
 .headline i{

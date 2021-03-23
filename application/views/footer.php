@@ -222,16 +222,16 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </table>
 
 
-                    <!-- RESULTS -->
-                    <div class="headline grey">Icons</div>
-                    <div id="img_results_icons"></div>
+                    <div class="block_results hidden">
+                        <div class="headline margin-top-down-half grey">Icons</div>
+                        <div id="img_results_icons icons_small"></div>
 
-                    <div class="headline grey">Emojis</div>
-                    <div id="img_results_emojis"></div>
+                        <div class="headline margin-top-down-half grey">Emojis</div>
+                        <div id="img_results_emojis icons_small"></div>
 
-                    <div class="headline grey">Images</div>
-                    <div id="img_results_images"></div>
-
+                        <div class="headline margin-top-down-half grey">Images</div>
+                        <div id="img_results_images icons_large"></div>
+                    </div>
 
                 </div>
             </div>
