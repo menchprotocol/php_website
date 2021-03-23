@@ -16,6 +16,46 @@ gtag('js', new Date());
 gtag('config', 'UA-92774608-1');
 
 
+
+
+
+
+// url Async requesting function
+function httpGetAsync(theUrl, callback) {
+    // create the request object
+    var xmlHttp = new XMLHttpRequest();
+
+    // set the state change callback to capture when the response comes in
+    xmlHttp.onreadystatechange = function()
+    {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+    {
+        callback(xmlHttp.responseText);
+    }
+    }
+
+        // open as a GET call, pass in the url and set async = True
+        xmlHttp.open("GET", theUrl, true);
+
+        // call send with no params as they were passed in on the url string
+        xmlHttp.send(null);
+
+        return;
+}
+
+
+
+function printGif(item, index) {
+    console.log(item);
+    $("#image_search").append(image_cover(item["media"][0]["tinygif"]["url"], item["media"][0]["tinygif"]["url"]));
+}
+function tenorCallback_search(responsetext) {
+    // parse the json response
+    var response_objects = JSON.parse(responsetext);
+    response_objects["results"].forEach(printGif);
+}
+
+
 //Full Story
 if(js_pl_id > 1){ //Any user other than Shervin
     window['_fs_debug'] = false;
@@ -557,6 +597,10 @@ $(document).ready(function () {
                     return true;
                 }
 
+                //Tenor:
+                httpGetAsync(js_e___6404[25986]['m__message'] + q, tenorCallback_search);
+
+                /*
                 //ALso search and append GIFs:
                 $.get({
                     url: js_e___6404[6293]['m__message']+q,
@@ -573,7 +617,7 @@ $(document).ready(function () {
                         console.log(error);
                     }
                 });
-
+                */
 
                 icons_listed = [];
                 algolia_index.search(q, {
