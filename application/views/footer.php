@@ -222,20 +222,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </table>
 
 
-                    <div class="block_results hidden">
-                        <div class="headline top-margin grey">Icons</div>
-                        <div id="img_results_icons" class="icons_small"></div>
-                        <div class="doclear">&nbsp;</div>
-
-                        <div class="headline top-margin grey">Emojis</div>
-                        <div id="img_results_emojis" class="icons_small"></div>
-                        <div class="doclear">&nbsp;</div>
-
-                        <div class="headline top-margin grey">Images</div>
-                        <div id="img_results_local" class="icons_large"></div>
-                        <div id="img_results_images" class="icons_large"></div>
-                        <div class="doclear">&nbsp;</div>
-                    </div>
+                    <div id="img_results_icons" class="icons_small"></div>
+                    <div id="img_results_emojis" class="icons_small"></div>
+                    <div class="doclear">&nbsp;</div>
+                    <div id="img_results_local" class="icons_large"></div>
+                    <div id="img_results_images" class="icons_large"></div>
+                    <div class="doclear">&nbsp;</div>
 
                 </div>
             </div>
