@@ -1387,7 +1387,7 @@ function view_i_featured(){
 
     $CI =& get_instance();
     $visible_ui = '';
-    $limit = view_memory(6404,14877);
+    $limit = view_memory(6404,14435);
     $member_e = superpower_unlocked();
     $counter = 0;
 
@@ -1407,7 +1407,6 @@ function view_i_featured(){
             continue;
         }
 
-
         $ui = '<div class="row justify-content-center margin-top-down-half">';
         foreach($query as $i){
             $ui .= view_i(14877, 0, null, $i);
@@ -1417,6 +1416,7 @@ function view_i_featured(){
             $ui .= view_show_more(14435, null, '/@'.$e__id);
         }
         $ui .= '</div>';
+
 
         $visible_ui .= view_headline($e__id, $query2[0]['totals'], $m, $ui, !$counter);
         $counter++;
