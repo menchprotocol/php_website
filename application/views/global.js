@@ -50,7 +50,7 @@ function tenor_search_cover(responsetext) {
     var response_objects = JSON.parse(responsetext);
     response_objects["results"].forEach(function(item) {
         console.log(item);
-        $("#image_search").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["tinygif"]["url"], item["h1_title"]));
+        $("#image_search").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["tinygif"]["url"], item["h1_title"].replace("'",'')));
     });
 }
 
@@ -59,7 +59,7 @@ function tenor_search_box(responsetext) {
     var response_objects = JSON.parse(responsetext);
     response_objects["results"].forEach(function(item) {
         console.log(item);
-        $(".new_images").append("<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"images_add("+x__type+",'"+gifObject.id+"','"+gifObject.title.replace("'",'')+"')\"><img src='/img/logos/"+base_source+".svg' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.id+"/200w.gif' /></a></div>");
+        $(".new_images").append("<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"images_add('" + item["media"][0]["tinygif"]["url"] +"','"+item["h1_title"].replace("'",'')+"')\"><img src='"+item["media"][0]["tinygif"]["url"]+"' alt='"+item["h1_title"].replace("'",'')+"' /></a></div>");
     });
 }
 
@@ -1359,11 +1359,12 @@ function images_search(query){
     tenor_getasync(query, tenor_search_box);
 }
 
-function images_add(x__type, giphy_id, giphy_title){
+function images_add(image_url, image_title){
 
+    var x__type = $('#modal_x__type').val();
     var current_value = $('.input_note_' + x__type).val();
     $('#modal14073').modal('hide');
-    $('.input_note_' + x__type).val(( current_value.length ? current_value+"\n\n" : '' ) + 'https://media.giphy.com/media/'+giphy_id+'/giphy.gif?e__title='+encodeURI(giphy_title));
+    $('.input_note_' + x__type).val(( current_value.length ? current_value+"\n\n" : '' ) + image_url + '?e__title='+encodeURI(image_title));
 
     //Save or Submit:
     if(js_n___14311.includes(x__type)){

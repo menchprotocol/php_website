@@ -240,7 +240,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title" id="modal14073Label"><?= $e___11035[14073]['m__cover'].' '.$e___11035[14073]['m__title'] ?></h5> <!-- &nbsp;&nbsp;<img class="giphy_logo" src="https://s3foundation.s3-us-west-2.amazonaws.com/5d8ebb9a080502d42a05e175265130d4.png" /> -->
+                    <h5 class="modal-title css__title" id="modal14073Label"><?= $e___11035[14073]['m__cover'].' '.$e___11035[14073]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -249,7 +249,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <input type="hidden" id="modal_i__id" value="0" />
                     <input type="hidden" id="modal_x__type" value="0" />
                     <input type="text" class="form-control text-edit border css__title images_query" placeholder="Search GIFs..." onkeyup="images_search($('.images_query').val())" data-lpignore="true" />
-                    <div class="new_images margin-top-down hideIfEmpty"></div>
+                    <div class="row new_images margin-top-down hideIfEmpty"></div>
                 </div>
             </div>
         </div>
