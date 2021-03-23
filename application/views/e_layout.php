@@ -394,7 +394,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $list_i = view_coins_e(12273, $e['e__id'], 1, true);
         $has_more = $counter>($show_max_14435+1);
         $trigger_hide = null;
-        $drop_limit = doubleval(view_memory(6404,14684));
         $max_seconds = intval(view_memory(6404,14841));
         $max_i__spectrum = 0;
 
@@ -405,11 +404,9 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
 
             //SHow or Hide?
-            if($has_more && !$trigger_hide && (($count==$show_max_14435) || ($max_i__spectrum && $item['i__spectrum']>0 && $i_stats['i___6162']<=$max_seconds && (($max_i__spectrum * $drop_limit) > $item['i__spectrum'])))){
-                if($count==$show_max_14435){
-                    $ui .= view_show_more(14435, 'see_all_13550');
-                    $trigger_hide = 'see_all_13550 hidden';
-                }
+            if($has_more && $count==$show_max_14435){
+                $ui .= view_show_more(14435, 'see_all_13550');
+                $trigger_hide = 'see_all_13550 hidden';
             }
 
             //UI
