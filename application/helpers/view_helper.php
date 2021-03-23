@@ -1388,12 +1388,10 @@ function view_i_featured(){
 
     $CI =& get_instance();
     $visible_ui = '';
-    $hidden_ui = '';
     $limit = view_memory(6404,14877);
-    $show_max_14435 = view_memory(6404,14435);
     $member_e = superpower_unlocked();
-    $loaded_topics = 0;
-    $my_topics = ( $member_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___'.$topic_id)) : array() );
+
+    //$my_topics = ( $member_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___'.$topic_id)) : array() );
 
 
     //Go through Featured Categories:
@@ -1410,9 +1408,6 @@ function view_i_featured(){
 
         if(count($query)){
 
-            $should_be_hidden = ( !count($my_topics) && $loaded_topics>=$show_max_14435 ) || ( count($my_topics) && !in_array($e__id, $my_topics) );
-            $loaded_topics++;
-
             //We need to check if we have more than this?
             $see_all_link = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
             //We might have more, let's check:
@@ -1424,30 +1419,16 @@ function view_i_featured(){
                 $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query, 0).' Ideas"><span class="icon-block">'.$m['m__cover'].'</span><u>'.$m['m__title'].'</u></a>'; //&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i>
             }
 
-
-            $ui = '<div class="'.( $should_be_hidden ? 'all-topics hidden' : '' ).'">';
             $ui .= '<div class="headline top-margin">'.$see_all_link.'</div>';
             $ui .= '<div class="row justify-content-center margin-top-down-half">';
             foreach($query as $i){
                 $ui .= view_i(14877, 0, null, $i);
             }
             $ui .= '</div>';
-            $ui .= '</div>';
 
-            if($should_be_hidden){
-                $hidden_ui .= $ui;
-            } else {
-                $visible_ui .= $ui;
-            }
+            $visible_ui .= view_headline(11030, $counter, $e___11035[11030], $profile_ui, $counter > 0);
+
         }
-    }
-
-
-    if($hidden_ui){
-        //Append hidden UI to visible UI:
-        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-        $visible_ui .= $hidden_ui;
-        $visible_ui .= '<div class="margin-top-down full-width-btn all-topics center"><a  href="javascript:void(0);" onclick="$(\'.all-topics\').toggleClass(\'hidden\');" class="btn btn-large btn-default">'.$e___11035[14435]['m__cover'].' '.$e___11035[14435]['m__title'].'</a></div>';
     }
 
     return $visible_ui;

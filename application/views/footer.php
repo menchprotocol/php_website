@@ -180,9 +180,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     <div class="modal fade" id="modal14937" tabindex="-1" role="dialog" aria-labelledby="modal14937Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-
-                <a name="preview_cover">&nbsp;</a>
-
                 <div class="modal-header">
                     <h5 class="modal-title css__title" id="modal14393Label"><?= $e___11035[14937]['m__cover'].' '.$e___11035[14937]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -193,6 +190,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body block_search_results">
 
                     <!-- PREVIEW -->
+                    <a name="preview_cover" style="height: 1px;">&nbsp;</a>
                     <div class="coin_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
                         <div class="cover-wrapper"><div class="black-background cover-link" style=""><div class="cover-btn"></div></div></div>
                         <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="coin__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>

@@ -9,6 +9,7 @@ echo '<h1>' . $is[0]['i__title'] . '</h1>';
 
 
 //MESSAGES
+echo '<div style="padding-bottom: 34px;">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
@@ -16,6 +17,8 @@ foreach($this->X_model->fetch(array(
 ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
     echo $this->X_model->message_view( $x['x__message'], true);
 }
+echo '</div>';
+
 
 //FEATURED IDEAS
 echo view_i_featured();
