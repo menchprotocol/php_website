@@ -377,7 +377,7 @@ img.no-frame {
     height:144px !important;
     display: block;
     float: left;
-    margin:0 !important;
+    margin:0 5px 5px 0 !important;
     padding:0 !important;
 }
 .icons_small .block-icon {
@@ -394,12 +394,11 @@ img.no-frame {
     font-size: 0.78em !important;
     margin-top: -8px;
 }
-.icons_small .block-icon img, .icons_large .block-icon img{
+.icons_large .block-icon img{
     border-radius: 50%;
     line-height: 100%;
     width:100%;
     height:100%;
-    margin-top: -13px !important;
 }
 
 
