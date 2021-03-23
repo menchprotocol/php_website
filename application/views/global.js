@@ -50,7 +50,7 @@ function tenor_search_cover(responsetext) {
     var response_objects = JSON.parse(responsetext);
     response_objects["results"].forEach(function(item) {
         console.log(item);
-        $("#image_search").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["gif"]["url"], item["h1_title"].replace("'",'')));
+        $("#img_results_images").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["gif"]["url"], item["h1_title"].replace("'",'')));
     });
 }
 
@@ -597,7 +597,7 @@ $(document).ready(function () {
 
             source: function (q, cb) {
 
-                $("#image_search").html('');
+                $("#img_results_icons, #img_results_emojis, #img_results_images").html('');
 
                 if(validURL(q)){
                     //Must be an image URL:
@@ -627,9 +627,11 @@ $(document).ready(function () {
                     if(!icons_listed.includes(suggestion.s__cover)) {
                         icons_listed.push(suggestion.s__cover);
                         if(validURL(suggestion.s__cover)){
-                            $("#image_search").append(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
+                            $("#img_results_images").append(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
+                        } else if (suggestion.s__cover.includes("fa")) {
+                            $("#img_results_icons").append(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
                         } else {
-                            $("#image_search").prepend(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
+                            $("#img_results_emojis").append(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
                         }
                     }
                     return false;
@@ -868,7 +870,7 @@ function coin__load(coin__type, coin__id){
 
     $('#modal14937').modal('show');
     $('#search_cover').val('').focus();
-    $("#image_search").html('');
+    $("#img_results_icons, #img_results_emojis, #img_results_images").html('');
     $('#coin__title, #coin__cover').val('LOADING...');
     $('#modal14937 .black-background').removeClass('coinType12273').removeClass('coinType12274').addClass('coinType'+coin__type);
 

@@ -223,7 +223,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <!-- RESULTS -->
-                    <div id="image_search"></div>
+                    <div class="headline grey">Icons</div>
+                    <div id="img_results_icons"></div>
+
+                    <div class="headline grey">Emojis</div>
+                    <div id="img_results_emojis"></div>
+
+                    <div class="headline grey">Images</div>
+                    <div id="img_results_images"></div>
 
 
                 </div>
