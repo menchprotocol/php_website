@@ -21,7 +21,7 @@ gtag('config', 'UA-92774608-1');
 
 
 // url Async requesting function
-function tenor_getasync(theUrl, callback) {
+function tenor_getasync(query, callback) {
     // create the request object
     var xmlHttp = new XMLHttpRequest();
 
@@ -35,7 +35,7 @@ function tenor_getasync(theUrl, callback) {
     }
 
         // open as a GET call, pass in the url and set async = True
-        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.open("GET", js_e___6404[25986]['m__message'] + query, true);
 
         // call send with no params as they were passed in on the url string
         xmlHttp.send(null);
@@ -45,13 +45,22 @@ function tenor_getasync(theUrl, callback) {
 
 
 
-function tenor_print(item, index) {
-    $("#image_search").append(image_cover(item["media"][0]["nanogif"]["url"], item["h1_title"]));
-}
-function tenor_search(responsetext) {
+function tenor_search_cover(responsetext) {
     // parse the json response
     var response_objects = JSON.parse(responsetext);
-    response_objects["results"].forEach(tenor_print);
+    response_objects["results"].forEach(function(item) {
+        console.log(item);
+        $("#image_search").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["tinygif"]["url"], item["h1_title"]));
+    });
+}
+
+function tenor_search_box(responsetext) {
+    // parse the json response
+    var response_objects = JSON.parse(responsetext);
+    response_objects["results"].forEach(function(item) {
+        console.log(item);
+        $(".new_images").append("<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"images_add("+x__type+",'"+gifObject.id+"','"+gifObject.title.replace("'",'')+"')\"><img src='/img/logos/"+base_source+".svg' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.id+"/200w.gif' /></a></div>");
+    });
 }
 
 
@@ -467,8 +476,8 @@ function update__cover(new_cover){
     $('#coin__cover').val( new_cover );
     update_cover_main(new_cover, '.demo_cover');
 }
-function image_cover(new_cover, new_title){
-    return '<a href="#preview_cover" onclick="update__cover(\''+new_cover+'\')">' + view_s_mini_js(12274, new_cover, new_title) + '</a>';
+function image_cover(cover_preview, cover_apply, new_title){
+    return '<a href="#preview_cover" onclick="update__cover(\''+cover_apply+'\')">' + view_s_mini_js(12274, cover_preview, new_title) + '</a>';
 }
 
 var algolia_index = false;
@@ -597,26 +606,7 @@ $(document).ready(function () {
                 }
 
                 //Tenor:
-                tenor_getasync(js_e___6404[25986]['m__message'] + q, tenor_search);
-
-                /*
-                //ALso search and append GIFs:
-                $.get({
-                    url: js_e___6404[6293]['m__message']+q,
-                    success: function(result) {
-                        var data = result.data;
-                        var new_cover = "";
-                        var counter = 0;
-                        for (var index in data){
-                            counter++;
-                            $("#image_search").append(image_cover("https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+data[index].id+"/200w.gif", data[index].title.replace("'",'')));
-                        }
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-                */
+                tenor_getasync(q, tenor_search_cover);
 
                 icons_listed = [];
                 algolia_index.search(q, {
@@ -637,9 +627,9 @@ $(document).ready(function () {
                     if(!icons_listed.includes(suggestion.s__cover)) {
                         icons_listed.push(suggestion.s__cover);
                         if(validURL(suggestion.s__cover)){
-                            $("#image_search").append(image_cover(suggestion.s__cover, suggestion.s__title));
+                            $("#image_search").append(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
                         } else {
-                            $("#image_search").prepend(image_cover(suggestion.s__cover, suggestion.s__title));
+                            $("#image_search").prepend(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
                         }
                     }
                     return false;
@@ -1364,48 +1354,9 @@ Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPreci
 
 
 
-var current_q = '';
 function images_search(query){
-
-    q = encodeURI(query);
-
-    if(q==current_q){
-        return false;
-    }
-
-    current_q = q;
-    var x__type = $('#modal_x__type').val();
     $('.new_images').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
-    $.get({
-        url: js_e___6404[6293]['m__message']+current_q,
-        success: function(result) {
-            var data = result.data;
-            var output = "";
-            var counter = 0;
-            for (var index in data){
-                counter++;
-                var gifObject = data[index];
-                output += "<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"images_add("+x__type+",'"+gifObject.id+"','"+gifObject.title.replace("'",'')+"')\"><img src='/img/logos/"+base_source+".svg' alt='GIF' class='lazyimage' data-src='https://media"+parseInt(Math.fmod(counter, 5))+".giphy.com/media/"+gifObject.id+"/200w.gif' /></a></div>";
-                if(!Math.fmod(counter, 3)){
-                    //output += "</div><div class=\"row\">";
-                }
-            }
-
-            //Did we find anything?
-            if(output.length){
-                output = "<div style=\"margin:5px 0;\">Tap the GIF you want to add:</div><div class=\"row\">"+output+"</div>";
-            } else {
-                //No results found:
-                output = "<div style=\"margin:5px 0;\">No GIFs found</div>";
-            }
-            $(".new_images").html(output);
-            lazy_load();
-        },
-        error: function(error) {
-            console.log(error);
-        }
-    });
-
+    tenor_getasync(query, tenor_search_box);
 }
 
 function images_add(x__type, giphy_id, giphy_title){
