@@ -21,7 +21,7 @@ gtag('config', 'UA-92774608-1');
 
 
 // url Async requesting function
-function httpGetAsync(theUrl, callback) {
+function tenor_getasync(theUrl, callback) {
     // create the request object
     var xmlHttp = new XMLHttpRequest();
 
@@ -45,14 +45,13 @@ function httpGetAsync(theUrl, callback) {
 
 
 
-function printGif(item, index) {
-    console.log(item);
-    $("#image_search").append(image_cover(item["media"][0]["tinygif"]["url"], item["media"][0]["tinygif"]["url"]));
+function tenor_print(item, index) {
+    $("#image_search").append(image_cover(item["media"][0]["nanogif"]["url"], item["h1_title"]));
 }
-function tenorCallback_search(responsetext) {
+function tenor_search(responsetext) {
     // parse the json response
     var response_objects = JSON.parse(responsetext);
-    response_objects["results"].forEach(printGif);
+    response_objects["results"].forEach(tenor_print);
 }
 
 
@@ -598,7 +597,7 @@ $(document).ready(function () {
                 }
 
                 //Tenor:
-                httpGetAsync(js_e___6404[25986]['m__message'] + q, tenorCallback_search);
+                tenor_getasync(js_e___6404[25986]['m__message'] + q, tenor_search);
 
                 /*
                 //ALso search and append GIFs:
