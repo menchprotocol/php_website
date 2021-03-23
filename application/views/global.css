@@ -1623,7 +1623,6 @@ i, .btn .show-max {
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
 .icon-block { font-size: 1.5em; width:41px !important; display: inline-block; text-align: center; }
-.icon-block i { font-size: 0.8em !important; }
 .icon-block-xs{ width:33px !important; display: inline-block; text-align: center; }
 .custom_ui_13491_13493 .icon-block-xs{ width:33px; }
 .custom_ui_13491_13494 .icon-block-xs{ width:36px; }
@@ -2739,6 +2738,7 @@ font-weight: bold !important;
     border-bottom-color: #222222 !important;
 }
 
+.icon-block i { font-size: 0.8em !important; }
 
 .custom_ui_13884_13886 .black-background {
     border:3px solid #222222;
