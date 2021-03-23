@@ -2407,10 +2407,7 @@ textarea {
 
 
 .texttransparent{
-    color:transparent;
-}
-.texttransparent:hover{
-    color:#999999;
+    color:transparent !important;
 }
 .form-control{
     background-color:transparent;
