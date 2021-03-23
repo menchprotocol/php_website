@@ -50,7 +50,7 @@ function tenor_search_cover(responsetext) {
     var response_objects = JSON.parse(responsetext);
     response_objects["results"].forEach(function(item) {
         console.log(item);
-        $("#image_search").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["tinygif"]["url"], item["h1_title"].replace("'",'')));
+        $("#image_search").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["gif"]["url"], item["h1_title"].replace("'",'')));
     });
 }
 
@@ -59,7 +59,7 @@ function tenor_search_box(responsetext) {
     var response_objects = JSON.parse(responsetext);
     response_objects["results"].forEach(function(item) {
         console.log(item);
-        $(".new_images").append("<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"images_add('" + item["media"][0]["tinygif"]["url"] +"','"+item["h1_title"].replace("'",'')+"')\"><img src='"+item["media"][0]["tinygif"]["url"]+"' alt='"+item["h1_title"].replace("'",'')+"' /></a></div>");
+        $(".new_images").append("<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"images_add('" + item["media"][0]["gif"]["url"] +"','"+item["h1_title"].replace("'",'')+"')\"><img src='"+item["media"][0]["tinygif"]["url"]+"' alt='"+item["h1_title"].replace("'",'')+"' /></a></div>");
     });
 }
 
