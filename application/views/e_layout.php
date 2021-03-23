@@ -34,7 +34,7 @@ $profiles = $this->X_model->fetch(array(
 if(!$source_is_e || $superpower_13422){
 
     $counter = count($profiles);
-    $has_more = $counter>($show_max_14538+1);
+    $has_more = $counter>($show_max_14538+1) && 0; //Disabled for now
     $trigger_hide = null;
 
 
@@ -68,7 +68,7 @@ if(!$source_is_e || $superpower_13422){
                 </div></div></div></div>' . $profile_ui;
     }
 
-    echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, $counter > 0);
+    echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, false);
 
 }
 
