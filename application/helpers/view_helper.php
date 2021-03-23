@@ -1389,6 +1389,7 @@ function view_i_featured(){
     $visible_ui = '';
     $limit = view_memory(6404,14877);
     $member_e = superpower_unlocked();
+    $counter = 0;
 
     //$my_topics = ( $member_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___'.$topic_id)) : array() );
 
@@ -1407,20 +1408,18 @@ function view_i_featured(){
         }
 
 
-        $ui .= '<div class="row justify-content-center margin-top-down-half">';
-
+        $ui = '<div class="row justify-content-center margin-top-down-half">';
         foreach($query as $i){
             $ui .= view_i(14877, 0, null, $i);
         }
-
         $query2 = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
         if($query2[0]['totals'] > $limit){
             $ui .= view_show_more(14435, null, '/@'.$e__id);
         }
-
         $ui .= '</div>';
 
         $visible_ui .= view_headline($e__id, $counter, $m, $ui, $counter > 0);
+        $counter++;
     }
 
     return $visible_ui;
