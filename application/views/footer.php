@@ -232,6 +232,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="doclear">&nbsp;</div>
 
                         <div class="headline top-margin grey">Images</div>
+                        <div id="img_results_local" class="icons_large"></div>
                         <div id="img_results_images" class="icons_large"></div>
                         <div class="doclear">&nbsp;</div>
                     </div>

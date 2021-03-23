@@ -597,7 +597,7 @@ $(document).ready(function () {
 
             source: function (q, cb) {
 
-                $("#img_results_icons, #img_results_emojis, #img_results_images").html('');
+                $("#img_results_icons, #img_results_emojis, #img_results_images, #img_results_local").html('');
                 $('.block_results').removeClass('hidden');
 
                 if(validURL(q)){
@@ -628,7 +628,7 @@ $(document).ready(function () {
                     if(!icons_listed.includes(suggestion.s__cover)) {
                         icons_listed.push(suggestion.s__cover);
                         if(validURL(suggestion.s__cover)){
-                            $("#img_results_images").prepend(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
+                            $("#img_results_local").append(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
                         } else if (suggestion.s__cover.includes("fa")) {
                             $("#img_results_icons").append(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
                         } else {
@@ -871,7 +871,7 @@ function coin__load(coin__type, coin__id){
 
     $('#modal14937').modal('show');
     $('#search_cover').val('').focus();
-    $("#img_results_icons, #img_results_emojis, #img_results_images").html('');
+    $("#img_results_icons, #img_results_emojis, #img_results_images, #img_results_local").html('');
     $('.block_results').addClass('hidden');
     $('#coin__title, #coin__cover').val('LOADING...');
     $('#modal14937 .black-background').removeClass('coinType12273').removeClass('coinType12274').addClass('coinType'+coin__type);
