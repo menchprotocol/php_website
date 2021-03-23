@@ -80,7 +80,7 @@ foreach($previous_is as $previous_i) {
 }
 $body .= '</div>';
 
-echo view_headline(11019, count($previous_is), $e___11035[11019], $body, count($previous_is) > 0);
+echo view_headline(11019, count($previous_is), $e___11035[11019], $body, count($previous_is) > 0 && in_array(11019, $this->config->item('n___20424')));
 
 
 if(isset($_GET['load__e']) && $superpower_14005){
