@@ -1,12 +1,11 @@
 <?php
 
 
-function view_show_more($see_more_type, $class){
+function view_show_more($see_more_type, $class, $href_link = null){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $href = 'href="javascript:void(0);" onclick="$(\'.'.$class.'\').toggleClass(\'hidden\')"';
     return '<div class="coin_cover coin_reverse col-md-4 col-6 no-padding '.$class.'">
-                                <div class="cover-wrapper"><a '.$href.' class="black-background cover-link"><div class="cover-btn">'.$e___11035[$see_more_type]['m__cover'].'</div></a></div>
+                                <div class="cover-wrapper"><a '.( $href_link ? 'href="'.$href_link.'"' : 'href="javascript:void(0);" onclick="$(\'.'.$class.'\').toggleClass(\'hidden\')"' ).' class="black-background cover-link"><div class="cover-btn">'.$e___11035[$see_more_type]['m__cover'].'</div></a></div>
                             </div>';
 }
 
@@ -1393,7 +1392,6 @@ function view_i_featured(){
 
     //$my_topics = ( $member_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___'.$topic_id)) : array() );
 
-
     //Go through Featured Categories:
     foreach($CI->config->item('e___'.$topic_id) as $e__id => $m) {
 
@@ -1403,32 +1401,26 @@ function view_i_featured(){
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $e__id,
         );
-
         $query = $CI->X_model->fetch($query_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC'));
-
-        if(count($query)){
-
-            //We need to check if we have more than this?
-            $see_all_link = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
-            //We might have more, let's check:
-            $query2 = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
-            $count_query = $query2[0]['totals'];
-
-            if($count_query > $limit){
-                //Yes, we have more, show this:
-                $see_all_link = '<a href="/@'.$e__id.'" title="'.number_format($count_query, 0).' Ideas"><span class="icon-block">'.$m['m__cover'].'</span><u>'.$m['m__title'].'</u></a>'; //&nbsp;<i class="fas fa-chevron-right" style="font-size: 0.8em !important; margin-left:3px;"></i>
-            }
-
-            $ui .= '<div class="headline top-margin">'.$see_all_link.'</div>';
-            $ui .= '<div class="row justify-content-center margin-top-down-half">';
-            foreach($query as $i){
-                $ui .= view_i(14877, 0, null, $i);
-            }
-            $ui .= '</div>';
-
-            $visible_ui .= view_headline(11030, $counter, $e___11035[11030], $profile_ui, $counter > 0);
-
+        if(!count($query)){
+            continue;
         }
+
+
+        $ui .= '<div class="row justify-content-center margin-top-down-half">';
+
+        foreach($query as $i){
+            $ui .= view_i(14877, 0, null, $i);
+        }
+
+        $query2 = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
+        if($query2[0]['totals'] > $limit){
+            $ui .= view_show_more(14435, null, '/@'.$e__id);
+        }
+
+        $ui .= '</div>';
+
+        $visible_ui .= view_headline($e__id, $counter, $m, $ui, $counter > 0);
     }
 
     return $visible_ui;
