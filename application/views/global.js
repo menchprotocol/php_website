@@ -1359,7 +1359,7 @@ function images_search(query){
         return false;
     }
     current_q = query;
-    $('.new_images').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>').hide().fadeIn();
+    $('.new_images').html('');
     tenor_getasync(query, tenor_search_box);
 }
 
