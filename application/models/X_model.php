@@ -910,6 +910,7 @@ class X_model extends CI_Model
                 $e_appendix .= '<div style="margin: 0 -41px;">'.view_coins().'</div>';
             }
 
+            $edit_btn = null;
 
             //Display:
             if($on_its_own_line){
