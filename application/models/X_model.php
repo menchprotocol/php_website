@@ -880,9 +880,10 @@ class X_model extends CI_Model
 
 
             if(!$is_discovery_mode && source_of_e($es[0]['e__id'])){
-                $tooltip_class .= ' class="ignore-click trigger_coincover_edit" coin__type="12274" coin__id="' . $es[0]['e__id'] . '" ';
+                $tooltip_class .= ' class="inline-block ignore-click trigger_coincover_edit" coin__type="12274" coin__id="' . $es[0]['e__id'] . '" ';
                 $edit_btn = '<span class="ignore-click icon-block-img mini_6197_'.$es[0]['e__id'].'">'.view_cover(12274,$es[0]['e__cover']).'</span> ';
             } else {
+                $tooltip_class .= ' class="inline-block" ';
                 $edit_btn = '<span class="icon-block-img mini_6197_'.$es[0]['e__id'].'">'.view_cover(12274,$es[0]['e__cover']).'</span> ';
             }
 
