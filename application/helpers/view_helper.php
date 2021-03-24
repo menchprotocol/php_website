@@ -1462,21 +1462,6 @@ function view_info_box(){
     }
 
 
-
-
-
-    //SOCIAL FOOTER
-    $social_id = intval(get_domain_setting(14904));
-    if($social_id){
-        $ui .= '<ul class="social-footer">';
-        foreach($CI->config->item('e___'.$social_id) as $e__id => $m) {
-            $ui .= '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';
-        }
-        $ui .= '</ul>';
-    }
-
-
-
     return $ui;
 }
 
