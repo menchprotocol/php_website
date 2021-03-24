@@ -53,8 +53,10 @@ function tenor_search_cover(responsetext) {
     });
 }
 function unsplash_search_cover(responsetext) {
+    console.log(responsetext);
     // parse the json response
     var response_objects = JSON.parse(responsetext);
+    console.log(response_objects);
     response_objects["results"].forEach(function(item) {
         $("#img_results_unsplash").append(image_cover(item["urls"]["thumb"], item["urls"]["regular"], item["description"].replace("'",'')));
     });
