@@ -1165,7 +1165,7 @@ a.headline {
     max-width: calc(100% - 43px);
     height: 34px;
     overflow: hidden;
-    line-height: 233%;
+    line-height: 151%;
 }
 .x-list {
     padding:15px 0;
