@@ -117,7 +117,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m__cover'].' '.$m['m__title'].' '.number_format($counter, 0).' times.</div>';
         }
 
-    } elseif($x__type==12274){
+    } elseif($x__type==11029){
 
         //SOURCES
         $counter = view_coins_e(12274, $e['e__id'], 0, false);
