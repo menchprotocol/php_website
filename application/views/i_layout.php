@@ -285,7 +285,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
         }
 
-    } elseif($x__type==4983){
+    } elseif($x__type==12274){
 
         $i_notes = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
