@@ -485,7 +485,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         if($source_is_e && $x__type==12969){
 
             //Sorting
-            $ui .= ( count($list_x) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list-in-12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+            $ui .= ( $counter >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list-in-12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
 
             //Add New Discovery Button:
