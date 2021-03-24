@@ -39,6 +39,7 @@ if(!$source_is_e || $superpower_13422){
 
 
     $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
+    /*
     $counter = 0; //Recount
     foreach($profiles as $e_link) {
 
@@ -54,6 +55,7 @@ if(!$source_is_e || $superpower_13422){
         $counter++;
 
     }
+    */
     $profile_ui .= '</div>';
 
     if($superpower_13422){
@@ -493,7 +495,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         }
 
-    } elseif(in_array($x__type, $this->config->item('n___4485'))){
+    } elseif(0 && in_array($x__type, $this->config->item('n___4485'))){
 
         //IDEA NOTES
         $i_notes_filters = array(
