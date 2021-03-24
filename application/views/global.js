@@ -21,7 +21,7 @@ gtag('config', 'UA-92774608-1');
 
 
 // url Async requesting function
-function tenor_getasync(query, callback) {
+function images_api_getasync(api_id, query, callback) {
     // create the request object
     var xmlHttp = new XMLHttpRequest();
 
@@ -35,7 +35,7 @@ function tenor_getasync(query, callback) {
     }
 
         // open as a GET call, pass in the url and set async = True
-        xmlHttp.open("GET", js_e___6404[25986]['m__message'] + query, true);
+        xmlHttp.open("GET", js_e___6404[api_id]['m__message'] + query, true);
 
         // call send with no params as they were passed in on the url string
         xmlHttp.send(null);
@@ -49,8 +49,14 @@ function tenor_search_cover(responsetext) {
     // parse the json response
     var response_objects = JSON.parse(responsetext);
     response_objects["results"].forEach(function(item) {
-        console.log(item);
-        $("#img_results_images").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["gif"]["url"], item["h1_title"].replace("'",'')));
+        $("#img_results_tenor").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["gif"]["url"], item["h1_title"].replace("'",'')));
+    });
+}
+function unsplash_search_cover(responsetext) {
+    // parse the json response
+    var response_objects = JSON.parse(responsetext);
+    response_objects["results"].forEach(function(item) {
+        $("#img_results_unsplash").append(image_cover(item["urls"]["thumb"], item["urls"]["regular"], item["description"].replace("'",'')));
     });
 }
 
@@ -58,7 +64,6 @@ function tenor_search_box(responsetext) {
     // parse the json response
     var response_objects = JSON.parse(responsetext);
     response_objects["results"].forEach(function(item) {
-        console.log(item);
         $(".new_images").append("<div class=\"gif-col col-4\"><a href=\"javascript:void(0);\" onclick=\"images_add('" + item["media"][0]["gif"]["url"] +"','"+item["h1_title"].replace("'",'')+"')\"><img src='"+item["media"][0]["tinygif"]["url"]+"' alt='"+item["h1_title"].replace("'",'')+"' /></a></div>");
     });
 }
@@ -603,10 +608,14 @@ $(document).ready(function () {
                     return true;
                 }
 
-                $("#img_results_icons, #img_results_emojis, #img_results_images, #img_results_local").html('');
+                $("#img_results_icons, #img_results_emojis, #img_results_tenor, #img_results_unsplash, #img_results_local").html('');
 
                 //Tenor:
-                tenor_getasync(q, tenor_search_cover);
+                images_api_getasync(25986, q, tenor_search_cover);
+
+                //Unsplash:
+                images_api_getasync(18139, q, tenor_search_cover);
+
 
                 icons_listed = [];
                 algolia_index.search(q, {
@@ -870,7 +879,7 @@ function coin__load(coin__type, coin__id){
 
     $('#modal14937').modal('show');
     $('#search_cover').val('').focus();
-    $("#img_results_icons, #img_results_emojis, #img_results_images, #img_results_local").html('');
+    $("#img_results_icons, #img_results_emojis, #img_results_tenor, #img_results_unsplash, #img_results_local").html('');
     $('#coin__title, #coin__cover').val('LOADING...');
     $('#modal14937 .black-background').removeClass('coinType12273').removeClass('coinType12274').addClass('coinType'+coin__type);
 
@@ -1362,7 +1371,7 @@ function images_search(query){
     }
     current_q = query;
     $('.new_images').html('');
-    tenor_getasync(query, tenor_search_box);
+    images_api_getasync(25986, query, tenor_search_box);
 }
 
 function images_add(image_url, image_title){

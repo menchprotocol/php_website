@@ -25,6 +25,6 @@ echo view_i_featured();
 
 
 //Info Boxes:
-echo view_info_box();
+//echo view_info_box();
 
 ?>
