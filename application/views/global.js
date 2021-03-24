@@ -364,7 +364,7 @@ function lazy_load(){
     });
 }
 
-
+var init_in_process = 0;
 function init_remove(){
     $(".x_remove").click(function(event) {
 
@@ -372,6 +372,11 @@ function init_remove(){
 
         var i__id = $(this).attr('i__id');
         var x__id = $(this).attr('x__id');
+
+        if(init_in_process==(x__id + i__id)){
+            return false;
+        }
+        init_in_process = (x__id + i__id);
         var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
         if (r == true) {
             //Save changes:
