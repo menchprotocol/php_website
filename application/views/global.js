@@ -1383,14 +1383,14 @@ Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPreci
 
 
 var current_q = '';
-function images_search(query){
-    if(query==current_q){
+function images_search(q){
+    if(q==current_q){
         return false;
     }
-    current_q = query;
+    current_q = q;
     $('.new_images').html('');
-    images_api_getasync(25986, query, tenor_search_box);
-    images_api_getasync(18139, query, unsplash_search_box);
+    images_api_getasync(25986, q, tenor_search_box);
+    images_api_getasync(18139, q, unsplash_search_box);
 }
 
 function images_add(image_url, image_title){
