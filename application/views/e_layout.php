@@ -39,7 +39,6 @@ if(!$source_is_e || $superpower_13422){
 
 
     $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
-    /*
     $counter = 0; //Recount
     foreach($profiles as $e_link) {
 
@@ -55,7 +54,6 @@ if(!$source_is_e || $superpower_13422){
         $counter++;
 
     }
-    */
     $profile_ui .= '</div>';
 
     if($superpower_13422){
@@ -119,7 +117,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m__cover'].' '.$m['m__title'].' '.number_format($counter, 0).' times.</div>';
         }
 
-    } elseif($x__type==12274 && 0){
+    } elseif($x__type==12274){
 
         //SOURCES
         $counter = view_coins_e(12274, $e['e__id'], 0, false);
@@ -388,7 +386,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         }
 
-    } elseif($x__type==12273 && 0){
+    } elseif($x__type==12273){
 
         //IDEAS (Referenced)
         $count = 0;
@@ -466,7 +464,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         }
 
-    } elseif(0 && ($x__type==12969 || $x__type==6255)){
+    } elseif($x__type==12969 || $x__type==6255){
 
         //STARTED & DISCOVERIES
         $counter = view_coins_e($x__type, $e['e__id'], 0, false);
@@ -495,7 +493,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         }
 
-    } elseif(0 && in_array($x__type, $this->config->item('n___4485'))){
+    } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
         //IDEA NOTES
         $i_notes_filters = array(
