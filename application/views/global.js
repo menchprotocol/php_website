@@ -614,7 +614,7 @@ $(document).ready(function () {
                 images_api_getasync(25986, q, tenor_search_cover);
 
                 //Unsplash:
-                images_api_getasync(18139, q, tenor_search_cover);
+                images_api_getasync(18139, q, unsplash_search_cover);
 
 
                 icons_listed = [];
