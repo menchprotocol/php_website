@@ -117,7 +117,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m__cover'].' '.$m['m__title'].' '.number_format($counter, 0).' times.</div>';
         }
 
-    } elseif($x__type==12274){
+    } elseif($x__type==12274 && 0){
 
         //SOURCES
         $counter = view_coins_e(12274, $e['e__id'], 0, false);
@@ -386,7 +386,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         }
 
-    } elseif($x__type==12273){
+    } elseif($x__type==12273 && 0){
 
         //IDEAS (Referenced)
         $count = 0;
@@ -464,7 +464,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         }
 
-    } elseif($x__type==12969 || $x__type==6255){
+    } elseif(0 && ($x__type==12969 || $x__type==6255)){
 
         //STARTED & DISCOVERIES
         $counter = view_coins_e($x__type, $e['e__id'], 0, false);
