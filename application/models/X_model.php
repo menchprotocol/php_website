@@ -879,9 +879,8 @@ class X_model extends CI_Model
             $tooltip_underdot = ( $tooltip_info ? ' underdot ' : null );
 
 
-            $edit_btn = '<span class="ignore-click icon-block-img mini_6197_'.$es[0]['e__id'].'" title="'.$e___11035[13571]['m__title'].'">'.view_cover(12274,$es[0]['e__cover']).'</span> ';
+            $edit_btn = '<span class="ignore-click icon-block-img mini_6197_'.$es[0]['e__id'].'">'.view_cover(12274,$es[0]['e__cover']).'</span> ';
             if(!$is_discovery_mode && source_of_e($es[0]['e__id'])){
-                $e___11035 = $this->config->item('e___11035');
                 $tooltip_class .= ' class="ignore-click trigger_coincover_edit" coin__type="12274" coin__id="' . $es[0]['e__id'] . '" ';
             }
 
