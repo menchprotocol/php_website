@@ -701,7 +701,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
     //Return Results:
     if($page_num > 0){
 
-        $limit = 5;
         return $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
 
     } else {
