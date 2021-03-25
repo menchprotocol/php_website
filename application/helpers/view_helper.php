@@ -622,8 +622,10 @@ function view_coins(){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $ui = '<div class="row justify-content-center margin-top-down list-coins">';
+    $count = 0;
     foreach($CI->config->item('e___14874') as $e__id => $m) {
-        $ui .= ( $e__id==6255 ? '<div class="w-100"></div>' : '' ).'<div class="coin_cover coin_cover_'.$e__id.' no-padding col-6"><div class="cover-wrapper"><div class="bg'.$e__id.' coinType'.$e__id.' cover-link"><div class="cover-btn"><div class="the_counter css__title"><div class="min-height"><b class="css__title coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b></div>'.$m['m__title'].'</div></div></div></div></div>';
+        $count++;
+        $ui .= ( $count==3 ? '<div class="w-100"></div>' : '' ).'<div class="coin_cover coin_cover_'.$e__id.' no-padding col-6"><div class="cover-wrapper"><div class="bg'.$e__id.' coinType'.$e__id.' cover-link"><div class="cover-btn"><div class="the_counter css__title"><div class="min-height"><b class="css__title coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b></div>'.$m['m__title'].'</div></div></div></div></div>';
     }
     $ui .= '</div>';
     return $ui;
