@@ -68,7 +68,7 @@ if(!$source_is_e || $superpower_13422){
                 </div></div></div></div>' . $profile_ui;
     }
 
-    echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, false);
+    echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, ($counter<=2));
 
 }
 
