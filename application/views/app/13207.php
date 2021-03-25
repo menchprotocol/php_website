@@ -36,7 +36,7 @@ foreach($this->config->item('e___13207') as $x__type => $m) {
 
     $ui .= '</div>';
 
-    echo view_headline($x__type, view_coins_e(12274, $x__type, 0, false), $m, $ui, !$list_count);
+    echo view_headline($x__type, view_coins_e(12274, $x__type, 0, false), $m, $ui, false);
 
     $list_count++;
 

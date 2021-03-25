@@ -2039,7 +2039,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //Coin Block
     if(!$is_app && !$focus_coin){
-        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'" '.( isset($e['totals']) ? ' title="'.$e['totals'].'" ' : '' ).'>';
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
         $ui .= '<table class="coin_coins"><tr>';
         $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.view_coins_e(12274,  $e['e__id']).'</div></td>';
         $ui .= '<td width="34%" class="center">'.view_coins_e(12273,  $e['e__id']).'</td>';
