@@ -330,10 +330,6 @@ class App extends CI_Controller
         //Display filter:
         if($total_items_loaded > 0){
 
-            if($page_num==1){
-                $message .= view_coins();
-            }
-
             //Subsequent messages:
             $message .= '<div class="css__title x-info grey">'.( $x_count[0]['total_count']>$total_items_loaded ? ( $has_more_x && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) : '') . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
 
