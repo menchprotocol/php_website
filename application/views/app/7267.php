@@ -1,5 +1,16 @@
 <?php
 
+
+//Analyze Sou
+foreach($this->X_model->fetch(array(
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__up > ' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
+), array('x__up'), 0) as $count => $e){
+    echo '<tr><td>@'.$e['e__id'].' '.$e['e__title'].'</td><td>'.$e['x__message'].'</td><td>'.(substr_count($e['x__message'], '@') > 1 ? '2++' : '').'</td></tr>';
+}
+echo $count.' Total';
+
+
 $icon_keyword = null;
 
 if(isset($_GET['search_for'])){

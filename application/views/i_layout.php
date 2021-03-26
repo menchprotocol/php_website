@@ -307,23 +307,21 @@ foreach($this->config->item('e___11018') as $x__type => $m){
             'x__type' => 4983, //References
             'x__right' => $i_focus['i__id'],
             'x__up >' => 0,
-        ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC')) as $e_ref){
+        ), array('x__up'), 0, 0, array('x__id' => 'DESC')) as $e_ref){
             //Adjust message:
             $e_ref['x__message'] = trim(str_replace('@'.$e_ref['e__id'],'',$e_ref['x__message']));
             $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
             $counter++;
         }
-        $ui .= '</div>';
 
         //Inherited: Non Adjustable
-        $ui .= '<div class="row justify-content-center">';
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__type !=' => 4983, //References
             'x__right' => $i_focus['i__id'],
             'x__up >' => 0,
-        ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC')) as $e_ref){
+        ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $e_ref){
             $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
             $counter++;
         }
