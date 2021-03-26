@@ -1452,14 +1452,14 @@ function toggle_search(){
         //Search OFF
         search_on = false; //Reverse
         $('.top_nav, #container_content').removeClass('hidden');
-        $('#container_search').addClass('hidden');
+        $('.search_nav, #container_search').addClass('hidden');
 
     } else {
 
         //Search ON
         search_on = true; //Reverse
         $('.top_nav, #container_content').addClass('hidden');
-        $('#container_search').removeClass('hidden');
+        $('.search_nav, #container_search').removeClass('hidden');
         $("#container_search .row").html('') //Reset results view
         $('#top_search').focus();
 
