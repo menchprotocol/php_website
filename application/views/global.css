@@ -2013,8 +2013,9 @@ i, .btn .show-max {
     left: 45px;
 }
 .coin-cover-top-right{
-    top: -8px;
+    top: -21px;
     right: 13px;
+    font-size: 0.89em;
 }
 .coin-cover-bottom-right{
     top: 13px;
@@ -2025,7 +2026,7 @@ i, .btn .show-max {
     right: 45px;
 }
 .focus-coin .coin-cover-top-right {
-    top: 21px;
+    top: 13px;
     right: 45px;
 }
 
@@ -2277,7 +2278,7 @@ textarea {
         right: 5px;
     }
     .coin-cover-top-right{
-        top: -13px;
+        top: -24px;
         right: 5px;
     }
 
@@ -2290,7 +2291,7 @@ textarea {
         right: 21px;
     }
     .focus-coin .coin-cover-top-right{
-        top: -5px;
+        top: -13px;
         right: 21px;
     }
 
