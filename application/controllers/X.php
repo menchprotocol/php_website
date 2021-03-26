@@ -797,11 +797,23 @@ class X extends CI_Controller
             //Oops something went wrong:
             return view_json($cdn_status);
         } else {
+
+            //Log Success:
+            $invite_x = $this->X_model->create(array(
+                'x__type' => 25990,
+                'x__source' => $member_e['e__id'],
+                'x__up' => $_POST['coin__type'],
+                'x__down' => ( $_POST['coin__type']==12274 ? $_POST['coin__id'] : 0 ),
+                'x__right' => ( $_POST['coin__type']==12273 ? $_POST['coin__id'] : 0 ),
+                'x__message' => $cdn_status['cdn_url'],
+            ));
+
             //Return CDN URL:
             return view_json(array(
                 'status' => 1,
                 'cdn_url' => $cdn_status['cdn_url'],
             ));
+
         }
     }
 
