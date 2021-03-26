@@ -625,6 +625,11 @@ $(document).ready(function () {
     //Lookout for textinput updates
     x_set_start_text();
 
+    $('#top_search').keyup(function() {
+        if(!$(this).val().length){
+            $("#container_search .row").html(''); //Reset results view
+        }
+    });
 
     //For the S shortcut to load search:
     $("#top_search").focus(function() {
