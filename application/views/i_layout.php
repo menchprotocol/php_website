@@ -308,6 +308,8 @@ foreach($this->config->item('e___11018') as $x__type => $m){
             'x__right' => $i_focus['i__id'],
             'x__up >' => 0,
         ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC')) as $e_ref){
+            //Adjust message:
+            $e_ref['x__message'] = trim(str_replace('@'.$e_ref['e__id'],'',$e_ref['x__message']));
             $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
             $counter++;
         }
