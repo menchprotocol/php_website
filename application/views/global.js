@@ -838,7 +838,7 @@ $(document).ready(function () {
                 },
                 templates: {
                     suggestion: function (suggestion) {
-                        $("#container_search .row").append(view_s_js_coin(12274, cover_preview, new_title));
+                        $("#container_search .row").append(view_s_js_coin(suggestion));
                     },
                     empty: function (data) {
                         $("#container_search .row").html('<div class="not-found suggestion css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Results</div>');
