@@ -1454,7 +1454,6 @@ function toggle_search(){
         $('.top_nav, #container_content').removeClass('hidden');
         $('#container_search').addClass('hidden');
 
-
     } else {
 
         //Search ON
@@ -1462,9 +1461,8 @@ function toggle_search(){
         $('.top_nav, #container_content').addClass('hidden');
         $('#container_search').removeClass('hidden');
         $("#container_search .row").html('') //Reset results view
-
-        //Focus:
         $('#top_search').focus();
+
         setTimeout(function () {
             //One more time to make sure it also works in mobile:
             $('#top_search').focus();

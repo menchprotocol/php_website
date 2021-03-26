@@ -282,5 +282,5 @@ if(!$basic_header_footer){
 
 <?php } ?>
 
-<div id="container_search" class="container hide"><div class="row justify-content-center"></div></div>
+<div id="container_search" class="container hidden"><div class="row justify-content-center"></div></div>
 <div id="container_content" class="container">
