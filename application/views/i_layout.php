@@ -301,7 +301,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
 
         //Direct: Adjustable
-        $ui .= '<div class="row justify-content-center inline-block">';
+        $ui .= '<div class="row justify-content-center">';
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4983, //References
@@ -314,7 +314,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         $ui .= '</div>';
 
         //Inherited: Non Adjustable
-        $ui .= '<div class="row justify-content-center inline-block">';
+        $ui .= '<div class="row justify-content-center">';
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
