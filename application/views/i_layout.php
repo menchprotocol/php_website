@@ -317,12 +317,12 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
         $ui .= '<div id="new_4983" class="list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New4983input\').focus();"><span class="icon-block">'.$e___11035[4983]['m__cover'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New4983input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                id="New4983input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[4983]['m__title'].'">
+                               placeholder="'.$e___11035[14055]['m__title'].'">
                     </div><div class="algolia_pad_search hidden pad_expand">&nbsp;</div></div>';
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
