@@ -419,7 +419,7 @@ if($top_i__id) {
 /*
 if($top_i__id && count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type' => 4983, //IDEA SOURCES
+        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__up' => 12896, //SAVE THIS IDEA
         'x__right' => $i_focus['i__id'],
     ))) && !count($this->X_model->fetch(array(

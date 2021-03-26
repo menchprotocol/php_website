@@ -1407,7 +1407,6 @@ class X extends CI_Controller
         $x = $this->X_model->create(array(
             'x__source' => $member_e['e__id'],
             'x__up' => $member_e['e__id'],
-            'x__message' => '@'.$member_e['e__id'],
             'x__left' => $_POST['top_i__id'],
             'x__right' => $_POST['i__id'],
             'x__type' => 12896, //SAVED

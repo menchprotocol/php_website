@@ -125,7 +125,6 @@ class I extends CI_Controller {
                 'x__type' => 4983, //IDEA SOURCES
                 'x__source' => $member_e['e__id'],
                 'x__up' => $member_e['e__id'],
-                'x__message' => '@'.$member_e['e__id'],
                 'x__right' => $i__id,
             ));
 

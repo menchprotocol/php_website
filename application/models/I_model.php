@@ -52,7 +52,6 @@ class I_model extends CI_Model
                     'x__source' => $x__source,
                     'x__up' => $x__source,
                     'x__type' => 4983, //IDEA SOURCES
-                    'x__message' => '@'.$x__source,
                     'x__right' => $add_fields['i__id'],
                 ), true);
 
@@ -565,7 +564,6 @@ class I_model extends CI_Model
                 'x__type' => 4983, //IDEA SOURCES
                 'x__source' => $x__source,
                 'x__up' => $focus_e[0]['e__id'],
-                'x__message' => '@'.$focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
                 'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -594,7 +592,6 @@ class I_model extends CI_Model
                 'x__source' => $x__source,
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
-                'x__message' => '@'.$focus_e[0]['e__id'],
                 'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type' => 10573, //MY IDEAS
@@ -842,7 +839,6 @@ class I_model extends CI_Model
                         'x__source' => $x__source,
                         'x__up' => $e__profile_id,
                         'x__type' => 4983, //IDEA SOURCES
-                        'x__message' => '@'.$e__profile_id,
                         'x__right' => $next_i['i__id'],
                     ), true);
 

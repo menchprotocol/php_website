@@ -57,7 +57,6 @@ foreach($this->I_model->fetch() as $in) {
             'x__type' => 4983, //IDEA SOURCES
             'x__source' => $creator_id,
             'x__up' => $creator_id,
-            'x__message' => '@'.$creator_id,
             'x__right' => $in['i__id'],
         ));
 

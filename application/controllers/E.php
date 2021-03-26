@@ -417,7 +417,6 @@ class E extends CI_Controller
             'x__type' => $_POST['x__type'],
             'x__right' => $is[0]['i__id'],
             'x__up' => $focus_e['e__id'],
-            'x__message' => '@'.$focus_e['e__id'],
         ));
 
         //Return source:
