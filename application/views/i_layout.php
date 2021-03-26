@@ -287,18 +287,11 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
     } elseif($x__type==12274){
 
+
+
+    } elseif($x__type==12274){
+
         $counter = 0;
-        $ui .= '<div class="row justify-content-center">';
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $i_focus['i__id'],
-            'x__up >' => 0,
-        ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC')) as $e_ref){
-            $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
-            $counter++;
-        }
-        $ui .= '</div>';
 
         $ui .= '<div id="new_4983" current-count="'.$counter.'" class="list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
@@ -309,6 +302,31 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[4983]['m__title'].'">
                     </div><div class="algolia_pad_search hidden pad_expand">&nbsp;</div></div>';
+
+        $ui .= '<div class="row justify-content-center inline-block">';
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 4983, //References
+            'x__right' => $i_focus['i__id'],
+            'x__up >' => 0,
+        ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC')) as $e_ref){
+            $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
+            $counter++;
+        }
+        $ui .= '</div>';
+
+        $ui .= '<div class="row justify-content-center inline-block">';
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__type !=' => 4983, //References
+            'x__right' => $i_focus['i__id'],
+            'x__up >' => 0,
+        ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC')) as $e_ref){
+            $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
+            $counter++;
+        }
+        $ui .= '</div>';
 
         //IDEA REFERENCES:
         /*
