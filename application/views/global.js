@@ -844,7 +844,7 @@ $(document).ready(function () {
                         return false;
                     },
                     empty: function (data) {
-                        $("#container_search .row").html('<div class="css__title" style="position: absolute; top:40px; left: 10px;"><span class="icon-block"><i class="fal fa-exclamation-circle"></i></span>No Results</div>');
+                        $("#container_search .row").html('<div class="css__title" style="position: absolute; top:55px; left: 10px;"><span class="icon-block"><i class="fal fa-exclamation-circle"></i></span>No results found</div>');
                     },
                 }
             }
