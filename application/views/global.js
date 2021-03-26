@@ -169,7 +169,7 @@ function load_editor(){
                     return view_s_js_line(suggestion);
                 },
                 empty: function (data) {
-                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
+                    return '<div class="css__title"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
                 },
             }
         }]);
@@ -200,7 +200,7 @@ function load_editor(){
                     return view_s_js_line(suggestion);
                 },
                 empty: function (data) {
-                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
+                    return '<div class="css__title"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
                 },
             }
         }]);
@@ -773,7 +773,7 @@ $(document).ready(function () {
                 },
                 empty: function (data) {
                     //Nothing found:
-                    return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i> Nothing Found</div>';
+                    return '<div class="css__title"><i class="fas fa-exclamation-circle"></i> Nothing Found</div>';
                 },
             }
         }]);
@@ -844,7 +844,7 @@ $(document).ready(function () {
                         return false;
                     },
                     empty: function (data) {
-                        $("#container_search .row").html('<div class="not-found suggestion css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Results</div>');
+                        $("#container_search .row").html('<div class="css__title"><span class="icon-block"><i class="fal fa-exclamation-circle"></i></span>No Results</div>');
                     },
                 }
             }
