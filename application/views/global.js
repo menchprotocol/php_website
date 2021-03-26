@@ -166,7 +166,7 @@ function load_editor(){
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return view_s_js(suggestion);
+                    return view_s_js_line(suggestion);
                 },
                 empty: function (data) {
                     return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
@@ -197,7 +197,7 @@ function load_editor(){
             },
             templates: {
                 suggestion: function (suggestion) {
-                    return view_s_js(suggestion);
+                    return view_s_js_line(suggestion);
                 },
                 empty: function (data) {
                     return '<div class="not-found css__title"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
@@ -214,8 +214,21 @@ function view_s__title(suggestion){
 }
 
 
-function view_s_js(suggestion){
+function view_s_js_line(suggestion){
     return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
+}
+function view_s_js_coin(suggestion){
+
+    var background_image = '';
+    var icon_image = '';
+    if(validURL(suggestion.s__cover)){
+        background_image = 'style="background-image:url(\''+suggestion.s__cover+'\')"';
+    } else {
+        icon_image = view_cover_js(suggestion.s__type, suggestion.s__cover);
+    }
+
+    return '<div class="coin_cover col-md-4 col-6 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background cover-link" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'">'+suggestion.s__title+'</a></div></div></div>';
+
 }
 function view_s_mini_js(s__type,s__cover,s__title){
     return '<span class="block-icon" title="'+s__title+'">'+ view_cover_js(s__type, s__cover) +'</span>';
@@ -762,13 +775,7 @@ $(document).ready(function () {
         }]);
 
         //TOP SEARCH
-        $("#top_search").on('autocomplete:selected', function (event, suggestion, dataset) {
-
-            $('#top_search').val('Loading...');
-
-            window.location = suggestion.s__url;
-
-        }).autocomplete({minLength: 1, autoselect: true, keyboardShortcuts: ['s']}, [
+        $("#top_search").autocomplete({minLength: 1, autoselect: false, keyboardShortcuts: ['s']}, [
             {
                 source: function (q, cb) {
 
@@ -814,7 +821,7 @@ $(document).ready(function () {
 
                         //Append filters:
                         algolia_index.search(q, {
-                            hitsPerPage: 34,
+                            hitsPerPage: 55,
                             filters:search_filters,
                         }, function (error, content) {
                             if (error) {
@@ -831,41 +838,10 @@ $(document).ready(function () {
                 },
                 templates: {
                     suggestion: function (suggestion) {
-                        return view_s_js(suggestion);
-                    },
-                    header: function (data) {
-                        if(validURL(data.query)){
-
-                            return e_fetch_canonical(data.query, false);
-
-                        } else if($("#top_search").val().charAt(0)=='#' || $("#top_search").val().charAt(0)=='@'){
-
-                            //See what follows the @/# sign to determine if we should create OR redirect:
-                            var search_body = $("#top_search").val().substr(1);
-                            if(!isNaN(search_body)){
-                                //Valid Integer, Give option to go there:
-                                return '<a href="' + ( $("#top_search").val().charAt(0)=='#' ? '/i/i_go/' : '/@' ) + search_body + '" class="suggestion css__title"><span class="icon-block"><i class="far fa-level-up rotate90" style="margin: 0 5px;"></i></span>Go to ' + data.query
-                            }
-
-                        }
-                    },
-                    footer: function (data) {
-                        //return '<div class="suggestion" style="text-align: right;">Search Powered by Algolia<span class="icon-block"><i class="fab fa-algolia" style="margin: 0 5px;"></i></span></div>';
+                        $("#container_search .row").append(view_s_js_coin(12274, cover_preview, new_title));
                     },
                     empty: function (data) {
-                        if(validURL(data.query)){
-                            return e_fetch_canonical(data.query, true);
-                        } else if($("#top_search").val().charAt(0)=='#'){
-                            if(isNaN($("#top_search").val().substr(1))){
-                                return '<div class="not-found css__title"><span class="icon-block-xs"><i class="fas fa-exclamation-circle"></i></span>No IDEA found</div>';
-                            }
-                        } else if($("#top_search").val().charAt(0)=='@'){
-                            if(isNaN($("#top_search").val().substr(1))) {
-                                return '<div class="not-found css__title"><span class="icon-block-xs"><i class="fas fa-exclamation-circle"></i></span>No SOURCE found</div>';
-                            }
-                        } else {
-                            return '<div class="not-found suggestion css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No results found</div>';
-                        }
+                        $("#container_search .row").html('<div class="not-found suggestion css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Results</div>');
                     },
                 }
             }
@@ -1079,7 +1055,7 @@ function e_load_search(x__type) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return view_s_js(suggestion);
+                return view_s_js_line(suggestion);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -1254,7 +1230,7 @@ function e_load_search(x__type) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return view_s_js(suggestion);
+                return view_s_js_line(suggestion);
             },
             header: function (data) {
                 if (!data.isEmpty) {
@@ -1473,15 +1449,19 @@ function toggle_search(){
 
     if(search_on){
 
-        //Switch to Menu:
+        //Search OFF
         search_on = false; //Reverse
-        $('.top_nav').removeClass('hidden');
+        $('.top_nav, #container_content').removeClass('hidden');
+        $('#container_search').addClass('hidden');
+
 
     } else {
 
-        //Turn Search On:
+        //Search ON
         search_on = true; //Reverse
-        $('.search_nav').removeClass('hidden');
+        $('.top_nav, #container_content').addClass('hidden');
+        $('#container_search').removeClass('hidden');
+        $("#container_search .row").html('') //Reset results view
 
         //Focus:
         $('#top_search').focus();
@@ -1539,7 +1519,7 @@ function e_fetch_canonical(query_string, not_found){
         if(searchdata.status && searchdata.url_previously_existed){
             //URL was detected via PHP, update the search results:
             $('.add-e-suggest').remove();
-            $('.not-found').html('<a href="/@'+searchdata.suggestion.s__id+'" class="suggestion css__title">' + view_s_js(searchdata.suggestion)+'</a>');
+            $('.not-found').html('<a href="/@'+searchdata.suggestion.s__id+'" class="suggestion css__title">' + view_s_js_line(searchdata.suggestion)+'</a>');
         }
     });
 
@@ -1658,7 +1638,7 @@ function i_load_search(x__type) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return view_s_js(suggestion);
+                return view_s_js_line(suggestion);
             },
             header: function (data) {
                 return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle zq12273 add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
@@ -1931,7 +1911,7 @@ function i_note_e_search(obj) {
                         });
                 },
                 template: function (suggestion) {
-                    return view_s_js(suggestion);
+                    return view_s_js_line(suggestion);
                 },
                 replace: function (suggestion) {
                     setTimeout(function () {

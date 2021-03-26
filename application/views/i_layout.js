@@ -264,7 +264,7 @@ function e_e_only_search_7551(x__type) {
             templates: {
                 suggestion: function (suggestion) {
                     //If clicked, would trigger the autocomplete:selected above which will trigger the e__add() function
-                    return view_s_js(suggestion);
+                    return view_s_js_line(suggestion);
                 },
                 header: function (data) {
                     if (!data.isEmpty) {
