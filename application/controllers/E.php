@@ -763,41 +763,6 @@ class E extends CI_Controller
     }
 
 
-    function e_fetch_canonical(){
-
-        //Auth member and check required variables:
-        $member_e = superpower_unlocked();
-
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['search_url']) || !filter_var($_POST['search_url'], FILTER_VALIDATE_URL)) {
-            //This string was incorrectly detected as a URL by JS, return not found:
-            return view_json(array(
-                'status' => 1,
-                'url_previously_existed' => 0,
-            ));
-        }
-
-        //Fetch URL:
-        $url_e = $this->E_model->url($_POST['search_url']);
-
-        if($url_e['url_previously_existed']){
-            return view_json(array(
-                'status' => 1,
-                'url_previously_existed' => 1,
-                'suggestion' => update_algolia(12274, $url_e['e_url']['e__id'], 1),
-            ));
-        } else {
-            return view_json(array(
-                'status' => 1,
-                'url_previously_existed' => 0,
-            ));
-        }
-    }
-
 
 
 
