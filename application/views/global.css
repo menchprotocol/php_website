@@ -2012,21 +2012,12 @@ i, .btn .show-max {
     top: 45px;
     left: 45px;
 }
-.coin-cover-top-right{
-    top: -21px;
-    right: 13px;
-    font-size: 0.89em;
-}
 .coin-cover-bottom-right{
     top: 13px;
     right: 13px;
 }
 .focus-coin .coin-cover-bottom-right {
     top: 45px;
-    right: 45px;
-}
-.focus-coin .coin-cover-top-right {
-    top: 13px;
     right: 45px;
 }
 
@@ -2277,10 +2268,6 @@ textarea {
         top: 5px;
         right: 5px;
     }
-    .coin-cover-top-right{
-        top: -24px;
-        right: 5px;
-    }
 
     .focus-coin .coin-cover-left{
         top: 21px;
@@ -2288,10 +2275,6 @@ textarea {
     }
     .focus-coin .coin-cover-bottom-right{
         top: 21px;
-        right: 21px;
-    }
-    .focus-coin .coin-cover-top-right{
-        top: -13px;
         right: 21px;
     }
 
