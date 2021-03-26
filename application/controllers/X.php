@@ -792,7 +792,7 @@ class X extends CI_Controller
 
 
         //Upload to CDN and return:
-        $cdn_status = upload_to_cdn($temp_local, $member_e['e__id'], $_FILES[$_POST['upload_type']], true, $is[0]['i__title'].' BY '.$member_e['e__title']);
+        $cdn_status = upload_to_cdn($temp_local, 0 /* To NOT create a Source from URL */, $_FILES[$_POST['upload_type']], true);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
             return view_json($cdn_status);
