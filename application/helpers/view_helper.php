@@ -779,7 +779,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
             'x__right' => $i['i__id'],
             'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
-        $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
+        $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals', 'x__up');
         $count_query = $query[0]['totals'];
 
     } elseif($x__type==12273){
