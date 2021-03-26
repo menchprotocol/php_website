@@ -8,7 +8,7 @@ foreach($this->X_model->fetch(array(
     'x__type NOT IN (12419,4231)' => null, //SOURCE IDEAS
     'x__up > ' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
 ), array('x__up'), 0) as $count => $e){
-    if(!strlen($e['x__message']) || $e['x__message']=='@'.$e['x__up']){
+    if(!strlen($e['x__message'])){
         continue;
     }
     echo '<tr><td>'.$e['x__type'].'</td><td>'.$e['x__message'].'</td><td>'.(substr_count($e['x__message'], '@') > 1 ? '2++' : '').'</td></tr>';
