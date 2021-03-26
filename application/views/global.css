@@ -369,7 +369,8 @@ img.no-frame {
     text-decoration: none;
 }
 
-.block_search_results .aa-dropdown-menu {
+.fixed-top .aa-dropdown-menu,
+.block_search_results .aa-dropdown-menu{
     display: none !important;
 }
 .icons_large .block-icon {
