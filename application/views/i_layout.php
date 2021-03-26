@@ -289,28 +289,8 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
         $counter = 0;
 
-        $ui .= '<div id="new_4983" class="list-adder '.superpower_active(10939).'">
-                    <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New4983input\').focus();"><span class="icon-block">'.$e___11035[4983]['m__cover'].'</span></a>
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               id="New4983input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[4983]['m__title'].'">
-                    </div><div class="algolia_pad_search hidden pad_expand">&nbsp;</div></div>';
-
-
         //Direct: Adjustable
         $ui .= '<div class="row justify-content-center">';
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4983, //References
-            'x__right' => $i_focus['i__id'],
-            'x__up >' => 0,
-        ), array('x__up'), 0, 0, array('x__id' => 'DESC')) as $e_ref){
-            $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
-            $counter++;
-        }
 
         //Inherited: Non Adjustable
         foreach($this->X_model->fetch(array(
@@ -323,7 +303,27 @@ foreach($this->config->item('e___11018') as $x__type => $m){
             $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
             $counter++;
         }
+
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 4983, //References
+            'x__right' => $i_focus['i__id'],
+            'x__up >' => 0,
+        ), array('x__up'), 0, 0, array('x__id' => 'ASC')) as $e_ref){
+            $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
+            $counter++;
+        }
         $ui .= '</div>';
+
+        $ui .= '<div id="new_4983" class="list-adder '.superpower_active(10939).'">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New4983input\').focus();"><span class="icon-block">'.$e___11035[4983]['m__cover'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               id="New4983input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="'.$e___11035[4983]['m__title'].'">
+                    </div><div class="algolia_pad_search hidden pad_expand">&nbsp;</div></div>';
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
