@@ -1811,6 +1811,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         return 'Invalid x__type '.$x__type;
     }
 
+
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $superpower_10939 = superpower_active(10939, true);
@@ -1871,9 +1872,14 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-bottom-right hideIfEmpty">';
     //LOCKED
-    if($has_any_lock && !$focus_coin){
+    if($has_any_lock && !$focus_coin) {
 
-        $ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
+        $ui .= '<span title="' . $e___11035[$lock_notice]['m__title'] . '">' . $e___11035[$lock_notice]['m__cover'] . '</span>';
+
+    } elseif(in_array($x__type, $CI->config->item('n___14945'))){
+
+        $e___14690 = $CI->config->item('e___14690');
+        $ui .= '<span title="' . $e___14690[$x__type]['m__title'] . '">' . $e___14690[$x__type]['m__cover'] . '</span>';
 
     } elseif($source_of_e && !$cache_app) {
 
