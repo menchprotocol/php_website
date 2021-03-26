@@ -289,7 +289,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
         $counter = 0;
 
-        $ui .= '<div id="new_4983" current-count="'.$counter.'" class="list-adder '.superpower_active(10939).'">
+        $ui .= '<div id="new_4983" class="list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New4983input\').focus();"><span class="icon-block">'.$e___11035[4983]['m__cover'].'</span></a>
                         <input type="text"
@@ -299,6 +299,8 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                                placeholder="'.$e___11035[4983]['m__title'].'">
                     </div><div class="algolia_pad_search hidden pad_expand">&nbsp;</div></div>';
 
+
+        //Direct: Adjustable
         $ui .= '<div class="row justify-content-center inline-block">';
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -311,6 +313,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         }
         $ui .= '</div>';
 
+        //Inherited: Non Adjustable
         $ui .= '<div class="row justify-content-center inline-block">';
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
