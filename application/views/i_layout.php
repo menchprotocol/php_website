@@ -287,10 +287,6 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
     } elseif($x__type==12274){
 
-
-
-    } elseif($x__type==12274){
-
         $counter = 0;
 
         $ui .= '<div id="new_4983" current-count="'.$counter.'" class="list-adder '.superpower_active(10939).'">
