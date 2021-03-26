@@ -775,8 +775,6 @@ class X extends CI_Controller
 
         }
 
-        //TODO Log transaction to record this...
-
         //Attempt to save file locally:
         $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
         $temp_local = "application/cache/" . md5($file_parts[0] . $_FILES[$_POST['upload_type']]["type"] . $_FILES[$_POST['upload_type']]["size"]) . '.' . $file_parts[(count($file_parts) - 1)];
@@ -802,7 +800,6 @@ class X extends CI_Controller
             $invite_x = $this->X_model->create(array(
                 'x__type' => 25990,
                 'x__source' => $member_e['e__id'],
-                'x__up' => $_POST['coin__type'],
                 'x__down' => ( $_POST['coin__type']==12274 ? $_POST['coin__id'] : 0 ),
                 'x__right' => ( $_POST['coin__type']==12273 ? $_POST['coin__id'] : 0 ),
                 'x__message' => $cdn_status['cdn_url'],

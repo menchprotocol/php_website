@@ -66,7 +66,7 @@ if($search_for_set){
         $confirmation_keyword = 'Replace '.count($matching_results);
         $replace_with_confirmed = (isset($_GET['confirm_statement']) && strtolower($_GET['confirm_statement'])==strtolower($confirmation_keyword));
 
-        echo '<div class="list-group">';
+        echo '<div class="row">';
         foreach($matching_results as $count=>$en){
 
             if($replace_with_set){
