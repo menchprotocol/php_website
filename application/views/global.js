@@ -547,8 +547,13 @@ function cover_upload(droppedFiles, uploadType) {
             },
             success: function (data) {
                 //Render new file:
-                $('#upload_results').html('');
-                update__cover(data.cover_url);
+                if(data.status){
+                    $('#upload_results').html('');
+                    update__cover(data.cdn_url);
+                } else {
+                    //Show error:
+                    $('#upload_results').html(data.message);
+                }
             },
             error: function (data) {
                 //Show Error:

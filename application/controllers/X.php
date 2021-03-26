@@ -768,6 +768,8 @@ class X extends CI_Controller
 
         }
 
+        //TODO Log transaction to record this...
+
         //Attempt to save file locally:
         $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
         $temp_local = "application/cache/" . md5($file_parts[0] . $_FILES[$_POST['upload_type']]["type"] . $_FILES[$_POST['upload_type']]["size"]) . '.' . $file_parts[(count($file_parts) - 1)];
@@ -791,7 +793,7 @@ class X extends CI_Controller
             //Return CDN URL:
             return view_json(array(
                 'status' => 1,
-                'cover_url' => $cdn_status['cdn_url'],
+                'cdn_url' => $cdn_status['cdn_url'],
             ));
         }
     }
