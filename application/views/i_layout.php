@@ -291,7 +291,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         $ui .= '<div class="row justify-content-center">';
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i_focus['i__id'],
             'x__up >' => 0,
         ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC')) as $e_ref){
