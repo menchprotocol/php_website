@@ -490,7 +490,8 @@ class E extends CI_Controller
         //Set some variables:
         $_POST['x__type'] = intval($_POST['x__type']);
         $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
-        $is_url_input = false;
+        $is_url = filter_var($_POST['e_new_string'], FILTER_VALIDATE_URL);
+        $url_previously_existed = false;
 
         //Are we adding an existing source?
         if (intval($_POST['e_existing_id']) > 0) {
@@ -516,13 +517,15 @@ class E extends CI_Controller
             //We are creating a new source OR adding a URL...
 
             //Is this a URL?
-            if (filter_var($_POST['e_new_string'], FILTER_VALIDATE_URL)) {
+            if ($is_url) {
 
                 //Digest URL to see what type it is and if we have any errors:
-                $url_e = $this->E_model->url($_POST['e_new_string']);
+                $url_e = $this->E_model->url($_POST['e_new_string'], ( $_POST['x__type']==4983 ? $member_e['e__id'] /* Will Create if Not Found */ : 0 ));
                 if (!$url_e['status']) {
                     return view_json($url_e);
                 }
+
+                $url_previously_existed = $url_e['url_previously_existed'];
 
                 //Is this a root domain? Add to domains if so:
                 if($url_e['url_root']){
@@ -568,74 +571,72 @@ class E extends CI_Controller
             $ur2 = $this->X_model->create(array(
                 'x__type' => 4983, //IDEA SOURCES
                 'x__source' => $member_e['e__id'],
-                'x__up' => $focus_e['e__id'],
+                'x__up' => ( $is_url ? $url_e['e_url']['e__id'] /* We know we have it */ : $focus_e['e__id'] ),
                 'x__right' => $fetch_o[0]['i__id'],
             ));
 
-        } else {
+        } elseif (!$url_previously_existed) {
 
             //Add Up/Down Source:
-            if (!$is_url_input) {
 
-                //Add transactions only if not previously added by the URL function:
-                if (in_array($_POST['x__type'], $this->config->item('n___14686'))) {
+            //Add transactions only if not previously added by the URL function:
+            if (in_array($_POST['x__type'], $this->config->item('n___14686'))) {
 
-                    //Profile
-                    $x__down = $fetch_o[0]['e__id'];
-                    $x__up = $focus_e['e__id'];
-                    $x__spectrum = 0; //Never sort profiles, only sort portfolios
+                //Profile
+                $x__down = $fetch_o[0]['e__id'];
+                $x__up = $focus_e['e__id'];
+                $x__spectrum = 0; //Never sort profiles, only sort portfolios
 
-                } else {
+            } else {
 
-                    //Portfolio
-                    $x__up = $fetch_o[0]['e__id'];
-                    $x__down = $focus_e['e__id'];
+                //Portfolio
+                $x__up = $fetch_o[0]['e__id'];
+                $x__down = $focus_e['e__id'];
 
-                    if(sources_currently_sorted($x__up)){
+                if(sources_currently_sorted($x__up)){
 
-                        $x__spectrum = 1 + $this->X_model->max_spectrum(array(
-                                'x__up' => $x__up,
-                                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ));
-
-                    } else {
-
-                        //Don't sort since currently not sorted:
-                        $x__spectrum = 0;
-
-                    }
-
-                }
-
-
-                if (isset($url_e['url_root']) && $url_e['url_root']) {
-
-                    $x__message = $url_e['clean_url'];
-                    $x__type = e_x__type($x__message);
-
-                } elseif (isset($url_e['e_domain']) && $url_e['e_domain']) {
-
-                    $x__message = $url_e['clean_url'];
-                    $x__type = $url_e['x__type'];
+                    $x__spectrum = 1 + $this->X_model->max_spectrum(array(
+                            'x__up' => $x__up,
+                            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        ));
 
                 } else {
 
-                    $x__message = null;
-                    $x__type = e_x__type($x__message);
+                    //Don't sort since currently not sorted:
+                    $x__spectrum = 0;
 
                 }
 
-                //Create transaction:
-                $ur2 = $this->X_model->create(array(
-                    'x__source' => $member_e['e__id'],
-                    'x__type' => $x__type,
-                    'x__message' => $x__message,
-                    'x__down' => $x__down,
-                    'x__up' => $x__up,
-                    'x__spectrum' => $x__spectrum,
-                ));
             }
+
+
+            if (isset($url_e['url_root']) && $url_e['url_root']) {
+
+                $x__message = $url_e['clean_url'];
+                $x__type = e_x__type($x__message);
+
+            } elseif (isset($url_e['e_domain']) && $url_e['e_domain']) {
+
+                $x__message = $url_e['clean_url'];
+                $x__type = $url_e['x__type'];
+
+            } else {
+
+                $x__message = null;
+                $x__type = e_x__type($x__message);
+
+            }
+
+            //Create transaction:
+            $ur2 = $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => $x__type,
+                'x__message' => $x__message,
+                'x__down' => $x__down,
+                'x__up' => $x__up,
+                'x__spectrum' => $x__spectrum,
+            ));
 
         }
 
