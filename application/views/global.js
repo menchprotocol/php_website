@@ -231,7 +231,7 @@ function view_s_js_coin(suggestion){
     }
 
 
-    return '<div class="coin_cover coin-'+suggestion.s__type+' col-md-4 col-6 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+    return '<div class="coin_cover coin-'+suggestion.s__type+' col-md-4 col-6 no-padding" style="margin-top: 0 !important;"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
 
 }
 function view_s_mini_js(s__type,s__cover,s__title){
