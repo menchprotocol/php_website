@@ -439,7 +439,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (intval($_POST['e__id']) < 1) {
+        } elseif (intval($_POST['focus__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Parent Source',
@@ -456,16 +456,35 @@ class E extends CI_Controller
             ));
         }
 
-        //Validate parent source:
-        $fetch_e = $this->E_model->fetch(array(
-            'e__id' => $_POST['e__id'],
-        ));
-        if (count($fetch_e) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid parent source ID',
+
+        if($_POST['x__type']==4983){
+
+            //Validate Idea:
+            $fetch_o = $this->I_model->fetch(array(
+                'i__id' => $_POST['focus__id'],
             ));
+            if (count($fetch_o) < 1) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid parent source ID',
+                ));
+            }
+
+        } else {
+
+            //Validate Source:
+            $fetch_o = $this->E_model->fetch(array(
+                'e__id' => $_POST['focus__id'],
+            ));
+            if (count($fetch_o) < 1) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid parent source ID',
+                ));
+            }
+
         }
+
 
 
         //Set some variables:
@@ -543,84 +562,87 @@ class E extends CI_Controller
         //We need to check to ensure this is not a duplicate transaction if adding an existing source:
         $ur2 = array();
 
-        if (!$is_url_input) {
+        if($_POST['x__type']==4983) {
 
-            //Add transactions only if not previously added by the URL function:
-            if (in_array($_POST['x__type'], $this->config->item('n___14686'))) {
+            //Add Reference:
+            $ur2 = $this->X_model->create(array(
+                'x__type' => 4983, //IDEA SOURCES
+                'x__source' => $member_e['e__id'],
+                'x__up' => $focus_e['e__id'],
+                'x__right' => $fetch_o[0]['i__id'],
+            ));
 
-                //Profile
-                $x__down = $fetch_e[0]['e__id'];
-                $x__up = $focus_e['e__id'];
-                $x__spectrum = 0; //Never sort profiles, only sort portfolios
+        } else {
 
-            } else {
+            //Add Up/Down Source:
+            if (!$is_url_input) {
 
-                //Portfolio
-                $x__up = $fetch_e[0]['e__id'];
-                $x__down = $focus_e['e__id'];
+                //Add transactions only if not previously added by the URL function:
+                if (in_array($_POST['x__type'], $this->config->item('n___14686'))) {
 
-                if(sources_currently_sorted($x__up)){
-
-                    $x__spectrum = 1 + $this->X_model->max_spectrum(array(
-                            'x__up' => $x__up,
-                            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        ));
+                    //Profile
+                    $x__down = $fetch_o[0]['e__id'];
+                    $x__up = $focus_e['e__id'];
+                    $x__spectrum = 0; //Never sort profiles, only sort portfolios
 
                 } else {
 
-                    //Don't sort since currently not sorted:
-                    $x__spectrum = 0;
+                    //Portfolio
+                    $x__up = $fetch_o[0]['e__id'];
+                    $x__down = $focus_e['e__id'];
+
+                    if(sources_currently_sorted($x__up)){
+
+                        $x__spectrum = 1 + $this->X_model->max_spectrum(array(
+                                'x__up' => $x__up,
+                                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            ));
+
+                    } else {
+
+                        //Don't sort since currently not sorted:
+                        $x__spectrum = 0;
+
+                    }
 
                 }
 
+
+                if (isset($url_e['url_root']) && $url_e['url_root']) {
+
+                    $x__message = $url_e['clean_url'];
+                    $x__type = e_x__type($x__message);
+
+                } elseif (isset($url_e['e_domain']) && $url_e['e_domain']) {
+
+                    $x__message = $url_e['clean_url'];
+                    $x__type = $url_e['x__type'];
+
+                } else {
+
+                    $x__message = null;
+                    $x__type = e_x__type($x__message);
+
+                }
+
+                //Create transaction:
+                $ur2 = $this->X_model->create(array(
+                    'x__source' => $member_e['e__id'],
+                    'x__type' => $x__type,
+                    'x__message' => $x__message,
+                    'x__down' => $x__down,
+                    'x__up' => $x__up,
+                    'x__spectrum' => $x__spectrum,
+                ));
             }
 
-
-            if (isset($url_e['url_root']) && $url_e['url_root']) {
-
-                $x__message = $url_e['clean_url'];
-                $x__type = e_x__type($x__message);
-
-            } elseif (isset($url_e['e_domain']) && $url_e['e_domain']) {
-
-                $x__message = $url_e['clean_url'];
-                $x__type = $url_e['x__type'];
-
-            } else {
-
-                $x__message = null;
-                $x__type = e_x__type($x__message);
-
-            }
-
-            //Create transaction:
-            $ur2 = $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
-                'x__type' => $x__type,
-                'x__message' => $x__message,
-                'x__down' => $x__down,
-                'x__up' => $x__up,
-                'x__spectrum' => $x__spectrum,
-            ));
-        }
-
-        //Fetch latest version:
-        $es_latest = $this->E_model->fetch(array(
-            'e__id' => $focus_e['e__id'],
-            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ));
-        if(!count($es_latest)){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Failed to create/fetch new source',
-            ));
         }
 
         //Return source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e($_POST['x__type'], array_merge($es_latest[0], $ur2), null,  true),
+            'e_new_echo' => view_e($_POST['x__type'], array_merge($focus_e, $ur2), null,  true),
         ));
 
     }
