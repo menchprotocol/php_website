@@ -779,7 +779,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
             'x__right' => $i['i__id'],
             'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
-        $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals', null, 'x__up');
+        $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
 
     } elseif($x__type==12273){
@@ -1879,7 +1879,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     } elseif(in_array($x__type, $CI->config->item('n___14945'))){
 
         $e___14690 = $CI->config->item('e___14690');
-        $ui .= '<span class="grey" title="Referenced in ' . $e___14690[$x__type]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $e___14690[$x__type]['m__cover'] . '</span>';
+        $ui .= '<span class="grey" title="' . $e___14690[$x__type]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $e___14690[$x__type]['m__cover'] . '</span>';
 
     } elseif($source_of_e && !$cache_app) {
 

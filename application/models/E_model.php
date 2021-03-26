@@ -511,7 +511,7 @@ class E_model extends CI_Model
 
 
         //Analyze domain:
-        $url_analysis = analyze_domain($url);
+        $analyze_domain = analyze_domain($url);
         $domain_previously_existed = 0; //Assume false
         $e_domain = false; //Have an empty placeholder:
 
@@ -522,7 +522,7 @@ class E_model extends CI_Model
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
             'x__up' => 1326, //Domain Member
-            'x__message' => $url_analysis['url_clean_domain'],
+            'x__message' => $analyze_domain['url_clean_domain'],
         ), array('x__down'));
 
         //Do we need to create an source for this domain?
@@ -534,7 +534,7 @@ class E_model extends CI_Model
         } elseif ($x__source) {
 
             //Yes, let's add a new source:
-            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $url_analysis['url_domain'] ), $x__source);
+            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $analyze_domain['url_domain'] ), $x__source);
             $e_domain = $added_e['new_e'];
 
             //And transaction source to the domains source:
@@ -543,14 +543,14 @@ class E_model extends CI_Model
                 'x__type' => 4256, //Generic URL (Domains are always generic)
                 'x__up' => 1326, //Domain Member
                 'x__down' => $e_domain['e__id'],
-                'x__message' => $url_analysis['url_clean_domain'],
+                'x__message' => $analyze_domain['url_clean_domain'],
             ));
 
         }
 
 
         //Return data:
-        return array_merge( $url_analysis , array(
+        return array_merge( $analyze_domain , array(
             'status' => 1,
             'message' => 'Success',
             'domain_previously_existed' => $domain_previously_existed,
@@ -697,13 +697,13 @@ class E_model extends CI_Model
         $e_url = null;
 
         //Analyze domain:
-        $url_analysis = analyze_domain($url);
+        $analyze_domain = analyze_domain($url);
 
         //Now let's analyze further based on type:
-        if ($url_analysis['url_root']) {
+        if ($analyze_domain['url_root']) {
 
             //Update URL to keep synced:
-            $url = $url_analysis['url_clean_domain'];
+            $url = $analyze_domain['url_clean_domain'];
 
         } else {
 
@@ -729,11 +729,11 @@ class E_model extends CI_Model
                 $x__type = 4257;
                 $url = $embed_code['clean_url'];
 
-            } elseif ($url_analysis['url_file_extension'] && is_https_url($url)) {
+            } elseif ($analyze_domain['url_file_extension'] && is_https_url($url)) {
 
                 $detected_extension = false;
                 foreach($this->config->item('e___11080') as $e__id => $m){
-                    if(in_array($url_analysis['url_file_extension'], explode('|' , $m['m__message']))){
+                    if(in_array($analyze_domain['url_file_extension'], explode('|' , $m['m__message']))){
                         $x__type = $e__id;
                         $detected_extension = true;
                         break;
@@ -743,10 +743,10 @@ class E_model extends CI_Model
                 if(!$detected_extension){
                     //Log error to notify admin:
                     $this->X_model->create(array(
-                        'x__message' => 'e_url() detected unknown file extension ['.$url_analysis['url_file_extension'].'] that needs to be added to @11080',
+                        'x__message' => 'e_url() detected unknown file extension ['.$analyze_domain['url_file_extension'].'] that needs to be added to @11080',
                         'x__type' => 4246, //Platform Bug Reports
                         'x__up' => 11080,
-                        'x__metadata' => $url_analysis,
+                        'x__metadata' => $analyze_domain,
                     ));
                 }
             }
@@ -768,21 +768,21 @@ class E_model extends CI_Model
 
 
         //Fetch/Create domain source:
-        $url_e = $this->E_model->domain($url, $x__source, ( $url_analysis['url_root'] && $name_was_passed ? $page_title : null ));
-        if(!$url_e['status']){
+        $domain_e = $this->E_model->domain($url, $x__source, ( $analyze_domain['url_root'] && $name_was_passed ? $page_title : null ));
+        if(!$domain_e['status']){
             //We had an issue:
-            return $url_e;
+            return $domain_e;
         }
 
 
         //Was this not a root domain? If so, also check to see if URL exists:
-        if ($url_analysis['url_root']) {
+        if ($analyze_domain['url_root']) {
 
             //URL is the domain in this case:
-            $e_url = $url_e['e_domain'];
+            $e_url = $domain_e['e_domain'];
 
             //IF the URL exists since the domain existed and the URL is the domain!
-            if ($url_e['domain_previously_existed']) {
+            if ($domain_e['domain_previously_existed']) {
                 $url_previously_existed = 1;
             }
 
@@ -823,7 +823,7 @@ class E_model extends CI_Model
                     $this->X_model->create(array(
                         'x__source' => $x__source,
                         'x__type' => $x__type,
-                        'x__up' => $url_e['e_domain']['e__id'],
+                        'x__up' => $domain_e['e_domain']['e__id'],
                         'x__down' => $e_url['e__id'],
                         'x__message' => $url,
                     ));
@@ -841,7 +841,7 @@ class E_model extends CI_Model
                         'x__message' => 'e_url['.$url.'] FAILED to create ['.$page_title.'] with message: '.$added_e['message'],
                         'x__type' => 4246, //Platform Bug Reports
                         'x__source' => $x__source,
-                        'x__up' => $url_e['e_domain']['e__id'],
+                        'x__up' => $domain_e['e_domain']['e__id'],
                         'x__metadata' => array(
                             'url' => $url,
                             'x__source' => $x__source,
@@ -876,7 +876,7 @@ class E_model extends CI_Model
         //Return results:
         return array_merge(
 
-            $url_analysis, //Make domain analysis data available as well...
+            $analyze_domain, //Make domain analysis data available as well...
 
             array(
                 'status' => ( $url_already_linked ? 0 : 1),
@@ -886,7 +886,7 @@ class E_model extends CI_Model
                 'x__type' => $x__type,
                 'page_title' => html_entity_decode($page_title, ENT_QUOTES),
                 'page_title_generic' => $page_title_generic,
-                'e_domain' => $url_e['e_domain'],
+                'e_domain' => $domain_e['e_domain'],
                 'e_url' => $e_url,
             )
         );

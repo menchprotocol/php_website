@@ -490,8 +490,8 @@ class E extends CI_Controller
         //Set some variables:
         $_POST['x__type'] = intval($_POST['x__type']);
         $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
-        $is_url = filter_var($_POST['e_new_string'], FILTER_VALIDATE_URL);
         $url_previously_existed = false;
+        $url_e = false;
 
         //Are we adding an existing source?
         if (intval($_POST['e_existing_id']) > 0) {
@@ -517,7 +517,7 @@ class E extends CI_Controller
             //We are creating a new source OR adding a URL...
 
             //Is this a URL?
-            if ($is_url) {
+            if (filter_var($_POST['e_new_string'], FILTER_VALIDATE_URL)) {
 
                 //Digest URL to see what type it is and if we have any errors:
                 $url_e = $this->E_model->url($_POST['e_new_string'], ( $_POST['x__type']==4983 ? $member_e['e__id'] /* Will Create if Not Found */ : 0 ));
@@ -531,7 +531,7 @@ class E extends CI_Controller
                 if($url_e['url_root']){
 
                     //Domain
-                    $focus_e = array('e__id' => 1326);
+                    $focus_e = ( $_POST['x__type']==4983 ? $url_e['e_domain'] : array('e__id' => 1326) );
 
                     //Update domain to stay synced:
                     $_POST['e_new_string'] = $url_e['url_clean_domain'];
@@ -542,7 +542,8 @@ class E extends CI_Controller
                     $url_domain = $this->E_model->domain($_POST['e_new_string'], $member_e['e__id']);
 
                     //Add this source:
-                    $focus_e = $url_domain['e_domain'];
+                    $focus_e = ( $_POST['x__type']==4983 ? $url_e['e_url'] : $url_domain['e_domain'] );
+
                 }
 
             } else {
@@ -571,7 +572,7 @@ class E extends CI_Controller
             $ur2 = $this->X_model->create(array(
                 'x__type' => 4983, //IDEA SOURCES
                 'x__source' => $member_e['e__id'],
-                'x__up' => ( $is_url ? $url_e['e_url']['e__id'] /* We know we have it */ : $focus_e['e__id'] ),
+                'x__up' => $focus_e['e__id'],
                 'x__right' => $fetch_o[0]['i__id'],
             ));
 
