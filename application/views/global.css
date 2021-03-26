@@ -2012,13 +2012,20 @@ i, .btn .show-max {
     top: 45px;
     left: 45px;
 }
-
-.coin-cover-right{
+.coin-cover-top-right{
+    top: -8px;
+    right: 13px;
+}
+.coin-cover-bottom-right{
     top: 13px;
     right: 13px;
 }
-.focus-coin .coin-cover-right {
+.focus-coin .coin-cover-bottom-right {
     top: 45px;
+    right: 45px;
+}
+.focus-coin .coin-cover-top-right {
+    top: 21px;
     right: 45px;
 }
 
@@ -2265,8 +2272,12 @@ textarea {
         top: 5px;
         left: 5px;
     }
-    .coin-cover-right{
+    .coin-cover-bottom-right{
         top: 5px;
+        right: 5px;
+    }
+    .coin-cover-top-right{
+        top: -13px;
         right: 5px;
     }
 
@@ -2274,8 +2285,12 @@ textarea {
         top: 21px;
         left: 21px;
     }
-    .focus-coin .coin-cover-right{
+    .focus-coin .coin-cover-bottom-right{
         top: 21px;
+        right: 21px;
+    }
+    .focus-coin .coin-cover-top-right{
+        top: -5px;
         right: 21px;
     }
 
