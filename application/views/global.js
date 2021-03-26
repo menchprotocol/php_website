@@ -221,7 +221,8 @@ function view_s_js_coin(suggestion){
 
     var background_image = '';
     var icon_image = '';
-    if(suggestion.s__cover.length){
+
+    if(suggestion.s__cover && suggestion.s__cover.length){
         if(validURL(suggestion.s__cover)){
             background_image = 'style="background-image:url(\''+suggestion.s__cover+'\')"';
         } else {
