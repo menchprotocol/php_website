@@ -1598,7 +1598,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
     if($has_sortable){
-        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-top-right hideIfEmpty"><a href="javascript:void(0);" class="dropdown-item x_sort css__title"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span>'.$e___11035[4603]['m__title'].'</a></div>';
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-top-right hideIfEmpty"><a href="javascript:void(0);" class="dropdown-item x_sort css__title" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</a></div>';
     }
 
     $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-bottom-right hideIfEmpty">';
@@ -1871,7 +1871,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     }
 
     if($has_sortable){
-        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-top-right hideIfEmpty"><a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span>'.$e___11035[4603]['m__title'].'</a></div>';
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-top-right hideIfEmpty"><a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</a></div>';
     }
 
     $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-bottom-right hideIfEmpty">';
