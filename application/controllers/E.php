@@ -207,52 +207,6 @@ class E extends CI_Controller
 
 
 
-    function e_upload_file()
-    {
-
-        //Authenticate Member:
-        $member_e = superpower_unlocked(10939);
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(10939),
-            ));
-        } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Unknown upload type.',
-            ));
-        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Unknown error 3 while trying to save file.',
-            ));
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (view_memory(6404,13572) * 1024 * 1024)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'File is larger than the maximum file size of ' . view_memory(6404,13572) . ' MB.',
-            ));
-        }
-
-
-        //Attempt to save file locally:
-        $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
-        $temp_local = "application/cache/" . md5($file_parts[0] . $_FILES[$_POST['upload_type']]["type"] . $_FILES[$_POST['upload_type']]["size"]) . '.' . $file_parts[(count($file_parts) - 1)];
-        move_uploaded_file($_FILES[$_POST['upload_type']]['tmp_name'], $temp_local);
-
-
-        //Attempt to store in Cloud on Amazon S3:
-        if (isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type']) > 0) {
-            $mime = $_FILES[$_POST['upload_type']]['type'];
-        } else {
-            $mime = mime_content_type($temp_local);
-        }
-
-        //Return the CDN uploader results:
-        return view_json(upload_to_cdn($temp_local, 0, $_FILES[$_POST['upload_type']], true));
-
-    }
-
 
     function e_load_page()
     {

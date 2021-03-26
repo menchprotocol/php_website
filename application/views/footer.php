@@ -189,7 +189,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                 <div class="modal-body block_search_results">
 
-                    <!-- PREVIEW -->
+                    <!-- IMAGE DROP STARTS -->
+                    <div class="coverUploader">
+                    <form class="box coverUpload" method="post" enctype="multipart/form-data">
+
+
+                    <!-- COVER PREVIEW -->
                     <a name="preview_cover" style="height: 1px;">&nbsp;</a>
                     <div class="coin_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
                         <div class="cover-wrapper"><div class="black-background cover-link" style=""><div class="cover-btn"></div></div></div>
@@ -202,26 +207,38 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <input type="hidden" id="coin__id" value="0" />
 
 
-                    <!-- SEARCH -->
+                    <!-- CONTROLLER -->
                     <table style="width: 100%; margin-bottom: 34px;">
                         <tr>
                             <td style="width: 100%;">
+                                <!-- SEARCH -->
                                 <input id="search_cover" type="text" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Paste Image URL or Search Covers..." data-lpignore="true" />
 
                             </td>
                             <td>
+                                <!-- DELETE -->
                                 <a class="icon-block" href="javascript:void(0);" title="Clear Cover" onclick="update__cover('')"><i class="fas fa-trash-alt"></i></a>
                             </td>
                             <td>
-                                <a class="icon-block" href="javascript:void(0);" title="Upload Image"><i class="fas fa-cloud-upload"></i></a>
+                                <!-- UPLOAD -->
+                                <input class="inputfile" type="file" name="file" id="coverUpload" />
+                                <label class="icon-block" for="coverUpload"><i class="fas fa-cloud-upload"></i></label>
+
                             </td>
                             <td>
+                                <!-- SAVE -->
                                 <button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button>
                             </td>
                         </tr>
                     </table>
 
 
+                    <!-- IMAGE DROP ENDS -->
+                    </div>
+                    </form>
+
+
+                    <div id="upload_results"></div>
                     <div id="img_results_icons" class="icons_small"></div>
                     <div class="doclear">&nbsp;</div>
                     <div id="img_results_emojis" class="icons_small"></div>

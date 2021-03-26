@@ -508,8 +508,88 @@ function image_cover(cover_preview, cover_apply, new_title){
     return '<a href="#preview_cover" onclick="update__cover(\''+cover_apply+'\')">' + view_s_mini_js(12274, cover_preview, new_title) + '</a>';
 }
 
+
+function cover_upload(droppedFiles, uploadType) {
+
+    //Prevent multiple concurrent uploads:
+    if ($('.coverUpload').hasClass('dynamic_saving')) {
+        return false;
+    }
+
+    $('#upload_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="css__title">UPLOADING...</span>');
+
+    if (isAdvancedUpload) {
+
+        var ajaxData = new FormData($('.coverUpload').get(0));
+        if (droppedFiles) {
+            $.each(droppedFiles, function (i, file) {
+                var thename = $('.coverUpload').find('input[type="file"]').attr('name');
+                if (typeof thename == typeof undefined || thename == false) {
+                    var thename = 'drop';
+                }
+                ajaxData.append(uploadType, file);
+            });
+        }
+
+        ajaxData.append('coin__type', $('#coin__type').val());
+        ajaxData.append('coin__id', $('#coin__id').val());
+
+        $.ajax({
+            url: '/x/cover_upload',
+            type: $('.coverUpload').attr('method'),
+            data: ajaxData,
+            dataType: 'json',
+            cache: false,
+            contentType: false,
+            processData: false,
+            complete: function () {
+                $('.coverUpload').removeClass('dynamic_saving');
+            },
+            success: function (data) {
+                //Render new file:
+                $('#upload_results').html('');
+                update__cover(data.cover_url);
+            },
+            error: function (data) {
+                //Show Error:
+                $('#upload_results').html(data.responseText);
+            }
+        });
+    } else {
+        // ajax for legacy browsers
+    }
+
+}
+
+
 var algolia_index = false;
 $(document).ready(function () {
+
+    //Watchout for file uplods:
+    $('.coverUpload').find('input[type="file"]').change(function () {
+        cover_upload(droppedFiles, 'file');
+    });
+
+    //Should we auto start?
+    if (isAdvancedUpload) {
+        var droppedFiles = false;
+        $('.coverUpload').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        })
+            .on('dragover dragenter', function () {
+                $('.coverUploader').addClass('dynamic_saving');
+            })
+            .on('dragleave dragend drop', function () {
+                $('.coverUploader').removeClass('dynamic_saving');
+            })
+            .on('drop', function (e) {
+                droppedFiles = e.originalEvent.dataTransfer.files;
+                e.preventDefault();
+                cover_upload(droppedFiles, 'drop');
+            });
+    }
+
 
 
     if ($(".list-coins")[0]){
@@ -631,7 +711,7 @@ $(document).ready(function () {
                     return true;
                 }
 
-                $("#img_results_icons, #img_results_emojis, #img_results_tenor, #img_results_unsplash, #img_results_local").html('');
+                $("#upload_results, #img_results_icons, #img_results_emojis, #img_results_tenor, #img_results_unsplash, #img_results_local").html('');
 
                 //Tenor:
                 images_api_getasync(25986, q, tenor_search_cover);
@@ -902,7 +982,7 @@ function coin__load(coin__type, coin__id){
 
     $('#modal14937').modal('show');
     $('#search_cover').val('').focus();
-    $("#img_results_icons, #img_results_emojis, #img_results_tenor, #img_results_unsplash, #img_results_local").html('');
+    $("#upload_results, #img_results_icons, #img_results_emojis, #img_results_tenor, #img_results_unsplash, #img_results_local").html('');
     $('#coin__title, #coin__cover').val('LOADING...');
     $('#modal14937 .black-background').removeClass('coinType12273').removeClass('coinType12274').addClass('coinType'+coin__type);
 
@@ -1532,7 +1612,6 @@ function i_note_activate(){
         //Should we auto start?
         if (isAdvancedUpload) {
 
-            $('.box' + x__type).addClass('has-advanced-upload');
             var droppedFiles = false;
 
             $('.box' + x__type).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {

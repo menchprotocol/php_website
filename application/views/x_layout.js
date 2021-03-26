@@ -14,10 +14,9 @@ $(document).ready(function () {
     //Should we auto start?
     if (isAdvancedUpload) {
 
-        $('.boxUpload').addClass('has-advanced-upload');
         var droppedFiles = false;
 
-        $('.boxboxUpload').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+        $('.boxUpload').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
             e.preventDefault();
             e.stopPropagation();
         })
