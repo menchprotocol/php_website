@@ -531,6 +531,7 @@ function cover_upload(droppedFiles, uploadType) {
             });
         }
 
+        ajaxData.append('upload_type', uploadType);
         ajaxData.append('coin__type', $('#coin__type').val());
         ajaxData.append('coin__id', $('#coin__id').val());
 

@@ -745,6 +745,13 @@ class X extends CI_Controller
                 'message' => view_unauthorized_message(),
             ));
 
+        } elseif (!isset($_POST['coin__type']) || !isset($_POST['coin__id'])) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing core info',
+            ));
+
         } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
 
             return view_json(array(
