@@ -221,12 +221,14 @@ function view_s_js_coin(suggestion){
 
     var background_image = '';
     var icon_image = '';
-
-    if(validURL(suggestion.s__cover)){
-        background_image = 'style="background-image:url(\''+suggestion.s__cover+'\')"';
-    } else {
-        icon_image = view_cover_js(suggestion.s__type, suggestion.s__cover);
+    if(suggestion.s__cover.length){
+        if(validURL(suggestion.s__cover)){
+            background_image = 'style="background-image:url(\''+suggestion.s__cover+'\')"';
+        } else {
+            icon_image = view_cover_js(suggestion.s__type, suggestion.s__cover);
+        }
     }
+
 
     return '<div class="coin_cover coin-'+suggestion.s__type+' col-md-4 col-6 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'">'+suggestion.s__title+'</a></div></div></div>';
 
