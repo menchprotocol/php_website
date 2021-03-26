@@ -1,22 +1,5 @@
 <?php
 
-
-//Analyze Sou
-echo '<table>';
-foreach($this->X_model->fetch(array(
-    'x__type IN (10573,4983,12896)' => null, //SOURCE IDEAS
-    'LENGTH(x__message) > 0' => null, //SOURCE IDEAS
-    'x__up > ' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-), array('x__up'), 0) as $count => $e){
-    $this->X_model->update($e['x__id'], array(
-        'x__message' => null,
-    ));
-    echo '<tr><td>'.$e['x__type'].'</td><td>'.$e['x__message'].'</td><td>'.(substr_count($e['x__message'], '@') > 1 ? '2++' : '').'</td></tr>';
-}
-echo '</table>';
-echo $count.' Total';
-
-
 $icon_keyword = null;
 
 if(isset($_GET['search_for'])){
