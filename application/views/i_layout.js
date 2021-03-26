@@ -15,6 +15,8 @@ $(document).ready(function () {
     //Load search for mass update function:
     load_editor();
 
+    e_load_search(4983);
+
     $('.editor_preview.editor_preview_4231').click(function (e) {
 
         if(!click_has_class($(e.target), '.ignore-click')){
