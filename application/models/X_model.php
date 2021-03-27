@@ -933,6 +933,7 @@ class X_model extends CI_Model
                     $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.'<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].$tooltip_underdot.'">' . $es[0]['e__title'] . '</span></span>'.$e_dropdown.' ', $output_body_message).$e_appendix;
                 }
             } else {
+                $e_dropdown = 'hii';
                 $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.'<span class="text__6197_'.$es[0]['e__id'].$tooltip_underdot.'">' . $es[0]['e__title'] . '</span></span>'.$e_dropdown, $output_body_message).$e_appendix;
             }
 
