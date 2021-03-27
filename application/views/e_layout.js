@@ -42,14 +42,14 @@ $(document).ready(function () {
 
 
 
-function x_reset_all(){
+function e_reset_discoveries(){
     //Confirm First:
     var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE discovery history. This action cannot be undone and you will lose all your discovery coins.");
     if (r == true) {
-        $('.x_reset_all').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">REMOVING ALL...</b>');
+        $('.e_reset_discoveries').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">REMOVING ALL...</b>');
 
         //Redirect:
-        window.location = '/x/x_clear_coins';
+        window.location = '/x/e_reset_discoveries';
     } else {
         return false;
     }

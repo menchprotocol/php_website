@@ -1618,6 +1618,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item x_sort css__title">'.$anchor.'</a>'; //SORT
                 } elseif($e__id==6155 && $control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'">'.$anchor.'</a>'; //UNLINK
+                } elseif($e__id==26001 && superpower_active(12701, true)){
+                    //Reset discoveries
+                    $action_buttons .= '<a href="javascript:void(0);" onclick="i_reset_discoveries('.$i['i__id'].')" class="dropdown-item css__title i_reset_discoveries">'.$anchor.'</a>';
                 }
             }
 
@@ -1770,7 +1773,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<table class="coin_coins"><tr>';
         $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.view_coins_i(12274,  $i).'</div></td>';
         $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: left;"><div>'.view_coins_i(6255,  $i).'</div></td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: left;"><div class="i_reset_discoveries">'.view_coins_i(6255,  $i).'</div></td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
 
@@ -1928,7 +1931,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
             } elseif($e__id==6415 && $member_e['e__id']==$e['e__id']){
 
                 //Reset my discoveries
-                $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_all()" class="dropdown-item css__title">'.$anchor.'</a>';
+                $action_buttons .= '<a href="javascript:void(0);" onclick="e_reset_discoveries()" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif(substr($m['m__message'], 0, 1)=='/') {
 

@@ -1313,17 +1313,16 @@ class X extends CI_Controller
 
 
 
-    function x_clear_coins($u_id = 0){
-
+    function e_reset_discoveries($e__id = 0){
 
         $member_e = superpower_unlocked(null, true);
-        $u_id = ( $u_id > 0 ? $u_id : $member_e['e__id'] );
+        $e__id = ( $e__id > 0 ? $e__id : $member_e['e__id'] );
 
         //Fetch their current progress transactions:
         $progress_x = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
-            'x__source' => $u_id,
+            'x__source' => $e__id,
         ), array(), 0);
 
         if(count($progress_x) > 0){
@@ -1335,7 +1334,7 @@ class X extends CI_Controller
             $clear_all_x = $this->X_model->create(array(
                 'x__message' => $message,
                 'x__type' => 6415,
-                'x__source' => $u_id,
+                'x__source' => $e__id,
             ));
 
             //Delete all progressions:
@@ -1343,7 +1342,7 @@ class X extends CI_Controller
                 $this->X_model->update($progress_x['x__id'], array(
                     'x__status' => 6173, //Transaction Removed
                     'x__reference' => $clear_all_x['x__id'], //To indicate when it was deleted
-                ), $u_id, 6415 /* Reset All discoveries */);
+                ), $e__id, 6415 /* Reset All discoveries */);
             }
 
         } else {
@@ -1355,6 +1354,62 @@ class X extends CI_Controller
 
         //Show basic UI for now:
         return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+
+    }
+
+
+    function i_reset_discoveries(){
+
+        $member_e = superpower_unlocked(12701);
+
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(12701),
+            ));
+        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Starting Idea',
+            ));
+        }
+
+        //Fetch their current progress transactions:
+        $progress_x = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
+            'x__left' => $_POST['i__id'],
+        ), array(), 0);
+
+        if(!count($progress_x)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Nothing found to be removed',
+            ));
+        }
+
+        $message = 'Removed all '.count($progress_x).' discoveries';
+
+        //Log transaction:
+        $clear_all_x = $this->X_model->create(array(
+            'x__type' => 26001,
+            'x__source' => $member_e['e__id'],
+            'x__left' => $_POST['i__id'],
+            'x__message' => $message,
+        ));
+
+        //Delete all progressions:
+        foreach($progress_x as $progress_x){
+            $this->X_model->update($progress_x['x__id'], array(
+                'x__status' => 6173, //Transaction Removed
+                'x__reference' => $clear_all_x['x__id'], //To indicate when it was deleted
+            ), $e__id, 26001 /* Reset All discoveries */);
+        }
+
+        return view_json(array(
+            'status' => 1,
+            'message' => $message,
+        ));
 
     }
 
