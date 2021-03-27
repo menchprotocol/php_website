@@ -902,7 +902,7 @@ class X_model extends CI_Model
 
 
             //Add Dropdown frame IF any:
-            $e_dropdown = null;
+            $e_dropdown = '';
             if(count($e_links)){
                 if(count($e_links)==1){
 
@@ -917,7 +917,6 @@ class X_model extends CI_Model
                     }
                     $e_dropdown .= '</div></div>';
                 }
-
             }
 
             if($es[0]['e__id']==14874){
