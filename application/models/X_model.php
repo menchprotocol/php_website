@@ -819,7 +819,7 @@ class X_model extends CI_Model
             $e_media_count = 0;
             $e_count = 0;
             $e_appendix = null;
-            $e_dropdown = null;
+            $e_links = array();
             $first_segment = $this->uri->segment(1);
             $is_current_e = ( $first_segment == '@'.$referenced_e );
             $tooltip_info = null;
@@ -858,7 +858,7 @@ class X_model extends CI_Model
 
                     } elseif($e_profile['x__type'] == 4256 /* URL */) {
 
-                        $e_dropdown .= '<a href="'.$e_profile['x__message'].'" target="_blank" class="dropdown-item move_away css__title ignore-click"><span class="icon-block">'.view_cover(12274,$e_profile['e__cover']).'</span>'.$e_profile['e__title'].'</a>';
+                        array_push($e_links, $e_profile);
 
                     } else {
 
@@ -881,7 +881,7 @@ class X_model extends CI_Model
 
             if(!$is_discovery_mode && source_of_e($es[0]['e__id'])){
                 $tooltip_class .= ' class="inline-block ignore-click trigger_coincover_edit" coin__type="12274" coin__id="' . $es[0]['e__id'] . '" ';
-                $edit_btn = '<span class="ignore-click icon-block-img mini_6197_'.$es[0]['e__id'].'">'.view_cover(12274,$es[0]['e__cover']).'</span> ';
+                $edit_btn = '<span class="icon-block-img mini_6197_'.$es[0]['e__id'].' ignore-click">'.view_cover(12274,$es[0]['e__cover']).'</span> ';
             } else {
                 $tooltip_class .= ' class="inline-block" ';
                 $edit_btn = '<span class="icon-block-img mini_6197_'.$es[0]['e__id'].'">'.view_cover(12274,$es[0]['e__cover']).'</span> ';
@@ -902,8 +902,21 @@ class X_model extends CI_Model
 
 
             //Add Dropdown frame IF any:
-            if($e_dropdown){
-                $e_dropdown = '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn no-left-padding no-right-padding css__title ignore-click" id="externalRef'.$es[0]['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-external-link"></i></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">'.$e_dropdown.'</div></div>';
+            if(count($e_links)){
+                if(count($e_links)==1){
+
+                    //Just show one:
+                    $e_dropdown = '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="dropdown-item move_away css__title ignore-click grey" title="'.$e_links[0]['e__title'].'"><i class="far fa-external-link"></i></a>';
+
+                } else {
+                    //List all:
+                    $e_dropdown = '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn no-left-padding no-right-padding css__title ignore-click grey" id="externalRef'.$es[0]['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-external-link"></i></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
+                    foreach($e_links as $e_link){
+                        $e_dropdown .= '<a href="'.$e_link['x__message'].'" target="_blank" class="dropdown-item move_away css__title ignore-click"><span class="icon-block">'.view_cover(12274,$e_link['e__cover']).'</span>'.$e_link['e__title'].'</a>';
+                    }
+                    $e_dropdown .= '</div></div>';
+                }
+
             }
 
             if($es[0]['e__id']==14874){
