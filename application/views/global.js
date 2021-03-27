@@ -259,7 +259,7 @@ function i_reset_discoveries(i__id){
     }
 
     //Go ahead and delete:
-    $('.i_reset_discoveries').fadeOut();
+    $('.i_reset_discoveries_'+i__id).fadeOut();
     $.post("/x/i_reset_discoveries", {
         i__id:i__id
     }, function (data) {
