@@ -2051,6 +2051,9 @@ i, .btn .show-max {
     position: relative;
     margin:34px 0 89px !important;
 }
+.mini-coin{
+    margin:0 0 89px !important;
+}
 .focus-coin{
     margin:13px 0 144px !important;
 }
@@ -2071,6 +2074,17 @@ i, .btn .show-max {
     border-radius: 5px;
     vertical-align: middle;
     min-height: 68px;
+}
+.mini-coin .cover-content .inner-content {
+    margin: 0;
+    padding: 0;
+    line-height: 110%;
+    font-size: 0.89em;
+    display: block;
+    text-align: center;
+    border-radius: 5px;
+    vertical-align: middle;
+    min-height: 34px;
 }
 .cover-link {
     border:0;
