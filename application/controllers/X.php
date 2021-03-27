@@ -1403,7 +1403,7 @@ class X extends CI_Controller
             $this->X_model->update($progress_x['x__id'], array(
                 'x__status' => 6173, //Transaction Removed
                 'x__reference' => $clear_all_x['x__id'], //To indicate when it was deleted
-            ), $e__id, 26001 /* Reset All discoveries */);
+            ), $member_e['e__id'], 26001 /* Reset All discoveries */);
         }
 
         return view_json(array(
