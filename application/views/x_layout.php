@@ -169,7 +169,7 @@ if($top_i__id){
         }
         $body .= '</div>';
 
-        echo view_headline(26000, count($previous_x), $e___11035[26000], $body, false);
+        echo view_headline(26000, null, $e___11035[26000], $body, false);
 
     }
 }
