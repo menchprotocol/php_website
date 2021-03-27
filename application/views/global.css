@@ -1963,8 +1963,11 @@ i, .btn .show-max {
     overflow-y: auto;
     display: block;
     bottom: -74px;
-    min-height: 25px;
     min-height: 47px;
+}
+.mini-coin .cover-content{
+    bottom: -46px;
+    min-height: 46px;
 }
 .coinType12274 .cover-content{
     min-height: 73px;
@@ -2052,7 +2055,7 @@ i, .btn .show-max {
     margin:34px 0 89px !important;
 }
 .mini-coin{
-    margin:0 0 89px !important;
+    margin:0 0 55px !important;
 }
 .focus-coin{
     margin:13px 0 144px !important;
@@ -2079,7 +2082,7 @@ i, .btn .show-max {
     margin: 0;
     padding: 0;
     line-height: 110%;
-    font-size: 0.89em;
+    font-size: 0.75em;
     display: block;
     text-align: center;
     border-radius: 5px;
