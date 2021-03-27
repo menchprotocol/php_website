@@ -902,15 +902,16 @@ class X_model extends CI_Model
 
 
             //Add Dropdown frame IF any:
+            $e_dropdown = null;
             if(count($e_links)){
                 if(count($e_links)==1){
 
                     //Just show one:
-                    $e_dropdown = '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="dropdown-item move_away css__title ignore-click grey" title="'.$e_links[0]['e__title'].'"><i class="far fa-external-link"></i></a>';
+                    $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="dropdown-item move_away css__title ignore-click grey" title="'.$e_links[0]['e__title'].'"><i class="far fa-external-link"></i></a>';
 
                 } else {
                     //List all:
-                    $e_dropdown = '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn no-left-padding no-right-padding css__title ignore-click grey" id="externalRef'.$es[0]['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-external-link"></i></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
+                    $e_dropdown .= '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn no-left-padding no-right-padding css__title ignore-click grey" id="externalRef'.$es[0]['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-external-link"></i></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
                     foreach($e_links as $e_link){
                         $e_dropdown .= '<a href="'.$e_link['x__message'].'" target="_blank" class="dropdown-item move_away css__title ignore-click"><span class="icon-block">'.view_cover(12274,$e_link['e__cover']).'</span>'.$e_link['e__title'].'</a>';
                     }
