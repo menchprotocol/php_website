@@ -823,6 +823,7 @@ class X_model extends CI_Model
             $first_segment = $this->uri->segment(1);
             $is_current_e = ( $first_segment == '@'.$referenced_e );
             $tooltip_info = null;
+            $e_dropdown = '';
 
 
             //Determine what type of Media this reference has:
@@ -902,7 +903,6 @@ class X_model extends CI_Model
 
 
             //Add Dropdown frame IF any:
-            $e_dropdown = '';
             if(count($e_links)){
                 if(count($e_links)==1){
 
