@@ -1870,8 +1870,6 @@ i, .btn .show-max {
 .list-radio-select .list-group-item.active {
     color:#222222 !important;
 }
-.show-max-active {display: none !important;}
-.active .show-max-active {display: inline-block !important;}
 
 .top-icon{
     vertical-align: top;
