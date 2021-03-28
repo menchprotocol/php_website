@@ -1214,17 +1214,17 @@ class E extends CI_Controller
                 'message' => 'Name must be less than '.view_memory(6404,6197).' characters',
                 'focus_input_field' => 'input_name',
             ));
-        } elseif (strlen($_POST['new_password'])<1) {
+        } elseif (strlen($_POST['password_reset'])<1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing password',
-                'focus_input_field' => 'new_password',
+                'focus_input_field' => 'password_reset',
             ));
-        } elseif (strlen($_POST['new_password']) < view_memory(6404,11066)) {
+        } elseif (strlen($_POST['password_reset']) < view_memory(6404,11066)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'New password must be '.view_memory(6404,11066).' characters or longer',
-                'focus_input_field' => 'new_password',
+                'focus_input_field' => 'password_reset',
             ));
         }
 
@@ -1236,7 +1236,7 @@ class E extends CI_Controller
 
 
         //Add Password:
-        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['new_password'] . $member_result['e']['e__id']));
+        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['password_reset'] . $member_result['e']['e__id']));
         $this->X_model->create(array(
             'x__type' => e_x__type($hash),
             'x__message' => $hash,

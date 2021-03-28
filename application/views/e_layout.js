@@ -12,7 +12,7 @@ var $input = $('.drag-box').find('input[type="file"]'),
 $(document).ready(function () {
 
     //Source Loader:
-    var portfolio_count = parseInt($('#new_11029').attr('current-count'));
+    var portfolio_count = parseInt($('.new-list-11029').attr('current-count'));
     if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m__message'])){
         e_sort_portfolio_load();
     }

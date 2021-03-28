@@ -58,12 +58,11 @@ if(!$source_is_e || $superpower_13422){
     $profile_ui .= '</div>';
 
     if($superpower_13422){
-        $profile_ui = '<div class="'.$trigger_hide.'"><div class="headline-height"><div id="new_11030" class="list-adder">
+        $profile_ui = '<div class="'.$trigger_hide.'"><div class="headline-height"><div class="new-list-11030 list-adder">
                 <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11030input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11030 .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
-                           id="New11030input"
                            maxlength="' . view_memory(6404,6197) . '"
                            placeholder="'.$e___11035[14055]['m__title'].'">
                 </div></div></div></div>' . $profile_ui;
@@ -328,19 +327,18 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         //Input to add new child:
         if($superpower_13422){
 
-            $ui .= '<div class="'.$trigger_hide.'"><div id="new_11029" current-count="'.$counter.'" class="list-adder '.superpower_active(10939).'">
+            $ui .= '<div class="'.$trigger_hide.'"><div current-count="'.$counter.'" class="new-list-11029 list-adder '.superpower_active(10939).'">
                     <div class="input-group border '.$trigger_hide.'">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New11029input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11029 .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
-                               id="New11029input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div></div>';
 
         } else {
 
-            $ui .= '<div id="new_11029" class="hideIfEmpty"></div>';
+            $ui .= '<div class="hideIfEmpty new-list-11029"></div>';
 
         }
 
@@ -375,11 +373,10 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             //Give Option to Add New Idea:
             $ui .= '<div class="new-list-10573 list-group"><div class="list-group-item list-adder">
                 <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-10573 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
-                           id="newIdeaTitle"
                            placeholder="'.$e___11035[14016]['m__title'].'">
                 </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div></div>';
 
@@ -430,11 +427,10 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             //Give Option to Add New Idea:
             $ui .= '<div class="new-list-13550 list-group"><div class="list-group-item list-adder">
                 <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#newIdeaTitle\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-13550 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
-                           id="newIdeaTitle"
                            placeholder="'.$e___11035[14016]['m__title'].'">
                 </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div></div>';
 

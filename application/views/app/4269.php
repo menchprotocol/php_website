@@ -217,12 +217,12 @@ if(superpower_unlocked()) {
                 <!-- New Password -->
                 <div class="margin-top-down">
                     <span class="css__title" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[14027]['m__cover'] ?></span><?= $e___4269[14027]['m__title'] ?></span>
-                    <div class="form-group"><input type="password" id="new_password" class="form-control border white-border"></div>
+                    <div class="form-group"><input type="password" id="password_reset" class="form-control border white-border"></div>
                 </div>
 
 
                 <!-- Signup Buttons -->
-                <div id="new_account_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
+                <div id="account_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                 <span>
                     <a href="javascript:void(0)" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
                     <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__cover'] ?></a>

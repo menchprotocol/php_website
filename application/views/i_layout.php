@@ -68,7 +68,7 @@ $body = '';
 if($show_previous){
     $body .= '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
@@ -153,10 +153,9 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         if($e_of_i && $is_active && !in_array($x__type, $this->config->item('n___12677'))) {
             $ui .= '<div class="list-adder e-only-7551 e-i-' . $x__type . '" x__type="' . $x__type . '">
                 <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new_e_' . $x__type . '\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.e-i-' . $x__type . ' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
-                           id="new_e_' . $x__type . '"                          
                            maxlength="' . view_memory(6404,6197) . '"                          
                            placeholder="' . $e___11035[14055]['m__title'] . '">
                 </div><div class="algolia_pad_search row justify-content-center e-pad-' . $x__type . '">&nbsp;</div></div>';
@@ -244,7 +243,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         if($e_of_i && $is_active){
             $ui .= '<div class="new-list-13542 list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#new-list-13542 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-13542 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
@@ -316,12 +315,11 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         }
         $ui .= '</div>';
 
-        $ui .= '<div id="new_4983" class="list-adder '.superpower_active(10939).'">
+        $ui .= '<div class="new-list-4983 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'#New4983input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-4983 .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
-                               id="New4983input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div>';

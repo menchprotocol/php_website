@@ -241,10 +241,11 @@ function view_s_js_coin(x__type, suggestion, action_id){
         //Mini Coin
         return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
     } else if(x__type==26012){
-        //Add Idea
+        //Link Idea
         return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26012]['m__cover']+'</div><a href="javascript:void(0);" onclick="i_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+' <i class="far fa-external-link"></i></a></div></div></div>';
     } else if(x__type==26013){
-        //Add Source
+        //Link Source
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26013]['m__cover']+'</div><a href="javascript:void(0);" onclick="e_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+' <i class="far fa-external-link"></i></a></div></div></div>';
     }
 
 }
@@ -316,7 +317,7 @@ function i_load_page(x__type, page, load_new_filter) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
-        var append_div = $('#new_'+x__type).html();
+        var append_div = $('.new-list-'+x__type).html();
         //The padding-bottom would delete the scrolling effect on the left side!
         $('#list-in-'+x__type).html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     } else {
@@ -335,7 +336,7 @@ function i_load_page(x__type, page, load_new_filter) {
 
         if (load_new_filter) {
 
-            $('#list-in-'+x__type).html(data + '<div id="new_'+x__type+'" class="list-group-item no-side-padding grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#list-in-'+x__type).html(data + '<div class="new-list-'+x__type+' list-group-item no-side-padding grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
             e_load_search(x__type);
 
@@ -362,7 +363,7 @@ function e_load_page(x__type, page, load_new_filter) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
-        var append_div = $('#new_'+x__type).html();
+        var append_div = $('.new-list-'+x__type).html();
         //The padding-bottom would delete the scrolling effect on the left side!
         $('#list-in-'+x__type).html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     } else {
@@ -382,7 +383,7 @@ function e_load_page(x__type, page, load_new_filter) {
 
         if (load_new_filter) {
 
-            $('#list-in-'+x__type).html(data + '<div id="new_'+x__type+'" class="list-group-item no-side-padding grey-input">' + append_div + '</div>').hide().fadeIn();
+            $('#list-in-'+x__type).html(data + '<div class="new-list-'+x__type+' list-group-item no-side-padding grey-input">' + append_div + '</div>').hide().fadeIn();
             //Reset search engine:
             e_load_search(x__type);
 
@@ -1072,6 +1073,69 @@ function coin__load(coin__type, coin__id){
 
 
 
+
+function i_load_search(x__type) {
+
+    if(!parseInt(js_e___6404[12678]['m__message'])){
+        alert('Search is currently disabled');
+        return false;
+    } else if(!js_n___14685.includes(x__type)){
+        alert('Idea Type not supported to be added');
+        return false;
+    }
+
+
+    $('.new-list-'+x__type+' .add-input').keypress(function (e) {
+
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
+            e.preventDefault();
+            return i_add(x__type, 0);
+        }
+
+    }).keyup(function () {
+
+        //Clear if no input:
+        if(!$(this).val().length){
+            $('.new-list-'+x__type+' .algolia_pad_search').html('');
+        }
+
+    }).autocomplete({hint: false, minLength: 1}, [{
+        source: function (q, cb) {
+
+            $('.new-list-'+x__type+' .algolia_pad_search').html('');
+
+            algolia_index.search(q, {
+
+                filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
+                hitsPerPage:34,
+
+            }, function (error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+
+        },
+        templates: {
+            suggestion: function (suggestion) {
+                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_coin(26012, suggestion, x__type));
+            },
+            header: function (data) {
+                if(data.query && data.query.length){
+                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="coin_cover mini-coin coin-12273 col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12273"></i></div><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="black-background cover-link coinType12273"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
+                }
+            },
+            empty: function (data) {
+                return '';
+            },
+        }
+    }]);
+
+}
+
 function e_load_search(x__type) {
 
     //Search Enabled?
@@ -1085,11 +1149,8 @@ function e_load_search(x__type) {
         return false;
     }
 
-
-    var element_focus = '#new_'+x__type;
-
     //Load Search:
-    $(element_focus + ' .add-input').keypress(function (e) {
+    $('.new-list-'+x__type + ' .add-input').keypress(function (e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
@@ -1099,15 +1160,21 @@ function e_load_search(x__type) {
             return true;
         }
 
-    }).on('autocomplete:selected', function (event, suggestion, dataset) {
+    }).keyup(function () {
 
-        e__add(x__type, suggestion.s__id);
+        //Clear if no input:
+        if(!$(this).val().length){
+            $('.new-list-'+x__type+' .algolia_pad_search').html('');
+        }
 
     }).autocomplete({hint: false, minLength: 1}, [{
         source: function (q, cb) {
+
+            $('.new-list-'+x__type+' .algolia_pad_search').html('');
+
             algolia_index.search(q, {
                 filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
-                hitsPerPage: ( validURL(q) ? 1 : 21 ),
+                hitsPerPage:34,
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -1118,20 +1185,16 @@ function e_load_search(x__type) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return view_s_js_line(suggestion);
+                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_coin(26013, suggestion, x__type));
             },
             header: function (data) {
-                if (!data.isEmpty) {
-                    if(superpower_js_13422){
-                        return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span>' + '<b class="zq12274 css__title">Create "' + data.query + '"</b>' + '</a>';
-                    } else {
-                        return '';
-                    }
+                if(data.query && data.query.length){
+                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="coin_cover mini-coin coin-12274 col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12274"></i></div><a href="javascript:void(0);" onclick="e_add('+x__type+', 0)" class="black-background cover-link coinType12274"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e_add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
                 }
             },
             empty: function (data) {
-                return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span><b class="zq12274">' + data.query + '</b></a>';
-            },
+                return '';
+            }
         }
     }]);
 }
@@ -1185,7 +1248,7 @@ function e__add(x__type, e_existing_id) {
     //if e_existing_id>0 it means we're adding an existing source, in which case e_new_string should be null
     //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
 
-    var input = $('#new_'+x__type+' .add-input');
+    var input = $('.new-list-'+x__type+' .add-input');
     var list_id = 'list-in-'+x__type;
 
     var e_new_string = null;
@@ -1231,70 +1294,6 @@ function e__add(x__type, e_existing_id) {
     });
 }
 
-
-
-function e_load_search(x__type) {
-
-    //Search Enabled?
-    if(!parseInt(js_e___6404[12678]['m__message'])){
-        return false;
-    }
-
-    //Valid Source Creation Type?
-    if(!js_n___14055.includes(x__type)){
-        alert('Invalid Source Creation Type: ' + x__type);
-        return false;
-    }
-
-    var element_focus = '#new_'+x__type;
-
-    //Load Search:
-    $(element_focus + ' .add-input').keypress(function (e) {
-
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            if(superpower_js_13422){
-                e__add(x__type, 0);
-            }
-            return true;
-        }
-
-    }).on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        e__add(x__type, suggestion.s__id);
-
-    }).autocomplete({hint: false, minLength: 1}, [{
-        source: function (q, cb) {
-            algolia_index.search(q, {
-                filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
-                hitsPerPage: ( validURL(q) ? 1 : 21 ),
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                return view_s_js_line(suggestion);
-            },
-            header: function (data) {
-                if (!data.isEmpty) {
-                    if(superpower_js_13422){
-                        return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion">' + '<span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span>' + '<b class="zq12274 css__title">Create "' + data.query + '"</b>' + '</a>';
-                    } else {
-                        return '';
-                    }
-                }
-            },
-            empty: function (data) {
-                return '<a href="javascript:void(0);" onclick="e__add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span><b class="zq12274">' + data.query + '</b></a>';
-            },
-        }
-    }]);
-}
 
 
 
@@ -1615,68 +1614,6 @@ jQuery.fn.extend({
 
 
 
-
-function i_load_search(x__type) {
-
-    if(!parseInt(js_e___6404[12678]['m__message'])){
-        alert('Search is currently disabled');
-        return false;
-    } else if(!js_n___14685.includes(x__type)){
-        alert('Idea Type not supported to be added');
-        return false;
-    }
-
-
-    $('.new-list-'+x__type+' .add-input').keypress(function (e) {
-
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            e.preventDefault();
-            return i_add(x__type, 0);
-        }
-
-    }).keyup(function () {
-
-        //Clear if no input:
-        if(!$(this).val().length){
-            $('.new-list-'+x__type+' .algolia_pad_search').html('');
-        }
-
-    }).autocomplete({hint: false, minLength: 1}, [{
-        source: function (q, cb) {
-
-            $('.new-list-'+x__type+' .algolia_pad_search').html('');
-
-            algolia_index.search(q, {
-
-                filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
-                hitsPerPage:21,
-
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_coin(26012, suggestion, x__type));
-            },
-            header: function (data) {
-                if(data.query && data.query.length){
-                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="coin_cover mini-coin coin-12273 col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12273"></i></div><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="black-background cover-link coinType12273"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
-                }
-            },
-            empty: function (data) {
-                return '';
-            },
-        }
-    }]);
-
-}
 
 function images_modal(x__type){
     x_create({

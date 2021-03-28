@@ -107,13 +107,13 @@ function add_account(){
     //Lock fields:
     account_adding = true;
     $('#add_acount_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
-    $('#input_name, #new_password').prop('disabled', true);
+    $('#input_name, #password_reset').prop('disabled', true);
 
     //Check email and validate:
     $.post("/e/e_signin_create", {
         input_email: $('#input_email').val(),
         input_name: $('#input_name').val(),
-        new_password: $('#new_password').val(),
+        password_reset: $('#password_reset').val(),
         referrer_url: referrer_url,
         sign_i__id: sign_i__id,
     }, function (data) {
@@ -122,7 +122,7 @@ function add_account(){
 
             //Release field lock:
             $('#add_acount_next').html(js_e___11035[14424]['m__cover']);
-            $('#new_account_errors').html('');
+            $('#account_errors').html('');
 
             setTimeout(function () {
                 //Redirect to next read:
@@ -135,7 +135,7 @@ function add_account(){
             //Release field lock:
             account_adding = false;
             $('#add_acount_next').html(go_next_icon);
-            $('#new_password, #input_name').prop('disabled', false);
+            $('#password_reset, #input_name').prop('disabled', false);
 
             //Do we know which field to focus on?
             if(data.focus_input_field.length>0) {
@@ -143,7 +143,7 @@ function add_account(){
             }
 
             //Show errors:
-            $('#new_account_errors').html('<b class="css__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+            $('#account_errors').html('<b class="css__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
         }
 
     });
