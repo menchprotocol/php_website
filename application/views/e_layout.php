@@ -520,7 +520,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         continue;
     }
 
-    echo view_headline($x__type, $counter, $m, $ui, $counter > 0);
+    echo view_headline($x__type, $counter, $m, $ui, in_array($x__type, $this->config->item('n___26005')) && $counter > 0);
 
 }
 
