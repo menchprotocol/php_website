@@ -259,7 +259,7 @@ function e_e_only_search_7551(x__type) {
             templates: {
                 suggestion: function (suggestion) {
                     //If clicked, would trigger the autocomplete:selected above which will trigger the e__add() function
-                    $('.e-i-'+x__type+' .algolia_pad_search').append(view_s_js_coin(26012, suggestion, x__type));
+                    $('.e-i-'+x__type+' .algolia_pad_search').append(view_s_js_coin(7551, suggestion, x__type));
                     return false;
                 },
                 header: function (data) {
