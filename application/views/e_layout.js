@@ -17,7 +17,7 @@ $(document).ready(function () {
         e_sort_portfolio_load();
     }
 
-    set_autosize($('.texttype__lg.text__6197_'+$('#focus__id').val()));
+    set_autosize($('.texttype__lg.text__6197_'+current_id()));
 
     $("#input__6197").keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -117,7 +117,7 @@ function e_sort_save() {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/e/e_sort_save", {e__id: $('#focus__id').val(), new_x__spectrums: new_x__spectrums}, function (data) {
+        $.post("/e/e_sort_save", {e__id: current_id(), new_x__spectrums: new_x__spectrums}, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -134,7 +134,7 @@ function e_sort_reset(){
 
         //Update via call:
         $.post("/e/e_sort_reset", {
-            e__id: $('#focus__id').val()
+            e__id: current_id()
         }, function (data) {
 
             if (!data.status) {
@@ -145,7 +145,7 @@ function e_sort_reset(){
             } else {
 
                 //Refresh page:
-                window.location = '/@' + $('#focus__id').val();
+                window.location = '/@' + current_id();
 
             }
         });

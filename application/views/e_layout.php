@@ -25,6 +25,7 @@ $profiles = $this->X_model->fetch(array(
     //Set global variables:
     var e_focus_filter = -1; //No filter, show all
 </script>
+<input type="hidden" id="focus__type" value="12274" />
 <input type="hidden" id="focus__id" value="<?= $e['e__id'] ?>" />
 <script src="/application/views/e_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 

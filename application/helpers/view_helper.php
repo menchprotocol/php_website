@@ -416,6 +416,7 @@ function view_x($x, $has_x__reference = false)
     $e___4593 = $CI->config->item('e___4593'); //Transaction Type
     $e___4341 = $CI->config->item('e___4341'); //Transaction Table
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
+    $e___14870 = $CI->config->item('e___14870'); //Hosted Domains
     $member_e = superpower_unlocked();
     $superpower_css_12701 = superpower_active(12701); //SUPERPOWER OF DISCOVERY GLASSES
     $add_e = $CI->E_model->fetch(array(
@@ -487,6 +488,7 @@ function view_x($x, $has_x__reference = false)
     }
 
 
+
     //5x Relations:
     if(!$has_x__reference){
 
@@ -524,6 +526,10 @@ function view_x($x, $has_x__reference = false)
             }
         }
     }
+
+
+    //DOMAIN
+    $ui .= '<div class="simple-line"><a href="https://'.$e___14870[$x['x__domain']]['m__message'].'" target="_blank" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___14870[$x['x__domain']]['m__cover']. '</span>' . $e___14870[$x['x__domain']]['m__title'] . '</a></div>';
 
 
     $ui .= '</div>';

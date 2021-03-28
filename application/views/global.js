@@ -239,7 +239,24 @@ function view_s_mini_js(s__type,s__cover,s__title){
     return '<span class="block-icon" title="'+s__title+'">'+ view_cover_js(s__type, s__cover) +'</span>';
 }
 
+function current_type(){
+    return ( $('#focus__type').length ? parseInt($('#focus__type').val()) : 0 );
+}
+function current_id(){
+    return ( $('#focus__id').length ? parseInt($('#focus__id').val()) : 0 );
+}
+
 function toggle_headline(headline_id){
+
+    var x__down = 0;
+    var x__right = 0;
+    var current_type = current_type();
+    if(current_type==12273){
+        x__right = current_id();
+    } else if (current_type==12274){
+        x__down = current_id();
+    }
+
     if($('.headline_title_' + headline_id+' .icon_26008').hasClass('hidden')){
         //Currently open, must now be closed:
         var action_id = 26008; //Close
@@ -257,9 +274,10 @@ function toggle_headline(headline_id){
     //Log Transaction:
     x_create({
         x__source: js_pl_id,
-        x__type: 26006, //Headline Toggle
+        x__type: action_id,
         x__up: headline_id,
-        x__down: action_id,
+        x__down: x__down,
+        x__right: x__right,
     });
 }
 
@@ -298,7 +316,7 @@ function i_load_page(x__type, page, load_new_filter) {
     $.post("/i/i_load_page", {
         x__type: x__type,
         page: page,
-        focus__id: $('#focus__id').val(),
+        focus__id: current_id(),
     }, function (data) {
 
         //Appending to existing content:
@@ -344,7 +362,7 @@ function e_load_page(x__type, page, load_new_filter) {
     $.post("/e/e_load_page", {
         x__type: x__type,
         page: page,
-        focus__id: $('#focus__id').val(),
+        focus__id: current_id(),
         e_focus_filter: e_focus_filter,
     }, function (data) {
 
@@ -1186,7 +1204,7 @@ function e__add(x__type, e_existing_id) {
     $.post("/e/e__add", {
 
         x__type: x__type,
-        focus__id: $('#focus__id').val(),
+        focus__id: current_id(),
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
 
@@ -1639,7 +1657,7 @@ function i_load_search(x__type) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             e.preventDefault();
-            return i_add(x__type, 0, $('#focus__id').val());
+            return i_add(x__type, 0, current_id());
         }
 
     }).on('autocomplete:selected', function (event, suggestion, dataset) {
@@ -1686,7 +1704,7 @@ function images_modal(x__type){
         x__source: js_pl_id,
         x__type: 14576, //MODAL VIEWED
         x__up: 14073,
-        x__right: $('#focus__id').val(),
+        x__right: current_id(),
     });
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
@@ -2059,7 +2077,7 @@ function i_note_update_text(x__id, x__type) {
 
     var modify_data = {
         x__id: parseInt(x__id),
-        i__id: parseInt($('#focus__id').val()),
+        i__id: parseInt(current_id()),
         x__message: $("#ul-nav-" + x__id + " textarea").val(),
     };
 
@@ -2173,7 +2191,7 @@ function i_note_add_file(droppedFiles, uploadType, x__type) {
     }
 
     ajaxData.append('upload_type', uploadType);
-    ajaxData.append('i__id', $('#focus__id').val());
+    ajaxData.append('i__id', current_id());
     ajaxData.append('x__type', x__type);
 
     $.ajax({
@@ -2246,7 +2264,7 @@ function i_note_add_text(x__type) {
     //Update backend:
     $.post("/i/i_note_add_text", {
 
-        i__id: $('#focus__id').val(), //Synonymous
+        i__id: current_id(), //Synonymous
         x__message: $('.input_note_' + x__type).val(),
         x__type: x__type,
 
@@ -2573,7 +2591,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
     $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
     $.post("/x/update_dropdown", {
-        focus__id:$('#focus__id').val(),
+        focus__id:current_id(),
         o__id: o__id,
         element_id: element_id,
         new_e__id: new_e__id,
@@ -2633,7 +2651,7 @@ function i_add(x__type, link_i__id) {
      *
      * Either creates an IDEA transaction between focus__id & link_i__id
      * OR will create a new idea based on input text and then transaction it
-     * to $('#focus__id').val() (In this case link_i__id=0)
+     * to current_id() (In this case link_i__id=0)
      *
      * */
 
@@ -2663,7 +2681,7 @@ function i_add(x__type, link_i__id) {
     //Update backend:
     $.post("/i/i_add", {
         x__type: x__type,
-        focus__id: $('#focus__id').val(),
+        focus__id: current_id(),
         i__title: i__title,
         link_i__id: link_i__id
     }, function (data) {

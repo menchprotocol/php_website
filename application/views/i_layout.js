@@ -110,7 +110,7 @@ function i_note_poweredit_save(x__type){
     $('.save_notes_' + x__type).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
 
     $.post("/i/i_note_poweredit_save", {
-        i__id: $('#focus__id').val(),
+        i__id: current_id(),
         x__type: x__type,
         field_value: $(input_textarea).val().trim()
     }, function (data) {
@@ -192,7 +192,7 @@ function e_add_only_7551(e_existing_id, x__type) {
     //Add via Ajax:
     $.post("/e/e_add_only_7551", {
 
-        i__id: $('#focus__id').val(),
+        i__id: current_id(),
         x__type: x__type,
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
@@ -228,7 +228,7 @@ function e_e_only_search_7551(x__type) {
 
     var element_focus = ".e-i-"+x__type;
 
-    var base_creator_url = '/e/create/'+$('#focus__id').val()+'/?content_title=';
+    var base_creator_url = '/e/create/'+current_id()+'/?content_title=';
 
     $(element_focus + ' .add-input').focus(function() {
         $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');

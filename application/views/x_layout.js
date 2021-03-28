@@ -66,7 +66,7 @@ function go_next(go_next_url){
             x_create({
                 x__source: js_pl_id,
                 x__type: 14604, //START BLOCKED
-                x__left: $('#focus__id').val(),
+                x__left: current_id(),
             });
 
             if(superpower_js_10939){
@@ -145,7 +145,7 @@ function x_upload(droppedFiles, uploadType) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('i__id', $('#focus__id').val());
+        ajaxData.append('i__id', current_id());
         ajaxData.append('top_i__id', $('#top_i__id').val());
 
         $.ajax({
@@ -179,7 +179,7 @@ function x_upload(droppedFiles, uploadType) {
 
 function x_reply(go_next_url){
     $.post("/x/x_reply", {
-        i__id:$('#focus__id').val(),
+        i__id:current_id(),
         top_i__id:$('#top_i__id').val(),
         x_reply:$('#x_reply').val(),
     }, function (data) {
@@ -209,7 +209,7 @@ function x_select(go_next_url){
     //Show Loading:
     $.post("/x/x_select", {
         focus_i__type:focus_i__type,
-        focus__id:$('#focus__id').val(),
+        focus__id:current_id(),
         top_i__id:$('#top_i__id').val(),
         selection_i__id:selection_i__id
     }, function (data) {
