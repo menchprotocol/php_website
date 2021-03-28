@@ -189,7 +189,14 @@ function e_e_only_search_7551(x__type) {
 
     if(parseInt(js_e___6404[12678]['m__message'])){
 
-        $(element_focus + ' .add-input').autocomplete({hint: false, autoselect: false, minLength: 1}, [{
+        $(element_focus + ' .add-input').keyup(function () {
+
+            //Clear if no input:
+            if(!$(this).val().length){
+                $('.new-list-'+x__type+' .algolia_pad_search').html('');
+            }
+
+        }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
 
             source: function (q, cb) {
 
