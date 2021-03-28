@@ -193,7 +193,7 @@ function e_e_only_search_7551(x__type) {
 
             //Clear if no input:
             if(!$(this).val().length){
-                $('.new-list-'+x__type+' .algolia_pad_search').html('');
+                $('.e-i-'+x__type+' .algolia_pad_search').html('');
             }
 
         }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
