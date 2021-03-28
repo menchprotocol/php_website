@@ -73,7 +73,7 @@ if(!$member_e){
         }
 
 
-        echo '<div class="row">'.view_i(14730, $is[0]['i__id'], null, $is[0]).'</div>';
+        echo '<div class="row justify-content-center">'.view_i(14730, $is[0]['i__id'], null, $is[0]).'</div>';
 
 
         //100% COMPLETE
