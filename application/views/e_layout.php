@@ -516,10 +516,9 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         }
     }
 
-    if(!$counter && !$superpower_10939 && !in_array($x__type, $this->config->item('n___14874'))){
+    if(!$counter && in_array($x__type, $this->config->item('n___14874')) && !$superpower_10939){
         continue;
     }
-
 
     echo view_headline($x__type, $counter, $m, $ui, $counter > 0);
 
