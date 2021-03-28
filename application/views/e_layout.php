@@ -65,7 +65,7 @@ if(!$source_is_e || $superpower_13422){
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"
                            placeholder="'.$e___11035[14055]['m__title'].'">
-                </div></div></div></div>' . $profile_ui;
+                </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div></div></div>' . $profile_ui;
     }
 
     echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, ($counter<=2));

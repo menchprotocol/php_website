@@ -158,7 +158,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"                          
                            placeholder="' . $e___11035[14055]['m__title'] . '">
-                </div><div class="algolia_pad_search row justify-content-center e-pad-' . $x__type . '">&nbsp;</div></div>';
+                </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div>';
         }
 
     } elseif($x__type==12273){
