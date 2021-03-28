@@ -1232,9 +1232,15 @@ function view_e_settings($list_id, $is_open){
     //Display account fields ordered with their SOURCE LINKS:
     foreach($CI->config->item('e___'.$list_id) as $acc_e__id => $acc_detail) {
 
-        //Skip if missing superpower:
+        //Skip if domain specific:
         $hosted_domains = array_intersect($CI->config->item('n___14870'), $acc_detail['m__profile']);
         if(count($hosted_domains) && !in_array(get_domain_setting(0), $hosted_domains)){
+            continue;
+        }
+
+        //Skip if missing superpower:
+        $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__profile']);
+        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             continue;
         }
 
