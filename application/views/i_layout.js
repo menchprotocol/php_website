@@ -230,11 +230,7 @@ function e_e_only_search_7551(x__type) {
 
     var base_creator_url = '/e/create/'+current_id()+'/?content_title=';
 
-    $(element_focus + ' .add-input').focus(function() {
-        $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
-    }).focusout(function() {
-        $(element_focus + ' .algolia_pad_search' ).addClass('hidden');
-    }).keypress(function (e) {
+    $(element_focus + ' .add-input').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             return e_add_only_7551(0, x__type);

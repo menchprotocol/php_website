@@ -336,7 +336,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                                id="New11029input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content-center  hidden pad_expand">&nbsp;</div></div></div>';
+                    </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div></div>';
 
         } else {
 
@@ -381,7 +381,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                            maxlength="' . view_memory(6404,4736) . '"
                            id="newIdeaTitle"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content-center  hidden">&nbsp;</div></div></div>';
+                </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div></div>';
 
             $ui .= '<script> $(document).ready(function () { i_load_search(10573); }); </script>';
 
@@ -436,7 +436,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                            maxlength="' . view_memory(6404,4736) . '"
                            id="newIdeaTitle"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content-center  hidden">&nbsp;</div></div></div>';
+                </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div></div>';
 
             $ui .= '<script> $(document).ready(function () { i_load_search(13550); }); </script>';
 

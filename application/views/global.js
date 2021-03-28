@@ -1086,25 +1086,11 @@ function e_load_search(x__type) {
         return false;
     }
 
-    $('#new_'+x__type).focus(function() {
-        $('#new_'+x__type+' .pad_expand').removeClass('hidden');
-    }).focusout(function() {
-        $('#new_'+x__type+' .pad_expand').addClass('hidden');
-    });
-
 
     var element_focus = '#new_'+x__type;
 
     //Load Search:
-    $(element_focus + ' .add-input').focus(function() {
-
-        $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
-
-    }).focusout(function() {
-
-        $(element_focus + ' .algolia_pad_search' ).addClass('hidden');
-
-    }).keypress(function (e) {
+    $(element_focus + ' .add-input').keypress(function (e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
@@ -1261,25 +1247,10 @@ function e_load_search(x__type) {
         return false;
     }
 
-    $('#new_'+x__type).focus(function() {
-        $('#new_'+x__type+' .pad_expand').removeClass('hidden');
-    }).focusout(function() {
-        $('#new_'+x__type+' .pad_expand').addClass('hidden');
-    });
-
-
     var element_focus = '#new_'+x__type;
 
     //Load Search:
-    $(element_focus + ' .add-input').focus(function() {
-
-        $(element_focus + ' .algolia_pad_search' ).removeClass('hidden');
-
-    }).focusout(function() {
-
-        $(element_focus + ' .algolia_pad_search' ).addClass('hidden');
-
-    }).keypress(function (e) {
+    $(element_focus + ' .add-input').keypress(function (e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
@@ -1657,15 +1628,7 @@ function i_load_search(x__type) {
     }
 
 
-    $('.new-list-'+x__type+' .add-input').focus(function() {
-
-        $('.new-list-'+x__type+' .algolia_pad_search').removeClass('hidden').html('');
-
-    }).focusout(function() {
-
-        $('.new-list-'+x__type+' .algolia_pad_search').addClass('hidden');
-
-    }).keypress(function (e) {
+    $('.new-list-'+x__type+' .add-input').keypress(function (e) {
 
         //Clear if no input:
         if(!$(this).val().length){
