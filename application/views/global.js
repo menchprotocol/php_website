@@ -250,7 +250,8 @@ function toggle_headline(headline_id){
 
     var x__down = 0;
     var x__right = 0;
-    var current_type = current_type();
+    var current_type = 0;
+    current_type = current_type();
     if(current_type==12273){
         x__right = current_id();
     } else if (current_type==12274){
