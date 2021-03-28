@@ -210,7 +210,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <tr>
                             <td style="width: 100%;">
                                 <!-- SEARCH -->
-                                <input id="search_cover" type="text" class="form-control text-edit border-dotted no-padding cover_query algolia_search" placeholder="Search or Paste Image URL..." data-lpignore="true" />
+                                <input id="search_cover" type="text" style="padding-left: 0; padding-right: 0;" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search or Paste Image URL..." data-lpignore="true" />
 
                             </td>
                             <td>
