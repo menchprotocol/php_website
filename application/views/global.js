@@ -240,12 +240,12 @@ function view_s_js_coin(x__type, suggestion, action_id){
     if(x__type==26011){
         //Mini Coin
         return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
-    } else if(x__type==14016){
+    } else if(x__type==26012){
         //Add Idea
-        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[14016]['m__cover']+'</div><a href="javascript:void(0);" onclick="i_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
-    } else if(x__type==14055){
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26012]['m__cover']+'</div><a href="javascript:void(0);" onclick="i_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+    } else if(x__type==26013){
         //Add Source
-        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[14055]['m__cover']+'</div><a href="javascript:void(0);" onclick="i_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26013]['m__cover']+'</div><a href="javascript:void(0);" onclick="i_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
     }
 
 }
@@ -759,7 +759,7 @@ $(document).ready(function () {
 
 
     //General ESC cancel
-    $(document).keyup(function (e) {
+    $(document).keyup(function () {
         //Watch for action keys:
         if (e.keyCode === 27) { //ESC
 
@@ -1630,15 +1630,17 @@ function i_load_search(x__type) {
 
     $('.new-list-'+x__type+' .add-input').keypress(function (e) {
 
-        //Clear if no input:
-        if(!$(this).val().length){
-            $('.new-list-'+x__type+' .algolia_pad_search').html('');
-        }
-
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             e.preventDefault();
             return i_add(x__type, 0);
+        }
+
+    }).keyup(function () {
+
+        //Clear if no input:
+        if(!$(this).val().length){
+            $('.new-list-'+x__type+' .algolia_pad_search').html('');
         }
 
     }).autocomplete({hint: false, minLength: 1}, [{
@@ -1662,7 +1664,7 @@ function i_load_search(x__type) {
         },
         templates: {
             suggestion: function (suggestion) {
-                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_coin(14016, suggestion, x__type));
+                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_coin(26012, suggestion, x__type));
             },
             header: function (data) {
                 return false;

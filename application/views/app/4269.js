@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     goto_step(2);
 
-    $(document).keyup(function (e) {
+    $(document).keyup(function () {
         //Watch for action keys:
         if (e.keyCode == 13) {
             if(step_count==2){
