@@ -76,7 +76,6 @@ if(!$member_e){
         //100% COMPLETE
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14730]['m__cover'].'</span>'.$e___14709[14730]['m__title'].'</div>';
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14730]['m__message']).'</div>';
-        echo '<div class="padded">'.view_i(14730, $is[0]['i__id'], null, $is[0]).'</div>';
 
 
 
@@ -84,6 +83,12 @@ if(!$member_e){
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14343]['m__cover'].'</span>'.$e___14709[14343]['m__title'].'</div>';
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14343]['m__message']).'</div>';
 
+
+
+        //Share Feedback:
+        echo '<div class="padded share_feedback"><a href="javascript:void();" onclick="$(\'.share_feedback\').toggleClass(\'hidden\');"><u>Rate & Share Feedback</u></a></div>';
+
+        echo '<div class="share_feedback hidden">';
 
 
         //Rate
@@ -154,9 +159,6 @@ if(!$member_e){
             var new_url = "https://<?= $_SERVER['SERVER_NAME'] ?>/<?= $is[0]['i__id'] ?>";
 
             $(document).ready(function () {
-                addthis.update('share', 'url', new_url);
-                addthis.url = new_url;
-                addthis.toolbox(".addthis_inline_share_toolbox");
 
                 $('.share_url').text(new_url);
 
@@ -175,7 +177,9 @@ if(!$member_e){
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[13024]['m__cover'].'</span>' . $e___14709[13024]['m__title'] . '</div>';
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[13024]['m__message']).'</div>';
         echo '<div class="padded"><a href="javascript:void();" onclick="copy_share()"><span class="share_url"></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
-        echo '<div class="padded"><div class="addthis_inline_share_toolbox"></div></div>'; //AddThis: Customize at www.addthis.com/dashboard
+
+
+        echo '</div>';
 
 
         //SAVE & NEXT

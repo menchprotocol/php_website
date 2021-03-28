@@ -107,8 +107,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     echo '<div class="headline"><span class="icon-block">'.$e___14393[14927]['m__cover'].'</span>'.$e___14393[14927]['m__title'].'</div>';
                     echo '<div class="padded"><a href="javascript:void();" onclick="copyTextToClipboard(\''.$current_link.'\');">'.$current_link.'&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
 
-                    //Add This
-                    echo '<div class="addthis_inline_share_toolbox"></div>'; //Customize at www.addthis.com/dashboard
                     ?>
 
                 </div>
