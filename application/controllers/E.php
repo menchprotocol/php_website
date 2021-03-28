@@ -729,6 +729,19 @@ class E extends CI_Controller
             ));
         }
 
+        //Any suggestions?
+        $icon_suggestions = array();
+        if($_POST['coin__type']==12274 && $member_e['e__id']==$_POST['coin__id']){
+            //Show animal icons:
+            foreach($this->config->item('e___12279') as $e__id => $m) {
+                array_push($icon_suggestions, array(
+                    'cover_preview' => $m['m__cover'],
+                    'cover_apply' => $m['m__cover'],
+                    'new_title' => $m['m__title'],
+                ));
+            }
+        }
+
         if($_POST['coin__type']==12273){
             //IDEA
             $is = $this->I_model->fetch(array(
@@ -739,6 +752,7 @@ class E extends CI_Controller
                     'status' => 1,
                     'coin__title' => $is[0]['i__title'],
                     'coin__cover' => $is[0]['i__cover'],
+                    'icon_suggestions' => $icon_suggestions,
                 ));
             }
         } elseif($_POST['coin__type']==12274){
@@ -751,6 +765,7 @@ class E extends CI_Controller
                     'status' => 1,
                     'coin__title' => $es[0]['e__title'],
                     'coin__cover' => $es[0]['e__cover'],
+                    'icon_suggestions' => $icon_suggestions,
                 ));
             }
         }
