@@ -1666,7 +1666,9 @@ function i_load_search(x__type) {
                 $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_coin(26012, suggestion, x__type));
             },
             header: function (data) {
-                $("#container_search .row").prepend('<div class="coin_cover mini-coin coin-12273 col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12273"></i></div><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="black-background cover-link coinType12273"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
+                if(data.query && data.query.length){
+                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="coin_cover mini-coin coin-12273 col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12273"></i></div><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="black-background cover-link coinType12273"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
+                }
             },
             empty: function (data) {
                 return '';
