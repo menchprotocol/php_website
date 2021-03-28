@@ -54,7 +54,7 @@ function view_i_time($i_stats, $give_right_space = false, $micro_sign = false){
     $ui = '<div class="inline-block '.( $give_right_space ? ' css__title grey ' : ' mini-font ' ).'">';
 
     if(!$micro_sign && $i_stats['i___6170']>0){
-        $ui .= ( $has_any_diff && !$micro_sign ? view_number($i_stats['i___6169']).'<span class="mid-range">-</span>' : '' ).view_number($i_stats['i___6170']).' idea'.view__s($i_stats['i___6170']).'<span class="mid-range">&middot;</span>';
+        $ui .= ( $has_any_diff && !$micro_sign ? number_format($i_stats['i___6169'], 0).'<span class="mid-range">-</span>' : '' ).number_format($i_stats['i___6170'], 0).' idea'.view__s($i_stats['i___6170']).'<span class="mid-range">&middot;</span>';
     }
 
     if($has_micro){
