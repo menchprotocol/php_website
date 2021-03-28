@@ -144,7 +144,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($i_notes);
 
-        $ui .= '<div id="add-e-' .$x__type . '" class="row justify-content-center e-adder" style="margin-bottom:41px;">';
+        $ui .= '<div id="add-e-' .$x__type . '" class="row justify-content-center e-adder">';
         foreach($i_notes as $i_note) {
             $ui .= view_e($x__type, $i_note,  null, $e_of_i && $is_active);
         }
@@ -178,7 +178,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
             $ui .= '<div class="action-middle-btn grey toggle_12589"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m__cover'].'</a></div>';
 
 
-            $ui .= '<div class="toggle_12589 hidden" style="margin-bottom:41px;">';
+            $ui .= '<div class="toggle_12589 hidden">';
             $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[12589]['m__cover'].'</span>'.$e___11035[12589]['m__title'].'</div>';
             $dropdown_options = '';
             $input_options = '';

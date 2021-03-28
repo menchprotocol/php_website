@@ -169,7 +169,7 @@ function i_note_poweredit_save(x__type){
 
 
 
-function e_add_only_7551(e_existing_id, x__type) {
+function e_add_only_7551(x__type, e_existing_id) {
 
 
     //if e_existing_id>0 it means we're adding an existing source, in which case e_new_string should be null
@@ -232,19 +232,19 @@ function e_e_only_search_7551(x__type) {
     $(element_focus + ' .add-input').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return e_add_only_7551(0, x__type);
+            return e_add_only_7551(x__type, 0);
         }
     });
 
+
     if(parseInt(js_e___6404[12678]['m__message'])){
 
-        $(element_focus + ' .add-input').on('autocomplete:selected', function (event, suggestion, dataset) {
-
-            e_add_only_7551(suggestion.s__id, x__type);
-
-        }).autocomplete({hint: false, minLength: 1}, [{
+        $(element_focus + ' .add-input').autocomplete({hint: false, autoselect: false, minLength: 1}, [{
 
             source: function (q, cb) {
+
+                $('.e-i-'+x__type+' .algolia_pad_search').html('');
+
                 algolia_index.search(q, {
                     filters: 's__type=12274',
                     hitsPerPage: 21,
@@ -259,15 +259,14 @@ function e_e_only_search_7551(x__type) {
             templates: {
                 suggestion: function (suggestion) {
                     //If clicked, would trigger the autocomplete:selected above which will trigger the e__add() function
-                    return view_s_js_line(suggestion);
+                    $('.e-i-'+x__type+' .algolia_pad_search').append(view_s_js_coin(26012, suggestion, x__type));
+                    return false;
                 },
                 header: function (data) {
-                    if (!data.isEmpty) {
-                        return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+x__type+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span><b class="zq12274">Create "' + data.query + '"</b></a>';
-                    }
+                    return false;
                 },
                 empty: function (data) {
-                    return '<a href="javascript:void(0);" onclick="e_add_only_7551(0, '+x__type+');" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle add-plus zq12274"></i></span><b class="zq12274">' + data.query + '</b></a>';
+                    return false;
                 },
             }
         }]);

@@ -147,7 +147,7 @@ function load_editor(){
 
             $(this).val('@' + suggestion.s__id + ' ' + suggestion.s__title);
 
-        }).autocomplete({hint: false, minLength: 2}, [{
+        }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
@@ -178,7 +178,7 @@ function load_editor(){
 
             $(this).val('#' + suggestion.s__id + ' ' + suggestion.s__title);
 
-        }).autocomplete({hint: false, minLength: 2}, [{
+        }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
 
             source: function (q, cb) {
                 algolia_index.search(q, {
@@ -246,6 +246,9 @@ function view_s_js_coin(x__type, suggestion, action_id){
     } else if(x__type==26013){
         //Link Source
         return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26013]['m__cover']+'</div><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+' <i class="far fa-external-link"></i></a></div></div></div>';
+    } else if(x__type==7551){
+        //1x Source
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[7551]['m__cover']+'</div><a href="javascript:void(0);" onclick="e_add_only_7551('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+' <i class="far fa-external-link"></i></a></div></div></div>';
     }
 
 }
@@ -791,7 +794,7 @@ $(document).ready(function () {
         var icons_listed = [];
 
         //COVER SEARCH
-        $('.cover_query').autocomplete({hint: false, minLength: 1}, [{
+        $('.cover_query').autocomplete({hint: false, autoselect: false, minLength: 1}, [{
 
             source: function (q, cb) {
 
@@ -1100,7 +1103,7 @@ function i_load_search(x__type) {
             $('.new-list-'+x__type+' .algolia_pad_search').html('');
         }
 
-    }).autocomplete({hint: false, minLength: 1}, [{
+    }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
         source: function (q, cb) {
 
             $('.new-list-'+x__type+' .algolia_pad_search').html('');
@@ -1167,7 +1170,7 @@ function e_load_search(x__type) {
             $('.new-list-'+x__type+' .algolia_pad_search').html('');
         }
 
-    }).autocomplete({hint: false, minLength: 1}, [{
+    }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
         source: function (q, cb) {
 
             $('.new-list-'+x__type+' .algolia_pad_search').html('');
@@ -1952,13 +1955,13 @@ function i_note_e_search(obj) {
         obj.textcomplete([
             {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
-                search: function (query, callback) {
-                    algolia_index.search(query, {
+                search: function (q, callback) {
+                    algolia_index.search(q, {
                         hitsPerPage: 8,
                         filters: 's__type=12274',
                     })
                         .then(function searchSuccess(content) {
-                            if (content.query === query) {
+                            if (content.query === q) {
                                 callback(content.hits);
                             }
                         })
