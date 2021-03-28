@@ -367,10 +367,12 @@ img.no-frame {
     text-decoration: none;
 }
 
+.list-adder .aa-dropdown-menu,
 .fixed-top .aa-dropdown-menu,
 .block_search_results .aa-dropdown-menu{
     display: none !important;
 }
+
 .icons_large .block-icon {
     width:100px !important;
     height:100px !important;
@@ -2452,7 +2454,7 @@ textarea {
     display: none !important;
 }
 .list-adder{
-    padding: 7px 0 !important;
+    padding: 8px 0 !important;
 }
 .icon-adder{
     margin-top: 3px;
