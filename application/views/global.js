@@ -1358,6 +1358,8 @@ function e__add(x__type, e_existing_id) {
 
     }, function (data) {
 
+        e_is_adding = false;
+
         if (data.status) {
 
             //Raw input to make it ready for next URL:
