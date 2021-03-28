@@ -240,14 +240,27 @@ function view_s_mini_js(s__type,s__cover,s__title){
 }
 
 function toggle_headline(headline_id){
-    if($('.headline_title_' + headline_id + ' i').hasClass('fa-chevron-up')){
-        //Must be closed:
-        $('.headline_title_' + headline_id+ ' i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+    if($('.headline_title_' + headline_id+' .icon_26008').hasClass('hidden')){
+        //Currently open, must now be closed:
+        var action_id = 26008; //Close
+         $('.headline_title_' + headline_id+ ' .icon_26008').removeClass('hidden');
+        $('.headline_title_' + headline_id+ ' .icon_26007').addClass('hidden');
         $('.headline_body_' + headline_id).addClass('hidden');
     } else {
-        $('.headline_title_' + headline_id+ ' i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+        //Currently closed, must now be opened:
+        var action_id = 26007; //Open
+        $('.headline_title_' + headline_id+ ' .icon_26007').removeClass('hidden');
+        $('.headline_title_' + headline_id+ ' .icon_26008').addClass('hidden');
         $('.headline_body_' + headline_id).removeClass('hidden');
     }
+
+    //Log Transaction:
+    x_create({
+        x__source: js_pl_id,
+        x__type: 26006, //Headline Toggle
+        x__up: headline_id,
+        x__down: action_id,
+    });
 }
 
 
