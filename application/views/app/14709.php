@@ -117,9 +117,7 @@ if(!$member_e){
         <script>
 
             function go_to_next(){
-                setTimeout(function () {
-                    window.location = '/@'+js_pl_id;
-                }, 1597);
+                window.location = '/@'+js_pl_id;
             }
 
             function save_feedback(){
@@ -128,10 +126,6 @@ if(!$member_e){
                 var update_x__id = <?= count($was_sibmitted) ? $was_sibmitted[0]['x__id'] : 0 ?>;
                 var rating_e__id = parseInt($('input[name="feedback_rating_14712"]:checked').val());
                 var feedback_text = $('#feedback_writing_14720').val().trim();
-
-                //Show Loader:
-                $('.submit_feedback').addClass('hidden');
-                $('.saving_feedback').removeClass('hidden');
 
                 if(update_x__id > 0 || rating_e__id > 0 || feedback_text.length > 0){
 
@@ -189,13 +183,6 @@ if(!$member_e){
         echo '<div class="nav-controller"><div><a class="controller-nav btn btn-lrg btn-6255 go-next top-margin" href="javascript:void();" onclick="save_feedback()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__cover'].'</a></div></div>';
 
 
-        echo '</div>';
-
-
-
-        echo '<div class="saving_feedback hidden top-margin">';
-        echo '<div class="text-center platform-large">'.get_domain('m__cover').'</div>';
-        echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
         echo '</div>';
 
     }
