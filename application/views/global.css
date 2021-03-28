@@ -2021,6 +2021,10 @@ i, .btn .show-max {
     top: 45px;
     right: 45px;
 }
+.mini-coin .coin-cover-right {
+    top: 0;
+    right: 0;
+}
 
 .coin_coins{
     width: 100%;

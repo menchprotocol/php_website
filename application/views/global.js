@@ -1675,7 +1675,7 @@ function i_load_search(x__type) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             e.preventDefault();
-            return i_add(x__type, 0, current_id());
+            return i_add(x__type, 0);
         }
 
     }).autocomplete({hint: false, minLength: 1}, [{
@@ -2673,6 +2673,7 @@ function i_add(x__type, link_i__id) {
         return false;
     }
 
+    alert('add '+x__type+'/'+link_i__id);
     i_is_adding = true;
     var sort_handler = ".coin_cover";
     var sort_list_id = "list-in-" + x__type;
