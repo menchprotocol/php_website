@@ -242,10 +242,9 @@ function view_s_js_coin(x__type, suggestion, action_id){
         return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
     } else if(x__type==26012){
         //Add Idea
-        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26012]['m__cover']+'</div><a href="javascript:void(0);" onclick="i_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26012]['m__cover']+'</div><a href="javascript:void(0);" onclick="i_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+' <i class="far fa-external-link"></i></a></div></div></div>';
     } else if(x__type==26013){
         //Add Source
-        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26013]['m__cover']+'</div><a href="javascript:void(0);" onclick="i_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
     }
 
 }
@@ -1668,7 +1667,7 @@ function i_load_search(x__type) {
             },
             header: function (data) {
                 return false;
-                return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle zq12273 add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
+                return '<div class="coin_cover mini-coin coin-12273 col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12273"></i></div><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="black-background cover-link coinType12273"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>';
             },
             empty: function (data) {
                 return '';
@@ -2639,7 +2638,7 @@ function i_add(x__type, link_i__id) {
     }
 
     //Remove results:
-    $('.new-list-'+x__type+' .algolia_pad_search').html('');
+    //$('.new-list-'+x__type+' .algolia_pad_search').html('');
     i_is_adding = true;
     var sort_handler = ".coin_cover";
     var sort_list_id = "list-in-" + x__type;
