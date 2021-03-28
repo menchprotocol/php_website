@@ -410,10 +410,8 @@ class App extends CI_Controller
 
     function auth0_create($sign_i__id){
 
-        //TODO make this more secure
-
         //New account to be created:
-        $member_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']), urldecode($_GET['image_url']));
+        $member_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email'])); //, urldecode($_GET['image_url'])
         if(!$member_result['status']) {
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
