@@ -759,7 +759,7 @@ $(document).ready(function () {
 
 
     //General ESC cancel
-    $(document).keyup(function () {
+    $(document).keyup(function (e) {
         //Watch for action keys:
         if (e.keyCode === 27) { //ESC
 
