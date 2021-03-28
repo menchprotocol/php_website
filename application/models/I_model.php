@@ -351,7 +351,7 @@ class I_model extends CI_Model
          * (IF $link_i__id>0) OR will create a new idea with outcome $i__title
          * and transaction it to $focus__id (In this case $link_i__id will be 0)
          *
-         * p.s. Inputs have previously been validated via ideas/i_add() function
+         * p.s. Inputs have previously been validated via ideas/i__add() function
          *
          * */
 

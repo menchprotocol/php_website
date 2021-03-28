@@ -239,13 +239,13 @@ function view_s_js_coin(x__type, suggestion, action_id){
     //Return appropriate UI:
     if(x__type==26011){
         //Mini Coin
-        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
     } else if(x__type==26012){
         //Link Idea
-        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26012]['m__cover']+'</div><a href="javascript:void(0);" onclick="i_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+' <i class="far fa-external-link"></i></a></div></div></div>';
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26012]['m__cover']+'</div><a href="javascript:void(0);" onclick="i__add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+' <i class="far fa-external-link"></i></a></div></div></div>';
     } else if(x__type==26013){
         //Link Source
-        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26013]['m__cover']+'</div><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+' <i class="far fa-external-link"></i></a></div></div></div>';
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26013]['m__cover']+'</div><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+' <i class="far fa-external-link"></i></a></div></div></div>';
     }
 
 }
@@ -1090,7 +1090,7 @@ function i_load_search(x__type) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             e.preventDefault();
-            return i_add(x__type, 0);
+            return i__add(x__type, 0);
         }
 
     }).keyup(function () {
@@ -1125,7 +1125,7 @@ function i_load_search(x__type) {
             },
             header: function (data) {
                 if(data.query && data.query.length){
-                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="coin_cover mini-coin coin-12273 col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12273"></i></div><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="black-background cover-link coinType12273"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i_add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
+                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="coin_cover mini-coin coin-12273 coin-id-0 col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12273"></i></div><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="black-background cover-link coinType12273"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
                 }
             },
             empty: function (data) {
@@ -1189,7 +1189,7 @@ function e_load_search(x__type) {
             },
             header: function (data) {
                 if(data.query && data.query.length){
-                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="coin_cover mini-coin coin-12274 col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12274"></i></div><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="black-background cover-link coinType12274"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e_add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
+                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="coin_cover mini-coin coin-12274 coin-id-0 col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12274"></i></div><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="black-background cover-link coinType12274"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e_add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
                 }
             },
             empty: function (data) {
@@ -1241,15 +1241,100 @@ function coin__save(){
 }
 
 
+var i_is_adding = false;
+function i__add(x__type, link_i__id) {
+
+    /*
+     *
+     * Either creates an IDEA transaction between focus__id & link_i__id
+     * OR will create a new idea based on input text and then transaction it
+     * to current_id() (In this case link_i__id=0)
+     *
+     * */
+
+    if(i_is_adding){
+        return false;
+    }
+
+    //Remove results:
+    $('.mini-coin.coin-12273.coin-id-'+link_i__id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
+    i_is_adding = true;
+    var sort_handler = ".coin_cover";
+    var input_field = $('.new-list-'+x__type+' .add-input');
+    var i__title = input_field.val();
+
+
+    //We either need the idea name (to create a new idea) or the link_i__id>0 to create an IDEA transaction:
+    if (!link_i__id && i__title.length < 1) {
+        alert('Missing Idea Title');
+        input_field.focus();
+        return false;
+    }
+
+    //Set processing status:
+    input_field.addClass('dynamic_saving').prop("disabled", true);
+    add_to_list("list-in-" + x__type, sort_handler, '<div id="tempLoader" class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>', js_n___14686.includes(x__type));
+
+
+    //Update backend:
+    $.post("/i/i__add", {
+        x__type: x__type,
+        focus__id: current_id(),
+        i__title: i__title,
+        link_i__id: link_i__id
+    }, function (data) {
+
+        //Delete loader:
+        $("#tempLoader").remove();
+        input_field.removeClass('dynamic_saving').prop("disabled", false).focus();
+        i_is_adding = false;
+
+        if (data.status) {
+
+            if(x__type==13542){
+                //Next Ideas map to ideas so increment counter:
+                i_note_counter(12273, +1);
+            }
+
+            x_sort_load(x__type);
+
+            //Add new
+            add_to_list("list-in-" + x__type, sort_handler, data.new_i_html, js_n___14686.includes(x__type));
+
+            //Lookout for textinput updates
+            x_set_start_text();
+            set_autosize($('.texttype__lg'));
+
+            //Hide Coin:
+            $('.mini-coin.coin-12273.coin-id-'+link_i__id).fadeOut();
+
+        } else {
+            //Show errors:
+            alert(data.message);
+        }
+
+    });
+
+    //Return false to prevent <form> submission:
+    return false;
+
+}
+
+
 
 //Adds OR transactions sources to sources
+var e_is_adding = false;
 function e__add(x__type, e_existing_id) {
+
+    if(e_is_adding){
+        return false;
+    }
 
     //if e_existing_id>0 it means we're adding an existing source, in which case e_new_string should be null
     //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
+    e_is_adding = true;
 
     var input = $('.new-list-'+x__type+' .add-input');
-    var list_id = 'list-in-'+x__type;
 
     var e_new_string = null;
     if (e_existing_id == 0) {
@@ -1277,7 +1362,7 @@ function e__add(x__type, e_existing_id) {
             input.focus();
 
             //Add new object to list:
-            add_to_list(list_id, '.coinface-12274', data.e_new_echo, js_n___14686.includes(x__type));
+            add_to_list('list-in-'+x__type, '.coinface-12274', data.e_new_echo, js_n___14686.includes(x__type));
 
             //Allow inline editing if enabled:
             x_set_start_text();
@@ -2558,81 +2643,3 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
     });
 }
 
-
-
-var i_is_adding = false;
-function i_add(x__type, link_i__id) {
-
-    /*
-     *
-     * Either creates an IDEA transaction between focus__id & link_i__id
-     * OR will create a new idea based on input text and then transaction it
-     * to current_id() (In this case link_i__id=0)
-     *
-     * */
-
-    if(i_is_adding){
-        return false;
-    }
-
-    //Remove results:
-    //$('.new-list-'+x__type+' .algolia_pad_search').html('');
-    i_is_adding = true;
-    var sort_handler = ".coin_cover";
-    var sort_list_id = "list-in-" + x__type;
-    var input_field = $('.new-list-'+x__type+' .add-input');
-    var i__title = input_field.val();
-
-
-    //We either need the idea name (to create a new idea) or the link_i__id>0 to create an IDEA transaction:
-    if (!link_i__id && i__title.length < 1) {
-        alert('Missing Idea Title');
-        input_field.focus();
-        return false;
-    }
-
-    //Set processing status:
-    input_field.addClass('dynamic_saving').prop("disabled", true);
-    add_to_list(sort_list_id, sort_handler, '<div id="tempLoader" class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>', js_n___14686.includes(x__type));
-
-
-    //Update backend:
-    $.post("/i/i_add", {
-        x__type: x__type,
-        focus__id: current_id(),
-        i__title: i__title,
-        link_i__id: link_i__id
-    }, function (data) {
-
-        //Delete loader:
-        $("#tempLoader").remove();
-        input_field.removeClass('dynamic_saving').prop("disabled", false).focus();
-        i_is_adding = false;
-
-        if (data.status) {
-
-            if(x__type==13542){
-                //Next Ideas map to ideas so increment counter:
-                i_note_counter(12273, +1);
-            }
-
-            x_sort_load(x__type);
-
-            //Add new
-            add_to_list(sort_list_id, sort_handler, data.new_i_html, js_n___14686.includes(x__type));
-
-            //Lookout for textinput updates
-            x_set_start_text();
-            set_autosize($('.texttype__lg'));
-
-        } else {
-            //Show errors:
-            alert(data.message);
-        }
-
-    });
-
-    //Return false to prevent <form> submission:
-    return false;
-
-}

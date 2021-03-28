@@ -197,7 +197,7 @@ class I extends CI_Controller {
 
 
 
-    function i_add()
+    function i__add()
     {
 
         /*
