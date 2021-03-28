@@ -239,9 +239,7 @@ function view_s_mini_js(s__type,s__cover,s__title){
     return '<span class="block-icon" title="'+s__title+'">'+ view_cover_js(s__type, s__cover) +'</span>';
 }
 
-function current_type(){
-    return ( $('#focus__type').length ? parseInt($('#focus__type').val()) : 0 );
-}
+
 function current_id(){
     return ( $('#focus__id').length ? parseInt($('#focus__id').val()) : 0 );
 }
@@ -250,8 +248,7 @@ function toggle_headline(headline_id){
 
     var x__down = 0;
     var x__right = 0;
-    var current_type = 0;
-    current_type = current_type();
+    var current_type = ( $('#focus__type').length ? parseInt($('#focus__type').val()) : 0 );
     if(current_type==12273){
         x__right = current_id();
     } else if (current_type==12274){
