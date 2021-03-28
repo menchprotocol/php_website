@@ -1681,6 +1681,8 @@ function i_load_search(x__type) {
     }).autocomplete({hint: false, minLength: 1}, [{
         source: function (q, cb) {
 
+            $('.new-list-'+x__type+' .algolia_pad_search').html('');
+
             algolia_index.search(q, {
 
                 filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
