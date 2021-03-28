@@ -73,7 +73,7 @@ if($show_previous){
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[14016]['m__title'].'">
-                    </div><div class="algolia_pad_search hidden">&nbsp;</div></div>';
+                    </div><div class="algolia_pad_search row justify-content-center  hidden">&nbsp;</div></div>';
 }
 $body .= '<div id="list-in-11019" class="row justify-content-center dominHeight">';
 foreach($previous_is as $previous_i) {
@@ -159,7 +159,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                            id="new_e_' . $x__type . '"                          
                            maxlength="' . view_memory(6404,6197) . '"                          
                            placeholder="' . $e___11035[14055]['m__title'] . '">
-                </div><div class="algolia_pad_search hidden pad_expand e-pad-' . $x__type . '">&nbsp;</div></div>';
+                </div><div class="algolia_pad_search row justify-content-center  hidden pad_expand e-pad-' . $x__type . '">&nbsp;</div></div>';
         }
 
     } elseif($x__type==12273){
@@ -249,7 +249,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                            class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search hidden">&nbsp;</div></div>';
+                </div><div class="algolia_pad_search row justify-content-center  hidden">&nbsp;</div></div>';
         }
 
     } elseif($x__type==6255) {
@@ -324,7 +324,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                                id="New4983input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
-                    </div><div class="algolia_pad_search hidden pad_expand">&nbsp;</div></div>';
+                    </div><div class="algolia_pad_search row justify-content-center  hidden pad_expand">&nbsp;</div></div>';
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
 

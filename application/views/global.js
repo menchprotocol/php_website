@@ -1697,7 +1697,7 @@ function i_load_search(x__type) {
         },
         templates: {
             suggestion: function (suggestion) {
-                return view_s_js_coin(14016, suggestion, x__type);
+                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_coin(14016, suggestion, x__type));
             },
             header: function (data) {
                 return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle zq12273 add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
