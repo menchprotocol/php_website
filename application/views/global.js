@@ -672,6 +672,7 @@ $(document).ready(function () {
 
     //Lookout for textinput updates
     x_set_start_text();
+    set_autosize($('#x__message'));
 
     $('#top_search').keyup(function() {
         if(!$(this).val().length){
@@ -994,7 +995,7 @@ function x_message_load(x__id) {
             $('#modal13571 .modal_x__id').val(x__id);
             $('#modal13571 .save_results').html('');
             $('#x__message').val(data.x__message);
-            set_autosize($('#x__message'));
+            autosize.update($("#x__message"));
             x_type_preview();
             setTimeout(function () {
                 $('#x__message').focus();
