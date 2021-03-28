@@ -2638,7 +2638,8 @@ function i_add(x__type, link_i__id) {
         return false;
     }
 
-    alert('add '+x__type+'/'+link_i__id);
+    //Remove results:
+    $('.new-list-'+x__type+' .algolia_pad_search').html('');
     i_is_adding = true;
     var sort_handler = ".coin_cover";
     var sort_list_id = "list-in-" + x__type;
