@@ -1610,7 +1610,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
-    $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-bottom-right hideIfEmpty">';
+    $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
         //LOCKED
         $action_buttons = null;
 
@@ -1887,7 +1887,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         $ui .= '</div>';
     }
 
-    $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-bottom-right hideIfEmpty">';
+    $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
     //LOCKED
     if($has_any_lock && !$focus_coin) {
 

@@ -381,7 +381,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                            maxlength="' . view_memory(6404,4736) . '"
                            id="newIdeaTitle"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div></div></div>';
+                </div><div class="algolia_pad_search hidden">&nbsp;</div></div></div>';
 
             $ui .= '<script> $(document).ready(function () { i_load_search(10573); }); </script>';
 
@@ -436,7 +436,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                            maxlength="' . view_memory(6404,4736) . '"
                            id="newIdeaTitle"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div></div></div>';
+                </div><div class="algolia_pad_search hidden">&nbsp;</div></div></div>';
 
             $ui .= '<script> $(document).ready(function () { i_load_search(13550); }); </script>';
 

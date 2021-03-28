@@ -291,11 +291,9 @@ img.no-frame {
 }
 
 .algolia_pad_search{
-    height:377px;
-    padding: 13px 3px;
+    min-height:44px;
+    padding: 8px 0;
     text-align: center;
-    color: #999999;
-    font-weight: bold;
 }
 .gateway{
     color:transparent !important;
@@ -2013,11 +2011,11 @@ i, .btn .show-max {
     top: 45px;
     left: 45px;
 }
-.coin-cover-bottom-right{
+.coin-cover-right{
     top: 13px;
     right: 13px;
 }
-.focus-coin .coin-cover-bottom-right {
+.focus-coin .coin-cover-right {
     top: 45px;
     right: 45px;
 }
@@ -2281,7 +2279,7 @@ textarea {
         top: 5px;
         left: 5px;
     }
-    .coin-cover-bottom-right{
+    .coin-cover-right{
         top: 5px;
         right: 5px;
     }
@@ -2290,7 +2288,7 @@ textarea {
         top: 21px;
         left: 21px;
     }
-    .focus-coin .coin-cover-bottom-right{
+    .focus-coin .coin-cover-right{
         top: 21px;
         right: 21px;
     }

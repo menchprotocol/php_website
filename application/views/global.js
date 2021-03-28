@@ -218,7 +218,12 @@ function view_s_js_line(suggestion){
     return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
 }
 
-function view_s_js_coin(suggestion){
+function view_s_js_coin(x__type, suggestion, action_id){
+
+    if(!js_n___26010.includes(x__type)){
+        alert('Missing type in JS UI');
+        return false;
+    }
 
     var background_image = '';
     var icon_image = '';
@@ -231,8 +236,17 @@ function view_s_js_coin(suggestion){
         }
     }
 
-
-    return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+    //Return appropriate UI:
+    if(x__type==26011){
+        //Mini Coin
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+    } else if(x__type==14016){
+        //Add Idea
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[14016]['m__cover']+'</div><a href="javascript:void(0);" onclick="i_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+    } else if(x__type==14055){
+        //Add Source
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' col-md-2 col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[14055]['m__cover']+'</div><a href="javascript:void(0);" onclick="i_add('+action_id+', '+suggestion.s__id+')" class="black-background cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+    }
 
 }
 function view_s_mini_js(s__type,s__cover,s__title){
@@ -893,7 +907,7 @@ $(document).ready(function () {
                 },
                 templates: {
                     suggestion: function (suggestion) {
-                        $("#container_search .row").append(view_s_js_coin(suggestion));
+                        $("#container_search .row").append(view_s_js_coin(26011, suggestion, 0));
                         return false;
                     },
                     empty: function (data) {
@@ -1645,7 +1659,7 @@ function i_load_search(x__type) {
 
     $('.new-list-'+x__type+' .add-input').focus(function() {
 
-        $('.new-list-'+x__type+' .algolia_pad_search').removeClass('hidden');
+        $('.new-list-'+x__type+' .algolia_pad_search').removeClass('hidden').html('Search existing or create new ideas...');
 
     }).focusout(function() {
 
@@ -1653,15 +1667,16 @@ function i_load_search(x__type) {
 
     }).keypress(function (e) {
 
+        //Clear if no input:
+        if(!$(this).val().length){
+            $('.new-list-'+x__type+' .algolia_pad_search').html('Search existing or create new ideas...');
+        }
+
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             e.preventDefault();
             return i_add(x__type, 0, current_id());
         }
-
-    }).on('autocomplete:selected', function (event, suggestion, dataset) {
-
-        i_add(x__type, suggestion.s__id);
 
     }).autocomplete({hint: false, minLength: 1}, [{
         source: function (q, cb) {
@@ -1680,12 +1695,9 @@ function i_load_search(x__type) {
             });
 
         },
-        displayKey: function (suggestion) {
-            return ""
-        },
         templates: {
             suggestion: function (suggestion) {
-                return view_s_js_line(suggestion);
+                return view_s_js_coin(14016, suggestion, x__type);
             },
             header: function (data) {
                 return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle zq12273 add-plus"></i></span><b>Create "' + data.query + '"</b></a>';

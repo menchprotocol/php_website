@@ -73,7 +73,7 @@ if($show_previous){
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[14016]['m__title'].'">
-                    </div></div>';
+                    </div><div class="algolia_pad_search hidden">&nbsp;</div></div>';
 }
 $body .= '<div id="list-in-11019" class="row justify-content-center dominHeight">';
 foreach($previous_is as $previous_i) {
