@@ -1659,7 +1659,7 @@ function i_load_search(x__type) {
 
     $('.new-list-'+x__type+' .add-input').focus(function() {
 
-        $('.new-list-'+x__type+' .algolia_pad_search').removeClass('hidden').html('Search existing or create new ideas...');
+        $('.new-list-'+x__type+' .algolia_pad_search').removeClass('hidden').html('');
 
     }).focusout(function() {
 
@@ -1669,7 +1669,7 @@ function i_load_search(x__type) {
 
         //Clear if no input:
         if(!$(this).val().length){
-            $('.new-list-'+x__type+' .algolia_pad_search').html('Search existing or create new ideas...');
+            $('.new-list-'+x__type+' .algolia_pad_search').html('');
         }
 
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -1700,6 +1700,7 @@ function i_load_search(x__type) {
                 $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_coin(14016, suggestion, x__type));
             },
             header: function (data) {
+                return false;
                 return '<a href="javascript:void(0);" onclick="i_add('+x__type+',0)" class="suggestion css__title"><span class="icon-block"><i class="fas fa-plus-circle zq12273 add-plus"></i></span><b>Create "' + data.query + '"</b></a>';
             },
             empty: function (data) {
