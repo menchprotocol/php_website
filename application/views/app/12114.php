@@ -20,7 +20,7 @@ $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; te
 foreach($this->config->item('e___14874') as $x__type => $m) {
 
     //Calculate Growth Rate:
-    if(substr_count($m['m__cover'], 'zq6266')>0){
+    if(substr_count($m['m__cover'], 'zq6255')>0){
         $icon = '🔴';
     } elseif(substr_count($m['m__cover'], 'zq12273')>0){
         $icon = '🟡';
