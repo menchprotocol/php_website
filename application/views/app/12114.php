@@ -2,6 +2,7 @@
 
 //Calculates the weekly coins issued:
 $e___14874 = $this->config->item('e___14874'); //COINS
+$e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $last_x_days = 7;
 
 $x__time_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
@@ -15,7 +16,7 @@ $html_message = '<br />';
 $html_message .= '<div>In the last '.$last_x_days.' day'.view__s($last_x_days).' we grew:</div>';
 $html_message .= '<br />';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">&nbsp;</b><b style="min-width:66px; display: inline-block;">&nbsp;</b><span style="text-decoration:none;"><span style="min-width:66px; display: inline-block;">New</span>Total</span></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:100px; text-align: left; display: inline-block;">'.$e___11035[14874]['m__title'].'</b><span style="text-decoration:none;"><span style="min-width:66px; display: inline-block;">New</span>Total</span></div>';
 
 foreach($this->config->item('e___14874') as $x__type => $m) {
 
