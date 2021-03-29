@@ -15,7 +15,7 @@ $html_message = '<br />';
 $html_message .= '<div>In the last '.$last_x_days.' day'.view__s($last_x_days).' we grew:</div>';
 $html_message .= '<br />';
 
-$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">&nbsp;</b><b style="min-width:55px; display: inline-block;">&nbsp;</b><span style="text-decoration:none;"><span style="min-width:55px; display: inline-block;">NEW</span>Total</span></div>';
+$html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">&nbsp;</b><b style="min-width:55px; display: inline-block;">&nbsp;</b><span style="text-decoration:none;"><span style="min-width:66px; display: inline-block;">New</span>Total</span></div>';
 
 foreach($this->config->item('e___14874') as $x__type => $m) {
 
@@ -34,7 +34,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.$icon.'</b><b style="min-width:55px; display: inline-block;">'.$growth.'</b><span style="text-decoration:none;"><span style="min-width:55px; display: inline-block;"><b>'.number_format($this_week, 0).'</b></span><b>'.number_format($unique, 0).'</b> '.$m['m__title'].'</span></div>';
+    $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.$icon.'</b><b style="min-width:55px; display: inline-block;">'.$growth.'</b><span style="text-decoration:none;"><b style="min-width:66px; display: inline-block;">'.number_format($this_week, 0).'</b><b style="min-width:66px; display: inline-block;">'.number_format($unique, 0).'</b> '.$m['m__title'].'</span></div>';
 
     //Primary Coin?
     if(in_array($x__type, $this->config->item('n___13776'))){
