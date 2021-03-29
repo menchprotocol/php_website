@@ -27,11 +27,12 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
     }
 
     $unique = count_unique_coins($x__type, null, $x__time_end);
-    $growth = format_percentage(($unique / ( $unique - count_unique_coins($x__type, $x__time_start, $x__time_end) ) * 100) - 100);
+    $this_week = count_unique_coins($x__type, $x__time_start, $x__time_end);
+    $growth = format_percentage(($unique / ( $unique - $this_week ) * 100) - 100);
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.$icon.'</b><b style="min-width:55px; display: inline-block;">'.$growth.'</b><span style="text-decoration:none;">TO <b>'.number_format($unique, 0).'</b> '.$m['m__title'].'</span></div>';
+    $html_message .= '<div style="padding-bottom:10px;"><b style="min-width:34px; text-align: center; display: inline-block;">'.$icon.'</b><b style="min-width:55px; display: inline-block;">'.$growth.'</b><span style="text-decoration:none;">NEW <b>'.number_format($this_week, 0).'</b> TOTAL <b>'.number_format($unique, 0).'</b> '.$m['m__title'].'</span></div>';
 
     //Primary Coin?
     if(in_array($x__type, $this->config->item('n___13776'))){
