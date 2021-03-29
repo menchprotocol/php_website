@@ -102,7 +102,7 @@ foreach($this->I_model->fetch($query_filters) as $in){
                         $end_time = $string_references['ref_time_end'];
                         $this_time = $end_time - $start_time;
                     } else {
-                        $this_time = 90;
+                        $this_time = 15;
                     }
 
                 } elseif($e_profile['x__type'] == 4255 /* TEXT */){
@@ -120,7 +120,7 @@ foreach($this->I_model->fetch($query_filters) as $in){
 
                 } else {
 
-                    $this_time = 15;
+                    $this_time = 5;
 
                 }
 

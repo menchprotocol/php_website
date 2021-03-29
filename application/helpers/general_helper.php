@@ -358,7 +358,7 @@ function current_link(){
 
 function words_to_seconds($text){
     //Average reading speed assumed to be 250 words/minute
-    return ( strlen($text) ? round( (substr_count($text, ' ') + 1) / 250 * 60 , 4 ) : 0 );
+    return ( strlen($text) ? round( (substr_count($text, ' ') + 1) / view_memory(6404,26019) * 60 , 4 ) : 0 );
 }
 
 function is_https_url($url){
