@@ -87,8 +87,13 @@ if(!$member_e){
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14343]['m__message']).'</div>';
 
 
+        //Share
+        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[13024]['m__cover'].'</span>' . $e___14709[13024]['m__title'] . '</div>';
+        echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[13024]['m__message']).'</div>';
+        echo '<div class="padded"><a href="javascript:void();" onclick="copy_share()"><span class="share_url"></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
 
-        //Share Feedback:
+
+        //Rate & Feedback:
         echo '<div class="padded share_feedback"><a href="javascript:void();" onclick="$(\'.share_feedback\').toggleClass(\'hidden\');"><u>Rate, Feedback & Share</u></a></div>';
 
         echo '<div class="share_feedback hidden">';
@@ -169,13 +174,6 @@ if(!$member_e){
 
         </script>
         <?php
-
-        //Share
-        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[13024]['m__cover'].'</span>' . $e___14709[13024]['m__title'] . '</div>';
-        echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[13024]['m__message']).'</div>';
-        echo '<div class="padded"><a href="javascript:void();" onclick="copy_share()"><span class="share_url"></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
-
-
         echo '</div>';
 
 
