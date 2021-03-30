@@ -1564,17 +1564,19 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12700 = superpower_active(12700, true);
     $superpower_12673 = superpower_active(12673, true);
+    $is_completed = ($completion_rate['completion_percentage']>=100);
+    $is_started = ($completion_rate['completion_percentage']>0);
     $previous_is_lock = ($previous_i && in_array($previous_i['i__type'], $CI->config->item('n___14488')));
     $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($previous_is_lock && $discovery_mode);
     $has_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
-    $has_soft_lock = $locking_enabled && ($has_hard_lock || ($completion_rate['completion_percentage']<100 && $previous_is_lock) || (in_array($x__type, $CI->config->item('n___14377')) && !$completion_rate['completion_percentage']));
+    $has_soft_lock = $locking_enabled && ($has_hard_lock || (!$is_completed && $previous_is_lock) || (in_array($x__type, $CI->config->item('n___14377')) && !$is_started));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603')) && $control_enabled;
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i);
     $has_any_lock = $has_soft_lock || $has_hard_lock;
     $lock_notice = (  $previous_is_lock ? 14488 : 14377 );
 
-    if(in_array($x__type, $CI->config->item('n___14454')) && $completion_rate['completion_percentage']<100){
+    if(in_array($x__type, $CI->config->item('n___14454')) && !$is_completed){
         $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
     } elseif(strlen($e___13369[$x__type]['m__message'])){
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
@@ -1653,7 +1655,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Coin Cover
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $completion_rate['completion_percentage']>=100 ? ' coinType6255 ' : ' coinType12273 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12273,$i['i__cover']) : '').'</div>';
@@ -1690,7 +1692,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         //Editable title:
         $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $editing_enabled, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
     } elseif($can_click){
-        $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
+        $ui .= '<a href="'.$href.'">'.$i_title.( $is_completed ? ' [Completed]' : '' ).'</a>';
     } else {
         $ui .= $i_title;
     }
@@ -1701,7 +1703,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $view_i_time = view_i_time($i_stats);
     $ui .= '<div class="cover-text"><span class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</span></div>';
 
-    if($load_completion && $completion_rate['completion_percentage']>0 && $completion_rate['completion_percentage']<100){
+    if($load_completion && $is_started && !$is_completed){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
 
