@@ -36,16 +36,29 @@ if(!$member_e){
     //Fetch their discoveries:
     if($completion_rate['completion_percentage'] < 100){
 
-        $error_message = 'Idea not yet completed. Redirecting now...';
-        $this->X_model->create(array(
-            'x__source' => $member_e['e__id'],
-            'x__type' => 4246, //Platform Bug Reports
-            'x__up' => 14709,
-            'x__left' => $is[0]['i__id'],
-            'x__message' => $error_message,
-        ));
-        echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'.$error_message.'</div>';
-        js_redirect('/'.$is[0]['i__id'], 2584);
+        //Go to the top and find the next idea:
+        $next_i__id = $this->X_model->find_next($member_e['e__id'], $is[0]['i__id'], $is[0]);
+        if($next_i__id > 0){
+
+            js_redirect('/'.$is[0]['i__id'].'/'.$next_i__id, 0);
+
+        } else {
+
+            //This should not happen
+            $error_message = 'Idea not yet completed. Redirecting now...';
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => 4246, //Platform Bug Reports
+                'x__up' => 14709,
+                'x__left' => $is[0]['i__id'],
+                'x__message' => $error_message,
+            ));
+
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'.$error_message.'</div>';
+            js_redirect('/'.$is[0]['i__id'], 2584);
+
+        }
+
 
     } else {
 
@@ -58,11 +71,7 @@ if(!$member_e){
         ), array());
 
 
-
-
         //Allow to submit now:
-
-
 
 
         echo '<div class="submit_feedback">';
@@ -79,7 +88,6 @@ if(!$member_e){
         //100% COMPLETE
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14730]['m__cover'].'</span>'.$e___14709[14730]['m__title'].'</div>';
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14730]['m__message']).'</div>';
-
 
 
         //Continious Updates
