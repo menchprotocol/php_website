@@ -1023,9 +1023,16 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e){
     $ui .= '<div class="doclear">&nbsp;</div>';
 
     $ui .= '<div class="row justify-content-center">';
+    $is_first_incomplete = false;
+    $found_first_incomplete = false;
     foreach($has_next as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
-        $ui .= view_i($x__type, $top_i__id, $i, $next_i, $in_my_x, null, $member_e, $completion_rate);
+        if(!$found_first_incomplete && $completion_rate['completion_percentage'] < 100){
+            $is_first_incomplete = true;
+            $found_first_incomplete = true;
+        }
+        $ui .= view_i($x__type, $top_i__id, $i, $next_i, $in_my_x, null, $member_e, $completion_rate, null, $is_first_incomplete);
+        $is_first_incomplete = false; //False afterwards
     }
     $ui .= '</div>';
     $ui .= '<div class="doclear">&nbsp;</div>';
@@ -1523,7 +1530,7 @@ function view_i_select($i, $x__source, $previously_selected){
 }
 
 
-function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabled = false, $message_input = null, $focus_e = false, $completion_rate = null, $extra_class = null){
+function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabled = false, $message_input = null, $focus_e = false, $completion_rate = null, $extra_class = null, $is_first_incomplete = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1569,7 +1576,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $previous_is_lock = ($previous_i && in_array($previous_i['i__type'], $CI->config->item('n___14488')));
     $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($previous_is_lock && $discovery_mode);
     $has_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
-    $has_soft_lock = $locking_enabled && ($has_hard_lock || (!$is_completed && $previous_is_lock) || (in_array($x__type, $CI->config->item('n___14377')) && !$is_started));
+    $has_soft_lock = $locking_enabled && ($has_hard_lock || (!$is_completed && !$is_first_incomplete && $previous_is_lock) || (in_array($x__type, $CI->config->item('n___14377')) && !$is_started));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603')) && $control_enabled;
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i);
@@ -1693,7 +1700,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         //Editable title:
         $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $editing_enabled, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
     } elseif($can_click){
-        $ui .= '<a href="'.$href.'">'.$i_title.( $is_completed ? '<span class="icon-block"><i class="fas fa-check-circle zq6255"></i></span>' : '' ).'</a>';
+        $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
         $ui .= $i_title;
     }
