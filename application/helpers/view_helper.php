@@ -1692,7 +1692,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         //Editable title:
         $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $editing_enabled, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
     } elseif($can_click){
-        $ui .= '<a href="'.$href.'">'.$i_title.( $is_completed ? ' [Completed]' : '' ).'</a>';
+        $ui .= '<a href="'.$href.'">'.$i_title.( $is_completed ? '<span class="icon-block"><i class="fas fa-check-circle zq6255"></i></span>' : '' ).'</a>';
     } else {
         $ui .= $i_title;
     }
