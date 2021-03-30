@@ -1573,10 +1573,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $superpower_12673 = superpower_active(12673, true);
     $is_completed = ($completion_rate['completion_percentage']>=100);
     $is_started = ($completion_rate['completion_percentage']>0);
+    $start_to_unlock = in_array($x__type, $CI->config->item('n___14377'));
     $previous_is_lock = ($previous_i && in_array($previous_i['i__type'], $CI->config->item('n___14488')));
     $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($previous_is_lock && $discovery_mode);
     $has_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
-    $has_soft_lock = $locking_enabled && ($has_hard_lock || (!$is_completed && !$is_first_incomplete && $previous_is_lock) || (in_array($x__type, $CI->config->item('n___14377')) && !$is_started));
+    $has_soft_lock = $locking_enabled && !$is_completed && ($has_hard_lock || (!$is_first_incomplete && ($previous_is_lock || ($start_to_unlock && !$is_started))));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603')) && $control_enabled;
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i);
