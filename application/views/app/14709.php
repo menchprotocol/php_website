@@ -102,7 +102,7 @@ if(!$member_e){
 
 
         //Rate & Feedback:
-        echo '<div class="padded share_feedback"><a href="javascript:void();" onclick="$(\'.share_feedback\').toggleClass(\'hidden\');"><u>Rate, Feedback & Share</u></a></div>';
+        echo '<div class="padded share_feedback"><a href="javascript:void();" onclick="$(\'.share_feedback\').toggleClass(\'hidden\');"><u>Rate & Review</u></a></div>';
 
         echo '<div class="share_feedback hidden">';
 
