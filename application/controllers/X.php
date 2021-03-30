@@ -423,16 +423,7 @@ class X extends CI_Controller
 
         } else {
 
-            //Has this been completed before?
-            $been_completed = count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 14730, //COMPLETED 100%
-                'x__source' => $member_e['e__id'],
-                'x__right' => $top_i__id,
-            )));
-
-
-            //Mark as Complete (maybe again):
+            //Mark as Complete
             $this->X_model->create(array(
                 'x__source' => $member_e['e__id'],
                 'x__type' => 14730, //COMPLETED 100%
@@ -440,24 +431,9 @@ class X extends CI_Controller
                 //TODO Maybe log additional details like total ideas, time, etc...
             ));
 
+            //Go to Rating App since it's first completion:
+            return redirect_message('/-14709?i__id='.$top_i__id);
 
-            //Decide where to redirect:
-            if(!$been_completed){
-
-                //Go to Rating App since it's first completion:
-                return redirect_message('/-14709?i__id='.$top_i__id);
-
-            } else {
-
-                //They had already completed this before, so skip feedback & take them to home page:
-                $top_is = $this->I_model->fetch(array(
-                    'i__id' => $top_i__id,
-                ));
-
-                //Home Page:
-                return redirect_message('/@'.$member_e['e__id'], '<div class="msg alert" role="alert"><div><span class="icon-block"><i class="fas fa-check-circle"></i></span>You discovered all ideas for '.$top_is[0]['i__title'].' & will be notified of future updates.</div></div>');
-
-            }
         }
     }
 
