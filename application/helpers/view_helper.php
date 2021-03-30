@@ -1634,7 +1634,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'">'.$anchor.'</a>'; //UNLINK
                 } elseif($e__id==26001 && superpower_active(12701, true)){
                     //Reset discoveries
-                    $action_buttons .= '<a href="javascript:void(0);" onclick="i_reset_discoveries('.$i['i__id'].')" class="dropdown-item css__title i_reset_discoveries_'.$i['i__id'].'">'.$anchor.'</a>';
+                    //TODO Maybe consider activating later, but dangerous and may not be necessary...
+                    //$action_buttons .= '<a href="javascript:void(0);" onclick="i_reset_discoveries('.$i['i__id'].')" class="dropdown-item css__title i_reset_discoveries_'.$i['i__id'].'">'.$anchor.'</a>';
                 }
             }
 
