@@ -11,6 +11,7 @@ $control_enabled = $source_is_e || $superpower_10939;
 $show_max_14435 = view_memory(6404,14435);
 $show_max_14538 = view_memory(6404,14538);
 $limit = view_memory(6404,11064);
+$found_10573 = false;
 
 $profiles = $this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -353,6 +354,9 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($i_stars);
 
+        $found_10573 = ( $counter > 0);
+
+
         //Any Ideas?
         if($counter || $source_is_e){
 
@@ -513,11 +517,12 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         }
     }
 
-    if(!$counter && in_array($x__type, $this->config->item('n___14874')) && !$superpower_10939){
+    $is_token = in_array($x__type, $this->config->item('n___14874'));
+    if(!$counter && $is_token && !$superpower_10939){
         continue;
     }
 
-    echo view_headline($x__type, $counter, $m, $ui, in_array($x__type, $this->config->item('n___26005')) && $counter > 0);
+    echo view_headline($x__type, $counter, $m, $ui, in_array($x__type, $this->config->item('n___26005')) && $counter > 0 && !($found_10573 && $is_token));
 
 }
 
