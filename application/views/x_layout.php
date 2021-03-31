@@ -451,7 +451,7 @@ $headline_ui = view_i_note_list(12419, true, $i_focus, $comments, true, true);
 
 echo '<div class="view-discussions hidden">';
 echo '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
-echo view_headline(12419, count($comments), $e___11035[12419], $headline_ui, true, true);
+echo view_headline(12419, count($comments), $e___11035[12419], $headline_ui, true, false);
 echo '</div>';
 
 
