@@ -270,7 +270,7 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 
     if($editable_discovery && isset($x['e__id'])){
         //Show member:
-        $ui .= view_e(14672, $x);
+        $ui .= view_e_line($x);
     }
 
     //Type & Delivery Method:
@@ -1830,6 +1830,33 @@ function view_x_progress($completion_rate, $i){
 
 }
 
+function view_e_line($e)
+{
+
+
+    $CI =& get_instance();
+    $member_e = superpower_unlocked();
+    $has_valid_url = filter_var($i['i__cover'], FILTER_VALIDATE_URL);
+    $href = '/@'.$e['e__id'];
+
+    $ui  = '<div class="coinface-12274 edge-coin col-md-2 col-3 coin_cover no-padding coin-12274 coin___12274_'.$e['e__id'].'">';
+    $ui .= '<div class="cover-wrapper">';
+    $ui .= '<a href="'.$href.'" class="coinType12274 black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= '<div class="cover-btn">'.( !$has_valid_url && $e['e__cover'] ? view_cover(12274,$e['e__cover']) : '' ).'</div>';
+    $ui .= '</a>';
+    $ui .= '</div>';
+    $ui .= '</div>';
+
+    $ui  = '<div class="col-md-10 col-9">';
+    $ui .= '<div class="css__title"><a href="'.$href.'" class="css__title">'.$e['e__title'].'</a><span class="grey" style="padding-left: 5px;">' . view_time_difference(strtotime($e['x__time'])) . '</span></div>';
+    $ui .= '</div>';
+
+    return $ui;
+
+}
+
+
+
 function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 {
 
@@ -1997,7 +2024,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $cointype = 'coinType12274';
     if ($discovery_mode) { // || substr_count($e['e__cover'], 'fas fa-circle zq6255')
         $cointype = 'coinType6255';
-    //} elseif (substr_count($e['e__cover'], 'fas fa-circle zq12273')) {
+        //} elseif (substr_count($e['e__cover'], 'fas fa-circle zq12273')) {
         //$cointype = 'coinType12273'; //Hack to make a source like an idea only for the source idea!
     }
 

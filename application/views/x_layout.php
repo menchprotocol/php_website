@@ -21,7 +21,7 @@ $is_next = $this->X_model->fetch(array(
 
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
-$x_completes = ($top_i__id ? $this->X_model->fetch(array(
+$x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
     'x__source' => $x__source,
