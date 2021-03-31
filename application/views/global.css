@@ -2093,29 +2093,27 @@ i, .btn .show-max {
     vertical-align: middle;
     min-height: 34px;
 }
-.cover-link {
-    border:0;
-    width: 100%;
-    position: relative;
-    padding-top: 150%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    display: block;
-    border-radius: 10px;
-    margin-bottom: 6px;
-    overflow: hidden;
-}
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
     padding: 0 0 5px;
 }
 .cover-link {
-    padding-top: 100%;
+    border:0;
+    width: 100%;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: block;
+    overflow: hidden;
+    padding-top: 98%;
     border-radius: 50%;
     margin-bottom: 0px;
     margin-top: 0px;
+}
+.minix-coin .cover-link{
+    padding-top: 94%;
 }
 .emptycoin{
     min-height: 40px;
@@ -2423,6 +2421,9 @@ textarea {
     .cover-btn{
         font-size: 8em;
         top: 42%;
+    }
+    .minix-coin .cover-btn{
+        top: 34%;
     }
     .focus-coin .cover-btn{
         font-size: 10em;
