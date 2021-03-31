@@ -1623,6 +1623,7 @@ i, .btn .show-max {
 
 .controller-nav{
     font-size: 2.6em;
+    position: relative;
 }
 
 /* FUNCTIONAL */
@@ -2113,7 +2114,7 @@ i, .btn .show-max {
     margin-top: 0px;
 }
 .minix-coin .cover-link{
-    padding-top: 94%;
+    padding-top: 91%;
 }
 .emptycoin{
     min-height: 40px;
@@ -2547,7 +2548,7 @@ textarea {
     display: inline-block;
     width: 35px;
     margin-left: -38px !important;
-    top: 28px;
+    top: 21px;
     position: absolute;
     text-align: center;
 }
