@@ -1836,7 +1836,7 @@ function view_e_line($e)
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();
-    $has_valid_url = filter_var($i['i__cover'], FILTER_VALIDATE_URL);
+    $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $href = '/@'.$e['e__id'];
 
     $ui  = '<div class="coinface-12274 edge-coin col-md-2 col-3 coin_cover no-padding coin-12274 coin___12274_'.$e['e__id'].'">';
