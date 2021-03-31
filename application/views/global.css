@@ -2058,6 +2058,9 @@ i, .btn .show-max {
 .mini-coin{
     margin:0 0 55px !important;
 }
+.minix-coin{
+    margin:0 !important;
+}
 .focus-coin{
     margin:13px 0 144px !important;
 }
@@ -2191,6 +2194,9 @@ i, .btn .show-max {
 }
 .mini-coin .cover-btn{
     font-size: 5em;
+}
+.minix-coin .cover-btn{
+    font-size: 2em;
 }
 .focus-coin .cover-btn {
     font-size: 16em;
@@ -2417,9 +2423,6 @@ textarea {
     .cover-btn{
         font-size: 8em;
         top: 42%;
-    }
-    .mini-coin .cover-btn{
-        font-size: 5em;
     }
     .focus-coin .cover-btn{
         font-size: 10em;

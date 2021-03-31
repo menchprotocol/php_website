@@ -1840,7 +1840,7 @@ function view_e_line($e)
     $href = '/@'.$e['e__id'];
 
     $ui = '<div class="row">';
-    $ui .= '<div class="coinface-12274 mini-coin edge-coin col-md-1 col-2 no-padding coin-12274 coin___12274_'.$e['e__id'].'">';
+    $ui .= '<div class="coinface-12274 minix-coin edge-coin col-md-1 col-2 no-padding coin-12274 coin___12274_'.$e['e__id'].'">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<a href="'.$href.'" class="coinType12274 black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
     $ui .= '<div class="cover-btn">'.( !$has_valid_url && $e['e__cover'] ? view_cover(12274,$e['e__cover']) : '' ).'</div>';
