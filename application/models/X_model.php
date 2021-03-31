@@ -1107,7 +1107,7 @@ class X_model extends CI_Model
         if(!count($this->X_model->fetch(array(
                 'x__source' => $e__id,
                 'x__left' => $i__id,
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
 
@@ -1137,7 +1137,7 @@ class X_model extends CI_Model
             //Move other ideas down in the read List:
             foreach($this->X_model->fetch(array(
                 'x__id !=' => $home['x__id'], //Not the newly added idea
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__source' => $e__id, //Belongs to this Member
             ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $current_i){
@@ -1961,7 +1961,7 @@ class X_model extends CI_Model
             return count($this->X_model->fetch(array(
                 'x__left' => $i__id,
                 'x__source' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
@@ -1971,7 +1971,7 @@ class X_model extends CI_Model
             if($e__id > 0){
                 foreach($this->X_model->fetch(array(
                     'x__source' => $e__id,
-                    'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+                    'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )) as $u_in){
                     array_push($u_x_ids, intval($u_in['x__left']));

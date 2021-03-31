@@ -339,7 +339,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
         $u_x = $this->X_model->fetch(array(
             'x__left' => $i_focus['i__id'],
-            'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+            'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__source'), 0, 0, array(), 'COUNT(x__id) as totals');
         $counter = $u_x[0]['totals'];
@@ -348,7 +348,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
             $ui .= '<div class="row justify-content-center">';
             foreach($this->X_model->fetch(array(
                 'x__left' => $i_focus['i__id'],
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array('x__source')) as $u){
                 $ui .= view_e(12969, $u);

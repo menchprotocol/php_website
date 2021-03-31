@@ -514,6 +514,7 @@ class X extends CI_Controller
          * */
 
         //Fetch data:
+        $member_e = superpower_unlocked();
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
         ));
@@ -522,6 +523,9 @@ class X extends CI_Controller
             $top_is = $this->I_model->fetch(array(
                 'i__id' => $top_i__id,
             ));
+        } elseif(!$top_i__id && $member_e && $this->X_model->ids($member_e['e__id'], $i__id)) {
+            //Already in their discoveries, redirect:
+            return redirect_message('/'.$i__id.'/'.$i__id);
         }
 
         //Make sure we found it:
@@ -565,7 +569,6 @@ class X extends CI_Controller
         */
 
 
-        $member_e = superpower_unlocked();
 
         if($member_e) {
             //VIEW DISCOVERY

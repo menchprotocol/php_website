@@ -11,7 +11,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
     $u_x = $this->X_model->fetch(array(
         'x__source' => $_GET['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //MY DISCOVERIES
+        'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     ), array('x__left'), 0, 0, array('x__spectrum' => 'ASC'));
