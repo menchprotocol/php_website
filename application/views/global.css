@@ -2422,9 +2422,6 @@ textarea {
         font-size: 8em;
         top: 42%;
     }
-    .minix-coin .cover-btn{
-        top: 34%;
-    }
     .focus-coin .cover-btn{
         font-size: 10em;
         top: 46%;
@@ -2432,7 +2429,9 @@ textarea {
 
 }
 
-
+.minix-coin .cover-btn{
+    top: 34%;
+}
 
 .texttransparent{
     color:transparent !important;

@@ -1849,7 +1849,7 @@ function view_e_line($e)
     $ui .= '</div>';
 
     $ui .= '<div class="col-md-11 col-10">';
-    $ui .= '<div><a href="'.$href.'" class="css__title">'.$e['e__title'].'</a><span class="grey" style="padding-left: 5px;">' . view_time_difference(strtotime($e['x__time'])) . '</span></div>';
+    $ui .= '<div style="margin-top: 15px;"><a href="'.$href.'" class="css__title">'.$e['e__title'].'</a><span class="grey" style="padding-left: 5px;">' . view_time_difference(strtotime($e['x__time'])) . '</span></div>';
     $ui .= '</div>';
     $ui .= '</div>';
 
