@@ -11,7 +11,7 @@ $superpower_10939 = $member_e && superpower_active(10939, true);
 $current_coin_id = current_coin_id();
 $base_source = get_domain_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
-$logo = ( !strlen($first_segment) || $first_segment=='@'.$base_source ? '/img/logos/'.$base_source.'.svg' : '/img/'.$current_coin_id.'.png' );
+$logo = '/img/'.$current_coin_id.'.png';
 ?><!doctype html>
 <html lang="en" >
 <head>
