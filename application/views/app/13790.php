@@ -57,21 +57,21 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 
-    echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 480  ).'px;">';
+    if(!isset($_GET['csv'])){
+        echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 480  ).'px;">';
 
-    echo '<tr style="font-weight:bold;">';
-    echo '<td style="width:200px;">MEMBER</td>';
-    echo '<td style="width:50px;">DONE</td>';
-    foreach($column_sources as $e){
-        echo '<td style="width:200px;"><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a></td>';
+        echo '<tr style="font-weight:bold;">';
+        echo '<td style="width:200px;">MEMBER</td>';
+        echo '<td style="width:50px;">DONE</td>';
+        foreach($column_sources as $e){
+            echo '<td style="width:200px;"><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a></td>';
+        }
+        foreach($column_ideas as $i){
+            echo '<td style="width:200px;"><a href="/i/i_go/'.$i['i__id'].'">'.$i['i__title'].'</a></td>';
+        }
+        echo '<td style="width:200px;">STARTED</td>';
+        echo '</tr>';
     }
-    foreach($column_ideas as $i){
-        echo '<td style="width:200px;"><a href="/i/i_go/'.$i['i__id'].'">'.$i['i__title'].'</a></td>';
-    }
-    echo '<td style="width:200px;">STARTED</td>';
-    echo '</tr>';
-
-
 
 
 
@@ -86,8 +86,15 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         //Member
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
-        echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
-        echo '<td>'.$completion_rate['completion_percentage'].'%</td>';
+
+        if(!isset($_GET['csv'])){
+            echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
+            echo '<td>'.$completion_rate['completion_percentage'].'%</td>';
+        } else {
+            echo '<a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'."\t".$completion_rate['completion_percentage'].'%'."\t";
+        }
+
+
 
         //SOURCES
         foreach($column_sources as $e){
@@ -97,7 +104,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up' => $e['e__id'],
             ));
-            echo '<td>'.( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '' ).'</td>';
+            if(!isset($_GET['csv'])){
+                echo '<td>'.( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '' ).'</td>';
+            } else {
+                echo ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '' )."\t";
+            }
         }
 
         //IDEAS
@@ -108,13 +119,25 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
-            echo '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').'</td>';
+            if(!isset($_GET['csv'])){
+                echo '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').'</td>';
+            } else {
+                echo ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '')."\t";
+            }
         }
 
-        echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
-        echo '</tr>';
+        if(!isset($_GET['csv'])){
+            echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
+            echo '</tr>';
+        } else {
+            echo date("Y-m-d H:i:s", strtotime($x['x__time']));
+        }
+
 
     }
-    echo '</table>';
+
+    if(!isset($_GET['csv'])){
+        echo '</table>';
+    }
 
 }
