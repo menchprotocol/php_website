@@ -82,7 +82,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         'x__left' => $_GET['i__id'],
     ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $count => $x){
 
-        echo '<tr>';
+        if(!isset($_GET['csv'])){
+            echo '<tr>';
+        }
 
         //Member
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
@@ -91,7 +93,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
             echo '<td>'.$completion_rate['completion_percentage'].'%</td>';
         } else {
-            echo '<a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'.",".$completion_rate['completion_percentage'].'%'.",";
+            echo $x['e__title'].",".$completion_rate['completion_percentage'].'%'.",";
         }
 
 
