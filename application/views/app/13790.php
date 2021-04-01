@@ -91,7 +91,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
             echo '<td>'.$completion_rate['completion_percentage'].'%</td>';
         } else {
-            echo '<a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'."\t".$completion_rate['completion_percentage'].'%'."\t";
+            echo '<a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'.",".$completion_rate['completion_percentage'].'%'.",";
         }
 
 
@@ -107,7 +107,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             if(!isset($_GET['csv'])){
                 echo '<td>'.( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '' ).'</td>';
             } else {
-                echo ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '' )."\t";
+                echo ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '' ).",";
             }
         }
 
@@ -122,7 +122,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             if(!isset($_GET['csv'])){
                 echo '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').'</td>';
             } else {
-                echo ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '')."\t";
+                echo ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').",";
             }
         }
 
