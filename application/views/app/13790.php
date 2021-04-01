@@ -130,7 +130,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
             echo '</tr>';
         } else {
-            echo date("Y-m-d H:i:s", strtotime($x['x__time']));
+            echo date("Y-m-d H:i:s", strtotime($x['x__time']))."\n";
         }
 
 
