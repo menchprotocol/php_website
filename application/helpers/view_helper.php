@@ -1968,7 +1968,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden">'.$anchor.'</a>';
 
-            } elseif($e__id==13571 && $supports_messages && $superpower_13422 && $x__id > 0){
+            } elseif($e__id==13571 && $supports_messages && $superpower_13422){
 
                 //Edit Message
                 array_push($list_buttons , $e__id);

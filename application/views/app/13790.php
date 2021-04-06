@@ -15,7 +15,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                         
                         <br />
                         <span class="input-group-addon addon-lean addon-grey" style="color:#222222; font-weight: 300;">Sources of </span>
-                        <input style="padding-left:3px; min-width:56px;" type="number" name="e_sources_id" value="'.( isset($_GET['e_sources_id']) ? $_GET['e_sources_id'] : '' ).'" class="form-control">
+                        <input style="padding-left:3px; min-width:56px;" type="number" name="e__id" value="'.( isset($_GET['e__id']) ? $_GET['e__id'] : '' ).'" class="form-control">
 
                     </div>
                 </div>
@@ -36,7 +36,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
     $column_sources = $this->X_model->fetch(array(
-        'x__up IN (' . join(',', ( isset($_GET['e_sources_id']) && strlen($_GET['e_sources_id']) ? array($_GET['e_sources_id'], 13861) : array(13861)) ) . ')' => null, //PUBLIC
+        'x__up IN (' . join(',', ( isset($_GET['e__id']) && strlen($_GET['e__id']) ? array($_GET['e__id'], 13861) : array(13861)) ) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
