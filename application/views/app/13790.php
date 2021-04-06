@@ -112,6 +112,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         //SOURCES
         foreach($column_sources as $e){
+
             $fetch_data = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__down' => $x['e__id'],
@@ -119,7 +120,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => $e['e__id'],
             ));
 
-            $message_clean = view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']);
+            if(count($fetch_data)){
+                $message_clean = view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']);
+            }
 
             if(!isset($_GET['csv'])){
                 echo '<td>'.( count($fetch_data) ? ( $message_clean ? $message_clean : '✅' ) : '' ).'</td>';
