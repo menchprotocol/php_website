@@ -993,49 +993,51 @@ function view_i_marks($i_x){
 }
 
 
-function view_i_list($x__type, $top_i__id, $in_my_x, $i, $has_next, $member_e){
+function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e, $is_open = false){
 
     //If no list just return the next step:
-    if(!count($has_next)){
+    if(!count($next_is)){
         return false;
     }
 
     $CI =& get_instance();
 
-    //List children so they know what's ahead:
-    $ui = '';
-    $ui .= '<div>';
-    $ui .= '<div class="pull-left">';
-
-    //Show idea type?
-    if(in_array($x__type, $CI->config->item('n___14945'))){
-        //IDEA TYPE
-        $e___4737 = $CI->config->item('e___4737'); //IDEA TYPE
-        $ui .= '<div class="headline"><span class="icon-block">'.$e___4737[$i['i__type']]['m__cover'].'</span>'.$e___4737[$i['i__type']]['m__title'].':</div>';
-    } else {
-        //LIST TYPE
-        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-        $edit_button = ( $x__type==13980 ? '<a class="btn btn-6255" style="margin-left:13px;" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a>' : null );
-        $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__cover'].'</span>'.$e___11035[$x__type]['m__title'].':'.$edit_button.'</div>';
-    }
-    $ui .= '</div>';
-    $ui .= '</div>';
-    $ui .= '<div class="doclear">&nbsp;</div>';
-
-    $ui .= '<div class="row justify-content-center">';
+    //Build Body UI:
+    $body = '<div class="row justify-content-center">';
     $is_first_incomplete = false;
     $found_first_incomplete = false;
-    foreach($has_next as $key => $next_i){
+    foreach($next_is as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
         if(!$found_first_incomplete && $completion_rate['completion_percentage'] < 100){
             $is_first_incomplete = true;
             $found_first_incomplete = true;
         }
-        $ui .= view_i($x__type, $top_i__id, $i, $next_i, $in_my_x, null, $member_e, $completion_rate, null, $is_first_incomplete);
+        $body .= view_i($x__type, $top_i__id, $i, $next_i, $in_my_x, null, $member_e, $completion_rate, null, $is_first_incomplete);
         $is_first_incomplete = false; //False afterwards
     }
-    $ui .= '</div>';
-    $ui .= '<div class="doclear">&nbsp;</div>';
+    $body .= '</div>';
+
+
+    $ui = '';
+
+    //Show idea type?
+    if(in_array($x__type, $CI->config->item('n___14945'))){
+
+        //IDEA TYPE
+        $e___4737 = $CI->config->item('e___4737'); //IDEA TYPE
+        $ui .= view_headline(26104, count($next_is), $e___4737[$i['i__type']], $body, $is_open);
+
+    } else {
+
+        //LIST TYPE
+        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+        $edit_button = ( $x__type==13980 ? '<a class="btn btn-6255" style="margin-left:13px;" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a>' : null );
+        $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__cover'].'</span>'.$e___11035[$x__type]['m__title'].':'.$edit_button.'</div>';
+        $ui .= $body;
+
+    }
+
+
 
     return $ui;
 

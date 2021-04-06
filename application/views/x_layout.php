@@ -254,7 +254,6 @@ if($top_i__id) {
         //List Children if any:
         echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
 
-
     } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
 
         //SELECT ANSWER
@@ -561,10 +560,7 @@ if($top_i__id) {
 } else {
 
     //NEXT IDEAS
-    $preview_ideas = view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
-    echo view_headline(26104, count($is_next), $e___11035[11019], $preview_ideas, false);
-
-
+    echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e, true);
 
 }
 
