@@ -120,14 +120,12 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => $e['e__id'],
             ));
 
-            if(count($fetch_data)){
-                $message_clean = view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']);
-            }
+            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '✅' ) : '' );
 
             if(!isset($_GET['csv'])){
-                echo '<td>'.( count($fetch_data) ? ( $message_clean ? $message_clean : '✅' ) : '' ).'</td>';
+                echo '<td>'.$message_clean.'</td>';
             } else {
-                echo ( count($fetch_data) ? ( $message_clean ? $message_clean : '✅' ) : '' ).",";
+                echo $message_clean.",";
             }
         }
 
