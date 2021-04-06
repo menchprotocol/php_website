@@ -343,7 +343,7 @@ function x_detect_type($string)
             'x__type' => 26090,
         );
 
-    } elseif (substr($string, 0, 4)=='$CAD ' && is_numeric(substr($string, 4))) {
+    } elseif (substr($string, 0, 5)=='$CAD ' && is_numeric(substr($string, 5))) {
 
         //CAD:
         return array(
@@ -351,7 +351,7 @@ function x_detect_type($string)
             'x__type' => 26092,
         );
 
-    } elseif (substr($string, 0, 3)=='$US ' && is_numeric(substr($string, 3))) {
+    } elseif (substr($string, 0, 4)=='$US ' && is_numeric(substr($string, 4))) {
 
         //USD:
         return array(
