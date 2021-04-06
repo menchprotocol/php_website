@@ -123,7 +123,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '✅' ) : '' );
 
             if(!isset($_GET['csv'])){
-                echo '<td title="'.$fetch_data[0]['x__type'].'">'.$message_clean.'</td>';
+                echo '<td>'.$message_clean.'</td>';
             } else {
                 echo $message_clean.",";
             }
