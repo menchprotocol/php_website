@@ -1082,8 +1082,11 @@ class E_model extends CI_Model
 
             } elseif ($action_e__id == 5001 && substr_count($x['x__message'], $action_command1) > 0) { //Replace Transaction Matching String
 
+                $new_message = str_replace($action_command1, $action_command2, $x['x__message']);
+
                 $this->X_model->update($x['x__id'], array(
-                    'x__message' => str_replace($action_command1, $action_command2, $x['x__message']),
+                    'x__message' => $new_message,
+                    'x__type' => e_x__type($new_message),
                 ), $x__source, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                 $applied_success++;
@@ -1092,6 +1095,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => $action_command1,
+                    'x__type' => e_x__type($action_command1),
                 ), $x__source, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                 $applied_success++;
