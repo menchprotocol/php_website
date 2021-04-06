@@ -306,7 +306,6 @@ function x_detect_type($string)
     } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
 
         //It's a URL, see what type (this could fail if duplicate, etc...):
-        $CI =& get_instance();
         return $CI->E_model->url($string);
 
     } elseif (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//' && !$has_space) {
@@ -331,6 +330,33 @@ function x_detect_type($string)
         return array(
             'status' => 1,
             'x__type' => 7657,
+        );
+
+    } elseif (substr($string, 0, 1)=='@' && is_numeric(substr($string, 1)) && count($CI->E_model->fetch(array(
+            'e__id' => substr($string, 1),
+            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        )))) {
+
+        //Source:
+        return array(
+            'status' => 1,
+            'x__type' => 26090,
+        );
+
+    } elseif (substr($string, 0, 4)=='CAD$' && is_numeric(substr($string, 4))) {
+
+        //CAD:
+        return array(
+            'status' => 1,
+            'x__type' => 26092,
+        );
+
+    } elseif (substr($string, 0, 3)=='US$' && is_numeric(substr($string, 3))) {
+
+        //USD:
+        return array(
+            'status' => 1,
+            'x__type' => 26091,
         );
 
     } elseif (!$has_space) {
