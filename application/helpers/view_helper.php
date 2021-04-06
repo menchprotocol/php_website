@@ -106,6 +106,14 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
         return view_url_embed($x__message, $full_message);
 
+    } elseif ($x__type == 26092 /* CAD */) {
+
+        return str_replace('$CAD ','$',$x__message);
+
+    } elseif ($x__type == 26091 /* USD */) {
+
+        return str_replace('$US ','$',$x__message);
+
     } elseif ($x__type == 4260 /* Image URL */) {
 
         return '<img '.( $has_discovery_mode ? ' src="' . $x__message . '" class="content-image" ' : ' data-src="' . $x__message . '" src="https://s3foundation.s3-us-west-2.amazonaws.com/f9ad9c2e7c18abd949a0119d621bf00f.gif" class="content-image lazyimage" ' ).' alt="IMAGE" />';
@@ -1870,7 +1878,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         //Not a valid Source List
         return 'Invalid x__type '.$x__type;
     }
-
 
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION

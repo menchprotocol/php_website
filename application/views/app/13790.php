@@ -118,10 +118,13 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up' => $e['e__id'],
             ));
+
+            $message_clean = view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']);
+
             if(!isset($_GET['csv'])){
-                echo '<td>'.( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '' ).'</td>';
+                echo '<td>'.( count($fetch_data) ? ( $message_clean ? $message_clean : '✅' ) : '' ).'</td>';
             } else {
-                echo ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) > 0 ? $fetch_data[0]['x__message'] : '✅' ) : '' ).",";
+                echo ( count($fetch_data) ? ( $message_clean ? $message_clean : '✅' ) : '' ).",";
             }
         }
 
