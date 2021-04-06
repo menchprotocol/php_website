@@ -1088,6 +1088,14 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
+            } elseif ($action_e__id == 26093) { //Replace Transaction Matching String
+
+                $this->X_model->update($x['x__id'], array(
+                    'x__message' => $action_command1,
+                ), $x__source, 10657 /* SOURCE LINK CONTENT UPDATE  */);
+
+                $applied_success++;
+
             } elseif ($action_e__id == 5003 && ($action_command1=='*' || $x['e__type']==$action_command1) && in_array($action_command2, $this->config->item('n___6177'))) {
 
                 //Being deleted? Remove as well if that's the case:

@@ -907,15 +907,17 @@ class X_model extends CI_Model
                 if(count($e_links)==1){
 
                     //Just show one:
-                    $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click grey icon-block-xs" style="font-size:0.89em;" title="'.$e_links[0]['e__title'].'"><i class="far fa-external-link"></i></a>';
+                    $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click icon-block-xs" style="font-size:0.89em;" title="'.$e_links[0]['e__title'].'"><i class="far fa-external-link"></i></a>';
 
                 } else {
-                    //List all:
+
+                    //List all links:
                     $e_dropdown .= '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn no-left-padding no-right-padding css__title ignore-click grey" id="externalRef'.$es[0]['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-external-link"></i></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
                     foreach($e_links as $e_link){
                         $e_dropdown .= '<a href="'.$e_link['x__message'].'" target="_blank" class="dropdown-item move_away css__title ignore-click"><span class="icon-block">'.view_cover(12274,$e_link['e__cover']).'</span>'.$e_link['e__title'].'</a>';
                     }
                     $e_dropdown .= '</div></div>';
+
                 }
             }
 
@@ -925,12 +927,16 @@ class X_model extends CI_Model
             }
 
 
+
             //Display:
             if($on_its_own_line){
+
+                $the_title = '<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].$tooltip_underdot.'">' . $es[0]['e__title'] . '</span>';
+
                 if($new_lines <= 1){
-                    $output_body_message = $e_appendix.str_replace($identifier_string, '<span '.$tooltip_class.'><span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].$tooltip_underdot.'">' . $es[0]['e__title'] . '</span></span>'.$e_dropdown.' ', $output_body_message); //'.$edit_btn.'
+                    $output_body_message = $e_appendix.str_replace($identifier_string, '<span '.$tooltip_class.'>'.$the_title.'</span>'.$e_dropdown.' ', $output_body_message); //'.$edit_btn.'
                 } else {
-                    $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.'<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].$tooltip_underdot.'">' . $es[0]['e__title'] . '</span></span>'.$e_dropdown.' ', $output_body_message).$e_appendix;
+                    $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.$the_title.'</span>'.$e_dropdown.' ', $output_body_message).$e_appendix;
                 }
             } else {
                 $output_body_message = str_replace($identifier_string, '<span '.$tooltip_class.'>'.$edit_btn.'<span class="text__6197_'.$es[0]['e__id'].$tooltip_underdot.'">' . $es[0]['e__title'] . '</span></span>'.$e_dropdown, $output_body_message).$e_appendix;
