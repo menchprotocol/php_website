@@ -1025,7 +1025,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e, $i
 
         //IDEA TYPE
         $e___4737 = $CI->config->item('e___4737'); //IDEA TYPE
-        $ui .= view_headline(26104, count($next_is), $e___4737[$i['i__type']], $body, $is_open);
+        $ui .= view_headline(26104, count($next_is), $e___11035[26104], $body, $is_open); //$e___4737[$i['i__type']]
 
     } else {
 
