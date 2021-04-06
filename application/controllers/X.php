@@ -1004,15 +1004,8 @@ class X extends CI_Controller
 
             $this->X_model->update($_POST['x__id'], array(
                 'x__message' => $x__message,
+                'x__type' => $x__message_type,
             ), $member_e['e__id'], 10657 /* SOURCE LINK CONTENT UPDATE */);
-
-
-            //Also, did the transaction type change based on the content change?
-            if($x__message_type!=$e_x[0]['x__type']){
-                $this->X_model->update($_POST['x__id'], array(
-                    'x__type' => $x__message_type,
-                ), $member_e['e__id'], 10659 /* Member Transaction updated Type */);
-            }
 
         }
 
