@@ -320,7 +320,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                 if(!isset($count_totals[$e_link['x__type']])){
                     $count_totals[$e_link['x__type']] = 0;
                 }
-                $count_totals[$e_link['x__type']] += preg_replace("/[0-9.]/i", '', $e_link['x__message']);
+                $count_totals[$e_link['x__type']] += preg_replace("/[^0-9.]/", '', $e_link['x__message']);
             }
 
             $ui .= view_e(11029, $e_link, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_link['x__source']))));
