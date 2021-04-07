@@ -1844,26 +1844,10 @@ function view_x_progress($completion_rate, $i){
 function view_e_line($e)
 {
 
-
-    $CI =& get_instance();
-    $member_e = superpower_unlocked();
-    $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
-    $href = '/@'.$e['e__id'];
-
-    $ui = '<div class="row">';
-    $ui .= '<div class="coinface-12274 minix-coin edge-coin col-md-1 col-2 no-padding coin-12274 coin___12274_'.$e['e__id'].'">';
-    $ui .= '<div class="cover-wrapper">';
-    $ui .= '<a href="'.$href.'" class="coinType12274 black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
-    $ui .= '<div class="cover-btn">'.( !$has_valid_url && $e['e__cover'] ? view_cover(12274,$e['e__cover']) : '' ).'</div>';
+    $ui = '<a href="/@'.$e['e__id'].'" class="doblock">';
+    $ui .= '<span class="icon-block">'.view_cover(12274, $e['e__cover']).'</span>';
+    $ui .= '<span class="css__title">'.$e['e__title'].'<span class="grey" style="padding-left:8px;">' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span></span>';
     $ui .= '</a>';
-    $ui .= '</div>';
-    $ui .= '</div>';
-
-    $ui .= '<div class="col-md-11 col-10">';
-    $ui .= '<div style="margin-top: 15px;"><a href="'.$href.'" class="css__title">'.$e['e__title'].'</a><span class="grey" style="padding-left: 5px;">' . view_time_difference(strtotime($e['x__time'])) . '</span></div>';
-    $ui .= '</div>';
-    $ui .= '</div>';
-
     return $ui;
 
 }

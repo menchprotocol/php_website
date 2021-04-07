@@ -2059,9 +2059,6 @@ i, .btn .show-max {
 .mini-coin{
     margin:0 0 55px !important;
 }
-.minix-coin{
-    margin:0 !important;
-}
 .focus-coin{
     margin:13px 0 144px !important;
 }
@@ -2112,9 +2109,6 @@ i, .btn .show-max {
     border-radius: 50%;
     margin-bottom: 0px;
     margin-top: 0px;
-}
-.minix-coin .cover-link{
-    padding-top: 91%;
 }
 .emptycoin{
     min-height: 40px;
@@ -2193,9 +2187,6 @@ i, .btn .show-max {
 }
 .mini-coin .cover-btn{
     font-size: 5em;
-}
-.minix-coin .cover-btn{
-    font-size: 2em;
 }
 .focus-coin .cover-btn {
     font-size: 16em;
@@ -2430,9 +2421,6 @@ textarea {
 
 }
 
-.minix-coin .cover-btn{
-    top: 34%;
-}
 
 .texttransparent{
     color:transparent !important;
