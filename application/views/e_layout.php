@@ -305,6 +305,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $count = 0;
         $has_more = count($list_e)>($show_max_14435+1);
         $trigger_hide = null;
+        $count_totals = array();
         foreach($list_e as $e_link) {
 
             if($count==$show_max_14435 && $has_more){
@@ -313,6 +314,13 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
             if($count>=$show_max_14435 && $has_more){
                 $trigger_hide = 'see_all_11029 hidden';
+            }
+
+            if(strlen($e_link['x__message'])>0 && in_array($e_link['x__type'], $this->config->item('n___26111'))){
+                if(!isset($count_totals[$e_link['x__type']])){
+                    $count_totals[$e_link['x__type']] = 0;
+                }
+                $count_totals[$e_link['x__type']] += doubleval($e_link['x__message']);
             }
 
             $ui .= view_e(11029, $e_link, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_link['x__source']))));
@@ -341,6 +349,15 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
             $ui .= '<div class="hideIfEmpty new-list-11029"></div>';
 
+        }
+
+        if(count($count_totals)){
+            $e___26111 = $this->config->item('e___26111');
+            echo '<div style="padding: 21px 0 0 0;">Totals: ';
+            foreach($count_totals as $total_type => $total_value){
+                echo number_format($total_value, 2).' '.$e___26111[$total_type]['m__title'].' ';
+            }
+            echo '</div>';
         }
 
     } elseif($x__type==10573){
@@ -517,6 +534,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             }
             $ui .= '</div>';
         }
+
     }
 
     $is_token = in_array($x__type, $this->config->item('n___14874'));

@@ -1001,7 +1001,7 @@ function view_i_marks($i_x){
 }
 
 
-function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e, $is_open = false){
+function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e){
 
     //If no list just return the next step:
     if(!count($next_is)){
@@ -1027,6 +1027,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e, $i
     $body .= '</div>';
 
 
+    $is_open = !$is_first_incomplete;
     $ui = '';
 
     //Show idea type?
