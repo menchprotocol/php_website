@@ -320,7 +320,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                 if(!isset($count_totals[$e_link['x__type']])){
                     $count_totals[$e_link['x__type']] = 0;
                 }
-                $count_totals[$e_link['x__type']] += doubleval($e_link['x__message']);
+                $count_totals[$e_link['x__type']] += floatval($e_link['x__message']);
             }
 
             $ui .= view_e(11029, $e_link, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_link['x__source']))));
@@ -353,11 +353,11 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         if(count($count_totals)){
             $e___26111 = $this->config->item('e___26111');
-            echo '<div style="padding: 21px 0 0 0;">Totals: ';
+            $ui .= '<div style="padding: 21px 0 0 0;">Totals: ';
             foreach($count_totals as $total_type => $total_value){
-                echo number_format($total_value, 2).' '.$e___26111[$total_type]['m__title'].' ';
+                $ui .= number_format($total_value, 2).' '.$e___26111[$total_type]['m__title'].' ';
             }
-            echo '</div>';
+            $ui .= '</div>';
         }
 
     } elseif($x__type==10573){
