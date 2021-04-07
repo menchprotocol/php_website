@@ -355,7 +355,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $e___26111 = $this->config->item('e___26111');
             $ui .= '<div style="padding: 21px 0 0 0;">Totals: ';
             foreach($count_totals as $total_type => $total_value){
-                $ui .= number_format($total_value, 2).' '.$e___26111[$total_type]['m__title'].' ';
+                $ui .= $e___26111[$total_type]['m__title'].' '.number_format($total_value, 2).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
             }
             $ui .= '</div>';
         }
