@@ -6,7 +6,11 @@ $i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13479 = $this->config->item('e___13479');
 $e___14874 = $this->config->item('e___14874'); //COINS
-
+$icons = array(
+    12273 => '🟡',
+    12274 => '🔵',
+    6255 => '🔴',
+);
 $superpower_10939 = $member_e && superpower_active(10939, true);
 $current_coin_id = current_coin_id();
 $base_source = get_domain_setting(0);
@@ -24,7 +28,7 @@ $logo = '/img/'.$current_coin_id.'.png';
     <link rel="canonical" href="https://mench.com<?= $_SERVER['REQUEST_URI'] ?>" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?= ( isset($title) ? $title : get_domain('m__title') ) ?></title>
+    <title><?= ( isset($title) ? $icons[$current_coin_id].' '.$title : get_domain('m__title') ) ?></title>
     <?php
     echo '<script type="text/javascript">';
     //MEMBER VARIABLES
