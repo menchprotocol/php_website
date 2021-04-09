@@ -40,6 +40,7 @@ if(superpower_unlocked()) {
 
 } else {
 
+
     if($sign_i__id || isset($_GET['url'])){
         //Assign Session variable so we can detect upon social login:
         $session_data = $this->session->all_userdata();
@@ -51,6 +52,11 @@ if(superpower_unlocked()) {
         }
         $this->session->set_userdata($session_data);
     }
+
+
+    //Disable for now:
+    //TODO maybe remove later
+    js_redirect('/-14436', 0);
 
 
     $e___4269 = $this->config->item('e___4269');
