@@ -66,6 +66,9 @@ class App extends CI_Controller
         } elseif(!$member_e && in_array($app_e__id, $this->config->item('n___14740'))){
             //Should redirect them:
             return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>App @'.$app_e__id.' is for members only</div>', true);
+        } elseif(in_array($app_e__id, $this->config->item('n___26122'))){
+            $e___26122 = $this->config->item('e___26122'); //REDIRECT URL is here
+            return redirect_message($e___26122[$app_e__id]['m__message']);
         }
 
 

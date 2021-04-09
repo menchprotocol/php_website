@@ -417,11 +417,10 @@ if($top_i__id) {
 
 
 
-/*
 if($top_i__id && count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__up' => 12896, //SAVE THIS IDEA
+        'x__up' => 12896, //SAVALBLE
         'x__right' => $i_focus['i__id'],
     ))) && !count($this->X_model->fetch(array(
         'x__up' => $x__source,
@@ -434,7 +433,6 @@ if($top_i__id && count($this->X_model->fetch(array(
     echo '<div class="msg alert no-margin space-left">Save idea for quick access? <span class="inline-block">Tap <i class="far fa-bookmark black"></i></span></div>';
 
 }
-*/
 
 
 

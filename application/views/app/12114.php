@@ -21,11 +21,11 @@ $html_message .= '<div style="padding-bottom:10px;"><span style="min-width:125px
 foreach($this->config->item('e___14874') as $x__type => $m) {
 
     //Calculate Growth Rate:
-    if(substr_count($m['m__cover'], 'zq6255')>0){
+    if(substr_count($m['m__cover'], '6255')>0){
         $icon = '🔴';
-    } elseif(substr_count($m['m__cover'], 'zq12273')>0){
+    } elseif(substr_count($m['m__cover'], '12273')>0){
         $icon = '🟡';
-    } elseif(substr_count($m['m__cover'], 'zq12274')>0){
+    } elseif(substr_count($m['m__cover'], '12274')>0){
         $icon = '🔵';
     }
 
