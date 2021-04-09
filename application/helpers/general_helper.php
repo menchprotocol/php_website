@@ -223,19 +223,6 @@ function current_coin_id(){
 
 }
 
-function e_is_featured($e)
-{
-    $CI =& get_instance();
-    return in_array($e['e__type'], $CI->config->item('n___7357') /* PUBLIC */) && count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__up IN (' . join(',', $CI->config->item('n___14374')) . ')' => null, //FEATURED SOURCES
-            'x__down' => $e['e__id'],
-        )));
-
-}
-
-
 
 function int_hash($string){
     $int_length = 4;
@@ -255,7 +242,7 @@ function i_is_startable($i)
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i['i__id'],
-            'x__up' => 14596, //Starting point
+            'x__up IN (' . join(',', $CI->config->item('n___26124')) . ')' => null, //Starting Topics
         )));
 
 }
@@ -299,7 +286,7 @@ function x_detect_type($string)
             'x__type' => 14728,
         );
 
-    } elseif (in_array($string, array('True','False','true','false'))) {
+    } elseif (in_array($string, array('true','false'))) {
 
         //Boolean
         return array(
@@ -1583,11 +1570,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 if($s['x__source']!=$s['e__id']){
                     //Also give access to source themselves, in case they can login:
                     array_push($export_row['_tags'], 'alg_e_' . $s['e__id']);
-                }
-
-                //Featured?
-                if (e_is_featured($s)) {
-                    array_push($export_row['_tags'], 'is_featured');
                 }
 
                 //Is this an image?
