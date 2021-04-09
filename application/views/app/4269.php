@@ -58,12 +58,19 @@ if(superpower_unlocked()) {
     //TODO maybe remove later
     js_redirect('/-14436', 0);
 
+    echo '<div class="center-info">';
+    echo '<div class="text-center platform-large">'.get_domain('m__cover').'</div>';
+    echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
+    echo '</div>';
+
+
+    /*
 
     $e___4269 = $this->config->item('e___4269');
     $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
     $this_attempt = array(
-        'x__type' => ( $sign_i__id > 0 ? 7560 /* Member Signin Idea Channel Choose */ : 7561 /* Member Signin on Website */ ),
+        'x__type' => ( $sign_i__id > 0 ? 7560 : 7561 ),
         'x__left' => $sign_i__id,
     );
 
@@ -249,5 +256,7 @@ if(superpower_unlocked()) {
     </div>
 
     <?php
+
+    */
 
 }
