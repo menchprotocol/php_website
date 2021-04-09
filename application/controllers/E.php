@@ -352,6 +352,13 @@ class E extends CI_Controller
         //Are we adding an existing source?
         if ($_POST['e_existing_id'] > 0) {
 
+            if(in_array($_POST['e_existing_id'], $this->config->item('n___13997'))){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Cannot link to idea settings from here',
+                ));
+            }
+
             //Validate this existing source:
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['e_existing_id'],
@@ -377,16 +384,6 @@ class E extends CI_Controller
                     'message' => $es[0]['e__title'].' is already added as idea '.$e___7551[$_POST['x__type']]['m__title'],
                 ));
             }
-
-
-            //Make sure not featured, or have superpower to do so:
-            if(in_array($_POST['e_existing_id'], $this->config->item('n___4235')) && !superpower_active(13994, true)){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => view_unauthorized_message(13994),
-                ));
-            }
-
 
             //All good, assign:
             $focus_e = $es[0];

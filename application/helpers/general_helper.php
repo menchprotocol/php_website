@@ -235,17 +235,7 @@ function e_is_featured($e)
 
 }
 
-function i_is_featured($i)
-{
-    $CI =& get_instance();
-    return in_array($i['i__type'], $CI->config->item('n___7355')) && count($CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__right' => $i['i__id'],
-        'x__up IN (' . join(',', $CI->config->item('n___4235')).')' => null,
-    )));
 
-}
 
 function int_hash($string){
     $int_length = 4;
@@ -261,21 +251,14 @@ function int_hash($string){
 function i_is_startable($i)
 {
     $CI =& get_instance();
-    return
-        (
-            i_is_featured($i)
-            || (
-                superpower_active(10939, true) &&
-                in_array($i['i__type'], $CI->config->item('n___7355')) &&
-                count($CI->X_model->fetch(array(
-                    'x__type' => 10573, //MY IDEAS
-                    'x__right' => $i['i__id'],
-                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))
-            )
-        );
-}
+    return in_array($i['i__type'], $CI->config->item('n___7355')) && count($CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $i['i__id'],
+            'x__up' => 14596, //Starting point
+        )));
 
+}
 
 function x_detect_type($string)
 {
@@ -1657,7 +1640,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));
 
                 //Featured?
-                if (i_is_featured($s)) {
+                if (i_is_startable($s)) {
                     array_push($export_row['_tags'], 'is_featured');
                 }
 

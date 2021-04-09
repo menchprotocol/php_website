@@ -56,7 +56,7 @@ if(superpower_unlocked()) {
 
     //Disable for now:
     //TODO maybe remove later
-    js_redirect('/-14436', 0);
+    js_redirect('/-14436', 13);
 
     echo '<div class="center-info">';
     echo '<div class="text-center platform-large">'.get_domain('m__cover').'</div>';
