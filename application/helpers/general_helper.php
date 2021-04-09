@@ -316,7 +316,15 @@ function x_detect_type($string)
             'x__type' => 14728,
         );
 
-    } elseif (strlen($string) > 9 && (is_valid_date($string) || strtotime($string) > 0)) {
+    } elseif (in_array($string, array('True','False','true','false'))) {
+
+        //Boolean
+        return array(
+            'status' => 1,
+            'x__type' => 26123,
+        );
+
+    } elseif (strlen($string) > 9 && is_valid_date($string)) {
 
         //Date/time:
         return array(
