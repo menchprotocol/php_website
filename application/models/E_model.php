@@ -899,7 +899,6 @@ class E_model extends CI_Model
 
         boost_power();
 
-        $is_valid_icon = is_valid_icon($action_command1);
 
         if(!in_array($action_e__id, $this->config->item('n___4997'))) {
 
@@ -913,13 +912,6 @@ class E_model extends CI_Model
             return array(
                 'status' => 0,
                 'message' => 'Missing primary command',
-            );
-
-        } elseif(in_array($action_e__id, array(5943,12318)) && !$is_valid_icon['status']){
-
-            return array(
-                'status' => 0,
-                'message' => $is_valid_icon['message'],
             );
 
         } elseif(in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441)) && !is_valid_e_string($action_command1)){

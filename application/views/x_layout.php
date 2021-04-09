@@ -420,7 +420,7 @@ if($top_i__id) {
 if($top_i__id && count($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__up' => 12896, //SAVALBLE
+        'x__up' => 26115, //SAVALBLE
         'x__right' => $i_focus['i__id'],
     ))) && !count($this->X_model->fetch(array(
         'x__up' => $x__source,
@@ -435,7 +435,6 @@ if($top_i__id && count($this->X_model->fetch(array(
 }
 
 
-
 //DISCUSSIONS:
 $comments = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -443,10 +442,17 @@ $comments = $this->X_model->fetch(array(
     'x__right' => $i_focus['i__id'],
 ), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
 
+$auto_open = count($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__up' => 26117, //SAVALBLE
+    'x__right' => $i_focus['i__id'],
+)));
+
 //For now we have comments completely hidden:
 $headline_ui = view_i_note_list(12419, true, $i_focus, $comments, true, true);
 
-echo '<div class="view-discussions hidden">';
+echo '<div class="view-discussions '.( $auto_open ? '' : ' hidden ' ).'">';
 echo '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
 echo view_headline(12419, count($comments), $e___11035[12419], $headline_ui, true, false);
 echo '</div>';

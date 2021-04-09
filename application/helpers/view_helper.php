@@ -1066,7 +1066,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
 
     if($show_empty_error && !count($i_notes) && $e_of_i){
         $ui .= '<div class="no_notes_' . $x__type .'" style="margin:21px 0;">';
-        $ui .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($e___4485[$x__type]['m__title'])).' yet</div>';
+        $ui .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($e___4485[$x__type]['m__title'])).' yet, be the first to post one</div>';
         $ui .= '</div>';
     }
 
