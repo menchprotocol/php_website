@@ -238,7 +238,14 @@ function int_hash($string){
 function i_is_startable($i)
 {
     $CI =& get_instance();
-    return in_array($i['i__type'], $CI->config->item('n___26128'));
+    return in_array($i['i__type'], $CI->config->item('n___26128'))
+        || (in_array($i['i__type'], $CI->config->item('n___7355')) && count($CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $i['i__id'],
+            'x__up IN (' . join(',', $CI->config->item('n___26124')) . ')' => null, //Starting Topics
+        ))));
+
 }
 
 function x_detect_type($string)

@@ -521,7 +521,7 @@ class I_model extends CI_Model
             //Create new Idea:
             $i_new = $this->I_model->create(array(
                 'i__title' => $i__title_validation['i_clean_title'],
-                'i__type' => 6677, //New Default Ideas
+                'i__type' => ( in_array($x__type, $this->config->item('n___26129')) ? 26127 : 6677 ), //New Default Ideas
             ), $x__source);
 
         }
