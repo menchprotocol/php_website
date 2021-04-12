@@ -1720,10 +1720,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Fetch minting details:
-    $minter = $CI->X_model->fetch(array(
+    $minter = ($focus_coin ? $CI->X_model->fetch(array(
         'x__type' => 4250, //New Idea Created
         'x__right' => $i['i__id'],
-    ), array('x__source'));
+    ), array('x__source')) : array());
 
     //IDEAs and Time
     $view_i_time = view_i_time($i_stats);
