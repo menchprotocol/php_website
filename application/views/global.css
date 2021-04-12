@@ -1988,7 +1988,7 @@ i, .btn .show-max {
         display: none;
     }
     .coin_cover:hover .coin-hover{
-        display: block;
+        display: inline-block;
     }
 }
 
