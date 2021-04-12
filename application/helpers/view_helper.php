@@ -1015,11 +1015,15 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e){
     $body = '<div class="row justify-content-center">';
     $is_first_incomplete = false;
     $found_first_incomplete = false;
+    $found_first_complete = false;
     foreach($next_is as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
         if(!$found_first_incomplete && $completion_rate['completion_percentage'] < 100){
             $is_first_incomplete = true;
             $found_first_incomplete = true;
+        }
+        if(!$found_first_complete && $completion_rate['completion_percentage'] >= 100){
+            $found_first_complete = true;
         }
         $body .= view_i($x__type, $top_i__id, $i, $next_i, $in_my_x, null, $member_e, $completion_rate, null, $is_first_incomplete);
         $is_first_incomplete = false; //False afterwards
@@ -1027,7 +1031,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e){
     $body .= '</div>';
 
 
-    $is_open = !$is_first_incomplete;
+    $is_open = !$found_first_incomplete && $found_first_complete; //Open if all are completed
     $ui = '';
 
     //Show idea type?
