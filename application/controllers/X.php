@@ -316,30 +316,61 @@ class X extends CI_Controller
 
 
 
-    function complete_next($top_i__id, $previous_i__id, $i__id){
+    function complete_next($top_i__id, $current_i__id, $next_i__id){
 
         //Marks an idea as complete if the member decides to navigate out of order:
 
         $member_e = superpower_unlocked();
-        $is = $this->I_model->fetch(array(
-            'i__id' => $previous_i__id,
+        $current_is = $this->I_model->fetch(array(
+            'i__id' => $current_i__id,
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
 
+        $next_is = $this->I_model->fetch(array(
+            'i__id' => $next_i__id,
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        ));
+
+        if(!count($current_is) || !count($next_is)){
+
+            //Not public, somehow!
+            $this->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__message' => 'complete_next() found non-public ideas for Top ID /'.$top_i__id.'!',
+                'x__source' => ( $member_e ? $member_e['e__id'] : 0 ),
+                'x__left' => $current_i__id,
+                'x__right' => $next_i__id,
+            ));
+
+            return false;
+        }
+
         //Mark this as complete since there is no child to choose from:
-        if ($member_e && count($is) && in_array($is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
-            'x__source' => $member_e['e__id'],
-            'x__left' => $previous_i__id,
-        )))) {
-            $this->X_model->mark_complete($top_i__id, $is[0], array(
+        if($member_e && in_array($current_is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE ALREADY?
+                'x__source' => $member_e['e__id'],
+                'x__left' => $current_is[0]['i__id'],
+            )))){
+            $this->X_model->mark_complete($top_i__id, $current_is[0], array(
                 'x__type' => 4559, //DISCOVERY MESSAGES
                 'x__source' => $member_e['e__id'],
             ));
         }
 
-        return redirect_message('/'.$top_i__id.'/'.$i__id);
+        if($member_e && in_array($next_is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE ALREADY?
+                'x__source' => $member_e['e__id'],
+                'x__left' => $next_is[0]['i__id'],
+            )))){
+            $this->X_model->mark_complete($top_i__id, $next_is[0], array(
+                'x__type' => 4559, //DISCOVERY MESSAGES
+                'x__source' => $member_e['e__id'],
+            ));
+        }
+
+        return redirect_message('/'.$top_i__id.'/'.$next_i__id);
 
     }
 
