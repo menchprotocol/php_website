@@ -239,7 +239,7 @@ if(!$basic_header_footer){
                         } elseif(in_array($x__type, $this->config->item('n___6287'))){
 
                             //APP
-                            $href = 'href="/-'.$x__type.( $x__type==4269 ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ).'"';
+                            $href = 'href="/-'.$x__type.( $x__type==4269 && isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ).'"';
 
                         } else {
 
