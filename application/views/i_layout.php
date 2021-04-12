@@ -27,7 +27,7 @@ $show_previous = $e_of_i && $is_active;
 $is_in_my_ideas = count($this->X_model->fetch(array(
     'x__up' => $member_e['e__id'],
     'x__right' => $i_focus['i__id'],
-    'x__type' => 10573, //MY IDEAS
+    'x__type' => 10573, //STARRED
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 )));
 

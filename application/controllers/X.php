@@ -365,7 +365,7 @@ class X extends CI_Controller
 
             if(!$next_i__id){
                 //Failed to add to read:
-                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block">'.$e___11035[12969]['m__cover'].'</span>FAILED to add to '.$e___11035[12969]['m__title'].'.</div>', true);
+                return redirect_message(home_url());
             }
         }
 

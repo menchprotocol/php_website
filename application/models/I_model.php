@@ -483,7 +483,7 @@ class I_model extends CI_Model
                 //Duplicate Check:
                 if(count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 10573, //BOOKMARKED IDEAS
+                    'x__type' => 10573, //STARRED
                     'x__up' => $focus_e[0]['e__id'],
                     'x__right' => $link_i[0]['i__id'],
                 )))){
@@ -521,7 +521,7 @@ class I_model extends CI_Model
             //Create new Idea:
             $i_new = $this->I_model->create(array(
                 'i__title' => $i__title_validation['i_clean_title'],
-                'i__type' => ( in_array($x__type, $this->config->item('n___26129')) ? 26127 : 6677 ), //New Default Ideas
+                'i__type' => 6677, //New Default Ideas
             ), $x__source);
 
         }
@@ -583,13 +583,13 @@ class I_model extends CI_Model
 
             //Add to top of my ideas:
             $this->X_model->create(array(
-                'x__type' => 10573, //MY IDEAS
+                'x__type' => 10573, //STARRED
                 'x__source' => $x__source,
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
                 'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type' => 10573, //MY IDEAS
+                        'x__type' => 10573, //STARRED
                         'x__up' => $focus_e[0]['e__id'],
                     )),
             ), true);
@@ -597,7 +597,7 @@ class I_model extends CI_Model
             $new_i = $this->X_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 10573, //BOOKMARKED IDEAS
+                'x__type' => 10573, //STARRED
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
             ), array('x__right'));
