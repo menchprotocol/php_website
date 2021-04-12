@@ -1727,7 +1727,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     //IDEAs and Time
     $view_i_time = view_i_time($i_stats);
-    $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : ' inline-block ' ).' grey hideIfEmpty">' . ( $view_i_time ? $view_i_time : '' ) . '</div>'.( count($minter) ? '<div class="coin-hover grey mini-font" style="padding-left:3px;">| Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>' : '' ).'</div>';
+    $ui .= '<div class="cover-text">' . ( $view_i_time ? '<div class="'.( !$linkbar_visible ? ' coin-hover ' : ' inline-block ' ).' grey">'.$view_i_time.'</div>' : '' ) . ( count($minter) ? '<div class="coin-hover grey mini-font" style="padding-left:3px;">| Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>' : '' ).'</div>';
 
     if($load_completion && $is_started && !$is_completed){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
