@@ -1719,10 +1719,15 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     }
 
 
+    //Fetch minting details:
+    $minter = $this->X_model->fetch(array(
+        'x__type' => 4250, //New Idea Created
+        'x__right' => $i['i__id'],
+    ), array('x__source'));
 
     //IDEAs and Time
     $view_i_time = view_i_time($i_stats);
-    $ui .= '<div class="cover-text"><span class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</span></div>';
+    $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</div>'.( count($minter) ? '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">Minted '.view_time_difference(strtotime($minter[0]['x__time'])).' ago by <a href="/@'.$minter[0]['e__id'].'">'.$minter[0]['e__title'].'</a></div>' : '' ).'</div>';
 
     if($load_completion && $is_started && !$is_completed){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
