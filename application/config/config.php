@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  |
  */
 
-$config['base_url']                 = 'https://'.$_SERVER['SERVER_NAME'];
+$config['base_url']                 = 'https://'.( isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'mench.com' );
 
 
 /*

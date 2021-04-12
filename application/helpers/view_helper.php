@@ -2232,7 +2232,9 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
 
 function view_json($array)
 {
-    header('Content-Type: application/json');
+    if(!headers_sent()) {
+        header('Content-Type: application/json');
+    }
     echo json_encode($array);
     return true;
 }
