@@ -1720,7 +1720,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Fetch minting details:
-    $minter = $this->X_model->fetch(array(
+    $minter = $CI->X_model->fetch(array(
         'x__type' => 4250, //New Idea Created
         'x__right' => $i['i__id'],
     ), array('x__source'));
