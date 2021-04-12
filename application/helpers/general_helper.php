@@ -254,7 +254,7 @@ function i_is_startable($i)
                 'x__right' => $i['i__id'],
                 'x__up IN (' . join(',', $CI->config->item('n___26124')) . ')' => null, //Starting Topics
             ))) ||
-            count($this->X_model->fetch(array(
+            count($CI->X_model->fetch(array(
                 'x__right' => $i['i__id'],
                 'x__type' => 10573, //STARRED
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
