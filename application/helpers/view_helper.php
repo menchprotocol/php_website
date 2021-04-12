@@ -1720,7 +1720,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Fetch minting details:
-    $minter = ($focus_coin ? $CI->X_model->fetch(array(
+    $minter = ( $focus_coin && !$discovery_mode ? $CI->X_model->fetch(array(
         'x__type' => 4250, //New Idea Created
         'x__right' => $i['i__id'],
     ), array('x__source')) : array());
@@ -2068,7 +2068,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Fetch minting details:
-    $minter = ($focus_coin ? $CI->X_model->fetch(array(
+    $minter = ( $focus_coin ? $CI->X_model->fetch(array(
         'x__type' => 4251, //New Source Minted
         'x__down' => $e['e__id'],
     ), array('x__source')) : array());
