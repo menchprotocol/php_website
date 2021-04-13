@@ -848,7 +848,7 @@ class X_model extends CI_Model
                     if (in_array($e_profile['x__type'], $this->config->item('n___13899'))) {
 
                         //TOOLTIP INFO
-                        $tooltip_info .= ( strlen($tooltip_info) ? ' | ' : '' ).$e_profile['e__title'].' : ' . strip_tags($e_profile['x__message']);
+                        $tooltip_info .= ( strlen($tooltip_info) ? ' | ' : '' ).$e_profile['e__title'].': ' . substr_replace("\n",' ',$e_profile['x__message']);
 
                     } elseif (in_array($e_profile['x__type'], $this->config->item('n___12524'))) {
 
