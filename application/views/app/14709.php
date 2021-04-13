@@ -167,7 +167,7 @@ if(!$member_e){
             }
 
 
-            var new_url = "https://<?= $_SERVER['SERVER_NAME'] ?>/<?= $is[0]['i__id'] ?>";
+            var new_url = "https://<?= get_server('SERVER_NAME') ?>/<?= $is[0]['i__id'] ?>";
 
             $(document).ready(function () {
 

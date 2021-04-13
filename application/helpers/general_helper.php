@@ -373,7 +373,7 @@ function x_detect_type($string)
 }
 
 function current_link(){
-    return 'https://' .( isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '' ) . ( isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '' );
+    return 'https://' .get_server('SERVER_NAME') . get_server('REQUEST_URI');
 }
 
 function words_to_seconds($text){
@@ -687,7 +687,7 @@ function cookie_check() {
         && isset($_COOKIE['login_cookie'])
         && !(substr($first_segment, 0, 1)=='-' && in_array(intval(substr($first_segment, 1)), $CI->config->item('n___14582')))
     ) {
-        header("Location: " . '/-4269?url=' . urlencode($_SERVER['REQUEST_URI']), true, 307);
+        header("Location: " . '/-4269'.( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' ), true, 307);
         exit;
     }
 }
@@ -891,7 +891,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
         if($has_session){
             $goto_url = '/@'.$member_e['e__id'];
         } else {
-            $goto_url = '/-4269?url=' . urlencode($_SERVER['REQUEST_URI']);
+            $goto_url = '/-4269'.( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' );
         }
 
         //Now redirect:
@@ -900,7 +900,9 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
 
 }
 
-
+function get_server($var_name){
+    return ( isset($_SERVER[$var_name]) ? $_SERVER[$var_name] : null );
+}
 
 function fetch_cookie_order($cookie_name){
 
@@ -912,7 +914,7 @@ function fetch_cookie_order($cookie_name){
     $CI->input->set_cookie(array(
         'name'   => $cookie_name,
         'value'  => $new_order_value."", //Cast to string
-        'domain' => '.'.$_SERVER['SERVER_NAME'],
+        'domain' => '.'.get_server('SERVER_NAME'),
         'expire' => '2592000', //1 Week
         'secure' => FALSE,
     ));
@@ -1255,7 +1257,7 @@ function get_domain_setting($setting_id = 0){
     $no_domain = 14923; //No Domain ID
     $source_id = $no_domain; //Assume no domain unless found below...
     foreach($CI->config->item('e___14870') as $x__type => $m) {
-        if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == $m['m__message']){
+        if (get_server('SERVER_NAME') == $m['m__message']){
             $source_id = $x__type;
             break;
         }
