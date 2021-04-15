@@ -1629,8 +1629,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     if(!$discovery_mode && $superpower_10939){
 
         $messages = '';
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        foreach($CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4231,
             'x__right' => $i['i__id'],
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
