@@ -2007,15 +2007,15 @@ i, .btn .show-max {
     min-height: 144px;
 }
 .coin-cover-left{
-    top: 13px;
+    top: 47px;
     left: 5px;
 }
 .focus-coin .coin-cover-left {
-    top: 45px;
+    top: 92px;
     left: 45px;
 }
 .coin-cover-right{
-    top: 13px;
+    top: 94px;
     right: 13px;
 }
 .focus-coin .coin-cover-right {
@@ -2030,7 +2030,7 @@ i, .btn .show-max {
 .coin_coins{
     width: 100%;
     position: absolute;
-    top: -38px;
+    top: -5px;
 }
 .push_down>div {
     margin-bottom:-25px !important;
@@ -2055,7 +2055,7 @@ i, .btn .show-max {
 .coin_cover{
     position: relative;
     margin:0 0 89px !important;
-    padding-top: 34px;
+    padding-top: 34px !important;
 }
 .mini-coin{
     margin:0 0 55px !important;
