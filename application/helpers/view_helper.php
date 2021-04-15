@@ -1636,10 +1636,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
             $messages .= $mes['x__message'].' ';
         }
-        if(!$messages){
-            $messages = 'No Messages Yet';
+        if($messages){
+            $message_tooltip = ' data-toggle="tooltip" data-placement="left" title="'.$messages.'" ';
         }
-        $message_tooltip = ' data-toggle="tooltip" data-placement="left" title="'.$messages.'" ';
     }
 
 
