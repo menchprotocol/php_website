@@ -1639,7 +1639,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         if(!$messages){
             $messages = 'No Messages Yet';
         }
-        $message_tooltip = ' data-toggle="tooltip" data-placement="right" title="'.$messages.'" ';
+        $message_tooltip = ' data-toggle="tooltip" data-placement="left" title="'.$messages.'" ';
     }
 
 
