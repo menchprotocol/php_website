@@ -646,8 +646,8 @@ function view_coins(){
     return $ui;
 }
 
-function view_coin_line($href, $is_current, $o__cover, $o__title, $message_tooltip = ''){
-    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'" '.$message_tooltip.'><span class="icon-block">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.( $is_current ? '<i class="fas fa-map-marker"></i>' : '<i class="far fa-arrow-right"></i>' ).'</span></a>';
+function view_coin_line($href, $is_current, $o__cover, $o__title, $message_tooltip = '', $view_coins_i = null){
+    return '<div class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'" '.$message_tooltip.'><a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'"><span class="icon-block">'.$o__cover.'</span>'.$o__title.'</a><span class="pull-right inline-block">'.( $is_current ? '<i class="fas fa-map-marker"></i>' : ( $view_coins_i ? $view_coins_i : '<i class="far fa-arrow-right"></i>' ) ).'</span></div>';
 }
 
 function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true){
@@ -866,7 +866,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
                         $message_tooltip = ' data-toggle="tooltip" data-placement="left" title="'.$messages.'" ';
                     }
                 }
-                $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, view_cover(12273,$next_i['i__cover']), view_i_title($next_i).' '.view_coins_i(12273,  $next_i), $message_tooltip);
+                $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, view_cover(12273,$next_i['i__cover']), view_i_title($next_i), $message_tooltip, view_coins_i(12273,  $next_i));
             }
         } elseif($x__type==6255){
             //DISCOVERIES / SOURCS
