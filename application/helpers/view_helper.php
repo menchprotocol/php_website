@@ -866,7 +866,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
                         $message_tooltip = ' data-toggle="tooltip" data-placement="left" title="'.$messages.'" ';
                     }
                 }
-                $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, view_cover(12273,$next_i['i__cover']), view_i_title($next_i), $message_tooltip);
+                $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, view_cover(12273,$next_i['i__cover']), view_i_title($next_i).' '.view_coins_i(12273,  $next_i), $message_tooltip);
             }
         } elseif($x__type==6255){
             //DISCOVERIES / SOURCS
