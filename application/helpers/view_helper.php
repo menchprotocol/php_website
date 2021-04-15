@@ -863,7 +863,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
                         $messages .= $mes['x__message'].' ';
                     }
                     if($messages){
-                        $message_tooltip = ' data-toggle="tooltip" data-placement="top" title="'.$messages.'" ';
+                        $message_tooltip = ' data-toggle="tooltip" data-placement="right" title="'.$messages.'" ';
                     }
                 }
                 $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, view_cover(12273,$next_i['i__cover']), view_i_title($next_i), $message_tooltip);
