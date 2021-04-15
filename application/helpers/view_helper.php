@@ -1626,7 +1626,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     $message_tooltip = '';
-    if(!$discovery_mode && $superpower_10939){
+    if(!$discovery_mode && !$primary_icon && $superpower_10939){
 
         $messages = '';
         foreach($CI->X_model->fetch(array(
