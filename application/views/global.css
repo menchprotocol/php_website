@@ -1961,7 +1961,7 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    bottom: -74px;
+    bottom: 0;
     min-height: 47px;
 }
 .mini-coin .cover-content{
@@ -2054,8 +2054,9 @@ i, .btn .show-max {
 }
 .coin_cover{
     position: relative;
-    margin:0 0 89px !important;
+    margin: 0 0 15px !important;
     padding-top: 34px !important;
+    padding-bottom: 74px !important;
 }
 .mini-coin{
     margin:0 0 55px !important;
