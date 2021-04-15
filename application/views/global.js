@@ -977,7 +977,8 @@ function view_cover_js(coin__type, cover_code){
             return cover_code;
         }
     } else {
-        return '<img src="/img/'+coin__type+'.png" />';
+        return '<i class="fas fa-circle zq'+coin__type+'"></i>';
+        //return '<img src="/img/'+coin__type+'.png" />';
     }
 }
 

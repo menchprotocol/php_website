@@ -361,7 +361,8 @@ function view_cover($coin__type, $cover_code)
     } else {
 
         //Standard Icon if none:
-        return '<img src="/img/'.$coin__type.'.png" />';
+        return '<i class="fas fa-circle zq'.$coin__type.'"></i>';
+        //return '<img src="/img/'.$coin__type.'.png" />';
 
     }
 }
@@ -645,8 +646,8 @@ function view_coins(){
     return $ui;
 }
 
-function view_coin_line($href, $is_current, $o__cover, $o__title){
-    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.( $is_current ? '<i class="fas fa-map-marker"></i>' : '<i class="far fa-arrow-right"></i>' ).'</span></a>';
+function view_coin_line($href, $is_current, $o__cover, $o__title, $message_tooltip = ''){
+    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'" '.$message_tooltip.'><span class="icon-block">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.( $is_current ? '<i class="fas fa-map-marker"></i>' : '<i class="far fa-arrow-right"></i>' ).'</span></a>';
 }
 
 function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true){
@@ -848,9 +849,24 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
             }
         } elseif($x__type==12273){
             //IDEAS
+            $superpower_10939 = superpower_active(10939, true);
             $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i) {
-                $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, view_cover(12273,$next_i['i__cover']), view_i_title($next_i));
+                $message_tooltip = '';
+                if($superpower_10939){
+                    $messages = '';
+                    foreach($CI->X_model->fetch(array(
+                        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'x__type' => 4231,
+                        'x__right' => $next_i['i__id'],
+                    ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
+                        $messages .= $mes['x__message'].' ';
+                    }
+                    if($messages){
+                        $message_tooltip = ' data-toggle="tooltip" data-placement="top" title="'.$messages.'" ';
+                    }
+                }
+                $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, view_cover(12273,$next_i['i__cover']), view_i_title($next_i), $message_tooltip);
             }
         } elseif($x__type==6255){
             //DISCOVERIES / SOURCS
@@ -1627,7 +1643,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     $message_tooltip = '';
     if(!$discovery_mode && $can_click && $superpower_10939){
-
         $messages = '';
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
