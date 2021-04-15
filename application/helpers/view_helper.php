@@ -863,7 +863,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
                         $messages .= $mes['x__message'].' ';
                     }
                     if($messages){
-                        $message_tooltip = ' data-toggle="tooltip" data-placement="left" title="'.$messages.'" ';
+                        $message_tooltip = ' data-toggle="tooltip" data-placement="top" title="'.$messages.'" ';
                     }
                 }
                 $coins = view_coins_i(12273,  $next_i, false);
@@ -1654,7 +1654,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             $messages .= $mes['x__message'].' ';
         }
         if($messages){
-            $message_tooltip = ' data-toggle="tooltip" data-placement="left" title="'.$messages.'" ';
+            $message_tooltip = ' data-toggle="tooltip" data-placement="top" title="'.$messages.'" ';
         }
     }
 
