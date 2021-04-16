@@ -2059,13 +2059,13 @@ i, .btn .show-max {
     padding-bottom: 74px !important;
 }
 .mini-coin{
-    margin:0 0 55px !important;
+    margin: 0 0 -45px 0 !important;
 }
 .focus-coin{
-    margin:13px 0 144px !important;
+    margin:13px 0 74px !important;
 }
 .coin-12273.focus-coin{
-    margin:13px 0 120px !important;
+    margin:13px 0 60px !important;
 }
 .coin_cover_3 {
     margin-top:-116px !important;
