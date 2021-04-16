@@ -2011,15 +2011,15 @@ i, .btn .show-max {
     left: 5px;
 }
 .focus-coin .coin-cover-left {
-    top: 92px;
+    top: 79px;
     left: 45px;
 }
 .coin-cover-right{
-    top: 94px;
+    top: 45px;
     right: 13px;
 }
 .focus-coin .coin-cover-right {
-    top: 45px;
+    top: 79px;
     right: 45px;
 }
 .mini-coin .coin-cover-right {
