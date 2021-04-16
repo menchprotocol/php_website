@@ -50,24 +50,28 @@ if($icon_keyword){
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'LOWER(e__cover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
     ));
+    $matching_results_i = $this->I_model->fetch(array(
+        'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+        'LOWER(i__cover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
+    ));
 
     //List the matching search:
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
 
     echo '<tr class="panel-title down-border">';
-    echo '<td style="text-align: left;" colspan="2">'.count($matching_results).' Results found</td>';
+    echo '<td style="text-align: left;" colspan="2">'.(count($matching_results) + count($matching_results_i)).' Results found</td>';
     echo '</tr>';
 
 
+    echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
+    echo '<td style="text-align: left;">#</td>';
+    echo '<td style="text-align: left;">Matching Search</td>';
+    echo '</tr>';
+
     if(count($matching_results) > 0){
 
-        echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-        echo '<td style="text-align: left;">#</td>';
-        echo '<td style="text-align: left;">Matching Search</td>';
-        echo '</tr>';
         $replaced = 0;
-
         foreach($matching_results as $count=>$en){
 
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
@@ -87,6 +91,33 @@ if($icon_keyword){
         if($replaced > 0){
             echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>Updated icons for '.$replaced.' sources.';
         }
+
+    }
+
+    if(count($matching_results_i) > 0){
+
+        $replaced = 0;
+
+        foreach($matching_results_i as $count=>$in){
+
+            if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
+                $replaced += $this->I_model->update($in['i__id'], array(
+                    'i__cover' => str_ireplace($icon_keyword, $_GET['replace_with'], $in['i__cover']),
+                ), false, $member_e['e__id']);
+
+            }
+
+            echo '<tr class="panel-title down-border">';
+            echo '<td style="text-align: left;">'.($count+1).'</td>';
+            echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__type'], true, 'right').' <span class="icon-block">'.view_cover(12273,$in['i__cover']).'</span><a href="/~'.$in['i__id'].'">'.$in['i__title'].'</a></td>';
+            echo '</tr>';
+
+        }
+
+        if($replaced > 0){
+            echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>Updated icons for '.$replaced.' ideas.';
+        }
+
     }
 
     echo '</table>';
