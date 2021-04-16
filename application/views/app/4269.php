@@ -54,209 +54,208 @@ if(superpower_unlocked()) {
     }
 
 
-    //Disable for now:
-    //TODO maybe remove later
-    js_redirect('/-14436', 13);
+    if(!isset($_GET['active'])){
+        //Disable for now:
+        //TODO maybe remove later
+        js_redirect('/-14436', 13);
 
-    echo '<div class="center-info">';
-    echo '<div class="text-center platform-large">'.get_domain('m__cover').'</div>';
-    echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
-    echo '</div>';
+        echo '<div class="center-info">';
+        echo '<div class="text-center platform-large">'.get_domain('m__cover').'</div>';
+        echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
+        echo '</div>';
 
+    } else {
 
-    /*
+        $e___4269 = $this->config->item('e___4269');
+        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
-    $e___4269 = $this->config->item('e___4269');
-    $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+        $this_attempt = array(
+            'x__type' => ( $sign_i__id > 0 ? 7560 : 7561 ),
+            'x__left' => $sign_i__id,
+        );
 
-    $this_attempt = array(
-        'x__type' => ( $sign_i__id > 0 ? 7560 : 7561 ),
-        'x__left' => $sign_i__id,
-    );
-
-    $current_sign_i_attempt = array(); //Will try to find this...
-    $current_sign_i_attempts = $this->session->userdata('sign_i_attempts');
-    if(is_array($current_sign_i_attempts) && count($current_sign_i_attempts) > 0){
-        //See if any of the current sign-in attempts match this:
-        foreach($current_sign_i_attempts as $sign_i_attempt){
-            $all_match = true;
-            foreach(array('x__left') as $sign_i_attempt_field){
-                if(intval($this_attempt[$sign_i_attempt_field]) != intval($sign_i_attempt[$sign_i_attempt_field])){
-                    $all_match = false;
+        $current_sign_i_attempt = array(); //Will try to find this...
+        $current_sign_i_attempts = $this->session->userdata('sign_i_attempts');
+        if(is_array($current_sign_i_attempts) && count($current_sign_i_attempts) > 0){
+            //See if any of the current sign-in attempts match this:
+            foreach($current_sign_i_attempts as $sign_i_attempt){
+                $all_match = true;
+                foreach(array('x__left') as $sign_i_attempt_field){
+                    if(intval($this_attempt[$sign_i_attempt_field]) != intval($sign_i_attempt[$sign_i_attempt_field])){
+                        $all_match = false;
+                        break;
+                    }
+                }
+                if($all_match){
+                    //We found a match!
+                    $current_sign_i_attempt = $sign_i_attempt;
                     break;
                 }
             }
-            if($all_match){
-                //We found a match!
-                $current_sign_i_attempt = $sign_i_attempt;
-                break;
-            }
+        } else {
+            $current_sign_i_attempts = array();
         }
-    } else {
-        $current_sign_i_attempts = array();
-    }
 
 
-    //See what to do based on current matches:
-    if(count($current_sign_i_attempt) == 0){
+        //See what to do based on current matches:
+        if(count($current_sign_i_attempt) == 0){
 
-        //Log transaction:
-        $current_sign_i_attempt = $this->X_model->create($this_attempt);
+            //Log transaction:
+            $current_sign_i_attempt = $this->X_model->create($this_attempt);
 
-        //Grow the array:
-        array_push($current_sign_i_attempts, $current_sign_i_attempt);
+            //Grow the array:
+            array_push($current_sign_i_attempts, $current_sign_i_attempt);
 
-        //Add this sign-in attempt to session:
-        $this->session->set_userdata(array('sign_i_attempts' => $current_sign_i_attempts));
+            //Add this sign-in attempt to session:
+            $this->session->set_userdata(array('sign_i_attempts' => $current_sign_i_attempts));
 
-    }
-    ?>
+        }
+        ?>
 
-    <script>
-        var go_next_icon = '<?= $e___11035[12211]['m__cover'] ?>';
-        var sign_i__id = <?= $sign_i__id ?>;
-        var referrer_url = '<?= @$_GET['url'] ?>';
-    </script>
-    <script src="/application/views/app/4269.js?v=<?= view_memory(6404,11060) ?>"
-            type="text/javascript"></script>
-
-
-    <div class="center-info">
-
-        <div class="text-center platform-large"><?= get_domain('m__cover') ?></div>
-
-        <div class="login-content" style="margin-top:41px;">
-
-            <!-- Step 1: Enter Email -->
-            <div id="step2" class="signup-steps hidden">
-
-                <?php
+        <script>
+            var go_next_icon = '<?= $e___11035[12211]['m__cover'] ?>';
+            var sign_i__id = <?= $sign_i__id ?>;
+            var referrer_url = '<?= @$_GET['url'] ?>';
+        </script>
+        <script src="/application/views/app/4269.js?v=<?= view_memory(6404,11060) ?>"
+                type="text/javascript"></script>
 
 
-                //Back only if coming from an idea:
-                $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
-                if ($sign_i__id > 0) {
-                    $sign_i = $this->I_model->fetch(array(
-                        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                        'i__id' => $sign_i__id,
-                    ));
-                    if (count($sign_i)) {
-                        $intro_message = str_replace('%s','<br /><a href="/' . $sign_i__id . '"><u>'.$sign_i[0]['i__title'].'</u></a>', $e___4269[7560]['m__message']);
+        <div class="center-info">
+
+            <div class="text-center platform-large"><?= get_domain('m__cover') ?></div>
+
+            <div class="login-content" style="margin-top:41px;">
+
+                <!-- Step 1: Enter Email -->
+                <div id="step2" class="signup-steps hidden">
+
+                    <?php
+
+
+                    //Back only if coming from an idea:
+                    $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
+                    if ($sign_i__id > 0) {
+                        $sign_i = $this->I_model->fetch(array(
+                            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                            'i__id' => $sign_i__id,
+                        ));
+                        if (count($sign_i)) {
+                            $intro_message = str_replace('%s','<br /><a href="/' . $sign_i__id . '"><u>'.$sign_i[0]['i__title'].'</u></a>', $e___4269[7560]['m__message']);
+                        }
                     }
-                }
 
 
-                echo '<p style="margin-top:13px; text-align: center; padding-bottom: 34px;">'.$intro_message.'</p>';
+                    echo '<p style="margin-top:13px; text-align: center; padding-bottom: 34px;">'.$intro_message.'</p>';
 
 
-                //SOCIAL LOGIN:
-                echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
-                echo $e___11035[14436]['m__title'];
-                foreach($this->config->item('e___14436') as $e__id => $m) {
-                    echo '&nbsp;&nbsp;'.$m['m__cover'];
-                }
-                echo '</a></div>';
-                echo '<div class="mid-text-line"><span>OR</span></div>';
-                ?>
+                    //SOCIAL LOGIN:
+                    echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
+                    echo $e___11035[14436]['m__title'];
+                    foreach($this->config->item('e___14436') as $e__id => $m) {
+                        echo '&nbsp;&nbsp;'.$m['m__cover'];
+                    }
+                    echo '</a></div>';
+                    echo '<div class="mid-text-line"><span>OR</span></div>';
+                    ?>
 
-                <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__cover'].'</span>'.$e___4269[3288]['m__title'] ?></span>
-                <div class="form-group"><input type="email" placeholder="your@email.com" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
-                <div id="email_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
-                <span id="step2buttons" class="<?= isset($_GET['input_email']) ? '' : ' hidden ' ?>" >
+                    <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__cover'].'</span>'.$e___4269[3288]['m__title'] ?></span>
+                    <div class="form-group"><input type="email" placeholder="your@email.com" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
+                    <div id="email_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
+                    <span id="step2buttons" class="<?= isset($_GET['input_email']) ? '' : ' hidden ' ?>" >
                     <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__cover'] ?></a>
                 <div class="doclear">&nbsp;</div>
                 </span>
 
-                <?php
+                    <?php
 
-                //GUEST LOGIN:
-                if($sign_i__id && 0){
-                    echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" class="btn btn-large btn-default">';
-                    echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__cover'];
-                    echo '</a></div>';
-                }
-                ?>
+                    //GUEST LOGIN:
+                    if($sign_i__id && 0){
+                        echo '<div class="mid-text-line"><span>OR</span></div>';
+                        echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" class="btn btn-large btn-default">';
+                        echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__cover'];
+                        echo '</a></div>';
+                    }
+                    ?>
 
-            </div>
-
-
-
-
-
-            <!-- Step 3: Enter password (IF FOUND) -->
-            <div id="step3" class="signup-steps hidden">
-
-                <!-- To be updated to >0 IF email was found -->
-                <input type="hidden" id="sign_e__id" value="0" />
-
-                <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m__cover'].'</span>'.$e___4269[3286]['m__title'] ?></span>
-                <div class="form-group"><input type="password" id="input_password" class="form-control border white-border"></div>
-                <div id="password_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
-
-                <div class="doclear">&nbsp;</div>
-
-                <div id="step3buttons">
-                    <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
-                    <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__cover'] ?></a>
-                </div>
-
-                <div class="doclear">&nbsp;</div>
-                <div style="padding-top:13px;">No password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration:none;font-weight: bold;"><?= '<u>'.$e___11035[11068]['m__title'].'</u> '.$e___11035[11068]['m__cover'] ?></a></div>
-
-            </div>
-
-
-
-
-
-            <!-- Step 4: Create New Account (IF NOT FOUND) -->
-            <div id="step4" class="signup-steps hidden">
-
-                <!-- pre-set Email -->
-                <div class="margin-top-down">
-                    <div class="css__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
-                    <div style="padding:8px 0;"><span class="icon-block">&nbsp;</span><span class="focus_email"></span></div>
                 </div>
 
 
-                <!-- Full Name -->
-                <div class="margin-top-down">
-                    <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
-                    <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="input_name" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border"></div>
+
+
+
+                <!-- Step 3: Enter password (IF FOUND) -->
+                <div id="step3" class="signup-steps hidden">
+
+                    <!-- To be updated to >0 IF email was found -->
+                    <input type="hidden" id="sign_e__id" value="0" />
+
+                    <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m__cover'].'</span>'.$e___4269[3286]['m__title'] ?></span>
+                    <div class="form-group"><input type="password" id="input_password" class="form-control border white-border"></div>
+                    <div id="password_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
+
+                    <div class="doclear">&nbsp;</div>
+
+                    <div id="step3buttons">
+                        <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
+                        <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__cover'] ?></a>
+                    </div>
+
+                    <div class="doclear">&nbsp;</div>
+                    <div style="padding-top:13px;">No password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration:none;font-weight: bold;"><?= '<u>'.$e___11035[11068]['m__title'].'</u> '.$e___11035[11068]['m__cover'] ?></a></div>
+
                 </div>
 
 
-                <!-- New Password -->
-                <div class="margin-top-down">
-                    <span class="css__title" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[14027]['m__cover'] ?></span><?= $e___4269[14027]['m__title'] ?></span>
-                    <div class="form-group"><input type="password" id="password_reset" class="form-control border white-border"></div>
-                </div>
 
 
-                <!-- Signup Buttons -->
-                <div id="account_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
-                <span>
+
+                <!-- Step 4: Create New Account (IF NOT FOUND) -->
+                <div id="step4" class="signup-steps hidden">
+
+                    <!-- pre-set Email -->
+                    <div class="margin-top-down">
+                        <div class="css__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
+                        <div style="padding:8px 0;"><span class="icon-block">&nbsp;</span><span class="focus_email"></span></div>
+                    </div>
+
+
+                    <!-- Full Name -->
+                    <div class="margin-top-down">
+                        <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
+                        <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="input_name" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border"></div>
+                    </div>
+
+
+                    <!-- New Password -->
+                    <div class="margin-top-down">
+                        <span class="css__title" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[14027]['m__cover'] ?></span><?= $e___4269[14027]['m__title'] ?></span>
+                        <div class="form-group"><input type="password" id="password_reset" class="form-control border white-border"></div>
+                    </div>
+
+
+                    <!-- Signup Buttons -->
+                    <div id="account_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
+                    <span>
                     <a href="javascript:void(0)" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
                     <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__cover'] ?></a>
                     <div class="doclear">&nbsp;</div>
                 </span>
 
+                </div>
+
+
+                <!-- Step 5: Check your email -->
+                <div id="step5" class="signup-steps hidden">
+                    <div style="padding-bottom: 10px;"><span class="icon-block"><i class="fas fa-envelope-open"></i></span><span class="focus_email"></span></div>
+                    <span class="medium-header magic_result"></span>
+                </div>
+
+
             </div>
-
-
-            <!-- Step 5: Check your email -->
-            <div id="step5" class="signup-steps hidden">
-                <div style="padding-bottom: 10px;"><span class="icon-block"><i class="fas fa-envelope-open"></i></span><span class="focus_email"></span></div>
-                <span class="medium-header magic_result"></span>
-            </div>
-
-
         </div>
-    </div>
 
-    <?php
+        <?php
 
-    */
-
+    }
 }
