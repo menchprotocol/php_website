@@ -26,7 +26,7 @@ if($client_id && $client_secret && $server_name){
     $auth0->logout();
     session_delete();
 
-    header('Location: ' . sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', $client_id, 'https://'.$server_name.'?flash_message=Logout+Successful+😃'));
+    header('Location: ' . sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', $client_id, 'https://'.$server_name));
 
 
 } else {
