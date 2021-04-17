@@ -9,7 +9,7 @@ use Auth0\SDK\Auth0;
 if($client_id && $client_secret && $server_name){
 
     //Destroys Session
-    session_delete();
+    //session_delete();
 
     /*
 
@@ -31,7 +31,7 @@ if($client_id && $client_secret && $server_name){
 
     $auth0->logout();
 
-    header('Location: ' . sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', $client_id, 'https://'.$server_name));
+    //header('Location: ' . sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', $client_id, 'https://'.$server_name));
 
 
 } else {
