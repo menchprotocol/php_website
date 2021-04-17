@@ -4,6 +4,8 @@ $client_id = get_domain_setting(14881);
 $client_secret = get_domain_setting(14882);
 $server_name = get_server('SERVER_NAME');
 
+use Auth0\SDK\Auth0;
+
 if($client_id && $client_secret && $server_name){
 
     //This page is loaded after member successfully authenticates via Auth0
@@ -12,8 +14,6 @@ if($client_id && $client_secret && $server_name){
     header("Pragma: no-cache");
 
     require 'vendor/autoload.php';
-
-    use Auth0\SDK\Auth0;
 
     $auth0 = new Auth0([
         'domain' => 'mench.auth0.com',
