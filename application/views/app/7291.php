@@ -7,13 +7,10 @@ $server_name = get_server('SERVER_NAME');
 
 use Auth0\SDK\Auth0;
 
-//Destroys Session
-session_delete();
-
-
 if($client_id && $client_secret && $server_name){
 
-
+    //Destroys Session
+    session_delete();
 
     /*
 
