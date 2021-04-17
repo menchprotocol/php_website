@@ -271,7 +271,9 @@ echo '<div id="container_search" class="container hidden"><div class="row justif
 echo '<div id="container_content" class="container">';
 
 //Any message we need to show here?
-if (!isset($flash_message)) {
+if (isset($_GET['flash_message'])) {
+    $flash_message = $_GET['flash_message'];
+} elseif (!isset($flash_message)) {
     $flash_message = $this->session->flashdata('flash_message');
 }
 
