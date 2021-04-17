@@ -9,7 +9,6 @@ use Auth0\SDK\Auth0;
 if($client_id && $client_secret && $server_name){
 
     //Destroys Session
-    //session_delete();
 
     /*
 
@@ -20,6 +19,7 @@ if($client_id && $client_secret && $server_name){
 
     js_redirect('/', 1597);
     */
+
 
     //This page is loaded after member successfully authenticates via Auth0
     header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -37,8 +37,9 @@ if($client_id && $client_secret && $server_name){
     ]);
 
     $auth0->logout();
+    session_delete();
 
-    //header('Location: ' . sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', $client_id, 'https://'.$server_name));
+    header('Location: ' . sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', $client_id, 'https://'.$server_name));
 
 
 } else {
