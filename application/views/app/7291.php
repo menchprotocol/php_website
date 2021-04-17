@@ -21,6 +21,13 @@ if($client_id && $client_secret && $server_name){
     js_redirect('/', 1597);
     */
 
+    //This page is loaded after member successfully authenticates via Auth0
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
+
+    require 'vendor/autoload.php';
+
     $auth0 = new Auth0([
         'domain' => 'mench.auth0.com',
         'client_id' => $client_id,
