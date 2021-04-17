@@ -1,6 +1,5 @@
 <?php
 
-
 $client_id = get_domain_setting(14881);
 $client_secret = get_domain_setting(14882);
 $server_name = get_server('SERVER_NAME');
@@ -40,14 +39,6 @@ if($client_id && $client_secret && $server_name){
     js_redirect('/', 13);
 
 }
-
-
-
-
-
-
-
-
 
 
 ?>
