@@ -2280,12 +2280,12 @@ textarea {
 
 
     .coin-cover-left{
-        top: 5px;
-        left: 5px;
+        top: 46px;
+        left: 8px;
     }
     .coin-cover-right{
-        top: 5px;
-        right: 5px;
+        top: 46px;
+        right: 8px;
     }
 
     .focus-coin .coin-cover-left{
