@@ -2289,12 +2289,12 @@ textarea {
     }
 
     .focus-coin .coin-cover-left{
-        top: 21px;
-        left: 21px;
+        top: 46px;
+        left: 46px;
     }
     .focus-coin .coin-cover-right{
-        top: 21px;
-        right: 21px;
+        top: 46px;
+        right: 46px;
     }
 
     .title-icon{
@@ -2396,7 +2396,7 @@ textarea {
         font-size: 1.4em;
     }
     .focus-coin.doedit .cover-content{
-        bottom:-84px;
+        bottom:-13px;
     }
     .the_counter{
         margin-top: -24px;

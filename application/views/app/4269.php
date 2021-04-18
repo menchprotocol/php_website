@@ -17,14 +17,8 @@ if(superpower_unlocked()) {
     $es = $this->E_model->fetch(array(
         'e__id' => $cookie_parts[0],
     ));
-    $u_emails = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__up' => 3288, //Email
-        'x__down' => $cookie_parts[0],
-    ));
 
-    if(count($es) && count($u_emails) && $cookie_parts[2]==md5($cookie_parts[0].$u_emails[0]['x__message'].$cookie_parts[1].$this->config->item('cred_password_salt'))){
+    if(count($es) && $cookie_parts[2]==md5($cookie_parts[0].$cookie_parts[1].$this->config->item('cred_password_salt'))){
 
         //Assign session & log transaction:
         $this->E_model->activate_session($es[0], false, true);

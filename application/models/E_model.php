@@ -37,17 +37,9 @@ class E_model extends CI_Model
 
             if(!$is_cookie){
 
-                //Set cookie for this new session:
-                $u_emails = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__up' => 3288, //Email
-                    'x__down' => $e['e__id'],
-                ));
-
                 //Create Cookie:
                 $cookie_time = time();
-                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.md5($e['e__id'].$u_emails[0]['x__message'].$cookie_time.$this->config->item('cred_password_salt'));
+                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.md5($e['e__id'].$cookie_time.$this->config->item('cred_password_salt'));
                 setcookie('login_cookie', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
 
             }

@@ -13,13 +13,6 @@ $show_max_14538 = view_memory(6404,14538);
 $limit = view_memory(6404,11064);
 $found_10573 = false;
 
-$profiles = $this->X_model->fetch(array(
-    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    'x__down' => $e['e__id'],
-), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
-
 ?>
 
 <script>
@@ -34,6 +27,13 @@ $profiles = $this->X_model->fetch(array(
 
 //PROFILE
 if(!$source_is_e || $superpower_13422){
+
+    $profiles = $this->X_model->fetch(array(
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'x__down' => $e['e__id'],
+    ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
 
     $counter = count($profiles);
     $has_more = $counter>($show_max_14538+1) && 0; //Disabled for now
@@ -71,15 +71,11 @@ if(!$source_is_e || $superpower_13422){
 
     echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, ($counter<=2));
 
+    echo '<div class="row justify-content-center">';
+    echo view_e(4251, $e, null, $source_of_e);
+    echo '</div>';
+
 }
-
-
-
-
-echo '<div class="row justify-content-center">';
-echo view_e(4251, $e, null, $source_of_e);
-echo '</div>';
-
 
 
 foreach($this->config->item('e___11089') as $x__type => $m) {
