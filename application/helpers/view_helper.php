@@ -1828,16 +1828,15 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= '</div></div>';
 
 
-    //Coin Block
     if($focus_coin){
 
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div class="'.superpower_active(12700).'">'.( $discovery_mode ? '' : ( i_is_startable($i) ? '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26124]['m__title'].'">'.$e___11035[26124]['m__cover'].'</span>' : '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26130]['m__title'].'">'.$e___11035[26130]['m__cover'].'</span>' ) ).'</div></td>';
-        $ui .= '<td width="34%" class="center"><div>'.( $discovery_mode || !superpower_active(12700, true) ? '&nbsp;' : view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0).' '.$e___11035[4356]['m__cover'] ).'</div></td>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: left;"><div class="'.superpower_active(10939).'">';
+        $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.( $discovery_mode || !superpower_active(12700, true) ? '&nbsp;' : view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0).' '.$e___11035[4356]['m__cover'] ).'</div></td>';
+        $ui .= '<td width="34%" class="center"><div class="'.superpower_active(12700).'">'.( $discovery_mode ? '' : ( i_is_startable($i) ? '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26124]['m__title'].'">'.$e___11035[26124]['m__cover'].'</span>' : '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26130]['m__title'].'">'.$e___11035[26130]['m__cover'].'</span>' ) ).'</div></td>';
+        $ui .= '<td width="33%" class="push_down" style="text-align: left;"><div>';
         if($discovery_mode){
-            $ui .= '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'">'.$e___11035[13563]['m__cover'].'</a>';
+            $ui .= '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'" class="'.superpower_active(10939).'">'.$e___11035[13563]['m__cover'].'</a>';
         } else {
             $ui .= '<a href="/'.$i['i__id'].'" title="'.$e___11035[13562]['m__title'].'">'.$e___11035[13562]['m__cover'].'</a>';
         }
