@@ -501,12 +501,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             //Sorting
             $ui .= ( $counter >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list-in-12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
-
-            //Add New Discovery Button:
-            if(!$superpower_10939){
-                $ui .= '<div class="center" style="padding-top:89px;"><a class="btn btn-lrg btn-6255" href="/">'.$e___11035[18995]['m__cover'].' '.$e___11035[18995]['m__title'].' <i class="far fa-arrow-right"></i></a></div>';
-            }
-
         }
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
@@ -540,6 +534,12 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
     echo view_headline($x__type, $counter, $m, $ui, in_array($x__type, $this->config->item('n___26005')) && $counter > 0 && !($found_10573 && $is_token));
 
+}
+
+
+//Add New Discovery Button:
+if($source_is_e){
+    echo '<div class="center" style="padding-top:89px;"><a class="btn btn-lrg btn-6255" href="/">'.$e___11035[18995]['m__cover'].' '.$e___11035[18995]['m__title'].' <i class="far fa-arrow-right"></i></a></div>';
 }
 
 
