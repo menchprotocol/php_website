@@ -233,6 +233,11 @@ if(!$basic_header_footer){
                             //Home
                             $href = 'href="/"';
 
+                        } elseif($x__type==26139) {
+
+                            //My Avatar
+                            $href = 'href="javascript:void(0);" onclick="coin__load(12274,'.$member_e['e__id'].')" ';
+
                         } elseif(in_array($x__type, $this->config->item('n___13566'))) {
 
                             //MODAL

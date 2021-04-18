@@ -2043,18 +2043,13 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
         //Any Buttons?
         if($action_buttons){
-            if(count($list_buttons)==1 && $list_buttons[0]==14937){
-                //Just show cover link:
-                $ui .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" title="'.$e___11035[14937]['m__title'].'">'.$e___11035[14937]['m__cover'].'</a>';
-            } else {
-                //Show menu:
-                $ui .= '<div class="dropdown inline-block">';
-                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_e_'.$e['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14956]['m__cover'].'</button>';
-                $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
-                $ui .= $action_buttons;
-                $ui .= '</div>';
-                $ui .= '</div>';
-            }
+            //Show menu:
+            $ui .= '<div class="dropdown inline-block">';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_e_'.$e['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14956]['m__cover'].'</button>';
+            $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
+            $ui .= $action_buttons;
+            $ui .= '</div>';
+            $ui .= '</div>';
         }
     }
     $ui .= '</div>';
