@@ -9,10 +9,10 @@ if(superpower_unlocked()) {
     //Lead member and above, go to console:
     js_redirect($next_url, 13);
 
-} elseif(isset($_COOKIE['login_cookie'])){
+} elseif(isset($_COOKIE['auth_cookie'])){
 
     //Authenticate Cookie:
-    $cookie_parts = explode('ABCEFG',$_COOKIE['login_cookie']);
+    $cookie_parts = explode('ABCEFG',$_COOKIE['auth_cookie']);
 
     $es = $this->E_model->fetch(array(
         'e__id' => $cookie_parts[0],

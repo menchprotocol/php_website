@@ -674,8 +674,8 @@ function session_delete(){
 }
 
 function cookie_delete(){
-    unset($_COOKIE['login_cookie']);
-    setcookie('login_cookie', null, -1, '/');
+    unset($_COOKIE['auth_cookie']);
+    setcookie('auth_cookie', null, -1, '/');
 }
 
 function cookie_check() {
@@ -684,7 +684,7 @@ function cookie_check() {
     $first_segment = $CI->uri->segment(1);
     if(
         !superpower_unlocked()
-        && isset($_COOKIE['login_cookie'])
+        && isset($_COOKIE['auth_cookie'])
         && !(substr($first_segment, 0, 1)=='-' && in_array(intval(substr($first_segment, 1)), $CI->config->item('n___14582')))
     ) {
         header("Location: " . '/-4269'.( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' ), true, 307);
