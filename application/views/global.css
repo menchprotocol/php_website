@@ -2280,21 +2280,21 @@ textarea {
 
 
     .coin-cover-left{
-        top: 46px;
-        left: 8px;
+        top: 39px;
+        left: 1px;
     }
     .coin-cover-right{
-        top: 46px;
-        right: 8px;
+        top: 39px;
+        right: 1px;
     }
 
     .focus-coin .coin-cover-left{
-        top: 46px;
-        left: 46px;
+        top: 39px;
+        left: 39px;
     }
     .focus-coin .coin-cover-right{
-        top: 46px;
-        right: 46px;
+        top: 39px;
+        right: 39px;
     }
 
     .title-icon{
