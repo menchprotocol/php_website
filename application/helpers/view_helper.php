@@ -1644,7 +1644,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     $message_tooltip = '';
-    if(!$discovery_mode && $can_click && $superpower_10939){
+    if(!$discovery_mode && $can_click && superpower_active(26144, true)){
         $messages = '';
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
