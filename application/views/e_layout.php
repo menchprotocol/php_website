@@ -80,7 +80,6 @@ if(!$source_is_e || $superpower_13422){
 
 foreach($this->config->item('e___11089') as $x__type => $m) {
 
-
     //Have Needed Superpowers?
     $require = 0;
     $missing = 0;
@@ -366,6 +365,10 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             'x__up' => $e['e__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($i_stars);
+
+        if(!$source_is_e && !$counter){
+            continue;
+        }
 
         $found_10573 = ( $counter > 0);
 

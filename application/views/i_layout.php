@@ -23,13 +23,6 @@ $superpower_14005 = superpower_active(14005, true);
 <?php
 
 $e_focus_found = false; //Used to determine the first tab to be opened
-$show_previous = $e_of_i && $is_active;
-$is_in_my_ideas = count($this->X_model->fetch(array(
-    'x__up' => $member_e['e__id'],
-    'x__right' => $i_focus['i__id'],
-    'x__type' => 10573, //STARRED
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-)));
 
 
 
@@ -65,7 +58,7 @@ $previous_is = $this->X_model->fetch(array(
 ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
 
 $body = '';
-if($show_previous){
+if($e_of_i && $is_active){
     $body .= '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
