@@ -20,7 +20,11 @@ $logo = '/img/'.$current_coin_id.'.png';
     <meta name="theme-color" content="#f0f0f0">
     <link rel="icon" href="<?= $logo ?>">
     <link rel="mask-icon" href="<?= $logo ?>" color="#000000">
-    <link rel="canonical" href="https://mench.com<?= get_server('REQUEST_URI') ?>" />
+    <?php
+    if(isset($_SERVER['SERVER_NAME'])){
+        echo '<link rel="canonical" href="https://'.$_SERVER['SERVER_NAME'].get_server('REQUEST_URI').'" />';
+    }
+    ?>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= ( isset($title) ? $title : get_domain('m__title') ) ?></title>
