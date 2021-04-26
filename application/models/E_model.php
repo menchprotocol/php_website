@@ -968,12 +968,14 @@ class E_model extends CI_Model
                 $focus__id = intval(one_two_explode('@',' ',$action_command1));
 
                 //Go through all children and add the ones missing:
-                foreach($this->X_model->fetch(array(
+                $children = $this->X_model->fetch(array(
                     'x__up' => $focus__id,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                ), array('x__down'), 0, 0) as $e__child){
+                ), array('x__down'), 0, 0);
+
+                foreach($children as $e__child){
 
                     //Add if not added as the child:
                     if(!count($this->X_model->fetch(array(
