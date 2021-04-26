@@ -19,21 +19,10 @@ foreach($this->config->item('e___14870') as $e__id => $m) {
 
             $counter++;
 
-            //Add as parent:
-            $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
-                'x__down' => $e__id,
-                'x__up' => $setting_e__id,
-                'x__type' => e_x__type($x['x__message']),
-                'x__message' => $x['x__message'],
-            ));
 
-            //Remove as child:
-            /*
             $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
             ), $member_e['e__id'], 10673);
-            */
 
         }
 
