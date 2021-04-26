@@ -1,36 +1,5 @@
 <?php
 
-//Flip:
-$counter = 0;
-$member_e = superpower_unlocked();
-foreach($this->config->item('e___14870') as $e__id => $m) {
-
-    //Hosted Domains:
-
-    foreach($this->config->item('e___14925') as $setting_e__id => $setting_m) {
-
-        //Setting
-        foreach($this->X_model->fetch(array(
-            'x__up' => $e__id,
-            'x__down' => $setting_e__id,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array(), 0, 0) as $x){
-
-            $counter++;
-
-
-            $this->X_model->update($x['x__id'], array(
-                'x__status' => 6173, //Transaction Deleted
-            ), $member_e['e__id'], 10673);
-
-        }
-
-    }
-}
-
-echo $counter.' Total<br />';
-
 //Calculates the weekly coins issued:
 $e___14874 = $this->config->item('e___14874'); //COINS
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION

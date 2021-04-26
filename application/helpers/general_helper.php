@@ -1247,19 +1247,18 @@ function e__title_validate($string, $x__type = 0){
     }
 }
 
-function new_member_app(){
-
-}
-
 function get_domain_setting($setting_id = 0){
 
     $CI =& get_instance();
     $no_domain = 14923; //No Domain ID
     $source_id = $no_domain; //Assume no domain unless found below...
-    foreach($CI->config->item('e___14870') as $x__type => $m) {
-        if (get_server('SERVER_NAME') == $m['m__message']){
-            $source_id = $x__type;
-            break;
+    $server_name = get_server('SERVER_NAME');
+    if(strlen($server_name)){
+        foreach($CI->config->item('e___14870') as $x__type => $m) {
+            if ($server_name == $m['m__message']){
+                $source_id = $x__type;
+                break;
+            }
         }
     }
 
@@ -1270,9 +1269,10 @@ function get_domain_setting($setting_id = 0){
         return 0;
     } else {
         //No Domain detected
-        $e___domain = $CI->config->item('e___'.$source_id); //DOMAINS
-        return $e___domain[$setting_id]['m__message'];
+        $e___domain_sett = $CI->config->item('e___'.$setting_id); //DOMAINS
+        return $e___domain_sett[$source_id]['m__message'];
     }
+
 }
 
 function get_domain($var_field){
