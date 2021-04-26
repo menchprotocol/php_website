@@ -906,7 +906,7 @@ class E_model extends CI_Model
                 'message' => 'Missing primary command',
             );
 
-        } elseif(in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441)) && !is_valid_e_string($action_command1)){
+        } elseif(in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441, 26149)) && !is_valid_e_string($action_command1)){
 
             return array(
                 'status' => 0,
@@ -960,6 +960,41 @@ class E_model extends CI_Model
                 ), true, $x__source);
 
                 $applied_success++;
+
+
+            } elseif (in_array($action_e__id, array(26149))) {
+
+                //Add Child Sources:
+                $focus__id = intval(one_two_explode('@',' ',$action_command1));
+
+                //Go through all children and add the ones missing:
+                foreach($this->X_model->fetch(array(
+                    'x__up' => $focus__id,
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                ), array('x__down'), 0, 0) as $e__child){
+
+                    //Add if not added as the child:
+                    if(!count($this->X_model->fetch(array(
+                        'x__up' => $x['e__id'],
+                        'x__down' => $e__child['e__id'],
+                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+
+                        //Must be added:
+                        $this->X_model->create(array(
+                            'x__source' => $x__source,
+                            'x__type' => e_x__type(),
+                            'x__up' => $x['e__id'],
+                            'x__down' => $e__child['e__id'],
+                        ));
+
+                        $applied_success++;
+                    }
+
+                }
 
             } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
 
