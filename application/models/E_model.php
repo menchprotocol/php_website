@@ -929,226 +929,221 @@ class E_model extends CI_Model
         //Basic input validation done, let's continue...
         $applied_success = 0; //To be populated...
 
+        //Fetch all children:
+        $children = $this->X_model->fetch(array(
+            'x__up' => $e__id,
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), array('x__down'), 0);
 
-        if (in_array($action_e__id, array(26149))) {
 
-            //Add Child Sources:
-            $focus__id = intval(one_two_explode('@',' ',$action_command1));
+        //Process request:
+        foreach($children as $x) {
 
-            //Go through all children and add the ones missing:
-            $children = $this->X_model->fetch(array(
-                'x__up' => $focus__id,
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('x__down'), 0, 0);
+            //Logic here must match items in e_mass_actions config variable
 
-            foreach($children as $e__child){
+            //Take command-specific action:
+            if ($action_e__id == 4998) { //Add Prefix String
 
-                //Add if not added as the child:
-                if(!count($this->X_model->fetch(array(
-                    'x__up' => $e__id,
-                    'x__down' => $e__child['e__id'],
+                $this->E_model->update($x['e__id'], array(
+                    'e__title' => $action_command1 . $x['e__title'],
+                ), true, $x__source);
+
+                $applied_success++;
+
+            } elseif ($action_e__id == 4999) { //Add Postfix String
+
+                $this->E_model->update($x['e__id'], array(
+                    'e__title' => $x['e__title'] . $action_command1,
+                ), true, $x__source);
+
+                $applied_success++;
+
+
+            } elseif (in_array($action_e__id, array(26149))) { //Add/Delete/Migrate parent source
+
+                //Go through all parents of this source:
+                //Add Child Sources:
+                $focus__id = intval(one_two_explode('@',' ',$action_command1));
+
+                //Go through all parents and add the ones missing:
+                foreach($this->X_model->fetch(array(
+                    'x__down' => $focus__id,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))){
+                    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                ), array('x__up'), 0, 0) as $e__up){
 
-                    //Must be added:
-                    $this->X_model->create(array(
-                        'x__source' => $x__source,
-                        'x__type' => e_x__type(),
-                        'x__up' => $e__id,
-                        'x__down' => $e__child['e__id'],
-                    ));
+                    //Add if not added as the child:
+                    if(!count($this->X_model->fetch(array(
+                        'x__up' => $e__up['e__id'],
+                        'x__down' => $x['e__id'],
+                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
 
-                    $applied_success++;
+                        //Must be added:
+                        $this->X_model->create(array(
+                            'x__source' => $x__source,
+                            'x__up' => $e__up['e__id'],
+                            'x__down' => $x['e__id'],
+                            'x__type' => e_x__type($e__up['x__message']),
+                            'x__message' => $e__up['x__message'],
+                        ));
+
+                        $applied_success++;
+                    }
+
                 }
 
-            }
+            } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
 
-        } else {
+                //What member searched for:
+                $focus__id = intval(one_two_explode('@',' ',$action_command1));
 
-            //Fetch all children:
-            $children = $this->X_model->fetch(array(
-                'x__up' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('x__down'), 0);
+                //See if child source has searched parent source:
+                $child_parent_e = $this->X_model->fetch(array(
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__down' => $x['e__id'], //This child source
+                    'x__up' => $focus__id,
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                ));
 
+                if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_e)==0) || ($action_e__id==12928 && view_coins_e(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_coins_e(12273, $x['e__id'],0, false))){
 
-            //Process request:
-            foreach($children as $x) {
-
-                //Logic here must match items in e_mass_actions config variable
-
-                //Take command-specific action:
-                if ($action_e__id == 4998) { //Add Prefix String
-
-                    $this->E_model->update($x['e__id'], array(
-                        'e__title' => $action_command1 . $x['e__title'],
-                    ), true, $x__source);
-
-                    $applied_success++;
-
-                } elseif ($action_e__id == 4999) { //Add Postfix String
-
-                    $this->E_model->update($x['e__id'], array(
-                        'e__title' => $x['e__title'] . $action_command1,
-                    ), true, $x__source);
-
-                    $applied_success++;
-
-
-                } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
-
-                    //What member searched for:
-                    $focus__id = intval(one_two_explode('@',' ',$action_command1));
-
-                    //See if child source has searched parent source:
-                    $child_parent_e = $this->X_model->fetch(array(
-                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    $add_fields = array(
+                        'x__source' => $x__source,
+                        'x__type' => e_x__type(),
                         'x__down' => $x['e__id'], //This child source
                         'x__up' => $focus__id,
-                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    ));
+                    );
 
-                    if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_e)==0) || ($action_e__id==12928 && view_coins_e(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_coins_e(12273, $x['e__id'],0, false))){
+                    if($action_e__id==13441){
+                        //Copy message only if moving:
+                        $add_fields['x__message'] = $x['x__message'];
+                    }
 
-                        $add_fields = array(
+                    //Parent Member Addition
+                    $this->X_model->create($add_fields);
+
+                    $applied_success++;
+
+                    if($action_e__id==13441){
+                        //Since we're migrating we should remove from here:
+                        $this->X_model->update($x['x__id'], array(
+                            'x__status' => 6173, //Transaction Deleted
+                        ), $x__source, 10673 /* Member Transaction Unpublished  */);
+                    }
+
+                } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_e) > 0){
+
+                    if($action_e__id==5982){
+
+                        //Parent Member Removal
+                        foreach($child_parent_e as $delete_tr){
+
+                            $this->X_model->update($delete_tr['x__id'], array(
+                                'x__status' => 6173, //Transaction Deleted
+                            ), $x__source, 10673 /* Member Transaction Unpublished  */);
+
+                            $applied_success++;
+                        }
+
+                    } elseif($action_e__id==11956) {
+
+                        $parent_new_e__id = intval(one_two_explode('@',' ',$action_command2));
+
+                        //Add as a parent because it meets the condition
+                        $this->X_model->create(array(
                             'x__source' => $x__source,
                             'x__type' => e_x__type(),
                             'x__down' => $x['e__id'], //This child source
-                            'x__up' => $focus__id,
-                        );
-
-                        if($action_e__id==13441){
-                            //Copy message only if moving:
-                            $add_fields['x__message'] = $x['x__message'];
-                        }
-
-                        //Parent Member Addition
-                        $this->X_model->create($add_fields);
+                            'x__up' => $parent_new_e__id,
+                        ));
 
                         $applied_success++;
 
-                        if($action_e__id==13441){
-                            //Since we're migrating we should remove from here:
-                            $this->X_model->update($x['x__id'], array(
-                                'x__status' => 6173, //Transaction Deleted
-                            ), $x__source, 10673 /* Member Transaction Unpublished  */);
-                        }
-
-                    } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_e) > 0){
-
-                        if($action_e__id==5982){
-
-                            //Parent Member Removal
-                            foreach($child_parent_e as $delete_tr){
-
-                                $this->X_model->update($delete_tr['x__id'], array(
-                                    'x__status' => 6173, //Transaction Deleted
-                                ), $x__source, 10673 /* Member Transaction Unpublished  */);
-
-                                $applied_success++;
-                            }
-
-                        } elseif($action_e__id==11956) {
-
-                            $parent_new_e__id = intval(one_two_explode('@',' ',$action_command2));
-
-                            //Add as a parent because it meets the condition
-                            $this->X_model->create(array(
-                                'x__source' => $x__source,
-                                'x__type' => e_x__type(),
-                                'x__down' => $x['e__id'], //This child source
-                                'x__up' => $parent_new_e__id,
-                            ));
-
-                            $applied_success++;
-
-                        }
-
                     }
-
-                } elseif ($action_e__id == 5943) { //Member Mass Update Member Icon
-
-                    $this->E_model->update($x['e__id'], array(
-                        'e__cover' => $action_command1,
-                    ), true, $x__source);
-
-                    $applied_success++;
-
-                } elseif ($action_e__id == 12318 && !strlen($x['e__cover'])) { //Member Mass Update Member Icon
-
-                    $this->E_model->update($x['e__id'], array(
-                        'e__cover' => $action_command1,
-                    ), true, $x__source);
-
-                    $applied_success++;
-
-                } elseif ($action_e__id == 5000 && substr_count(strtolower($x['e__title']), strtolower($action_command1)) > 0) { //Replace Member Matching Name
-
-                    $this->E_model->update($x['e__id'], array(
-                        'e__title' => str_ireplace($action_command1, $action_command2, $x['e__title']),
-                    ), true, $x__source);
-
-                    $applied_success++;
-
-                } elseif ($action_e__id == 10625 && substr_count($x['e__cover'], $action_command1) > 0) { //Replace Member Matching Icon
-
-                    $this->E_model->update($x['e__id'], array(
-                        'e__cover' => str_replace($action_command1, $action_command2, $x['e__cover']),
-                    ), true, $x__source);
-
-                    $applied_success++;
-
-                } elseif ($action_e__id == 5001 && substr_count($x['x__message'], $action_command1) > 0) { //Replace Transaction Matching String
-
-                    $new_message = str_replace($action_command1, $action_command2, $x['x__message']);
-
-                    $this->X_model->update($x['x__id'], array(
-                        'x__message' => $new_message,
-                        'x__type' => e_x__type($new_message),
-                    ), $x__source, 10657 /* SOURCE LINK CONTENT UPDATE  */);
-
-                    $applied_success++;
-
-                } elseif ($action_e__id == 26093) { //Replace Transaction Matching String
-
-                    $this->X_model->update($x['x__id'], array(
-                        'x__message' => $action_command1,
-                        'x__type' => e_x__type($action_command1),
-                    ), $x__source, 10657 /* SOURCE LINK CONTENT UPDATE  */);
-
-                    $applied_success++;
-
-                } elseif ($action_e__id == 5003 && ($action_command1=='*' || $x['e__type']==$action_command1) && in_array($action_command2, $this->config->item('n___6177'))) {
-
-                    //Being deleted? Remove as well if that's the case:
-                    if(!in_array($action_command2, $this->config->item('n___7358'))){
-                        $this->E_model->remove($x['e__id'], $x__source);
-                    }
-
-                    //Update Matching Member Status:
-                    $this->E_model->update($x['e__id'], array(
-                        'e__type' => $action_command2,
-                    ), true, $x__source);
-
-                    $applied_success++;
-
-                } elseif ($action_e__id == 5865 && ($action_command1=='*' || $x['x__status']==$action_command1) && in_array($action_command2, $this->config->item('n___6186') /* Transaction Status */)) { //Update Matching Transaction Status
-
-                    $this->X_model->update($x['x__id'], array(
-                        'x__status' => $action_command2,
-                    ), $x__source, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Member Transaction Updated Status */ : 10673 /* Member Transaction Unpublished */ ));
-
-                    $applied_success++;
 
                 }
+
+            } elseif ($action_e__id == 5943) { //Member Mass Update Member Icon
+
+                $this->E_model->update($x['e__id'], array(
+                    'e__cover' => $action_command1,
+                ), true, $x__source);
+
+                $applied_success++;
+
+            } elseif ($action_e__id == 12318 && !strlen($x['e__cover'])) { //Member Mass Update Member Icon
+
+                $this->E_model->update($x['e__id'], array(
+                    'e__cover' => $action_command1,
+                ), true, $x__source);
+
+                $applied_success++;
+
+            } elseif ($action_e__id == 5000 && substr_count(strtolower($x['e__title']), strtolower($action_command1)) > 0) { //Replace Member Matching Name
+
+                $this->E_model->update($x['e__id'], array(
+                    'e__title' => str_ireplace($action_command1, $action_command2, $x['e__title']),
+                ), true, $x__source);
+
+                $applied_success++;
+
+            } elseif ($action_e__id == 10625 && substr_count($x['e__cover'], $action_command1) > 0) { //Replace Member Matching Icon
+
+                $this->E_model->update($x['e__id'], array(
+                    'e__cover' => str_replace($action_command1, $action_command2, $x['e__cover']),
+                ), true, $x__source);
+
+                $applied_success++;
+
+            } elseif ($action_e__id == 5001 && substr_count($x['x__message'], $action_command1) > 0) { //Replace Transaction Matching String
+
+                $new_message = str_replace($action_command1, $action_command2, $x['x__message']);
+
+                $this->X_model->update($x['x__id'], array(
+                    'x__message' => $new_message,
+                    'x__type' => e_x__type($new_message),
+                ), $x__source, 10657 /* SOURCE LINK CONTENT UPDATE  */);
+
+                $applied_success++;
+
+            } elseif ($action_e__id == 26093) { //Replace Transaction Matching String
+
+                $this->X_model->update($x['x__id'], array(
+                    'x__message' => $action_command1,
+                    'x__type' => e_x__type($action_command1),
+                ), $x__source, 10657 /* SOURCE LINK CONTENT UPDATE  */);
+
+                $applied_success++;
+
+            } elseif ($action_e__id == 5003 && ($action_command1=='*' || $x['e__type']==$action_command1) && in_array($action_command2, $this->config->item('n___6177'))) {
+
+                //Being deleted? Remove as well if that's the case:
+                if(!in_array($action_command2, $this->config->item('n___7358'))){
+                    $this->E_model->remove($x['e__id'], $x__source);
+                }
+
+                //Update Matching Member Status:
+                $this->E_model->update($x['e__id'], array(
+                    'e__type' => $action_command2,
+                ), true, $x__source);
+
+                $applied_success++;
+
+            } elseif ($action_e__id == 5865 && ($action_command1=='*' || $x['x__status']==$action_command1) && in_array($action_command2, $this->config->item('n___6186') /* Transaction Status */)) { //Update Matching Transaction Status
+
+                $this->X_model->update($x['x__id'], array(
+                    'x__status' => $action_command2,
+                ), $x__source, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Member Transaction Updated Status */ : 10673 /* Member Transaction Unpublished */ ));
+
+                $applied_success++;
+
             }
         }
-
 
         //Log mass source edit transaction:
         $this->X_model->create(array(
