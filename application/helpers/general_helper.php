@@ -253,12 +253,12 @@ function i_is_startable($i)
                 'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__right' => $i['i__id'],
                 'x__up IN (' . join(',', $CI->config->item('n___26124')) . ')' => null, //Starting Topics
-            ))) ||
-            count($CI->X_model->fetch(array(
+            )))
+            /* || count($CI->X_model->fetch(array(
                 'x__right' => $i['i__id'],
                 'x__type' => 10573, //STARRED
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))
+            ))) */
         );
 
 }
@@ -1281,6 +1281,9 @@ function get_domain_setting($setting_id = 0){
     } else {
         //No Domain detected
         $e___domain_sett = $CI->config->item('e___'.$setting_id); //DOMAINS
+        if(!isset($e___domain_sett[$source_id]) || !strlen($e___domain_sett[$source_id]['m__message'])){
+            return false;
+        }
         $skip_first_word = in_array($setting_id, $CI->config->item('n___26090')) || in_array($setting_id, $CI->config->item('n___26155'));
         return ( $skip_first_word ? substr($e___domain_sett[$source_id]['m__message'], 1) : $e___domain_sett[$source_id]['m__message'] );
     }
