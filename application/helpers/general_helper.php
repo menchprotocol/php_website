@@ -1282,7 +1282,7 @@ function get_domain_setting($setting_id = 0){
         //No Domain detected
         $e___domain_sett = $CI->config->item('e___'.$setting_id); //DOMAINS
         $skip_first_word = in_array($setting_id, $CI->config->item('n___26090')) || in_array($setting_id, $CI->config->item('n___26155'));
-        return ( $skip_first_word ? subste($e___domain_sett[$source_id]['m__message'], 1) : $e___domain_sett[$source_id]['m__message'] );
+        return ( $skip_first_word ? substr($e___domain_sett[$source_id]['m__message'], 1) : $e___domain_sett[$source_id]['m__message'] );
     }
 
 }
