@@ -106,6 +106,18 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
         return view_url_embed($x__message, $full_message);
 
+    } elseif ($x__type == 26090 /* Source */) {
+
+        $sources = $CI->E_model->fetch(array(
+            'e__id' => substr($x__message, 1),
+            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        ));
+        if(count($sources)){
+            return '<span class="icon-block">'.view_cover(12274,$sources[0]['e__cover']). '</span>'.$sources[0]['e__title'].'';
+        } else {
+            return $x__message.' ⚠️ INVALID SOURCE';
+        }
+
     } elseif ($x__type == 26092 /* CAD */) {
 
         return str_replace('$CAD ','$',$x__message);
