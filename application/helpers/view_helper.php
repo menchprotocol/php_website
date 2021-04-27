@@ -114,7 +114,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
         if(count($ideas)){
-            return '<span class="icon-block">'.view_cover(12273,$ideas[0]['i__cover']). '</span>'.$ideas[0]['i__title'].'';
+            return '<div><span class="icon-block-xs">'.view_cover(12273,$ideas[0]['i__cover']). '</span>'.$ideas[0]['i__title'].'<a href="/i/i_go'.$x__message.'" target="_blank" class="ignore-click icon-block-xs" style="font-size:0.89em;"><i class="far fa-external-link"></i></a></div>';
         } else {
             return $x__message.' ⚠️ INVALID ID';
         }
@@ -126,7 +126,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
         if(count($sources)){
-            return '<span class="icon-block">'.view_cover(12274,$sources[0]['e__cover']). '</span>'.$sources[0]['e__title'].'';
+            return '<div><span class="icon-block-xs">'.view_cover(12274,$sources[0]['e__cover']). '</span>'.$sources[0]['e__title'].'<a href="/'.$x__message.'" target="_blank" class="ignore-click icon-block-xs" style="font-size:0.89em;"><i class="far fa-external-link"></i></a></div>';
         } else {
             return $x__message.' ⚠️ INVALID ID';
         }
