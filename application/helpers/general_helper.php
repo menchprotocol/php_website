@@ -294,6 +294,28 @@ function x_detect_type($string)
         //It's a URL, see what type (this could fail if duplicate, etc...):
         return $CI->E_model->url($string);
 
+    } elseif (substr($string, 0, 1)=='@' && is_numeric(substr($string, 1)) && count($CI->E_model->fetch(array(
+            'e__id' => substr($string, 1),
+            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        )))) {
+
+        //Source:
+        return array(
+            'status' => 1,
+            'x__type' => 26090,
+        );
+
+    } elseif (substr($string, 0, 1)=='/' && is_numeric(substr($string, 1)) && count($CI->I_model->fetch(array(
+            'i__id' => substr($string, 1),
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+        )))) {
+
+        //Idea:
+        return array(
+            'status' => 1,
+            'x__type' => 26155,
+        );
+
     } elseif (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//' && !$has_space) {
 
         //Relative URL
@@ -324,17 +346,6 @@ function x_detect_type($string)
         return array(
             'status' => 1,
             'x__type' => 7657,
-        );
-
-    } elseif (substr($string, 0, 1)=='@' && is_numeric(substr($string, 1)) && count($CI->E_model->fetch(array(
-            'e__id' => substr($string, 1),
-            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-        )))) {
-
-        //Source:
-        return array(
-            'status' => 1,
-            'x__type' => 26090,
         );
 
     } elseif (substr($string, 0, 5)=='$CAD ' && is_numeric(substr($string, 5))) {

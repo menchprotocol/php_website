@@ -106,6 +106,19 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
         return view_url_embed($x__message, $full_message);
 
+
+    } elseif ($x__type == 26155 /* Idea */) {
+
+        $ideas = $CI->I_model->fetch(array(
+            'i__id' => substr($x__message, 1),
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+        ));
+        if(count($ideas)){
+            return '<span class="icon-block">'.view_cover(12273,$ideas[0]['i__cover']). '</span>'.$ideas[0]['i__title'].'';
+        } else {
+            return $x__message.' ⚠️ INVALID ID';
+        }
+
     } elseif ($x__type == 26090 /* Source */) {
 
         $sources = $CI->E_model->fetch(array(
@@ -115,7 +128,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
         if(count($sources)){
             return '<span class="icon-block">'.view_cover(12274,$sources[0]['e__cover']). '</span>'.$sources[0]['e__title'].'';
         } else {
-            return $x__message.' ⚠️ INVALID SOURCE';
+            return $x__message.' ⚠️ INVALID ID';
         }
 
     } elseif ($x__type == 26092 /* CAD */) {
