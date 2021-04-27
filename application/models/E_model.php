@@ -961,7 +961,7 @@ class E_model extends CI_Model
                 $applied_success++;
 
 
-            } elseif (in_array($action_e__id, array(26149))) { //Add/Delete/Migrate parent source
+            } elseif (in_array($action_e__id, array(26149))) {
 
                 //Go through all parents of this source:
                 //Add Child Sources:
@@ -969,11 +969,11 @@ class E_model extends CI_Model
 
                 //Go through all parents and add the ones missing:
                 foreach($this->X_model->fetch(array(
-                    'x__down' => $focus__id,
+                    'x__up' => $focus__id,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                ), array('x__up'), 0, 0) as $e__up){
+                ), array('x__down'), 0, 0) as $e__up){
 
                     //Add if not added as the child:
                     if(!count($this->X_model->fetch(array(
