@@ -40,7 +40,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                                 //Start with the input wrapper:
-                                $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m__message'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                                $input_options .= '<span title="'.$e_list_action['m__message'].'" class="mass_id_'.$action_e__id.' inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
 
 
@@ -133,7 +133,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             }
 
                             //Drop Down
-                            echo '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
+                            echo '<select class="form-control border" name="mass_action_toggle">';
                             echo $dropdown_options;
                             echo '</select>';
 
@@ -179,7 +179,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                             //Start with the input wrapper:
-                            $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m__message'].'" class="inline-block '. ( $this_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+                            $input_options .= '<span title="'.$e_list_action['m__message'].'" class="mass_id_'.$action_e__id.' inline-block '. ( $this_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
                             if(in_array($action_e__id, array(12591, 12592))){
 
@@ -206,7 +206,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         }
 
                         //Drop Down
-                        echo '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
+                        echo '<select class="form-control border" name="mass_action_toggle">';
                         echo $dropdown_options;
                         echo '</select>';
 

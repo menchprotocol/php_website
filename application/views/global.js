@@ -123,12 +123,6 @@ if(js_pl_id > 1){ //Any user other than Shervin
 }
 
 
-
-function mass_action_ui(){
-    $('.mass_action_item').addClass('hidden');
-    $('#mass_id_' + $('#set_mass_action').val() ).removeClass('hidden');
-}
-
 function htmlentitiesjs(rawStr){
     return rawStr.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
         return '&#'+i.charCodeAt(0)+';';
@@ -138,8 +132,9 @@ function htmlentitiesjs(rawStr){
 function load_editor(){
 
 
-    $('#set_mass_action').change(function () {
-        mass_action_ui();
+    $('.mass_action_toggle').change(function () {
+        $('.mass_action_item').addClass('hidden');
+        $('.mass_id_' + $(this).val() ).removeClass('hidden');
     });
 
     if(parseInt(js_e___6404[12678]['m__message'])){
