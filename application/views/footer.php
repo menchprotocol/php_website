@@ -10,6 +10,221 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
     $e___14937 = $this->config->item('e___14937'); //SOURCE ICON
 
+    //Apply to All Sources
+    if(superpower_active(12703, true)){
+        ?>
+        <div class="modal fade indifferent" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title css__title" id="modal4997Label"><?= $e___11035[4997]['m__cover'].' '.$e___11035[4997]['m__title'] ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="">
+                        <div class="modal-body">
+                            <?php
+
+                            //Mass Editor:
+                            $dropdown_options = '';
+                            $input_options = '';
+                            $editor_counter = 0;
+
+                            foreach($this->config->item('e___4997') as $action_e__id => $e_list_action) {
+
+
+                                $editor_counter++;
+                                $dropdown_options .= '<option value="' . $action_e__id . '" title="'.$e_list_action['m__message'].'">' .$e_list_action['m__title'] . '</option>';
+                                $is_upper = ( in_array($action_e__id, $this->config->item('n___12577') /* SOURCE UPDATER UPPERCASE */) ? ' css__title ' : false );
+
+
+                                //Start with the input wrapper:
+                                $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m__message'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+
+
+
+
+                                if(in_array($action_e__id, array(5000, 5001, 10625))){
+
+                                    //String Find and Replace:
+
+                                    //Find:
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'" placeholder="Search" class="form-control border '.$is_upper.'">';
+
+                                    //Replace:
+                                    $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'" placeholder="Replace" class="form-control border '.$is_upper.'">';
+
+
+                                } elseif(in_array($action_e__id, array(5981, 12928, 12930, 5982, 13441, 26149))){
+
+                                    //Member search box:
+
+                                    //String command:
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
+
+                                    //We don't need the second value field here:
+                                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" placeholder="Search Source" />';
+
+
+                                } elseif($action_e__id == 11956){
+
+                                    //IF HAS THIS
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
+
+                                    //ADD THIS
+                                    $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
+
+
+                                } elseif($action_e__id == 5003){
+
+                                    //Member Status update:
+
+                                    //Find:
+                                    $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
+                                    $input_options .= '<option value="*">Update All Statuses</option>';
+                                    foreach($this->config->item('e___6177') /* Source Status */ as $x__type3 => $m3){
+                                        $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m__title'].'</option>';
+                                    }
+                                    $input_options .= '</select>';
+
+                                    //Replace:
+                                    $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
+                                    $input_options .= '<option value="">Set New Status...</option>';
+                                    foreach($this->config->item('e___6177') /* Source Status */ as $x__type3 => $m3){
+                                        $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
+                                    }
+                                    $input_options .= '</select>';
+
+
+                                } elseif($action_e__id == 5865){
+
+                                    //Transaction Status update:
+
+                                    //Find:
+                                    $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
+                                    $input_options .= '<option value="*">Update All Statuses</option>';
+                                    foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type3 => $m3){
+                                        $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m__title'].'</option>';
+                                    }
+                                    $input_options .= '</select>';
+
+                                    //Replace:
+                                    $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
+                                    $input_options .= '<option value="">Set New Status...</option>';
+                                    foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type3 => $m3){
+                                        $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
+                                    }
+                                    $input_options .= '</select>';
+
+
+                                } else {
+
+                                    //String command:
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="String..." class="form-control border '.$is_upper.'">';
+
+                                    //We don't need the second value field here:
+                                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
+
+                                }
+
+                                $input_options .= '</span>';
+
+                            }
+
+                            //Drop Down
+                            echo '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
+                            echo $dropdown_options;
+                            echo '</select>';
+
+                            echo $input_options;
+
+                            ?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-default">APPLY TO ALL</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+
+    //Apply to All Ideas
+    if(superpower_active(12700, true)){
+        ?>
+        <div class="modal fade indifferent" id="modal12589" tabindex="-1" role="dialog" aria-labelledby="modal12589Label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title css__title" id="modal12589Label"><?= $e___11035[12589]['m__cover'].' '.$e___11035[12589]['m__title'] ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="">
+                    <div class="modal-body">
+                        <?php
+
+                        //IDEA LIST EDITOR
+                        $dropdown_options = '';
+                        $input_options = '';
+                        $this_counter = 0;
+
+                        foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
+
+                            $this_counter++;
+                            $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m__title'] . '</option>';
+
+
+                            //Start with the input wrapper:
+                            $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m__message'].'" class="inline-block '. ( $this_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
+
+                            if(in_array($action_e__id, array(12591, 12592))){
+
+                                //Source search box:
+
+                                //String command:
+                                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border css__title">';
+
+                                //We don't need the second value field here:
+                                $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
+
+                            } elseif(in_array($action_e__id, array(12611, 12612))){
+
+                                //String command:
+                                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_search i_text_search border css__title">';
+
+                                //We don't need the second value field here:
+                                $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
+
+                            }
+
+                            $input_options .= '</span>';
+
+                        }
+
+                        //Drop Down
+                        echo '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
+                        echo $dropdown_options;
+                        echo '</select>';
+
+                        echo $input_options;
+
+                        ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default">APPLY TO ALL</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <?php
+    }
+
     ?>
 
     <!-- ACCOUNT SETTINGS Modal -->

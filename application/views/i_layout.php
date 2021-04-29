@@ -165,68 +165,6 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($is_next);
 
-        if(superpower_active(12700, true)){
-
-            //IDEA LIST EDITOR
-            $ui .= '<div class="action-middle-btn grey toggle_12589"><a href="javascript:void(0);" onclick="$(\'.toggle_12589\').toggleClass(\'hidden\');" title="'.$e___11035[12589]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[12589]['m__cover'].'</a></div>';
-
-
-            $ui .= '<div class="toggle_12589 hidden">';
-            $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[12589]['m__cover'].'</span>'.$e___11035[12589]['m__title'].'</div>';
-            $dropdown_options = '';
-            $input_options = '';
-            $this_counter = 0;
-
-            foreach($this->config->item('e___12589') as $action_e__id => $e_list_action) {
-
-                $this_counter++;
-                $dropdown_options .= '<option value="' . $action_e__id . '">' .$e_list_action['m__title'] . '</option>';
-
-
-                //Start with the input wrapper:
-                $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m__message'].'" class="inline-block '. ( $this_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
-
-                if(in_array($action_e__id, array(12591, 12592))){
-
-                    //Source search box:
-
-                    //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border css__title">';
-
-                    //We don't need the second value field here:
-                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
-
-                } elseif(in_array($action_e__id, array(12611, 12612))){
-
-                    //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_search i_text_search border css__title">';
-
-                    //We don't need the second value field here:
-                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
-
-                }
-
-                $input_options .= '</span>';
-
-            }
-
-            $ui .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 41px;">';
-
-            //Drop Down
-            $ui .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
-            $ui .= $dropdown_options;
-            $ui .= '</select>';
-
-            $ui .= $input_options;
-
-            $ui .= '<div><input type="submit" value="APPLY" class="btn btn-12273 inline-block"></div>';
-
-            $ui .= '</form>';
-            $ui .= '</div>';
-
-        }
-
-
         $ui .= '<div id="list-in-13542" class="row justify-content-center hideIfEmpty">';
         foreach($is_next as $next_i) {
             $ui .= view_i(13542, 0, $i_focus, $next_i, $e_of_i);

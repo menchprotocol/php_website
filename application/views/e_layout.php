@@ -119,178 +119,34 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $counter = view_coins_e(12274, $e['e__id'], 0, false);
         $list_e = view_coins_e(12274, $e['e__id'], 1);
 
-        //SOURCE MASS EDITOR
-        if($superpower_12703){
+        //Source Status Filters:
+        if(superpower_active(14005, true)){
 
-            //Mass Editor:
-            $dropdown_options = '';
-            $input_options = '';
-            $editor_counter = 0;
+            $e_count = $this->E_model->child_count($e['e__id'], $this->config->item('n___7358') /* ACTIVE */);
+            $child__filters = $this->X_model->fetch(array(
+                'x__up' => $e['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            ), array('x__down'), 0, 0, array('e__type' => 'ASC'), 'COUNT(e__id) as totals, e__type', 'e__type');
 
-            foreach($this->config->item('e___4997') as $action_e__id => $e_list_action) {
+            //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
+            if (count($child__filters) > 0 && $child__filters[0]['totals'] < $e_count) {
 
+                //Add 2nd Navigation to UI
+                $ui .= '<div class="nav nav-pills nav-sm">';
 
-                $editor_counter++;
-                $dropdown_options .= '<option value="' . $action_e__id . '" title="'.$e_list_action['m__message'].'">' .$e_list_action['m__title'] . '</option>';
-                $is_upper = ( in_array($action_e__id, $this->config->item('n___12577') /* SOURCE UPDATER UPPERCASE */) ? ' css__title ' : false );
+                //Show fixed All button:
+                $ui .= '<li class="nav-item"><a href="#" onclick="e_filter_status(11029, -1)" class="nav-x e_filter_status_11029 active en_status_11029_-1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk zq12274"></i><span class="zq12274">&nbsp;' . $e_count . '</span></a></li>';
 
-
-                //Start with the input wrapper:
-                $input_options .= '<span id="mass_id_'.$action_e__id.'" title="'.$e_list_action['m__message'].'" class="inline-block '. ( $editor_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
-
-
-
-
-                if(in_array($action_e__id, array(5000, 5001, 10625))){
-
-                    //String Find and Replace:
-
-                    //Find:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'" placeholder="Search" class="form-control border '.$is_upper.'">';
-
-                    //Replace:
-                    $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'" placeholder="Replace" class="form-control border '.$is_upper.'">';
-
-
-                } elseif(in_array($action_e__id, array(5981, 12928, 12930, 5982, 13441, 26149))){
-
-                    //Member search box:
-
-                    //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
-
-                    //We don't need the second value field here:
-                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" placeholder="Search Source" />';
-
-
-                } elseif($action_e__id == 11956){
-
-                    //IF HAS THIS
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
-
-                    //ADD THIS
-                    $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
-
-
-                } elseif($action_e__id == 5003){
-
-                    //Member Status update:
-
-                    //Find:
-                    $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
-                    $input_options .= '<option value="*">Update All Statuses</option>';
-                    foreach($this->config->item('e___6177') /* Source Status */ as $x__type3 => $m3){
-                        $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m__title'].'</option>';
-                    }
-                    $input_options .= '</select>';
-
-                    //Replace:
-                    $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
-                    $input_options .= '<option value="">Set New Status...</option>';
-                    foreach($this->config->item('e___6177') /* Source Status */ as $x__type3 => $m3){
-                        $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
-                    }
-                    $input_options .= '</select>';
-
-
-                } elseif($action_e__id == 5865){
-
-                    //Transaction Status update:
-
-                    //Find:
-                    $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
-                    $input_options .= '<option value="*">Update All Statuses</option>';
-                    foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type3 => $m3){
-                        $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m__title'].'</option>';
-                    }
-                    $input_options .= '</select>';
-
-                    //Replace:
-                    $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
-                    $input_options .= '<option value="">Set New Status...</option>';
-                    foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type3 => $m3){
-                        $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
-                    }
-                    $input_options .= '</select>';
-
-
-                } else {
-
-                    //String command:
-                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="String..." class="form-control border '.$is_upper.'">';
-
-                    //We don't need the second value field here:
-                    $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
-
+                //Show each specific filter based on DB counts:
+                foreach($child__filters as $c_c) {
+                    $st = $e___6177[$c_c['e__type']];
+                    $ui .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(11029, ' . $c_c['e__type'] . ')" class="nav-x nav-link e_filter_status_11029 en_status_11029_' . $c_c['e__type'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m__message'] . '">' . $st['m__cover'] . '&nbsp;' . $c_c['totals'] . '<span class="show-max">&nbsp;' . $st['m__title'] . '</span></a></li>';
                 }
 
-                $input_options .= '</span>';
+                $ui .= '</div>';
 
-            }
-
-
-            $ui .= '<div class="action-middle-btn grey toggle_4997"><a href="javascript:void(0);" onclick="$(\'.toggle_4997\').toggleClass(\'hidden\');" title="'.$e___11035[4997]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4997]['m__cover'].'</a></div>';
-
-
-
-            $ui .= '<div class="toggle_4997 hidden">';
-            $ui .= '<form class="mass_modify" method="POST" action="" style="width: 100% !important; margin-left: 41px;">';
-
-            //Drop Down
-            $ui .= '<select class="form-control border" name="mass_action_e__id" id="set_mass_action">';
-            $ui .= $dropdown_options;
-            $ui .= '</select>';
-
-            $ui .= $input_options;
-
-            $ui .= '<div><input type="submit" value="APPLY" class="btn btn-default inline-block"></div>';
-
-            $ui .= '</form>';
-
-            //Also add invisible child IDs for quick copy/pasting:
-            $ui .= '<div class="hideIfEmpty texttransparent">';
-            foreach($list_e as $e_portfolio) {
-                $ui .= $e_portfolio['e__id'].',';
-            }
-            $ui .= '</div>';
-            $ui .= '<div class="doclear">&nbsp;</div>';
-            $ui .= '</div>';
-
-
-
-
-
-
-
-            //Source Status Filters:
-            if(superpower_active(14005, true)){
-
-                $e_count = $this->E_model->child_count($e['e__id'], $this->config->item('n___7358') /* ACTIVE */);
-                $child__filters = $this->X_model->fetch(array(
-                    'x__up' => $e['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                ), array('x__down'), 0, 0, array('e__type' => 'ASC'), 'COUNT(e__id) as totals, e__type', 'e__type');
-
-                //Only show filtering UI if we find child sources with different Status (Otherwise no need to filter):
-                if (count($child__filters) > 0 && $child__filters[0]['totals'] < $e_count) {
-
-                    //Add 2nd Navigation to UI
-                    $ui .= '<div class="nav nav-pills nav-sm">';
-
-                    //Show fixed All button:
-                    $ui .= '<li class="nav-item"><a href="#" onclick="e_filter_status(11029, -1)" class="nav-x e_filter_status_11029 active en_status_11029_-1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk zq12274"></i><span class="zq12274">&nbsp;' . $e_count . '</span></a></li>';
-
-                    //Show each specific filter based on DB counts:
-                    foreach($child__filters as $c_c) {
-                        $st = $e___6177[$c_c['e__type']];
-                        $ui .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(11029, ' . $c_c['e__type'] . ')" class="nav-x nav-link e_filter_status_11029 en_status_11029_' . $c_c['e__type'] . '" data-toggle="tooltip" data-placement="top" title="' . $st['m__message'] . '">' . $st['m__cover'] . '&nbsp;' . $c_c['totals'] . '<span class="show-max">&nbsp;' . $st['m__title'] . '</span></a></li>';
-                    }
-
-                    $ui .= '</div>';
-
-                }
             }
         }
 

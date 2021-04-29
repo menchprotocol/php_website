@@ -1238,11 +1238,6 @@ a.headline {
     display: inline-block;
 }
 
-.mass_modify .form-control{
-    margin:0 0 10px 0;
-    width: auto;
-}
-
 .x_marks .form-control{
     width: 41px;
     display: inline-block;
