@@ -1711,6 +1711,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
                 if($e__id==14937 && $editing_enabled){
                     $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
+                } elseif($e__id==12589 && superpower_active(12700, true)){
+                    $action_buttons .= '<a href="javascript:void(0);" x__type="'.$e__id.'" class="dropdown-item css__title trigger_modal">'.$anchor.'</a>';
                 } elseif($e__id==4603 && $has_sortable){
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item x_sort css__title">'.$anchor.'</a>'; //SORT
                 } elseif($e__id==6155 && $control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
@@ -2020,6 +2022,11 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 //COIN COVER
                 array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
+
+            } elseif($e__id==4997 && superpower_active(13429, true)){
+
+                array_push($list_buttons , $e__id);
+                $action_buttons .= '<a href="javascript:void(0);" x__type="'.$e__id.'" class="dropdown-item css__title trigger_modal">'.$anchor.'</a>';
 
             } elseif($e__id==4603 && $has_sortable){
 
