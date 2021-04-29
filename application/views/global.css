@@ -241,6 +241,7 @@ img.no-frame {
     border-radius: 0;
     margin:0 0 13px 0 !important;
     border: 0 !important;
+    text-align: left !important;
 }
 
 
@@ -2157,6 +2158,9 @@ i, .btn .show-max {
 .modal-content{
     border: 3px solid transparent;
     border-radius: 13px;
+}
+.mass_action_toggle, .e_text_search{
+    width: 100% !important;
 }
 .modal-header{
     border-bottom:0;
