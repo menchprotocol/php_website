@@ -145,9 +145,18 @@ function apply_all_load(apply_id, coin__id){
     var first_id = $('#modal'+apply_id+' .mass_action_toggle option:first').val();
     $('.mass_action_item').addClass('hidden');
     $('.mass_id_' + first_id ).removeClass('hidden');
-    $('#modal'+apply_id+' .mass_action_toggle').val(first_id);
+    $('#modal'+apply_id+' .mass_action_toggle').val(first_id);o
     $('#modal'+apply_id+' input[name="coin__id"]').val(coin__id);
     $('#modal'+apply_id).modal('show');
+
+    //Load Ppeview:
+    $('#modal'+apply_id+' .apply_preview').html('<span class="icon-block">i class="far fa-yin-yang fa-spin"></i></span>Loading...');
+    $.post("/x/apply_preview", {
+        apply_id: apply_id,
+        coin__id: coin__id
+    }, function (data) {
+        $('#modal'+apply_id+' .apply_preview').html(data);
+    });
 
 }
 

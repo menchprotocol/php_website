@@ -315,6 +315,47 @@ class X extends CI_Controller
 
 
 
+    function apply_preview()
+    {
+
+        if(!isset($_POST['apply_id']) || !isset($_POST['coin__id'])){
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing Core Data</div>';
+        } else {
+            if($_POST['apply_id']==4997){
+
+                //Source list:
+
+
+            } elseif($_POST['apply_id']==12589){
+
+                //idea list:
+                $is_next = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                    'x__left' => $_POST['coin__id'],
+                ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+                $counter = count($is_next);
+
+                if(!$counter){
+                    echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Ideas yet...</div>';
+                } else {
+                    echo '<div class="msg alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' idea'.view__s($counter).':</div>';
+                    echo '<div class="row justify-content-center">';
+                    foreach($is_next as $i) {
+                        echo view_i(13542, 0, null, $i);
+                    }
+                    echo '</div>';
+                }
+
+            } else {
+                echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Unknown Apply ID</div>';
+            }
+        }
+    }
+
+
+
 
     function complete_next($top_i__id, $current_i__id, $next_i__id){
 
