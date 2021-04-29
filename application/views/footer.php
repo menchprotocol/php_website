@@ -133,7 +133,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             }
 
                             //Drop Down
-                            echo '<select class="form-control border" name="mass_action_toggle">';
+                            echo '<select class="form-control border mass_action_toggle" name="mass_action_toggle">';
                             echo $dropdown_options;
                             echo '</select>';
 
@@ -206,7 +206,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         }
 
                         //Drop Down
-                        echo '<select class="form-control border" name="mass_action_toggle">';
+                        echo '<select class="form-control border mass_action_toggle" name="mass_action_toggle">';
                         echo $dropdown_options;
                         echo '</select>';
 
