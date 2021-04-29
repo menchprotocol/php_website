@@ -2023,7 +2023,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
-            } elseif($e__id==4997 && superpower_active(13429, true)){
+            } elseif($e__id==4997 && superpower_active(12703, true)){
 
                 array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" x__type="'.$e__id.'" class="dropdown-item css__title trigger_modal">'.$anchor.'</a>';
