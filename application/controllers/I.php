@@ -56,12 +56,10 @@ class I extends CI_Controller {
 
 
         //Mass List Editing?
-        if (superpower_active(12700, true) && isset($_POST['mass_action_toggle']) && isset($_POST['mass_value1_'.$_POST['mass_action_toggle']]) && isset($_POST['mass_value2_'.$_POST['mass_action_toggle']])) {
-
-            die('ID is: '.$_POST['coin__id']);
+        if (superpower_active(12700, true) && isset($_POST['coin__id']) && isset($_POST['mass_action_toggle']) && isset($_POST['mass_value1_'.$_POST['mass_action_toggle']]) && isset($_POST['mass_value2_'.$_POST['mass_action_toggle']])) {
 
             //Process mass action:
-            $process_mass_action = $this->I_model->mass_update($i__id, intval($_POST['mass_action_toggle']), $_POST['mass_value1_'.$_POST['mass_action_toggle']], $_POST['mass_value2_'.$_POST['mass_action_toggle']], $member_e['e__id']);
+            $process_mass_action = $this->I_model->mass_update($_POST['coin__id'], intval($_POST['mass_action_toggle']), $_POST['mass_value1_'.$_POST['mass_action_toggle']], $_POST['mass_value2_'.$_POST['mass_action_toggle']], $member_e['e__id']);
 
             //Pass-on results to UI:
             $message = '<div class="msg alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$process_mass_action['message'].'</div>';

@@ -129,6 +129,29 @@ function htmlentitiesjs(rawStr){
     });
 }
 
+
+
+function apply_all_load(apply_id, coin__id){
+
+    x_create({
+        x__source: js_pl_id,
+        x__type: 14576, //MODAL VIEWED
+        x__up: apply_id,
+        x__down: ( coin__type==4997 ? coin__id : 0 ),
+        x__right: ( coin__type==12589 ? coin__id : 0 ),
+    });
+
+    //Select first:
+    var first_id = $('#modal'+apply_id+' .mass_action_toggle option:first').val();
+    $('.mass_action_item').addClass('hidden');
+    $('.mass_id_' + first_id ).removeClass('hidden');
+    $('#modal'+apply_id+' .mass_action_toggle').val(first_id);
+    $('#modal'+apply_id+' input[name="coin__id"]').val(coin__id);
+    $('#modal'+apply_id).modal('show');
+
+}
+
+
 function load_editor(){
 
 
@@ -1069,21 +1092,6 @@ function coin__load(coin__type, coin__id){
 
 }
 
-
-function apply_all_load(apply_id, coin__id){
-
-    x_create({
-        x__source: js_pl_id,
-        x__type: 14576, //MODAL VIEWED
-        x__up: apply_id,
-        x__down: ( coin__type==4997 ? coin__id : 0 ),
-        x__right: ( coin__type==12589 ? coin__id : 0 ),
-    });
-
-    $('#modal'+apply_id+' input[name="coin__id"]').val(coin__id);
-    $('#modal'+apply_id).modal('show');
-
-}
 
 
 
