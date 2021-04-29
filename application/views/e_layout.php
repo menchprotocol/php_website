@@ -528,6 +528,31 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= '</div>';
         }
 
+    } elseif(in_array($x__type, $this->config->item('n___12149'))){
+
+        //Ideas/Sources Owned
+        $owner_filters = array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => $x__type,
+            'x__source' => $e['e__id'],
+        );
+        $item_counters = $this->X_model->fetch($owner_filters, array(), 0, 0, array(), 'COUNT(x__id) as totals');
+        $counter = $item_counters[0]['totals'];
+        if($counter){
+            $ui .= '<div class="row justify-content-center top-margin">';
+            if($x__type==4250){
+                foreach($this->X_model->fetch($owner_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC')) as $count => $i_own) {
+                    $ui .= view_i(4250, 0, null, $i_own, $control_enabled);
+                }
+            } elseif($x__type==4251) {
+                foreach($this->X_model->fetch($owner_filters, array('x__down'), $limit, 0, array('e__spectrum' => 'DESC')) as $count => $e_own) {
+                    $ui .= view_e(4251, $e_own, source_of_e($e['e__id']));
+                }
+            }
+
+            $ui .= '</div>';
+        }
+
     }
 
     $is_token = in_array($x__type, $this->config->item('n___14874'));

@@ -203,7 +203,7 @@ if(!$basic_header_footer){
                     echo '</div>';
                     echo '</td>';
 
-                    if(intval(view_memory(6404,12678))){
+                    if(intval(view_memory(6404,12678)) && $member_e){
                         //Search button
                         echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m__cover'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__cover'].'</span></a></td>';
                     }
