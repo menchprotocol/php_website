@@ -46,6 +46,8 @@ class E extends CI_Controller
         //Do we have any mass action to process here?
         if (superpower_unlocked(12703) && isset($_POST['mass_action_toggle']) && isset($_POST['mass_value1_'.$_POST['mass_action_toggle']]) && isset($_POST['mass_value2_'.$_POST['mass_action_toggle']])) {
 
+            die('ID is: '.$_POST['coin__id']);
+
             //Process mass action:
             $process_mass_action = $this->E_model->mass_update($e__id, intval($_POST['mass_action_toggle']), $_POST['mass_value1_'.$_POST['mass_action_toggle']], $_POST['mass_value2_'.$_POST['mass_action_toggle']], $member_e['e__id']);
 

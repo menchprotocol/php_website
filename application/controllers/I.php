@@ -58,6 +58,8 @@ class I extends CI_Controller {
         //Mass List Editing?
         if (superpower_active(12700, true) && isset($_POST['mass_action_toggle']) && isset($_POST['mass_value1_'.$_POST['mass_action_toggle']]) && isset($_POST['mass_value2_'.$_POST['mass_action_toggle']])) {
 
+            die('ID is: '.$_POST['coin__id']);
+
             //Process mass action:
             $process_mass_action = $this->I_model->mass_update($i__id, intval($_POST['mass_action_toggle']), $_POST['mass_value1_'.$_POST['mass_action_toggle']], $_POST['mass_value2_'.$_POST['mass_action_toggle']], $member_e['e__id']);
 

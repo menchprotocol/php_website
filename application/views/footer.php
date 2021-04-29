@@ -23,7 +23,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </button>
                     </div>
                     <form method="POST" action="">
-                        <div class="modal-body">
+                    <input type="hidden" name="coin__id" value="" />
+                    <div class="modal-body">
                             <?php
 
                             //Mass Editor:
@@ -164,6 +165,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </button>
                     </div>
                     <form method="POST" action="">
+                    <input type="hidden" name="coin__id" value="" />
                     <div class="modal-body">
                         <?php
 
