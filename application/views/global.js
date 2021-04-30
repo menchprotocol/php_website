@@ -150,7 +150,7 @@ function apply_all_load(apply_id, coin__id){
     $('#modal'+apply_id).modal('show');
 
     //Load Ppeview:
-    $('#modal'+apply_id+' .apply_preview').html('<span class="icon-block">i class="far fa-yin-yang fa-spin"></i></span>Loading...');
+    $('#modal'+apply_id+' .apply_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...');
     $.post("/x/apply_preview", {
         apply_id: apply_id,
         coin__id: coin__id

@@ -74,7 +74,7 @@ function e_filter_status(x__type, new_val) {
 function e_x_form_lock(){
     $('#x__message').prop("disabled", true);
 
-    $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block">i class="far fa-yin-yang fa-spin"></i></span>Uploading');
+    $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Uploading');
 
 }
 
