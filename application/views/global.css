@@ -2159,7 +2159,7 @@ i, .btn .show-max {
     border: 3px solid transparent;
     border-radius: 13px;
 }
-.mass_action_toggle, .e_text_search{
+.mass_action_toggle, .e_text_search, .mass_action_item{
     width: 100% !important;
 }
 .modal-header{
