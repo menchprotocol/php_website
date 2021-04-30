@@ -57,8 +57,6 @@ foreach($this->I_model->fetch() as $in) {
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $msg){
         array_push($all_messages, $msg['x__reference']);
     }
-
-
     $delete_filters = array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type' => 14947, //Note Extra Sources
@@ -67,19 +65,11 @@ foreach($this->I_model->fetch() as $in) {
     if(count($all_messages)){
         $delete_filters['x__reference NOT IN (' . join(',', $all_messages) . ')'] = null;
     }
-
     foreach($this->X_model->fetch($delete_filters, array(), 0) as $delete_x) {
-
         $stats['note_ref_deleted']++;
-
-        echo ' ['.$delete_x['x__id'].'] ';
-
-        /*
         $this->X_model->update($delete_x['x__id'], array(
             'x__status' => 6173,
         ));
-        */
-
     }
 
 
