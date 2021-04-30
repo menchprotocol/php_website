@@ -2000,7 +2000,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     } elseif(in_array($x__type, $CI->config->item('n___14945'))){
 
         $e___14690 = $CI->config->item('e___14690');
-        $ui .= '<span class="grey" title="' . $e___14690[$x__type]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $e___14690[$x__type]['m__cover'] . '</span>';
+        $ui .= '<span class="grey" title="' . $e___14690[$x__type]['m__title'] . ' ['.$e['x__id'].']" data-toggle="tooltip" data-placement="top">' . $e___14690[$x__type]['m__cover'] . '</span>';
 
     } elseif($source_of_e && !$cache_app) {
 
