@@ -774,7 +774,7 @@ class X_model extends CI_Model
 
                     //Replace the URL with this new @source in message.
                     //This is the only valid modification we can do to $message_input before storing it in the DB:
-                    $message_input = str_replace($input_url, '@' . $url_e['e_url']['e__id'], $message_input);
+                    $message_input = str_replace($input_url.' ', '@' . $url_e['e_url']['e__id'].' ', $message_input.' ');
 
                     //Remove URL:
                     unset($string_references['ref_urls'][$url_key]);
@@ -794,7 +794,7 @@ class X_model extends CI_Model
         //Start building the Output message body based on format:
 
         $message_input .= ' ';//Helps with accurate source reference replacement
-        $output_body_message = htmlentities($message_input);
+        $output_body_message = htmlentities($message_input).' ';
         $string_references = extract_e_references($message_input); //Do it again since it may be updated
         $note_references = array();
 
@@ -874,7 +874,7 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' );
+            $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
             $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom" ' : null );
             $tooltip_underdot = ( $tooltip_info ? ' underdot ' : null );
 
@@ -894,7 +894,7 @@ class X_model extends CI_Model
                     if(strlen($line) > 0){
                         $new_lines++;
                     }
-                    if(!$on_its_own_line && trim($line)==$identifier_string){
+                    if(!$on_its_own_line && trim($line)==trim($identifier_string)){
                         $on_its_own_line = true;
                     }
                 }
@@ -949,7 +949,7 @@ class X_model extends CI_Model
         return array(
             'status' => 1,
             'clean_message' => trim($message_input),
-            'output_messages' => ( strlen($output_body_message) ? '<div class="msg"><span>' . nl2br($output_body_message) . '</span></div>' : null ),
+            'output_messages' => ( strlen(trim($output_body_message)) ? '<div class="msg"><span>' . nl2br($output_body_message) . '</span></div>' : null ),
             'note_references' => $note_references,
         );
     }
