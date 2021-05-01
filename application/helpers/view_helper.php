@@ -1932,6 +1932,17 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         //Not a valid Source List
         return 'Invalid x__type '.$x__type;
     }
+    if(!isset($e['e__id']) || !isset($e['e__title'])){
+        $CI->X_model->create(array(
+            'x__type' => 4246, //Platform Bug Reports
+            'x__message' => 'view_e() Missing core variables',
+            'x__metadata' => array(
+                '$x__type' => $x__type,
+                '$e' => $e,
+            ),
+        ));
+        return 'Missing core variables';
+    }
 
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
