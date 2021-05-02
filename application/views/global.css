@@ -60,7 +60,7 @@ body {
 }
 .x__message img, .i_content img, .content-image {
     max-width: 100%;
-    max-height: 377px;
+    max-height: 610px;
     border-radius: 13px !important;
     display: block;
 }
