@@ -774,7 +774,7 @@ class X_model extends CI_Model
 
                     //Replace the URL with this new @source in message.
                     //This is the only valid modification we can do to $message_input before storing it in the DB:
-                    $message_input = str_replace($input_url.' ', '@' . $url_e['e_url']['e__id'].' ', $message_input.' ');
+                    $message_input = str_replace($input_url, '@' . $url_e['e_url']['e__id'], $message_input.' ');
 
                     //Remove URL:
                     unset($string_references['ref_urls'][$url_key]);
@@ -874,7 +874,7 @@ class X_model extends CI_Model
 
 
             //Append any appendix generated:
-            $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' ).' ';
+            $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' );
             $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom" ' : null );
             $tooltip_underdot = ( $tooltip_info ? ' underdot ' : null );
 
@@ -916,7 +916,7 @@ class X_model extends CI_Model
                     foreach($e_links as $e_link){
                         $e_dropdown .= '<a href="'.$e_link['x__message'].'" target="_blank" class="dropdown-item move_away css__title ignore-click"><span class="icon-block">'.view_cover(12274,$e_link['e__cover']).'</span>'.$e_link['e__title'].'</a>';
                     }
-                    $e_dropdown .= '</div></div> ';
+                    $e_dropdown .= '</div></div>';
 
                 }
             }
