@@ -1788,7 +1788,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             $messages .= $mes['x__message'].' ';
         }
         if($messages){
-            $message_tooltip = '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$messages.'">'.$e___11035[4231]['m__cover'].'</span>';
+            $message_tooltip = '<span class="icon-block" title="'.$messages.'">'.$e___11035[4231]['m__cover'].'</span>';
         }
     }
     $view_i_time = view_i_time($i_stats);
