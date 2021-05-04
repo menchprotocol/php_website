@@ -1668,23 +1668,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $can_click = !$has_any_lock && !$focus_coin;
 
 
-    $message_tooltip = '';
-    if(!$discovery_mode && $can_click && superpower_active(26144, true)){
-        $messages = '';
-        foreach($CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4231,
-            'x__right' => $i['i__id'],
-        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
-            $messages .= $mes['x__message'].' ';
-        }
-        if($messages){
-            $message_tooltip = ' data-toggle="tooltip" data-placement="top" title="'.$messages.'" ';
-        }
-    }
-
-
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).$message_tooltip.' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-11 ' : ' edge-coin col-md-4 col-6 ' ).' no-padding coin-12273 coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-11 ' : ' edge-coin col-md-4 col-6 ' ).' no-padding coin-12273 coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
 
@@ -1790,13 +1774,37 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         'x__right' => $i['i__id'],
     ), array('x__source')) : array());
 
-    //IDEAs and Time
+
+
+    //IDEAs & Time & Message
+    $message_tooltip = '';
+    if(!$discovery_mode && $can_click){
+        $messages = '';
+        foreach($CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 4231,
+            'x__right' => $i['i__id'],
+        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
+            $messages .= $mes['x__message'].' ';
+        }
+        if($messages){
+            $message_tooltip = '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$messages.'">'.$e___11035[4231]['m__cover'].'</span>';
+        }
+    }
     $view_i_time = view_i_time($i_stats);
-    $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . ( $view_i_time ? $view_i_time : '&nbsp;' ) . '</div>'.( count($minter) ? '<div class="coin-hover grey mini-font">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> & owned by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>' : '' ).'</div>';
+    $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . ( $view_i_time ? $view_i_time : '&nbsp;' ).$message_tooltip . '</div>';
+
+    if(count($minter)){
+        $ui .= '<div class="coin-hover grey mini-font">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> & owned by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>';
+
+    }
+    $ui .= '</div>';
 
     if($load_completion && $is_started && !$is_completed){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
+
+
 
     //Message
     if($message_input){
