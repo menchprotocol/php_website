@@ -888,6 +888,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
                         $messages .= $mes['x__message'].' ';
                     }
                     if($messages){
+                        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
                         $message_tooltip = '<span class="icon-block" title="'.$messages.'">'.$e___11035[4231]['m__cover'].'</span>';
                     }
                 }
