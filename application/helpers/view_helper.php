@@ -671,8 +671,8 @@ function view_coins(){
     return $ui;
 }
 
-function view_coin_line($href, $is_current, $o__cover, $o__title, $x__message = null){
-    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.( $is_current ? '<i class="fas fa-map-marker"></i>' : '<i class="far fa-arrow-right"></i>' ).'</span>'.( strlen($x__message) ? '<div>'.$x__message.'</div>' : '' ).'</a>';
+function view_coin_line($href, $is_current, $o__cover, $o__title, $x__message){
+    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.( $is_current ? '<i class="fas fa-map-marker"></i>' : '<i class="far fa-arrow-right"></i>' ).'</span>'.( strlen($x__message) ? '<div class="center" style="padding-top:5px; font-size:0.89em;">'.$x__message.'</div>' : '' ).'</a>';
 }
 
 function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true){
@@ -772,13 +772,13 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
                     'x__spectrum' => 'ASC',
                     'e__title' => 'ASC'
                 )) as $source_e) {
-                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, view_cover(12274,$source_e['e__cover']), $source_e['e__title']);
+                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, view_cover(12274,$source_e['e__cover']), $source_e['e__title'], $source_e['x__message']);
                 }
             } elseif($x__type==12273){
                 //IDEAS
                 $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
                 foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array('x__spectrum' => 'DESC')) as $next_i) {
-                    $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, view_cover(12273,$next_i['i__cover']), view_i_title($next_i));
+                    $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, view_cover(12273,$next_i['i__cover']), view_i_title($next_i), $next_i['x__message']);
                 }
             } elseif($x__type==6255){
                 //DISCOVERIES / IDEAS
@@ -870,7 +870,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
             //SOURCES
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__up'), 10, 0, array('x__type' => 'ASC', 'x__spectrum' => 'ASC')) as $source_e) {
-                $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, view_cover(12274,$source_e['e__cover']), $source_e['e__title']);
+                $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, view_cover(12274,$source_e['e__cover']), $source_e['e__title'], $source_e['x__message']);
             }
         } elseif($x__type==12273){
             //IDEAS
@@ -894,7 +894,7 @@ function view_coins_i($x__type, $i, $append_coin_icon = true){
                 }
                 $coins = view_coins_i(12273,  $next_i, false);
 
-                $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, view_cover(12273,$next_i['i__cover']), view_i_title($next_i).$message_tooltip.( $coins > 0 ? ' <i class="fas fa-circle zq12273"></i> '.$coins : '' ));
+                $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, view_cover(12273,$next_i['i__cover']), view_i_title($next_i).$message_tooltip.( $coins > 0 ? ' <i class="fas fa-circle zq12273"></i> '.$coins : '' ), $next_i['x__message']);
             }
         } elseif($x__type==6255){
             //DISCOVERIES / SOURCS
