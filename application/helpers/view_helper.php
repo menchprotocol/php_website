@@ -1933,7 +1933,7 @@ function view_e_line($e)
 
 
 
-function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
+function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked_m = null)
 {
 
     $CI =& get_instance();
@@ -2012,15 +2012,15 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     }
 
     $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
+
     //LOCKED
     if($has_any_lock && !$focus_coin) {
 
         $ui .= '<span title="' . $e___11035[$lock_notice]['m__title'] . '">' . $e___11035[$lock_notice]['m__cover'] . '</span>';
 
-    } elseif(in_array($x__type, $CI->config->item('n___14945'))){
+    } elseif($locked_m){
 
-        $e___14690 = $CI->config->item('e___14690');
-        $ui .= '<span class="grey" title="' . $e___14690[$x__type]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $e___14690[$x__type]['m__cover'] . '</span>';
+        $ui .= '<span class="grey" title="' . $locked_m['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $locked_m['m__cover'] . '</span>';
 
     } elseif($source_of_e && !$cache_app) {
 
