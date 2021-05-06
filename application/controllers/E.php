@@ -352,13 +352,6 @@ class E extends CI_Controller
         //Are we adding an existing source?
         if ($_POST['e_existing_id'] > 0) {
 
-            if(in_array($_POST['e_existing_id'], $this->config->item('n___13997'))){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Cannot link to idea settings from here',
-                ));
-            }
-
             //Validate this existing source:
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['e_existing_id'],
