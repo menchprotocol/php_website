@@ -1932,7 +1932,7 @@ function view_e_line($e)
 
 
 
-function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked_m = null)
+function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked_m = false)
 {
 
     $CI =& get_instance();
@@ -2019,7 +2019,8 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
 
     } elseif($locked_m){
 
-        $ui .= '<span class="grey" title="' . $locked_m['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $locked_m['m__cover'] . '</span>';
+        $e___14690 = $CI->config->item('e___14690');
+        $ui .= '<span class="grey" title="' . $e___14690[$x__type]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $e___14690[$x__type]['m__cover'] . '</span>';
 
     } elseif($source_of_e && !$cache_app) {
 
