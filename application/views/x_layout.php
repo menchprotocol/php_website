@@ -294,8 +294,7 @@ if($top_i__id) {
                     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                 ), array('x__up'), 0);
                 if(count($fetch_13865)){
-
-                    //Let's see if they meet any of these requirements:
+                    //Let's see if they meet any of these PREREQUISITES:
                     $meets_prereq = false;
                     if($x__source > 0){
                         foreach($fetch_13865 as $e_pre){
@@ -317,6 +316,27 @@ if($top_i__id) {
                 }
 
 
+                //Any Limits on Selection?
+                $show_limit = null;
+                $has_limits = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type' => 4983, //References
+                    'x__right' => $next_i['i__id'],
+                    'x__up' => 26189,
+                ), array(), 1);
+                if(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0){
+                    //We have a limit! See if we've met it already:
+                    $spots_remaining = intval($has_limits[0]['x__message'])-view_coins_i(6255,  $next_i, false);
+                    if($spots_remaining > 0){
+                        //Not maxed out yet! Show limits:
+                        $show_limit = $spots_remaining.'/'.$has_limits[0]['x__message'].' Remaining';
+                    } else {
+                        //Maxed out! Hide this one:
+                        continue;
+                    }
+                }
+
+
                 //Has this been previously selected?
                 $previously_selected = count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -326,7 +346,7 @@ if($top_i__id) {
                     'x__source' => $x__source,
                 )));
 
-                echo view_i_select($next_i, $x__source, $previously_selected);
+                echo view_i_select($next_i, $x__source, $previously_selected, $show_limit);
 
             }
 
