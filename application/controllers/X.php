@@ -1022,73 +1022,84 @@ class X extends CI_Controller
 
         } else {
 
-            //Transaction content has changed:
-            $detected_x_type = x_detect_type($_POST['x__message']);
+            //Change transaction type ONLY if source link:
+            if(!in_array($e_x[0]['x__type'], $this->config->item('n___4592'))){
 
-            if (!$detected_x_type['status']) {
+                $x__message = $_POST['x__message'];
+                $x__message_type = $e_x[0]['x__type'];
+                $this->X_model->update($_POST['x__id'], array(
+                    'x__message' => $x__message,
+                ), $member_e['e__id'], 26191 /* SOURCE CONTENT UPDATE */);
 
-                return view_json($detected_x_type);
+            } else {
+                //it is a source link! We should update this:
+                //Transaction content has changed:
+                $detected_x_type = x_detect_type($_POST['x__message']);
+                if (!$detected_x_type['status']) {
 
-            } elseif (in_array($detected_x_type['x__type'], $this->config->item('n___4537')) && isset($detected_x_type['url_root']) /* This prevents issues with /local_urls that start with / */) {
+                    return view_json($detected_x_type);
 
-                //This is a URL, validate modification:
+                } elseif (in_array($detected_x_type['x__type'], $this->config->item('n___4537')) && isset($detected_x_type['url_root']) /* This prevents issues with /local_urls that start with / */) {
 
-                if ($detected_x_type['url_root']) {
+                    //This is a URL, validate modification:
 
-                    if ($e_x[0]['x__up'] == 1326) {
+                    if ($detected_x_type['url_root']) {
 
-                        //Override with the clean domain for consistency:
-                        $_POST['x__message'] = $detected_x_type['url_clean_domain'];
+                        if ($e_x[0]['x__up'] == 1326) {
 
-                    } else {
+                            //Override with the clean domain for consistency:
+                            $_POST['x__message'] = $detected_x_type['url_clean_domain'];
 
-                        //Domains can only be added to the domain source:
-                        return view_json(array(
-                            'status' => 0,
-                            'message' => 'Domain URLs requires <b>@1326 Domains</b> in profile',
-                        ));
+                        } else {
 
-                    }
-
-                } else {
-
-                    if ($e_x[0]['x__up'] == 1326) {
-
-                        return view_json(array(
-                            'status' => 0,
-                            'message' => 'Only domain URLs can be connected to Domain source.',
-                        ));
-
-                    } elseif ($detected_x_type['e_domain']) {
-                        //We do have the domain saved! Is this connected to the domain source as its parent?
-                        if ($detected_x_type['e_domain']['e__id'] != $e_x[0]['x__up']) {
+                            //Domains can only be added to the domain source:
                             return view_json(array(
                                 'status' => 0,
-                                'message' => 'Must have <b>@' . $detected_x_type['e_domain']['e__id'] . ' ' . $detected_x_type['e_domain']['e__title'] . '</b> in profile',
+                                'message' => 'Domain URLs requires <b>@1326 Domains</b> in profile',
+                            ));
+
+                        }
+
+                    } else {
+
+                        if ($e_x[0]['x__up'] == 1326) {
+
+                            return view_json(array(
+                                'status' => 0,
+                                'message' => 'Only domain URLs can be connected to Domain source.',
+                            ));
+
+                        } elseif ($detected_x_type['e_domain']) {
+                            //We do have the domain saved! Is this connected to the domain source as its parent?
+                            if ($detected_x_type['e_domain']['e__id'] != $e_x[0]['x__up']) {
+                                return view_json(array(
+                                    'status' => 0,
+                                    'message' => 'Must have <b>@' . $detected_x_type['e_domain']['e__id'] . ' ' . $detected_x_type['e_domain']['e__title'] . '</b> in profile',
+                                ));
+                            }
+                        } else {
+                            //We don't have the domain saved, this is for sure not allowed:
+                            return view_json(array(
+                                'status' => 0,
+                                'message' => 'Requires a new parent source for <b>' . $detected_x_type['url_tld'] . '</b>. Add by pasting URL into the [Add @Source] input field.',
                             ));
                         }
-                    } else {
-                        //We don't have the domain saved, this is for sure not allowed:
-                        return view_json(array(
-                            'status' => 0,
-                            'message' => 'Requires a new parent source for <b>' . $detected_x_type['url_tld'] . '</b>. Add by pasting URL into the [Add @Source] input field.',
-                        ));
+
                     }
 
                 }
 
+                //Update variables:
+                $x__message = $_POST['x__message'];
+                $x__message_type = $detected_x_type['x__type'];
+
+
+                $this->X_model->update($_POST['x__id'], array(
+                    'x__message' => $x__message,
+                    'x__type' => $x__message_type,
+                ), $member_e['e__id'], 10657 /* SOURCE LINK CONTENT UPDATE */);
+
             }
-
-            //Update variables:
-            $x__message = $_POST['x__message'];
-            $x__message_type = $detected_x_type['x__type'];
-
-
-            $this->X_model->update($_POST['x__id'], array(
-                'x__message' => $x__message,
-                'x__type' => $x__message_type,
-            ), $member_e['e__id'], 10657 /* SOURCE LINK CONTENT UPDATE */);
-
         }
 
 
@@ -1097,7 +1108,6 @@ class X extends CI_Controller
             'status' => 1,
             'x__message' => view_x__message($x__message, $x__message_type),
             'x__message_final' => $x__message, //In case content was updated
-            'x__message_type' => intval($x__message_type),
         ));
 
     }
