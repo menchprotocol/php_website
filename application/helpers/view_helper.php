@@ -1572,7 +1572,10 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
     $ui .= '<div class="cover-text">';
     //TIME
     if($view_i_time){
-        $ui .= '<a '.$href.' class="doblock"><span class="coin-hover">' . ( $show_limit ? $show_limit.' | ' : '' ) . $view_i_time . '</span></a>';
+        $ui .= '<a '.$href.' class="doblock"><span class="coin-hover">' . $view_i_time . '</span></a>';
+    }
+    if($show_limit){
+        $ui .= '<a '.$href.' class="doblock"><span class="coin-hover">' . $show_limit . '</span></a>';
     }
     //PROGRESS?
     if($completion_rate['completion_percentage'] > 0 && $completion_rate['completion_percentage'] < 100){
