@@ -196,44 +196,6 @@ foreach($messages as $message_x) {
 
 
 
-$fetch_13865 = $this->X_model->fetch(array(
-    'x__right' => $i_focus['i__id'],
-    'x__type' => 13865, //PREREQUISITES
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-), array('x__up'), 0);
-$meets_13865 = !count($fetch_13865);
-
-if(count($fetch_13865)){
-
-    echo '<div class="headline" style="margin-top: 41px;"><span class="icon-block">'.$e___11035[13865]['m__cover'].'</span>'.$e___11035[13865]['m__title'].'</div>';
-
-    $missing_13865 = 0;
-    $e___13865 = $this->config->item('e___13865'); //PREREQUISITES
-    echo '<div class="list-group" style="margin-bottom: 34px;">';
-    foreach($fetch_13865 as $e_pre){
-
-        $meets_this = ($x__source > 0 && count($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__up' => $e_pre['x__up'],
-                'x__down' => $x__source,
-            ))));
-
-        $meets_this_id = ( $meets_this ? 13875 : 13876 );
-
-        echo '<div class="list-group-item no-left-padding"><span class="icon-block">'.$e___13865[$meets_this_id]['m__cover'].'</span>'.$e_pre['e__title'].'</div>';
-
-        if(!$meets_this){
-            $missing_13865++;
-        }
-
-    }
-    echo '</div>';
-    $meets_13865 = !$missing_13865;
-}
-
-
 
 
 
@@ -323,6 +285,37 @@ if($top_i__id) {
 
             //List children to choose from:
             foreach ($is_next as $key => $next_i) {
+
+                //Any PREREQUISITES?
+                $fetch_13865 = $this->X_model->fetch(array(
+                    'x__right' => $next_i['i__id'],
+                    'x__type' => 13865, //PREREQUISITES
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                ), array('x__up'), 0);
+                if(count($fetch_13865)){
+
+                    //Let's see if they meet any of these requirements:
+                    $meets_prereq = false;
+                    if($x__source > 0){
+                        foreach($fetch_13865 as $e_pre){
+                            if(count($this->X_model->fetch(array(
+                                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__up' => $e_pre['x__up'],
+                                'x__down' => $x__source,
+                            )))){
+                                $meets_prereq = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(!$meets_prereq){
+                        continue;
+                    }
+                }
+
 
                 //Has this been previously selected?
                 $previously_selected = count($this->X_model->fetch(array(
