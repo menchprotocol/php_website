@@ -59,7 +59,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
     if(!isset($_GET['csv'])){
-        echo '<table style="width:'.( ( count($column_ideas) * 200 ) + ( count($column_sources) * 200 ) + 480  ).'px;">';
+        echo '<table>';
 
         echo '<tr style="font-weight:bold;">';
         echo '<td style="width:200px;">MEMBER</td>';
@@ -70,7 +70,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         foreach($column_ideas as $i){
             echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'</a></td>';
         }
-        echo '<td style="width:200px;">STARTED</td>';
+        echo '<td>STARTED</td>';
         echo '</tr>';
     } else {
 
