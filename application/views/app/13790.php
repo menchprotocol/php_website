@@ -65,10 +65,10 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<td style="width:200px;">MEMBER</td>';
         echo '<td style="width:50px;">PROGRESS</td>';
         foreach($column_sources as $e){
-            echo '<td style="display: flex;"><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl;">'.$e['e__title'].'</a></td>';
+            echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl;">'.$e['e__title'].'</a></td>';
         }
         foreach($column_ideas as $i){
-            echo '<td style="display: flex;"><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'</a></td>';
+            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'</a></td>';
         }
         echo '<td style="width:200px;">STARTED</td>';
         echo '</tr>';
