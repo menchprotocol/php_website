@@ -61,11 +61,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     if(!isset($_GET['csv'])){
         echo '<table>';
 
-        echo '<tr style="font-weight:bold;">';
+        echo '<tr style="font-weight:bold; vertical-align: baseline;">';
         echo '<td style="width:200px;">MEMBER</td>';
         echo '<td style="width:50px;">PROGRESS</td>';
         foreach($column_sources as $e){
-            echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl;">'.$e['e__title'].'</a></td>';
+            echo '<td><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a></td>';
         }
         foreach($column_ideas as $i){
             echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'</a></td>';
@@ -120,7 +120,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => $e['e__id'],
             ));
 
-            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '✅' ) : '' );
+            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? '<span title="'.$fetch_data[0]['x__message'].'">📝</span>' : '✅' ) : '' );
 
             if(!isset($_GET['csv'])){
                 echo '<td>'.$message_clean.'</td>';
@@ -138,7 +138,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
             if(!isset($_GET['csv'])){
-                echo '<td><div style="max-width:150px;">'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').'</div></td>';
+                echo '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').'</td>';
             } else {
                 echo ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').",";
             }
