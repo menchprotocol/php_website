@@ -65,10 +65,10 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<td style="width:200px;">MEMBER</td>';
         echo '<td style="width:50px;">PROGRESS</td>';
         foreach($column_sources as $e){
-            echo '<td style="max-width:150px;"><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl;">'.$e['e__title'].'</a></td>';
+            echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl;">'.$e['e__title'].'</a></td>';
         }
         foreach($column_ideas as $i){
-            echo '<td style="max-width:150px;"><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'</a></td>';
+            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'</a></td>';
         }
         echo '<td style="width:200px;">STARTED</td>';
         echo '</tr>';
@@ -138,7 +138,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
             if(!isset($_GET['csv'])){
-                echo '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').'</td>';
+                echo '<td><div style="max-width:150px;">'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').'</div></td>';
             } else {
                 echo ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').",";
             }
