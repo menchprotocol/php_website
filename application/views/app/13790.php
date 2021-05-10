@@ -58,36 +58,14 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 
-    if(!isset($_GET['csv'])){
-        echo '<table>';
-
-        echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-        echo '<td style="width:200px;">MEMBER</td>';
-        echo '<td style="width:50px;">PROGRESS</td>';
-        foreach($column_sources as $e){
-            echo '<td><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a></td>';
-        }
-        foreach($column_ideas as $i){
-            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'</a></td>';
-        }
-        echo '<td>STARTED</td>';
-        echo '</tr>';
-    } else {
-
-        echo 'MEMBER,DONE,';
-        foreach($column_sources as $e){
-            echo $e['e__title'].',';
-        }
-        foreach($column_ideas as $i){
-            echo $i['i__title'].',';
-        }
-        echo 'STARTED'."\n";
-
-    }
-
 
 
     //Return UI:
+    $body_content = '';
+    $count_totals = array(
+        'e' => array(),
+        'i' => array(),
+    );
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
@@ -95,17 +73,17 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $count => $x){
 
         if(!isset($_GET['csv'])){
-            echo '<tr style="'.( !fmod($count,2) ? 'background-color:#EFEFEF;' : '' ).'">';
+            $body_content .= '<tr style="'.( !fmod($count,2) ? 'background-color:#EFEFEF;' : '' ).'">';
         }
 
         //Member
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
 
         if(!isset($_GET['csv'])){
-            echo '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
-            echo '<td>'.$completion_rate['completion_percentage'].'%</td>';
+            $body_content .= '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
+            $body_content .= '<td>'.$completion_rate['completion_percentage'].'%</td>';
         } else {
-            echo $x['e__title'].",".$completion_rate['completion_percentage'].'%'.",";
+            $body_content .= $x['e__title'].",".$completion_rate['completion_percentage'].'%'.",";
         }
 
 
@@ -123,9 +101,16 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '✅' ) : '' );
 
             if(!isset($_GET['csv'])){
-                echo '<td>'.$message_clean.'</td>';
+                $body_content .= '<td>'.$message_clean.'</td>';
+
+                if(strlen($message_clean)>0 && in_array(e_x__type($fetch_data[0]['x__message']), $this->config->item('n___26111'))){
+                    if(!isset($count_totals['e'][$e['e__id']])){
+                        $count_totals['e'][$e['e__id']] = 0;
+                    }
+                    $count_totals['e'][$e['e__id']] += preg_replace("/[^0-9.]/", '', $fetch_data[0]['x__message']);
+                }
             } else {
-                echo $message_clean.",";
+                $body_content .= $message_clean.",";
             }
         }
 
@@ -138,25 +123,64 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
             if(!isset($_GET['csv'])){
-                echo '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'">📝</span>' : '✅' )  : '').'</td>';
+                $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'">📝</span>' : '✅' )  : '').'</td>';
+
+                if(strlen($message_clean)>0 && in_array(e_x__type($fetch_data[0]['x__message']), $this->config->item('n___26111'))){
+                    if(!isset($count_totals['i'][$i['i__id']])){
+                        $count_totals['i'][$i['i__id']] = 0;
+                    }
+                    $count_totals['i'][$i['i__id']] += preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']);
+                }
+
             } else {
-                echo ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'">📝</span>' : '✅' )  : '').",";
+                $body_content .= ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').",";
             }
+
+
         }
 
 
         if(!isset($_GET['csv'])){
-            echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
-            echo '</tr>';
+            $body_content .= '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
+            $body_content .= '</tr>';
         } else {
-            echo date("Y-m-d H:i:s", strtotime($x['x__time']))."\n";
+            $body_content .= date("Y-m-d H:i:s", strtotime($x['x__time']))."\n";
         }
 
 
     }
 
     if(!isset($_GET['csv'])){
+
+        echo '<table>';
+
+        echo '<tr style="font-weight:bold; vertical-align: baseline;">';
+        echo '<td style="width:200px;">MEMBER</td>';
+        echo '<td style="width:50px;">DONE</td>';
+        foreach($column_sources as $e){
+            echo '<td><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>'.( isset($count_totals['e'][$e['e__id']]) ? ' ('.$count_totals['e'][$e['e__id']].')' : '' ).'</td>';
+        }
+        foreach($column_ideas as $i){
+            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'</a>'.( isset($count_totals['i'][$i['i__id']]) ? ' ('.$count_totals['i'][$i['i__id']].')' : '' ).'</td>';
+        }
+        echo '<td>STARTED</td>';
+        echo '</tr>';
+        echo $body_content;
         echo '</table>';
+
+    } else {
+
+        echo 'MEMBER,DONE,';
+        foreach($column_sources as $e){
+            echo $e['e__title'].',';
+        }
+        foreach($column_ideas as $i){
+            echo $i['i__title'].',';
+        }
+        echo 'STARTED'."\n";
+        echo $body_content;
+
+
     }
 
 }
