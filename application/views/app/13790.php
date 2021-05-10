@@ -103,11 +103,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             if(!isset($_GET['csv'])){
                 $body_content .= '<td>'.$message_clean.'</td>';
 
-                if(strlen($message_clean)>0 && in_array(e_x__type($fetch_data[0]['x__message']), $this->config->item('n___26111'))){
+                if(strlen($message_clean)>0){
                     if(!isset($count_totals['e'][$e['e__id']])){
                         $count_totals['e'][$e['e__id']] = 0;
                     }
-                    $count_totals['e'][$e['e__id']] += preg_replace("/[^0-9.]/", '', $fetch_data[0]['x__message']);
+                    $count_totals['e'][$e['e__id']] += ( in_array(e_x__type($fetch_data[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $fetch_data[0]['x__message']) : 1 );
                 }
             } else {
                 $body_content .= $message_clean.",";
@@ -125,11 +125,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             if(!isset($_GET['csv'])){
                 $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'">📝</span>' : '✅' )  : '').'</td>';
 
-                if(strlen($message_clean)>0 && in_array(e_x__type($fetch_data[0]['x__message']), $this->config->item('n___26111'))){
+                if(strlen($discoveries[0]['x__message'])>0){
                     if(!isset($count_totals['i'][$i['i__id']])){
                         $count_totals['i'][$i['i__id']] = 0;
                     }
-                    $count_totals['i'][$i['i__id']] += preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']);
+                    $count_totals['i'][$i['i__id']] += ( in_array(e_x__type($discoveries[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']) : 1 );
                 }
 
             } else {
@@ -158,10 +158,10 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<td style="width:200px;">MEMBER</td>';
         echo '<td style="width:50px;">DONE</td>';
         foreach($column_sources as $e){
-            echo '<td><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a>'.( isset($count_totals['e'][$e['e__id']]) ? ' ('.$count_totals['e'][$e['e__id']].')' : '' ).'</td>';
+            echo '<td><a href="/@'.$e['e__id'].'">'.$e['e__title'].( isset($count_totals['e'][$e['e__id']]) ? ': '.$count_totals['e'][$e['e__id']] : '' ).'</a></td>';
         }
         foreach($column_ideas as $i){
-            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'</a>'.( isset($count_totals['i'][$i['i__id']]) ? ' ('.$count_totals['i'][$i['i__id']].')' : '' ).'</td>';
+            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].( isset($count_totals['i'][$i['i__id']]) ? ': '.$count_totals['i'][$i['i__id']] : '' ).'</a></td>';
         }
         echo '<td>STARTED</td>';
         echo '</tr>';
