@@ -120,7 +120,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => $e['e__id'],
             ));
 
-            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? '<span title="'.$fetch_data[0]['x__message'].'">📝</span>' : '✅' ) : '' );
+            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '✅' ) : '' );
 
             if(!isset($_GET['csv'])){
                 echo '<td>'.$message_clean.'</td>';
@@ -138,11 +138,12 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
             if(!isset($_GET['csv'])){
-                echo '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').'</td>';
+                echo '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'">📝</span>' : '✅' )  : '').'</td>';
             } else {
-                echo ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').",";
+                echo ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'">📝</span>' : '✅' )  : '').",";
             }
         }
+
 
         if(!isset($_GET['csv'])){
             echo '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
