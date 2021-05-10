@@ -63,12 +63,12 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         echo '<tr style="font-weight:bold;">';
         echo '<td style="width:200px;">MEMBER</td>';
-        echo '<td style="width:50px;">DONE</td>';
+        echo '<td style="width:50px;">PROGRESS</td>';
         foreach($column_sources as $e){
-            echo '<td style="width:200px;"><a href="/@'.$e['e__id'].'">'.$e['e__title'].'</a></td>';
+            echo '<td style="width:200px;"><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl;">'.$e['e__title'].'</a></td>';
         }
         foreach($column_ideas as $i){
-            echo '<td style="width:200px;"><a href="/i/i_go/'.$i['i__id'].'">'.$i['i__title'].'</a></td>';
+            echo '<td style="width:200px;"><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'</a></td>';
         }
         echo '<td style="width:200px;">STARTED</td>';
         echo '</tr>';
@@ -95,7 +95,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $count => $x){
 
         if(!isset($_GET['csv'])){
-            echo '<tr>';
+            echo '<tr style="'.( !fmod($count,1) ? 'background-color:#EFEFEF;' : '' ).'">';
         }
 
         //Member
