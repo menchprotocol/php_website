@@ -4,12 +4,12 @@
 
 
 //IDEAS
-$ideas_scanned = 0;
-$ideas_inherit = 0;
-$ideas_inherit_image = 0;
+$i_scanned = 0;
+$i_inherit = 0;
+$i_inherit_image = 0;
 foreach($this->I_model->fetch(array('i__cover IS NULL' => null)) as $o){
 
-    $ideas_scanned++;
+    $i_scanned++;
 
     $found_image = null;
     $found_icon = null;
@@ -63,20 +63,20 @@ foreach($this->I_model->fetch(array('i__cover IS NULL' => null)) as $o){
 
 
     if($found_image){
-        $ideas_inherit_image++;
+        $i_inherit_image++;
     }
     $new_icon = ( $found_image ? $found_image : $found_icon );
     if(strlen($new_icon)){
         echo '<a href="/~'.$o['i__id'].'">NEW</a> ['.$new_icon.']<br />';
-        $ideas_inherit += $this->I_model->update($o['i__id'], array(
+        $i_inherit += $this->I_model->update($o['i__id'], array(
             'i__cover' => $new_icon,
         ), false, ( $member_e ? $member_e['e__id'] : 7274 ), 18148);
     }
 
 }
 echo '<br /><br />';
-echo $ideas_scanned.' Ideas scanned.<br />';
-echo $ideas_inherit.' Ideas inherited, of which '.$ideas_inherit_image.' had images.<br />';
+echo $i_scanned.' Ideas scanned.<br />';
+echo $i_inherit.' Ideas inherited, of which '.$i_inherit_image.' had images.<br />';
 echo '<br /><br />';
 
 

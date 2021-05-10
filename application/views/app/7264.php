@@ -5,7 +5,7 @@
 
 if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
 
-    echo 'Missing Idea ID (Append ?i__id=IDEA_ID in URL)';
+    echo 'Missing Idea ID (Append ?i__id=ID in URL)';
 
 } else {
 
