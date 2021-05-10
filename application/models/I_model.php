@@ -865,10 +865,13 @@ class I_model extends CI_Model
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
-                    $this->I_model->create_or_link(11019, '', $x__source, $focus__id, $next_i['i__id']);
+                    $status = $this->I_model->create_or_link(11019, '', $x__source, $next_i['i__id'], $focus__id);
 
-                    //Add Source since not there:
-                    $applied_success++;
+                    if($status['status']){
+                        //Add Source since not there:
+                        $applied_success++;
+                    }
+
 
                 } elseif($action_e__id==12612 && count($is_previous)){
 
