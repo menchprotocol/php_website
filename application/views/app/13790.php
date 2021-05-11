@@ -3,45 +3,6 @@
     a { text-decoration: none; }
 </style>
 
-<script>
-
-    $(document).ready(function () {
-        var table = $('#registry_table');
-        $('#th_members, #th_done')
-            .wrapInner('<span title="sort this column"/>')
-            .each(function(){
-
-                var th = $(this),
-                    thIndex = th.index(),
-                    inverse = false;
-
-                th.click(function(){
-
-                    table.find('td').filter(function(){
-
-                        return $(this).index() === thIndex;
-
-                    }).sortElements(function(a, b){
-
-                        return $.text([a]) > $.text([b]) ?
-                            inverse ? -1 : 1
-                            : inverse ? 1 : -1;
-
-                    }, function(){
-
-                        return this.parentNode;
-
-                    });
-
-                    inverse = !inverse;
-
-                });
-
-            });
-
-    });
-</script>
-
 <?php
 
 if(!isset($_GET['i__id']) || !$_GET['i__id']){
@@ -117,7 +78,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $count => $x){
 
         if(!isset($_GET['csv'])){
-            $body_content .= '<tr style="'.( !fmod($count,2) ? 'background-color:#FFFFFF;' : '' ).'">';
+            $body_content .= '<tr>';
         }
 
 
@@ -199,13 +160,15 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     if(!isset($_GET['csv'])){
 
-        echo '<table style="font-size:0.8em; width:100%;" id="registry_table">';
+        $table_sortable = array('#th_members','#th_done');
+        echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
         echo '<th id="th_members" style="width:200px;">'.($count+1).' MEMBERS</th>';
         echo '<th id="th_done" style="width:50px;">DONE</th>';
         foreach($column_sources as $e){
-            echo '<th><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span></a>'.view_cover(12274,$e['e__cover']).'</th>';
+            array_push($table_sortable, '#th_e_'.$e['e__id']);
+            echo '<th id="th_e_'.$e['e__id'].'"><span style="writing-mode: tb-rl; white-space: nowrap;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span></span>'.view_cover(12274,$e['e__cover']).'</th>';
         }
         foreach($column_ideas as $i){
             $has_limits = $this->X_model->fetch(array(
@@ -214,7 +177,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__right' => $i['i__id'],
                 'x__up' => 26189,
             ), array(), 1);
-            echo '<th><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span></a>'.view_cover(12273,$i['i__cover']).'</th>';
+            array_push($table_sortable, '#th_i_'.$i['i__id']);
+            echo '<th id="th_i_'.$i['i__id'].'"><span style="writing-mode: tb-rl; white-space: nowrap;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span></span>'.view_cover(12273,$i['i__cover']).'</th>';
         }
         //echo '<th>STARTED</th>';
         echo '</tr>';
@@ -240,3 +204,45 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     }
 
 }
+
+?>
+
+
+<script>
+
+    $(document).ready(function () {
+        var table = $('#registry_table');
+        $('<?= join(', ', $table_sortable) ?>')
+            .wrapInner('<span title="sort this column"/>')
+            .each(function(){
+
+                var th = $(this),
+                    thIndex = th.index(),
+                    inverse = false;
+
+                th.click(function(){
+
+                    table.find('td').filter(function(){
+
+                        return $(this).index() === thIndex;
+
+                    }).sortElements(function(a, b){
+
+                        return $.text([a]) > $.text([b]) ?
+                            inverse ? -1 : 1
+                            : inverse ? 1 : -1;
+
+                    }, function(){
+
+                        return this.parentNode;
+
+                    });
+
+                    inverse = !inverse;
+
+                });
+
+            });
+
+    });
+</script>
