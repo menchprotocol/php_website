@@ -35,7 +35,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     if(!count($is)){
         die('Invalid Idea ID');
     }
-    echo '<h2>'.$is[0]['i__title'].'</h2>';
+    echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</h2>';
 
 
     $column_sources = $this->X_model->fetch(array(
@@ -181,8 +181,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo $body_content;
         echo '</table>';
 
-        echo '<div>Copy & Paste to email all '.($count+1).' members:</div>';
-        echo '<div>'.join(', ',$all_emails).'</div>';
+        echo '<div style="padding: 34px 0 8px;">Copy & Paste to email all '.($count+1).' members:</div>';
+        echo '<textarea class="mono-space" style="background-color:#FFFFFF; color:#222222 !important; padding:20px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.join(', ',$all_emails).'</textarea>';
 
     } else {
 
