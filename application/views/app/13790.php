@@ -140,7 +140,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 }
 
             } else {
-                $body_content .= ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').",";
+                $body_content .= ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '&nbsp;').",";
             }
         }
 
