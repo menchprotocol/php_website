@@ -224,7 +224,10 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 <style>
-    .fa-filter{font-size: 0.33em !important;}
+    .fa-filter{
+        font-size: 1em !important;
+        margin-bottom: 3px;
+    }
     th{
         cursor: ns-resize !important;
         border: 0 !important;
