@@ -182,7 +182,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '</table>';
 
         echo '<div>Copy & Paste to email all '.($count+1).' members:</div>';
-        echo '<div>'.join(',',$all_emails).'</div>';
+        echo '<div>'.join(', ',$all_emails).'</div>';
 
     } else {
 
