@@ -76,7 +76,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $count => $x){
 
         if(!isset($_GET['csv'])){
-            $body_content .= '<tr style="'.( !fmod($count,2) ? 'background-color:#EFEFEF;' : '' ).'">';
+            $body_content .= '<tr style="'.( fmod($count,2) ? 'background-color:#FFFFFF;' : '' ).'">';
         }
 
         $body_content .= '<td>'.($count+1).'</td>';
@@ -104,7 +104,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => $e['e__id'],
             ));
 
-            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( $e['e__id']==3288 ? '<a href="mailto:'.$fetch_data[0]['x__message'].'?subject='.$is[0]['i__title'].'" title="'.$fetch_data[0]['x__message'].'">💌</a>' : view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type'])  ) : '✅' ) : '' );
+            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( $e['e__id']==3288 ? '<a href="mailto:'.$fetch_data[0]['x__message'].'?subject='.$is[0]['i__title'].'" title="'.$fetch_data[0]['x__message'].'">✉️</a>' : view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type'])  ) : '✅' ) : '' );
 
             if(!isset($_GET['csv'])){
                 $body_content .= '<td>'.$message_clean.'</td>';
@@ -156,7 +156,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     if(!isset($_GET['csv'])){
 
-        echo '<table>';
+        echo '<table style="font-size:0.8em;">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
         echo '<td>&nbsp;</td>';

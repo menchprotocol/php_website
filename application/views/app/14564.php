@@ -41,7 +41,7 @@ $sign_i__id = intval($this->session->userdata('login_i__id'));
 $redirect_url = $this->session->userdata('redirect_url');
 
 
-if($userInfo){
+if($userInfo && isset($userInfo['email'])){
 
     //We have their email already?
     $member_emails = $this->X_model->fetch(array(
