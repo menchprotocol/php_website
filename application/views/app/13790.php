@@ -1,8 +1,3 @@
-
-<style>
-    a { text-decoration: none; }
-</style>
-
 <?php
 
 if(!isset($_GET['i__id']) || !$_GET['i__id']){
@@ -168,7 +163,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<th id="th_done" style="width:50px;">DONE</th>';
         foreach($column_sources as $e){
             array_push($table_sortable, '#th_e_'.$e['e__id']);
-            echo '<th id="th_e_'.$e['e__id'].'"><span style="writing-mode: tb-rl; white-space: nowrap;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span></span>'.view_cover(12274,$e['e__cover']).'</th>';
+            echo '<th id="th_e_'.$e['e__id'].'"><span class="vertical_col">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span></span>'.view_cover(12274,$e['e__cover']).'</th>';
         }
         foreach($column_ideas as $i){
             $has_limits = $this->X_model->fetch(array(
@@ -178,7 +173,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => 26189,
             ), array(), 1);
             array_push($table_sortable, '#th_i_'.$i['i__id']);
-            echo '<th id="th_i_'.$i['i__id'].'"><span style="writing-mode: tb-rl; white-space: nowrap;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span></span>'.view_cover(12273,$i['i__cover']).'</th>';
+            echo '<th id="th_i_'.$i['i__id'].'"><span class="vertical_col">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span></span>'.view_cover(12273,$i['i__cover']).'</th>';
         }
         //echo '<th>STARTED</th>';
         echo '</tr>';
@@ -208,6 +203,14 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 ?>
 
 
+<style>
+    a { text-decoration: none; }
+    .vertical_col {
+        writing-mode: tb-rl;
+        white-space: nowrap;
+        display: block;
+    }
+</style>
 <script>
 
     $(document).ready(function () {
