@@ -176,11 +176,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         $table_sortable = array('#th_members','#th_done');
 
         echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</a></h2>';
-        echo '<p class="center">Tip: Click table headlines to sort by column.</p>';
+        echo '<p class="center">Tip: Click <i class="fas fa-filter"></i> to apply filter. Click anywhere else on headline to sort by column.</p>';
         echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-        echo '<th id="th_members" style="width:200px;">'.($count+1).' MEMBERS'.( isset($_GET['i_filter']) ? ' <a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTER <i class="fal fa-filter" style="font-size: 0.44em;"></i></u></a>' : '' ).'</th>';
+        echo '<th id="th_members" style="width:200px;">'.($count+1).' MEMBERS'.( isset($_GET['i_filter']) ? '<br /><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTER <i class="fal fa-filter"></i></u></a>' : '' ).'</th>';
         echo '<th id="th_done" style="width:50px;">DONE</th>';
         foreach($column_sources as $e){
             array_push($table_sortable, '#th_e_'.$e['e__id']);
@@ -194,7 +194,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => 26189,
             ), array(), 1);
             array_push($table_sortable, '#th_i_'.$i['i__id']);
-            echo '<th id="th_i_'.$i['i__id'].'"><span class="vertical_col">'.( !isset($_GET['i_filter']) || $_GET['i_filter']==$i['i__id'] ? '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'"><i class="fas fa-filter" style="font-size: 0.44em;"></i></a>' : '' ).'<span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span>'.$i['i__title'].'</span></th>';
+            echo '<th id="th_i_'.$i['i__id'].'"><span class="vertical_col">'.( !isset($_GET['i_filter']) || $_GET['i_filter']==$i['i__id'] ? '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'"><i class="fas fa-filter"></i></a>' : '' ).'<span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span>'.$i['i__title'].'</span></th>';
         }
         //echo '<th>STARTED</th>';
         echo '</tr>';
@@ -224,6 +224,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 <style>
+    .fa-filter{font-size: 0.33em !important;}
     th{
         cursor: ns-resize !important;
         border: 0 !important;
