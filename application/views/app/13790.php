@@ -155,8 +155,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         $table_sortable = array('#th_members','#th_done');
 
-        echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</h2>';
-        echo '<p>Tip: Click table headlines to sort by that column.</p>';
+        echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</a></h2>';
+        echo '<p class="center">Tip: Click table headlines to sort by column.</p>';
         echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
