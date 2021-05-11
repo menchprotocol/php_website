@@ -1,3 +1,7 @@
+
+<style>
+    a { text-decoration: none; }
+</style>
 <?php
 
 if(!isset($_GET['i__id']) || !$_GET['i__id']){
