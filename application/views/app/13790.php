@@ -207,6 +207,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 <style>
     th{
         cursor: ns-resize !important;
+        border: 0 !important;
     }
     .vertical_col {
         writing-mode: tb-rl;
