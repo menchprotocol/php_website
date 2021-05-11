@@ -87,7 +87,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         if(!isset($_GET['csv'])){
             $body_content .= '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;"><u>'.$x['e__title'].'</u></a></td>';
-            $body_content .= '<td>'.$completion_rate['completion_percentage'].'%</td>';
+            $body_content .= '<td>'.$completion_rate['completion_percentage'].'</td>';
         } else {
             $body_content .= $x['e__title'].",".$completion_rate['completion_percentage'].'%'.",";
         }
@@ -185,7 +185,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
         echo '<th id="th_members" style="width:200px;">'.( isset($_GET['i_filter']) || isset($_GET['i_filter']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTER <i class="fas fa-filter"></i></u></a><br /><br />' : '' ).($count+1).' MEMBERS</th>';
-        echo '<th id="th_done" style="width:50px;">DONE</th>';
+        echo '<th id="th_done" style="width:50px;">%</th>';
         foreach($column_sources as $e){
             array_push($table_sortable, '#th_e_'.$e['e__id']);
             echo '<th id="th_e_'.$e['e__id'].'">'.( $e['e__id']==3288 ? '' : '<span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&e_filter='.$e['e__id'].'">'.( isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] ? '<i class="fas fa-filter rotate180"></i>' : '<i class="fal fa-filter rotate180"></i>' ).'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span>'.$e['e__title'].'</span>' ).'</th>';
