@@ -160,7 +160,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<td style="width:200px;">'.($count+1).' MEMBERS</td>';
         echo '<td style="width:50px;">DONE</td>';
         foreach($column_sources as $e){
-            echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span></a><span class="icon-block-xs">'.view_cover(12274,$e['e__cover']).'</span></td>';
+            echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span></a>'.view_cover(12274,$e['e__cover']).'</td>';
         }
         foreach($column_ideas as $i){
             $has_limits = $this->X_model->fetch(array(
@@ -169,7 +169,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__right' => $i['i__id'],
                 'x__up' => 26189,
             ), array(), 1);
-            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span></a><span class="icon-block-xs">'.view_cover(12273,$i['i__cover']).'</span></td>';
+            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span></a>'.view_cover(12273,$i['i__cover']).'</td>';
         }
         //echo '<td>STARTED</td>';
         echo '</tr>';
