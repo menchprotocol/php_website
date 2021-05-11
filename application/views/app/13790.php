@@ -65,6 +65,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     //Return UI:
     $body_content = '';
+    $all_emails = array();
     $count_totals = array(
         'e' => array(),
         'i' => array(),
@@ -103,6 +104,10 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             ));
 
             $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( $e['e__id']==3288 ? '<a href="mailto:'.$fetch_data[0]['x__message'].'?subject='.$is[0]['i__title'].'" title="'.$fetch_data[0]['x__message'].'" data-toggle="tooltip" data-placement="top">✉️</a>' : view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type'])  ) : '✅' ) : '' );
+
+            if(count($fetch_data) &&  strlen($fetch_data[0]['x__message']) && $e['e__id']==3288){
+                array_push($all_emails, $fetch_data[0]['x__message']);
+            }
 
             if(!isset($_GET['csv'])){
                 $body_content .= '<td>'.$message_clean.'</td>';
@@ -175,6 +180,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '</tr>';
         echo $body_content;
         echo '</table>';
+
+        echo '<div>Copy & Paste to email all '.($count+1).' members:</div>';
+        echo '<div>'.join(',',$all_emails).'</div>';
 
     } else {
 
