@@ -213,6 +213,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         writing-mode: tb-rl;
         white-space: nowrap;
         display: block;
+        padding-bottom: 8px;
     }
     .col_stat{
         height:55px;
