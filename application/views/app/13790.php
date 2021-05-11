@@ -188,7 +188,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<th id="th_done" style="width:50px;">DONE</th>';
         foreach($column_sources as $e){
             array_push($table_sortable, '#th_e_'.$e['e__id']);
-            echo '<th id="th_e_'.$e['e__id'].'"><span class="vertical_col">'.( $e['e__id']==3288 ? '' : '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&e_filter='.$e['e__id'].'">'.( isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] ? '<i class="fas fa-filter rotate180"></i>' : '<i class="fal fa-filter rotate180"></i>' ).'</a>' ).'<span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span>'.$e['e__title'].'</span></th>';
+            echo '<th id="th_e_'.$e['e__id'].'">'.( $e['e__id']==3288 ? '' : '<span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&e_filter='.$e['e__id'].'">'.( isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] ? '<i class="fas fa-filter rotate180"></i>' : '<i class="fal fa-filter rotate180"></i>' ).'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span>'.$e['e__title'].'</span>' ).'</th>';
         }
         foreach($column_ideas as $i){
             $has_limits = $this->X_model->fetch(array(
