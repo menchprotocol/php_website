@@ -182,7 +182,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '</table>';
 
         echo '<div style="padding: 34px 0 8px;">Copy & Paste to email all '.($count+1).' members:</div>';
-        echo '<textarea class="mono-space" style="background-color:#FFFFFF; color:#222222 !important; padding:20px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.join(', ',$all_emails).'</textarea>';
+        echo '<textarea class="mono-space" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.join(', ',$all_emails).'</textarea>';
 
     } else {
 
