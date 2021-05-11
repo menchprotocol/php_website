@@ -76,7 +76,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $count => $x){
 
         if(!isset($_GET['csv'])){
-            $body_content .= '<tr style="'.( fmod($count,2) ? 'background-color:#FFFFFF;' : '' ).'">';
+            $body_content .= '<tr style="'.( !fmod($count,2) ? 'background-color:#FFFFFF;' : '' ).'">';
         }
 
         $body_content .= '<td>'.($count+1).'</td>';
@@ -166,7 +166,13 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span></a></td>';
         }
         foreach($column_ideas as $i){
-            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).'</span></a></td>';
+            $has_limits = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 4983, //References
+                'x__right' => $i['i__id'],
+                'x__up' => 26189,
+            ), array(), 1);
+            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span></a></td>';
         }
         //echo '<td>STARTED</td>';
         echo '</tr>';
