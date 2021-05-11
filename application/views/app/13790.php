@@ -76,6 +76,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             $body_content .= '<tr style="'.( !fmod($count,2) ? 'background-color:#EFEFEF;' : '' ).'">';
         }
 
+        $body_content .= '<td>'.($count+1).'</td>';
+
+
         //Member
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
 
@@ -155,10 +158,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<table>';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
+        echo '<td>&nbsp;</td>';
         echo '<td style="width:200px;">MEMBER</td>';
         echo '<td style="width:50px;">DONE</td>';
         foreach($column_sources as $e){
-            echo '<td><a href="/@'.$e['e__id'].'">'.$e['e__title'].( isset($count_totals['e'][$e['e__id']]) ? ': '.$count_totals['e'][$e['e__id']] : '' ).'</a></td>';
+            echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl;">'.$e['e__title'].( isset($count_totals['e'][$e['e__id']]) ? ': '.$count_totals['e'][$e['e__id']] : '' ).'</a></td>';
         }
         foreach($column_ideas as $i){
             echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].( isset($count_totals['i'][$i['i__id']]) ? ': '.$count_totals['i'][$i['i__id']] : '' ).'</a></td>';
