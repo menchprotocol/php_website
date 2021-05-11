@@ -128,11 +128,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             if(!isset($_GET['csv'])){
                 $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'">📝</span>' : '✅' )  : '').'</td>';
 
-                if(count($discoveries) && strlen($discoveries[0]['x__message'])>0){
+                if(count($discoveries)){
                     if(!isset($count_totals['i'][$i['i__id']])){
                         $count_totals['i'][$i['i__id']] = 0;
                     }
-                    $count_totals['i'][$i['i__id']] += ( in_array(e_x__type($discoveries[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']) : 1 );
+                    $count_totals['i'][$i['i__id']] += ( strlen($discoveries[0]['x__message'])>0 && in_array(e_x__type($discoveries[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']) : 1 );
                 }
 
             } else {
