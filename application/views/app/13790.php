@@ -6,9 +6,8 @@
 <script>
 
     $(document).ready(function () {
-        console.log('loaded');
-        var table = $('table');
-        $('#th_members')
+        var table = $('#registry_table');
+        $('#th_members, #th_done')
             .wrapInner('<span title="sort this column"/>')
             .each(function(){
 
@@ -200,11 +199,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     if(!isset($_GET['csv'])){
 
-        echo '<table style="font-size:0.8em; width:100%;">';
+        echo '<table style="font-size:0.8em; width:100%;" id="registry_table">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
         echo '<th id="th_members" style="width:200px;">'.($count+1).' MEMBERS</th>';
-        echo '<th style="width:50px;">DONE</th>';
+        echo '<th id="th_done" style="width:50px;">DONE</th>';
         foreach($column_sources as $e){
             echo '<th><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span></a>'.view_cover(12274,$e['e__cover']).'</th>';
         }
