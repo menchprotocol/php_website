@@ -179,16 +179,12 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         $table_sortable = array('#th_members','#th_done');
 
-        echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-        echo '<td colspan="99">';
         echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</a></h2>';
         echo '<p class="center">Tip: Click <i class="fal fa-filter"></i> to apply filter. Click anywhere else on headline to sort by column.</p>';
-        echo '</td>';
-        echo '</tr>';
         echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-        echo '<th id="th_members" style="width:200px;">'.($count+1).' MEMBERS'.( isset($_GET['i_filter']) || isset($_GET['e_filter']) ? '<br /><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTER <i class="fas fa-filter"></i></u></a>' : '' ).'</th>';
+        echo '<th id="th_members" style="width:200px;">'.( isset($_GET['i_filter']) || isset($_GET['i_filter']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTER <i class="fas fa-filter"></i></u></a><br /><br />' : '' ).($count+1).' MEMBERS</th>';
         echo '<th id="th_done" style="width:50px;">DONE</th>';
         foreach($column_sources as $e){
             array_push($table_sortable, '#th_e_'.$e['e__id']);

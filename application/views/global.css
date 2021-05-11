@@ -2985,10 +2985,10 @@ font-weight: bold !important;
 }
 
 .table-striped tbody tr:nth-of-type(odd){
-    background-color: #FFF;
+    background-color: transparent;
 }
 .table-striped tbody tr:nth-of-type(even){
-    background-color: transparent;
+    background-color: #FFF;
 }
 
 
