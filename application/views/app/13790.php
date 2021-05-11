@@ -59,6 +59,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     //Return UI:
     $body_content = '';
+    $filtered_count = 0;
     $all_emails = array();
     $skip_filter = array();
     $count_totals = array(
@@ -84,7 +85,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
 
         if(!isset($_GET['csv'])){
-            $body_content .= '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a></td>';
+            $body_content .= '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;"><u>'.$x['e__title'].'</u></a></td>';
             $body_content .= '<td>'.$completion_rate['completion_percentage'].'%</td>';
         } else {
             $body_content .= $x['e__title'].",".$completion_rate['completion_percentage'].'%'.",";
@@ -156,6 +157,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         }
         if(in_array($x['e__id'], $skip_filter)){
             $body_content = str_replace('tr__'.$x['e__id'],'hidden',$body_content);
+        } else {
+            $filtered_count++;
         }
 
         if(!isset($_GET['csv'])){
@@ -177,7 +180,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-        echo '<th id="th_members" style="width:200px;">'.($count+1).' MEMBERS</th>';
+        echo '<th id="th_members" style="width:200px;">'.($count+1).' MEMBERS'.( $_GET['i_filter'] ? ' <a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'"><u>VIEW ALL</u></a>' : '' ).'</th>';
         echo '<th id="th_done" style="width:50px;">DONE</th>';
         foreach($column_sources as $e){
             array_push($table_sortable, '#th_e_'.$e['e__id']);
@@ -191,14 +194,14 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => 26189,
             ), array(), 1);
             array_push($table_sortable, '#th_i_'.$i['i__id']);
-            echo '<th id="th_i_'.$i['i__id'].'"><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'"><i class="fas fa-filter" style="font-size: 0.55em;"></i></a><span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span>'.$i['i__title'].'</span></th>';
+            echo '<th id="th_i_'.$i['i__id'].'"><span class="vertical_col">'.( !isset($_GET['i_filter']) || $_GET['i_filter']==$i['i__id'] ).'<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'"><i class="fas fa-filter" style="font-size: 0.55em;"></i></a><span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span>'.$i['i__title'].'</span></th>';
         }
         //echo '<th>STARTED</th>';
         echo '</tr>';
         echo $body_content;
         echo '</table>';
 
-        echo '<div style="padding: 34px 0 8px;"><a href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to='.join(',',$all_emails).'&subject='.$is[0]['i__title'].'" target="_blank">Email all '.($count+1).' members</div>';
+        echo '<div style="padding: 34px 0 8px;"><a href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to='.join(',',$all_emails).'&subject='.$is[0]['i__title'].'" target="_blank">Email '.$filtered_count.' members:</div>';
         echo '<textarea class="mono-space" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.join(', ',$all_emails).'</textarea>';
 
     } else {
