@@ -118,6 +118,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         }
 
         //IDEAS
+        $skip_filter = false;
         foreach($column_ideas as $i){
             $discoveries = $this->X_model->fetch(array(
                 'x__left' => $i['i__id'],
@@ -126,18 +127,27 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
             if(!isset($_GET['csv'])){
-                $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top">📝</span>' : $i['i__cover'] )  : '').'</td>';
 
-                if(count($discoveries)){
-                    if(!isset($count_totals['i'][$i['i__id']])){
-                        $count_totals['i'][$i['i__id']] = 0;
+                if(isset($_GET['i_filter']) && $_GET['i_filter']==$i['i__id'] && !count($discoveries)){
+                    $skip_filter = true;
+                    break;
+                } else {
+                    $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top">📝</span>' : view_cover(12273,$i['i__cover']) )  : '').'</td>';
+
+                    if(count($discoveries)){
+                        if(!isset($count_totals['i'][$i['i__id']])){
+                            $count_totals['i'][$i['i__id']] = 0;
+                        }
+                        $count_totals['i'][$i['i__id']] += ( strlen($discoveries[0]['x__message'])>0 && in_array(e_x__type($discoveries[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']) : 1 );
                     }
-                    $count_totals['i'][$i['i__id']] += ( strlen($discoveries[0]['x__message'])>0 && in_array(e_x__type($discoveries[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']) : 1 );
                 }
 
             } else {
-                $body_content .= ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : $i['i__cover'] )  : '&nbsp;').",";
+                $body_content .= ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : view_cover(12273,$i['i__cover']) )  : '&nbsp;').",";
             }
+        }
+        if($skip_filter){
+            break;
         }
 
 
@@ -164,7 +174,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<th id="th_done" style="width:50px;">DONE</th>';
         foreach($column_sources as $e){
             array_push($table_sortable, '#th_e_'.$e['e__id']);
-            echo '<th id="th_e_'.$e['e__id'].'">'.view_cover(12274,$e['e__cover']).'<span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span>'.$e['e__title'].'</span></th>';
+            echo '<th id="th_e_'.$e['e__id'].'"><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span>'.$e['e__title'].'</span></th>';
         }
         foreach($column_ideas as $i){
             $has_limits = $this->X_model->fetch(array(
@@ -174,7 +184,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => 26189,
             ), array(), 1);
             array_push($table_sortable, '#th_i_'.$i['i__id']);
-            echo '<th id="th_i_'.$i['i__id'].'">'.view_cover(12273,$i['i__cover']).'<span class="vertical_col"><span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span>'.$i['i__title'].'</span></th>';
+            echo '<th id="th_i_'.$i['i__id'].'"><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'"><i class="fas fa-filter" style="font-size: 0.55em;"></i></a><span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span>'.$i['i__title'].'</span></th>';
         }
         //echo '<th>STARTED</th>';
         echo '</tr>';
