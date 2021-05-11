@@ -180,7 +180,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-        echo '<th id="th_members" style="width:200px;">'.($count+1).' MEMBERS'.( $_GET['i_filter'] ? ' <a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'"><u>VIEW ALL</u></a>' : '' ).'</th>';
+        echo '<th id="th_members" style="width:200px;">'.($count+1).' MEMBERS'.( isset($_GET['i_filter']) ? ' <a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTER <i class="fal fa-filter" style="font-size: 0.44em;"></i></u></a>' : '' ).'</th>';
         echo '<th id="th_done" style="width:50px;">DONE</th>';
         foreach($column_sources as $e){
             array_push($table_sortable, '#th_e_'.$e['e__id']);
