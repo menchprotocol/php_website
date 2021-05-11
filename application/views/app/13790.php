@@ -5,40 +5,42 @@
 
 <script>
 
-var table = $('table');
+    $(document).ready(function () {
+        console.log('loaded');
+        var table = $('table');
+        $('#th_members')
+            .wrapInner('<span title="sort this column"/>')
+            .each(function(){
 
-$('#th_members')
-.wrapInner('<span title="sort this column"/>')
-.each(function(){
+                var th = $(this),
+                    thIndex = th.index(),
+                    inverse = false;
 
-var th = $(this),
-thIndex = th.index(),
-inverse = false;
+                th.click(function(){
 
-th.click(function(){
+                    table.find('td').filter(function(){
 
-table.find('td').filter(function(){
+                        return $(this).index() === thIndex;
 
-return $(this).index() === thIndex;
+                    }).sortElements(function(a, b){
 
-}).sortElements(function(a, b){
+                        return $.text([a]) > $.text([b]) ?
+                            inverse ? -1 : 1
+                            : inverse ? 1 : -1;
 
-return $.text([a]) > $.text([b]) ?
-inverse ? -1 : 1
-: inverse ? 1 : -1;
+                    }, function(){
 
-}, function(){
+                        return this.parentNode;
 
-// parentNode is the element we want to move
-return this.parentNode;
+                    });
 
-});
+                    inverse = !inverse;
 
-inverse = !inverse;
+                });
 
-});
+            });
 
-});
+    });
 </script>
 
 <?php
