@@ -180,7 +180,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         $table_sortable = array('#th_members','#th_done');
 
         echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</a></h2>';
-        echo '<p class="center" style="padding-bottom: 34px;">Legend: <i class="fal fa-filter"></i> Apply filter <i class="fal fa-filter rotate180"></i> Apply Inverse filter <i class="fas fa-sort"></i> Sort by column</p>';
+        echo '<p class="center" style="padding-bottom: 34px;">Legend: <i class="fal fa-filter"></i> Filter <i class="fal fa-filter rotate180"></i> Inverse Filter <i class="fas fa-sort"></i> Sort</p>';
         echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
