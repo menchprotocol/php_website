@@ -101,7 +101,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => $e['e__id'],
             ));
 
-            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '✅' ) : '' );
+            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( $e['e__id']==3288 ? '<a href="mailto:'.$fetch_data[0]['x__message'].'?subject='.$is[0]['i__title'].'" title="'.$fetch_data[0]['x__message'].'">💌</a>' : view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type'])  ) : '✅' ) : '' );
 
             if(!isset($_GET['csv'])){
                 $body_content .= '<td>'.$message_clean.'</td>';
@@ -162,10 +162,10 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<td style="width:200px;">MEMBER</td>';
         echo '<td style="width:50px;">DONE</td>';
         foreach($column_sources as $e){
-            echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl;">'.$e['e__title'].'<span style="height:34px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '&nbsp;' ).'</span></a></td>';
+            echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '&nbsp;' ).'</span></a></td>';
         }
         foreach($column_ideas as $i){
-            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'<span style="height:34px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '&nbsp;' ).'</span></a></td>';
+            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '&nbsp;' ).'</span></a></td>';
         }
         echo '<td>STARTED</td>';
         echo '</tr>';
