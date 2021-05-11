@@ -97,7 +97,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => $e['e__id'],
             ));
 
-            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( $e['e__id']==3288 ? '<a href="mailto:'.$fetch_data[0]['x__message'].'?subject='.$is[0]['i__title'].'" title="'.$fetch_data[0]['x__message'].'" data-toggle="tooltip" data-placement="top">✉️</a>' : view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type'])  ) : '✅' ) : '' );
+            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( $e['e__id']==3288 ? '<a target="_blank" href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to='.$fetch_data[0]['x__message'].'?subject='.$is[0]['i__title'].'" title="'.$fetch_data[0]['x__message'].'" data-toggle="tooltip" data-placement="top">✉️</a>' : view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type'])  ) : '✅' ) : '' );
 
             if(count($fetch_data) &&  strlen($fetch_data[0]['x__message']) && $e['e__id']==3288){
                 array_push($all_emails, $fetch_data[0]['x__message']);
@@ -181,7 +181,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo $body_content;
         echo '</table>';
 
-        echo '<div style="padding: 34px 0 8px;">Copy & Paste to email all '.($count+1).' members:</div>';
+        echo '<div style="padding: 34px 0 8px;"><a href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to='.join(',',$all_emails).'" target="_blank">Email all '.($count+1).' members</div>';
         echo '<textarea class="mono-space" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.join(', ',$all_emails).'</textarea>';
 
     } else {
