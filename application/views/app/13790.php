@@ -213,7 +213,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     $(document).ready(function () {
         var table = $('#registry_table');
         $('<?= join(', ', $table_sortable) ?>')
-            .wrapInner('<span title="sort this column"/>')
             .each(function(){
 
                 var th = $(this),
