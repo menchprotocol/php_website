@@ -60,6 +60,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     //Return UI:
     $body_content = '';
     $all_emails = array();
+    $skip_filter = array();
     $count_totals = array(
         'e' => array(),
         'i' => array(),
@@ -70,8 +71,12 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         'x__left' => $_GET['i__id'],
     ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $count => $x){
 
+
+
+
+
         if(!isset($_GET['csv'])){
-            $body_content .= '<tr>';
+            $body_content .= '<tr class="tr__'.$x['e__id'].'">';
         }
 
 
@@ -88,6 +93,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
         //SOURCES
+        $the_email = null;
         foreach($column_sources as $e){
 
             $fetch_data = $this->X_model->fetch(array(
@@ -100,7 +106,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( $e['e__id']==3288 ? '<a target="_blank" href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to='.$fetch_data[0]['x__message'].'&subject='.$is[0]['i__title'].'" title="'.$fetch_data[0]['x__message'].'" data-toggle="tooltip" data-placement="top">✉️</a>' : view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type'])  ) : '✅' ) : '' );
 
             if(count($fetch_data) &&  strlen($fetch_data[0]['x__message']) && $e['e__id']==3288){
-                array_push($all_emails, $fetch_data[0]['x__message']);
+                $the_email = $fetch_data[0]['x__message'];
             }
 
             if(!isset($_GET['csv'])){
@@ -118,7 +124,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         }
 
         //IDEAS
-        $skip_filter = false;
         foreach($column_ideas as $i){
             $discoveries = $this->X_model->fetch(array(
                 'x__left' => $i['i__id'],
@@ -129,27 +134,29 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             if(!isset($_GET['csv'])){
 
                 if(isset($_GET['i_filter']) && $_GET['i_filter']==$i['i__id'] && !count($discoveries)){
-                    $skip_filter = true;
-                    break;
-                } else {
-                    $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top">📝</span>' : view_cover(12273,$i['i__cover']) )  : '').'</td>';
+                    array_push($skip_filter, $x['e__id']);
+                }
 
-                    if(count($discoveries)){
-                        if(!isset($count_totals['i'][$i['i__id']])){
-                            $count_totals['i'][$i['i__id']] = 0;
-                        }
-                        $count_totals['i'][$i['i__id']] += ( strlen($discoveries[0]['x__message'])>0 && in_array(e_x__type($discoveries[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']) : 1 );
+                $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top">📝</span>' : view_cover(12273,$i['i__cover']) )  : '').'</td>';
+
+                if(count($discoveries)){
+                    if(!isset($count_totals['i'][$i['i__id']])){
+                        $count_totals['i'][$i['i__id']] = 0;
                     }
+                    $count_totals['i'][$i['i__id']] += ( strlen($discoveries[0]['x__message'])>0 && in_array(e_x__type($discoveries[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']) : 1 );
                 }
 
             } else {
                 $body_content .= ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : view_cover(12273,$i['i__cover']) )  : '&nbsp;').",";
             }
         }
-        if($skip_filter){
-            break;
-        }
 
+        if($the_email && !in_array($x['e__id'], $skip_filter)){
+            array_push($all_emails,$the_email);
+        }
+        if(in_array($x['e__id'], $skip_filter)){
+            $body_content = str_replace('tr__'.$x['e__id'],'hidden',$body_content);
+        }
 
         if(!isset($_GET['csv'])){
             //$body_content .= '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
