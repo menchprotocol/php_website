@@ -126,7 +126,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
             if(!isset($_GET['csv'])){
-                $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top">📝</span>' : '✅' )  : '').'</td>';
+                $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top">📝</span>' : $i['i__cover'] )  : '').'</td>';
 
                 if(count($discoveries)){
                     if(!isset($count_totals['i'][$i['i__id']])){
@@ -136,7 +136,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 }
 
             } else {
-                $body_content .= ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '&nbsp;').",";
+                $body_content .= ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : $i['i__cover'] )  : '&nbsp;').",";
             }
         }
 
@@ -195,7 +195,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         }
         //echo 'STARTED'."\n";
         //echo $body_content;
-
 
     }
 
