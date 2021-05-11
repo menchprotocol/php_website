@@ -2984,7 +2984,12 @@ font-weight: bold !important;
     background-color: transparent !important;
 }
 
-
+.table-striped tbody tr:nth-of-type(odd){
+    background-color: transparent;
+}
+.table-striped tbody tr:nth-of-type(even){
+    background-color: #FFF;
+}
 
 
 .ignore-click .fa-gif-wrap {
