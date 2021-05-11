@@ -228,7 +228,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
                     }).sortElements(function(a, b){
 
-                        return $.text([a]) > $.text([b]) ?
+                        return $.text([a]) < $.text([b]) ?
                             inverse ? -1 : 1
                             : inverse ? 1 : -1;
 
