@@ -142,16 +142,14 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             } else {
                 $body_content .= ( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? $discoveries[0]['x__message'] : '✅' )  : '').",";
             }
-
-
         }
 
 
         if(!isset($_GET['csv'])){
-            $body_content .= '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
+            //$body_content .= '<td>'.date("Y-m-d H:i:s", strtotime($x['x__time'])).'</td>';
             $body_content .= '</tr>';
         } else {
-            $body_content .= date("Y-m-d H:i:s", strtotime($x['x__time']))."\n";
+            //$body_content .= date("Y-m-d H:i:s", strtotime($x['x__time']))."\n";
         }
 
 
@@ -166,12 +164,12 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<td style="width:200px;">MEMBER</td>';
         echo '<td style="width:50px;">DONE</td>';
         foreach($column_sources as $e){
-            echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '&nbsp;' ).'</span></a></td>';
+            echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl; min-height:200px;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '&nbsp;' ).'</span></a></td>';
         }
         foreach($column_ideas as $i){
-            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '&nbsp;' ).'</span></a></td>';
+            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl; min-height:200px;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '&nbsp;' ).'</span></a></td>';
         }
-        echo '<td>STARTED</td>';
+        //echo '<td>STARTED</td>';
         echo '</tr>';
         echo $body_content;
         echo '</table>';
@@ -185,8 +183,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         foreach($column_ideas as $i){
             echo $i['i__title'].',';
         }
-        echo 'STARTED'."\n";
-        echo $body_content;
+        //echo 'STARTED'."\n";
+        //echo $body_content;
 
 
     }
