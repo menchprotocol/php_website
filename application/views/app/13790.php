@@ -194,7 +194,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => 26189,
             ), array(), 1);
             array_push($table_sortable, '#th_i_'.$i['i__id']);
-            echo '<th id="th_i_'.$i['i__id'].'"><span class="vertical_col">'.( !isset($_GET['i_filter']) || $_GET['i_filter']==$i['i__id'] ).'<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'"><i class="fas fa-filter" style="font-size: 0.55em;"></i></a><span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span>'.$i['i__title'].'</span></th>';
+            echo '<th id="th_i_'.$i['i__id'].'"><span class="vertical_col">'.( !isset($_GET['i_filter']) || $_GET['i_filter']==$i['i__id'] ? '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'"><i class="fas fa-filter" style="font-size: 0.44em;"></i></a>' : '' ).'<span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span>'.$i['i__title'].'</span></th>';
         }
         //echo '<th>STARTED</th>';
         echo '</tr>';
