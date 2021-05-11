@@ -35,8 +35,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     if(!count($is)){
         die('Invalid Idea ID');
     }
-
-
+    echo '<h2>'.$is[0]['i__title'].'</h2>';
 
 
     $column_sources = $this->X_model->fetch(array(
