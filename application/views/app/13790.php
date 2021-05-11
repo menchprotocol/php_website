@@ -79,8 +79,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             $body_content .= '<tr style="'.( !fmod($count,2) ? 'background-color:#FFFFFF;' : '' ).'">';
         }
 
-        $body_content .= '<td>'.($count+1).'</td>';
-
 
         //Member
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $is[0]);
@@ -156,11 +154,10 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     if(!isset($_GET['csv'])){
 
-        echo '<table style="font-size:0.8em;">';
+        echo '<table style="font-size:0.8em; width:100%;">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-        echo '<td>&nbsp;</td>';
-        echo '<td style="width:200px;">MEMBER</td>';
+        echo '<td style="width:200px;">'.($count+1).' MEMBERS</td>';
         echo '<td style="width:50px;">DONE</td>';
         foreach($column_sources as $e){
             echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span></a></td>';
