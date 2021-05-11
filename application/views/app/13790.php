@@ -31,8 +31,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     if(!count($is)){
         die('Invalid Idea ID');
     }
-    echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</h2>';
-
 
     $column_sources = $this->X_model->fetch(array(
         'x__up IN (' . join(',', ( isset($_GET['e__id']) && strlen($_GET['e__id']) ? array($_GET['e__id'], 13861) : array(13861)) ) . ')' => null, //PUBLIC
@@ -156,6 +154,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     if(!isset($_GET['csv'])){
 
         $table_sortable = array('#th_members','#th_done');
+
+        echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</h2>';
+        echo '<p>Tip: Click table headlines to sort by that column.</p>';
         echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
@@ -204,7 +205,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 <style>
-    a { text-decoration: none; }
+    th{
+        cursor: ns-resize !important;
+    }
     .vertical_col {
         writing-mode: tb-rl;
         white-space: nowrap;
@@ -214,6 +217,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         height:55px;
         display:inline-block;
         text-align: left;
+        width: 8px;
     }
 </style>
 <script>
