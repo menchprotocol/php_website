@@ -2,6 +2,45 @@
 <style>
     a { text-decoration: none; }
 </style>
+
+<script>
+
+var table = $('table');
+
+$('#th_members')
+.wrapInner('<span title="sort this column"/>')
+.each(function(){
+
+var th = $(this),
+thIndex = th.index(),
+inverse = false;
+
+th.click(function(){
+
+table.find('td').filter(function(){
+
+return $(this).index() === thIndex;
+
+}).sortElements(function(a, b){
+
+return $.text([a]) > $.text([b]) ?
+inverse ? -1 : 1
+: inverse ? 1 : -1;
+
+}, function(){
+
+// parentNode is the element we want to move
+return this.parentNode;
+
+});
+
+inverse = !inverse;
+
+});
+
+});
+</script>
+
 <?php
 
 if(!isset($_GET['i__id']) || !$_GET['i__id']){
@@ -162,10 +201,10 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<table style="font-size:0.8em; width:100%;">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-        echo '<td style="width:200px;">'.($count+1).' MEMBERS</td>';
-        echo '<td style="width:50px;">DONE</td>';
+        echo '<th id="th_members" style="width:200px;">'.($count+1).' MEMBERS</th>';
+        echo '<th style="width:50px;">DONE</th>';
         foreach($column_sources as $e){
-            echo '<td><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span></a>'.view_cover(12274,$e['e__cover']).'</td>';
+            echo '<th><a href="/@'.$e['e__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$e['e__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span></a>'.view_cover(12274,$e['e__cover']).'</th>';
         }
         foreach($column_ideas as $i){
             $has_limits = $this->X_model->fetch(array(
@@ -174,9 +213,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__right' => $i['i__id'],
                 'x__up' => 26189,
             ), array(), 1);
-            echo '<td><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span></a>'.view_cover(12273,$i['i__cover']).'</td>';
+            echo '<th><a href="/i/i_go/'.$i['i__id'].'" style="writing-mode: tb-rl; white-space: nowrap;">'.$i['i__title'].'<span style="height:50px; display:inline-block; text-align: right;">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span></a>'.view_cover(12273,$i['i__cover']).'</th>';
         }
-        //echo '<td>STARTED</td>';
+        //echo '<th>STARTED</th>';
         echo '</tr>';
         echo $body_content;
         echo '</table>';
