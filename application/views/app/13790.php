@@ -188,7 +188,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<th id="th_done" style="width:50px;">%</th>';
         foreach($column_sources as $e){
             array_push($table_sortable, '#th_e_'.$e['e__id']);
-            echo '<th id="th_e_'.$e['e__id'].'">'.( $e['e__id']==3288 ? '' : '<span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&e_filter='.$e['e__id'].'&i_filter='.$_GET['i_filter'].'">'.( isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] ? '<i class="fas fa-filter rotate180"></i>' : '<i class="fal fa-filter rotate180"></i>' ).'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span>'.$e['e__title'].'</span>' ).'</th>';
+            echo '<th id="th_e_'.$e['e__id'].'">'.( $e['e__id']==3288 ? '' : '<span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&e_filter='.$e['e__id'].'&i_filter='.( isset($_GET['i_filter']) ? $_GET['i_filter'] : '' ).'">'.( isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] ? '<i class="fas fa-filter rotate180"></i>' : '<i class="fal fa-filter rotate180"></i>' ).'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span>'.$e['e__title'].'</span>' ).'</th>';
         }
         foreach($column_ideas as $i){
             $has_limits = $this->X_model->fetch(array(
@@ -198,7 +198,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => 26189,
             ), array(), 1);
             array_push($table_sortable, '#th_i_'.$i['i__id']);
-            echo '<th id="th_i_'.$i['i__id'].'"><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'&e_filter='.$_GET['e_filter'].'">'.( isset($_GET['i_filter']) && $_GET['i_filter']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span>'.$i['i__title'].'</span></th>';
+            echo '<th id="th_i_'.$i['i__id'].'"><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'&e_filter='.( isset($_GET['e_filter']) ? $_GET['e_filter'] : '' ).'">'.( isset($_GET['i_filter']) && $_GET['i_filter']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span>'.$i['i__title'].'</span></th>';
         }
         //echo '<th>STARTED</th>';
         echo '</tr>';
