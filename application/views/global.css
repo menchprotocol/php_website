@@ -191,7 +191,7 @@ li a {
 
 
 .add-input{
-    margin-bottom: 13px;
+    margin-bottom: 5px;
     padding: 5px 0 5px 41px !important;
     width: 100%;
 }
@@ -292,8 +292,10 @@ img.no-frame {
 }
 
 .algolia_pad_search{
+    /*
     min-height:44px;
     padding: 8px 0;
+    */
     text-align: center;
 }
 .gateway{
