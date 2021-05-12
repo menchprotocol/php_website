@@ -31,14 +31,15 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     if(!count($is)){
         die('Invalid Idea ID');
     }
-
-    $column_sources = $this->X_model->fetch(array(
-        'x__up IN (' . join(',', ( isset($_GET['e__id']) && strlen($_GET['e__id']) ? array($_GET['e__id'], 13861) : array(13861)) ) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC'));
-
+    $column_sources = array();
+    if(isset($_GET['e__id']) && strlen($_GET['e__id'])){
+        $column_sources = $this->X_model->fetch(array(
+            'x__up' => $_GET['e__id'], //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC'));
+    }
 
     $column_ideas = array();
     if(isset($_GET['i__tree_id']) && strlen($_GET['i__tree_id'])){
@@ -72,11 +73,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         'x__left' => $_GET['i__id'],
     ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $count => $x){
 
-
-
-        $the_email = null;
-
-
         if(!isset($_GET['csv'])){
             $body_content .= '<tr class="tr__'.$x['e__id'].'">';
         }
@@ -87,7 +83,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         if(!isset($_GET['csv'])){
             $body_content .= '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;"><u>'.$x['e__title'].'</u></a></td>';
-            $body_content .= '<td>'.$completion_rate['completion_percentage'].'</td>';
+            $body_content .= '<td>'.( $completion_rate['completion_percentage']>=100 ? '✅' : $completion_rate['completion_percentage'].'%' ).'</td>';
         } else {
             $body_content .= $x['e__title'].",".$completion_rate['completion_percentage'].'%'.",";
         }
@@ -104,11 +100,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => $e['e__id'],
             ));
 
-            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( $e['e__id']==3288 ? '<a target="_blank" href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to='.$fetch_data[0]['x__message'].'&subject='.$is[0]['i__title'].'" title="'.$e['e__title'].': '.$fetch_data[0]['x__message'].'" data-toggle="tooltip" data-placement="top">'.view_cover(12273,$e['e__cover']).'️</a>' : view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type'])  ) : view_cover(12273,$e['e__cover']) ) : '' );
-
-            if(count($fetch_data) &&  strlen($fetch_data[0]['x__message']) && $e['e__id']==3288){
-                $the_email = $fetch_data[0]['x__message'];
-            }
+            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : view_cover(12273,$e['e__cover']) ) : '' );
 
             if(isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] && count($fetch_data)){
                 array_push($skip_filter, $x['e__id']);
@@ -156,8 +148,14 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             }
         }
 
-        if($the_email && !in_array($x['e__id'], $skip_filter)){
-            array_push($all_emails,$the_email);
+        $u_emails = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__down' => $x['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 3288, //Email
+        ));
+        if(count($u_emails) && !in_array($x['e__id'], $skip_filter)){
+            array_push($all_emails, $u_emails[0]['x__message']);
         }
         if(in_array($x['e__id'], $skip_filter)){
             $body_content = str_replace('tr__'.$x['e__id'],'hidden',$body_content);
@@ -180,15 +178,14 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         $table_sortable = array('#th_members','#th_done');
 
         echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</a></h2>';
-        echo '<p class="center" style="padding-bottom: 34px;">Legend: <i class="fal fa-filter"></i> Filter <i class="fal fa-filter rotate180"></i> Inverse Filter <i class="fas fa-sort"></i> Sort</p>';
         echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped">';
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
         echo '<th id="th_members" style="width:200px;">'.( isset($_GET['i_filter']) || isset($_GET['e_filter']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTERS <i class="fas fa-filter"></i></u></a><br /><br />' : '' ).($count+1).' MEMBERS</th>';
-        echo '<th id="th_done" style="width:50px;">%</th>';
+        echo '<th id="th_done">&nbsp;</th>';
         foreach($column_sources as $e){
             array_push($table_sortable, '#th_e_'.$e['e__id']);
-            echo '<th id="th_e_'.$e['e__id'].'">'.( $e['e__id']==3288 ? '' : ''.view_cover(12274,$e['e__cover']).'<span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&e_filter='.$e['e__id'].'&i_filter='.( isset($_GET['i_filter']) ? $_GET['i_filter'] : '' ).'">'.( isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] ? '<i class="fas fa-filter rotate180"></i>' : '<i class="fal fa-filter rotate180"></i>' ).'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span>' ).'</th>';
+            echo '<th id="th_e_'.$e['e__id'].'">'.view_cover(12274,$e['e__cover']).'<span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&e_filter='.$e['e__id'].'&i_filter='.( isset($_GET['i_filter']) ? $_GET['i_filter'] : '' ).'">'.( isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
         }
         foreach($column_ideas as $i){
             $has_limits = $this->X_model->fetch(array(
