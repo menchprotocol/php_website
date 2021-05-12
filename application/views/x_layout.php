@@ -280,7 +280,7 @@ if($top_i__id) {
 
 
             //Open for list to be printed:
-            echo '<div class="row justify-content-center top-margin list-answers" i__type="' . $i_focus['i__type'] . '">';
+            echo '<div class="row justify-content-center list-answers" i__type="' . $i_focus['i__type'] . '">';
 
 
             //List children to choose from:

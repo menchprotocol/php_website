@@ -377,7 +377,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $item_counters = $this->X_model->fetch($i_notes_filters, array('x__right'), 0, 0, array(), 'COUNT(i__id) as totals');
         $counter = $item_counters[0]['totals'];
         if($counter>0){
-            $ui .= '<div class="row justify-content-center top-margin">';
+            $ui .= '<div class="row justify-content-center">';
             $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC'));
             foreach($i_notes_query as $count => $i_notes) {
                 $ui .= view_i(4485, 0, null, $i_notes, $control_enabled);
@@ -396,7 +396,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $item_counters = $this->X_model->fetch($owner_filters, array(), 0, 0, array(), 'COUNT(x__id) as totals');
         $counter = $item_counters[0]['totals'];
         if($counter){
-            $ui .= '<div class="row justify-content-center top-margin">';
+            $ui .= '<div class="row justify-content-center">';
             if($x__type==4250){
                 foreach($this->X_model->fetch($owner_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC')) as $count => $i_own) {
                     $ui .= view_i(4250, 0, null, $i_own, $control_enabled);
