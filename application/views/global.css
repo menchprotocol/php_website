@@ -2680,7 +2680,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .light-bg,
 .custom_ui_13884_13886 .inner-content,
 .custom_ui_13884_13886 .media-info {
-    background: rgba(34,34,34,0.80);
+    background: rgba(0,0,0,0.80); /*34,34,34*/
 }
 .custom_ui_13884_13886,
 .custom_ui_13884_13886 .container,
@@ -2814,7 +2814,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .light-bg,
 .custom_ui_13884_13885 .inner-content,
 .custom_ui_13884_13885 .media-info {
-    background: rgba(239,239,239,0.80);
+    background: rgba(255,255,255,0.80); /*239,239,239*/
 }
 
 .custom_ui_13884_13885,
