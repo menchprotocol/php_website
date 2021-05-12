@@ -1992,13 +1992,9 @@ i, .btn .show-max {
 
 
 .headlinebody {
-    margin: -18px 10px 34px 10px;
-    padding-bottom: 55px;
-    padding-bottom: 0;
-    border: 1px solid transparent;
-    border-top: 0;
-    border-bottom-left-radius: 13px;
-    border-bottom-right-radius: 13px;
+    margin: -20px 0px 0px 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .headlinebody.leftPad {
@@ -2054,7 +2050,9 @@ i, .btn .show-max {
     font-weight: bold !important;
 }
 .headline-height, .headline {
-    min-height: 44px;
+    padding: 8px 0;
+    border-radius: 10px;
+    margin-bottom: 13px;
 }
 .coin_cover{
     position: relative;
@@ -2743,7 +2741,6 @@ font-weight: bold !important;
     color: #FFFFFF;
 }
 
-.custom_ui_13884_13886 .headlinebody,
 .custom_ui_13884_13886 .btn-12274,
 .custom_ui_13884_13886 .btn.btn-12274,
 .custom_ui_13884_13886 .nav-tabs,
@@ -2772,6 +2769,8 @@ font-weight: bold !important;
 .black-background i{
     color: #FFFFFF;
 }
+.custom_ui_13884_13886 .headline,
+.custom_ui_13884_13886 .headlinebody,
 .custom_ui_13884_13886 .doabsolute, .black-background {
     background-color: #000000 !important;
     color: #FFFFFF !important;
@@ -2873,7 +2872,6 @@ font-weight: bold !important;
 .btn-tiny{
     font-size: 0.55em !important;
 }
-.custom_ui_13884_13885 .headlinebody,
 .custom_ui_13884_13885 .btn-12274,
 .custom_ui_13884_13885 .btn.btn-12274,
 .custom_ui_13884_13885 .nav-tabs,
@@ -2899,6 +2897,8 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover {
     border-bottom-color: #f0f0f0 !important; /* WAS WHITE */
 }
+.custom_ui_13884_13885 .headline,
+.custom_ui_13884_13885 .headlinebody,
 .custom_ui_13884_13885 .doabsolute {
     background-color:#FFFFFF !important;
     color: #000000 !important;
