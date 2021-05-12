@@ -2458,7 +2458,7 @@ textarea {
     display: none !important;
 }
 .list-adder{
-    padding: 8px 0 !important;
+    padding: 8px 0 0 !important;
 }
 .icon-adder{
     margin-top: 3px;

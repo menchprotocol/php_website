@@ -66,7 +66,7 @@ if($e_of_i && $is_active){
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[14016]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div>';
+                    </div><div class="algolia_pad_search row justify-content-center"></div></div>';
 }
 $body .= '<div id="list-in-11019" class="row justify-content-center dominHeight">';
 foreach($previous_is as $previous_i) {
@@ -151,7 +151,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"                          
                            placeholder="' . $e___11035[14055]['m__title'] . '">
-                </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div>';
+                </div><div class="algolia_pad_search row justify-content-center"></div></div>';
         }
 
     } elseif($x__type==12273){
@@ -179,7 +179,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                            class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div>';
+                </div><div class="algolia_pad_search row justify-content-center"></div></div>';
         }
 
     } elseif($x__type==6255) {
@@ -253,7 +253,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div>';
+                    </div><div class="algolia_pad_search row justify-content-center"></div></div>';
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
 

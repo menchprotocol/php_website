@@ -66,7 +66,7 @@ if(!$source_is_e || $superpower_13422){
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"
                            placeholder="'.$e___11035[14055]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div></div></div>' . $profile_ui;
+                </div><div class="algolia_pad_search row justify-content-center"></div></div></div></div>' . $profile_ui;
     }
 
     echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, ($counter<=2));
@@ -195,7 +195,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div></div>';
+                    </div><div class="algolia_pad_search row justify-content-center"></div></div></div>';
 
         } else {
 
@@ -255,7 +255,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div></div>';
+                </div><div class="algolia_pad_search row justify-content-center"></div></div></div>';
 
             $ui .= '<script> $(document).ready(function () { i_load_search(10573); }); </script>';
 
@@ -309,7 +309,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content-center">&nbsp;</div></div></div>';
+                </div><div class="algolia_pad_search row justify-content-center"></div></div></div>';
 
             $ui .= '<script> $(document).ready(function () { i_load_search(13550); }); </script>';
 
