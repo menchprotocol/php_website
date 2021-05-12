@@ -1992,10 +1992,12 @@ i, .btn .show-max {
 
 
 .headlinebody {
+    margin: -18px 10px 34px 10px;
     padding-bottom: 55px;
     padding-bottom: 0;
+    padding-left: 3px;
+    padding-right: 3px;
     border: 2px solid transparent;
-    margin: -18px 22px 34px 19px;
     border-top: 0;
     border-bottom-left-radius: 13px;
     border-bottom-right-radius: 13px;
