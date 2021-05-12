@@ -83,7 +83,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         if(!isset($_GET['csv'])){
             $body_content .= '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;"><u>'.$x['e__title'].'</u></a></td>';
-            $body_content .= '<td>'.( $completion_rate['completion_percentage']>=100 ? '✅' : $completion_rate['completion_percentage'].'%' ).'</td>';
+            $body_content .= '<td>'.( $completion_rate['completion_percentage']>=100 ? '✅' : str_pad($completion_rate['completion_percentage'], 2, '0', STR_PAD_LEFT).'%' ).'</td>';
         } else {
             $body_content .= $x['e__title'].",".$completion_rate['completion_percentage'].'%'.",";
         }
