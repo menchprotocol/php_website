@@ -2678,10 +2678,16 @@ font-weight: bold !important;
 /* DARK */
 .custom_ui_13884_13886 .coin-cover,
 .custom_ui_13884_13886 .light-bg,
-.custom_ui_13884_13886 .inner-content,
-.custom_ui_13884_13886 .media-info {
-    background: rgba(0,0,0,0.80); /*34,34,34*/
+.custom_ui_13884_13886 .media-info,
+.custom_ui_13884_13885 .focus-coin .inner-content,
+.custom_ui_13884_13885 .mini-coin .inner-content {
+    background: rgba(34,34,34,0.80);
 }
+
+.custom_ui_13884_13886 .edge-coin .inner-content {
+    background: rgba(0,0,0,0.80);
+}
+
 .custom_ui_13884_13886,
 .custom_ui_13884_13886 .container,
 .custom_ui_13884_13886 .table-striped tbody tr,
@@ -2812,9 +2818,13 @@ font-weight: bold !important;
 
 /* WHITE */
 .custom_ui_13884_13885 .light-bg,
-.custom_ui_13884_13885 .inner-content,
+.custom_ui_13884_13885 .focus-coin .inner-content,
+.custom_ui_13884_13885 .mini-coin .inner-content,
 .custom_ui_13884_13885 .media-info {
-    background: rgba(255,255,255,0.80); /*239,239,239*/
+    background: rgba(239,239,239,0.80);
+}
+.custom_ui_13884_13885 .edge-coin .inner-content {
+    background: rgba(255,255,255,0.80);
 }
 
 .custom_ui_13884_13885,
