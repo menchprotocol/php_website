@@ -1994,15 +1994,16 @@ i, .btn .show-max {
     padding-bottom: 55px;
     padding-bottom: 0;
     border: 2px solid #000;
-    margin: -18px 22px 21px 19px;
+    margin: -18px 22px 34px 19px;
     border-top: 0;
     border-bottom-left-radius: 13px;
     border-bottom-right-radius: 13px;
 }
 
 .headlinebody.leftPad {
-    padding-top: 13px;
-    padding-left: 41px;
+    padding-top: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 
@@ -2027,8 +2028,8 @@ i, .btn .show-max {
     right: 45px;
 }
 .mini-coin .coin-cover-right {
-    top: 0;
-    right: 0;
+    top: 25px;
+    right: 5px;
 }
 
 .coin_coins{
