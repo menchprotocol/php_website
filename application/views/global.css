@@ -2717,6 +2717,11 @@ font-weight: bold !important;
     background-color:transparent !important;
     color: #FFFFFF !important;
 }
+
+.custom_ui_13884_13886 .coinType12273 i.zq12273,
+.custom_ui_13884_13886 .coinType6255 i.zq6255,
+.custom_ui_13884_13886 .btn-12273 i.zq12273,
+.custom_ui_13884_13886 .btn-6255 i.zq6255,
 .custom_ui_13884_13886 .adj-btn i,
 .custom_ui_13884_13886 .controller-nav i,
 .custom_ui_13884_13886 .controller-nav,
@@ -2838,6 +2843,10 @@ font-weight: bold !important;
     color: #222222;
 }
 
+.custom_ui_13884_13885 .coinType12273 i.zq12273,
+.custom_ui_13884_13885 .coinType6255 i.zq6255,
+.custom_ui_13884_13885 .btn-12273 i.zq12273,
+.custom_ui_13884_13885 .btn-6255 i.zq6255,
 .alert a, .alert i, .custom_ui_13884_13885 .btn-default i,
 .custom_ui_13884_13885 .new-note:not(.editing-mode),
 .custom_ui_13884_13885 .controller-nav i,
@@ -3053,9 +3062,6 @@ font-weight: bold !important;
 
 .coinType12274 i.zq12274 {
     color: #FFFFFF !important;
-}
-.coinType12273 i.zq12273, .coinType6255 i.zq6255, .btn-12273 i.zq12273, .btn-6255 i.zq6255 {
-    color: #222222 !important;
 }
 .coinType12273 .zq12273.fa-circle.fas, .coinType12274 .zq12274.fa-circle.fas, .coinType6255 .zq6255.fa-circle.fas {
     color: transparent !important;
