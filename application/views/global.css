@@ -1364,12 +1364,7 @@ label {
     color: #999999 !important;
 }
 
-.dotransparent {
-    background-color: transparent !important;
-}
-.dotransparent *, .btn-grey {
-    background-color: transparent;
-}
+
 .doclear{
     clear: both;
     line-height: 100%;
@@ -3088,4 +3083,9 @@ font-weight: bold !important;
     color: #000000 !important;
 }
 
-
+.dotransparent {
+    background-color: transparent !important;
+}
+.dotransparent *, .btn-grey {
+    background-color: transparent;
+}
