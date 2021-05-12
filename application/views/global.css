@@ -1990,6 +1990,12 @@ i, .btn .show-max {
 
 .headlinebody {
     padding-bottom: 55px;
+    padding-bottom: 0;
+    border: 2px solid #000;
+    margin: -21px 21px 21px;
+    border-top: 0;
+    border-bottom-left-radius: 13px;
+    border-bottom-right-radius: 13px;
 }
 
 .headlinebody.leftPad {
