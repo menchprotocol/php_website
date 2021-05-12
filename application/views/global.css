@@ -1995,7 +1995,7 @@ i, .btn .show-max {
     margin: -18px 10px 34px 10px;
     padding-bottom: 55px;
     padding-bottom: 0;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     border-top: 0;
     border-bottom-left-radius: 13px;
     border-bottom-right-radius: 13px;
