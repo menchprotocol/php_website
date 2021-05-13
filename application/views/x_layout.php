@@ -521,6 +521,17 @@ if($top_i__id) {
         echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
     }
 
+    //DISCUSSIONS:
+    $comments = $this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type' => 12419,
+        'x__right' => $i_focus['i__id'],
+    ), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
+
+    //For now we have comments completely hidden:
+    $headline_ui = view_i_note_list(12419, true, $i_focus, $comments, true);
+    echo view_headline(12419, count($comments), $e___11035[12419], $headline_ui, false);
+
 } else {
 
     //NEXT IDEAS
@@ -528,16 +539,5 @@ if($top_i__id) {
 
 }
 
-
-//DISCUSSIONS:
-$comments = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'x__type' => 12419,
-    'x__right' => $i_focus['i__id'],
-), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
-
-//For now we have comments completely hidden:
-$headline_ui = view_i_note_list(12419, true, $i_focus, $comments, true);
-echo view_headline(12419, count($comments), $e___11035[12419], $headline_ui, false);
 
 ?>
