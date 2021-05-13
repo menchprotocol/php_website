@@ -82,12 +82,7 @@ if(!$member_e){
         }
 
 
-        echo '<div class="row justify-content-center">'.view_i(14730, $is[0]['i__id'], null, $is[0]).'</div>';
-
-
-        //100% COMPLETE
-        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14730]['m__cover'].'</span>'.$e___14709[14730]['m__title'].'</div>';
-        echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14730]['m__message']).'</div>';
+        echo view_headline(14730, null, $e___14709[14730], '<div class="row justify-content-center">'.view_i(14730, $is[0]['i__id'], null, $is[0]).'</div>', true);
 
 
         //Continious Updates
