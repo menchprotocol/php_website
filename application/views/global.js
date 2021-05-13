@@ -765,7 +765,7 @@ $(document).ready(function () {
 
     $('#top_search').keyup(function() {
         if(!$(this).val().length){
-            $("#container_search .row").html(''); //Reset results view
+            $("#container_search .row").html('Type something to begin search...'); //Reset results view
         }
     });
 
@@ -929,7 +929,7 @@ $(document).ready(function () {
                     //Members can filter search with first word:
                     var search_only_e = $("#top_search").val().charAt(0) == '@';
                     var search_only_in = $("#top_search").val().charAt(0) == '#';
-                    $("#container_search .row").html(''); //Reset results view
+                    $("#container_search .row").html('Type something to begin search...'); //Reset results view
 
                     //Do not search if specific command ONLY:
                     if (( search_only_in || search_only_e ) && !isNaN($("#top_search").val().substr(1)) ) {
@@ -1733,7 +1733,7 @@ function toggle_search(){
         search_on = true; //Reverse
         $('.top_nav, #container_content').addClass('hidden');
         $('.search_nav, #container_search').removeClass('hidden');
-        $("#container_search .row").html(''); //Reset results view
+        $("#container_search .row").html('Type something to begin search...'); //Reset results view
         $('#top_search').focus();
 
         setTimeout(function () {
