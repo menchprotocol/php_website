@@ -161,7 +161,7 @@ li a {
     background-color: #999999 !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
-    border-radius: 10px !important;
+    border-radius: 13px !important;
 }
 
 .avatar-item .avatar-icon i {
@@ -595,7 +595,7 @@ label:focus,
     color: #FFF;
     font-weight: bold;
     font-size: 0.8em;
-    border-radius: 10px;
+    border-radius: 13px;
     z-index: 1;
 }
 .btn-lrg{
@@ -859,7 +859,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 .nav-pills .nav-x.active, .nav-pills .show>.nav-x {
     color: #fff;
     background-color: #222222;
-    border-radius: 10px;
+    border-radius: 13px;
 }
 
 .black.active, .black.active i, .grey.active, .grey.active i {
@@ -1134,7 +1134,7 @@ a.headline {
 
 
 .modal-content .form-control{
-    border-radius: 10px;
+    border-radius: 13px;
     margin-bottom: 5px;
 }
 .platform-navigation .block-x, .platform-navigation .block-menu {
@@ -1416,7 +1416,7 @@ label {
     line-height: 100%;
     border: 0;
     padding: 10px;
-    border-radius:13px !important;
+    border-radius: 13px !important;
 }
 
 .coin-cover .btn{
@@ -1923,7 +1923,7 @@ i, .btn .show-max {
 .chat-title span{
     z-index: 99999999;
     padding: 3px;
-    border-radius: 10px;
+    border-radius: 13px;
     line-height: 125%;
 }
 .modal-body{
@@ -2051,7 +2051,7 @@ i, .btn .show-max {
 }
 .headline-height, .headline {
     padding: 8px 0;
-    border-radius: 10px;
+    border-radius: 13px;
     margin-bottom: 13px;
 }
 .coin_cover{
@@ -2679,12 +2679,12 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .coin-cover,
 .custom_ui_13884_13886 .light-bg,
 .custom_ui_13884_13886 .media-info,
-.custom_ui_13884_13886 .focus-coin .inner-content,
-.custom_ui_13884_13886 .mini-coin .inner-content {
+.custom_ui_13884_13886 .focus-coin .inner-content {
     background: rgba(34,34,34,0.80);
 }
 
-.custom_ui_13884_13886 .edge-coin .inner-content {
+.custom_ui_13884_13886 .edge-coin .inner-content,
+.custom_ui_13884_13886 .mini-coin .inner-content {
     background: rgba(0,0,0,0.80);
 }
 
@@ -2805,24 +2805,24 @@ font-weight: bold !important;
 }
 
 .doabsolute {
-    border-radius: 10px !important;
+    border-radius: 13px !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
 }
 .editor_preview{
     padding:25px 13px 13px !important;
     margin: 0 41px;
-    border-radius: 10px !important;
+    border-radius: 13px !important;
     margin-bottom: 34px;
 }
 
 /* WHITE */
 .custom_ui_13884_13885 .light-bg,
 .custom_ui_13884_13885 .focus-coin .inner-content,
-.custom_ui_13884_13885 .mini-coin .inner-content,
 .custom_ui_13884_13885 .media-info {
     background: rgba(239,239,239,0.80);
 }
+.custom_ui_13884_13885 .mini-coin .inner-content,
 .custom_ui_13884_13885 .edge-coin .inner-content {
     background: rgba(255,255,255,0.80);
 }
@@ -3027,7 +3027,7 @@ font-weight: bold !important;
 }
 .editing-mode{
     padding-top: 5px !important;
-    border-radius: 10px !important;
+    border-radius: 13px !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }

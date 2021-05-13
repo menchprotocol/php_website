@@ -203,7 +203,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '</table>';
 
         echo '<div style="padding: 34px 0 8px;"><a href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to='.join(',',$all_emails).'&subject='.$is[0]['i__title'].'" target="_blank">Email '.$filtered_count.' members:</div>';
-        echo '<textarea class="mono-space" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.join(', ',$all_emails).'</textarea>';
+        echo '<textarea class="mono-space" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:377px; width: 100%; border-radius: 13px;">'.join(', ',$all_emails).'</textarea>';
 
     } else {
 
