@@ -268,15 +268,11 @@ if($top_i__id) {
             }
 
 
-            echo '<div class="edit_select_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
 
-            //HTML:
-            $e___4737 = $this->config->item('e___4737'); //Idea Types
-            echo '<div class="headline"><span class="icon-block">'.$e___4737[$i_focus['i__type']]['m__cover'].'</span>' . $e___4737[$i_focus['i__type']]['m__title'] . ':</div>';
+
 
             //Open for list to be printed:
-            echo '<div class="row justify-content-center list-answers" i__type="' . $i_focus['i__type'] . '">';
-
+            $select_answer = '<div class="row justify-content-center list-answers" i__type="' . $i_focus['i__type'] . '">';
 
             //List children to choose from:
             foreach ($is_next as $key => $next_i) {
@@ -341,24 +337,28 @@ if($top_i__id) {
                     'x__source' => $x__source,
                 )));
 
-                echo view_i_select($next_i, $x__source, $previously_selected, $show_limit);
+                $select_answer .= view_i_select($next_i, $x__source, $previously_selected, $show_limit);
 
             }
 
 
-            echo '</div>';
+            $select_answer .= '</div>';
 
 
             if (count($x_selects) > 0) {
 
                 //Cancel:
-                echo '<div class="inline-block margin-top-down btn-five"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a></div>';
+                $select_answer .= '<div class="inline-block margin-top-down btn-five"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a></div>';
 
                 //Save Answers:
-                echo '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i_focus['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
+                $select_answer .= '<div class="inline-block margin-top-down left-half-margin"><a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i_focus['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
 
             }
 
+            //HTML:
+            $e___4737 = $this->config->item('e___4737'); //Idea Types
+            echo '<div class="edit_select_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
+            echo view_headline($i_focus['i__type'], null, $e___4737[$i_focus['i__type']], $select_answer, true);
             echo '</div>';
 
         }
