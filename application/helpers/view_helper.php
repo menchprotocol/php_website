@@ -1088,9 +1088,11 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e){
     } else {
 
         //LIST TYPE
-        $edit_button = ( $x__type==13980 ? '<a class="btn btn-6255" style="margin-left:13px;" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a>' : null );
-        $ui .= '<div class="headline"><span class="icon-block">'.$e___11035[$x__type]['m__cover'].'</span>'.$e___11035[$x__type]['m__title'].':'.$edit_button.'</div>';
-        $ui .= $body;
+        if($x__type==13980){
+            $body .= '<a class="btn btn-6255" style="margin-left:13px;" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a>';
+        }
+
+        $ui .= view_headline($x__type, null, $e___11035[$x__type], $body, true);
 
     }
 
