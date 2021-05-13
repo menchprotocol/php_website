@@ -418,22 +418,6 @@ if($top_i__id) {
 
 
 
-//DISCUSSIONS:
-$comments = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'x__type' => 12419,
-    'x__right' => $i_focus['i__id'],
-), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
-
-//For now we have comments completely hidden:
-$headline_ui = view_i_note_list(12419, true, $i_focus, $comments, true, true);
-
-echo '<div class="view-discussions hidden">';
-echo '<a name="comment" class="black" style="padding: 10px 0;">&nbsp;</a>';
-echo view_headline(12419, count($comments), $e___11035[12419], $headline_ui, true, false);
-echo '</div>';
-
-
 
 
 if(!$top_i__id){
@@ -468,17 +452,17 @@ if(!$top_i__id){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ));
 
-            $control_btn = '<a class="round-btn dotransparent save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__cover'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
-
-        } elseif($e__id==14672){
-
-            //COMMENT
-            $control_btn = '<a class="controller-nav dotransparent round-btn" href="#comment" onclick="load_comments()">'.$m2['m__cover'].'<span class="nav-counter css__title xtypecounter12419 hideIfEmpty">'.( count($comments) ? count($comments) : '' ).'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+            $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__cover'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
         } elseif($e__id==12211){
 
             //NEXT
             $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+
+        } elseif($e__id==26280){
+
+            //PREVIOUS
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="history.back()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
         }
 
@@ -545,7 +529,15 @@ if($top_i__id) {
 }
 
 
+//DISCUSSIONS:
+$comments = $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'x__type' => 12419,
+    'x__right' => $i_focus['i__id'],
+), array('x__source'), view_memory(6404,11064), 0, array('x__spectrum' => 'ASC'));
 
-
+//For now we have comments completely hidden:
+$headline_ui = view_i_note_list(12419, true, $i_focus, $comments, true, true);
+echo view_headline(12419, count($comments), $e___11035[12419], $headline_ui, false);
 
 ?>
