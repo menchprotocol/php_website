@@ -296,11 +296,11 @@ img.no-frame {
 }
 
 .algolia_pad_search{
-    /*
-    min-height:44px;
-    padding: 8px 0;
-    */
     text-align: center;
+    padding-bottom: 21px;
+}
+.algolia_pad_search:empty{
+    display: none !important;
 }
 .gateway{
     color:transparent !important;
