@@ -60,12 +60,12 @@ body {
 }
 .media-content, .x__message video {
     /* max-width: 377px; */
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 .x__message img, .i_content img, .content-image {
     max-width: 100%;
     max-height: 610px;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
     display: block;
 }
 .platform-12273 .media-content, .platform-12273 .x__message video {
@@ -89,7 +89,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 .list-group-item {
     border: 0;
@@ -161,7 +161,7 @@ li a {
     background-color: #999999 !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 .avatar-item .avatar-icon i {
@@ -595,7 +595,7 @@ label:focus,
     color: #FFF;
     font-weight: bold;
     font-size: 0.8em;
-    border-radius: 13px;
+    border-radius: 10px;
     z-index: 1;
 }
 .btn-lrg{
@@ -849,7 +849,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     padding: 5px;
     border: 3px solid transparent !important;
     height: 55px;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 .previous_answer{
     display: block;
@@ -859,7 +859,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 .nav-pills .nav-x.active, .nav-pills .show>.nav-x {
     color: #fff;
     background-color: #222222;
-    border-radius: 13px;
+    border-radius: 10px;
 }
 
 .black.active, .black.active i, .grey.active, .grey.active i {
@@ -1134,7 +1134,7 @@ a.headline {
 
 
 .modal-content .form-control{
-    border-radius: 13px;
+    border-radius: 10px;
     margin-bottom: 5px;
 }
 .platform-navigation .block-x, .platform-navigation .block-menu {
@@ -1416,7 +1416,7 @@ label {
     line-height: 100%;
     border: 0;
     padding: 10px;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
 }
 
 .coin-cover .btn{
@@ -1923,7 +1923,7 @@ i, .btn .show-max {
 .chat-title span{
     z-index: 99999999;
     padding: 3px;
-    border-radius: 13px;
+    border-radius: 10px;
     line-height: 125%;
 }
 .modal-body{
@@ -2051,7 +2051,7 @@ i, .btn .show-max {
 }
 .headline-height, .headline {
     padding: 8px 0;
-    border-radius: 13px;
+    border-radius: 10px;
     margin-bottom: 13px;
 }
 .coin_cover{
@@ -2163,7 +2163,7 @@ i, .btn .show-max {
 }
 .modal-content{
     border: 3px solid transparent;
-    border-radius: 13px;
+    border-radius: 10px;
 }
 .mass_action_toggle, .e_text_search, .mass_action_item{
     width: 100% !important;
@@ -2176,7 +2176,7 @@ i, .btn .show-max {
 }
 .gif-col img{
     width: 100%;
-    border-radius: 13px;
+    border-radius: 10px;
 }
 .avatar-type-group{
     margin: 20px auto;
@@ -2508,11 +2508,11 @@ textarea {
 
 .custom_ui_13884_13886 .white-border {
     border: 3px solid #FFFFFF !important;
-    border-radius: 13px;
+    border-radius: 10px;
 }
 .custom_ui_13884_13885 .white-border {
     border: 3px solid #222222 !important;
-    border-radius: 13px;
+    border-radius: 10px;
 }
 
 .first_btn{
@@ -2805,14 +2805,14 @@ font-weight: bold !important;
 }
 
 .doabsolute {
-    border-radius: 13px !important;
+    border-radius: 10px !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
 }
 .editor_preview{
     padding:25px 13px 13px !important;
     margin: 0 41px;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
     margin-bottom: 34px;
 }
 
@@ -3028,7 +3028,7 @@ font-weight: bold !important;
 }
 .editing-mode{
     padding-top: 5px !important;
-    border-radius: 13px !important;
+    border-radius: 10px !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
