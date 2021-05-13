@@ -2774,6 +2774,7 @@ font-weight: bold !important;
 .black-background i{
     color: #FFFFFF;
 }
+.custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 .headline,
 .custom_ui_13884_13886 .headline-height,
 .custom_ui_13884_13886 .headlinebody,
@@ -2907,6 +2908,8 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .nav-tabs .nav-x:hover {
     border-bottom-color: #f0f0f0 !important; /* WAS WHITE */
 }
+
+.custom_ui_13884_13885 .modal-content,
 .custom_ui_13884_13885 .headline,
 .custom_ui_13884_13885 .headline-height,
 .custom_ui_13884_13885 .headlinebody,
