@@ -347,11 +347,11 @@ if($top_i__id) {
 
             if (count($x_selects) > 0) {
 
-                //Cancel:
-                $select_answer .= '<div class="inline-block margin-top-down-half btn-five"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a></div>';
-
                 //Save Answers:
-                $select_answer .= '<div class="inline-block margin-top-down-half left-half-margin"><a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i_focus['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
+                $select_answer .= '<div class="inline-block margin-top-down-half left-half-margin pull-right"><a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i_focus['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
+
+                //Cancel:
+                $select_answer .= '<div class="inline-block margin-top-down-half btn-five pull-right"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a></div>';
 
             }
 
