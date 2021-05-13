@@ -2682,6 +2682,7 @@ font-weight: bold !important;
     background: rgba(34,34,34,0.80);
 }
 
+.custom_ui_13884_13886 .cover-content,
 .custom_ui_13884_13886 .edge-coin .inner-content,
 .custom_ui_13884_13886 .mini-coin .inner-content {
     background: rgba(0,0,0,0.80);
@@ -2827,6 +2828,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .media-info {
     background: rgba(239,239,239,0.80);
 }
+.custom_ui_13884_13885 .cover-content,
 .custom_ui_13884_13885 .mini-coin .inner-content,
 .custom_ui_13884_13885 .edge-coin .inner-content {
     background: rgba(255,255,255,0.80);
