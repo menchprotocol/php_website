@@ -269,15 +269,10 @@ if($top_i__id) {
 
 
             echo '<div class="edit_select_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
-            echo '<div class="doclear">&nbsp;</div>';
 
             //HTML:
             $e___4737 = $this->config->item('e___4737'); //Idea Types
-            echo '<div class="pull-left headline"><span class="icon-block">'.$e___4737[$i_focus['i__type']]['m__cover'].'</span>' . $e___4737[$i_focus['i__type']]['m__title'] . ':</div>';
-
-
-            echo '<div class="doclear">&nbsp;</div>';
-
+            echo '<div class="headline"><span class="icon-block">'.$e___4737[$i_focus['i__type']]['m__cover'].'</span>' . $e___4737[$i_focus['i__type']]['m__title'] . ':</div>';
 
             //Open for list to be printed:
             echo '<div class="row justify-content-center list-answers" i__type="' . $i_focus['i__type'] . '">';
