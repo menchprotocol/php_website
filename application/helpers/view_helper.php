@@ -1103,7 +1103,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e){
 }
 
 
-function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, $show_empty_error = false){
+function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i){
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
@@ -1112,13 +1112,6 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i, 
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
     $member_e = superpower_unlocked();
     $ui = '';
-
-
-    if($show_empty_error && !count($i_notes) && $e_of_i){
-        $ui .= '<div class="no_notes_' . $x__type .'" style="margin:21px 0;">';
-        $ui .= '<div class="msg alert alert-danger" role="alert"><span class="icon-block">&nbsp;</span>No '.ucwords(strtolower($e___4485[$x__type]['m__title'])).' yet, be the first to post one</div>';
-        $ui .= '</div>';
-    }
 
 
     if(in_array($x__type, $CI->config->item('n___14311'))){

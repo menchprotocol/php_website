@@ -100,7 +100,7 @@ echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type' => 4231,
     'x__right' => $i_focus['i__id'],
-), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i, false);
+), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i);
 
 
 //IDEA LAYOUT
@@ -263,7 +263,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
             'x__right' => $i_focus['i__id'],
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($i_notes);
-        $ui .= view_i_note_list($x__type, false, $i_focus, $i_notes, $e_of_i, false);
+        $ui .= view_i_note_list($x__type, false, $i_focus, $i_notes, $e_of_i);
 
     } elseif($x__type==12969){
 
