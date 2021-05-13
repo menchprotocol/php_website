@@ -1351,7 +1351,7 @@ function i__add(x__type, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving').prop("disabled", true);
-    add_to_list("list-in-" + x__type, sort_handler, '<div id="tempLoader" class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>', js_n___14686.includes(x__type));
+    add_to_list("list-in-" + x__type, sort_handler, '<div id="tempLoader" class="col-md-4 col-6 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
 
 
     //Update backend:
@@ -1377,7 +1377,7 @@ function i__add(x__type, link_i__id) {
             x_sort_load(x__type);
 
             //Add new
-            add_to_list("list-in-" + x__type, sort_handler, data.new_i_html, js_n___14686.includes(x__type));
+            add_to_list("list-in-" + x__type, sort_handler, data.new_i_html);
 
             //Lookout for textinput updates
             x_set_start_text();
@@ -1444,7 +1444,7 @@ function e__add(x__type, e_existing_id) {
             input.focus();
 
             //Add new object to list:
-            add_to_list('list-in-'+x__type, '.coinface-12274', data.e_new_echo, js_n___14686.includes(x__type));
+            add_to_list('list-in-'+x__type, '.coinface-12274', data.e_new_echo);
 
             //Allow inline editing if enabled:
             x_set_start_text();
@@ -1505,7 +1505,7 @@ function e_add_only_7551(x__type, e_existing_id) {
             input.focus();
 
             //Add new object to list:
-            add_to_list('add-e-'+x__type, '.coinface-12274', data.e_new_echo, false);
+            add_to_list('add-e-'+x__type, '.coinface-12274', data.e_new_echo);
 
             //Hide Coin:
             $('.mini-coin.coin-12274.coin-id-'+e_existing_id).fadeOut();
@@ -1789,11 +1789,12 @@ function validURL(str) {
 }
 
 
-function add_to_list(sort_list_id, sort_handler, html_content, add_to_start) {
+function add_to_list(sort_list_id, sort_handler, html_content) {
 
     //See if we previously have a list in place?
     if ($("#" + sort_list_id + " " + sort_handler).length > 0) {
-        if(add_to_start){
+        if(0){
+            //Add to start (disabled)
             $("#" + sort_list_id + " " + sort_handler + ":first").before(html_content);
         } else {
             $("#" + sort_list_id + " " + sort_handler + ":last").after(html_content);

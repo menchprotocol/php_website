@@ -2676,7 +2676,6 @@ font-weight: bold !important;
 
 
 /* DARK */
-.custom_ui_13884_13886 .coin-cover,
 .custom_ui_13884_13886 .light-bg,
 .custom_ui_13884_13886 .media-info,
 .custom_ui_13884_13886 .focus-coin .inner-content {
@@ -2776,6 +2775,7 @@ font-weight: bold !important;
     color: #FFFFFF;
 }
 .custom_ui_13884_13886 .headline,
+.custom_ui_13884_13886 .headline-height,
 .custom_ui_13884_13886 .headlinebody,
 .custom_ui_13884_13886 .doabsolute, .black-background {
     background-color: #000000 !important;
@@ -2908,6 +2908,7 @@ font-weight: bold !important;
     border-bottom-color: #f0f0f0 !important; /* WAS WHITE */
 }
 .custom_ui_13884_13885 .headline,
+.custom_ui_13884_13885 .headline-height,
 .custom_ui_13884_13885 .headlinebody,
 .custom_ui_13884_13885 .doabsolute {
     background-color:#FFFFFF !important;

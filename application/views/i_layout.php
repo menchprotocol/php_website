@@ -57,7 +57,11 @@ $previous_is = $this->X_model->fetch(array(
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
 
-$body = '';
+$body = '<div id="list-in-11019" class="row justify-content-center dominHeight">';
+foreach($previous_is as $previous_i) {
+    $body .= view_i(11019, 0, null, $previous_i, $e_of_i);
+}
+$body .= '</div>';
 if($e_of_i && $is_active){
     $body .= '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
@@ -68,11 +72,6 @@ if($e_of_i && $is_active){
                                placeholder="'.$e___11035[14016]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content-center"></div></div>';
 }
-$body .= '<div id="list-in-11019" class="row justify-content-center dominHeight">';
-foreach($previous_is as $previous_i) {
-    $body .= view_i(11019, 0, null, $previous_i, $e_of_i);
-}
-$body .= '</div>';
 
 echo view_headline(11019, count($previous_is), $e___11035[11019], $body, count($previous_is) > 0 && in_array(11019, $this->config->item('n___20424')));
 

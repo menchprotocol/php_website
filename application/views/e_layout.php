@@ -59,17 +59,18 @@ if(!$source_is_e || $superpower_13422){
     $profile_ui .= '</div>';
 
     if($superpower_13422){
-        $profile_ui = '<div class="'.$trigger_hide.'"><div class="headline-height"><div class="new-list-11030 list-adder">
+        $profile_ui .= '<div class="'.$trigger_hide.'"><div class="headline-height"><div class="new-list-11030 list-adder">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11030 .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"
                            placeholder="'.$e___11035[14055]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content-center"></div></div></div></div>' . $profile_ui;
+                </div><div class="algolia_pad_search row justify-content-center"></div></div></div></div>';
     }
 
     echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, ($counter<=2));
+
 
     echo '<div class="row justify-content-center">';
     echo view_e(4251, $e, null, $source_of_e);
