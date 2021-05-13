@@ -2804,6 +2804,10 @@ font-weight: bold !important;
 .editor_preview:hover{
     cursor: text !important;
 }
+.select-btns{
+    padding:13px;
+    text-align:right;
+}
 
 .doabsolute {
     border-radius: 10px !important;
