@@ -297,7 +297,7 @@ img.no-frame {
 
 .algolia_pad_search{
     text-align: center;
-    padding-bottom: 21px;
+    padding-bottom: 34px;
 }
 .algolia_pad_search:empty{
     display: none !important;
