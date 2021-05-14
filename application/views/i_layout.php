@@ -57,7 +57,7 @@ $previous_is = $this->X_model->fetch(array(
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
 
-$body = '<div id="list-in-11019" class="row justify-content-center dominHeight">';
+$body = '<div id="list-in-11019" class="row justify-content-center">';
 foreach($previous_is as $previous_i) {
     $body .= view_i(11019, 0, null, $previous_i, $e_of_i);
 }

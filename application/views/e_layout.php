@@ -40,7 +40,7 @@ if(!$source_is_e || $superpower_13422){
     $trigger_hide = null;
 
 
-    $profile_ui = '<div id="list-in-11030" class="row justify-content-center dominHeight">';
+    $profile_ui = '<div id="list-in-11030" class="row justify-content-center">';
     $counter = 0; //Recount
     foreach($profiles as $e_link) {
 
