@@ -627,7 +627,7 @@ class E extends CI_Controller
             }
 
             $e_already_linked = count($this->X_model->fetch(array(
-                'x__type' => $x__type,
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__down' => $x__down,
                 'x__up' => $x__up,
             )));
