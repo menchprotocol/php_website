@@ -69,7 +69,7 @@ function go_next(go_next_url){
                 x__left: current_id(),
             });
 
-            alert('This idea is not published yet & cannot be started at this time.');
+            alert('This idea is currrently not active & cannot be started at this time.');
 
         }
     }

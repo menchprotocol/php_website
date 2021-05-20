@@ -555,13 +555,20 @@ class E extends CI_Controller
 
         //We need to check to ensure this is not a duplicate transaction if adding an existing source:
         $ur2 = array();
+        $e_already_linked = 0;
 
         if($_POST['x__type']==4983) {
 
+            $e_already_linked = count($this->X_model->fetch(array(
+                'x__type' => 4983,
+                'x__up' => $focus_e['e__id'],
+                'x__right' => $fetch_o[0]['i__id'],
+            )));
+
             //Add Reference:
             $ur2 = $this->X_model->create(array(
-                'x__type' => 4983, //IDEA SOURCES
                 'x__source' => $member_e['e__id'],
+                'x__type' => 4983, //IDEA SOURCES
                 'x__up' => $focus_e['e__id'],
                 'x__right' => $fetch_o[0]['i__id'],
             ));
@@ -619,6 +626,12 @@ class E extends CI_Controller
 
             }
 
+            $e_already_linked = count($this->X_model->fetch(array(
+                'x__type' => $x__type,
+                'x__down' => $x__down,
+                'x__up' => $x__up,
+            )));
+
             //Create transaction:
             $ur2 = $this->X_model->create(array(
                 'x__source' => $member_e['e__id'],
@@ -635,6 +648,7 @@ class E extends CI_Controller
         return view_json(array(
             'status' => 1,
             'e_new_echo' => view_e($_POST['x__type'], array_merge($focus_e, $ur2), null,  true),
+            'e_already_linked' => $e_already_linked,
         ));
 
     }
