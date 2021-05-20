@@ -435,7 +435,9 @@ class X extends CI_Controller
 
         //Check to see if added to read for logged-in members:
         if(!$member_e){
+
             return redirect_message('/-4269?i__id='.$i__id);
+
         }
 
         //Add this Idea to their read If not there:
@@ -443,6 +445,30 @@ class X extends CI_Controller
 
         if(!in_array($i__id, $this->X_model->ids($member_e['e__id']))){
 
+            //Make sure they can start this:
+            if(!i_is_startable($i__id)){
+
+                //Try to find the top registrable idea:
+                $top_startable = $this->I_model->top_startable($i__id);
+                if(count($top_startable)){
+
+                    return redirect_message('/'.$top_startable[0]['i__id']);
+
+                } else {
+
+                    //Cannot be started:
+                    $this->X_model->create(array(
+                        'x__source' => $member_e['e__id'],
+                        'x__left' => $i__id,
+                        'x__type' => 14604,
+                    ));
+
+                    return redirect_message('/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is currently not active & cannot be started at this time.</div>');
+
+                }
+            }
+
+            //All good, add to start:
             $next_i__id = $this->X_model->start($member_e['e__id'], $i__id);
 
             if(!$next_i__id){

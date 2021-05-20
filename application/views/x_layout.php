@@ -128,31 +128,7 @@ if($top_i__id){
 
 } else {
 
-    if(i_is_startable($i_focus)){
-
-        //OPEN TO REGISTER
-        $go_next_url = '/x/x_start/'.$i_focus['i__id'];
-
-    } else {
-
-        //Try to find the top registrable idea:
-        $top_startable = $this->I_model->top_startable($i_focus);
-        if(count($top_startable)){
-
-            foreach($top_startable as $start_i){
-                //OPEN TO REGISTER
-                $is_discovarable = false;
-                $go_next_url = '/'.$start_i['i__id'];
-                break; //Ignore other possible pathways
-            }
-
-        } else {
-
-            $go_next_url = null;
-
-        }
-
-    }
+    $go_next_url = '/x/x_start/'.$i_focus['i__id'];
 
 }
 

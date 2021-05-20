@@ -53,25 +53,12 @@ function go_next(go_next_url){
         //Must upload file first:
         alert('You must upload file before going next.');
 
-    } else {
+    } else if(go_next_url && go_next_url.length > 0){
 
-        if(go_next_url && go_next_url.length > 0){
+        //Go Next:
+        $('.go-next').html(( js_pl_id > 0 ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
+        window.location = go_next_url;
 
-            //Go Next:
-            $('.go-next').html(( js_pl_id > 0 ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
-            window.location = go_next_url;
-
-        } else {
-
-            x_create({
-                x__source: js_pl_id,
-                x__type: 14604, //START BLOCKED
-                x__left: current_id(),
-            });
-
-            alert('This idea is currrently not active & cannot be started at this time.');
-
-        }
     }
 }
 
