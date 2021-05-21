@@ -1448,11 +1448,13 @@ class X_model extends CI_Model
                 ))) &&
 
                 //One or less next
+                /*
                 count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $next_i['i__id'],
                 ))) <= 1 &&
+                */
 
                 //Not Already Completed:
                 !count($this->X_model->fetch(array(
