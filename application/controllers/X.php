@@ -446,7 +446,14 @@ class X extends CI_Controller
         if(!in_array($i__id, $this->X_model->ids($member_e['e__id']))){
 
             //Make sure they can start this:
-            if(!i_is_startable($i__id)){
+            $is = $this->I_model->fetch(array(
+                'i__id' => $i__id,
+            ));
+            if(!count($is)){
+                return redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid idea ID</div>', true);
+            }
+
+            if(!i_is_startable($is[0])){
 
                 //Try to find the top registrable idea:
                 $top_startable = $this->I_model->top_startable($i__id);
