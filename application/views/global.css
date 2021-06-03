@@ -2370,6 +2370,7 @@ textarea {
     .media-content, .x__message img, .x__message video, .i_content img { max-width: 100%; }
     .content-image {
         max-width: calc(100% + 70px);
+        max-height: 100%;
         margin-left: -35px !important;
     }
 
