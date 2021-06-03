@@ -145,6 +145,8 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     } elseif ($x__type == 4259 /* Audio URL */) {
 
+        return  '<audio controls autoplay src="' . $x__message . '">Your Browser Does Not Support Audio</audio>' ;
+
         $segment1 = $CI->uri->segment(1);
         if(is_numeric($segment1) || !strlen($segment1)){
             //Autoplay in discovery mode:
