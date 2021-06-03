@@ -150,9 +150,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
             //Autoplay in discovery mode:
             return '<audio autoplay loop  id="playAudio">
     <source src="' . $x__message . '">
-    <iframe src="' . $x__message . '" allow="autoplay" style="display:none" id="iframeAudio">
-</iframe> 
-</audio>';
+</audio>    <iframe src="' . $x__message . '" allow="autoplay" style="display:none" id="iframeAudio"></iframe> ';
         } else {
             //Regular audio:
             return  '<audio controls autoplay src="' . $x__message . '">Your Browser Does Not Support Audio</audio>' ;
