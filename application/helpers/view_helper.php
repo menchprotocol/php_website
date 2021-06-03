@@ -145,7 +145,13 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     } elseif ($x__type == 4259 /* Audio URL */) {
 
-        return  '<audio controls autoplay src="' . $x__message . '">Your Browser Does Not Support Audio</audio>' ;
+        //return  '<audio controls autoplay src="' . $x__message . '">Your Browser Does Not Support Audio</audio>' ;
+
+        return '<audio autoplay loop  id="playAudio">
+    <source src="' . $x__message . '">
+    <iframe src="' . $x__message . '" allow="autoplay" style="display:none" id="iframeAudio">
+</iframe> 
+</audio>';
 
     } elseif ($x__type == 4258 /* Video URL */) {
 
