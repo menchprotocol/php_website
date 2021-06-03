@@ -455,10 +455,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <div id="upload_results"></div>
+                    <div id="img_results_emojis" class="icons_small"></div>
+                    <div class="doclear">&nbsp;</div>
                     <div id="icon_suggestions" class="icons_small"></div>
                     <div id="img_results_icons" class="icons_small"></div>
-                    <div class="doclear">&nbsp;</div>
-                    <div id="img_results_emojis" class="icons_small"></div>
                     <div class="doclear">&nbsp;</div>
                     <div id="img_results_local" class="icons_large"></div>
                     <div id="img_results_tenor" class="icons_large"></div>
