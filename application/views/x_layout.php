@@ -2,12 +2,6 @@
 
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
-//Messages:
-$messages = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 4231, //IDEA NOTES Messages
-    'x__right' => $i_focus['i__id'],
-), array(), 0, 0, array('x__spectrum' => 'ASC'));
 
 
 //NEXT IDEAS
@@ -160,7 +154,11 @@ echo '</div>';
 
 
 //MESSAGES
-foreach($messages as $message_x) {
+foreach($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type' => 4231, //IDEA NOTES Messages
+    'x__right' => $i_focus['i__id'],
+), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
     echo $this->X_model->message_view(
         $message_x['x__message'],
         true,
