@@ -145,7 +145,8 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     } elseif ($x__type == 4259 /* Audio URL */) {
 
-        if(is_numeric($CI->uri->segment(1))){
+        $segment1 = $CI->uri->segment(1);
+        if(is_numeric($segment1) || !strlen($segment1)){
             //Autoplay in discovery mode:
             return '<audio autoplay loop  id="playAudio">
     <source src="' . $x__message . '">
