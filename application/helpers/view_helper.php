@@ -688,9 +688,6 @@ function view_coin_line($href, $is_current, $o__type, $o__cover, $o__title, $x__
 
 function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true){
 
-    if($page_num<0){
-        return false;
-    }
     /*
      *
      * Loads Source
@@ -795,21 +792,21 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
                     'x__spectrum' => 'ASC',
                     'e__title' => 'ASC'
                 )) as $source_e) {
-                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'].view_coins_e(12273,  $source_e['e__id'], -1).view_coins_e(12274,  $source_e['e__id'], -1).view_coins_e(6255,  $source_e['e__id'], -1), view_x__message($source_e['x__message'],$source_e['x__type']));
+                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                 }
             } elseif($x__type==12273){
                 //IDEAS
                 $e___4737 = $CI->config->item('e___4737'); //Idea Types
                 $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
                 foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array('x__spectrum' => 'DESC')) as $next_i) {
-                    $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i).view_coins_i(12273,  $next_i, -1).view_coins_i(12274,  $next_i, -1).view_coins_i(6255,  $next_i, -1), view_x__message($next_i['x__message'],$next_i['x__type']));
+                    $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
                 }
             } elseif($x__type==6255){
                 //DISCOVERIES / IDEAS
                 $e___4593 = $CI->config->item('e___4593'); //Transaction Types
                 $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
                 foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array('x__id' => 'DESC')) as $x_i) {
-                    $ui .= view_coin_line('/i/i_go/'.$x_i['i__id'], $x_i['i__id']==$current_i, $e___4593[$x_i['x__type']]['m__cover'], view_cover(12273,$x_i['i__cover']), view_i_title($x_i).view_coins_i(12273,  $x_i, -1).view_coins_i(12274,  $x_i, -1).view_coins_i(6255,  $x_i, -1), view_x__message($x_i['x__message'],$x_i['x__type']));
+                    $ui .= view_coin_line('/i/i_go/'.$x_i['i__id'], $x_i['i__id']==$current_i, $e___4593[$x_i['x__type']]['m__cover'], view_cover(12273,$x_i['i__cover']), view_i_title($x_i), view_x__message($x_i['x__message'],$x_i['x__type']));
                 }
             }
             $ui .= '</div>';
@@ -827,9 +824,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
 
 function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
 
-    if($page_num<0){
-        return false;
-    }
     /*
      *
      * Loads Idea
@@ -909,7 +903,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
             $e___4593 = $CI->config->item('e___4593'); //Transaction Types
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__up'), 10, 0, array('x__type' => 'ASC', 'x__spectrum' => 'ASC')) as $source_e) {
-                $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'].view_coins_e(12273,  $source_e['e__id'], -1).view_coins_e(12274,  $source_e['e__id'], -1).view_coins_e(6255,  $source_e['e__id'], -1), view_x__message($source_e['x__message'],$source_e['x__type']));
+                $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
             }
         } elseif($x__type==12273){
             //IDEAS
@@ -933,14 +927,14 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
                     }
                 }
 
-                $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i).$message_tooltip.view_coins_i(12273,  $next_i, -1).view_coins_i(12274,  $next_i, -1).view_coins_i(6255,  $next_i, -1), view_x__message($next_i['x__message'],$next_i['x__type']));
+                $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i).$message_tooltip, view_x__message($next_i['x__message'],$next_i['x__type']));
             }
         } elseif($x__type==6255){
             //DISCOVERIES / SOURCES
             $e___4593 = $CI->config->item('e___4593'); //Transaction Types
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__source'), 10, 0, array('x__id' => 'DESC')) as $source_e) {
-                $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'].view_coins_e(12273,  $source_e['e__id'], -1).view_coins_e(12274,  $source_e['e__id'], -1).view_coins_e(6255,  $source_e['e__id'], -1), view_x__message($source_e['x__message'],$source_e['x__type']));
+                $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
             }
         }
         $ui .= '</div>';
