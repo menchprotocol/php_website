@@ -72,6 +72,8 @@ if(!$source_is_e || $superpower_13422){
     echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, ($counter<=2));
 
 
+
+    //Focus Source:
     echo '<div class="row justify-content-center">';
     echo view_e(4251, $e, null, $source_of_e);
     echo '</div>';
@@ -95,7 +97,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
     }
     if($require && !$meeting){
         //RELAX: Meet any requirement and it would be shown
-        continue;
+        //continue;
     }
 
     $counter = null;
