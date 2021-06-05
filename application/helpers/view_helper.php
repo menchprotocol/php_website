@@ -1603,7 +1603,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
 
 
     //Messages:
-    $ui .= '<div class="hideIfEmpty">';
+    $ui .= '<a '.$href.' class="hideIfEmpty doblock">';
     foreach($CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
@@ -1615,7 +1615,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
             $member_e
         );
     }
-    $ui .= '</div>';
+    $ui .= '</a>';
 
     //TIME
     if($view_i_time){
