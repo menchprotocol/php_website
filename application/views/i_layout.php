@@ -184,7 +184,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
     } elseif($x__type==6255) {
 
         //DISCOVERIES
-        $counter = view_coins_i(6255,  $i_focus, false);
+        $counter = view_coins_i(6255,  $i_focus, 0, false);
 
         if($counter){
 
