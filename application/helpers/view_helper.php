@@ -1609,7 +1609,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
-        echo $CI->X_model->message_view(
+        $ui .= $CI->X_model->message_view(
             $message_x['x__message'],
             true,
             $member_e
