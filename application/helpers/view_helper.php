@@ -688,6 +688,9 @@ function view_coin_line($href, $is_current, $o__type, $o__cover, $o__title, $x__
 
 function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true){
 
+    if($page_num<0 && $x__type!=12273){
+        return false;
+    }
     /*
      *
      * Loads Source
@@ -824,6 +827,9 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
 
 function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
 
+    if($page_num<0 && $x__type!=12273){
+        return false;
+    }
     /*
      *
      * Loads Idea
