@@ -1581,6 +1581,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
     $has_valid_url = filter_var($i['i__cover'], FILTER_VALIDATE_URL);
     $completion_rate = $CI->X_model->completion_progress($x__source, $i);
     $i_title = view_i_title($i);
+    $member_e = superpower_unlocked();
     $i_stats = i_stats($i['i__metadata']);
     $href = 'href="javascript:void(0);" onclick="select_answer(' . $i['i__id'] . ')"';
 
@@ -1599,6 +1600,22 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
     $view_i_time = view_i_time($i_stats);
 
     $ui .= '<div class="cover-text">';
+
+    //Messages:
+    $ui .= '<div class="hideIfEmpty doblock">';
+    foreach($CI->X_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type' => 4231, //IDEA NOTES Messages
+        'x__right' => $i['i__id'],
+    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
+        echo $CI->X_model->message_view(
+            $message_x['x__message'],
+            true,
+            $member_e
+        );
+    }
+    $ui .= '<div class="cover-text">';
+
     //TIME
     if($view_i_time){
         $ui .= '<a '.$href.' class="doblock"><span class="coin-hover">' . $view_i_time . '</span></a>';
