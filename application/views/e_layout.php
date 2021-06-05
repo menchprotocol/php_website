@@ -97,7 +97,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
     }
     if($require && !$meeting){
         //RELAX: Meet any requirement and it would be shown
-        //continue;
+        continue;
     }
 
     $counter = null;
@@ -415,15 +415,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
     }
 
-
-    $is_token = in_array($x__type, $this->config->item('n___14874'));
-    /*
-    if(!$counter && $is_token && !$superpower_10939){
-        continue;
-    }
-    */
-
-    echo view_headline($x__type, $counter, $m, $ui, in_array($x__type, $this->config->item('n___26005')) && $counter > 0 && !($found_10573 && $is_token));
+    echo view_headline($x__type, $counter, $m, $ui, in_array($x__type, $this->config->item('n___26005')) && $counter > 0);
 
 }
 
