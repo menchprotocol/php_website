@@ -1601,6 +1601,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
 
     $ui .= '<div class="cover-text">';
 
+
     //Messages:
     $ui .= '<div class="hideIfEmpty doblock">';
     foreach($CI->X_model->fetch(array(
@@ -1614,7 +1615,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
             $member_e
         );
     }
-    $ui .= '<div class="cover-text">';
+    $ui .= '</div>';
 
     //TIME
     if($view_i_time){
