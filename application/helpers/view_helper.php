@@ -114,7 +114,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
         if(count($ideas)){
-            return '<div><span class="icon-block-xs">'.view_cover(12273,$ideas[0]['i__cover']). '</span>'.$ideas[0]['i__title'].'<a href="/i/i_go'.$x__message.'" target="_blank" class="ignore-click icon-block-xs" style="font-size:0.89em;"><i class="far fa-external-link"></i></a></div>';
+            return '<div><span class="icon-block-xs">'.view_cover(12273,$ideas[0]['i__cover']). '</span><a href="/i/i_go'.$x__message.'" target="_blank" class="ignore-click icon-block-xs" style="font-size:0.89em;">'.$ideas[0]['i__title'].'</a></div>';
         } else {
             return $x__message.' ⚠️ INVALID ID';
         }
@@ -126,7 +126,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
         if(count($sources)){
-            return '<div><span class="icon-block-xs">'.view_cover(12274,$sources[0]['e__cover']). '</span>'.$sources[0]['e__title'].'<a href="/'.$x__message.'" target="_blank" class="ignore-click icon-block-xs" style="font-size:0.89em;"><i class="far fa-external-link"></i></a></div>';
+            return '<div><span class="icon-block-xs">'.view_cover(12274,$sources[0]['e__cover']). '</span><a href="/'.$x__message.'" target="_blank" class="ignore-click icon-block-xs" style="font-size:0.89em;">'.$sources[0]['e__title'].'</a></div>';
         } else {
             return $x__message.' ⚠️ INVALID ID';
         }
@@ -524,7 +524,7 @@ function view_x($x, $has_x__reference = false)
 
     //Metadata
     if(strlen($x['x__metadata']) > 0){
-        $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/-12722?x__id=' . $x['x__id'] . '" target="_blank"><span class="icon-block">'.$e___4341[6103]['m__cover']. '</span><u>'.$e___4341[6103]['m__title']. '</u> <i class="far fa-external-link"></i></a></div>';
+        $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/-12722?x__id=' . $x['x__id'] . '" target="_blank"><span class="icon-block">'.$e___4341[6103]['m__cover']. '</span><u>'.$e___4341[6103]['m__title']. '</u></a></div>';
     }
 
     //Message

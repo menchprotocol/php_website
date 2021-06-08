@@ -906,7 +906,7 @@ class X_model extends CI_Model
                 if(count($e_links)==1){
 
                     //Just show one:
-                    $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click" title="'.$e_links[0]['e__title'].'">'.( $is_discovery_mode ? '<u>'.$es[0]['e__title'].'</u>' : '' ).'<span class="icon-block-xs" style="font-size:0.89em;"><i class="far fa-external-link"></i></span></a>';
+                    $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click" title="'.$e_links[0]['e__title'].'">'.( $is_discovery_mode ? '<u>'.$es[0]['e__title'].'</u>' : '' ).'</a>';
 
                 } else {
 
