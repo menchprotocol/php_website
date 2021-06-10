@@ -1629,8 +1629,8 @@ i, .btn .show-max {
 .block{ display: block !important; width: 100%; }
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
-.icon-block { width:41px !important; display: inline-grid; text-align: center; overflow: hidden; }
-.icon-block-xs{ width:33px !important; display: inline-grid; text-align: center; overflow: hidden; }
+.icon-block { width:41px !important; display: inline-grid; text-align: center; overflow: hidden; line-height: 110%; }
+.icon-block-xs{ width:33px !important; display: inline-grid; text-align: center; overflow: hidden; line-height: 110%; }
 .custom_ui_13491_13493 .icon-block-xs{ width:33px; }
 .custom_ui_13491_13494 .icon-block-xs{ width:36px; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; }
