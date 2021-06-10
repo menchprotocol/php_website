@@ -60,7 +60,7 @@ foreach($this->X_model->fetch(array(
         } else {
 
             //Update member progression transaction type:
-            $u_x = $this->X_model->fetch(array(
+            $e_x = $this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                 'x__left' => $i_x['i__id'],
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -68,8 +68,8 @@ foreach($this->X_model->fetch(array(
 
             $updated = 0;
 
-            echo '<div>Total Steps: '.count($u_x).'</div>';
-            $total_count += count($u_x);
+            echo '<div>Total Steps: '.count($e_x).'</div>';
+            $total_count += count($e_x);
 
         }
 

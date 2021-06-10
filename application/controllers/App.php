@@ -161,7 +161,7 @@ class App extends CI_Controller
 
             if(isset($_GET['i__id'])){
                 $is = $this->I_model->fetch(array(
-                    'i__id' => $_GET['i__id'],
+                    'i__id' => intval($_GET['i__id']),
                     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 ));
                 if(count($is)){

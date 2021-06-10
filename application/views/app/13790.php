@@ -148,14 +148,14 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             }
         }
 
-        $u_emails = $this->X_model->fetch(array(
+        $e_emails = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
         ));
-        if(count($u_emails) && !in_array($x['e__id'], $skip_filter)){
-            array_push($all_emails, $u_emails[0]['x__message']);
+        if(count($e_emails) && !in_array($x['e__id'], $skip_filter)){
+            array_push($all_emails, $e_emails[0]['x__message']);
         }
         if(in_array($x['e__id'], $skip_filter)){
             $body_content = str_replace('tr__'.$x['e__id'],'hidden',$body_content);
