@@ -563,6 +563,7 @@ class E extends CI_Controller
                 'x__type' => 4983,
                 'x__up' => $focus_e['e__id'],
                 'x__right' => $fetch_o[0]['i__id'],
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             )));
 
             //Add Reference:
@@ -627,9 +628,10 @@ class E extends CI_Controller
             }
 
             $e_already_linked = count($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__down' => $x__down,
                 'x__up' => $x__up,
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             )));
 
             //Create transaction:
