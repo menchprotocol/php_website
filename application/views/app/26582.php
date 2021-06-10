@@ -8,6 +8,7 @@ if(!isset($_GET['i__id'])){
 
     //Fetch Sources who started or were blocked:
     $subs = '';
+    $total_subs = 0;
     $already_added = array();
     $filters = array(
         'x__type IN (' . join(',', $this->config->item('n___26582')) . ')' => null,
@@ -42,23 +43,26 @@ if(!isset($_GET['i__id'])){
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
+        $e_email = ( count($e_emails) && filter_var($e_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $e_emails[0]['x__message'] : false );
         $e_phones = $this->X_model->fetch(array(
             'x__up' => 4783, //Phone
             'x__down' => $subscriber['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
+        $e_phone = ( count($e_phones) && strlen(preg_replace('/[^0-9]/', '', $e_phones[0]['x__message']))>=10 ? preg_replace('/[^0-9]/', '', $e_phones[0]['x__message']) : false );
 
-        if(!count($e_emails) && !count($e_phones)){
-            //No contact method found:
-            continue;
+        preg_replace('/[^0-9]/', '', $string)
+
+        if($e_email || $e_phone){
+            //Add to sub list:
+            $total_subs++;
+            $subs .= one_two_explode('',' ', $subscriber['e__title'])."\t".( count($e_emails) ? $e_emails[0]['x__message'] : '' )."\t".( count($e_phones) ? $e_phones[0]['x__message'] : '' )."\n";
         }
-
-        //Add to sub list:
-        $subs .= $subscriber['e__title']."\t".( count($e_emails) ? $e_emails[0]['x__message'] : '' )."\t".( count($e_phones) ? $e_phones[0]['x__message'] : '' )."\n";
 
     }
 
+    echo '<div>Found '.$total_subs.' Subscribers:</div>';
     echo '<textarea class="mono-space" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.$subs.'</textarea>';
 
 
