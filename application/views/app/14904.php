@@ -31,11 +31,11 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
             'x__down' => $_GET['e__id'],
         ));
 
-        js_redirect(home_url(), 1597);
+        js_redirect(home_url(), 1);
 
     } else {
 
-        js_redirect($profiles[0]['x__message'], 1597);
+        js_redirect($profiles[0]['x__message'], 1);
 
     }
 

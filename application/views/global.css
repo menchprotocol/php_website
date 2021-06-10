@@ -1659,17 +1659,17 @@ i, .btn .show-max {
 
 
 .platform-logo{
-    line-height: 100%;
-    width: 33px !important;
-    height: 33px !important;
-    margin-left: 4px !important;
-    margin-right: 4px !important;
+    line-height: 130%;
+    width: 35px !important;
+    height: 35px !important;
+    margin-left: 5px !important;
+    margin-right: 5px !important;
     margin-bottom: 0 !important;
-    margin-top: 8px;
-    border-radius:0 !important;
-    display: block;
+    margin-top: 6px;
+    border-radius: 0 !important;
+    display: inline-block;
     float: left;
-    font-size: 1.4em; /* For Emojis ony */
+    font-size: 1.4em;
 }
 .platform-logo i{
     font-size: 1em !important;
