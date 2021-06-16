@@ -344,7 +344,7 @@ if($top_i__id) {
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ));
 
-        if(count($e_already_linked)){
+        if(count($e_already_linked) && is_valid_amount($e_already_linked[0]['x__message'])){
             //All good, found value:
 
         } else {

@@ -23,7 +23,7 @@ body {
     margin-bottom: 13px;
 }
 .container {
-    max-width:767px;
+    max-width:1534px;
     padding:0;
 }
 .padded {
@@ -2156,7 +2156,7 @@ i, .btn .show-max {
 }
 
 .modal-dialog{
-    max-width: 767px;
+    max-width:1534px;
 }
 .modal-content{
     border: 3px solid transparent;
@@ -2257,7 +2257,7 @@ textarea {
     margin-left:5px;
 }
 
-@media (max-width:767px) {
+@media (max-width:1534px) {
 
     .coin_cover_3 {
         margin-top:-109px !important;

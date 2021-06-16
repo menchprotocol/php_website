@@ -4,7 +4,7 @@
 function view_show_more($see_more_type, $class, $href_link = null){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    return '<div class="coin_cover coin_reverse col-md-4 col-6 no-padding '.$class.'">
+    return '<div class="coin_cover coin_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding '.$class.'">
                                 <div class="cover-wrapper"><a '.( $href_link ? 'href="'.$href_link.'"' : 'href="javascript:void(0);" onclick="$(\'.'.$class.'\').toggleClass(\'hidden\')"' ).' class="black-background cover-link"><div class="cover-btn">'.$e___11035[$see_more_type]['m__cover'].'</div></a></div>
                             </div>';
 }
@@ -19,7 +19,7 @@ function i_load_page($x__type, $page, $limit, $list_count, $extra_class = null)
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
     $href = 'href="javascript:void(0);" onclick="i_load_page('.$x__type.',' . $page . ', 0)"';
-    return '<div class="coin_cover coin_reverse col-md-4 col-6 no-padding load-more '.$extra_class.'">
+    return '<div class="coin_cover coin_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding load-more '.$extra_class.'">
                                 <div class="cover-wrapper"><a '.$href.' class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
                             </div>';
 }
@@ -32,7 +32,7 @@ function e_load_page($x__type, $page, $limit, $list_count, $extra_class = null)
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
     $href = 'href="javascript:void(0);" onclick="e_load_page('.$x__type.',' . $page . ', 0)"';
-    return '<div class="coin_cover coin_reverse col-md-4 col-6 no-padding load-more '.$extra_class.'">
+    return '<div class="coin_cover coin_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding load-more '.$extra_class.'">
                                 <div class="cover-wrapper"><a '.$href.' class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
                             </div>';
 }
@@ -133,11 +133,11 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     } elseif ($x__type == 26092 /* CAD */) {
 
-        return str_replace('$CAD ','$',$x__message);
+        return str_replace('CAD ','$',$x__message);
 
     } elseif ($x__type == 26091 /* USD */) {
 
-        return str_replace('$USD ','$',$x__message);
+        return str_replace('USD ','$',$x__message);
 
     } elseif ($x__type == 4260 /* Image URL */) {
 
@@ -676,7 +676,7 @@ function view_coins(){
     $count = 0;
     foreach($CI->config->item('e___14874') as $e__id => $m) {
         $count++;
-        $ui .= ( $count==3 ? '<div class="w-100"></div>' : '' ).'<div class="coin_cover coin_cover_'.$count.' no-padding col-6"><div class="cover-wrapper"><div class="bg'.$e__id.' coinType'.$e__id.' cover-link"><div class="cover-btn"><div class="the_counter css__title"><div class="min-height"><b class="css__title coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b></div>'.$m['m__title'].'</div></div></div></div></div>';
+        $ui .= ( $count==3 ? '<div class="w-100"></div>' : '' ).'<div class="coin_cover coin_cover_'.$count.' no-padding col-xl-4 col-6"><div class="cover-wrapper"><div class="bg'.$e__id.' coinType'.$e__id.' cover-link"><div class="cover-btn"><div class="the_counter css__title"><div class="min-height"><b class="css__title coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b></div>'.$m['m__title'].'</div></div></div></div></div>';
     }
     $ui .= '</div>';
     return $ui;
@@ -1552,7 +1552,7 @@ function view_info_box(){
         foreach($CI->config->item('e___'.$e__id) as $m) {
             $counter++;
             $title_parts = explode(' ', $m['m__title'], 2);
-            $ui .= '<div class="col-12 col-sm-6 col-md-4 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
+            $ui .= '<div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
             $ui .= '<div class="info_box">';
             $ui .= '<div class="info_box_cover">'.$m['m__cover'].'</div>';
             $ui .= '<div class="info_box_title css__title">'.$title_parts[0].'<br />'.$title_parts[1].'</div>';
@@ -1585,7 +1585,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
     $i_stats = i_stats($i['i__metadata']);
     $href = 'href="javascript:void(0);" onclick="select_answer(' . $i['i__id'] . ')"';
 
-    $ui  = '<div class="coin_cover col-md-4 col-6 no-padding">';
+    $ui  = '<div class="coin_cover col-md-4 col-6 col-xl-2 col-lg-3 no-padding">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' coinType12273 ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
@@ -1718,7 +1718,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $can_click = !$has_any_lock && !$focus_coin;
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-11 ' : ' edge-coin col-md-4 col-6 ' ).' no-padding coin-12273 coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-11 col-xl-5 col-lg-6 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).' no-padding coin-12273 coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
 
@@ -2048,7 +2048,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
 
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coinface-12274 '.( $focus_coin ? ' focus-coin col-md-8 col-11 ' : ' edge-coin col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).' coin_cover no-padding coin-12274 coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coinface-12274 '.( $focus_coin ? ' focus-coin col-md-8 col-11 col-xl-5 col-lg-6 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).' coin_cover no-padding coin-12274 coin___12274_'.$e['e__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'">';
 
     $ui .= '<div class="cover-wrapper">';
 

@@ -1,17 +1,5 @@
 <?php
 
-$counter = 0;
-foreach($this->X_model->fetch(array(
-    'x__type' => 26092,
-), array(), 0) as $x) {
-    $counter++;
-    $parts = explode(' ',$x['x__message']);
-    $this->X_model->update($x['x__id'], array(
-        'x__message' => 'CAD '.str_replace('.00','',$parts[1]),
-    ));
-}
-echo $counter.' Ceaned';
-
 //Called when the paypal payment is complete:
 if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=='Completed' && isset($_POST['item_number']) && intval($_POST['item_number'])>0){
 
