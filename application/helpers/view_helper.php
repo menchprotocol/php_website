@@ -1684,8 +1684,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $is_completed = ($completion_rate['completion_percentage']>=100);
     $is_started = ($completion_rate['completion_percentage']>0);
     $start_to_unlock = in_array($x__type, $CI->config->item('n___14377'));
-    $force_order = ($previous_i && count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    $force_order = ($previous_i && count($CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4983, //References
             'x__right' => $previous_i['i__id'],
             'x__up' => 14488, //Force Order
