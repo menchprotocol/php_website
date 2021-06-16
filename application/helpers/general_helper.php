@@ -837,7 +837,6 @@ function i_stats($i__metadata){
     $metadata = unserialize($i__metadata);
 
     $array_13207 = ( isset($metadata['i___13207']) ? $metadata['i___13207'] : array() );
-    $array_7545 = ( isset($metadata['i___7545']) ? $metadata['i___7545'] : array() );
 
     $e_count = count($array_13207);
 
@@ -855,10 +854,6 @@ function i_stats($i__metadata){
         //LEADERBOARD SOURCES
         'array_13207' => $array_13207,
         'count_13207' => count($array_13207),
-
-        //CERTIFICATES
-        'count_7545' => count($array_7545),
-        'array_7545' => $array_7545,
     );
 
 }

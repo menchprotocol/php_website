@@ -1474,13 +1474,13 @@ class X_model extends CI_Model
         }
 
 
-        //SOURCE APPEND?
         $detected_x_type = x_detect_type($add_fields['x__message']);
         if ($detected_x_type['status']) {
 
+            //ADD PROFILE?
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 7545, //CERTIFICATES
+                'x__type' => 7545, //Profile Add
                 'x__right' => $i['i__id'],
             )) as $x_tag){
 
@@ -1516,6 +1516,15 @@ class X_model extends CI_Model
                             'x__type' => $detected_x_type['x__type'],
                         ), $add_fields['x__source'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
+                        $this->X_model->create(array(
+                            'x__type' => 12197, //Profile Added
+                            'x__source' => $add_fields['x__source'],
+                            'x__up' => $x_tag['x__up'],
+                            'x__down' => $add_fields['x__source'],
+                            'x__left' => $i['i__id'],
+                            'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
+                        ));
+
                     }
 
                 } else {
@@ -1549,22 +1558,55 @@ class X_model extends CI_Model
                         'x__down' => $add_fields['x__source'],
                     ));
 
-                }
+                    $this->X_model->create(array(
+                        'x__type' => 12197, //Profile Added
+                        'x__source' => $add_fields['x__source'],
+                        'x__up' => $x_tag['x__up'],
+                        'x__down' => $add_fields['x__source'],
+                        'x__left' => $i['i__id'],
+                        'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
+                    ));
 
-                //Track Tag:
-                $this->X_model->create(array(
-                    'x__type' => 12197, //Tag Member
-                    'x__source' => $add_fields['x__source'],
-                    'x__up' => $x_tag['x__up'],
-                    'x__down' => $add_fields['x__source'],
-                    'x__left' => $i['i__id'],
-                    'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
-                ));
+                }
 
 
                 if($x_added>0 || $x_edited>0 || $x_deleted>0){
                     //See if Session needs to be updated:
                     $member_e = superpower_unlocked();
+                    if($member_e && $member_e['e__id']==$add_fields['x__source']){
+                        //Yes, update session:
+                        $this->E_model->activate_session($member_e, true);
+                    }
+                }
+            }
+
+
+
+            //REMOVE PROFILE?
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 26599, //Profile Remove
+                'x__right' => $i['i__id'],
+            )) as $x_tag){
+
+                //Remove Profile IF previously assigned:
+                $existing_x = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
+                    'x__down' => $add_fields['x__source'],
+                ));
+
+                if(count($existing_x)){
+
+                    //Exists, so must be removed:
+                    $member_e = superpower_unlocked();
+
+                    $this->X_model->update($existing_x[0]['x__id'], array(
+                        'x__status' => 6173,
+                    ), $member_e['e__id'], 12197 /* Profile Removed */);
+
+                    //See if Session needs to be updated:
                     if($member_e && $member_e['e__id']==$add_fields['x__source']){
                         //Yes, update session:
                         $this->E_model->activate_session($member_e, true);

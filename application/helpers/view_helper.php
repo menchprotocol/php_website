@@ -1684,15 +1684,20 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $is_completed = ($completion_rate['completion_percentage']>=100);
     $is_started = ($completion_rate['completion_percentage']>0);
     $start_to_unlock = in_array($x__type, $CI->config->item('n___14377'));
-    $previous_is_lock = ($previous_i && in_array($previous_i['i__type'], $CI->config->item('n___14488')));
-    $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($previous_is_lock && $discovery_mode);
+    $force_order = ($previous_i && count($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4983, //References
+            'x__right' => $previous_i['i__id'],
+            'x__up' => 14488, //Force Order
+        ), array(), 1)));
+    $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($force_order && $discovery_mode);
     $has_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
-    $has_soft_lock = $locking_enabled && !$is_completed && ($has_hard_lock || (!$is_first_incomplete && ($previous_is_lock || ($start_to_unlock && !$is_started))));
+    $has_soft_lock = $locking_enabled && !$is_completed && ($has_hard_lock || (!$is_first_incomplete && ($force_order || ($start_to_unlock && !$is_started))));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603')) && $control_enabled;
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i);
     $has_any_lock = $has_soft_lock || $has_hard_lock;
-    $lock_notice = (  $previous_is_lock ? 14488 : 14377 );
+    $lock_notice = (  $force_order ? 14488 : 14377 );
 
     if(in_array($x__type, $CI->config->item('n___14454')) && !$is_completed){
         $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];

@@ -962,7 +962,6 @@ class I_model extends CI_Model
             'p___6161' => $i['i__duration'],
             'p___6162' => $i['i__duration'],
             'p___13207' => array(), //Leaderboard Sources
-            'p___7545' => array(), //Certificates
             'p___ids' => array($i['i__id']), //Keeps Track of the IDs scanned here
         );
 
@@ -987,19 +986,6 @@ class I_model extends CI_Model
             //MEMBERS:
             if (!in_array($fetched_e['x__source'], $metadata_this['p___13207'])) {
                 array_push($metadata_this['p___13207'], intval($fetched_e['x__source']));
-            }
-        }
-
-
-        //AGGREGATE CERTIFICATES
-        foreach($this->X_model->fetch(array(
-            'x__right' => $i['i__id'],
-            'x__type' => 7545, //CERTIFICATES
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        ), array('x__up'), 0) as $e) {
-            if (!in_array($e['e__id'], $metadata_this['p___7545'])) {
-                array_push($metadata_this['p___7545'], intval($e['e__id']));
             }
         }
 
@@ -1099,12 +1085,6 @@ class I_model extends CI_Model
                 }
             }
 
-            //CERTIFICATES
-            foreach($metadata_recursion['p___7545'] as $e__id) {
-                if (!in_array($e__id, $metadata_this['p___7545'])) {
-                    array_push($metadata_this['p___7545'], intval($e__id));
-                }
-            }
 
             //AGGREGATE IDS
             foreach($metadata_recursion['p___ids'] as $i__id) {
@@ -1136,7 +1116,6 @@ class I_model extends CI_Model
             'i___6161' => intval($metadata_this['p___6161']),
             'i___6162' => intval($metadata_this['p___6162']),
             'i___13207' => $metadata_this['p___13207'], //LEADERBOARD Sources
-            'i___7545' => $metadata_this['p___7545'], //Certificates
         ));
 
         //Return data:

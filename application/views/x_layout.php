@@ -244,18 +244,17 @@ if($top_i__id) {
 
 
 
-
-
             //Open for list to be printed:
             $select_answer = '<div class="row justify-content-center list-answers" i__type="' . $i_focus['i__type'] . '">';
 
             //List children to choose from:
             foreach ($is_next as $key => $next_i) {
 
-                //Any PREREQUISITES?
+
+                //Any Inclusion Requirements?
                 $fetch_13865 = $this->X_model->fetch(array(
                     'x__right' => $next_i['i__id'],
-                    'x__type' => 13865, //PREREQUISITES
+                    'x__type' => 13865, //Must Include Any
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                 ), array('x__up'), 0);
@@ -277,6 +276,38 @@ if($top_i__id) {
                     }
 
                     if(!$meets_prereq){
+                        continue;
+                    }
+                }
+
+                //Any Exclusion Requirements?
+                $fetch_26600 = $this->X_model->fetch(array(
+                    'x__right' => $next_i['i__id'],
+                    'x__type' => 26600, //Must Exclude All
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                ), array('x__up'), 0);
+                if(count($fetch_26600)){
+                    //Let's see if they meet any of these PREREQUISITES:
+                    $excludes_all = false;
+                    if($x__source > 0){
+                        foreach($fetch_26600 as $e_pre){
+                            if(count($this->X_model->fetch(array(
+                                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__up' => $e_pre['x__up'],
+                                'x__down' => $x__source,
+                            )))){
+                                //Found an exclusion, so skip this:
+                                $excludes_all = false;
+                                break;
+                            } else {
+                                $excludes_all = true;
+                            }
+                        }
+                    }
+
+                    if(!$excludes_all){
                         continue;
                     }
                 }
