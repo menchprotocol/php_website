@@ -137,7 +137,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     } elseif ($x__type == 26091 /* USD */) {
 
-        return str_replace('$US ','$',$x__message);
+        return str_replace('$USD ','$',$x__message);
 
     } elseif ($x__type == 4260 /* Image URL */) {
 

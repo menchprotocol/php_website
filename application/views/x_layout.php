@@ -1,6 +1,7 @@
 <?php
 
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$e___4737 = $this->config->item('e___4737'); //Idea Types
 
 
 
@@ -327,7 +328,6 @@ if($top_i__id) {
             }
 
             //HTML:
-            $e___4737 = $this->config->item('e___4737'); //Idea Types
             echo '<div class="edit_select_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
             echo view_headline($i_focus['i__type'], null, $e___4737[$i_focus['i__type']], $select_answer, true);
             echo '</div>';
@@ -336,15 +336,38 @@ if($top_i__id) {
 
     } elseif ($i_focus['i__type'] == 6683) {
 
-        //Write `skip` if you prefer not to answer...
-        $text_response = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
+        //Fetch Value
+        $e_already_linked = $this->X_model->fetch(array(
+            'x__type' => 4983,
+            'x__up' => $focus_e['e__id'],
+            'x__right' => $fetch_o[0]['i__id'],
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ));
 
-        if (count($x_completes)) {
-            //Next Ideas:
-            $text_response .= view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
+        if(count($e_already_linked)){
+            //All good, found value:
+
+        } else {
+            //Error: Missing value:
+            $text_response = '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing payment amount.</div>';
         }
 
-        $text_response .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
+
+        //Paypal Payment
+        $text_response = '';
+        $text_response .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+        $text_response .= '<input type="hidden" name="business" value="'.get_domain('m__title').'">';
+        $text_response .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
+        $text_response .= '<input type="hidden" name="item_number" value="'.$i_focus['i__id'].'">';
+        $text_response .= '<input type="hidden" name="amount" value="10">';
+        $text_response .= '<input type="hidden" name="no_shipping" value="1">';
+        $text_response .= '<input type="hidden" name="currency_code" value="USD">';
+        $text_response .= '<input type="hidden" name="notify_url" value="http://sitename/paypal-payment-gateway-integration-in-php/notify.php">';
+        $text_response .= '<input type="hidden" name="cancel_return" value="http://sitename/paypal-payment-gateway-integration-in-php/cancel.php">';
+        $text_response .= '<input type="hidden" name="return" value="http://sitename/paypal-payment-gateway-integration-in-php/return.php">';
+        $text_response .= '<input type="hidden" name="cmd" value="_xclick">';
+        $text_response .= '<input type="submit" name="pay_now" id="pay_now" value="Pay Now">';
+        $text_response .= '</form>';
 
         echo view_headline(13980, null, $e___11035[13980], $text_response, true);
 
