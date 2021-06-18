@@ -1631,8 +1631,6 @@ i, .btn .show-max {
 .underline{ text-decoration: underline !important; }
 .icon-block { width:41px !important; display: inline-grid; text-align: center; overflow: hidden; line-height: 110% !important; }
 .icon-block-xs{ width:33px !important; display: inline-grid; text-align: center; overflow: hidden; line-height: 110% !important; }
-.custom_ui_13491_13493 .icon-block-xs{ width:33px; }
-.custom_ui_13491_13494 .icon-block-xs{ width:36px; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; }
 .icon-block-img img,
 .icon-block-lg img,
@@ -2257,6 +2255,13 @@ textarea {
     margin-left:5px;
 }
 
+video {
+    width: auto;
+    max-width: 100%;
+    max-height: 987px;
+    border-radius: 10px;
+}
+
 @media (max-width:1534px) {
 
     .coin_cover_3 {
@@ -2274,9 +2279,6 @@ textarea {
 
     .coin_coins{
         font-size: 0.89em;
-    }
-    .coin_coins .icon-block-xs {
-        width: 22px !important;
     }
 
 

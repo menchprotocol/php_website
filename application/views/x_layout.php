@@ -375,30 +375,27 @@ if($top_i__id) {
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ));
 
-        if(count($e_already_linked) && is_valid_amount($e_already_linked[0]['x__message'])){
+        if(count($e_already_linked) && is_valid_currency($e_already_linked[0]['x__message'])){
             //All good, found value:
-
+            $text_response = '';
+            $text_response .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+            $text_response .= '<input type="hidden" name="business" value="'.get_domain('m__title').'">';
+            $text_response .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
+            $text_response .= '<input type="hidden" name="item_number" value="'.$i_focus['i__id'].'">';
+            $text_response .= '<input type="hidden" name="amount" value="10">';
+            $text_response .= '<input type="hidden" name="no_shipping" value="1">';
+            $text_response .= '<input type="hidden" name="currency_code" value="CAD">';
+            $text_response .= '<input type="hidden" name="notify_url" value="http://sitename/paypal-payment-gateway-integration-in-php/notify.php">';
+            $text_response .= '<input type="hidden" name="cancel_return" value="http://sitename/paypal-payment-gateway-integration-in-php/cancel.php">';
+            $text_response .= '<input type="hidden" name="return" value="http://sitename/paypal-payment-gateway-integration-in-php/return.php">';
+            $text_response .= '<input type="hidden" name="cmd" value="_xclick">';
+            $text_response .= '<input type="submit" name="pay_now" id="pay_now" value="Pay Now">';
+            $text_response .= '</form>';
         } else {
             //Error: Missing value:
-            $text_response = '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing payment amount.</div>';
+            $text_response = '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing valid payment currency.</div>';
         }
 
-
-        //Paypal Payment
-        $text_response = '';
-        $text_response .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
-        $text_response .= '<input type="hidden" name="business" value="'.get_domain('m__title').'">';
-        $text_response .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
-        $text_response .= '<input type="hidden" name="item_number" value="'.$i_focus['i__id'].'">';
-        $text_response .= '<input type="hidden" name="amount" value="10">';
-        $text_response .= '<input type="hidden" name="no_shipping" value="1">';
-        $text_response .= '<input type="hidden" name="currency_code" value="USD">';
-        $text_response .= '<input type="hidden" name="notify_url" value="http://sitename/paypal-payment-gateway-integration-in-php/notify.php">';
-        $text_response .= '<input type="hidden" name="cancel_return" value="http://sitename/paypal-payment-gateway-integration-in-php/cancel.php">';
-        $text_response .= '<input type="hidden" name="return" value="http://sitename/paypal-payment-gateway-integration-in-php/return.php">';
-        $text_response .= '<input type="hidden" name="cmd" value="_xclick">';
-        $text_response .= '<input type="submit" name="pay_now" id="pay_now" value="Pay Now">';
-        $text_response .= '</form>';
 
         echo view_headline(13980, null, $e___11035[13980], $text_response, true);
 
