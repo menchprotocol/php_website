@@ -250,7 +250,6 @@ if($top_i__id) {
             //List children to choose from:
             foreach ($is_next as $key => $next_i) {
 
-
                 //Any Inclusion Requirements?
                 $fetch_13865 = $this->X_model->fetch(array(
                     'x__right' => $next_i['i__id'],
@@ -263,7 +262,7 @@ if($top_i__id) {
                     $meets_prereq = false;
                     if($x__source > 0){
                         foreach($fetch_13865 as $e_pre){
-                            if(count($this->X_model->fetch(array(
+                            if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($this->X_model->fetch(array(
                                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                 'x__up' => $e_pre['x__up'],
@@ -274,7 +273,6 @@ if($top_i__id) {
                             }
                         }
                     }
-
                     if(!$meets_prereq){
                         continue;
                     }
