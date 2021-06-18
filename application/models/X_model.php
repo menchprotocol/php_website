@@ -1473,7 +1473,7 @@ class X_model extends CI_Model
             }
         }
 
-
+        $member_e = superpower_unlocked();
         $detected_x_type = x_detect_type($add_fields['x__message']);
         if ($detected_x_type['status']) {
 
@@ -1484,37 +1484,95 @@ class X_model extends CI_Model
                 'x__right' => $i['i__id'],
             )) as $x_tag){
 
-                //Generate stats:
-                $x_added = 0;
-                $x_edited = 0;
-                $x_deleted = 0;
+                if($x_tag['x__up']==13025){
 
+                    if($member_e && strlen($add_fields['x__message'])>=5){
 
-                //Assign tag if parent/child transaction NOT previously assigned:
-                $existing_x = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
-                    'x__down' => $add_fields['x__source'],
-                ));
+                        //Update full name for current user:
+                        $this->E_model->update($member_e['e__id'], array(
+                            'e__title' => $add_fields['x__message'],
+                        ), true, $member_e['e__id']);
 
-                if(count($existing_x)){
+                        //Update live session as well:
+                        $member_e['e__title'] = $add_fields['x__message'];
+                        $this->E_model->activate_session($member_e, true);
 
-                    //Transaction previously exists, see if content value is the same:
-                    if($existing_x[0]['x__message'] == $add_fields['x__message'] && $existing_x[0]['x__type'] == $detected_x_type['x__type']){
+                    }
 
-                        //Everything is the same, nothing to do here:
-                        continue;
+                } else {
+
+                    //Generate stats:
+                    $x_added = 0;
+                    $x_edited = 0;
+                    $x_deleted = 0;
+
+                    //Assign tag if parent/child transaction NOT previously assigned:
+                    $existing_x = $this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
+                        'x__down' => $add_fields['x__source'],
+                    ));
+
+                    if(count($existing_x)){
+
+                        //Transaction previously exists, see if content value is the same:
+                        if($existing_x[0]['x__message'] == $add_fields['x__message'] && $existing_x[0]['x__type'] == $detected_x_type['x__type']){
+
+                            //Everything is the same, nothing to do here:
+                            continue;
+
+                        } else {
+
+                            $x_edited++;
+
+                            //Content value has changed, update the transaction:
+                            $this->X_model->update($existing_x[0]['x__id'], array(
+                                'x__message' => $add_fields['x__message'],
+                                'x__type' => $detected_x_type['x__type'],
+                            ), $add_fields['x__source'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
+
+                            $this->X_model->create(array(
+                                'x__type' => 12197, //Profile Added
+                                'x__source' => $add_fields['x__source'],
+                                'x__up' => $x_tag['x__up'],
+                                'x__down' => $add_fields['x__source'],
+                                'x__left' => $i['i__id'],
+                                'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
+                            ));
+
+                        }
 
                     } else {
 
-                        $x_edited++;
+                        //See if we need to delete single selectable transactions:
+                        foreach($this->config->item('n___6204') as $single_select_e__id){
+                            $single_selectable = $this->config->item('n___'.$single_select_e__id);
+                            if(is_array($single_selectable) && count($single_selectable) && in_array($x_tag['x__up'], $single_selectable)){
+                                //Delete other siblings, if any:
+                                foreach($this->X_model->fetch(array(
+                                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                                    'x__up IN (' . join(',', $single_selectable) . ')' => null,
+                                    'x__up !=' => $x_tag['x__up'],
+                                    'x__down' => $add_fields['x__source'],
+                                )) as $single_selectable_siblings_preset){
+                                    $x_deleted += $this->X_model->update($single_selectable_siblings_preset['x__id'], array(
+                                        'x__status' => 6173, //Transaction Deleted
+                                    ), $add_fields['x__source'], 10673 /* Member Transaction Unpublished */);
+                                }
+                            }
+                        }
 
-                        //Content value has changed, update the transaction:
-                        $this->X_model->update($existing_x[0]['x__id'], array(
-                            'x__message' => $add_fields['x__message'],
+                        //Create transaction:
+                        $x_added++;
+                        $this->X_model->create(array(
                             'x__type' => $detected_x_type['x__type'],
-                        ), $add_fields['x__source'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
+                            'x__message' => $add_fields['x__message'],
+                            'x__source' => $add_fields['x__source'],
+                            'x__up' => $x_tag['x__up'],
+                            'x__down' => $add_fields['x__source'],
+                        ));
 
                         $this->X_model->create(array(
                             'x__type' => 12197, //Profile Added
@@ -1527,55 +1585,12 @@ class X_model extends CI_Model
 
                     }
 
-                } else {
-
-                    //See if we need to delete single selectable transactions:
-                    foreach($this->config->item('n___6204') as $single_select_e__id){
-                        $single_selectable = $this->config->item('n___'.$single_select_e__id);
-                        if(is_array($single_selectable) && count($single_selectable) && in_array($x_tag['x__up'], $single_selectable)){
-                            //Delete other siblings, if any:
-                            foreach($this->X_model->fetch(array(
-                                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                                'x__up IN (' . join(',', $single_selectable) . ')' => null,
-                                'x__up !=' => $x_tag['x__up'],
-                                'x__down' => $add_fields['x__source'],
-                            )) as $single_selectable_siblings_preset){
-                                $x_deleted += $this->X_model->update($single_selectable_siblings_preset['x__id'], array(
-                                    'x__status' => 6173, //Transaction Deleted
-                                ), $add_fields['x__source'], 10673 /* Member Transaction Unpublished */);
-                            }
+                    if($x_added>0 || $x_edited>0 || $x_deleted>0){
+                        //See if Session needs to be updated:
+                        if($member_e && $member_e['e__id']==$add_fields['x__source']){
+                            //Yes, update session:
+                            $this->E_model->activate_session($member_e, true);
                         }
-                    }
-
-                    //Create transaction:
-                    $x_added++;
-                    $this->X_model->create(array(
-                        'x__type' => $detected_x_type['x__type'],
-                        'x__message' => $add_fields['x__message'],
-                        'x__source' => $add_fields['x__source'],
-                        'x__up' => $x_tag['x__up'],
-                        'x__down' => $add_fields['x__source'],
-                    ));
-
-                    $this->X_model->create(array(
-                        'x__type' => 12197, //Profile Added
-                        'x__source' => $add_fields['x__source'],
-                        'x__up' => $x_tag['x__up'],
-                        'x__down' => $add_fields['x__source'],
-                        'x__left' => $i['i__id'],
-                        'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
-                    ));
-
-                }
-
-
-                if($x_added>0 || $x_edited>0 || $x_deleted>0){
-                    //See if Session needs to be updated:
-                    $member_e = superpower_unlocked();
-                    if($member_e && $member_e['e__id']==$add_fields['x__source']){
-                        //Yes, update session:
-                        $this->E_model->activate_session($member_e, true);
                     }
                 }
             }
