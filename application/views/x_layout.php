@@ -365,6 +365,22 @@ if($top_i__id) {
 
     } elseif ($i_focus['i__type'] == 6683) {
 
+        //Write `skip` if you prefer not to answer...
+        $text_response = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
+
+        if (count($x_completes)) {
+            //Next Ideas:
+            $text_response .= view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
+        }
+
+        $text_response .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
+
+        echo view_headline(13980, null, $e___11035[13980], $text_response, true);
+
+    } elseif ($i_focus['i__type'] == 26560) {
+
+        /*
+
         //Fetch Value
         $e_already_linked = $this->X_model->fetch(array(
             'x__type' => 4983,
@@ -396,6 +412,8 @@ if($top_i__id) {
 
 
         echo view_headline(13980, null, $e___11035[13980], $text_response, true);
+
+        */
 
     } elseif ($i_focus['i__type'] == 7637) {
 
