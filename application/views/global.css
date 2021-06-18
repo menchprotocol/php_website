@@ -2262,7 +2262,7 @@ video {
     border-radius: 10px;
 }
 
-@media (max-width:1534px) {
+@media (max-width:767px) {
 
     .coin_cover_3 {
         margin-top:-109px !important;
