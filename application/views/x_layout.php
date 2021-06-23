@@ -370,7 +370,8 @@ if($top_i__id) {
         }
 
         if(count($x_completes)){
-            echo '<div class="msg alert alert-success" role="alert">We have received a payment of $'.$x_completes[0]['x__message'].'</div>';
+            $e___26661 = $this->config->item('e___26661');
+            echo '<div class="msg alert alert-success" role="alert">We have received a payment of '.$e___26661[$x_completes[0]['x__up']]['m__title'].' '.$x_completes[0]['x__message'].' via Paypal.</div>';
         } else {
             echo '<div class="msg alert alert-warning" role="alert">Next you will be redirect to Paypal to complete your payment.<br />You can choose to login to your Paypal account or just pay as a guest using your credit card or debit card.<br />Everyone is asked to complete their own payment as you cannot pay for someone else.</div>';
         }
