@@ -494,8 +494,7 @@ if(!$top_i__id){
                         $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$i_focus['i__id'].'">';
                         $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'">';
                         $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
-                        $control_btn .= '<input type="submit" class="controller-nav round-btn go-next" name="pay_now" id="pay_now" value="PAY">';
-
+                        //$control_btn .= '<input type="submit" class="controller-nav round-btn go-next" name="pay_now" id="pay_now" value="PAY">';
                         $control_btn .= '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="document.getElementById(\'paypal_form\').submit();">'.$e___4737[$i_focus['i__type']]['m__cover'].'</a><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].'</span>';
 
 
