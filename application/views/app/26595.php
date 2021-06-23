@@ -21,7 +21,7 @@ if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=
         //Mark idea as complete:
         $this->X_model->mark_complete($top_i__id, $next_is[0], array(
             'x__type' => 26595,
-            'x__source' => $next_is,
+            'x__source' => $x__source,
             'x__up' => $currency_type,
             'x__metadata' => $_POST,
             'x__message' => $pay_amount,
