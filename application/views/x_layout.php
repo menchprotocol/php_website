@@ -507,7 +507,7 @@ if(!$top_i__id){
                         $control_btn = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
                         $control_btn .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
                         $control_btn .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
-                        $control_btn .= '<input type="hidden" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'-'.time().'">';
+                        $control_btn .= '<input type="hidden" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
                         $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
                         $control_btn .= '<input type="hidden" name="amount" value="'.$currency_parts[1].'">';
                         $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
