@@ -363,6 +363,10 @@ if($top_i__id) {
 
         }
 
+    } elseif ($i_focus['i__type'] == 26560) {
+
+        echo '<div class="msg alert alert-warning" role="alert">Next you will be redirect to Paypal to complete your payment.<br />You can choose to login to your Paypal account or just pay as a guest using your credit card or debit card.<br />Everyone is asked to complete their own payment as you cannot pay for someone else.</div>';
+
     } elseif ($i_focus['i__type'] == 6683) {
 
         //Write `skip` if you prefer not to answer...
