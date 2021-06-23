@@ -242,11 +242,10 @@ img.no-frame {
 }
 
 .alert{
-    padding:10px 0 !important;
-    border-radius: 0;
+    padding:10px !important;
+    border-radius: 10px;
     margin:0 0 13px 0 !important;
     border: 0 !important;
-    text-align: left !important;
 }
 
 
