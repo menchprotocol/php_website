@@ -480,7 +480,7 @@ if(!$top_i__id){
                         $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
 
                         //Load Paypal Pay button:
-                        $control_btn = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+                        $control_btn = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
                         $control_btn .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
                         $control_btn .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
                         $control_btn .= '<input type="hidden" name="item_number" value="'.$i_focus['i__id'].'">';
@@ -495,6 +495,10 @@ if(!$top_i__id){
                         $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'">';
                         $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
                         $control_btn .= '<input type="submit" class="controller-nav round-btn go-next" name="pay_now" id="pay_now" value="PAY">';
+
+                        $control_btn .= '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="document.getElementById(\'paypal_form\').submit();">'.$e___4737[$i_focus['i__type']]['m__cover'].'</a><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].'</span>';
+
+
                         $control_btn .= '</form>';
 
                     }
