@@ -396,7 +396,7 @@ if($top_i__id) {
             //All good, found value:
             $message_ui = '';
             $message_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
-            $message_ui .= '<input type="hidden" name="business" value="'.get_domain('m__title').'">';
+            $message_ui .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
             $message_ui .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
             $message_ui .= '<input type="hidden" name="item_number" value="'.$i_focus['i__id'].'">';
             $message_ui .= '<input type="hidden" name="x__source" value="'.$x__source.'">';

@@ -15,7 +15,7 @@ if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=
         $this->X_model->mark_complete($_POST['top_i__id'], $next_is[0], array(
             'x__type' => 26595,
             'x__source' => $_POST['x__source'],
-            'x__up' => $_POST['x__up'],
+            'x__up' => $_POST['x__up'], //Currency type
             'x__metadata' => $_POST,
             'x__message' => doubleval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] )),
         ));
