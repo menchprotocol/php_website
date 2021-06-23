@@ -1,7 +1,7 @@
 <?php
 
 //Called when the paypal payment is complete:
-if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=='Completed' && isset($_POST['item_number']) && intval($_POST['item_number'])>0 && intval($_POST['x__source'])>0 && intval($_POST['x__up'])>0 && intval($_POST['top_i__id'])>0){
+if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=='Completed' && isset($_POST['item_number'])){
 
     $item_numbers = explode('-',$_POST['item_number']);
     $top_i__id = intval($item_numbers[0]);
