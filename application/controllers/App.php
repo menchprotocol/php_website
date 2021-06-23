@@ -140,6 +140,10 @@ class App extends CI_Controller
             'x__type' => 14067, //APP LOADED
             'x__up' => $app_e__id,
             'x__reference' => $cache_x__id,
+            'x__metadata' => array(
+                '$_GET' => $_GET,
+                '$_POST' => $_POST,
+            ),
         );
 
         //Append additional info for members:
