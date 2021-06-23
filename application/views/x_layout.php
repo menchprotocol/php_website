@@ -392,8 +392,11 @@ if($top_i__id) {
         }
 
         if($x__source>0 && count($total_dues) && in_array(x_detect_type($total_dues[0]['x__message']), $this->config->item('n___26661'))){
+
+            //Break down amount & currency
             $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
-            //All good, found value:
+
+            //Load Paypal Pay button:
             $message_ui = '';
             $message_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
             $message_ui .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
@@ -414,7 +417,7 @@ if($top_i__id) {
 
         } else {
             //Error: Missing value:
-            $message_ui = '<div class="msg alert alert-danger" role="alert" title="'.$x__source.' / '.count($total_dues).' / '.( count($total_dues) ? x_detect_type($total_dues[0]['x__message']) : '' ).'"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing valid payment currency or logged in member.</div>';
+            $message_ui = '<div class="msg alert alert-danger" role="alert" title="'.$x__source.' / '.count($total_dues).' / '.( count($total_dues) > 0 ? x_detect_type($total_dues[0]['x__message']) : '' ).'"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing valid payment currency or logged in member.</div>';
         }
 
         echo view_headline($i_focus['i__type'], null, $e___4737[$i_focus['i__type']], $message_ui, true);
