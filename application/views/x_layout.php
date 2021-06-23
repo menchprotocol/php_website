@@ -408,7 +408,7 @@ if($top_i__id) {
                 $message_ui .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
                 $message_ui .= '<input type="hidden" name="item_number" value="'.$i_focus['i__id'].'">';
                 $message_ui .= '<input type="hidden" name="x__source" value="'.$x__source.'">';
-                $message_ui .= '<input type="hidden" name="x__up" value="'.x_detect_type($total_dues[0]['x__message']).'">';
+                $message_ui .= '<input type="hidden" name="x__up" value="'.$detected_x_type['x__type'].'">';
                 $message_ui .= '<input type="hidden" name="top_i__id" value="'.$top_i__id.'">';
                 $message_ui .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
                 $message_ui .= '<input type="hidden" name="amount" value="'.$currency_parts[1].'">';
