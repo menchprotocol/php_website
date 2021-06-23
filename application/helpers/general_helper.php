@@ -349,7 +349,7 @@ function x_detect_type($string)
             'x__type' => 7657,
         );
 
-    } elseif (substr($string, 0, 5)=='CAD ' && is_numeric(substr($string, 4))) {
+    } elseif (substr($string, 0, 4)=='CAD ' && is_numeric(substr($string, 4))) {
 
         //CAD:
         return array(
