@@ -366,54 +366,58 @@ if($top_i__id) {
     } elseif ($i_focus['i__type'] == 6683) {
 
         //Write `skip` if you prefer not to answer...
-        $text_response = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
+        $message_ui = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
 
         if (count($x_completes)) {
             //Next Ideas:
-            $text_response .= view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
+            $message_ui .= view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
         }
 
-        $text_response .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
+        $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
 
-        echo view_headline(13980, null, $e___11035[13980], $text_response, true);
+        echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
 
     } elseif ($i_focus['i__type'] == 26560) {
 
-        /*
-
         //Fetch Value
-        $e_already_linked = $this->X_model->fetch(array(
+        $total_dues = $this->X_model->fetch(array(
             'x__type' => 4983,
-            'x__up' => $focus_e['e__id'],
-            'x__right' => $fetch_o[0]['i__id'],
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__up' => 26562, //Total Due
+            'x__right' => $i_focus['i__id'],
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
 
-        if(count($e_already_linked) && is_valid_currency($e_already_linked[0]['x__message'])){
-            //All good, found value:
-            $text_response = '';
-            $text_response .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
-            $text_response .= '<input type="hidden" name="business" value="'.get_domain('m__title').'">';
-            $text_response .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
-            $text_response .= '<input type="hidden" name="item_number" value="'.$i_focus['i__id'].'">';
-            $text_response .= '<input type="hidden" name="amount" value="10">';
-            $text_response .= '<input type="hidden" name="no_shipping" value="1">';
-            $text_response .= '<input type="hidden" name="currency_code" value="CAD">';
-            $text_response .= '<input type="hidden" name="notify_url" value="http://sitename/paypal-payment-gateway-integration-in-php/notify.php">';
-            $text_response .= '<input type="hidden" name="cancel_return" value="http://sitename/paypal-payment-gateway-integration-in-php/cancel.php">';
-            $text_response .= '<input type="hidden" name="return" value="http://sitename/paypal-payment-gateway-integration-in-php/return.php">';
-            $text_response .= '<input type="hidden" name="cmd" value="_xclick">';
-            $text_response .= '<input type="submit" name="pay_now" id="pay_now" value="Pay Now">';
-            $text_response .= '</form>';
-        } else {
-            //Error: Missing value:
-            $text_response = '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing valid payment currency.</div>';
+        if(isset($_GET['pay_cancel'])){
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>You cancelled making the payment.</div>';
         }
 
+        if($x__source>0 && count($total_dues) && in_array(x_detect_type($total_dues[0]['x__message']), $this->config->item('n___26661'))){
+            $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
+            //All good, found value:
+            $message_ui = '';
+            $message_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+            $message_ui .= '<input type="hidden" name="business" value="'.get_domain('m__title').'">';
+            $message_ui .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
+            $message_ui .= '<input type="hidden" name="item_number" value="'.$i_focus['i__id'].'">';
+            $message_ui .= '<input type="hidden" name="x__source" value="'.$x__source.'">';
+            $message_ui .= '<input type="hidden" name="x__up" value="'.x_detect_type($total_dues[0]['x__message']).'">';
+            $message_ui .= '<input type="hidden" name="top_i__id" value="'.$top_i__id.'">';
+            $message_ui .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
+            $message_ui .= '<input type="hidden" name="amount" value="'.$currency_parts[1].'">';
+            $message_ui .= '<input type="hidden" name="no_shipping" value="1">';
+            $message_ui .= '<input type="hidden" name="notify_url" value="https://'.get_domain('m__message').'/-26595">';
+            $message_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$i_focus['i__id'].'?pay_cancel=1">';
+            $message_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'">';
+            $message_ui .= '<input type="hidden" name="cmd" value="_xclick">';
+            $message_ui .= '<input type="submit" class="btn btn-default" name="pay_now" id="pay_now" value="Pay Now">';
+            $message_ui .= '</form>';
 
-        echo view_headline(13980, null, $e___11035[13980], $text_response, true);
+        } else {
+            //Error: Missing value:
+            $message_ui = '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing valid payment currency or logged in member.</div>';
+        }
 
-        */
+        echo view_headline($i_focus['i__type'], null, $e___4737[$i_focus['i__type']], $message_ui, true);
 
     } elseif ($i_focus['i__type'] == 7637) {
 
@@ -422,7 +426,6 @@ if($top_i__id) {
         echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
 
         echo '<input class="inputfile" type="file" name="file" id="fileType' . $i_focus['i__type'] . '" />';
-
 
         if (count($x_completes)) {
 

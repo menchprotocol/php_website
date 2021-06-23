@@ -263,6 +263,7 @@ function i_is_startable($i)
 
 }
 
+
 function x_detect_type($string)
 {
 
