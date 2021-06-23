@@ -365,6 +365,10 @@ if($top_i__id) {
 
     } elseif ($i_focus['i__type'] == 26560) {
 
+        if(isset($_GET['cancel_pay'])){
+            echo '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
+        }
+
         echo '<div class="msg alert alert-warning" role="alert">Next you will be redirect to Paypal to complete your payment.<br />You can choose to login to your Paypal account or just pay as a guest using your credit card or debit card.<br />Everyone is asked to complete their own payment as you cannot pay for someone else.</div>';
 
     } elseif ($i_focus['i__type'] == 6683) {
@@ -487,15 +491,12 @@ if(!$top_i__id){
                         $control_btn = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
                         $control_btn .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
                         $control_btn .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
-                        $control_btn .= '<input type="hidden" name="item_number" value="'.$i_focus['i__id'].'">';
-                        $control_btn .= '<input type="hidden" name="x__source" value="'.$x__source.'">';
-                        $control_btn .= '<input type="hidden" name="x__up" value="'.$detected_x_type['x__type'].'">';
-                        $control_btn .= '<input type="hidden" name="top_i__id" value="'.$top_i__id.'">';
+                        $control_btn .= '<input type="hidden" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
                         $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
                         $control_btn .= '<input type="hidden" name="amount" value="'.$currency_parts[1].'">';
                         $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
                         $control_btn .= '<input type="hidden" name="notify_url" value="https://'.get_domain('m__message').'/-26595">';
-                        $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'">';
+                        $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?cancel_pay=1">';
                         $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'">';
                         $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
                         //$control_btn .= '<input type="submit" class="controller-nav round-btn go-next" name="pay_now" id="pay_now" value="PAY">';
