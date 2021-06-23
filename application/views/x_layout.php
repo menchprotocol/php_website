@@ -366,14 +366,25 @@ if($top_i__id) {
     } elseif ($i_focus['i__type'] == 26560) {
 
         if(isset($_GET['cancel_pay'])){
-            echo '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
-        }
 
-        if(count($x_completes)){
+            echo '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
+
+        } elseif(isset($_GET['process_pay'])){
+
+            echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
+
+            //Referesh soon so we can check if completed or not
+            js_redirect('/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1', 2584);
+
+        } elseif(count($x_completes)){
+
             $e___26661 = $this->config->item('e___26661');
             echo '<div class="msg alert alert-success" role="alert">We have received a payment of '.$e___26661[$x_completes[0]['x__up']]['m__title'].' '.$x_completes[0]['x__message'].' via Paypal.</div>';
+
         } else {
+
             echo '<div class="msg alert alert-warning" role="alert">Next you will be redirect to Paypal to complete your payment.<br />You can choose to login to your Paypal account or just pay as a guest using your credit card or debit card.<br />Everyone is asked to complete their own payment as you cannot pay for someone else.</div>';
+
         }
 
     } elseif ($i_focus['i__type'] == 6683) {
@@ -502,7 +513,7 @@ if(!$top_i__id){
                         $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
                         $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
                         $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?cancel_pay=1">';
-                        $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'">';
+                        $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1">';
                         $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
                         //$control_btn .= '<input type="submit" class="controller-nav round-btn go-next" name="pay_now" id="pay_now" value="PAY">';
                         $control_btn .= '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="document.getElementById(\'paypal_form\').submit();">'.$e___4737[$i_focus['i__type']]['m__cover'].'</a><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].'</span>';
