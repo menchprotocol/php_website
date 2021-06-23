@@ -369,7 +369,11 @@ if($top_i__id) {
             echo '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
         }
 
-        echo '<div class="msg alert alert-warning" role="alert">Next you will be redirect to Paypal to complete your payment.<br />You can choose to login to your Paypal account or just pay as a guest using your credit card or debit card.<br />Everyone is asked to complete their own payment as you cannot pay for someone else.</div>';
+        if(count($x_completes)){
+            echo '<div class="msg alert alert-success" role="alert">We have received a payment of $'.$x_completes[0]['x__message'].'</div>';
+        } else {
+            echo '<div class="msg alert alert-warning" role="alert">Next you will be redirect to Paypal to complete your payment.<br />You can choose to login to your Paypal account or just pay as a guest using your credit card or debit card.<br />Everyone is asked to complete their own payment as you cannot pay for someone else.</div>';
+        }
 
     } elseif ($i_focus['i__type'] == 6683) {
 
@@ -513,7 +517,7 @@ if(!$top_i__id){
 
             if(!$control_btn){
                 //NEXT
-                $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+                $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'</span>';
             }
 
         } elseif($e__id==26280){
