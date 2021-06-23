@@ -414,7 +414,7 @@ if($top_i__id) {
 
         } else {
             //Error: Missing value:
-            $message_ui = '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing valid payment currency or logged in member.</div>';
+            $message_ui = '<div class="msg alert alert-danger" role="alert" title="'.$x__source.' / '.count($total_dues).' / '.x_detect_type($total_dues[0]['x__message']).'"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing valid payment currency or logged in member.</div>';
         }
 
         echo view_headline($i_focus['i__type'], null, $e___4737[$i_focus['i__type']], $message_ui, true);
