@@ -491,7 +491,7 @@ if(!$top_i__id){
                         $control_btn .= '<input type="hidden" name="amount" value="'.$currency_parts[1].'">';
                         $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
                         $control_btn .= '<input type="hidden" name="notify_url" value="https://'.get_domain('m__message').'/-26595">';
-                        $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$i_focus['i__id'].'">';
+                        $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'">';
                         $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'">';
                         $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
                         //$control_btn .= '<input type="submit" class="controller-nav round-btn go-next" name="pay_now" id="pay_now" value="PAY">';
