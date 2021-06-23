@@ -381,7 +381,7 @@ if($top_i__id) {
 
         //Fetch Value
         $total_dues = $this->X_model->fetch(array(
-            'x__type' => 4983,
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => 26562, //Total Due
             'x__right' => $i_focus['i__id'],
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -414,7 +414,7 @@ if($top_i__id) {
 
         } else {
             //Error: Missing value:
-            $message_ui = '<div class="msg alert alert-danger" role="alert" title="'.$x__source.' / '.count($total_dues).' / '.x_detect_type($total_dues[0]['x__message']).'"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing valid payment currency or logged in member.</div>';
+            $message_ui = '<div class="msg alert alert-danger" role="alert" title="'.$x__source.' / '.count($total_dues).' / '.( count($total_dues) ? x_detect_type($total_dues[0]['x__message']) : '' ).'"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing valid payment currency or logged in member.</div>';
         }
 
         echo view_headline($i_focus['i__type'], null, $e___4737[$i_focus['i__type']], $message_ui, true);
