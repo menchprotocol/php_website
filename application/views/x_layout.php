@@ -365,11 +365,11 @@ if($top_i__id) {
 
     } elseif ($i_focus['i__type'] == 26560) {
 
-        if(isset($_GET['cancel_pay'])){
+        if(isset($_GET['cancel_pay']) && !count($x_completes)){
 
             echo '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
 
-        } elseif(isset($_GET['process_pay'])){
+        } elseif(isset($_GET['process_pay']) && !count($x_completes)){
 
             echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
 
@@ -379,7 +379,7 @@ if($top_i__id) {
         } elseif(count($x_completes)){
 
             $e___26661 = $this->config->item('e___26661');
-            echo '<div class="msg alert alert-success" role="alert">We have received a payment of '.$e___26661[$x_completes[0]['x__up']]['m__title'].' '.$x_completes[0]['x__message'].' via Paypal.</div>';
+            echo '<div class="msg alert alert-success" role="alert">We have received your payment of '.$e___26661[$x_completes[0]['x__up']]['m__title'].' '.$x_completes[0]['x__message'].'. You are ready to go next.</div>';
 
         } else {
 
