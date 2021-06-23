@@ -379,6 +379,10 @@ if($top_i__id) {
 
     } elseif ($i_focus['i__type'] == 26560) {
 
+        if(isset($_GET['pay_cancel'])){
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>You cancelled making the payment.</div>';
+        }
+
         //Fetch Value
         $total_dues = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
@@ -387,37 +391,41 @@ if($top_i__id) {
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
 
-        if(isset($_GET['pay_cancel'])){
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>You cancelled making the payment.</div>';
-        }
 
-        if($x__source>0 && count($total_dues) && in_array(x_detect_type($total_dues[0]['x__message']), $this->config->item('n___26661'))){
+        if($x__source>0 && count($total_dues)){
 
-            //Break down amount & currency
-            $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
+            $detected_x_type = x_detect_type($total_dues[0]['x__message']);
+            if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
 
-            //Load Paypal Pay button:
-            $message_ui = '';
-            $message_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
-            $message_ui .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
-            $message_ui .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
-            $message_ui .= '<input type="hidden" name="item_number" value="'.$i_focus['i__id'].'">';
-            $message_ui .= '<input type="hidden" name="x__source" value="'.$x__source.'">';
-            $message_ui .= '<input type="hidden" name="x__up" value="'.x_detect_type($total_dues[0]['x__message']).'">';
-            $message_ui .= '<input type="hidden" name="top_i__id" value="'.$top_i__id.'">';
-            $message_ui .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
-            $message_ui .= '<input type="hidden" name="amount" value="'.$currency_parts[1].'">';
-            $message_ui .= '<input type="hidden" name="no_shipping" value="1">';
-            $message_ui .= '<input type="hidden" name="notify_url" value="https://'.get_domain('m__message').'/-26595">';
-            $message_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$i_focus['i__id'].'?pay_cancel=1">';
-            $message_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'">';
-            $message_ui .= '<input type="hidden" name="cmd" value="_xclick">';
-            $message_ui .= '<input type="submit" class="btn btn-default" name="pay_now" id="pay_now" value="Pay Now">';
-            $message_ui .= '</form>';
+                //Break down amount & currency
+                $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
+
+                //Load Paypal Pay button:
+                $message_ui = '';
+                $message_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+                $message_ui .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
+                $message_ui .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
+                $message_ui .= '<input type="hidden" name="item_number" value="'.$i_focus['i__id'].'">';
+                $message_ui .= '<input type="hidden" name="x__source" value="'.$x__source.'">';
+                $message_ui .= '<input type="hidden" name="x__up" value="'.x_detect_type($total_dues[0]['x__message']).'">';
+                $message_ui .= '<input type="hidden" name="top_i__id" value="'.$top_i__id.'">';
+                $message_ui .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
+                $message_ui .= '<input type="hidden" name="amount" value="'.$currency_parts[1].'">';
+                $message_ui .= '<input type="hidden" name="no_shipping" value="1">';
+                $message_ui .= '<input type="hidden" name="notify_url" value="https://'.get_domain('m__message').'/-26595">';
+                $message_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$i_focus['i__id'].'?pay_cancel=1">';
+                $message_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/x/x_next/'.$top_i__id.'/'.$i_focus['i__id'].'">';
+                $message_ui .= '<input type="hidden" name="cmd" value="_xclick">';
+                $message_ui .= '<input type="submit" class="btn btn-default" name="pay_now" id="pay_now" value="Pay Now">';
+                $message_ui .= '</form>';
+
+            } else {
+                $message_ui = '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>['.$total_dues[0]['x__message'].'] is not a valid currency. Example valid values are: "USD 29.33" or "CAD 44.00"</div>';
+            }
 
         } else {
             //Error: Missing value:
-            $message_ui = '<div class="msg alert alert-danger" role="alert" title="'.$x__source.' / '.count($total_dues).' / '.( count($total_dues) > 0 ? x_detect_type($total_dues[0]['x__message']) : '' ).'"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing valid payment currency or logged in member.</div>';
+            $message_ui = '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing valid payment currency or logged in member.</div>';
         }
 
         echo view_headline($i_focus['i__type'], null, $e___4737[$i_focus['i__type']], $message_ui, true);
