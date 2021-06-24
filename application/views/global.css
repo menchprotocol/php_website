@@ -271,7 +271,7 @@ img.no-frame {
 .extra_progress{
     font-size: .89em;
     color: #999999;
-    font-weight: normal !important;
+    font-weight: 300 !important;
 }
 
 .dounderline{
