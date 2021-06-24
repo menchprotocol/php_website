@@ -268,7 +268,9 @@ img.no-frame {
     background-color: #b2defd;
     border-color: #b2defd;
 }
-
+.extra_progress{
+    margin-top: 13px;
+}
 
 .dounderline{
     text-decoration: underline !important;

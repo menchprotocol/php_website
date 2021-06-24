@@ -1964,10 +1964,10 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
 function view_x_progress($completion_rate, $i){
 
     if(!isset($completion_rate['steps_total'])){
-        return '<div class="progress-bg-list progress_'.$i['i__id'].'"><div class="progress-done" style="width:0%"></div></div>';
+        return '<div class="progress-bg-list progress_'.$i['i__id'].'"><div class="progress-done" style="width:0%" prograte="0"></div></div>';
     }
 
-    return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$completion_rate['completion_percentage'].'% COMPLETED"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%"></div></div>';
+    return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$completion_rate['completion_percentage'].'% COMPLETED"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%" prograte="'.$completion_rate['completion_percentage'].'"></div></div>';
     //: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERY
     //data-toggle="tooltip" data-placement="top"
 

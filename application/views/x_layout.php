@@ -135,7 +135,7 @@ if($top_i__id){
     $previous_x = $this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']);
     if(count($previous_x)){
 
-        $body = '<div class="row justify-content-center">';
+        $body = '<div class="row justify-content-center list_26000">';
         foreach($previous_x as $count => $sitemap_i){
             $body .= view_i(14450, $top_i__id, null, $sitemap_i);
         }
@@ -529,7 +529,7 @@ if(!$top_i__id){
 
             if(!$control_btn){
                 //NEXT
-                $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'</span>';
+                $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'</span><div class="extra_progress"></div>';
             }
 
         } elseif($e__id==26280){

@@ -2,6 +2,14 @@
 
 $(document).ready(function () {
 
+    //Make progress more visible if possible:
+    var top_id = parseInt($('#top_i__id').val());
+    var top_progress = parseInt($('.list_26000 div:first-child .progress-done').attr('prograte'));
+    if(top_id>0 && top_progress>0){
+        //Display this progress:
+        $('.extra_progress').html('<div class="progress-bg-list progress_'+top_id+'"><div class="progress-done" style="width:'+top_progress+'%"></div></div><div class="below_progress">'+top_progress+'% Completed</div>');
+    }
+
     i_note_activate();
 
     set_autosize($('#x_reply'));
