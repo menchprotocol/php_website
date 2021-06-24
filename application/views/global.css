@@ -2478,6 +2478,11 @@ video {
     padding:9px 0 0 0;
     text-align: center;
 }
+.adj-btn{
+    width:auto;
+    border-radius: 10px;
+    border:0;
+}
 
 .info_box{
     padding: 8px 0;
