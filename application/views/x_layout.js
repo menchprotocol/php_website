@@ -7,7 +7,7 @@ $(document).ready(function () {
     var top_progress = parseInt($('.list_26000 div:first-child .progress-done').attr('prograte'));
     if(top_id>0 && top_progress>0){
         //Display this progress:
-        $('.extra_progress').text(' ('+top_progress+'% Complete)');
+        $('.extra_progress').text('<br />'+top_progress+'% Complete');
     }
 
     i_note_activate();
