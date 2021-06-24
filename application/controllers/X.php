@@ -652,6 +652,7 @@ class X extends CI_Controller
             $crossovers = array_intersect($starting_is, $parent_is);
             if(count($crossovers) > 0){
                 //Just go to the first one for now:
+                //TODO If more than one option give the user choice on where to start
                 return redirect_message('/'.$crossovers[0].'/'.$i__id);
             }
 
