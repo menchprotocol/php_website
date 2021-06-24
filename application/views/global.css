@@ -2479,11 +2479,9 @@ video {
     text-align: center;
 }
 .adj-btn{
-    width:auto;
-    border-radius: 10px;
-    padding:5px 8px;
-    border:0;
-    font-weight: bold;
+    border: 0;
+    font-weight: 800 !important;
+    font-size: 2.1em;
 }
 
 .info_box{

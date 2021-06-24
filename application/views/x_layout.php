@@ -516,7 +516,7 @@ if(!$top_i__id){
                         $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1">';
                         $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
 
-                        $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="PAY '.$total_dues[0]['x__message'].' &raquo;">';
+                        $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="$"><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].' '.$total_dues[0]['x__message'].'</span>';
                         //$control_btn .= '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="document.getElementById(\'paypal_form\').submit();">'.$e___4737[$i_focus['i__type']]['m__cover'].'</a><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].'</span>';
 
                         $control_btn .= '</form>';
