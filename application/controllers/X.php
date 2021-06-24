@@ -638,9 +638,18 @@ class X extends CI_Controller
             $top_is = $this->I_model->fetch(array(
                 'i__id' => $top_i__id,
             ));
-        } elseif(!$top_i__id && $member_e && $this->X_model->ids($member_e['e__id'], $i__id)) {
-            //Already in their discoveries, redirect:
-            return redirect_message('/'.$i__id.'/'.$i__id);
+        } elseif($member_e) {
+
+            //See if this idea belongs to any of this members starting points, if so, redirect:
+            $starting_is = $this->X_model->ids($member_e['e__id']);
+            if(in_array($i__id, $starting_is)){
+                //This is a starting point itself, so go there:
+                return redirect_message('/'.$i__id.'/'.$i__id);
+            }
+
+            //Move recursively up to see if we cross any starting points:
+
+
         }
 
         //Make sure we found it:

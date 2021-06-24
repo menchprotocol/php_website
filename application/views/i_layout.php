@@ -93,7 +93,7 @@ echo '<div class="row justify-content-center">';
 echo view_i(4250, 0, null, $i_focus, $e_of_i);
 echo '</div>';
 
-
+print_r($this->I_model->recursive_parent_ids($i_focus['i__id']));
 
 //IDEA MESSAGES:
 echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(

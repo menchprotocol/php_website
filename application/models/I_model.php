@@ -618,9 +618,8 @@ class I_model extends CI_Model
 
     function recursive_child_ids($i__id, $first_level = true){
 
-        $child_ids = array();
+        $recursive_i_ids = array();
 
-        //Fetch parents:
         foreach($this->X_model->fetch(array(
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -628,21 +627,48 @@ class I_model extends CI_Model
             'x__left' => $i__id,
         ), array('x__right')) as $next_i){
 
-            array_push($child_ids, intval($next_i['i__id']));
+            array_push($recursive_i_ids, intval($next_i['i__id']));
 
-            //Fetch parents of parents:
-            $recursive_children = $this->I_model->recursive_child_ids($next_i['i__id'], false);
+            $recursive_is = $this->I_model->recursive_child_ids($next_i['i__id'], false);
 
             //Add to current array if we found anything:
-            if(count($recursive_children) > 0){
-                $child_ids = array_merge($child_ids, $recursive_children);
+            if(count($recursive_is) > 0){
+                $recursive_i_ids = array_merge($recursive_i_ids, $recursive_is);
             }
         }
 
         if($first_level){
-            return array_unique($child_ids);
+            return array_unique($recursive_i_ids);
         } else {
-            return $child_ids;
+            return $recursive_i_ids;
+        }
+    }
+
+    function recursive_parent_ids($i__id, $first_level = true){
+
+        $recursive_i_ids = array();
+
+        foreach($this->X_model->fetch(array(
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__right' => $i__id,
+        ), array('x__left')) as $next_i){
+
+            array_push($recursive_i_ids, intval($next_i['i__id']));
+
+            $recursive_is = $this->I_model->recursive_parent_ids($next_i['i__id'], false);
+
+            //Add to current array if we found anything:
+            if(count($recursive_is) > 0){
+                $recursive_i_ids = array_merge($recursive_i_ids, $recursive_is);
+            }
+        }
+
+        if($first_level){
+            return array_unique($recursive_i_ids);
+        } else {
+            return $recursive_i_ids;
         }
     }
 
