@@ -648,7 +648,12 @@ class X extends CI_Controller
             }
 
             //Move recursively up to see if we cross any starting points:
-
+            $parent_is = $this->I_model->recursive_parent_ids($i__id);
+            $crossovers = array_intersect($starting_is, $parent_is);
+            if(count($crossovers) > 0){
+                //Just go to the first one for now:
+                return redirect_message('/'.$crossovers[0].'/'.$i__id);
+            }
 
         }
 

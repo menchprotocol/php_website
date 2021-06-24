@@ -635,6 +635,7 @@ class I_model extends CI_Model
             if(count($recursive_is) > 0){
                 $recursive_i_ids = array_merge($recursive_i_ids, $recursive_is);
             }
+
         }
 
         if($first_level){
@@ -642,6 +643,7 @@ class I_model extends CI_Model
         } else {
             return $recursive_i_ids;
         }
+
     }
 
     function recursive_parent_ids($i__id, $first_level = true){
