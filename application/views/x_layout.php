@@ -529,7 +529,7 @@ if(!$top_i__id){
 
             if(!$control_btn){
                 //NEXT
-                $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'</span><div class="extra_progress"></div>';
+                $control_btn = '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'<span class="extra_progress"></span></span>';
             }
 
         } elseif($e__id==26280){
