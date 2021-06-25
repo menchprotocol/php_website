@@ -727,7 +727,7 @@ var algolia_index = false;
 $(document).ready(function () {
 
     if (navigator.userAgent.indexOf("Instagram") != -1) {
-        $('body').html('<div style="text-align: center;"><a class="controller-nav btn btn-lrg btn-6255" target="_blank" href="http://instagram.com/?nibrowser=no">Continue <i class="far fa-arrow-right"></i></a></div>');
+        $('body').html('<div style="text-align: center; padding: 10px;">⚠️ This website does not work in Instagram\'s Browser. Please copy think link and open it using Chrome or Safari:</div><div style="text-align: center;"><a href="'+window.location.href+'">'+window.location.href+'</a></div>');
     }
 
     //Watchout for file uplods:
