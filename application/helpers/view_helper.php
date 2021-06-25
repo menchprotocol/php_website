@@ -146,18 +146,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
     } elseif ($x__type == 4259 /* Audio URL */) {
 
         return  '<audio controls src="' . $x__message . '">Your Browser Does Not Support Audio</audio>' ;
-        /*
-        $segment1 = $CI->uri->segment(1);
-        if(is_numeric($segment1) || !strlen($segment1)){
-            //Autoplay in discovery mode:
-            return '<audio autoplay loop  id="playAudio">
-    <source src="' . $x__message . '">
-</audio>    <iframe src="' . $x__message . '" allow="autoplay" style="display:none" id="iframeAudio"></iframe> ';
-        } else {
-            //Regular audio:
-            return  '<audio controls autoplay src="' . $x__message . '">Your Browser Does Not Support Audio</audio>' ;
-        }
-        */
+
     } elseif ($x__type == 4258 /* Video URL */) {
 
         return  '<video width="100%" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="' . $x__message . '" type="video/mp4"></video>' ;

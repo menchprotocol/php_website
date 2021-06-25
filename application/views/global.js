@@ -726,15 +726,9 @@ function cover_upload(droppedFiles, uploadType) {
 var algolia_index = false;
 $(document).ready(function () {
 
-    //Audio Autoplay
-    var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    if (!isChrome){
-        $('#iframeAudio').remove()
+    if (navigator.userAgent.indexOf("Instagram") != -1) {
+        $('body').html('This website does not work on Instagram\'s browser. Please use Chrome or Safari Instead.');
     }
-    else {
-        $('#playAudio').remove() // just to make sure that it will not have 2x audio in the background
-    }
-
 
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
