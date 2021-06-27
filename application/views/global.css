@@ -1656,7 +1656,12 @@ i, .btn .show-max {
     font-size: 8em !important;
     padding:0 0 13px 0;
 }
-
+.image-mini img{
+    border-radius: 50%;
+    line-height: 100%;
+    width: 20px !important;
+    height: 20px !important;
+}
 
 
 .platform-logo{
