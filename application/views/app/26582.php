@@ -8,6 +8,7 @@ if(!isset($_GET['i__id'])){
 
     //Fetch Sources who started or were blocked:
     $subs = '';
+    $emails = '';
     $total_subs = 0;
     $already_added = array();
     $filters = array(
@@ -56,12 +57,14 @@ if(!isset($_GET['i__id'])){
             //Add to sub list:
             $total_subs++;
             $subs .= one_two_explode('',' ', $subscriber['e__title'])."\t".$e_email."\t".$e_phone."\n";
+            $emails .= ( strlen($emails) ? ", " : '' ).$e_email;
         }
 
     }
 
     echo '<div>Found '.$total_subs.' Subscribers:</div>';
     echo '<textarea class="mono-space" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.$subs.'</textarea>';
+    echo '<textarea class="mono-space" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.$emails.'</textarea>';
 
 
 }

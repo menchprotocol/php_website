@@ -227,23 +227,61 @@ class I_model extends CI_Model
         return $affected_rows;
     }
 
-    function remove($i__id, $x__source = 0){
+    function remove($i__id, $x__source = 0, $migrate_i__id = 0){
 
-        //REMOVE TRANSACTIONS
-        $x_deleted = 0;
-        foreach($this->X_model->fetch(array( //Idea Transactions
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type !=' => 13579, //Idea Transaction Unpublished
-            '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
-        ), array(), 0) as $x){
-            //Delete this transaction:
-            $x_deleted += $this->X_model->update($x['x__id'], array(
-                'x__status' => 6173, //Transaction Deleted
-            ), $x__source, 13579 /* Idea Transaction Unpublished */);
+        $x_adjusted = 0;
+        if($migrate_i__id > 0){
+
+            //Validate this migration ID:
+            $is = $this->I_model->fetch(array(
+                'i__id' => $migrate_i__id,
+                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            ));
+
+            if(count($is)){
+                //Migrate Transactions:
+                foreach($this->X_model->fetch(array( //Idea Transactions
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__type !=' => 13579, //Idea Transaction Unpublished
+                    '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
+                ), array(), 0) as $x){
+
+                    //Migrate this transaction:
+                    if($x['x__right']==$i__id){
+                        $x_adjusted += $this->X_model->update($x['x__id'], array(
+                            'x__right' => $migrate_i__id,
+                        ), $x__source, 26785 /* Idea Link Migrated */);
+                    }
+
+                    if($x['x__left']==$i__id){
+                        $x_adjusted += $this->X_model->update($x['x__id'], array(
+                            'x__left' => $migrate_i__id,
+                        ), $x__source, 26785 /* Idea Link Migrated */);
+                    }
+
+                }
+            }
+
+        } else {
+
+            //REMOVE TRANSACTIONS
+            foreach($this->X_model->fetch(array( //Idea Transactions
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__type !=' => 13579, //Idea Transaction Unpublished
+                '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
+            ), array(), 0) as $x){
+                //Delete this transaction:
+                $x_adjusted += $this->X_model->update($x['x__id'], array(
+                    'x__status' => 6173, //Transaction Deleted
+                ), $x__source, 13579 /* Idea Transaction Unpublished */);
+            }
+
         }
 
+
+
         //Return transactions deleted:
-        return $x_deleted;
+        return $x_adjusted;
     }
 
 

@@ -9,7 +9,7 @@ if($member_e){
         'i__type NOT IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     )) as $deleted_i){
         $deleted_ideas++;
-        $deleted_links += $this->I_model->remove($deleted_i['i__id'], $member_e['e__id']);
+        $deleted_links += $this->I_model->remove($deleted_i['i__id'], $member_e['e__id'], 0);
     }
 }
 

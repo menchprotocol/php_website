@@ -1253,6 +1253,11 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Transaction ID',
             ));
+        } elseif (!isset($_POST['migrate_i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Migrate Idea ID',
+            ));
         } elseif (!isset($_POST['element_id']) || intval($_POST['element_id']) < 1 || !count($this->config->item('n___'.$_POST['element_id'])) || !isset($e___12079[$_POST['element_id']])) {
             return view_json(array(
                 'status' => 0,
@@ -1269,12 +1274,12 @@ class X extends CI_Controller
         //See if anything is being deleted:
         $deletion_redirect = null;
         $delete_element = null;
-
+        $status = 0;
 
         if($_POST['element_id']==4486 && $_POST['x__id'] > 0){
 
             //IDEA LINK TYPE
-            $this->X_model->update($_POST['x__id'], array(
+            $status = $this->X_model->update($_POST['x__id'], array(
                 'x__type' => $_POST['new_e__id'],
             ), $member_e['e__id'], 13962);
 
@@ -1316,7 +1321,7 @@ class X extends CI_Controller
             }
 
             //Update:
-            $this->E_model->update($_POST['o__id'], array(
+            $status = $this->E_model->update($_POST['o__id'], array(
                 'e__type' => $_POST['new_e__id'],
             ), true, $member_e['e__id']);
 
@@ -1365,19 +1370,27 @@ class X extends CI_Controller
                 }
 
                 //Delete all transactions:
-                $this->I_model->remove($_POST['o__id'] , $member_e['e__id']);
+                $this->I_model->remove($_POST['o__id'] , $member_e['e__id'], $_POST['migrate_i__id']);
 
             }
 
-            //Update Idea:
-            $this->I_model->update($_POST['o__id'], array(
-                'i__type' => $_POST['new_e__id'],
-            ), true, $member_e['e__id']);
+
+            //Delete only if Migration request is successful:
+            if(!intval($_POST['migrate_i__id']) || count($this->I_model->fetch(array(
+                    'i__id' => $_POST['migrate_i__id'],
+                    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                )))){
+                //Update Idea:
+                $status = $this->I_model->update($_POST['o__id'], array(
+                    'i__type' => $_POST['new_e__id'],
+                ), true, $member_e['e__id']);
+            }
+
 
         }
 
         return view_json(array(
-            'status' => 1,
+            'status' => intval($status),
             'deletion_redirect' => $deletion_redirect,
             'delete_element' => $delete_element,
         ));
@@ -1428,7 +1441,7 @@ class X extends CI_Controller
     function e_reset_discoveries($e__id = 0){
 
         $member_e = superpower_unlocked(null, true);
-        $e__id = ( $e__id > 0 ? $e__id : $member_e['e__id'] );
+        $e__id = ( $e__id > 0 || !$member_e ? $e__id : $member_e['e__id'] );
 
         //Fetch their current progress transactions:
         $progress_x = $this->X_model->fetch(array(
