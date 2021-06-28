@@ -47,7 +47,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__left IN (' . join(',', ( isset($_GET['i__2nd_tree_id']) && $_GET['i__2nd_tree_id']>0 ? array($_GET['i__tree_id'],$_GET['i__tree_id']) : array($_GET['i__2nd_tree_id']) )) . ')' => null, //IDEA LINKS
+            'x__left IN (' . join(',', ( isset($_GET['i__2nd_tree_id']) && $_GET['i__2nd_tree_id']>0 ? array($_GET['i__tree_id'],$_GET['i__2nd_tree_id']) : array($_GET['i__tree_id']) )) . ')' => null, //IDEA LINKS
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $x){
             array_push($column_ideas, $x);
         }
@@ -70,7 +70,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
-        'x__left IN (' . join(',', ( isset($_GET['i__2nd_tree_id']) && $_GET['i__2nd_tree_id']>0 ? array($_GET['i__tree_id'],$_GET['i__tree_id']) : array($_GET['i__2nd_tree_id']) )) . ')' => null, //IDEA LINKS
+        'x__left IN (' . join(',', ( isset($_GET['i__2nd_tree_id']) && $_GET['i__2nd_tree_id']>0 ? array($_GET['i__tree_id'],$_GET['i__2nd_tree_id']) : array($_GET['i__tree_id']) )) . ')' => null, //IDEA LINKS
     ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $count => $x){
 
         if(!isset($_GET['csv'])){
