@@ -134,7 +134,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 if(!isset($count_totals['e'][$e['e__id']])){
                     $count_totals['e'][$e['e__id']] = 0;
                 }
-                $count_totals['e'][$e['e__id']] += ( in_array(e_x__type($fetch_data[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $fetch_data[0]['x__message']) : 1 );
+                //$count_totals['e'][$e['e__id']] += ( in_array(e_x__type($fetch_data[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $fetch_data[0]['x__message']) : 1 );
+                $count_totals['e'][$e['e__id']]++;
             }
         }
 
@@ -189,7 +190,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped image-mini">';
 
     echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-    echo '<th id="th_members" style="width:200px;">'.( isset($_GET['i_filter']) || isset($_GET['e_filter']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&i__2id='.$_GET['i__2id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTERS <i class="fas fa-filter"></i></u></a><br /><br />' : '' ).($count+1).' MEMBERS</th>';
+    echo '<th id="th_members" style="width:200px;">'.( isset($_GET['i_filter']) || isset($_GET['e_filter']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&i__2id='.$_GET['i__2id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTERS <i class="fas fa-filter"></i></u></a><br /><br />' : '' ).$count.' MEMBERS</th>';
     echo '<th id="th_done">&nbsp;</th>';
     foreach($column_sources as $e){
         array_push($table_sortable, '#th_e_'.$e['e__id']);
