@@ -183,7 +183,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
     $table_sortable = array('#th_members','#th_done');
-    echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'">'.$is[0]['i__title'].'</a>'.($_GET['i__2id'] > 0 ? '& <a href="/i/i_go/'.$is_2nd[0]['i__id'].'">'.$is_2nd[0]['i__title'].'</a>' : '').'</h2>';
+    echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'"><u>'.$is[0]['i__title'].'</u></a>'.($_GET['i__2id'] > 0 ? ' & <a href="/i/i_go/'.$is_2nd[0]['i__id'].'"><u>'.$is_2nd[0]['i__title'].'</u></a>' : '').'</h2>';
 
     echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped image-mini">';
 
