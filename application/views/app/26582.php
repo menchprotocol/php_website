@@ -1,6 +1,6 @@
 <?php
 
-if(!isset($_GET['i__id']) || !isset($_GET['e__id'])){
+if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
 
     echo 'Missing Idea ID (Append ?i__id=ID in URL) or Source ID (Append ?e__id=ID in URL)';
 
