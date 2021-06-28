@@ -1,8 +1,8 @@
 <?php
 
-if(!isset($_GET['i__id'])){
+if(!isset($_GET['i__id']) || !isset($_GET['e__id'])){
 
-    echo 'Missing Idea ID (Append ?i__id=ID in URL)';
+    echo 'Missing Idea ID (Append ?i__id=ID in URL) or Source ID (Append ?e__id=ID in URL)';
 
 } else {
 
@@ -11,19 +11,39 @@ if(!isset($_GET['i__id'])){
     $emails = '';
     $total_subs = 0;
     $already_added = array();
-    $filters = array(
-        'x__type IN (' . join(',', $this->config->item('n___26582')) . ')' => null,
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-    );
-    if(substr_count($_GET['i__id'], ',') > 0){
-        //Multiple IDs:
-        $filters['x__left IN (' . $_GET['i__id'] . ')'] = null;
-    } else {
-        $filters['x__left'] = $_GET['i__id'];
+
+
+    $query = array();
+    if(isset($_GET['i__id'])){
+        $i_filters = array(
+            'x__type IN (' . join(',', $this->config->item('n___26582')) . ')' => null,
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        );
+        if(substr_count($_GET['i__id'], ',') > 0){
+            //Multiple IDs:
+            $i_filters['x__left IN (' . $_GET['i__id'] . ')'] = null;
+        } else {
+            $i_filters['x__left'] = $_GET['i__id'];
+        }
+        $query = array_merge($query, $this->X_model->fetch($i_filters, array('x__source'), 0, 0, array('x__id' => 'DESC')));
+    }
+    if(isset($_GET['e__id'])){
+        $e_filters = array(
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        );
+        if(substr_count($_GET['e__id'], ',') > 0){
+            //Multiple IDs:
+            $e_filters['x__up IN (' . $_GET['e__id'] . ')'] = null;
+        } else {
+            $e_filters['x__up'] = $_GET['e__id'];
+        }
+        $query = array_merge($query, $this->X_model->fetch($e_filters, array('x__down'), 0, 0, array('x__id' => 'DESC')));
     }
 
-    foreach($this->X_model->fetch($filters, array('x__source'), 0, 0, array('x__id' => 'DESC')) as $subscriber){
+    foreach($query as $subscriber){
 
         //Make sure not already added AND not unsubscribed:
         if (in_array($subscriber['e__id'], $already_added) || count($this->X_model->fetch(array(
