@@ -726,10 +726,6 @@ function cover_upload(droppedFiles, uploadType) {
 var algolia_index = false;
 $(document).ready(function () {
 
-    if (navigator.userAgent.indexOf("Instagram") != -1) {
-        $('body').html('<div style="text-align: center; padding: 10px;">⚠️ This website does not work in Instagram\'s Browser. Please copy think link and open it using Chrome or Safari:</div><div style="text-align: center; padding-top: 21px;"><a href="'+window.location.href+'"><u><b>'+window.location.href+'</b></u></a></div>');
-    }
-
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
         cover_upload(droppedFiles, 'file');

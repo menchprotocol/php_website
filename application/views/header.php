@@ -41,7 +41,7 @@ $logo = '/img/'.$current_coin_id.'.png';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
     echo ' var base_source = ' . $base_source . '; ';
 
-    //JAVASCRIPT PLATFORM MEMORY
+    //JAVASCRIPT PLATFORM MEMORYwq
     foreach($this->config->item('e___11054') as $x__type => $m){
         if(is_array($this->config->item('e___'.$x__type)) && count($this->config->item('e___'.$x__type))){
             echo ' var js_e___'.$x__type.' = ' . json_encode($this->config->item('e___'.$x__type)) . ';';
