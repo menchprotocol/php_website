@@ -13,7 +13,7 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
     $already_added = array();
     if(isset($_GET['i__id'])){
         $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
+            'i__id' => $_GET['i__id'],
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
         if(count($is)){
