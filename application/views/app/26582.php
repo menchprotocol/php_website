@@ -11,6 +11,25 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
     $emails = '';
     $total_subs = 0;
     $already_added = array();
+    if(isset($_GET['i__id'])){
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+        ));
+        if(count($is)){
+            echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'"><u>'.$is[0]['i__title'].'</u></a></h2>';
+        }
+    }
+
+    if(isset($_GET['e__id'])){
+        $es = $this->E_model->fetch(array(
+            'e__id' => $_GET['e__id'],
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        ));
+        if(count($es)){
+            echo '<h2><a href="/@'.$es[0]['e__id'].'"><u>'.$es[0]['e__title'].'</u></a></h2>';
+        }
+    }
 
 
     $query = array();
