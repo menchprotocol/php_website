@@ -153,7 +153,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 array_push($skip_filter, $x['e__id']);
             }
 
-            $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top" class="underdot">'.view_cover(12273,$i['i__cover']).'</span>' : '<span title="'.$i['i__title'].'" data-toggle="tooltip" data-placement="top">'.( strlen($discoveries[0]['x__message']) ? $discoveries[0]['x__message'] : view_cover(12273,$i['i__cover']) ) ).'</span>'  : '').'</td>';
+            $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top" class="underdot">'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover(12273,$i['i__cover']) ).'</span>'  : '').'</td>';
 
             if(count($discoveries)){
                 if(!isset($count_totals['i'][$i['i__id']])){
