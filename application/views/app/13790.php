@@ -79,7 +79,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     //Return UI:
     $body_content = '';
     $filtered_count = 0;
-    $all_emails = array();
     $skip_filter = array();
     $count_totals = array(
         'e' => array(),
@@ -171,9 +170,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
         ));
-        if(count($e_emails) && !in_array($x['e__id'], $skip_filter)){
-            array_push($all_emails, $e_emails[0]['x__message']);
-        }
         if(in_array($x['e__id'], $skip_filter)){
             $body_content = str_replace('tr__'.$x['e__id'],'hidden',$body_content);
         } else {
@@ -212,9 +208,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     echo '</tr>';
     echo $body_content;
     echo '</table>';
-
-    echo '<div style="padding: 34px 0 8px;"><a href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to='.join(',',$all_emails).'&subject='.$is[0]['i__title'].'" target="_blank">Email '.$filtered_count.' members:</div>';
-    echo '<textarea class="mono-space" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.join(', ',$all_emails).'</textarea>';
 
 }
 
