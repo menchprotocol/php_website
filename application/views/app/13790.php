@@ -109,7 +109,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $this_top[0]);
 
         $body_content .= '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;"><u>'.$x['e__title'].'</u></a></td>';
-        $body_content .= '<td>'.( $completion_rate['completion_percentage']>=100 ? '<span title="Completed 100%" data-toggle="tooltip" data-placement="top">✅</span>' : str_pad($completion_rate['completion_percentage'], 2, '0', STR_PAD_LEFT).'%' ).'</td>';
+        $body_content .= '<td>'.str_pad($completion_rate['completion_percentage'], 2, '0', STR_PAD_LEFT).'%</td>';
 
 
 
@@ -191,7 +191,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     echo '<tr style="font-weight:bold; vertical-align: baseline;">';
     echo '<th id="th_members" style="width:200px;">'.( isset($_GET['i_filter']) || isset($_GET['e_filter']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&i__2id='.$_GET['i__2id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTERS <i class="fas fa-filter"></i></u></a><br /><br />' : '' ).$count.' MEMBERS</th>';
-    echo '<th id="th_done">&nbsp;</th>';
+    echo '<th id="th_done">Progres</th>';
     foreach($column_sources as $e){
         array_push($table_sortable, '#th_e_'.$e['e__id']);
         echo '<th id="th_e_'.$e['e__id'].'">'.view_cover(12274,$e['e__cover']).'<span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&i__2id='.$_GET['i__2id'].'&e__id='.$_GET['e__id'].'&e_filter='.$e['e__id'].'&i_filter='.( isset($_GET['i_filter']) ? $_GET['i_filter'] : '' ).'">'.( isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?e__id='.$e['e__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
