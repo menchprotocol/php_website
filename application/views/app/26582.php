@@ -13,7 +13,7 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
     $already_added = array();
     if(isset($_GET['i__id'])){
         $is = $this->I_model->fetch(array(
-            'i__id' => $_GET['i__id'],
+            'i__id IN (' . $_GET['i__id'] . ')' => null,
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
         if(count($is)){
@@ -23,7 +23,7 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
 
     if(isset($_GET['e__id'])){
         $es = $this->E_model->fetch(array(
-            'e__id' => $_GET['e__id'],
+            'e__id IN (' . $_GET['e__id'] . ')' => null,
             'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
         if(count($es)){
@@ -34,32 +34,20 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
 
     $query = array();
     if(isset($_GET['i__id'])){
-        $i_filters = array(
+        $query = array_merge($query, $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___26582')) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        );
-        if(substr_count($_GET['i__id'], ',') > 0){
-            //Multiple IDs:
-            $i_filters['x__left IN (' . $_GET['i__id'] . ')'] = null;
-        } else {
-            $i_filters['x__left'] = $_GET['i__id'];
-        }
-        $query = array_merge($query, $this->X_model->fetch($i_filters, array('x__source'), 0, 0, array('x__id' => 'DESC')));
+            'x__left IN (' . $_GET['i__id'] . ')' => null, //PUBLIC
+        ), array('x__source'), 0, 0, array('x__id' => 'DESC')));
     }
     if(isset($_GET['e__id'])){
-        $e_filters = array(
+        $query = array_merge($query, $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        );
-        if(substr_count($_GET['e__id'], ',') > 0){
-            //Multiple IDs:
-            $e_filters['x__up IN (' . $_GET['e__id'] . ')'] = null;
-        } else {
-            $e_filters['x__up'] = $_GET['e__id'];
-        }
-        $query = array_merge($query, $this->X_model->fetch($e_filters, array('x__down'), 0, 0, array('x__id' => 'DESC')));
+            'x__up IN (' . $_GET['e__id'] . ')' => null,
+        ), array('x__down'), 0, 0, array('x__id' => 'DESC')));
     }
 
     foreach($query as $subscriber){
