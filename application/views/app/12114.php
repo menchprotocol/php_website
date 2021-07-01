@@ -31,7 +31,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $plain_message .= "\n".$icon.' '.$m['m__title'].' '.$growth.' '.number_format($this_week, 0);
+    $plain_message .= "\n".$icon.' '.$m['m__title'].' '.$growth;
 
     //Primary Coin?
     if(in_array($x__type, $this->config->item('n___13776'))){

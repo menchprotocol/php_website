@@ -159,8 +159,6 @@ function x_reply(go_next_url){
 
     if($('#x_reply').hasClass('phone_verify')){
 
-        var error_message = null;
-
         const data = new URLSearchParams();
         data.append("phone", $('#x_reply').val());
 
@@ -171,18 +169,16 @@ function x_reply(go_next_url){
             .then((response) => response.json())
             .then((json) => {
                 if (!json.success) {
-                    error_message = 'This phone number is not valid, please try again.';
                     console.log(json.error);
+                    alert('This phone number is not valid, please try again.');
+                    return false;
                 }
             })
             .catch((err) => {
-                error_message = `Something went wrong: ${err}`;
+                alert('Something went wrong: ${err}');
+                return false;
             });
 
-        if(error_message){
-            alert('ERROR: '+ error_message);
-            return false;
-        }
 
     }
 
