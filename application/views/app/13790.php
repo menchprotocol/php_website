@@ -12,6 +12,7 @@
     }
     .table-striped td {
         border-bottom: 1px dotted #f0f0f0 !important;
+        font-size: 1.3em;
     }
 </style>
 
