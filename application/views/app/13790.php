@@ -6,8 +6,8 @@
     .top_nav{
         display:none !important;
     }
-    body, .table-striped tr:nth-of-type(odd) {
-        background-color: #CCCCCC !important;
+    .table-striped tr:nth-of-type(odd) td {
+        background-color: #f0f0f0 !important;
     }
 </style>
 
