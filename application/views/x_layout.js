@@ -158,6 +158,7 @@ function x_upload(droppedFiles, uploadType) {
 function x_reply(go_next_url){
 
     if($('#x_reply').hasClass('phone_verify')){
+        console.log('yesss');
 
         const data = new URLSearchParams();
         data.append("phone", $('#x_reply').val());
@@ -179,8 +180,10 @@ function x_reply(go_next_url){
                 return false;
             });
 
-        return false;
+
     }
+    return false;
+
 
     $.post("/x/x_reply", {
         i__id:current_id(),
