@@ -148,9 +148,9 @@ class E_model extends CI_Model
 
 
         //Send Welcome Email if any:
-        $welcome_email = intval(get_domain_setting(14929));
-        if($welcome_email){
-            email_template($welcome_email, $added_e['new_e'], $email);
+        $welcome_message = intval(get_domain_setting(14929));
+        if($welcome_message){
+            send_dm_template($added_e['new_e'], $welcome_message);
         }
 
 

@@ -705,31 +705,19 @@ function cookie_check() {
 }
 
 
-function email_template($template_id, $member, $member_email){
+function send_dm_template($member, $template_id){
 
     $CI =& get_instance();
 
     ##Email Body
     $e___26154 = $CI->config->item('e___26154'); //RECEIVED ON EMAIL
-    $html_message = '<div>Hi '.one_two_explode('', ' ', $member['e__title']).' 👋</div><br /><br />';
-    $html_message .= '<div>'.nl2br($e___26154[$template_id]['m__message']).'</div>';
-    $html_message .= '<br /><br />';
-    $html_message .= '<div>'.view_shuffle_message(12691).'</div>';
-    $html_message .= '<div>'.get_domain('m__title').'</div>';
+    $plain_message = 'Hi '.$member['e__title'].' 👋'."\n\n";
+    $plain_message .= $e___26154[$template_id]['m__message']."\n\n";
+    $plain_message .= view_shuffle_message(12691)."\n";
+    $plain_message .= get_domain('m__title');
 
-    //Send email:
-    $email_result = $CI->X_model->email_sent(array($member_email), $e___26154[$template_id]['m__title'], $html_message);
-
-    //Log Email Sending:
-    $CI->X_model->create(array(
-        'x__source' => $member['e__id'],
-        'x__type' => $template_id,
-        'x__message' => $e___26154[$template_id]['m__message'],
-        'x__metadata' => array(
-            'email' => $member_email,
-            'result' => $email_result,
-        ),
-    ));
+    //Send DM:
+    $CI->X_model->send_dm($member['e__id'], $e___26154[$template_id]['m__title'], $plain_message);
 
 }
 

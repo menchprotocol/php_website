@@ -1415,7 +1415,6 @@ class E extends CI_Controller
         //Log email search attempt:
         $reset_x = $this->X_model->create(array(
             'x__type' => 7563, //Member Signin Magic Email
-            'x__message' => $_POST['input_email'],
             'x__source' => $u_emails[0]['e__id'], //Member making request
             'x__left' => intval($_POST['sign_i__id']),
         ));
@@ -1427,19 +1426,18 @@ class E extends CI_Controller
         $subject = $e___11035[11068]['m__title'].' | '.get_domain('m__title');
 
         ##Email Body
-        $html_message = '<div>Hi '.one_two_explode('',' ',$u_emails[0]['e__title']).' 👋</div><br /><br />';
+        $plain_message = 'Hi '.one_two_explode('',' ',$u_emails[0]['e__title']).' 👋'."\n\n";
 
         $magic_x_expiry_hours = (view_memory(6404,11065)/3600);
-        $html_message .= '<div>Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).( $has_i ? ' to discover '.$is[0]['i__title'] : '' ).':</div>';
+        $plain_message .= 'Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).( $has_i ? ' to discover '.$is[0]['i__title'] : '' ).':'."\n";
         $magic_url = $this->config->item('base_url').'/e/e_magic_sign/' . $reset_x['x__id'] . '?email='.$_POST['input_email'];
-        $html_message .= '<div><a href="'.$magic_url.'" target="_blank" class="ignore-click">' . $magic_url . '</a></div>';
+        $plain_message .=  $magic_url ."\n"."\n" ;
 
-        $html_message .= '<br /><br />';
-        $html_message .= '<div>'.view_shuffle_message(12691).'</div>';
-        $html_message .= '<div>'.get_domain('m__title').'</div>';
+        $plain_message .= "\n".view_shuffle_message(12691);
+        $plain_message .= "\n".get_domain('m__title');
 
         //Send email:
-        $this->X_model->email_sent(array($_POST['input_email']), $subject, $html_message);
+        $this->X_model->send_dm($u_emails[0]['e__id'], $subject, $plain_message);
 
         //Return success
         return view_json(array(

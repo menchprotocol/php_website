@@ -156,6 +156,36 @@ function x_upload(droppedFiles, uploadType) {
 
 
 function x_reply(go_next_url){
+
+    if($('#x_reply').hasClass('phone_verify')){
+
+        var error_message = null;
+
+        const data = new URLSearchParams();
+        data.append("phone", $('#x_reply').val());
+
+        fetch("//intl-tel-input-8586.twil.io/lookup", {
+            method: "POST",
+            body: data,
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                if (!json.success) {
+                    error_message = 'This phone number is not valid, please try again.';
+                    console.log(json.error);
+                }
+            })
+            .catch((err) => {
+                error_message = `Something went wrong: ${err}`;
+            });
+
+        if(error_message){
+            alert('ERROR: '+ error_message);
+            return false;
+        }
+
+    }
+
     $.post("/x/x_reply", {
         i__id:current_id(),
         top_i__id:$('#top_i__id').val(),

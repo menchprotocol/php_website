@@ -1,3 +1,12 @@
+<style>
+    .fixed-top{
+        background-color: transparent !important;
+    }
+    .top_nav{
+        display:none !important;
+    }
+</style>
+
 <?php
 
 if(!isset($_GET['i__2id'])){

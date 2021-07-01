@@ -723,6 +723,8 @@ function cover_upload(droppedFiles, uploadType) {
 }
 
 
+
+
 var algolia_index = false;
 $(document).ready(function () {
 

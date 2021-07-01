@@ -147,34 +147,6 @@ class X_model extends CI_Model
         //See if this transaction type has any subscribers:
         if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */){
 
-            //Try to fetch subscribers:
-            $e___5967 = $this->config->item('e___5967'); //Include subscription details
-            $sub_emails = array();
-            $sub_e__ids = array();
-            foreach(explode(',', $e___5967[$add_fields['x__type']]['m__message']) as $subscriber_e__id){
-
-                //Do not inform the member who just took the action:
-                if($subscriber_e__id==$add_fields['x__source']){
-                    continue;
-                }
-
-                //Try fetching subscribers email:
-                foreach($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__up' => 3288, //Email
-                    'x__down' => $subscriber_e__id,
-                ), array('x__down')) as $e_email){
-                    if(filter_var($e_email['x__message'], FILTER_VALIDATE_EMAIL)){
-                        //All good, add to list:
-                        array_push($sub_e__ids , $e_email['e__id']);
-                        array_push($sub_emails , $e_email['x__message']);
-                    }
-                }
-            }
-
-
             //Did we find any subscribers?
             if(count($sub_e__ids) > 0){
 
@@ -195,7 +167,7 @@ class X_model extends CI_Model
                 $subject = 'Notification: '  . $u_name . ' ' . $e___5967[$add_fields['x__type']]['m__title'];
 
                 //Compose email body, start with transaction content:
-                $html_message = ( strlen($add_fields['x__message']) > 0 ? '<div>' .$add_fields['x__message'].'</div>' : '') . '<br />';
+                $plain_message = ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '') . "\n";
 
                 $var_index = var_index();
 
@@ -210,47 +182,44 @@ class X_model extends CI_Model
 
                         //IDEA
                         $is = $this->I_model->fetch(array( 'i__id' => $add_fields[$var_index[$e__id]] ));
-                        $html_message .= '<div>' . $m['m__title'] . ': <a href="'.$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id'] . '" target="_parent">#'.$is[0]['i__id'].' '.$is[0]['i__title'].'</a></div>';
+                        $plain_message .= $m['m__title'] . ' > '.$is[0]['i__id'].' '.$is[0]['i__title'].' > '.$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id']."\n";
 
                     } elseif (in_array(6160 , $m['m__profile'])) {
 
                         //SOURCE
                         $es = $this->E_model->fetch(array( 'e__id' => $add_fields[$var_index[$e__id]] ));
                         if(count($es)){
-                            $html_message .= '<div>' . $m['m__title'] . ': <a href="'.$this->config->item('base_url').'/@' . $es[0]['e__id'] . '" target="_parent">@'.$es[0]['e__id'].' '.$es[0]['e__title'].'</a></div>';
+                            $plain_message .= $m['m__title'] . ': @'.$es[0]['e__id'].' '.$es[0]['e__title'].': '.$this->config->item('base_url').'/@' . $es[0]['e__id'] . "\n";
                         }
 
                     } elseif (in_array(4367 , $m['m__profile'])) {
 
                         //DISCOVERY
-                        $html_message .= '<div>' . $m['m__title'] . ' ID: <a href="'.$this->config->item('base_url').'/-12722?x__id=' . $add_fields[$var_index[$e__id]] . '" target="_parent">'.$add_fields[$var_index[$e__id]].'</a></div>';
+                        $plain_message .= $m['m__title'] . ' ID: '.$add_fields[$var_index[$e__id]].': '.$this->config->item('base_url').'/-12722?x__id=' . $add_fields[$var_index[$e__id]]."\n";
 
                     }
 
                 }
 
                 //Finally append DISCOVERY ID:
-                $html_message .= '<div>TRANSACTION ID: <a href="'.$this->config->item('base_url').'/-12722?x__id=' . $add_fields['x__id'] . '">' . $add_fields['x__id'] . '</a></div>';
+                $plain_message .= 'TRANSACTION ID: ' . $add_fields['x__id'] . ' > '.$this->config->item('base_url').'/-12722?x__id=' . $add_fields['x__id']."\n";
 
                 //Inform how to change settings:
-                $html_message .= '<div style="color: #999999; font-size:0.9em; margin-top:20px;">Manage your email notifications via <a href="'.$this->config->item('base_url').'/@5967" target="_blank">@5967</a></div>';
+                $plain_message .= 'Manage your email notifications via: @5967 '.$this->config->item('base_url').'/@5967'."\n";
 
-                //Send email:
-                $this->X_model->email_sent($sub_emails, $subject, $html_message);
-
-                //Log emails sent:
-                foreach($sub_e__ids as $to_e__id){
-                    $this->X_model->create(array(
-                        'x__type' => 5967, //Transaction Carbon Copy Email
-                        'x__source' => $to_e__id, //Sent to this u
-                        'x__reference' => $add_fields['x__id'], //Save transaction
-
-                        //Import potential Idea/source connections from transaction:
-                        'x__right' => $add_fields['x__right'],
-                        'x__left' => $add_fields['x__left'],
-                        'x__down' => $add_fields['x__down'],
-                        'x__up' => $add_fields['x__up'],
-                    ));
+                //Try to fetch subscribers:
+                $e___5967 = $this->config->item('e___5967'); //Include subscription details
+                foreach(explode(',', $e___5967[$add_fields['x__type']]['m__message']) as $subscriber_e__id){
+                    //Do not inform the member who just took the action:
+                    if($subscriber_e__id!=$add_fields['x__source']){
+                        $this->X_model->send_dm($subscriber_e__id, $subject, $plain_message, array(
+                            'x__reference' => $add_fields['x__id'], //Save transaction
+                            'x__right' => $add_fields['x__right'],
+                            'x__left' => $add_fields['x__left'],
+                            'x__down' => $add_fields['x__down'],
+                            'x__up' => $add_fields['x__up'],
+                        ));
+                    }
                 }
             }
         }
@@ -465,62 +434,130 @@ class X_model extends CI_Model
 
 
 
-    function email_sent($to_array, $subject, $html_message)
+    function send_dm($e__id, $subject, $plain_message, $x_data = array())
     {
 
-        /*
-         *
-         * Send an email via our Amazon server
-         *
-         * */
+        $full_message = $subject."\n\n".$plain_message;
 
-        //Loadup amazon SES:
-        require_once('application/libraries/aws/aws-autoloader.php');
-        $this->CLIENT = new Aws\Ses\SesClient([
-            'version' => 'latest',
-            'region' => 'us-west-2',
-            'credentials' => $this->config->item('cred_aws'),
-        ]);
 
-        $this->CLIENT->sendEmail(array(
-            // Source is required
-            'Source' => view_memory(6404,3288),
-            // Destination is required
-            'Destination' => array(
-                'ToAddresses' => $to_array,
-                'CcAddresses' => array(),
-                'BccAddresses' => array(),
-            ),
-            // Message is required
-            'Message' => array(
-                // Subject is required
-                'Subject' => array(
-                    // Data is required
-                    'Data' => $subject,
-                    'Charset' => 'UTF-8',
+        //Send Emails:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 3288, //Email
+            'x__down' => $e__id,
+        )) as $e_data){
+
+            if(!filter_var($e_data['x__message'], FILTER_VALIDATE_EMAIL)){
+                //TODO Remove this link
+                continue;
+            }
+
+            //Loadup amazon SES:
+            require_once('application/libraries/aws/aws-autoloader.php');
+            $this->CLIENT = new Aws\Ses\SesClient([
+                'version' => 'latest',
+                'region' => 'us-west-2',
+                'credentials' => $this->config->item('cred_aws'),
+            ]);
+
+            $response = $this->CLIENT->sendEmail(array(
+                // Source is required
+                'Source' => view_memory(6404,3288),
+                // Destination is required
+                'Destination' => array(
+                    'ToAddresses' => array($e_data['x__message']),
+                    'CcAddresses' => array(),
+                    'BccAddresses' => array(),
                 ),
-                // Body is required
-                'Body' => array(
-                    'Text' => array(
+                // Message is required
+                'Message' => array(
+                    // Subject is required
+                    'Subject' => array(
                         // Data is required
-                        'Data' => strip_tags($html_message),
+                        'Data' => $subject,
                         'Charset' => 'UTF-8',
                     ),
-                    'Html' => array(
-                        // Data is required
-                        'Data' => $html_message,
-                        'Charset' => 'UTF-8',
+                    // Body is required
+                    'Body' => array(
+                        'Text' => array(
+                            // Data is required
+                            'Data' => strip_tags($plain_message),
+                            'Charset' => 'UTF-8',
+                        ),
+                        'Html' => array(
+                            // Data is required
+                            'Data' => nl2br($plain_message),
+                            'Charset' => 'UTF-8',
+                        ),
                     ),
                 ),
-            ),
-            'ReplyToAddresses' => array(view_memory(6404,3288)),
-            'ReturnPath' => view_memory(6404,3288),
-        ));
+                'ReplyToAddresses' => array(view_memory(6404,3288)),
+                'ReturnPath' => view_memory(6404,3288),
+            ));
 
-        return true;
+            //Log transaction:
+            $this->X_model->create(array_merge($x_data, array(
+                'x__type' => 12114,
+                'x__source' => $e__id,
+                'x__message' => $full_message,
+                'x__metadata' => array(
+                    'to' => $e_data['x__message'],
+                    'subject' => $subject,
+                    'message' => $plain_message,
+                    'response' => $response,
+                ),
+            )));
+
+        }
+
+
+        //Send SMS
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 4783, //Phone
+            'x__down' => $e__id,
+        )) as $e_data){
+
+            continue; //Disabled for now
+
+            $plain_number = intval($e_data['x__message']);
+
+            if(strlen($plain_number)<10){
+                //TODO Remove this link
+                continue;
+            }
+
+            if(strlen($plain_number)!=strlen($e_data['x__message'])){
+                //Update number to plain format:
+
+            }
+
+            //Twillio API Call:
+            $response = 0;
+
+            if(0) {
+                //Failure, remove this link:
+
+            }
+
+            //Log Transaction:
+            $this->X_model->create(array_merge($x_data, array(
+                'x__type' => 12114, //TODO Update to SMS sending
+                'x__source' => $e__id,
+                'x__message' => $full_message,
+                'x__metadata' => array(
+                    'to' => $e_data['x__message'],
+                    'subject' => $subject,
+                    'message' => $plain_message,
+                    'response' => $response,
+                ),
+            )));
+
+        }
 
     }
-
 
     function message_view($message_input, $is_discovery_mode, $member_e = array(), $message_i__id = 0, $simple_version = false)
     {

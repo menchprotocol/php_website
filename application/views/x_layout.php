@@ -390,7 +390,12 @@ if($top_i__id) {
     } elseif ($i_focus['i__type'] == 6683) {
 
         //Write `skip` if you prefer not to answer...
-        $message_ui = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
+        $message_ui = '<textarea class="border i_content padded x_input '.( count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 7545, //Profile Add
+                'x__right' => $i_focus['i__id'],
+                'x__up' => 4783, //Phone
+            ))) ? ' phone_verify ' : '' ).'" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
 
         if (count($x_completes)) {
             //Next Ideas:

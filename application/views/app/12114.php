@@ -12,11 +12,7 @@ $x__time_start = date("Y-m-d H:i:s", $x__time_start_timestamp);
 $x__time_end = date("Y-m-d H:i:s", $x__time_end_timestamp);
 
 //Email Body
-$html_message = '<br />';
-$html_message .= '<div>In the last '.$last_x_days.' day'.view__s($last_x_days).' '.$e___11035[14874]['m__title'].' grew:</div>';
-$html_message .= '<br />';
-
-$html_message .= '<div style="padding-bottom:10px;"><span style="min-width:125px; display: inline-block;">&nbsp;</span><span style="min-width:62px; display: inline-block;">&nbsp;</span><span style="text-decoration:none;"><span style="min-width:62px; display: inline-block;">New</span>Total</span></div>';
+$plain_message = 'In the last '.$last_x_days.' day'.view__s($last_x_days).' '.$e___11035[14874]['m__title'].' grew:'."\n";
 
 foreach($this->config->item('e___14874') as $x__type => $m) {
 
@@ -35,7 +31,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $html_message .= '<div style="padding-bottom:10px; text-decoration:none;"><span style="min-width:125px; display: inline-block;">'.$icon.' '.$m['m__title'].'</span><span style="min-width:62px; display: inline-block;">'.$growth.'</span><span style="min-width:62px; display: inline-block;">'.number_format($this_week, 0).'</span>'.number_format($unique, 0).'</div>';
+    $plain_message .= "\n".$icon.' '.$m['m__title'].' '.$growth.' '.number_format($this_week, 0);
 
     //Primary Coin?
     if(in_array($x__type, $this->config->item('n___13776'))){
@@ -44,20 +40,19 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
 }
 
-$html_message .= '<br />';
-$html_message .= '<div>'.view_shuffle_message(12691).'</div>';
-$html_message .= '<div>'.get_domain('m__title').'</div>';
+$plain_message .= "\n"."\n".view_shuffle_message(12691);
+$plain_message .= "\n".get_domain('m__title');
 
 
 
 
 
 //Decide what to do with this?
-if($is_u_request && !isset($_GET['send_email'])){
+if($is_u_request && !isset($_GET['email_trigger'])){
 
     echo '<div style="font-weight: bold; padding: 0 0 13px 0;">'.$subject.'</div>';
-    echo $html_message;
-    echo '<div style="padding: 21px 0;"><a href="/-12114?send_email=1">Email Me This Report</a></div>';
+    echo nl2br($plain_message);
+    echo '<div style="padding: 21px 0;"><a href="/-12114?email_trigger=1">Email Me This Report</a></div>';
 
 } else {
 
@@ -88,7 +83,7 @@ if($is_u_request && !isset($_GET['send_email'])){
         )) as $e_email){
             if(filter_var($e_email['x__message'], FILTER_VALIDATE_EMAIL)){
 
-                $this->X_model->email_sent(array($e_email['x__message']), $subject, '<div>Hi '.one_two_explode('',' ',$subscribed_u['e__title']).' 👋</div>'.$html_message);
+                $this->X_model->send_dm(array($e_email['x__message']), $subject, 'Hi '.one_two_explode('',' ',$subscribed_u['e__title']).' 👋 '."\n\n".$plain_message);
 
                 //Send & Log Email
                 $invite_x = $this->X_model->create(array(
