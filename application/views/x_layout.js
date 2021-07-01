@@ -162,7 +162,7 @@ function x_reply(go_next_url){
         const data = new URLSearchParams();
         data.append("phone", $('#x_reply').val());
 
-        fetch("//intl-tel-input-8586.twil.io/lookup", {
+        fetch("https://intl-tel-input-8586.twil.io/lookup", {
             method: "POST",
             body: data,
         })
@@ -179,7 +179,7 @@ function x_reply(go_next_url){
                 return false;
             });
 
-
+        return false;
     }
 
     $.post("/x/x_reply", {
