@@ -74,30 +74,12 @@ if($is_u_request && !isset($_GET['email_trigger'])){
     $email_recipients = 0;
     //Send email to all subscribers:
     foreach($this->X_model->fetch($subscriber_filters, array('x__down')) as $subscribed_u){
-        //Try fetching subscribers email:
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3288, //Email
-            'x__down' => $subscribed_u['e__id'],
-        )) as $e_email){
-            if(filter_var($e_email['x__message'], FILTER_VALIDATE_EMAIL)){
 
-                $this->X_model->send_dm(array($e_email['x__message']), $subject, 'Hi '.one_two_explode('',' ',$subscribed_u['e__title']).' 👋 '."\n\n".$plain_message);
+        $this->X_model->send_dm($subscribed_u['e__id'], $subject, 'Hi '.one_two_explode('',' ',$subscribed_u['e__title']).' 👋 '."\n\n".$plain_message);
+        $email_recipients++;
 
-                //Send & Log Email
-                $invite_x = $this->X_model->create(array(
-                    'x__type' => 12114,
-                    'x__source' => $subscribed_u['e__id'],
-                ));
-
-                $email_recipients++;
-
-                break;
-            }
-        }
     }
 
-    echo 'Emailed Reports to '.$email_recipients.' Member'.view__s($email_recipients);
+    echo 'Report sent to '.$email_recipients.' Member'.view__s($email_recipients);
 
 }
