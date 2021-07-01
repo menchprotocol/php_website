@@ -157,7 +157,8 @@ function x_upload(droppedFiles, uploadType) {
 
 function x_reply(go_next_url){
 
-    if($('#x_reply').hasClass('phone_verify')){
+    if($('#x_reply').hasClass('phone_verify') && js_pl_id==1){
+
         console.log('Phone verification initiated');
 
         const data = new URLSearchParams();
