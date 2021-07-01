@@ -1,11 +1,12 @@
 <style>
+    /* CSS Adjustments for Printing View */
     .fixed-top{
         background-color: transparent !important;
     }
     .top_nav{
         display:none !important;
     }
-    .table-striped tbody tr:nth-of-type(odd) {
+    .table-striped tr:nth-of-type(odd) {
         background-color: #f0f0f0 !important;
     }
 </style>
