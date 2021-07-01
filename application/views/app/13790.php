@@ -11,7 +11,7 @@
         -webkit-print-color-adjust:exact;
     }
     .table-striped td {
-        border-bottom: 1px dotted #999999;
+        border-bottom: 1px dotted #f0f0f0 !important;
     }
 </style>
 
