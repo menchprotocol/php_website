@@ -158,12 +158,12 @@ function x_upload(droppedFiles, uploadType) {
 function x_reply(go_next_url){
 
     if($('#x_reply').hasClass('phone_verify')){
-        console.log('yesss');
+        console.log('Phone verification initiated');
 
         const data = new URLSearchParams();
         data.append("phone", $('#x_reply').val());
 
-        fetch("https://intl-tel-input-8586.twil.io/lookup", {
+        var fetch_result = fetch("https://intl-tel-input-8586.twil.io/lookup", {
             method: "POST",
             body: data,
         })
@@ -171,8 +171,10 @@ function x_reply(go_next_url){
             .then((json) => {
                 if (!json.success) {
                     console.log(json.error);
-                    alert('This phone number is not valid, please try again.');
+                    alert('Error: Phone number ['+$('#x_reply').val()+'] is not valid, please try again.');
                     return false;
+                } else {
+                    return true;
                 }
             })
             .catch((err) => {
@@ -180,9 +182,11 @@ function x_reply(go_next_url){
                 return false;
             });
 
+        if(!fetch_result){
+            return false;
+        }
 
     }
-    return false;
 
 
     $.post("/x/x_reply", {
