@@ -147,6 +147,9 @@ class X_model extends CI_Model
         //See if this transaction type has any subscribers:
         if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */){
 
+            $e___5967 = $this->config->item('e___5967'); //Include subscription details
+            $sub_e__ids = explode(',', $e___5967[$add_fields['x__type']]['m__message']);
+
             //Did we find any subscribers?
             if(count($sub_e__ids) > 0){
 
@@ -208,8 +211,8 @@ class X_model extends CI_Model
                 $plain_message .= 'Manage your email notifications via: @5967 '.$this->config->item('base_url').'/@5967'."\n";
 
                 //Try to fetch subscribers:
-                $e___5967 = $this->config->item('e___5967'); //Include subscription details
-                foreach(explode(',', $e___5967[$add_fields['x__type']]['m__message']) as $subscriber_e__id){
+
+                foreach($sub_e__ids as $subscriber_e__id){
                     //Do not inform the member who just took the action:
                     if($subscriber_e__id!=$add_fields['x__source']){
                         $this->X_model->send_dm($subscriber_e__id, $subject, $plain_message, array(

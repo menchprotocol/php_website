@@ -155,41 +155,7 @@ function x_upload(droppedFiles, uploadType) {
 }
 
 
-function x_reply(go_next_url){
-
-    if($('#x_reply').hasClass('phone_verify') && js_pl_id==1){
-
-        console.log('Phone verification initiated');
-
-        const data = new URLSearchParams();
-        data.append("phone", $('#x_reply').val());
-
-        var fetch_result = fetch("https://intl-tel-input-8586.twil.io/lookup", {
-            method: "POST",
-            body: data,
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                if (!json.success) {
-                    console.log(json.error);
-                    alert('Error: Phone number ['+$('#x_reply').val()+'] is not valid, please try again.');
-                    return false;
-                } else {
-                    return true;
-                }
-            })
-            .catch((err) => {
-                alert('Something went wrong: ${err}');
-                return false;
-            });
-
-        if(!fetch_result){
-            return false;
-        }
-
-    }
-
-
+function x_reply_save(){
     $.post("/x/x_reply", {
         i__id:current_id(),
         top_i__id:$('#top_i__id').val(),
@@ -204,6 +170,40 @@ function x_reply(go_next_url){
             alert(data.message);
         }
     });
+}
+
+function x_reply(go_next_url){
+
+    if($('#x_reply').hasClass('phone_verify') && js_pl_id==1){
+
+        console.log('Phone verification initiated');
+
+        const data = new URLSearchParams();
+        data.append("phone", $('#x_reply').val());
+
+        fetch("https://intl-tel-input-8586.twil.io/lookup", {
+            method: "POST",
+            body: data,
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                if (!json.success) {
+                    console.log(json.error);
+                    alert('Error: Phone number ['+$('#x_reply').val()+'] is not valid, please try again.');
+                    return false;
+                } else {
+                    x_reply_save();
+                }
+            })
+            .catch((err) => {
+                alert("Something went wrong: ${err}");
+                return false;
+            });
+
+    } else {
+        x_reply_save();
+    }
+
 }
 
 function x_select(go_next_url){
