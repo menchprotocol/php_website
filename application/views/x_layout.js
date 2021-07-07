@@ -155,7 +155,7 @@ function x_upload(droppedFiles, uploadType) {
 }
 
 
-function x_reply_save(){
+function x_reply_save(go_next_url){
     $.post("/x/x_reply", {
         i__id:current_id(),
         top_i__id:$('#top_i__id').val(),
@@ -192,7 +192,7 @@ function x_reply(go_next_url){
                     alert('Error: Phone number ['+$('#x_reply').val()+'] is not valid, please try again.');
                     return false;
                 } else {
-                    x_reply_save();
+                    x_reply_save(go_next_url);
                 }
             })
             .catch((err) => {
@@ -201,7 +201,7 @@ function x_reply(go_next_url){
             });
 
     } else {
-        x_reply_save();
+        x_reply_save(go_next_url);
     }
 
 }
