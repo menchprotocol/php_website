@@ -1135,19 +1135,17 @@ function js_redirect($url, $timer){
 
 function i__title_validate($string){
 
+    $title_clean = trim($string);
+    while(substr_count($title_clean , '  ') > 0){
+        $title_clean = str_replace('  ',' ',$title_clean);
+    }
+
     //Validate:
     if(!strlen(trim($string))){
 
         return array(
             'status' => 0,
             'message' => 'Title missing',
-        );
-
-    } elseif(substr_count($string , '  ') > 0){
-
-        return array(
-            'status' => 0,
-            'message' => 'Title cannot include double spaces',
         );
 
     } elseif (strlen($string) > view_memory(6404,4736)) {
@@ -1162,7 +1160,7 @@ function i__title_validate($string){
     //All good, return success:
     return array(
         'status' => 1,
-        'i_clean_title' => trim($string),
+        'i_clean_title' => $title_clean,
     );
 
 }
@@ -1173,15 +1171,15 @@ function e__title_validate($string, $x__type = 0){
     $CI =& get_instance();
     $e___4592 = $CI->config->item('e___4592');
     $errors = false;
-    $e__title_clean = trim($string);
-    while(substr_count($e__title_clean , '  ') > 0){
-        $e__title_clean = str_replace('  ',' ',$e__title_clean);
+    $title_clean = trim($string);
+    while(substr_count($title_clean , '  ') > 0){
+        $title_clean = str_replace('  ',' ',$title_clean);
     }
 
     if(!strlen(trim($string))){
 
         if($x__type){
-            $e__title_clean = $e___4592[$x__type]['m__title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+            $title_clean = $e___4592[$x__type]['m__title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(
@@ -1192,7 +1190,7 @@ function e__title_validate($string, $x__type = 0){
     } elseif(strlen(trim($string)) < view_memory(6404,12232)){
 
         if($x__type){
-            $e__title_clean = $e___4592[$x__type]['m__title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
+            $title_clean = $e___4592[$x__type]['m__title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
         }
 
         $errors = array(
@@ -1203,7 +1201,7 @@ function e__title_validate($string, $x__type = 0){
     } elseif (strlen($string) > view_memory(6404,6197)) {
 
         if($x__type){
-            $e__title_clean = substr($string, 0, view_memory(6404,6197));
+            $title_clean = substr($string, 0, view_memory(6404,6197));
         }
 
         $errors = array(
@@ -1213,11 +1211,11 @@ function e__title_validate($string, $x__type = 0){
 
     }
 
-    $e__title_clean = trim($e__title_clean);
+    $title_clean = trim($title_clean);
 
     //Just the clean name?
     if($x__type){
-        return $e__title_clean;
+        return $title_clean;
     }
 
 
@@ -1229,7 +1227,7 @@ function e__title_validate($string, $x__type = 0){
         //All good, return success:
         return array(
             'status' => 1,
-            'e__title_clean' => $e__title_clean,
+            'e__title_clean' => $title_clean,
         );
     }
 }
