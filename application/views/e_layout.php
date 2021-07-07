@@ -141,7 +141,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                 $ui .= '<div class="nav nav-pills nav-sm">';
 
                 //Show fixed All button:
-                $ui .= '<li class="nav-item"><a href="#" onclick="e_filter_status(11029, -1)" class="nav-x e_filter_status_11029 active en_status_11029_-1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk zq12274"></i><span class="zq12274">&nbsp;' . $e_count . '</span></a></li>';
+                $ui .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(11029, -1)" class="nav-x e_filter_status_11029 active en_status_11029_-1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk zq12274"></i><span class="zq12274">&nbsp;' . $e_count . '</span></a></li>';
 
                 //Show each specific filter based on DB counts:
                 foreach($child__filters as $c_c) {

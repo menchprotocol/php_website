@@ -1174,6 +1174,9 @@ function e__title_validate($string, $x__type = 0){
     $e___4592 = $CI->config->item('e___4592');
     $errors = false;
     $e__title_clean = trim($string);
+    while(substr_count($e__title_clean , '  ') > 0){
+        $e__title_clean = str_replace('  ',' ',$e__title_clean);
+    }
 
     if(!strlen(trim($string))){
 
@@ -1195,17 +1198,6 @@ function e__title_validate($string, $x__type = 0){
         $errors = array(
             'status' => 0,
             'message' => 'Name is shorter than the minimum ' . view_memory(6404,12232) . ' characters.',
-        );
-
-    } elseif(substr_count($string , '  ') > 0){
-
-        if($x__type){
-            $e__title_clean = str_replace('  ',' ',str_replace('  ',' ',str_replace('  ',' ',$string)));
-        }
-
-        $errors = array(
-            'status' => 0,
-            'message' => 'Name cannot include double spaces',
         );
 
     } elseif (strlen($string) > view_memory(6404,6197)) {
