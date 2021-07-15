@@ -16,6 +16,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
         $total_revenue = 0;
         $total_paypal_fee = 0;
         $total_instant = 0;
+        $currencies = array();
 
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -26,6 +27,10 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
             $total_units++;
             $total_paypal_fee += doubleval($x__metadata['mc_fee']);
             $total_instant += ( $x__metadata['payment_type']=='instant' ? 1 : 0 );
+            $total_revenue += doubleval($x__metadata['mc_gross']);
+            if(!in_array($x__metadata['mc_currency'], $currencies)){
+                array_push($currencies, $x__metadata['mc_currency']);
+            }
         }
         $total_commission = ( $commission_rate * $total_revenue );
 
@@ -33,9 +38,14 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
 
         $body_content .= '<td><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
         $body_content .= '<td>'.$total_instant.'/'.$total_units.'</td>';
+        $body_content .= '<td>'.join(', ',$currencies).'</td>';
         $body_content .= '<td>$'.number_format($total_revenue, 2).'</td>';
         $body_content .= '<td>$'.number_format(( $total_revenue / $total_units ), 2).'</td>';
-        $body_content .= '<td title="Commission of $'.$total_commission.' ('.($commission_rate*100).'%) and Paypal Fee of $'.$total_paypal_fee.' ('.($total_paypal_fee/$total_revenue*100).'%)">$'.number_format(($total_revenue-$total_commission), 2).'</td>';
+        if($total_revenue > 0){
+            $body_content .= '<td title="Commission of $'.$total_commission.' ('.($commission_rate*100).'%) and Paypal Fee of $'.$total_paypal_fee.' ('.($total_paypal_fee/$total_revenue*100).'%)">$'.number_format(($total_revenue-$total_commission), 2).'</td>';
+        } else {
+            $body_content .= '<td>$0</td>';
+        }
 
         $body_content .= '</tr>';
         $count++;
