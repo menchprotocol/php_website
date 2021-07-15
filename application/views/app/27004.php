@@ -8,7 +8,6 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     //List all payment Ideas and their total earnings
     $body_content = '';
     foreach($this->I_model->fetch(array(
-        'i__id' => ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 ),
         'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
     )) as $i){
 
