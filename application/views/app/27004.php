@@ -60,12 +60,12 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
 
     echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
     echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-    echo '<th id="th_primary">Paid Ideas</th>';
+    echo '<th id="th_primary">Ideas</th>';
+    echo '<th id="th_paid">Payments</th>';
     echo '<th id="th_currency">Currency</th>';
-    echo '<th id="th_paid">Instant Payments</th>';
-    echo '<th id="th_average">Average Payment</th>';
-    echo '<th id="th_rev">Total Revenue</th>';
-    echo '<th id="th_payout">Net Payout</th>';
+    echo '<th id="th_rev">Total</th>';
+    echo '<th id="th_average">Average</th>';
+    echo '<th id="th_payout">Payout</th>';
     echo '</tr>';
     echo $body_content;
     echo '</table>';
