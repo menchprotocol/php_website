@@ -24,11 +24,14 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
             'x__left' => $i['i__id'],
         ), array(), 0) as $x){
             $x__metadata = unserialize($x['x__metadata']);
+            if(doubleval($x__metadata['mc_gross']) <= 0){
+                continue;
+            }
             $total_units++;
             $total_paypal_fee += doubleval($x__metadata['mc_fee']);
             $total_instant += ( $x__metadata['payment_type']=='instant' ? 1 : 0 );
             $total_revenue += doubleval($x__metadata['mc_gross']);
-            if(!in_array($x__metadata['mc_currency'], $currencies)){
+            if(!in_array($x__metadata['mc_currency'], $currencies) && strlen($x__metadata['mc_currency'])>0){
                 array_push($currencies, $x__metadata['mc_currency']);
             }
         }
