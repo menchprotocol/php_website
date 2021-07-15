@@ -40,24 +40,25 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
         $body_content .= '<td>'.$total_instant.'/'.$total_units.'</td>';
         $body_content .= '<td>'.join(', ',$currencies).'</td>';
         $body_content .= '<td>$'.number_format($total_revenue, 2).'</td>';
-        $body_content .= '<td>$'.number_format(( $total_revenue / $total_units ), 2).'</td>';
-        if($total_revenue > 0){
+        if($total_revenue > 0 && $total_units > 0){
+            $body_content .= '<td>$'.number_format(( $total_revenue / $total_units ), 2).'</td>';
             $body_content .= '<td title="Commission of $'.$total_commission.' ('.($commission_rate*100).'%) and Paypal Fee of $'.$total_paypal_fee.' ('.($total_paypal_fee/$total_revenue*100).'%)">$'.number_format(($total_revenue-$total_commission), 2).'</td>';
         } else {
+            $body_content .= '<td>$0</td>';
             $body_content .= '<td>$0</td>';
         }
 
         $body_content .= '</tr>';
-        $count++;
 
     }
 
 
-    $table_sortable = array('#th_primary','#th_paid','#th_average','#th_rev','#th_payout');
+    $table_sortable = array('#th_primary','#th_average','#th_rev');
 
     echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
     echo '<tr style="font-weight:bold; vertical-align: baseline;">';
     echo '<th id="th_primary">Paid Ideas</th>';
+    echo '<th id="th_currency">Currency</th>';
     echo '<th id="th_paid">Instant Payments</th>';
     echo '<th id="th_average">Average Payment</th>';
     echo '<th id="th_rev">Total Revenue</th>';
