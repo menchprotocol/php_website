@@ -15,7 +15,6 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
         $total_units = 0;
         $total_revenue = 0;
         $total_paypal_fee = 0;
-        $total_instant = 0;
         $currencies = array();
 
         foreach($this->X_model->fetch(array(
@@ -29,7 +28,6 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
             }
             $total_units++;
             $total_paypal_fee += doubleval($x__metadata['mc_fee']);
-            $total_instant += ( $x__metadata['payment_type']=='instant' ? 1 : 0 );
             $total_revenue += doubleval($x__metadata['mc_gross']);
             if(!in_array($x__metadata['mc_currency'], $currencies) && strlen($x__metadata['mc_currency'])>0){
                 array_push($currencies, $x__metadata['mc_currency']);
@@ -40,8 +38,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
         $body_content .= '<tr>';
 
         $body_content .= '<td><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
-        $body_content .= '<td>'.$total_instant.'/'.$total_units.'</td>';
-        $body_content .= '<td>'.join(', ',$currencies).'</td>';
+        $body_content .= '<td>'.$total_units.'x</td>';
         $body_content .= '<td>$'.number_format($total_revenue, 2).'</td>';
         if($total_revenue > 0 && $total_units > 0){
             $body_content .= '<td>$'.number_format(( $total_revenue / $total_units ), 2).'</td>';
@@ -50,7 +47,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
             $body_content .= '<td>$0</td>';
             $body_content .= '<td>$0</td>';
         }
-
+        $body_content .= '<td>'.join(', ',$currencies).'</td>';
         $body_content .= '</tr>';
 
     }
@@ -61,11 +58,11 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
     echo '<tr style="font-weight:bold; vertical-align: baseline;">';
     echo '<th id="th_primary">Ideas</th>';
-    echo '<th id="th_paid">Payments</th>';
-    echo '<th id="th_currency">Currency</th>';
-    echo '<th id="th_rev">Total</th>';
+    echo '<th id="th_paid">Unit</th>';
     echo '<th id="th_average">Average</th>';
+    echo '<th id="th_rev">Total</th>';
     echo '<th id="th_payout">Payout</th>';
+    echo '<th id="th_currency">Currency</th>';
     echo '</tr>';
     echo $body_content;
     echo '</table>';
