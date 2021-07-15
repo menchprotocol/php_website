@@ -1,21 +1,3 @@
-<style>
-    /* CSS Adjustments for Printing View */
-    .fixed-top{
-        background-color: transparent !important;
-    }
-    .top_nav{
-        display:none !important;
-    }
-    .table-striped tr:nth-of-type(odd) td {
-        background-color: #f0f0f0 !important;
-        -webkit-print-color-adjust:exact;
-    }
-    .table-striped td {
-        border-bottom: 1px dotted #f0f0f0 !important;
-        font-size: 1.3em;
-    }
-</style>
-
 <?php
 
 if(!isset($_GET['i__2id'])){
@@ -200,13 +182,13 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     }
 
 
-    $table_sortable = array('#th_members','#th_done');
+    $table_sortable = array('#th_primary','#th_done');
     echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'"><u>'.$is[0]['i__title'].'</u></a>'.($_GET['i__2id'] > 0 ? ' & <a href="/i/i_go/'.$is_2nd[0]['i__id'].'"><u>'.$is_2nd[0]['i__title'].'</u></a>' : '').' <a href="/-26582?i__id='.$is[0]['i__id'].($_GET['i__2id'] > 0 ? ','.$_GET['i__2id'] : '').'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></h2>';
 
-    echo '<table style="font-size:0.8em;" id="registry_table" class="table table-sm table-striped image-mini">';
+    echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
     echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-    echo '<th id="th_members" style="width:200px;">'.( isset($_GET['i_filter']) || isset($_GET['e_filter']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&i__2id='.$_GET['i__2id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTERS <i class="fas fa-filter"></i></u></a><br /><br />' : '' ).$count.' MEMBERS</th>';
+    echo '<th id="th_primary" style="width:200px;">'.( isset($_GET['i_filter']) || isset($_GET['e_filter']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&i__2id='.$_GET['i__2id'].'&e__id='.$_GET['e__id'].'"><u>REMOVE FILTERS <i class="fas fa-filter"></i></u></a><br /><br />' : '' ).$count.' MEMBERS</th>';
     echo '<th id="th_done">Done</th>';
     foreach($column_sources as $e){
         array_push($table_sortable, '#th_e_'.$e['e__id']);
@@ -233,6 +215,21 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 <style>
+    /* CSS Adjustments for Printing View */
+    .fixed-top{
+        background-color: transparent !important;
+    }
+    .top_nav{
+        display:none !important;
+    }
+    .table-striped tr:nth-of-type(odd) td {
+        background-color: #f0f0f0 !important;
+        -webkit-print-color-adjust:exact;
+    }
+    .table-striped td {
+        border-bottom: 1px dotted #f0f0f0 !important;
+        font-size: 1.3em;
+    }
     .fa-filter, .fa-sort{
         font-size: 1.1em !important;
         margin-bottom: 3px;
@@ -260,7 +257,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 <script>
 
     $(document).ready(function () {
-        var table = $('#registry_table');
+        var table = $('#sortable_table');
         $('<?= join(', ', $table_sortable) ?>')
             .each(function(){
 
@@ -294,3 +291,4 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     });
 </script>
+
