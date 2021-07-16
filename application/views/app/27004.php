@@ -105,7 +105,7 @@ foreach($this->I_model->fetch($query_filters) as $i){
 
 }
 
-$body_content .= '<div<a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></div>';
+echo '<div<a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></div>';
 
 
 echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
