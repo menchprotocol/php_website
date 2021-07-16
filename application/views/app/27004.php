@@ -67,10 +67,10 @@ foreach($this->I_model->fetch($query_filters) as $i){
         $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden">';
         $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
         $transaction_content .= '<td style="text-align: right;">1x</td>';
-        $transaction_content .= '<td style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
-        $transaction_content .= '<td style="text-align: right;">+$'.number_format($x__metadata['mc_gross'], 2).'</td>';
-        $transaction_content .= '<td style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($this_commission, 2).'</td>';
-        $transaction_content .= '<td style="text-align: right;" title="'.($x__metadata['mc_fee']/$x__metadata['mc_gross']*100).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
+        $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
+        $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($x__metadata['mc_gross'], 2).'</td>';
+        $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($this_commission, 2).'</td>';
+        $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($x__metadata['mc_fee']/$x__metadata['mc_gross']*100).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
         $transaction_content .= '<td style="text-align: right;" title="'.(( $x__metadata['mc_gross']>0 ? $this_payout/$x__metadata['mc_gross'] : 0 )*100).'%"><b>$'.number_format($this_payout, 2).'</b></td>';
         $transaction_content .= '<td style="text-align: right;">'.$x__metadata['mc_currency'].'</td>';
         $transaction_content .= '</tr>';
@@ -93,10 +93,10 @@ foreach($this->I_model->fetch($query_filters) as $i){
     $body_content .= '<tr>';
     $body_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
     $body_content .= '<td style="text-align: right;">'.$total_units.'x</td>';
-    $body_content .= '<td style="text-align: right;">$'.number_format(( $total_units > 0 ? $total_revenue / $total_units : 0 ), 2).'</td>';
-    $body_content .= '<td style="text-align: right;">+$'.number_format($total_revenue, 2).'</td>';
-    $body_content .= '<td style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($total_commission, 2).'</td>';
-    $body_content .= '<td style="text-align: right;" title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
+    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format(( $total_units > 0 ? $total_revenue / $total_units : 0 ), 2).'</td>';
+    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($total_revenue, 2).'</td>';
+    $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($total_commission, 2).'</td>';
+    $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
     $body_content .= '<td style="text-align: right;" title="'.(( $total_revenue>0 ? $payout/$total_revenue : 0 )*100).'%"><b>$'.number_format($payout, 2).'</b></td>';
     $body_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
     $body_content .= '</tr>';
@@ -105,15 +105,17 @@ foreach($this->I_model->fetch($query_filters) as $i){
 
 }
 
+$body_content .= '<div<a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></div>';
+
 
 echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
 echo '<tr style="vertical-align: baseline;">';
 echo '<th id="th_primary">Paid Ideas</th>';
 echo '<th style="text-align: right;" id="th_paid">Unit</th>';
-echo '<th style="text-align: right;" id="th_average">Average</th>';
-echo '<th style="text-align: right;" id="th_rev">Revenue</th>';
-echo '<th style="text-align: right;" id="th_payout">Commission</th>';
-echo '<th style="text-align: right;" id="th_payout">Paypal Fee</th>';
+echo '<th style="text-align: right;" class="advance_columns hidden" id="th_average">Average</th>';
+echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Revenue</th>';
+echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Commission</th>';
+echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal Fee</th>';
 echo '<th style="text-align: right;" id="th_payout">Payout</th>';
 echo '<th style="text-align: right;" id="th_currency">Currency</th>';
 echo '</tr>';
@@ -171,9 +173,7 @@ echo '</table>';
         padding: 1px 0 !important;
         font-size: 0.9em;
     }
-    th:hover, th:active{
-        background-color: #FFF;
-    }
+
     .vertical_col {
         writing-mode: tb-rl;
         white-space: nowrap;
