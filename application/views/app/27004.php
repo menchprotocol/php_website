@@ -64,7 +64,7 @@ foreach($this->I_model->fetch($query_filters) as $i){
         $this_payout = $x__metadata['mc_gross']-$x__metadata['mc_fee']-$this_commission;
 
 
-        $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden">';
+        $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden" title="Transaction ID '.$x['x__id'].'">';
         $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
         $transaction_content .= '<td style="text-align: right;">1x</td>';
         $transaction_content .= '<td style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
@@ -73,7 +73,7 @@ foreach($this->I_model->fetch($query_filters) as $i){
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($x__metadata['mc_fee']/$x__metadata['mc_gross']*100).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
         $transaction_content .= '<td style="text-align: right;" title="'.(( $x__metadata['mc_gross']>0 ? $this_payout/$x__metadata['mc_gross'] : 0 )*100).'%"><b>$'.number_format($this_payout, 2).'</b></td>';
         $transaction_content .= '<td style="text-align: right;">'.$x__metadata['mc_currency'].'</td>';
-        $transaction_content .= '<td style="text-align: right;"><a href="#" style="font-weight:bold;">Refund</a></td>';
+        $transaction_content .= '<td style="text-align: right;"><a href="#" style="font-weight:bold;"><u>Refund</u></a></td>';
         $transaction_content .= '</tr>';
 
     }
@@ -100,7 +100,7 @@ foreach($this->I_model->fetch($query_filters) as $i){
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
     $body_content .= '<td style="text-align: right;" title="'.(( $total_revenue>0 ? $payout/$total_revenue : 0 )*100).'%"><b>$'.number_format($payout, 2).'</b></td>';
     $body_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
-    $body_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'" style="font-weight:bold;">Idea</a></td>';
+    $body_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>Edit</u></a></td>';
     $body_content .= '</tr>';
     $body_content .= $transaction_content;
 
