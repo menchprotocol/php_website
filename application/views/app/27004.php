@@ -65,9 +65,9 @@ foreach($this->I_model->fetch($query_filters) as $i){
 
 
         $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden">';
-        $transaction_content .= '<td>'.$x__metadata['first_name'].' '.$x__metadata['last_name'].'<br />'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold;"><u>'.$es[0]['e__title'].'</u></a>' : 'Unknown user @'.$item_parts[3] ).'</td>';
+        $transaction_content .= '<td style="padding-left: 34px;">'.$x__metadata['first_name'].' '.$x__metadata['last_name'].'<br />'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold;"><u>'.$es[0]['e__title'].'</u></a>' : 'Unknown user @'.$item_parts[3] ).'</td>';
         $transaction_content .= '<td style="text-align: right;">1x</td>';
-        $transaction_content .= '<td style="text-align: right;"></td>';
+        $transaction_content .= '<td style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td style="text-align: right;">+$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($this_commission, 2).'</td>';
         $transaction_content .= '<td style="text-align: right;" title="'.($x__metadata['mc_fee']/$x__metadata['mc_gross']*100).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
@@ -165,6 +165,10 @@ echo '</table>';
     tr td {
         padding: 5px 0 !important;
         font-size: 1.1em;
+    }
+    .tr_row td{
+        padding: 1px 0 !important;
+        font-size: 0.9em;
     }
     th:hover, th:active{
         background-color: #FFF;
