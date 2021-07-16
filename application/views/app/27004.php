@@ -5,6 +5,13 @@ $commission_rate = doubleval(view_memory(6404,27017))/100;
 if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
 
 
+    $gross_units = 0;
+    $gross_revenue = 0;
+    $gross_paypal_fee = 0;
+    $gross_commission = 0;
+    $gross_payout = 0;
+    $gross_currencies = array();
+
     //List all payment Ideas and their total earnings
     $body_content = '';
     foreach($this->I_model->fetch(array(
@@ -32,21 +39,31 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
             if(!in_array($x__metadata['mc_currency'], $currencies) && strlen($x__metadata['mc_currency'])>0){
                 array_push($currencies, $x__metadata['mc_currency']);
             }
+            if(!in_array($x__metadata['mc_currency'], $gross_currencies) && strlen($x__metadata['mc_currency'])>0){
+                array_push($gross_currencies, $x__metadata['mc_currency']);
+            }
+
         }
         $total_commission = ( $commission_rate * $total_revenue );
+        $payout = $total_revenue-$total_commission-$total_paypal_fee;
+
+
+        $gross_units += $total_units;
+        $gross_revenue += $total_revenue;
+        $gross_paypal_fee += $total_paypal_fee;
+        $gross_commission += $total_commission;
+        $gross_payout += $payout;
+
 
         $body_content .= '<tr>';
 
         $body_content .= '<td><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
         $body_content .= '<td>'.$total_units.'x</td>';
-        $body_content .= '<td>$'.number_format($total_revenue, 2).'</td>';
-        if($total_revenue > 0 && $total_units > 0){
-            $body_content .= '<td>$'.number_format(( $total_revenue / $total_units ), 2).'</td>';
-            $body_content .= '<td title="Commission of $'.$total_commission.' ('.($commission_rate*100).'%) and Paypal Fee of $'.$total_paypal_fee.' ('.($total_paypal_fee/$total_revenue*100).'%)">$'.number_format(($total_revenue-$total_commission), 2).'</td>';
-        } else {
-            $body_content .= '<td>$0</td>';
-            $body_content .= '<td>$0</td>';
-        }
+        $body_content .= '<td>$'.number_format(( $total_units > 0 ? $total_revenue / $total_units : 0 ), 2).'</td>';
+        $body_content .= '<td>+$'.number_format($total_revenue, 2).'</td>';
+        $body_content .= '<td title="'.($commission_rate*100).'%">-$'.number_format($total_commission, 2).'</td>';
+        $body_content .= '<td title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
+        $body_content .= '<td title="'.(( $total_revenue>0 ? $payout/$total_revenue : 0 )*100).'%"><b>$'.number_format($payout, 2).'</b></td>';
         $body_content .= '<td>'.join(', ',$currencies).'</td>';
         $body_content .= '</tr>';
 
@@ -60,11 +77,23 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     echo '<th id="th_primary">Ideas</th>';
     echo '<th id="th_paid">Unit</th>';
     echo '<th id="th_average">Average</th>';
-    echo '<th id="th_rev">Total</th>';
+    echo '<th id="th_rev">Revenue</th>';
+    echo '<th id="th_payout">Commission</th>';
+    echo '<th id="th_payout">Paypal Fee</th>';
     echo '<th id="th_payout">Payout</th>';
     echo '<th id="th_currency">Currency</th>';
     echo '</tr>';
     echo $body_content;
+    echo '<tr>';
+    echo '<td id="td_primary"></td>';
+    echo '<td>'.$gross_units.'x</td>';
+    echo '<td>$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</td>';
+    echo '<td>+$'.number_format($gross_revenue, 2).'</td>';
+    echo '<td title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</td>';
+    echo '<td title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</td>';
+    echo '<td title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></td>';
+    echo '<td>'.join(', ',$gross_currencies).'</td>';
+    echo '</tr>';
     echo '</table>';
 
 } else {
