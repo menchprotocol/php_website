@@ -93,7 +93,7 @@ foreach($this->I_model->fetch($query_filters) as $i){
     $body_content .= '<tr>';
     $body_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
     $body_content .= '<td style="text-align: right;">'.$total_units.'x</td>';
-    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format(( $total_units > 0 ? $total_revenue / $total_units : 0 ), 2).'</td>';
+    $body_content .= '<td style="text-align: right;">$'.number_format(( $total_units > 0 ? $total_revenue / $total_units : 0 ), 2).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($total_revenue, 2).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($total_commission, 2).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
@@ -105,18 +105,18 @@ foreach($this->I_model->fetch($query_filters) as $i){
 
 }
 
-echo '<div<a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></div>';
+echo '<div style="text-align: center; font-size: 0.7em;"><a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');">Toggle Advance Columns</a></div>';
 
 
 echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
 echo '<tr style="vertical-align: baseline;">';
 echo '<th id="th_primary">Paid Ideas</th>';
 echo '<th style="text-align: right;" id="th_paid">Unit</th>';
-echo '<th style="text-align: right;" class="advance_columns hidden" id="th_average">Average</th>';
+echo '<th style="text-align: right;" id="th_average">Average</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Revenue</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Commission</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal Fee</th>';
-echo '<th style="text-align: right;" id="th_payout">Payout</th>';
+echo '<th style="text-align: right;" id="th_payout">NET Payout</th>';
 echo '<th style="text-align: right;" id="th_currency">Currency</th>';
 echo '</tr>';
 echo $body_content;
@@ -124,7 +124,7 @@ echo $body_content;
 echo '<tr>';
 echo '<th style="text-align: right;" id="th_primary">Totals</th>';
 echo '<th style="text-align: right;">'.$gross_units.'x</th>';
-echo '<th style="text-align: right;" class="advance_columns hidden">$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
+echo '<th style="text-align: right;">$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden">+$'.number_format($gross_revenue, 2).'</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
