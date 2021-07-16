@@ -73,6 +73,7 @@ foreach($this->I_model->fetch($query_filters) as $i){
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($x__metadata['mc_fee']/$x__metadata['mc_gross']*100).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
         $transaction_content .= '<td style="text-align: right;" title="'.(( $x__metadata['mc_gross']>0 ? $this_payout/$x__metadata['mc_gross'] : 0 )*100).'%"><b>$'.number_format($this_payout, 2).'</b></td>';
         $transaction_content .= '<td style="text-align: right;">'.$x__metadata['mc_currency'].'</td>';
+        $transaction_content .= '<td style="text-align: right;"><a href="#" style="font-weight:bold;">Refund</a></td>';
         $transaction_content .= '</tr>';
 
     }
@@ -99,6 +100,7 @@ foreach($this->I_model->fetch($query_filters) as $i){
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
     $body_content .= '<td style="text-align: right;" title="'.(( $total_revenue>0 ? $payout/$total_revenue : 0 )*100).'%"><b>$'.number_format($payout, 2).'</b></td>';
     $body_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
+    $body_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'" style="font-weight:bold;">Idea</a></td>';
     $body_content .= '</tr>';
     $body_content .= $transaction_content;
 
@@ -118,6 +120,7 @@ echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payou
 echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal Fee</th>';
 echo '<th style="text-align: right;" id="th_payout">NET Payout</th>';
 echo '<th style="text-align: right;" id="th_currency">Currency</th>';
+echo '<th style="text-align: right;">Action</th>';
 echo '</tr>';
 echo $body_content;
 
@@ -130,6 +133,7 @@ echo '<th style="text-align: right;" class="advance_columns hidden" title="'.($c
 echo '<th style="text-align: right;" class="advance_columns hidden" title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
 echo '<th style="text-align: right;" title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></th>';
 echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
+echo '<th style="text-align: right;">&nbsp;</th>';
 echo '</tr>';
 echo '</table>';
 
