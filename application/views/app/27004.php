@@ -27,7 +27,7 @@ if (isset($_GET['i__id']) && substr_count($_GET['i__id'], ',') > 0) {
 //List all payment Ideas and their total earnings
 $body_content = '';
 $ids = '';
-foreach($this->I_model->fetch($query_filters, array(), 0, 0, array('i__title' => 'ASC')) as $i){
+foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) as $i){
 
     //Total earnings:
     $transaction_content = '';
