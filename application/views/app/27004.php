@@ -86,14 +86,14 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     echo $body_content;
 
     echo '<tr>';
-    echo '<th style="text-align: right;font-weight: bold; " id="th_primary">Totals</th>';
-    echo '<th style="text-align: right;font-weight: bold; ">'.$gross_units.'x</th>';
-    echo '<th style="text-align: right;font-weight: bold; ">$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
-    echo '<th style="text-align: right;font-weight: bold; ">+$'.number_format($gross_revenue, 2).'</th>';
-    echo '<th style="text-align: right;font-weight: bold; " title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
-    echo '<th style="text-align: right;font-weight: bold; " title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
-    echo '<th style="text-align: right;font-weight: bold; " title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></th>';
-    echo '<th style="text-align: right;font-weight: bold; ">'.join(', ',$gross_currencies).'</th>';
+    echo '<th style="text-align: right;" id="th_primary">Totals</th>';
+    echo '<th style="text-align: right;">'.$gross_units.'x</th>';
+    echo '<th style="text-align: right;">$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
+    echo '<th style="text-align: right;">+$'.number_format($gross_revenue, 2).'</th>';
+    echo '<th style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
+    echo '<th style="text-align: right;" title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
+    echo '<th style="text-align: right;" title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></th>';
+    echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
     echo '</tr>';
     echo '</table>';
 
@@ -149,8 +149,10 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
         cursor: ns-resize !important;
         border: 0 !important;
     }
-    th td{
+    tr th{
        padding: 8px 0;
+        font-weight: bold;
+        font-size: 1.2em;
     }
     th:hover, th:active{
         background-color: #FFF;
