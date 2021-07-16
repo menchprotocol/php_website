@@ -26,7 +26,8 @@ if (isset($_GET['i__id']) && substr_count($_GET['i__id'], ',') > 0) {
 
 //List all payment Ideas and their total earnings
 $body_content = '';
-foreach($this->I_model->fetch($query_filters) as $i){
+$ids = '';
+foreach($this->I_model->fetch($query_filters, array(), 0, 0, array('i__title' => 'ASC')) as $i){
 
     //Total earnings:
     $transaction_content = '';
@@ -34,6 +35,7 @@ foreach($this->I_model->fetch($query_filters) as $i){
     $total_revenue = 0;
     $total_paypal_fee = 0;
     $currencies = array();
+    $ids .= $i['i__id'].',';
 
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -64,8 +66,8 @@ foreach($this->I_model->fetch($query_filters) as $i){
         $this_payout = $x__metadata['mc_gross']-$x__metadata['mc_fee']-$this_commission;
 
 
-        $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden">';
-        $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].' #'.$x['x__id'].'</div></td>';
+        $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden" title="Transaction #'.$x['x__id'].'">';
+        $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
         $transaction_content .= '<td style="text-align: right;">1x</td>';
         $transaction_content .= '<td style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($x__metadata['mc_gross'], 2).'</td>';
@@ -107,7 +109,7 @@ foreach($this->I_model->fetch($query_filters) as $i){
 
 }
 
-echo '<div style="text-align: center;"><a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="color: transparent;">Toggle Advance Columns</a></div>';
+echo '<div style="text-align: center;"><a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" class="texttransparent">Toggle Advance Columns</a></div>';
 
 
 echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
@@ -136,6 +138,7 @@ echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
 echo '<th style="text-align: right;">&nbsp;</th>';
 echo '</tr>';
 echo '</table>';
+echo '<div class="texttransparent">'.$ids.'</div>';
 
 
 ?>
