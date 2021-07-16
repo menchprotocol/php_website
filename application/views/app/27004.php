@@ -72,9 +72,9 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
 
     $table_sortable = array('#th_primary','#th_average','#th_rev');
 
-    echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
+    echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
     echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-    echo '<th id="th_primary">Ideas</th>';
+    echo '<th id="th_primary">Paid Ideas</th>';
     echo '<th style="text-align: right;" id="th_paid">Unit</th>';
     echo '<th style="text-align: right;" id="th_average">Average</th>';
     echo '<th style="text-align: right;" id="th_rev">Revenue</th>';
@@ -84,15 +84,15 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     echo '<th style="text-align: right;" id="th_currency">Currency</th>';
     echo '</tr>';
     echo $body_content;
-    echo '<tr style="font-size: 1.2em; font-weight: bold; padding: 5px 0;">';
-    echo '<th style="text-align: right;" id="th_primary">Totals</th>';
-    echo '<th style="text-align: right;">'.$gross_units.'x</th>';
-    echo '<th style="text-align: right;">$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
-    echo '<th style="text-align: right;">+$'.number_format($gross_revenue, 2).'</th>';
-    echo '<th style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
-    echo '<th style="text-align: right;" title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
-    echo '<th style="text-align: right;" title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></th>';
-    echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
+    echo '<tr>';
+    echo '<th style="text-align: right; padding: 5px 0;font-weight: bold; " id="th_primary">Totals</th>';
+    echo '<th style="text-align: right; padding: 5px 0;font-weight: bold; ">'.$gross_units.'x</th>';
+    echo '<th style="text-align: right; padding: 5px 0;font-weight: bold; ">$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
+    echo '<th style="text-align: right; padding: 5px 0;font-weight: bold; ">+$'.number_format($gross_revenue, 2).'</th>';
+    echo '<th style="text-align: right; padding: 5px 0;font-weight: bold; " title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
+    echo '<th style="text-align: right; padding: 5px 0;font-weight: bold; " title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
+    echo '<th style="text-align: right; padding: 5px 0;font-weight: bold; " title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></th>';
+    echo '<th style="text-align: right; padding: 5px 0;font-weight: bold; ">'.join(', ',$gross_currencies).'</th>';
     echo '</tr>';
     echo '</table>';
 
