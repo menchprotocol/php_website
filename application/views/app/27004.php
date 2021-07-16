@@ -58,12 +58,12 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
         $body_content .= '<tr>';
 
         $body_content .= '<td><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
-        $body_content .= '<td>'.$total_units.'x</td>';
-        $body_content .= '<td>$'.number_format(( $total_units > 0 ? $total_revenue / $total_units : 0 ), 2).'</td>';
-        $body_content .= '<td>+$'.number_format($total_revenue, 2).'</td>';
-        $body_content .= '<td title="'.($commission_rate*100).'%">-$'.number_format($total_commission, 2).'</td>';
-        $body_content .= '<td title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
-        $body_content .= '<td title="'.(( $total_revenue>0 ? $payout/$total_revenue : 0 )*100).'%"><b>$'.number_format($payout, 2).'</b></td>';
+        $body_content .= '<td style="text-align: right;">'.$total_units.'x</td>';
+        $body_content .= '<td style="text-align: right;">$'.number_format(( $total_units > 0 ? $total_revenue / $total_units : 0 ), 2).'</td>';
+        $body_content .= '<td style="text-align: right;">+$'.number_format($total_revenue, 2).'</td>';
+        $body_content .= '<td style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($total_commission, 2).'</td>';
+        $body_content .= '<td style="text-align: right;" title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
+        $body_content .= '<td style="text-align: right;" title="'.(( $total_revenue>0 ? $payout/$total_revenue : 0 )*100).'%"><b>$'.number_format($payout, 2).'</b></td>';
         $body_content .= '<td>'.join(', ',$currencies).'</td>';
         $body_content .= '</tr>';
 
@@ -75,24 +75,24 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
     echo '<tr style="font-weight:bold; vertical-align: baseline;">';
     echo '<th id="th_primary">Ideas</th>';
-    echo '<th id="th_paid">Unit</th>';
-    echo '<th id="th_average">Average</th>';
-    echo '<th id="th_rev">Revenue</th>';
-    echo '<th id="th_payout">Commission</th>';
-    echo '<th id="th_payout">Paypal Fee</th>';
-    echo '<th id="th_payout">Payout</th>';
+    echo '<th style="text-align: right;" id="th_paid">Unit</th>';
+    echo '<th style="text-align: right;" id="th_average">Average</th>';
+    echo '<th style="text-align: right;" id="th_rev">Revenue</th>';
+    echo '<th style="text-align: right;" id="th_payout">Commission</th>';
+    echo '<th style="text-align: right;" id="th_payout">Paypal Fee</th>';
+    echo '<th style="text-align: right;" id="th_payout">Payout</th>';
     echo '<th id="th_currency">Currency</th>';
     echo '</tr>';
     echo $body_content;
-    echo '<tr>';
-    echo '<td id="td_primary"></td>';
-    echo '<td>'.$gross_units.'x</td>';
-    echo '<td>$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</td>';
-    echo '<td>+$'.number_format($gross_revenue, 2).'</td>';
-    echo '<td title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</td>';
-    echo '<td title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</td>';
-    echo '<td title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></td>';
-    echo '<td>'.join(', ',$gross_currencies).'</td>';
+    echo '<tr style="font-size: 1.2em; font-weight: bold; padding: 5px 0;">';
+    echo '<th id="th_primary">Totals</th>';
+    echo '<th>'.$gross_units.'x</th>';
+    echo '<th>$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
+    echo '<th>+$'.number_format($gross_revenue, 2).'</th>';
+    echo '<th title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
+    echo '<th title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
+    echo '<th title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></th>';
+    echo '<th>'.join(', ',$gross_currencies).'</th>';
     echo '</tr>';
     echo '</table>';
 
