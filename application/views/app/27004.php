@@ -64,8 +64,8 @@ foreach($this->I_model->fetch($query_filters) as $i){
         $this_payout = $x__metadata['mc_gross']-$x__metadata['mc_fee']-$this_commission;
 
 
-        $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden" title="Transaction ID '.$x['x__id'].'">';
-        $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
+        $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden">';
+        $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].' #'.$x['x__id'].'</div></td>';
         $transaction_content .= '<td style="text-align: right;">1x</td>';
         $transaction_content .= '<td style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($x__metadata['mc_gross'], 2).'</td>';
