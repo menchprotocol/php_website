@@ -73,7 +73,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     $table_sortable = array('#th_primary','#th_average','#th_rev');
 
     echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
-    echo '<tr style="font-weight:bold; vertical-align: baseline;">';
+    echo '<tr style="vertical-align: baseline;">';
     echo '<th id="th_primary">Paid Ideas</th>';
     echo '<th style="text-align: right;" id="th_paid">Unit</th>';
     echo '<th style="text-align: right;" id="th_average">Average</th>';
@@ -84,6 +84,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     echo '<th style="text-align: right;" id="th_currency">Currency</th>';
     echo '</tr>';
     echo $body_content;
+
     echo '<tr>';
     echo '<th style="text-align: right; padding: 5px 0;font-weight: bold; " id="th_primary">Totals</th>';
     echo '<th style="text-align: right; padding: 5px 0;font-weight: bold; ">'.$gross_units.'x</th>';
@@ -139,7 +140,6 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
     }
     .table-striped td {
         border-bottom: 1px dotted #f0f0f0 !important;
-        font-size: 1.3em;
     }
     .fa-filter, .fa-sort{
         font-size: 1.1em !important;
