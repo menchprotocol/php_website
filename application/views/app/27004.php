@@ -65,7 +65,7 @@ foreach($this->I_model->fetch($query_filters) as $i){
 
 
         $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden">';
-        $transaction_content .= '<td><div style="padding-left: 34px;"><span style="display: inline-block;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).'</span>'.$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
+        $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
         $transaction_content .= '<td style="text-align: right;">1x</td>';
         $transaction_content .= '<td style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td style="text-align: right;">+$'.number_format($x__metadata['mc_gross'], 2).'</td>';
@@ -86,7 +86,9 @@ foreach($this->I_model->fetch($query_filters) as $i){
     $gross_commission += $total_commission;
     $gross_payout += $payout;
 
-
+    if(fmod($total_units, 2)==1){
+        $transaction_content .= '<tr class="tr_row hidden"></tr>';
+    }
 
     $body_content .= '<tr>';
     $body_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
@@ -100,10 +102,9 @@ foreach($this->I_model->fetch($query_filters) as $i){
     $body_content .= '</tr>';
     $body_content .= $transaction_content;
 
+
 }
 
-
-$table_sortable = array('#th_primary','#th_average','#th_rev');
 
 echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
 echo '<tr style="vertical-align: baseline;">';
@@ -186,42 +187,3 @@ echo '</table>';
         width: 8px;
     }
 </style>
-<script>
-
-    $(document).ready(function () {
-        var table = $('#sortable_table');
-        $('<?= join(', ', $table_sortable) ?>')
-            .each(function(){
-
-                var th = $(this),
-                    thIndex = th.index(),
-                    inverse = false;
-
-                th.click(function(){
-
-                    table.find('td').filter(function(){
-
-                        return $(this).index() === thIndex;
-
-                    }).sortElements(function(a, b){
-
-                        return $.text([a]) < $.text([b]) ?
-                            inverse ? -1 : 1
-                            : inverse ? 1 : -1;
-
-                    }, function(){
-
-                        return this.parentNode;
-
-                    });
-
-                    inverse = !inverse;
-
-                });
-
-            });
-
-    });
-</script>
-
-
