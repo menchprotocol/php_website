@@ -65,7 +65,7 @@ foreach($this->I_model->fetch($query_filters) as $i){
 
 
         $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden">';
-        $transaction_content .= '<td><div style="padding-left: 34px;">'.$x__metadata['first_name'].' '.$x__metadata['last_name'].' <span style="display: inline-block;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold;"><u>'.$es[0]['e__title'].'</u></a>' : 'Unknown user @'.$item_parts[3] ).'</span></div></td>';
+        $transaction_content .= '<td><div style="padding-left: 34px;"><span style="display: inline-block;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).'</span>'.$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
         $transaction_content .= '<td style="text-align: right;">1x</td>';
         $transaction_content .= '<td style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td style="text-align: right;">+$'.number_format($x__metadata['mc_gross'], 2).'</td>';
