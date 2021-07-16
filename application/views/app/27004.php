@@ -150,7 +150,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])){
         border: 0 !important;
     }
     tr th{
-       padding: 8px 0;
+       padding: 8px 0 !important;
         font-weight: bold;
         font-size: 1.2em;
     }
