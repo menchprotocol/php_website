@@ -1633,7 +1633,8 @@ i, .btn .show-max {
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
 .icon-block { width:41px !important; display: inline-grid; text-align: center; overflow: hidden; line-height: 110% !important; }
-.icon-block-xxs{ width:24px !important; display: inline-grid; text-align: center; overflow: hidden; line-height: 110% !important; }
+.icon-block-xxs{ width:20px !important; display: inline-grid; text-align: center; overflow: hidden; line-height: 110% !important; }
+.icon-block-xxs i{ font-size: 0.8em !important; }
 .icon-block-xs{ width:33px !important; display: inline-grid; text-align: center; overflow: hidden; line-height: 110% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; }
 .icon-block-img img,
