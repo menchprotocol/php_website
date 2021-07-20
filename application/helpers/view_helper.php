@@ -859,7 +859,19 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
         $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
 
+    } elseif($x__type==11019){
+
+        $query_filters = array(
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__right' => $i['i__id'],
+        );
+        $query = $CI->X_model->fetch($query_filters);
+        $count_query = count($query);
+
     }
+
 
 
 
@@ -880,11 +892,11 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
 
         $e___14874 = $CI->config->item('e___14874'); //COINS
         $first_segment = $CI->uri->segment(1);
-        $coin_icon = '<span class="icon-block-xs">'.$e___14874[$x__type]['m__cover'].'</span>';
-        $coin_count = number_format($count_query, 0);
+        $coin_icon = '<span class="icon-block-xxs">'.$e___14874[$x__type]['m__cover'].'</span>';
+        $coin_count = view_number($count_query);
 
         $ui = '<div class="dropdown inline-block">';
-        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $x__type==12274 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
+        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).'">'.( $x__type==12274 || $x__type==11019 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
         $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
 
         if($x__type==12274){
@@ -919,12 +931,40 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
                 $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i).$message_tooltip, view_x__message($next_i['x__message'],$next_i['x__type']));
             }
         } elseif($x__type==6255){
+
             //DISCOVERIES / SOURCES
             $e___4593 = $CI->config->item('e___4593'); //Transaction Types
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__source'), 10, 0, array('x__id' => 'DESC')) as $source_e) {
                 $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
             }
+
+        } elseif($x__type==11019){
+
+            //PREVIOUS IDEAS
+            $e___4737 = $CI->config->item('e___4737'); //Idea Types
+            $superpower_10939 = superpower_active(10939, true);
+            $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
+            foreach($query as $prev_i) {
+                $message_tooltip = '';
+                if($superpower_10939){
+                    $messages = '';
+                    foreach($CI->X_model->fetch(array(
+                        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'x__type' => 4231,
+                        'x__right' => $prev_i['i__id'],
+                    ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
+                        $messages .= $mes['x__message'].' ';
+                    }
+                    if($messages){
+                        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+                        $message_tooltip = '<span class="icon-block" title="'.$messages.'">'.$e___11035[4231]['m__cover'].'</span>';
+                    }
+                }
+
+                $ui .= view_coin_line('/~'.$prev_i['i__id'], $prev_i['i__id']==$current_i, $e___4737[$prev_i['i__type']]['m__cover'], view_cover(12273,$prev_i['i__cover']), view_i_title($prev_i).$message_tooltip, view_x__message($prev_i['x__message'],$prev_i['x__type']));
+            }
+
         }
         $ui .= '</div>';
         $ui .= '</div>';
@@ -1739,7 +1779,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
                 if($e__id==14937 && $editing_enabled){
                     $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
-                } elseif($e__id==12589 && superpower_active(12700, true)){
+                } elseif($e__id==12589 && $superpower_12700){
                     $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title '.superpower_active(12700).'">'.$anchor.'</a>';
                 } elseif($e__id==4603 && $has_sortable){
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item x_sort css__title">'.$anchor.'</a>'; //SORT
@@ -1784,6 +1824,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //Previous Ideas
+    /*
     if(!$discovery_mode && $editing_enabled && $superpower_12673){
         $ui .= '<div class="hideIfEmpty coin-hover" style="padding-top:5px;">';
         foreach($CI->X_model->fetch(array(
@@ -1797,7 +1838,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         }
         $ui .= '</div>';
     }
-
+    */
 
 
     //TITLE
@@ -1926,9 +1967,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: right;"><div>'.view_coins_i(12274,  $i).'</div></td>';
-        $ui .= '<td width="34%" class="center">'.view_coins_i(12273,  $i).'</td>';
-        $ui .= '<td width="33%" class="push_down" style="text-align: left;"><div class="i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i).'</div></td>';
+        $ui .= '<td width="25%" class="push_down" style="text-align: right;"><div>'.view_coins_i(11019,  $i).'</div></td>';
+        $ui .= '<td width="25%" class="center" style="text-align: right;"><div>'.view_coins_i(12274,  $i).'</div></td>';
+        $ui .= '<td width="25%" class="center">'.view_coins_i(12273,  $i).'</td>';
+        $ui .= '<td width="25%" class="push_down" style="text-align: left;"><div class="i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i).'</div></td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
 
