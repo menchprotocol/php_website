@@ -684,6 +684,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
      * */
 
     $CI =& get_instance();
+    $first_segment = $CI->uri->segment(1);
 
     if($x__type==12274){
 
@@ -738,12 +739,14 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
 
     } elseif($x__type==11030){
 
+        $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
         $join_objects = array('x__up');
         $limit = 0;
         $order_columns = array('e__spectrum' => 'DESC');
         $query_filters = array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__down' => $e__id, //This child source
+            'x__up !=' => $current_e, //This child source
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
@@ -777,7 +780,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             }
 
             $e___11035 = $CI->config->item('e___11035'); //COINS
-            $first_segment = $CI->uri->segment(1);
             $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
             $coin_count = view_number($count_query);
 
@@ -798,7 +800,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             } elseif($x__type==11030){
                 //PROFILES
                 $e___4593 = $CI->config->item('e___4593'); //Transaction Types
-                $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
                 foreach($CI->X_model->fetch($query_filters, $join_objects, 0, 0, array(
                     'x__spectrum' => 'DESC',
                 )) as $source_e) {
@@ -841,6 +842,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
      * */
 
     $CI =& get_instance();
+    $first_segment = $CI->uri->segment(1);
 
     if($x__type==12274){
 
@@ -882,11 +884,13 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
 
     } elseif($x__type==11019){
 
+        $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i['i__id'],
+            'x__left !=' => $current_i,
         );
         $query = $CI->X_model->fetch($query_filters, array('x__left'), 0);
         $count_query = count($query);
@@ -912,7 +916,6 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
         }
 
         $e___11035 = $CI->config->item('e___11035'); //COINS
-        $first_segment = $CI->uri->segment(1);
         $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
         $coin_count = view_number($count_query);
 
@@ -965,7 +968,6 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
             //PREVIOUS IDEAS
             $e___4737 = $CI->config->item('e___4737'); //Idea Types
             $superpower_10939 = superpower_active(10939, true);
-            $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
             foreach($query as $prev_i) {
                 $message_tooltip = '';
                 if($superpower_10939){
