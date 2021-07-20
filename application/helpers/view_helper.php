@@ -890,9 +890,9 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
             return '<div class="emptycoin">&nbsp;</div>';
         }
 
-        $e___14874 = $CI->config->item('e___14874'); //COINS
+        $e___11035 = $CI->config->item('e___11035'); //COINS
         $first_segment = $CI->uri->segment(1);
-        $coin_icon = '<span class="icon-block-xxs">'.$e___14874[$x__type]['m__cover'].'</span>';
+        $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
         $coin_count = view_number($count_query);
 
         $ui = '<div class="dropdown inline-block">';
