@@ -896,7 +896,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
         $coin_count = view_number($count_query);
 
         $ui = '<div class="dropdown inline-block">';
-        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).'">'.( $x__type==12274 || $x__type==11019 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
+        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).'">'.( $x__type==12273 || $x__type==11019 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
         $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
 
         if($x__type==12274){
@@ -1821,24 +1821,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //Title Cover
     $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';
-
-
-    //Previous Ideas
-    /*
-    if(!$discovery_mode && $editing_enabled && $superpower_12673){
-        $ui .= '<div class="hideIfEmpty coin-hover" style="padding-top:5px;">';
-        foreach($CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__right' => $i['i__id'],
-            'x__left !=' => $current_i,
-        ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC')) as $previous_i) {
-            $ui .= '<span class="icon-block-img"><a href="/~'.$previous_i['i__id'].'" title="' . $previous_i['i__title'] . '">' . $e___4737[$previous_i['i__type']]['m__cover'] . '</a></span> ';
-        }
-        $ui .= '</div>';
-    }
-    */
 
 
     //TITLE
