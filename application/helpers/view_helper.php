@@ -779,10 +779,10 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             $e___11035 = $CI->config->item('e___11035'); //COINS
             $first_segment = $CI->uri->segment(1);
             $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
-            $coin_count = number_format($count_query, 0);
+            $coin_count = view_number($count_query);
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $x__type==12274 || $x__type==11030 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).'">'.( $x__type==12274 || $x__type==11030 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
             $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$e__id.'">';
 
             if($x__type==12274){
