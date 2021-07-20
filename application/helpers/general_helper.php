@@ -732,7 +732,7 @@ function superpower_active($superpower_e__id, $boolean_only = false){
     if( intval($superpower_e__id)>0 ){
 
         $CI =& get_instance();
-        $is_match = (superpower_unlocked() ? in_array(intval($superpower_e__id), $CI->session->userdata('session_superpowers_activated')) : false);
+        $is_match = ( superpower_unlocked($superpower_e__id) ? ( in_array($superpower_e__id, $CI->session->userdata('session_superpowers_activated')) ? true : false ) : false);
 
         if($boolean_only){
             return $is_match;
