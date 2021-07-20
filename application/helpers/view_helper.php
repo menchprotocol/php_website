@@ -896,7 +896,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
         $coin_count = view_number($count_query);
 
         $ui = '<div class="dropdown inline-block">';
-        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).'">'.( $x__type==12273 || $x__type==11019 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
+        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).'">'.( $x__type==12274 || $x__type==11019 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
         $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
 
         if($x__type==12274){
@@ -1950,8 +1950,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
         $ui .= '<table class="coin_coins"><tr>';
         $ui .= '<td width="25%" class="push_down" style="text-align: right;"><div>'.view_coins_i(11019,  $i).'</div></td>';
-        $ui .= '<td width="25%" class="center">'.view_coins_i(12273,  $i).'</td>';
-        $ui .= '<td width="25%" class="center"><div>'.view_coins_i(12274,  $i).'</div></td>';
+        $ui .= '<td width="25%" class="" style="text-align: right;">'.view_coins_i(12273,  $i).'</td>';
+        $ui .= '<td width="25%" class="" style="text-align: left;"><div>'.view_coins_i(12274,  $i).'</div></td>';
         $ui .= '<td width="25%" class="push_down" style="text-align: left;"><div class="i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i).'</div></td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
