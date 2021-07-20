@@ -1949,10 +1949,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="25%" class="center push_down"><div>'.view_coins_i(11019,  $i).'</div></td>';
+        $ui .= '<td width="25%" class="push_down" style="text-align: right;"><div>'.view_coins_i(11019,  $i).'</div></td>';
         $ui .= '<td width="25%" class="center">'.view_coins_i(12273,  $i).'</td>';
         $ui .= '<td width="25%" class="center"><div>'.view_coins_i(12274,  $i).'</div></td>';
-        $ui .= '<td width="25%" class="center push_down"><div class="i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i).'</div></td>';
+        $ui .= '<td width="25%" class="push_down" style="text-align: left;"><div class="i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i).'</div></td>';
         $ui .= '</tr></table>';
         $ui .= '</div>';
 
