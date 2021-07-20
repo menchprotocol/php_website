@@ -867,7 +867,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i['i__id'],
         );
-        $query = $CI->X_model->fetch($query_filters);
+        $query = $CI->X_model->fetch($query_filters, array('x__left'), 0);
         $count_query = count($query);
 
     }
