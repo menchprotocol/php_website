@@ -390,7 +390,7 @@ if($top_i__id) {
                     echo '<li>Click next to Pay '.$e___26661[$x_completes[0]['x__up']]['m__title'].' '.$x_completes[0]['x__message'].' via Paypal ✅</li>';
                     echo '<li>Login OR checkout as a guest without Paypal account ✅</li>';
                     echo '<li>Click "<span style="color: #FF0000;">Return to Merchant</span>" at the end to continue here ✅</li>';
-                    echo '</ol>';
+                echo '</ol>';
             echo '</div>';
 
         }
