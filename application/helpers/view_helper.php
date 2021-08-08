@@ -1798,19 +1798,29 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
             foreach($CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' )) as $e__id => $m) {
 
+                //Skip if missing superpower:
+                $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
+                if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+                    //Missing Superpower
+                    continue;
+                }
+
                 $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
 
                 if($e__id==14937 && $editing_enabled){
                     $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
-                } elseif($e__id==12589 && $superpower_12700){
-                    $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title '.superpower_active(12700).'">'.$anchor.'</a>';
+                } elseif($e__id==12589){
+                    $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
                 } elseif($e__id==4603 && $has_sortable){
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item x_sort css__title">'.$anchor.'</a>'; //SORT
                 } elseif($e__id==6155 && $control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155'))){
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'">'.$anchor.'</a>'; //UNLINK
-                } elseif($e__id==26001 && superpower_active(12701, true)){
+                } elseif($e__id==26001){
                     //Reset discoveries
-                    $action_buttons .= '<a href="javascript:void(0);" onclick="i_reset_discoveries('.$i['i__id'].')" class="dropdown-item css__title '.superpower_active(12701).' i_reset_discoveries_'.$i['i__id'].'">'.$anchor.'</a>';
+                    $action_buttons .= '<a href="javascript:void(0);" onclick="i_reset_discoveries('.$i['i__id'].')" class="dropdown-item css__title i_reset_discoveries_'.$i['i__id'].'">'.$anchor.'</a>';
+                } elseif(substr($m['m__message'], 0, 1)=='/'){
+                    //Standard button
+                    $action_buttons .= '<a href="'.$m['m__message'].$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
                 }
             }
 
