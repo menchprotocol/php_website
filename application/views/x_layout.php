@@ -383,7 +383,15 @@ if($top_i__id) {
 
         } else {
 
-            echo '<div class="msg alert alert-warning" role="alert">Next you will be redirect to Paypal to complete your payment.<br />You can choose to login to your Paypal account or just pay as a guest using your credit card or debit card.<br />Everyone is asked to complete their own payment as you cannot pay for someone else.</div>';
+            $e___26661 = $this->config->item('e___26661');
+            echo '<div class="msg alert alert-warning" role="alert">';
+                echo '<h2 style="color: #FF0000;">🚨 Important Payment Guide:</h2>';
+                echo '<ol>';
+                    echo '<li>Click next to Pay '.$e___26661[$x_completes[0]['x__up']]['m__title'].' '.$x_completes[0]['x__message'].' via Paypal ✅</li>';
+                    echo '<li>Login OR checkout as a guest without Paypal account ✅</li>';
+                    echo '<li>Click "<span style="color: #FF0000;">Return to Merchant</span>" at the end to continue here ✅</li>';
+                    echo '</ol>';
+            echo '</div>';
 
         }
 
