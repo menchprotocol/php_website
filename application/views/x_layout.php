@@ -365,7 +365,27 @@ if($top_i__id) {
 
     } elseif ($i_focus['i__type'] == 26560) {
 
-        if(isset($_GET['cancel_pay']) && !count($x_completes)){
+        //Fetch Value
+        $total_dues = $this->X_model->fetch(array(
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__up' => 26562, //Total Due
+            'x__right' => $i_focus['i__id'],
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ));
+
+        $valid_payment = false;
+        if($x__source>0 && count($total_dues)){
+            $detected_x_type = x_detect_type($total_dues[0]['x__message']);
+            if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
+                $valid_payment = true;
+            }
+        }
+
+        if(!$valid_payment){
+
+            echo '<div class="msg alert alert-danger" role="alert">Error: Idea missing valid payment amount.</div>';
+
+        } elseif(isset($_GET['cancel_pay']) && !count($x_completes)){
 
             echo '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
 
@@ -385,11 +405,11 @@ if($top_i__id) {
 
             $e___26661 = $this->config->item('e___26661');
             echo '<div class="msg alert alert-warning" role="alert">';
-                echo '<h2 style="color: #FF0000;">🚨 Important Payment Guide:</h2>';
-                echo '<ol>';
-                    echo '<li>Click next to Pay '.$e___26661[$x_completes[0]['x__up']]['m__title'].' '.$x_completes[0]['x__message'].' via Paypal ✅</li>';
-                    echo '<li>Login OR checkout as a guest without Paypal account ✅</li>';
-                    echo '<li>Click "<span style="color: #FF0000;">Return to Merchant</span>" at the end to continue here ✅</li>';
+                echo '<h2 style="color: #FF0000;">🚨 How to Pay:</h2>';
+                echo '<ol style="text-align: left;">';
+                    echo '<li>Click next to Pay '.$total_dues[0]['x__message'].' via Paypal</li>';
+                    echo '<li>You can checkout as a guest (No Paypal account needed)</li>';
+                    echo '<li>Click "<span style="color: #FF0000;">Return to Merchant</span>" at the end to continue here</li>';
                 echo '</ol>';
             echo '</div>';
 
@@ -497,46 +517,28 @@ if(!$top_i__id){
 
             $control_btn = null;
 
-            if($i_focus['i__type'] == 26560 && !count($x_completes)){
+            if($i_focus['i__type'] == 26560 && !count($x_completes) && $valid_payment){
 
-                //Fetch Value
-                $total_dues = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                    'x__up' => 26562, //Total Due
-                    'x__right' => $i_focus['i__id'],
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ));
+                //Break down amount & currency
+                $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
 
-                if($x__source>0 && count($total_dues)){
+                //Load Paypal Pay button:
+                $control_btn = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
+                $control_btn .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
+                $control_btn .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
+                $control_btn .= '<input type="hidden" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
+                $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
+                $control_btn .= '<input type="hidden" name="amount" value="'.$currency_parts[1].'">';
+                $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
+                $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
+                $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?cancel_pay=1">';
+                $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1">';
+                $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
 
-                    $detected_x_type = x_detect_type($total_dues[0]['x__message']);
+                $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="$"><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].' '.$total_dues[0]['x__message'].'</span>';
+                //$control_btn .= '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="document.getElementById(\'paypal_form\').submit();">'.$e___4737[$i_focus['i__type']]['m__cover'].'</a><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].'</span>';
 
-                    if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
-
-                        //Break down amount & currency
-                        $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
-
-                        //Load Paypal Pay button:
-                        $control_btn = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
-                        $control_btn .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
-                        $control_btn .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
-                        $control_btn .= '<input type="hidden" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
-                        $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
-                        $control_btn .= '<input type="hidden" name="amount" value="'.$currency_parts[1].'">';
-                        $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
-                        $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
-                        $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?cancel_pay=1">';
-                        $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1">';
-                        $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
-
-                        $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="$"><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].' '.$total_dues[0]['x__message'].'</span>';
-                        //$control_btn .= '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="document.getElementById(\'paypal_form\').submit();">'.$e___4737[$i_focus['i__type']]['m__cover'].'</a><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].'</span>';
-
-                        $control_btn .= '</form>';
-
-                    }
-
-                }
+                $control_btn .= '</form>';
 
             }
 
