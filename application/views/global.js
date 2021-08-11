@@ -1352,7 +1352,7 @@ function i__add(x__type, link_i__id) {
     }
 
     //Set processing status:
-    input_field.addClass('dynamic_saving').prop("disabled", true);
+    input_field.addClass('dynamic_saving');
     add_to_list("list-in-" + x__type, sort_handler, '<div id="tempLoader" class="col-md-4 col-6 col-xl-2 col-lg-3 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
 
 
@@ -1366,7 +1366,7 @@ function i__add(x__type, link_i__id) {
 
         //Delete loader:
         $("#tempLoader").remove();
-        input_field.removeClass('dynamic_saving').prop("disabled", false).focus();
+        input_field.removeClass('dynamic_saving').focus();
         i_is_adding = false;
 
         if (data.status) {
