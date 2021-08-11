@@ -174,7 +174,7 @@ function x_reply_save(go_next_url){
 
 function x_reply(go_next_url){
 
-    if($('#x_reply').hasClass('phone_verify') && js_pl_id==1){
+    if($('#x_reply').hasClass('phone_verify_4783') && js_pl_id==1){
 
         console.log('Phone verification initiated');
 
@@ -189,7 +189,7 @@ function x_reply(go_next_url){
             .then((json) => {
                 if (!json.success) {
                     console.log(json.error);
-                    alert('Error: Phone number ['+$('#x_reply').val()+'] is not valid, please try again.');
+                    alert('Error: Phone number ['+$('#x_reply').val()+'] is not valid, please try again. Example: 7788826962');
                     return false;
                 } else {
                     x_reply_save(go_next_url);

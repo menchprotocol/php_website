@@ -424,7 +424,7 @@ if($top_i__id) {
                 'x__type' => 7545, //Profile Add
                 'x__right' => $i_focus['i__id'],
                 'x__up' => 4783, //Phone
-            ))) ? ' phone_verify ' : '' ).'" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
+            ))) ? ' phone_verify_4783 ' : '' ).'" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
 
         if (count($x_completes)) {
             //Next Ideas:
