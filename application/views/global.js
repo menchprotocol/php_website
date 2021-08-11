@@ -1332,7 +1332,7 @@ function i__add(x__type, link_i__id) {
      *
      * */
 
-    if(i_is_adding){
+    if(i_is_adding && js_pl_id!=1){
         return false;
     }
 
