@@ -192,7 +192,8 @@ function x_reply(go_next_url){
                     alert('Error: Phone number ['+$('#x_reply').val()+'] is not valid, please try again. Example: 7788826962');
                     return false;
                 } else {
-                    x_reply_save(go_next_url);
+                    console.log(json);
+                    //x_reply_save(go_next_url);
                 }
             })
             .catch((err) => {
