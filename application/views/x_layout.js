@@ -197,6 +197,7 @@ function x_reply(go_next_url){
                 }
             })
             .catch((err) => {
+                console.log(err);
                 alert("Something went wrong: ${err}");
                 return false;
             });
