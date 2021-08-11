@@ -174,6 +174,10 @@ function x_reply_save(go_next_url){
 
 function x_reply(go_next_url){
 
+    x_reply_save(go_next_url);
+
+    /*
+
     if($('#x_reply').hasClass('phone_verify_4783') && js_pl_id==1){
 
         console.log('Phone verification initiated');
@@ -185,21 +189,18 @@ function x_reply(go_next_url){
             method: "POST",
             body: data,
         })
-            .then((response) => {
-                response.json();
-                console.log(response);
-            })
+            .then((response) => response.json())
             .then((json) => {
                 if (!json.success) {
                     console.log(json.error);
                     alert('Error: Phone number ['+$('#x_reply').val()+'] is not valid, please try again. Example: 7788826962');
                     return false;
                 } else {
+                    console.log(response);
                     //x_reply_save(go_next_url);
                 }
             })
             .catch((err) => {
-                console.log(err);
                 alert("Something went wrong: ${err}");
                 return false;
             });
@@ -207,6 +208,7 @@ function x_reply(go_next_url){
     } else {
         x_reply_save(go_next_url);
     }
+    */
 
 }
 
