@@ -185,14 +185,16 @@ function x_reply(go_next_url){
             method: "POST",
             body: data,
         })
-            .then((response) => response.json())
+            .then((response) => {
+                response.json();
+                console.log(response);
+            })
             .then((json) => {
                 if (!json.success) {
                     console.log(json.error);
                     alert('Error: Phone number ['+$('#x_reply').val()+'] is not valid, please try again. Example: 7788826962');
                     return false;
                 } else {
-                    console.log(response);
                     //x_reply_save(go_next_url);
                 }
             })
