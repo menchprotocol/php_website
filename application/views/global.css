@@ -3066,10 +3066,6 @@ font-weight: bold !important;
     background-color: #999999 !important;
 }
 
-.form-control:disabled:not(.dynamic_saving) {
-    background-color: transparent !important;
-}
-
 .table-striped tbody tr:nth-of-type(odd){
     background-color: transparent;
 }
