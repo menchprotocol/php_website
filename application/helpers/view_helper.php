@@ -1162,7 +1162,8 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e){
 
 
     //$is_open = !$found_first_incomplete && $found_first_complete; //Open if all are completed
-    $is_open = $found_first_complete; //Open if at least one is completed
+    //$is_open = $found_first_complete; //Open if at least one is completed
+    $is_open = false; //Do not open for now...
     $ui = '';
 
     //Show idea type?
