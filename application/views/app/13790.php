@@ -122,7 +122,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => $e['e__id'],
             ));
 
-            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : view_cover(12273,$e['e__cover']) ) : '' );
+            //$message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : view_cover(12273,$e['e__cover']) ) : '' );
+            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? '<span class="underdot" title="'.$fetch_data[0]['x__message'].'">'.view_cover(12273,$e['e__cover']).'</span>' : view_cover(12273,$e['e__cover']) ) : '' );
 
             if(isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] && count($fetch_data)){
                 array_push($skip_filter, $x['e__id']);
