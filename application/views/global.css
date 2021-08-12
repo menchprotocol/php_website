@@ -2853,8 +2853,11 @@ font-weight: bold !important;
     cursor: text !important;
 }
 .select-btns{
-    padding:34px 13px;
+    padding:55px 8px;
     text-align:center;
+}
+.select-btns .btn{
+    font-size: 2.1em;
 }
 
 .doabsolute {
