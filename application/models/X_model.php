@@ -1526,7 +1526,7 @@ class X_model extends CI_Model
 
                 if($x_tag['x__up']==13025){
 
-                    if($member_e && strlen($add_fields['x__message'])>=5){
+                    if($member_e && strlen(trim($add_fields['x__message']))>=2){
 
                         //Update full name for current user:
                         $this->E_model->update($member_e['e__id'], array(
