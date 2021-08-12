@@ -2857,7 +2857,7 @@ font-weight: bold !important;
     text-align:center;
 }
 .select-btns .btn{
-    font-size: 2.1em;
+    font-size: 2.1em !important;
 }
 
 .doabsolute {
