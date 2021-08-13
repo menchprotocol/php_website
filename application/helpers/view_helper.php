@@ -1176,7 +1176,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e){
 
         //LIST TYPE
         if($x__type==13980){
-            $body .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
+            $body .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . ':</a></div>';
         }
 
         $ui .= view_headline($x__type, null, $e___11035[$x__type], $body, true);
