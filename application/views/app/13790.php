@@ -122,8 +122,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__up' => $e['e__id'],
             ));
 
-            //$message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : view_cover(12273,$e['e__cover']) ) : '' );
-            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? '<span class="underdot" title="'.$fetch_data[0]['x__message'].'">'.view_cover(12273,$e['e__cover']).'</span>' : view_cover(12273,$e['e__cover']) ) : '' );
+
+            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( isset($_GET['expand']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '<span class="underdot" title="'.$fetch_data[0]['x__message'].'">'.view_cover(12273,$e['e__cover']).'</span>' ) : view_cover(12273,$e['e__cover']) ) : '' );
 
             if(isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] && count($fetch_data)){
                 array_push($skip_filter, $x['e__id']);
@@ -153,7 +153,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 array_push($skip_filter, $x['e__id']);
             }
 
-            $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top" class="underdot">'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover(12273,$i['i__cover']) ).'</span>'  : '').'</td>';
+            $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top" class="underdot">'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top" class="underdot">'.view_cover(12273,$i['i__cover']).'</span>'  ) : '<span title="'.$i['i__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover(12273,$i['i__cover']) ).'</span>'  : '').'</td>';
 
             if(count($discoveries)){
                 if(!isset($count_totals['i'][$i['i__id']])){
