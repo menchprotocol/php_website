@@ -1176,7 +1176,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e){
 
         //LIST TYPE
         if($x__type==13980){
-            $body .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . ':</a></div>';
+            $body .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
         }
 
         $ui .= view_headline($x__type, null, $e___11035[$x__type], $body, true);
@@ -2004,7 +2004,7 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
     } else {
         $CI =& get_instance();
         $e___26006 = $CI->config->item('e___26006'); //Toggle Headline
-        return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . ( !is_null($counter) ? '<span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span> ' : '' ).$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'"><span class="icon_26007 '.( !$is_open ? ' hidden ' : '' ).'">'.$e___26006[26008]['m__cover'].'</span><span class="icon_26008 '.( $is_open ? ' hidden ' : '' ).'">'.$e___26006[26007]['m__cover'].'</span></span></a>'.'<div class="headlinebody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
+        return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . ( !is_null($counter) ? '<span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span> ' : '' ).$m['m__title'].':<span class="icon-block pull-right headline_title_'.$x__type.'"><span class="icon_26007 '.( !$is_open ? ' hidden ' : '' ).'">'.$e___26006[26008]['m__cover'].'</span><span class="icon_26008 '.( $is_open ? ' hidden ' : '' ).'">'.$e___26006[26007]['m__cover'].'</span></span></a>'.'<div class="headlinebody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
     }
 }
 
