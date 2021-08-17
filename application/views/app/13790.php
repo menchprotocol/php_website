@@ -31,8 +31,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     $e___6287 = $this->config->item('e___6287'); //APP
     $is = $this->I_model->fetch(array(
         'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
-
-    ));
+    ), 0, 0, array('i__id' => 'ASC'));
     if(!count($is)){
         die('Invalid Idea ID');
     }
