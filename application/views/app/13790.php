@@ -250,6 +250,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         text-align: left;
         width: 8px;
     }
+
+    td{
+        max-width: 89px !important;
+        overflow: hidden;
+    }
 </style>
 <script>
 
