@@ -171,8 +171,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
     $table_sortable = array('#th_primary','#th_done');
+    $e___6287 = $this->config->item('e___6287'); //APP
 
-    echo '<div class="show-on-hover"><a href="/-26582?i__id='.$_GET['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></div>';
+
+    echo '<h1>'.$e___6287[13790]['m__title'].' <a href="/-26582?i__id='.$_GET['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></h1>';
+
 
     foreach($is as $loaded_i){
         echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'">'.view_cover(12273,$loaded_i['i__cover']).'<u>'.$loaded_i['i__title'].'</u></a></h2>';
