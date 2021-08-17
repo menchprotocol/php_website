@@ -13,7 +13,7 @@ $(document).ready(function () {
     i_note_activate();
 
     //Keep track of message link clicks:
-    $('.should-click').click(function (e) {
+    $('.should-click').click(function(e) {
         $('#click_count').val(parseInt($('#click_count').val())+1);
     });
 
@@ -51,7 +51,7 @@ $(document).ready(function () {
 function go_next(go_next_url){
 
     //Click Requirement?
-    if(parseInt($('#must_click').val()) && !parseInt($('#click_count').val())){
+    if(parseInt($('#must_click').val()) && $(".should-click")[0] && !parseInt($('#click_count').val())){
         alert('Click on the link ['+$('.should-click:first').text()+'] before going next.');
         return false;
     }

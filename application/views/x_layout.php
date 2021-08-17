@@ -53,7 +53,6 @@ $i_stats = i_stats($i_focus['i__metadata']);
 
 if($top_i__id){
 
-
     $is_this = $this->I_model->fetch(array(
         'i__id' => $top_i__id,
     ));
