@@ -11,10 +11,6 @@ function includes_any($string, $items)
     return false;
 }
 
-function valid_image_url($file) {
-    $size = getimagesize($file);
-    return (strtolower(substr($size['mime'], 0, 5)) == 'image' ? true : false);
-}
 
 function load_algolia($index_name)
 {

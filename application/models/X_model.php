@@ -1543,18 +1543,27 @@ class X_model extends CI_Model
 
                 } elseif($x_tag['x__up']==26139){
 
-                    //Make sure submission is image:
-                    if($member_e && valid_image_url($add_fields['x__message'])){
+                    //Make sure submission is image source reference:
+                    foreach($this->X_model->fetch(array(
+                        'x__type' => 4260, //IMAGES
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__down' => intval(str_replace('@','',$add_fields['x__message'])),
+                    ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $profile){
+                        $url_e = $this->E_model->url($profile['x__message']);
+                        if($member_e && $url_e['status'] && $url_e['x__type']==4260){
 
-                        //Update profile picture for current user:
-                        $this->E_model->update($member_e['e__id'], array(
-                            'e__cover' => $add_fields['x__message'],
-                        ), true, $member_e['e__id']);
+                            //Update profile picture for current user:
+                            $this->E_model->update($member_e['e__id'], array(
+                                'e__cover' => $add_fields['x__message'],
+                            ), true, $member_e['e__id']);
 
-                        //Update live session as well:
-                        $member_e['e__cover'] = $add_fields['x__message'];
-                        $this->E_model->activate_session($member_e, true);
+                            //Update live session as well:
+                            $member_e['e__cover'] = $add_fields['x__message'];
+                            $this->E_model->activate_session($member_e, true);
 
+                            break;
+
+                        }
                     }
 
                 } else {
