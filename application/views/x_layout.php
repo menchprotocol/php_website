@@ -31,14 +31,21 @@ $i_stats = i_stats($i_focus['i__metadata']);
 
 
 ?>
-
 <script>
     var focus_i__type = <?= $i_focus['i__type'] ?>;
 </script>
 
 <input type="hidden" id="focus__type" value="12273" />
 <input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
-<input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
+    <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
+    <input type="hidden" id="click_count" value="0" />
+    <input type="hidden" id="must_click" value="<?= count($this->X_model->fetch(array(
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__up' => 27178, //Require Link Click
+    'x__right' => $i_focus['i__id'],
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    ))) ?>" />
+
 <script src="/application/views/x_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 <?php
