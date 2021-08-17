@@ -461,7 +461,7 @@ if($top_i__id) {
         } else {
 
             //for when added:
-            echo '<div class="file_saving_result"></div>';
+            echo '<div class="file_saving_result center"></div>';
 
         }
 
