@@ -110,7 +110,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             ));
 
 
-            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( isset($_GET['expand']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '<span class="underdot" title="'.$fetch_data[0]['x__message'].'">'.view_cover(12273,$e['e__cover']).'</span>' ) : view_cover(12273,$e['e__cover']) ) : '' );
+            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( isset($_GET['expand']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '<span class="underdot" title="'.$fetch_data[0]['x__message'].'">'.view_cover(12273,$e['e__cover'], '✔️').'</span>' ) : view_cover(12273,$e['e__cover'], '✔️') ) : '' );
 
             if(isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] && count($fetch_data)){
                 array_push($skip_filter, $x['e__id']);
@@ -140,7 +140,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 array_push($skip_filter, $x['e__id']);
             }
 
-            $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top" class="underdot">'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top" class="underdot">'.view_cover(12273,$i['i__cover']).'</span>'  ) : '<span title="'.$i['i__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover(12273,$i['i__cover']) ).'</span>'  : '').'</td>';
+            $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top" class="underdot">'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top" class="underdot">'.view_cover(12273,$i['i__cover'], '✔️').'</span>'  ) : '<span title="'.$i['i__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover(12273,$i['i__cover'], '✔️') ).'</span>'  : '').'</td>';
 
             if(count($discoveries)){
                 if(!isset($count_totals['i'][$i['i__id']])){
@@ -189,7 +189,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     echo '<th id="th_done">Done</th>';
     foreach($column_sources as $e){
         array_push($table_sortable, '#th_e_'.$e['e__id']);
-        echo '<th id="th_e_'.$e['e__id'].'">'.view_cover(12274,$e['e__cover'], '✔️').'<span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&e_filter='.$e['e__id'].'&i_filter='.( isset($_GET['i_filter']) ? $_GET['i_filter'] : '' ).'">'.( isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?e__id='.$e['e__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
+        echo '<th id="th_e_'.$e['e__id'].'">'.view_cover(12274,$e['e__cover']).'<span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&e_filter='.$e['e__id'].'&i_filter='.( isset($_GET['i_filter']) ? $_GET['i_filter'] : '' ).'">'.( isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?e__id='.$e['e__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
     }
     foreach($column_ideas as $i){
         $has_limits = $this->X_model->fetch(array(
@@ -199,7 +199,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             'x__up' => 26189,
         ), array(), 1);
         array_push($table_sortable, '#th_i_'.$i['i__id']);
-        echo '<th id="th_i_'.$i['i__id'].'">'.view_cover(12273,$i['i__cover'], '✔️').'<span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'&e_filter='.( isset($_GET['e_filter']) ? $_GET['e_filter'] : '' ).'">'.( isset($_GET['i_filter']) && $_GET['i_filter']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?i__id='.$i['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span><i class="fas fa-sort"></i>'.$i['i__title'].'</span></th>';
+        echo '<th id="th_i_'.$i['i__id'].'">'.view_cover(12273,$i['i__cover']).'<span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'&e_filter='.( isset($_GET['e_filter']) ? $_GET['e_filter'] : '' ).'">'.( isset($_GET['i_filter']) && $_GET['i_filter']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?i__id='.$i['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : '0' ).(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? '/'.$has_limits[0]['x__message'] : '').'</span><i class="fas fa-sort"></i>'.$i['i__title'].'</span></th>';
     }
     //echo '<th>STARTED</th>';
     echo '</tr>';
