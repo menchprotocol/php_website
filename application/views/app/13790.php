@@ -178,7 +178,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     echo '<h2>';
     foreach($is as $loaded_i){
-        echo '<a href="/i/i_go/'.$loaded_i['i__id'].'">'.view_cover(12273,$loaded_i['i__cover']).' '.$loaded_i['i__title'].'</a> ';
+        echo '<a href="/i/i_go/'.$loaded_i['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$loaded_i['i__cover']).'</span> '.$loaded_i['i__title'].'</a> ';
     }
     echo '</h2>';
 
