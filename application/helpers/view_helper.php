@@ -368,7 +368,7 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 }
 
 
-function view_cover($coin__type, $cover_code)
+function view_cover($coin__type, $cover_code, $noicon_default = null)
 {
     //A simple function to display the Member Icon OR the default icon if not available:
     if(filter_var($cover_code, FILTER_VALIDATE_URL)){
@@ -382,6 +382,10 @@ function view_cover($coin__type, $cover_code)
     } elseif(strlen($cover_code)) {
 
         return $cover_code;
+
+    } elseif($noicon_default) {
+
+        return $noicon_default;
 
     } else {
 
