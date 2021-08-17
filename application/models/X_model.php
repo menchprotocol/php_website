@@ -1524,6 +1524,8 @@ class X_model extends CI_Model
                 'x__right' => $i['i__id'],
             )) as $x_tag){
 
+                //Check if special profile add?
+
                 if($x_tag['x__up']==13025){
 
                     if($member_e && strlen(trim($add_fields['x__message']))>=2){
@@ -1535,6 +1537,24 @@ class X_model extends CI_Model
 
                         //Update live session as well:
                         $member_e['e__title'] = $add_fields['x__message'];
+                        $this->E_model->activate_session($member_e, true);
+
+                    }
+
+                } elseif($x_tag['x__up']==26139){
+
+                    //Make sure submission is image:
+                    $url_e = $this->E_model->url($add_fields['x__message']);
+
+                    if($member_e && $url_e['status'] && $url_e['x__type']==4260){
+
+                        //Update profile picture for current user:
+                        $this->E_model->update($member_e['e__id'], array(
+                            'e__cover' => $add_fields['x__message'],
+                        ), true, $member_e['e__id']);
+
+                        //Update live session as well:
+                        $member_e['e__cover'] = $add_fields['x__message'];
                         $this->E_model->activate_session($member_e, true);
 
                     }
