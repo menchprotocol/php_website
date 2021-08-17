@@ -172,7 +172,12 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
     $table_sortable = array('#th_primary','#th_done');
-    echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'"><u>'.$is[0]['i__title'].'</u></a> <a href="/-26582?i__id='.$_GET['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></h2>';
+
+    echo '<div class="show-on-hover"><a href="/-26582?i__id='.$_GET['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></div>';
+
+    foreach($is as $loaded_i){
+        echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'">'.view_cover(12273,$loaded_i['i__cover']).'<u>'.$loaded_i['i__title'].'</u></a></h2>';
+    }
 
     echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
