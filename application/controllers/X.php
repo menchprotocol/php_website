@@ -456,7 +456,7 @@ class X extends CI_Controller
             if(!i_is_startable($is[0])){
 
                 //Try to find the top registrable idea:
-                $top_startable = $this->I_model->top_startable($i__id);
+                $top_startable = $this->I_model->top_startable($is[0]);
                 if(count($top_startable)){
 
                     return redirect_message('/'.$top_startable[0]['i__id']);
