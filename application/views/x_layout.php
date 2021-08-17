@@ -470,7 +470,7 @@ if($top_i__id) {
         }
 
         //UPLOAD BUTTON:
-        echo '<div class="margin-top-down"><label class="btn btn-6255 inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
+        echo '<div class="select-btns"><label class="btn btn-6255 inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
 
 
         echo '<div class="doclear">&nbsp;</div>';
@@ -491,7 +491,7 @@ if(!$top_i__id){
     $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
     //Get Started
-    echo '<div class="nav-controller margin-top-down center"><a class="controller-nav btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
+    echo '<div class="nav-controller select-btns"><a class="controller-nav btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
 
 } else {
 
