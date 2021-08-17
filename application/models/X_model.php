@@ -1544,9 +1544,7 @@ class X_model extends CI_Model
                 } elseif($x_tag['x__up']==26139){
 
                     //Make sure submission is image:
-                    $url_e = $this->E_model->url($add_fields['x__message']);
-
-                    if($member_e && $url_e['status'] && $url_e['x__type']==4260){
+                    if($member_e && valid_image_url($add_fields['x__message'])){
 
                         //Update profile picture for current user:
                         $this->E_model->update($member_e['e__id'], array(
