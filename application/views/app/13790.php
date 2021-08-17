@@ -177,11 +177,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     echo '<h1>'.$e___6287[13790]['m__title'].' <a href="/-26582?i__id='.$_GET['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></h1>';
 
     echo '<h2>';
-    foreach($is as $count => $loaded_i){
-        if($count > 0){
-            echo ', ';
-        }
-        echo '<a href="/i/i_go/'.$loaded_i['i__id'].'">'.view_cover(12273,$loaded_i['i__cover']).' '.$loaded_i['i__title'].'</a>';
+    foreach($is as $loaded_i){
+        echo '<a href="/i/i_go/'.$loaded_i['i__id'].'">'.view_cover(12273,$loaded_i['i__cover']).' '.$loaded_i['i__title'].'</a> ';
     }
     echo '</h2>';
 
