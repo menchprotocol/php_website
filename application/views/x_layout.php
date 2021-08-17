@@ -452,11 +452,7 @@ if($top_i__id) {
         if (count($x_completes)) {
 
             echo '<div class="file_saving_result">';
-
-            echo '<div class="headline"><span class="icon-block">' . $e___11035[13977]['m__cover'] . '</span>' . $e___11035[13977]['m__title'] . '</div>';
-
-            echo '<div class="previous_answer">' . $this->X_model->message_view($x_completes[0]['x__message'], true) . '</div>';
-
+            echo view_headline(13977, null, $e___11035[13977], $this->X_model->message_view($x_completes[0]['x__message'], true), true);
             echo '</div>';
 
             //Any child ideas?
