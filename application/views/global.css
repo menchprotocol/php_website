@@ -1693,6 +1693,7 @@ i, .btn .show-max {
     display: block;
     float: left;
     text-align: center;
+    overflow: visible;
 }
 
 .icon-block-lg img {
