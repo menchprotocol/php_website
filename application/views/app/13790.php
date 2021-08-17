@@ -7,7 +7,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     echo '<div class="form-group" style="max-width:550px; margin:1px 0 10px; display: inline-block;">
                     <div class="input-group border">
                         <span class="input-group-addon addon-lean addon-grey" style="color:#222222; font-weight: 300;">Start #</span>
-                        <input style="padding-left:3px; min-width:56px;" type="number" name="i__id" value="'.( isset($_GET['i__id']) ? $_GET['i__id'] : '' ).'" class="form-control">
+                        <input style="padding-left:3px; min-width:56px;" type="text" name="i__id" value="'.( isset($_GET['i__id']) ? $_GET['i__id'] : '' ).'" class="form-control">
                         
                         <br />
                         <span class="input-group-addon addon-lean addon-grey" style="color:#222222; font-weight: 300;">Idea Tree #</span>
@@ -30,7 +30,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     //Fetch Main Idea:
     $e___6287 = $this->config->item('e___6287'); //APP
     $is = $this->I_model->fetch(array(
-        'i__id' => $_GET['i__id'],
+        'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
+
     ));
     if(!count($is)){
         die('Invalid Idea ID');
