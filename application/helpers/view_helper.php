@@ -1894,7 +1894,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         if($messages){
             $message_tooltip = '<span class="icon-block-xs mini-font" title="'.$messages.'">'.$e___11035[4231]['m__cover'].'</span>';
         }
+    } elseif($discovery_mode && $can_click && isset($i['x__message']) && strlen($i['x__message'])>0){
+        $message_tooltip = '<span class="icon-block-xs mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</span>';
     }
+
+
     $view_i_time = view_i_time($i_stats);
     $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . ( $view_i_time ? $view_i_time : '&nbsp;' ).$message_tooltip . '</div>';
 
