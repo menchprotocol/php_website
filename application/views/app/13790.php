@@ -47,15 +47,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     }
 
     $column_ideas = array();
-    $i__trees = array();
 
     if(isset($_GET['i__tree_id']) && strlen($_GET['i__tree_id'])){
-
-        $i__trees = $this->I_model->fetch(array(
-            'i__id' => intval($_GET['i__tree_id']),
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-        ));
-
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
@@ -188,11 +181,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         echo '<a href="/i/i_go/'.$loaded_i['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$loaded_i['i__cover']).'</span> '.$loaded_i['i__title'].'</a> ';
     }
     echo '</h2>';
-
-    if(count($i__trees)){
-        echo '<h2><a href="/i/i_go/'.$i__trees[0]['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$i__trees[0]['i__cover']).'</span> '.$i__trees[0]['i__title'].'</a></h2>';
-    }
-
 
     echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
