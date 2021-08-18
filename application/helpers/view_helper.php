@@ -2180,7 +2180,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
 
                 //Reset my discoveries
                 array_push($list_buttons , $e__id);
-                $action_buttons .= '<a href="javascript:void(0);" onclick="e_reset_discoveries()" class="dropdown-item css__title">'.$anchor.'</a>';
+                $action_buttons .= '<a href="javascript:void(0);" onclick="e_reset_discoveries('.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif(substr($m['m__message'], 0, 1)=='/') {
 
