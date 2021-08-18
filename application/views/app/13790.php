@@ -183,14 +183,14 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     //echo '<h1>'.$e___6287[13790]['m__title'].' <a href="/-26582?i__id='.$_GET['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></h1>';
 
-    echo '<h1>';
+    echo '<h2>';
     foreach($is as $loaded_i){
         echo '<a href="/i/i_go/'.$loaded_i['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$loaded_i['i__cover']).'</span> '.$loaded_i['i__title'].'</a> ';
     }
-    echo '</h1>';
+    echo '</h2>';
 
     if(count($i__trees)){
-        echo '<h2><a href="/i/i_go/'.$i__trees[0]['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$i__trees[0]['i__cover']).'</span> '.$i__trees[0]['i__title'].'</a><h2>';
+        echo '<h2><a href="/i/i_go/'.$i__trees[0]['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$i__trees[0]['i__cover']).'</span> '.$i__trees[0]['i__title'].'</a></h2>';
     }
 
 
