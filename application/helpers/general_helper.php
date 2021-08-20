@@ -1124,7 +1124,7 @@ function analyze_domain($full_url){
 }
 
 
-function js_redirect($url, $timer){
+function js_redirect($url, $timer = 13){
     echo '<script>
     $(document).ready(function () {
         setTimeout(function () {
