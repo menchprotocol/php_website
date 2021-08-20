@@ -26,10 +26,12 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             'x__up' => 4430, //Member
             'x__down' => $es[0]['e__id'],
         )))){
+
             return view_json(array(
                 'status' => 0,
                 'message' => 'Source is not a member',
             ));
+
         } else {
 
             session_delete();
