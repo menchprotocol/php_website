@@ -1,6 +1,6 @@
 <?php
 
-if(!isset($_GET['e__id'])) {
+if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
     return view_json(array(
         'status' => 0,
         'message' => 'Missing e__id',
@@ -9,7 +9,7 @@ if(!isset($_GET['e__id'])) {
 
     //Login as user:
     $es = $this->E_model->fetch(array(
-        'e__id' => $_POST['e__id'],
+        'e__id' => intval($_GET['e__id']),
     ));
 
     if (!count($es) || !in_array($es[0]['e__type'], $this->config->item('n___7357') /* PUBLIC */)) {
