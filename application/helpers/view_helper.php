@@ -2177,10 +2177,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
                 //Reset my discoveries
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_reset_discoveries('.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
-            } elseif(in_array($e__id, $CI->config->item('n___6287'))) {
-
-                $action_buttons .= '<a href="/'.$e__id.'?e__id='.$e['e__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
-
             } elseif(substr($m['m__message'], 0, 1)=='/') {
 
                 //Custom Anchor
