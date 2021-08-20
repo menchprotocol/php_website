@@ -1,7 +1,10 @@
 <?php
 
 if(!isset($_GET['e__id'])) {
-    echo 'Must define e__id';
+    return view_json(array(
+        'status' => 0,
+        'message' => 'Missing e__id',
+    ));
 } else {
     $member_e = superpower_unlocked();
     if($member_e){
@@ -23,10 +26,26 @@ if(!isset($_GET['e__id'])) {
                 'message' => 'Source is not public.',
             ));
         } else {
-            //Assign session & log transaction:
-            $this->E_model->activate_session($es[0]);
 
-            redirect_message('/@'.$es[0]['e__id']);
+            //Make sure member:
+            if(!count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
+                'x__up' => 4430, //Member
+                'x__down' => $es[0]['e__id'],
+            )))){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Source is not a member',
+                ));
+            } else {
+                //Assign session & log transaction:
+                $this->E_model->activate_session($es[0]);
+
+                redirect_message('/@'.$es[0]['e__id']);
+            }
+
+
         }
     }
 }
