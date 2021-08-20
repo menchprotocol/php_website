@@ -2126,7 +2126,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
 
     } elseif($source_of_e && !$cache_app) {
 
-        $list_buttons = array();
         $action_buttons = null;
 
         //Generate Buttons:
@@ -2142,54 +2141,49 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
             if($e__id==14937 && $source_of_e){
 
                 //COIN COVER
-                array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif($e__id==4997 && superpower_active(12703, true)){
 
-                array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(4997,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif($e__id==4603 && $has_sortable){
 
                 //SORT
-                array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden">'.$anchor.'</a>';
 
             } elseif($e__id==13571 && $supports_messages && $superpower_13422){
 
                 //Edit Message
-                array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif($e__id==10673 && $source_of_e && $x__id > 0){
 
                 //UNLINK
-                array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</span></a>';
 
             } elseif($e__id==14601 && !$has_any_lock && $source_of_e && superpower_active(14683, true)){
 
                 //NUCLEAR DELETE
-                array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif($e__id==13007 && $focus_coin){
 
                 //Reset Alphabetic order
-                array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_sort_reset()" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif($e__id==6415){
 
                 //Reset my discoveries
-                array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_reset_discoveries('.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
+
+            } elseif(in_array($e__id, $this->config->item('n___6287'))) {
+
+                $action_buttons .= '<a href="/'.$e__id.'?e__id='.$e['e__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif(substr($m['m__message'], 0, 1)=='/') {
 
                 //Custom Anchor
-                array_push($list_buttons , $e__id);
                 $action_buttons .= '<a href="' . $m['m__message'] . $e['e__id'] . '" class="dropdown-item css__title">'.$anchor.'</a>';
 
             }
