@@ -11,7 +11,7 @@ if(!isset($_GET['e__id'])) {
 
         //Logout first:
         session_delete();
-        redirect_message('/-27283?e__id='.$_GET['e__id'].'&logout=1');
+        js_redirect('/-27283?e__id='.$_GET['e__id'].'&logout=1');
 
     } else {
 
@@ -42,7 +42,7 @@ if(!isset($_GET['e__id'])) {
                 //Assign session & log transaction:
                 $this->E_model->activate_session($es[0]);
 
-                redirect_message('/@'.$es[0]['e__id']);
+                js_redirect('/@'.$es[0]['e__id']);
             }
 
 
