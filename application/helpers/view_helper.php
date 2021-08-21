@@ -2338,7 +2338,7 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
 
 
 
-function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
+function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $e_of_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
