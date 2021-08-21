@@ -883,7 +883,7 @@ class I_model extends CI_Model
                 'message' => 'Unknown Source. Format must be: @123 Source Title',
             );
 
-        } elseif(in_array($action_e__id , array(12611,12612,27088)) && !is_valid_i_string($action_command1)){
+        } elseif(in_array($action_e__id , array(12611,12612,27240)) && !is_valid_i_string($action_command1)){
 
             return array(
                 'status' => 0,
@@ -988,7 +988,7 @@ class I_model extends CI_Model
 
                     $applied_success++;
 
-                } elseif($action_e__id==27088){
+                } elseif($action_e__id==27240){
 
                     //Copy
                     $status = $this->I_model->duplicate($next_i, $focus__id, $x__source);
