@@ -394,22 +394,31 @@ class I_model extends CI_Model
         ), array(), 0) as $x){
 
             //Duplicate transaction, with new idea
-            $this->X_model->create(array(
-                //Copy:
+            if(!count($this->X_model->fetch(array(
                 'x__type' => $x['x__type'],
-                'x__status' => $x['x__status'],
-                'x__spectrum' => $x['x__spectrum'],
-                'x__message' => $x['x__message'],
                 'x__metadata' => $x['x__metadata'],
-                'x__up' => $x['x__up'],
-                'x__down' => $x['x__down'],
-                //Might change:
                 'x__left' => ( $x['x__left']==$i['i__id'] ? $i_new['i__id'] : $x['x__left'] ),
                 'x__right' => ( $x['x__right']==$i['i__id'] ? $i_new['i__id'] : $x['x__right'] ),
-                'x__reference' => ( $x['x__reference']>0 ? $x['x__reference'] : $x['x__id'] ), //TODO validate implications for this
-                //Always Change:
-                'x__source' => $x__source,
-            ));
+                'x__up' => $x['x__up'],
+                'x__down' => $x['x__down'],
+            )))){
+                $this->X_model->create(array(
+                    //Copy:
+                    'x__type' => $x['x__type'],
+                    'x__status' => $x['x__status'],
+                    'x__spectrum' => $x['x__spectrum'],
+                    'x__message' => $x['x__message'],
+                    'x__metadata' => $x['x__metadata'],
+                    'x__up' => $x['x__up'],
+                    'x__down' => $x['x__down'],
+                    //Might change:
+                    'x__left' => ( $x['x__left']==$i['i__id'] ? $i_new['i__id'] : $x['x__left'] ),
+                    'x__right' => ( $x['x__right']==$i['i__id'] ? $i_new['i__id'] : $x['x__right'] ),
+                    'x__reference' => ( $x['x__reference']>0 ? $x['x__reference'] : $x['x__id'] ), //TODO validate implications for this
+                    //Always Change:
+                    'x__source' => $x__source,
+                ));
+            }
 
         }
 
