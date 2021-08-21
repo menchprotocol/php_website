@@ -386,8 +386,6 @@ class I_model extends CI_Model
             'i__cover' => $i['i__cover'],
         ), $x__source);
 
-        echo print_r(array($i,$copy_to__id,$x__source,$i_new));
-
         /*
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -949,7 +947,7 @@ class I_model extends CI_Model
 
                 }
 
-            } elseif(in_array($action_e__id , array(12611, 12612))){
+            } elseif(in_array($action_e__id , array(12611, 12612, 27240))){
 
                 //Check if it hs this item:
                 $focus__id = intval(one_two_explode('#',' ',$action_command1));
