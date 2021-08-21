@@ -406,9 +406,9 @@ class I_model extends CI_Model
                 //Might change:
                 'x__left' => ( $x['x__left']==$i['i__id'] ? $i_new['i__id'] : $x['x__left'] ),
                 'x__right' => ( $x['x__right']==$i['i__id'] ? $i_new['i__id'] : $x['x__right'] ),
+                'x__reference' => ( $x['x__reference']>0 ? $x['x__reference'] : $x['x__id'] ), //TODO validate implications for this
                 //Always Change:
                 'x__source' => $x__source,
-                'x__reference' => $x['x__id'], //Replace reference, always... TODO validate implications for this
             ));
 
         }
