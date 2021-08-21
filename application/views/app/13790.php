@@ -61,6 +61,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 
+   echo view_input_dropdown(27264, ( isset($_GET['expand']) ? 27266 : 27265 ));
 
 
 

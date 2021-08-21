@@ -2369,6 +2369,16 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class, $e_of_i 
             //What type of URL?
             if($has_url_desc){
 
+                if(substr_count($m['m__message'], '=$_GET')){
+                    //Update URL:
+                    $parts = str_replace('&','',$m['m__message']);
+                    $parts = one_two_explode('?','',$parts);
+                    $parts = explode('=$_GET',$parts);
+                    foreach($parts as $part){
+                        $m['m__message'] = str_replace($part.'=$_GET',$part.'='.$_GET[$part],$m['m__message']);
+                    }
+                }
+
                 //Basic transaction:
                 $anchor_url = ( $e__id==$selected_e__id ? 'href="javascript:void();"' : 'href="'.$m['m__message'].'"' );
 
