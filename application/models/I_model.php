@@ -852,7 +852,7 @@ class I_model extends CI_Model
                 'message' => 'Unknown Source. Format must be: @123 Source Title',
             );
 
-        } elseif(in_array($action_e__id , array(12611, 12612)) && !is_valid_i_string($action_command1)){
+        } elseif(in_array($action_e__id , array(12611,12612,27088)) && !is_valid_i_string($action_command1)){
 
             return array(
                 'status' => 0,
@@ -939,6 +939,7 @@ class I_model extends CI_Model
                 //See how to adjust:
                 if($action_e__id==12611 && !count($is_previous)){
 
+                    //Link
                     $status = $this->I_model->create_or_link(11019, '', $x__source, $next_i['i__id'], $focus__id);
 
                     if($status['status']){
@@ -949,10 +950,18 @@ class I_model extends CI_Model
 
                 } elseif($action_e__id==12612 && count($is_previous)){
 
-                    //Remove Source:
+                    //Unlink
                     $this->X_model->update($is_previous[0]['x__id'], array(
                         'x__status' => 6173,
                     ), $x__source, 13579 /* IDEA NOTES Unpublished */);
+
+                    $applied_success++;
+
+                } elseif($action_e__id==27088){
+
+                    //Copy
+
+                    //TODO Copy function
 
                     $applied_success++;
 
