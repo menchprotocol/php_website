@@ -61,9 +61,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 
-   echo view_input_dropdown(27264, ( isset($_GET['expand']) ? 27266 : 27265 ));
-
-
 
     //Return UI:
     $body_content = '';
@@ -180,6 +177,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     foreach($is as $loaded_i){
         echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'"><a class="icon-block-img" href="/~'.$loaded_i['i__id'].'" target="_blank" title="Open in New Window">'.view_cover(12273,$loaded_i['i__cover']).'</a> '.$loaded_i['i__title'].'</a> <a href="/-26582?i__id='.$_GET['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></h2>';
     }
+
+    echo view_input_dropdown(27264, ( isset($_GET['expand']) ? 27266 : 27265 ));
 
     echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
