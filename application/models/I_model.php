@@ -411,11 +411,11 @@ class I_model extends CI_Model
                     'x__metadata' => $x['x__metadata'],
                     'x__up' => $x['x__up'],
                     'x__down' => $x['x__down'],
+                    'x__reference' => $x['x__reference'],
                     //Change:
                     'x__source' => $x__source,
                     'x__left' => ( $i['i__id']==$x['x__left'] ? $i_new['i__id'] : $x['x__left'] ),
                     'x__right' => ( $i['i__id']==$x['x__right'] ? $i_new['i__id'] : $x['x__right'] ),
-                    'x__reference' => ( $x['x__reference']>0 ? $x['x__reference'] : $x['x__id'] ), //TODO validate implications for this
                 ));
             }
 
