@@ -390,17 +390,17 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___27240')) . ')' => null, //COPY Transactions
-            'x__right' => $i['i__id'],
+            '(x__right='.$i['i__id'].' OR x__left='.$i['i__id'].')' => null,
         ), array(), 0) as $x){
 
             //Duplicate transaction, with new idea
             if(!count($this->X_model->fetch(array(
                 'x__type' => $x['x__type'],
                 'x__metadata' => $x['x__metadata'],
-                'x__left' => $x['x__left'],
                 'x__up' => $x['x__up'],
                 'x__down' => $x['x__down'],
-                'x__right' => $i_new['i__id'],
+                'x__left' => ( $i['i__id']==$x['x__left'] ? $i_new['i__id'] : $x['x__left'] ),
+                'x__right' => ( $i['i__id']==$x['x__right'] ? $i_new['i__id'] : $x['x__right'] ),
             )))){
                 $this->X_model->create(array(
                     //Copy:
@@ -411,10 +411,10 @@ class I_model extends CI_Model
                     'x__metadata' => $x['x__metadata'],
                     'x__up' => $x['x__up'],
                     'x__down' => $x['x__down'],
-                    'x__left' => $x['x__left'],
                     //Change:
                     'x__source' => $x__source,
-                    'x__right' => $i_new['i__id'],
+                    'x__left' => ( $i['i__id']==$x['x__left'] ? $i_new['i__id'] : $x['x__left'] ),
+                    'x__right' => ( $i['i__id']==$x['x__right'] ? $i_new['i__id'] : $x['x__right'] ),
                     'x__reference' => ( $x['x__reference']>0 ? $x['x__reference'] : $x['x__id'] ), //TODO validate implications for this
                 ));
             }
