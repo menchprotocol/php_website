@@ -381,7 +381,7 @@ class I_model extends CI_Model
     {
 
         $i_new = $this->I_model->create(array(
-            'i__title' => 'Copy Of '.$i['i__title'],
+            'i__title' => $i['i__title'],
             'i__type' => $i['i__type'],
             'i__cover' => $i['i__cover'],
         ), $x__source);
