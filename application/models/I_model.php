@@ -386,15 +386,32 @@ class I_model extends CI_Model
             'i__cover' => $i['i__cover'],
         ), $x__source);
 
-        /*
+        //Copy related transactions:
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $i['i__id'],
-        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $fetched_e){
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___27240')) . ')' => null, //COPY Transactions
+            '(x__right='.$i['i__id'].' OR x__left='.$i['i__id'].')' => null,
+        ), array(), 0) as $x){
+
+            //Duplicate transaction, with new idea
+            $this->X_model->create(array(
+                //Copy:
+                'x__type' => $x['x__type'],
+                'x__status' => $x['x__status'],
+                'x__spectrum' => $x['x__spectrum'],
+                'x__message' => $x['x__message'],
+                'x__metadata' => $x['x__metadata'],
+                'x__up' => $x['x__up'],
+                'x__down' => $x['x__down'],
+                //Might change:
+                'x__left' => ( $x['x__left']==$i['i__id'] ? $i_new['i__id'] : $x['x__left'] ),
+                'x__right' => ( $x['x__right']==$i['i__id'] ? $i_new['i__id'] : $x['x__right'] ),
+                //Always Change:
+                'x__source' => $x__source,
+                'x__reference' => $x['x__id'], //Replace reference, always... TODO validate implications for this
+            ));
 
         }
-        */
 
         return $this->I_model->create_or_link(11019, '', $x__source, $i_new['i__id'], $copy_to__id);
 
