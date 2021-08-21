@@ -377,6 +377,37 @@ class I_model extends CI_Model
 
     }
 
+    function duplicate($i, $copy_to__id, $x__source)
+    {
+
+        /*
+         *
+         * Duplicate an idea
+         *
+         *
+         * */
+
+        $i_new = $this->I_model->create(array(
+            'i__title' => 'Copy Of '.$i['i__title'],
+            'i__type' => $i['i__type'],
+            'i__duration' => $i['i__duration'],
+            'i__cover' => $i['i__cover'],
+        ), $x__source);
+
+        /*
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4231, //IDEA NOTES Messages
+            'x__right' => $i['i__id'],
+        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $fetched_e){
+
+        }
+        */
+
+        return $this->I_model->create_or_link(11019, '', $x__source, $i_new['i__id'], $copy_to__id);
+
+    }
+
     function create_or_link($x__type, $i__title, $x__source, $focus__id, $link_i__id = 0)
     {
 
@@ -960,10 +991,12 @@ class I_model extends CI_Model
                 } elseif($action_e__id==27088){
 
                     //Copy
+                    $status = $this->I_model->duplicate($next_i, $focus__id, $x__source);
 
-                    //TODO Copy function
-
-                    $applied_success++;
+                    if($status['status']){
+                        //Add Source since not there:
+                        $applied_success++;
+                    }
 
                 }
 
