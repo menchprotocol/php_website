@@ -336,7 +336,7 @@ class X extends CI_Controller
                         echo view_e(11029, $e);
                     }
                     echo '</div>';
-                    echo '<div class="show-on-hover">'.join(',',$ids).'</div>';
+                    echo '<div class="dotransparent">'.join(',',$ids).'</div>';
                 }
 
             } elseif($_POST['apply_id']==12589){
@@ -361,7 +361,7 @@ class X extends CI_Controller
                         echo view_i(13542, 0, null, $i);
                     }
                     echo '</div>';
-                    echo '<div class="show-on-hover">'.join(',',$ids).'</div>';
+                    echo '<div class="dotransparent">'.join(',',$ids).'</div>';
                 }
 
             } else {
