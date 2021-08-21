@@ -380,19 +380,13 @@ class I_model extends CI_Model
     function duplicate($i, $copy_to__id, $x__source)
     {
 
-        /*
-         *
-         * Duplicate an idea
-         *
-         *
-         * */
-
         $i_new = $this->I_model->create(array(
             'i__title' => 'Copy Of '.$i['i__title'],
             'i__type' => $i['i__type'],
-            'i__duration' => $i['i__duration'],
             'i__cover' => $i['i__cover'],
         ), $x__source);
+
+        echo print_r(array($i,$copy_to__id,$x__source,$i_new));
 
         /*
         foreach($this->X_model->fetch(array(
