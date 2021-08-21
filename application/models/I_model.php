@@ -397,6 +397,7 @@ class I_model extends CI_Model
             if(!count($this->X_model->fetch(array(
                 'x__type' => $x['x__type'],
                 'x__metadata' => $x['x__metadata'],
+                'x__message' => $x['x__message'],
                 'x__up' => $x['x__up'],
                 'x__down' => $x['x__down'],
                 'x__left' => ( $i['i__id']==$x['x__left'] ? $i_new['i__id'] : $x['x__left'] ),
