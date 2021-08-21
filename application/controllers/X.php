@@ -330,10 +330,13 @@ class X extends CI_Controller
                 } else {
                     echo '<div class="msg alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' source'.view__s($counter).':</div>';
                     echo '<div class="row justify-content-center">';
+                    $ids = array();
                     foreach(view_coins_e(12274, $_POST['coin__id'], 1) as $e) {
+                        array_push($ids, $e['e__id']);
                         echo view_e(11029, $e);
                     }
                     echo '</div>';
+                    echo '<div class="show-on-hover">'.join(',',$ids).'</div>';
                 }
 
             } elseif($_POST['apply_id']==12589){
@@ -352,10 +355,13 @@ class X extends CI_Controller
                 } else {
                     echo '<div class="msg alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' idea'.view__s($counter).':</div>';
                     echo '<div class="row justify-content-center">';
+                    $ids = array();
                     foreach($is_next as $i) {
+                        array_push($ids, $i['i__id']);
                         echo view_i(13542, 0, null, $i);
                     }
                     echo '</div>';
+                    echo '<div class="show-on-hover">'.join(',',$ids).'</div>';
                 }
 
             } else {
