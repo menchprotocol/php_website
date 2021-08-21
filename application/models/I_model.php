@@ -947,40 +947,12 @@ class I_model extends CI_Model
 
                 }
 
-            } elseif(in_array($action_e__id , array(12611, 12612, 27240))){
+            } elseif(in_array($action_e__id , array(12611,12612,27240))){
 
                 //Check if it hs this item:
                 $focus__id = intval(one_two_explode('#',' ',$action_command1));
 
-                $is_previous = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                    'x__left' => $focus__id,
-                    'x__right' => $next_i['i__id'],
-                ), array(), 0);
-
-                //See how to adjust:
-                if($action_e__id==12611 && !count($is_previous)){
-
-                    //Link
-                    $status = $this->I_model->create_or_link(11019, '', $x__source, $next_i['i__id'], $focus__id);
-
-                    if($status['status']){
-                        //Add Source since not there:
-                        $applied_success++;
-                    }
-
-
-                } elseif($action_e__id==12612 && count($is_previous)){
-
-                    //Unlink
-                    $this->X_model->update($is_previous[0]['x__id'], array(
-                        'x__status' => 6173,
-                    ), $x__source, 13579 /* IDEA NOTES Unpublished */);
-
-                    $applied_success++;
-
-                } elseif($action_e__id==27240){
+                if($action_e__id==27240){
 
                     //Copy
                     $status = $this->I_model->duplicate($next_i, $focus__id, $x__source);
@@ -990,10 +962,40 @@ class I_model extends CI_Model
                         $applied_success++;
                     }
 
+                } else {
+
+                    $is_previous = $this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                        'x__left' => $focus__id,
+                        'x__right' => $next_i['i__id'],
+                    ), array(), 0);
+
+                    //See how to adjust:
+                    if($action_e__id==12611 && !count($is_previous)){
+
+                        //Link
+                        $status = $this->I_model->create_or_link(11019, '', $x__source, $next_i['i__id'], $focus__id);
+
+                        if($status['status']){
+                            //Add Source since not there:
+                            $applied_success++;
+                        }
+
+
+                    } elseif($action_e__id==12612 && count($is_previous)){
+
+                        //Unlink
+                        $this->X_model->update($is_previous[0]['x__id'], array(
+                            'x__status' => 6173,
+                        ), $x__source, 13579 /* IDEA NOTES Unpublished */);
+
+                        $applied_success++;
+
+                    }
+
                 }
-
             }
-
         }
 
 
