@@ -413,7 +413,7 @@ function view_number($number)
     if ($number >= 950000000) {
         $formatting = array(
             'multiplier' => (1 / 1000000000),
-            'decimals' => 1,
+            'decimals' => 0,
             'suffix' => 'B',
         );
     } elseif ($number >= 9500000) {
@@ -425,7 +425,7 @@ function view_number($number)
     } elseif ($number >= 950000) {
         $formatting = array(
             'multiplier' => (1 / 1000000),
-            'decimals' => 1,
+            'decimals' => 0,
             'suffix' => 'M',
         );
     } elseif ($number >= 9500) {
@@ -437,7 +437,7 @@ function view_number($number)
     } else {
         $formatting = array(
             'multiplier' => (1 / 1000),
-            'decimals' => 1,
+            'decimals' => 0,
             'suffix' => 'K',
         );
     }
