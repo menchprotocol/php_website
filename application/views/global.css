@@ -2827,7 +2827,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .headline,
 .custom_ui_13884_13886 .headline-height,
 .custom_ui_13884_13886 .headlinebody,
-.custom_ui_13884_13886 .doabsolute, .black-background {
+.custom_ui_13884_13886 .doabsolute, .custom_ui_13884_13886 .black-background {
     background-color: #000000 !important;
     color: #FFFFFF !important;
 }
@@ -2970,7 +2970,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .headline,
 .custom_ui_13884_13885 .headline-height,
 .custom_ui_13884_13885 .headlinebody,
-.custom_ui_13884_13885 .doabsolute {
+.custom_ui_13884_13885 .doabsolute, .custom_ui_13884_13885 .black-background {
     background-color:#FFFFFF !important;
     color: #000000 !important;
 }
