@@ -142,10 +142,10 @@ class X_model extends CI_Model
             ));
         }
 
-        /*
+
 
         //See if this transaction type has any subscribers:
-        if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967){
+        if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */){
 
             $e___5967 = $this->config->item('e___5967'); //Include subscription details
             $sub_e__ids = explode(',', $e___5967[$add_fields['x__type']]['m__message']);
@@ -226,8 +226,6 @@ class X_model extends CI_Model
                 }
             }
         }
-
-        */
 
         //Return:
         return $add_fields;
