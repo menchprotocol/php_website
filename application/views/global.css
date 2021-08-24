@@ -1911,7 +1911,7 @@ i, .btn .show-max {
 
 .cover-wrapper {
     border:0;
-    margin:0 5px 0; /*0 5px 25px*/
+    margin:0 8px 0;
 }
 .form-check{
     padding: 8px 0 8px 60px;
@@ -2288,6 +2288,10 @@ video {
 }
 
 @media (max-width:767px) {
+
+    .cover-wrapper {
+        margin:0 5px 0;
+    }
 
     .coin_cover_3 {
         margin-top:-109px !important;
