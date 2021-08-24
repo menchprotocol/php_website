@@ -2847,7 +2847,9 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .black-background {
     border:3px solid #000000;
 }
-
+.black-background i{
+    color: #FFFFFF;
+}
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 .headline,
 .custom_ui_13884_13886 .headline-height,
@@ -3188,8 +3190,4 @@ font-weight: bold !important;
 }
 .dotransparent *, .btn-grey {
     background-color: transparent;
-}
-
-.black-background i{
-    color: #FFFFFF;
 }
