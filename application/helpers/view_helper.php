@@ -1778,6 +1778,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $show_coins = !$has_any_lock && !$discovery_mode;
     $show_custom_image = !$has_valid_url && $i['i__cover'];
     $can_click = !$has_any_lock && !$focus_coin;
+    $focus_list = $CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' ));
 
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-11 col-xl-5 col-lg-6 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).' no-padding coin-12273 coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
@@ -1803,7 +1804,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
         //LOCKED
         $action_buttons = null;
-        $focus_list = $CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' ));
 
         if($has_any_lock && !$focus_coin){
 
@@ -1826,8 +1826,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                     $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
                 } elseif($e__id==12589){
                     $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
-                } elseif($e__id==4603 && $has_sortable){
-                    $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item x_sort css__title">'.$anchor.'</a>'; //SORT
                 } elseif($e__id==6155 && $control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155')) && ($x__type!=6255 || $superpower_10939)){
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'">'.$anchor.'</a>'; //UNLINK
                 } elseif($e__id==26001){
@@ -2114,6 +2112,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $supports_messages && $superpower_13422 && $x__id > 0;
     $show_text_editor = $source_of_e && $control_enabled && !$has_any_lock;
     $can_click = !$focus_coin; //Allow clicking for all
+    $focus_list = $CI->config->item(( $focus_coin ? 'e___12887' : 'e___14956' ));
 
 
     //Source UI
@@ -2125,6 +2124,10 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
     if($source_of_e && $superpower_13422 && !$cache_app){
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-left">';
         $ui .= view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']);
+        $ui .= '</div>';
+
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
+        $ui .= '<span class="icon-block grey">'.view_cache(4592, $e['x__type']).'</span>';
         $ui .= '</div>';
     }
 
@@ -2145,7 +2148,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
         $action_buttons = null;
 
         //Generate Buttons:
-        foreach($CI->config->item(( $focus_coin ? 'e___12887' : 'e___14956' )) as $e__id => $m) {
+        foreach($focus_list as $e__id => $m) {
 
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
             if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
@@ -2162,11 +2165,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
             } elseif($e__id==4997 && superpower_active(12703, true)){
 
                 $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(4997,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
-
-            } elseif($e__id==4603 && $has_sortable){
-
-                //SORT
-                $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title sort_e hidden">'.$anchor.'</a>';
 
             } elseif($e__id==13571 && $supports_messages && $superpower_13422){
 
@@ -2213,6 +2211,15 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
         }
     }
     $ui .= '</div>';
+
+
+    //SORT HANDLER
+    if($has_sortable){
+        //SORT
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2right">';
+        $ui .= '<span class="sort_e hidden" title="'.$focus_list[4603]['m__title'].'"><span class="icon-block">'.$focus_list[4603]['m__cover'].'</span></span>'; //SORT
+        $ui .= '</div>';
+    }
 
     //Determine coin type: (Hack removed)
     $cointype = 'coinType12274';
