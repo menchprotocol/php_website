@@ -2021,7 +2021,7 @@ i, .btn .show-max {
     left: -8px;
 }
 .focus-coin .coin-cover-left {
-    top: 79px;
+    top: 45px;
     left: 45px;
 }
 .coin-cover-right{
@@ -2036,7 +2036,7 @@ i, .btn .show-max {
     font-size: 1.2em !important;
 }
 .focus-coin .coin-cover-right {
-    top: 79px;
+    top: 45px;
     right: 45px;
 }
 .mini-coin .coin-cover-right {
