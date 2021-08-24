@@ -59,8 +59,11 @@ body {
 .span__4356{
     display: inline-block;
 }
-.media-content, .x__message video {
-    /* max-width: 377px; */
+.media-content {
+    border-radius: 10px !important;
+}
+.x__message video {
+    max-width: 610px;
     border-radius: 10px !important;
 }
 .x__message img, .i_content img, .content-image {
@@ -70,7 +73,7 @@ body {
     display: block;
 }
 .platform-12273 .media-content, .platform-12273 .x__message video {
-    max-width: 377px;
+    max-width: 610px;
 }
 .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
     margin: 0 auto;
