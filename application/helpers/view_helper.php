@@ -2125,7 +2125,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
 
         if($x__id){
             $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
-            $ui .= '<span class="icon-block grey">'.view_cache(4592, $e['x__type']).'</span>';
+            $ui .= '<span class="icon-block grey">'.view_cache(4593, $e['x__type']).'</span>';
             $ui .= '</div>';
         }
     }
