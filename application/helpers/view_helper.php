@@ -1778,7 +1778,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $show_coins = !$has_any_lock && !$discovery_mode;
     $show_custom_image = !$has_valid_url && $i['i__cover'];
     $can_click = !$has_any_lock && !$focus_coin;
-    $focus_list = $CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' ));
 
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-11 col-xl-5 col-lg-6 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).' no-padding coin-12273 coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
@@ -1811,7 +1810,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         } elseif(!$cache_app && $control_enabled) {
 
-            foreach($focus_list as $e__id => $m) {
+            foreach($CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' )) as $e__id => $m) {
 
                 //Skip if missing superpower:
                 $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
@@ -1854,7 +1853,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //SORT HANDLER
     if($has_sortable){
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2right">';
-        $ui .= '<span class="x_sort" title="'.$focus_list[4603]['m__title'].'"><span class="icon-block">'.$focus_list[4603]['m__cover'].'</span></span>'; //SORT
+        $ui .= '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>'; //SORT
         $ui .= '</div>';
     }
 
@@ -2109,7 +2108,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $supports_messages && $superpower_13422 && $x__id > 0;
     $show_text_editor = $source_of_e && $control_enabled && !$has_any_lock;
     $can_click = !$focus_coin; //Allow clicking for all
-    $focus_list = $CI->config->item(( $focus_coin ? 'e___12887' : 'e___14956' ));
 
 
     //Source UI
@@ -2142,7 +2140,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
         $action_buttons = null;
 
         //Generate Buttons:
-        foreach($focus_list as $e__id => $m) {
+        foreach($CI->config->item(( $focus_coin ? 'e___12887' : 'e___14956' )) as $e__id => $m) {
 
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
             if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
@@ -2211,7 +2209,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
     if($has_sortable){
         //SORT
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2right">';
-        $ui .= '<span class="sort_e hidden" title="'.$focus_list[4603]['m__title'].'"><span class="icon-block">'.$focus_list[4603]['m__cover'].'</span></span>'; //SORT
+        $ui .= '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>'; //SORT
         $ui .= '</div>';
     }
 
