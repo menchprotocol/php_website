@@ -1957,9 +1957,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             //IDEA LINK BAR
             $ui .= '<span class="' . superpower_active(12700) . '">';
 
-            //LINK TYPE
-            $ui .= view_input_dropdown(4486, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
-
             //LINK MARKS
             $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
             $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $editing_enabled, ($i['x__spectrum']*10)+2 );
