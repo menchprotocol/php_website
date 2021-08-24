@@ -2018,7 +2018,7 @@ i, .btn .show-max {
 }
 .coin-cover-2left{
     top: 77px;
-    left: -13px;
+    left: -8px;
 }
 .focus-coin .coin-cover-left {
     top: 79px;
@@ -2318,7 +2318,7 @@ video {
     }
     .coin-cover-2left{
         top: 68px;
-        left: -8px;
+        left: -5px;
     }
     .coin-cover-right{
         top: 39px;
@@ -2848,7 +2848,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .black-background {
     border:3px solid #000000;
 }
-.black-background i{
+.custom_ui_13884_13886 .black-background i{
     color: #FFFFFF;
 }
 .custom_ui_13884_13886 .modal-content,
@@ -2950,6 +2950,9 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .grey-background i,
 .custom_ui_13884_13885 .coin_reverse .black-background i{
     color: #222222 !important;
+}
+.custom_ui_13884_13885 .black-background i{
+    color: #000000;
 }
 
 .custom_ui_13884_13885 a,
