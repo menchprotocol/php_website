@@ -2137,11 +2137,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
 
         $ui .= '<span title="' . $e___11035[$lock_notice]['m__title'] . '">' . $e___11035[$lock_notice]['m__cover'] . '</span>';
 
-    } elseif($locked_m){
-
-        $e___14690 = $CI->config->item('e___14690');
-        $ui .= '<span class="grey" title="' . $e___14690[$x__type]['m__title'] . '" data-toggle="tooltip" data-placement="top">' . $e___14690[$x__type]['m__cover'] . '</span>';
-
     } elseif($source_of_e && !$cache_app) {
 
         $action_buttons = null;
