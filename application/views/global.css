@@ -2288,6 +2288,13 @@ video {
     border-radius: 10px;
 }
 
+.message2{
+    padding:5px 0 0 34px;
+    font-size:0.54em;
+    line-height: 110%;
+    white-space: normal;
+}
+
 @media (max-width:767px) {
 
     .cover-wrapper {
