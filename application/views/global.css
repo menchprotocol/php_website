@@ -62,7 +62,7 @@ body {
 .media-content {
     border-radius: 10px !important;
 }
-.x__message video {
+.x__message video, .x__message .ytframe {
     max-width: 610px;
     border-radius: 10px !important;
 }
@@ -72,7 +72,7 @@ body {
     border-radius: 10px !important;
     display: block;
 }
-.platform-12273 .media-content, .platform-12273 .x__message video {
+.platform-12273 .media-content, .platform-12273 .x__message video, .platform-12273 .x__message .ytframe {
     max-width: 610px;
 }
 .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
