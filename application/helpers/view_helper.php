@@ -2126,9 +2126,11 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked
         $ui .= view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']);
         $ui .= '</div>';
 
-        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
-        $ui .= '<span class="icon-block grey">'.view_cache(4592, $e['x__type']).'</span>';
-        $ui .= '</div>';
+        if($x__id){
+            $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
+            $ui .= '<span class="icon-block grey">'.view_cache(4592, $e['x__type']).'</span>';
+            $ui .= '</div>';
+        }
     }
 
     $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
