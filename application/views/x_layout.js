@@ -106,6 +106,9 @@ function select_answer(i__id){
         //Not selected, select now:
         $('.x_select_'+i__id).addClass('coinType12273');
 
+        //Flash call to action:
+        $(".main-next").fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+
     }
 
 }

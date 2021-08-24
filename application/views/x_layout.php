@@ -547,7 +547,7 @@ if(!$top_i__id){
 
             if(!$control_btn){
                 //NEXT
-                $control_btn = '<a class="controller-nav round-btn go-next" href="#nextclick" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'<div class="extra_progress hideIfEmpty"></div></span><a name="nextclick" style="height: 1px;">&nbsp;</a>';
+                $control_btn = '<a class="controller-nav round-btn go-next main-next" href="#nextclick" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'<div class="extra_progress hideIfEmpty"></div></span><a name="nextclick" style="height: 1px;">&nbsp;</a>';
             }
 
         } elseif($e__id==26280){
