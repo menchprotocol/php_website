@@ -2013,11 +2013,11 @@ i, .btn .show-max {
 
 .coin-cover-left{
     top: 47px;
-    left: 5px;
+    left: 8px;
 }
 .coin-cover-2left{
-    top: 67px;
-    left: 0px;
+    top: 77px;
+    left: -3px;
 }
 .focus-coin .coin-cover-left {
     top: 79px;
@@ -2032,8 +2032,11 @@ i, .btn .show-max {
     right: 13px;
 }
 .coin-cover-2right{
-    top: 25px;
-    right: 5px;
+    top: 60px;
+    right: 10px;
+}
+.coin-cover-2right i{
+    font-size: 0.8em;
 }
 .focus-coin .coin-cover-right {
     top: 79px;
