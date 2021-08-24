@@ -1856,7 +1856,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     //SORT HANDLER
     if($has_sortable){
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2right">';
-        $ui .= '<span class="dropdown-item x_sort css__title" title="'.$focus_list[4603]['m__title'].'"><span class="icon-block">'.$focus_list[4603]['m__cover'].'</span></span>'; //SORT
+        $ui .= '<span class="x_sort" title="'.$focus_list[4603]['m__title'].'"><span class="icon-block">'.$focus_list[4603]['m__cover'].'</span></span>'; //SORT
         $ui .= '</div>';
     }
 

@@ -2036,7 +2036,7 @@ i, .btn .show-max {
     right: 10px;
 }
 .coin-cover-2right i{
-    font-size: 0.8em;
+    font-size: 1.2em !important;
 }
 .focus-coin .coin-cover-right {
     top: 79px;
