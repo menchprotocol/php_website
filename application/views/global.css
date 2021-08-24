@@ -2015,21 +2015,41 @@ i, .btn .show-max {
     top: 47px;
     left: 5px;
 }
+.coin-cover-2left{
+    top: 67px;
+    left: 0px;
+}
 .focus-coin .coin-cover-left {
     top: 79px;
     left: 45px;
+}
+.focus-coin .coin-cover-2left {
+    top: 99px;
+    left: 30px;
 }
 .coin-cover-right{
     top: 45px;
     right: 13px;
 }
+.coin-cover-2right{
+    top: 25px;
+    right: 5px;
+}
 .focus-coin .coin-cover-right {
     top: 79px;
     right: 45px;
 }
+.focus-coin .coin-cover-2right {
+    top: 99px;
+    right: 30px;
+}
 .mini-coin .coin-cover-right {
     top: 25px;
     right: 5px;
+}
+.mini-coin .coin-cover-2right {
+    top: 35px;
+    right: 0px;
 }
 
 .coin_coins{
@@ -2296,18 +2316,34 @@ video {
         top: 39px;
         left: 1px;
     }
+    .coin-cover-2left{
+        top: 49px;
+        left: 0;
+    }
     .coin-cover-right{
         top: 39px;
         right: 1px;
+    }
+    .coin-cover-2right{
+        top: 49px;
+        right: 0px;
     }
 
     .focus-coin .coin-cover-left{
         top: 39px;
         left: 39px;
     }
+    .focus-coin .coin-cover-2left{
+        top: 59px;
+        left: 29px;
+    }
     .focus-coin .coin-cover-right{
         top: 39px;
         right: 39px;
+    }
+    .focus-coin .coin-cover-2right{
+        top: 59px;
+        right: 29px;
     }
 
     .title-icon{

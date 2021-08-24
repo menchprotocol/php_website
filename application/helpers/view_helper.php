@@ -1784,9 +1784,18 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
     $ui .= '<div class="cover-wrapper">';
 
+
+    //IDEA TYPE
     if(!$discovery_mode && $editing_enabled){
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-left">';
         $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
+        $ui .= '</div>';
+    }
+
+    //LINK TYPE
+    if(!$has_any_lock && $toolbar && $superpower_12700 && isset($i['x__id'])){
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
+        $ui .= view_input_dropdown(4486, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
         $ui .= '</div>';
     }
 
@@ -1794,6 +1803,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-right hideIfEmpty">';
         //LOCKED
         $action_buttons = null;
+        $focus_list = $CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' ));
 
         if($has_any_lock && !$focus_coin){
 
@@ -1801,7 +1811,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         } elseif(!$cache_app && $control_enabled) {
 
-            foreach($CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' )) as $e__id => $m) {
+            foreach($focus_list as $e__id => $m) {
 
                 //Skip if missing superpower:
                 $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
@@ -1842,6 +1852,13 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
         }
     $ui .= '</div>';
+
+    //SORT HANDLER
+    if($has_sortable){
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2right">';
+        $ui .= '<a href="javascript:void(0);" class="dropdown-item x_sort css__title" title="'.$focus_list[4603]['m__title'].'"><span class="icon-block">'.$focus_list[4603]['m__cover'].'</span></a>'; //SORT
+        $ui .= '</div>';
+    }
 
 
 
@@ -1928,7 +1945,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //TOOLBAR
-    if(!$has_any_lock && $toolbar && $superpower_12700){
+    if(!$has_any_lock && $toolbar && $superpower_12700 && isset($i['x__id'])){
 
         //Idea Toolbar
         $ui .= '<div class="center coin-hover">';
