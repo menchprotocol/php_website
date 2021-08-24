@@ -2003,6 +2003,7 @@ i, .btn .show-max {
     margin: -20px 0px 13px 0px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    min-height: 34px;
 }
 
 .headlinebody.leftPad {

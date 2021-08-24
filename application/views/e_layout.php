@@ -186,6 +186,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= e_load_page(11029, 1, $limit, $counter, $trigger_hide);
         }
 
+        $ui .= '</div>';
         //Input to add new child:
         if($superpower_13422){
 
@@ -213,8 +214,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= '</div>';
         }
 
-        $ui .= '</div>';
-
     } elseif($x__type==10573){
 
         //STARRED IDEAS
@@ -234,15 +233,16 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
 
         //Any Ideas?
-        $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-10573">';
         if($counter || $source_is_e){
 
             //Need 2 or more to sort...
             $ui .= ( count($i_stars) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
 
+            $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-10573">';
             foreach($i_stars as $item){
                 $ui .= view_i(10573, 0, null, $item, $control_enabled,null, $e);
             }
+            $ui .= '</div>';
 
         }
 
@@ -262,8 +262,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= '<script> $(document).ready(function () { i_load_search(10573); }); </script>';
 
         }
-
-        $ui .= '</div>';
 
     } elseif($x__type==12273){
 
@@ -300,6 +298,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= i_load_page(13550, 1, $limit, $counter, $trigger_hide);
         }
 
+        $ui .= '</div>';
 
 
         if($superpower_10939 && !$source_is_e){
@@ -317,9 +316,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= '<script> $(document).ready(function () { i_load_search(13550); }); </script>';
 
         }
-
-        $ui .= '</div>';
-
 
     } elseif($x__type==12896){
 
@@ -350,15 +346,15 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $counter = view_coins_e($x__type, $e['e__id'], 0, false);
 
         //Show My discoveries
-        $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12969">';
-
         if($counter){
 
             $list_x  = view_coins_e($x__type, $e['e__id'], 1);
 
+            $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12969">';
             foreach($list_x as $item){
                 $ui .= view_i($x__type, $item['i__id'], null, $item,$control_enabled,null, $e);
             }
+            $ui .= '</div>';
 
         }
 
@@ -368,8 +364,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= ( $counter >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list-in-12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
         }
-
-        $ui .= '</div>';
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
