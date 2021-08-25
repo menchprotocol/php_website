@@ -77,7 +77,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
         'x__left IN (' . join(',', array($_GET['i__id'])) . ')' => null, //IDEA LINKS
-    ), array('x__source'), 0, 0, array('x__time' => 'ASC')) as $x){
+    ), array('x__source'), 0, 0, array('x__time' => 'DESC')) as $x){
 
         if(in_array($x['e__id'], $unique_users)){
             continue;

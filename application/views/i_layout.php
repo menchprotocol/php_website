@@ -197,7 +197,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
             }
 
             //Fetch Results:
-            $query = $this->X_model->fetch($query_filters, array('x__source'), view_memory(6404,11064), 0, array('x__id' => 'ASC'));
+            $query = $this->X_model->fetch($query_filters, array('x__source'), view_memory(6404,11064), 0, array('x__id' => 'DESC'));
 
             //Return UI:
             $ui .= '<div class="row justify-content-center">';
