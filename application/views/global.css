@@ -2224,6 +2224,13 @@ i, .btn .show-max {
     top: 48%;
 }
 
+.isgreen{
+    color:#009900 !important;
+}
+.isred{
+    color:#FF0000 !important;
+}
+
 .cover-btn i {
     margin-top: -27%;
     font-size: 0.87em !important;
