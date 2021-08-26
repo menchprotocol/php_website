@@ -2227,9 +2227,14 @@ i, .btn .show-max {
 .isgreen{
     color:#009900 !important;
 }
+.isorange{
+    color:#FFA500 !important;
+}
 .isred{
     color:#FF0000 !important;
 }
+
+
 
 .cover-btn i {
     margin-top: -27%;
