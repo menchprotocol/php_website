@@ -197,11 +197,13 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             'x__right' => $i['i__id'],
             'x__up' => 26189,
         ), array(), 1);
-        $current_x = (count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? intval($has_limits[0]['x__message']) : 0 );
-        $max_limit = ( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : 0 );
+        $current_x = ( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : 0 );
+        $max_limit = (count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? intval($has_limits[0]['x__message']) : 0 );
 
         array_push($table_sortable, '#th_i_'.$i['i__id']);
+
         echo '<th id="th_i_'.$i['i__id'].'"><a class="icon-block-img" href="/~'.$i['i__id'].'" target="_blank" title="Open in New Window">'.view_cover(12273,$i['i__cover']).'</a><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&i_filter='.$i['i__id'].'&e_filter='.( isset($_GET['e_filter']) ? $_GET['e_filter'] : '' ).'">'.( isset($_GET['i_filter']) && $_GET['i_filter']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?i__id='.$i['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ' isgreen '  : ' isred ' ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.$i['i__title'].'</span></th>';
+
     }
     //echo '<th>STARTED</th>';
     echo '</tr>';
