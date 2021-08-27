@@ -218,7 +218,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 <style>
 
-    <?php if(isset($_GET['expand'])){ echo ' td{ max-width: 89px !important; overflow: hidden; } '; } ?>
+    <?php if(!isset($_GET['expand'])){ echo ' td{ max-width: 89px !important; overflow: hidden; } '; } else { echo ' td{ font-size:1em !important; } '; } ?>
 
 
     /* CSS Adjustments for Printing View */
