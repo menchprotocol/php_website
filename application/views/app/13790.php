@@ -174,6 +174,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     //echo '<h1>'.$e___6287[13790]['m__title'].'</h1>';
 
+
     echo view_input_dropdown(27264, ( isset($_GET['expand']) ? 27266 : 27265 ));
 
     foreach($is as $loaded_i){
@@ -216,6 +217,10 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
 <style>
+
+    <?php if(isset($_GET['expand'])){ echo ' td{ max-width: 89px !important; overflow: hidden; } '; } ?>
+
+
     /* CSS Adjustments for Printing View */
     .fixed-top{
         background-color: transparent !important;
@@ -255,10 +260,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         width: 8px;
     }
 
-    td{
-        max-width: 89px !important;
-        overflow: hidden;
-    }
+
 </style>
 <script>
 
