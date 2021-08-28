@@ -220,6 +220,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     <?php if(!isset($_GET['expand'])){ echo ' td{ max-width: 89px !important; overflow: hidden; } '; } else { echo ' td{ font-size:1em !important; } '; } ?>
 
+    td{
+        max-height: 100px !important;
+        overflow: scroll;
+        display: block;
+    }
 
     /* CSS Adjustments for Printing View */
     .fixed-top{
