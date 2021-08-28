@@ -218,12 +218,12 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 <style>
 
-    <?php if(!isset($_GET['expand'])){ echo ' td{ max-width: 89px !important; overflow: hidden; } '; } else { echo ' td{ font-size:1em !important; } '; } ?>
+    <?php if(!isset($_GET['expand'])){ echo ' td{ max-width: 89px !important; max-height: 89px !important; overflow: scroll; } '; } else { echo ' td{ font-size:1em !important; } '; } ?>
 
     td{
-        max-height: 100px !important;
+        max-height: 144px !important;
+        max-height: 144px !important;
         overflow: scroll;
-        display: block;
     }
 
     /* CSS Adjustments for Printing View */
