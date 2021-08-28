@@ -139,7 +139,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 array_push($skip_filter, $x['e__id']);
             }
 
-            $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top" class="underdot">'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-toggle="tooltip" data-placement="top" class="underdot">'.view_cover(12273,$i['i__cover'], '✔️').'</span>'  ) : '<span title="'.$i['i__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover(12273,$i['i__cover'], '✔️') ).'</span>'  : '').'</td>';
+            $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" class="underdot">'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" class="underdot">'.view_cover(12273,$i['i__cover'], '✔️').'</span>'  ) : '<span title="'.$i['i__title'].'" data-placement="top">'.view_cover(12273,$i['i__cover'], '✔️') ).'</span>'  : '').'</td>';
 
             if(count($discoveries)){
                 if(!isset($count_totals['i'][$i['i__id']])){
@@ -220,7 +220,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     <?php if(!isset($_GET['expand'])){ echo ' td{ max-width: 89px !important; max-height: 89px !important; overflow: scroll; } '; } else { echo ' td{ font-size:1em !important; } '; } ?>
 
-    td{
+    td>span{
+        display: block;
         max-height: 144px !important;
         max-height: 144px !important;
         overflow: scroll;
