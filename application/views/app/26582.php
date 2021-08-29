@@ -33,6 +33,7 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
 
 
     $query = array();
+
     if(isset($_GET['i__id'])){
         $query = array_merge($query, $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___26582')) . ')' => null,
@@ -41,6 +42,7 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
             'x__left IN (' . $_GET['i__id'] . ')' => null, //PUBLIC
         ), array('x__source'), 0, 0, array('x__id' => 'DESC')));
     }
+
     if(isset($_GET['e__id'])){
         $query = array_merge($query, $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -62,6 +64,25 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
             continue;
         }
 
+        //Any exclusions?
+        if(isset($_GET['exclude_e']) && count($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__up IN (' . $_GET['exclude_e'] . ')' => null,
+                'x__down' => $subscriber['e__id'],
+            )))){
+            continue;
+        }
+
+        if(isset($_GET['include_e']) && !count($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__up IN (' . $_GET['include_e'] . ')' => null,
+                'x__down' => $subscriber['e__id'],
+            )))){
+            continue;
+        }
+
         array_push($already_added, $subscriber['e__id']);
 
         //Fetch email & phone:
@@ -78,7 +99,8 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
-        $e_phone = ( count($e_phones) && strlen(preg_replace('/[^0-9]/', '', $e_phones[0]['x__message']))>=10 ? preg_replace('/[^0-9]/', '', $e_phones[0]['x__message']) : false );
+        //$e_phone = ( count($e_phones) && strlen(preg_replace('/[^0-9]/', '', $e_phones[0]['x__message']))>=10 ? preg_replace('/[^0-9]/', '', $e_phones[0]['x__message']) : false );
+        $e_phone = ( count($e_phones) && strlen($e_phones[0]['x__message'])>=10 ? $e_phones[0]['x__message'] : false );
 
         if($e_email || $e_phone){
             //Add to sub list:
