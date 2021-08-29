@@ -102,10 +102,12 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
         //$e_phone = ( count($e_phones) && strlen(preg_replace('/[^0-9]/', '', $e_phones[0]['x__message']))>=10 ? preg_replace('/[^0-9]/', '', $e_phones[0]['x__message']) : false );
         $e_phone = ( count($e_phones) && strlen($e_phones[0]['x__message'])>=10 ? $e_phones[0]['x__message'] : false );
 
-        //Add to sub list:
-        $total_subs++;
-        $subs .= one_two_explode('',' ', $subscriber['e__title'])."\t".$e_email."\t".$e_phone."\n";
-        $emails .= ( strlen($emails) ? ", " : '' ).$e_email;
+        if(!isset($_GET['phone']) || (isset($_GET['phone']) && $e_phone)){
+            //Add to sub list:
+            $total_subs++;
+            $subs .= one_two_explode('',' ', $subscriber['e__title'])."\t".$e_email."\t".$e_phone."\n";
+            $emails .= ( strlen($emails) ? ", " : '' ).$e_email;
+        }
 
     }
 
