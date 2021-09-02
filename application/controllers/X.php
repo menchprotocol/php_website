@@ -540,25 +540,27 @@ class X extends CI_Controller
 
         //DO we have a hard redirect?
         if($i__id > 0){
-            $hard_redirects = $this->X_model->fetch(array(
+            foreach($this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__up' => 27664, //Hard Redirect
                 'x__right' => $i__id,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ));
-            if(count($hard_redirects) > 0 && strlen($hard_redirects[0]['x__message']) > 0){
+            )) as $hard_redirect){
+                if(strlen($hard_redirect['x__message']) > 0){
 
-                //Save transaction:
-                $this->X_model->create(array(
-                    'x__source' => $member_e['e__id'],
-                    'x__type' => 27664, //Hard Redirect
-                    'x__right' => $i__id,
-                    'x__message' => $hard_redirects[0]['x__message'],
-                ));
+                    //Save transaction:
+                    $this->X_model->create(array(
+                        'x__source' => $member_e['e__id'],
+                        'x__type' => 27664, //Hard Redirect
+                        'x__right' => $i__id,
+                        'x__message' => $hard_redirect['x__message'],
+                    ));
 
-                return redirect_message($hard_redirects[0]['x__message']);
+                    return redirect_message($hard_redirect['x__message']);
 
+                }
             }
+
         }
 
         if($next_url){

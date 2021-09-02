@@ -451,7 +451,11 @@ class X_model extends CI_Model
         )) as $e_data){
 
             if(!filter_var($e_data['x__message'], FILTER_VALIDATE_EMAIL)){
-                //TODO Remove this link
+
+                $this->X_model->update($e_data['x__id'], array(
+                    'x__status' => 6173, //Transaction Deleted
+                ), $e__id, 10673 /* Member Transaction Unpublished */);
+
                 continue;
             }
 
@@ -515,6 +519,7 @@ class X_model extends CI_Model
 
 
         //Send SMS
+        $cred_twilio = $this->config->item('cred_twilio');
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -522,38 +527,46 @@ class X_model extends CI_Model
             'x__down' => $e__id,
         )) as $e_data){
 
-            continue; //Disabled for now
-
-            $plain_number = intval($e_data['x__message']);
-
-            if(strlen($plain_number)<10){
-                //TODO Remove this link
+            if($e__id!=1){
                 continue;
             }
 
-            if(strlen($plain_number)!=strlen($e_data['x__message'])){
-                //Update number to plain format:
+            $sms_message = substr($full_message, 0, 160);
 
+            $post = http_build_query(array (
+                'From' => view_memory(6404,27673),
+                'To' => $e_data['x__message'],
+                'Body' => $sms_message,
+            ));
+
+            $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$cred_twilio['account_sid']."/SMS/Messages");
+            curl_setopt($x, CURLOPT_POST, true);
+            curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_setopt($x, CURLOPT_USERPWD, $cred_twilio['account_sid'].":".$cred_twilio['auth_token']);
+            curl_setopt($x, CURLOPT_POSTFIELDS, $post);
+            $y = curl_exec($x);
+            curl_close($x);
+
+            $sms_success = 1; //Assume success for now...
+
+            if(!$sms_success){
+                //Remove Phone Number:
+                $this->X_model->update($e_data['x__id'], array(
+                    'x__status' => 6173, //Transaction Deleted
+                ), $e__id, 10673 /* Member Transaction Unpublished */);
             }
 
-            //Twillio API Call:
-            $response = 0;
-
-            if(0) {
-                //Failure, remove this link:
-
-            }
-
-            //Log Transaction:
+            //Log transaction:
             $this->X_model->create(array_merge($x_data, array(
-                'x__type' => 12114, //TODO Update to SMS sending
+                'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
                 'x__source' => $e__id,
-                'x__message' => $full_message,
+                'x__message' => $sms_message,
                 'x__metadata' => array(
-                    'to' => $e_data['x__message'],
-                    'subject' => $subject,
-                    'message' => $plain_message,
-                    'response' => $response,
+                    'full_message' => $full_message,
+                    'post' => $post,
+                    'response' => $y,
                 ),
             )));
 
