@@ -48,13 +48,15 @@ $(document).ready(function () {
 
 });
 
-function go_next(go_next_url){
+function go_next(){
 
     //Click Requirement?
     if(parseInt($('#must_click').val()) && $(".should-click")[0] && !parseInt($('#click_count').val())){
         alert('Click on the link ['+$('.should-click:first').text()+'] before going next.');
         return false;
     }
+
+    var go_next_url = $('#go_next_url').val();
 
     //Attempts to go next if no submissions:
     if(focus_i__type==6683) {

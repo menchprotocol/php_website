@@ -29,28 +29,6 @@ $is_discovarable = true;
 $i_stats = i_stats($i_focus['i__metadata']);
 
 
-
-?>
-<script>
-    var focus_i__type = <?= $i_focus['i__type'] ?>;
-</script>
-
-<input type="hidden" id="focus__type" value="12273" />
-<input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
-    <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
-    <input type="hidden" id="click_count" value="0" />
-    <input type="hidden" id="must_click" value="<?= ( count($x_completes) ? 0 : count($this->X_model->fetch(array(
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-    'x__up' => 27178, //Require Link Click
-    'x__right' => $i_focus['i__id'],
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    )))) ?>" />
-
-<script src="/application/views/x_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
-
-<?php
-
-
 if($top_i__id){
 
     $is_this = $this->I_model->fetch(array(
@@ -133,7 +111,26 @@ if($top_i__id){
 
 }
 
+?>
+    <script>
+        var focus_i__type = <?= $i_focus['i__type'] ?>;
+    </script>
 
+    <input type="hidden" id="focus__type" value="12273" />
+    <input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
+    <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
+    <input type="hidden" id="click_count" value="0" />
+    <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
+    <input type="hidden" id="must_click" value="<?= ( count($x_completes) ? 0 : count($this->X_model->fetch(array(
+        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__up' => 27178, //Require Link Click
+        'x__right' => $i_focus['i__id'],
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    )))) ?>" />
+
+    <script src="/application/views/x_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+
+<?php
 
 //PREVIOUS DISCOVERIES
 if($top_i__id){
@@ -487,7 +484,7 @@ if(!$top_i__id){
     $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
     //Get Started
-    echo '<div class="nav-controller select-btns"><a class="controller-nav btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next(\''.$go_next_url.'\')">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
+    echo '<div class="nav-controller select-btns"><a class="controller-nav btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
 
 } else {
 
@@ -547,7 +544,7 @@ if(!$top_i__id){
 
             if(!$control_btn){
                 //NEXT
-                $control_btn = '<a class="controller-nav round-btn go-next main-next" href="#nextclick" onclick="go_next(\''.$go_next_url.'\')">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'<div class="extra_progress hideIfEmpty"></div></span><a name="nextclick" style="height: 1px;">&nbsp;</a>';
+                $control_btn = '<a class="controller-nav round-btn go-next main-next" href="#nextclick" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'<div class="extra_progress hideIfEmpty"></div></span><a name="nextclick" style="height: 1px;">&nbsp;</a>';
             }
 
         } elseif($e__id==26280){

@@ -517,6 +517,7 @@ class X extends CI_Controller
 
 
         //Should we check for auto next redirect if empty? Only if this is a selection:
+        $next_url = null;
         if(!count($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
@@ -532,8 +533,36 @@ class X extends CI_Controller
                 ));
             } else {
                 //We can't, so this is the next idea:
-                return redirect_message('/'.$top_i__id.'/'.$is[0]['i__id'] );
+                $next_url = '/'.$top_i__id.'/'.$is[0]['i__id'];
             }
+        }
+
+
+        //DO we have a hard redirect?
+        if($i__id > 0){
+            $hard_redirects = $this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__up' => 27664, //Hard Redirect
+                'x__right' => $i__id,
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ));
+            if(count($hard_redirects) > 0 && strlen($hard_redirects[0]['x__message']) > 0){
+
+                //Save transaction:
+                $this->X_model->create(array(
+                    'x__source' => $member_e['e__id'],
+                    'x__type' => 27664, //Hard Redirect
+                    'x__right' => $i__id,
+                    'x__message' => $hard_redirects[0]['x__message'],
+                ));
+
+                return redirect_message($hard_redirects[0]['x__message']);
+
+            }
+        }
+
+        if($next_url){
+            return redirect_message($next_url);
         }
 
         //Go to Next Idea:
@@ -1228,8 +1257,6 @@ class X extends CI_Controller
         ));
 
     }
-
-
 
 
     function update_dropdown(){
