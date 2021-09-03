@@ -272,6 +272,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         cursor: ns-resize !important;
         border: 0 !important;
     }
+
+
     th:hover, th:active{
         background-color: #FFF;
     }

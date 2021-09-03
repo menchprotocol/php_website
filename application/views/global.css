@@ -2628,7 +2628,11 @@ padding: 2px;
 font-weight: bold !important;
 }
 
-
+@media print {
+    th, td{
+        border:1px solid #000;
+    }
+}
 
 
 
