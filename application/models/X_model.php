@@ -522,13 +522,11 @@ class X_model extends CI_Model
         $cred_twilio = $this->config->item('cred_twilio');
 
         //Breakup into smaller SMS friendly messages
-        $sms_texts = array();
+        $sms_texts = array($subject);
         $sms_limit = 150;
         for($i=1;$i<=ceil(strlen($plain_message)/$sms_limit);$i++) {
             array_push($sms_texts, substr($plain_message, ($i-1)*$sms_limit, $sms_limit) );
         }
-        array_push($sms_texts, $subject );
-
 
 
         foreach($this->X_model->fetch(array(
@@ -542,7 +540,7 @@ class X_model extends CI_Model
                 continue;
             }
 
-            foreach(array_reverse($sms_texts) as $sms_text){
+            foreach($sms_texts as $sms_text){
 
                 $post = array(
                     'From' => view_memory(6404,27673), //Twilio From number
@@ -581,6 +579,8 @@ class X_model extends CI_Model
                         'response' => $y,
                     ),
                 )));
+
+                usleep(100000); //0.1 Second delay
             }
         }
     }
