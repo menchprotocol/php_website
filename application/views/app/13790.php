@@ -271,7 +271,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     th{
         cursor: ns-resize !important;
     }
-    th, td{
+    table th, table td{
         border:1px solid #000 !important;
     }
 
