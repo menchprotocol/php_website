@@ -528,7 +528,7 @@ class X_model extends CI_Model
         for($i=1;$i<=ceil($characters/$sms_limit);$i++) {
             array_push($sms_texts, substr($plain_message, ($i-1)*$sms_limit, $sms_limit) );
         }
-
+        array_push($sms_texts, $subject);
 
 
         foreach($this->X_model->fetch(array(
@@ -542,7 +542,7 @@ class X_model extends CI_Model
                 continue;
             }
 
-            foreach($sms_texts as $sms_text){
+            foreach(array_reverse($sms_texts) as $sms_text){
 
                 $post = array(
                     'From' => view_memory(6404,27673), //Twilio From number
