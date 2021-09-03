@@ -524,7 +524,7 @@ class X_model extends CI_Model
         //Breakup into smaller SMS friendly messages
         $sms_message = $subject.': '.$plain_message;
         $sms_texts = array();
-        $sms_limit = 155;
+        $sms_limit = 145;
         for($i=1;$i<=ceil(strlen($sms_message)/$sms_limit);$i++) {
             array_push($sms_texts, substr($sms_message, ($i-1)*$sms_limit, $sms_limit) );
         }
