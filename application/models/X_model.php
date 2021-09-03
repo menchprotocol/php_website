@@ -519,6 +519,8 @@ class X_model extends CI_Model
 
 
         //Send SMS
+        //$sms_message = substr($subject.": ".$plain_message, 0, 160);
+        $sms_message = $subject.": ".$plain_message;
         $cred_twilio = $this->config->item('cred_twilio');
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -531,10 +533,8 @@ class X_model extends CI_Model
                 continue;
             }
 
-            $sms_message = substr($full_message, 0, 160);
-
             $post = http_build_query(array (
-                'From' => view_memory(6404,27673),
+                'From' => view_memory(6404,27673), //Twilio From number
                 'To' => $e_data['x__message'],
                 'Body' => $sms_message,
             ));
