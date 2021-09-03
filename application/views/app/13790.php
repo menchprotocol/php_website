@@ -270,9 +270,10 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     }
     th{
         cursor: ns-resize !important;
-        border: 0 !important;
     }
-
+    th, td{
+        border:1px solid #000 !important;
+    }
 
     th:hover, th:active{
         background-color: #FFF;
