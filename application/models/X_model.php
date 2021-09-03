@@ -526,7 +526,7 @@ class X_model extends CI_Model
         $characters = strlen($plain_message);
         $sms_limit = 150;
         for($i=1;$i<=ceil($characters/$sms_limit);$i++) {
-            array_push($sms_texts, substr($plain_message, ($i-1)*$sms_limit, $i*$sms_limit) );
+            array_push($sms_texts, substr($plain_message, ($i-1)*$sms_limit, $sms_limit) );
         }
 
 
