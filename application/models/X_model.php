@@ -560,13 +560,15 @@ class X_model extends CI_Model
                 $y = curl_exec($x);
                 curl_close($x);
 
-                $sms_success = 1; //Assume success for now...
 
-                if(!$sms_success){
+                if(substr_count($y, '<Code>21211</Code>')){
                     //Remove Phone Number:
+                    $sms_success = false;
                     $this->X_model->update($e_data['x__id'], array(
                         'x__status' => 6173, //Transaction Deleted
                     ), $e__id, 10673 /* Member Transaction Unpublished */);
+                } else {
+                    $sms_success = substr_count($y, '<SMSMessage><Sid>');
                 }
 
                 //Log transaction:
@@ -575,7 +577,6 @@ class X_model extends CI_Model
                     'x__source' => $e__id,
                     'x__message' => $sms_text,
                     'x__metadata' => array(
-                        'full_message' => $full_message,
                         'post' => $post,
                         'response' => $y,
                     ),
