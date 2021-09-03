@@ -66,8 +66,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
     //Return UI:
     $body_content = '';
-    $filtered_count = 0;
-    $skip_filter = array();
     $count_totals = array(
         'e' => array(),
         'i' => array(),
@@ -114,7 +112,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( isset($_GET['expand']) ? view_cover(12273,$e['e__cover'], '✔️').' '.view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '<span '.$underdot_class.' title="'.$fetch_data[0]['x__message'].'">'.view_cover(12273,$e['e__cover'], '✔️').'</span>' ) : view_cover(12273,$e['e__cover'], '✔️') ) : '' );
 
             if(isset($_GET['e_filter']) && $_GET['e_filter']==$e['e__id'] && count($fetch_data)){
-                array_push($skip_filter, $x['e__id']);
+                continue;
             }
 
             $body_content .= '<td>'.$message_clean.'</td>';
@@ -138,7 +136,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
             if(isset($_GET['i_filter']) && $_GET['i_filter']==$i['i__id'] && !count($discoveries)){
-                array_push($skip_filter, $x['e__id']);
+                continue;
             }
 
             $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.view_cover(12273,$i['i__cover'], '✔️').' '.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.view_cover(12273,$i['i__cover'], '✔️').'</span>'  ) : '<span title="'.$i['i__title'].'" data-placement="top">'.view_cover(12273,$i['i__cover'], '✔️') ).'</span>'  : '').'</td>';
@@ -159,11 +157,6 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
         ));
-        if(in_array($x['e__id'], $skip_filter)){
-            $body_content = str_replace('tr__'.$x['e__id'],'hidden',$body_content);
-        } else {
-            $filtered_count++;
-        }
 
         $body_content .= '</tr>';
         $count++;
