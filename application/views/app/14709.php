@@ -100,7 +100,8 @@ if(!$member_e){
         //Share
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[13024]['m__cover'].'</span>' . $e___14709[13024]['m__title'] . '</div>';
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[13024]['m__message']).'</div>';
-        echo '<div class="padded"><a href="javascript:void();" onclick="copy_share()"><span class="share_url"></span>&nbsp;&nbsp;<i class="fa fa-gif-wrap was_copied">COPY</i></a></div>';
+        echo '<div class="padded"><input type="url" class="form-control border share_url" value=""></div>';
+
 
 
         //Rate
@@ -166,15 +167,12 @@ if(!$member_e){
 
             $(document).ready(function () {
 
-                $('.share_url').text(new_url);
+                $('.share_url').val(new_url);
 
                 set_autosize($('#feedback_writing_14720'));
 
             });
 
-            function copy_share(){
-                copyTextToClipboard(new_url);
-            }
 
         </script>
         <?php

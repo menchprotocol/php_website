@@ -582,65 +582,6 @@ function x_create(add_fields){
     return $.post("/x/x_create", add_fields);
 }
 
-function fallbackCopyTextToClipboard(text) {
-    var textArea = document.createElement("textarea");
-    textArea.value = text;
-
-    // Avoid scrolling to bottom
-    textArea.style.top = "0";
-    textArea.style.left = "0";
-    textArea.style.position = "fixed";
-
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-
-    try {
-        var successful = document.execCommand('copy');
-        var msg = successful ? 'successful' : 'unsuccessful';
-        console.log('Fallback: Copying text command was ' + msg);
-    } catch (err) {
-        console.error('Fallback: Oops, unable to copy', err);
-    }
-
-    document.body.removeChild(textArea);
-}
-function copyTextToClipboard(text) {
-
-    if (!navigator.clipboard) {
-        fallbackCopyTextToClipboard(text);
-        return;
-    }
-
-    navigator.clipboard.writeText(text).then(function() {
-        console.log('Async: Copying to clipboard was successful!');
-
-        var affirm_text = '✅ COPIED';
-        if($('.was_copied').text() != affirm_text){
-
-            $('.was_copied').text(affirm_text);
-
-            //Save Once:
-            x_create({
-                x__source: js_pl_id,
-                x__type: 14732, //COPIED
-                x__message: text,
-            });
-
-        }
-        $('.was_copied').hide().fadeIn();
-
-
-    }, function(err) {
-        console.error('Async Error: Could not copy text: ', err);
-        x_create({
-            x__source: js_pl_id,
-            x__type: 4246, //BUG
-            x__message: 'Async Error: Could not copy text: ' + text,
-        });
-    });
-}
-
 function load_coin_count(){
     $.post("/x/load_coin_count", {}, function (data) {
         if($(".coin_count_12273:first").text()!=data.count__12273){
