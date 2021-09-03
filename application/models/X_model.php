@@ -519,9 +519,18 @@ class X_model extends CI_Model
 
 
         //Send SMS
-        //$sms_message = substr($subject.": ".$plain_message, 0, 160);
-        $sms_message = $subject.": ".$plain_message;
         $cred_twilio = $this->config->item('cred_twilio');
+
+        //Breakup into smaller SMS friendly messages
+        $sms_texts = array($subject);
+        $characters = strlen($plain_message);
+        $sms_limit = 150;
+        for($i=1;$i<=ceil($characters/$sms_limit);$i++) {
+            array_push($sms_texts, ($i-1)*$sms_limit, $i*$sms_limit );
+        }
+
+
+
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -533,45 +542,46 @@ class X_model extends CI_Model
                 continue;
             }
 
-            $post = http_build_query(array (
-                'From' => view_memory(6404,27673), //Twilio From number
-                'To' => $e_data['x__message'],
-                'Body' => $sms_message,
-            ));
+            foreach($sms_texts as $sms_text){
 
-            $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$cred_twilio['account_sid']."/SMS/Messages");
-            curl_setopt($x, CURLOPT_POST, true);
-            curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            curl_setopt($x, CURLOPT_USERPWD, $cred_twilio['account_sid'].":".$cred_twilio['auth_token']);
-            curl_setopt($x, CURLOPT_POSTFIELDS, $post);
-            $y = curl_exec($x);
-            curl_close($x);
+                $post = array(
+                    'From' => view_memory(6404,27673), //Twilio From number
+                    'To' => $e_data['x__message'],
+                    'Body' => $sms_text,
+                );
 
-            $sms_success = 1; //Assume success for now...
+                $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$cred_twilio['account_sid']."/SMS/Messages");
+                curl_setopt($x, CURLOPT_POST, true);
+                curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                curl_setopt($x, CURLOPT_USERPWD, $cred_twilio['account_sid'].":".$cred_twilio['auth_token']);
+                curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
+                $y = curl_exec($x);
+                curl_close($x);
 
-            if(!$sms_success){
-                //Remove Phone Number:
-                $this->X_model->update($e_data['x__id'], array(
-                    'x__status' => 6173, //Transaction Deleted
-                ), $e__id, 10673 /* Member Transaction Unpublished */);
+                $sms_success = 1; //Assume success for now...
+
+                if(!$sms_success){
+                    //Remove Phone Number:
+                    $this->X_model->update($e_data['x__id'], array(
+                        'x__status' => 6173, //Transaction Deleted
+                    ), $e__id, 10673 /* Member Transaction Unpublished */);
+                }
+
+                //Log transaction:
+                $this->X_model->create(array_merge($x_data, array(
+                    'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
+                    'x__source' => $e__id,
+                    'x__message' => $sms_text,
+                    'x__metadata' => array(
+                        'full_message' => $full_message,
+                        'post' => $post,
+                        'response' => $y,
+                    ),
+                )));
             }
-
-            //Log transaction:
-            $this->X_model->create(array_merge($x_data, array(
-                'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
-                'x__source' => $e__id,
-                'x__message' => $sms_message,
-                'x__metadata' => array(
-                    'full_message' => $full_message,
-                    'post' => $post,
-                    'response' => $y,
-                ),
-            )));
-
         }
-
     }
 
     function message_view($message_input, $is_discovery_mode, $member_e = array(), $message_i__id = 0, $simple_version = false)
