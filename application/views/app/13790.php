@@ -83,8 +83,16 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             continue;
         }
 
-        if(isset($_GET['include_e']) && intval($_GET['include_e']) && !count($this->X_model->fetch(array(
-                'x__up IN (' . $_GET['include_e'] . ')' => null, //Any of these
+        if(isset($_GET['include_e']) && intval($_GET['include_e']) && count($this->X_model->fetch(array(
+                'x__up IN (' . $_GET['include_e'] . ')' => null, //All of these
+                'x__down' => $x['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ))) != count(explode(',',$_GET['include_e']))){
+            continue;
+        }
+        if(isset($_GET['exclude_e']) && intval($_GET['exclude_e']) && count($this->X_model->fetch(array(
+                'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
                 'x__down' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -92,14 +100,23 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
             continue;
         }
 
-        if(isset($_GET['include_i']) && intval($_GET['include_i']) && !count($this->X_model->fetch(array(
-                'x__left IN (' . $_GET['include_i'] . ')' => null, //Any of these
+        if(isset($_GET['include_i']) && intval($_GET['include_i']) && count($this->X_model->fetch(array(
+                'x__left IN (' . $_GET['include_i'] . ')' => null, //All of these
+                'x__source' => $x['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ))) != count(explode(',',$_GET['include_i']))){
+            continue;
+        }
+        if(isset($_GET['exclude_i']) && intval($_GET['exclude_i']) && count($this->X_model->fetch(array(
+                'x__left IN (' . $_GET['exclude_i'] . ')' => null, //All of these
                 'x__source' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
             continue;
         }
+
 
         array_push($unique_users, $x['e__id']);
         $body_content .= '<tr>';
