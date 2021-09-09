@@ -1653,7 +1653,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
 
     $ui .= '<div class="cover-content"><div class="inner-content">';
     $ui .= '<a '.$href.'>'.$i_title.'</a>';
-    $view_i_time = view_i_time($i_stats);
+    //$view_i_time = view_i_time($i_stats);
 
     $ui .= '<div class="cover-text">';
 
