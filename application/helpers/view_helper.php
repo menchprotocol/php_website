@@ -1653,7 +1653,6 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
 
     $ui .= '<div class="cover-content"><div class="inner-content">';
     $ui .= '<a '.$href.'>'.$i_title.'</a>';
-    //$view_i_time = view_i_time($i_stats);
 
     $ui .= '<div class="cover-text">';
 
@@ -1674,9 +1673,12 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
     $ui .= '</a>';
 
     //TIME
+    /*
+    $view_i_time = view_i_time($i_stats);
     if($view_i_time){
         $ui .= '<a '.$href.' class="doblock"><span class="coin-hover">' . $view_i_time . '</span></a>';
     }
+    */
     if($show_limit){
         $ui .= '<a '.$href.' class="doblock"><span class="coin-hover mini-font">' . $show_limit . '</span></a>';
     }
