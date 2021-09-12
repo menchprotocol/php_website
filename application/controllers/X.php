@@ -539,6 +539,8 @@ class X extends CI_Controller
                 'total' => number_format($_POST['refund_total'], 2).'',
                 'currency' => $x__metadata['mc_currency']
             ),
+            'invoice_number' => 'INVOICE-123',
+            'description' => 'refunded',
         );
 
         $cred_paypal = $this->config->item('cred_paypal');
@@ -560,16 +562,9 @@ class X extends CI_Controller
         curl_close($ch);
 
 
-
-        $header = base64_encode(json_encode(['alg' => 'none']));
-        $body = base64_encode(json_encode(['payer_id' => $x__metadata['payer_id'], 'iss' => $x__metadata['receiver_id']]));
-        $auth_assertion_header = $header . "." . $body . ".";
-
         $headers = array(
             'Content-Type: application/json',
             'Authorization: Bearer '.$access_token,
-            //'PayPal-Request-Id: ' . $auth_assertion_header,
-            //'PayPal-Auth-Assertion: ' . $auth_assertion_header
         );
         $ch=curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
