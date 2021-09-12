@@ -542,7 +542,7 @@ class X extends CI_Controller
         );
 
         $cred_paypal = $this->config->item('cred_paypal');
-        $x = curl_init("https://api-m.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
+        $x = curl_init("https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
         curl_setopt($x, CURLOPT_POST, true);
         curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
