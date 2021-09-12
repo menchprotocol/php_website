@@ -546,7 +546,7 @@ class X extends CI_Controller
         curl_setopt($x, CURLOPT_POST, true);
         curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($x, CURLOPT_HEADER, false);
+        //curl_setopt($x, CURLOPT_HEADER, false);
         curl_setopt($x, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
         curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
         $y = curl_exec($x);
