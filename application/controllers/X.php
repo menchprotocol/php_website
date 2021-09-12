@@ -536,7 +536,7 @@ class X extends CI_Controller
         $x__metadata = unserialize($transactions[0]['x__metadata']);
         $post = array(
             'amount' => array(
-                'value' => number_format($_POST['refund_total'], 2).'',
+                'value' => number_format($_POST['refund_total'], 2),
                 'currency_code' => $x__metadata['mc_currency']
             ),
         );
@@ -572,7 +572,7 @@ class X extends CI_Controller
             'Content-Type: application/json',
             'Authorization: Bearer '.$access_token,
             //'PayPal-Request-Id: ' . $auth_assertion_header,
-            'PayPal-Auth-Assertion: ' . $auth_assertion_header
+            //'PayPal-Auth-Assertion: ' . $auth_assertion_header
         );
         $ch=curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
