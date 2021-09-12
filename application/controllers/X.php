@@ -512,7 +512,7 @@ class X extends CI_Controller
                 'message' => 'Missing X ID',
             ));
 
-        } elseif (!isset($_POST['refund_total']) || doubleval($_POST['refund_total'])<=0 || !is_double($_POST['refund_total'])) {
+        } elseif (!isset($_POST['refund_total']) || doubleval($_POST['refund_total'])<=0) {
 
             return view_json(array(
                 'status' => 0,

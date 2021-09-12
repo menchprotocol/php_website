@@ -199,12 +199,14 @@ echo '<div class="texttransparent">'.$ids.'</div>';
 
     function paypal_refund(x__id, transaction_total){
         var refund_total = prompt("How much of the total ["+transaction_total+"] payment would you like to refund?", transaction_total);
-        $.post("/x/paypal_refund", {
-            x__id: x__id,
-            refund_total: refund_total
-        }, function (data) {
-            alert(data.message);
-        });
+        if(refund_total && refund_total.length>0){
+            $.post("/x/paypal_refund", {
+                x__id: x__id,
+                refund_total: refund_total
+            }, function (data) {
+                alert(data.message);
+            });
+        }
     }
 
 </script>
