@@ -600,7 +600,7 @@ class X extends CI_Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
         $result = curl_exec($ch);
         $y=json_decode($result,true);
 
@@ -614,6 +614,7 @@ class X extends CI_Controller
             'x__message' => $_POST['refund_total'],
             'x__metadata' => array(
                 'post' => $post,
+                'post_query' => http_build_query($post),
                 'response' => $y,
             ),
             //Copy parent link info:
