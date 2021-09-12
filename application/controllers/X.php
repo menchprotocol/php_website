@@ -539,6 +539,8 @@ class X extends CI_Controller
                 'currency' => $x__metadata['mc_currency'],
                 'total' => number_format($_POST['refund_total'], 2).'',
             ),
+            'invoice_number' => "X-".$_POST['x__id'],
+            'description' => 'Refunded',
         );
 
         $cred_paypal = $this->config->item('cred_paypal');
