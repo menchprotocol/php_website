@@ -594,6 +594,8 @@ class X extends CI_Controller
                 'value' => number_format($_POST['refund_total'], 2).'',
                 'currency_code' => $x__metadata['mc_currency']
             ),
+            'invoice_id' => 'INVOICE-123',
+            'note_to_payer' => 'Defective product',
         );
         $ch=curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
