@@ -542,17 +542,7 @@ class X extends CI_Controller
         );
 
         $cred_paypal = $this->config->item('cred_paypal');
-
-        /*
-        $x = curl_init("https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
-        curl_setopt($x, CURLOPT_POST, true);
-        curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($x, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
-        curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
-        $y = curl_exec($x);
-        curl_close($x);
-        */
+        $auth_assertion_header = 'a';
 
 
 
@@ -573,14 +563,23 @@ class X extends CI_Controller
         curl_close($ch);
 
 
+
+        $header = base64_encode(json_encode(['alg' => 'none']));
+        $body = base64_encode(json_encode(['payer_id' => $x__metadata['payer_id'], 'iss' => $x__metadata['receiver_id']]));
+        $auth_assertion_header = $header . "." . $body . ".";
+
+        $headers = array(
+            'Content-Type: application/json',
+            'Authorization: Bearer '.$access_token,
+            //'PayPal-Request-Id: ' . $auth_assertion_header,
+            'PayPal-Auth-Assertion: ' . $auth_assertion_header
+        );
         $ch=curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Authorization: Bearer '.$access_token));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
-        //curl_setopt($ch, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        //curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
         $result = curl_exec($ch);
         $y=json_decode($result);
@@ -598,6 +597,7 @@ class X extends CI_Controller
                 'json' => $json,
                 'result' => $result,
                 'response' => $y,
+                'headers' => $headers,
             ),
             //Copy parent link info:
             'x__up' => $transactions[0]['x__up'],
