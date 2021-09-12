@@ -591,16 +591,16 @@ class X extends CI_Controller
         );
         $post = array(
             'amount' => array(
-                'currency' => $x__metadata['mc_currency'],
-                'total' => number_format($_POST['refund_total'], 2).''
-            )
+                'value' => number_format($_POST['refund_total'], 2).'',
+                'currency_code' => $x__metadata['mc_currency']
+            ),
         );
         $ch=curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
+        curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v2/payments/captures/".$x__metadata['txn_id']."/refund");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
         $result = curl_exec($ch);
         $y=json_decode($result,true);
