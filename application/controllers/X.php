@@ -599,11 +599,16 @@ class X extends CI_Controller
                 'json' => $json,
                 'response' => $y,
             ),
+            //Copy parent link info:
+            'x__up' => $transactions[0]['x__up'],
+            'x__down' => $transactions[0]['x__source'],
+            'x__left' => $transactions[0]['x__left'],
         ));
+
 
         return view_json(array(
             'status' => 1,
-            'message' => $_POST['refund_total'].' Refunded',
+            'message' => $_POST['refund_total'].' Refunded ['.( isset($y->state) ? $y->state : 'Error' ).']',
         ));
 
     }
