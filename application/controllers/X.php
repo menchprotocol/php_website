@@ -536,8 +536,8 @@ class X extends CI_Controller
         $x__metadata = unserialize($transactions[0]['x__metadata']);
         $post = array(
             'amount' => array(
-                'total' => number_format($_POST['refund_total'], 2),
-                'currency' => $x__metadata['mc_currency']
+                'value' => number_format($_POST['refund_total'], 2).'',
+                'currency_code' => $x__metadata['mc_currency']
             ),
         );
 
@@ -547,7 +547,7 @@ class X extends CI_Controller
 
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://api-m.paypal.com/v1/oauth2/token");
+        curl_setopt($ch, CURLOPT_URL, "https://api-m.paypal.com/v2/oauth2/token");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Accept: application/json',
             'Accept-Language: en_US'
