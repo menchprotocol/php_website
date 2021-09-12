@@ -75,7 +75,7 @@ foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) 
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($x__metadata['mc_fee']/$x__metadata['mc_gross']*100).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
         $transaction_content .= '<td style="text-align: right;" title="'.(( $x__metadata['mc_gross']>0 ? $this_payout/$x__metadata['mc_gross'] : 0 )*100).'%"><b>$'.number_format($this_payout, 2).'</b></td>';
         $transaction_content .= '<td style="text-align: right;">'.$x__metadata['mc_currency'].'</td>';
-        $transaction_content .= '<td style="text-align: right;"><a href="#" style="font-weight:bold;"><u>Refund</u></a></td>';
+        $transaction_content .= '<td style="text-align: right;"><a href="#" onclick="paypal_refund('.$x['x__id'].', '.number_format($x__metadata['mc_gross'], 2).')" style="font-weight:bold;"><u>Refund</u></a></td>';
         $transaction_content .= '</tr>';
 
     }
@@ -144,6 +144,7 @@ echo '<div class="texttransparent">'.$ids.'</div>';
 ?>
 
 
+
 <style>
     /* CSS Adjustments for Printing View */
     .fixed-top{
@@ -194,3 +195,16 @@ echo '<div class="texttransparent">'.$ids.'</div>';
         width: 8px;
     }
 </style>
+<script>
+
+    function paypal_refund(x__id, transaction_total){
+        var refund_total = prompt("How much of the total ["+transaction_total+"] payment would you like to refund?", transaction_total);
+        $.post("/x/paypal_refund", {
+            x__id: x__id,
+            refund_total: refund_total
+        }, function (data) {
+            alert(data.message);
+        });
+    }
+
+</script>

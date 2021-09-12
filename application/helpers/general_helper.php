@@ -821,6 +821,7 @@ function var_index(){
     return $var_index;
 }
 
+
 function i_stats($i__metadata){
 
     //Calculates average based on metadata:

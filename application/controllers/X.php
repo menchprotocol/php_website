@@ -495,6 +495,82 @@ class X extends CI_Controller
 
     }
 
+    function paypal_refund(){
+
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+
+        } elseif (!isset($_POST['x__id'])) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing X ID',
+            ));
+
+        } elseif (!isset($_POST['refund_total']) || doubleval($_POST['refund_total'])<=0 || !is_double($_POST['refund_total'])) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Refund Amount ['.$_POST['refund_total'].']',
+            ));
+
+        }
+
+        $transactions = $this->X_model->fetch(array(
+            'x__id' => $_POST['x__id'],
+            'x__type' => 26595,
+        ));
+        if(!count($transactions)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid X ID',
+            ));
+        }
+
+        $_POST['refund_total'] = doubleval($_POST['refund_total']);
+        $x__metadata = unserialize($transactions[0]['x__metadata']);
+        $post = array(
+            'amount' => array(
+                'currency' => $x__metadata['mc_currency'],
+                'total' => $_POST['refund_total'],
+            ),
+        );
+
+        $cred_paypal = $this->config->item('cred_paypal');
+        $x = curl_init("https://api-m.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
+        curl_setopt($x, CURLOPT_POST, true);
+        curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($x, CURLOPT_HEADER, false);
+        curl_setopt($x, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
+        curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
+        $y = curl_exec($x);
+        curl_close($x);
+
+        //Log refund:
+        $this->X_model->create(array(
+            'x__type' => 27794, //Paypal Refund
+            'x__source' => $member_e['e__id'],
+            'x__reference' => $_POST['x__id'],
+            'x__message' => $_POST['refund_total'],
+            'x__metadata' => array(
+                'post' => $post,
+                'response' => $y,
+            ),
+        ));
+
+        return view_json(array(
+            'status' => 1,
+            'message' => $_POST['refund_total'].' Refunded',
+        ));
+
+    }
+
     function x_next($top_i__id, $i__id = 0){
 
         if(!$i__id){

@@ -551,7 +551,7 @@ class I extends CI_Controller {
         } elseif (!isset($_POST['x__message'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Message',
+                'message' => 'Missing Message Text',
             ));
         } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
