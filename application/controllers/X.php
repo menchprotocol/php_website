@@ -539,8 +539,6 @@ class X extends CI_Controller
                 'total' => number_format($_POST['refund_total'], 2).'',
                 'currency' => $x__metadata['mc_currency']
             ),
-            'invoice_number' => 'INVOICE-123',
-            'description' => 'refunded',
         );
 
         $cred_paypal = $this->config->item('cred_paypal');
@@ -568,7 +566,7 @@ class X extends CI_Controller
         );
         $ch=curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
+        curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/capture/".$x__metadata['txn_id']."/refund");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
