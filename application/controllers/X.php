@@ -536,11 +536,11 @@ class X extends CI_Controller
         $x__metadata = unserialize($transactions[0]['x__metadata']);
         $post = array(
             'amount' => array(
-                'currency' => $x__metadata['mc_currency'],
                 'total' => number_format($_POST['refund_total'], 2).'',
+                'currency' => $x__metadata['mc_currency']
             ),
             'invoice_number' => "X-".$_POST['x__id'],
-            'description' => 'Refunded',
+            'description' => 'Refunded'
         );
 
         $cred_paypal = $this->config->item('cred_paypal');
@@ -550,7 +550,6 @@ class X extends CI_Controller
         curl_setopt($x, CURLOPT_POST, true);
         curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
-        //curl_setopt($x, CURLOPT_HEADER, false);
         curl_setopt($x, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
         curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
         $y = curl_exec($x);
@@ -578,9 +577,10 @@ class X extends CI_Controller
         $ch=curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Authorization: Bearer '.$access_token));
         curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
-        curl_setopt($ch, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
+        //curl_setopt($ch, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
+        //curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
         $result = curl_exec($ch);
         $y=json_decode($result,true);
