@@ -536,8 +536,8 @@ class X extends CI_Controller
         $x__metadata = unserialize($transactions[0]['x__metadata']);
         $post = array(
             'amount' => array(
-                'value' => number_format($_POST['refund_total'], 2),
-                'currency_code' => $x__metadata['mc_currency']
+                'total' => number_format($_POST['refund_total'], 2),
+                'currency' => $x__metadata['mc_currency']
             ),
         );
 
