@@ -537,7 +537,7 @@ class X extends CI_Controller
         $post = array(
             'amount' => array(
                 'currency' => $x__metadata['mc_currency'],
-                'total' => $_POST['refund_total'],
+                'total' => number_format($_POST['refund_total'], 2).'',
             ),
         );
 
