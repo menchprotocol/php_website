@@ -198,15 +198,15 @@ echo '<div class="texttransparent">'.$ids.'</div>';
 <script>
 
     function paypal_refund(x__id, transaction_total){
-        var refund_total = prompt("How much of the total ["+transaction_total+"] payment would you like to refund?", transaction_total);
-        if(refund_total && refund_total.length>0){
+        var confirm_refund = confirm("Process a full refund of "+transaction_total+"?");
+        if(confirm_refund){
             $.post("/x/paypal_refund", {
                 x__id: x__id,
-                refund_total: refund_total
+                refund_total: transaction_total
             }, function (data) {
                 alert(data.message);
                 if(data.status){
-                    $('#refund_'+x__id).html('Refunded '+refund_total);
+                    $('#refund_'+x__id).html('✅ Refunded');
                 }
             });
         }

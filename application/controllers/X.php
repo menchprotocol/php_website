@@ -549,29 +549,18 @@ class X extends CI_Controller
         curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+        //curl_setopt($ch, CURLOPT_POST, true);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
         $result = curl_exec($ch);
         $y=json_decode($result,true);
 
 
-        //Log refund:
-        $this->X_model->create(array(
-            'x__type' => 27794, //Paypal Refund
-            'x__source' => $member_e['e__id'],
-            'x__reference' => $_POST['x__id'],
-            'x__message' => $_POST['refund_total'],
-            'x__metadata' => array(
-                'post' => $post,
-                'post_query' => http_build_query($post),
-                'response' => $y,
-            ),
-            //Copy parent link info:
-            'x__up' => $transactions[0]['x__up'],
-            'x__down' => $transactions[0]['x__source'],
-            'x__left' => $transactions[0]['x__left'],
-        ));
+
+        $this->X_model->update($transactions[0]['x__id'], array(
+            'x__status' => 6173, //Transaction Deleted
+            'x__metadata' => $y,
+        ), $member_e['e__id'], 27794 /* Paypal Refund */);
 
 
         return view_json(array(
