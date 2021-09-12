@@ -612,7 +612,6 @@ class X extends CI_Controller
             'x__message' => $_POST['refund_total'],
             'x__metadata' => array(
                 'post' => $post,
-                'access_token' => $access_token,
                 'response' => $y,
                 'result' => $result,
             ),
