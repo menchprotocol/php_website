@@ -590,12 +590,8 @@ class X extends CI_Controller
             'Authorization: Basic '.base64_encode($cred_paypal['client_id'].":".$cred_paypal['secret_key']),
         );
         $post = array(
-            'amount' => array(
-                'value' => number_format($_POST['refund_total'], 2).'',
-                'currency_code' => $x__metadata['mc_currency']
-            ),
-            'invoice_id' => 'INVOICE-123',
-            'note_to_payer' => 'Defective product',
+            'currency_code' => $x__metadata['mc_currency'],
+            'value' => number_format($_POST['refund_total'], 2).'',
         );
         $ch=curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
