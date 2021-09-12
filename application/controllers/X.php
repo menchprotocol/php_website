@@ -535,13 +535,11 @@ class X extends CI_Controller
         $_POST['refund_total'] = doubleval($_POST['refund_total']);
         $x__metadata = unserialize($transactions[0]['x__metadata']);
         $cred_paypal = $this->config->item('cred_paypal');
-
-        $post = array(
-            'amount' => array(
-                'total' => number_format($_POST['refund_total'], 2),
-                'currency' => $x__metadata['mc_currency']
-            ),
+        $post['amount'] = array(
+            'total' => number_format($_POST['refund_total'], 2),
+            'currency' => $x__metadata['mc_currency']
         );
+
         $ch=curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
