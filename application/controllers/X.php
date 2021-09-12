@@ -537,7 +537,7 @@ class X extends CI_Controller
         $post = array(
             'amount' => array(
                 'value' => number_format($_POST['refund_total'], 2).'',
-                'currency' => $x__metadata['mc_currency']
+                'currency_code' => $x__metadata['mc_currency']
             ),
         );
 
@@ -579,6 +579,7 @@ class X extends CI_Controller
         //curl_setopt($ch, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         //curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
         $result = curl_exec($ch);
@@ -595,6 +596,7 @@ class X extends CI_Controller
             'x__metadata' => array(
                 'post' => $post,
                 'json' => $json,
+                'result' => $result,
                 'response' => $y,
             ),
             //Copy parent link info:
