@@ -557,6 +557,8 @@ class X extends CI_Controller
         */
 
 
+
+        /*
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/oauth2/token");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -585,6 +587,22 @@ class X extends CI_Controller
         $result = curl_exec($ch);
         $y=json_decode($result,true);
 
+        */
+
+        $ch=curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Accept: application/json',
+            'Accept-Language: en_US'
+        ));
+        curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
+        curl_setopt($ch, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+        $result = curl_exec($ch);
+        $y=json_decode($result,true);
+
 
         //Log refund:
         $this->X_model->create(array(
@@ -596,6 +614,7 @@ class X extends CI_Controller
                 'post' => $post,
                 'access_token' => $access_token,
                 'response' => $y,
+                'result' => $result,
             ),
         ));
 
