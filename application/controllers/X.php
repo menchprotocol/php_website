@@ -547,7 +547,7 @@ class X extends CI_Controller
 
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/oauth2/token");
+        curl_setopt($ch, CURLOPT_URL, "https://api-m.paypal.com/v1/oauth2/token");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Accept: application/json',
             'Accept-Language: en_US'
