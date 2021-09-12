@@ -542,6 +542,8 @@ class X extends CI_Controller
         );
 
         $cred_paypal = $this->config->item('cred_paypal');
+
+        /*
         $x = curl_init("https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
         curl_setopt($x, CURLOPT_POST, true);
         curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
@@ -551,6 +553,36 @@ class X extends CI_Controller
         curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
         $y = curl_exec($x);
         curl_close($x);
+        */
+
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/oauth2/token");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Accept: application/json',
+            'Accept-Language: en_US'
+        ));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+        $result = curl_exec($ch);
+        $json = json_decode($result);
+        $access_token=$json->access_token;
+        curl_close($ch);
+
+
+        $ch=curl_init();
+        $headers=array('Content-Type: application/json','Authorization: Bearer '.$access_token);
+        curl_setopt($ch,CRULOPT_HTTPHEADER,$headers);
+        curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+        $result = curl_exec($ch);
+        $y=json_decode($result,true);
+
 
         //Log refund:
         $this->X_model->create(array(
@@ -560,6 +592,7 @@ class X extends CI_Controller
             'x__message' => $_POST['refund_total'],
             'x__metadata' => array(
                 'post' => $post,
+                'access_token' => $access_token,
                 'response' => $y,
             ),
         ));
