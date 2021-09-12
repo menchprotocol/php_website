@@ -585,10 +585,6 @@ class X extends CI_Controller
 
 
 
-        $headers = array(
-            'Content-Type: application/json',
-            'Authorization: Basic '.base64_encode($cred_paypal['client_id'].":".$cred_paypal['secret_key']),
-        );
         $post = array(
             'amount' => array(
                 'value' => number_format($_POST['refund_total'], 2).'',
@@ -596,12 +592,15 @@ class X extends CI_Controller
             ),
         );
         $ch=curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Authorization: Basic '.base64_encode($cred_paypal['client_id'].":".$cred_paypal['secret_key']),
+        ));
         curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v2/payments/captures/".$x__metadata['txn_id']."/refund");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         $result = curl_exec($ch);
         $y=json_decode($result,true);
 
@@ -616,7 +615,6 @@ class X extends CI_Controller
             'x__metadata' => array(
                 'post' => $post,
                 'response' => $y,
-                'headers' => $headers,
             ),
             //Copy parent link info:
             'x__up' => $transactions[0]['x__up'],
