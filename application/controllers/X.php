@@ -536,18 +536,15 @@ class X extends CI_Controller
         $x__metadata = unserialize($transactions[0]['x__metadata']);
         $post = array(
             'amount' => array(
-                'value' => number_format($_POST['refund_total'], 2).'',
-                'currency_code' => $x__metadata['mc_currency']
+                'total' => number_format($_POST['refund_total'], 2).'',
+                'currency' => $x__metadata['mc_currency']
             ),
         );
 
         $cred_paypal = $this->config->item('cred_paypal');
-        $auth_assertion_header = 'a';
-
-
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://api-m.paypal.com/v2/oauth2/token");
+        curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/oauth2/token");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Accept: application/json',
             'Accept-Language: en_US'
