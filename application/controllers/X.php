@@ -558,7 +558,6 @@ class X extends CI_Controller
 
 
 
-        /*
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/oauth2/token");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -582,27 +581,11 @@ class X extends CI_Controller
         //curl_setopt($ch, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
-        //curl_setopt($ch, CURLOPT_HEADER, false);
-        //curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
-        $result = curl_exec($ch);
-        $y=json_decode($result,true);
-
-        */
-
-        $ch=curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Accept: application/json',
-            'Accept-Language: en_US'
-        ));
-        curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
-        curl_setopt($ch, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
         $result = curl_exec($ch);
-        $y=json_decode($result,true);
+        $y=json_decode($result);
+
 
 
         //Log refund:
@@ -613,6 +596,7 @@ class X extends CI_Controller
             'x__message' => $_POST['refund_total'],
             'x__metadata' => array(
                 'post' => $post,
+                'json' => $json,
                 'response' => $y,
             ),
         ));
