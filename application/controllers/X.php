@@ -577,6 +577,7 @@ class X extends CI_Controller
         $headers=array('Content-Type: application/json','Authorization: Bearer '.$access_token);
         curl_setopt($ch,CRULOPT_HTTPHEADER,$headers);
         curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
+        curl_setopt($ch, CURLOPT_USERPWD, $cred_paypal['client_id'].":".$cred_paypal['secret_key']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
