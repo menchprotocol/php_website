@@ -537,7 +537,7 @@ class X extends CI_Controller
         $cred_paypal = $this->config->item('cred_paypal');
         $post = array(
             'amount' => array(
-                'total' => number_format($_POST['refund_total'], 2),
+                'total' => 95,
                 'currency' => $x__metadata['mc_currency']
             ),
         );
@@ -551,17 +551,17 @@ class X extends CI_Controller
         curl_setopt($ch, CURLOPT_HEADER, false);
         //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "{}"); //http_build_query($post)
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
         $result = curl_exec($ch);
         $y=json_decode($result,true);
 
 
-
+        /*
         $this->X_model->update($transactions[0]['x__id'], array(
             'x__status' => 6173, //Transaction Deleted
             'x__metadata' => $y,
-        ), $member_e['e__id'], 27794 /* Paypal Refund */);
-
+        ), $member_e['e__id'], 27794); //Paypal Refund
+        */
 
         return view_json(array(
             'status' => 1,
