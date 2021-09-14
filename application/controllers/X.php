@@ -549,9 +549,9 @@ class X extends CI_Controller
         curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        //curl_setopt($ch, CURLOPT_POST, true);
-        //curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "{}"); //http_build_query($post)
         $result = curl_exec($ch);
         $y=json_decode($result,true);
 
