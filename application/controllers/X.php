@@ -565,6 +565,7 @@ class X extends CI_Controller
 
         return view_json(array(
             'status' => 1,
+            'y' => $y,
             'message' => $_POST['refund_total'].' Refunded ['.( isset($y->state) ? $y->state : 'Error' ).']',
         ));
 
