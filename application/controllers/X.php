@@ -559,7 +559,9 @@ class X extends CI_Controller
 
         $this->X_model->update($transactions[0]['x__id'], array(
             'x__status' => 6173, //Transaction Deleted
-            'x__metadata' => $y,
+            'x__metadata' => array(
+                'refund_result' => $y,
+            ),
         ), $member_e['e__id'], 27794 /* Paypal Refund */);
 
 
