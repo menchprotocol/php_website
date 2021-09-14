@@ -535,13 +535,14 @@ class X extends CI_Controller
         $_POST['refund_total'] = doubleval($_POST['refund_total']);
         $x__metadata = unserialize($transactions[0]['x__metadata']);
         $cred_paypal = $this->config->item('cred_paypal');
-        $post = array(
+        $arrays = array(
             'amount' => array(
                 'total' => "95.00",
                 'currency' => $x__metadata['mc_currency'],
-                'details' => array()
             ),
         );
+        http_build_query_for_curl( $arrays, $post );
+
         $ch=curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
@@ -566,6 +567,7 @@ class X extends CI_Controller
 
         return view_json(array(
             'status' => 1,
+            'arrays' => $arrays,
             'post' => $post,
             'y' => $y,
             'message' => $_POST['refund_total'].' Refunded ['.( isset($y->state) ? $y->state : 'Error' ).']',
