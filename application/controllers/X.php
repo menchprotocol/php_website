@@ -537,8 +537,9 @@ class X extends CI_Controller
         $cred_paypal = $this->config->item('cred_paypal');
         $post = array(
             'amount' => array(
-                'total' => 95,
-                'currency' => $x__metadata['mc_currency']
+                'total' => "95.00",
+                'currency' => $x__metadata['mc_currency'],
+                'details' => array()
             ),
         );
         $ch=curl_init();
@@ -565,6 +566,7 @@ class X extends CI_Controller
 
         return view_json(array(
             'status' => 1,
+            'post' => $post,
             'y' => $y,
             'message' => $_POST['refund_total'].' Refunded ['.( isset($y->state) ? $y->state : 'Error' ).']',
         ));
