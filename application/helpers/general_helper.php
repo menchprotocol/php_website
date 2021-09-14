@@ -821,22 +821,6 @@ function var_index(){
     return $var_index;
 }
 
-function http_build_query_for_curl( $arrays, &$new = array(), $prefix = null ) {
-
-    if ( is_object( $arrays ) ) {
-        $arrays = get_object_vars( $arrays );
-    }
-
-    foreach ( $arrays AS $key => $value ) {
-        $k = isset( $prefix ) ? $prefix . '[' . $key . ']' : $key;
-        if ( is_array( $value ) OR is_object( $value )  ) {
-            http_build_query_for_curl( $value, $new, $k );
-        } else {
-            $new[$k] = $value;
-        }
-    }
-}
-
 function i_stats($i__metadata){
 
     //Calculates average based on metadata:

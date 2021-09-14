@@ -535,14 +535,12 @@ class X extends CI_Controller
         $_POST['refund_total'] = doubleval($_POST['refund_total']);
         $x__metadata = unserialize($transactions[0]['x__metadata']);
         $cred_paypal = $this->config->item('cred_paypal');
-        $arrays = array(
+        $post = array(
             'amount' => array(
-                'total' => "95.00",
-                'currency' => $x__metadata['mc_currency'],
+                'total' => number_format($_POST['refund_total'], 2),
+                'currency' => $x__metadata['mc_currency']
             ),
         );
-        http_build_query_for_curl( $arrays, $post );
-
         $ch=curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
@@ -553,22 +551,20 @@ class X extends CI_Controller
         curl_setopt($ch, CURLOPT_HEADER, false);
         //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "{}"); //http_build_query($post)
         $result = curl_exec($ch);
         $y=json_decode($result,true);
 
 
-        /*
+
         $this->X_model->update($transactions[0]['x__id'], array(
             'x__status' => 6173, //Transaction Deleted
             'x__metadata' => $y,
-        ), $member_e['e__id'], 27794); //Paypal Refund
-        */
+        ), $member_e['e__id'], 27794 /* Paypal Refund */);
+
 
         return view_json(array(
             'status' => 1,
-            'arrays' => $arrays,
-            'post' => $post,
             'y' => $y,
             'message' => $_POST['refund_total'].' Refunded ['.( isset($y->state) ? $y->state : 'Error' ).']',
         ));
