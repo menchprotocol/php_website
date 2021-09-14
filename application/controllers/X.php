@@ -553,7 +553,7 @@ class X extends CI_Controller
         curl_setopt($ch, CURLOPT_HEADER, false);
         //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         $result = curl_exec($ch);
         $y=json_decode($result,true);
 
