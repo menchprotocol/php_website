@@ -6,33 +6,7 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
 
 } else {
 
-    echo '<form action="" method="GET">';
 
-    echo '<table class="table table-sm maxout"><tr>';
-
-    //ANY IDEA
-    echo '<td><div style="padding-right:5px;">';
-    echo '<span class="mini-header">Ideas:</span>';
-    echo '<input type="text" name="i__id" placeholder="idea1id,idea2id" value="' . ((isset($_GET['i__id'])) ? $_GET['i__id'] : '') . '" class="form-control border">';
-    echo '</div></td>';
-
-    echo '<td><span class="mini-header">Sources:</span><input type="text" name="e__id" value="' . ((isset($_GET['e__id'])) ? $_GET['e__id'] : '') . '" class="form-control border"></td>';
-
-    echo '</tr><tr>';
-
-    echo '<td><div style="padding-right:5px;">';
-    echo '<span class="mini-header">Includes Profile:</span>';
-    echo '<input type="text" name="include_e" placeholder="idea1id,idea2id" value="' . ((isset($_GET['include_e'])) ? $_GET['include_e'] : '') . '" class="form-control border">';
-    echo '</div></td>';
-
-    echo '<td><span class="mini-header">Excludes Profile:</span><input type="text" name="exclude_e" value="' . ((isset($_GET['exclude_e'])) ? $_GET['exclude_e'] : '') . '" class="form-control border"></td>';
-
-    echo '</tr></table>';
-
-
-    echo '<input type="submit" class="btn btn-6255" value="Apply Filters" />';
-
-    echo '</form>';
 
 
     //Fetch Sources who started or were blocked:
@@ -177,10 +151,38 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
 
     }
 
-    //Print JS phones & emails:
-    echo '';
-    echo '</script>';
+    echo '<form action="" method="GET">';
 
+    echo '<table class="table table-sm maxout"><tr>';
+
+    //ANY IDEA
+    echo '<td><div style="padding-right:5px;">';
+    echo '<span class="mini-header">Ideas:</span>';
+    echo '<input type="text" name="i__id" placeholder="idea1id,idea2id" value="' . ((isset($_GET['i__id'])) ? $_GET['i__id'] : '') . '" class="form-control border">';
+    echo '</div></td>';
+
+    echo '<td><span class="mini-header">Sources:</span><input type="text" name="e__id" value="' . ((isset($_GET['e__id'])) ? $_GET['e__id'] : '') . '" class="form-control border"></td>';
+
+    echo '</tr><tr>';
+
+    echo '<td><div style="padding-right:5px;">';
+    echo '<span class="mini-header">Includes Profile:</span>';
+    echo '<input type="text" name="include_e" placeholder="idea1id,idea2id" value="' . ((isset($_GET['include_e'])) ? $_GET['include_e'] : '') . '" class="form-control border">';
+    echo '</div></td>';
+
+    echo '<td><span class="mini-header">Excludes Profile:</span><input type="text" name="exclude_e" value="' . ((isset($_GET['exclude_e'])) ? $_GET['exclude_e'] : '') . '" class="form-control border"></td>';
+
+    echo '</tr></table>';
+
+    echo '<input type="submit" class="btn btn-6255" value="Apply Filters" />';
+
+    echo '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');">Found '.$total_subs.' = '.$email_count.' Email + '.$phone_count.' SMS</a>';
+
+    echo '</form>';
+
+
+    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 10px;">'.$subs.'</textarea>';
+    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 10px;">'.$emails.'</textarea>';
 
 
     echo '<div><textarea class="form-control border-dotted no-padding" id="message_text">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea></div>';
@@ -188,11 +190,8 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
 
     echo '<div id="message_result"></div>';
 
+    echo '<div></div>';
 
-
-    echo '<div><a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');">Found '.$total_subs.' Subscribers:</a></div>';
-    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.$subs.'</textarea>';
-    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:377px; width: 100%; border-radius: 10px;">'.$emails.'</textarea>';
 
 
 }
