@@ -851,11 +851,18 @@ class X extends CI_Controller
                 'message' => view_unauthorized_message(),
             ));
 
+        } elseif (!isset($_POST['message_subject']) || !strlen($_POST['message_subject'])) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Subject',
+            ));
+
         } elseif (!isset($_POST['message_text']) || !strlen($_POST['message_text'])) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Message',
+                'message' => 'Missing Message Body',
             ));
 
         } elseif (!isset($_POST['all_recipients']) || !count($_POST['all_recipients'])) {
@@ -867,22 +874,34 @@ class X extends CI_Controller
 
         }
 
+
         //Loop through all contacts and send messages:
         $stats = array(
             'unique' => 0,
-            'email' => 0,
-            'sms' => 0,
-            'unsubscribed' => 0,
+            'phone_count' => 0,
+            'error_count' => 0,
+            'email_count' => 0,
         );
-        foreach($_POST['all_recipients']){
-            $this->X_model->send_dm($u_emails[0]['e__id'], $subject, $plain_message);
+
+
+        foreach($_POST['all_recipients'] as $send_e__id){
+            $results = $this->X_model->send_dm($send_e__id, trim($_POST['message_subject']), trim($_POST['message_text']));
+            if($results['status']){
+                $stats['unique']++;
+                $stats['email_count'] += $results['email_count'];
+                $stats['phone_count'] += $results['phone_count'];
+            } else {
+                $stats['error_count']++;
+            }
         }
 
+
         return view_json(array(
-            'status' => 1,
-            'message' => 'Sent messages to '.$stats['unique'].' recipients, '.$stats['email'].' Email & '.$stats['sms'].' SMS. '.$stats['unsubscribed'].' Unsubscribed.',
+            'status' => ( $stats['unique']>0 ? 1 : 0 ),
+            'message' => 'Sent messages to '.$stats['unique'].' recipients, '.$stats['email_count'].' Email & '.$stats['phone_count'].' SMS. '.$stats['email_count'].' Errors/Unsubscribed.',
             'all_recipients' => $_POST['all_recipients'],
         ));
+
 
     }
 

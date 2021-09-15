@@ -133,12 +133,7 @@ foreach($query as $subscriber){
     }
 
     $first_name = one_two_explode('',' ', $subscriber['e__title']);
-    array_push($all_recipients, array(
-        'id' => $subscriber['e__id'],
-        'first_name' => $first_name,
-        'email' => $e_email,
-        'phone' => $e_phone,
-    ));
+    array_push($all_recipients,  intval($subscriber['e__id']));
 
     $subs .= $first_name."\t".$e_email."\t".$e_phone."\n";
 
@@ -181,7 +176,6 @@ echo '<textarea class="mono-space subscriber_data hidden" style="background-colo
 echo '<div style="padding: 55px 10px 13px;">';
 echo '<div style="padding: 10px 0;"><input type="text" class="form-control white-border" id="message_subject" onkeyup="countChar()" value="'.( isset($_GET['message_subject']) ? $_GET['message_subject'] : '' ).'" /></div>';
 echo '<textarea class="form-control white-border" id="message_text" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
-echo '<div style="padding: 10px 0;"><input type="text" class="form-control white-border" id="message_media" onkeyup="countChar()" value="'.( isset($_GET['message_media']) ? $_GET['message_media'] : '' ).'" /></div>';
 echo '</div>';
 echo '<div id="charNum"></div>';
 
@@ -225,6 +219,7 @@ echo '<div></div>';
 
         $.post("/x/x_send_message", {
             all_recipients:all_recipients,
+            message_subject: $('#message_subject').val(),
             message_text: $('#message_text').val(),
         }, function (data) {
 
