@@ -40,6 +40,8 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
     $emails = '';
     $total_subs = 0;
     $already_added = array();
+    $all_recipients = array();
+
     if(isset($_GET['i__id'])){
         $is = $this->I_model->fetch(array(
             'i__id IN (' . $_GET['i__id'] . ')' => null,
