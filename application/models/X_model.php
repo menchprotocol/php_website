@@ -454,11 +454,9 @@ class X_model extends CI_Model
         }
 
         $full_message = $subject."\n\n".$plain_message;
-        $return = array(
-            'status' => 1,
+        $stats = array(
             'email_count' => 0,
             'phone_count' => 0,
-            'message' => 'Message sent',
         );
 
 
@@ -536,7 +534,7 @@ class X_model extends CI_Model
                 ),
             )));
 
-            $return['email_count']++;
+            $stats['email_count']++;
 
         }
 
@@ -603,10 +601,20 @@ class X_model extends CI_Model
                     ),
                 )));
 
+                $stats['phone_count']++;
+
                 //usleep(50000); //0.05 Second delay
 
             }
         }
+
+        return array(
+            'status' => ( $stats['phone_count']>0 || $stats['email_count']>0 ? 1 : 0 ),
+            'email_count' => $stats['email_count'],
+            'phone_count' => $stats['phone_count'],
+            'message' => 'Message sent',
+        );;
+
     }
 
     function message_view($message_input, $is_discovery_mode, $member_e = array(), $message_i__id = 0, $simple_version = false)
