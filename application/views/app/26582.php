@@ -88,9 +88,6 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
     $phone_array = array();
     $email_array = array();
 
-    $emails = array();
-    $sms = array();
-
     foreach($query as $subscriber){
 
         //Make sure not already added AND not unsubscribed:
