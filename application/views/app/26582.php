@@ -176,7 +176,7 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
 
     echo '<input type="submit" class="btn btn-6255" value="Apply Filters" />';
 
-    echo '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');">Found '.$total_subs.' = '.$email_count.' Email + '.$phone_count.' SMS</a>';
+    echo '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');">'.$total_subs.' Unique Users = '.$email_count.' Emails + '.$phone_count.' SMS</a>';
 
     echo '</form>';
 
@@ -185,8 +185,9 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
     echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 10px;">'.$emails.'</textarea>';
 
 
-    echo '<div><textarea class="form-control border-dotted no-padding" id="message_text">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea></div>';
-    echo '<div id="send_message_btn"><a class="btn btn-6255" href="javascript:void(0);" onclick="send_message();">Send Message to '.$total_subs.' = '.$email_count.' Email + '.$phone_count.' SMS <i class="fas fa-arrow-right"></i></a></div>';
+    echo '<div style="padding: 55px 10px 13px;"><textarea class="form-control white-border no-padding" id="message_text">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea></div>';
+
+    echo '<div id="send_message_btn"><a class="btn btn-6255" href="javascript:void(0);" onclick="send_message();">Send Message to '.$total_subs.' <i class="fas fa-arrow-right"></i></a></div>';
 
     echo '<div id="message_result"></div>';
 
