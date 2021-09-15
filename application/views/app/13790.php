@@ -200,7 +200,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     echo view_input_dropdown(27264, ( isset($_GET['expand']) ? 27266 : 27265 ));
 
     foreach($is as $loaded_i){
-        echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'"><a class="icon-block" href="/~'.$loaded_i['i__id'].'" target="_blank" title="Open in New Window">'.view_cover(12273,$loaded_i['i__cover']).'</a> '.$loaded_i['i__title'].'</a> <a href="/-26582?i__id='.$_GET['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></h2>';
+        echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'"><a class="icon-block-xxs" href="/~'.$loaded_i['i__id'].'" target="_blank" title="Open in New Window">'.view_cover(12273,$loaded_i['i__cover']).'</a> '.$loaded_i['i__title'].'</a> <a href="/-26582?i__id='.$_GET['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></h2>';
     }
 
     echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
@@ -210,7 +210,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     echo '<th id="th_done">Done</th>';
     foreach($column_sources as $e){
         array_push($table_sortable, '#th_e_'.$e['e__id']);
-        echo '<th id="th_e_'.$e['e__id'].'"><a class="icon-block" href="/@'.$e['e__id'].'" target="_blank" title="Open in New Window">'.view_cover(12274,$e['e__cover']).'</a><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&include_e='.$e['e__id'].'&include_i='.( isset($_GET['include_i']) ? $_GET['include_i'] : '' ).'">'.( isset($_GET['include_e']) && $_GET['include_e']==$e['e__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?e__id='.$e['e__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
+        echo '<th id="th_e_'.$e['e__id'].'"><a class="icon-block-xxs" href="/@'.$e['e__id'].'" target="_blank" title="Open in New Window">'.view_cover(12274,$e['e__cover']).'</a><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&include_e='.$e['e__id'].'&include_i='.( isset($_GET['include_i']) ? $_GET['include_i'] : '' ).'">'.( isset($_GET['include_e']) && $_GET['include_e']==$e['e__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?e__id='.$e['e__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
     }
     foreach($column_ideas as $i){
 
@@ -225,7 +225,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         array_push($table_sortable, '#th_i_'.$i['i__id']);
 
-        echo '<th id="th_i_'.$i['i__id'].'"><a class="icon-block" href="/~'.$i['i__id'].'" target="_blank" title="Open in New Window">'.view_cover(12273,$i['i__cover']).'</a><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&include_i='.$i['i__id'].'&include_e='.( isset($_GET['include_e']) ? $_GET['include_e'] : '' ).'">'.( isset($_GET['include_i']) && $_GET['include_i']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?i__id='.$i['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isorange' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.$i['i__title'].'</span></th>';
+        echo '<th id="th_i_'.$i['i__id'].'"><a class="icon-block-xxs" href="/~'.$i['i__id'].'" target="_blank" title="Open in New Window">'.view_cover(12273,$i['i__cover']).'</a><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&i__tree_id='.$_GET['i__tree_id'].'&e__id='.$_GET['e__id'].'&include_i='.$i['i__id'].'&include_e='.( isset($_GET['include_e']) ? $_GET['include_e'] : '' ).'">'.( isset($_GET['include_i']) && $_GET['include_i']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?i__id='.$i['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isorange' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.$i['i__title'].'</span></th>';
 
     }
     //echo '<th>STARTED</th>';
@@ -240,9 +240,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 <style>
 
-    <?php if(!isset($_GET['expand'])){ echo ' td{ max-width: 89px !important; max-height: 89px !important; overflow: scroll; } '; } else { echo ' td{ font-size:1em !important; } '; } ?>
+    <?php if(!isset($_GET['expand'])){ echo ' #sortable_table td{ max-width: 89px !important; max-height: 89px !important; overflow: scroll; } '; } else { echo ' #sortable_table td{ font-size:1em !important; } '; } ?>
 
-    td>span{
+    #sortable_table td>span{
         display: block;
         max-width: 144px !important;
         max-height: 144px !important;
@@ -256,11 +256,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     .top_nav{
         display:none !important;
     }
-    .table-striped tr:nth-of-type(odd) td {
+    #sortable_table .table-striped tr:nth-of-type(odd) td {
         background-color: #f0f0f0 !important;
         -webkit-print-color-adjust:exact;
     }
-    .table-striped td {
+    #sortable_table .table-striped td {
         border-bottom: 1px dotted #f0f0f0 !important;
         font-size: 1.3em;
     }
@@ -268,14 +268,14 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         font-size: 1.1em !important;
         margin-bottom: 3px;
     }
-    th{
+    #sortable_table th{
         cursor: ns-resize !important;
     }
-    table th, table td{
+    #sortable_table th, #sortable_table td{
         border:1px solid #000 !important;
     }
 
-    th:hover, th:active{
+    #sortable_table th:hover, #sortable_table th:active{
         background-color: #FFF;
     }
     .vertical_col {
