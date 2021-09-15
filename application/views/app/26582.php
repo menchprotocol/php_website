@@ -183,8 +183,8 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
 
 
 
-    echo '<div><textarea class="form-control border no-padding" id="message_text">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea></div>';
-    echo '<div id="send_message_btn"><a class="btn btn-compact btn-grey" href="javascript:void(0);" onclick="send_message();">Send Message to '.$total_subs.' = '.$email_count.' Email + '.$phone_count.' SMS <i class="fas fa-arrow-right"></i></a></div>';
+    echo '<div><textarea class="form-control border-dotted no-padding" id="message_text">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea></div>';
+    echo '<div id="send_message_btn"><a class="btn btn-6255" href="javascript:void(0);" onclick="send_message();">Send Message to '.$total_subs.' = '.$email_count.' Email + '.$phone_count.' SMS <i class="fas fa-arrow-right"></i></a></div>';
 
     echo '<div id="message_result"></div>';
 
@@ -234,7 +234,6 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
                 //Show error:
                 is_processing = false; //Allow resubmissions
                 $('#message_result').html('ERROR: '+data.message);
-
             }
 
         });

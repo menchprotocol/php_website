@@ -868,7 +868,7 @@ class X extends CI_Controller
         }
 
         return view_json(array(
-            'status' => 0,
+            'status' => 1,
             'message' => 'Sent messages',
             'all_recipients' => $_POST['all_recipients'],
         ));
