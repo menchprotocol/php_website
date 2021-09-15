@@ -176,7 +176,6 @@ function htmlentitiesjs(rawStr){
 }
 
 
-
 function apply_all_load(apply_id, coin__id){
 
     x_create({

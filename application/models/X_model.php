@@ -440,7 +440,27 @@ class X_model extends CI_Model
     function send_dm($e__id, $subject, $plain_message, $x_data = array())
     {
 
+
+        if (count($this->X_model->fetch(array(
+            'x__up' => 26583, //Unsubscribed
+            'x__down' => $e__id,
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        )))) {
+            return array(
+                'status' => 0,
+                'message' => 'User is unsubscribed',
+            );
+        }
+
         $full_message = $subject."\n\n".$plain_message;
+        $return = array(
+            'status' => 1,
+            'email_count' => 0,
+            'phone_count' => 0,
+            'message' => 'Message sent',
+        );
+
 
         //Send Emails:
         foreach($this->X_model->fetch(array(
@@ -454,9 +474,10 @@ class X_model extends CI_Model
 
                 $this->X_model->update($e_data['x__id'], array(
                     'x__status' => 6173, //Transaction Deleted
-                ), $e__id, 10673 /* Member Transaction Unpublished */);
+                ), $e__id, 27890 /* Invalid Input Removed */);
 
                 continue;
+
             }
 
             //Loadup amazon SES:
@@ -515,6 +536,8 @@ class X_model extends CI_Model
                 ),
             )));
 
+            $return['email_count']++;
+
         }
 
 
@@ -524,12 +547,10 @@ class X_model extends CI_Model
         //Breakup into smaller SMS friendly messages
         $sms_message = $subject.': '.$plain_message;
         $sms_texts = array();
-        $sms_limit = 145;
+        $sms_limit = view_memory(6404,27891);
         for($i=1;$i<=ceil(strlen($sms_message)/$sms_limit);$i++) {
             array_push($sms_texts, substr($sms_message, ($i-1)*$sms_limit, $sms_limit) );
         }
-
-
 
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -566,7 +587,7 @@ class X_model extends CI_Model
                     $sms_success = false;
                     $this->X_model->update($e_data['x__id'], array(
                         'x__status' => 6173, //Transaction Deleted
-                    ), $e__id, 10673 /* Member Transaction Unpublished */);
+                    ), $e__id, 27890 /* Invalid Input Removed */);
                 } else {
                     $sms_success = substr_count($y, '<SMSMessage><Sid>');
                 }
@@ -582,7 +603,8 @@ class X_model extends CI_Model
                     ),
                 )));
 
-                usleep(50000); //0.05 Second delay
+                //usleep(50000); //0.05 Second delay
+
             }
         }
     }

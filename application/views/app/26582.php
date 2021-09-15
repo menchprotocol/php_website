@@ -7,6 +7,7 @@ $emails = '';
 $total_subs = 0;
 $already_added = array();
 $all_recipients = array();
+$sms_limit = view_memory(6404,27891);
 
 if(isset($_GET['i__id']) && strlen($_GET['i__id'])){
     $is = $this->I_model->fetch(array(
@@ -168,7 +169,7 @@ echo '</tr></table>';
 
 echo '<input type="submit" class="btn btn-6255" value="Apply Filters" />';
 
-echo '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');">'.$total_subs.' Unique Users = '.$email_count.' Emails + '.$phone_count.' SMS</a>';
+echo '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');">'.$total_subs.' Unique Recipients = '.$email_count.' Emails + '.$phone_count.' SMS</a>';
 
 echo '</form>';
 
@@ -177,7 +178,12 @@ echo '<textarea class="mono-space subscriber_data hidden" style="background-colo
 echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 10px;">'.$emails.'</textarea>';
 
 
-echo '<div style="padding: 55px 10px 13px;"><textarea class="form-control white-border no-padding" id="message_text">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea></div>';
+echo '<div style="padding: 55px 10px 13px;">';
+echo '<div style="padding: 10px 0;"><input type="text" class="form-control white-border" id="message_subject" onkeyup="countChar()" value="'.( isset($_GET['message_subject']) ? $_GET['message_subject'] : '' ).'" /></div>';
+echo '<textarea class="form-control white-border" id="message_text" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
+echo '<div style="padding: 10px 0;"><input type="text" class="form-control white-border" id="message_media" onkeyup="countChar()" value="'.( isset($_GET['message_media']) ? $_GET['message_media'] : '' ).'" /></div>';
+echo '</div>';
+echo '<div id="charNum"></div>';
 
 echo '<div id="send_message_btn"><a class="btn btn-6255" href="javascript:void(0);" onclick="send_message();">Send Message to '.$total_subs.' <i class="fas fa-arrow-right"></i></a></div>';
 
@@ -188,6 +194,14 @@ echo '<div></div>';
 ?>
 
 <script type="text/javascript">
+
+    $(document).ready(function () {
+        countChar();
+    });
+
+    function countChar() {
+        $('#charNum').text(( $('#message_subject').value.length + $('#message_text').value.length + 2 /* For the [: ] that connects the subject to body in SMS */ )+'/<?= $sms_limit ?> Characters (Subject + Text)');
+    }
 
     <?= ' var all_recipients = ' . json_encode($all_recipients) . ';' ?>
 

@@ -867,9 +867,20 @@ class X extends CI_Controller
 
         }
 
+        //Loop through all contacts and send messages:
+        $stats = array(
+            'unique' => 0,
+            'email' => 0,
+            'sms' => 0,
+            'unsubscribed' => 0,
+        );
+        foreach($_POST['all_recipients']){
+            $this->X_model->send_dm($u_emails[0]['e__id'], $subject, $plain_message);
+        }
+
         return view_json(array(
             'status' => 1,
-            'message' => 'Sent messages',
+            'message' => 'Sent messages to '.$stats['unique'].' recipients, '.$stats['email'].' Email & '.$stats['sms'].' SMS. '.$stats['unsubscribed'].' Unsubscribed.',
             'all_recipients' => $_POST['all_recipients'],
         ));
 
