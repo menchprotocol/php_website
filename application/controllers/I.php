@@ -345,7 +345,7 @@ class I extends CI_Controller {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing IDEA',
+                'message' => 'Missing the IDEA',
             ));
 
         } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___12359'))) {

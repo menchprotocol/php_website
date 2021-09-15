@@ -840,6 +840,40 @@ class X extends CI_Controller
     }
 
 
+    function x_send_message(){
+        //Authenticate Member:
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+
+        } elseif (!isset($_POST['message_text']) || !strlen($_POST['message_text'])) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Message',
+            ));
+
+        } elseif (!isset($_POST['all_recipients']) || !count($_POST['all_recipients'])) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Recipients',
+            ));
+
+        }
+
+        print_r($_POST['all_recipients']);
+
+        return view_json(array(
+            'status' => 0,
+            'message' => 'Sent messages',
+        ));
+
+    }
 
     function x_upload()
     {
