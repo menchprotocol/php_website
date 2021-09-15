@@ -37,7 +37,7 @@ $logo = '/img/'.$current_coin_id.'.png';
     echo ' var superpower_js_13422 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(13422, $this->session->userdata('session_superpowers_activated'))) . '; ';
 
     echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
-    echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',$member_e['e__title']) : '' ) . '\'; ';
+    echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
     echo ' var base_source = ' . $base_source . '; ';
 
