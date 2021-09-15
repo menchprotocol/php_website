@@ -66,7 +66,7 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
 
     if(isset($_GET['i__id'])){
         $query = array_merge($query, $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___26582')) . ')' => null,
+            'x__type IN (' . join(',', $this->config->item('n___26582')) . ')' => null, //Send Instant Message
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
             'x__left IN (' . $_GET['i__id'] . ')' => null, //PUBLIC
@@ -219,12 +219,11 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
             return false;
         }
 
-
         $('#message_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span> Sending Messages...');
 
         $.post("/x/x_send_message", {
             all_recipients:all_recipients,
-            message_text:$('#message_text').val(),
+            message_text: $('#message_text').val(),
         }, function (data) {
 
             if (data.status) {
@@ -237,6 +236,7 @@ if(!isset($_GET['i__id']) && !isset($_GET['e__id'])){
                 $('#message_result').html('ERROR: '+data.message);
 
             }
+
         });
 
     }

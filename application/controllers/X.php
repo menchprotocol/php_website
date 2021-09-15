@@ -841,6 +841,7 @@ class X extends CI_Controller
 
 
     function x_send_message(){
+
         //Authenticate Member:
         $member_e = superpower_unlocked();
         if (!$member_e) {
@@ -866,11 +867,10 @@ class X extends CI_Controller
 
         }
 
-        print_r($_POST['all_recipients']);
-
         return view_json(array(
             'status' => 0,
             'message' => 'Sent messages',
+            'all_recipients' => $_POST['all_recipients'],
         ));
 
     }
