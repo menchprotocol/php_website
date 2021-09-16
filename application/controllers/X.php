@@ -883,9 +883,22 @@ class X extends CI_Controller
             'email_count' => 0,
         );
 
+        //Log mass message transaction:
+        $log_x = $this->X_model->create(array(
+            'x__type' => 26582, //Send Instant Message
+            'x__source' => $member_e['e__id'],
+            'x__metadata' => array(
+                'message_subject' => $_POST['message_subject'],
+                'message_text' => $_POST['message_text'],
+                'all_recipients' => $_POST['all_recipients'],
+            ),
+            'x__message' => trim($_POST['message_subject'])."\n".trim($_POST['message_text']),
+        ));
 
         foreach($_POST['all_recipients'] as $send_e__id){
-            $results = $this->X_model->send_dm($send_e__id, trim($_POST['message_subject']), trim($_POST['message_text']));
+
+            $results = $this->X_model->send_dm($send_e__id, trim($_POST['message_subject']), trim($_POST['message_text']), array('x__reference' => $log_x['x__id']));
+
             if($results['status']){
                 $stats['unique']++;
                 $stats['email_count'] += $results['email_count'];
@@ -895,13 +908,19 @@ class X extends CI_Controller
             }
         }
 
+        //Also save final results:
+        $this->X_model->update($log_x['x__id'], array(
+            'x__metadata' => array(
+                'stats' => $stats,
+            ),
+        ));
+
 
         return view_json(array(
             'status' => ( $stats['unique']>0 ? 1 : 0 ),
-            'message' => 'Sent messages to '.$stats['unique'].' recipients, '.$stats['email_count'].' Email & '.$stats['phone_count'].' SMS. '.$stats['email_count'].' Errors/Unsubscribed.',
+            'message' => 'Sent messages to '.$stats['unique'].' recipients ('.$log_x['x__id'].'): '.$stats['email_count'].' Email & '.$stats['phone_count'].' SMS. '.$stats['email_count'].' Errors/Unsubscribed.',
             'all_recipients' => $_POST['all_recipients'],
         ));
-
 
     }
 
