@@ -887,12 +887,6 @@ class X extends CI_Controller
         $log_x = $this->X_model->create(array(
             'x__type' => 26582, //Send Instant Message
             'x__source' => $member_e['e__id'],
-            'x__metadata' => array(
-                'message_subject' => $_POST['message_subject'],
-                'message_text' => $_POST['message_text'],
-                'all_recipients' => $_POST['all_recipients'],
-            ),
-            'x__message' => trim($_POST['message_subject'])."\n".trim($_POST['message_text']),
         ));
 
         foreach($_POST['all_recipients'] as $send_e__id){
@@ -910,7 +904,11 @@ class X extends CI_Controller
 
         //Also save final results:
         $this->X_model->update($log_x['x__id'], array(
+            'x__message' => $stats['unique'].'x ['.trim($_POST['message_subject']).']'."\n".trim($_POST['message_text']),
             'x__metadata' => array(
+                'message_subject' => $_POST['message_subject'],
+                'message_text' => $_POST['message_text'],
+                'all_recipients' => $_POST['all_recipients'],
                 'stats' => $stats,
             ),
         ));
