@@ -557,10 +557,6 @@ class X_model extends CI_Model
             'x__down' => $e__id,
         )) as $e_data){
 
-            if($e__id!=1){
-                continue;
-            }
-
             foreach($sms_texts as $sms_text){
 
                 $post = array(
