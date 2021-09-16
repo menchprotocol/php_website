@@ -12,6 +12,8 @@ if(1){
         ),
     ));
 
+    echo 'Got it';
+
 } else {
     echo 'Invalid Post Data: '.print_r($_POST, true);
 }
