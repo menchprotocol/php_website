@@ -194,7 +194,7 @@ echo '<div></div>';
     });
 
     function countChar() {
-        $('#charNum').text(( $('#message_subject').value.length + $('#message_text').value.length + 2 /* For the [: ] that connects the subject to body in SMS */ )+'/<?= $sms_limit ?> Characters (Subject + Text)');
+        $('#charNum').html(( $('#message_subject').value.length + $('#message_text').value.length + 2 /* For the [: ] that connects the subject to body in SMS */ )+'/<?= $sms_limit ?> Characters (Subject + Text)');
     }
 
     <?= ' var all_recipients = ' . json_encode($all_recipients) . ';' ?>
