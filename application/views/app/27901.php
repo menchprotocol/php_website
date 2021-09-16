@@ -1,7 +1,7 @@
 <?php
 
 //Called when the paypal payment is complete:
-if(isset($_POST)){
+if(isset($_POST) && count($_POST)>0){
 
     $this->X_model->create(array(
         'x__type' => 27901,
