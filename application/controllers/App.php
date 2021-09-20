@@ -179,13 +179,16 @@ class App extends CI_Controller
 
 
 
-
         //Delivery App
         if(!$memory_detected){
 
             echo $ui;
 
         } else {
+
+            if(in_array($app_e__id, $this->config->item('n___27947'))){
+                header("Content-type: text/xml; charset=utf-8");
+            }
 
             if(in_array($app_e__id, $this->config->item('n___12741'))){
 
