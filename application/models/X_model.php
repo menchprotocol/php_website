@@ -541,7 +541,7 @@ class X_model extends CI_Model
 
 
         //Breakup into smaller SMS friendly messages
-        $sms_message = str_replace('  ',' ',str_replace("\n",' ', remove_emoji($subject.': '.$plain_message)));
+        $sms_message = $subject.': '.$plain_message;
         if(strlen($sms_message)<=view_memory(6404,27891)){
 
             //Send SMS
