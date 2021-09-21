@@ -539,30 +539,25 @@ class X_model extends CI_Model
         }
 
 
-        //Send SMS
-        $cred_twilio = $this->config->item('cred_twilio');
 
         //Breakup into smaller SMS friendly messages
         $sms_message = $subject.': '.$plain_message;
-        $sms_texts = array();
-        $sms_limit = view_memory(6404,27891);
-        for($i=1;$i<=ceil(strlen($sms_message)/$sms_limit);$i++) {
-            array_push($sms_texts, substr($sms_message, ($i-1)*$sms_limit, $sms_limit) );
-        }
+        if(strlen($sms_message)<=view_memory(6404,27891)){
 
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 4783, //Phone
-            'x__down' => $e__id,
-        )) as $e_data){
+            //Send SMS
+            $cred_twilio = $this->config->item('cred_twilio');
 
-            foreach($sms_texts as $sms_text){
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__up' => 4783, //Phone
+                'x__down' => $e__id,
+            )) as $e_data){
 
                 $post = array(
                     'From' => view_memory(6404,27673), //Twilio From number
                     'To' => $e_data['x__message'],
-                    'Body' => $sms_text,
+                    'Body' => $sms_message,
                 );
 
                 $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$cred_twilio['account_sid']."/SMS/Messages");
@@ -590,7 +585,7 @@ class X_model extends CI_Model
                 $this->X_model->create(array_merge($x_data, array(
                     'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
                     'x__source' => $e__id,
-                    'x__message' => $sms_text,
+                    'x__message' => $sms_message,
                     'x__metadata' => array(
                         'post' => $post,
                         'response' => $y,
@@ -598,8 +593,6 @@ class X_model extends CI_Model
                 )));
 
                 $stats['phone_count']++;
-
-                //usleep(50000); //0.05 Second delay
 
             }
         }
