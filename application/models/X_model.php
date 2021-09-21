@@ -541,7 +541,7 @@ class X_model extends CI_Model
 
 
         //Breakup into smaller SMS friendly messages
-        $sms_message = str_replace('  ',' ',str_replace("\n",' ',$subject.': '.$plain_message));
+        $sms_message = str_replace('  ',' ',str_replace("\n",' ', remove_emoji($subject.': '.$plain_message)));
         if(strlen($sms_message)<=view_memory(6404,27891)){
 
             //Send SMS
@@ -556,8 +556,8 @@ class X_model extends CI_Model
 
                 $post = array(
                     'From' => view_memory(6404,27673), //Twilio From number
-                    'To' => $e_data['x__message'],
                     'Body' => $sms_message,
+                    'To' => $e_data['x__message'],
                 );
 
                 $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$cred_twilio['account_sid']."/SMS/Messages");
