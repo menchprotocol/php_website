@@ -177,7 +177,7 @@ echo '<div style="padding: 55px 10px 13px;">';
 echo '<div style="padding: 10px 0;"><input type="text" class="form-control white-border" id="message_subject" placeholder="Subject" onkeyup="countChar()" value="'.( isset($_GET['message_subject']) ? $_GET['message_subject'] : '' ).'" /></div>';
 echo '<textarea class="form-control white-border" id="message_text" placeholder="Body" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
 echo '<div id="charNum"></div>';
-echo '<div style="padding:10px;">TIP: SMS Messages must be less than 160 Characters and NOT include new lines or Emojis.</div>';
+echo '<div style="padding:10px 0;">TIP: SMS Messages must be less than 160 Characters and NOT include new lines or Emojis.</div>';
 echo '</div>';
 
 echo '<div id="send_message_btn"><a class="btn btn-6255" href="javascript:void(0);"  onclick="send_message();">Send Message to '.$total_subs.' <i class="fas fa-arrow-right"></i></a></div>';
