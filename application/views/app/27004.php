@@ -25,6 +25,7 @@ if (isset($_GET['i__id']) && substr_count($_GET['i__id'], ',') > 0) {
 }
 
 //List all payment Ideas and their total earnings
+$x_ids = array();
 $body_content = '';
 $ids = '';
 foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) as $i){
@@ -94,7 +95,8 @@ foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) 
         $transaction_content .= '<td style="text-align: right;">'.$x__metadata['mc_currency'].'</td>';
         $transaction_content .= '<td style="text-align: right;" id="refund_'.$x['x__id'].'"><a href="#" onclick="paypal_refund('.$x['x__id'].', '.number_format($x__metadata['mc_gross'], 2).')" style="font-weight:bold;"><u>Refund</u></a> <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank"><i class="fas fa-info-circle"></i></a> <a href="/-4341?x__id='.$x['x__id'].'" target="_blank"><i class="fas fa-atlas"></i></a></td>';
 
-        https://www.paypal.com/activity/payment/1GT16890V2379634R
+        array_push($x_ids, $x['x__id']);
+
         $transaction_content .= '</tr>';
 
     }
@@ -157,7 +159,9 @@ echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
 echo '<th style="text-align: right;">&nbsp;</th>';
 echo '</tr>';
 echo '</table>';
+echo '<div class="texttransparent">Transactions: '.join(',',$x_ids).'</div>';
 echo '<div class="texttransparent">'.$ids.'</div>';
+
 
 
 ?>
