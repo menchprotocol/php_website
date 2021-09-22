@@ -9,6 +9,7 @@ $gross_commission = 0;
 $gross_payout = 0;
 $gross_currencies = array();
 
+
 $query_filters = array(
     'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
 );
@@ -26,6 +27,7 @@ if (isset($_GET['i__id']) && substr_count($_GET['i__id'], ',') > 0) {
 
 //List all payment Ideas and their total earnings
 $x_ids = array();
+$x_adjustments = array();
 $body_content = '';
 $ids = '';
 foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) as $i){
@@ -74,6 +76,29 @@ foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) 
         if(!in_array($x__metadata['mc_currency'], $gross_currencies) && strlen($x__metadata['mc_currency'])>0){
             array_push($gross_currencies, $x__metadata['mc_currency']);
         }
+
+
+        if(isset($_GET['update']) && intval($_GET['update'])==intval($x__metadata['mc_gross'])){
+            $this->X_model->update($x['x__id'], array(
+                'x__message' => number_format(($x__metadata['mc_gross']/2),2),
+            ));
+            update_metadata(12273, $i['i__id'], array(
+                'mc_fee' => number_format(($x__metadata['mc_fee']/2),2),
+                'mc_gross' => number_format(($x__metadata['mc_gross']/2),2),
+                'mc_gross_old' => $x__metadata['mc_gross'],
+                'mc_fee_old' => $x__metadata['mc_fee'],
+            ));
+        } else {
+
+            array_push($x_adjustments, array(
+                'mc_fee' => number_format(($x__metadata['mc_fee']/2),2),
+                'mc_gross' => number_format(($x__metadata['mc_gross']/2),2),
+                'mc_gross_old' => $x__metadata['mc_gross'],
+                'mc_fee_old' => $x__metadata['mc_fee'],
+            ));
+
+        }
+
 
 
         $item_parts = explode('-',$x__metadata['item_number']);
@@ -159,6 +184,7 @@ echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
 echo '<th style="text-align: right;">&nbsp;</th>';
 echo '</tr>';
 echo '</table>';
+echo '<div class="texttransparent">Adjustments: '.print_r($x_adjustments, true).'<hr /></div>';
 echo '<div class="texttransparent">Transactions: '.join(',',$x_ids).'</div>';
 echo '<div class="texttransparent">'.$ids.'</div>';
 
