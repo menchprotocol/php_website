@@ -43,6 +43,23 @@ foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) 
         'x__left' => $i['i__id'],
     ), array(), 0) as $x){
 
+        if(isset($_GET['include_e']) && strlen($_GET['include_e']) && !count($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__up IN (' . $_GET['include_e'] . ')' => null,
+                'x__down' => $x['x__source'],
+            )))){
+            continue;
+        }
+        if(isset($_GET['exclude_e']) && intval($_GET['exclude_e']) && count($this->X_model->fetch(array(
+                'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
+                'x__down' => $x['x__source'],
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))){
+            continue;
+        }
+
         $x__metadata = unserialize($x['x__metadata']);
         if(doubleval($x__metadata['mc_gross']) <= 0){
             continue;
