@@ -28,7 +28,6 @@ if (isset($_GET['i__id']) && substr_count($_GET['i__id'], ',') > 0) {
 //List all payment Ideas and their total earnings
 $x_ids = array();
 $x_updated = 0;
-$x_adjustments = array();
 $body_content = '';
 $ids = '';
 foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) as $i){
@@ -79,12 +78,11 @@ foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) 
         }
 
 
-        if(isset($_GET['half'])){
-            /*
+        //Half only if not halfed before
+        if(isset($_GET['half']) && !isset($x__metadata['mc_gross_old'])){
             $this->X_model->update($x['x__id'], array(
                 'x__message' => number_format(($x__metadata['mc_gross']/2),2),
             ));
-            */
             update_metadata(6255, $x['x__id'], array(
                 'mc_fee' => number_format(($x__metadata['mc_fee']/2),2),
                 'mc_gross' => number_format(($x__metadata['mc_gross']/2),2),
@@ -92,15 +90,6 @@ foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) 
                 'mc_fee_old' => $x__metadata['mc_fee'],
             ));
             $x_updated++;
-        } else {
-
-            array_push($x_adjustments, array(
-                'mc_fee' => number_format(($x__metadata['mc_fee']/2),2),
-                'mc_gross' => number_format(($x__metadata['mc_gross']/2),2),
-                'mc_gross_old' => $x__metadata['mc_gross'],
-                'mc_fee_old' => $x__metadata['mc_fee'],
-            ));
-
         }
 
 
@@ -188,7 +177,7 @@ echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
 echo '<th style="text-align: right;">&nbsp;</th>';
 echo '</tr>';
 echo '</table>';
-echo '<div>'.( $x_updated > 0 ? $x_updated.' Halfed: ' : '' ).'Adjustments: '.print_r($x_adjustments, true).'<hr /></div>';
+echo ( $x_updated > 0 ? '<div>'.$x_updated.' Halfed!<hr /></div>' : '' );
 echo '<div class="texttransparent">Transactions: '.join(',',$x_ids).'</div>';
 echo '<div class="texttransparent">'.$ids.'</div>';
 
