@@ -79,11 +79,13 @@ foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) 
         }
 
 
-        if(isset($_GET['update']) && intval($_GET['update'])==intval($x__metadata['mc_gross'])){
+        if(isset($_GET['half'])){
+            /*
             $this->X_model->update($x['x__id'], array(
                 'x__message' => number_format(($x__metadata['mc_gross']/2),2),
             ));
-            update_metadata(12273, $i['i__id'], array(
+            */
+            update_metadata(6255, $x['x__id'], array(
                 'mc_fee' => number_format(($x__metadata['mc_fee']/2),2),
                 'mc_gross' => number_format(($x__metadata['mc_gross']/2),2),
                 'mc_gross_old' => $x__metadata['mc_gross'],
@@ -186,7 +188,7 @@ echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
 echo '<th style="text-align: right;">&nbsp;</th>';
 echo '</tr>';
 echo '</table>';
-echo '<div>Adjustments: '.print_r($x_adjustments, true).'<hr /></div>';
+echo '<div>'.( $x_updated > 0 ? $x_updated.' Halfed: ' : '' ).'Adjustments: '.print_r($x_adjustments, true).'<hr /></div>';
 echo '<div class="texttransparent">Transactions: '.join(',',$x_ids).'</div>';
 echo '<div class="texttransparent">'.$ids.'</div>';
 
