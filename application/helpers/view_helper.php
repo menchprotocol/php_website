@@ -1907,7 +1907,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             $messages .= $mes['x__message'].' ';
         }
         if($messages){
-            $message_tooltip = '<span class="icon-block-xs mini-font">'.$messages.'</span>';
+            $message_tooltip = '<span class="mini-font">'.$messages.'</span>';
         }
     } elseif($discovery_mode && $can_click && isset($i['x__message']) && strlen($i['x__message'])>0){
         $message_tooltip = '<div class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</div>';
@@ -1915,7 +1915,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     $view_i_time = view_i_time($i_stats);
-    $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . ( $view_i_time ? $view_i_time : '&nbsp;' ).$message_tooltip . '</div>';
+    $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . $message_tooltip . ( $view_i_time ? '<br />'.$view_i_time : '' ) . '</div>';
 
     if(count($minter)){
         //$ui .= '<div class="coin-hover grey mini-font">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>';
