@@ -1664,11 +1664,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
-        $ui .= $CI->X_model->message_view(
-            $message_x['x__message'],
-            true,
-            $member_e
-        );
+        $ui .= $CI->X_model->message_view($message_x['x__message'], true, $member_e);
     }
     $ui .= '</a>';
 
@@ -1708,18 +1704,18 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $e_of_i = e_of_i($i['i__id']);
     $user_input = $focus_e;
-    $user_session = superpower_unlocked();
-    $is_first_incomplete = ( $top_i__id>0 && $user_session ? $is_first_incomplete : false );
+    $member_e = superpower_unlocked();
+    $is_first_incomplete = ( $top_i__id>0 && $member_e ? $is_first_incomplete : false );
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $editing_enabled = !$cache_app && in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
     $focus_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
-    $has_self = $user_session && $focus_e && $user_session['e__id']==$focus_e['e__id'];
+    $has_self = $member_e && $focus_e && $member_e['e__id']==$focus_e['e__id'];
 
     if(!$focus_e){
-        $focus_e = $user_session;
+        $focus_e = $member_e;
     }
 
     $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__id > 0 && $focus_e && $discovery_mode;
@@ -1761,7 +1757,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
     } elseif(strlen($e___13369[$x__type]['m__message'])){
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
-    } elseif(in_array($x__type, $CI->config->item('n___14742')) && $previous_i && $user_session){
+    } elseif(in_array($x__type, $CI->config->item('n___14742')) && $previous_i && $member_e){
         //Complete if not already:
         $href = '/x/complete_next/'.$top_i__id.'/'.$previous_i['i__id'].'/'.$i['i__id'];
     } elseif($discovery_mode){
@@ -1904,7 +1900,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             'x__type' => 4231,
             'x__right' => $i['i__id'],
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
-            $messages .= $mes['x__message'].' ';
+            $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e);
         }
         if($messages){
             $message_tooltip = '<span class="mini-font">'.$messages.'</span>';
