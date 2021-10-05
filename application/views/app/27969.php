@@ -24,6 +24,15 @@ if(!isset($_GET['i__id']) && get_domain_setting(14002) > 0){
 }
 
 
+if(isset($_GET['i__id'])){
+    $is = $this->I_model->fetch(array(
+        'i__id' => $_GET['i__id'],
+    ));
+
+    //IDEA TITLE
+    echo '<h1 style="padding-top: 21px;">' . $is[0]['i__title'] . '</h1>';
+}
+
 
 if(isset($_GET['e__id'])){
 
@@ -106,13 +115,6 @@ if(isset($_GET['e__id'])){
 
 
 if(isset($_GET['i__id'])){
-    $is = $this->I_model->fetch(array(
-        'i__id' => $_GET['i__id'],
-    ));
-
-    //IDEA TITLE
-    echo '<h1 style="padding-top: 21px;">' . $is[0]['i__title'] . '</h1>';
-
 
     //MESSAGES
     echo '<div>';
