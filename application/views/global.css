@@ -847,9 +847,9 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     padding: 5px 0;
 }
 .mid-title{
-    padding: 13px;
+    padding: 10px;
     text-align: center;
-    font-weight: 1.2em;
+    font-weight: 1.3em !important;
 }
 .list-border .list-group-item p {
     padding: 8px 0 0 0 !important;
