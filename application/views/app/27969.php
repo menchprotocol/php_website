@@ -77,7 +77,7 @@ foreach(explode(',',$_GET['e__id']) as $e__id){
 
     if($list_body){
         //Add this to the UI:
-        $ui .= '<div class="css__title x-info grey"><span class="icon-block-lg">'.view_cover(12274,$headers[0]['e__cover']).'</span>'.$headers[0]['e__title'].'</div>';
+        $ui .= '<div class="css__title x-info grey"><span class="icon-block">'.view_cover(12274,$headers[0]['e__cover']).'</span>'.$headers[0]['e__title'].'</div>';
         $ui .= '<div class="list-group list-border">';
         $ui .= $list_body;
         $ui .= '</div>';
