@@ -22,7 +22,7 @@ function build_item($e, $link, $desc){
       <h3 class="mb-1"><b><span class="icon-block-lg">'.view_cover(12274,$e['e__cover']).'</span>'.$e['e__title'].'</b></h3>
       <small>&nbsp;&nbsp;<i class="fas fa-arrow-right"></i>&nbsp;&nbsp;</small>
     </div>
-    '.( strlen($desc) ? '<p class="mb-1" style="padding: 8px 3px 8px 52px;">'.$desc.'</p>' : '' ) .'
+    '.( strlen($desc) ? '<p class="mb-1" style="padding: 8px 3px 8px 57px;">'.$desc.'</p>' : '' ) .'
   </a>';
 
 }
@@ -77,7 +77,7 @@ foreach(explode(',',$_GET['e__id']) as $e__id){
 
     if($list_body){
         //Add this to the UI:
-        $ui .= '<div class="css__title x-info grey"><span class="icon-block-lg">'.view_cover(12274,$headers[0]['e__cover']).'</span>&nbsp;&nbsp;'.$headers[0]['e__title'].'</div>';
+        $ui .= '<div class="css__title x-info grey"><span class="icon-block-lg" style="margin-right: 5px;">'.view_cover(12274,$headers[0]['e__cover']).'</span>'.$headers[0]['e__title'].'</div>';
         $ui .= '<div class="list-group list-border">';
         $ui .= $list_body;
         $ui .= '</div>';
