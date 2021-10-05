@@ -54,7 +54,7 @@ if(isset($_GET['e__id'])){
         if($list_body){
             //Add this to the UI:
             $ui .= '<div class="css__title x-info grey"><span class="icon-block-lg">'.view_cover(12274,$header['e__cover']).'</span>'.$header['e__title'].'</div>';
-            $ui .= '<div class="list-group" style="margin-bottom: 34px;">';
+            $ui .= '<div class="list-group" style="margin-bottom: 34px; border: 1px solid #000; border-radius: 13px; overflow: hidden;">';
             $ui .= $list_body;
             $ui .= '</div>';
         }
