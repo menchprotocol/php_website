@@ -5,7 +5,7 @@ function build_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $
     return '<a href="/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link).'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
       <h4><b><span class="icon-block-lg" style="margin-right:2px;">'.view_cover(($e__id>0 ? 12274 : 12273),$s__cover).'</span>'.$s__title.'</b></h4>
-      <small>&nbsp;<i class="fas fa-arrow-right"></i>&nbsp;</small>
+      <small><i class="fas fa-arrow-right"></i></small>
     </div>
     '.( strlen($desc) ? '<p>'.$desc.'</p>' : '' ) .'
     '.( strlen($small_text) ? '<small>'.$small_text.'</small>' : '' ) .'
