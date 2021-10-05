@@ -1,6 +1,6 @@
 <style>
     .list-border{
-        margin-bottom: 45px;
+        padding-bottom: 45px;
         border: 1px solid #000;
         border-radius: 13px;
         overflow: hidden;
