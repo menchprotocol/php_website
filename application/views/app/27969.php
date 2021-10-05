@@ -2,7 +2,7 @@
 
 function build_item($e, $link, $desc){
 
-    return '<a href="/-27970?e__id='.$e['e__id'].'&go_to='.urlencode($link).'" class="list-group-item list-group-item-action flex-column align-items-start">
+    return '<a href="/-27970?e__id='.$e['e__id'].'&go_to='.urlencode($link).'" style="border-bottom: 1px solid #000;" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
       <h3 class="mb-1"><b><span class="icon-block-lg">'.view_cover(12274,$e['e__cover']).'</span>'.$e['e__title'].'</b></h3>
       <small>&nbsp;&nbsp;<i class="fas fa-arrow-right"></i>&nbsp;&nbsp;</small>
