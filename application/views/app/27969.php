@@ -4,8 +4,8 @@ function build_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $
 
     return '<a href="/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link).'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
-      <h4><b><span class="icon-block-lg" style="margin-right: 5px;">'.view_cover(($e__id>0 ? 12274 : 12273),$s__cover).'</span>'.$s__title.'</b></h4>
-      <small>&nbsp;&nbsp;<i class="fas fa-arrow-right"></i>&nbsp;&nbsp;</small>
+      <h4><b><span class="icon-block-lg" style="margin-right:2px;">'.view_cover(($e__id>0 ? 12274 : 12273),$s__cover).'</span>'.$s__title.'</b></h4>
+      <small>&nbsp;<i class="fas fa-arrow-right"></i>&nbsp;</small>
     </div>
     '.( strlen($desc) ? '<p>'.$desc.'</p>' : '' ) .'
     '.( strlen($small_text) ? '<small>'.$small_text.'</small>' : '' ) .'
@@ -102,7 +102,7 @@ if(isset($_GET['e__id'])){
             $ui .= '<div class="list-group list-border">';
             $ui .= $list_body;
             $ui .= '</div>';
-            $ui .= '<div class="doclear" style="padding-bottom: 45px;">&nbsp;</div>';
+            $ui .= '<div class="doclear" style="padding-bottom: 34px;">&nbsp;</div>';
         }
 
     }
