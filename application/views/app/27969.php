@@ -15,7 +15,7 @@
 
 <?php
 
-function build_item($e__id, $i__id, $s__title, $s__cover, $link, $desc){
+function build_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $small_text = null){
 
     return '<a href="/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link).'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
@@ -23,6 +23,8 @@ function build_item($e__id, $i__id, $s__title, $s__cover, $link, $desc){
       <small>&nbsp;&nbsp;<i class="fas fa-arrow-right"></i>&nbsp;&nbsp;</small>
     </div>
     '.( strlen($desc) ? '<p class="mb-1" style="padding: 8px 3px 8px 57px;">'.$desc.'</p>' : '' ) .'
+    '.( strlen($small_text) ? '<small>'.$small_text.'</small>' : '' ) .'
+    
   </a>';
 
 }
@@ -39,6 +41,7 @@ if(!isset($_GET['i__id']) && get_domain_setting(14002) > 0){
 
 
 if(isset($_GET['e__id'])){
+
     $ui = '';
     foreach($this->X_model->fetch(array(
         'x__up' => $_GET['e__id'],
@@ -52,7 +55,21 @@ if(isset($_GET['e__id'])){
         //Any Startable Referenced Ideas?
         foreach(view_coins_e(12273, $header['e__id'], 1) as $ref_i){
             if(i_is_startable($ref_i)){
-                $list_body .= build_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], '/'.$ref_i['i__id'] ,$ref_i['x__message']);
+
+                //Does it have any featured tags?
+                $small_text = null;
+                foreach($this->X_model->fetch(array(
+                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__up IN (' . join(',', $this->config->item('n___27980')) . ')' => null, //Link Tree Featured Tags
+                    'x__right' => $ref_i['i__id'],
+                ), array('x__up'), 0, 0, array('i__spectrum' => 'DESC')) as $key_references){
+                    $small_text .= '<div class="key-ref"><span class="icon-block">'.view_cover(12274,$key_references['e__cover']).'</span>'.$key_references['e__title'].'</div>';
+                }
+
+                //Print list:
+                $list_body .= build_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], '/'.$ref_i['i__id'] ,$ref_i['x__message'], $small_text);
             }
         }
 
