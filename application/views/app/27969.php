@@ -15,11 +15,11 @@
 
 <?php
 
-function build_item($e, $link, $desc){
+function build_item($e__id, $i__id, $s__title, $s__cover, $link, $desc){
 
-    return '<a href="/-27970?e__id='.$e['e__id'].'&go_to='.urlencode($link).'" class="list-group-item list-group-item-action flex-column align-items-start">
+    return '<a href="/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link).'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
-      <h3 class="mb-1"><b><span class="icon-block-lg" style="margin-right: 5px;">'.view_cover(12274,$e['e__cover']).'</span>'.$e['e__title'].'</b></h3>
+      <h3 class="mb-1"><b><span class="icon-block-lg" style="margin-right: 5px;">'.view_cover(($e__id>0 ? 12274 : 12273),$s__cover).'</span>'.$s__title.'</b></h3>
       <small>&nbsp;&nbsp;<i class="fas fa-arrow-right"></i>&nbsp;&nbsp;</small>
     </div>
     '.( strlen($desc) ? '<p class="mb-1" style="padding: 8px 3px 8px 57px;">'.$desc.'</p>' : '' ) .'
@@ -27,45 +27,48 @@ function build_item($e, $link, $desc){
 
 }
 
+
 //Set default loading:
-if(!isset($_GET['e__id'])){
-    $_GET['e__id'] = '27960,27961';
+if(!isset($_GET['e__id']) && get_domain_setting(14002)>0){
+    $_GET['e__id'] = get_domain_setting(14002);
 }
 //Set default loading:
-if(!isset($_GET['i__id'])){
-    $_GET['i__id'] = '15221';
+if(!isset($_GET['i__id']) && get_domain_setting(14002) > 0){
+    $_GET['i__id'] = get_domain_setting(14002);
 }
 
 
 
 
 $ui = '';
-
-foreach(explode(',',$_GET['e__id']) as $e__id){
-
-    //Fetch ID:
-    $headers = $this->E_model->fetch(array(
-        'e__id' => $e__id,
-        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    ));
-    if(!count($headers)){
-        continue;
-    }
+foreach($this->X_model->fetch(array(
+    'x__up' => $_GET['e__id'],
+    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $header){
 
     //Fetch all links for this link list
     $list_body = '';
     foreach($this->X_model->fetch(array(
-        'x__up' => $headers[0]['e__id'],
+        'x__up' => $header['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $list_e){
 
+        //Any Startable Referenced Ideas?
+        foreach(view_coins_e(12273, $header['e__id'], 1) as $ref_i){
+            if(i_is_startable($ref_i)){
+                $list_body .= build_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], '/'.$ref_i['i__id'] ,$ref_i['x__message']);
+            }
+        }
+
         //Make sure this has a valid URL:
         if(substr($list_e['x__message'], 0, 1)=='/'){
 
             //URL override in link message:
-            $list_body .= build_item($list_e, $list_e['x__message']);
+            $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $list_e['x__message']);
 
         } else {
 
@@ -76,7 +79,7 @@ foreach(explode(',',$_GET['e__id']) as $e__id){
                 'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                 'x__down' => $list_e['e__id'],
             ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $url){
-                $list_body .= build_item($list_e, $url['x__message'], $list_e['x__message']);
+                $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $url['x__message'], $list_e['x__message']);
             }
 
         }
@@ -84,12 +87,13 @@ foreach(explode(',',$_GET['e__id']) as $e__id){
 
     if($list_body){
         //Add this to the UI:
-        $ui .= '<div class="css__title grey" style="padding: 10px;"><span class="icon-block">'.view_cover(12274,$headers[0]['e__cover']).'</span>'.$headers[0]['e__title'].'</div>';
+        $ui .= '<div class="css__title grey" style="padding: 10px;"><span class="icon-block">'.view_cover(12274,$header['e__cover']).'</span>'.$header['e__title'].'</div>';
         $ui .= '<div class="list-group list-border">';
         $ui .= $list_body;
         $ui .= '</div>';
         $ui .= '<div class="doclear" style="padding-bottom: 45px;">&nbsp;</div>';
     }
+
 }
 
 echo $ui;
