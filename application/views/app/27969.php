@@ -1,6 +1,6 @@
 <style>
     .list-border{
-        margin-bottom: 34px;
+        margin-bottom: 45px;
         border: 1px solid #000;
         border-radius: 13px;
         overflow: hidden;
@@ -77,7 +77,7 @@ foreach(explode(',',$_GET['e__id']) as $e__id){
 
     if($list_body){
         //Add this to the UI:
-        $ui .= '<div class="css__title grey"><span class="icon-block">'.view_cover(12274,$headers[0]['e__cover']).'</span>'.$headers[0]['e__title'].'</div>';
+        $ui .= '<div class="css__title grey" style="padding: 10px;"><span class="icon-block">'.view_cover(12274,$headers[0]['e__cover']).'</span>'.$headers[0]['e__title'].'</div>';
         $ui .= '<div class="list-group list-border">';
         $ui .= $list_body;
         $ui .= '</div>';
