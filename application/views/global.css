@@ -846,8 +846,11 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-size: 1.2em !important;
     padding: 5px 0;
 }
-.list-border .list-group-item .p, .list-border .list-group-item small {
-    padding: 8px 3px 8px 57px;
+.list-border .list-group-item p {
+    padding: 8px 3px 8px 3px !important;
+}
+.list-border .list-group-item small {
+    padding: 0 3px 0 3px !important;
 }
 
 
