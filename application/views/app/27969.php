@@ -4,11 +4,10 @@ function build_item($e, $link, $desc){
 
     return '<a href="/-27970?e__id='.$e['e__id'].'&go_to='.urlencode($link).'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
-      <h5 class="mb-1"><span class="icon-block-lg">'.view_cover(12274,$e['e__cover']).'</span>'.$e['e__title'].'</h5>
-      <small><i class="far fa-arrow-right"></i></small>
+      <h3 class="mb-1"><b><span class="icon-block-lg">'.view_cover(12274,$e['e__cover']).'</span>'.$e['e__title'].'</b></h3>
+      <small>&nbsp;&nbsp;<i class="fas fa-arrow-right"></i>&nbsp;&nbsp;</small>
     </div>
-    '.( strlen($desc) ? '<p class="mb-1">'.$desc.'</p>' : '' ) .'
-    <small>'.$link.'</small>
+    '.( strlen($desc) ? '<p class="mb-1" style="padding: 8px 3px 8px 52px;">'.$desc.'</p>' : '' ) .'
   </a>';
 
 }
