@@ -50,7 +50,7 @@ if(isset($_GET['e__id'])){
                     'x__up IN (' . join(',', $this->config->item('n___27980')) . ')' => null, //Link Tree Featured Tags
                     'x__right' => $ref_i['i__id'],
                 ), array('x__up'), 0, 0) as $key_references){
-                    $small_text .= '<div class="key-ref css__title">'.view_cover(12274,$key_references['e__cover']).'&nbsp;'.$key_references['e__title'].'</div>';
+                    $small_text .= '<div class="key-ref css__title"><span class="icon-block-img">'.view_cover(12274,$key_references['e__cover']).'</span>&nbsp;'.$key_references['e__title'].'</div>';
                 }
 
                 //Print list:

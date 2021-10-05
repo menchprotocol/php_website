@@ -843,7 +843,8 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 .key-ref{
     font-weight: bold;
     font-size: 1.3em !important;
-    padding: 13px 0;
+    padding: 13px 0 5px;
+    text-transform: uppercase;
 }
 .mid-title{
     padding: 10px;
