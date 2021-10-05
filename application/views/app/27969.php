@@ -64,7 +64,7 @@ if(isset($_GET['e__id'])){
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__up IN (' . join(',', $this->config->item('n___27980')) . ')' => null, //Link Tree Featured Tags
                     'x__right' => $ref_i['i__id'],
-                ), array('x__up'), 0, 0, array('i__spectrum' => 'DESC')) as $key_references){
+                ), array('x__up'), 0, 0) as $key_references){
                     $small_text .= '<div class="key-ref"><span class="icon-block">'.view_cover(12274,$key_references['e__cover']).'</span>'.$key_references['e__title'].'</div>';
                 }
 
