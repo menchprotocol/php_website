@@ -16,15 +16,21 @@ if(isset($_GET['e__id'])){
 
     $ui = '';
 
-    foreach($this->E_model->fetch(array(
-        'e__id IN (' . $_GET['e__id'] . ')' => null,
-        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    )) as $header){
+    foreach(explode(',',$_GET['e__id']) as $e__id){
+
+        //Fetch ID:
+        $headers = $this->E_model->fetch(array(
+            'e__id' => $e__id,
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        ));
+        if(!count($headers)){
+            continue;
+        }
 
         //Fetch all links for this link list
         $list_body = '';
         foreach($this->X_model->fetch(array(
-            'x__up' => $header['e__id'],
+            'x__up' => $headers[0]['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
@@ -53,7 +59,7 @@ if(isset($_GET['e__id'])){
 
         if($list_body){
             //Add this to the UI:
-            $ui .= '<div class="css__title x-info grey"><span class="icon-block-lg">'.view_cover(12274,$header['e__cover']).'</span>'.$header['e__title'].'</div>';
+            $ui .= '<div class="css__title x-info grey"><span class="icon-block-lg">'.view_cover(12274,$headers[0]['e__cover']).'</span>'.$headers[0]['e__title'].'</div>';
             $ui .= '<div class="list-group" style="margin-bottom: 34px; border: 1px solid #000; border-radius: 13px; overflow: hidden;">';
             $ui .= $list_body;
             $ui .= '</div>';
