@@ -31,6 +31,33 @@ function build_item($e, $link, $desc){
 if(!isset($_GET['e__id'])){
     $_GET['e__id'] = '27960,27961';
 }
+//Set default loading:
+if(!isset($_GET['i__id'])){
+    $_GET['i__id'] = '15221';
+}
+
+if(isset($_GET['i__id'])){
+    $is = $this->I_model->fetch(array(
+        'i__id' => $_GET['i__id'],
+    ));
+
+    //IDEA TITLE
+    echo '<h1>' . $is[0]['i__title'] . '</h1>';
+
+
+    //MESSAGES
+    echo '<div style="padding-bottom: 34px;">';
+    foreach($this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type' => 4231, //IDEA NOTES Messages
+        'x__right' => $is[0]['i__id'],
+    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
+        echo $this->X_model->message_view( $x['x__message'], true);
+    }
+    echo '</div>';
+}
+
+
 
 $ui = '';
 
@@ -55,7 +82,7 @@ foreach(explode(',',$_GET['e__id']) as $e__id){
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $list_e){
 
         //Make sure this has a valid URL:
-        if(substr($list_e['x__message'], 0, 2)=='//'){
+        if(substr($list_e['x__message'], 0, 1)=='/'){
 
             //URL override in link message:
             $list_body .= build_item($list_e, $list_e['x__message']);
