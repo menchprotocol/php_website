@@ -784,7 +784,7 @@ class E_model extends CI_Model
             $url_x = $this->X_model->fetch(array(
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Member URL Transactions
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
                 'x__message' => $url,
             ), array('x__down'));
 

@@ -36,6 +36,7 @@ class X extends CI_Controller
 
         if(!$_POST['x__id'] && !in_array($detected_x_type['x__type'], $this->config->item('n___4537'))){
 
+            //NOT SOURCE LINK URLS
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid URL',
@@ -46,7 +47,7 @@ class X extends CI_Controller
             //See if this is duplicate to either transaction:
             $e_x = $this->X_model->fetch(array(
                 'x__id' => $_POST['x__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //Member URL Transactions
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
             ));
 
             //Are they both different?
@@ -1283,7 +1284,7 @@ class X extends CI_Controller
 
                     return view_json($detected_x_type);
 
-                } elseif (in_array($detected_x_type['x__type'], $this->config->item('n___4537')) && isset($detected_x_type['url_root']) /* This prevents issues with /local_urls that start with / */) {
+                } elseif (in_array($detected_x_type['x__type'], $this->config->item('n___4537')) && isset($detected_x_type['url_root']) /* This prevents issues with SOURCE LINK URLS that start with / */) {
 
                     //This is a URL, validate modification:
 
