@@ -3,6 +3,7 @@
         border: 1px solid #000;
         border-radius: 13px;
         overflow: hidden;
+        margin: 0 5px;
     }
     .list-border .list-group-item{
         border-bottom: 1px solid #000;
