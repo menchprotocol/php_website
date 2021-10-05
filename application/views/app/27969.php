@@ -1,6 +1,5 @@
 <style>
     .list-border{
-        padding-bottom: 45px;
         border: 1px solid #000;
         border-radius: 13px;
         overflow: hidden;
@@ -81,6 +80,7 @@ foreach(explode(',',$_GET['e__id']) as $e__id){
         $ui .= '<div class="list-group list-border">';
         $ui .= $list_body;
         $ui .= '</div>';
+        $ui .= '<div class="doclear" style="padding-bottom: 45px;">&nbsp;</div>';
     }
 }
 
