@@ -1,28 +1,13 @@
-<style>
-    .list-border{
-        border: 1px solid #000;
-        border-radius: 13px;
-        overflow: hidden;
-        margin: 0 5px;
-    }
-    .list-border .list-group-item{
-        border-bottom: 1px solid #000;
-    }
-    .list-border .list-group-item:last-of-type{
-        border-bottom: 0 !important;
-    }
-</style>
-
 <?php
 
 function build_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $small_text = null){
 
     return '<a href="/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link).'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
-      <h3 class="mb-1"><b><span class="icon-block-lg" style="margin-right: 5px;">'.view_cover(($e__id>0 ? 12274 : 12273),$s__cover).'</span>'.$s__title.'</b></h3>
+      <h3><b><span class="icon-block-lg" style="margin-right: 5px;">'.view_cover(($e__id>0 ? 12274 : 12273),$s__cover).'</span>'.$s__title.'</b></h3>
       <small>&nbsp;&nbsp;<i class="fas fa-arrow-right"></i>&nbsp;&nbsp;</small>
     </div>
-    '.( strlen($desc) ? '<p class="mb-1" style="padding: 8px 3px 8px 57px;">'.$desc.'</p>' : '' ) .'
+    '.( strlen($desc) ? '<p>'.$desc.'</p>' : '' ) .'
     '.( strlen($small_text) ? '<small>'.$small_text.'</small>' : '' ) .'
     
   </a>';

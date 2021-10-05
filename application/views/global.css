@@ -828,6 +828,30 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 
 
 
+.list-border{
+    border: 1px solid #000;
+    border-radius: 13px;
+    overflow: hidden;
+    margin: 0 5px;
+}
+.list-border .list-group-item{
+    border-bottom: 1px solid #000;
+}
+.list-border .list-group-item:last-of-type{
+    border-bottom: 0 !important;
+}
+.key-ref{
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.2em !important;
+    padding: 5px 0;
+}
+.list-border .list-group-item .p, .list-border .list-group-item small {
+    padding: 8px 3px 8px 57px;
+}
+
+
+
 .nav-tabs {
     border-bottom: 3px solid transparent;
 }
