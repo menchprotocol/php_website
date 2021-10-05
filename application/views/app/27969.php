@@ -27,7 +27,6 @@ function build_item($e__id, $i__id, $s__title, $s__cover, $link, $desc){
 
 }
 
-
 //Set default loading:
 if(!isset($_GET['e__id']) && get_domain_setting(27972)>0){
     $_GET['e__id'] = get_domain_setting(27972);
@@ -48,21 +47,22 @@ foreach($this->X_model->fetch(array(
     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
 ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $header){
 
-    //Fetch all links for this link list
     $list_body = '';
+
+    //Any Startable Referenced Ideas?
+    foreach(view_coins_e(12273, $header['e__id'], 1) as $ref_i){
+        if(i_is_startable($ref_i)){
+            $list_body .= build_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], '/'.$ref_i['i__id'] ,$ref_i['x__message']);
+        }
+    }
+
+    //Any child sources?
     foreach($this->X_model->fetch(array(
         'x__up' => $header['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $list_e){
-
-        //Any Startable Referenced Ideas?
-        foreach(view_coins_e(12273, $header['e__id'], 1) as $ref_i){
-            if(i_is_startable($ref_i)){
-                $list_body .= build_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], '/'.$ref_i['i__id'] ,$ref_i['x__message']);
-            }
-        }
 
         //Make sure this has a valid URL:
         if(substr($list_e['x__message'], 0, 1)=='/'){
