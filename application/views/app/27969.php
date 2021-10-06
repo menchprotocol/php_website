@@ -98,7 +98,7 @@ if(isset($_GET['e__id'])){
 
         if($list_body){
             //Add this to the UI:
-            $ui .= '<div class="css__title mid-title grey"><span class="icon-block">'.view_cover(12274,$header['e__cover']).'</span>'.$header['e__title'].'</div>';
+            $ui .= '<div class="css__title mid-title grey">'.view_cover(12274,$header['e__cover']).'&nbsp;'.$header['e__title'].'</div>';
             $ui .= '<div class="list-group list-border">';
             $ui .= $list_body;
             $ui .= '</div>';
