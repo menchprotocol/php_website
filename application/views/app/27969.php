@@ -89,7 +89,7 @@ if(isset($_GET['e__id'])){
             $small_text = null;
             //Search for featured tags:
             foreach($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                 'x__up IN (' . join(',', $this->config->item('n___27980')) . ')' => null, //Link Tree Featured Tags
