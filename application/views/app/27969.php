@@ -86,11 +86,23 @@ if(isset($_GET['e__id'])){
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $list_e){
 
+            $small_text = null;
+            //Search for featured tags:
+            foreach($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                'x__up IN (' . join(',', $this->config->item('n___27980')) . ')' => null, //Link Tree Featured Tags
+                'x__down' => $list_e['e__id'],
+            ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $key_references){
+                $small_text .= '<div class="key-ref css__title"><span class="icon-block">'.view_cover(12274,$key_references['e__cover']).'</span>'.$key_references['e__title'].'</div>';
+            }
+
             //Make sure this has a valid URL:
             if(substr($list_e['x__message'], 0, 1)=='/'){
 
                 //URL override in link message:
-                $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $list_e['x__message']);
+                $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $list_e['x__message'], $small_text);
 
             } else {
 
@@ -101,7 +113,7 @@ if(isset($_GET['e__id'])){
                     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                     'x__down' => $list_e['e__id'],
                 ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $url){
-                    $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $url['x__message'], $list_e['x__message']);
+                    $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $url['x__message'], $list_e['x__message'], $small_text);
                 }
 
             }
