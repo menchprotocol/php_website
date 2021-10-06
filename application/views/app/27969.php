@@ -102,7 +102,7 @@ if(isset($_GET['e__id'])){
             if(substr($list_e['x__message'], 0, 1)=='/'){
 
                 //URL override in link message:
-                $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $list_e['x__message'], $small_text);
+                $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $list_e['x__message'], null, $small_text);
 
             } else {
 
