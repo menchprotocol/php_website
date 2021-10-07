@@ -1011,7 +1011,9 @@ class X_model extends CI_Model
 
 
             //Display:
-            if($on_its_own_line && !$simple_version){
+            if($simple_version){
+                $output_body_message = str_replace($identifier_string, $the_title, $output_body_message);
+            } elseif($on_its_own_line){
                 $the_title = '<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].$tooltip_underdot.'">' . $es[0]['e__title'] . '</span>';
                 if($new_lines <= 1){
                     $output_body_message = $e_appendix.str_replace($identifier_string, ( !count($e_links) || !$is_discovery_mode ? '<span '.$tooltip_class.'>'.$the_title.'</span>' : '' ).$e_dropdown, $output_body_message); //'.$edit_btn.'
