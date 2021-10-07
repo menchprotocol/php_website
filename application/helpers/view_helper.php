@@ -1165,22 +1165,19 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e){
     $body .= '</div>';
 
 
-    //$is_open = !$found_first_incomplete && $found_first_complete; //Open if all are completed
-    //$is_open = $found_first_complete; //Open if at least one is completed
-    $is_open = false; //Do not open for now...
     $ui = '';
 
     //Show idea type?
     if(in_array($x__type, $CI->config->item('n___14945'))){
 
         //IDEA TYPE
-        $ui .= view_headline(26104, count($next_is), $e___11035[26104], $body, $is_open);
+        $ui .= view_headline(26104, count($next_is), $e___11035[26104], $body, in_array(26104, $this->config->item('n___20424')));
 
     } else {
 
         //LIST TYPE
         if($x__type==13980){
-            $body .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
+            $body .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
         }
 
         $ui .= view_headline($x__type, null, $e___11035[$x__type], $body, true);
@@ -1639,7 +1636,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
     $i_title = view_i_title($i);
     $member_e = superpower_unlocked();
     $i_stats = i_stats($i['i__metadata']);
-    $href = 'href="javascript:void(0);" onclick="select_answer(' . $i['i__id'] . ')"';
+    $href = 'href="javascript:void(0);" onclick="toggle_answer(' . $i['i__id'] . ')"';
 
     $ui  = '<div class="coin_cover col-md-4 col-6 col-xl-2 col-lg-3 no-padding">';
     $ui .= '<div class="cover-wrapper">';
@@ -1740,6 +1737,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $is_completed = ($completion_rate['completion_percentage']>=100);
     $is_started = ($completion_rate['completion_percentage']>0);
     $start_to_unlock = in_array($x__type, $CI->config->item('n___14377'));
+    $parent_is_or = ( $previous_i && in_array($previous_i['i__type'], $this->config->item('n___6193')) );
     $force_order = ($previous_i && count($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4983, //References
@@ -1779,7 +1777,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
     $can_click = !$has_any_lock && !$focus_coin;
 
 
-    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-xl-3 col-lg-4 col-md-6 col-8 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).' no-padding coin-12273 coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+    $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-xl-3 col-lg-4 col-md-6 col-8 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).( $parent_is_or ? ' black-background ' : '' ).' no-padding coin-12273 coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
     $ui .= '<div class="cover-wrapper">';
 

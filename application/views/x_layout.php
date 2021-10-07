@@ -240,7 +240,7 @@ if($top_i__id) {
 
             if (count($x_selects) > 0) {
                 //MODIFY ANSWER
-                echo '<div class="edit_select_answer">';
+                echo '<div class="edit_toggle_answer">';
                 echo view_i_list(13980, $top_i__id, $top_i__id, $i_focus, $x_selects, $member_e);
                 echo '</div>';
             }
@@ -372,6 +372,11 @@ if($top_i__id) {
                     'x__source' => $x__source,
                 )));
 
+                //Has max selection limit?
+
+
+                //Has min selecetion limit?
+
                 $select_answer .= view_i_select($next_i, $x__source, $previously_selected, $show_limit);
 
             }
@@ -383,12 +388,12 @@ if($top_i__id) {
             if (count($x_selects) > 0) {
 
                 //Save Answers:
-                $select_answer .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_select_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a>&nbsp;&nbsp;<a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i_focus['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
+                $select_answer .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a>&nbsp;&nbsp;<a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i_focus['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
 
             }
 
             //HTML:
-            echo '<div class="edit_select_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
+            echo '<div class="edit_toggle_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
             echo view_headline($i_focus['i__type'], null, $e___4737[$i_focus['i__type']], $select_answer, true);
             echo '</div>';
 

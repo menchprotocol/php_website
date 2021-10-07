@@ -1625,6 +1625,35 @@ class X extends CI_Controller
             ));
         }
 
+        //How about the min & max selection?
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4983, //References
+            'x__right' => $_POST['focus__id'],
+            'x__up' => 26613, //Min Selection
+        ), array(), 1) as $limit){
+            if(intval($limit['x__message']) > 0 && count($_POST['selection_i__id']) < intval($limit['x__message'])){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'You must select at-least '.$limit['x__message'].' items.',
+                ));
+            }
+        }
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4983, //References
+            'x__right' => $_POST['focus__id'],
+            'x__up' => 26614, //Max Selection
+        ), array(), 1) as $limit){
+            if(intval($limit['x__message']) > 0 && count($_POST['selection_i__id']) > intval($limit['x__message'])){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'You cannot select more than '.$limit['x__message'].' items.',
+                ));
+            }
+        }
+
+
         //We have something to save:
         return view_json($this->X_model->x_answer($member_e['e__id'], $_POST['top_i__id'], $_POST['focus__id'], ( $nothing_seected ? array() : $_POST['selection_i__id'] )));
 
