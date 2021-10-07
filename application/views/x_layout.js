@@ -83,7 +83,7 @@ function go_next(){
     }
 }
 
-function select_answer(i__id){
+function toggle_answer(i__id){
 
     //Allow answer to be saved/updated:
     var i__type = parseInt($('.list-answers').attr('i__type'));
