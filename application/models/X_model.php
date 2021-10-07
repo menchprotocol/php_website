@@ -646,7 +646,7 @@ class X_model extends CI_Model
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
                 'x__source' => (isset($member_e['e__id']) ? $member_e['e__id'] : 0),
-                'x__message' => 'message_compile() returned error [' . $msg_validation['message'] . '] for input message [' . $message_input . ']',
+                'x__message' => 'message_compile() returned error [' . (isset($msg_validation['message']) ? $msg_validation['message'] : '') . '] for input message [' . $message_input . ']',
                 'x__metadata' => array(
                     'clean_message' => $message_input,
                     'member_e' => $member_e,
