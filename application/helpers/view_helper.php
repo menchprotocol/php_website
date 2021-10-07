@@ -1657,6 +1657,10 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
     $ui .= '<div class="cover-text">';
 
 
+    if($show_limit){
+        $ui .= '<a '.$href.' class="doblock"><span class="coin-hover mini-font">' . $show_limit . '</span></a>';
+    }
+
     //Messages:
     $ui .= '<a '.$href.' class="hideIfEmpty doblock">';
     foreach($CI->X_model->fetch(array(
@@ -1675,9 +1679,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
         $ui .= '<a '.$href.' class="doblock"><span class="coin-hover">' . $view_i_time . '</span></a>';
     }
     */
-    if($show_limit){
-        $ui .= '<a '.$href.' class="doblock"><span class="coin-hover mini-font">' . $show_limit . '</span></a>';
-    }
+
     //PROGRESS?
     if($completion_rate['completion_percentage'] > 0 && $completion_rate['completion_percentage'] < 100){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';

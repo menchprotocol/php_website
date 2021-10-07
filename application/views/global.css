@@ -858,9 +858,6 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 .list-border .list-group-item p {
     padding: 8px 0 0 0 !important;
     margin-bottom: 0;
-    max-height: 71px;
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
 .list-border .list-group-item small {
     margin-bottom: 0;
