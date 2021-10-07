@@ -986,7 +986,7 @@ class X_model extends CI_Model
 
             //Add Dropdown frame IF any:
             $e_dropdown = '';
-            if(count($e_links)){
+            if(count($e_links) && !$simple_version){
                 if(count($e_links)==1){
 
                     //Just show one:
