@@ -262,7 +262,7 @@ if($top_i__id) {
                 ), array('x__up'), 0);
                 if(count($fetch_13865)){
                     //Let's see if they meet any of these PREREQUISITES:
-                    $meets_prereq = false;
+                    $meets_inc1_prereq = false;
                     if($x__source > 0){
                         foreach($fetch_13865 as $e_pre){
                             if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($this->X_model->fetch(array(
@@ -271,12 +271,12 @@ if($top_i__id) {
                                     'x__up' => $e_pre['x__up'],
                                     'x__down' => $x__source,
                                 )))){
-                                $meets_prereq = true;
+                                $meets_inc1_prereq = true;
                                 break;
                             }
                         }
                     }
-                    if(!$meets_prereq){
+                    if(!$meets_inc1_prereq){
                         continue;
                     }
                 }
@@ -290,7 +290,7 @@ if($top_i__id) {
                 ), array('x__up'), 0);
                 if(count($fetch_27984)){
                     //Let's see if they meet all of these PREREQUISITES:
-                    $meets_prereq = 0;
+                    $meets_inc2_prereq = 0;
                     if($x__source > 0){
                         foreach($fetch_27984 as $e_pre){
                             if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($this->X_model->fetch(array(
@@ -299,11 +299,11 @@ if($top_i__id) {
                                     'x__up' => $e_pre['x__up'],
                                     'x__down' => $x__source,
                                 )))){
-                                $meets_prereq++;
+                                $meets_inc2_prereq++;
                             }
                         }
                     }
-                    if($meets_prereq < count($fetch_27984)){
+                    if($meets_inc2_prereq < count($fetch_27984)){
                         //Did not meet all requirements:
                         continue;
                     }

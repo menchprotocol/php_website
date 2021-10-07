@@ -640,7 +640,11 @@ class X_model extends CI_Model
 
 
         //Did we have ane error in message validation?
-        if (!$msg_validation['status'] || !isset($msg_validation['output_messages'])) {
+        if(!isset($msg_validation['output_messages'])){
+
+            return false;
+
+        } elseif (!$msg_validation['status']) {
 
             //Log Error Transaction:
             $this->X_model->create(array(
@@ -655,6 +659,7 @@ class X_model extends CI_Model
             ));
 
             return false;
+
         }
 
         //Message validation passed...
@@ -984,7 +989,7 @@ class X_model extends CI_Model
 
             //Add Dropdown frame IF any:
             $e_dropdown = '';
-            if(count($e_links) && !$simple_version){
+            if(count($e_links)){
                 if(count($e_links)==1){
 
                     //Just show one:
@@ -1028,7 +1033,6 @@ class X_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'message' => 'all good',
             'clean_message' => trim($message_input),
             'output_messages' => ( strlen(trim($output_body_message)) ? '<div class="msg"><span>' . nl2br($output_body_message) . '</span></div>' : null ),
             'note_references' => $note_references,
