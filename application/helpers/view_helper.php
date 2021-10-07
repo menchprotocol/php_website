@@ -1902,7 +1902,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             'x__type' => 4231,
             'x__right' => $i['i__id'],
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
-            $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e);
+            $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
         }
         if($messages){
             $message_tooltip = '<span class="mini-font">'.$messages.'</span>';
