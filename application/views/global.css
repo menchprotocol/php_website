@@ -843,6 +843,10 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 .list-border .list-group-item:last-of-type{
     border-bottom: 0 !important;
 }
+.list-border .msg {
+    text-align: left !important;
+    font-size: 1em !important;
+}
 .key-ref{
     font-weight: bold;
     font-size: 1.3em !important;
@@ -3115,8 +3119,6 @@ font-weight: bold !important;
     float: right;
 }
 
-
-
 .coin_reverse .black-background {
     background-color: transparent !important;
 }
@@ -3230,6 +3232,7 @@ font-weight: bold !important;
     color: transparent !important;
 }
 */
+
 
 
 .add_notes_form{
