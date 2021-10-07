@@ -184,7 +184,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             //Start with the input wrapper:
                             $input_options .= '<span title="'.$e_list_action['m__message'].'" class="mass_id_'.$action_e__id.' inline-block '. ( $this_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
-                            if(in_array($action_e__id, array(12591,12592,27080,27081,27082,27083,27084,27085,27086,27087))){
+                            if(in_array($action_e__id, array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087))){
 
                                 //Source search box:
 

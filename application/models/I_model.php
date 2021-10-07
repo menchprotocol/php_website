@@ -894,7 +894,7 @@ class I_model extends CI_Model
                 'message' => 'Unknown mass action',
             );
 
-        } elseif(in_array($action_e__id , array(12591,12592,27080,27081,27082,27083,27084,27085,27086,27087)) && !is_valid_e_string($action_command1)){
+        } elseif(in_array($action_e__id , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087)) && !is_valid_e_string($action_command1)){
 
             return array(
                 'status' => 0,
@@ -931,7 +931,7 @@ class I_model extends CI_Model
 
             //Logic here must match items in e_mass_actions config variable
 
-            if(in_array($action_e__id , array(12591,12592,27080,27081,27082,27083,27084,27085,27086,27087))){
+            if(in_array($action_e__id , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087))){
 
                 //Check if it has this item:
                 $e__profile_id = intval(one_two_explode('@',' ',$action_command1));
@@ -942,13 +942,14 @@ class I_model extends CI_Model
                     'x__up' => $e__profile_id,
                 ));
 
-                if(in_array($action_e__id , array(12591,27080,27082,27084,27086)) && !count($i_has_e)){
+                if(in_array($action_e__id , array(12591,27080,27985,27082,27084,27086)) && !count($i_has_e)){
 
                     $source_mapper = array(
-                        12591 => 4983, //Sources
+                        12591 => 4983,  //Sources
                         27080 => 13865, //Profile Includes Any
+                        27985 => 27984, //Profile Includes All
                         27082 => 26600, //Profile Excludes All
-                        27084 => 7545, //Profile Add
+                        27084 => 7545,  //Profile Add
                         27086 => 26599, //Profile Remove
                     );
 
@@ -962,7 +963,7 @@ class I_model extends CI_Model
 
                     $applied_success++;
 
-                } elseif(in_array($action_e__id , array(12592,27081,27083,27085,27087)) && count($i_has_e)){
+                } elseif(in_array($action_e__id , array(12592,27081,27986,27083,27085,27087)) && count($i_has_e)){
 
                     //Has and must be deleted:
                     $this->X_model->update($i_has_e[0]['x__id'], array(

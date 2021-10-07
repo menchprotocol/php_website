@@ -253,7 +253,7 @@ if($top_i__id) {
             //List children to choose from:
             foreach ($is_next as $key => $next_i) {
 
-                //Any Inclusion Requirements?
+                //Any Inclusion Any Requirements?
                 $fetch_13865 = $this->X_model->fetch(array(
                     'x__right' => $next_i['i__id'],
                     'x__type' => 13865, //Must Include Any
@@ -266,11 +266,11 @@ if($top_i__id) {
                     if($x__source > 0){
                         foreach($fetch_13865 as $e_pre){
                             if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($this->X_model->fetch(array(
-                                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'x__up' => $e_pre['x__up'],
-                                'x__down' => $x__source,
-                            )))){
+                                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                    'x__up' => $e_pre['x__up'],
+                                    'x__down' => $x__source,
+                                )))){
                                 $meets_prereq = true;
                                 break;
                             }
@@ -281,7 +281,35 @@ if($top_i__id) {
                     }
                 }
 
-                //Any Exclusion Requirements?
+                //Any Inclusion All Requirements?
+                $fetch_27984 = $this->X_model->fetch(array(
+                    'x__right' => $next_i['i__id'],
+                    'x__type' => 27984, //Must Include All
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                ), array('x__up'), 0);
+                if(count($fetch_27984)){
+                    //Let's see if they meet all of these PREREQUISITES:
+                    $meets_prereq = 0;
+                    if($x__source > 0){
+                        foreach($fetch_27984 as $e_pre){
+                            if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($this->X_model->fetch(array(
+                                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                    'x__up' => $e_pre['x__up'],
+                                    'x__down' => $x__source,
+                                )))){
+                                $meets_prereq++;
+                            }
+                        }
+                    }
+                    if($meets_prereq < count($fetch_27984)){
+                        //Did not meet all requirements:
+                        continue;
+                    }
+                }
+
+                //Any Exclusion All Requirements?
                 $fetch_26600 = $this->X_model->fetch(array(
                     'x__right' => $next_i['i__id'],
                     'x__type' => 26600, //Must Exclude All
