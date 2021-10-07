@@ -1658,7 +1658,7 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
 
 
     if($show_limit){
-        $ui .= '<a '.$href.' class="doblock"><span class="coin-hover mini-font">' . $show_limit . '</span></a>';
+        $ui .= '<a '.$href.' class="doblock"><span class="mini-font">' . $show_limit . '</span></a>';
     }
 
     //Messages:
