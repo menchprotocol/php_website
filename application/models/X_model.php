@@ -910,7 +910,7 @@ class X_model extends CI_Model
 
 
             //Determine what type of Media this reference has:
-            if(!$simple_version && (!$is_current_e || $string_references['ref_time_found'])){
+            if(!$is_current_e || $string_references['ref_time_found']){
 
                 foreach($this->X_model->fetch(array(
                     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
@@ -952,8 +952,6 @@ class X_model extends CI_Model
                     }
                 }
             }
-
-
 
 
 
