@@ -68,7 +68,7 @@ if(isset($_GET['e__id'])){
                     'x__type' => 4231, //IDEA NOTES Messages
                     'x__right' => $ref_i['i__id'],
                 ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
-                    $messages .= $this->X_model->message_view( $x['x__message'], true);
+                    $messages .= $this->X_model->message_view( $x['x__message'], true, array(), 0, true);
                 }
 
                 //Does it have any featured tags?
