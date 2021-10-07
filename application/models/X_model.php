@@ -1030,6 +1030,7 @@ class X_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
+            'message' => 'all good',
             'clean_message' => trim($message_input),
             'output_messages' => ( strlen(trim($output_body_message)) ? '<div class="msg"><span>' . nl2br($output_body_message) . '</span></div>' : null ),
             'note_references' => $note_references,
