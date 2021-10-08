@@ -147,12 +147,10 @@ if(strlen($live_chat_page_id)>10){
 
     <!-- Your Chat App code -->
     <div class="fb-customerchat"
-         attribution=setup_tool
-         guest_chat_mode="ENABLED"
          page_id="<?= $live_chat_page_id ?>"
          greeting_dialog_display="hide"
          ref="<?= ( $member_e ? $member_e['e__id'] : '' ) ?>"
-         theme_color="000000">
+         theme_color="#000000">
     </div>
     <?php
 
