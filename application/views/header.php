@@ -127,12 +127,13 @@ echo '<body class="'.$body_class.'">';
 $live_chat_page_id = get_domain_setting(12899);
 if(strlen($live_chat_page_id)>10){
     ?>
+    <!-- Load Facebook SDK for JavaScript -->
+    <div id="fb-root"></div>
     <script>
-
         window.fbAsyncInit = function() {
             FB.init({
                 xfbml            : true,
-                version          : 'v12.0'
+                version          : 'v8.0'
             });
         };
 
@@ -142,23 +143,16 @@ if(strlen($live_chat_page_id)>10){
             js = d.createElement(s); js.id = id;
             js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
             fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+        }(document, 'script', 'facebook-jssdk'));</script>
 
-        //This domain has a chat page ID, so let's load it:
-        var chatbox = document.getElementById('fb-customer-chat');
-        chatbox.setAttribute("page_id", "<?= $live_chat_page_id ?>");
-        chatbox.setAttribute("attribution", "biz_inbox");
-
-    </script>
-
-    <!-- Messenger Chat Plugin Code -->
-    <div id="fb-root"></div>
-
-    <!-- Your Chat Plugin code -->
-    <div id="fb-customer-chat" class="fb-customerchat" greeting_dialog_display="hide"
+    <!-- Your Chat App code -->
+    <div class="fb-customerchat"
+         attribution=setup_tool
+         page_id="<?= $live_chat_page_id ?>"
+         greeting_dialog_display="hide"
          ref="<?= ( $member_e ? $member_e['e__id'] : '' ) ?>"
-         theme_color="#222222"></div>
-
+         theme_color="#222222">
+    </div>
     <div class="chat-title"><span><?= $e___11035[12899]['m__title'] ?></span></div>
     <?php
 }
