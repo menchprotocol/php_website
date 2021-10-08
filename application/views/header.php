@@ -149,7 +149,7 @@ if(strlen($live_chat_page_id)>10){
     <div class="fb-customerchat"
          page_id="<?= $live_chat_page_id ?>"
          greeting_dialog_display="hide"
-         welcome_screen_greeting=""
+         welcome_screen_greeting="Hi"
          ref="<?= ( $member_e ? $member_e['e__id'] : '' ) ?>"
          theme_color="#000000">
     </div>
