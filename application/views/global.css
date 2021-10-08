@@ -2574,7 +2574,6 @@ video {
     background-color: #222222 !important;
 }
 .round-btn{
-    background-color: #000000 !important;
     display: inline-block;
     border-radius: 50%;
     width: 60px;
@@ -3272,6 +3271,16 @@ font-weight: bold !important;
 .dotransparent *, .btn-grey {
     background-color: transparent;
 }
-.custom_ui_13884_13885 .round-btn i, .custom_ui_13884_13886 .round-btn i{
+.custom_ui_13884_13885 .round-btn {
+    background-color: #000000 !important;
+}
+.custom_ui_13884_13885 .round-btn i {
     color:#FFFFFF !important;
+}
+
+.custom_ui_13884_13886 .round-btn i{
+    background-color: #FFFFFF !important;
+}
+.custom_ui_13884_13886 .round-btn i {
+    color:#000000 !important;
 }
