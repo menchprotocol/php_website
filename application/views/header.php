@@ -153,8 +153,10 @@ if(strlen($live_chat_page_id)>10){
          ref="<?= ( $member_e ? $member_e['e__id'] : '' ) ?>"
          theme_color="#222222">
     </div>
-    <div class="chat-title"><span><?= $e___11035[12899]['m__title'] ?></span></div>
     <?php
+
+    /*<div class="chat-title"><span><?= $e___11035[12899]['m__title'] ?></span></div>*/
+
 }
 
 
