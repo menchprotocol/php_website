@@ -89,7 +89,8 @@ function toggle_answer(i__id){
     var i__type = parseInt($('.list-answers').attr('i__type'));
 
     //Clear all if single selection:
-    if(i__type == 6684){
+    var is_single_selection = (i__type == 6684);
+    if(is_single_selection){
         //Single Selection, clear all:
         $('.answer-item').removeClass('coinType12273');
     }
@@ -108,9 +109,13 @@ function toggle_answer(i__id){
         //Not selected, select now:
         $('.x_select_'+i__id).addClass('coinType12273');
 
-        //Flash call to action:
-        $(".main-next").fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-
+        if(is_single_selection){
+            //Auto submit answer:
+            go_next();
+        } else {
+            //Flash call to action:
+            $(".main-next").fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+        }
     }
 
 }
