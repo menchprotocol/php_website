@@ -3272,6 +3272,6 @@ font-weight: bold !important;
 .dotransparent *, .btn-grey {
     background-color: transparent;
 }
-.round-btn i{
+.custom_ui_13884_13885 .round-btn i, .custom_ui_13884_13886 .round-btn i{
     color:#FFFFFF !important;
 }
