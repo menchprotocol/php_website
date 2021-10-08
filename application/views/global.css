@@ -837,7 +837,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 
 
 .list-border .list-group-item{
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid transparent;
 }
 .list-border .list-group-item:last-of-type{
     border-bottom: 0 !important;
@@ -2899,6 +2899,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .btn.btn-default,
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 #x_reply,
+.custom_ui_13884_13885 .list-border .list-group-item,
 .custom_ui_13884_13886 .fa-gif-wrap{
     border-color: #FFFFFF !important;
 }
@@ -3060,6 +3061,7 @@ font-weight: bold !important;
     border-color: #222222 !important;
 }
 .custom_ui_13884_13885 .cover-content *,
+.custom_ui_13884_13885 .list-border .list-group-item,
 .custom_ui_13884_13885 .inner-content .texttype__lg {
     border-color: #000000 !important;
 }
