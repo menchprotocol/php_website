@@ -133,7 +133,7 @@ if(strlen($live_chat_page_id)>10){
         window.fbAsyncInit = function() {
             FB.init({
                 xfbml            : true,
-                version          : 'v8.0'
+                version          : 'v12.0'
             });
         };
 
