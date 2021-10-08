@@ -2582,9 +2582,7 @@ video {
     padding:9px 0 0 0;
     text-align: center;
 }
-.round-btn i{
-    color:#FFFFFF !important;
-}
+
 .adj-btn{
     border: 0;
     font-weight: 800 !important;
@@ -3273,4 +3271,7 @@ font-weight: bold !important;
 }
 .dotransparent *, .btn-grey {
     background-color: transparent;
+}
+.round-btn i{
+    color:#FFFFFF !important;
 }
