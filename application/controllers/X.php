@@ -1621,7 +1621,7 @@ class X extends CI_Controller
         } elseif (in_array($_POST['focus_i__type'], $this->config->item('n___14958')) && $nothing_seected) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'You must select an answer before going next.',
+                'message' => 'You must select an item before going next.',
             ));
         }
 
