@@ -83,7 +83,13 @@ function go_next(){
     }
 }
 
+var is_toggling = false;
 function toggle_answer(i__id){
+
+    if(is_toggling){
+        return false;
+    }
+    is_toggling = true;
 
     //Allow answer to be saved/updated:
     var i__type = parseInt($('.list-answers').attr('i__type'));
@@ -104,6 +110,8 @@ function toggle_answer(i__id){
             $('.x_select_'+i__id).removeClass('coinType12273');
         }
 
+        is_toggling = false;
+
     } else {
 
         //Not selected, select now:
@@ -115,6 +123,7 @@ function toggle_answer(i__id){
         } else {
             //Flash call to action:
             $(".main-next").fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+            is_toggling = false;
         }
     }
 
