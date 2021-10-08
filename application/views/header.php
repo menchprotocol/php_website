@@ -128,10 +128,6 @@ $live_chat_page_id = get_domain_setting(12899);
 if(strlen($live_chat_page_id)>10){
     ?>
     <script>
-        //This domain has a chat page ID, so let's load it:
-        var chatbox = document.getElementById('fb-customer-chat');
-        chatbox.setAttribute("page_id", "<?= $live_chat_page_id ?>");
-        chatbox.setAttribute("attribution", "biz_inbox");
 
         window.fbAsyncInit = function() {
             FB.init({
@@ -147,6 +143,12 @@ if(strlen($live_chat_page_id)>10){
             js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
+
+        //This domain has a chat page ID, so let's load it:
+        var chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "<?= $live_chat_page_id ?>");
+        chatbox.setAttribute("attribution", "biz_inbox");
+
     </script>
 
     <!-- Messenger Chat Plugin Code -->
@@ -167,8 +169,6 @@ if(!$basic_header_footer){
 
     //Do not show for /sign view
     ?>
-
-    <!-- LINE -->
     <div class="container fixed-top" style="padding-bottom: 0 !important;">
         <div class="row justify-content-center">
             <table class="platform-navigation">
