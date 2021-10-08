@@ -4,18 +4,14 @@ $i__id = ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 );
 ?>
 <script>
     function complete_setup(){
-
-        $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-
         //Log transaction:
         if(x_create({
             x__source: js_pl_id,
             x__type: 14517,
             x__left: <?= $i__id ?>,
         })){
-            setTimeout(function () {
-                window.location = '<?= ( $i__id > 0 ? '/x/x_start/'.$i__id : ( isset($_GET['url']) ? urldecode($_GET['url']) : '/' /* Home Page */ ) ) ?>';
-            }, 89);
+            $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
+            window.location = '<?= ( $i__id > 0 ? '/x/x_start/'.$i__id : ( isset($_GET['url']) ? urldecode($_GET['url']) : '/' /* Home Page */ ) ) ?>';
         }
 
     }
