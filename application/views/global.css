@@ -2574,13 +2574,16 @@ video {
     background-color: #222222 !important;
 }
 .round-btn{
-    background-color: #FC1B44 !important;
+    background-color: #000000 !important;
     display: inline-block;
     border-radius: 50%;
     width: 60px;
     height: 60px;
     padding:9px 0 0 0;
     text-align: center;
+}
+.round-btn i{
+    color:#FFFFFF !important;
 }
 .adj-btn{
     border: 0;
