@@ -11,7 +11,7 @@ $(document).ready(function () {
     }
 
     //Auto next a single answer:
-    if(parseInt($('.list-answers').attr('i__type'))==6684){
+    if(js_n___28015.includes(parseInt($('.list-answers').attr('i__type')))){
         //It is, see if it has only 1 option:
         var single_id = 0;
         var answer_count = 0;
