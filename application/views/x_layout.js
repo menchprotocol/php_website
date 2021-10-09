@@ -10,6 +10,21 @@ $(document).ready(function () {
         $('.extra_progress').text(top_progress+'% Complete');
     }
 
+    //Auto next a single answer:
+    if(parseInt($('.list-answers').attr('i__type'))==6684){
+        //It is, see if it has only 1 option:
+        var single_id = 0;
+        var answer_count = 0;
+        $(".answer-item").each(function () {
+            single_id = parseInt($(this).attr('selection_i__id'));
+            answer_count++;
+        });
+        if(answer_count==1){
+            //Only 1 option, select and go next:
+            toggle_answer(single_id);
+        }
+    }
+
     i_note_activate();
 
     //Keep track of message link clicks:
