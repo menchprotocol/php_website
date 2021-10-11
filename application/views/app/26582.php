@@ -49,6 +49,7 @@ if(isset($_GET['e__id']) && strlen($_GET['e__id'])){
     ), array('x__down'), 0, 0, array('x__id' => 'DESC')));
 }
 
+$add_e_count = 0;
 $unsubscribed = 0;
 $email_count = 0;
 $phone_count = 0;
@@ -56,6 +57,23 @@ $phone_array = array();
 $email_array = array();
 
 foreach($query as $subscriber){
+
+    if(isset($_GET['add_e']) && intval($_GET['add_e']) > 0){
+        if (!count($this->X_model->fetch(array(
+            'x__up' => $_GET['add_e'],
+            'x__down' => $subscriber['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        )))) {
+            $add_e_count += $this->X_model->create(array(
+                'x__up' => $_GET['add_e'],
+                'x__down' => $subscriber['e__id'],
+                'x__source' => $member_e['e__id'],
+                'x__type' => e_x__type(),
+            ));
+        }
+        continue;
+    }
 
     //Make sure not already added AND not unsubscribed:
     if(in_array($subscriber['e__id'], $already_added)){
@@ -137,6 +155,10 @@ foreach($query as $subscriber){
 
     $subs .= $first_name."\t".$e_email."\t".$e_phone."\n";
 
+}
+
+if($add_e_count > 0){
+    echo '<div>Added '.$add_e_count.' to @'.$_GET['add_e'].'</div>';
 }
 
 echo '<form action="" method="GET">';

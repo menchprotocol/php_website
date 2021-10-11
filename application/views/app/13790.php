@@ -132,7 +132,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         $completion_rate = $this->X_model->completion_progress($x['e__id'], $this_top[0]);
 
         $body_content .= '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;"><u>'.$x['e__title'].'</u></a></td>';
-        $body_content .= '<td>'.str_pad($completion_rate['completion_percentage'], 2, '0', STR_PAD_LEFT).'%</td>';
+        $body_content .= '<td>'.str_pad($completion_rate['completion_percentage'], 3, '0', STR_PAD_LEFT).'%</td>';
 
 
 
