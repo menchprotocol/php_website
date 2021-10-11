@@ -59,13 +59,15 @@ $email_array = array();
 foreach($query as $subscriber){
 
     if(isset($_GET['add_e']) && intval($_GET['add_e']) > 0){
+
         if (!count($this->X_model->fetch(array(
             'x__up' => $_GET['add_e'],
             'x__down' => $subscriber['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         )))) {
-            $add_e_count += $this->X_model->create(array(
+            $add_e_count++;
+            $this->X_model->create(array(
                 'x__up' => $_GET['add_e'],
                 'x__down' => $subscriber['e__id'],
                 'x__source' => $member_e['e__id'],
