@@ -152,7 +152,7 @@ class App extends CI_Controller
             $log_data['x__message'] = current_link();
 
             //Any more data to append?
-            if(isset($_GET['e__id'])){
+            if(isset($_GET['e__id']) && intval($_GET['e__id'])){
                 $es = $this->E_model->fetch(array(
                     'e__id IN (' . $_GET['e__id'] . ')' => null,
                     'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -163,7 +163,7 @@ class App extends CI_Controller
                 }
             }
 
-            if(isset($_GET['i__id'])){
+            if(isset($_GET['i__id']) && intval($_GET['i__id'])){
                 $is = $this->I_model->fetch(array(
                     'i__id IN (' . $_GET['i__id'] . ')' => null,
                     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
