@@ -274,7 +274,7 @@ function x_select(go_next_url){
         focus_i__type:focus_i__type,
         focus__id:current_id(),
         top_i__id:$('#top_i__id').val(),
-        selection_i__id:selection_i__id
+        selection_i__id:selection_i__id,
     }, function (data) {
         if (data.status) {
             //Go to redirect message:

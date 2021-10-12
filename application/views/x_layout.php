@@ -365,11 +365,6 @@ if($top_i__id) {
                     'x__source' => $x__source,
                 )));
 
-                //Has max selection limit?
-
-
-                //Has min selecetion limit?
-
                 $select_answer .= view_i_select($next_i, $x__source, $previously_selected, $spots_remaining);
 
             }

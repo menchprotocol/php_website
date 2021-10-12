@@ -2201,9 +2201,14 @@ class X_model extends CI_Model
             'x__source' => $e__id,
             'x__left' => $is[0]['i__id'],
         )) as $x_progress){
+
             $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
             ), $e__id, 12129 /* DISCOVERY ANSWER DELETED */);
+
+            //TODO Also remove the discovery of the selected if not a payment type:
+
+
         }
 
         //Add New Answers

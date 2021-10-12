@@ -1627,12 +1627,11 @@ function view_info_box(){
     return $ui;
 }
 
-function view_i_select($i, $x__source, $previously_selected, $spots_remaining = -1){
+function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     $has_valid_url = filter_var($i['i__cover'], FILTER_VALIDATE_URL);
-    $completion_rate = $CI->X_model->completion_progress($x__source, $i);
     $i_title = view_i_title($i);
     $member_e = superpower_unlocked();
     $i_stats = i_stats($i['i__metadata']);
@@ -1676,14 +1675,16 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining = 
     if($view_i_time){
         $ui .= '<a '.$href.' class="doblock"><span class="coin-hover">' . $view_i_time . '</span></a>';
     }
-    */
+
 
     //PROGRESS?
+    $completion_rate = $CI->X_model->completion_progress($x__source, $i);
     if($completion_rate['completion_percentage'] > 0 && $completion_rate['completion_percentage'] < 100){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
     $ui .= '</div>';
 
+    */
 
     $ui .= '</div></div>';
     $ui .= '</div>';
@@ -1912,7 +1913,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     $view_i_time = view_i_time($i_stats);
-    $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . $message_tooltip . ( $view_i_time ? '<br />'.$view_i_time : '' ) . '</div>';
+    $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . $message_tooltip . ( $view_i_time ? $view_i_time : '' ) . '</div>';
 
     if(count($minter)){
         //$ui .= '<div class="coin-hover grey mini-font">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>';
