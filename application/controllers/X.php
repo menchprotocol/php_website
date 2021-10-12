@@ -905,7 +905,7 @@ class X extends CI_Controller
             'x__metadata' => array(
                 'message_subject' => $_POST['message_subject'],
                 'message_text' => $_POST['message_text'],
-                'all_recipients' => $_POST['all_recipients'],
+                'all_recipients' => $message_list['unique_users_id'],
                 'stats' => $stats,
             ),
         ));
