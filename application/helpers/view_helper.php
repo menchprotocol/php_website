@@ -1682,9 +1682,11 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
     if($completion_rate['completion_percentage'] > 0 && $completion_rate['completion_percentage'] < 100){
         $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
     }
+    */
+
+
     $ui .= '</div>';
 
-    */
 
     $ui .= '</div></div>';
     $ui .= '</div>';
