@@ -1627,7 +1627,7 @@ function view_info_box(){
     return $ui;
 }
 
-function view_i_select($i, $x__source, $previously_selected, $show_limit = null){
+function view_i_select($i, $x__source, $previously_selected, $spots_remaining = -1){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1636,14 +1636,15 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
     $i_title = view_i_title($i);
     $member_e = superpower_unlocked();
     $i_stats = i_stats($i['i__metadata']);
-    $href = 'href="javascript:void(0);" onclick="toggle_answer(' . $i['i__id'] . ')"';
+
+    $href = 'href="javascript:void(0);"'.( $spots_remaining==0 ? ' onclick="alert(\'This Option is Not Available\')" ' : ' onclick="toggle_answer(' . $i['i__id'] . ')"' );
 
     $ui  = '<div class="coin_cover col-md-4 col-6 col-xl-2 col-lg-3 no-padding">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' coinType12273 ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
     //ICON?
-    $ui .= '<div class="cover-btn">'.(!$has_valid_url && $i['i__cover'] ? view_cover(12273,$i['i__cover']) : '').'</div>';
+    $ui .= '<div class="cover-btn '.( $spots_remaining==0 ? ' greyout ' : '' ).'">'.(!$has_valid_url && $i['i__cover'] ? view_cover(12273,$i['i__cover']) : '').'</div>';
 
     $ui .= '</a>';
     $ui .= '</div>';
@@ -1654,8 +1655,8 @@ function view_i_select($i, $x__source, $previously_selected, $show_limit = null)
     $ui .= '<div class="cover-text">';
 
 
-    if($show_limit){
-        $ui .= '<a '.$href.' class="doblock"><span class="mini-font">' . $show_limit . '</span></a>';
+    if($spots_remaining >= 0){
+        $ui .= '<a '.$href.' class="doblock" style="padding-bottom:2px;"><span class="mini-font '.( $spots_remaining==0 ? ' isred ' : '' ).'">' . $spots_remaining . ' Remaining</span></a>';
     }
 
     //Messages:

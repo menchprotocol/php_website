@@ -343,7 +343,7 @@ if($top_i__id) {
 
 
                 //Any Limits on Selection?
-                $show_limit = null;
+                $spots_remaining = -1; //No limits
                 $has_limits = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 4983, //References
@@ -353,13 +353,6 @@ if($top_i__id) {
                 if(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0){
                     //We have a limit! See if we've met it already:
                     $spots_remaining = intval($has_limits[0]['x__message'])-view_coins_i(6255,  $next_i, 0, false);
-                    if($spots_remaining > 0){
-                        //Not maxed out yet! Show limits:
-                        $show_limit = $spots_remaining.'/'.$has_limits[0]['x__message'].' Remaining';
-                    } else {
-                        //Maxed out! Hide this one:
-                        continue;
-                    }
                 }
 
 
@@ -377,7 +370,7 @@ if($top_i__id) {
 
                 //Has min selecetion limit?
 
-                $select_answer .= view_i_select($next_i, $x__source, $previously_selected, $show_limit);
+                $select_answer .= view_i_select($next_i, $x__source, $previously_selected, $spots_remaining);
 
             }
 

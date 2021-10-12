@@ -2533,6 +2533,9 @@ video {
 
 }
 
+.greyout{
+    opacity: 0.5 !important;
+}
 
 .texttransparent{
     color:transparent !important;
