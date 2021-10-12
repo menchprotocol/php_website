@@ -122,7 +122,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
         array_push($unique_users_count, $x['e__id']);
-        $body_content .= '<tr>';
+        $body_content .= '<tr class="body_tr">';
 
         $this_top = $this->I_model->fetch(array(
             'i__id' => $x['x__left'],
@@ -282,6 +282,14 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     #sortable_table th:hover, #sortable_table th:active{
         background-color: #FFF;
     }
+
+    #sortable_table .body_tr:hover {
+        background-color: #CCC;
+    }
+    #sortable_table .body_tr td:hover {
+        background-color: #FFD961;
+    }
+
     .vertical_col {
         writing-mode: tb-rl;
         white-space: nowrap;
