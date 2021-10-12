@@ -880,14 +880,6 @@ class X extends CI_Controller
             'email_count' => 0,
         );
 
-
-        return view_json(array(
-            'status' => 1,
-            'message' => 'Sent messages to '.count($message_list['unique_users_id']),
-        ));
-
-
-
         //Log mass message transaction:
         $log_x = $this->X_model->create(array(
             'x__type' => 26582, //Send Instant Message
