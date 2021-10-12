@@ -1283,21 +1283,21 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
     );
 
     $query = array();
-    if(strlen($_GET['i__id'])){
+    if(strlen($i__id)){
         $query = array_merge($query, $CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___26582')) . ')' => null, //Send Instant Message
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
-            'x__left IN (' . $_GET['i__id'] . ')' => null, //PUBLIC
+            'x__left IN (' . $i__id . ')' => null, //PUBLIC
         ), array('x__source'), 0, 0, array('x__id' => 'DESC')));
     }
 
-    if(strlen($_GET['e__id'])){
+    if(strlen($e__id)){
         $query = array_merge($query, $CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
-            'x__up IN (' . $_GET['e__id'] . ')' => null,
+            'x__up IN (' . $e__id . ')' => null,
         ), array('x__down'), 0, 0, array('x__id' => 'DESC')));
     }
 
