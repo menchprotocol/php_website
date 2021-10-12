@@ -148,7 +148,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
             $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( isset($_GET['expand']) ? view_cover(12273,$e['e__cover'], '✔️').' '.view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '<span '.$underdot_class.' title="'.$fetch_data[0]['x__message'].'">'.view_cover(12273,$e['e__cover'], '✔️').'</span>' ) : '<span class="icon-block-xxs">'.view_cover(12273,$e['e__cover'], '✔️').'</span>' ) : '' );
 
-            $body_content .= '<td>'.$message_clean.'</td>';
+            $body_content .= '<td class="editable" i__id="0" e__id="'.$e['e__id'].'" x__source="'.$x['e__id'].'" x__id="'.$x['x__id'].'">'.$message_clean.'</td>';
 
             if(strlen($message_clean)>0){
                 if(!isset($count_totals['e'][$e['e__id']])){
@@ -169,7 +169,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
 
-            $body_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) || substr_count($i['i__title'], 'Full Name')  ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.view_cover(12273,$i['i__cover'], '✔️').'</span>'  ) : '<span title="'.$i['i__title'].'" data-placement="top" class="icon-block-xxs">'.view_cover(12273,$i['i__cover'], '✔️') ).'</span>'  : '').'</td>';
+            $body_content .= '<td class="editable" i__id="'.$i['i__id'].'" e__id="0" x__source="'.$x['e__id'].'" x__id="'.$x['x__id'].'">'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) || substr_count($i['i__title'], 'Full Name')  ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.view_cover(12273,$i['i__cover'], '✔️').'</span>'  ) : '<span title="'.$i['i__title'].'" data-placement="top" class="icon-block-xxs">'.view_cover(12273,$i['i__cover'], '✔️') ).'</span>'  : '').'</td>';
 
             if(count($discoveries)){
                 if(!isset($count_totals['i'][$i['i__id']])){
@@ -286,8 +286,9 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
     #sortable_table .body_tr:hover {
         background-color: #CCC;
     }
-    #sortable_table .body_tr td:hover {
+    #sortable_table .body_tr .editable:hover {
         background-color: #FFD961;
+        cursor: pointer;
     }
 
     .vertical_col {
@@ -308,6 +309,11 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 <script>
 
     $(document).ready(function () {
+
+        $('.editable').click(function (e) {
+            alert($(this).attr('i__id') + $(this).attr('e__id') + $(this).attr('x__source') + $(this).attr('x__id'));
+        });
+
         var table = $('#sortable_table');
         $('<?= join(', ', $table_sortable) ?>')
             .each(function(){
