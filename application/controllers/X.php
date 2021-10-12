@@ -880,11 +880,18 @@ class X extends CI_Controller
             'email_count' => 0,
         );
 
+
+        return view_json(array(
+            'status' => 1,
+            'message' => 'Sent messages to '.count($message_list['unique_users_id']),
+        ));
+
+
+
         //Log mass message transaction:
         $log_x = $this->X_model->create(array(
             'x__type' => 26582, //Send Instant Message
             'x__source' => $member_e['e__id'],
-            'x__message' => trim($_POST['message_subject']).': '.trim($_POST['message_text']),
         ));
 
         foreach($message_list['unique_users_id'] as $send_e__id){
@@ -915,7 +922,6 @@ class X extends CI_Controller
         return view_json(array(
             'status' => ( $stats['unique']>0 ? 1 : 0 ),
             'message' => 'Sent messages to '.$stats['unique'].' recipients ('.$log_x['x__id'].'): '.$stats['email_count'].' Email & '.$stats['phone_count'].' SMS. '.$stats['email_count'].' Errors/Unsubscribed.',
-            'all_recipients' => $_POST['all_recipients'],
         ));
 
     }
