@@ -866,14 +866,10 @@ class X extends CI_Controller
                 'message' => 'Missing Message Body',
             ));
 
-        } elseif (!isset($_POST['all_recipients']) || !count($_POST['all_recipients'])) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Recipients',
-            ));
-
         }
+
+        //Determine Recipients:
+        $message_list = message_list($_POST['i__id'], $_POST['e__id'], $_POST['exclude_e'], $_POST['include_e']);
 
 
         //Loop through all contacts and send messages:
@@ -888,9 +884,10 @@ class X extends CI_Controller
         $log_x = $this->X_model->create(array(
             'x__type' => 26582, //Send Instant Message
             'x__source' => $member_e['e__id'],
+            'x__message' => trim($_POST['message_subject']).': '.trim($_POST['message_text']),
         ));
 
-        foreach($_POST['all_recipients'] as $send_e__id){
+        foreach($message_list['unique_users_id'] as $send_e__id){
 
             $results = $this->X_model->send_dm($send_e__id, trim($_POST['message_subject']), trim($_POST['message_text']), array('x__reference' => $log_x['x__id']));
 

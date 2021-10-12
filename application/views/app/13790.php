@@ -73,7 +73,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         'e' => array(),
         'i' => array(),
     );
-    $unique_users = array();
+    $unique_users_count = array();
     $count = 0;
 
     foreach($this->X_model->fetch(array(
@@ -82,7 +82,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         'x__left IN (' . join(',', array($_GET['i__id'])) . ')' => null, //IDEA LINKS
     ), array('x__source'), 0, 0, array('x__time' => 'DESC')) as $x){
 
-        if(in_array($x['e__id'], $unique_users)){
+        if(in_array($x['e__id'], $unique_users_count)){
             continue;
         }
 
@@ -121,7 +121,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         }
 
 
-        array_push($unique_users, $x['e__id']);
+        array_push($unique_users_count, $x['e__id']);
         $body_content .= '<tr>';
 
         $this_top = $this->I_model->fetch(array(

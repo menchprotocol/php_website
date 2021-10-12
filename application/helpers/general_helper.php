@@ -1266,6 +1266,120 @@ function get_domain_setting($setting_id = 0){
 
 }
 
+
+
+function message_list($i__id, $e__id, $exclude_e, $include_e){
+
+    $CI =& get_instance();
+    $message_list = array(
+        'unique_users_id' => array(),
+        'unique_users_count' => 0,
+        'full_list' => '',
+        'email_list' => '',
+        'email_count' => 0,
+        'phone_count' => 0,
+        'phone_array' => array(),
+        'email_array' => array(),
+    );
+
+    $query = array();
+    if(strlen($_GET['i__id'])){
+        $query = array_merge($query, $CI->X_model->fetch(array(
+            'x__type IN (' . join(',', $CI->config->item('n___26582')) . ')' => null, //Send Instant Message
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+            'x__left IN (' . $_GET['i__id'] . ')' => null, //PUBLIC
+        ), array('x__source'), 0, 0, array('x__id' => 'DESC')));
+    }
+
+    if(strlen($_GET['e__id'])){
+        $query = array_merge($query, $CI->X_model->fetch(array(
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+            'x__up IN (' . $_GET['e__id'] . ')' => null,
+        ), array('x__down'), 0, 0, array('x__id' => 'DESC')));
+    }
+
+
+    $already_added = array(); //Prevent duplicates
+    foreach($query as $subscriber){
+
+        //Make sure not already added AND not unsubscribed:
+        if(in_array($subscriber['e__id'], $already_added)){
+            continue;
+        }
+        if (count($CI->X_model->fetch(array(
+            'x__up' => 26583, //Unsubscribed
+            'x__down' => $subscriber['e__id'],
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        )))) {
+            continue;
+        }
+
+        //Any exclusions?
+        if(strlen($exclude_e) && count($CI->X_model->fetch(array(
+                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__up IN (' . $exclude_e . ')' => null,
+                'x__down' => $subscriber['e__id'],
+            )))){
+            continue;
+        }
+
+        if(strlen($include_e) && !count($CI->X_model->fetch(array(
+                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__up IN (' . $include_e . ')' => null,
+                'x__down' => $subscriber['e__id'],
+            )))){
+            continue;
+        }
+
+        array_push($already_added, $subscriber['e__id']);
+
+        //Fetch email & phone:
+        $e_emails = $CI->X_model->fetch(array(
+            'x__up' => 3288, //Email
+            'x__down' => $subscriber['e__id'],
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        ));
+        $e_email = ( count($e_emails) && filter_var($e_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $e_emails[0]['x__message'] : false );
+        $e_phones = $CI->X_model->fetch(array(
+            'x__up' => 4783, //Phone
+            'x__down' => $subscriber['e__id'],
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        ));
+        $e_phone = ( count($e_phones) && strlen($e_phones[0]['x__message'])>=10 ? $e_phones[0]['x__message'] : false );
+
+        if(!$e_email && !$e_phone){
+            //No way to reach them:
+            continue;
+        }
+
+        $message_list['unique_users_count']++;
+        if($e_email){
+            $message_list['email_count']++;
+            $message_list['email_list'] .= ( strlen($message_list['email_list']) ? ", " : '' ).$e_email;
+        }
+        if($e_phone){
+            $message_list['phone_count']++;
+        }
+
+        $first_name = one_two_explode('',' ', $subscriber['e__title']);
+        array_push( $message_list['unique_users_id'],  intval($subscriber['e__id']));
+
+        $message_list['full_list'] .= $first_name."\t".$e_email."\t".$e_phone."\n";
+
+    }
+
+    return $message_list;
+
+}
+
 function get_domain($var_field){
     $CI =& get_instance();
     $domain_source = get_domain_setting(0);
