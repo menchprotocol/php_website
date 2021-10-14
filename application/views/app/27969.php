@@ -80,7 +80,7 @@ if(isset($_GET['e__id'])){
                     'x__up IN (' . join(',', $this->config->item('n___27980')) . ')' => null, //Link Tree Featured Tags
                     'x__right' => $ref_i['i__id'],
                 ), array('x__up'), 0, 0) as $key_references){
-                    $small_text .= '<div class="key-ref css__title"><span class="icon-block-lg">'.view_cover(12274,$key_references['e__cover']).'</span>'.$key_references['e__title'].( strlen($key_references['x__message']) ? ': '.$key_references['x__message'] : '' ).'</div>';
+                    $small_text .= '<div class="key-ref css__title"><span class="icon-block-lg">'.view_cover(12274,$key_references['e__cover']).'</span>'.( strlen($key_references['x__message']) ? $key_references['x__message'] : $key_references['e__title'] ).'</div>';
                 }
 
                 //Print list:
@@ -105,7 +105,7 @@ if(isset($_GET['e__id'])){
                 'x__up IN (' . join(',', $this->config->item('n___27980')) . ')' => null, //Link Tree Featured Tags
                 'x__down' => $list_e['e__id'],
             ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $key_references){
-                $small_text .= '<div class="key-ref css__title"><span class="icon-block-lg">'.view_cover(12274,$key_references['e__cover']).'</span>'.$key_references['e__title'].( strlen($key_references['x__message']) ? ': '.$key_references['x__message'] : '' ).'</div>';
+                $small_text .= '<div class="key-ref css__title"><span class="icon-block-lg">'.view_cover(12274,$key_references['e__cover']).'</span>'.( strlen($key_references['x__message']) ? $key_references['x__message'] : $key_references['e__title'] ).'</div>';
             }
 
             //Make sure this has a valid URL:
