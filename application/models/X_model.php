@@ -457,7 +457,7 @@ class X_model extends CI_Model
             'e__id' => $e__id,
         ));
         $full_message = $subject."\n\n".$plain_message;
-        $email_message = "Hi ".$es[0]['e__title']."\n\n".$plain_message."\n\nLove,\nTeam Atlas";
+        $email_message = "Hi ".$es[0]['e__title'].",\n\n".$plain_message."\n\nLove,\nTeam Atlas";
         $stats = array(
             'email_count' => 0,
             'phone_count' => 0,
