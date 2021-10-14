@@ -453,7 +453,11 @@ class X_model extends CI_Model
             );
         }
 
+        $es = $this->E_model->fetch(array(
+            'e__id' => $e__id,
+        ));
         $full_message = $subject."\n\n".$plain_message;
+        $email_message = "Hi ".$es[0]['e__title']."\n\n".$plain_message."\n\nLove,\nTeam Atlas";
         $stats = array(
             'email_count' => 0,
             'phone_count' => 0,
@@ -507,12 +511,12 @@ class X_model extends CI_Model
                     'Body' => array(
                         'Text' => array(
                             // Data is required
-                            'Data' => strip_tags($plain_message),
+                            'Data' => strip_tags($email_message),
                             'Charset' => 'UTF-8',
                         ),
                         'Html' => array(
                             // Data is required
-                            'Data' => nl2br($plain_message),
+                            'Data' => nl2br($email_message),
                             'Charset' => 'UTF-8',
                         ),
                     ),
