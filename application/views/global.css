@@ -2533,7 +2533,7 @@ video {
 
 }
 
-.greyout{
+.greyout, .greyout img{
     opacity: 0.34 !important;
 }
 
