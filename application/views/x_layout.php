@@ -561,11 +561,12 @@ if(!$top_i__id){
 
                 $control_btn .= '</form>';
 
-            }
+            } else {
 
-            if(!$control_btn){
                 //NEXT
-                $control_btn = '<a class="controller-nav round-btn go-next main-next" href="#nextclick" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'<div class="extra_progress hideIfEmpty"></div></span><a name="nextclick" style="height: 1px;">&nbsp;</a>';
+                $control_btn = '<a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a>';
+                $control_btn .= '<span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'<div class="extra_progress hideIfEmpty"></div></span>';
+
             }
 
         } elseif($e__id==26280){

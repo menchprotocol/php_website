@@ -2533,7 +2533,7 @@ video {
 
 }
 
-.greyout, .greyout img{
+.greyout, .greyout img, .greyout a{
     opacity: 0.34 !important;
 }
 
@@ -2870,7 +2870,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .coinType6255 i.zq6255,
 .custom_ui_13884_13886 .btn-12273 i.zq12273,
 .custom_ui_13884_13886 .btn-6255 i.zq6255,
-.custom_ui_13884_13886 .adj-btn i,
+.custom_ui_13884_13886 .nav-title i,
 .custom_ui_13884_13886 .controller-nav i,
 .custom_ui_13884_13886 .controller-nav,
 .custom_ui_13884_13886 .grey-background,
@@ -3021,6 +3021,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .new-note:not(.editing-mode),
 .custom_ui_13884_13885 .controller-nav i,
 .custom_ui_13884_13885 .controller-nav,
+.custom_ui_13884_13885 .nav-title i,
 .custom_ui_13884_13885 .grey-background,
 .custom_ui_13884_13885 .grey-background i,
 .custom_ui_13884_13885 .coin_reverse .black-background i{
