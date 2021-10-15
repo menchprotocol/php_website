@@ -1640,10 +1640,10 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
 
     $ui  = '<div class="coin_cover col-md-4 col-6 col-xl-2 col-lg-3 no-padding">';
     $ui .= '<div class="cover-wrapper">';
-    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="' . ($previously_selected ? ' coinType12273 ' : '') . ' x_select_' . $i['i__id'] . ' answer-item black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
+    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' coinType12273 ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
     //ICON?
-    $ui .= '<div class="cover-btn '.( $spots_remaining==0 ? ' greyout ' : '' ).'">'.(!$has_valid_url && $i['i__cover'] ? view_cover(12273,$i['i__cover']) : '').'</div>';
+    $ui .= '<div class="cover-btn">'.(!$has_valid_url && $i['i__cover'] ? view_cover(12273,$i['i__cover']) : '').'</div>';
 
     $ui .= '</a>';
     $ui .= '</div>';
