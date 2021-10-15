@@ -712,13 +712,9 @@ function send_dm_template($member, $template_id){
 
     ##Email Body
     $e___26154 = $CI->config->item('e___26154'); //RECEIVED ON EMAIL
-    $plain_message = 'Hi '.$member['e__title'].' 👋'."\n\n";
-    $plain_message .= $e___26154[$template_id]['m__message']."\n\n";
-    $plain_message .= view_shuffle_message(12691)."\n";
-    $plain_message .= get_domain('m__title');
 
     //Send DM:
-    $CI->X_model->send_dm($member['e__id'], $e___26154[$template_id]['m__title'], $plain_message);
+    $CI->X_model->send_dm($member['e__id'], $e___26154[$template_id]['m__title'], $e___26154[$template_id]['m__message']);
 
 }
 

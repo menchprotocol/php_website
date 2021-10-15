@@ -40,12 +40,6 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
 }
 
-$plain_message .= "\n"."\n".view_shuffle_message(12691);
-$plain_message .= "\n".get_domain('m__title');
-
-
-
-
 
 //Decide what to do with this?
 if($is_u_request && !isset($_GET['email_trigger'])){
@@ -75,7 +69,7 @@ if($is_u_request && !isset($_GET['email_trigger'])){
     //Send email to all subscribers:
     foreach($this->X_model->fetch($subscriber_filters, array('x__down')) as $subscribed_u){
 
-        $this->X_model->send_dm($subscribed_u['e__id'], $subject, 'Hi '.one_two_explode('',' ',$subscribed_u['e__title']).' 👋 '."\n\n".$plain_message);
+        $this->X_model->send_dm($subscribed_u['e__id'], $subject, $plain_message);
         $email_recipients++;
 
     }

@@ -457,7 +457,13 @@ class X_model extends CI_Model
             'e__id' => $e__id,
         ));
         $full_message = $subject."\n\n".$plain_message;
-        $email_message = "Hi ".$es[0]['e__title'].",\n\n".$plain_message."\n\nLove,\nTeam Atlas";
+
+        //Email has no word limit to add header & footer:
+        $email_message = 'Hi '.$es[0]['e__title'].' 👋'."\n\n";
+        $email_message .= $plain_message."\n\n";
+        $email_message .= view_shuffle_message(12691)."\n";
+        $email_message .= get_domain('m__title');
+
         $stats = array(
             'email_count' => 0,
             'phone_count' => 0,
