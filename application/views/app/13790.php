@@ -18,7 +18,7 @@ if(isset($_GET['clean'])){
         $x__metadata = unserialize($x['x__metadata']);
 
         if(isset($x__metadata['tr__assessment_points'])){
-            array_push($counter['tr__conditional_score_min'], $x__metadata['tr__assessment_points']);
+            array_push($counter['data__assessment_points'], $x__metadata['tr__assessment_points']);
         }
         if(isset($x__metadata['tr__conditional_score_min'])){
             array_push($counter['data__conditional_score_min'], $x__metadata['tr__conditional_score_min']);
