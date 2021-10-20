@@ -19,14 +19,12 @@ if(isset($_GET['clean'])){
         if(isset($x__metadata['tr__assessment_points']) && intval($x__metadata['tr__assessment_points'])!=0){
             $counter['tr__assessment_points']++;
 
-            /*
             $this->X_model->create(array(
                 'x__type' => 4983,
                 'x__up' => 4358,
                 'x__right' => $x['x__right'],
                 'x__message' => intval($x__metadata['tr__assessment_points']),
             ));
-            */
 
         }
 
@@ -35,7 +33,6 @@ if(isset($_GET['clean'])){
             $counter['tr__conditional_score_min']++;
             $counter['tr__conditional_score_max']++;
 
-            /*
             $this->X_model->create(array(
                 'x__type' => 4983,
                 'x__up' => 4735,
@@ -48,7 +45,6 @@ if(isset($_GET['clean'])){
                 'x__right' => $x['x__right'],
                 'x__message' => intval($x__metadata['tr__conditional_score_max']).'%',
             ));
-            */
 
         }
     }
