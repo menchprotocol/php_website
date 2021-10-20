@@ -666,7 +666,7 @@ function view_coins(){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $query = $CI->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
-    $ui = '<div class="row justify-content-center margin-top-down list-coins"><span class="min-width: 100px; text-align: center; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>Transactions</div>';
+    $ui = '<div class="row justify-content-center margin-top-down list-coins"><span style="min-width: 100px; text-align: center; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>Transactions</div>';
     $ui .= '<div class="row justify-content-center margin-top-down list-coins">';
     $count = 0;
     foreach($CI->config->item('e___14874') as $e__id => $m) {
