@@ -1007,74 +1007,6 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
 
 }
 
-function view_i_scores_answer($i__id, $depth_levels, $original_depth_levels, $previous_i__type){
-
-    if($depth_levels<=0){
-        //End recursion:
-        return false;
-    }
-
-    //We're going 1 level deep:
-    $depth_levels--;
-
-    //Go down recursively:
-    $CI =& get_instance();
-    $e___6186 = $CI->config->item('e___6186'); //Transaction Status
-    $e___4486 = $CI->config->item('e___4486');
-    $e___4737 = $CI->config->item('e___4737'); // Idea Status
-
-
-    $ui = null;
-    foreach($CI->X_model->fetch(array(
-        'x__left' => $i__id,
-        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i_x){
-
-        //Prep Metadata:
-        $metadata = unserialize($i_x['x__metadata']);
-        $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
-        $messages = $CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $i_x['i__id'],
-        ), array(), 0, 0, array('x__spectrum' => 'ASC'));
-
-        //Display block:
-        $ui .= '<div class="'.( $tr__assessment_points==0 ? 'no-assessment ' : 'has-assessment' ).'">';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Type: '.$e___4486[$i_x['x__type']]['m__title'].'">'. $e___4486[$i_x['x__type']]['m__cover'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Transaction Status: '.$e___6186[$i_x['x__status']]['m__title'].'">'. $e___6186[$i_x['x__status']]['m__cover'] . '</span>';
-
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Type: '.$e___4737[$i_x['i__type']]['m__title'].'">'. $e___4737[$i_x['i__type']]['m__cover'] . '</span>';
-        $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="Idea Status: '.$e___4737[$i_x['i__type']]['m__title'].'">'. $e___4737[$i_x['i__type']]['m__cover']. '</span>';
-        $ui .= '<a href="?i__id='.$i_x['i__id'].'&depth_levels='.$original_depth_levels.'" data-toggle="tooltip" data-placement="top" title="Navigate report to this idea"><u>' .   view_i_title($i_x) . '</u></a>';
-
-        $ui .= ' [<span data-toggle="tooltip" data-placement="top" title="Completion Marks">'.( ($i_x['x__type'] == 4228 && in_array($previous_i__type , $CI->config->item('n___6193') /* OR Ideas */ )) || ($i_x['x__type'] == 4229) ? view_i_marks($i_x) : '' ).'</span>]';
-
-        if(count($messages) > 0){
-            $ui .= ' <a href="javascript:void(0);" onclick="$(\'.messages-'.$i_x['i__id'].'\').toggleClass(\'hidden\');"><i class="fas fa-comment"></i><b>' .  count($messages) . '</b></a>';
-        }
-        $ui .= '</div>';
-
-        //Display Messages:
-        $ui .= '<div class="messages-'.$i_x['i__id'].' hidden">';
-        foreach($messages as $msg) {
-            $ui .= '<div class="tip_bubble">';
-            $ui .= $CI->X_model->message_view($msg['x__message'], false);
-            $ui .= '</div>';
-        }
-        $ui .= '</div>';
-
-        //Go Recursively down:
-        $ui .=  view_i_scores_answer($i_x['i__id'], $depth_levels, $original_depth_levels, $i_x['i__type']);
-
-    }
-
-    //Return the wrapped UI if existed:
-    return ($ui ? $ui : false);
-}
-
 function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
 
     /*
@@ -1118,22 +1050,6 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
     $ui .= '</div>';
 
     return $ui;
-}
-
-
-function view_i_marks($i_x){
-
-    //Validate core inputs:
-    if(!isset($i_x['x__metadata']) || !isset($i_x['x__type'])){
-        return false;
-    }
-
-    //prep metadata:
-    $x__metadata = unserialize($i_x['x__metadata']);
-
-    //Return mark:
-    return ( $i_x['x__type'] == 4228 ? ( !isset($x__metadata['tr__assessment_points']) || $x__metadata['tr__assessment_points'] == 0 ? '' : '<span class="score-range">[<span style="'.( $x__metadata['tr__assessment_points']>0 ? 'font-weight:bold;' : ( $x__metadata['tr__assessment_points'] < 0 ? 'font-weight:bold;' : '' )).'">' . ( $x__metadata['tr__assessment_points'] > 0 ? '+' : '' ) . $x__metadata['tr__assessment_points'].'</span>]</span>' ) : '<span class="score-range">['.$x__metadata['tr__conditional_score_min'] . ( $x__metadata['tr__conditional_score_min']==$x__metadata['tr__conditional_score_max'] ? '' : '-'.$x__metadata['tr__conditional_score_max'] ).'%]</span>' );
-
 }
 
 
@@ -1944,46 +1860,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             $ui .= $message_input;
         }
     }
-
-
-
-
-    //TOOLBAR
-    if(!$has_any_lock && $toolbar && $superpower_12700 && isset($i['x__id'])){
-
-        //Idea Toolbar
-        $ui .= '<div class="center coin-hover">';
-
-
-        //Idea Link Controller
-        if(isset($i['x__id'])){
-
-            $x__metadata = unserialize($i['x__metadata']);
-
-            //IDEA LINK BAR
-            $ui .= '<span class="' . superpower_active(12700) . '">';
-
-            //LINK MARKS
-            $ui .= '<span class="x_marks account_4228 '.( $i['x__type']==4228 ? : 'hidden' ).'">';
-            $ui .= view_input_text(4358, ( isset($x__metadata['tr__assessment_points']) ? $x__metadata['tr__assessment_points'] : '' ), $i['x__id'], $editing_enabled, ($i['x__spectrum']*10)+2 );
-            $ui .='</span>';
-
-
-            //LINK CONDITIONAL RANGE
-            $ui .= '<span class="x_marks account_4229 '.( $i['x__type']==4229 ? : 'hidden' ).'">';
-            //MIN
-            $ui .= view_input_text(4735, ( isset($x__metadata['tr__conditional_score_min']) ? $x__metadata['tr__conditional_score_min'] : '' ), $i['x__id'], $editing_enabled, ($i['x__spectrum']*10)+3);
-            //MAX
-            $ui .= view_input_text(4739, ( isset($x__metadata['tr__conditional_score_max']) ? $x__metadata['tr__conditional_score_max'] : '' ), $i['x__id'], $editing_enabled, ($i['x__spectrum']*10)+4);
-            $ui .= '</span>';
-            $ui .= '</span>';
-
-        }
-
-        $ui .= '</div>';
-
-    }
-
 
     $ui .= '</div></div>';
 

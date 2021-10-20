@@ -256,55 +256,6 @@ class App extends CI_Controller
 
 
 
-    function app_7264(){
-
-        //Authenticate Member:
-        $member_e = superpower_unlocked(12700);
-
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(12700),
-            ));
-        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Starting Idea',
-            ));
-        } elseif (!isset($_POST['depth_levels']) || intval($_POST['depth_levels']) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Depth',
-            ));
-        }
-
-        //Fetch/Validate idea:
-        $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-        ));
-        if(count($is) != 1){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Could not find idea #'.$_POST['i__id'],
-            ));
-        }
-
-
-        //Load AND/OR Ideas:
-        $e___4737 = $this->config->item('e___4737'); // Idea Status
-
-
-        //Return report:
-        return view_json(array(
-            'status' => 1,
-            'message' => '<h3>'.$e___4737[$is[0]['i__type']]['m__cover'].' '.view_i_title($is[0]).'</h3>'.view_i_scores_answer($_POST['i__id'], $_POST['depth_levels'], $_POST['depth_levels'], $is[0]['i__type']),
-        ));
-
-
-    }
-
-
 
     function app_4341(){
 

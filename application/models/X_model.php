@@ -1336,19 +1336,7 @@ class X_model extends CI_Model
 
             foreach($locked_x as $locked_x) {
 
-                //See if it unlocks any of these ranges defined in the metadata:
-                $x__metadata = unserialize($locked_x['x__metadata']);
-
-                //Defines ranges:
-                if(!isset($x__metadata['tr__conditional_score_min'])){
-                    $x__metadata['tr__conditional_score_min'] = 0;
-                }
-                if(!isset($x__metadata['tr__conditional_score_max'])){
-                    $x__metadata['tr__conditional_score_max'] = 0;
-                }
-
-
-                if($u_marks['steps_answered_score']>=$x__metadata['tr__conditional_score_min'] && $u_marks['steps_answered_score']<=$x__metadata['tr__conditional_score_max']){
+                if($u_marks['steps_answered_score']>=fetch_source(4735, $locked_x['i__id']) && $u_marks['steps_answered_score']<=fetch_source(4739, $locked_x['i__id'])){
 
                     //Found a match:
                     $found_match++;
@@ -1822,11 +1810,9 @@ class X_model extends CI_Model
                     'x__right IN (' . join(',', $answers_i__ids) . ')' => null, //Limit to cached answers
                 ), array('x__right')) as $i_answer){
 
-                    //Extract Transaction Metadata:
-                    $possible_answer_metadata = unserialize($i_answer['x__metadata']);
 
                     //Assign to this question:
-                    $answer_marks_index[$i_answer['i__id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
+                    $answer_marks_index[$i_answer['i__id']] = fetch_source(4358, $i_answer['i__id']);
 
                     //Addup local min/max marks:
                     if(is_null($local_min) || $answer_marks_index[$i_answer['i__id']] < $local_min){
@@ -1908,7 +1894,7 @@ class X_model extends CI_Model
                     $possible_answer_metadata = unserialize($i_answer['x__metadata']);
 
                     //Assign to this question:
-                    $answer_marks_index[$i_answer['i__id']] = ( isset($possible_answer_metadata['tr__assessment_points']) ? intval($possible_answer_metadata['tr__assessment_points']) : 0 );
+                    $answer_marks_index[$i_answer['i__id']] = fetch_source(4358, $i_answer['i__id']);
 
                     //Addup local min/max marks:
                     if(is_null($local_min) || $answer_marks_index[$i_answer['i__id']] < $local_min){

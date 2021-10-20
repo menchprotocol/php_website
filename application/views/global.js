@@ -2725,11 +2725,6 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
                 }, 377);
             }
 
-            if(element_id==4486){
-                $('.cover_x_'+x__id+' .x_marks').addClass('hidden');
-                $('.cover_x_'+x__id+' .account_' + new_e__id).removeClass('hidden');
-            }
-
         } else {
 
             //Reset to default:

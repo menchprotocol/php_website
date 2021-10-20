@@ -1288,17 +1288,6 @@ a.headline {
 }
 
 
-.x_marks{
-    display: inline-block;
-}
-
-.x_marks .form-control{
-    width: 41px;
-    display: inline-block;
-    padding: 2px;
-    text-align: center;
-}
-
 .edit-locked{
     padding: 10px 0 !important;
 }

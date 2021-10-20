@@ -1499,7 +1499,21 @@ function sources_currently_sorted($e__id){
     ), array(), 1) );
 }
 
-
+function fetch_source($source_type, $i__id){
+    $CI =& get_instance();
+    foreach($CI->X_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+        'x__type' => 4983,
+        'x__up' => $source_type,
+        'x__right' => $i__id,
+    ), array(), 0, 0) as $x){
+        //Eliminates % mark if there
+        return intval($x['x__message']);
+    }
+    //Not found? return zero:
+    return 0;
+}
 
 
 function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
