@@ -1336,7 +1336,7 @@ class X_model extends CI_Model
 
             foreach($locked_x as $locked_x) {
 
-                if($u_marks['steps_answered_score']>=fetch_source(4735, $locked_x['i__id']) && $u_marks['steps_answered_score']<=fetch_source(4739, $locked_x['i__id'])){
+                if($u_marks['steps_answered_score']>=fetch_i_source(4735, $locked_x['i__id']) && $u_marks['steps_answered_score']<=fetch_i_source(4739, $locked_x['i__id'])){
 
                     //Found a match:
                     $found_match++;
@@ -1812,7 +1812,7 @@ class X_model extends CI_Model
 
 
                     //Assign to this question:
-                    $answer_marks_index[$i_answer['i__id']] = fetch_source(4358, $i_answer['i__id']);
+                    $answer_marks_index[$i_answer['i__id']] = fetch_i_source(4358, $i_answer['i__id']);
 
                     //Addup local min/max marks:
                     if(is_null($local_min) || $answer_marks_index[$i_answer['i__id']] < $local_min){
@@ -1894,7 +1894,7 @@ class X_model extends CI_Model
                     $possible_answer_metadata = unserialize($i_answer['x__metadata']);
 
                     //Assign to this question:
-                    $answer_marks_index[$i_answer['i__id']] = fetch_source(4358, $i_answer['i__id']);
+                    $answer_marks_index[$i_answer['i__id']] = fetch_i_source(4358, $i_answer['i__id']);
 
                     //Addup local min/max marks:
                     if(is_null($local_min) || $answer_marks_index[$i_answer['i__id']] < $local_min){

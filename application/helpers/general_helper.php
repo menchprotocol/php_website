@@ -1499,7 +1499,7 @@ function sources_currently_sorted($e__id){
     ), array(), 1) );
 }
 
-function fetch_source($source_type, $i__id){
+function fetch_i_source($source_type, $i__id){
     $CI =& get_instance();
     foreach($CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
