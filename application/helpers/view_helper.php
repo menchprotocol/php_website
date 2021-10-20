@@ -1910,7 +1910,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             $message_tooltip = '<span class="mini-font">'.$messages.'</span>';
         }
     } elseif($discovery_mode && $can_click && isset($i['x__message']) && strlen($i['x__message'])>0){
-        $message_tooltip = '<div class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</div>';
+        if(superpower_active(12701, true)){
+            $message_tooltip = '<div class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</div>';
+        } else {
+            $message_tooltip = '<div class="mini-font">***HIDDEN***</div>';
+        }
     }
 
 
