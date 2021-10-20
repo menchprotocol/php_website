@@ -1354,7 +1354,11 @@ class X extends CI_Controller
 
 
     function load_coin_count(){
-        $return_array = array();
+        //Count transactions:
+        $query = $this->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
+        $return_array = array(
+            'count__x' => number_format($query[0]['totals'], 0),
+        );
         foreach($this->config->item('e___14874') as $e__id => $m) {
             $return_array['count__'.$e__id] = number_format(count_unique_coins($e__id), 0);
         }

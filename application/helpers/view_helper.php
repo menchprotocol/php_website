@@ -665,7 +665,8 @@ function view_cache($parent, $e__id, $micro_status = true, $data_placement = 'to
 function view_coins(){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $ui = '<div class="row justify-content-center margin-top-down list-coins">';
+    $ui = '<div class="row justify-content-center margin-top-down list-coins"><b class="css__title coin_count_x"></b> Transactions</div>';
+    $ui .= '<div class="row justify-content-center margin-top-down list-coins">';
     $count = 0;
     foreach($CI->config->item('e___14874') as $e__id => $m) {
         $count++;

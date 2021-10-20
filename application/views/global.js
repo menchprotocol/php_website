@@ -583,6 +583,9 @@ function x_create(add_fields){
 
 function load_coin_count(){
     $.post("/x/load_coin_count", {}, function (data) {
+        if($(".coin_count_x:first").text()!=data.count__x){
+            $(".coin_count_x").text(data.count__x).hide().fadeIn().hide().fadeIn();
+        }
         if($(".coin_count_12273:first").text()!=data.count__12273){
             $(".coin_count_12273").text(data.count__12273).hide().fadeIn().hide().fadeIn();
         }
