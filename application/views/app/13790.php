@@ -1,5 +1,34 @@
 <?php
 
+if(isset($_GET['clean'])){
+
+    $counter = array(
+        'total' => 0,
+        'tr__assessment_points' => 0,
+        'tr__conditional_score_min' => 0,
+        'tr__conditional_score_max' => 0,
+
+    );
+    foreach($this->X_model->fetch(array(
+        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+    ), array('x__right'), 0, 0) as $x){
+        $counter['total']++;
+        $x__metadata = unserialize($x['x__metadata']);
+        if(isset($x__metadata['tr__assessment_points'])){
+            $counter['tr__assessment_points']++;
+        }
+        if(isset($x__metadata['tr__conditional_score_min'])){
+            $counter['tr__conditional_score_min']++;
+        }
+        if(isset($x__metadata['tr__conditional_score_max'])){
+            $counter['tr__conditional_score_max']++;
+        }
+    }
+
+    print_r($counter);
+    exit;
+}
+
 if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
 
