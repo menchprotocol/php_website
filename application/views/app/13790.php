@@ -23,8 +23,8 @@ if(isset($_GET['clean'])){
         if(isset($x__metadata['tr__conditional_score_min'])){
             array_push($counter['data__conditional_score_min'], $x__metadata['tr__conditional_score_min']);
         }
-        if(isset($x__metadata['data__conditional_score_max'])){
-            array_push($counter['data__conditional_score_max'], $x__metadata['data__conditional_score_max']);
+        if(isset($x__metadata['tr__conditional_score_max'])){
+            array_push($counter['data__conditional_score_max'], $x__metadata['tr__conditional_score_max']);
         }
 
         if(isset($x__metadata['tr__assessment_points']) && intval($x__metadata['tr__assessment_points'])!=0){
