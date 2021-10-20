@@ -14,7 +14,7 @@ if(isset($_GET['clean'])){
     ), array('x__right'), 0, 0) as $x){
         $counter['total']++;
         $x__metadata = unserialize($x['x__metadata']);
-        if(isset($x__metadata['tr__assessment_points'])){
+        if(isset($x__metadata['tr__assessment_points']) && intval($x__metadata['tr__assessment_points'])!=0){
             $counter['tr__assessment_points']++;
         }
         if(isset($x__metadata['tr__conditional_score_min'])){
