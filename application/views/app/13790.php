@@ -20,7 +20,7 @@ if(isset($_GET['clean'])){
         if(isset($x__metadata['tr__conditional_score_min'])){
             $counter['tr__conditional_score_min']++;
         }
-        if(isset($x__metadata['tr__conditional_score_max'])){
+        if(isset($x__metadata['tr__conditional_score_max']) && intval($x__metadata['tr__conditional_score_max'])!=0){
             $counter['tr__conditional_score_max']++;
         }
     }
