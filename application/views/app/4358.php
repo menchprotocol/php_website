@@ -7,7 +7,7 @@ echo '<table class="table table-sm table-striped maxout" style="text-align: left
 
 $e___11035 = $this->config->item('e___11035'); //Transaction Metadata
 $e___6186 = $this->config->item('e___6186'); //Transaction Status
-
+$e___4737 = $this->config->item('e___4737'); //Transaction Status
 echo '<tr style="font-weight: bold;">';
 echo '<td colspan="4" style="text-align: left;">'.$e___11035[6402]['m__cover'].' '.$e___11035[6402]['m__title'].'</td>';
 echo '</tr>';
