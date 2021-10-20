@@ -19,8 +19,8 @@ if(isset($_GET['clean'])){
 
             $this->X_model->create(array(
                 'x__type' => 4983,
-                'x__up' => $x['x__down'],
-                'x__right' => 4358,
+                'x__up' => 4358,
+                'x__right' => $x['x__right'],
                 'x__message' => intval($x__metadata['tr__assessment_points']),
             ));
 
@@ -33,14 +33,14 @@ if(isset($_GET['clean'])){
 
             $this->X_model->create(array(
                 'x__type' => 4983,
-                'x__up' => $x['x__down'],
-                'x__right' => 4735,
+                'x__up' => 4735,
+                'x__right' => $x['x__right'],
                 'x__message' => intval($x__metadata['tr__conditional_score_min']).'%',
             ));
             $this->X_model->create(array(
                 'x__type' => 4983,
-                'x__up' => $x['x__down'],
-                'x__right' => 4739,
+                'x__up' => 4739,
+                'x__right' => $x['x__right'],
                 'x__message' => intval($x__metadata['tr__conditional_score_max']).'%',
             ));
 
