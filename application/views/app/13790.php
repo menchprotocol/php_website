@@ -9,7 +9,7 @@ if(isset($_GET['clean'])){
         'tr__conditional_score_max' => 0,
     );
     foreach($this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+        'x__type > 0' => null, //IDEA LINKS
     ), array('x__right'), 0, 0) as $x){
         $counter['total']++;
         $x__metadata = unserialize($x['x__metadata']);
