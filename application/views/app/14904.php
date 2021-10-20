@@ -23,14 +23,6 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
     if(!count($profiles)){
 
-        $this->X_model->create(array(
-            'x__down' => $_GET['e__id'],
-            'x__message' => 'Failed to find URL',
-            'x__type' => 4246, //Platform Bug Reports
-            'x__source' => ( $member_e ? $member_e['e__id'] : 0 ),
-            'x__down' => $_GET['e__id'],
-        ));
-
         js_redirect(home_url(), 1);
 
     } else {

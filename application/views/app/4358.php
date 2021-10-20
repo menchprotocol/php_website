@@ -5,11 +5,11 @@
 echo '<p>Below are all the Conditional Step Transactions:</p>';
 echo '<table class="table table-sm table-striped maxout" style="text-align: left;">';
 
-$e___6103 = $this->config->item('e___6103'); //Transaction Metadata
+$e___11035 = $this->config->item('e___11035'); //Transaction Metadata
 $e___6186 = $this->config->item('e___6186'); //Transaction Status
 
 echo '<tr style="font-weight: bold;">';
-echo '<td colspan="4" style="text-align: left;">'.$e___6103[6402]['m__cover'].' '.$e___6103[6402]['m__title'].'</td>';
+echo '<td colspan="4" style="text-align: left;">'.$e___11035[6402]['m__cover'].' '.$e___11035[6402]['m__title'].'</td>';
 echo '</tr>';
 $counter = 0;
 $total_count = 0;
@@ -98,8 +98,11 @@ if(1){
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'LENGTH(x__metadata) > 0' => null,
     ), array('x__right'), 0, 0) as $i_x) {
+
         //Echo HTML format of this message:
         $metadata = unserialize($i_x['x__metadata']);
+
+
         $tr__assessment_points = ( isset($metadata['tr__assessment_points']) ? $metadata['tr__assessment_points'] : 0 );
         if($tr__assessment_points!=0){
 
