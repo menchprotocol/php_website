@@ -7,13 +7,26 @@ if(isset($_GET['clean'])){
         'tr__assessment_points' => 0,
         'tr__conditional_score_min' => 0,
         'tr__conditional_score_max' => 0,
-
+        'data__assessment_points' => array(),
+        'data__conditional_score_min' => array(),
+        'data__conditional_score_max' => array(),
     );
     foreach($this->X_model->fetch(array(
         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
     ), array('x__right'), 0, 0) as $x){
         $counter['total']++;
         $x__metadata = unserialize($x['x__metadata']);
+
+        if(isset($x__metadata['tr__assessment_points'])){
+            array_push($counter['tr__conditional_score_min'], $x__metadata['tr__assessment_points']);
+        }
+        if(isset($x__metadata['tr__conditional_score_min'])){
+            array_push($counter['data__conditional_score_min'], $x__metadata['tr__conditional_score_min']);
+        }
+        if(isset($x__metadata['data__conditional_score_max'])){
+            array_push($counter['data__conditional_score_max'], $x__metadata['data__conditional_score_max']);
+        }
+
         if(isset($x__metadata['tr__assessment_points']) && intval($x__metadata['tr__assessment_points'])!=0){
             $counter['tr__assessment_points']++;
         }
