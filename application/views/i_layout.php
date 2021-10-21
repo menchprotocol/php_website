@@ -229,7 +229,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
             'x__right' => $i_focus['i__id'],
             'x__up >' => 0,
         ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $e_ref){
-            $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i, true);
+            $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
             $counter++;
         }
 

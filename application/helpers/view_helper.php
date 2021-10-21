@@ -1683,7 +1683,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
         //Complete if not already:
         $href = '/x/complete_next/'.$top_i__id.'/'.$previous_i['i__id'].'/'.$i['i__id'];
     } elseif($discovery_mode){
-        $href = '/'.$top_i__id.'/'.$i['i__id'];
+        if($top_i__id > 0 && $top_i__id!=$i['i__id']){
+            $href = '/'.$top_i__id.'/'.$i['i__id'];
+        } else {
+            $href = '/'.$i['i__id'];
+        }
     } else {
         $href = '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
     }
@@ -1934,7 +1938,7 @@ function view_e_line($e)
 
 
 
-function view_e($x__type, $e, $extra_class = null, $source_of_e = false, $locked_m = false)
+function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 {
 
     $CI =& get_instance();
