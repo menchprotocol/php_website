@@ -551,24 +551,21 @@ class X_model extends CI_Model
 
 
         //Breakup into smaller SMS friendly messages
+        $cred_twilio = $this->config->item('cred_twilio');
         $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
 
+        //Send SMS
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 4783, //Phone
+            'x__down' => $e__id,
+        )) as $e_data){
 
-        if(strlen($sms_message)<=view_memory(6404,27891)){
-
-            //Send SMS
-            $cred_twilio = $this->config->item('cred_twilio');
-
-            foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__up' => 4783, //Phone
-                'x__down' => $e__id,
-            )) as $e_data){
-
+            foreach(explode('|||',wordwrap($sms_message, view_memory(6404,27891), "|||")) as $single_message){
                 $post = array(
                     'From' => view_memory(6404,27673), //Twilio From number
-                    'Body' => $sms_message,
+                    'Body' => $single_message,
                     'To' => $e_data['x__message'],
                 );
 
@@ -597,16 +594,17 @@ class X_model extends CI_Model
                 $this->X_model->create(array_merge($x_data, array(
                     'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
                     'x__source' => $e__id,
-                    'x__message' => $sms_message,
+                    'x__message' => $single_message,
                     'x__metadata' => array(
                         'post' => $post,
                         'response' => $y,
                     ),
                 )));
 
-                $stats['phone_count']++;
-
             }
+
+            $stats['phone_count']++;
+
         }
 
         return array(
