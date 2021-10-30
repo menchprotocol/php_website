@@ -1,5 +1,8 @@
 <?php
 
+$text = "Hiiiiiii: (1) Everyone, regardless if you drink or not, is asked to gift our communal bar a 750ml+ bottle of hard liquor -or- 18-pack of beer -or- pickup a bottle at the door for an extra $50 (no wine, we already have that). (2) Absolutely no photography with your phones to ensure a low-key event. We cover all phone cameras with stickers so we don’t forget. We have photographers who will share photos with us after the event. (3) Absolutely no ins-and-outs. Once you arrive at the event, you can go out only when you are ready to leave. (4) Smoking cigarettes is strictly limited to a designated smoking area with limited capacity. eCigarettes & vapes allowed throughout the studio. (5) Absolutely no touching art to ensure nothing gets damaged. (6) Doors open at 7P. Address is 1370 East Georgia Street, Vancouver. (7) Free body paint & makeup artists from 7-11P to make us look wicked. (8) No cash at the door, register at atlascamp.org before arrival.";
+$parts = explode('|||',wordwrap($text, 22, "|||"));
+print_r($parts);
 
 foreach(array('i__id','e__id','exclude_e','include_e') as $input){
     if(!isset($_GET[$input])){
