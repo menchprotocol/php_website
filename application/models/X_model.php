@@ -466,6 +466,7 @@ class X_model extends CI_Model
 
         $stats = array(
             'email_count' => 0,
+            'email_addresses' => array(),
             'phone_count' => 0,
         );
 
@@ -546,15 +547,19 @@ class X_model extends CI_Model
 
             $stats['email_count']++;
 
+            array_push($stats['email_addresses'], $e_data['x__message']);
+
         }
 
+        $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
+        if(count($stats['email_addresses']) && strlen($sms_message)>view_memory(6404,27891)){
+            $sms_message  = 'Check your email (and spam folder) as we sent you an important announcement to '.join(' & ',$stats['email_addresses']);
+        }
 
 
         //Breakup into smaller SMS friendly messages
         $cred_twilio = $this->config->item('cred_twilio');
-        $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
         $sms_message = str_replace("\n"," ",$sms_message);
-
         //Send SMS
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
