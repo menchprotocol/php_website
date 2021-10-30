@@ -552,6 +552,8 @@ class X_model extends CI_Model
 
         //Breakup into smaller SMS friendly messages
         $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
+
+
         if(strlen($sms_message)<=view_memory(6404,27891)){
 
             //Send SMS
