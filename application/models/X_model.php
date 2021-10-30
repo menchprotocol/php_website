@@ -611,8 +611,6 @@ class X_model extends CI_Model
                     ),
                 )));
 
-                sleep(1);
-
             }
 
             $stats['phone_count']++;
