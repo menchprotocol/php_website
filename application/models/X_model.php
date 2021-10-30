@@ -564,6 +564,7 @@ class X_model extends CI_Model
         )) as $e_data){
 
             foreach(explode('|||',wordwrap($sms_message, view_memory(6404,27891), "|||")) as $single_message){
+
                 $post = array(
                     'From' => view_memory(6404,27673), //Twilio From number
                     'Body' => $single_message,
@@ -601,6 +602,8 @@ class X_model extends CI_Model
                         'response' => $y,
                     ),
                 )));
+
+                sleep(0.3);
 
             }
 
