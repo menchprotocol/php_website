@@ -1,8 +1,8 @@
 <?php
 
 $text = "The quick brown fox jumped over the lazy dog.";
-$newtext = wordwrap($text, 22, "|");
-echo $newtext;
+$parts = explode('|||',wordwrap($text, 22, "|||"));
+print_r($parts);
 
 foreach(array('i__id','e__id','exclude_e','include_e') as $input){
     if(!isset($_GET[$input])){
