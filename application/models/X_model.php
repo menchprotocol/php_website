@@ -588,6 +588,9 @@ class X_model extends CI_Model
                     $this->X_model->update($e_data['x__id'], array(
                         'x__status' => 6173, //Transaction Deleted
                     ), $e__id, 27890 /* Invalid Input Removed */);
+
+                    break;
+
                 } else {
                     $sms_success = substr_count($y, '<SMSMessage><Sid>');
                 }
@@ -603,7 +606,7 @@ class X_model extends CI_Model
                     ),
                 )));
 
-                sleep(0.3);
+                sleep(1);
 
             }
 
