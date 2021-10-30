@@ -553,6 +553,7 @@ class X_model extends CI_Model
         //Breakup into smaller SMS friendly messages
         $cred_twilio = $this->config->item('cred_twilio');
         $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
+        $sms_message = str_replace("\n"," ",$sms_message);
 
         //Send SMS
         foreach($this->X_model->fetch(array(
