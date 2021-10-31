@@ -149,7 +149,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
             $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( isset($_GET['expand']) ? view_cover(12273,$e['e__cover'], '✔️').' '.view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '<span '.$underdot_class.' title="'.$fetch_data[0]['x__message'].'">'.view_cover(12273,$e['e__cover'], '✔️').'</span>' ) : '<span class="icon-block-xxs">'.view_cover(12273,$e['e__cover'], '✔️').'</span>' ) : '' );
 
-            $body_content .= '<td class="editable x__source_'.$x['e__id'].'" i__id="0" e__id="'.$e['e__id'].'" x__source="'.$x['e__id'].'" x__id="'.$x['x__id'].'">'.$message_clean.'</td>';
+            $body_content .= '<td class="editable x__source_'.$e['e__id'].'_'.$x['e__id'].'" i__id="0" e__id="'.$e['e__id'].'" x__source="'.$x['e__id'].'" x__id="'.$x['x__id'].'">'.$message_clean.'</td>';
 
             if(strlen($message_clean)>0){
                 if(!isset($count_totals['e'][$e['e__id']])){
@@ -330,7 +330,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 if (data.status) {
 
                     //Update source id IF existed previously:
-                    $('.x__source_' + $(this).attr('x__source')).html(data.message);
+                    $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html(data.message);
 
                 } else {
                     alert('ERROR:' + data.message);
