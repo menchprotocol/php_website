@@ -314,29 +314,33 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         $('.editable').click(function (e) {
 
-            //alert($(this).attr('i__id') + '/'+ $(this).attr('e__id') +'/'+ $(this).attr('x__source') +'/'+ $(this).attr('x__id'));
-            $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('<i class="far fa-eye"></i>');
+            if($(this).attr('e__id')==28017){
+                //alert($(this).attr('i__id') + '/'+ $(this).attr('e__id') +'/'+ $(this).attr('x__source') +'/'+ $(this).attr('x__id'));
+                $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('<i class="far fa-eye"></i>');
 
-            //Check email and validate:
-            $.post("/e/e_toggle_e", {
+                //Check email and validate:
+                $.post("/e/e_toggle_e", {
 
-                i__id: $(this).attr('i__id'),
-                e__id: $(this).attr('e__id'),
-                x__source: $(this).attr('x__source'),
-                x__id: $(this).attr('x__id'),
+                    i__id: $(this).attr('i__id'),
+                    e__id: $(this).attr('e__id'),
+                    x__source: $(this).attr('x__source'),
+                    x__id: $(this).attr('x__id'),
 
-            }, function (data) {
+                }, function (data) {
 
-                if (data.status) {
+                    if (data.status) {
 
-                    //Update source id IF existed previously:
-                    //$('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('<i class=""></i>');
+                        //Update source id IF existed previously:
+                        //$('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('<i class=""></i>');
 
 
-                } else {
-                    alert('ERROR:' + data.message);
-                }
-            });
+                    } else {
+                        alert('ERROR:' + data.message);
+                    }
+                });
+            }
+
+
 
         });
 

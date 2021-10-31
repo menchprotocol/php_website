@@ -1439,22 +1439,10 @@ class E extends CI_Controller
 
     function e_toggle_e(){
 
-        $member_e = superpower_unlocked();
-
-        if(!$member_e){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'You are logged out',
-            ));
-        } elseif(!isset($_POST['x__source']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){
+        if(!isset($_POST['x__source']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Variable',
-            ));
-        } elseif($_POST['e__id']!=28017){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Wrong Click',
             ));
 
         } else {
@@ -1468,7 +1456,7 @@ class E extends CI_Controller
                 $this->X_model->create(array(
                     'x__up' => $_POST['e__id'],
                     'x__down' => $_POST['x__source'],
-                    'x__source' => $member_e['e__id'],
+                    'x__source' => 1,
                     'x__type' => e_x__type(),
                 ));
             }
