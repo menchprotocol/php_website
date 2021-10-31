@@ -1437,6 +1437,14 @@ class E extends CI_Controller
         ));
     }
 
+    function e_toggle_e(){
+
+        return view_json(array(
+            'status' => 0,
+            'message' => 'Error',
+        ));
+
+    }
 
     function e_magic_sign($x__id){
 
