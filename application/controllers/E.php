@@ -1446,12 +1446,12 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'You are logged out',
             ));
-        } elseif(!isset($_GET['x__source']) || !isset($_GET['e__id']) || !isset($_GET['i__id']) || !isset($_GET['x__id'])){
+        } elseif(!isset($_POST['x__source']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Variable',
             ));
-        } elseif($_GET['e__id']!=28017){
+        } elseif($_POST['e__id']!=28017){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Wrong Click',
@@ -1460,14 +1460,14 @@ class E extends CI_Controller
         } else {
 
             if(!count($this->X_model->fetch(array(
-                'x__up' => $_GET['e__id'],
-                'x__down' => $_GET['x__source'],
+                'x__up' => $_POST['e__id'],
+                'x__down' => $_POST['x__source'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
                 $this->X_model->create(array(
-                    'x__up' => $_GET['e__id'],
-                    'x__down' => $_GET['x__source'],
+                    'x__up' => $_POST['e__id'],
+                    'x__down' => $_POST['x__source'],
                     'x__source' => $member_e['e__id'],
                     'x__type' => e_x__type(),
                 ));
