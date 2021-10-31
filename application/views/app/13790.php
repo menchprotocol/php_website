@@ -330,7 +330,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 if (data.status) {
 
                     //Update source id IF existed previously:
-                    $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).text(data.message);
+                    $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('👁');
 
                 } else {
                     alert('ERROR:' + data.message);
