@@ -314,7 +314,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
 
         $('.editable').click(function (e) {
 
-            alert($(this).attr('i__id') + '/'+ $(this).attr('e__id') +'/'+ $(this).attr('x__source') +'/'+ $(this).attr('x__id'));
+            //alert($(this).attr('i__id') + '/'+ $(this).attr('e__id') +'/'+ $(this).attr('x__source') +'/'+ $(this).attr('x__id'));
 
 
             //Check email and validate:
@@ -330,7 +330,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 if (data.status) {
 
                     //Update source id IF existed previously:
-                    $('.x__source_' + $(this).attr('x__source')).val(data.message);
+                    $('.x__source_' + $(this).attr('x__source')).html(data.message);
 
                 } else {
                     alert('ERROR:' + data.message);
