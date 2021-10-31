@@ -315,7 +315,7 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
         $('.editable').click(function (e) {
 
             //alert($(this).attr('i__id') + '/'+ $(this).attr('e__id') +'/'+ $(this).attr('x__source') +'/'+ $(this).attr('x__id'));
-            //$('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('<i class="far fa-yin-yang fa-spin"></i>');
+            $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('<i class="far fa-eye"></i>');
 
             //Check email and validate:
             $.post("/e/e_toggle_e", {
@@ -330,7 +330,8 @@ if(!isset($_GET['i__id']) || !$_GET['i__id']){
                 if (data.status) {
 
                     //Update source id IF existed previously:
-                    $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('<i class="far fa-eye"></i>');
+                    //$('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('<i class=""></i>');
+
 
                 } else {
                     alert('ERROR:' + data.message);
