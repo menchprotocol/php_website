@@ -2345,9 +2345,6 @@ video {
     white-space: normal;
 }
 
-.list-group a.list-group-item:hover {
-    background-color: #efefef;
-}
 
 @media (max-width:767px) {
 
@@ -3285,4 +3282,9 @@ font-weight: bold !important;
 }
 .custom_ui_13884_13886 .round-btn i {
     color:#000000 !important;
+}
+
+
+.list-group a.list-group-item:hover {
+    background-color: #efefef !important;
 }
