@@ -946,6 +946,9 @@ function x_type_preview_load(){
 
     //Watchout for content change
     var textInput = document.getElementById('x__message');
+    if(!textInput){
+        return false;
+    }
 
     //Init a timeout variable to be used below
     var timeout = null;
