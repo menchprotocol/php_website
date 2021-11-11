@@ -236,7 +236,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         if($counter || $source_is_e){
 
             //Need 2 or more to sort...
-            $ui .= ( count($i_stars) >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
+            $ui .= ( count($i_stars) >= 2 ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
 
             $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-10573">';
             foreach($i_stars as $item){
@@ -300,6 +300,9 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         $ui .= '</div>';
 
+        $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load(13550)}); </script>' : '<style> #list-in-13550 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+
+
 
         if($superpower_10939 && !$source_is_e){
 
@@ -336,7 +339,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             }
             $ui .= '</div>';
 
-            $ui .= ( $counter >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12896)}); </script>' : '<style> #list-in-12896 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+            $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load(12896)}); </script>' : '<style> #list-in-12896 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
         }
 
@@ -361,7 +364,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         if($source_is_e && $x__type==12969){
 
             //Sorting
-            $ui .= ( $counter >= view_memory(6404,14527) ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list-in-12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+            $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load(12969)}); </script>' : '<style> #list-in-12969 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
         }
 
