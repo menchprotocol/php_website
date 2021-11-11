@@ -586,7 +586,7 @@ function format_percentage($percent){
 
 function new_member_redirect($e__id, $sign_i__id){
     //Is there a redirect app?
-    $new_member_app = intval(get_domain_setting(14880));
+    $new_member_app = intval(get_domain_setting(14880), $e__id);
     if($new_member_app) {
         return '/-' . $new_member_app . ($sign_i__id > 0 ? '?i__id='.$sign_i__id : ( isset($_GET['url']) ? '?url='.$_GET['url'] : '' ) );
     } elseif($sign_i__id > 0) {
@@ -918,7 +918,7 @@ function fetch_cookie_order($cookie_name){
 function member_setting($e__id){
     $CI =& get_instance();
     $session_var = $CI->session->userdata('session_custom_ui_'.$e__id);
-    $domain_id = get_domain_setting(14926);
+    $domain_id = get_domain_setting(14926, $e__id);
 
     if(!$session_var && $domain_id){
         //Find the default value:
@@ -1230,12 +1230,20 @@ function e__title_validate($string, $x__type = 0){
     }
 }
 
-function get_domain_setting($setting_id = 0){
+function get_domain_setting($setting_id = 0, $initiator_e__id = 0){
 
     $CI =& get_instance();
     $no_domain = 14923; //No Domain ID
     $source_id = $no_domain; //Assume no domain unless found below...
     $server_name = get_server('SERVER_NAME');
+
+    if(!$initiator_e__id){
+        $member_e = superpower_unlocked();
+        if($member_e){
+            $initiator_e__id = $member_e['e__id'];
+        }
+    }
+
     if(strlen($server_name)){
         foreach($CI->config->item('e___14870') as $x__type => $m) {
             if ($server_name == $m['m__message']){
@@ -1243,18 +1251,27 @@ function get_domain_setting($setting_id = 0){
                 break;
             }
         }
+    } elseif($initiator_e__id > 0){
+        //Look for the original domain of the initiator:
+        foreach($CI->X_model->fetch(array(
+            'x__source' => $initiator_e__id,
+            'x__domain !=' => $no_domain,
+        ), array(), 1, 0, array('x__id' => 'DESC')) as $x_domain){
+            $source_id = $x_domain['x__domain'];
+        }
     }
+
 
     if(!$setting_id){
         return $source_id;
     } elseif($setting_id && $source_id==$no_domain) {
         //We have a setting for No Domain
-        return 0;
+        return ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,28614) : 0 );
     } else {
         //No Domain detected
         $e___domain_sett = $CI->config->item('e___'.$setting_id); //DOMAINS
         if(!isset($e___domain_sett[$source_id]) || !strlen($e___domain_sett[$source_id]['m__message'])){
-            return false;
+            return ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,28614) : false );
         }
         $skip_first_word = in_array($setting_id, $CI->config->item('n___26090')) || in_array($setting_id, $CI->config->item('n___26155'));
         return ( $skip_first_word ? substr($e___domain_sett[$source_id]['m__message'], 1) : $e___domain_sett[$source_id]['m__message'] );

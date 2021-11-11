@@ -457,6 +457,7 @@ class X_model extends CI_Model
             'e__id' => $e__id,
         ));
         $full_message = $subject."\n\n".$plain_message;
+        $from_email = get_domain_setting(28614, $e__id);
 
         //Email has no word limit to add header & footer:
         $email_message = 'Hi '.$es[0]['e__title'].' 👋'."\n\n";
@@ -499,7 +500,7 @@ class X_model extends CI_Model
 
             $response = $this->CLIENT->sendEmail(array(
                 // Source is required
-                'Source' => view_memory(6404,3288),
+                'Source' => $from_email,
                 // Destination is required
                 'Destination' => array(
                     'ToAddresses' => array($e_data['x__message']),
@@ -528,8 +529,8 @@ class X_model extends CI_Model
                         ),
                     ),
                 ),
-                'ReplyToAddresses' => array(view_memory(6404,3288)),
-                'ReturnPath' => view_memory(6404,3288),
+                'ReplyToAddresses' => array($from_email),
+                'ReturnPath' => $from_email,
             ));
 
             //Log transaction:
