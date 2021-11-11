@@ -59,33 +59,30 @@ if(isset($_GET['e__id'])){
 
         //Any Startable Referenced Ideas?
         foreach(view_coins_e(12273, $header['e__id'], 1) as $ref_i){
-            if(i_is_startable($ref_i)){
-
-                //Fetch Messages:
-                $messages = ( strlen($ref_i['x__message']) ? '<div class="msg"><span>' . nl2br($ref_i['x__message']) . '</span></div>' : '');
-                foreach($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 4231, //IDEA NOTES Messages
-                    'x__right' => $ref_i['i__id'],
-                ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
-                    $messages .= $this->X_model->message_view( $x['x__message'], true, array(), 0, true);
-                }
-
-                //Does it have any featured tags?
-                $small_text = null;
-                foreach($this->X_model->fetch(array(
-                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                    'x__up IN (' . join(',', $this->config->item('n___27980')) . ')' => null, //Link Tree Featured Tags
-                    'x__right' => $ref_i['i__id'],
-                ), array('x__up'), 0, 0) as $key_references){
-                    $small_text .= '<div class="key-ref css__title"><span class="icon-block-lg">'.view_cover(12274,$key_references['e__cover']).'</span>'.( strlen($key_references['x__message']) ? $key_references['x__message'] : $key_references['e__title'] ).'</div>';
-                }
-
-                //Print list:
-                $list_body .= build_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], '/'.$ref_i['i__id'] ,$messages, $small_text);
+            //Fetch Messages:
+            $messages = ( strlen($ref_i['x__message']) ? '<div class="msg"><span>' . nl2br($ref_i['x__message']) . '</span></div>' : '');
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 4231, //IDEA NOTES Messages
+                'x__right' => $ref_i['i__id'],
+            ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
+                $messages .= $this->X_model->message_view( $x['x__message'], true, array(), 0, true);
             }
+
+            //Does it have any featured tags?
+            $small_text = null;
+            foreach($this->X_model->fetch(array(
+                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__up IN (' . join(',', $this->config->item('n___27980')) . ')' => null, //Link Tree Featured Tags
+                'x__right' => $ref_i['i__id'],
+            ), array('x__up'), 0, 0) as $key_references){
+                $small_text .= '<div class="key-ref css__title"><span class="icon-block-lg">'.view_cover(12274,$key_references['e__cover']).'</span>'.( strlen($key_references['x__message']) ? $key_references['x__message'] : $key_references['e__title'] ).'</div>';
+            }
+
+            //Print list:
+            $list_body .= build_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], '/'.$ref_i['i__id'] ,$messages, $small_text);
         }
 
         //Any child sources?
