@@ -2345,6 +2345,10 @@ video {
     white-space: normal;
 }
 
+.list-group a.list-group-item:hover {
+    background-color: #efefef;
+}
+
 @media (max-width:767px) {
 
     .cover-wrapper {
