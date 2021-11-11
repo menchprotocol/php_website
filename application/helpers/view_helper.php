@@ -710,7 +710,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         //IDEAS
         $limit = view_memory(6404,13958);
         $join_objects = array('x__right');
-        $order_columns = array('i__spectrum' => 'DESC'); //BEST IDEAS
+        $order_columns = array('x__spectrum' => 'ASC', 'i__spectrum' => 'DESC'); //BEST IDEAS
         $query_filters = array(
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
