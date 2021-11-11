@@ -1266,12 +1266,12 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0){
         return $source_id;
     } elseif($setting_id && $source_id==$no_domain) {
         //We have a setting for No Domain
-        return ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,28614) : 0 );
+        return ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,$setting_id) : 0 );
     } else {
         //No Domain detected
         $e___domain_sett = $CI->config->item('e___'.$setting_id); //DOMAINS
         if(!isset($e___domain_sett[$source_id]) || !strlen($e___domain_sett[$source_id]['m__message'])){
-            return ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,28614) : false );
+            return ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,$setting_id) : false );
         }
         $skip_first_word = in_array($setting_id, $CI->config->item('n___26090')) || in_array($setting_id, $CI->config->item('n___26155'));
         return ( $skip_first_word ? substr($e___domain_sett[$source_id]['m__message'], 1) : $e___domain_sett[$source_id]['m__message'] );
