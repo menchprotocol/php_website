@@ -748,7 +748,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
         $join_objects = array('x__up');
         $limit = 0;
-        $order_columns = array('e__spectrum' => 'DESC');
+        $order_columns = array('x__spectrum' => 'ASC', 'e__spectrum' => 'DESC');
         $query_filters = array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__down' => $e__id, //This child source
