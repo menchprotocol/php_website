@@ -807,7 +807,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
                 //PROFILES
                 $e___4593 = $CI->config->item('e___4593'); //Transaction Types
                 foreach($CI->X_model->fetch($query_filters, $join_objects, 0, 0, array(
-                    'x__spectrum' => 'DESC',
+                    'x__spectrum' => 'ASC',
                 )) as $source_e) {
                     $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                 }
@@ -815,7 +815,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
                 //IDEAS
                 $e___4737 = $CI->config->item('e___4737'); //Idea Types
                 $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-                foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array('x__spectrum' => 'DESC')) as $next_i) {
+                foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array('x__spectrum' => 'ASC')) as $next_i) {
                     $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
                 }
             } elseif($x__type==6255){
