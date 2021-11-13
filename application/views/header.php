@@ -114,12 +114,14 @@ $logo = '/img/'.$current_coin_id.'.png';
 </head>
 
 <?php
+
+$domain_background = get_domain_setting(28621);
 //Generate Body Class String:
 $body_class = 'platform-'.$current_coin_id; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
 }
-echo '<body class="'.$body_class.'">';
+echo '<body class="'.$body_class.'" '.( strlen($domain_background) ? ' style="background:'.$domain_background.' !important;" ' : '' ).'>';
 
 
 
