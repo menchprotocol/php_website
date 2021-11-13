@@ -2771,6 +2771,36 @@ font-weight: bold !important;
 
 
 
+/* CURSIVE / CONTENT */
+.custom_ui_14506_28623 div,
+.custom_ui_14506_28623 p,
+.custom_ui_14506_28623 html,
+.custom_ui_14506_28623 body,
+.custom_ui_14506_28623 .doregular {
+    font-family: 'Lato', sans-serif;
+}
+/* CURSIVE / HEADER */
+.custom_ui_14506_28623 h1,
+.custom_ui_14506_28623 h2,
+.custom_ui_14506_28623 .css__title,
+.custom_ui_14506_28623 .headline,
+.custom_ui_14506_28623 .btn,
+.custom_ui_14506_28623 .algolia_pad_search,
+.custom_ui_14506_28623 .media-info,
+.custom_ui_14506_28623 .progress-title,
+.custom_ui_14506_28623 .progress-rate,
+.custom_ui_14506_28623 .mid-text-line span,
+.custom_ui_14506_28623 .previous_answer,
+.custom_ui_14506_28623 .nav-x,
+.custom_ui_14506_28623 .texttype__lg,
+.custom_ui_14506_28623 .texttype__lg::placeholder,
+.custom_ui_14506_28623 .alert a,
+.custom_ui_14506_28623 .pull-middle {
+    font-family: 'Rosarivo', cursive;
+}
+
+
+
 
 /* QUICKSAND / CONTENT */
 .custom_ui_14506_26578 div,
