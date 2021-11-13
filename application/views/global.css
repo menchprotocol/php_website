@@ -524,6 +524,7 @@ img.no-frame {
     border: 3px solid #FFC500 !important;
 }
 
+
 textarea:hover,
 input:hover,
 textarea:active,
@@ -2914,6 +2915,7 @@ font-weight: bold !important;
     color: #FFFFFF;
 }
 
+.custom_ui_13884_13886 .coinType12273,
 .custom_ui_13884_13886 .btn-12274,
 .custom_ui_13884_13886 .btn.btn-12274,
 .custom_ui_13884_13886 .nav-tabs,
@@ -3088,6 +3090,8 @@ font-weight: bold !important;
 {
     border-color: #222222 !important;
 }
+
+.custom_ui_13884_13885 .coinType12273,
 .custom_ui_13884_13885 .cover-content *,
 .custom_ui_13884_13885 .list-border,
 .custom_ui_13884_13885 .list-border .list-group-item,
