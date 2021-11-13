@@ -111,18 +111,25 @@ $logo = '/img/'.$current_coin_id.'.png';
     <link href="/application/views/global.css?v=dir3<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
     <script src="/application/views/global.js?v=dir3<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
+    <?php
+    $domain_background = get_domain_setting(28621);
+    if(strlen($domain_background)){
+        echo ' <style> body, .container, .chat-title span, div.dropdown-item, .mid-text-line span { background:'.$domain_background.' !important; } </style> ';
+    }
+    ?>
+
 </head>
 
 <?php
 
-$domain_background = get_domain_setting(28621);
+
+
 //Generate Body Class String:
 $body_class = 'platform-'.$current_coin_id; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
 }
-echo '<body class="'.$body_class.'" '.( strlen($domain_background) ? ' style="background:'.$domain_background.' !important;" ' : '' ).'>';
-
+echo '<body class="'.$body_class.'">';
 
 
 //Load live chat?
