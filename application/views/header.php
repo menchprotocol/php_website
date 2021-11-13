@@ -187,7 +187,7 @@ if(!$basic_header_footer){
 
 
                     $domain_cover = get_domain('m__cover');
-                    $site_logo = ( $domain_cover!='<i class="fas fa-circle zq12274"></i>' ? '<span class="icon-block platform-logo mini_6197_'.get_domain_setting(0).'">'.get_domain('m__cover').'</span>' : '');
+                    $site_logo = ( $domain_cover!='<i class="fas fa-circle zq12274"></i>' ? '<span class="icon-block platform-logo mini_6197_'.get_domain_setting(0).'">'.get_domain('m__cover').'</span>' : '&nbsp;&nbsp;');
                     $site_logo .= '<b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b>';
 
 
