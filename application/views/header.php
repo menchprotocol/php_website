@@ -114,7 +114,7 @@ $logo = '/img/'.$current_coin_id.'.png';
     <?php
     $domain_background = get_domain_setting(28621);
     if(strlen($domain_background)){
-        echo ' <style> body, .container, .chat-title span, div.dropdown-item, .mid-text-line span { background:'.$domain_background.' !important; } </style> ';
+        echo ' <style> body, .container, .chat-title span, div.dropdown-item, .mid-text-line span, .cover-content { background:'.$domain_background.' !important; } </style> ';
     }
     ?>
 
