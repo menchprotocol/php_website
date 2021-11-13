@@ -390,7 +390,8 @@ function view_cover($coin__type, $cover_code, $noicon_default = null)
     } else {
 
         //Standard Icon if none:
-        return '<i class="fas fa-circle zq'.$coin__type.'"></i>';
+        return null;
+        //return '<i class="fas fa-circle zq'.$coin__type.'"></i>';
         //return '<img src="/img/'.$coin__type.'.png" />';
 
     }
