@@ -1760,7 +1760,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                 } elseif($e__id==28637 && isset($i['x__type'])){
                     //Paypal Details
                     $x__metadata = unserialize($i['x__metadata']);
-                    if(isset($x__metadata)){
+                    if(isset($x__metadata['txn_id'])){
                         $action_buttons .= '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
                     }
                 } elseif(substr($m['m__message'], 0, 1)=='/'){
