@@ -2745,6 +2745,14 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
 
 
+function toggleNav() {
+    if(!document.getElementById("mySidebar").style.width){
+        openNav();
+    } else {
+        closeNav();
+    }
+}
+
 function openNav() {
     document.getElementById("mySidebar").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
