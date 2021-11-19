@@ -187,12 +187,12 @@ if($top_i__id) {
         if (!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)) {
 
             //List Unlock paths:
-            echo view_i_list(13979, $top_i__id, $top_i__id, $i_focus, $unlock_paths, $member_e);
+            echo view_i_list(13979, $top_i__id, $i_focus, $unlock_paths, $member_e);
 
         }
 
         //List Children if any:
-        echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
+        echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
 
     } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
 
@@ -241,7 +241,7 @@ if($top_i__id) {
             if (count($x_selects) > 0) {
                 //MODIFY ANSWER
                 echo '<div class="edit_toggle_answer">';
-                echo view_i_list(13980, $top_i__id, $top_i__id, $i_focus, $x_selects, $member_e);
+                echo view_i_list(13980, $top_i__id, $i_focus, $x_selects, $member_e);
                 echo '</div>';
             }
 
@@ -455,7 +455,7 @@ if($top_i__id) {
 
         if (count($x_completes)) {
             //Next Ideas:
-            $message_ui .= view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
+            $message_ui .= view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
         }
 
         $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
@@ -477,7 +477,7 @@ if($top_i__id) {
             echo '</div>';
 
             //Any child ideas?
-            echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
+            echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
 
         } else {
 
@@ -617,7 +617,7 @@ if($top_i__id) {
 
     //Did we have any steps unlocked?
     if (count($unlocked_x) > 0) {
-        echo view_i_list(13978, $top_i__id, $top_i__id, $i_focus, $unlocked_x, $member_e);
+        echo view_i_list(13978, $top_i__id, $i_focus, $unlocked_x, $member_e);
     }
 
 
@@ -633,7 +633,7 @@ if($top_i__id) {
 
     if (in_array($i_focus['i__type'], $this->config->item('n___4559'))) {
         //DISCOVERY ONLY
-        echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
+        echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
     }
 
     //DISCUSSIONS:
@@ -650,7 +650,7 @@ if($top_i__id) {
 } else {
 
     //NEXT IDEAS
-    echo view_i_list(12211, $top_i__id, $top_i__id, $i_focus, $is_next, $member_e);
+    echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
 
 }
 

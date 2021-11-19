@@ -7,7 +7,6 @@ $superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEAGING
 $superpower_13422 = superpower_active(13422, true); //SUPERPOWER OF SOURCING
 $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF GLASSES
 $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
-$control_enabled = $source_is_e || $superpower_10939;
 $show_max_14435 = view_memory(6404,14435);
 $show_max_14538 = view_memory(6404,14538);
 $limit = view_memory(6404,11064);
@@ -240,7 +239,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
             $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-10573">';
             foreach($i_stars as $item){
-                $ui .= view_i(10573, 0, null, $item, $control_enabled,null, $e);
+                $ui .= view_i(10573, 0, null, $item,null, $e);
             }
             $ui .= '</div>';
 
@@ -287,7 +286,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             }
 
             //UI
-            $ui .= view_i(13550, 0, null, $item, $control_enabled,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, $trigger_hide);
+            $ui .= view_i(13550, 0, null, $item,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, $trigger_hide);
 
             $max_i__spectrum = $item['i__spectrum'];
 
@@ -335,7 +334,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
             $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12896">';
             foreach($i_notes_query as $count => $i_notes) {
-                $ui .= view_i(12896, $i_notes['x__left'], null, $i_notes, $control_enabled);
+                $ui .= view_i(12896, $i_notes['x__left'], null, $i_notes);
             }
             $ui .= '</div>';
 
@@ -355,7 +354,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
             $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12969">';
             foreach($list_x as $item){
-                $ui .= view_i($x__type, $item['i__id'], null, $item,$control_enabled,null, $e);
+                $ui .= view_i($x__type, $item['i__id'], null, $item,null, $e);
             }
             $ui .= '</div>';
 
@@ -385,7 +384,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= '<div class="row justify-content-center">';
             $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC'));
             foreach($i_notes_query as $count => $i_notes) {
-                $ui .= view_i(4485, 0, null, $i_notes, $control_enabled);
+                $ui .= view_i(4485, 0, null, $i_notes);
             }
             $ui .= '</div>';
         }
@@ -404,7 +403,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= '<div class="row justify-content-center">';
             if($x__type==4250){
                 foreach($this->X_model->fetch($owner_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC')) as $count => $i_own) {
-                    $ui .= view_i(4250, 0, null, $i_own, $control_enabled);
+                    $ui .= view_i(4250, 0, null, $i_own);
                 }
             } elseif($x__type==4251) {
                 foreach($this->X_model->fetch($owner_filters, array('x__down'), $limit, 0, array('e__spectrum' => 'DESC')) as $count => $e_own) {

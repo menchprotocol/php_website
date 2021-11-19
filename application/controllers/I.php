@@ -519,7 +519,7 @@ class I extends CI_Controller {
         $extra_items = $this->X_model->fetch($query_filters, array('x__right'), $items_per_page, ($page * $items_per_page), array('i__spectrum' => 'DESC'));
 
         foreach($extra_items as $item) {
-            echo view_i(13550, 0, null, $item, $superpower_10939, ( $item['x__message']!='@'.$focus__id && strlen($item['x__message']) ? $this->X_model->message_view($item['x__message'], true) : null));
+            echo view_i(13550, 0, null, $item, ( $item['x__message']!='@'.$focus__id && strlen($item['x__message']) ? $this->X_model->message_view($item['x__message'], true) : null));
         }
 
         //Count total children:

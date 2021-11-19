@@ -1054,7 +1054,7 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
 }
 
 
-function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e){
+function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
 
     //If no list just return the next step:
     if(!count($next_is)){
@@ -1078,7 +1078,7 @@ function view_i_list($x__type, $top_i__id, $in_my_x, $i, $next_is, $member_e){
         if(!$found_first_complete && $completion_rate['completion_percentage'] >= 100){
             $found_first_complete = true;
         }
-        $body .= view_i($x__type, $top_i__id, $i, $next_i, $in_my_x, null, $member_e, $completion_rate, null, $is_first_incomplete);
+        $body .= view_i($x__type, $top_i__id, $i, $next_i, null, $member_e, $completion_rate, null, $is_first_incomplete);
         $is_first_incomplete = false; //False afterwards
     }
     $body .= '</div>';
@@ -1615,7 +1615,7 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
 }
 
 
-function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabled = false, $message_input = null, $focus_e = false, $completion_rate = null, $extra_class = null, $is_first_incomplete = false){
+function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input = null, $focus_e = false, $completion_rate = null, $extra_class = null, $is_first_incomplete = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1667,10 +1667,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
             'x__right' => $previous_i['i__id'],
             'x__up' => 14488, //Force Order
         ), array(), 1)));
-    $locking_enabled = !$control_enabled || !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($force_order && $discovery_mode);
+    $locking_enabled = !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($force_order && $discovery_mode);
     $has_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
     $has_soft_lock = $locking_enabled && !$is_completed && ($has_hard_lock || (!$is_first_incomplete && ($force_order || ($start_to_unlock && !$is_started))));
-    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603')) && $control_enabled;
+    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i);
     $has_any_lock = $has_soft_lock || $has_hard_lock;
@@ -1732,7 +1732,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
             //$ui .= '<span title="'.$e___11035[$lock_notice]['m__title'].'">'.$e___11035[$lock_notice]['m__cover'].'</span>';
 
-        } elseif(!$cache_app && $control_enabled) {
+        } elseif(!$cache_app) {
 
             foreach($CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' )) as $e__id => $m) {
 
@@ -1749,7 +1749,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
                     $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
                 } elseif($e__id==12589){
                     $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
-                } elseif($e__id==6155 && $control_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155')) && ($x__type!=6255 || $superpower_10939)){
+                } elseif($e__id==6155 && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155')) && ($x__type!=6255 || $superpower_10939)){
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'">'.$anchor.'</a>'; //UNLINK
                 } elseif($e__id==26001){
                     //Reset discoveries
@@ -1809,7 +1809,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $control_enabl
 
 
     //TITLE
-    if(in_array($x__type, $CI->config->item('n___14745')) && $e_of_i && $control_enabled){
+    if($e_of_i){
         //Editable title:
         $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $editing_enabled, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
     } elseif($can_click){
@@ -1978,9 +1978,8 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $focus_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
-    $control_enabled = !$cache_app && in_array($x__type, $CI->config->item('n___14696'));
 
-    $source_of_e = $source_of_e && $control_enabled && $member_e;
+    $source_of_e = $source_of_e && $member_e;
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $supports_messages = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___20409')));
@@ -2003,7 +2002,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$has_public && !$source_of_e && !$superpower_13422));
     $has_any_lock = !$superpower_12701 && ($has_soft_lock || $has_hard_lock);
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $supports_messages && $superpower_13422 && $x__id > 0;
-    $show_text_editor = $source_of_e && $control_enabled && !$has_any_lock;
+    $show_text_editor = $source_of_e && !$has_any_lock;
     $can_click = !$focus_coin; //Allow clicking for all
 
 

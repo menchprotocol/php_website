@@ -23,7 +23,7 @@ if(!$member_e){
     foreach(view_coins_e(6255, $member_e['e__id'], 1) as $item){
         $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
         if($completion_rate['completion_percentage'] >= 100){
-            echo view_i(14730, $item['i__id'], null, $item, false, null, $member_e, $completion_rate);
+            echo view_i(14730, $item['i__id'], null, $item, null, $member_e, $completion_rate);
         }
     }
     echo '</div>';

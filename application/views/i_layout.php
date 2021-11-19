@@ -59,7 +59,7 @@ $previous_is = $this->X_model->fetch(array(
 
 $body = '<div id="list-in-11019" class="row justify-content-center">';
 foreach($previous_is as $previous_i) {
-    $body .= view_i(11019, 0, null, $previous_i, $e_of_i);
+    $body .= view_i(11019, 0, null, $previous_i);
 }
 $body .= '</div>';
 if($e_of_i && $is_active){
@@ -90,7 +90,7 @@ if(isset($_GET['load__e']) && $superpower_14005){
 
 
 echo '<div class="row justify-content-center">';
-echo view_i(4250, 0, null, $i_focus, $e_of_i);
+echo view_i(4250, 0, null, $i_focus);
 echo '</div>';
 
 
@@ -165,7 +165,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
         $ui .= '<div id="list-in-13542" class="row justify-content-center hideIfEmpty">';
         foreach($is_next as $next_i) {
-            $ui .= view_i(13542, 0, $i_focus, $next_i, $e_of_i);
+            $ui .= view_i(13542, 0, $i_focus, $next_i);
         }
         $ui .= '</div>';
 
