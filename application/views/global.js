@@ -2667,19 +2667,21 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
     if(element_id==4737 && !(new_e__id in js_e___7356)){
 
         //Deleting Idea:
-        var confirm_removal = prompt("Are you sure you want to delete this idea? \nEnter 0 to delete all links OR enter another Idea ID to migrate links to.", "0");
+        var confirm_removal = prompt("Are you sure you want to delete this idea?\nEnter 0 to unlink OR enter Idea ID to migrate links.", "0");
         if (!isNormalInteger(confirm_removal)) {
             return false;
         }
-
         migrate_i__id = confirm_removal;
 
     } else if(element_id==6177 && !(new_e__id in js_e___7358)){
+
         //Deleting Source:
-        var r = confirm("Are you sure you want to delete this source and unlink it from all other coins?");
-        if (r == false) {
+        var confirm_removal = prompt("Are you sure you want to delete this source?\nEnter 0 to unlink OR enter source ID to migrate links.", "0");
+        if (!isNormalInteger(confirm_removal)) {
             return false;
         }
+        migrate_i__id = confirm_removal;
+
     }
 
 

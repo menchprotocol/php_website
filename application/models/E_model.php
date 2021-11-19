@@ -430,21 +430,65 @@ class E_model extends CI_Model
 
     }
 
-    function remove($e__id, $x__source = 0){
+    function remove($e__id, $x__source = 0, $migrate_i__id = 0){
 
         //Fetch all SOURCE LINKS:
-        $adjusted_count = 0;
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type !=' => 10673, //Member Transaction Unpublished
-            '(x__down = ' . $e__id . ' OR x__up = ' . $e__id . ' OR x__source = ' . $e__id . ')' => null,
-        ), array(), 0) as $adjust_tr){
-            //Delete this transaction:
-            $adjusted_count += $this->X_model->update($adjust_tr['x__id'], array(
-                'x__status' => 6173, //Transaction Deleted
-            ), $x__source, 10673 /* Member Transaction Unpublished */);
+        $x_adjusted = 0;
+
+        if($migrate_i__id > 0){
+
+            //Validate this migration ID:
+            $es = $this->E_model->fetch(array(
+                'e__id' => $migrate_i__id,
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            ));
+
+            if(count($es)){
+
+                //Migrate Transactions:
+                foreach($this->X_model->fetch(array( //Idea Transactions
+                    '(x__up = '.$e__id.' OR x__down = '.$e__id.' OR x__source = '.$e__id.')' => null,
+                ), array(), 0) as $x){
+
+                    //Migrate this transaction:
+                    if($x['x__up']==$e__id){
+                        $x_adjusted += $this->X_model->update($x['x__id'], array(
+                            'x__up' => $migrate_i__id,
+                        ));
+                    }
+
+                    if($x['x__down']==$e__id){
+                        $x_adjusted += $this->X_model->update($x['x__id'], array(
+                            'x__down' => $migrate_i__id,
+                        ));
+                    }
+
+                    if($x['x__source']==$e__id){
+                        $x_adjusted += $this->X_model->update($x['x__id'], array(
+                            'x__source' => $migrate_i__id,
+                        ));
+                    }
+
+                }
+            }
+
+        } else {
+
+            //REMOVE TRANSACTIONS
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__type !=' => 10673, //Member Transaction Unpublished
+                '(x__down = ' . $e__id . ' OR x__up = ' . $e__id . ' OR x__source = ' . $e__id . ')' => null,
+            ), array(), 0) as $adjust_tr){
+                //Delete this transaction:
+                $x_adjusted += $this->X_model->update($adjust_tr['x__id'], array(
+                    'x__status' => 6173, //Transaction Deleted
+                ), $x__source, 10673 /* Member Transaction Unpublished */);
+            }
+
         }
-        return $adjusted_count;
+
+        return $x_adjusted;
     }
 
     function add_source($e__id){

@@ -1382,6 +1382,7 @@ class X extends CI_Controller
         //See if anything is being deleted:
         $deletion_redirect = null;
         $delete_element = null;
+        $links_removed = -1;
         $status = 0;
 
         if($_POST['element_id']==4486 && $_POST['x__id'] > 0){
@@ -1413,7 +1414,7 @@ class X extends CI_Controller
 
                     //If still not found, go to main page if no parent found:
                     if(!$deletion_redirect){
-                        $deletion_redirect = home_url();
+                        $deletion_redirect = '/@'.$_POST['o__id'];
                     }
 
                 } else {
@@ -1424,14 +1425,20 @@ class X extends CI_Controller
                 }
 
                 //Delete all transactions:
-                $this->E_model->remove($_POST['o__id'], $member_e['e__id']);
+                $links_removed = $this->E_model->remove($_POST['o__id'], $member_e['e__id'], $_POST['migrate_i__id']);
 
             }
 
             //Update:
-            $status = $this->E_model->update($_POST['o__id'], array(
-                'e__type' => $_POST['new_e__id'],
-            ), true, $member_e['e__id']);
+            if(!intval($_POST['migrate_i__id']) || count($this->E_model->fetch(array(
+                    'e__id' => $_POST['migrate_i__id'],
+                    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                )))){
+                $status = $this->E_model->update($_POST['o__id'], array(
+                    'e__type' => $_POST['new_e__id'],
+                ), true, $member_e['e__id']);
+            }
+
 
         } elseif($_POST['element_id']==4737){
 
@@ -1467,7 +1474,7 @@ class X extends CI_Controller
 
                     //If still not found, go to main page if no parent found:
                     if(!$deletion_redirect){
-                        $deletion_redirect = home_url();
+                        $deletion_redirect = '/~'.$_POST['o__id'];
                     }
 
                 } else {
@@ -1478,7 +1485,7 @@ class X extends CI_Controller
                 }
 
                 //Delete all transactions:
-                $this->I_model->remove($_POST['o__id'] , $member_e['e__id'], $_POST['migrate_i__id']);
+                $links_removed = $this->I_model->remove($_POST['o__id'] , $member_e['e__id'], $_POST['migrate_i__id']);
 
             }
 
@@ -1498,7 +1505,8 @@ class X extends CI_Controller
         }
 
         return view_json(array(
-            'status' => intval($status),
+            'status' => intval($status) && ($links_removed<0 || $links_removed>0),
+            'message' => 'Delete status ['.$status.'] with '.$links_removed.' Links removed',
             'deletion_redirect' => $deletion_redirect,
             'delete_element' => $delete_element,
         ));
