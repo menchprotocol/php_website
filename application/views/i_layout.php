@@ -1,8 +1,21 @@
-    <?php
+<?php
+
+//Just Viewing:
+$new_order = ( $this->session->userdata('session_page_count') + 1 );
+$this->session->set_userdata('session_page_count', $new_order);
+$this->X_model->create(array(
+    'x__source' => $member_e['e__id'],
+    'x__type' => 4993, //Member Opened Idea
+    'x__right' => $i_focus['i__id'],
+    'x__spectrum' => $new_order,
+));
+
+
 $e___14874 = $this->config->item('e___14874'); //COINS
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___4485 = $this->config->item('e___4485'); //NAVIGATION
 
+$e_focus_found = false; //Used to determine the first tab to be opened
 $e_of_i = e_of_i($i_focus['i__id']);
 $is_active = in_array($i_focus['i__type'], $this->config->item('n___7356'));
 $is_public = in_array($i_focus['i__type'], $this->config->item('n___7355'));
@@ -21,11 +34,6 @@ $superpower_14005 = superpower_active(14005, true);
 <script src="/application/views/i_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 <?php
-
-$e_focus_found = false; //Used to determine the first tab to be opened
-
-
-
 
 if(!$e_of_i){
 

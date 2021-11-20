@@ -1,4 +1,15 @@
 <?php
+
+
+$new_order = ( $this->session->userdata('session_page_count') + 1 );
+$this->session->set_userdata('session_page_count', $new_order);
+$this->X_model->create(array(
+    'x__source' => $member_e['e__id'],
+    'x__type' => 4994, //Member Viewed Source
+    'x__down' => $e['e__id'],
+    'x__spectrum' => $new_order,
+));
+
 $e___6177 = $this->config->item('e___6177'); //Source Status
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $source_of_e = source_of_e($e['e__id']);

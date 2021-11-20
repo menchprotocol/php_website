@@ -42,50 +42,19 @@ class I extends CI_Controller {
             return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>IDEA #' . $i__id . ' Not Found</div>', true);
         }
 
-
         $member_e = superpower_unlocked(10939); //Idea Pen?
-        $is_public = in_array($is[0]['i__type'], $this->config->item('n___7355'));
-
         if(!$member_e){
-            if($is_public){
+            if(in_array($is[0]['i__type'], $this->config->item('n___7355'))){
                 return redirect_message('/'.$i__id);
             } else {
                 return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__id . ' is not published yet.</div>');
             }
         }
 
-
-        //Mass List Editing?
-        if (superpower_active(12700, true) && isset($_POST['coin__id']) && isset($_POST['mass_action_toggle']) && isset($_POST['mass_value1_'.$_POST['mass_action_toggle']]) && isset($_POST['mass_value2_'.$_POST['mass_action_toggle']])) {
-
-            //Process mass action:
-            $process_mass_action = $this->I_model->mass_update($_POST['coin__id'], intval($_POST['mass_action_toggle']), $_POST['mass_value1_'.$_POST['mass_action_toggle']], $_POST['mass_value2_'.$_POST['mass_action_toggle']], $member_e['e__id']);
-
-            //Pass-on results to UI:
-            $message = '<div class="msg alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$process_mass_action['message'].'</div>';
-
-        } else {
-
-            //Just Viewing:
-            $message = null;
-            $new_order = ( $this->session->userdata('session_page_count') + 1 );
-            $this->session->set_userdata('session_page_count', $new_order);
-            $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
-                'x__type' => 4993, //Member Opened Idea
-                'x__right' => $i__id,
-                'x__spectrum' => $new_order,
-            ));
-
-        }
-
-
-
         //Load views:
         $this->load->view('header', array(
             'title' => $is[0]['i__title'],
             'i_focus' => $is[0],
-            'flash_message' => $message, //Possible mass-action message for UI:
         ));
         $this->load->view('i_layout', array(
             'i_focus' => $is[0],

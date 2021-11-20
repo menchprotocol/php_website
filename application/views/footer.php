@@ -22,7 +22,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="POST" action="">
+                    <form method="POST" action="/-27196?e__id=12274">
                     <input type="hidden" name="coin__id" value="" />
                     <div class="modal-body">
                             <?php
@@ -165,7 +165,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="POST" action="">
+                    <form method="POST" action="/-27196?e__id=12273">
                     <input type="hidden" name="coin__id" value="" />
                     <div class="modal-body">
                         <?php
