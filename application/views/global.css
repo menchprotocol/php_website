@@ -3345,10 +3345,10 @@ font-weight: bold !important;
 }
 
 .sidebar a {
-    padding:5px 0;
+    padding:5px 5px 5px 0;
     text-decoration: none;
     display: block;
-    width: 240px;
+    width: 245px;
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis;
