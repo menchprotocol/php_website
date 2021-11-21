@@ -259,7 +259,7 @@ if(!$basic_header_footer){
                         } elseif($x__type==7256) {
 
                             //Search
-                            $href = 'href="javascript:void(0);" onclick="coin__load(12274,'.$member_e['e__id'].')" ';
+                            $href = 'href="javascript:void(0);" onclick="toggle_search()" ';
 
                         } elseif(in_array($x__type, $this->config->item('n___13566'))) {
 
