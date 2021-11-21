@@ -3345,6 +3345,10 @@ font-weight: bold !important;
     padding:4px 0;
     text-decoration: none;
     display: block;
+    width: 244px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
 }
 
 .sidebar a:hover {
