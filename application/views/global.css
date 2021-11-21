@@ -2460,6 +2460,7 @@ video {
     .icon-block-lg img {
         width: 41px !important;
         margin: -13px 0 -8px -2px !important;
+        margin: 0 !important;
         height: 41px !important;
     }
     .container {
