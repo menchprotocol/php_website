@@ -175,7 +175,7 @@ if(!$basic_header_footer){
     $domain_cover = get_domain('m__cover');
     $domain_list = intval(get_domain_setting(28646));
     $e___28646 = $this->config->item('e___28646');
-    $show_side_menu = ($member_e['e__id']==1);
+    $show_side_menu = ($member_e['e__id']==1 && $domain_list);
 
     if($show_side_menu){
 
