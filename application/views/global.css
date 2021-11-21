@@ -2952,6 +2952,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .headline,
 .custom_ui_13884_13886 .headline-height,
 .custom_ui_13884_13886 .headlinebody,
+.custom_ui_13884_13886 .sidebar,
 .custom_ui_13884_13886 .list-border .list-group-item,
 .custom_ui_13884_13886 .doabsolute, .custom_ui_13884_13886 .black-background {
     background-color: #000000 !important;
@@ -3106,6 +3107,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .modal-content,
 .custom_ui_13884_13885 .headline,
 .custom_ui_13884_13885 .headline-height,
+.custom_ui_13884_13885 .sidebar,
 .custom_ui_13884_13885 .headlinebody,
 .custom_ui_13884_13885 .list-border .list-group-item,
 .custom_ui_13884_13885 .doabsolute, .custom_ui_13884_13885 .black-background {
