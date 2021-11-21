@@ -3335,39 +3335,18 @@ font-weight: bold !important;
     width: 250px;
     position: fixed;
     z-index: 1;
-    top: 50px;
+    top: 55px;
     left: 0;
     overflow-x: hidden;
     transition: 0.5s;
 }
 
 .sidebar a {
-    padding: 2px;
+    padding:3px 0;
     text-decoration: none;
     display: block;
 }
 
 .sidebar a:hover {
-    color: #f1f1f1;
-}
-
-.sidebar .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-}
-
-.openbtn {
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #111;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-}
-
-.openbtn:hover {
-    background-color: #444;
+    background-color: #999999;
 }
