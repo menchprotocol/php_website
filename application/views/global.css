@@ -2876,6 +2876,7 @@ font-weight: bold !important;
 
 .custom_ui_13884_13886 .btn-default i,
 .custom_ui_13884_13886 .dropdown-menu,
+.custom_ui_13884_13886 .sidebar,
 .custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu{
     background-color:#222222 !important;
@@ -2952,7 +2953,6 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .headline,
 .custom_ui_13884_13886 .headline-height,
 .custom_ui_13884_13886 .headlinebody,
-.custom_ui_13884_13886 .sidebar,
 .custom_ui_13884_13886 .list-border .list-group-item,
 .custom_ui_13884_13886 .doabsolute, .custom_ui_13884_13886 .black-background {
     background-color: #000000 !important;
@@ -3026,6 +3026,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .accordion .card,
 .custom_ui_13884_13885 .btn-block,
 .custom_ui_13884_13885 .dropdown-menu,
+.custom_ui_13884_13885 .sidebar,
 .custom_ui_13884_13885 .algolia-autocomplete .aa-dropdown-menu,
 .custom_ui_13884_13885 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13885 textarea:not(.editing-mode),
@@ -3107,7 +3108,6 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .modal-content,
 .custom_ui_13884_13885 .headline,
 .custom_ui_13884_13885 .headline-height,
-.custom_ui_13884_13885 .sidebar,
 .custom_ui_13884_13885 .headlinebody,
 .custom_ui_13884_13885 .list-border .list-group-item,
 .custom_ui_13884_13885 .doabsolute, .custom_ui_13884_13885 .black-background {
