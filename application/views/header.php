@@ -199,9 +199,9 @@ if(!$basic_header_footer){
                 <tr>
                     <?php
 
-                    if($show_side_menu){
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggleNav()" style="margin-left: 0;" class="icon-block">'.$e___28646[$domain_list]['m__cover'].'</a></td>';
-                    }
+                    echo '<td class="block-x">';
+                    echo ($show_side_menu ? '<a href="javascript:void(0);" onclick="toggleNav()" style="margin-left: 0;" class="icon-block">'.$e___28646[$domain_list]['m__cover'].'</a>' : '&nbsp;' );
+                    echo '</td>';
 
                     echo '<td>';
                     echo '<div class="max_width">';
@@ -221,17 +221,14 @@ if(!$basic_header_footer){
                     echo '</div>';
                     echo '</td>';
 
-                    if(intval(view_memory(6404,12678)) && $member_e){
-                        //Search button
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;"><span class="search_icon">'.$e___11035[7256]['m__cover'].'</span><span class="search_icon hidden" title="'.$e___11035[13401]['m__title'].'">'.$e___11035[13401]['m__cover'].'</span></a></td>';
-                    }
+                    echo '<td class="block-x search_icon hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
 
                     //MENU
                     $menu_type = ( $member_e ? 12500 : 14372 );
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    echo '<span class="icon-block">' . $e___13479[$menu_type]['m__cover'] .'</span>';
+                    echo '<span class="icon-block">' . $e14372___13479[$menu_type]['m__cover'] .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
@@ -257,6 +254,11 @@ if(!$basic_header_footer){
                         } elseif($x__type==26139) {
 
                             //My Avatar
+                            $href = 'href="javascript:void(0);" onclick="coin__load(12274,'.$member_e['e__id'].')" ';
+
+                        } elseif($x__type==7256) {
+
+                            //Search
                             $href = 'href="javascript:void(0);" onclick="coin__load(12274,'.$member_e['e__id'].')" ';
 
                         } elseif(in_array($x__type, $this->config->item('n___13566'))) {
