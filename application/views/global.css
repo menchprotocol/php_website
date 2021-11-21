@@ -20,7 +20,6 @@ body {
 .row {
     margin-left:0px;
     margin-right:0px;
-    margin-bottom: 13px;
     width: 100%;
 }
 .container {
@@ -3335,14 +3334,14 @@ font-weight: bold !important;
     width: 250px;
     position: fixed;
     z-index: 1;
-    top: 58px;
+    top: 48px;
     left: 0;
     overflow-x: hidden;
     transition: 0.5s;
 }
 
 .sidebar a {
-    padding:5px 0;
+    padding:4px 0;
     text-decoration: none;
     display: block;
     width: 244px;
