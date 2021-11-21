@@ -2957,6 +2957,7 @@ font-weight: bold !important;
     background-color: #000000 !important;
     color: #FFFFFF !important;
 }
+
 .grey-background {
     background-color: transparent !important;
 }
@@ -3329,19 +3330,17 @@ font-weight: bold !important;
 
 .sidebar {
     height: 100%;
-    width: 0;
+    width: 250px;
     position: fixed;
     z-index: 1;
-    top: 0;
+    top: 50px;
     left: 0;
-    background-color: #111;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 65px;
 }
 
 .sidebar a {
-    padding: 3px 3px 3px 32px;
+    padding: 2px;
     text-decoration: none;
     display: block;
 }

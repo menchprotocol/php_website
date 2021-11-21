@@ -2746,19 +2746,9 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
 
 function toggleNav() {
-    if(!parseInt(document.getElementById("leftFixedBar").style.width)){
-        openNav();
+    if($('.sidebar').hasClass('hidden')){
+        $('.sidebar').removeClass('hidden');
     } else {
-        closeNav();
+        $('.sidebar').addClass('hidden');
     }
-}
-
-function openNav() {
-    document.getElementById("leftFixedBar").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
-}
-
-function closeNav() {
-    document.getElementById("leftFixedBar").style.width = "0";
-    document.getElementById("main").style.marginLeft= "0";
 }

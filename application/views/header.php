@@ -179,8 +179,7 @@ if(!$basic_header_footer){
 
     if($show_side_menu){
 
-        echo '<div id="leftFixedBar" class="sidebar">';
-        //<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        echo '<div class="sidebar hidden">';
         foreach($this->config->item('x___'.$domain_list) as $i__id => $m){
             echo '<a href="/~'.$i__id.'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
         }
