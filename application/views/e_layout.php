@@ -79,7 +79,7 @@ if(!$source_is_e || $superpower_13422){
                 </div><div class="algolia_pad_search row justify-content-center"></div></div></div></div>';
     }
 
-    echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, ($counter<=2));
+    echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, false);
 
 
 }
