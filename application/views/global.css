@@ -1681,6 +1681,9 @@ i, .btn .show-max {
     width: 33px !important;
     height: 33px !important;
     margin: -5px 3px -5px 2px !important;
+    margin: 0 !important;
+}
+.platform-logo img{
     margin:-13px 0px 0px 3px !important;
 }
 .icon-block-xs img {
