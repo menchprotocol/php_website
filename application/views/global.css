@@ -1672,7 +1672,7 @@ i, .btn .show-max {
 .icon-block { width:41px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
 .icon-block-xxs{ width:18px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
 .icon-block-xxs i{ font-size: 1.1em !important; }
-.icon-block-xs{ width:33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
+.icon-block-xs{ width:33px !important; height: 33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 1.5em; }
 .icon-block-img img,
 .icon-block-lg img,
