@@ -2746,7 +2746,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
 
 function toggleNav() {
-    if(!parseInt(document.getElementById("mySidebar").style.width)){
+    if(!parseInt(document.getElementById("leftFixedBar").style.width)){
         openNav();
     } else {
         closeNav();
@@ -2754,11 +2754,11 @@ function toggleNav() {
 }
 
 function openNav() {
-    document.getElementById("mySidebar").style.width = "250px";
+    document.getElementById("leftFixedBar").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
 }
 
 function closeNav() {
-    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("leftFixedBar").style.width = "0";
     document.getElementById("main").style.marginLeft= "0";
 }

@@ -32,7 +32,7 @@ foreach($this->X_model->fetch(array(
 ), array('x__down'), 0) as $en){
 
     //Now fetch all its children:
-    $children = $this->X_model->fetch(array(
+    $child__e = $this->X_model->fetch(array(
         'x__up' => $en['x__down'],
         'x__status IN (' . join(',', $n___7359) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
@@ -40,16 +40,18 @@ foreach($this->X_model->fetch(array(
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
 
+
+
     //Generate raw IDs:
     $child_ids = array();
-    foreach($children as $child){
+    foreach($child__e as $child){
         array_push($child_ids , $child['e__id']);
     }
 
     $memory_text .= "\n".'//'.$en['e__title'].':'."\n";
     $memory_text .= '$config[\'n___'.$en['x__down'].'\'] = array('.join(',',$child_ids).');'."\n";
     $memory_text .= '$config[\'e___'.$en['x__down'].'\'] = array('."\n";
-    foreach($children as $child){
+    foreach($child__e as $child){
 
         //Fetch all parents for this child:
         $child_parent_ids = array(); //To be populated soon
@@ -72,6 +74,25 @@ foreach($this->X_model->fetch(array(
 
     }
     $memory_text .= ');'."\n";
+
+
+    if($memory_detected){
+
+        $memory_text .= '$config[\'x___'.$en['x__down'].'\'] = array('."\n";
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__up' => $child['e__id'],
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $link_i){
+            $memory_text .= '     '.$link_i['i__id'].' => array('."\n";
+            $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',$link_i['i__title'])).'\','."\n";
+            $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$link_i['x__message'])).'\','."\n";
+            $memory_text .= '        \'m__cover\' => \''.view_cover(12274, $link_i['i__cover']).'\','."\n";
+            $memory_text .= '     ),'."\n";
+        }
+        $memory_text .= ');'."\n";
+
+    }
 }
 
 //Now Save File:
