@@ -1682,6 +1682,7 @@ i, .btn .show-max {
     width: 33px !important;
     height: 33px !important;
     margin: -5px 3px -5px 2px !important;
+    margin:-13px 0px 0px 3px !important;
 }
 .icon-block-xs img {
     width: 24px !important;
