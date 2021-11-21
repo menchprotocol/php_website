@@ -81,7 +81,7 @@ foreach($this->X_model->fetch(array(
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__up' => $child['e__id'],
+            'x__up' => $en['x__down'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $link_i){
             $memory_text .= '     '.$link_i['i__id'].' => array('."\n";
             $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',$link_i['i__title'])).'\','."\n";
