@@ -1672,7 +1672,7 @@ i, .btn .show-max {
 .icon-block-xxs{ width:18px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
 .icon-block-xxs i{ font-size: 1.1em !important; }
 .icon-block-xs{ width:33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
-.icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 1.5em; }
+.icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 1.6em; }
 .icon-block-img img,
 .icon-block-lg img,
 .icon-block img{
@@ -3341,14 +3341,14 @@ font-weight: bold !important;
     top: 48px;
     left: 0;
     overflow-x: hidden;
-    transition: 0.5s;
+    padding-bottom: 77px;
 }
 
 .sidebar a {
     padding:5px 0;
     text-decoration: none;
     display: block;
-    width: 247px;
+    width: 240px;
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis;
