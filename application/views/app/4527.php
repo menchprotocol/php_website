@@ -76,9 +76,8 @@ foreach($this->X_model->fetch(array(
     $memory_text .= ');'."\n";
 
 
+    $memory_text .= '$config[\'x___'.$en['x__down'].'\'] = array('."\n";
     if($memory_detected){
-
-        $memory_text .= '$config[\'x___'.$en['x__down'].'\'] = array('."\n";
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
@@ -90,9 +89,9 @@ foreach($this->X_model->fetch(array(
             $memory_text .= '        \'m__cover\' => \''.view_cover(12274, $link_i['i__cover']).'\','."\n";
             $memory_text .= '     ),'."\n";
         }
-        $memory_text .= ');'."\n";
-
     }
+    $memory_text .= ');'."\n";
+
 }
 
 //Now Save File:
