@@ -201,7 +201,7 @@ if(!$basic_header_footer){
                     <?php
 
                     if($show_side_menu){
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggleNav()" style="margin-left: 0;" class="icon-block">'.$e___28646[$domain_list]['m__cover'].'</a></td>';
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="toggleNav()" style="margin-left: 0;" class="icon-block">'.$e___28646[$domain_list]['m__cover'].'AAA</a></td>';
                     }
 
                     echo '<td>';
