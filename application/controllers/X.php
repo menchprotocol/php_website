@@ -1339,10 +1339,16 @@ class X extends CI_Controller
         $domain_list = intval(substr(get_domain_setting(28646), 1));
         if($domain_list){
             foreach($this->config->item('x___'.$domain_list) as $i__id => $m){
-                $return_array['class_i_'.$i__id] = view_number(rand(1,3000));
+                array_push($return_array, array(
+                    'class' => '.class_i_'.$i__id,
+                    'count' => view_number(rand(1,3000)),
+                ));
             }
             foreach($this->config->item('e___'.$domain_list) as $e__id => $m){
-                $return_array['class_e_'.$e__id] = view_number(rand(1,3000));
+                array_push($return_array, array(
+                    'class' => '.class_e_'.$e__id,
+                    'count' => view_number(rand(1,3000)),
+                ));
             }
         }
         return view_json($return_array);

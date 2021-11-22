@@ -2752,7 +2752,8 @@ function toggle_navigation() {
             nav_toggeled = true;
             $.post("/x/toggle_navigation", {}, function (data) {
                 for (const element of data) {
-                    console.log(element);
+                    $(element.class).html(element.count);
+
                 }
             });
         }
