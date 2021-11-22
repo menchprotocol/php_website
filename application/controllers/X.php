@@ -1341,13 +1341,13 @@ class X extends CI_Controller
             foreach($this->config->item('x___'.$domain_list) as $i__id => $m){
                 array_push($return_array, array(
                     'class' => '.class_i_'.$i__id,
-                    'count' => view_number(rand(1,3000)),
+                    'counter' => view_number(rand(1,3000)),
                 ));
             }
             foreach($this->config->item('e___'.$domain_list) as $e__id => $m){
                 array_push($return_array, array(
                     'class' => '.class_e_'.$e__id,
-                    'count' => view_number(rand(1,3000)),
+                    'counter' => view_number(rand(1,3000)),
                 ));
             }
         }
