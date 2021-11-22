@@ -1359,7 +1359,7 @@ class X extends CI_Controller
                     'x__up' => $e__id,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                ), array(), 0, 0, array(), 'COUNT(e__id) as totals');
+                ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
                 array_push($return_array, array(
                     'class' => '.class_e_'.$e__id,
