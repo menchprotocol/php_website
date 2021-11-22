@@ -3338,10 +3338,11 @@ font-weight: bold !important;
     width: 250px;
     position: fixed;
     z-index: 1;
-    top: 48px;
+    padding-top: 48px;
     left: 0;
     overflow-x: hidden;
     padding-bottom: 77px;
+    bordr-right:1px solid #999;
 }
 
 .sidebar a {
