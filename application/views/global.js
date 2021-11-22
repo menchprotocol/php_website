@@ -2752,7 +2752,7 @@ function toggle_navigation() {
             nav_toggeled = true;
             $.post("/x/toggle_navigation", {}, function (data) {
                 for (const element of data) {
-                    $(element.class).html('['+element.counter+'] ');
+                    $(element.class).html(element.counter+' ');
                 }
             });
         }
