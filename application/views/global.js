@@ -2744,9 +2744,18 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 }
 
 
+var nav_toggeled = false;
+function toggle_navigation() {
 
-function toggleNav() {
     if($('.sidebar').hasClass('hidden')){
+        if(!nav_toggeled){
+            nav_toggeled = true;
+            $.post("/x/toggle_navigation", {}, function (data) {
+                for (const element of data) {
+                    console.log(element);
+                }
+            });
+        }
         $('.sidebar').removeClass('hidden');
     } else {
         $('.sidebar').addClass('hidden');

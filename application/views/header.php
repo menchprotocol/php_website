@@ -181,10 +181,10 @@ if(!$basic_header_footer){
 
         echo '<div class="sidebar hidden">';
         foreach($this->config->item('x___'.$domain_list) as $i__id => $m){
-            echo '<a href="/~'.$i__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
+            echo '<a href="/~'.$i__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="class_i_'.$i__id.'"></span>'.$m['m__title'].'</a>';
         }
         foreach($this->config->item('e___'.$domain_list) as $e__id => $m){
-            echo '<a href="/@'.$e__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
+            echo '<a href="/@'.$e__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="class_e_'.$i__id.'"></span>'.$m['m__title'].'</a>';
         }
         echo '</div>';
 
@@ -200,7 +200,7 @@ if(!$basic_header_footer){
                     <?php
 
                     echo '<td class="block-x">';
-                    echo ($show_side_menu ? '<a href="javascript:void(0);" onclick="toggleNav()" style="margin-left: 0;" class="icon-block">'.$e___28646[$domain_list]['m__cover'].'</a>' : '&nbsp;' );
+                    echo ($show_side_menu ? '<a href="javascript:void(0);" onclick="toggle_navigation()" style="margin-left: 0;" class="icon-block">'.$e___28646[$domain_list]['m__cover'].'</a>' : '&nbsp;' );
                     echo '</td>';
 
                     echo '<td>';
