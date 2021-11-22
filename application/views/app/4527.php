@@ -13,6 +13,7 @@ if($memory_detected){
     $n___7357 = $this->config->item('n___7357');
     $n___7359 = $this->config->item('n___7359');
     $n___4592 = $this->config->item('n___4592');
+    $e___28649 = $this->config->item('e___28649');
 
 } else {
 
@@ -63,6 +64,11 @@ foreach($this->X_model->fetch(array(
         ), array('x__up'), 0);
         foreach($child_parents as $cp_en){
             array_push($child_parent_ids, intval($cp_en['e__id']));
+        }
+
+        //Manual term removal?
+        if($memory_detected && in_array($en['x__down'], $this->config->item('n___28649'))) {
+            $child['e__title'] = trim(str_replace($e___28649[$en['x__down']]['m__message'], '', $child['e__title']));
         }
 
         $memory_text .= '     '.$child['e__id'].' => array('."\n";
