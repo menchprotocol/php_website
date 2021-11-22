@@ -184,7 +184,7 @@ if(!$basic_header_footer){
             echo '<a href="/~'.$i__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="class_i_'.$i__id.'"></span>'.$m['m__title'].'</a>';
         }
         foreach($this->config->item('e___'.$domain_list) as $e__id => $m){
-            echo '<a href="/@'.$e__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="class_e_'.$i__id.'"></span>'.$m['m__title'].'</a>';
+            echo '<a href="/@'.$e__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="class_e_'.$e__id.'"></span>'.$m['m__title'].'</a>';
         }
         echo '</div>';
 
