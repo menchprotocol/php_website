@@ -3334,7 +3334,7 @@ font-weight: bold !important;
 .divider-line{
     height: 1px;
     border-bottom: 1px solid #999;
-    margin: 1px 8px 2px;
+    margin: 2px 8px;
 }
 
 .sidebar {
@@ -3354,7 +3354,7 @@ font-weight: bold !important;
     padding:5px 5px 5px 0;
     text-decoration: none;
     display: block;
-    width: 245px;
+    width: 250px;
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis;
