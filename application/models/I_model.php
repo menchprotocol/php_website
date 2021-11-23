@@ -608,6 +608,7 @@ class I_model extends CI_Model
             //Create new Idea:
             $i_new = $this->I_model->create(array(
                 'i__title' => $i__title_validation['i_clean_title'],
+                'i__cover' => ( isset($focus_i[0]['i__cover']) ? $focus_i[0]['i__cover'] : null ),
                 'i__type' => 6677, //New Default Ideas
             ), $x__source);
 
