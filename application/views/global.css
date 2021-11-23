@@ -2122,7 +2122,7 @@ i, .btn .show-max {
     padding-bottom: 74px !important;
 }
 .mini-coin{
-    margin: -30px 0 !important;
+    margin: -8px 0 -30px !important;
 }
 .focus-coin{
     margin:13px 0 74px !important;
