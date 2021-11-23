@@ -2753,7 +2753,7 @@ function toggle_navigation() {
             $.post("/x/toggle_navigation", {}, function (data) {
                 for (const element of data) {
                     if(parseInt(element.counter)>0){
-                        $(element.class).html(element.counter);
+                        $(element.class).html(element.counter+' ');
                     } else {
                         $(element.class).html('');
                     }
