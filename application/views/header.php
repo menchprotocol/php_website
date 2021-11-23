@@ -213,7 +213,8 @@ if(!$basic_header_footer){
 
                     //$my_source = '<span class="platform-circle icon-block mini_6197_'.$member_e['e__id'].'">'.view_cover(12274,$member_e['e__cover']).'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin_id, $member_e['e__id']).'</span>' : '' ).'</span>';
                     //Domain Source
-                    echo '<a href="'.($member_e ? '/@'.$member_e['e__id'] : '/' ).'">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo mini_6197_'.get_domain_setting(0).'">'.get_domain('m__cover').'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b>'.'</a>';
+                    //'.($member_e ? '/@'.$member_e['e__id'] : '/' ).'
+                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo mini_6197_'.get_domain_setting(0).'">'.get_domain('m__cover').'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b>'.'</a>';
 
                     echo '</div>';
 
@@ -249,17 +250,7 @@ if(!$basic_header_footer){
                         $extra_class = null;
                         $text_class = null;
 
-                        if($x__type==18995) {
-
-                            //Home
-                            $href = 'href="/"';
-
-                        } elseif($x__type==26139) {
-
-                            //My Avatar
-                            $href = 'href="javascript:void(0);" onclick="coin__load(12274,'.$member_e['e__id'].')" ';
-
-                        } elseif($x__type==7256) {
+                        if($x__type==7256) {
 
                             //Search
                             $href = 'href="javascript:void(0);" onclick="toggle_search()" ';
