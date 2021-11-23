@@ -3333,9 +3333,8 @@ font-weight: bold !important;
 
 .divider-line{
     height: 1px;
-    padding: 3px 3px 0 3px;
     border-bottom: 1px solid #999;
-    margin-bottom: 3px;
+    margin: 1px 8px 2px;
 }
 
 .sidebar {
