@@ -183,7 +183,9 @@ if(!$basic_header_footer){
         foreach($this->config->item('x___'.$domain_list) as $i__id => $m){
             echo '<a href="/~'.$i__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="class_i_'.$i__id.'">...</span>'.$m['m__title'].'</a>';
         }
-        echo '<div class="divider-line">&nbsp;</div>';
+        if(count($this->config->item('x___'.$domain_list)) && count($this->config->item('e___'.$domain_list))){
+            echo '<div class="divider-line">&nbsp;</div>';
+        }
         foreach($this->config->item('e___'.$domain_list) as $e__id => $m){
             echo '<a href="/@'.$e__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="class_e_'.$e__id.'">...</span>'.$m['m__title'].'</a>';
         }
