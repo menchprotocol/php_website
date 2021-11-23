@@ -3207,7 +3207,8 @@ font-weight: bold !important;
 
 
 
-.form-control:disabled, .dynamic_saving {
+/* .form-control:disabled { background-color: #999999 !important; } */
+.dynamic_saving {
     background-color: #999999 !important;
 }
 
