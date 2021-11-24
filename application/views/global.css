@@ -1217,7 +1217,7 @@ a.headline {
     padding-left: 0;
     font-weight: bold;
     max-width: calc(100% - 43px);
-    height: 34px;
+    height: 36px;
     overflow: hidden;
     line-height: 151%;
 }
