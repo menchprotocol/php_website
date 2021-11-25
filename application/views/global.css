@@ -2353,6 +2353,10 @@ video {
 
 @media (max-width:767px) {
 
+    .msg {
+        margin: 0 5px 3px;
+    }
+
     .cover-wrapper {
         margin:0 5px 0;
     }
