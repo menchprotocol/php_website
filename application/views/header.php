@@ -199,7 +199,7 @@ if(!$basic_header_footer){
                     } else {
 
                         //Login URL:
-                        echo '<a href="/-4269'.$login_url_path.'" style="margin-left: 0;" class="icon-block">'.view_cover(12274, $e___11035[4269]['e__cover']).'</a>';
+                        echo '<a href="/-4269'.$login_url_path.'" style="margin-left: 0;" class="icon-block">'.$e___11035[4269]['m__cover'].'</a>';
 
                     }
                     echo '</td>';
