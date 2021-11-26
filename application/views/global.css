@@ -865,6 +865,9 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     text-align: left;
     font-size: 0.89em !important;
 }
+.low-title:first-of-type{
+    padding-top: 0;
+}
 .list-border .list-group-item p {
     padding: 8px 0 0 0 !important;
     margin-bottom: 0;
@@ -3351,12 +3354,13 @@ font-weight: bold !important;
     width: 280px;
     position: fixed;
     z-index: 1;
-    top: 30px;
+    top: 53px;
     left: 0;
     overflow-x: hidden;
     padding-bottom: 77px;
     border-right:1px solid #999;
 }
+
 
 .sidebar a {
     padding:5px 5px 5px 0;
