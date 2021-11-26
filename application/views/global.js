@@ -2745,19 +2745,13 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
 
 var nav_toggeled = false;
-function toggle_navigation() {
+function toggle_sidebar() {
 
     if($('.sidebar').hasClass('hidden')){
         if(!nav_toggeled){
             nav_toggeled = true;
-            $.post("/x/toggle_navigation", {}, function (data) {
-                for (const element of data) {
-                    if(parseInt(element.counter)>0){
-                        $(element.class).html(element.counter+' ');
-                    } else {
-                        $(element.class).html('');
-                    }
-                }
+            $.post("/e/toggle_sidebar", {}, function (data) {
+                $('.sidebar').html(data);
             });
         }
         $('.sidebar').removeClass('hidden');

@@ -682,7 +682,7 @@ function view_coin_line($href, $is_current, $o__type, $o__cover, $o__title, $x__
     return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xs">'.$o__type.'</span><span class="icon-block-xs">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.( $is_current ? '<i class="fas fa-map-marker"></i>' : '<i class="far fa-arrow-right"></i>' ).'</span>'.( strlen($x__message) ? '<div class="message2">'.$x__message.'</div>' : '' ).'</a>';
 }
 
-function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true){
+function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true, $load_items = 0){
 
     /*
      *
@@ -758,6 +758,10 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
 
+    }
+
+    if($load_items > 0){
+        $limit = $load_items;
     }
 
 

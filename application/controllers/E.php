@@ -32,6 +32,79 @@ class E extends CI_Controller
 
 
 
+    function toggle_sidebar(){
+
+        $member_e = superpower_unlocked();
+        if(!$member_e){
+            return 'Session expired. You must <a href="/-4269"><b><u>login</u></b></a> to view this menu.';
+        }
+
+        //Start building the sidebar
+        $sidebar_ui = '';
+
+
+        //STARTED
+        $completion_rate = null;
+        foreach(view_coins_e(12969, $member_e['e__id'], 1) as $item){
+            $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
+            $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.$item['i__cover'].'</span>['.$completion_rate['completion_percentage'].'%] '.$item['i__title'].'</a>';
+        }
+
+
+        //RECENT DISCOVERIES
+        foreach(view_coins_e(6255, $member_e['e__id'], 1, true, 10) as $item){
+            if($completion_rate){
+                $sidebar_ui .= '<div class="divider-line">&nbsp;</div>';
+                $completion_rate = null;
+            }
+            $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.$item['i__cover'].'</span>'.$item['i__title'].'</a>';
+        }
+
+
+        //ADMIN MENU
+        $domain_list = intval(substr(get_domain_setting(28646), 1));
+        if(superpower_unlocked(28651) && $domain_list){
+
+            if(strlen($sidebar_ui)){
+                $sidebar_ui .= '<div class="divider-line">&nbsp;</div>';
+            }
+
+            foreach($this->config->item('x___'.$domain_list) as $i__id => $m){
+
+                //Count discoveries:
+                $x_coins = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                    'x__left' => $i__id,
+                ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
+                $sidebar_ui .= '<a href="/~'.$i__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.( $x_coins[0]['totals']>0 ? number_format($x_coins[0]['totals'], 0).' ' : '' ).$m['m__title'].'</a>';
+
+            }
+
+            if(count($this->config->item('x___'.$domain_list)) && count($this->config->item('e___'.$domain_list))){
+                $sidebar_ui .= '<div class="divider-line">&nbsp;</div>';
+            }
+
+            foreach($this->config->item('e___'.$domain_list) as $e__id => $m){
+
+                //Count sources:
+                $list_e_count = $this->X_model->fetch(array(
+                    'x__up' => $e__id,
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+                $sidebar_ui .= '<a href="/@'.$e__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.( $list_e_count[0]['totals']>0 ? number_format($list_e_count[0]['totals'], 0).' ' : '' ).$m['m__title'].'</a>';
+
+            }
+        }
+
+
+        return $sidebar_ui;
+
+    }
+
+
+
     //Lists sources
     function e_layout($e__id)
     {

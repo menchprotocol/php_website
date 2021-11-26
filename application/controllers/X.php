@@ -1362,42 +1362,6 @@ class X extends CI_Controller
     }
 
 
-    function toggle_navigation(){
-        $return_array = array();
-        $domain_list = intval(substr(get_domain_setting(28646), 1));
-        if($domain_list){
-            foreach($this->config->item('x___'.$domain_list) as $i__id => $m){
-
-                //Count discoveries:
-                $x_coins = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
-                    'x__left' => $i__id,
-                ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
-
-                array_push($return_array, array(
-                    'class' => '.class_i_'.$i__id,
-                    'counter' => number_format($x_coins[0]['totals'], 0),
-                ));
-            }
-            foreach($this->config->item('e___'.$domain_list) as $e__id => $m){
-
-                //Count sources:
-                $list_e_count = $this->X_model->fetch(array(
-                    'x__up' => $e__id,
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-
-                array_push($return_array, array(
-                    'class' => '.class_e_'.$e__id,
-                    'counter' => number_format($list_e_count[0]['totals'], 0),
-                ));
-            }
-        }
-        return view_json($return_array);
-    }
-
 
     function update_dropdown(){
 

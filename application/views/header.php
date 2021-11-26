@@ -10,6 +10,7 @@ $superpower_10939 = $member_e && superpower_active(10939, true);
 $current_coin_id = current_coin_id();
 $base_source = get_domain_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
+$login_url_path = ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' );
 $logo = '/img/'.$current_coin_id.'.png';
 ?><!doctype html>
 <html lang="en" >
@@ -180,22 +181,7 @@ if(!$basic_header_footer){
         $show_side_menu = $domain_list;
     }
 
-    if($show_side_menu){
-
-        echo '<div class="sidebar hidden">';
-        foreach($this->config->item('x___'.$domain_list) as $i__id => $m){
-            echo '<a href="/~'.$i__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="class_i_'.$i__id.'">...</span>'.$m['m__title'].'</a>';
-        }
-        if(count($this->config->item('x___'.$domain_list)) && count($this->config->item('e___'.$domain_list))){
-            echo '<div class="divider-line">&nbsp;</div>';
-        }
-        foreach($this->config->item('e___'.$domain_list) as $e__id => $m){
-            echo '<a href="/@'.$e__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="class_e_'.$e__id.'">...</span>'.$m['m__title'].'</a>';
-        }
-        echo '</div>';
-
-    }
-
+    echo '<div class="sidebar hidden"><i class="far fa-yin-yang fa-spin"></i></div>';
 
     //Do not show for /sign view
     ?>
@@ -206,12 +192,18 @@ if(!$basic_header_footer){
                     <?php
 
                     echo '<td class="block-x">';
-                    if($show_side_menu){
-                        echo '<a href="javascript:void(0);" onclick="toggle_navigation()" style="margin-left: 0;" class="icon-block">'.$e___28646[$domain_list]['m__cover'].'</a>';
-                    } elseif($member_e && isset($member_e['e__id'])) {
-                        echo '<a href="/@'.$member_e['e__id'].'"style="margin-left: 0;" class="icon-block" title="'.$member_e['e__title'].'">'.view_cover(12274, $member_e['e__cover']).'</a>';
+                    if($member_e) {
+
+                        echo '<a href="javascript:void(0);" onclick="toggle_sidebar()" style="margin-left: 0;" class="icon-block">'.view_cover(12274, $member_e['e__cover']).'</a>';
+
+                    } else {
+
+                        //Login URL:
+                        echo '<a href="/-4269'.$login_url_path.'" style="margin-left: 0;" class="icon-block">'.view_cover(12274, $e___11035[4269]['e__cover']).'</a>';
+
                     }
                     echo '</td>';
+
 
                     echo '<td>';
                     echo '<div class="max_width">';
@@ -272,7 +264,7 @@ if(!$basic_header_footer){
                         } elseif(in_array($x__type, $this->config->item('n___6287'))){
 
                             //APP
-                            $href = 'href="/-'.$x__type.( $x__type==4269 && isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ).'"';
+                            $href = 'href="/-'.$x__type.( $x__type==4269 ? $login_url_path : '' ).'"';
 
                         } else {
 
