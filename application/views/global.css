@@ -1700,7 +1700,7 @@ i, .btn .show-max {
     height: 24px !important;
 }
 .icon-block-xs i {
-    font-size:0,89em;
+    font-size:1em !important;
 }
 .platform-large img{
     width:128px;
