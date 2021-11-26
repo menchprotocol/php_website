@@ -132,7 +132,8 @@ if($top_i__id){
 
 <?php
 
-//PREVIOUS DISCOVERIES
+//PREVIOUS DISCOVERIES (Deprecated in favour of left menu)
+/*
 if($top_i__id){
 
     $previous_x = $this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']);
@@ -148,7 +149,7 @@ if($top_i__id){
 
     }
 }
-
+*/
 
 
 echo '<div class="row justify-content-center">';
