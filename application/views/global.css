@@ -1699,6 +1699,9 @@ i, .btn .show-max {
     width: 24px !important;
     height: 24px !important;
 }
+.icon-block-xs i {
+    font-size:0,89em;
+}
 .platform-large img{
     width:128px;
     margin-bottom: 5px;
