@@ -347,7 +347,7 @@ if($top_i__id) {
                     'x__type' => 4983, //References
                     'x__right' => $next_i['i__id'],
                     'x__up' => 28659,
-                ), array(), 1)) && isset($spots_remaining) && $spots_remaining>0){
+                ), array(), 1)) && isset($spots_remaining) && $spots_remaining!=0){
 
                     $spots_remaining = 0; //Not Available since previous is still available
 
