@@ -362,7 +362,7 @@ if($top_i__id) {
                         'x__right' => $next_i['i__id'],
                         'x__up' => 26189,
                     ), array(), 1);
-                    if(count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0){
+                    if(count($has_limits) && is_numeric($has_limits[0]['x__message'])){
                         //We have a limit! See if we've met it already:
                         $spots_remaining = intval($has_limits[0]['x__message'])-view_coins_i(6255,  $next_i, 0, false);
                         if($spots_remaining < 0){
