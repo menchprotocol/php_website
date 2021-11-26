@@ -560,6 +560,34 @@ class X extends CI_Controller
             return redirect_message($next_url);
         }
 
+        if($top_i__id > 0){
+            $is_top = $this->I_model->fetch(array(
+                'i__id' => $top_i__id,
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            ));
+            if(count($is_top)){
+                $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $is_top[0]);
+                if($completion_rate['completion_percentage'] >= 100 && !count($this->X_model->fetch(array(
+                        'x__source' => $member_e['e__id'],
+                        'x__type' => 14730, //COMPLETED 100%
+                        'x__right' => $top_i__id,
+                    )))){
+
+                    //Mark as Complete
+                    $this->X_model->create(array(
+                        'x__source' => $member_e['e__id'],
+                        'x__type' => 14730, //COMPLETED 100%
+                        'x__right' => $top_i__id,
+                        //TODO Maybe log additional details like total ideas, time, etc...
+                    ));
+
+                    //Go to Rating App since it's first completion:
+                    return redirect_message('/-14709?i__id='.$top_i__id);
+                }
+            }
+        }
+
+
         //Go to Next Idea:
         $next_i__id = $this->X_model->find_next($member_e['e__id'], $top_i__id, $is[0]);
         if($next_i__id > 0){
