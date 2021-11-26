@@ -342,16 +342,18 @@ if($top_i__id) {
                     }
                 }
 
+                $override = null;
                 if(count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 4983, //References
                     'x__right' => $next_i['i__id'],
                     'x__up' => 28659,
-                ), array(), 1)) && isset($spots_remaining) && $spots_remaining!=0){
+                ), array(), 1)) && isset($spots_remaining) && $spots_remaining>0){
 
-                    $spots_remaining = 0; //Not Available since previous is still available
+                    $override = 0; //Not Available since previous is still available
 
                 } else {
+
                     //Any Limits on Selection?
                     $spots_remaining = -1; //No limits
                     $has_limits = $this->X_model->fetch(array(
@@ -367,6 +369,7 @@ if($top_i__id) {
                             $spots_remaining = 0;
                         }
                     }
+
                 }
 
 
@@ -379,7 +382,7 @@ if($top_i__id) {
                     'x__source' => $x__source,
                 )));
 
-                $select_answer .= view_i_select($next_i, $x__source, $previously_selected, $spots_remaining);
+                $select_answer .= view_i_select($next_i, $x__source, $previously_selected, ( is_null($override) ? $spots_remaining : $override ));
 
             }
 
