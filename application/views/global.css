@@ -860,9 +860,10 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-weight: 1.3em !important;
 }
 .low-title{
-    padding: 8px;
+    padding: 21px 8px 8px;
+    font-weight: bold;
     text-align: left;
-    font-weight: 1em !important;
+    font-weight: 0.89em !important;
 }
 .list-border .list-group-item p {
     padding: 8px 0 0 0 !important;
