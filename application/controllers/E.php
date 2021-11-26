@@ -47,7 +47,7 @@ class E extends CI_Controller
         $completion_rate = null;
         foreach(view_coins_e(12969, $member_e['e__id'], 1) as $item){
             $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
-            $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.$item['i__cover'].'</span>['.$completion_rate['completion_percentage'].'%] '.$item['i__title'].'</a>';
+            $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>['.$completion_rate['completion_percentage'].'%] '.$item['i__title'].'</a>';
         }
 
 
@@ -57,7 +57,7 @@ class E extends CI_Controller
                 $sidebar_ui .= '<div class="divider-line">&nbsp;</div>';
                 $completion_rate = null;
             }
-            $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.$item['i__cover'].'</span>'.$item['i__title'].'</a>';
+            $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
         }
 
 
