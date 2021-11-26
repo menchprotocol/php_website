@@ -142,7 +142,7 @@ class E extends CI_Controller
         }
 
         if(!strlen($sidebar_ui)){
-            $sidebar_ui .= '<div>Nothing started yet... Visit the <a href="/"><b><u>Home Page</u></b></a> to get started.</div>';
+            $sidebar_ui .= '<div style="padding: 5px;">Nothing started yet... Visit the <a href="/"><b><u>Home Page</u></b></a> to get started.</div>';
         }
 
         echo $sidebar_ui;
