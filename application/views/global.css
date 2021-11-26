@@ -1758,6 +1758,15 @@ i, .btn .show-max {
     padding: 89px 0 34px;
     margin: 0;
 }
+.social2-footer{
+    text-align: center;
+    list-style: none;
+}
+.social2-footer li{
+    display: inline-block;
+    font-size: 3em;
+    margin: 0 13px;
+}
 .social-footer li{
     display: inline-block;
     font-size: 1.5em;
