@@ -85,6 +85,23 @@ class E extends CI_Controller
                     }
                 }
 
+            } elseif($x__type==12896){
+
+                //SAVED DISCOVERIES
+                $i_notes_query = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                    'x__type' => 12896,
+                    'x__up' => $member_e['e__id'],
+                ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'x__id' => 'DESC'));
+                $counter = count($i_notes_query);
+                if($counter > 0){
+                    $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$counter.' '.$m['m__title'].'</div>';
+                    foreach($i_notes_query as $item) {
+                        $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
+                    }
+                }
+
             } elseif($x__type==28646){
 
                 //ADMIN MENU
@@ -122,6 +139,10 @@ class E extends CI_Controller
                     }
                 }
             }
+        }
+
+        if(!strlen($sidebar_ui)){
+            $sidebar_ui .= '<div>Nothing started yet... Visit the <a href="/"><b><u>Home Page</u></b></a> to get started.</div>';
         }
 
         echo $sidebar_ui;
