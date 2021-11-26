@@ -346,7 +346,7 @@ if($top_i__id) {
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 4983, //References
                     'x__right' => $next_i['i__id'],
-                    'x__up' => 26659,
+                    'x__up' => 28659,
                 ), array(), 1)) && isset($spots_remaining) && $spots_remaining>0){
 
                     $spots_remaining = 0; //Not Available since previous is still available
@@ -368,8 +368,6 @@ if($top_i__id) {
                         }
                     }
                 }
-
-
 
 
                 //Has this been previously selected?
