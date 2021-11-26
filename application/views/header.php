@@ -206,7 +206,11 @@ if(!$basic_header_footer){
                     <?php
 
                     echo '<td class="block-x">';
-                    echo ($show_side_menu ? '<a href="javascript:void(0);" onclick="toggle_navigation()" style="margin-left: 0;" class="icon-block">'.$e___28646[$domain_list]['m__cover'].'</a>' : '&nbsp;' );
+                    if($show_side_menu){
+                        echo '<a href="javascript:void(0);" onclick="toggle_navigation()" style="margin-left: 0;" class="icon-block">'.$e___28646[$domain_list]['m__cover'].'</a>';
+                    } elseif($member_e && isset($member_e['e__id'])) {
+                        echo '<a href="/@'.$member_e['e__id'].'"style="margin-left: 0;" class="icon-block" title="'.$member_e['e__title'].'">'.view_cover(12274, $member_e['e__cover']).'</a>';
+                    }
                     echo '</td>';
 
                     echo '<td>';
