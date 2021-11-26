@@ -98,8 +98,7 @@ class E extends CI_Controller
             }
         }
 
-
-        return $sidebar_ui;
+        echo $sidebar_ui;
 
     }
 
