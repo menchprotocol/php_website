@@ -3362,7 +3362,7 @@ font-weight: bold !important;
 }
 
 
-.sidebar a {
+.sidebar a.css__title {
     padding:5px 5px 5px 0;
     text-decoration: none;
     display: block;
