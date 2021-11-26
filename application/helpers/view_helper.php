@@ -1578,7 +1578,7 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
 
 
     if($spots_remaining >= 0){
-        $ui .= '<a '.$href.' class="doblock" style="padding-bottom:2px;"><span class="mini-font '.( $spots_remaining==0 ? ' isred ' : ' isgreen ' ).'">' . $spots_remaining . ' Remaining</span></a>';
+        $ui .= '<a '.$href.' class="doblock" style="padding-bottom:2px;"><span class="mini-font '.( $spots_remaining==0 ? ' isred ' : ' isgreen ' ).'">' .( $spots_remaining==0 ? 'Not Available' : $spots_remaining . ' Remaining' ) .'</span></a>';
     }
 
     //Messages:
