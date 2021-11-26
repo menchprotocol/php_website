@@ -3347,7 +3347,7 @@ font-weight: bold !important;
 }
 
 .sidebar {
-    height: calc(100% - 45px);
+    height: 100%;
     width: 280px;
     position: fixed;
     z-index: 1;
