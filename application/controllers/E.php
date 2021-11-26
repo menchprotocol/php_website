@@ -67,7 +67,7 @@ class E extends CI_Controller
                 //STARTED
                 $counter = view_coins_e(12969, $member_e['e__id'], 0, false);
                 if($counter){
-                    $sidebar_ui .= '<div class="low-title grey">'.view_cover(12274,$m['e__cover']).'&nbsp;'.$counter.'&nbsp;'.$m['e__title'].'</div>';
+                    $sidebar_ui .= '<div class="low-title grey">'.$m['m__cover'].'&nbsp;'.$counter.'&nbsp;'.$m['m__title'].'</div>';
                     foreach(view_coins_e(12969, $member_e['e__id'], 1) as $item){
                         $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
                         $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>['.$completion_rate['completion_percentage'].'%] '.$item['i__title'].'</a>';
@@ -79,7 +79,7 @@ class E extends CI_Controller
                 //RECENT DISCOVERIES
                 $counter = view_coins_e($x__type, $member_e['e__id'], 0, false);
                 if($counter){
-                    $sidebar_ui .= '<div class="low-title grey">'.view_cover(12274,$m['e__cover']).'&nbsp;'.$counter.'&nbsp;'.$m['e__title'].'</div>';
+                    $sidebar_ui .= '<div class="low-title grey">'.$m['m__cover'].'&nbsp;'.$counter.'&nbsp;'.$m['m__title'].'</div>';
                     foreach(view_coins_e(6255, $member_e['e__id'], 1, true, 10) as $item){
                         $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
                     }
@@ -92,7 +92,7 @@ class E extends CI_Controller
                 if($domain_list){
 
                     if(count($this->config->item('x___'.$domain_list))){
-                        $sidebar_ui .= '<div class="low-title grey">'.view_cover(12274,$m['e__cover']).'&nbsp;'.$m['e__title'].' Ideas</div>';
+                        $sidebar_ui .= '<div class="low-title grey">'.$m['m__cover'].'&nbsp;'.$m['m__title'].' Ideas</div>';
                         foreach($this->config->item('x___'.$domain_list) as $i__id => $m){
 
                             //Count discoveries:
@@ -107,7 +107,7 @@ class E extends CI_Controller
                     }
 
                     if(count($this->config->item('e___'.$domain_list))){
-                        $sidebar_ui .= '<div class="low-title grey">'.view_cover(12274,$m['e__cover']).'&nbsp;'.$m['e__title'].' Sources</div>';
+                        $sidebar_ui .= '<div class="low-title grey">'.$m['m__cover'].'&nbsp;'.$m['m__title'].' Sources</div>';
                         foreach($this->config->item('e___'.$domain_list) as $e__id => $m){
 
                             //Count sources:
