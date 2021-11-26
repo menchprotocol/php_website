@@ -42,59 +42,85 @@ class E extends CI_Controller
         //Start building the sidebar
         $sidebar_ui = '';
 
+        foreach($this->config->item('e___28658') as $x__type => $m) {
 
-        //STARTED
-        $completion_rate = null;
-        foreach(view_coins_e(12969, $member_e['e__id'], 1) as $item){
-            $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
-            $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>['.$completion_rate['completion_percentage'].'%] '.$item['i__title'].'</a>';
-        }
-
-
-        //RECENT DISCOVERIES
-        foreach(view_coins_e(6255, $member_e['e__id'], 1, true, 10) as $item){
-            if($completion_rate){
-                $sidebar_ui .= '<div class="divider-line">&nbsp;</div>';
-                $completion_rate = null;
+            //Have Needed Superpowers?
+            $require = 0;
+            $missing = 0;
+            $meeting = 0;
+            foreach(array_intersect($this->config->item('n___10957'), $m['m__profile']) as $superpower_required){
+                $require++;
+                if(superpower_active($superpower_required, true)){
+                    $meeting++;
+                } else {
+                    $missing++;
+                }
             }
-            $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
-        }
-
-
-        //ADMIN MENU
-        $domain_list = intval(substr(get_domain_setting(28646), 1));
-        if(superpower_unlocked(28651) && $domain_list){
-
-            if(strlen($sidebar_ui)){
-                $sidebar_ui .= '<div class="divider-line">&nbsp;</div>';
+            if($require && !$meeting){
+                //RELAX: Meet any requirement and it would be shown
+                continue;
             }
 
-            foreach($this->config->item('x___'.$domain_list) as $i__id => $m){
 
-                //Count discoveries:
-                $x_coins = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
-                    'x__left' => $i__id,
-                ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
-                $sidebar_ui .= '<a href="/~'.$i__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.( $x_coins[0]['totals']>0 ? number_format($x_coins[0]['totals'], 0).' ' : '' ).$m['m__title'].'</a>';
+            if($x__type==12969){
 
-            }
+                //STARTED
+                $counter = view_coins_e(12969, $member_e['e__id'], 0, false);
+                if($counter){
+                    $sidebar_ui .= '<div class="low-title grey">'.view_cover(12274,$m['e__cover']).'&nbsp;'.$counter.'&nbsp;'.$m['e__title'].'</div>';
+                    foreach(view_coins_e(12969, $member_e['e__id'], 1) as $item){
+                        $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
+                        $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>['.$completion_rate['completion_percentage'].'%] '.$item['i__title'].'</a>';
+                    }
+                }
 
-            if(count($this->config->item('x___'.$domain_list)) && count($this->config->item('e___'.$domain_list))){
-                $sidebar_ui .= '<div class="divider-line">&nbsp;</div>';
-            }
+            } elseif($x__type==6255){
 
-            foreach($this->config->item('e___'.$domain_list) as $e__id => $m){
+                //RECENT DISCOVERIES
+                $counter = view_coins_e($x__type, $member_e['e__id'], 0, false);
+                if($counter){
+                    $sidebar_ui .= '<div class="low-title grey">'.view_cover(12274,$m['e__cover']).'&nbsp;'.$counter.'&nbsp;'.$m['e__title'].'</div>';
+                    foreach(view_coins_e(6255, $member_e['e__id'], 1, true, 10) as $item){
+                        $sidebar_ui .= '<a href="/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
+                    }
+                }
 
-                //Count sources:
-                $list_e_count = $this->X_model->fetch(array(
-                    'x__up' => $e__id,
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-                $sidebar_ui .= '<a href="/@'.$e__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.( $list_e_count[0]['totals']>0 ? number_format($list_e_count[0]['totals'], 0).' ' : '' ).$m['m__title'].'</a>';
+            } elseif($x__type==28646){
 
+                //ADMIN MENU
+                $domain_list = intval(substr(get_domain_setting(28646), 1));
+                if($domain_list){
+
+                    if(count($this->config->item('x___'.$domain_list))){
+                        $sidebar_ui .= '<div class="low-title grey">'.view_cover(12274,$m['e__cover']).'&nbsp;'.$m['e__title'].' Ideas</div>';
+                        foreach($this->config->item('x___'.$domain_list) as $i__id => $m){
+
+                            //Count discoveries:
+                            $x_coins = $this->X_model->fetch(array(
+                                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                                'x__left' => $i__id,
+                            ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
+                            $sidebar_ui .= '<a href="/~'.$i__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.( $x_coins[0]['totals']>0 ? number_format($x_coins[0]['totals'], 0).' ' : '' ).$m['m__title'].'</a>';
+
+                        }
+                    }
+
+                    if(count($this->config->item('e___'.$domain_list))){
+                        $sidebar_ui .= '<div class="low-title grey">'.view_cover(12274,$m['e__cover']).'&nbsp;'.$m['e__title'].' Sources</div>';
+                        foreach($this->config->item('e___'.$domain_list) as $e__id => $m){
+
+                            //Count sources:
+                            $list_e_count = $this->X_model->fetch(array(
+                                'x__up' => $e__id,
+                                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+                            $sidebar_ui .= '<a href="/@'.$e__id.'" class="css__title" title="'.$m['m__title'].'"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.( $list_e_count[0]['totals']>0 ? number_format($list_e_count[0]['totals'], 0).' ' : '' ).$m['m__title'].'</a>';
+
+                        }
+                    }
+                }
             }
         }
 

@@ -859,6 +859,11 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     text-align: left;
     font-weight: 1.3em !important;
 }
+.low-title{
+    padding: 8px;
+    text-align: left;
+    font-weight: 1em !important;
+}
 .list-border .list-group-item p {
     padding: 8px 0 0 0 !important;
     margin-bottom: 0;
