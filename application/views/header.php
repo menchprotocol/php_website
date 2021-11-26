@@ -181,7 +181,7 @@ if(!$basic_header_footer){
         $show_side_menu = $domain_list;
     }
 
-    echo '<div class="sidebar hidden"><i class="far fa-yin-yang fa-spin"></i></div>';
+    echo '<div class="sidebar hidden"><div style="padding:8px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div></div>';
 
     //Do not show for /sign view
     ?>
@@ -194,11 +194,12 @@ if(!$basic_header_footer){
                     echo '<td class="block-x">';
                     if($member_e) {
 
-                        echo '<a href="javascript:void(0);" onclick="toggle_sidebar()" style="margin-left: 0;" class="icon-block">'.view_cover(12274, $member_e['e__cover']).'</a>';
+                        //Load Left Menu
+                        echo '<a href="javascript:void(0);" onclick="toggle_left_menu()" style="margin-left: 0;" class="icon-block">'.$e___11035[28658]['m__cover'].'</a>';
 
                     } else {
 
-                        //Login URL:
+                        //Login:
                         echo '<a href="/-4269'.$login_url_path.'" style="margin-left: 0;" class="icon-block">'.$e___11035[4269]['m__cover'].'</a>';
 
                     }

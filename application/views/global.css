@@ -856,7 +856,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 }
 .mid-title{
     padding: 10px;
-    text-align: center;
+    text-align: left;
     font-weight: 1.3em !important;
 }
 .list-border .list-group-item p {
@@ -3342,10 +3342,10 @@ font-weight: bold !important;
 
 .sidebar {
     height: 100%;
-    width: 250px;
+    width: 280px;
     position: fixed;
     z-index: 1;
-    padding-top: 50px;
+    padding-top: 53px;
     left: 0;
     top:0;
     overflow-x: hidden;
@@ -3357,7 +3357,7 @@ font-weight: bold !important;
     padding:5px 5px 5px 0;
     text-decoration: none;
     display: block;
-    width: 250px;
+    width: 280px;
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis;

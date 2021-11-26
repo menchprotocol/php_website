@@ -32,7 +32,7 @@ class E extends CI_Controller
 
 
 
-    function toggle_sidebar(){
+    function toggle_left_menu(){
 
         $member_e = superpower_unlocked();
         if(!$member_e){
