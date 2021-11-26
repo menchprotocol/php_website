@@ -1759,13 +1759,13 @@ i, .btn .show-max {
     margin: 0;
 }
 .social2-footer{
-    text-align: center;
+    text-align: left;
     list-style: none;
 }
 .social2-footer li{
     display: inline-block;
-    font-size: 2.1em;
-    margin: 0 8px;
+    font-size: 1.8em;
+    margin: 0 13px 0 0;
 }
 .social-footer li{
     display: inline-block;
