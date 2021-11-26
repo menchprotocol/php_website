@@ -108,7 +108,7 @@ if(!$member_e){
         if($social_id){
             echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14904]['m__cover'].'</span>'.$e___14709[14904]['m__title'].'</div>';
             echo '<div class="padded hideIfEmpty">'.$e___14709[14904]['m__message'].'</div>';
-            echo '<ul class="social-footer">';
+            echo '<ul class="social2-footer">';
             foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
                 echo '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';
             }
