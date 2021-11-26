@@ -92,15 +92,28 @@ if(!$member_e){
 
 
         //Rate & Feedback:
-        echo '<div class="padded share_feedback"><a href="javascript:void();" onclick="$(\'.share_feedback\').toggleClass(\'hidden\');"><u>Share, Rate & Review</u></a></div>';
+        echo '<div class="padded share_feedback hidden"><a href="javascript:void();" onclick="$(\'.share_feedback\').toggleClass(\'hidden\');"><u>Share, Rate & Review</u></a></div>';
 
-        echo '<div class="share_feedback hidden">';
+        echo '<div class="share_feedback">';
 
 
         //Share
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[13024]['m__cover'].'</span>' . $e___14709[13024]['m__title'] . '</div>';
-        echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[13024]['m__message']).'</div>';
+        echo '<div class="padded">'.$is[0]['i__title'].':</div>';
         echo '<div class="padded"><input type="url" class="form-control border share_url" value=""></div>';
+
+
+        //SOCIAL FOOTER
+        $social_id = intval(get_domain_setting(14904));
+        if($social_id){
+            echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14904]['m__cover'].'</span>'.$e___14709[14904]['m__title'].'</div>';
+            echo '<div class="padded hideIfEmpty">'.$e___14709[14904]['m__message'].'</div>';
+            echo '<ul class="social-footer">';
+            foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
+                echo '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';
+            }
+            echo '</ul>';
+        }
 
 
 
@@ -177,6 +190,8 @@ if(!$member_e){
         </script>
         <?php
         echo '</div>';
+
+
 
 
         //SAVE & NEXT
