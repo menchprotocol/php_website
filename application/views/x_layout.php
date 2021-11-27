@@ -447,11 +447,10 @@ if($top_i__id) {
 
             $e___26661 = $this->config->item('e___26661');
             echo '<div class="msg alert alert-warning" role="alert">';
-                echo '<h2 style="color: #FF0000;">⚠️ How to Pay:</h2>';
+                echo '<h2 style="color: #FF0000;">⚠️ Warning:</h2>';
                 echo '<ol style="text-align: left;">';
-                    echo '<li>Click next to Pay '.$total_dues[0]['x__message'].' via Paypal</li>';
-                    echo '<li>You can checkout as a guest, No Paypal account needed</li>';
-                    echo '<li>Once you completed your payment, you are <span style="color: #FF0000;">Not Done!</span> ⚠️ You should then click "<b>Return to Merchant</b>" to continue back here to finish your registation.</li>';
+                    echo '<li>Once you completed your payment, you are <span style="color: #FF0000;">Not Done!</span> ⚠️ You must then click "<b>Return to Merchant</b>" to continue back here.</li>';
+                    echo '<li>Note: You can checkout as a guest, No Paypal account needed</li>';
                 echo '</ol>';
             echo '</div>';
 
