@@ -118,14 +118,17 @@ if(!$member_e){
 
 
         //Rate
-        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14712]['m__cover'].'</span>'.$e___14709[14712]['m__title'].'</div>';
-        echo '<div class="padded hideIfEmpty">'.$e___14709[14712]['m__message'].'</div>';
-        foreach($this->config->item('e___14712') as $x__type => $m){
-            echo '<div class="form-check">
+        if(0){
+            echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14712]['m__cover'].'</span>'.$e___14709[14712]['m__title'].'</div>';
+            echo '<div class="padded hideIfEmpty">'.$e___14709[14712]['m__message'].'</div>';
+            foreach($this->config->item('e___14712') as $x__type => $m){
+                echo '<div class="form-check">
                     <input class="form-check-input" type="radio" '.( count($was_sibmitted) && $was_sibmitted[0]['x__up']==$x__type ? ' checked="checked" ' : '' ) .' name="feedback_rating_14712" id="formRadio'.$x__type.'" value="'.$x__type.'">
                     <label class="form-check-label" for="formRadio'.$x__type.'"><span class="icon-block">' . $m['m__cover'] . '</span>' . $m['m__title'] . '</label>
                 </div>';
+            }
         }
+
 
 
         //Write Feedback
