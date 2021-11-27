@@ -2,6 +2,7 @@
 
 $member_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
+$second_segment = $this->uri->segment(2);
 $i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13479 = $this->config->item('e___13479');
@@ -195,7 +196,7 @@ if(!$basic_header_footer){
                     if($member_e) {
 
                         //Load Left Menu
-                        echo '<a href="javascript:void(0);" onclick="toggle_left_menu()" style="margin-left: 0;" class="icon-block">'.$e___11035[( strlen(intval($first_segment))==strlen($first_segment) ? 28658 : 28646 )]['m__cover'].'</a>';
+                        echo '<a href="javascript:void(0);" onclick="toggle_left_menu()" style="margin-left: 0;" class="icon-block">'.$e___11035[( strlen($second_segment) && is_numeric($first_segment) && is_numeric($second_segment) ? 28658 : 28646 )]['m__cover'].'</a>';
 
                     } else {
 
