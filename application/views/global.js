@@ -96,8 +96,11 @@ if(js_pl_id > 1){ //Any user other than Shervin
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "59riunqvfm");
-    clarity("set", member__id, js_pl_id);
-    clarity("set", member__title, js_pl_name);
+
+    $(document).ready(function () {
+        clarity("set", member__id, js_pl_id+"");
+        clarity("set", member__title, js_pl_name+"");
+    });
 
     /*
     <!-- Hotjar Tracking Code for My site -->
