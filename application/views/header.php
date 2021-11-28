@@ -142,7 +142,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo 'background-position: center !important; ';
             echo 'background-repeat: no-repeat !important; ';
             echo 'background-attachment: fixed !important; ';
-            echo 'background-size: auto 100% !important; ';
+            echo 'background-size: cover !important; ';
             echo '}';
 
             echo ' body { z-index: -1;
@@ -150,6 +150,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     left: 0 !important;
     width: 100% !important;
     height: 125% !important; /* To compensate for mobile browser address bar space */ } ';
+
             echo ' .halfbg, .msg span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
 
             //Force Dark Mode:
