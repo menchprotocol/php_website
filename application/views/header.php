@@ -37,7 +37,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     }
     ?>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <title><?= ( isset($title) ? $title : get_domain('m__title') ) ?></title>
     <?php
     echo '<script type="text/javascript">';
