@@ -140,7 +140,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
             echo 'background: url("'.$domain_background.'") no-repeat center center !important; ';
             echo 'background-attachment: fixed !important; ';
-            echo 'background-size: cover !important; '; //auto 100%
+            echo 'background-size: contain !important; '; //auto 100%
             echo '}';
 
             echo '.container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
@@ -151,10 +151,9 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
     height: 125% !important; /* To compensate for mobile browser address bar space */ } ';
 
             echo ' .halfbg, .mid-title, .msg span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
