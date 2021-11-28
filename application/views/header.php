@@ -138,8 +138,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         } elseif(substr($domain_background, 0, 2)=='//' && !strlen($first_segment)){
 
             echo 'body { ';
-            echo 'background: url("'.$domain_background.'") no-repeat center center !important; ';
-            echo 'background-attachment: fixed !important; ';
+            echo 'background: url("'.$domain_background.'") no-repeat center center fixed !important; ';
             echo 'background-size: cover !important; '; //auto 100%
             echo '
     width: 100% !important;
@@ -151,6 +150,21 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     max-height: 100% !important;
     ';
             echo '}';
+
+            echo 'body:after{
+      content:"";
+      position:fixed; /* stretch a fixed position to the whole screen */
+      top:0;
+      height:100vh; /* fix for mobile browser address bar appearing disappearing */
+      left:0;
+      right:0;
+      z-index:-1; /* needed to keep in the background */
+      background: url("'.$domain_background.'") no-repeat center center fixed !important;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+}';
 
             echo '.container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
             echo 'background: transparent !important; ';
