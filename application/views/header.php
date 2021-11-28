@@ -174,6 +174,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo ' .halfbg, .msg span, .msg { line-height: 125% !important; } ';
             echo ' .msg span u, .msg span a { line-height: 100% !important; padding:0 !important; } ';
 
+            echo '.list-border, .msg{ max-width: 600px; margin: 0 auto; }';
+
             //Force Dark Mode:
             $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
 
