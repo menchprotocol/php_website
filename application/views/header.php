@@ -137,7 +137,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
         } elseif(substr($domain_background, 0, 2)=='//' && !strlen($first_segment)){
 
-            echo 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
+            echo 'body { ';
             echo 'background: url("'.$domain_background.'") no-repeat center center !important; ';
             echo 'background-attachment: fixed !important; ';
             echo 'background-size: cover !important; '; //auto 100%
