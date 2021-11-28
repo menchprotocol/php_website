@@ -126,7 +126,7 @@ $logo = '/img/'.$current_coin_id.'.png';
             echo 'background:'.$domain_background.' !important; ';
             echo '}';
 
-        } elseif(substr($domain_background, 0, 2)=='//'){
+        } elseif(substr($domain_background, 0, 2)=='//' && !strlen($first_segment)){
 
             echo $apply_css.' { ';
             echo 'background-image: url("'.$domain_background.'"); ';
