@@ -138,11 +138,11 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         } elseif(substr($domain_background, 0, 2)=='//' && !strlen($first_segment)){
 
             echo $apply_css.' { ';
-            echo 'background-image: url("'.$domain_background.'"); ';
-            echo 'background-position: center; ';
-            echo 'background-repeat: no-repeat; ';
-            echo 'background-attachment: fixed; ';
-            echo 'background-size: auto 100%; ';
+            echo 'background-image: url("'.$domain_background.'") !important; ';
+            echo 'background-position: center !important; ';
+            echo 'background-repeat: no-repeat !important; ';
+            echo 'background-attachment: fixed !important; ';
+            echo 'background-size: auto 100% !important; ';
             echo '}';
 
             echo ' .halfbg, .msg span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
