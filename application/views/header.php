@@ -13,6 +13,15 @@ $base_source = get_domain_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
 $login_url_path = ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' );
 $logo = '/img/'.$current_coin_id.'.png';
+
+
+//Generate Body Class String:
+$body_class = 'platform-'.$current_coin_id; //Always append current coin
+foreach($this->config->item('e___13890') as $e__id => $m){
+    $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
+}
+
+
 ?><!doctype html>
 <html lang="en" >
 <head>
@@ -136,6 +145,9 @@ $logo = '/img/'.$current_coin_id.'.png';
             echo 'background-size: auto 100%; ';
             echo '}';
 
+            //Force Dark Mode:
+            $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
+
         }
         echo ' </style>';
     }
@@ -147,11 +159,7 @@ $logo = '/img/'.$current_coin_id.'.png';
 
 
 
-//Generate Body Class String:
-$body_class = 'platform-'.$current_coin_id; //Always append current coin
-foreach($this->config->item('e___13890') as $e__id => $m){
-    $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
-}
+
 echo '<body class="'.$body_class.'">';
 
 
