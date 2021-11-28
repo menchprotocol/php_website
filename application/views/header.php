@@ -131,24 +131,32 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         echo '<style> ';
         if(substr($domain_background, 0, 1)=='#'){
 
-            echo $apply_css.' { ';
+            echo 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
             echo 'background:'.$domain_background.' !important; ';
             echo '}';
 
         } elseif(substr($domain_background, 0, 2)=='//' && !strlen($first_segment)){
 
-            echo $apply_css.' { ';
+            echo 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
             echo 'background-image: url("'.$domain_background.'") !important; ';
             echo 'background-position: center !important; ';
             echo 'background-repeat: no-repeat !important; ';
             echo 'background-attachment: fixed !important; ';
-            echo 'background-size: cover !important; ';
+            echo 'background-size: cover !important; '; //auto 100%
+            echo '}';
+
+            echo '.container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
+            echo 'background: transparent !important; ';
             echo '}';
 
             echo ' body { z-index: -1;
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     height: 125% !important; /* To compensate for mobile browser address bar space */ } ';
 
             echo ' .halfbg, .msg span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
