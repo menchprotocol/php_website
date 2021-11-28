@@ -170,6 +170,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo '}';
 
             echo ' .halfbg, .mid-title, .msg span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
+            echo ' .halfbg, .msg span, .msg { line-height: 125% !important; } ';
 
             //Force Dark Mode:
             $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
