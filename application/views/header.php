@@ -145,25 +145,25 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     -webkit-background-size: cover !important;
     -moz-background-size: cover !important;
     -o-background-size: cover !important;
+    top:0 !important;
+      left:0 !important;
     height: 100% !important;
-    min-height: 100% !important;
-    max-height: 100% !important;
     ';
             echo '}';
 
             echo 'body:after{
-      content:"";
-      position:fixed; /* stretch a fixed position to the whole screen */
-      top:0;
-      height:100vh; /* fix for mobile browser address bar appearing disappearing */
-      left:0;
-      right:0;
-      z-index:-1; /* needed to keep in the background */
+      content:"" !important;
+      position:fixed !important; /* stretch a fixed position to the whole screen */
+      top:0 !important;
+      left:0 !important;
+      height:100vh !important; /* fix for mobile browser address bar appearing disappearing */
+      right:0 !important;
+      z-index:-1 !important; /* needed to keep in the background */
       background: url("'.$domain_background.'") no-repeat center center fixed !important;
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;
+      -webkit-background-size: cover !important;
+      -moz-background-size: cover !important;
+      -o-background-size: cover !important;
+      background-size: cover !important;
 }';
 
             echo '.container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
