@@ -142,8 +142,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo 'background-attachment: fixed !important; ';
             echo 'background-size: cover !important; '; //auto 100%
             echo '
-    top: 0 !important;
-    left: 0 !important;
     width: 100% !important;
     -webkit-background-size: cover !important;
     -moz-background-size: cover !important;
