@@ -833,6 +833,9 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     border-radius: 13px;
     overflow: hidden;
     margin: 0 5px;
+}
+
+.list-border, .msg{
     max-width: 600px;
     margin: 0 auto;
 }
@@ -1184,7 +1187,7 @@ a.headline {
 }
 .platform-navigation td {
     padding:0;
-    vertical-align: top;
+    vertical-align: middle;
 }
 .modal{
     z-index: 99999 !important;
