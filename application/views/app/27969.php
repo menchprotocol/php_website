@@ -23,14 +23,13 @@ if(!isset($_GET['i__id']) && get_domain_setting(14002) > 0){
     $_GET['i__id'] = get_domain_setting(14002);
 }
 
-
 if(isset($_GET['i__id'])){
     $is = $this->I_model->fetch(array(
         'i__id' => $_GET['i__id'],
     ));
 
     //IDEA TITLE
-    echo '<h1 style="padding-top: 21px;">' . $is[0]['i__title'] . '</h1>';
+    echo '<h1 style="padding-top: 21px;"><span class="halfbg">' . $is[0]['i__title'] . '</span></h1>';
 
     //MESSAGES
     echo '<div style="padding-bottom: 34px;">';
@@ -39,7 +38,16 @@ if(isset($_GET['i__id'])){
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $is[0]['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
-        echo $this->X_model->message_view( $x['x__message'], true);
+
+        $msg = $this->X_model->message_view( $x['x__message'], true);
+
+        if(substr_count($msg, '//www.youtube.com/embed/')==1){
+            //YouTube video link
+            echo '<div class="video-frame" style="padding: 200px 0; text-align: center;"><a href="javascript:void(0)" onclick="video_play()"><i class="far fa-play-circle" style="color: #FFF;"></i></a></div>';
+            echo '<div class="video-frame hidden">'.$msg.'</div>';
+        } else {
+            echo $msg;
+        }
     }
     echo '</div>';
 }
