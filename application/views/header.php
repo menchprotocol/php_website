@@ -143,10 +143,9 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo 'background-repeat: no-repeat !important; ';
             echo 'background-attachment: fixed !important; ';
             echo 'background-size: auto 100% !important; ';
-            echo 'min-height: 100% !important; ';
-
             echo '}';
 
+            echo ' body { min-height: 100% !important; } ';
             echo ' .halfbg, .msg span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
 
             //Force Dark Mode:
