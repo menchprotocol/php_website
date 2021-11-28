@@ -37,7 +37,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     }
     ?>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= ( isset($title) ? $title : get_domain('m__title') ) ?></title>
     <?php
     echo '<script type="text/javascript">';
@@ -138,10 +138,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         } elseif(substr($domain_background, 0, 2)=='//' && !strlen($first_segment)){
 
             echo 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
-            echo 'background-image: url("'.$domain_background.'") !important; ';
-            echo 'background-position: center !important; ';
-            echo 'background-repeat: no-repeat !important; ';
-            echo 'background-attachment: fixed !important; ';
+            echo 'background: url("'.$domain_background.'") no-repeat center center !important; ';
+            //echo 'background-attachment: fixed !important; ';
             echo 'background-size: cover !important; '; //auto 100%
             echo '}';
 
@@ -159,7 +157,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     background-size: cover;
     height: 125% !important; /* To compensate for mobile browser address bar space */ } ';
 
-            echo ' .halfbg, .msg span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
+            echo ' .halfbg, .mid-title, .msg span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
 
             //Force Dark Mode:
             $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
