@@ -75,7 +75,7 @@ function unsplash_search_box(responsetext) {
 }
 
 function video_play(){
-    $('.yt-video').attr('src', $('yt-video').attr('src')+'&autoplay=1' );
+    $('iframe.yt-video').attr('src', $('iframe.yt-video').attr('src')+'&autoplay=1' );
     $('.video-frame').toggleClass('hidden');
 }
 
