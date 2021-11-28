@@ -145,7 +145,11 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo 'background-size: auto 100% !important; ';
             echo '}';
 
-            echo ' body { min-height: 100% !important; } ';
+            echo ' body { z-index: -1;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 125% !important; /* To compensate for mobile browser address bar space */ } ';
             echo ' .halfbg, .msg span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
 
             //Force Dark Mode:
