@@ -3358,6 +3358,15 @@ font-weight: bold !important;
     color:#000000 !important;
 }
 
+.title-left{
+    float: left;
+    width: 50px;
+    padding-top: 3px;
+}
+.title-right{
+    float: left;
+    width: calc(100% - 51px);
+}
 
 .divider-line{
     height: 1px;
