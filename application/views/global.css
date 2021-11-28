@@ -2375,7 +2375,12 @@ video {
     font-size: 1.2rem;
 }
 
+.vid-padding { padding:160px 0; }
+
 @media (max-width:767px) {
+
+    .vid-padding { padding:87px 0; }
+
 
     .msg {
         margin: 0 5px 3px;
@@ -3351,12 +3356,6 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .round-btn i {
     color:#000000 !important;
 }
-
-
-.list-group a.list-group-item:hover {
-    background-color: #f5f5f5 !important;
-}
-
 
 
 .divider-line{
