@@ -137,10 +137,9 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
         } elseif(substr($domain_background, 0, 2)=='//' && !strlen($first_segment)){
 
-            echo 'body { ';
-            echo 'background: url("'.$domain_background.'") no-repeat center center fixed !important; ';
-            echo 'background-size: cover !important; '; //auto 100%
-            echo '
+            echo 'body { 
+    background: url("'.$domain_background.'") no-repeat center center fixed !important; 
+    background-size: cover !important;
     width: 100% !important;
     -webkit-background-size: cover !important;
     -moz-background-size: cover !important;
@@ -159,7 +158,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
       height:100vh !important; /* fix for mobile browser address bar appearing disappearing */
       right:0 !important;
       z-index:-1 !important; /* needed to keep in the background */
-      background: url("'.$domain_background.'") no-repeat center center fixed !important;
+      background: url("'.$domain_background.'") no-repeat center center !important;
       -webkit-background-size: cover !important;
       -moz-background-size: cover !important;
       -o-background-size: cover !important;
