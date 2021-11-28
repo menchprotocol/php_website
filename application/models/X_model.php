@@ -1580,7 +1580,7 @@ class X_model extends CI_Model
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 7545, //Profile Add
                 'x__right' => $i['i__id'],
-            )) as $x_tag){
+            ), array('x__up')) as $x_tag){
 
                 //Check if special profile add?
 
@@ -1702,6 +1702,9 @@ class X_model extends CI_Model
                             'x__left' => $i['i__id'],
                             'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
                         ));
+
+                        //Notify the user of this new profile addition:
+                        $this->X_model->send_dm($add_fields['x__source'], 'Added to Your '.get_domain('m__title').' Profile: '.$x_tag['e__title'], 'We just wanted to inform you that the tag [] has been added to your '.get_domain('m__title').' profile'.( strlen($add_fields['x__message'])>0 ? ' with the value ['.$add_fields['x__message'].']' : '' ).'.');
 
                     }
 
