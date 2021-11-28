@@ -116,7 +116,28 @@ $logo = '/img/'.$current_coin_id.'.png';
     <?php
     $domain_background = get_domain_setting(28621);
     if(strlen($domain_background)){
-        echo ' <style> body, .container, .chat-title span, div.dropdown-item, .mid-text-line span { background:'.$domain_background.' !important; } </style> ';
+
+        $apply_css = 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span';
+
+        echo '<style> ';
+        if(substr($domain_background, 0, 1)=='#'){
+
+            echo $apply_css.' { ';
+            echo 'background:'.$domain_background.' !important; ';
+            echo '}';
+
+        } elseif(substr($domain_background, 0, 2)=='//'){
+
+            echo $apply_css.' { ';
+            echo 'background-image: url("'.$domain_background.'"); ';
+            echo 'background-position: center; ';
+            echo 'background-repeat: no-repeat; ';
+            echo 'background-attachment: fixed; ';
+            echo 'background-size: auto 100%; ';
+            echo '}';
+
+        }
+        echo ' </style>';
     }
     ?>
 
