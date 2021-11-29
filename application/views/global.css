@@ -845,7 +845,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 .list-border .msg {
     text-align: left !important;
     font-size: 1em !important;
-    margin: 0 1px 1px 51px !important;
+    margin: 0 1px 1px 55px !important;
 }
 .key-ref{
     font-weight: bold;
@@ -866,10 +866,10 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-size: 0.89em !important;
 }
 .low-title:first-of-type{
-    padding-top: 3px;
+    padding-top: 8px;
 }
 .list-border .list-group-item p {
-    padding: 8px 0 0 0 !important;
+    padding: 0 !important;
     margin-bottom: 0;
 }
 .list-border .list-group-item small {
@@ -1660,7 +1660,8 @@ i, .btn .show-max {
 }
 
 .icon-block-lg i {
-    font-size: 1em !important;
+    font-size: .8em !important;
+    margin-top: -4px !important;
 }
 
 .btn-lrg i, .controller-nav i {
