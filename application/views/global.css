@@ -849,7 +849,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 }
 .key-ref{
     font-weight: bold;
-    font-size: 1.3em !important;
+    font-size: 1em !important;
     padding: 13px 0 5px;
     text-transform: uppercase;
     display: inline-block;
@@ -3364,8 +3364,12 @@ font-weight: bold !important;
     padding-top: 3px;
 }
 .title-right{
-    float: left;
-    width: calc(100% - 51px);
+    float: right;
+    width: calc(100% - 55px);
+    padding-top: 8px;
+}
+h4.css__title{
+    width:100%;
 }
 
 .divider-line{
