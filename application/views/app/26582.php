@@ -38,20 +38,20 @@ echo '<table class="table table-sm maxout filter_table"><tr>';
 
 //ANY IDEA
 echo '<td><div style="padding-right:5px;">';
-echo '<span class="mini-header">Send if Discovered Idea(s):</span>';
+echo '<span class="mini-header">Discovered Idea(s):</span>';
 echo '<input type="text" name="i__id" placeholder="id1,id2" value="' . $_GET['i__id'] . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">Send if Belongs to Source(s):</span><input type="text" name="e__id" placeholder="id1,id2" value="' . $_GET['e__id'] . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Belongs to Source(s):</span><input type="text" name="e__id" placeholder="id1,id2" value="' . $_GET['e__id'] . '" class="form-control border"></td>';
 
 echo '</tr><tr>';
 
 echo '<td><div style="padding-right:5px;">';
-echo '<span class="mini-header">Send if Includes Profile Source:</span>';
+echo '<span class="mini-header">Includes Profile Source:</span>';
 echo '<input type="text" name="include_e" placeholder="id1,id2" value="' . $_GET['include_e'] . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">Send if Excludes Profile Source:</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Excludes Profile Source:</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -73,7 +73,7 @@ echo '<div id="charNum"></div>';
 echo '<div style="padding:10px 0;">Note: If your message is (a) Shorter than '.view_memory(6404,27891).' Characters AND (b) Excludes new lines AND (c) Excludes Emojis THEN it would be directly sent via SMS Text message AND Email. Otherwise, it would be sent as Email, and an SMS notification to check their email will be sent.</div>';
 echo '</div>';
 
-echo '<div id="send_message_btn"><a class="btn btn-6255" href="javascript:void(0);"  onclick="send_message();">Send Message to '.$message_list['unique_users_count'].' <i class="fas fa-arrow-right"></i></a></div>';
+echo '<div id="send_message_btn"><a class="btn" href="javascript:void(0);"  onclick="send_message();">Send Message to '.$message_list['unique_users_count'].' <i class="fas fa-arrow-right"></i></a></div>';
 
 echo '<div id="message_result"></div>';
 

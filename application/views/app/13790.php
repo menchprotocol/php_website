@@ -13,20 +13,20 @@ echo '<table class="table table-sm maxout filter_table"><tr>';
 
 //ANY IDEA
 echo '<td><div style="padding-right:5px;">';
-echo '<span class="mini-header">Send if Discovered Idea(s):</span>';
+echo '<span class="mini-header">Discovered Idea(s):</span>';
 echo '<input type="text" name="i__id" placeholder="id1,id2" value="' . $_GET['i__id'] . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">Send if Belongs to Source(s):</span><input type="text" name="e__id" placeholder="id1,id2" value="' . $_GET['e__id'] . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Belongs to Source(s):</span><input type="text" name="e__id" placeholder="id1,id2" value="' . $_GET['e__id'] . '" class="form-control border"></td>';
 
 echo '</tr><tr>';
 
 echo '<td><div style="padding-right:5px;">';
-echo '<span class="mini-header">Send if Includes Profile Source(s):</span>';
+echo '<span class="mini-header">Includes Profile Source(s):</span>';
 echo '<input type="text" name="include_e" placeholder="id1,id2" value="' . $_GET['include_e'] . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">Send if Excludes Profile Source(s):</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Excludes Profile Source(s):</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
 
 echo '</tr><tr>';
 
@@ -39,7 +39,7 @@ echo '<td><span class="mini-header">List X-Axis Source(s):</span><input type="te
 
 echo '</tr></table>';
 
-echo '<input type="submit" class="btn btn-6255" value="Update Sheet" />';
+echo '<input type="submit" class="btn" value="Update Sheet" />';
 
 echo '</form>';
 
