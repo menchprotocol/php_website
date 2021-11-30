@@ -91,8 +91,8 @@ if(js_pl_id > 1){ //Any user other than Shervin
     })(window, document, "clarity", "script", "59riunqvfm");
 
     $(document).ready(function () {
-        clarity("set", member__id, js_pl_id+"");
-        clarity("set", member__title, js_pl_name+"");
+        clarity("set", "member__id", js_pl_id+"");
+        clarity("set", "member__title", js_pl_name+"");
     });
 
     /*
