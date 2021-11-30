@@ -73,7 +73,7 @@ echo '<div style="padding: 0 10px 13px;">';
 echo '<div style="padding: 10px 0;"><input type="text" class="form-control white-border" id="message_subject" placeholder="Subject" onkeyup="countChar()" value="'.( isset($_GET['message_subject']) ? $_GET['message_subject'] : '' ).'" /></div>';
 echo '<textarea class="form-control white-border" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
 echo '<div id="charNum"></div>';
-echo '<div style="padding:10px 0;">Note: If your message is (a) Shorter than '.view_memory(6404,27891).' Characters AND (b) Excludes new lines AND (c) Excludes Emojis THEN it would be directly sent via SMS Text message AND Email. Otherwise, it would be sent as Email, and an SMS notification to check their email will be sent.</div>';
+echo '<div style="padding:10px 0;">Note: You can send this message as an SMS if all 3 conditions are met: (a) Message is shorter than '.view_memory(6404,27891).' Characters AND (b) Message excludes new lines AND (c) Message excludes Emojis. If any of these conditions is not met, Message will be sent as email only, and an SMS notification to check their email.</div>';
 echo '</div>';
 
 echo '<div id="send_message_btn" style="padding: 10px;"><a class="btn btn-default" href="javascript:void(0);"  onclick="send_message();">Send Message to '.$message_list['unique_users_count'].' <i class="fas fa-arrow-right"></i></a></div>';
