@@ -2904,6 +2904,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .edit-locked span,
 .custom_ui_13884_13886 .chat-title span,
 .custom_ui_13884_13886 div.dropdown-item,
+.custom_ui_13884_13886 .standard-bg,
 .custom_ui_13884_13886 .mid-text-line span{
     background-color:#222222;
     color: #FFFFFF;
@@ -3050,6 +3051,7 @@ font-weight: bold !important;
 }
 
 .custom_ui_13884_13885,
+.custom_ui_13884_13885 .standard-bg,
 .custom_ui_13884_13885 .container,
 .custom_ui_13884_13885 .chat-title span,
 .custom_ui_13884_13885 div.dropdown-item,

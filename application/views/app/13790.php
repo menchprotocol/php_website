@@ -8,7 +8,7 @@ foreach(array('i__id','e__id','exclude_e','include_e','xaxis_i','xaxis_e') as $i
 
 $e___6287 = $this->config->item('e___6287'); //APP
 
-echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a> | <a href="/-26582?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a></div>';
+echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-26582?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a></div>';
 
 echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
 echo '<table class="table table-sm maxout filter_table"><tr>';
@@ -39,9 +39,12 @@ echo '</div></td>';
 
 echo '<td><span class="mini-header">List X-Axis Source(s):</span><input type="text" name="xaxis_e" placeholder="id1,id2" value="' . $_GET['xaxis_e'] . '" class="form-control border"></td>';
 
-echo '</tr></table>';
+echo '</tr><tr>';
 
-echo '<input type="submit" class="btn btn-default" value="Update Sheet" />';
+echo '<td class="standard-bg"><input type="submit" class="btn btn-default" value="Update Sheet" /></td>';
+echo '<td class="standard-bg">'.view_input_dropdown(27264, ( isset($_GET['expand']) ? 27266 : 27265 )).'</td>';
+
+echo '</tr></table>';
 
 echo '</form>';
 
@@ -214,9 +217,6 @@ foreach($this->X_model->fetch(array(
 $table_sortable = array('#th_primary','#th_done');
 $e___6287 = $this->config->item('e___6287'); //APP
 
-//echo '<h1>'.$e___6287[13790]['m__title'].'</h1>';
-
-echo view_input_dropdown(27264, ( isset($_GET['expand']) ? 27266 : 27265 ));
 
 foreach($is as $loaded_i){
     echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'"><a class="icon-block-img" href="/~'.$loaded_i['i__id'].'" target="_blank" title="Open in New Window">'.view_cover(12273,$loaded_i['i__cover']).'</a> '.$loaded_i['i__title'].'</a> <a href="/-26582?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></h2>';
