@@ -6,9 +6,9 @@ foreach(array('i__id','e__id','exclude_e','include_e','xaxis_i','xaxis_e') as $i
     }
 }
 
-echo '<div><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a></div>';
+echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a></div>';
 
-echo '<form action="" method="GET" class="filter_box hidden">';
+echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
 echo '<table class="table table-sm maxout filter_table"><tr>';
 
 //ANY IDEA

@@ -31,9 +31,9 @@ $e___6287 = $this->config->item('e___6287'); //APP
 
 
 
-echo '<div><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'" title="'.$e___6287[13790]['m__title'].'">'.$e___6287[13790]['m__cover'].'</a></div>';
+echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'" title="'.$e___6287[13790]['m__title'].'">'.$e___6287[13790]['m__cover'].'</a></div>';
 
-echo '<form action="" method="GET" class="filter_box hidden">';
+echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
 echo '<table class="table table-sm maxout filter_table"><tr>';
 
 //ANY IDEA
@@ -57,10 +57,10 @@ echo '</tr></table>';
 
 echo '<input type="submit" class="btn btn-6255" value="Apply Filters" />';
 
-echo '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');">'.$message_list['unique_users_count'].' Unique Recipients = '.$message_list['email_count'].' Emails + '.$message_list['phone_count'].' SMS</a>';
-
 echo '</form>';
 
+
+echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');">'.$message_list['unique_users_count'].' Unique Recipients = '.$message_list['email_count'].' Emails + '.$message_list['phone_count'].' SMS</a></div>';
 
 echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 10px;">'.$message_list['full_list'].'</textarea>';
 echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 10px;">'.$message_list['email_list'].'</textarea>';
