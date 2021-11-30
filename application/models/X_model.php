@@ -463,7 +463,7 @@ class X_model extends CI_Model
         $email_message = 'Hi '.$es[0]['e__title'].' 👋'."\n\n";
         $email_message .= $plain_message."\n\n";
         $email_message .= view_shuffle_message(12691)."\n";
-        $email_message .= get_domain('m__title');
+        $email_message .= get_domain('m__title', $e__id);
 
         $stats = array(
             'email_count' => 0,

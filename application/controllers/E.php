@@ -1514,7 +1514,7 @@ class E extends CI_Controller
 
         ##Email Subject
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-        $subject = $e___11035[11068]['m__title'].' | '.get_domain('m__title');
+        $subject = $e___11035[11068]['m__title'].' | '.get_domain('m__title', $u_emails[0]['e__id']);
 
         ##Email Body
         $magic_x_expiry_hours = (view_memory(6404,11065)/3600);

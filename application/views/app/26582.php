@@ -27,28 +27,30 @@ if(strlen($_GET['e__id'])){
 }
 
 $message_list = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e']);
+$e___6287 = $this->config->item('e___6287'); //APP
 
 
 echo '<form action="" method="GET">';
 
-echo '<table class="table table-sm maxout"><tr>';
+echo '<div><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'" title="'.$e___6287[13790]['m__title'].'">'.$e___6287[13790]['m__cover'].'</a></div>';
+echo '<table class="table table-sm maxout filter_box hidden"><tr>';
 
 //ANY IDEA
 echo '<td><div style="padding-right:5px;">';
-echo '<span class="mini-header">Ideas:</span>';
-echo '<input type="text" name="i__id" placeholder="idea1id,idea2id" value="' . $_GET['i__id'] . '" class="form-control border">';
+echo '<span class="mini-header">Send if Discovered Idea(s):</span>';
+echo '<input type="text" name="i__id" placeholder="id1,id2" value="' . $_GET['i__id'] . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">Sources:</span><input type="text" name="e__id" value="' . $_GET['e__id'] . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Send if Belongs to Source(s):</span><input type="text" name="e__id" placeholder="id1,id2" value="' . $_GET['e__id'] . '" class="form-control border"></td>';
 
 echo '</tr><tr>';
 
 echo '<td><div style="padding-right:5px;">';
-echo '<span class="mini-header">Includes Profile:</span>';
-echo '<input type="text" name="include_e" placeholder="idea1id,idea2id" value="' . $_GET['include_e'] . '" class="form-control border">';
+echo '<span class="mini-header">Send if Includes Profile Source:</span>';
+echo '<input type="text" name="include_e" placeholder="id1,id2" value="' . $_GET['include_e'] . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">Excludes Profile:</span><input type="text" name="exclude_e" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Send if Excludes Profile Source:</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
