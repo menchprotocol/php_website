@@ -3,6 +3,9 @@
 //Called when the paypal payment is complete:
 if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=='Completed' && isset($_POST['item_number'])){
 
+    //Remove Server Identity:
+    unset($_SERVER['SERVER_NAME']);
+
     $item_numbers = explode('-',$_POST['item_number']);
     $top_i__id = intval($item_numbers[0]);
     $i__id = intval($item_numbers[1]);

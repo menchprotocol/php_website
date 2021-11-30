@@ -1239,7 +1239,7 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0){
 
     if(!$initiator_e__id){
         $member_e = superpower_unlocked();
-        if($member_e){
+        if($member_e && $member_e['e__id']>0){
             $initiator_e__id = $member_e['e__id'];
         }
     }
