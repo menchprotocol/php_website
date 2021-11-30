@@ -2289,9 +2289,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $
                     $parts = str_replace('&','',$m['m__message']);
                     $parts = one_two_explode('?','',$parts);
                     foreach(explode('=$_GET',$parts) as $part){
-                        if(isset($_GET[$part]) && strlen($_GET[$part])>0){
-                            $m['m__message'] = str_replace($part.'=$_GET',$part.'='.$_GET[$part],$m['m__message']);
-                        }
+                        $m['m__message'] = str_replace($part.'=$_GET',$part.'='.(isset($_GET[$part]) && strlen($_GET[$part])>0 ? $_GET[$part] : ''),$m['m__message']);
                     }
                 }
 
