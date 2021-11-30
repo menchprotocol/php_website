@@ -13,7 +13,7 @@ if(strlen($_GET['i__id'])){
         'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
     ));
     if(count($is)){
-        echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'"><u>'.$is[0]['i__title'].'</u></a></h2>';
+        echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$is[0]['i__cover']).'</span>'.$is[0]['i__title'].'</a></h2>';
     }
 }
 if(strlen($_GET['e__id'])){
@@ -22,7 +22,7 @@ if(strlen($_GET['e__id'])){
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($es)){
-        echo '<h2><a href="/@'.$es[0]['e__id'].'"><u>'.$es[0]['e__title'].'</u></a></h2>';
+        echo '<h2><a href="/@'.$es[0]['e__id'].'"><span class="icon-block-img">'.view_cover(12274,$es[0]['i__cover']).'</span>'.$es[0]['e__title'].'</a></h2>';
     }
 }
 
@@ -69,7 +69,7 @@ echo '<textarea class="mono-space subscriber_data hidden" style="background-colo
 echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 10px;">'.$message_list['email_list'].'</textarea>';
 
 
-echo '<div style="padding: 13px 10px;">';
+echo '<div style="padding: 0 10px 13px;">';
 echo '<div style="padding: 10px 0;"><input type="text" class="form-control white-border" id="message_subject" placeholder="Subject" onkeyup="countChar()" value="'.( isset($_GET['message_subject']) ? $_GET['message_subject'] : '' ).'" /></div>';
 echo '<textarea class="form-control white-border" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
 echo '<div id="charNum"></div>';
