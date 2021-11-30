@@ -24,7 +24,6 @@ if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=
             'x__source' => $x__source,
             'x__up' => $currency_type,
             'x__metadata' => $_POST,
-            'x__message' => $pay_amount,
         ));
 
     } else {

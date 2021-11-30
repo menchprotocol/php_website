@@ -1256,7 +1256,7 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0){
         foreach($CI->X_model->fetch(array(
             'x__source' => $initiator_e__id,
             'x__domain !=' => $no_domain,
-        ), array(), 1, 0, array('x__id' => 'DESC')) as $x_domain){
+        ), array(), 1, 0, array('x__id' => 'ASC')) as $x_domain){
             $source_id = $x_domain['x__domain'];
         }
     }
