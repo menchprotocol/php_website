@@ -1393,9 +1393,9 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
 }
 
-function get_domain($var_field){
+function get_domain($var_field, $initiator_e__id = 0){
     $CI =& get_instance();
-    $domain_source = get_domain_setting(0);
+    $domain_source = get_domain_setting(0, $initiator_e__id);
     $e___14870 = $CI->config->item('e___14870'); //DOMAINS
     return $e___14870[$domain_source][$var_field];
 }

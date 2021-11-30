@@ -51,7 +51,7 @@ class X_model extends CI_Model
 
         //Set some defaults:
         if (!isset($add_fields['x__domain'])) {
-            $add_fields['x__domain'] = get_domain_setting(0);
+            $add_fields['x__domain'] = get_domain_setting(0, $add_fields['x__source']);
         }
 
 
@@ -154,7 +154,7 @@ class X_model extends CI_Model
             if(count($sub_e__ids) > 0){
 
                 //yes, start drafting email to be sent to them...
-                $u_name = get_domain('m__title');
+                $u_name = get_domain('m__title', $add_fields['x__source']);
                 if($add_fields['x__source'] > 0){
                     //Fetch member details:
                     $add_e = $this->E_model->fetch(array(
@@ -1703,8 +1703,10 @@ class X_model extends CI_Model
                             'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
                         ));
 
-                        //Notify the user of this new profile addition:
-                        $this->X_model->send_dm($add_fields['x__source'], get_domain('m__title').' Update', '['.$x_tag['e__title'].'] was added to your profile'.( strlen($add_fields['x__message'])>0 ? ' with value ['.$add_fields['x__message'].']' : '' ));
+                        //Notify the user of this new profile addition if not a silent addition:
+                        if(!in_array($x_tag['e__id'], $this->config->item('n___28702'))){
+                            $this->X_model->send_dm($add_fields['x__source'], get_domain('m__title', $add_fields['x__source']).' Update', '['.$x_tag['e__title'].'] was added to your profile'.( strlen($add_fields['x__message'])>0 ? ' with value ['.$add_fields['x__message'].']' : '' ));
+                        }
 
                     }
 
