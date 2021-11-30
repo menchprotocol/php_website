@@ -115,7 +115,7 @@ class App extends CI_Controller
 
 
             if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){
-                $ui .= '<h1>' . $e___6287[$app_e__id]['m__title'] . '</h1>';
+                $ui .= '<h1>' . $e___6287[$app_e__id]['m__cover'] . ' ' . $e___6287[$app_e__id]['m__title'] . '</h1>';
                 //if(strlen($e___6287[$app_e__id]['m__message']) > 0){ $ui .= '<p class="msg">'.$e___6287[$app_e__id]['m__message'].'</p>'; }
             }
             $ui .= $raw_app;
