@@ -31,7 +31,7 @@ $e___6287 = $this->config->item('e___6287'); //APP
 
 
 
-echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'" title="'.$e___6287[13790]['m__title'].'">'.$e___6287[13790]['m__cover'].'</a></div>';
+echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[13790]['m__cover'].' '.$e___6287[13790]['m__title'].'</a></div>';
 
 echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
 echo '<table class="table table-sm maxout filter_table"><tr>';
@@ -70,7 +70,7 @@ echo '<div style="padding: 55px 10px 13px;">';
 echo '<div style="padding: 10px 0;"><input type="text" class="form-control white-border" id="message_subject" placeholder="Subject" onkeyup="countChar()" value="'.( isset($_GET['message_subject']) ? $_GET['message_subject'] : '' ).'" /></div>';
 echo '<textarea class="form-control white-border" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
 echo '<div id="charNum"></div>';
-echo '<div style="padding:10px 0;">TIP: SMS Messages must be less than 160 Characters and NOT include new lines or Emojis.</div>';
+echo '<div style="padding:10px 0;">Note: If your message is (a) Shorter than '.view_memory(6404,27891).' Characters AND (b) Excludes new lines AND (c) Excludes Emojis THEN it would be directly sent via SMS Text message AND Email. Otherwise, it would be sent as Email, and an SMS notification to check their email will be sent.</div>';
 echo '</div>';
 
 echo '<div id="send_message_btn"><a class="btn btn-6255" href="javascript:void(0);"  onclick="send_message();">Send Message to '.$message_list['unique_users_count'].' <i class="fas fa-arrow-right"></i></a></div>';
@@ -88,7 +88,7 @@ echo '<div></div>';
     });
 
     function countChar() {
-        $('#charNum').html(( $('#message_subject').val().length + $('#message_text').val().length + 2 /* For the [: ] that connects the subject to body in SMS */ )+'/<?= view_memory(6404,27891) ?> Characters (Subject + Text)');
+        $('#charNum').html(( $('#message_subject').val().length + $('#message_text').val().length + 2 /* For the [: ] that connects the subject to body in SMS */ )+'/<?= view_memory(6404,27891) ?> Characters (Subject + Body)');
     }
 
     var is_processing = false;
