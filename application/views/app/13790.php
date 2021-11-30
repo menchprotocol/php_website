@@ -8,6 +8,19 @@ foreach(array('i__id','e__id','exclude_e','include_e','xaxis_i','xaxis_e') as $i
 
 $e___6287 = $this->config->item('e___6287'); //APP
 
+$underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
+
+//Fetch Main Idea:
+$is = $this->I_model->fetch(array(
+    'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
+), 0, 0, array('i__id' => 'ASC'));
+
+foreach($is as $loaded_i){
+    echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'"><a class="icon-block-img" href="/~'.$loaded_i['i__id'].'" target="_blank" title="Open in New Window">'.view_cover(12273,$loaded_i['i__cover']).'</a> '.$loaded_i['i__title'].'</a></h2>';
+}
+
+
+
 echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-26582?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a></div>';
 
 echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
@@ -50,15 +63,6 @@ echo '</form>';
 
 
 
-$underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
-
-//Fetch Main Idea:
-$is = $this->I_model->fetch(array(
-    'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
-), 0, 0, array('i__id' => 'ASC'));
-if(!count($is)){
-    die('Invalid Idea ID');
-}
 
 $column_sources = array();
 if(isset($_GET['xaxis_e']) && strlen($_GET['xaxis_e'])){
@@ -217,10 +221,6 @@ foreach($this->X_model->fetch(array(
 $table_sortable = array('#th_primary','#th_done');
 $e___6287 = $this->config->item('e___6287'); //APP
 
-
-foreach($is as $loaded_i){
-    echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'"><a class="icon-block-img" href="/~'.$loaded_i['i__id'].'" target="_blank" title="Open in New Window">'.view_cover(12273,$loaded_i['i__cover']).'</a> '.$loaded_i['i__title'].'</a> <a href="/-26582?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a></h2>';
-}
 
 echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
