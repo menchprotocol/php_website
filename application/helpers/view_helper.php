@@ -343,7 +343,7 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 
 
         //SAVE
-        $ui .= '<td class="table-btn"><a class="btn" href="javascript:i_note_update_text(' . $x['x__id'] . ',' . $x['x__type'] . ');" title="'.$e___11035[14039]['m__title'].'">'.$e___11035[14039]['m__cover'].'</a></td>';
+        $ui .= '<td class="table-btn"><a class="btn btn-default" href="javascript:i_note_update_text(' . $x['x__id'] . ',' . $x['x__type'] . ');" title="'.$e___11035[14039]['m__title'].'">'.$e___11035[14039]['m__cover'].'</a></td>';
 
         //CANCEL
         $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" title="'.$e___11035[13502]['m__title'].'" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__cover'].'</a></td>';

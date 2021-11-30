@@ -29,5 +29,5 @@ foreach($this->config->item('e___14599') as $app_e__id => $cache_apps){
 echo '</div>';
 
 if($found_cache){
-    echo '<a href="/-14599?reset=1" class="btn">RESET ACTIVE CACHE</a>';
+    echo '<a href="/-14599?reset=1" class="btn btn-default">RESET ACTIVE CACHE</a>';
 }

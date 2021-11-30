@@ -73,7 +73,7 @@ echo '<div id="charNum"></div>';
 echo '<div style="padding:10px 0;">Note: If your message is (a) Shorter than '.view_memory(6404,27891).' Characters AND (b) Excludes new lines AND (c) Excludes Emojis THEN it would be directly sent via SMS Text message AND Email. Otherwise, it would be sent as Email, and an SMS notification to check their email will be sent.</div>';
 echo '</div>';
 
-echo '<div id="send_message_btn"><a class="btn" href="javascript:void(0);"  onclick="send_message();">Send Message to '.$message_list['unique_users_count'].' <i class="fas fa-arrow-right"></i></a></div>';
+echo '<div id="send_message_btn"><a class="btn btn-default" href="javascript:void(0);"  onclick="send_message();">Send Message to '.$message_list['unique_users_count'].' <i class="fas fa-arrow-right"></i></a></div>';
 
 echo '<div id="message_result"></div>';
 

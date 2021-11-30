@@ -39,7 +39,7 @@ echo '<td><span class="mini-header">List X-Axis Source(s):</span><input type="te
 
 echo '</tr></table>';
 
-echo '<input type="submit" class="btn" value="Update Sheet" />';
+echo '<input type="submit" class="btn btn-default" value="Update Sheet" />';
 
 echo '</form>';
 
