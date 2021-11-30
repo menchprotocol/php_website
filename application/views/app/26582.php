@@ -55,7 +55,7 @@ echo '<td><span class="mini-header">Excludes Profile Source:</span><input type="
 
 echo '</tr><tr>';
 
-echo '<td class="standard-bg"><input type="submit" class="btn btn-default" value="Apply Filters" /></td>';
+echo '<td class="standard-bg"><input type="submit" class="btn btn-default" value="Apply" /></td>';
 echo '<td class="standard-bg">&nbsp;</td>';
 
 echo '</tr></table>';
@@ -73,7 +73,7 @@ echo '<div style="padding: 0 10px 13px;">';
 echo '<div style="padding: 10px 0;"><input type="text" class="form-control white-border" id="message_subject" placeholder="Subject" onkeyup="countChar()" value="'.( isset($_GET['message_subject']) ? $_GET['message_subject'] : '' ).'" /></div>';
 echo '<textarea class="form-control white-border" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
 echo '<div id="charNum"></div>';
-echo '<div style="padding:10px 0;">Note: You can send this message as an SMS if all 3 conditions are met: (a) Message is shorter than '.view_memory(6404,27891).' Characters AND (b) Message excludes new lines AND (c) Message excludes Emojis. If any of these conditions is not met, Message will be sent as email only, and an SMS notification to check their email.</div>';
+echo '<div style="padding:10px 0;">Note: An SMS with your message will be sent IF all 3 conditions are met: (a) Message is shorter than '.view_memory(6404,27891).' Characters AND (b) Message excludes new lines AND (c) Message excludes Emojis. If any of these conditions is not met, Message will be sent as email + An SMS notification asking them to "check your email".</div>';
 echo '</div>';
 
 echo '<div id="send_message_btn" style="padding: 10px;"><a class="btn btn-default" href="javascript:void(0);"  onclick="send_message();">Send Message to '.$message_list['unique_users_count'].' <i class="fas fa-arrow-right"></i></a></div>';

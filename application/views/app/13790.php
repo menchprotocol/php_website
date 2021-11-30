@@ -54,7 +54,7 @@ echo '<td><span class="mini-header">List X-Axis Source(s):</span><input type="te
 
 echo '</tr><tr>';
 
-echo '<td class="standard-bg"><input type="submit" class="btn btn-default" value="Update Sheet" /></td>';
+echo '<td class="standard-bg"><input type="submit" class="btn btn-default" value="Apply" /></td>';
 echo '<td class="standard-bg">'.view_input_dropdown(27264, ( isset($_GET['expand']) ? 27266 : 27265 )).'</td>';
 
 echo '</tr></table>';
