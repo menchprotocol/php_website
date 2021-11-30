@@ -16,7 +16,7 @@ $is = $this->I_model->fetch(array(
 ), 0, 0, array('i__id' => 'ASC'));
 
 foreach($is as $loaded_i){
-    echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$loaded_i['i__cover']).'</span>'.$loaded_i['i__title'].'</a></h2>';
+    echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$loaded_i['i__cover']).'</span> '.$loaded_i['i__title'].'</a></h2>';
 }
 
 
