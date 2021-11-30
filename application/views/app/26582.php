@@ -30,10 +30,11 @@ $message_list = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'],
 $e___6287 = $this->config->item('e___6287'); //APP
 
 
-echo '<form action="" method="GET">';
 
 echo '<div><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'" title="'.$e___6287[13790]['m__title'].'">'.$e___6287[13790]['m__cover'].'</a></div>';
-echo '<table class="table table-sm maxout filter_box hidden"><tr>';
+
+echo '<form action="" method="GET" class="filter_box hidden">';
+echo '<table class="table table-sm maxout filter_table"><tr>';
 
 //ANY IDEA
 echo '<td><div style="padding-right:5px;">';
@@ -67,7 +68,7 @@ echo '<textarea class="mono-space subscriber_data hidden" style="background-colo
 
 echo '<div style="padding: 55px 10px 13px;">';
 echo '<div style="padding: 10px 0;"><input type="text" class="form-control white-border" id="message_subject" placeholder="Subject" onkeyup="countChar()" value="'.( isset($_GET['message_subject']) ? $_GET['message_subject'] : '' ).'" /></div>';
-echo '<textarea class="form-control white-border" id="message_text" placeholder="Body" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
+echo '<textarea class="form-control white-border" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
 echo '<div id="charNum"></div>';
 echo '<div style="padding:10px 0;">TIP: SMS Messages must be less than 160 Characters and NOT include new lines or Emojis.</div>';
 echo '</div>';

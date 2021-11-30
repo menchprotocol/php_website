@@ -6,11 +6,10 @@ foreach(array('i__id','e__id','exclude_e','include_e','xaxis_i','xaxis_e') as $i
     }
 }
 
-
-echo '<form action="" method="GET">';
-
 echo '<div><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a></div>';
-echo '<table class="table table-sm maxout filter_box hidden"><tr>';
+
+echo '<form action="" method="GET" class="filter_box hidden">';
+echo '<table class="table table-sm maxout filter_table"><tr>';
 
 //ANY IDEA
 echo '<td><div style="padding-right:5px;">';
