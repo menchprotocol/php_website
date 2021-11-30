@@ -3408,3 +3408,16 @@ h4.css__title{
 .sidebar a:hover {
     background-color: #999999;
 }
+
+.filter_table {
+    background-color: #000;
+    color: #FFF;
+}
+.filter_table input {
+    background-color: #FFF;
+    border-radius: 5px;
+    color: #000;
+}
+.filter_table td {
+    padding: 8px;
+}
