@@ -1704,7 +1704,7 @@ class X_model extends CI_Model
                         ));
 
                         //Notify the user of this new profile addition:
-                        $this->X_model->send_dm($add_fields['x__source'], get_domain('m__title').' Update', $x_tag['e__title'].' was added to your profile'.( strlen($add_fields['x__message'])>0 ? ' with value ['.$add_fields['x__message'].']' : '' ));
+                        $this->X_model->send_dm($add_fields['x__source'], get_domain('m__title').' Update', '['.$x_tag['e__title'].'] was added to your profile'.( strlen($add_fields['x__message'])>0 ? ' with value ['.$add_fields['x__message'].']' : '' ));
 
                     }
 
