@@ -6,7 +6,9 @@ foreach(array('i__id','e__id','exclude_e','include_e','xaxis_i','xaxis_e') as $i
     }
 }
 
-echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a></div>';
+$e___6287 = $this->config->item('e___6287'); //APP
+
+echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')">Toggle Filters</a> | <a href="/-26582?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a></div>';
 
 echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
 echo '<table class="table table-sm maxout filter_table"><tr>';
@@ -48,7 +50,6 @@ echo '</form>';
 $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
 
 //Fetch Main Idea:
-$e___6287 = $this->config->item('e___6287'); //APP
 $is = $this->I_model->fetch(array(
     'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
 ), 0, 0, array('i__id' => 'ASC'));
