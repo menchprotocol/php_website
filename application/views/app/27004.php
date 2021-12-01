@@ -32,12 +32,16 @@ if (isset($_GET['e__id'])) {
     //Fetch all assigned ideas:
     $assigned_i_ids = array();
     foreach($payment_es as $e){
+
+        //Print as Option:
+        echo '<div><a href="/-27004?i__id='.$e['e__id'].'">'.$e['e__title'].'</a></div>';
+
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
             'x__up' => $e['e__id'],
-        ), array(), 0) as $i_assigned){
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $i_assigned){
             array_push($assigned_i_ids, $i_assigned['x__right']);
         }
     }
