@@ -171,7 +171,8 @@ foreach($this->X_model->fetch(array(
 
         $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( isset($_GET['expand']) ? view_cover(12273,$e['e__cover'], '✔️').' '.view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '<span '.$underdot_class.' title="'.$fetch_data[0]['x__message'].'">'.view_cover(12273,$e['e__cover'], '✔️').'</span>' ) : '<span class="icon-block-xxs">'.view_cover(12273,$e['e__cover'], '✔️').'</span>' ) : '' );
 
-        $body_content .= '<td class="editable x__source_'.$e['e__id'].'_'.$x['e__id'].'" i__id="0" e__id="'.$e['e__id'].'" x__source="'.$x['e__id'].'" x__id="'.$x['x__id'].'">'.$message_clean.'</td>';
+
+        $body_content .= '<td class="'.( in_array($e['e__id'], $this->config->item('n___28714')) ? ' editable ' : '' ).' x__source_'.$e['e__id'].'_'.$x['e__id'].'" i__id="0" e__id="'.$e['e__id'].'" x__source="'.$x['e__id'].'" x__id="'.$x['x__id'].'">'.$message_clean.'</td>';
 
         if(strlen($message_clean)>0){
             if(!isset($count_totals['e'][$e['e__id']])){
@@ -192,7 +193,6 @@ foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 1);
 
-        //class="editable" i__id="'.$i['i__id'].'" e__id="0" x__source="'.$x['e__id'].'" x__id="'.$x['x__id'].'"
         $body_content .= '<td >'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) || substr_count($i['i__title'], 'Full Name')  ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.view_cover(12273,$i['i__cover'], '✔️').'</span>'  ) : '<span title="'.$i['i__title'].'" data-placement="top" class="icon-block-xxs">'.view_cover(12273,$i['i__cover'], '✔️') ).'</span>'  : '').'</td>';
 
         if(count($discoveries)){
@@ -325,34 +325,28 @@ $(document).ready(function () {
 
     $('.editable').click(function (e) {
 
-        //Is this adjustable by the sheet?
-        if(js_n___28714.includes($(this).attr('e__id')) ){
+        $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('...');
 
-            $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('...');
+        //Check email and validate:
+        $.post("/e/e_toggle_e", {
 
-            //Check email and validate:
-            $.post("/e/e_toggle_e", {
+            i__id: $(this).attr('i__id'),
+            e__id: $(this).attr('e__id'),
+            x__source: $(this).attr('x__source'),
+            x__id: $(this).attr('x__id'),
 
-                i__id: $(this).attr('i__id'),
-                e__id: $(this).attr('e__id'),
-                x__source: $(this).attr('x__source'),
-                x__id: $(this).attr('x__id'),
+        }, function (data) {
 
-            }, function (data) {
+            if (data.status) {
 
-                if (data.status) {
-
-                    //Update source id IF existed previously:
-                    $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html(data.message);
+                //Update source id IF existed previously:
+                $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html(data.message);
 
 
-                } else {
-                    alert('ERROR:' + data.message);
-                }
-            });
-        }
-
-
+            } else {
+                alert('ERROR:' + data.message);
+            }
+        });
 
     });
 

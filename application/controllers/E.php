@@ -1546,6 +1546,13 @@ class E extends CI_Controller
                 'message' => 'Missing Core Variable',
             ));
 
+        } elseif( !in_array($_POST['e__id'], $this->config->item('n___28714'))){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'This source is not editable via @28714',
+            ));
+
         } else {
 
             $already_added = $this->X_model->fetch(array(
