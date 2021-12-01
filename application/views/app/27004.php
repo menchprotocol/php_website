@@ -173,7 +173,7 @@ foreach($i_query as $i){
         'x__right' => $i['i__id'],
         'x__up' => 26189,
     ), array(), 1);
-    $available_units = (count($has_limits) && is_numeric($has_limits[0]['x__message']) ? intval($has_limits[0]['x__message']) : 'N/A');
+    $available_units = (count($has_limits) && is_numeric($has_limits[0]['x__message']) ? intval($has_limits[0]['x__message']) : '∞');
 
     if(fmod($total_units, 2)==1){
         $transaction_content .= '<tr class="tr_row hidden"></tr>';
@@ -203,20 +203,21 @@ echo '<table id="sortable_table" class="table table-sm table-striped image-mini"
 echo '<tr style="vertical-align: baseline;">';
 echo '<th id="th_primary">Paid Ideas</th>';
 echo '<th style="text-align: right;" id="th_paid">Sold</th>';
-echo '<th style="text-align: right;" id="th_paid">Available</th>';
+echo '<th style="text-align: right;" id="th_paid">Limit</th>';
 echo '<th style="text-align: right;" id="th_average">Price</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Revenue</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Commission</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal Fee</th>';
-echo '<th style="text-align: right;" id="th_payout">NET Payout</th>';
-echo '<th style="text-align: right;" id="th_currency">Currency</th>';
+echo '<th style="text-align: right;" id="th_payout">Payout</th>';
+echo '<th style="text-align: right;" id="th_currency">&nbsp;</th>';
 echo '<th style="text-align: right;">Action</th>';
 echo '</tr>';
 echo $body_content;
 
 echo '<tr>';
 echo '<th style="text-align: right;" id="th_primary">Totals</th>';
-echo '<th style="text-align: right;">'.$gross_units.'x</th>';
+echo '<th style="text-align: right;">'.$gross_units.'</th>';
+echo '<th style="text-align: right;">&nbsp;</th>';
 echo '<th style="text-align: right;">$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden">+$'.number_format($gross_revenue, 2).'</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
