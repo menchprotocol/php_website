@@ -8,6 +8,7 @@ $gross_paypal_fee = 0;
 $gross_commission = 0;
 $gross_payout = 0;
 $gross_currencies = array();
+$i_query = array();
 
 //Generate list of payments:
 $payment_es = $this->X_model->fetch(array(
@@ -20,12 +21,21 @@ $payment_es = $this->X_model->fetch(array(
 
 if (isset($_GET['e__id'])) {
 
-    $i_query = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
-        'x__up' => $_GET['e__id'],
-    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
+    //Show header:
+    foreach($payment_es as $e){
+        if($e['e__id']==$_GET['e__id']){
+
+            echo '<h2>'.$e['e__title'].'</h2>';
+
+            $i_query = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
+                'x__up' => $e['e__id'],
+            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
+            break;
+        }
+    }
 
 } else {
 
