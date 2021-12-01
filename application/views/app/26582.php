@@ -8,21 +8,19 @@ foreach(array('i__id','e__id','exclude_e','include_e') as $input){
 
 //Show Titles:
 if(strlen($_GET['i__id'])){
-    $is = $this->I_model->fetch(array(
+    foreach($this->I_model->fetch(array(
         'i__id IN (' . $_GET['i__id'] . ')' => null,
         'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-    ));
-    if(count($is)){
-        echo '<h2><a href="/i/i_go/'.$is[0]['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$is[0]['i__cover']).'</span> '.$is[0]['i__title'].'</a></h2>';
+    )) as $i){
+        echo '<h2><a href="/i/i_go/'.$i['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$i['i__cover']).'</span> '.$i['i__title'].'</a></h2>';
     }
 }
 if(strlen($_GET['e__id'])){
-    $es = $this->E_model->fetch(array(
+    foreach($this->E_model->fetch(array(
         'e__id IN (' . $_GET['e__id'] . ')' => null,
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    ));
-    if(count($es)){
-        echo '<h2><a href="/@'.$es[0]['e__id'].'"><span class="icon-block-img">'.view_cover(12274,$es[0]['e__cover']).'</span> '.$es[0]['e__title'].'</a></h2>';
+    )) as $e){
+        echo '<h2><a href="/@'.$e['e__id'].'"><span class="icon-block-img">'.view_cover(12274,$e['e__cover']).'</span> '.$e['e__title'].'</a></h2>';
     }
 }
 
