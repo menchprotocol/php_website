@@ -1571,7 +1571,7 @@ class E extends CI_Controller
 
                 return view_json(array(
                     'status' => 1,
-                    'message' => 'Removed',
+                    'message' => ' ',
                 ));
 
             } else {

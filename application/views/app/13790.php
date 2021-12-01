@@ -325,23 +325,22 @@ $(document).ready(function () {
 
     $('.editable').click(function (e) {
 
-        $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('...');
-
-        //Check email and validate:
-        $.post("/e/e_toggle_e", {
-
+        var modify_data = {
             i__id: $(this).attr('i__id'),
             e__id: $(this).attr('e__id'),
             x__source: $(this).attr('x__source'),
             x__id: $(this).attr('x__id'),
+        };
 
-        }, function (data) {
+        $('.x__source_' + modify_data['e__id'] + '_' + modify_data['x__source']).html('...');
+
+        //Check email and validate:
+        $.post("/e/e_toggle_e", modify_data, function (data) {
 
             if (data.status) {
 
                 //Update source id IF existed previously:
-                $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html(data.message);
-
+                $('.x__source_' + modify_data['e__id'] + '_' + modify_data['x__source']).html(data.message);
 
             } else {
                 alert('ERROR:' + data.message);
