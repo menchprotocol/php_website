@@ -56,13 +56,12 @@ foreach($this->X_model->fetch(array(
 
         //Fetch all parents for this child:
         $child_parent_ids = array(); //To be populated soon
-        $child_parents = $this->X_model->fetch(array(
+        foreach($this->X_model->fetch(array(
             'x__down' => $child['e__id'],
             'x__status IN (' . join(',', $n___7359) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
             'e__type IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
-        ), array('x__up'), 0);
-        foreach($child_parents as $cp_en){
+        ), array('x__up'), 0) as $cp_en){
             array_push($child_parent_ids, intval($cp_en['e__id']));
         }
 

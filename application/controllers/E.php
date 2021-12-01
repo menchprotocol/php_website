@@ -375,7 +375,7 @@ class E extends CI_Controller
         } elseif (!isset($_POST['e__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Source ID',
+                'message' => 'Invalid Source ID #2',
             ));
         }
 

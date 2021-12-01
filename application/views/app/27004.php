@@ -9,19 +9,44 @@ $gross_commission = 0;
 $gross_payout = 0;
 $gross_currencies = array();
 
+//Generate list of payments:
+$payment_es = $this->X_model->fetch(array(
+    'x__up' => 27004,
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
-$query_filters = array(
-    'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
-);
 
-if (isset($_GET['i__id']) && substr_count($_GET['i__id'], ',') > 0) {
+if (isset($_GET['e__id'])) {
 
-    //This is multiple:
-    $query_filters['( i__id IN (' . $_GET['i__id'] . '))'] = null;
+    $i_query = $this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
+        'x__up' => $_GET['e__id'],
+    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
 
-} elseif(isset($_GET['i__id']) && intval($_GET['i__id']) > 0) {
+} else {
 
-    $query_filters['i__id'] = intval($_GET['i__id']);
+    //Fetch all assigned ideas:
+    $assigned_i_ids = array();
+    foreach($payment_es as $e){
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
+            'x__up' => $e['e__id'],
+        ), array(), 0) as $i_assigned){
+            array_push($assigned_i_ids, $i_assigned['x__right']);
+        }
+    }
+
+    //Show all non-assigned payment ideas:
+    $i_query = $this->I_model->fetch(array(
+        'i__id NOT IN (' . join(',', $assigned_i_ids) . ')' => null,
+        'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
+    ), 0, 0, array('i__title' => 'ASC'));
 
 }
 
@@ -30,7 +55,7 @@ $x_ids = array();
 $x_updated = 0;
 $body_content = '';
 $ids = '';
-foreach($this->I_model->fetch($query_filters, 0, 0, array('i__title' => 'ASC')) as $i){
+foreach($i_query as $i){
 
     //Total earnings:
     $transaction_content = '';

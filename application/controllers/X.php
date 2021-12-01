@@ -135,7 +135,7 @@ class X extends CI_Controller
             if(!count($es)){
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Source ID.',
+                    'message' => 'Invalid Source ID #3',
                     'original_val' => '',
                 ));
             }
@@ -412,12 +412,12 @@ class X extends CI_Controller
 
     function paypal_refund(){
 
-        $member_e = superpower_unlocked();
+        $member_e = superpower_unlocked(10939);
         if (!$member_e) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
+                'message' => view_unauthorized_message(10939),
             ));
 
         } elseif (!isset($_POST['x__id'])) {
@@ -483,7 +483,7 @@ class X extends CI_Controller
         return view_json(array(
             'status' => 1,
             'y' => $y,
-            'message' => $_POST['refund_total'].' Refunded ['.( isset($y->state) ? $y->state : 'Error' ).']',
+            'message' => $_POST['refund_total'].' Refunded',
         ));
 
     }

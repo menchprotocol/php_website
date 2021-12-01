@@ -14,7 +14,7 @@ if(isset($_GET['search_for'])){
     if(!count($es)){
         return view_json(array(
             'status' => 0,
-            'message' => 'Invalid Source ID'
+            'message' => 'Invalid Source ID #1'
         ));
     } elseif(!strlen($es[0]['e__cover'])) {
         return view_json(array(
