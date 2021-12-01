@@ -3372,7 +3372,7 @@ font-weight: bold !important;
 .title-right{
     float: right;
     width: calc(100% - 55px);
-    padding-top: 8px;
+    padding-top: 16px;
 }
 h4.css__title{
     width:100%;
