@@ -332,7 +332,7 @@ $(document).ready(function () {
             x__id: $(this).attr('x__id'),
         };
 
-        $('.x__source_' + modify_data['e__id'] + '_' + modify_data['x__source']).html('...');
+        $('.x__source_' + modify_data['e__id'] + '_' + modify_data['x__source']).html('<i class="far fa-yin-yang fa-spin"></i>');
 
         //Check email and validate:
         $.post("/e/e_toggle_e", modify_data, function (data) {
