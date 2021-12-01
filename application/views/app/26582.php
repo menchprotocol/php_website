@@ -22,7 +22,7 @@ if(strlen($_GET['e__id'])){
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($es)){
-        echo '<h2><a href="/@'.$es[0]['e__id'].'"><span class="icon-block-img">'.view_cover(12274,$es[0]['i__cover']).'</span> '.$es[0]['e__title'].'</a></h2>';
+        echo '<h2><a href="/@'.$es[0]['e__id'].'"><span class="icon-block-img">'.view_cover(12274,$es[0]['e__cover']).'</span> '.$es[0]['e__title'].'</a></h2>';
     }
 }
 
