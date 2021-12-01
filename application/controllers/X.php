@@ -412,12 +412,12 @@ class X extends CI_Controller
 
     function paypal_refund(){
 
-        $member_e = superpower_unlocked(10939);
+        $member_e = superpower_unlocked(28727);
         if (!$member_e) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(10939),
+                'message' => view_unauthorized_message(28727),
             ));
 
         } elseif (!isset($_POST['x__id'])) {

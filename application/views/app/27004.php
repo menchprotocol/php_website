@@ -193,48 +193,48 @@ foreach($i_query as $i){
     $body_content .= '</tr>';
     $body_content .= $transaction_content;
 
-
 }
 
-echo '<div style="text-align: center;"><a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" class="texttransparent">Toggle Advance Columns</a></div>';
+
+if(count($i_query)){
+
+    echo '<div style="text-align: center;"><a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" class="texttransparent">Toggle Advance Columns</a></div>';
 
 
-echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
-echo '<tr style="vertical-align: baseline;">';
-echo '<th id="th_primary">Paid Ideas</th>';
-echo '<th style="text-align: right;" id="th_paid">Sold</th>';
-echo '<th style="text-align: right;" id="th_paid">Limit</th>';
-echo '<th style="text-align: right;" id="th_average">Price</th>';
-echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Revenue</th>';
-echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Commission</th>';
-echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal Fee</th>';
-echo '<th style="text-align: right;" id="th_payout">Payout</th>';
-echo '<th style="text-align: right;" id="th_currency">&nbsp;</th>';
-echo '<th style="text-align: right;">Action</th>';
-echo '</tr>';
-echo $body_content;
+    echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
+    echo '<tr style="vertical-align: baseline;">';
+    echo '<th id="th_primary">Paid Ideas</th>';
+    echo '<th style="text-align: right;" id="th_paid">Sold</th>';
+    echo '<th style="text-align: right;" id="th_paid">Limit</th>';
+    echo '<th style="text-align: right;" id="th_average">Price</th>';
+    echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Revenue</th>';
+    echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Commission</th>';
+    echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal Fee</th>';
+    echo '<th style="text-align: right;" id="th_payout">Payout</th>';
+    echo '<th style="text-align: right;" id="th_currency">&nbsp;</th>';
+    echo '<th style="text-align: right;">Action</th>';
+    echo '</tr>';
+    echo $body_content;
 
-echo '<tr>';
-echo '<th style="text-align: right;" id="th_primary">Totals</th>';
-echo '<th style="text-align: right;">'.$gross_units.'</th>';
-echo '<th style="text-align: right;">&nbsp;</th>';
-echo '<th style="text-align: right;">$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
-echo '<th style="text-align: right;" class="advance_columns hidden">+$'.number_format($gross_revenue, 2).'</th>';
-echo '<th style="text-align: right;" class="advance_columns hidden" title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
-echo '<th style="text-align: right;" class="advance_columns hidden" title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
-echo '<th style="text-align: right;" title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></th>';
-echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
-echo '<th style="text-align: right;">&nbsp;</th>';
-echo '</tr>';
-echo '</table>';
-echo ( $x_updated > 0 ? '<div>'.$x_updated.' Halfed!<hr /></div>' : '' );
-echo '<div class="texttransparent">Transactions: '.join(',',$x_ids).'</div>';
-echo '<div class="texttransparent">'.$ids.'</div>';
-
-
+    echo '<tr>';
+    echo '<th style="text-align: right;" id="th_primary">Totals</th>';
+    echo '<th style="text-align: right;">'.$gross_units.'</th>';
+    echo '<th style="text-align: right;">&nbsp;</th>';
+    echo '<th style="text-align: right;">$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
+    echo '<th style="text-align: right;" class="advance_columns hidden">+$'.number_format($gross_revenue, 2).'</th>';
+    echo '<th style="text-align: right;" class="advance_columns hidden" title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
+    echo '<th style="text-align: right;" class="advance_columns hidden" title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
+    echo '<th style="text-align: right;" title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></th>';
+    echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
+    echo '<th style="text-align: right;">&nbsp;</th>';
+    echo '</tr>';
+    echo '</table>';
+    echo ( $x_updated > 0 ? '<div>'.$x_updated.' Halfed!<hr /></div>' : '' );
+    echo '<div class="texttransparent">Transactions: '.join(',',$x_ids).'</div>';
+    echo '<div class="texttransparent">'.$ids.'</div>';
+}
 
 ?>
-
 
 
 <style>
