@@ -43,8 +43,7 @@ if (isset($_GET['e__id'])) {
     $assigned_i_ids = array();
     foreach($payment_es as $e){
 
-        //Print as Option:
-        echo '<div><a href="/-27004?i__id='.$e['e__id'].'">'.$e['e__title'].'</a></div>';
+        echo '<div><a href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].'</a></div>';
 
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
