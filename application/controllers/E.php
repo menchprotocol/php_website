@@ -1584,9 +1584,11 @@ class E extends CI_Controller
                     'x__type' => e_x__type(),
                 ));
 
+                $e___28714 = $this->config->item('e___28714');
+
                 return view_json(array(
                     'status' => 1,
-                    'message' => 'Added',
+                    'message' => $e___28714[$_POST['e__id']]['m__cover'],
                 ));
 
             }
