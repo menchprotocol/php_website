@@ -166,13 +166,23 @@ foreach($i_query as $i){
     $gross_commission += $total_commission;
     $gross_payout += $payout;
 
+
+    $has_limits = $this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type' => 4983, //References
+        'x__right' => $i['i__id'],
+        'x__up' => 26189,
+    ), array(), 1);
+    $available_units = (count($has_limits) && is_numeric($has_limits[0]['x__message']) ? intval($has_limits[0]['x__message']) : 'N/A');
+
     if(fmod($total_units, 2)==1){
         $transaction_content .= '<tr class="tr_row hidden"></tr>';
     }
 
     $body_content .= '<tr>';
     $body_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
-    $body_content .= '<td style="text-align: right;">'.$total_units.'x</td>';
+    $body_content .= '<td style="text-align: right;">'.$total_units.'</td>';
+    $body_content .= '<td style="text-align: right;">'.$available_units.'</td>';
     $body_content .= '<td style="text-align: right;">$'.number_format(( $total_units > 0 ? $total_revenue / $total_units : 0 ), 2).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($total_revenue, 2).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($total_commission, 2).'</td>';
@@ -192,8 +202,9 @@ echo '<div style="text-align: center;"><a href="javascript:void(0)" onclick="$(\
 echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
 echo '<tr style="vertical-align: baseline;">';
 echo '<th id="th_primary">Paid Ideas</th>';
-echo '<th style="text-align: right;" id="th_paid">Unit</th>';
-echo '<th style="text-align: right;" id="th_average">Average</th>';
+echo '<th style="text-align: right;" id="th_paid">Sold</th>';
+echo '<th style="text-align: right;" id="th_paid">Available</th>';
+echo '<th style="text-align: right;" id="th_average">Price</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Revenue</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Commission</th>';
 echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal Fee</th>';
