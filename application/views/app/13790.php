@@ -325,9 +325,10 @@ $(document).ready(function () {
 
     $('.editable').click(function (e) {
 
-        if($(this).attr('e__id')==28017){
-            //alert($(this).attr('i__id') + '/'+ $(this).attr('e__id') +'/'+ $(this).attr('x__source') +'/'+ $(this).attr('x__id'));
-            $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('<i class="far fa-eye"></i>');
+        //Is this adjustable by the sheet?
+        if(js_n___28714.includes($(this).attr('e__id')) ){
+
+            $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('...');
 
             //Check email and validate:
             $.post("/e/e_toggle_e", {
@@ -342,7 +343,7 @@ $(document).ready(function () {
                 if (data.status) {
 
                     //Update source id IF existed previously:
-                    //$('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html('<i class=""></i>');
+                    $('.x__source_' + $(this).attr('e__id') + '_' + $(this).attr('x__source')).html(data.message);
 
 
                 } else {

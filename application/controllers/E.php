@@ -1530,7 +1530,17 @@ class E extends CI_Controller
 
     function e_toggle_e(){
 
-        if(!isset($_POST['x__source']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){
+        $member_e = superpower_unlocked();
+
+        if(!$member_e){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'You must login to continue...',
+            ));
+
+        } elseif(!isset($_POST['x__source']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){
+
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Variable',
@@ -1538,24 +1548,42 @@ class E extends CI_Controller
 
         } else {
 
-            if(!count($this->X_model->fetch(array(
+            $already_added = $this->X_model->fetch(array(
                 'x__up' => $_POST['e__id'],
                 'x__down' => $_POST['x__source'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))){
+            ));
+
+            if(count($already_added)){
+
+                //Already exists, let's remove:
+                $this->X_model->update($already_added[0]['x__id'], array(
+                    'x__status' => 6173, //Transaction Deleted
+                ), $member_e['e__id'], 10673 /* Member Transaction Unpublished */);
+
+                return view_json(array(
+                    'status' => 1,
+                    'message' => 'Removed',
+                ));
+
+            } else {
+
+                //Does not exist, Add:
                 $this->X_model->create(array(
                     'x__up' => $_POST['e__id'],
                     'x__down' => $_POST['x__source'],
-                    'x__source' => 1,
+                    'x__source' => $member_e['e__id'],
                     'x__type' => e_x__type(),
                 ));
+
+                return view_json(array(
+                    'status' => 1,
+                    'message' => 'Added',
+                ));
+
             }
 
-            return view_json(array(
-                'status' => 1,
-                'message' => 'done',
-            ));
         }
 
     }
