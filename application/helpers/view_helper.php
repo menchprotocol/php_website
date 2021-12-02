@@ -1657,7 +1657,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
 
 
-
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12700 = superpower_active(12700, true);
     $superpower_12673 = superpower_active(12673, true);
@@ -1799,8 +1798,13 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
     //Coin Cover
     $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
+     += $recursive_stats['steps_total'];
+     += $recursive_stats['steps_completed'];
+     += $recursive_stats['seconds_total'];
+     += $recursive_stats['seconds_completed'];
+
     //ICON?
-    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12273,$i['i__cover']) : '').'</div>';
+    $ui .= '<div class="cover-btn" title="'.( $member_e['e__id']==1 ? $completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps & '.$completion_rate['seconds_completed'].'/'.$completion_rate['seconds_total'].' Seconds Completed' : '' ).'">'.($show_custom_image ? view_cover(12273,$i['i__cover']) : '').'</div>';
 
     $ui .= ( !$can_click ? '</div>' : '</a>' );
     $ui .= '</div>'; //cover-wrapper
