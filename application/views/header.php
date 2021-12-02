@@ -315,7 +315,14 @@ if(!$basic_header_footer){
                         $extra_class = null;
                         $text_class = null;
 
-                        if($x__type==7256) {
+                        if($x__type==26105 && $member_e) {
+
+                            //Search
+                            $m['m__title'] = $member_e['e__title'];
+                            $m['m__cover'] = view_cover(12274,$member_e['e__cover']);
+                            $href = 'href="/@'.$member_e['e__id'].'" ';
+
+                        } elseif($x__type==7256) {
 
                             //Search
                             $href = 'href="javascript:void(0);" onclick="toggle_search()" ';
