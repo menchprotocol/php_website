@@ -2116,7 +2116,7 @@ class X_model extends CI_Model
 
             //Hack for now, TODO investigate later:
             if($metadata_this['completion_percentage'] > 100){
-                $metadata_this['completion_percentage'] = 100;
+                //$metadata_this['completion_percentage'] = 100;
             }
 
         }
