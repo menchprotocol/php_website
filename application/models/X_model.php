@@ -2006,7 +2006,7 @@ class X_model extends CI_Model
         $common_totals = $this->I_model->fetch(array(
             'i__id IN ('.join(',',$flat_common_x).')' => null,
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ), 0, 0, array(), 'COUNT(i__id) as total_x, SUM(i__duration) as total_seconds');
+        ), 0, 0, array(), 'COUNT(i__id) as total_x');
 
 
         //Count completed so far:
@@ -2023,8 +2023,6 @@ class X_model extends CI_Model
         $metadata_this = array(
             'steps_total' => intval($common_totals[0]['total_x']),
             'steps_completed' => intval($common_completed[0]['completed_x']),
-            'seconds_total' => intval($common_totals[0]['total_seconds']),
-            'seconds_completed' => intval($common_completed[0]['completed_seconds']),
         );
 
 
@@ -2055,8 +2053,6 @@ class X_model extends CI_Model
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
                 $metadata_this['steps_completed'] += $recursive_stats['steps_completed'];
-                $metadata_this['seconds_total'] += $recursive_stats['seconds_total'];
-                $metadata_this['seconds_completed'] += $recursive_stats['seconds_completed'];
             }
         }
 
@@ -2080,8 +2076,6 @@ class X_model extends CI_Model
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
                 $metadata_this['steps_completed'] += $recursive_stats['steps_completed'];
-                $metadata_this['seconds_total'] += $recursive_stats['seconds_total'];
-                $metadata_this['seconds_completed'] += $recursive_stats['seconds_completed'];
 
             }
         }
@@ -2105,19 +2099,12 @@ class X_model extends CI_Model
 
             //Set default seconds per step:
             $metadata_this['completion_percentage'] = 0;
-            $step_default_seconds = view_memory(6404,12176);
-
 
             //Calculate completion rate based on estimated time cost:
-            if($metadata_this['steps_total'] > 0 || $metadata_this['seconds_total'] > 0){
-                $metadata_this['completion_percentage'] = intval(floor( ($metadata_this['seconds_completed']+($step_default_seconds*$metadata_this['steps_completed'])) / ($metadata_this['seconds_total']+($step_default_seconds*$metadata_this['steps_total'])) * 100 ));
+            if($metadata_this['steps_total'] > 0){
+                $metadata_this['completion_percentage'] = intval(floor( $metadata_this['steps_completed'] / $metadata_this['steps_total'] * 100 ));
             }
 
-
-            //Hack for now, TODO investigate later:
-            if($metadata_this['completion_percentage'] > 100){
-                //$metadata_this['completion_percentage'] = 100;
-            }
 
         }
 
