@@ -1796,7 +1796,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
 
     //Coin Cover
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).' title="'.( 1 ? $completion_rate['completion_percentage'].'% Completed: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' Steps' : '' ).'">';
+    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
 
     //ICON?
