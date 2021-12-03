@@ -50,6 +50,7 @@ if(isset($_GET['i__id'])){
         }
     }
     echo '</div>';
+
 }
 
 
@@ -67,8 +68,10 @@ if(isset($_GET['e__id'])){
 
         //Any Startable Referenced Ideas?
         foreach(view_coins_e(12273, $header['e__id'], 1) as $ref_i){
+
             //Fetch Messages:
             $messages = ( strlen($ref_i['x__message']) ? '<div class="msg"><span>' . nl2br($ref_i['x__message']) . '</span></div>' : '');
+            /*
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 4231, //IDEA NOTES Messages
@@ -76,6 +79,7 @@ if(isset($_GET['e__id'])){
             ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
                 $messages .= $this->X_model->message_view( $x['x__message'], true, array(), 0, true);
             }
+            */
 
             //Does it have any featured tags?
             $small_text = null;
