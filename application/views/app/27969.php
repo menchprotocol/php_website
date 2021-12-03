@@ -1,6 +1,6 @@
 <?php
 
-function build_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $small_text = null){
+function build_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null){
 
     return '<a href="/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link).'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
@@ -8,7 +8,6 @@ function build_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $
       <small style="padding: 17px 3px 0 0;"><i class="far fa-chevron-right"></i></small>
     </div>
     '.( strlen($desc) ? '<p>'.$desc.'</p>' : '' ) .'
-    '.( strlen($small_text) ? '<small>'.$small_text.'</small>' : '' ) .'
     
   </a>';
 
@@ -81,20 +80,9 @@ if(isset($_GET['e__id'])){
             }
             */
 
-            //Does it have any featured tags?
-            $small_text = null;
-            foreach($this->X_model->fetch(array(
-                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__up IN (' . join(',', $this->config->item('n___27980')) . ')' => null, //Link Tree Featured Tags
-                'x__right' => $ref_i['i__id'],
-            ), array('x__up'), 0, 0) as $key_references){
-                $small_text .= '<div class="key-ref css__title"><span class="icon-block-lg">'.view_cover(12274,$key_references['e__cover']).'</span>'.( strlen($key_references['x__message']) ? $key_references['x__message'] : $key_references['e__title'] ).'</div>';
-            }
 
             //Print list:
-            $list_body .= build_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], '/'.$ref_i['i__id'] ,$messages, $small_text);
+            $list_body .= build_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], '/'.$ref_i['i__id'] ,$messages);
         }
 
         //Any child sources?
@@ -105,23 +93,12 @@ if(isset($_GET['e__id'])){
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $list_e){
 
-            $small_text = null;
-            //Search for featured tags:
-            foreach($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-                'x__up IN (' . join(',', $this->config->item('n___27980')) . ')' => null, //Link Tree Featured Tags
-                'x__down' => $list_e['e__id'],
-            ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $key_references){
-                $small_text .= '<div class="key-ref css__title"><span class="icon-block-lg">'.view_cover(12274,$key_references['e__cover']).'</span>'.( strlen($key_references['x__message']) ? $key_references['x__message'] : $key_references['e__title'] ).'</div>';
-            }
 
             //Make sure this has a valid URL:
             if(substr($list_e['x__message'], 0, 1)=='/'){
 
                 //URL override in link message:
-                $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $list_e['x__message'], null, $small_text);
+                $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $list_e['x__message'], null);
 
             } else {
 
@@ -132,7 +109,7 @@ if(isset($_GET['e__id'])){
                     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                     'x__down' => $list_e['e__id'],
                 ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $url){
-                    $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $url['x__message'], ( strlen($list_e['x__message']) ? '<div class="msg"><span>' . nl2br($list_e['x__message']) . '</span></div>' : '' ), $small_text);
+                    $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $url['x__message'], ( strlen($list_e['x__message']) ? '<div class="msg"><span>' . nl2br($list_e['x__message']) . '</span></div>' : '' ));
                 }
 
             }
