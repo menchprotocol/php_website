@@ -1854,9 +1854,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
     }
 
     //$view_i_time = view_i_time($i_stats);
+    $ui .= '<div class="cover-text">';
+
     $view_i_time = null;
     if($message_tooltip || $view_i_time){
-        $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . $message_tooltip . ( $view_i_time ? $view_i_time : '' ) . '</div>';
+        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . $message_tooltip . ( $view_i_time ? $view_i_time : '' ) . '</div>';
     }
 
     if(count($minter)){
