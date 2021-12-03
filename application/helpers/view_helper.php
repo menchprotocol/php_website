@@ -1853,9 +1853,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
         }
     }
 
-
-    $view_i_time = view_i_time($i_stats);
-    $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . $message_tooltip . ( $view_i_time ? $view_i_time : '' ) . '</div>';
+    //$view_i_time = view_i_time($i_stats);
+    $view_i_time = null;
+    if($message_tooltip || $view_i_time){
+        $ui .= '<div class="cover-text"><div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . $message_tooltip . ( $view_i_time ? $view_i_time : '' ) . '</div>';
+    }
 
     if(count($minter)){
         //$ui .= '<div class="coin-hover grey mini-font">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>';
@@ -1915,6 +1917,18 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
     return $ui;
 
+}
+
+
+function view_social(){
+    $social_id = intval(get_domain_setting(14904));
+    if($social_id){
+        echo '<ul class="social-footer">';
+        foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
+            echo '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';
+        }
+        echo '</ul>';
+    }
 }
 
 function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad = false){
