@@ -83,6 +83,10 @@ function video_play(){
 //Full Story
 if(js_pl_id > 1){ //Any user other than Shervin
 
+
+
+    /*
+
     <!-- Microsoft Clarify -->
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -95,7 +99,6 @@ if(js_pl_id > 1){ //Any user other than Shervin
         clarity("set", "member__title", js_pl_name+"");
     });
 
-    /*
     <!-- Hotjar Tracking Code for My site -->
     (function(h,o,t,j,a,r){
         h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
@@ -105,7 +108,7 @@ if(js_pl_id > 1){ //Any user other than Shervin
         r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-
+    */
 
     window['_fs_debug'] = false;
     window['_fs_host'] = 'fullstory.com';
@@ -137,7 +140,7 @@ if(js_pl_id > 1){ //Any user other than Shervin
             profileURL: base_url+'/@'+js_pl_id
         });
     }
-    */
+
 
 }
 

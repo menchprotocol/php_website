@@ -296,9 +296,10 @@ if(count($i_query)){
                 x__id: x__id,
                 refund_total: transaction_total
             }, function (data) {
-                alert(data.message);
                 if(data.status){
                     $('#refund_'+x__id).html('✅ Refunded');
+                } else {
+                    alert(data.message);
                 }
             });
         }
