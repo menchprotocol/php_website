@@ -29,5 +29,21 @@ foreach($this->X_model->fetch(array(
 
 }
 
-echo $fixed.' of '.$scanned.' Transactions Fixed & '.$skipped.' Skipped.';
+echo $fixed.'/'.$scanned.' Transactions Fixed & '.$skipped.' Skipped.<hr />';
+
+
+//Now find deleted sources with active links:
+foreach($this->X_model->fetch(array(
+    'e__type' => 6178,
+), array(), 0) as $e){
+    $active_links = count($this->X_model->fetch(array(
+        '(x__source='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__down='.$e['e__id'].')' => null, //SOURCE LINKS
+    ), array(), 0));
+    if($active_links > 0){
+        echo '<a href="/@'.$e['e__id'].'">@'.$e['e__id'].' '.$e['e__title'].'</a> Has '.$active_links.' Active Links<br />';
+    }
+}
+
+
+
 
