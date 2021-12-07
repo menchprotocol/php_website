@@ -1707,13 +1707,18 @@ class E extends CI_Controller
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'));
 
-        //See if this user has set a password before:
-        $u_passwords = $this->X_model->fetch(array(
-            'x__up' => 3286, //Password
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        ), array('x__down'));
+
+        $u_passwords = array();
+        if(count($u_emails)){
+            //See if this user has set a password before:
+            $u_passwords = $this->X_model->fetch(array(
+                'x__up' => 3286, //Password
+                'x__down' => $u_emails[0]['e__id'],
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            ));
+        }
+
 
         if(!count($u_emails) || !count($u_passwords)){
             //Send Email Verification Pass Code
