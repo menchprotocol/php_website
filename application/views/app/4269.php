@@ -48,10 +48,9 @@ if(superpower_unlocked()) {
     }
 
 
-    if(!isset($_GET['active'])){
+    if(0 && !isset($_GET['active'])){
 
         //Disable for now:
-        //TODO maybe remove later
         js_redirect('/-14436', 13);
 
         echo '<div class="center-info">';
@@ -429,7 +428,7 @@ if(superpower_unlocked()) {
                     <!-- Email Verification Pass Code -->
                     <div class="margin-top-down">
                         <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[28782]['m__cover'].'</span>'.$e___4269[28782]['m__title'] ?></span>
-                        <p><?= $e___4269[28782]['m__message'] ?></p>
+                        <div style="padding:8px 0;"><span class="icon-block">&nbsp;</span><?= $e___4269[28782]['m__message'] ?></div>
                         <div class="form-group"><input type="number" step="1" id="new_account_passcode" maxlength="4" class="form-control border css__title white-border"></div>
                     </div>
 
