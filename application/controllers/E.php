@@ -1707,38 +1707,27 @@ class E extends CI_Controller
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'));
 
-        if(count($u_emails) > 0){
+        //See if this user has set a password before:
+        $u_passwords = $this->X_model->fetch(array(
+            'x__up' => 3286, //Password
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        ), array('x__down'));
 
-            //See if this user has set a password before:
-            $u_passwords = $this->X_model->fetch(array(
-                'x__up' => 3286, //Password
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-            ), array('x__down'));
-
-            return view_json(array(
-                'status' => 1,
-                'email_existed_previously' => 1,
-                'password_existed_previously' => 1,
-                'sign_e__id' => $u_emails[0]['e__id'],
-                'clean_email_input' => $_POST['input_email'],
-            ));
-
-        } else {
-
+        if(!count($u_emails) || !count($u_passwords)){
             //Send Email Verification Pass Code
             send_email(array($_POST['input_email']), get_domain('m__title').' Email Verification Pass Code', 'Your pass code to create your new account is ['.substr(preg_replace('/[^0-9.]+/', '', md5($_POST['input_email'])), 0, 4).']');
-
-            return view_json(array(
-                'status' => 1,
-                'email_existed_previously' => 0,
-                'password_existed_previously' => 0,
-                'sign_e__id' => 0,
-                'clean_email_input' => $_POST['input_email'],
-            ));
-
         }
+
+        return view_json(array(
+            'status' => 1,
+            'email_existed_previously' => ( count($u_emails) ? 1 : 0 ),
+            'password_existed_previously' => ( count($u_passwords) ? 1 : 0 ),
+            'sign_e__id' => ( count($u_emails) ? $u_emails[0]['e__id'] : 0 ),
+            'clean_email_input' => $_POST['input_email'],
+        ));
+
     }
 
 

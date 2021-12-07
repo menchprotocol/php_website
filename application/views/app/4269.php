@@ -186,9 +186,6 @@ if(superpower_unlocked()) {
 
                     if (data.status) {
 
-                        //Update source id IF existed previously:
-                        $('#sign_e__id').val(data.sign_e__id);
-
                         //Update email:
                         $('#input_email').val(data.clean_email_input);
                         $('.focus_email').html(data.clean_email_input);
@@ -199,6 +196,11 @@ if(superpower_unlocked()) {
                             $('.full_name').addClass('hidden');
                         } else {
                             $('.full_name').removeClass('hidden');
+                        }
+
+                        if(data.email_existed_previously && data.password_existed_previously){
+                            //Update source id IF existed previously:
+                            $('#sign_e__id').val(data.sign_e__id);
                         }
 
                         //Go to next read:
