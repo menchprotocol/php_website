@@ -33,7 +33,7 @@ echo $fixed.'/'.$scanned.' Transactions Fixed & '.$skipped.' Skipped.<hr />';
 
 
 //Now find deleted sources with active links:
-foreach($this->X_model->fetch(array(
+foreach($this->E_model->fetch(array(
     'e__type' => 6178,
 ), array(), 0) as $e){
     $active_links = count($this->X_model->fetch(array(
