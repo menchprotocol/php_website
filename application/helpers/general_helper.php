@@ -1231,7 +1231,7 @@ function e__title_validate($string, $x__type = 0){
 }
 
 
-function send_email($to_emails, $subject, $email_message, $e__id = 0, $x_data = array()){
+function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array()){
 
     $CI =& get_instance();
     $from_email = get_domain_setting(28614, $e__id);
@@ -1248,7 +1248,7 @@ function send_email($to_emails, $subject, $email_message, $e__id = 0, $x_data = 
 
     //Email has no word limit to add header & footer:
     $email_message = 'Hi '.$name.' 👋'."\n\n";
-    $email_message .= $email_message."\n\n";
+    $email_message .= $email_body."\n\n";
     $email_message .= view_shuffle_message(12691)."\n";
     $email_message .= get_domain('m__title', $e__id);
 
