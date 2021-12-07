@@ -49,6 +49,7 @@ if(superpower_unlocked()) {
 
 
     if(!isset($_GET['active'])){
+
         //Disable for now:
         //TODO maybe remove later
         js_redirect('/-14436', 13);

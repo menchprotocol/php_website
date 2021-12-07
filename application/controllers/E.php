@@ -1507,6 +1507,7 @@ class E extends CI_Controller
         $reset_x = $this->X_model->create(array(
             'x__type' => 7563, //Member Signin Magic Email
             'x__source' => $u_emails[0]['e__id'], //Member making request
+            'x__message' => $_POST['input_email'],
             'x__left' => intval($_POST['sign_i__id']),
         ));
 
