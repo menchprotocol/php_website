@@ -72,11 +72,12 @@ echo '<div style="padding: 10px 0;"><input type="text" class="form-control white
 
 
 
+echo '<div class="border-left:3px solid #000; padding:5px; margin:10px 0;">';
 echo '<p>Hi '.$member_e['e__title'].' 👋</p>';
 echo '<textarea class="form-control white-border" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
 echo '<p>'.view_shuffle_message(12691).'</p>';
 echo '<p>'.get_domain('m__title', $member_e['e__id']).'</p>';
-
+echo '</div>';
 
 echo '<div id="charNum"></div>';
 echo '<div style="padding:10px 0;">Note: An SMS with your message will be sent IF all 3 conditions are met: (a) Message is shorter than '.view_memory(6404,27891).' Characters AND (b) Message excludes new lines AND (c) Message excludes Emojis. If any of these conditions is not met, Message will be sent as email + An SMS notification asking them to "check your email".</div>';
