@@ -1298,26 +1298,6 @@ class E extends CI_Controller
                 'message' => 'Invaid passcode. Check your email (and spam folder) and try again.',
                 'focus_input_field' => 'new_account_passcode',
             ));
-        }
-
-
-        //Prep inputs & validate further:
-        $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
-        $_POST['input_name'] = trim($_POST['input_name']);
-
-
-        if (strlen($_POST['input_name']) < view_memory(6404,12232)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Name must longer than '.view_memory(6404,12232).' characters',
-                'focus_input_field' => 'input_name',
-            ));
-        } elseif (strlen($_POST['input_name']) > view_memory(6404,6197)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Name must be less than '.view_memory(6404,6197).' characters',
-                'focus_input_field' => 'input_name',
-            ));
         } elseif (strlen($_POST['password_reset'])<1) {
             return view_json(array(
                 'status' => 0,
@@ -1333,10 +1313,48 @@ class E extends CI_Controller
         }
 
 
-        $member_result = $this->E_model->add_member(trim($_POST['input_name']), $_POST['input_email']);
-        if (!$member_result['status']) {
-            return view_json($member_result);
+
+        $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
+        $u_emails = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__message' => $_POST['input_email'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 3288, //Email
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        ), array('x__down'));
+
+
+
+        if(count($u_emails)){
+
+            //Member already exists:
+            $member_result['e'] = $u_emails[0];
+
+        } else {
+
+            //Prep inputs & validate further:
+            $_POST['input_name'] = trim($_POST['input_name']);
+            if (strlen($_POST['input_name']) < view_memory(6404,12232)) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Name must longer than '.view_memory(6404,12232).' characters',
+                    'focus_input_field' => 'input_name',
+                ));
+            } elseif (strlen($_POST['input_name']) > view_memory(6404,6197)) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Name must be less than '.view_memory(6404,6197).' characters',
+                    'focus_input_field' => 'input_name',
+                ));
+            }
+
+            $member_result = $this->E_model->add_member(trim($_POST['input_name']), $_POST['input_email']);
+            if (!$member_result['status']) {
+                return view_json($member_result);
+            }
+
         }
+
 
 
         //Add Password:
@@ -1691,9 +1709,18 @@ class E extends CI_Controller
 
         if(count($u_emails) > 0){
 
+            //See if this user has set a password before:
+            $u_passwords = $this->X_model->fetch(array(
+                'x__up' => 3286, //Password
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            ), array('x__down'));
+
             return view_json(array(
                 'status' => 1,
                 'email_existed_previously' => 1,
+                'password_existed_previously' => 1,
                 'sign_e__id' => $u_emails[0]['e__id'],
                 'clean_email_input' => $_POST['input_email'],
             ));
@@ -1706,6 +1733,7 @@ class E extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'email_existed_previously' => 0,
+                'password_existed_previously' => 0,
                 'sign_e__id' => 0,
                 'clean_email_input' => $_POST['input_email'],
             ));

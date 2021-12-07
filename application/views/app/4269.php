@@ -194,8 +194,15 @@ if(superpower_unlocked()) {
                         $('.focus_email').html(data.clean_email_input);
                         $('#email_errors').html('');
 
+                        if(data.email_existed_previously && !data.password_existed_previously){
+                            //Did social login before, but now trying to directly login:
+                            $('.full_name').addClass('hidden');
+                        } else {
+                            $('.full_name').removeClass('hidden');
+                        }
+
                         //Go to next read:
-                        goto_step(( data.email_existed_previously ? 3 /* To ask for password */ : 4 /* To check their email and create new account */ ));
+                        goto_step(( data.email_existed_previously && data.password_existed_previously ? 3 /* To ask for password */ : 4 /* To check their email and create new account */ ));
 
                     } else {
                         //Show errors:
@@ -434,7 +441,7 @@ if(superpower_unlocked()) {
 
 
                     <!-- Full Name -->
-                    <div class="margin-top-down">
+                    <div class="margin-top-down full_name">
                         <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
                         <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="input_name" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border"></div>
                     </div>
