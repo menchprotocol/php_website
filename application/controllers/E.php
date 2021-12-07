@@ -1330,6 +1330,9 @@ class E extends CI_Controller
             //Member already exists:
             $member_result['e'] = $u_emails[0];
 
+            //Assign session & log login transaction:
+            $this->E_model->activate_session($member_result['e']);
+
         } else {
 
             //Prep inputs & validate further:
