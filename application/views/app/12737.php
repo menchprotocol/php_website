@@ -36,12 +36,23 @@ echo $fixed.'/'.$scanned.' Transactions Fixed & '.$skipped.' Skipped.<hr />';
 foreach($this->E_model->fetch(array(
     'e__type' => 6178,
 ), array(), 0) as $e){
-    $active_links = count($this->X_model->fetch(array(
-        '(x__source='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__down='.$e['e__id'].')' => null, //SOURCE LINKS
+
+    $profiles = count($this->X_model->fetch(array(
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__down' => $e['e__id'],
     ), array(), 0));
-    if($active_links > 0){
-        echo '<a href="/@'.$e['e__id'].'">@'.$e['e__id'].' '.$e['e__title'].'</a> Has '.$active_links.' Active Links<br />';
+
+    $portfolios = count($this->X_model->fetch(array(
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__up' => $e['e__id'],
+    ), array(), 0));
+
+    if($profiles>0 || $portfolios>0){
+        echo '<a href="/@'.$e['e__id'].'">@'.$e['e__id'].' '.$e['e__title'].'</a> ['.$profiles.' profiles & '.$portfolios.' portfolios]<br />';
     }
+
 }
 
 
