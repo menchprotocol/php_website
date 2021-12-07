@@ -72,7 +72,7 @@ echo '<div style="padding: 10px 0;"><input type="text" class="form-control white
 
 
 
-echo '<div class="border-left:3px solid #000; padding:5px; margin:10px 0;">';
+echo '<div style="border-left:3px solid #000; padding:5px; margin:10px 0;">';
 echo '<p>Hi '.$member_e['e__title'].' 👋</p>';
 echo '<textarea class="form-control white-border" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
 echo '<p>'.view_shuffle_message(12691).'</p>';
