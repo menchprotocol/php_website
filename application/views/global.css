@@ -1709,7 +1709,7 @@ i, .btn .show-max {
 }
 .platform-large img{
     width:128px;
-    margin-bottom: 5px;
+    border-radius: 50%;
 }
 .platform-large{
     font-size: 8em !important;
