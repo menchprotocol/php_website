@@ -1292,7 +1292,14 @@ class E extends CI_Controller
                 'message' => 'Missing name',
                 'focus_input_field' => 'input_name',
             ));
+        } elseif ($_POST['new_account_passcode'] != substr(preg_replace('/[^0-9.]+/', '', md5($_POST['input_email'])), 0, 4)) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invaid passcode. Check your email and try again.',
+                'focus_input_field' => 'new_account_passcode',
+            ));
         }
+
 
         //Prep inputs & validate further:
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
@@ -1679,6 +1686,7 @@ class E extends CI_Controller
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'));
 
         if(count($u_emails) > 0){
@@ -1691,6 +1699,9 @@ class E extends CI_Controller
             ));
 
         } else {
+
+            //Send Email Verification Pass Code
+            send_email(array($_POST['input_email']), get_domain('m__title').' Email Verification Pass Code', 'Your pass code to create your new account is ['.substr(preg_replace('/[^0-9.]+/', '', md5($_POST['input_email'])), 0, 4).']');
 
             return view_json(array(
                 'status' => 1,

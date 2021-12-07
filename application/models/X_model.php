@@ -440,7 +440,6 @@ class X_model extends CI_Model
     function send_dm($e__id, $subject, $plain_message, $x_data = array())
     {
 
-
         if (count($this->X_model->fetch(array(
             'x__up' => 26583, //Unsubscribed
             'x__down' => $e__id,
@@ -453,24 +452,10 @@ class X_model extends CI_Model
             );
         }
 
-        $es = $this->E_model->fetch(array(
-            'e__id' => $e__id,
-        ));
-        $full_message = $subject."\n\n".$plain_message;
-        $from_email = get_domain_setting(28614, $e__id);
-
-        //Email has no word limit to add header & footer:
-        $email_message = 'Hi '.$es[0]['e__title'].' 👋'."\n\n";
-        $email_message .= $plain_message."\n\n";
-        $email_message .= view_shuffle_message(12691)."\n";
-        $email_message .= get_domain('m__title', $e__id);
-
         $stats = array(
-            'email_count' => 0,
             'email_addresses' => array(),
             'phone_count' => 0,
         );
-
 
         //Send Emails:
         foreach($this->X_model->fetch(array(
@@ -481,76 +466,21 @@ class X_model extends CI_Model
         )) as $e_data){
 
             if(!filter_var($e_data['x__message'], FILTER_VALIDATE_EMAIL)){
-
                 $this->X_model->update($e_data['x__id'], array(
                     'x__status' => 6173, //Transaction Deleted
                 ), $e__id, 27890 /* Invalid Input Removed */);
-
                 continue;
-
             }
-
-            //Loadup amazon SES:
-            require_once('application/libraries/aws/aws-autoloader.php');
-            $this->CLIENT = new Aws\Ses\SesClient([
-                'version' => 'latest',
-                'region' => 'us-west-2',
-                'credentials' => $this->config->item('cred_aws'),
-            ]);
-
-            $response = $this->CLIENT->sendEmail(array(
-                // Source is required
-                'Source' => $from_email,
-                // Destination is required
-                'Destination' => array(
-                    'ToAddresses' => array($e_data['x__message']),
-                    'CcAddresses' => array(),
-                    'BccAddresses' => array(),
-                ),
-                // Message is required
-                'Message' => array(
-                    // Subject is required
-                    'Subject' => array(
-                        // Data is required
-                        'Data' => $subject,
-                        'Charset' => 'UTF-8',
-                    ),
-                    // Body is required
-                    'Body' => array(
-                        'Text' => array(
-                            // Data is required
-                            'Data' => strip_tags($email_message),
-                            'Charset' => 'UTF-8',
-                        ),
-                        'Html' => array(
-                            // Data is required
-                            'Data' => nl2br($email_message),
-                            'Charset' => 'UTF-8',
-                        ),
-                    ),
-                ),
-                'ReplyToAddresses' => array($from_email),
-                'ReturnPath' => $from_email,
-            ));
-
-            //Log transaction:
-            $this->X_model->create(array_merge($x_data, array(
-                'x__type' => 12114,
-                'x__source' => $e__id,
-                'x__message' => $full_message,
-                'x__metadata' => array(
-                    'to' => $e_data['x__message'],
-                    'subject' => $subject,
-                    'message' => $plain_message,
-                    'response' => $response,
-                ),
-            )));
-
-            $stats['email_count']++;
 
             array_push($stats['email_addresses'], $e_data['x__message']);
 
         }
+
+        if(count($stats['email_addresses']) > 0){
+            //Send email:
+            send_email($stats['email_addresses'], $subject, $plain_message, $e__id, $x_data);
+        }
+
 
         $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
         if(count($stats['email_addresses']) && strlen($sms_message)>view_memory(6404,27891)){
@@ -619,8 +549,8 @@ class X_model extends CI_Model
         }
 
         return array(
-            'status' => ( $stats['phone_count']>0 || $stats['email_count']>0 ? 1 : 0 ),
-            'email_count' => $stats['email_count'],
+            'status' => ( $stats['phone_count']>0 || count($stats['email_addresses'])>0 ? 1 : 0 ),
+            'email_count' => count($stats['email_addresses']),
             'phone_count' => $stats['phone_count'],
             'message' => 'Message sent',
         );;

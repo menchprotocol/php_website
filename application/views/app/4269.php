@@ -221,6 +221,7 @@ if(superpower_unlocked()) {
 
                 //Check email and validate:
                 $.post("/e/e_signin_create", {
+                    new_account_passcode: $('#new_account_passcode').val(),
                     input_email: $('#input_email').val(),
                     input_name: $('#input_name').val(),
                     password_reset: $('#password_reset').val(),
@@ -241,7 +242,6 @@ if(superpower_unlocked()) {
 
                     } else {
 
-
                         //Release field lock:
                         account_adding = false;
                         $('#add_acount_next').html(go_next_icon);
@@ -254,6 +254,7 @@ if(superpower_unlocked()) {
 
                         //Show errors:
                         $('#account_errors').html('<b class="css__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+
                     }
 
                 });
@@ -422,6 +423,14 @@ if(superpower_unlocked()) {
                     <div class="margin-top-down">
                         <div class="css__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
                         <div style="padding:8px 0;"><span class="icon-block">&nbsp;</span><span class="focus_email"></span></div>
+                    </div>
+
+
+                    <!-- Email Verification Pass Code -->
+                    <div class="margin-top-down">
+                        <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[28782]['m__cover'].'</span>'.$e___4269[28782]['m__title'] ?></span>
+                        <p><?= $e___4269[28782]['m__message'] ?></p>
+                        <div class="form-group"><input type="number" step="1" id="new_account_passcode" maxlength="4" class="form-control border css__title white-border"></div>
                     </div>
 
 

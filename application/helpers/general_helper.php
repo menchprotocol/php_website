@@ -1230,6 +1230,89 @@ function e__title_validate($string, $x__type = 0){
     }
 }
 
+
+function send_email($to_emails, $subject, $email_message, $e__id = 0, $x_data = array()){
+
+    $CI =& get_instance();
+    $from_email = get_domain_setting(28614, $e__id);
+
+    $name = 'New User';
+    if($e__id > 0){
+        $es = $this->E_model->fetch(array(
+            'e__id' => $e__id,
+        ));
+        if(count($es)){
+            $name = $es[0]['e__title'];
+        }
+    }
+
+    //Email has no word limit to add header & footer:
+    $email_message = 'Hi '.$name.' 👋'."\n\n";
+    $email_message .= $email_message."\n\n";
+    $email_message .= view_shuffle_message(12691)."\n";
+    $email_message .= get_domain('m__title', $e__id);
+
+
+    //Loadup amazon SES:
+    require_once('application/libraries/aws/aws-autoloader.php');
+    $CI->CLIENT = new Aws\Ses\SesClient([
+        'version' => 'latest',
+        'region' => 'us-west-2',
+        'credentials' => $CI->config->item('cred_aws'),
+    ]);
+
+    $response = $CI->CLIENT->sendEmail(array(
+        // Source is required
+        'Source' => $from_email,
+        // Destination is required
+        'Destination' => array(
+            'ToAddresses' => $to_emails,
+            'CcAddresses' => array(),
+            'BccAddresses' => array(),
+        ),
+        // Message is required
+        'Message' => array(
+            // Subject is required
+            'Subject' => array(
+                // Data is required
+                'Data' => $subject,
+                'Charset' => 'UTF-8',
+            ),
+            // Body is required
+            'Body' => array(
+                'Text' => array(
+                    // Data is required
+                    'Data' => strip_tags($email_message),
+                    'Charset' => 'UTF-8',
+                ),
+                'Html' => array(
+                    // Data is required
+                    'Data' => nl2br($email_message),
+                    'Charset' => 'UTF-8',
+                ),
+            ),
+        ),
+        'ReplyToAddresses' => array($from_email),
+        'ReturnPath' => $from_email,
+    ));
+
+    //Log transaction:
+    $CI->X_model->create(array_merge($x_data, array(
+        'x__type' => 12114,
+        'x__source' => $e__id,
+        'x__message' => $subject."\n\n".$email_message,
+        'x__metadata' => array(
+            'to' => $to_emails,
+            'subject' => $subject,
+            'message' => $email_message,
+            'response' => $response,
+        ),
+    )));
+
+    return $response;
+
+}
+
 function get_domain_setting($setting_id = 0, $initiator_e__id = 0){
 
     $CI =& get_instance();
