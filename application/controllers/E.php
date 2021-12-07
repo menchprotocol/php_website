@@ -1295,7 +1295,7 @@ class E extends CI_Controller
         } elseif ($_POST['new_account_passcode'] != substr(preg_replace('/[^0-9.]+/', '', md5($_POST['input_email'])), 0, 4)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invaid passcode. Check your email and try again.',
+                'message' => 'Invaid passcode. Check your email (and spam folder) and try again.',
                 'focus_input_field' => 'new_account_passcode',
             ));
         }

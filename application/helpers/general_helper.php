@@ -1238,7 +1238,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
     $name = 'New User';
     if($e__id > 0){
-        $es = $this->E_model->fetch(array(
+        $es = $CI->E_model->fetch(array(
             'e__id' => $e__id,
         ));
         if(count($es)){
