@@ -440,8 +440,7 @@ if($top_i__id) {
 
         } elseif(count($x_completes)){
 
-            $e___26661 = $this->config->item('e___26661');
-            echo '<div class="msg alert alert-success" role="alert">We have received your payment of '.$e___26661[$x_completes[0]['x__up']]['m__title'].' '.$x_completes[0]['x__message'].'. You are ready to go next.</div>';
+            echo '<div class="msg alert alert-success" role="alert">Payment received. You are ready to go next.</div>';
 
         } else {
 

@@ -362,39 +362,6 @@ class E extends CI_Controller
 
     }
 
-    function e_nuclear_delete(){
-
-        //Auth member and check required variables:
-        $member_e = superpower_unlocked(14683);
-
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(14683),
-            ));
-        } elseif (!isset($_POST['e__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Source ID #2',
-            ));
-        }
-
-        //Remove All Links:
-        $x_adjusted = $this->E_model->remove($_POST['e__id'], $member_e['e__id']);
-
-        //Remove Source:
-        $this->E_model->update($_POST['e__id'], array(
-            'e__type' => 6178,
-        ), true, $member_e['e__id']);
-
-        return view_json(array(
-            'status' => 1,
-            'message' => 'Deleted source and its '.$x_adjusted.' transactions.',
-        ));
-
-    }
-
-
     function e_add_only_7551()
     {
 

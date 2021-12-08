@@ -802,7 +802,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
                 //SOURCES
                 $e___4593 = $CI->config->item('e___4593'); //Transaction Types
                 $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
-                foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array(
+                foreach($CI->X_model->fetch($query_filters, $join_objects, view_memory(6404,13206), 0, array(
                     'x__spectrum' => 'ASC',
                     'e__title' => 'ASC'
                 )) as $source_e) {
@@ -820,14 +820,14 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
                 //IDEAS
                 $e___4737 = $CI->config->item('e___4737'); //Idea Types
                 $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-                foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array('x__spectrum' => 'ASC')) as $next_i) {
+                foreach($CI->X_model->fetch($query_filters, $join_objects, view_memory(6404,13206), 0, array('x__spectrum' => 'ASC')) as $next_i) {
                     $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
                 }
             } elseif($x__type==6255){
                 //DISCOVERIES / IDEAS
                 $e___4593 = $CI->config->item('e___4593'); //Transaction Types
                 $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-                foreach($CI->X_model->fetch($query_filters, $join_objects, 10, 0, array('x__id' => 'DESC')) as $x_i) {
+                foreach($CI->X_model->fetch($query_filters, $join_objects, view_memory(6404,13206), 0, array('x__id' => 'DESC')) as $x_i) {
                     $ui .= view_coin_line('/i/i_go/'.$x_i['i__id'], $x_i['i__id']==$current_i, $e___4593[$x_i['x__type']]['m__cover'], view_cover(12273,$x_i['i__cover']), view_i_title($x_i), view_x__message($x_i['x__message'],$x_i['x__type']));
                 }
             }
@@ -938,7 +938,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
             //SOURCES
             $e___4593 = $CI->config->item('e___4593'); //Transaction Types
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
-            foreach($CI->X_model->fetch($query_filters, array('x__up'), 10, 0, array('x__type' => 'ASC', 'x__spectrum' => 'ASC')) as $source_e) {
+            foreach($CI->X_model->fetch($query_filters, array('x__up'), view_memory(6404,13206), 0, array('x__type' => 'ASC', 'x__spectrum' => 'ASC')) as $source_e) {
                 $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
             }
         } elseif($x__type==12273){
@@ -970,7 +970,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
             //DISCOVERIES / SOURCES
             $e___4593 = $CI->config->item('e___4593'); //Transaction Types
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
-            foreach($CI->X_model->fetch($query_filters, array('x__source'), 10, 0, array('x__id' => 'DESC')) as $source_e) {
+            foreach($CI->X_model->fetch($query_filters, array('x__source'), view_memory(6404,13206), 0, array('x__id' => 'DESC')) as $source_e) {
                 $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
             }
 
@@ -2083,11 +2083,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
                 //UNLINK
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</span></a>';
-
-            } elseif($e__id==14601 && !$has_any_lock && $source_of_e && superpower_active(14683, true)){
-
-                //NUCLEAR DELETE
-                $action_buttons .= '<a href="javascript:void(0);" onclick="e_nuclear_delete(' . $e['e__id'] . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif($e__id==13007 && $focus_coin){
 

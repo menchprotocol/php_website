@@ -1578,40 +1578,6 @@ function e_remove(x__id, x__type) {
 }
 
 
-function e_nuclear_delete(e__id, x__type) {
-
-    var confirm_removal = prompt("Nuclear Delete Source and all its related transactions? This cannot be undone! Type \"nuclear\" to confirm.", "");
-    if (!(confirm_removal=='nuclear')) {
-
-        //Abandon process:
-        alert('Source will not be deleted.');
-
-    } else {
-
-        //Delete Source
-        $.post("/e/e_nuclear_delete", {
-            e__id: e__id,
-        }, function (data) {
-            if (data.status) {
-
-                console.log(data.message);
-                i_note_counter(x__type, -1);
-                $(".coin___12274_" + e__id).fadeOut();
-                setTimeout(function () {
-                    $(".coin___12274_" + e__id).remove();
-                }, 610);
-
-            } else {
-                //We had an error:
-                alert(data.message);
-            }
-        });
-
-    }
-}
-
-
-
 function x_type_preview() {
 
     //Shows the transaction type based on the transaction message
