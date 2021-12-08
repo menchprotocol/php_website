@@ -1998,7 +1998,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $focus_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
-    $is_idea_link = in_array($x__type, $CI->config->item('n___28796'));
 
     $source_of_e = $source_of_e && $member_e;
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
@@ -2041,7 +2040,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
         //LINK TYPE
-        if($is_idea_link){
+        if(in_array($e['x__type'], $CI->config->item('n___28796'))){
 
             $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
             $ui .= view_input_dropdown(28796, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
