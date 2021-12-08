@@ -1,6 +1,6 @@
 <?php
 
-foreach(array('i__id','e__id','exclude_e','include_e','xaxis_i','xaxis_e') as $input){
+foreach(array('i__id','e__id','exclude_e','include_e','xaxis_e') as $input){
     if(!isset($_GET[$input])){
         $_GET[$input] = '';
     }
@@ -46,11 +46,11 @@ echo '<td><span class="mini-header">Excludes Profile Source(s):</span><input typ
 echo '</tr><tr>';
 
 echo '<td><div style="padding-right:5px;">';
-echo '<span class="mini-header">List X-Axis Idea(s):</span>';
-echo '<input type="text" name="xaxis_i" placeholder="id1,id2" value="' . $_GET['xaxis_i'] . '" class="form-control border">';
+echo '<span class="mini-header">List X-Axis Source(s):</span>';
+echo '<input type="text" name="xaxis_e" placeholder="id1,id2" value="' . $_GET['xaxis_e'] . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">List X-Axis Source(s):</span><input type="text" name="xaxis_e" placeholder="id1,id2" value="' . $_GET['xaxis_e'] . '" class="form-control border"></td>';
+echo '<td>&nbsp;</td>';
 
 echo '</tr><tr>';
 
@@ -65,27 +65,30 @@ echo '</form>';
 
 
 $column_sources = array();
+$column_ideas = array();
+
 if(isset($_GET['xaxis_e']) && strlen($_GET['xaxis_e'])){
+
     $column_sources = $this->X_model->fetch(array(
         'x__up' => $_GET['xaxis_e'], //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC'));
-}
+    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
-$column_ideas = array();
-
-if(isset($_GET['xaxis_i']) && strlen($_GET['xaxis_i'])){
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-        'x__left' => $_GET['xaxis_i'],
-    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $x){
-        array_push($column_ideas, $x);
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__up' => $_GET['xaxis_e'], //PUBLIC
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $link_i){
+        array_push($column_ideas, $link_i);
     }
+
 }
+
+
+
 
 
 
@@ -225,11 +228,11 @@ $e___6287 = $this->config->item('e___6287'); //APP
 echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-echo '<th id="th_primary" style="width:200px;">'.( isset($_GET['include_i']) || isset($_GET['include_e']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&xaxis_i='.$_GET['xaxis_i'].'&xaxis_e='.$_GET['xaxis_e'].'"><u>REMOVE FILTERS <i class="fas fa-filter"></i></u></a><br /><br />' : '' ).$count.' MEMBERS</th>';
+echo '<th id="th_primary" style="width:200px;">'.( isset($_GET['include_i']) || isset($_GET['include_e']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&xaxis_e='.$_GET['xaxis_e'].'"><u>REMOVE FILTERS <i class="fas fa-filter"></i></u></a><br /><br />' : '' ).$count.' MEMBERS</th>';
 echo '<th id="th_done">Done</th>';
 foreach($column_sources as $e){
     array_push($table_sortable, '#th_e_'.$e['e__id']);
-    echo '<th id="th_e_'.$e['e__id'].'"><a class="icon-block-xxs" href="/@'.$e['e__id'].'" target="_blank" title="Open in New Window">'.view_cover(12274,$e['e__cover']).'</a><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&xaxis_i='.$_GET['xaxis_i'].'&xaxis_e='.$_GET['xaxis_e'].'&include_e='.$e['e__id'].'&include_i='.( isset($_GET['include_i']) ? $_GET['include_i'] : '' ).'">'.( isset($_GET['include_e']) && $_GET['include_e']==$e['e__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?e__id='.$e['e__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
+    echo '<th id="th_e_'.$e['e__id'].'"><a class="icon-block-xxs" href="/@'.$e['e__id'].'" target="_blank" title="Open in New Window">'.view_cover(12274,$e['e__cover']).'</a><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&xaxis_e='.$_GET['xaxis_e'].'&include_e='.$e['e__id'].'&include_i='.( isset($_GET['include_i']) ? $_GET['include_i'] : '' ).'">'.( isset($_GET['include_e']) && $_GET['include_e']==$e['e__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?e__id='.$e['e__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
 }
 foreach($column_ideas as $i){
 
@@ -244,7 +247,7 @@ foreach($column_ideas as $i){
 
     array_push($table_sortable, '#th_i_'.$i['i__id']);
 
-    echo '<th id="th_i_'.$i['i__id'].'"><a class="icon-block-xxs" href="/~'.$i['i__id'].'" target="_blank" title="Open in New Window">'.view_cover(12273,$i['i__cover']).'</a><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&xaxis_i='.$_GET['xaxis_i'].'&xaxis_e='.$_GET['xaxis_e'].'&include_i='.$i['i__id'].'&include_e='.( isset($_GET['include_e']) ? $_GET['include_e'] : '' ).'">'.( isset($_GET['include_i']) && $_GET['include_i']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?i__id='.$i['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isorange' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.$i['i__title'].'</span></th>';
+    echo '<th id="th_i_'.$i['i__id'].'"><a class="icon-block-xxs" href="/~'.$i['i__id'].'" target="_blank" title="Open in New Window">'.view_cover(12273,$i['i__cover']).'</a><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&xaxis_e='.$_GET['xaxis_e'].'&include_i='.$i['i__id'].'&include_e='.( isset($_GET['include_e']) ? $_GET['include_e'] : '' ).'">'.( isset($_GET['include_i']) && $_GET['include_i']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?i__id='.$i['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isorange' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.$i['i__title'].'</span></th>';
 
 }
 //echo '<th>STARTED</th>';
