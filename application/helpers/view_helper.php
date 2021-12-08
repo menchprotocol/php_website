@@ -1998,6 +1998,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $focus_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
+    $is_idea_link = in_array($x__type, $CI->config->item('n___28796'));
 
     $source_of_e = $source_of_e && $member_e;
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
@@ -2033,11 +2034,20 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     if($source_of_e && $superpower_13422 && !$cache_app){
+
         $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-left">';
         $ui .= view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']);
         $ui .= '</div>';
 
-        if($x__id){
+
+        //LINK TYPE
+        if($is_idea_link){
+
+            $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
+            $ui .= view_input_dropdown(28796, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
+            $ui .= '</div>';
+
+        } elseif($x__id){
             $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
             $ui .= '<span class="icon-block grey">'.view_cache(4593, $e['x__type']).'</span>';
             $ui .= '</div>';
