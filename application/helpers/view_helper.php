@@ -2040,7 +2040,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
         //LINK TYPE
-        if(in_array($e['x__type'], $CI->config->item('n___28796'))){
+        if($x__id && in_array($e['x__type'], $CI->config->item('n___28796'))){
 
             $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
             $ui .= view_input_dropdown(28796, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
