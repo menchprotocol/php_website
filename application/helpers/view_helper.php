@@ -2299,10 +2299,9 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $
         foreach($e___this as $e__id => $m) {
 
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
-            $has_url_desc = ( substr($m['m__message'], 0, 1)=='/' );
 
             //What type of URL?
-            if($has_url_desc){
+            if(substr($m['m__message'], 0, 1)=='/'){
 
                 if(substr_count($m['m__message'], '=$_GET')){
                     //Update URL:
@@ -2323,7 +2322,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $
 
             }
 
-            $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' css__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.$anchor_url.' title="'.$m['m__message'].'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>'; //Used to show desc but caused JS click conflict sp retired for now: ( strlen($m['m__message']) && !$has_url_desc ? 'title="'.$m['m__message'].'" data-toggle="tooltip" data-placement="right"' : '' )
+            $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' css__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : ( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ) ).'" '.$anchor_url.' title="'.$m['m__message'].'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
 
         }
 
