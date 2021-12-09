@@ -2040,16 +2040,18 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
         //LINK TYPE
-        if($x__id && in_array($e['x__type'], $CI->config->item('n___13550'))){
+        if($x__id){
 
-            $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
-            $ui .= view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
-            $ui .= '</div>';
+            if(in_array($e['x__type'], $CI->config->item('n___13550'))){
+                $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
+                $ui .= view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
+                $ui .= '</div>';
+            } else {
+                $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
+                $ui .= '<span class="icon-block grey">'.view_cache(4593, $e['x__type']).'</span>';
+                $ui .= '</div>';
+            }
 
-        } elseif($x__id){
-            $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' coin-cover coin-cover-2left">';
-            $ui .= '<span class="icon-block grey">'.view_cache(4593, $e['x__type']).'</span>';
-            $ui .= '</div>';
         }
     }
 
