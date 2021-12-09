@@ -1393,6 +1393,13 @@ class X extends CI_Controller
                 'x__type' => $_POST['new_e__id'],
             ), $member_e['e__id'], 13962);
 
+        } elseif($_POST['element_id']==13550 && $_POST['x__id'] > 0){
+
+            //SOURCE LINK TYPE
+            $status = $this->X_model->update($_POST['x__id'], array(
+                'x__type' => $_POST['new_e__id'],
+            ), $member_e['e__id'], 28799);
+
         } elseif($_POST['element_id']==6177){
 
             //SOURCE TYPE
