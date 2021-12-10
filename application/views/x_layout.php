@@ -649,6 +649,7 @@ if($top_i__id) {
     }
 
     //DISCUSSIONS:
+    /*
     $comments = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type' => 12419,
@@ -658,6 +659,7 @@ if($top_i__id) {
     //For now we have comments completely hidden:
     $headline_ui = view_i_note_list(12419, true, $i_focus, $comments, true);
     echo view_headline(12419, count($comments), $e___11035[12419], $headline_ui, false);
+    */
 
 } else {
 
