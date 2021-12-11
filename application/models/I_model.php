@@ -902,7 +902,7 @@ class I_model extends CI_Model
                 'message' => 'Unknown Source. Format must be: @123 Source Title',
             );
 
-        } elseif(in_array($action_e__id , array(12611,12612,27240)) && !is_valid_i_string($action_command1)){
+        } elseif(in_array($action_e__id , array(12611,12612,27240,28801)) && !is_valid_i_string($action_command1)){
 
             return array(
                 'status' => 0,
@@ -975,7 +975,7 @@ class I_model extends CI_Model
 
                 }
 
-            } elseif(in_array($action_e__id , array(12611,12612,27240))){
+            } elseif(in_array($action_e__id , array(12611,12612,27240,28801))){
 
                 //Check if it hs this item:
                 $focus__id = intval(one_two_explode('#',' ',$action_command1));
@@ -999,28 +999,37 @@ class I_model extends CI_Model
                         'x__right' => $next_i['i__id'],
                     ), array(), 0);
 
+
                     //See how to adjust:
-                    if($action_e__id==12611 && !count($is_previous)){
+                    if(in_array($action_e__id, array(12611, 28801)) && !count($is_previous)){
 
                         //Link
                         $status = $this->I_model->create_or_link(11019, '', $x__source, $next_i['i__id'], $focus__id);
 
                         if($status['status']){
+
+                            if($action_e__id==28801){
+                                //Also remove old link:
+                                $this->X_model->update($next_i['x__id'], array(
+                                    'x__status' => 6173, //Transaction Deleted
+                                ), $x__source, 10673 /* Member Transaction Unpublished  */);
+                            }
+
                             //Add Source since not there:
                             $applied_success++;
                         }
+                    }
 
 
-                    } elseif($action_e__id==12612 && count($is_previous)){
-
+                    if($action_e__id==12612 && count($is_previous)){
                         //Unlink
                         $this->X_model->update($is_previous[0]['x__id'], array(
                             'x__status' => 6173,
                         ), $x__source, 13579 /* IDEA NOTES Unpublished */);
 
                         $applied_success++;
-
                     }
+
 
                 }
             }

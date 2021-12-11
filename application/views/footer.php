@@ -194,7 +194,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 //We don't need the second value field here:
                                 $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
 
-                            } elseif(in_array($action_e__id, array(12611,12612,27240))){
+                            } elseif(in_array($action_e__id, array(12611,12612,27240,28801))){
 
                                 //String command:
                                 $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_search i_text_search border css__title">';
