@@ -1140,7 +1140,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i){
 
                 $textarea_content = '';
                 foreach($i_notes as $i_note) {
-                    $textarea_content .= $i_note['x__message']."\n\n";
+                    $textarea_content .= $i_note['x__message']."\n";
                 }
 
                 //WRITE
