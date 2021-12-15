@@ -261,7 +261,7 @@ if(count($i_query)){
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-            var options = { hAxis: {direction:-1, slantedText:true, slantedTextAngle:45 }}
+            var options = { hAxis: {direction:-1, slantedText:true, slantedTextAngle:90, showTextEvery:1 }}
             chart.draw(data, options);
         }
     </script>
