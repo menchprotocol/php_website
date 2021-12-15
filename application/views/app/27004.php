@@ -151,6 +151,13 @@ foreach($i_query as $i){
 
         $transaction_content .= '</tr>';
 
+        $date = date("Ymd", strtotime($x['x__time']));
+        if(isset($daily_sales[$date])){
+            $daily_sales[$date] += $x__metadata['mc_gross'];
+        } else {
+            $daily_sales[$date] = $x__metadata['mc_gross'];
+        }
+
     }
     $total_commission = ( $commission_rate * $total_revenue );
     $payout = $total_revenue-$total_commission-$total_paypal_fee;
@@ -161,13 +168,6 @@ foreach($i_query as $i){
     $gross_paypal_fee += $total_paypal_fee;
     $gross_commission += $total_commission;
     $gross_payout += $payout;
-
-    $date = date("Ymd", strtotime($x['x__time']));
-    if(isset($daily_sales[$date])){
-        $daily_sales[$date] += $gross_revenue;
-    } else {
-        $daily_sales[$date] = $gross_revenue;
-    }
 
     $has_limits = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
