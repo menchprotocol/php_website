@@ -151,7 +151,7 @@ foreach($i_query as $i){
 
         $transaction_content .= '</tr>';
 
-        $date = date("d M y", strtotime($x['x__time']));
+        $date = date("y-m-d", strtotime($x['x__time']));
         if(isset($daily_sales[$date])){
             $daily_sales[$date] += $x__metadata['mc_gross'];
         } else {
