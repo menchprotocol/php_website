@@ -201,7 +201,17 @@ foreach($i_query as $i){
 if(count($i_query)){
 
     ksort($daily_sales);
-    echo '<div id="chart_div" style="margin: 34px 0;"></div>';
+
+    //Create % chart:
+    $total_sales = 0;
+    $daily_percent = array();
+    foreach($daily_sales as $day => $sales){
+        $total_sales += $sales;
+        $daily_percent[$day] = $total_sales/$gross_revenue*100;
+    }
+
+    echo '<div id="chart_div" style="margin:0 0 21px;"></div>';
+    echo '<div id="chart_div_percent" style="margin:0 0 21px;"></div>';
     ?>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -216,7 +226,29 @@ if(count($i_query)){
         // instantiates the pie chart, passes in the data and
         // draws it.
         function drawChart() {
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_percent'));
+            var options = {
+                hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:45}
+            }
+            var data = google.visualization.arrayToDataTable([
+                ['Day', 'Percent'],
+                <?php
+                foreach($daily_percent as $day => $sales){
+                    echo "['".$day."', ".$sales."],";
+                }
+                ?>
+            ]);
+            chart.draw(data, options);
+        }
 
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart2);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart2() {
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
             var options = {
                 hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:45}
