@@ -234,7 +234,6 @@ if(count($i_query)){
     echo ( $x_updated > 0 ? '<div>'.$x_updated.' Halfed!<hr /></div>' : '' );
 
     ksort($daily_sales);
-    print_r($daily_sales);
     echo '<div id="chart_div"></div>';
     ?>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -262,7 +261,7 @@ if(count($i_query)){
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-            var options ={ hAxis: {title: "Sales by Day" , slantedText:true, slantedTextAngle:90 }}
+            var options = { hAxis: {direction:-1, slantedText:true, slantedTextAngle:45 }}
             chart.draw(data, options);
         }
     </script>
