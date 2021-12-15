@@ -261,7 +261,7 @@ if(count($i_query)){
             ]);
 
             // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.arrayToDataTable(document.getElementById('chart_div'));
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
             chart.draw(data, {'title':'Sales by Day',
                 'width':400,
                 'height':300});
