@@ -252,8 +252,7 @@ if(count($i_query)){
 
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
             var options = {
-                hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:90},
-                vAxis: {showTextEvery:1}
+                hAxis: {showTextEvery:10, slantedText:true, slantedTextAngle:90}
             }
             var data = google.visualization.arrayToDataTable([
                 ['Day', 'Sales'],
