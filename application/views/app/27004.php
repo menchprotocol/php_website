@@ -9,6 +9,7 @@ $gross_commission = 0;
 $gross_payout = 0;
 $gross_currencies = array();
 $i_query = array();
+$daily_sales = array();
 
 //Generate list of payments:
 $payment_es = $this->X_model->fetch(array(
@@ -64,10 +65,8 @@ if (isset($_GET['e__id'])) {
 }
 
 //List all payment Ideas and their total earnings
-$x_ids = array();
 $x_updated = 0;
 $body_content = '';
-$ids = '';
 foreach($i_query as $i){
 
     //Total earnings:
@@ -76,7 +75,6 @@ foreach($i_query as $i){
     $total_revenue = 0;
     $total_paypal_fee = 0;
     $currencies = array();
-    $ids .= $i['i__id'].',';
 
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -151,8 +149,6 @@ foreach($i_query as $i){
         $transaction_content .= '<td style="text-align: right;">'.$x__metadata['mc_currency'].'</td>';
         $transaction_content .= '<td style="text-align: right;" id="refund_'.$x['x__id'].'"><a href="#" onclick="paypal_refund('.$x['x__id'].', '.number_format($x__metadata['mc_gross'], 2).')" style="font-weight:bold;"><u>Refund</u></a> <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank"><i class="fas fa-info-circle"></i></a> <a href="/-4341?x__id='.$x['x__id'].'" target="_blank"><i class="fas fa-atlas"></i></a></td>';
 
-        array_push($x_ids, $x['x__id']);
-
         $transaction_content .= '</tr>';
 
     }
@@ -166,6 +162,12 @@ foreach($i_query as $i){
     $gross_commission += $total_commission;
     $gross_payout += $payout;
 
+    $date = date("Ymd", strtotime($x['x__time']));
+    if(isset($daily_sales[$date])){
+        $daily_sales[$date] += $gross_revenue;
+    } else {
+        $daily_sales[$date] = $gross_revenue;
+    }
 
     $has_limits = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -230,8 +232,10 @@ if(count($i_query)){
     echo '</tr>';
     echo '</table>';
     echo ( $x_updated > 0 ? '<div>'.$x_updated.' Halfed!<hr /></div>' : '' );
-    echo '<div class="texttransparent">Transactions: '.join(',',$x_ids).'</div>';
-    echo '<div class="texttransparent">'.$ids.'</div>';
+
+    ksort($daily_sales);
+    print_r($daily_sales);
+
 }
 
 ?>
