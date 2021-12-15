@@ -262,7 +262,7 @@ if(count($i_query)){
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-            var options ={ hAxis: {title: "Sales by Day" , direction:-1, slantedText:true, slantedTextAngle:90 }}
+            var options ={ hAxis: {title: "Sales by Day" , slantedText:true, slantedTextAngle:90 }}
             chart.draw(data, options);
         }
     </script>
