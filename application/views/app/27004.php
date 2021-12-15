@@ -255,7 +255,7 @@ if(count($i_query)){
                 ['Day', 'Sales'],
                 <?php
                 foreach($daily_sales as $day => $sales){
-                    echo "['".$day."', ".number_format($sales, 0, '.', ',')."],";
+                    echo "['".$day."', ".number_format($sales, 0, '.', '')."],";
                 }
                 ?>
             ]);
