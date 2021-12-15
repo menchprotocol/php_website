@@ -200,6 +200,42 @@ foreach($i_query as $i){
 
 if(count($i_query)){
 
+    ksort($daily_sales);
+    echo '<div id="chart_div" style="margin: 34px 0;"></div>';
+    ?>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            var options = {
+                hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:45}
+            }
+            var data = google.visualization.arrayToDataTable([
+                ['Day', 'Sales'],
+                <?php
+                foreach($daily_sales as $day => $sales){
+                    echo "['".$day."', ".number_format($sales, 0, '.', '')."],";
+                }
+                ?>
+            ]);
+            chart.draw(data, options);
+        }
+    </script>
+    <?php
+
+
+
     echo '<div style="text-align: center;"><a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" class="texttransparent">Toggle Advance Columns</a></div>';
 
 
@@ -232,40 +268,6 @@ if(count($i_query)){
     echo '</tr>';
     echo '</table>';
     echo ( $x_updated > 0 ? '<div>'.$x_updated.' Halfed!<hr /></div>' : '' );
-
-    ksort($daily_sales);
-    echo '<div id="chart_div" style="margin-top: 34px;"></div>';
-    ?>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-
-        // Load the Visualization API and the corechart package.
-        google.charts.load('current', {'packages':['corechart']});
-
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
-
-        // Callback that creates and populates a data table,
-        // instantiates the pie chart, passes in the data and
-        // draws it.
-        function drawChart() {
-
-            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-            var options = {
-                hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:45}
-            }
-            var data = google.visualization.arrayToDataTable([
-                ['Day', 'Sales'],
-                <?php
-                foreach($daily_sales as $day => $sales){
-                    echo "['".$day."', ".number_format($sales, 0, '.', '')."],";
-                }
-                ?>
-            ]);
-            chart.draw(data, options);
-        }
-    </script>
-    <?php
 
 }
 
