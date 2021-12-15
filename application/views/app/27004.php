@@ -151,7 +151,7 @@ foreach($i_query as $i){
 
         $transaction_content .= '</tr>';
 
-        $date = date("Ymd", strtotime($x['x__time']));
+        $date = date("ymd", strtotime($x['x__time']));
         if(isset($daily_sales[$date])){
             $daily_sales[$date] += $x__metadata['mc_gross'];
         } else {
@@ -252,7 +252,7 @@ if(count($i_query)){
 
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
             var options = {
-                hAxis: {showTextEvery:10, slantedText:true, slantedTextAngle:90}
+                hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:45}
             }
             var data = google.visualization.arrayToDataTable([
                 ['Day', 'Sales'],
