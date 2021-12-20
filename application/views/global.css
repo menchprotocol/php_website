@@ -556,7 +556,7 @@ label:focus,
     display: block;
     padding: 8px 0;
     max-width: 540px;
-    margin: 0 auto;
+    margin: inherit auto inherit;
 }
 
 .nav-controller div{
