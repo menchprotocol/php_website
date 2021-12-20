@@ -522,6 +522,7 @@ if(!$top_i__id){
 
         //Get Started
         echo '<div class="nav-controller select-btns"><a class="controller-nav btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
+        echo '<div class="doclear">&nbsp;</div>';
     }
 
 } else {
@@ -605,6 +606,7 @@ if(!$top_i__id){
         echo '<div class="nav-controller">';
         echo $buttons_ui;
         echo '</div>';
+        echo '<div class="doclear">&nbsp;</div>';
     }
 
 }
