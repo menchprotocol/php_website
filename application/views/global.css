@@ -556,6 +556,7 @@ label:focus,
     display: block;
     padding: 8px 0;
     max-width: 540px;
+    margin: 0 auto;
 }
 
 .nav-controller div{
