@@ -2166,7 +2166,6 @@ i, .btn .show-max {
     line-height: 120%;
     font-size: 1em;
     display: block;
-    text-align: center;
     border-radius: 5px;
     vertical-align: middle;
     min-height: 68px;
@@ -2177,7 +2176,6 @@ i, .btn .show-max {
     line-height: 110%;
     font-size: 0.85em;
     display: block;
-    text-align: center;
     border-radius: 5px;
     vertical-align: middle;
     min-height: 34px;
@@ -3158,6 +3156,7 @@ font-weight: bold !important;
 
 
 /* TEXT ALIGN LEFT */
+.custom_ui_14541_14542 .inner-content,
 .custom_ui_14541_14542 .msg{
     text-align: left;
 }
@@ -3176,6 +3175,7 @@ font-weight: bold !important;
 
 
 /* TEXT ALIGN CENTER */
+.custom_ui_14541_14543 .inner-content,
 .custom_ui_14541_14543 .msg{
     text-align: center;
 }
@@ -3196,6 +3196,7 @@ font-weight: bold !important;
 
 
 /* TEXT ALIGN RIGHT */
+.custom_ui_14541_14544 .inner-content,
 .custom_ui_14541_14544 .msg{
     text-align: right;
 }
