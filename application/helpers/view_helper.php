@@ -368,24 +368,24 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 }
 
 
-function view_cover($coin__type, $cover_code, $noicon_default = null)
+function view_cover($coin__type, $cover_code, $noicon_default = null, $icon_prefix = '')
 {
     //A simple function to display the Member Icon OR the default icon if not available:
     if(filter_var($cover_code, FILTER_VALIDATE_URL)){
 
-        return '<img src="'.$cover_code.'"'.( substr_count($cover_code, 'class=') ? ' class="'.str_replace(',',' ',one_two_explode('class=','&', $cover_code)).'" ' : '' ).'/>';
+        return $icon_prefix.'<img src="'.$cover_code.'"'.( substr_count($cover_code, 'class=') ? ' class="'.str_replace(',',' ',one_two_explode('class=','&', $cover_code)).'" ' : '' ).'/>';
 
     } elseif (string_is_icon($cover_code)) {
 
-        return '<i class="'.$cover_code.'"></i>';
+        return $icon_prefix.'<i class="'.$cover_code.'"></i>';
 
     } elseif(strlen($cover_code)) {
 
-        return $cover_code;
+        return $icon_prefix.$cover_code;
 
     } elseif($noicon_default) {
 
-        return $noicon_default;
+        return $icon_prefix.$noicon_default;
 
     } else {
 
