@@ -602,7 +602,7 @@ if(!$top_i__id){
     }
 
     if($buttons_found > 0){
-        echo '<div class="nav-controller margin-top-down">';
+        echo '<div class="nav-controller">';
         echo $buttons_ui;
         echo '</div>';
     }
