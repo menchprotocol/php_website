@@ -250,7 +250,7 @@ if(!$basic_header_footer){
     //Do not show for /sign view
     ?>
     <div class="container fixed-top" style="padding-bottom: 0 !important;">
-        <div class="row justify-content-center">
+        <div class="row justify-content">
             <table class="platform-navigation">
                 <tr>
                     <?php
@@ -364,7 +364,7 @@ if(!$basic_header_footer){
 }
 
 
-echo '<div id="container_search" class="container hidden headline-height hideIfEmpty"><div class="row justify-content-center hideIfEmpty"></div></div>';
+echo '<div id="container_search" class="container hidden headline-height hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
 echo '<div id="container_content" class="container">';
 
 //Any message we need to show here?

@@ -244,7 +244,7 @@ class X extends CI_Controller
                     echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Sources yet...</div>';
                 } else {
                     echo '<div class="msg alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' source'.view__s($counter).':</div>';
-                    echo '<div class="row justify-content-center">';
+                    echo '<div class="row justify-content">';
                     $ids = array();
                     foreach(view_coins_e(12274, $_POST['coin__id'], 1) as $e) {
                         array_push($ids, $e['e__id']);
@@ -269,7 +269,7 @@ class X extends CI_Controller
                     echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Ideas yet...</div>';
                 } else {
                     echo '<div class="msg alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' idea'.view__s($counter).':</div>';
-                    echo '<div class="row justify-content-center">';
+                    echo '<div class="row justify-content">';
                     $ids = array();
                     foreach($is_next as $i) {
                         array_push($ids, $i['i__id']);

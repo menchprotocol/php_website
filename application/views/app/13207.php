@@ -24,8 +24,7 @@ foreach($this->config->item('e___13207') as $x__type => $m) {
     if(!count($e_list)){
         continue;
     }
-
-    $ui = '<div class="row justify-content-center">';
+    $ui = '<div class="row justify-content">';
     $has_more = count($e_list)>($show_max_14435+1);
     foreach($e_list as $count=>$e) {
         if($count==$show_max_14435 && $has_more){

@@ -139,7 +139,7 @@ if($top_i__id){
     $previous_x = $this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']);
     if(count($previous_x)){
 
-        $body = '<div class="row justify-content-center list_26000">';
+        $body = '<div class="row justify-content list_26000">';
         foreach($previous_x as $count => $sitemap_i){
             $body .= view_i(14450, $top_i__id, null, $sitemap_i);
         }
@@ -152,7 +152,7 @@ if($top_i__id){
 */
 
 
-echo '<div class="row justify-content-center">';
+echo '<div class="row justify-content">';
 echo view_i(20417, $top_i__id, null, $i_focus);
 echo '</div>';
 
@@ -249,7 +249,7 @@ if($top_i__id) {
 
 
             //Open for list to be printed:
-            $select_answer = '<div class="row justify-content-center list-answers" i__type="' . $i_focus['i__type'] . '">';
+            $select_answer = '<div class="row justify-content list-answers" i__type="' . $i_focus['i__type'] . '">';
 
             //List children to choose from:
             foreach ($is_next as $key => $next_i) {

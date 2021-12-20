@@ -50,7 +50,7 @@ if(!$source_is_e || $superpower_13422){
     $trigger_hide = null;
 
 
-    $profile_ui = '<div id="list-in-11030" class="row justify-content-center">';
+    $profile_ui = '<div id="list-in-11030" class="row justify-content">';
     $counter = 0; //Recount
     foreach($profiles as $e_link) {
 
@@ -76,7 +76,7 @@ if(!$source_is_e || $superpower_13422){
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"
                            placeholder="'.$e___11035[14055]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content-center"></div></div></div></div>';
+                </div><div class="algolia_pad_search row justify-content"></div></div></div></div>';
     }
 
     echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, false);
@@ -85,7 +85,7 @@ if(!$source_is_e || $superpower_13422){
 }
 
 //Focus Source:
-echo '<div class="row justify-content-center">';
+echo '<div class="row justify-content">';
 echo view_e(4251, $e, null, $source_of_e);
 echo '</div>';
 
@@ -163,7 +163,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             }
         }
 
-        $ui .= '<div id="list-in-11029" class="row justify-content-center hideIfEmpty">';
+        $ui .= '<div id="list-in-11029" class="row justify-content hideIfEmpty">';
 
 
         $count = 0;
@@ -207,7 +207,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content-center"></div></div></div>';
+                    </div><div class="algolia_pad_search row justify-content"></div></div></div>';
 
         } else {
 
@@ -248,7 +248,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             //Need 2 or more to sort...
             $ui .= ( count($i_stars) >= 2 ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
 
-            $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-10573">';
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-10573">';
             foreach($i_stars as $item){
                 $ui .= view_i(10573, 0, null, $item,null, $e);
             }
@@ -267,7 +267,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content-center"></div></div></div>';
+                </div><div class="algolia_pad_search row justify-content"></div></div></div>';
 
             $ui .= '<script> $(document).ready(function () { i_load_search(10573); }); </script>';
 
@@ -284,7 +284,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $max_seconds = intval(view_memory(6404,14841));
         $max_i__spectrum = 0;
 
-        $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-13550">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-13550">';
         foreach($list_i as $count => $item){
 
             $i_stats = i_stats($item['i__metadata']);
@@ -324,7 +324,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content-center"></div></div></div>';
+                </div><div class="algolia_pad_search row justify-content"></div></div></div>';
 
             $ui .= '<script> $(document).ready(function () { i_load_search(13550); }); </script>';
 
@@ -343,7 +343,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
         if($counter > 0){
 
-            $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12896">';
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12896">';
             foreach($i_notes_query as $count => $i_notes) {
                 $ui .= view_i(12896, $i_notes['x__left'], null, $i_notes);
             }
@@ -363,7 +363,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
             $list_x  = view_coins_e($x__type, $e['e__id'], 1);
 
-            $ui .= '<div class="row justify-content-center hideIfEmpty" id="list-in-12969">';
+            $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12969">';
             foreach($list_x as $item){
                 $ui .= view_i($x__type, $item['i__id'], null, $item,null, $e);
             }
@@ -392,7 +392,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $item_counters = $this->X_model->fetch($i_notes_filters, array('x__right'), 0, 0, array(), 'COUNT(i__id) as totals');
         $counter = $item_counters[0]['totals'];
         if($counter>0){
-            $ui .= '<div class="row justify-content-center">';
+            $ui .= '<div class="row justify-content">';
             $i_notes_query = $this->X_model->fetch($i_notes_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC'));
             foreach($i_notes_query as $count => $i_notes) {
                 $ui .= view_i(4485, 0, null, $i_notes);
@@ -411,7 +411,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $item_counters = $this->X_model->fetch($owner_filters, array(), 0, 0, array(), 'COUNT(x__id) as totals');
         $counter = $item_counters[0]['totals'];
         if($counter){
-            $ui .= '<div class="row justify-content-center">';
+            $ui .= '<div class="row justify-content">';
             if($x__type==4250){
                 foreach($this->X_model->fetch($owner_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC')) as $count => $i_own) {
                     $ui .= view_i(4250, 0, null, $i_own);

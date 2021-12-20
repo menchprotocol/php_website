@@ -65,7 +65,7 @@ $previous_is = $this->X_model->fetch(array(
     'x__right' => $i_focus['i__id'],
 ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
 
-$body = '<div id="list-in-11019" class="row justify-content-center">';
+$body = '<div id="list-in-11019" class="row justify-content">';
 foreach($previous_is as $previous_i) {
     $body .= view_i(11019, 0, null, $previous_i);
 }
@@ -78,7 +78,7 @@ if($e_of_i && $is_active){
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[14016]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content-center"></div></div>';
+                    </div><div class="algolia_pad_search row justify-content"></div></div>';
 }
 
 echo view_headline(11019, count($previous_is), $e___11035[11019], $body, count($previous_is) > 0 && in_array(11019, $this->config->item('n___20424')));
@@ -97,7 +97,7 @@ if(isset($_GET['load__e']) && $superpower_14005){
 
 
 
-echo '<div class="row justify-content-center">';
+echo '<div class="row justify-content">';
 echo view_i(4250, 0, null, $i_focus);
 echo '</div>';
 
@@ -143,7 +143,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         ), array('x__up'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($i_notes);
 
-        $ui .= '<div id="add-e-' .$x__type . '" class="row justify-content-center e-adder">';
+        $ui .= '<div id="add-e-' .$x__type . '" class="row justify-content e-adder">';
         foreach($i_notes as $i_note) {
             $ui .= view_e($x__type, $i_note,  null, $e_of_i && $is_active);
         }
@@ -157,7 +157,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                            class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"                          
                            placeholder="' . $e___11035[14055]['m__title'] . '">
-                </div><div class="algolia_pad_search row justify-content-center"></div></div>';
+                </div><div class="algolia_pad_search row justify-content"></div></div>';
         }
 
     } elseif($x__type==12273){
@@ -171,7 +171,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
         $counter = count($is_next);
 
-        $ui .= '<div id="list-in-13542" class="row justify-content-center hideIfEmpty">';
+        $ui .= '<div id="list-in-13542" class="row justify-content hideIfEmpty">';
         foreach($is_next as $next_i) {
             $ui .= view_i(13542, 0, $i_focus, $next_i);
         }
@@ -185,7 +185,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                            class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content-center"></div></div>';
+                </div><div class="algolia_pad_search row justify-content"></div></div>';
         }
 
     } elseif($x__type==6255) {
@@ -208,7 +208,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
             $query = $this->X_model->fetch($query_filters, array('x__source'), view_memory(6404,11064), 0, array('x__id' => 'DESC'));
 
             //Return UI:
-            $ui .= '<div class="row justify-content-center">';
+            $ui .= '<div class="row justify-content">';
             foreach($query as $item){
                 $ui .= view_e(6255, $item);
             }
@@ -226,7 +226,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
         $counter = 0;
 
-        $ui .= '<div class="row justify-content-center" id="list-in-4983">';
+        $ui .= '<div class="row justify-content" id="list-in-4983">';
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
@@ -245,7 +245,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content-center"></div></div>';
+                    </div><div class="algolia_pad_search row justify-content"></div></div>';
 
     } elseif(in_array($x__type, $this->config->item('n___4485'))){
 
@@ -268,7 +268,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         $counter = $u_x[0]['totals'];
         if($counter > 0){
 
-            $ui .= '<div class="row justify-content-center">';
+            $ui .= '<div class="row justify-content">';
             foreach($this->X_model->fetch(array(
                 'x__left' => $i_focus['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED

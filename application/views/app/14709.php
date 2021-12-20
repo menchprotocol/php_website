@@ -19,7 +19,7 @@ if(!$member_e){
     //List all eligible:
 
     echo '<div class="headline top-margin"><span class="icon-block">'.$e___11035[14730]['m__cover'].'</span>'.$e___11035[14730]['m__title'].'</div>';
-    echo '<div class="row justify-content-center hideIfEmpty" id="list-in-14730">';
+    echo '<div class="row justify-content hideIfEmpty" id="list-in-14730">';
     foreach(view_coins_e(6255, $member_e['e__id'], 1) as $item){
         $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
         if($completion_rate['completion_percentage'] >= 100){
@@ -82,7 +82,7 @@ if(!$member_e){
         }
 
 
-        echo view_headline(14730, null, $e___14709[14730], '<div class="row justify-content-center">'.view_i(14730, $is[0]['i__id'], null, $is[0]).'</div>', true);
+        echo view_headline(14730, null, $e___14709[14730], '<div class="row justify-content">'.view_i(14730, $is[0]['i__id'], null, $is[0]).'</div>', true);
 
 
         //Continious Updates

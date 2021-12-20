@@ -667,8 +667,8 @@ function view_coins(){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $query = $CI->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
-    $ui = '<div class="row justify-content-center list-coins"><span style="min-width: 89px; min-height: 20px; text-align: right; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;Transactions</div>';
-    $ui .= '<div class="row justify-content-center margin-top-down list-coins">';
+    $ui = '<div class="row justify-content list-coins"><span style="min-width: 89px; min-height: 20px; text-align: right; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;Transactions</div>';
+    $ui .= '<div class="row justify-content margin-top-down list-coins">';
     $count = 0;
     foreach($CI->config->item('e___14874') as $e__id => $m) {
         $count++;
@@ -1069,7 +1069,7 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
 
     //Build Body UI:
-    $body = '<div class="row justify-content-center">';
+    $body = '<div class="row justify-content">';
     $is_first_incomplete = false;
     $found_first_incomplete = false;
     $found_first_complete = false;
@@ -1495,7 +1495,7 @@ function view_i_featured(){
             continue;
         }
 
-        $ui = '<div class="row justify-content-center margin-top-down-half">';
+        $ui = '<div class="row justify-content margin-top-down-half">';
         foreach($query as $i){
             $ui .= view_i(14877, 0, null, $i);
         }
@@ -1524,7 +1524,7 @@ function view_info_box(){
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
         $max_limit = view_memory(6404,14903);
         $ui .= '<h2 class="info_box_header css__title">' . $e___11035[$e__id]['m__title'] . '</h2>';
-        $ui .= '<div class="row justify-content-center">';
+        $ui .= '<div class="row justify-content">';
         $counter = 0;
         foreach($CI->config->item('e___'.$e__id) as $m) {
             $counter++;

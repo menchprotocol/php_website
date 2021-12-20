@@ -11,7 +11,7 @@ echo '</form>';
 
 
 if(isset($_GET['i__id']) && isset($_GET['top_i__id'])){
-    echo '<div class="row justify-content-center">';
+    echo '<div class="row justify-content">';
     $find_previous = $this->X_model->find_previous($member_e['e__id'], $_GET['top_i__id'], $_GET['i__id']);
     if(count($find_previous)){
         foreach($find_previous as $i){

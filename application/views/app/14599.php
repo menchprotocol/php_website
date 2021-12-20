@@ -8,7 +8,7 @@ if($member_e && isset($_GET['reset'])){
 
 
 $found_cache = 0;
-echo '<div class="row justify-content-center margin-top-down">';
+echo '<div class="row justify-content margin-top-down">';
 foreach($this->config->item('e___14599') as $app_e__id => $cache_apps){
 
     //Fetch Last Cache
