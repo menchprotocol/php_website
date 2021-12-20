@@ -556,6 +556,7 @@ label:focus,
     display: table;
     table-layout: fixed;
     padding: 8px 0;
+    max-width: 540px;
 }
 
 .nav-controller div{
