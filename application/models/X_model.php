@@ -143,7 +143,6 @@ class X_model extends CI_Model
         }
 
 
-
         //See if this transaction type has any subscribers:
         if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */){
 
@@ -1434,6 +1433,28 @@ class X_model extends CI_Model
 
         //Log completion transaction:
         $new_x = $this->X_model->create($add_fields);
+
+        //Fetch Source ID:
+        $watchers = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 10573, //WATCHERS
+            'x__right' => $i['i__id'],
+            'x__up > 0' => null,
+        ), array(), 0);
+        if(count($watchers)){
+
+            $es_discoverer = $this->E_model->fetch(array(
+                'e__id' => $add_fields['x__source'],
+            ));
+            if(count($es_discoverer)){
+                //Notify Idea Watchers
+                foreach($watchers as $watcher){
+                    $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered '.$i['i__title'], ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).'You received this message because you are watching ['.$i['i__title'].']');
+                }
+            }
+
+        }
+
 
 
         //Check Auto Completes:
