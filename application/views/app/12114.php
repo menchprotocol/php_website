@@ -16,26 +16,17 @@ $plain_message = 'In the last '.$last_x_days.' day'.view__s($last_x_days).' '.$e
 
 foreach($this->config->item('e___14874') as $x__type => $m) {
 
-    //Calculate Growth Rate:
-    if(substr_count($m['m__cover'], '6255')>0){
-        $icon = '🔴';
-    } elseif(substr_count($m['m__cover'], '12273')>0){
-        $icon = '🟡';
-    } elseif(substr_count($m['m__cover'], '12274')>0){
-        $icon = '🔵';
-    }
-
     $unique = count_unique_coins($x__type, null, $x__time_end);
     $this_week = count_unique_coins($x__type, $x__time_start, $x__time_end);
     $growth = format_percentage(($unique / ( $unique - $this_week ) * 100) - 100);
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $plain_message .= "\n".$icon.' '.$m['m__title'].' '.$growth;
+    $plain_message .= "\n".$m['m__title'].' '.$growth;
 
     //Primary Coin?
     if(in_array($x__type, $this->config->item('n___13776'))){
-        $subject = $icon.' '.$m['m__title'].' '.$growth.' for the Week of '.date("M jS", $x__time_start_timestamp);
+        $subject = $m['m__title'].' '.$growth.' for the Week of '.date("M jS", $x__time_start_timestamp);
     }
 
 }
