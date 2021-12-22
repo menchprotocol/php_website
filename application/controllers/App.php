@@ -45,11 +45,11 @@ class App extends CI_Controller
         boost_power();
         $member_e = false;
         $is_u_request = isset($_SERVER['SERVER_NAME']);
+        $e___6287 = $this->config->item('e___6287'); //APP
 
         if($memory_detected && $is_u_request){
             //Needs superpowers?
             $member_e = superpower_unlocked();
-            $e___6287 = $this->config->item('e___6287'); //APP
             $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__profile']);
             if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 die(view_unauthorized_message(end($superpower_actives)));
@@ -65,7 +65,7 @@ class App extends CI_Controller
             return redirect_message('/@'.$member_e['e__id']);
         } elseif(!$member_e && in_array($app_e__id, $this->config->item('n___14740'))){
             //Should redirect them:
-            return redirect_message('/-4269?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You must login to use this app</div>', true);
+            return redirect_message('/-4269?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>You must login to access ['.$e___6287[$app_e__id]['m__title'].']</div>');
         }
 
 
