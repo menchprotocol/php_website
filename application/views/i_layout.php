@@ -57,33 +57,6 @@ if(!$e_of_i){
 }
 
 
-
-$previous_is = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-    'x__right' => $i_focus['i__id'],
-), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
-
-$body = '<div id="list-in-11019" class="row justify-content">';
-foreach($previous_is as $previous_i) {
-    $body .= view_i(11019, 0, null, $previous_i);
-}
-$body .= '</div>';
-if($e_of_i && $is_active){
-    $body .= '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
-                    <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
-                        <input type="text"
-                               class="form-control form-control-thick add-input algolia_search dotransparent"
-                               maxlength="' . view_memory(6404,4736) . '"
-                               placeholder="'.$e___11035[14016]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content"></div></div>';
-}
-
-echo view_headline(11019, count($previous_is), $e___11035[11019], $body, count($previous_is) > 0 && in_array(11019, $this->config->item('n___20424')));
-
-
 if(isset($_GET['load__e']) && $superpower_14005){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
@@ -160,7 +133,32 @@ foreach($this->config->item('e___11018') as $x__type => $m){
                 </div><div class="algolia_pad_search row justify-content"></div></div>';
         }
 
-    } elseif($x__type==12273){
+    } elseif($x__type==11019){
+
+        $previous_is = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__right' => $i_focus['i__id'],
+        ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
+
+        $ui .= '<div id="list-in-11019" class="row justify-content">';
+        foreach($previous_is as $previous_i) {
+            $body .= view_i(11019, 0, null, $previous_i);
+        }
+        $ui .= '</div>';
+        if($e_of_i && $is_active){
+            $ui .= '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick add-input algolia_search dotransparent"
+                               maxlength="' . view_memory(6404,4736) . '"
+                               placeholder="'.$e___11035[14016]['m__title'].'">
+                    </div><div class="algolia_pad_search row justify-content"></div></div>';
+        }
+
+    } elseif($x__type==13542){
 
         //IDEAS
         $is_next = $this->X_model->fetch(array(
