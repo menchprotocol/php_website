@@ -369,7 +369,7 @@ function toggle_headline(headline_id){
     if($('.headline_title_' + headline_id+' .icon_26008').hasClass('hidden')){
         //Currently open, must now be closed:
         var action_id = 26008; //Close
-         $('.headline_title_' + headline_id+ ' .icon_26008').removeClass('hidden');
+        $('.headline_title_' + headline_id+ ' .icon_26008').removeClass('hidden');
         $('.headline_title_' + headline_id+ ' .icon_26007').addClass('hidden');
         $('.headline_body_' + headline_id).addClass('hidden');
     } else {
@@ -388,6 +388,37 @@ function toggle_headline(headline_id){
         x__down: x__down,
         x__right: x__right,
     });
+}
+
+function toggle_pills(headline_id){
+
+    var x__down = 0;
+    var x__right = 0;
+    var current_type = ( $('#focus__type').length ? parseInt($('#focus__type').val()) : 0 );
+    if(current_type==12273){
+        x__right = current_id();
+    } else if (current_type==12274){
+        x__down = current_id();
+    }
+
+    if(!$('.thepill' + headline_id+' .nav-link').hasClass('active')){
+
+        //Currently closed, must now be opened:
+        $('.nav-link').removeClass('active');
+        $('.thepill' + headline_id+ ' .nav-link').addClass('active');
+        $('.headlinebody').addClass('hidden');
+        $('.headline_body_' + headline_id).removeClass('hidden');
+
+        //Log Transaction:
+        x_create({
+            x__source: js_pl_id,
+            x__type: 26007,
+            x__up: headline_id,
+            x__down: x__down,
+            x__right: x__right,
+        });
+
+    }
 }
 
 

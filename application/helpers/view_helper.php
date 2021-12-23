@@ -1934,13 +1934,17 @@ function view_social(){
 }
 
 function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad = false){
+
     if(!strlen($ui)){
         return false;
-    } else {
-        $CI =& get_instance();
-        $e___26006 = $CI->config->item('e___26006'); //Toggle Headline
-        return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . ( !is_null($counter) ? '<span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span> ' : '' ).$m['m__title'].':<span class="icon-block pull-right headline_title_'.$x__type.'"><span class="icon_26007 '.( !$is_open ? ' hidden ' : '' ).'">'.$e___26006[26008]['m__cover'].'</span><span class="icon_26008 '.( $is_open ? ' hidden ' : '' ).'">'.$e___26006[26007]['m__cover'].'</span></span></a>'.'<div class="headlinebody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
     }
+
+    return '<script> $(\'.nav-pills\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span><span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span></a></li>\') </script>'.'<div class="headlinebody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
+
+    //$CI =& get_instance();
+    //        $e___26006 = $CI->config->item('e___26006'); //Toggle Headline
+    //return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . ( !is_null($counter) ? '<span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span> ' : '' ).$m['m__title'].':<span class="icon-block pull-right headline_title_'.$x__type.'"><span class="icon_26007 '.( !$is_open ? ' hidden ' : '' ).'">'.$e___26006[26008]['m__cover'].'</span><span class="icon_26008 '.( $is_open ? ' hidden ' : '' ).'">'.$e___26006[26007]['m__cover'].'</span></span></a>'.'<div class="headlinebody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
+
 }
 
 function view_x_progress($completion_rate, $i){

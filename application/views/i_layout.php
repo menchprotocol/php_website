@@ -83,6 +83,8 @@ echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
 ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i);
 
 
+echo '<ul class="nav nav-pills"></ul>';
+
 //IDEA LAYOUT
 foreach($this->config->item('e___11018') as $x__type => $m){
 
@@ -283,6 +285,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
         //Hide since Zero:
         continue;
     }
+
 
     //Show headline:
     echo view_headline($x__type, $counter, $m, $ui, in_array($x__type, $this->config->item('n___20424')));
