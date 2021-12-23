@@ -89,27 +89,26 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $has_more = $counter>($show_max_14538+1) && 0; //Disabled for now
         $trigger_hide = null;
 
-
-        $profile_ui = '<div id="list-in-11030" class="row justify-content">';
+        $ui .= '<div id="list-in-11030" class="row justify-content">';
         $counter = 0; //Recount
         foreach($profiles as $e_link) {
 
             if($counter==$show_max_14538 && $has_more){
-                $profile_ui .= view_show_more(14538, 'see_all_11030');
+                $ui .= view_show_more(14538, 'see_all_11030');
             }
 
             if($counter>=$show_max_14538 && $has_more){
                 $trigger_hide = 'see_all_11030 hidden';
             }
 
-            $profile_ui .= view_e(11030, $e_link, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_link['x__source']))));
+            $ui .= view_e(11030, $e_link, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_link['x__source']))));
             $counter++;
 
         }
-        $profile_ui .= '</div>';
+        $ui .= '</div>';
 
         if($superpower_13422){
-            $profile_ui .= '<div class="'.$trigger_hide.'"><div class="headline-height"><div class="new-list-11030 list-adder">
+            $ui .= '<div class="'.$trigger_hide.'"><div class="headline-height"><div class="new-list-11030 list-adder">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11030 .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                     <input type="text"
@@ -118,8 +117,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
                            placeholder="'.$e___11035[14055]['m__title'].'">
                 </div><div class="algolia_pad_search row justify-content"></div></div></div></div>';
         }
-
-        $ui .= view_headline(11030, $counter, $e___11035[11030], $profile_ui, false);
 
     } elseif($x__type==11029){
 
