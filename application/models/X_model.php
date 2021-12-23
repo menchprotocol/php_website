@@ -439,12 +439,27 @@ class X_model extends CI_Model
     function send_dm($e__id, $subject, $plain_message, $x_data = array())
     {
 
-        if (count($this->X_model->fetch(array(
-            'x__up' => 26583, //Unsubscribed
+        $notification_levels = $this->X_model->fetch(array(
+            'x__up IN (' . join(',', $this->config->item('n___28904')) . ')' => null, //Manage Notifications
             'x__down' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        )))) {
+        ));
+
+        if (!count($notification_levels)) {
+            $this->X_model->create(array(
+                'x__message' => 'send_dm() user is not in any of @28904',
+                'x__type' => 4246, //Platform Bug Reports
+                'x__up' => 28904,
+                'x__down' => $e__id,
+            ));
+            return array(
+                'status' => 0,
+                'message' => 'Unknown user status',
+            );
+        }
+
+        if(in_array($notification_levels[0]['x__up'], $this->config->item('n___28914'))){
             return array(
                 'status' => 0,
                 'message' => 'User is unsubscribed',
@@ -455,6 +470,7 @@ class X_model extends CI_Model
             'email_addresses' => array(),
             'phone_count' => 0,
         );
+
 
         //Send Emails:
         foreach($this->X_model->fetch(array(
@@ -481,70 +497,76 @@ class X_model extends CI_Model
         }
 
 
-        $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
-        if(count($stats['email_addresses']) && strlen($sms_message)>view_memory(6404,27891)){
-            $sms_message  = 'We emailed ['.$subject.'] to '.join(' & ',$stats['email_addresses']).' (also check spam)';
-        }
 
+        //Should we send SMS?
+        if(in_array($notification_levels[0]['x__up'], $this->config->item('n___28915'))){
 
-        //Breakup into smaller SMS friendly messages
-        $cred_twilio = $this->config->item('cred_twilio');
-        $sms_message = str_replace("\n"," ",$sms_message);
-        //Send SMS
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 4783, //Phone
-            'x__down' => $e__id,
-        )) as $e_data){
-
-            foreach(explode('|||',wordwrap($sms_message, view_memory(6404,27891), "|||")) as $single_message){
-
-                $post = array(
-                    'From' => view_memory(6404,27673), //Twilio From number
-                    'Body' => $single_message,
-                    'To' => $e_data['x__message'],
-                );
-
-                $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$cred_twilio['account_sid']."/SMS/Messages");
-                curl_setopt($x, CURLOPT_POST, true);
-                curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-                curl_setopt($x, CURLOPT_USERPWD, $cred_twilio['account_sid'].":".$cred_twilio['auth_token']);
-                curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
-                $y = curl_exec($x);
-                curl_close($x);
-
-
-                if(substr_count($y, '<Code>21211</Code>')){
-                    //Remove Phone Number:
-                    $sms_success = false;
-                    $this->X_model->update($e_data['x__id'], array(
-                        'x__status' => 6173, //Transaction Deleted
-                    ), $e__id, 27890 /* Invalid Input Removed */);
-
-                    break;
-
-                } else {
-                    $sms_success = substr_count($y, '<SMSMessage><Sid>');
-                }
-
-                //Log transaction:
-                $this->X_model->create(array_merge($x_data, array(
-                    'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
-                    'x__source' => $e__id,
-                    'x__message' => $single_message,
-                    'x__metadata' => array(
-                        'post' => $post,
-                        'response' => $y,
-                    ),
-                )));
-
+            //Yes, generate message
+            $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
+            if(count($stats['email_addresses']) && strlen($sms_message)>view_memory(6404,27891)){
+                $sms_message  = 'We emailed ['.$subject.'] to '.join(' & ',$stats['email_addresses']).' (also check spam)';
             }
 
-            $stats['phone_count']++;
 
+            //Breakup into smaller SMS friendly messages
+            $cred_twilio = $this->config->item('cred_twilio');
+            $sms_message = str_replace("\n"," ",$sms_message);
+            //Send SMS
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__up' => 4783, //Phone
+                'x__down' => $e__id,
+            )) as $e_data){
+
+                foreach(explode('|||',wordwrap($sms_message, view_memory(6404,27891), "|||")) as $single_message){
+
+                    $post = array(
+                        'From' => view_memory(6404,27673), //Twilio From number
+                        'Body' => $single_message,
+                        'To' => $e_data['x__message'],
+                    );
+
+                    $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$cred_twilio['account_sid']."/SMS/Messages");
+                    curl_setopt($x, CURLOPT_POST, true);
+                    curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                    curl_setopt($x, CURLOPT_USERPWD, $cred_twilio['account_sid'].":".$cred_twilio['auth_token']);
+                    curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
+                    $y = curl_exec($x);
+                    curl_close($x);
+
+
+                    if(substr_count($y, '<Code>21211</Code>')){
+                        //Remove Phone Number:
+                        $sms_success = false;
+                        $this->X_model->update($e_data['x__id'], array(
+                            'x__status' => 6173, //Transaction Deleted
+                        ), $e__id, 27890 /* Invalid Input Removed */);
+
+                        break;
+
+                    } else {
+                        $sms_success = substr_count($y, '<SMSMessage><Sid>');
+                    }
+
+                    //Log transaction:
+                    $this->X_model->create(array_merge($x_data, array(
+                        'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
+                        'x__source' => $e__id,
+                        'x__message' => $single_message,
+                        'x__metadata' => array(
+                            'post' => $post,
+                            'response' => $y,
+                        ),
+                    )));
+
+                }
+
+                $stats['phone_count']++;
+
+            }
         }
 
         return array(
