@@ -35,55 +35,6 @@ $found_10573 = false;
 
 <?php
 
-//PROFILE
-if(!$source_is_e || $superpower_13422){
-
-    $profiles = $this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'x__down' => $e['e__id'],
-    ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
-
-    $counter = count($profiles);
-    $has_more = $counter>($show_max_14538+1) && 0; //Disabled for now
-    $trigger_hide = null;
-
-
-    $profile_ui = '<div id="list-in-11030" class="row justify-content">';
-    $counter = 0; //Recount
-    foreach($profiles as $e_link) {
-
-        if($counter==$show_max_14538 && $has_more){
-            $profile_ui .= view_show_more(14538, 'see_all_11030');
-        }
-
-        if($counter>=$show_max_14538 && $has_more){
-            $trigger_hide = 'see_all_11030 hidden';
-        }
-
-        $profile_ui .= view_e(11030, $e_link, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_link['x__source']))));
-        $counter++;
-
-    }
-    $profile_ui .= '</div>';
-
-    if($superpower_13422){
-        $profile_ui .= '<div class="'.$trigger_hide.'"><div class="headline-height"><div class="new-list-11030 list-adder">
-                <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11030 .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
-                    <input type="text"
-                           class="form-control form-control-thick algolia_search dotransparent add-input"
-                           maxlength="' . view_memory(6404,6197) . '"
-                           placeholder="'.$e___11035[14055]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content"></div></div></div></div>';
-    }
-
-    echo view_headline(11030, $counter, $e___11035[11030], $profile_ui, false);
-
-
-}
-
 //Focus Source:
 echo '<div class="row justify-content">';
 echo view_e(4251, $e, null, $source_of_e);
@@ -125,7 +76,52 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             $ui .= '<div><span class="icon-block">&nbsp;</span>Source referenced as '.$m['m__cover'].' '.$m['m__title'].' '.number_format($counter, 0).' times.</div>';
         }
 
-    } elseif($x__type==12274){
+    } elseif($x__type==11030){
+
+        $profiles = $this->X_model->fetch(array(
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'x__down' => $e['e__id'],
+        ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
+
+        $counter = count($profiles);
+        $has_more = $counter>($show_max_14538+1) && 0; //Disabled for now
+        $trigger_hide = null;
+
+
+        $profile_ui = '<div id="list-in-11030" class="row justify-content">';
+        $counter = 0; //Recount
+        foreach($profiles as $e_link) {
+
+            if($counter==$show_max_14538 && $has_more){
+                $profile_ui .= view_show_more(14538, 'see_all_11030');
+            }
+
+            if($counter>=$show_max_14538 && $has_more){
+                $trigger_hide = 'see_all_11030 hidden';
+            }
+
+            $profile_ui .= view_e(11030, $e_link, $trigger_hide,  ($source_of_e || ($member_e && ($member_e['e__id']==$e_link['x__source']))));
+            $counter++;
+
+        }
+        $profile_ui .= '</div>';
+
+        if($superpower_13422){
+            $profile_ui .= '<div class="'.$trigger_hide.'"><div class="headline-height"><div class="new-list-11030 list-adder">
+                <div class="input-group border">
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11030 .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                    <input type="text"
+                           class="form-control form-control-thick algolia_search dotransparent add-input"
+                           maxlength="' . view_memory(6404,6197) . '"
+                           placeholder="'.$e___11035[14055]['m__title'].'">
+                </div><div class="algolia_pad_search row justify-content"></div></div></div></div>';
+        }
+
+        $ui .= view_headline(11030, $counter, $e___11035[11030], $profile_ui, false);
+
+    } elseif($x__type==11029){
 
         //SOURCES
         $counter = view_coins_e(12274, $e['e__id'], 0, false);
