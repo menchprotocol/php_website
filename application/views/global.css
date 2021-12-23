@@ -3180,12 +3180,11 @@ color: #000000;
     float: none;
 }
 .custom_ui_14541_14543 .content-image,
-.custom_ui_14541_14543 .media-content,
-.custom_ui_14541_14544 .media-content{
+.custom_ui_14541_14543 .media-content{
     margin:0 auto;
     text-align: center;
 }
-.custom_ui_14541_14544 .nav-pills {
+.custom_ui_14541_14543 .nav-pills {
     justify-content: center;
 }
 
@@ -3212,7 +3211,10 @@ color: #000000;
 .custom_ui_14541_14544 .nav-pills {
     justify-content: right;
 }
-
+.custom_ui_14541_14544 .media-content{
+    margin:0 auto;
+    text-align: center;
+}
 
 
 
