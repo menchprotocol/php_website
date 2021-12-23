@@ -468,7 +468,11 @@ img.no-frame {
 
 
 .nav-pills {
-    margin:0 0 21px;
+    margin:0 0 28px;
+}
+.nav-link {
+    display: block;
+    padding: 8px 8px 8px 0;
 }
 
 .modal-footer{
