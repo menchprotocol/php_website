@@ -144,7 +144,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
         $ui .= '<div id="list-in-11019" class="row justify-content">';
         foreach($previous_is as $previous_i) {
-            $body .= view_i(11019, 0, null, $previous_i);
+            $ui .= view_i(11019, 0, null, $previous_i);
         }
         $ui .= '</div>';
         if($e_of_i && $is_active){
