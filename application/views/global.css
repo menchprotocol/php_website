@@ -468,7 +468,7 @@ img.no-frame {
 
 
 .nav-pills {
-    margin:0 0 21px;
+    margin:0 0 30px;
 }
 .nav-link {
     display: block;
@@ -900,8 +900,8 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     margin-top: 3px;
 }
 
-.nav-tabs .nav-item {
-    margin-bottom: -3px;
+.nav-item {
+    margin: 0;
 }
 
 #x_reply{
