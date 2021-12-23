@@ -401,24 +401,32 @@ function toggle_pills(headline_id){
         x__down = current_id();
     }
 
+    //Hide all elements
+    $('.nav-link').removeClass('active');
+    $('.headlinebody').addClass('hidden');
+
     if(!$('.thepill' + headline_id+' .nav-link').hasClass('active')){
 
         //Currently closed, must now be opened:
-        $('.nav-link').removeClass('active');
+        var action_id = 26007; //Open
         $('.thepill' + headline_id+ ' .nav-link').addClass('active');
-        $('.headlinebody').addClass('hidden');
         $('.headline_body_' + headline_id).removeClass('hidden');
 
-        //Log Transaction:
-        x_create({
-            x__source: js_pl_id,
-            x__type: 26007,
-            x__up: headline_id,
-            x__down: x__down,
-            x__right: x__right,
-        });
+    } else {
+
+        //Currently closed, must now be opened:
+        var action_id = 26008; //Close
 
     }
+
+    //Log Transaction:
+    x_create({
+        x__source: js_pl_id,
+        x__type: action_id,
+        x__up: headline_id,
+        x__down: x__down,
+        x__right: x__right,
+    });
 }
 
 
