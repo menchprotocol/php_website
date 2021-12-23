@@ -41,6 +41,8 @@ echo view_e(4251, $e, null, $source_of_e);
 echo '</div>';
 
 
+echo '<ul class="nav nav-pills"></ul>';
+
 foreach($this->config->item('e___11089') as $x__type => $m) {
 
     //Have Needed Superpowers?
@@ -420,7 +422,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
     }
 
-    echo view_headline($x__type, $counter, $m, $ui, in_array($x__type, $this->config->item('n___26005')) && $counter > 0);
+    echo view_pill($x__type, $counter, $m, $ui, in_array($x__type, $this->config->item('n___26005')) && $counter > 0);
 
 }
 
