@@ -59,17 +59,17 @@ body {
     display: inline-block;
 }
 .media-content {
-    border-radius: 10px !important;
+    border-radius: 8px !important;
     max-width: 610px;
 }
 .x__message video {
     max-width: 610px;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
 }
 .x__message img, .i_content img, .content-image {
     max-width: 100%;
     max-height: 850px;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
     display: block;
 }
 .platform-12273 .media-content, .platform-12273 .x__message video {
@@ -92,7 +92,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
 }
 .list-group-item {
     border: 0;
@@ -164,7 +164,7 @@ li a {
     background-color: #999999 !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
 }
 
 .avatar-item .avatar-icon i {
@@ -245,7 +245,7 @@ img.no-frame {
 
 .alert{
     padding:10px !important;
-    border-radius: 10px;
+    border-radius: 8px;
     margin:0 0 13px 0 !important;
     border: 0 !important;
 }
@@ -408,7 +408,7 @@ img.no-frame {
     margin-top: -8px;
 }
 .icons_large .block-icon img{
-    border-radius: 50%;
+    border-radius: 8px; /*icon*/
     line-height: 100%;
     width:100%;
     height:100%;
@@ -577,7 +577,7 @@ label:focus,
 
 .mini-circle{
     display: inline-block;
-    border-radius: 50%;
+    border-radius: 8px; /*icon*/
     background-color: #FC1B44;
     padding: 8px 0;
     width: 34px;
@@ -605,7 +605,7 @@ label:focus,
     color: #FFF;
     font-weight: bold;
     font-size: 0.8em;
-    border-radius: 10px;
+    border-radius: 8px;
     z-index: 1;
 }
 .btn-lrg{
@@ -679,7 +679,7 @@ label:focus,
 }
 .cover-photo img{
     border: 3px solid #FC1B44;
-    border-radius:34px;
+    border-radius: 8px;
     padding: 2px;
     height: 290px;
     width: 200px;
@@ -834,7 +834,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 
 .list-border{
     border: 1px solid transparent;
-    border-radius: 13px;
+    border-radius: 8px;
     overflow: hidden;
     margin: 0 5px;
 }
@@ -887,7 +887,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 }
 .dropdown-menu {
     border:3px solid transparent;
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
 
@@ -909,7 +909,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     padding: 5px;
     border: 3px solid transparent !important;
     height: 55px;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
 }
 .previous_answer{
     display: block;
@@ -919,7 +919,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 .nav-pills .nav-x.active, .nav-pills .show>.nav-x {
     color: #fff;
     background-color: #222222;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .black.active, .black.active i, .grey.active, .grey.active i {
@@ -1194,7 +1194,7 @@ a.headline {
 
 
 .modal-content .form-control{
-    border-radius: 10px;
+    border-radius: 8px;
     margin-bottom: 5px;
 }
 .platform-navigation .block-x, .platform-navigation .block-menu {
@@ -1255,7 +1255,7 @@ a.headline {
 .story-bar li{
     height: 3px;
     flex-grow: 1;
-    border-radius: 3px;
+    border-radius: 8px;
     margin: 0 5px 0 0;
     display: flex;
     background-repeat: no-repeat;
@@ -1267,7 +1267,7 @@ a.headline {
 .story-bar .progress{
     height: 3px;
     flex-grow: 1;
-    border-radius: 4px;
+    border-radius: 8px;
     margin: 0 5px;
     display: flex;
     background-repeat: no-repeat;
@@ -1465,7 +1465,7 @@ label {
     line-height: 100%;
     border: 0;
     padding: 10px;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
 }
 
 .coin-cover .btn{
@@ -1580,7 +1580,7 @@ label {
     display: block !important;
 }
 .note-btn > span > span {
-    border-radius: 50%;
+    border-radius: 8px; /*icon*/
     padding: 8px 0 !important;
     margin: 3px 3px 0 0;
 }
@@ -1691,7 +1691,7 @@ i, .btn .show-max {
 .icon-block-img img,
 .icon-block-lg img,
 .icon-block img{
-    border-radius: 50%;
+    border-radius: 8px; /*icon*/
     line-height: 100%;
     width: 33px !important;
     height: 33px !important;
@@ -1699,7 +1699,7 @@ i, .btn .show-max {
     margin: 0 !important;
 }
 .icon-block-xs img{
-    border-radius: 50%;
+    border-radius: 8px; /*icon*/
     line-height: 100%;
     width: 24px !important;
     height: 24px !important;
@@ -1713,14 +1713,14 @@ i, .btn .show-max {
 }
 .platform-large img{
     width:128px;
-    border-radius: 50%;
+    border-radius: 8px; /*icon*/
 }
 .platform-large{
     font-size: 8em !important;
     padding:0 0 13px 0;
 }
 .image-mini img{
-    border-radius: 50%;
+    border-radius: 8px; /*icon*/
     line-height: 100%;
     width: 20px !important;
     height: 20px !important;
@@ -2005,7 +2005,7 @@ i, .btn .show-max {
 .chat-title span{
     z-index: 99999999;
     padding: 3px;
-    border-radius: 10px;
+    border-radius: 8px;
     line-height: 125%;
 }
 .modal-body{
@@ -2146,7 +2146,7 @@ i, .btn .show-max {
 }
 .headline-height, .headline {
     padding: 8px 0;
-    border-radius: 10px;
+    border-radius: 8px;
     margin-bottom: 13px;
 }
 .coin_cover{
@@ -2174,7 +2174,7 @@ i, .btn .show-max {
     line-height: 120%;
     font-size: 1em;
     display: block;
-    border-radius: 5px;
+    border-radius: 8px;
     vertical-align: middle;
     min-height: 68px;
 }
@@ -2184,7 +2184,7 @@ i, .btn .show-max {
     line-height: 110%;
     font-size: 0.85em;
     display: block;
-    border-radius: 5px;
+    border-radius: 8px;
     vertical-align: middle;
     min-height: 34px;
 }
@@ -2203,7 +2203,7 @@ i, .btn .show-max {
     display: block;
     overflow: hidden;
     padding-top: 98%;
-    border-radius: 50%;
+    border-radius: 8px; /*icon*/
     margin-bottom: 0px;
     margin-top: 0px;
 }
@@ -2256,7 +2256,7 @@ i, .btn .show-max {
 }
 .modal-content{
     border: 3px solid transparent;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 .mass_action_toggle, .e_text_search, .mass_action_item{
     width: 100% !important;
@@ -2269,7 +2269,7 @@ i, .btn .show-max {
 }
 .gif-col img{
     width: 100%;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 .avatar-type-group{
     margin: 20px auto;
@@ -2369,7 +2369,7 @@ video {
     width: auto;
     max-width: 100%;
     max-height: 987px;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .message2{
@@ -2612,7 +2612,7 @@ video {
 }
 .round-btn{
     display: inline-block;
-    border-radius: 50%;
+    border-radius: 8px; /*icon*/
     width: 60px;
     height: 60px;
     padding:9px 0 0 0;
@@ -2658,11 +2658,11 @@ video {
 
 .custom_ui_13884_13886 .white-border {
     border: 3px solid #FFFFFF !important;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 .custom_ui_13884_13885 .white-border {
     border: 3px solid #222222 !important;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .first_btn{
@@ -2704,7 +2704,7 @@ font-weight: normal !important;
 
 .fa-gif-wrap{
 border:2px solid transparent;
-border-radius: 3px;
+border-radius: 8px;
 font-size: 0.8em !important;
 text-transform: uppercase;
 padding: 2px;
@@ -3306,14 +3306,14 @@ color: #000000;
 }
 
 .doabsolute {
-    border-radius: 10px !important;
+    border-radius: 8px !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
 }
 .editor_preview{
     padding:25px 13px 13px !important;
     margin: 0 41px;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
     margin-bottom: 34px;
 }
 
@@ -3336,7 +3336,7 @@ color: #000000;
 }
 .editing-mode{
     padding-top: 5px !important;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
@@ -3492,7 +3492,7 @@ h4.css__title{
 }
 .filter_table input {
     background-color: #FFF;
-    border-radius: 5px;
+    border-radius: 8px;
     color: #000;
 }
 .filter_table td {
