@@ -3014,7 +3014,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .headline-height,
 .custom_ui_13884_13886 .list-border .list-group-item,
 .custom_ui_13884_13886 .doabsolute, .custom_ui_13884_13886 .black-background {
-    /* background-color: #000000 !important; */
+    background-color: #000000 !important;
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .nav-pills .nav-link.active {
@@ -3135,7 +3135,7 @@ color: #000000;
 .custom_ui_13884_13885 .headline-height,
 .custom_ui_13884_13885 .list-border .list-group-item,
 .custom_ui_13884_13885 .doabsolute, .custom_ui_13884_13885 .black-background {
-    /* background-color:#FFFFFF !important; */
+    background-color:#FFFFFF !important;
     color: #000000 !important;
 }
 .custom_ui_13884_13885 .nav-pills .nav-link.active {
