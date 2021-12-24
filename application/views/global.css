@@ -2044,12 +2044,12 @@ i, .btn .show-max {
     height: min-content;
 }
 .edge-coin .cover-content{
-    max-height: 40%;
-    top: 84px;
+    max-height: 40% !important;
+    top: 84px !important;
 }
 .focus-coin .cover-content{
-    max-height: 65%;
-    top: 40px;
+    max-height: 65% !important;
+    top: 59px !important;
 }
 .mini-coin .cover-content{
     bottom:24px;
@@ -2134,6 +2134,7 @@ i, .btn .show-max {
 
 .coin_coins{
     width: 100%;
+
 }
 /*
 .coin_coins{
