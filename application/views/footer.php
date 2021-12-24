@@ -413,7 +413,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- COVER PREVIEW -->
                     <a name="preview_cover" style="height: 1px;">&nbsp;</a>
                     <div class="coin_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
-                        <div class="cover-wrapper"><div class="black-background cover-link" style=""><div class="cover-btn"></div></div></div>
+                        <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
                         <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="coin__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>
                     </div>
 

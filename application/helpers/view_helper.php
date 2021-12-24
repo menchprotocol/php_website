@@ -5,7 +5,7 @@ function view_show_more($see_more_type, $class, $href_link = null){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     return '<div class="coin_cover coin_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding '.$class.'">
-                                <div class="cover-wrapper"><a '.( $href_link ? 'href="'.$href_link.'"' : 'href="javascript:void(0);" onclick="$(\'.'.$class.'\').toggleClass(\'hidden\')"' ).' class="black-background cover-link"><div class="cover-btn">'.$e___11035[$see_more_type]['m__cover'].'</div></a></div>
+                                <div class="cover-wrapper"><a '.( $href_link ? 'href="'.$href_link.'"' : 'href="javascript:void(0);" onclick="$(\'.'.$class.'\').toggleClass(\'hidden\')"' ).' class="black-background-obs cover-link"><div class="cover-btn">'.$e___11035[$see_more_type]['m__cover'].'</div></a></div>
                             </div>';
 }
 
@@ -20,7 +20,7 @@ function i_load_page($x__type, $page, $limit, $list_count, $extra_class = null)
     $e___11035 = $CI->config->item('e___11035');
     $href = 'href="javascript:void(0);" onclick="i_load_page('.$x__type.',' . $page . ', 0)"';
     return '<div class="coin_cover coin_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding load-more '.$extra_class.'">
-                                <div class="cover-wrapper"><a '.$href.' class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
+                                <div class="cover-wrapper"><a '.$href.' class="black-background-obs cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
                             </div>';
 }
 function e_load_page($x__type, $page, $limit, $list_count, $extra_class = null)
@@ -33,7 +33,7 @@ function e_load_page($x__type, $page, $limit, $list_count, $extra_class = null)
     $e___11035 = $CI->config->item('e___11035');
     $href = 'href="javascript:void(0);" onclick="e_load_page('.$x__type.',' . $page . ', 0)"';
     return '<div class="coin_cover coin_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding load-more '.$extra_class.'">
-                                <div class="cover-wrapper"><a '.$href.' class="black-background cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
+                                <div class="cover-wrapper"><a '.$href.' class="black-background-obs cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
                             </div>';
 }
 
@@ -1563,7 +1563,7 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
 
     $ui  = '<div class="coin_cover col-md-4 col-6 col-xl-2 col-lg-3 no-padding">';
     $ui .= '<div class="cover-wrapper">';
-    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' coinType12273 ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
+    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background-obs cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' coinType12273 ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.(!$has_valid_url && $i['i__cover'] ? view_cover(12273,$i['i__cover']) : '').'</div>';
@@ -1790,7 +1790,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
 
     //Coin Cover
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12273,$i['i__cover']) : '').'</div>';
@@ -2135,7 +2135,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Coin Cover
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.$cointype.' black-background cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.$cointype.' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover']) : '' ).'</div>';
