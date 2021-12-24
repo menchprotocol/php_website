@@ -2124,10 +2124,11 @@ i, .btn .show-max {
     right: 0px;
 }
 
-
-/*
 .coin_coins{
     width: 100%;
+}
+/*
+.coin_coins{
     position: absolute;
     top: -5px;
 }
