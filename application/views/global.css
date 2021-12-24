@@ -1985,7 +1985,7 @@ i, .btn .show-max {
 
 .cover-wrapper {
     border:0;
-    margin:0 8px 0;
+    margin:0 5px 0;
 }
 .form-check{
     padding: 8px 0 8px 60px;
@@ -2034,14 +2034,16 @@ i, .btn .show-max {
 }
 .cover-content{
     padding: 0;
-    width: 100% !important;
-    max-height: 34%;
+    width: calc(100% - 20px) !important;
+    max-height: 55%;
     position: absolute;
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    bottom: 0;
+    top: 84px;
     min-height: 47px;
+    margin: 0 10px;
+    border-radius: 5px;
 }
 .mini-coin .cover-content{
     bottom:24px;
