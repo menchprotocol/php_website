@@ -1693,10 +1693,9 @@ i, .btn .show-max {
 .icon-block img{
     border-radius: 8px; /*icon*/
     line-height: 100%;
-    width: 33px !important;
-    height: 33px !important;
-    margin: -5px 3px -5px 2px !important;
-    margin: 0 !important;
+    width: 28px !important;
+    height: 28px !important;
+    margin: -8px 3px -5px 2px !important;
 }
 .icon-block-xs img{
     border-radius: 8px; /*icon*/
