@@ -2035,15 +2035,22 @@ i, .btn .show-max {
 .cover-content{
     padding: 0;
     width: calc(100% - 20px) !important;
-    max-height: 55%;
     position: absolute;
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    top: 84px;
     min-height: 47px;
     margin: 0 10px;
     border-radius: 5px;
+    height: min-content;
+}
+.edge-coin .cover-content{
+    max-height: 55%;
+    top: 84px;
+}
+.focus-coin .cover-content{
+    max-height: 55%;
+    top: 55px;
 }
 .mini-coin .cover-content{
     bottom:24px;
@@ -2200,7 +2207,7 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    padding: 0 0 5px;
+    padding:5px 0;
 }
 .cover-link {
     border:0;
