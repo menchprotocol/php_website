@@ -2045,11 +2045,11 @@ i, .btn .show-max {
     height: min-content;
 }
 .edge-coin .cover-content{
-    max-height: 55%;
+    max-height: 40%;
     top: 84px;
 }
 .focus-coin .cover-content{
-    max-height: 70%;
+    max-height: 65%;
     top: 40px;
 }
 .mini-coin .cover-content{
