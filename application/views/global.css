@@ -2063,9 +2063,11 @@ i, .btn .show-max {
 }
 
 @media (hover: hover) {
+    /*
     .coin-hover{
         display: none;
     }
+    */
     .coin_cover:hover .coin-hover{
         display: block;
     }
@@ -2122,6 +2124,8 @@ i, .btn .show-max {
     right: 0px;
 }
 
+
+/*
 .coin_coins{
     width: 100%;
     position: absolute;
@@ -2133,6 +2137,8 @@ i, .btn .show-max {
 .focus-coin .push_down>div {
     padding-top:25px !important;
 }
+*/
+
 .text_e_4356{
     text-align: right;
 }
