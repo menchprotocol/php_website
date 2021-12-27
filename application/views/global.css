@@ -243,6 +243,9 @@ img.no-frame {
     border-radius:0 !important;
 }
 
+.nav-pills .nav-link{
+    border-radius: 8px;
+}
 .alert{
     padding:10px !important;
     border-radius: 8px;
