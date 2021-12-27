@@ -448,8 +448,8 @@ if($top_i__id) {
             echo '<div class="msg alert alert-warning" role="alert">';
                 echo '<h2 style="color: #FF0000;">⚠️ Warning:</h2>';
                 echo '<ul style="list-style: none;">';
-                    echo '<li>1. After completed your payment, you are <span style="color: #FF0000;">Not Done!</span> ⚠️ You must then click "<b>Return to Merchant</b>" to continue back here.</li>';
-                    echo '<li>2. Note: You can checkout as a guest, No Paypal account needed</li>';
+                    echo '<li>1. After completing your payment click on "<b style="color: #FF0000;">Return to Merchant ⚠</b>" to continue back here.</li>';
+                    echo '<li>2. Remember that you can checkout as a guest, You do not need to create a Paypal account.</li>';
                 echo '</ul>';
             echo '</div>';
 
