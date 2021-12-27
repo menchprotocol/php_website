@@ -18,7 +18,6 @@ $superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEAGING
 $superpower_13422 = superpower_active(13422, true); //SUPERPOWER OF SOURCING
 $superpower_12701 = superpower_active(12701, true); //SUPERPOWER OF GLASSES
 $superpower_12703 = superpower_active(12703, true); //SUPERPOWER OF CHAIN LINK
-$show_max_14435 = view_memory(6404,14435);
 $show_max_14538 = view_memory(6404,14538);
 $limit = view_memory(6404,11064);
 $found_10573 = false;
@@ -162,18 +161,9 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
 
         $count = 0;
-        $has_more = count($list_e)>($show_max_14435+1);
         $trigger_hide = null;
         $count_totals = array();
         foreach($list_e as $e_link) {
-
-            if($count==$show_max_14435 && $has_more){
-                $ui .= view_show_more(14435, 'see_all_11029');
-            }
-
-            if($count>=$show_max_14435 && $has_more){
-                $trigger_hide = 'see_all_11029 hidden';
-            }
 
             if(strlen($e_link['x__message'])>0 && in_array($e_link['x__type'], $this->config->item('n___26111'))){
                 if(!isset($count_totals[$e_link['x__type']])){
@@ -274,7 +264,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $count = 0;
         $counter = view_coins_e(12273, $e['e__id'], 0, false);
         $list_i = view_coins_e(12273, $e['e__id'], 1, true);
-        $has_more = $counter>($show_max_14435+1);
         $trigger_hide = null;
         $max_seconds = intval(view_memory(6404,14841));
         $max_i__spectrum = 0;
@@ -284,12 +273,6 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
 
             $i_stats = i_stats($item['i__metadata']);
             $show_message = strlen($item['x__message']) && trim($item['x__message'])!=$this->uri->segment(1); //Basic references only
-
-            //SHow or Hide?
-            if($has_more && $count==$show_max_14435){
-                $ui .= view_show_more(14435, 'see_all_13550');
-                $trigger_hide = 'see_all_13550 hidden';
-            }
 
             //UI
             $ui .= view_i(13550, 0, null, $item,( $show_message ? $this->X_model->message_view($item['x__message'], true) : null), $e, null, $trigger_hide);

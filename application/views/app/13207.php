@@ -1,10 +1,13 @@
 <?php
 
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$show_max_14435 = view_memory(6404,14435);
 $group_by = 'e__id, e__title, e__cover, e__metadata, e__type, e__spectrum';
 
 //SOURCE LEADERBOARD
+
+echo '<ul class="nav nav-pills"></ul>';
+
+$is_open = true;
 $list_count = 0;
 foreach($this->config->item('e___13207') as $x__type => $m) {
 
@@ -25,18 +28,15 @@ foreach($this->config->item('e___13207') as $x__type => $m) {
         continue;
     }
     $ui = '<div class="row justify-content">';
-    $has_more = count($e_list)>($show_max_14435+1);
     foreach($e_list as $count=>$e) {
-        if($count==$show_max_14435 && $has_more){
-            $ui .= view_show_more(14435, 'see_more_who'.$x__type);
-        }
-        $ui .= view_e(13207, $e, ( $count>=$show_max_14435 && $has_more ? ' see_more_who'.$x__type.' hidden ' : ''), true);
+        $ui .= view_e(13207, $e, null, true);
     }
 
     $ui .= '</div>';
 
-    echo view_headline($x__type, view_coins_e(12274, $x__type, 0, false), $m, $ui, false);
+    echo view_pill($x__type, view_coins_e(12274, $x__type, 0, false), $m, $ui, $is_open);
 
+    $is_open = false;
     $list_count++;
 
 }
