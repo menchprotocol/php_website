@@ -3414,13 +3414,12 @@ color: #000000;
     margin-bottom: 21px;
 }
 .note_pad{
-    background-color: #FFC500;
     border-bottom-left-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
     text-align: center !important;
 }
 .note_pad i{
-    color: #000000 !important;
+    color: #999999 !important;
 }
 .note_pad .btn.btn-default {
     color: #000000 !important;

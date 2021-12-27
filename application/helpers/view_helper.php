@@ -1160,9 +1160,6 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i){
                 $tab_ui .= '<div class="add_notes_form note_pad indifferent">';
                 $tab_ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
 
-                $tab_ui .= '<div class="inline-block css__title show-max">Editing Mode:&nbsp;</div>';
-
-
                 if($handles_uploads){
 
                     //UPLOAD
