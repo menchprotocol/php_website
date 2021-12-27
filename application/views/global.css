@@ -3017,7 +3017,8 @@ font-weight: bold !important;
     background-color: #000000 !important;
     color: #FFFFFF !important;
 }
-.custom_ui_13884_13886 .nav-pills .nav-link.active {
+.custom_ui_13884_13886 .nav-pills .nav-link.active,
+.custom_ui_13884_13886 .nav-link.active .css__title {
 background-color: #FFFFFF;
 color: #000000;
 }
@@ -3138,7 +3139,8 @@ color: #000000;
     background-color:#FFFFFF !important;
     color: #000000 !important;
 }
-.custom_ui_13884_13885 .nav-pills .nav-link.active {
+.custom_ui_13884_13885 .nav-pills .nav-link.active,
+.custom_ui_13884_13885 .nav-link.active .css__title {
     background-color: #000000;
     color: #FFFFFF;
 }
