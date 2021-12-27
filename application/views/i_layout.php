@@ -143,6 +143,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i_focus['i__id'],
         ), array('x__left'), 0, 0, array('i__spectrum' => 'DESC'));
+        $counter = count($previous_is);
 
         $ui .= '<div id="list-in-11019" class="row justify-content">';
         foreach($previous_is as $previous_i) {
