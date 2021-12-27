@@ -109,14 +109,14 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
         $ui .= '</div>';
 
         if($superpower_13422){
-            $ui .= '<div class="'.$trigger_hide.'"><div class="headline-height"><div class="new-list-11030 list-adder">
+            $ui .= '<div class="'.$trigger_hide.'"><div class="new-list-11030 list-adder">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11030 .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,6197) . '"
                            placeholder="'.$e___11035[14055]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content"></div></div></div></div>';
+                </div><div class="algolia_pad_search row justify-content"></div></div></div>';
         }
 
     } elseif($x__type==11029){
