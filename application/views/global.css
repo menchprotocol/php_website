@@ -3329,10 +3329,9 @@ color: #000000;
     padding-bottom: 5px !important;
 }
 .editor_preview{
-    padding:25px 13px 13px !important;
+    padding:5px 0 !important;
     margin: 0 41px;
     border-radius: 8px !important;
-    margin-bottom: 34px;
 }
 
 /* .form-control:disabled { background-color: #999999 !important; } */
@@ -3413,7 +3412,6 @@ color: #000000;
 
 .add_notes_form{
     margin-left: 41px;
-    margin-bottom: 21px;
 }
 .note_pad{
     border-bottom-left-radius: 10px !important;
