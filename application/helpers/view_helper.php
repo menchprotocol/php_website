@@ -2137,6 +2137,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Top action menu:
+    /*
     $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
     $ui .= '<table class="coin_coins"><tr>';
     $ui .= '<td width="25%" style="text-align: left;"><div>'.(!$discovery_mode && $editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</div></td>';
@@ -2145,7 +2146,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $ui .= '<td width="25%" style="text-align: right;"><div>'.$o_menu.'</div></td>';
     $ui .= '</tr></table>';
     $ui .= '</div>';
-
+    */
 
 
 
