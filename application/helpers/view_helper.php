@@ -1194,7 +1194,7 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i){
                 }
 
                 //PREVIEW
-                $tab_ui .= '<div class="list-group hideIfEmpty '.( $e_of_i ? ' editor_preview doabsolute ' : '' ).' editor_preview_'.$x__type.'">';
+                $tab_ui .= '<div class="list-group hideIfEmpty '.( $e_of_i ? ' editor_preview ' : '' ).' editor_preview_'.$x__type.'">';
                 foreach($i_notes as $i_note) {
                     $tab_ui .= $CI->X_model->message_view($i_note['x__message'], $has_discovery_mode, $member_e, $i['i__id']);
                 }
