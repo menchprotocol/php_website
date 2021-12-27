@@ -2169,13 +2169,13 @@ i, .btn .show-max {
     position: relative;
     margin: 5px 0 13px !important;
     padding-top: 34px !important;
-    padding-bottom: 74px !important;
+    padding-bottom: 8px !important;
 }
 .mini-coin{
     margin: -8px 0 -30px !important;
 }
 .focus-coin{
-    margin:13px 0 74px !important;
+    margin:13px 0 0 !important;
 }
 .coin-12273.focus-coin{
     margin:13px 0 60px !important;
