@@ -3422,12 +3422,12 @@ color: #000000;
     color: #999999 !important;
 }
 .note_pad .btn.btn-default {
-    color: #000000 !important;
-    border-color:#000000 !important;
+    color: #999999 !important;
+    border-color:#999999 !important;
 }
 .note_pad .btn.btn-default i {
     background-color: transparent !important;
-    color: #000000 !important;
+    color: #999999 !important;
 }
 
 .dotransparent {
