@@ -65,7 +65,7 @@ class App extends CI_Controller
             return redirect_message('/@'.$member_e['e__id']);
         } elseif(!$member_e && in_array($app_e__id, $this->config->item('n___14740'))){
             //Should redirect them:
-            return redirect_message('/-4269?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to access <b>'.$e___6287[$app_e__id]['m__title'].'</b></div>');
+            return redirect_message('/-4269?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to <b>'.$e___6287[$app_e__id]['m__title'].'</b></div>');
         }
 
 
