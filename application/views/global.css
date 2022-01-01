@@ -2041,10 +2041,9 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    min-height: 47px;
     margin: 0 10px;
     border-radius: 5px;
-    height: min-content;
+    top:39px;
 }
 .edge-coin .cover-content{
     max-height: 40% !important;
@@ -2158,7 +2157,6 @@ i, .btn .show-max {
 .cover-text {
     line-height: 120%;
     text-align: center;
-    min-height: 21px;
 }
 .cover-text .mini-font {
     font-weight: bold !important;
