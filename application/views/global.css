@@ -2193,7 +2193,6 @@ i, .btn .show-max {
     display: block;
     border-radius: 8px;
     vertical-align: middle;
-    min-height: 68px;
 }
 .mini-coin .cover-content .inner-content {
     margin: 0;
