@@ -284,7 +284,7 @@ foreach($this->config->item('e___11018') as $x__type => $m){
 
     if(!$counter && !in_array($x__type, $this->config->item('n___13530'))){
         //Hide since Zero:
-        continue;
+        //continue;
     }
 
 
