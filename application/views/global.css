@@ -2053,18 +2053,6 @@ i, .btn .show-max {
     max-height: 65% !important;
     top: 59px !important;
 }
-.mini-coin .cover-content{
-    bottom:24px;
-}
-.coinType12274 .cover-content{
-    min-height: 73px;
-}
-.focus-coin .cover-content{
-    min-height: 74px;
-}
-.coin-12273.focus-coin .cover-content {
-    min-height: 113px;
-}
 
 .coin-cover{
     position: absolute;
@@ -2365,13 +2353,7 @@ textarea {
     line-height: 110%;
 }
 
-.coin-12273.focus-coin .cover-content{
-    bottom:-50px;
-}
 
-.focus-coin.doedit .cover-content{
-    bottom:-60px;
-}
 .inner-content .form-control {
     background-color: transparent !important;
 }
