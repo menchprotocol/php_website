@@ -2045,13 +2045,9 @@ i, .btn .show-max {
     border-radius: 5px;
     top:39px;
 }
-.edge-coin .cover-content{
+.edge-coin .cover-content, .focus-coin .cover-content{
     max-height: 40% !important;
     top: 84px !important;
-}
-.focus-coin .cover-content{
-    max-height: 65% !important;
-    top: 59px !important;
 }
 
 .coin-cover{
