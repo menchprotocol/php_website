@@ -2,9 +2,9 @@
 <script>
 
     function load_content(){
-        $('.new-content').html($('.main_content').html());
         $('.fixed-intro').removeClass('hidden');
         $('.main_content').addClass('hidden');
+        $('.new-content').html($('.main_content').html());
     }
 
 
@@ -113,8 +113,8 @@
     <div class="starwars-intro">
 
         <h1 class="text-center">AnakInu</h1>
+        <br>
         <div class="main_content">
-            <br>
             <p>It is a period of crypto unrest.</p>
             <br>
             <p>Discovered as the leader of the Inus by Obi-Wan Kenobi, AnakInu has the potential to become one of the most powerful JeDoges ever, and was believed by some to be the prophesied Chosen One who would bring balance to the crypto world.</p>
