@@ -41,8 +41,8 @@
         font-family: 'jedi';
         src: url('/img/StarJedi-DGRW.ttf');
     }
-    * {
-        font-family: jedi;
+    .jedi {
+        font-family: 'jedi' !important;
     }
     body, html {
         margin: 0;
@@ -77,9 +77,9 @@
 </style>
 <div class="starwars-page">
     <div class="starwars-intro">
-        <h1 class="text-center">VADER</h1>
+        <h1 class="text-center jedi">VADER</h1>
         <br>
-        <p>
+        <p class="jedi">
             It is a period of insurgence. Rebel spaceships, striking from a hidden base on a moon of Yahin, have won a shocking surprise victory against the rightful reign of the Galactic Empire.
         </p>
         <p>
