@@ -60,7 +60,7 @@
         top: 0%;
         margin: auto;
         width: 100%;
-        max-width: 400px;
+        max-width: 500px;
         position: relative;
         font-size: 1.8em;
         color: #e8be1e;
