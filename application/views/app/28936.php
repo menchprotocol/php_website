@@ -162,5 +162,16 @@
     <p>We burn a specific amount of supply on milestones. Additionally, 5% of the 1% Redistribution tax gets burned with every transaction.</p>
 
 
+    <br />
+    <br />
+    <br />
+    <p>Contract: <a href="https://bscscan.com/address/0x277773135557a24b834288bb7e5592a8e95313be#code" target="_blank">0x277773135557a24b834288bb7e5592a8e95313be</a></p>
+    <p>
+        <a class="btn btn-yellow" href="#"><i class="far fa-lock"></i> IP Lock</a>
+        <a class="btn btn-yellow" href="#"><i class="far fa-square"></i> Renounce</a>
+    </p>
+
+
+
 
 </div>
