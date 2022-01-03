@@ -39,14 +39,10 @@
 <style>
     @font-face {
         font-family: 'jedi';
-        src: url('/img/StarJedi-DGRW.ttf'); /* IE9 Compat Modes */
-        src: url('/img/StarJedi-DGRW.ttf?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-        url('/img/StarJedi-DGRW.ttf') format('woff'), /* Modern Browsers */
-        url('/img/StarJedi-DGRW.ttf')  format('truetype'), /* Safari, Android, iOS */
-        url('/img/StarJedi-DGRW.ttf#svgFontName') format('svg'); /* Legacy iOS */
+        src: URL('/img/StarJedi-DGRW.ttf') format('truetype');
     }
     .jedi {
-        font-family: "jedi" !important;
+        font-family: 'jedi' !important;
     }
     body, html {
         margin: 0;
