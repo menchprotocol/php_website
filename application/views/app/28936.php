@@ -67,8 +67,8 @@
         text-align: justify;
         transform: rotateX(30deg) scale(2);
     }
-    p {
-        line-height: 125% !important;
+    p, .text-center {
+        line-height: 115% !important;
         text-align: center;
     }
 </style>
