@@ -5,11 +5,11 @@
         scale();
     })
     var size=3;
-    var posY = 230;
+    var posY = 180;
     var ang = 60;
     var delta =1;
     var scaleDelta = 0.008;
-    var speed = 50;
+    var speed = 30;
 
     function scale(){
         size = size - scaleDelta;
@@ -31,7 +31,7 @@
         if(posY> -30){
             setTimeout(scale,speed);
         }else{
-            $(".starwars-intro").animate({opacity:"0"},500);
+            $(".starwars-intro").animate({opacity:"0"},300);
         }
     }
 
