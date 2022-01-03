@@ -67,6 +67,9 @@
         text-align: justify;
         transform: rotateX(30deg) scale(2);
     }
+    p {
+        line-height: 140% !important;
+    }
 </style>
 <div class="starwars-page">
     <div class="starwars-intro">
