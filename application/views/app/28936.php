@@ -1,13 +1,15 @@
 
 <script>
 
+    var load_time = 42000;
+    load_time = 400;
     $(document).ready(function(){
         scale();
 
         setTimeout(function () {
             $('.fixed-intro').removeClass('hidden');
             $('.starwars-intro').addClass('hidden');
-        }, 42000);
+        }, load_time);
 
     })
     var size=3;
@@ -81,12 +83,17 @@
         margin: 0 auto;
         display: block;
     }
+    .fixed-p {
+        padding: 0 20px;
+        margin-bottom: 34px;
+    }
 </style>
 <div class="starwars-page">
     <div class="fixed-intro hidden">
         <h1 class="text-center">AnakInu</h1>
-        <p>Discovered as the leader of the Inus by Obi-Wan Kenobi, AnakInu has the potential to become one of the most powerful JeDoges ever, and was believed by some to be the prophesied Chosen One who would bring balance to the crypto world.</p>
-        <p><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 350px;"></p>
+        <p class="fixed-p">Discovered as the leader of the Inus by Obi-Wan Kenobi, AnakInu has the potential to become one of the most powerful JeDoges ever, and was believed by some to be the prophesied Chosen One who would bring balance to the crypto world.</p>
+        <p><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 300px;"></p>
+        <p><a class="controller-nav btn btn-lrg btn-6255 go-next" href="#">Buy Coin</a></p>
     </div>
     <div class="starwars-intro">
 
