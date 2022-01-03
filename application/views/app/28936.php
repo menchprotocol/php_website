@@ -104,9 +104,10 @@
         <p>
             <a class="btn btn-yellow" href="#"><i class="fab fa-telegram"></i> Telegram</a>
             <a class="btn btn-yellow" href="#"><i class="fab fa-twitter"></i> Twitter</a>
-            <a class="btn btn-yellow" href="#"><i class="far fa-usd-circle"></i> How to Buy</a>
             <a class="btn btn-yellow" href="#"><i class="far fa-file-certificate"></i> White Paper</a>
             <a class="btn btn-yellow" href="#"><i class="far fa-chart-line"></i> Chart</a>
+            <a class="btn btn-yellow" href="#"><i class="far fa-usd-circle"></i> How to Buy</a>
+            <a class="btn btn-yellow" href="#"><i class="far fa-shopping-cart"></i> Buy Now</a>
         </p>
     </div>
     <div class="starwars-intro">
