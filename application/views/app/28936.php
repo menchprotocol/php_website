@@ -120,6 +120,8 @@
             <p>Senator PalpatInu has turned the young Sith Lord, once believed to have the potential to become one of the most powerful JeDoges ever, to the Dark Side.</p>
             <br>
             <p>After executing Order 69, AnakInu is now traveling many parsecs to capture LaunchPadme and bring her back to Moosetoofar. There, AnakInu will execute his plan to take over all the Inus and take crypto by storm. Nothing will stop the natural born Inu from achieving greatness.</p>
+            <br />
+            <p><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 300px; border-radius: 8px;"></p>
         </div>
 
     </div>
@@ -130,7 +132,6 @@
 <div class="fixed-intro hidden">
     <h1 class="text-center">AnakInu</h1>
     <p class="new-content fixed-p"></p>
-    <p class="fixed-p"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 300px;"></p>
     <p>
         <a class="btn btn-yellow" href="#"><i class="fab fa-telegram"></i> Telegram</a>
         <a class="btn btn-yellow" href="#"><i class="fab fa-twitter"></i> Twitter</a>
