@@ -87,6 +87,12 @@
         padding: 0 20px;
         margin-bottom: 34px;
     }
+    .btn-default i { color: #e8be1e !important; }
+    .btn-default { border-color:#e8be1e !important; }
+    .btn.btn-default {
+        border: 3px solid #e8be1e;
+        color: #e8be1e;
+    }
 </style>
 <div class="starwars-page">
     <div class="fixed-intro hidden">
