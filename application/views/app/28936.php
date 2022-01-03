@@ -1,16 +1,26 @@
 
 <script>
 
+    function load_content(){
+        $('.fixed-intro').removeClass('hidden');
+        $('.starwars-page').addClass('hidden');
+    }
+
+
     var load_time = 45000;
     $(document).ready(function(){
         scale();
 
         setTimeout(function () {
-            $('.fixed-intro').removeClass('hidden');
-            $('.starwars-page').addClass('hidden');
+            load_content();
         }, load_time);
 
-    })
+    });
+
+    $( "body" ).click(function() {
+        load_content();
+    });
+
     var size=3;
     var posY = 200;
     var ang = 60;
