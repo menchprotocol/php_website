@@ -7,7 +7,7 @@
         setTimeout(function () {
             $('.fixed-intro').removeClass('hidden');
             $('.starwars-intro').addClass('hidden');
-        }, 15000);
+        }, 45000);
 
     })
     var size=3;
@@ -81,7 +81,8 @@
 <div class="starwars-page">
     <div class="fixed-intro hidden">
         <h1 class="text-center">AnakInu</h1>
-        <p>Wow nice</p>
+        <p>Discovered as the leader of the Inus by Obi-Wan Kenobi, AnakInu has the potential to become one of the most powerful JeDoges ever, and was believed by some to be the prophesied Chosen One who would bring balance to the crypto world.</p>
+        <p><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 200px;"></p>
     </div>
     <div class="starwars-intro">
 
