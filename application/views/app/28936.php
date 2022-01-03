@@ -132,6 +132,8 @@
     </p>
     <br />
     <br />
+    <br />
+    <br />
 
     <div class="row justify-content-center" style="text-align: center; color: #FFF;">
         <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
@@ -146,16 +148,17 @@
         </div>
         <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
             <div class="info_box_cover">4%</div>
-            <div class="info_box_title css__title">General Development</div>
+            <div class="info_box_title css__title">Development</div>
             <div class="info_box_message">All costs regarding project development</div>
         </div>
     </div>
 
-
+    <br />
+    <br />
     <br />
     <br />
 
-    <h2>Burning Mechanism</h2>
+    <h2 class="text-center">Burning Mechanism</h2>
     <p>We burn a specific amount of supply on milestones. Additionally, 5% of the 1% Redistribution tax gets burned with every transaction.</p>
 
 
