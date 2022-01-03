@@ -92,7 +92,8 @@
     }
     .btn-yellow {
         border: 3px solid #e8be1e !important;
-        color: #e8be1e;
+        color: #e8be1e !important;
+        margin-bottom: 3px;
     }
 </style>
 <div class="starwars-page">
