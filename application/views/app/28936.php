@@ -68,7 +68,8 @@
         transform: rotateX(30deg) scale(2);
     }
     p {
-        line-height: 140% !important;
+        line-height: 125% !important;
+        text-align: center;
     }
 </style>
 <div class="starwars-page">
