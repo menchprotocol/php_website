@@ -11,11 +11,11 @@
 
     })
     var size=3;
-    var posY = 230;
+    var posY = 200;
     var ang = 60;
     var delta =1;
     var scaleDelta = 0.008;
-    var speed = 55;
+    var speed = 50;
 
     function scale(){
         size = size - scaleDelta;
@@ -37,7 +37,7 @@
         if(posY> -30){
             setTimeout(scale,speed);
         }else{
-            $(".starwars-intro").animate({opacity:"0"},700);
+            $(".starwars-intro").animate({opacity:"0"},500);
         }
     }
 
@@ -50,6 +50,7 @@
         font-size: 16px;
         font-family: impact;
         font-weight: 500;
+        color: #FFF !important;
     }
     .starwars-page {
         margin: auto;
@@ -76,13 +77,14 @@
     p, .text-center {
         line-height: 115% !important;
         text-align: center;
+        max-width: 500px;
     }
 </style>
 <div class="starwars-page">
     <div class="fixed-intro hidden">
         <h1 class="text-center">AnakInu</h1>
         <p>Discovered as the leader of the Inus by Obi-Wan Kenobi, AnakInu has the potential to become one of the most powerful JeDoges ever, and was believed by some to be the prophesied Chosen One who would bring balance to the crypto world.</p>
-        <p><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 200px;"></p>
+        <p><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 350px;"></p>
     </div>
     <div class="starwars-intro">
 
