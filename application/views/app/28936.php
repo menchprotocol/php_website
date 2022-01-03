@@ -3,6 +3,12 @@
 
     $(document).ready(function(){
         scale();
+
+        setTimeout(function () {
+            $('.fixed-intro').removeClass('hidden');
+            $('.starwars-intro').addClass('hidden');
+        }, 15000);
+
     })
     var size=3;
     var posY = 230;
@@ -73,18 +79,21 @@
     }
 </style>
 <div class="starwars-page">
+    <div class="fixed-intro hidden">
+        <h1 class="text-center">AnakInu</h1>
+        <p>Wow nice</p>
+    </div>
     <div class="starwars-intro">
+
         <h1 class="text-center">AnakInu</h1>
         <br>
         <p>It is a period of crypto unrest.</p>
         <br>
-        <p>Discovered as the leader of the Inus by Obi-Wan Kenobi, AnakInu has the potential to become one of the most powerful JeDoge ever, and was believed by some to be the prophesied Chosen One who would bring balance to the metaverse.</p>
+        <p>Discovered as the leader of the Inus by Obi-Wan Kenobi, AnakInu has the potential to become one of the most powerful JeDoges ever, and was believed by some to be the prophesied Chosen One who would bring balance to the crypto world.</p>
         <br>
-        <p>A hero of the Clone Wars, Anakin was caring and compassionate, but also had a fear of loss that would prove to be his downfall. Nothing will EVER stop the great AnakInu from achieving greatness.</p>
+        <p>A hero of the clone wars, Anakin was caring and compassionate, but also had a fear of loss that would prove to be his downfall. Nothing will EVER stop the great AnakInu from achieving greatness.</p>
         <br>
-        <p>AnakInu possesses mighty force and intelligence, as well as being capable of understanding and speaking human languages. She plans to take over all Inus and the Binance network by storm. Nothing will EVER stop the great AnakInu from achieving greatness.</p>
-
-
+        <p>AnakInu plans to take over all Inus and the Binance network by storm. Nothing will EVER stop the great AnakInu from achieving greatness.</p>
 
     </div>
 </div>
