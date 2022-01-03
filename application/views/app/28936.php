@@ -7,7 +7,7 @@
         setTimeout(function () {
             $('.fixed-intro').removeClass('hidden');
             $('.starwars-intro').addClass('hidden');
-        }, 45000);
+        }, 42000);
 
     })
     var size=3;
@@ -50,7 +50,6 @@
         font-size: 16px;
         font-family: impact;
         font-weight: 500;
-        color: #FFF !important;
     }
     .starwars-page {
         margin: auto;
@@ -78,6 +77,9 @@
         line-height: 115% !important;
         text-align: center;
         max-width: 500px;
+        color: #e8be1e !important;
+        margin: 0 auto;
+        display: block;
     }
 </style>
 <div class="starwars-page">
