@@ -82,7 +82,7 @@
         max-width: 500px;
         position: relative;
         font-size: 1.8em;
-        color: #fc9a26;
+        color: #e8be1e;
         text-align: justify;
         transform: rotateX(30deg) scale(2);
     }
@@ -90,7 +90,7 @@
         line-height: 115% !important;
         text-align: center;
         max-width: 500px;
-        color: #fc9a26 !important;
+        color: #e8be1e !important;
         margin: 0 auto;
         display: block;
     }
@@ -99,11 +99,11 @@
         margin-bottom: 34px;
     }
     .btn-yellow i, a {
-        color: #fc9a26 !important;
+        color: #e8be1e !important;
     }
     .btn-yellow {
-        border: 3px solid #fc9a26 !important;
-        color: #fc9a26 !important;
+        border: 3px solid #e8be1e !important;
+        color: #e8be1e !important;
         margin-bottom: 4px;
     }
 </style>
