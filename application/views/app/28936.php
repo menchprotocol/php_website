@@ -37,6 +37,13 @@
 
 </script>
 <style>
+    @font-face {
+        font-family: 'jedi';
+        src: url('/img/StarJedi-DGRW.ttf');
+    }
+    * {
+        font-family: jedi;
+    }
     body, html {
         margin: 0;
         padding: 0;
