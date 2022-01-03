@@ -176,8 +176,10 @@
 
 
 
-
-    <h2 class="text-center">Team</h2>
+    <br />
+    <br />
+    <br />
+    <h2 class="text-center" style="color: #FFF;">Team</h2>
     <div class="row justify-content-center" style="text-align: center; color: #FFF;">
         <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
             <div class="info_box_cover"><i class="fad fa-user-astronaut"></i></div>
