@@ -88,13 +88,13 @@
         padding: 0 20px;
         margin-bottom: 34px;
     }
-    .btn-yellow i {
+    .btn-yellow i, a {
         color: #e8be1e !important;
     }
     .btn-yellow {
         border: 3px solid #e8be1e !important;
         color: #e8be1e !important;
-        margin-bottom: 3px;
+        margin-bottom: 4px;
     }
 </style>
 
@@ -166,12 +166,35 @@
     <br />
     <br />
     <p>Contract: <a href="https://bscscan.com/address/0x277773135557a24b834288bb7e5592a8e95313be#code" target="_blank">0x277773135557a24b834288bb7e5592a8e95313be</a></p>
+    <br />
     <p>
         <a class="btn btn-yellow" href="#"><i class="far fa-lock"></i> IP Lock</a>
         <a class="btn btn-yellow" href="#"><i class="far fa-square"></i> Renounce</a>
     </p>
 
 
+
+
+
+
+    <h2 class="text-center">Team</h2>
+    <div class="row justify-content-center" style="text-align: center; color: #FFF;">
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><i class="fad fa-user-astronaut"></i></div>
+            <div class="info_box_title css__title">Jonathan MT</div>
+            <div class="info_box_message">Lead Dev & Marketing</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><i class="fad fa-user-headset"></i></div>
+            <div class="info_box_title css__title">Mike BB</div>
+            <div class="info_box_message">Community Manager</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><i class="fad fa-user-visor"></i></div>
+            <div class="info_box_title css__title">Coco</div>
+            <div class="info_box_message">Design Expert & Dev</div>
+        </div>
+    </div>
 
 
 </div>
