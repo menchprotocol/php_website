@@ -90,7 +90,7 @@
     .btn-default i {
         color: #e8be1e !important;
     }
-    .btn-default {
+    .btn.btn-default {
         border: 3px solid #e8be1e !important;
         color: #e8be1e;
     }
