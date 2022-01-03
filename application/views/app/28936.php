@@ -92,8 +92,14 @@
     <div class="fixed-intro hidden">
         <h1 class="text-center">AnakInu</h1>
         <p class="fixed-p">Discovered as the leader of the Inus by Obi-Wan Kenobi, AnakInu has the potential to become one of the most powerful JeDoges ever, and was believed by some to be the prophesied Chosen One who would bring balance to the crypto world.</p>
-        <p><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 300px;"></p>
-        <p><a class="controller-nav btn btn-lrg btn-6255 go-next" href="#">Buy Coin</a></p>
+        <p class="fixed-p"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 300px;"></p>
+        <p>
+            <a class="btn btn-default" href="#"><i class="fab fa-telegram"></i> Telegram</a>
+            <a class="btn btn-default" href="#"><i class="fab fa-twitter"></i> Twitter</a>
+            <a class="btn btn-default" href="#"><i class="far fa-usd-circle"></i> How to Buy</a>
+            <a class="btn btn-default" href="#"><i class="far fa-file-certificate"></i> White Paper</a>
+            <a class="btn btn-default" href="#"><i class="far fa-chart-line"></i> Chart</a>
+        </p>
     </div>
     <div class="starwars-intro">
 
