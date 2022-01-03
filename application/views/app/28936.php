@@ -109,6 +109,36 @@
             <a class="btn btn-yellow" href="#"><i class="far fa-usd-circle"></i> How to Buy</a>
             <a class="btn btn-yellow" href="#"><i class="far fa-shopping-cart"></i> Buy Now</a>
         </p>
+        <br />
+        <br />
+
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+                <div class="info_box_cover">1%</div>
+                <div class="info_box_title css__title">Redistribution</div>
+                <div class="info_box_message">Holders get rewarded! Simply hold AnakInu and you will earn more AnakInu passively!</div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+                <div class="info_box_cover">5%</div>
+                <div class="info_box_title css__title">Marketing</div>
+                <div class="info_box_message">So the world hears about the best community on ETH</div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+                <div class="info_box_cover">4%</div>
+                <div class="info_box_title css__title">General Development</div>
+                <div class="info_box_message">All costs regarding project development</div>
+            </div>
+        </div>
+
+
+        <br />
+        <br />
+
+        <h2>Burning Mechanism</h2>
+        <p>We burn a specific amount of supply on milestones. Additionally, 5% of the 1% Redistribution tax gets burned with every transaction.</p>
+
+
+
     </div>
     <div class="starwars-intro">
 
