@@ -62,7 +62,7 @@
         text-align: center;
     }
     .container{
-        background-color: transparent;
+        background: transparent !important;
     }
 
     .starwars-intro {
