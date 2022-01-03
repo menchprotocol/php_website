@@ -37,13 +37,6 @@
 
 </script>
 <style>
-    @font-face {
-        font-family: 'jedi';
-        src: URL('/img/StarJedi-DGRW.ttf') format('truetype');
-    }
-    .jedi {
-        font-family: 'jedi' !important;
-    }
     body, html {
         margin: 0;
         padding: 0;
@@ -77,16 +70,17 @@
 </style>
 <div class="starwars-page">
     <div class="starwars-intro">
-        <h1 class="text-center jedi">VADER</h1>
+        <h1 class="text-center">AnakInu</h1>
         <br>
-        <p class="jedi">
-            It is a period of insurgence. Rebel spaceships, striking from a hidden base on a moon of Yahin, have won a shocking surprise victory against the rightful reign of the Galactic Empire.
-        </p>
-        <p>
-            The Empire's ultimate peacekeeping force, THE DEATH STAR, was destroyed due to an unforseen design flaw. Without this deterrent, the rule of law is in danger. Chaos looms!
-        </p>
-        <p>
-            For the nineteen years after the vaniquishing of the Jedi and his painful rebirth on Volcanic Mustafarm Sith Lord DARTH VADER has faithfully served his master. But now, he has failed the Emperor and must pay the price...
-        </p>
+        <p>It is a period of crypto unrest.</p>
+        <br>
+        <p>Discovered as the leader of the Inus by Obi-Wan Kenobi, AnakInu has the potential to become one of the most powerful JeDoge ever, and was believed by some to be the prophesied Chosen One who would bring balance to the metaverse.</p>
+        <br>
+        <p>A hero of the Clone Wars, Anakin was caring and compassionate, but also had a fear of loss that would prove to be his downfall. Nothing will EVER stop the great AnakInu from achieving greatness.</p>
+        <br>
+        <p>AnakInu possesses mighty force and intelligence, as well as being capable of understanding and speaking human languages. She plans to take over all Inus and the Binance network by storm. Nothing will EVER stop the great AnakInu from achieving greatness.</p>
+
+
+
     </div>
 </div>
