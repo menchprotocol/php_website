@@ -61,6 +61,9 @@
         overflow: hidden;
         text-align: center;
     }
+    .fixed-intro{
+        background-color: transparent;
+    }
 
     .starwars-intro {
         top: 0%;
@@ -130,7 +133,7 @@
     <br />
     <br />
 
-    <div class="row text-center">
+    <div class="row">
         <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
             <div class="info_box_cover">1%</div>
             <div class="info_box_title css__title">Redistribution</div>
