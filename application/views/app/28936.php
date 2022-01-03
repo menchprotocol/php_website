@@ -115,16 +115,15 @@
         <h1 class="text-center">AnakInu</h1>
         <br>
         <div class="main_content">
-            <p>It is a period of crypto unrest.</p>
+            <p>It is a period of unrest as crypto is under attack. The financial systems are crumbling, and AnakInu has come to deal the final blow.</p>
             <br>
-            <p>Discovered as the leader of the Inus by Obi-Wan Kenobi, AnakInu has the potential to become one of the most powerful JeDoges ever, and was believed by some to be the prophesied Chosen One who would bring balance to the crypto world.</p>
+            <p>Senator PalpatInu has turned the young Sith Lord, once believed to have the potential to become one of the most powerful JeDoges ever, to the Dark Side.</p>
             <br>
-            <p>A hero of the clone wars, Anakin was caring and compassionate, but also had a fear of loss that would prove to be his downfall. AnakInu plans to take over all Inus and the Binance network by storm. Nothing will EVER stop the great AnakInu from achieving greatness.</p>
+            <p>After executing Order 69, AnakInu is now traveling many parsecs to capture LaunchPadme and bring her back to Moosetoofar. There, AnakInu will execute his plan to take over all the Inus and take crypto by storm. Nothing will stop the natural born Inu from achieving greatness.</p>
         </div>
 
     </div>
 </div>
-
 
 
 
@@ -136,8 +135,8 @@
         <a class="btn btn-yellow" href="#"><i class="fab fa-telegram"></i> Telegram</a>
         <a class="btn btn-yellow" href="#"><i class="fab fa-twitter"></i> Twitter</a>
         <a class="btn btn-yellow" href="#"><i class="far fa-file-certificate"></i> White Paper</a>
-        <a class="btn btn-yellow" href="#"><i class="far fa-chart-line"></i> Chart</a>
         <a class="btn btn-yellow" href="#"><i class="far fa-usd-circle"></i> How to Buy</a>
+        <a class="btn btn-yellow" href="#"><i class="far fa-chart-line"></i> Chart</a>
         <a class="btn btn-yellow" href="#"><i class="far fa-shopping-cart"></i> Buy Now</a>
     </p>
     <br />
@@ -175,7 +174,7 @@
     <br />
     <br />
     <br />
-    <p>Contract: <a href="https://bscscan.com/address/0x277773135557a24b834288bb7e5592a8e95313be#code" target="_blank">0x277773135557a24b834288bb7e5592a8e95313be</a></p>
+    <p>Contract: <a href="https://bscscan.com/address/0x277773135557a24b834288bb7e5592a8e95313be#code" target="_blank" style="font-size: 0.8em;">0x277773135557a24b834288bb7e5592a8e95313be</a></p>
     <br />
     <p>
         <a class="btn btn-yellow" href="#"><i class="far fa-lock"></i> IP Lock</a>
