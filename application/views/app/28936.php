@@ -3,7 +3,7 @@
 
     function load_content(){
         $('.fixed-intro').removeClass('hidden');
-        $('.main_content').addClass('hidden');
+        $('.starwars-page').addClass('hidden');
         $('.new-content').html($('.main_content').html());
     }
 
