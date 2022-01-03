@@ -87,10 +87,11 @@
         padding: 0 20px;
         margin-bottom: 34px;
     }
-    .btn-default i { color: #e8be1e !important; }
-    .btn-default { border-color:#e8be1e !important; }
-    .btn.btn-default {
-        border: 3px solid #e8be1e;
+    .btn-default i {
+        color: #e8be1e !important;
+    }
+    .btn-default {
+        border: 3px solid #e8be1e !important;
         color: #e8be1e;
     }
 </style>
