@@ -43,7 +43,7 @@
             delta = 0.1;
             scaleDelta = 0.001;
         }
-        alert(delta);
+
         $(".starwars-intro").css({'top' : posY + "%","transform" : "rotateX(" + ang + "deg) scale(" + size + ")"})
 
         if(posY> -30){
