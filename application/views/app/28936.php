@@ -8,13 +8,12 @@
     }
 
 
-    var load_time = 45000;
     $(document).ready(function(){
         scale();
 
         setTimeout(function () {
             load_content();
-        }, load_time);
+        }, 60000);
 
     });
 
@@ -113,6 +112,7 @@
     <div class="starwars-intro">
 
         <h1 class="text-center">AnakInu</h1>
+
         <br>
         <div class="main_content">
             <p>It is a period of unrest as crypto is under attack. The financial systems are crumbling, and AnakInu has come to deal the final blow.</p>
@@ -123,6 +123,9 @@
             <br />
             <p><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 300px; border-radius: 8px;"></p>
         </div>
+
+        <br>
+        <p>(Click Anywhere to Continue)</p>
 
     </div>
 </div>
@@ -135,10 +138,10 @@
     <p>
         <a class="btn btn-yellow" href="#"><i class="fab fa-telegram"></i> Telegram</a>
         <a class="btn btn-yellow" href="#"><i class="fab fa-twitter"></i> Twitter</a>
-        <a class="btn btn-yellow" href="#"><i class="far fa-file-certificate"></i> White Paper</a>
-        <a class="btn btn-yellow" href="#"><i class="far fa-usd-circle"></i> How to Buy</a>
-        <a class="btn btn-yellow" href="#"><i class="far fa-chart-line"></i> Chart</a>
-        <a class="btn btn-yellow" href="#"><i class="far fa-shopping-cart"></i> Buy Now</a>
+        <a class="btn btn-yellow" href="#"><i class="fas fa-file-certificate"></i> White Paper</a>
+        <a class="btn btn-yellow" href="#"><i class="fas fa-usd-circle"></i> How to Buy</a>
+        <a class="btn btn-yellow" href="#"><i class="fas fa-chart-line"></i> Chart</a>
+        <a class="btn btn-yellow" href="#"><i class="fas fa-shopping-cart"></i> Buy Now</a>
     </p>
     <br />
     <br />
@@ -178,8 +181,8 @@
     <p>Contract: <a href="https://bscscan.com/address/0x277773135557a24b834288bb7e5592a8e95313be#code" target="_blank" style="font-size: 0.8em;">0x277773135557a24b834288bb7e5592a8e95313be</a></p>
     <br />
     <p>
-        <a class="btn btn-yellow" href="#"><i class="far fa-lock"></i> IP Lock</a>
-        <a class="btn btn-yellow" href="#"><i class="far fa-square"></i> Renounce</a>
+        <a class="btn btn-yellow" href="#"><i class="fas fa-lock"></i> IP Lock</a>
+        <a class="btn btn-yellow" href="#"><i class="fas fa-square"></i> Renounce</a>
     </p>
 
 
