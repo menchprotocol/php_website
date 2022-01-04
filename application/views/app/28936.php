@@ -13,7 +13,7 @@
 
         setTimeout(function () {
             load_content();
-        }, 60000);
+        }, 55000);
 
     });
 
@@ -26,7 +26,7 @@
     var ang = 60;
     var delta =1;
     var scaleDelta = 0.008;
-    var speed = 50;
+    var speed = 40;
 
     function scale(){
         size = size - scaleDelta;
