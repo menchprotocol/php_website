@@ -117,7 +117,7 @@
     }
 </style>
 
-<div class="hidden">
+<div>
     <iframe src="https://s3foundation.s3-us-west-2.amazonaws.com/c771a5d7d0ebd8f7508b2e57fe7ebc30.mp3" allow="autoplay" style="display:none" id="iframeAudio">
     </iframe>
     <audio autoplay loop id="playAudio">
