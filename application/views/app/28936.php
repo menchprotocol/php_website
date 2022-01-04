@@ -53,13 +53,6 @@
         }
     }
 
-    var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    if (!isChrome){
-        $('#iframeAudio').remove()
-    }
-    else {
-        $('#playAudio').remove() // just to make sure that it will not have 2x audio in the background
-    }
 
 </script>
 <style>
@@ -118,11 +111,8 @@
 </style>
 
 <div>
-    <iframe src="https://s3foundation.s3-us-west-2.amazonaws.com/c771a5d7d0ebd8f7508b2e57fe7ebc30.mp3" allow="autoplay" style="display:none" id="iframeAudio">
-    </iframe>
-    <audio autoplay loop id="playAudio">
-        <source src="https://s3foundation.s3-us-west-2.amazonaws.com/c771a5d7d0ebd8f7508b2e57fe7ebc30.mp3">
-    </audio>
+    <iframe src="https://s3foundation.s3-us-west-2.amazonaws.com/a22629a9676fb694ed6c299b1125380c.mp3" allow="autoplay"></iframe>
+    <audio autoplay controls><source src="https://s3foundation.s3-us-west-2.amazonaws.com/7e873e11da5b88a38edabb21babdac48.mp3" type="audio/mp3"></audio>
 </div>
 
 
