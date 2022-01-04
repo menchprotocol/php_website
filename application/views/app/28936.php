@@ -13,7 +13,7 @@
 
         setTimeout(function () {
             load_content();
-        }, 55000);
+        }, 60000);
 
     });
 
@@ -51,6 +51,14 @@
         }else{
             $(".starwars-intro").animate({opacity:"0"},500);
         }
+    }
+
+    var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    if (!isChrome){
+        $('#iframeAudio').remove()
+    }
+    else {
+        $('#playAudio').remove() // just to make sure that it will not have 2x audio in the background
     }
 
 </script>
@@ -108,6 +116,14 @@
         margin-bottom: 4px;
     }
 </style>
+
+<div class="hidden">
+    <iframe src="https://s3foundation.s3-us-west-2.amazonaws.com/c771a5d7d0ebd8f7508b2e57fe7ebc30.mp3" allow="autoplay" style="display:none" id="iframeAudio">
+    </iframe>
+    <audio autoplay loop id="playAudio">
+        <source src="https://s3foundation.s3-us-west-2.amazonaws.com/c771a5d7d0ebd8f7508b2e57fe7ebc30.mp3">
+    </audio>
+</div>
 
 
 <div class="starwars-page">
