@@ -2036,18 +2036,18 @@ i, .btn .show-max {
 }
 .cover-content{
     padding: 0;
-    width: calc(100% - 20px) !important;
+    width: calc(100% - 16px) !important;
     position: absolute;
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    margin: 0 10px;
+    margin: 0 8px;
     border-radius: 5px;
     top:39px;
 }
 .edge-coin .cover-content, .focus-coin .cover-content{
     max-height: 40% !important;
-    top: 84px !important;
+    top: 82px !important;
 }
 
 .coin-cover{
@@ -2170,12 +2170,13 @@ i, .btn .show-max {
 }
 
 .cover-content .inner-content {
-    margin: 0 5px;
+    margin: 0;
     padding: 2px 3px 0;
     line-height: 120%;
     font-size: 1em;
     display: block;
-    border-radius: 8px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     vertical-align: middle;
 }
 .mini-coin .cover-content .inner-content {
@@ -2191,7 +2192,7 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    padding:5px 0;
+    padding:5px 0 0;
 }
 .cover-link {
     border:0;
