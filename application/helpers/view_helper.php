@@ -679,7 +679,7 @@ function view_coins(){
 }
 
 function view_coin_line($href, $is_current, $o__type, $o__cover, $o__title, $x__message){
-    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xs">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.$o__type.'</span>'.( strlen($x__message) && superpower_active(12701) ? '<div class="message2">'.$x__message.'</div>' : '' ).'</a>';
+    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xs">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.$o__type.'</span>'.( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.$x__message.'</div>' : '' ).'</a>';
 }
 
 function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true, $load_items = 0){
