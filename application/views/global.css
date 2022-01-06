@@ -2111,19 +2111,11 @@ i, .btn .show-max {
 .coin_coins{
     width: 100%;
     height: 45px;
+    text-align: center;
 }
-/*
-.coin_coins{
-    position: absolute;
-    top: -5px;
+.coin_coins>span{
+    padding: 0 3px;
 }
-.push_down>div {
-    margin-bottom:-25px !important;
-}
-.focus-coin .push_down>div {
-    padding-top:25px !important;
-}
-*/
 
 .text_e_4356{
     text-align: right;
