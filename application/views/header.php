@@ -364,7 +364,7 @@ if(!$basic_header_footer){
 }
 
 
-echo '<div id="container_search" class="container hidden headline-height hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
+echo '<div id="container_search" class="container hidden hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
 echo '<div id="container_content" class="container">';
 
 //Any message we need to show here?
