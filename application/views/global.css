@@ -2882,8 +2882,7 @@ font-weight: bold !important;
 /* DARK */
 
 .custom_ui_13884_13886 .light-bg,
-.custom_ui_13884_13886 .media-info,
-.custom_ui_13884_13886 .focus-coin .cover-content {
+.custom_ui_13884_13886 .media-info {
     background: rgba(34,34,34,0.80);
 }
 
@@ -3013,7 +3012,6 @@ color: #000000;
 /* WHITE */
 
 .custom_ui_13884_13885 .light-bg,
-.custom_ui_13884_13885 .focus-coin .cover-content,
 .custom_ui_13884_13885 .media-info {
     background: rgba(239,239,239,0.80);
 }
