@@ -787,7 +787,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         } elseif($append_coin_icon){
 
             if(!$count_query){
-                return '<div class="emptycoin">&nbsp;</div>';
+                return null;
             }
 
             $e___11035 = $CI->config->item('e___11035'); //COINS
@@ -922,7 +922,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
     } elseif($append_coin_icon){
 
         if(!$count_query){
-            return '<div class="emptycoin">&nbsp;</div>';
+            return null;
         }
 
         $e___11035 = $CI->config->item('e___11035'); //COINS
