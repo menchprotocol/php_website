@@ -1592,10 +1592,10 @@ label {
 .bg6255, .btn-6255 {
     background-color: #FC1B44 !important;
 }
-.bg12273 {
+.bg12273, .btn-12273 {
     background-color: #FFC500 !important;
 }
-.bg12274 {
+.bg12274, .btn-12274 {
     background-color: #007AFD !important;
 }
 
@@ -2029,9 +2029,9 @@ i, .btn .show-max {
     line-height: 100%;
 }
 .cover-progress{
-    width:calc(100% - 10px);
+    width:100%;
     bottom: 0;
-    left: 5px;
+    left: 0;
     position: absolute;
 }
 .cover-content{
