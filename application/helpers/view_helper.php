@@ -2101,9 +2101,9 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     //Top action menu:
     $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
     $ui .= '<table class="coin_coins"><tr>';
-    $ui .= '<td width="25%" style="text-align: left;"><div>'.($source_of_e && $superpower_13422 && !$cache_app ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
-    $ui .= '<td width="25%" class="center">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<span class="icon-block grey">'.view_cache(4593, $e['x__type']).'</span>' ) : '').'</td>';
-    $ui .= '<td width="25%" class="center"><div>'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
+    $ui .= '<td width="25%" style="text-align: left;"><div>'.($source_of_e && $superpower_13422 && !$cache_app ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '&nbsp;').'</div></td>';
+    $ui .= '<td width="25%" class="center">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<span class="icon-block grey">'.view_cache(4593, $e['x__type']).'</span>' ) : '&nbsp;').'</td>';
+    $ui .= '<td width="25%" class="center"><div>'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '&nbsp;').'</div></td>';
     $ui .= '<td width="25%" style="text-align: right;"><div>'.$dropdown_ui.'</div></td>';
     $ui .= '</tr></table>';
     $ui .= '</div>';
