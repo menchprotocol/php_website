@@ -2057,17 +2057,6 @@ i, .btn .show-max {
     overflow: visible;
 }
 
-@media (hover: hover) {
-    /*
-    .coin-hover{
-        display: none;
-    }
-    */
-    .coin_cover:hover .coin-hover{
-        display: block;
-    }
-}
-
 
 
 .headlinebody {
@@ -2405,11 +2394,6 @@ video {
         min-height: 34px;
     }
     .mid-range { padding:0; }
-
-    .coin_coins{
-        font-size: 0.89em;
-    }
-
 
     .coin-cover-left{
         top: 39px;

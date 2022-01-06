@@ -679,7 +679,7 @@ function view_coins(){
 }
 
 function view_coin_line($href, $is_current, $o__type, $o__cover, $o__title, $x__message){
-    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xs">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.$o__type.'</span>'.( strlen($x__message) ? '<div class="message2">'.$x__message.'</div>' : '' ).'</a>';
+    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xs">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.$o__type.'</span>'.( strlen($x__message) && superpower_active(12701) ? '<div class="message2">'.$x__message.'</div>' : '' ).'</a>';
 }
 
 function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true, $load_items = 0){
@@ -792,10 +792,9 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
             $e___11035 = $CI->config->item('e___11035'); //COINS
             $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
-            $coin_count = view_number($count_query);
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).'">'.( $x__type==12274 || $x__type==11030 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).'">'.$coin_icon.view_number($count_query).'</button>';
             $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$e__id.'">';
 
             if($x__type==12274){
@@ -928,10 +927,9 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
 
         $e___11035 = $CI->config->item('e___11035'); //COINS
         $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
-        $coin_count = view_number($count_query);
 
         $ui = '<div class="dropdown inline-block">';
-        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).'">'.( $x__type==12273 || $x__type==11019 ? $coin_count.$coin_icon : $coin_icon.$coin_count ).'</button>';
+        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).'">'.$coin_icon.view_number($count_query).'</button>';
         $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
 
         if($x__type==12274){
@@ -948,7 +946,9 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
             $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
             foreach($CI->X_model->fetch($query_filters, array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i) {
                 $message_tooltip = '';
-                if($superpower_10939){
+
+
+                if(0 && $superpower_10939){
                     $messages = '';
                     foreach($CI->X_model->fetch(array(
                         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -981,7 +981,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
             $superpower_10939 = superpower_active(10939, true);
             foreach($query as $prev_i) {
                 $message_tooltip = '';
-                if($superpower_10939){
+                if(0 && $superpower_10939){
                     $messages = '';
                     foreach($CI->X_model->fetch(array(
                         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -1589,7 +1589,7 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
     /*
     $view_i_time = view_i_time($i_stats);
     if($view_i_time){
-        $ui .= '<a '.$href.' class="doblock"><span class="coin-hover">' . $view_i_time . '</span></a>';
+        $ui .= '<a '.$href.' class="doblock">' . $view_i_time . '</a>';
     }
 
 
@@ -1767,14 +1767,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
 
     //Top action menu:
-    $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
     $ui .= '<table class="coin_coins"><tr>';
     $ui .= '<td width="25%" style="text-align: left;"><div>'.(!$discovery_mode && $editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</div></td>';
     $ui .= '<td width="25%" class="center">'.( $focus_coin ? ( $discovery_mode || !superpower_active(12700, true) ? '&nbsp;' : view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0).' '.$e___11035[4356]['m__cover'] ) : (!$has_any_lock && $toolbar && $superpower_12700 && isset($i['x__id']) ? view_input_dropdown(4486, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']) : '') ).'</td>';
     $ui .= '<td width="25%" class="center"><div>'.($focus_coin ? ($discovery_mode ? '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'" class="'.superpower_active(10939).'">'.$e___11035[13563]['m__cover'].'</a>' : '<a href="/'.$i['i__id'].'">'.( i_is_startable($i) ? '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26124]['m__title'].'">'.$e___11035[26124]['m__cover'].'</span>' : '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26130]['m__title'].'">'.$e___11035[26130]['m__cover'].'</span>' ).'</a>' ) : ($has_sortable ? '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '') ).'</div></td>';
     $ui .= '<td width="25%" style="text-align: right;"><div>'.$o_menu.'</div></td>';
     $ui .= '</tr></table>';
-    $ui .= '</div>';
 
 
 
@@ -1844,11 +1842,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
     $view_i_time = null;
     if($message_tooltip || $view_i_time){
-        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).' grey">' . $message_tooltip . ( $view_i_time ? $view_i_time : '' ) . '</div>';
+        $ui .= '<div class="grey">' . $message_tooltip . ( $view_i_time ? $view_i_time : '' ) . '</div>';
     }
 
     if(count($minter)){
-        //$ui .= '<div class="coin-hover grey mini-font">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>';
+        //$ui .= '<div class="grey mini-font">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>';
     }
     $ui .= '</div>';
 
@@ -1874,13 +1872,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
     if(!$focus_coin && $show_coins){
 
-        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
-        $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="25%" style="text-align: left;"><div>'.view_coins_i(11019,  $i).'</div></td>';
-        $ui .= '<td width="25%" class="center">'.view_coins_i(12273,  $i).'</td>';
-        $ui .= '<td width="25%" class="center"><div>'.view_coins_i(12274,  $i).'</div></td>';
-        $ui .= '<td width="25%" style="text-align: right;"><div class="i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i).'</div></td>';
-        $ui .= '</tr></table>';
+        $ui .= '<div class="coin_coins">';
+        $ui .= '<span>'.view_coins_i(11019,  $i).'</span>';
+        $ui .= '<span>'.view_coins_i(12273,  $i).'</span>';
+        $ui .= '<span>'.view_coins_i(12274,  $i).'</span>';
+        $ui .= '<span class="i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i).'</span>';
         $ui .= '</div>';
 
     }
@@ -2099,14 +2095,12 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Top action menu:
-    $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
     $ui .= '<table class="coin_coins"><tr>';
     $ui .= '<td width="25%" style="text-align: left;"><div>'.($source_of_e && $superpower_13422 && !$cache_app ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
     $ui .= '<td width="25%" class="center">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<span class="icon-block grey">'.view_cache(4593, $e['x__type']).'</span>' ) : '').'</td>';
     $ui .= '<td width="25%" class="center"><div>'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
     $ui .= '<td width="25%" style="text-align: right;"><div>'.$dropdown_ui.'</div></td>';
     $ui .= '</tr></table>';
-    $ui .= '</div>';
 
 
 
@@ -2143,7 +2137,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         'x__down' => $e['e__id'],
     ), array('x__source')) : array());
 
-    //$ui .= ( count($minter) ? '<div class="cover-text"><div class="coin-hover grey mini-font" style="padding-top:5px;">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div></div>' : '' );
+    //$ui .= ( count($minter) ? '<div class="cover-text"><div class="grey mini-font" style="padding-top:5px;">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div></div>' : '' );
 
 
     //Message
@@ -2195,13 +2189,11 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //Coin Block
     if(!$is_app && !$focus_coin){
-        $ui .= '<div class="'.( !$linkbar_visible ? ' coin-hover ' : '' ).'">';
-        $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="25%" class="push_down" style="text-align: right;"><div>'.view_coins_e(11030,  $e['e__id']).'</div></td>';
-        $ui .= '<td width="25%" class="center">'.view_coins_e(12274,  $e['e__id']).'</td>';
-        $ui .= '<td width="25%" class="center">'.view_coins_e(12273,  $e['e__id']).'</td>';
-        $ui .= '<td width="25%" class="push_down" style="text-align: left;"><div>'.view_coins_e(6255,  $e['e__id']).'</div></td>';
-        $ui .= '</tr></table>';
+        $ui .= '<div class="coin_coins">';
+        $ui .= '<span>'.view_coins_e(11030,  $e['e__id']).'</span>';
+        $ui .= '<span>'.view_coins_e(12274,  $e['e__id']).'</span>';
+        $ui .= '<span>'.view_coins_e(12273,  $e['e__id']).'</span>';
+        $ui .= '<span>'.view_coins_e(6255,  $e['e__id']).'</span>';
         $ui .= '</div>';
     }
 
