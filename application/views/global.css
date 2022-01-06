@@ -2989,6 +2989,13 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .black-background i{
     color: #FFFFFF;
 }
+
+.custom_ui_13884_13886 .coinType12273,
+.custom_ui_13884_13886 .coinType12273 i,
+.custom_ui_13884_13886 .coinType12274,
+.custom_ui_13884_13886 .coinType12274 i,
+.custom_ui_13884_13886 .coinType6255,
+.custom_ui_13884_13886 .coinType6255 i,
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 .headline,
 .custom_ui_13884_13886 .headline-height,
@@ -3112,6 +3119,12 @@ color: #000000;
     border-bottom-color: #f0f0f0 !important; /* WAS WHITE */
 }
 
+.custom_ui_13884_13885 .coinType12273,
+.custom_ui_13884_13885 .coinType12273 i,
+.custom_ui_13884_13885 .coinType12274,
+.custom_ui_13884_13885 .coinType12274 i,
+.custom_ui_13884_13885 .coinType6255,
+.custom_ui_13884_13885 .coinType6255 i,
 .custom_ui_13884_13885 .modal-content,
 .custom_ui_13884_13885 .headline,
 .custom_ui_13884_13885 .headline-height,
@@ -3338,30 +3351,6 @@ color: #000000;
 }
 
 
-.btn-lrg.btn-12274, .coinType12274 {
-    background-color: #007AFD !important;
-    color: #222222 !important;
-}
-.coinType12274 i{
-    color: #222222;
-}
-.custom_ui_13884_13886 .coinType12274 i{
-    color: #FFFFFF;
-}
-.btn-lrg.btn-6255, .coinType6255{
-    background-color: #FC1B44 !important;
-    color: #222222 !important;
-}
-.coinType6255 i{
-    color: #222222;
-}
-.btn-lrg.btn-12273, .coinType12273{
-    background-color: #FFC500 !important;
-    color: #222222 !important;
-}
-.coinType12273 i{
-    color: #222222;
-}
 
 .move_away{
     margin-right: 34px;
@@ -3378,12 +3367,14 @@ color: #000000;
     color:#FC1B44 !important;
 }
 
+/*
 .coinType12274 i.zq12274 {
     color: #FFFFFF !important;
 }
 .coinType12273 .zq12273.fa-circle.fas, .coinType12274 .zq12274.fa-circle.fas, .coinType6255 .zq6255.fa-circle.fas {
     color: transparent !important;
 }
+*/
 
 
 
