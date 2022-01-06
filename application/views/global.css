@@ -2360,6 +2360,10 @@ video {
 
 @media (max-width:767px) {
 
+    .coin_coins>span{
+        padding: 0 2px;
+    }
+
     .vid-padding { padding:55px 0; }
 
 
