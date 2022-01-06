@@ -2042,7 +2042,8 @@ i, .btn .show-max {
     overflow-y: auto;
     display: block;
     margin: 0 8px;
-    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     top:39px;
 }
 .edge-coin .cover-content, .focus-coin .cover-content{
@@ -2175,8 +2176,7 @@ i, .btn .show-max {
     line-height: 120%;
     font-size: 1em;
     display: block;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-radius: 8px;
     vertical-align: middle;
 }
 .mini-coin .cover-content .inner-content {
