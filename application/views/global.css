@@ -514,34 +514,9 @@ img.no-frame {
 }
 
 
-/* Colors */
-.zq12274, .zq12274 .fas, .zq12274 .far, .zq12274 .fal, .zq12274 .fad, .color12274, .info-item i.zq12274:hover, .info-item a.zq12274:hover, .headline.zq12274, .headline.zq12274 a, .headline.zq12274 i  { color:#007AFD !important; }
-.zq12273, .zq12273 .fas, .zq12273 .far, .zq12273 .fal, .zq12273 .fad, .color12273, .info-item i.zq12273:hover, .info-item a.zq12273:hover, .headline.zq12273, .headline.zq12273 a, .headline.zq12273 i  { color:#FFC500 !important; }
-.zq6255, .zq6255 .fas, .zq6255 .far, .zq6255 .fal, .zq6255 .fad, .color6255, .info-item i.zq6255:hover, .info-item a.zq6255:hover, .fas.redalert, .headline.zq6255, .headline.zq6255 a, .headline.zq6255 i  { color:#FC1B44 !important; }
-.grey, .grey i, .grey a, .grey .zq12274, .grey .zq12273, .grey .zq6255, .btn-grey, .btn-grey i, .mini-grey { color:#999999 !important; }
-.black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#222222 !important; }
-
-.coinType12274{
-    border: 3px solid #007AFD !important;
-}
-.coinType12273{
-    border: 3px solid #FFC500 !important;
-}
-.coinType6255{
-    border: 3px solid #FC1B44 !important;
-}
 
 
-.nav12274 .nav-link.active, .nav12274 .nav-link.active i {
-    background-color: #007AFD !important;
-    color: #FFFFFF !important;
-}
-.nav12273 .nav-link.active, .nav12273 .nav-link.active i {
-    background-color: #FFC500 !important;
-    color: #FFFFFF !important;
-}
-.nav6255 .nav-link.active, .nav6255 .nav-link.active i {
-    background-color: #FC1B44 !important;
+.nav12274 .nav-link.active .zq12274, .nav12273 .nav-link.active .zq12273, .nav6255 .nav-link.active .zq6255 {
     color: #FFFFFF !important;
 }
 
@@ -1605,15 +1580,39 @@ label {
 }
 
 
-.bg6255, .btn-6255 {
+
+
+
+/* Colors */
+.zq12274, .zq12274 .fas, .zq12274 .far, .zq12274 .fal, .zq12274 .fad, .color12274, .info-item i.zq12274:hover, .info-item a.zq12274:hover, .headline.zq12274, .headline.zq12274 a, .headline.zq12274 i  { color:#007AFD !important; }
+.zq12273, .zq12273 .fas, .zq12273 .far, .zq12273 .fal, .zq12273 .fad, .color12273, .info-item i.zq12273:hover, .info-item a.zq12273:hover, .headline.zq12273, .headline.zq12273 a, .headline.zq12273 i  { color:#FFC500 !important; }
+.zq6255, .zq6255 .fas, .zq6255 .far, .zq6255 .fal, .zq6255 .fad, .color6255, .info-item i.zq6255:hover, .info-item a.zq6255:hover, .fas.redalert, .headline.zq6255, .headline.zq6255 a, .headline.zq6255 i  { color:#FC1B44 !important; }
+.grey, .grey i, .grey a, .grey .zq12274, .grey .zq12273, .grey .zq6255, .btn-grey, .btn-grey i, .mini-grey { color:#999999 !important; }
+.black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#222222 !important; }
+
+.coinType12274{
+    border: 3px solid #007AFD !important;
+}
+.coinType12273{
+    border: 3px solid #FFC500 !important;
+}
+.coinType6255{
+    border: 3px solid #FC1B44 !important;
+}
+
+
+.bg6255, .btn-6255, .nav6255 .nav-link.active {
     background-color: #FC1B44 !important;
 }
-.bg12273, .btn-12273 {
+.bg12273, .btn-12273, .nav12273 .nav-link.active {
     background-color: #FFC500 !important;
 }
-.bg12274, .btn-12274 {
+.bg12274, .btn-12274, .nav12274 .nav-link.active {
     background-color: #007AFD !important;
 }
+
+
+
 
 .note-btn i {
     color: #222222 !important;
