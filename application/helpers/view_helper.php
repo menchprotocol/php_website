@@ -1825,7 +1825,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
     //IDEAs & Time & Message
     $message_tooltip = '';
-    if(!$discovery_mode && $can_click){
+    if(!$discovery_mode){ // && $can_click
         $messages = '';
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
