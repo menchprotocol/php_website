@@ -2014,11 +2014,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //LOCKED
     $dropdown_ui = false;
-    if($has_any_lock && !$focus_coin) {
-
-        $dropdown_ui .= '<span title="' . $e___11035[$lock_notice]['m__title'] . '">' . $e___11035[$lock_notice]['m__cover'] . '</span>';
-
-    } elseif($source_of_e && !$cache_app) {
+    if($source_of_e && !$cache_app) {
 
         $action_buttons = null;
 
