@@ -929,7 +929,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
         $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
 
         $ui = '<div class="dropdown inline-block">';
-        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$coin_icon.view_number($count_query).'</button>';
+        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span title="'.number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$coin_icon.view_number($count_query).'</span></button>';
         $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
 
         if($x__type==12274){
