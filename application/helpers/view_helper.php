@@ -1666,7 +1666,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
     $locking_enabled = !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($force_order && $discovery_mode);
     $has_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
     $has_soft_lock = $locking_enabled && !$is_completed && ($has_hard_lock || (!$is_first_incomplete && ($force_order || ($start_to_unlock && !$is_started))));
-    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___4603'));
+    $has_sortable = !$has_soft_lock && $editing_enabled && in_array($x__type, $CI->config->item('n___4603'));
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i);
     $has_any_lock = $has_soft_lock || $has_hard_lock;
@@ -1730,12 +1730,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
                 $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
             } elseif($e__id==12589){
                 $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
-            } elseif($e__id==6155 && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155')) && ($x__type!=6255 || $superpower_10939)){
+            } elseif($e__id==6155 && $editing_enabled && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155')) && ($x__type!=6255 || $superpower_10939)){
                 $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'">'.$anchor.'</a>'; //UNLINK
             } elseif($e__id==26001){
                 //Reset discoveries
                 $action_buttons .= '<a href="javascript:void(0);" onclick="i_reset_discoveries('.$i['i__id'].')" class="dropdown-item css__title i_reset_discoveries_'.$i['i__id'].'">'.$anchor.'</a>';
-            } elseif($e__id==28636 && isset($i['x__id']) && $i['x__id']>0){
+            } elseif($e__id==28636 && $superpower_12700 && isset($i['x__id']) && $i['x__id']>0){
                 //Transaction Details
                 $action_buttons .= '<a href="/-4341?x__id='.$i['x__id'].'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
             } elseif($e__id==28637 && isset($i['x__type'])){
