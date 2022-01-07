@@ -1912,13 +1912,13 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
 }
 
 
-function view_pill($x__type, $counter, $m, $ui, $is_open = true, $left_pad = false){
+function view_pill($x__type, $counter, $m, $ui, $is_open = true){
 
     if(!strlen($ui)){
         return false;
     }
 
-    return '<script> $(\'.nav-pills\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span><span class="css__title xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span></a></li>\') </script>'.'<div class="headlinebody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
+    return '<script> $(\'.nav-pills\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">'.$m['m__cover'].'<span class="css__title xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span></a></li>\') </script>'.'<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
 
 }
 
