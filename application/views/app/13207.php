@@ -5,7 +5,7 @@ $group_by = 'e__id, e__title, e__cover, e__metadata, e__type, e__spectrum';
 
 //SOURCE LEADERBOARD
 
-echo '<ul class="nav nav-pills"></ul>';
+echo '<ul class="nav nav-pills nav12274"></ul>';
 
 $is_open = true;
 $list_count = 0;

@@ -40,7 +40,7 @@ echo view_e(4251, $e, null, $source_of_e);
 echo '</div>';
 
 
-echo '<ul class="nav nav-pills"></ul>';
+echo '<ul class="nav nav-pills nav12274"></ul>';
 
 foreach($this->config->item('e___11089') as $x__type => $m) {
 
@@ -141,7 +141,7 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
             if (count($child__filters) > 0 && $child__filters[0]['totals'] < $e_count) {
 
                 //Add 2nd Navigation to UI
-                $ui .= '<div class="nav nav-pills nav-sm">';
+                $ui .= '<div class="nav nav-pills nav-sm nav12274">';
 
                 //Show fixed All button:
                 $ui .= '<li class="nav-item"><a href="javascript:void(0)" onclick="e_filter_status(11029, -1)" class="nav-x e_filter_status_11029 active en_status_11029_-1" data-toggle="tooltip" data-placement="top" title="View all sources"><i class="fas fa-asterisk zq12274"></i><span class="zq12274">&nbsp;' . $e_count . '</span></a></li>';
