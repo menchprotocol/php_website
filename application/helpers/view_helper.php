@@ -1833,7 +1833,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
         if(superpower_active(12701, true)){
             $message_tooltip = '<div class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</div>';
         } else {
-            $message_tooltip = '<div class="mini-font">***HIDDEN***</div>';
+            //$message_tooltip = '<div class="mini-font">***HIDDEN***</div>';
         }
     }
 
