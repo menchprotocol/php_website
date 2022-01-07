@@ -1881,9 +1881,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
     if($superpower_10939 && !$focus_coin && $show_coins){
 
         $ui .= '<div class="coin_coins">';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_i(11019,  $i).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_i(13542,  $i).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i).'</span>';
         $ui .= '<span class="hideIfEmpty i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i).'</span>';
         $ui .= '</div>';
 
