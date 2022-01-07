@@ -1870,7 +1870,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
     $ui .= '</div></div>';
 
 
-    if(!$focus_coin && $show_coins){
+    if($superpower_10939 && !$focus_coin && $show_coins){
 
         $ui .= '<div class="coin_coins">';
         $ui .= '<span class="hideIfEmpty">'.view_coins_i(11019,  $i).'</span>';
@@ -2188,7 +2188,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Coin Block
-    if(!$is_app && !$focus_coin){
+    if($superpower_10939 && !$is_app && !$focus_coin){
         $ui .= '<div class="coin_coins">';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(11030,  $e['e__id']).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(12274,  $e['e__id']).'</span>';
