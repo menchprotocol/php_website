@@ -122,8 +122,8 @@ foreach($this->config->item('e___11089') as $x__type => $m) {
     } elseif($x__type==11029){
 
         //SOURCES
-        $counter = view_coins_e(12274, $e['e__id'], 0, false);
-        $list_e = view_coins_e(12274, $e['e__id'], 1);
+        $counter = view_coins_e(11029, $e['e__id'], 0, false);
+        $list_e = view_coins_e(11029, $e['e__id'], 1);
 
         //SOURCE MASS EDITOR
         //Source Status Filters:

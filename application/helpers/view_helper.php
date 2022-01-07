@@ -693,7 +693,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if($x__type==12274){
+    if($x__type==11029){
 
         //SOURCES
         $limit = view_memory(6404,11064);
@@ -797,7 +797,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).'">'.$coin_icon.view_number($count_query).'</button>';
             $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$e__id.'">';
 
-            if($x__type==12274){
+            if($x__type==11029){
                 //SOURCES
                 $e___4593 = $CI->config->item('e___4593'); //Transaction Types
                 $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
@@ -866,7 +866,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
         $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
 
-    } elseif($x__type==12273){
+    } elseif($x__type==13542){
 
         //IDEAS
         $query_filters = array(
@@ -939,7 +939,7 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
             foreach($CI->X_model->fetch($query_filters, array('x__up'), view_memory(6404,13206), 0, array('x__type' => 'ASC', 'x__spectrum' => 'ASC')) as $source_e) {
                 $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
             }
-        } elseif($x__type==12273){
+        } elseif($x__type==13542){
             //IDEAS
             $e___4737 = $CI->config->item('e___4737'); //Idea Types
             $superpower_10939 = superpower_active(10939, true);
@@ -1873,9 +1873,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
     if($superpower_10939 && !$focus_coin && $show_coins){
 
         $ui .= '<div class="coin_coins">';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_i(11019,  $i).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_i(12273,  $i).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_i(11019,  $i).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_i(13542,  $i).'</span>';
         $ui .= '<span class="hideIfEmpty i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i).'</span>';
         $ui .= '</div>';
 
@@ -2187,7 +2187,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     if($superpower_10939 && !$is_app && !$focus_coin){
         $ui .= '<div class="coin_coins">';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(11030,  $e['e__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_e(12274,  $e['e__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_e(11029,  $e['e__id']).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(12273,  $e['e__id']).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(6255,  $e['e__id']).'</span>';
         $ui .= '</div>';

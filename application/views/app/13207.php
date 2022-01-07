@@ -34,7 +34,7 @@ foreach($this->config->item('e___13207') as $x__type => $m) {
 
     $ui .= '</div>';
 
-    echo view_pill($x__type, view_coins_e(12274, $x__type, 0, false), $m, $ui, $is_open);
+    echo view_pill($x__type, view_coins_e(11029, $x__type, 0, false), $m, $ui, $is_open);
 
     $is_open = false;
     $list_count++;
