@@ -83,7 +83,7 @@ echo view_i_note_list(4231, false, $i_focus, $this->X_model->fetch(array(
 ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i);
 
 
-echo '<ul class="nav nav-pills"></ul>';
+echo '<ul class="nav nav-pills nav12273"></ul>';
 
 //IDEA LAYOUT
 foreach($this->config->item('e___11018') as $x__type => $m){

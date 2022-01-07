@@ -524,11 +524,25 @@ img.no-frame {
 .coinType12274{
     border: 3px solid #007AFD !important;
 }
+.coinType12273{
+    border: 3px solid #FFC500 !important;
+}
 .coinType6255{
     border: 3px solid #FC1B44 !important;
 }
-.coinType12273{
-    border: 3px solid #FFC500 !important;
+
+
+.nav12274 .nav-link.active, .nav12274 .nav-link.active i {
+    background-color: #007AFD !important;
+    color: #000 !important;
+}
+.nav12273 .nav-link.active, .nav12273 .nav-link.active i {
+    background-color: #FFC500 !important;
+    color: #000 !important;
+}
+.nav6255 .nav-link.active, .nav6255 .nav-link.active i {
+    background-color: #FC1B44 !important;
+    color: #000 !important;
 }
 
 
@@ -2972,7 +2986,6 @@ font-weight: bold !important;
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .nav-link.active .css__title {
-background-color: #FFFFFF;
 color: #000000;
 }
 
@@ -3095,7 +3108,6 @@ color: #000000;
     color: #000000 !important;
 }
 .custom_ui_13884_13885 .nav-link.active .css__title {
-    background-color: #000000;
     color: #FFFFFF;
 }
 
