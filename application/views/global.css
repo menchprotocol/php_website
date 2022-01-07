@@ -2259,7 +2259,7 @@ i, .btn .show-max {
 .cover-btn{
     font-size: 9em;
     position: absolute;
-    top: 46%;
+    top: 55%;
     width: 100%;
     text-align: center;
 }
@@ -2535,7 +2535,6 @@ video {
     }
     .focus-coin .cover-btn{
         font-size: 10em;
-        top: 46%;
     }
 
 }
