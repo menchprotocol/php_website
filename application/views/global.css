@@ -2134,8 +2134,8 @@ i, .btn .show-max {
 }
 .coin_cover{
     position: relative;
-    margin:0 0 13px 0 !important;
-    padding: 0 !important;
+    margin:0 0 13px !important;
+    padding: 21px 0 0 !important;
 }
 .mini-coin{
     margin: -8px 0 -30px !important;
