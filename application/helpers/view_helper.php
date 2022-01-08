@@ -1782,10 +1782,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
     } elseif(!$has_any_lock && $toolbar && $superpower_12700 && isset($i['x__type'])){
 
-        if(in_array($i['x__type'], $this->config->item('n___4486'))){
+        if(in_array($i['x__type'], $CI->config->item('n___4486'))){
             //Idea Links
             $ui .= view_input_dropdown(4486, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
-        } elseif(in_array($i['x__type'], $this->config->item('n___13550'))){
+        } elseif(in_array($i['x__type'], $CI->config->item('n___13550'))){
             //Idea Source Reference
             $ui .= view_input_dropdown(13550, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
         }
@@ -1907,10 +1907,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
 
 function view_social(){
+    $CI =& get_instance();
     $social_id = intval(get_domain_setting(14904));
     if($social_id){
         echo '<ul class="social-footer">';
-        foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
+        foreach($CI->config->item('e___'.$social_id) as $e__id => $m) {
             echo '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';
         }
         echo '</ul>';
