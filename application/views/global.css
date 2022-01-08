@@ -2044,10 +2044,11 @@ i, .btn .show-max {
     line-height: 100%;
 }
 .cover-progress{
-    width:100%;
-    bottom: 0;
-    left: 0;
+    width: calc(100% - 16px);
+    bottom: 3px;
+    left: 8px;
     position: absolute;
+    z-index: 999;
 }
 .cover-content{
     padding: 0;

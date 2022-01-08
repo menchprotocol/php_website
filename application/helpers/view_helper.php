@@ -1702,6 +1702,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-xl-3 col-lg-4 col-md-6 col-8 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $has_soft_lock ? ' soft_lock ' : '' ).' no-padding coin-12273 coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
+    if($load_completion && $is_started && !$is_completed){
+        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
+    }
+
     $ui .= '<div class="cover-wrapper">';
 
 
@@ -1857,11 +1861,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
         //$ui .= '<div class="grey mini-font">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>';
     }
     $ui .= '</div>';
-
-    if($load_completion && $is_started && !$is_completed){
-        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
-    }
-
 
 
     //Message
