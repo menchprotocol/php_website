@@ -794,7 +794,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$coin_icon.view_number($count_query).'</button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span title="'.number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$coin_icon.view_number($count_query).'</span></button>';
             $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$e__id.'">';
 
             if($x__type==11029){
@@ -1926,7 +1926,7 @@ function view_pill($x__type, $counter, $m, $ui, $is_open = true){
         return false;
     }
 
-    return '<script> $(\'.nav-pills\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span><span class="css__title xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span></a></li>\') </script>'.'<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
+    return '<script> $(\'.nav-pills\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span><span class="css__title xtypecounter'.$x__type.'">'.view_number($counter) . '</span></a></li>\') </script>'.'<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
 
 }
 
