@@ -644,7 +644,6 @@ label:focus,
     cursor: default;
     overflow: hidden;
     width: 100%;
-    background-color: #999999 !important;
 }
 .progress-done{
     height:3px;
