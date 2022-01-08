@@ -478,7 +478,7 @@ img.no-frame {
 }
 .nav-link {
     display: block;
-    padding: 8px 8px 8px 0;
+    padding:5px 2px;
 }
 
 .modal-footer{
