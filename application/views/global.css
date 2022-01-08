@@ -2182,7 +2182,6 @@ i, .btn .show-max {
     display: block;
     border-radius: 8px;
     vertical-align: middle;
-    min-height: 34px;
 }
 
 /* Cover Circle Override: */
@@ -2205,7 +2204,7 @@ i, .btn .show-max {
 }
 
 .cover-content .inner-content .css__title {
-    padding:0 3px;
+    padding:3px 0 0;
     display: block;
     min-height: 21px;
 }
