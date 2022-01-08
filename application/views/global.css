@@ -2062,7 +2062,7 @@ i, .btn .show-max {
     top:39px;
 }
 .edge-coin .cover-content, .focus-coin .cover-content{
-    max-height: 69% !important;
+    max-height: 66% !important;
     top: 69px !important;
 }
 
@@ -2270,7 +2270,7 @@ i, .btn .show-max {
 .cover-btn{
     font-size: 9em;
     position: absolute;
-    top: 69%;
+    top: 66%;
     width: 100%;
     text-align: center;
 }
