@@ -2263,7 +2263,6 @@ i, .btn .show-max {
 .cover-btn{
     font-size: 9em;
     position: absolute;
-    top: 66%;
     width: 100%;
     text-align: center;
 }
@@ -3106,8 +3105,55 @@ color: #000000;
 
 
 
+/* SHAPE: Rounded Rectangle Tall */
+.custom_ui_28938_28953 .cover-btn{
+    top: 66%;
+}
+.custom_ui_28938_28953 .cover-link {
+    padding-top: 144%;
+}
+.custom_ui_28938_28953 .cover-link,
+.custom_ui_28938_28953 .icons_large .block-icon img,
+.custom_ui_28938_28953 .mini-circle,
+.custom_ui_28938_28953 .note-btn > span > span,
+.custom_ui_28938_28953 .icon-block-img img,
+.custom_ui_28938_28953 .icon-block-lg img,
+.custom_ui_28938_28953 .icon-block img,
+.custom_ui_28938_28953 .icon-block-xs img,
+.custom_ui_28938_28953 .platform-large img,
+.custom_ui_28938_28953 .image-mini img,
+.custom_ui_28938_28953 .round-btn {
+    border-radius: 8px;
+}
+
+
+/* SHAPE: Rounded Rectangle Wide */
+.custom_ui_28938_28955 .cover-btn{
+    top: 34%;
+}
+.custom_ui_28938_28955 .cover-link {
+    padding-top: 56%;
+}
+.custom_ui_28938_28955 .cover-link,
+.custom_ui_28938_28955 .icons_large .block-icon img,
+.custom_ui_28938_28955 .mini-circle,
+.custom_ui_28938_28955 .note-btn > span > span,
+.custom_ui_28938_28955 .icon-block-img img,
+.custom_ui_28938_28955 .icon-block-lg img,
+.custom_ui_28938_28955 .icon-block img,
+.custom_ui_28938_28955 .icon-block-xs img,
+.custom_ui_28938_28955 .platform-large img,
+.custom_ui_28938_28955 .image-mini img,
+.custom_ui_28938_28955 .round-btn {
+    border-radius: 8px;
+}
+
+
 
 /* SHAPE: Circle */
+.custom_ui_28938_28939 .cover-btn {
+    top: 55%;
+}
 .custom_ui_28938_28939 .cover-link {
     padding-top: 98%;
 }
@@ -3126,25 +3172,11 @@ color: #000000;
 }
 
 
-/* SHAPE: Rounded Tall Rectangle */
-.custom_ui_28938_28953 .cover-link {
-    padding-top: 144%;
-}
-.custom_ui_28938_28953 .cover-link,
-.custom_ui_28938_28953 .icons_large .block-icon img,
-.custom_ui_28938_28953 .mini-circle,
-.custom_ui_28938_28953 .note-btn > span > span,
-.custom_ui_28938_28953 .icon-block-img img,
-.custom_ui_28938_28953 .icon-block-lg img,
-.custom_ui_28938_28953 .icon-block img,
-.custom_ui_28938_28953 .icon-block-xs img,
-.custom_ui_28938_28953 .platform-large img,
-.custom_ui_28938_28953 .image-mini img,
-.custom_ui_28938_28953 .round-btn {
-    border-radius: 8px;
-}
 
 /* SHAPE: Rounded Square */
+.custom_ui_28938_28940 .cover-btn{
+    top: 55%;
+}
 .custom_ui_28938_28940 .cover-link {
     padding-top: 98%;
 }
@@ -3164,6 +3196,9 @@ color: #000000;
 
 
 /* SHAPE: Sharp Square */
+.custom_ui_28938_28941 .cover-btn{
+    top: 55%;
+}
 .custom_ui_28938_28941 .cover-link {
     padding-top: 98%;
 }
