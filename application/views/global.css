@@ -3105,7 +3105,7 @@ color: #000000;
     border-top-right-radius: 0;
 }
 .cover-content{
-    border-radius: 8px;
+    border-radius: 5px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
@@ -3175,8 +3175,10 @@ color: #000000;
 .custom_ui_28938_28939 .round-btn {
     border-radius: 50%;
 }
-.custom_ui_28938_28939 .nav-pills .nav-link,
 .custom_ui_28938_28939 .cover-content{
+    border-radius: 5px;
+}
+.custom_ui_28938_28939 .nav-pills .nav-link{
     border-radius: 8px;
 }
 
