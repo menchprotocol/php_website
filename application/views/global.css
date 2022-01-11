@@ -2046,8 +2046,6 @@ i, .btn .show-max {
     overflow-y: auto;
     display: block;
     margin: 0 8px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
     top:39px;
 }
 .mini-coin .cover-content {
@@ -3101,11 +3099,12 @@ color: #000000;
 
 
 
-.nav-pills .nav-link{
+.nav-pills .nav-link, .cover-content{
     border-radius: 8px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
 
 /* SHAPE: Rounded Rectangle Tall */
 .custom_ui_28938_28953 .cover-btn{
@@ -3171,7 +3170,8 @@ color: #000000;
 .custom_ui_28938_28939 .round-btn {
     border-radius: 50%;
 }
-.custom_ui_28938_28939 .nav-pills .nav-link{
+.custom_ui_28938_28939 .nav-pills .nav-link,
+.custom_ui_28938_28939 .cover-content{
     border-radius: 8px;
 }
 
