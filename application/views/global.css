@@ -3130,28 +3130,6 @@ color: #000000;
     border-radius: 8px;
 }
 
-/* SHAPE: Rounded Rectangle Wide */
-.custom_ui_28938_28955 .cover-btn{
-    top: 45%;
-}
-.custom_ui_28938_28955 .cover-link {
-    padding-top: 56%;
-}
-.custom_ui_28938_28955 .cover-link,
-.custom_ui_28938_28955 .icons_large .block-icon img,
-.custom_ui_28938_28955 .mini-circle,
-.custom_ui_28938_28955 .note-btn > span > span,
-.custom_ui_28938_28955 .icon-block-img img,
-.custom_ui_28938_28955 .icon-block-lg img,
-.custom_ui_28938_28955 .icon-block img,
-.custom_ui_28938_28955 .icon-block-xs img,
-.custom_ui_28938_28955 .platform-large img,
-.custom_ui_28938_28955 .image-mini img,
-.custom_ui_28938_28955 .round-btn {
-    border-radius: 8px;
-}
-
-
 
 /* SHAPE: Circle */
 .custom_ui_28938_28939 .cover-btn {
@@ -3184,7 +3162,7 @@ color: #000000;
 
 /* SHAPE: Rounded Square */
 .custom_ui_28938_28940 .cover-btn{
-    top: 45%;
+    top: 50%;
 }
 .custom_ui_28938_28940 .cover-link {
     padding-top: 98%;
