@@ -2047,13 +2047,11 @@ i, .btn .show-max {
     display: block;
     margin: 0 8px;
     top:39px;
+    max-height: 66%;
+    top: 69px;
 }
 .mini-coin .cover-content {
     top:24px;
-}
-.edge-coin .cover-content, .focus-coin .cover-content{
-    max-height: 66% !important;
-    top: 69px !important;
 }
 
 .coin-cover{

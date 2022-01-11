@@ -58,19 +58,6 @@ function e_reset_discoveries(e__id){
 
 
 
-function e_filter_status(x__type, new_val) {
-    //Delete active class:
-    $('.e_filter_status_'+x__type).removeClass('active');
-    //We do have a filter:
-    e_focus_filter = parseInt(new_val);
-    $('.en_status_'+x__type+'_' + new_val).addClass('active');
-    e_load_page(x__type,0, 1);
-}
-
-
-
-
-
 function e_x_form_lock(){
     $('#x__message').prop("disabled", true);
 
