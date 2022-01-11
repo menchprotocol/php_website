@@ -3175,10 +3175,8 @@ color: #000000;
 .custom_ui_28938_28939 .round-btn {
     border-radius: 50%;
 }
+.custom_ui_28938_28939 .nav-pills .nav-link,
 .custom_ui_28938_28939 .cover-content{
-    border-radius: 5px;
-}
-.custom_ui_28938_28939 .nav-pills .nav-link{
     border-radius: 8px;
 }
 
