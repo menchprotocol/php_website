@@ -3099,10 +3099,15 @@ color: #000000;
 
 
 
-.nav-pills .nav-link, .cover-content{
+.nav-pills .nav-link{
     border-radius: 8px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+.cover-content{
+    border-radius: 8px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 
