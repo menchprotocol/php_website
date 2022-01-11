@@ -243,11 +243,7 @@ img.no-frame {
     border-radius:0 !important;
 }
 
-.nav-pills .nav-link{
-    border-radius: 8px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
+
 .alert{
     padding:10px !important;
     border-radius: 8px;
@@ -3105,6 +3101,12 @@ color: #000000;
 
 
 
+.nav-pills .nav-link{
+    border-radius: 8px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
 /* SHAPE: Rounded Rectangle Tall */
 .custom_ui_28938_28953 .cover-btn{
     top: 66%;
@@ -3125,7 +3127,6 @@ color: #000000;
 .custom_ui_28938_28953 .round-btn {
     border-radius: 8px;
 }
-
 
 /* SHAPE: Rounded Rectangle Wide */
 .custom_ui_28938_28955 .cover-btn{
@@ -3170,7 +3171,9 @@ color: #000000;
 .custom_ui_28938_28939 .round-btn {
     border-radius: 50%;
 }
-
+.custom_ui_28938_28939 .nav-pills .nav-link{
+    border-radius: 8px;
+}
 
 
 /* SHAPE: Rounded Square */
