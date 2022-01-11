@@ -3203,29 +3203,6 @@ color: #000000;
 }
 
 
-/* SHAPE: Sharp Square */
-.custom_ui_28938_28941 .cover-btn{
-    top: 45%;
-}
-.custom_ui_28938_28941 .cover-link {
-    padding-top: 98%;
-}
-.custom_ui_28938_28941 .cover-link,
-.custom_ui_28938_28941 .icons_large .block-icon img,
-.custom_ui_28938_28941 .mini-circle,
-.custom_ui_28938_28941 .note-btn > span > span,
-.custom_ui_28938_28941 .icon-block-img img,
-.custom_ui_28938_28941 .icon-block-lg img,
-.custom_ui_28938_28941 .icon-block img,
-.custom_ui_28938_28941 .icon-block-xs img,
-.custom_ui_28938_28941 .platform-large img,
-.custom_ui_28938_28941 .image-mini img,
-.custom_ui_28938_28941 .round-btn {
-    border-radius: 0;
-}
-
-
-
 
 
 
