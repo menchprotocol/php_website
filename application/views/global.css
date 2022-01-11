@@ -413,7 +413,6 @@ img.no-frame {
     margin-top: -8px;
 }
 .icons_large .block-icon img{
-    border-radius: 8px; /*icon*/
     line-height: 100%;
     width:100%;
     height:100%;
@@ -571,7 +570,6 @@ label:focus,
 
 .mini-circle{
     display: inline-block;
-    border-radius: 8px; /*icon*/
     background-color: #FC1B44;
     padding: 8px 0;
     width: 34px;
@@ -1573,7 +1571,6 @@ label {
     display: block !important;
 }
 .note-btn > span > span {
-    border-radius: 8px; /*icon*/
     padding: 8px 0 !important;
     margin: 3px 3px 0 0;
 }
@@ -1708,14 +1705,12 @@ i, .btn .show-max {
 .icon-block-img img,
 .icon-block-lg img,
 .icon-block img{
-    border-radius: 8px; /*icon*/
     line-height: 100%;
     width: 28px !important;
     height: 28px !important;
     margin: -8px 3px -5px 2px !important;
 }
 .icon-block-xs img{
-    border-radius: 8px; /*icon*/
     line-height: 100%;
     width: 24px !important;
     height: 24px !important;
@@ -1729,14 +1724,12 @@ i, .btn .show-max {
 }
 .platform-large img{
     width:128px;
-    border-radius: 8px; /*icon*/
 }
 .platform-large{
     font-size: 8em !important;
     padding:0 0 13px 0;
 }
 .image-mini img{
-    border-radius: 8px; /*icon*/
     line-height: 100%;
     width: 20px !important;
     height: 20px !important;
@@ -2197,8 +2190,6 @@ i, .btn .show-max {
     background-position: center;
     display: block;
     overflow: hidden;
-    padding-top: 144%;
-    border-radius: 8px; /*icon*/
     margin-bottom: 0px;
     margin-top: 0px;
 }
@@ -2594,7 +2585,6 @@ video {
 }
 .round-btn{
     display: inline-block;
-    border-radius: 8px; /*icon*/
     width: 60px;
     height: 60px;
     padding:9px 0 0 0;
@@ -3113,6 +3103,83 @@ color: #000000;
 }
 
 
+
+
+
+
+/* SHAPE: Circle */
+.custom_ui_28938_28939 .cover-link {
+    padding-top: 98%;
+}
+.custom_ui_28938_28939 .cover-link,
+.custom_ui_28938_28939 .icons_large .block-icon img,
+.custom_ui_28938_28939 .mini-circle,
+.custom_ui_28938_28939 .note-btn > span > span,
+.custom_ui_28938_28939 .icon-block-img img,
+.custom_ui_28938_28939 .icon-block-lg img,
+.custom_ui_28938_28939 .icon-block img,
+.custom_ui_28938_28939 .icon-block-xs img,
+.custom_ui_28938_28939 .platform-large img,
+.custom_ui_28938_28939 .image-mini img,
+.custom_ui_28938_28939 .round-btn {
+    border-radius: 50%;
+}
+
+
+/* SHAPE: Rounded Tall Rectangle */
+.custom_ui_28938_28953 .cover-link {
+    padding-top: 144%;
+}
+.custom_ui_28938_28953 .cover-link,
+.custom_ui_28938_28953 .icons_large .block-icon img,
+.custom_ui_28938_28953 .mini-circle,
+.custom_ui_28938_28953 .note-btn > span > span,
+.custom_ui_28938_28953 .icon-block-img img,
+.custom_ui_28938_28953 .icon-block-lg img,
+.custom_ui_28938_28953 .icon-block img,
+.custom_ui_28938_28953 .icon-block-xs img,
+.custom_ui_28938_28953 .platform-large img,
+.custom_ui_28938_28953 .image-mini img,
+.custom_ui_28938_28953 .round-btn {
+    border-radius: 8px;
+}
+
+/* SHAPE: Rounded Square */
+.custom_ui_28938_28940 .cover-link {
+    padding-top: 98%;
+}
+.custom_ui_28938_28940 .cover-link,
+.custom_ui_28938_28940 .icons_large .block-icon img,
+.custom_ui_28938_28940 .mini-circle,
+.custom_ui_28938_28940 .note-btn > span > span,
+.custom_ui_28938_28940 .icon-block-img img,
+.custom_ui_28938_28940 .icon-block-lg img,
+.custom_ui_28938_28940 .icon-block img,
+.custom_ui_28938_28940 .icon-block-xs img,
+.custom_ui_28938_28940 .platform-large img,
+.custom_ui_28938_28940 .image-mini img,
+.custom_ui_28938_28940 .round-btn {
+    border-radius: 8px;
+}
+
+
+/* SHAPE: Sharp Square */
+.custom_ui_28938_28941 .cover-link {
+    padding-top: 98%;
+}
+.custom_ui_28938_28941 .cover-link,
+.custom_ui_28938_28941 .icons_large .block-icon img,
+.custom_ui_28938_28941 .mini-circle,
+.custom_ui_28938_28941 .note-btn > span > span,
+.custom_ui_28938_28941 .icon-block-img img,
+.custom_ui_28938_28941 .icon-block-lg img,
+.custom_ui_28938_28941 .icon-block img,
+.custom_ui_28938_28941 .icon-block-xs img,
+.custom_ui_28938_28941 .platform-large img,
+.custom_ui_28938_28941 .image-mini img,
+.custom_ui_28938_28941 .round-btn {
+    border-radius: 0;
+}
 
 
 
