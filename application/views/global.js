@@ -1264,7 +1264,6 @@ function e_load_search(x__type) {
 
     //Valid Source Creation Type?
     if(!js_n___14055.includes(x__type)){
-        alert('Invalid Source Creation Type: ' + x__type);
         return false;
     }
 
