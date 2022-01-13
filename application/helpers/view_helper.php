@@ -872,7 +872,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
     } elseif($x__type==10573){
 
-        $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
+        $order_columns = array('x__spectrum' => 'ASC');
         $join_objects = array('x__right');
         $query_filters = array(
             'x__up' => $e__id,
