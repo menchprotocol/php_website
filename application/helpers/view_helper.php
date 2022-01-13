@@ -978,6 +978,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
                 return null;
             }
 
+            $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
             $e___11035 = $CI->config->item('e___11035'); //COINS
             $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
 
@@ -988,7 +989,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             if($x__type==11029){
                 //SOURCES
                 $e___4593 = $CI->config->item('e___4593'); //Transaction Types
-                $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
                 foreach($CI->X_model->fetch($query_filters, $join_objects, view_memory(6404,13206), 0, array(
                     'x__spectrum' => 'ASC',
                     'e__title' => 'ASC'
