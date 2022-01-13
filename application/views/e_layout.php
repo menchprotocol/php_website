@@ -54,7 +54,7 @@ foreach($e___11089 as $x__type => $m) {
 //Determine focus/auto-load tab:
 $focus_tab = 0;
 foreach($this->config->item('e___26005') as $x__type => $m) {
-    if($item_counts[$x__type] > 0){
+    if(isset($item_counts[$x__type]) && $item_counts[$x__type] > 0){
         $focus_tab = $x__type;
         break;
     }
