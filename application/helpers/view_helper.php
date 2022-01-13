@@ -684,6 +684,158 @@ function view_coin_line($href, $is_current, $o__type, $o__cover, $o__title, $x__
     return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xs">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.$o__type.'</span>'.( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.$x__message.'</div>' : '' ).'</a>';
 }
 
+
+
+
+function view_body_e($x__type, $counter, $e__id){
+
+    $CI =& get_instance();
+    $limit = view_memory(6404,11064);
+    $member_e = superpower_unlocked();
+    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    $superpower_10939 = superpower_active(10939, true);
+    $source_is_e = $e__id==$member_e['e__id'];
+    $source_of_e = source_of_e($e__id);
+    $list_results = view_coins_e($x__type, $e__id, 1);
+    $focus_e = ($e__id == $member_e['e__id'] ? $member_e : false);
+    $ui = '';
+
+
+    if($x__type==4250){
+
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
+        foreach($list_results as $i) {
+            $ui .= view_i($x__type, 0, null, $i, null, $focus_e);
+        }
+        $ui .= '</div>';
+
+    } elseif($x__type==4251) {
+
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
+        foreach ($list_results as $e) {
+            $ui .= view_e($x__type, $e, source_of_e($e__id));
+        }
+        $ui .= '</div>';
+
+    } elseif($x__type==12273){
+
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-13550">';
+        foreach($list_results as $i){
+            $ui .= view_i(13550, 0, null, $i,( strlen($i['x__message']) && trim($i['x__message'])!=$CI->uri->segment(1) ? $CI->X_model->message_view($i['x__message'], true) : null), $focus_e, null);
+        }
+
+        if ($counter > count($list_results)) {
+            //We have even more:
+            $ui .= i_load_page(13550, 1, $limit, $counter);
+        }
+
+        $ui .= '</div>';
+
+        $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load(13550)}); </script>' : '<style> #list-in-13550 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+
+
+        if($superpower_10939 && !$source_is_e){
+            $ui .= '<div class="new-list-13550 list-group"><div class="list-group-item list-adder">
+                <div class="input-group border">
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-13550 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                    <input type="text"
+                           class="form-control form-control-thick algolia_search dotransparent add-input"
+                           maxlength="' . view_memory(6404,4736) . '"
+                           placeholder="'.$e___11035[14016]['m__title'].'">
+                </div><div class="algolia_pad_search row justify-content"></div></div></div>';
+
+            $ui .= '<script> $(document).ready(function () { i_load_search(13550); }); </script>';
+        }
+
+    } elseif($x__type==11029 || $x__type==11030){
+
+        $ui .= '<div id="list-in-'.$x__type.'" class="row justify-content hideIfEmpty">';
+
+        foreach($list_results as $e) {
+            $ui .= view_e($x__type, $e, null,  ($source_of_e || ($member_e && ($member_e['e__id']==$e['x__source']))));
+        }
+
+        if ($counter > count($list_results)) {
+            //Load even more if there...
+            $ui .= e_load_page($x__type, 1, $limit, $counter);
+        }
+
+        $ui .= '</div>';
+
+        //Input to add new child:
+        if(superpower_active(13422, true)){
+
+            $ui .= '<div current-count="'.$counter.'" class="new-list-'.$x__type.' list-adder">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="'.$e___11035[14055]['m__title'].'">
+                    </div><div class="algolia_pad_search row justify-content"></div></div>';
+
+        } else {
+
+            $ui .= '<div class="hideIfEmpty new-list-'.$x__type.'"></div>';
+
+        }
+
+    } elseif($x__type==10573){
+
+        //Need 2 or more to sort...
+        $ui .= ( count($list_results) >= 2 ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
+
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-10573">';
+        foreach($list_results as $i){
+            $ui .= view_i(10573, 0, null, $i,null, $focus_e);
+        }
+        $ui .= '</div>';
+
+
+        //Add Idea:
+        if($superpower_10939 && $source_is_e){
+            //Give Option to Add New Idea:
+            $ui .= '<div class="new-list-10573 list-group"><div class="list-group-item list-adder">
+                <div class="input-group border">
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-10573 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                    <input type="text"
+                           class="form-control form-control-thick algolia_search dotransparent add-input"
+                           maxlength="' . view_memory(6404,4736) . '"
+                           placeholder="'.$e___11035[14016]['m__title'].'">
+                </div><div class="algolia_pad_search row justify-content"></div></div></div>';
+
+            $ui .= '<script> $(document).ready(function () { i_load_search(10573); }); </script>';
+
+        }
+    } elseif(in_array($x__type, $CI->config->item('n___4485'))){
+
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
+        foreach($list_results as $i) {
+            $ui .= view_i(4485, 0, null, $i, null, $focus_e);
+        }
+        $ui .= '</div>';
+
+    } elseif(in_array($x__type, $CI->config->item('n___14690'))) {
+
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
+        foreach ($list_results as $i) {
+            $ui .= view_i($x__type, $i['i__id'], null, $i, null, $focus_e);
+        }
+        $ui .= '</div>';
+
+        if ($e__id == $member_e['e__id'] && in_array($x__type, $CI->config->item('n___4603'))) {
+            $ui .= '<script> $(document).ready(function () { x_sort_load(' . $x__type . ') }); </script>';
+        } else {
+            $ui .= '<style> #list-in-' . $x__type . ' .x_sort {display:none !important;} </style>';
+        }
+
+    }
+
+    return $ui;
+
+}
+
+
 function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true, $load_items = 0){
 
     /*
@@ -698,7 +850,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     if($x__type==11029){
 
         //SOURCES
-        $limit = view_memory(6404,11064);
         $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
         $join_objects = array('x__down');
         $query_filters = array(
@@ -708,10 +859,31 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
 
+    } elseif($x__type==11030){
+
+        $order_columns = array('x__spectrum' => 'ASC', 'e__spectrum' => 'DESC', 'e__title' => 'ASC');
+        $join_objects = array('x__up');
+        $query_filters = array(
+            'x__down' => $e__id,
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        );
+
+    } elseif($x__type==10573){
+
+        $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
+        $join_objects = array('x__right');
+        $query_filters = array(
+            'x__up' => $e__id,
+            'x__type' => 10573, //STARRED
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        );
+        
     } elseif($x__type==12273){
 
         //IDEAS
-        $limit = view_memory(6404,13958);
         $join_objects = array('x__right');
         $order_columns = array('x__spectrum' => 'ASC', 'i__spectrum' => 'DESC'); //BEST IDEAS
         $query_filters = array(
@@ -721,10 +893,20 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'x__up' => $e__id,
         );
 
+    } elseif($x__type==12896){
+
+        $join_objects = array('x__right');
+        $order_columns = array('x__spectrum' => 'ASC', 'x__id' => 'DESC');
+        $query_filters = array(
+            'x__up' => $e__id,
+            'x__type' => 12896,
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+        );
+
     } elseif($x__type==12969){
 
         $join_objects = array('x__left');
-        $limit = view_memory(6404,11064);
         $order_columns = array('x__spectrum' => 'ASC'); //Custom Sort
         $query_filters = array(
             'x__source' => $e__id,
@@ -737,7 +919,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         //DISCOVERIES
         $join_objects = array('x__left');
-        $limit = view_memory(6404,11064);
         $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
         $query_filters = array(
             'x__source' => $e__id,
@@ -746,32 +927,37 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
         );
 
-    } elseif($x__type==11030){
+    } elseif(in_array($x__type, $CI->config->item('n___4485'))){
 
-        $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
-        $join_objects = array('x__up');
-        $limit = 0;
-        $order_columns = array('x__spectrum' => 'ASC', 'e__spectrum' => 'DESC');
+        //IDEA NOTES
+        $join_objects = array('x__right');
+        $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
         $query_filters = array(
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__down' => $e__id, //This child source
-            'x__up !=' => $current_e, //This child source
+            'x__up' => $e__id,
+            'x__type' => $x__type,
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+        );
+
+    } elseif(in_array($x__type, $CI->config->item('n___12149'))){
+
+        //Ideas/Sources Owned
+        $join_objects = array();
+        $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
+        $query_filters = array(
+            'x__source' => $e__id,
+            'x__type' => $x__type,
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         );
 
     }
-
-    if($load_items > 0){
-        $limit = $load_items;
-    }
-
 
 
     //Return Results:
     if($page_num > 0){
 
-        return $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
+        $limit = view_memory(6404,11064);
+        return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
 
     } else {
 
@@ -1933,13 +2119,13 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
 }
 
 
-function view_pill($x__type, $counter, $m, $ui, $is_open = true){
+function view_pill($x__type, $counter, $m, $ui = null, $is_open = true){
 
     if(!strlen($ui)){
         return false;
     }
 
-    return '<script> $(\'.nav-pills\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>'.'<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
+    return '<script> $(\'.nav-pills\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>'.'<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'" item-counter="'.$counter.'">'.$ui.'</div>';
 
 }
 

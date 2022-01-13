@@ -31,6 +31,14 @@ class E extends CI_Controller
     }
 
 
+    function e_view_body_e(){
+        //Authenticate Member:
+        if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !isset($_POST['counter']) || !isset($_POST['headline_id']) || intval($_POST['headline_id']) < 1) {
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
+        } else {
+            echo view_body_e($_POST['headline_id'], $_POST['counter'], $_POST['e__id']);
+        }
+    }
 
     function toggle_left_menu(){
 
@@ -80,7 +88,7 @@ class E extends CI_Controller
                 $counter = view_coins_e($x__type, $member_e['e__id'], 0, false);
                 if($counter){
                     $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$counter.' '.$m['m__title'].'</div>';
-                    foreach(view_coins_e(6255, $member_e['e__id'], 1, true, 10) as $item){
+                    foreach(view_coins_e(6255, $member_e['e__id'], 1, false, 10) as $item){
                         $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
                     }
                 }
@@ -304,13 +312,12 @@ class E extends CI_Controller
 
         $items_per_page = view_memory(6404,11064);
         $focus__id = intval($_POST['focus__id']);
-        $e_focus_filter = intval($_POST['e_focus_filter']);
         $source_of_e = source_of_e($focus__id);
         $page = intval($_POST['page']);
         $query_filters = array(
             'x__up' => $focus__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'e__type IN (' . join(',', ( $e_focus_filter<0 /* Remove Filters */ ? $this->config->item('n___7358') /* ACTIVE */ : array($e_focus_filter) /* This specific filter*/ )) . ')' => null,
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         );
 

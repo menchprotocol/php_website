@@ -394,11 +394,12 @@ function toggle_pills(headline_id){
 
     var x__down = 0;
     var x__right = 0;
+    var current_id = current_id();
     var current_type = ( $('#focus__type').length ? parseInt($('#focus__type').val()) : 0 );
     if(current_type==12273){
-        x__right = current_id();
+        x__right = current_id;
     } else if (current_type==12274){
-        x__down = current_id();
+        x__down = current_id;
     }
 
     if($('.thepill' + headline_id+' .nav-link').hasClass('active')){
@@ -419,6 +420,24 @@ function toggle_pills(headline_id){
         $('.headlinebody').addClass('hidden');
         $('.thepill' + headline_id+ ' .nav-link').addClass('active');
         $('.headline_body_' + headline_id).removeClass('hidden');
+
+        //Do we need to load data via ajax?
+        if( !$('.headline_body_' + headline_id).html().length ){
+            $('.headline_body_' + headline_id).html('<i class="far fa-yin-yang fa-spin"></i>');
+            //Nothing loaded, we need to load:
+            if (current_type==12274){
+                $.post("/e/e_view_body_e", {
+                    headline_id:headline_id,
+                    counter:$('.headline_body_' + headline_id).attr('item-counter'),
+                    e__id:current_id
+                }, function (data) {
+                    //Update UI to confirm with member:
+                    $('.headline_body_' + headline_id).html(data);
+                });
+            } else {
+
+            }
+        }
 
     }
 
@@ -516,7 +535,6 @@ function e_load_page(x__type, page, load_new_filter) {
         x__type: x__type,
         page: page,
         focus__id: current_id(),
-        e_focus_filter: e_focus_filter,
     }, function (data) {
 
         //Appending to existing content:
