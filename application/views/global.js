@@ -394,15 +394,13 @@ function toggle_pills(headline_id){
 
     var x__down = 0;
     var x__right = 0;
-    var current_id = 0;
     var current_type = ( $('#focus__type').length ? parseInt($('#focus__type').val()) : 0 );
 
 
-    current_id = current_id();
     if(current_type==12273){
-        x__right = current_id;
+        x__right = current_id();
     } else if (current_type==12274){
-        x__down = current_id;
+        x__down = current_id();
     }
 
     if($('.thepill' + headline_id+' .nav-link').hasClass('active')){
@@ -432,7 +430,7 @@ function toggle_pills(headline_id){
                 $.post("/e/e_view_body_e", {
                     headline_id:headline_id,
                     counter:$('.headline_body_' + headline_id).attr('item-counter'),
-                    e__id:current_id
+                    e__id:current_id()
                 }, function (data) {
                     //Update UI to confirm with member:
                     $('.headline_body_' + headline_id).html(data);
