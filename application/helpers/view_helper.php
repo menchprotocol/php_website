@@ -1642,7 +1642,7 @@ function view_i_featured(){
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $e__id,
         );
-        $query = $CI->X_model->fetch($query_filters, array('x__right'), $limit, 0, array('i__spectrum' => 'DESC'));
+        $query = $CI->X_model->fetch($query_filters, array('x__right'), view_memory(6404,13206), 0, array('i__spectrum' => 'DESC'));
         if(!count($query)){
             continue;
         }
