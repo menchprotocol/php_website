@@ -242,6 +242,7 @@ class E extends CI_Controller
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
         } else {
 
+            $ui = '';
             $listed_items = 0;
             if($_POST['x__type']==11029){
                 //SOURCES
