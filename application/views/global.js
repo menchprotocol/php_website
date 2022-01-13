@@ -437,6 +437,7 @@ function toggle_pills(x__type){
 
                     //Reinstante search & sort
                     e_sort_load(x__type);
+                    initiate_algolia();
                     e_load_search(x__type);
 
                 });
@@ -756,7 +757,15 @@ function cover_upload(droppedFiles, uploadType) {
 }
 
 
-
+function initiate_algolia(){
+    $(".algolia_search").focus(function () {
+        if(!algolia_index && parseInt(js_e___6404[12678]['m__message'])){
+            //Loadup Algolia once:
+            client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
+            algolia_index = client.initIndex('alg_index');
+        }
+    });
+}
 
 var algolia_index = false;
 $(document).ready(function () {
@@ -860,13 +869,7 @@ $(document).ready(function () {
 
 
     //Load Algolia on Focus:
-    $(".algolia_search").focus(function () {
-        if(!algolia_index && parseInt(js_e___6404[12678]['m__message'])){
-            //Loadup Algolia once:
-            client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-            algolia_index = client.initIndex('alg_index');
-        }
-    });
+    initiate_algolia();
 
 
     //General ESC cancel
