@@ -355,7 +355,7 @@ function current_id(){
     return ( $('#focus__id').length ? parseInt($('#focus__id').val()) : 0 );
 }
 
-function toggle_headline(headline_id){
+function toggle_headline(x__type){
 
     var x__down = 0;
     var x__right = 0;
@@ -366,31 +366,31 @@ function toggle_headline(headline_id){
         x__down = current_id();
     }
 
-    if($('.headline_title_' + headline_id+' .icon_26008').hasClass('hidden')){
+    if($('.headline_title_' + x__type+' .icon_26008').hasClass('hidden')){
         //Currently open, must now be closed:
         var action_id = 26008; //Close
-        $('.headline_title_' + headline_id+ ' .icon_26008').removeClass('hidden');
-        $('.headline_title_' + headline_id+ ' .icon_26007').addClass('hidden');
-        $('.headline_body_' + headline_id).addClass('hidden');
+        $('.headline_title_' + x__type+ ' .icon_26008').removeClass('hidden');
+        $('.headline_title_' + x__type+ ' .icon_26007').addClass('hidden');
+        $('.headline_body_' + x__type).addClass('hidden');
     } else {
         //Currently closed, must now be opened:
         var action_id = 26007; //Open
-        $('.headline_title_' + headline_id+ ' .icon_26007').removeClass('hidden');
-        $('.headline_title_' + headline_id+ ' .icon_26008').addClass('hidden');
-        $('.headline_body_' + headline_id).removeClass('hidden');
+        $('.headline_title_' + x__type+ ' .icon_26007').removeClass('hidden');
+        $('.headline_title_' + x__type+ ' .icon_26008').addClass('hidden');
+        $('.headline_body_' + x__type).removeClass('hidden');
     }
 
     //Log Transaction:
     x_create({
         x__source: js_pl_id,
         x__type: action_id,
-        x__up: headline_id,
+        x__up: x__type,
         x__down: x__down,
         x__right: x__right,
     });
 }
 
-function toggle_pills(headline_id){
+function toggle_pills(x__type){
 
     var x__down = 0;
     var x__right = 0;
@@ -403,7 +403,7 @@ function toggle_pills(headline_id){
         x__down = current_id();
     }
 
-    if($('.thepill' + headline_id+' .nav-link').hasClass('active')){
+    if($('.thepill' + x__type+' .nav-link').hasClass('active')){
 
         var action_id = 26008; //Close
 
@@ -419,23 +419,26 @@ function toggle_pills(headline_id){
         //Hide all elements
         $('.nav-link').removeClass('active');
         $('.headlinebody').addClass('hidden');
-        $('.thepill' + headline_id+ ' .nav-link').addClass('active');
-        $('.headline_body_' + headline_id).removeClass('hidden');
+        $('.thepill' + x__type+ ' .nav-link').addClass('active');
+        $('.headline_body_' + x__type).removeClass('hidden');
 
         //Do we need to load data via ajax?
-        if( !$('.headline_body_' + headline_id).html().length ){
-            $('.headline_body_' + headline_id).html('<i class="far fa-yin-yang fa-spin"></i>');
+        if( !$('.headline_body_' + x__type).html().length ){
+            $('.headline_body_' + x__type).html('<i class="far fa-yin-yang fa-spin"></i>');
             //Nothing loaded, we need to load:
             if (current_type==12274){
                 $.post("/e/e_view_body_e", {
-                    headline_id:headline_id,
-                    counter:$('.headline_body_' + headline_id).attr('item-counter'),
+                    x__type:x__type,
+                    counter:$('.headline_body_' + x__type).attr('item-counter'),
                     e__id:current_id()
                 }, function (data) {
                     //Update UI to confirm with member:
-                    $('.headline_body_' + headline_id).html(data);
+                    $('.headline_body_' + x__type).html(data);
 
                     //Reinstante search & sort
+                    e_sort_load(x__type);
+                    e_load_search(x__type);
+
                 });
             } else {
 
@@ -450,7 +453,7 @@ function toggle_pills(headline_id){
     x_create({
         x__source: js_pl_id,
         x__type: action_id,
-        x__up: headline_id,
+        x__up: x__type,
         x__down: x__down,
         x__right: x__right,
     });
