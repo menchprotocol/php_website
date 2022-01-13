@@ -141,6 +141,11 @@ function e_sort_reset(){
 
 function e_sort_load(x__type) {
 
+    if(!js_n___13911.includes(x__type)){
+        //Does not support sorting:
+        return false;
+    }
+
     var element_key = null;
     var theobject = document.getElementById("list-in-"+x__type);
     if (!theobject) {
