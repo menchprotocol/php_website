@@ -2032,9 +2032,9 @@ i, .btn .show-max {
     line-height: 100%;
 }
 .cover-progress{
-    width: calc(100% - 16px);
-    bottom: 3px;
-    left: 8px;
+    width: 100%;
+    top: 0;
+    left: 0;
     position: absolute;
     z-index: 999;
 }
