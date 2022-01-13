@@ -236,6 +236,54 @@ class E extends CI_Controller
     }
 
 
+    function e_load_coin(){
+
+        if (!isset($_POST['e__id']) || !isset($_POST['x__type']) || !isset($_POST['first_segment']) || !isset($_POST['current_e']) || !isset($_POST['counter']) || !isset($_POST['page'])) {
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
+        } else {
+
+            $listed_items = 0;
+            if($_POST['x__type']==11029){
+                //SOURCES
+                $e___4593 = $this->config->item('e___4593'); //Transaction Types
+                foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], $_POST['page'], false, view_memory(6404,13206)) as $source_e) {
+                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$_POST['current_e'], $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
+                    $listed_items++;
+                }
+            } elseif($_POST['x__type']==11030){
+                //PROFILES
+                $e___4593 = $this->config->item('e___4593'); //Transaction Types
+                foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], $_POST['page'], false, view_memory(6404,13206)) as $source_e) {
+                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$_POST['current_e'], $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
+                    $listed_items++;
+                }
+            } elseif($_POST['x__type']==12273){
+                //IDEAS
+                $e___4737 = $this->config->item('e___4737'); //Idea Types
+                $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
+                foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], $_POST['page'], false, view_memory(6404,13206)) as $next_i) {
+                    $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
+                    $listed_items++;
+                }
+            } elseif($_POST['x__type']==6255){
+                //DISCOVERIES / IDEAS
+                $e___4593 = $this->config->item('e___4593'); //Transaction Types
+                $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
+                foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], $_POST['page'], false, view_memory(6404,13206)) as $x_i) {
+                    $ui .= view_coin_line('/i/i_go/'.$x_i['i__id'], $x_i['i__id']==$current_i, $e___4593[$x_i['x__type']]['m__cover'], view_cover(12273,$x_i['i__cover']), view_i_title($x_i), view_x__message($x_i['x__message'],$x_i['x__type']));
+                    $listed_items++;
+                }
+            }
+
+            if($listed_items < $_POST['counter']){
+                //We have more to show:
+                $ui .= view_coin_line('javascript:void(0)" onclick="load_coin_list()', $x_i['i__id']==$current_i, $e___4593[$x_i['x__type']]['m__cover'], view_cover(12273,$x_i['i__cover']), view_i_title($x_i), view_x__message($x_i['x__message'],$x_i['x__type']));
+            }
+
+            echo $ui;
+        }
+    }
+
     function e_sort_save()
     {
 

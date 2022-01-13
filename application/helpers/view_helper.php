@@ -983,41 +983,9 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span title="'.number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$coin_icon.view_number($count_query).'</span></button>';
-            $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$e__id.'">';
-
-            if($x__type==11029){
-                //SOURCES
-                $e___4593 = $CI->config->item('e___4593'); //Transaction Types
-                foreach($CI->X_model->fetch($query_filters, $join_objects, view_memory(6404,13206), 0, array(
-                    'x__spectrum' => 'ASC',
-                    'e__title' => 'ASC'
-                )) as $source_e) {
-                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
-                }
-            } elseif($x__type==11030){
-                //PROFILES
-                $e___4593 = $CI->config->item('e___4593'); //Transaction Types
-                foreach($CI->X_model->fetch($query_filters, $join_objects, 0, 0, array(
-                    'x__spectrum' => 'ASC',
-                )) as $source_e) {
-                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
-                }
-            } elseif($x__type==12273){
-                //IDEAS
-                $e___4737 = $CI->config->item('e___4737'); //Idea Types
-                $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-                foreach($CI->X_model->fetch($query_filters, $join_objects, view_memory(6404,13206), 0, array('x__spectrum' => 'ASC')) as $next_i) {
-                    $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
-                }
-            } elseif($x__type==6255){
-                //DISCOVERIES / IDEAS
-                $e___4593 = $CI->config->item('e___4593'); //Transaction Types
-                $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-                foreach($CI->X_model->fetch($query_filters, $join_objects, view_memory(6404,13206), 0, array('x__id' => 'DESC')) as $x_i) {
-                    $ui .= view_coin_line('/i/i_go/'.$x_i['i__id'], $x_i['i__id']==$current_i, $e___4593[$x_i['x__type']]['m__cover'], view_cover(12273,$x_i['i__cover']), view_i_title($x_i), view_x__message($x_i['x__message'],$x_i['x__type']));
-                }
-            }
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title load_coins button_of_'.$e__id.'_'.$x__type.'" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_page="1" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'" load_current_e="'.$current_e.'" ><span title="'.number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$coin_icon.view_number($count_query).'</span></button>';
+            $ui .= '<div class="dropdown-menu coins_of_'.$e__id.'_'.$x__type.'" aria-labelledby="coingroup'.$x__type.'_'.$e__id.'">';
+                //Menu To be loaded dynamically via AJAX
             $ui .= '</div>';
             $ui .= '</div>';
 

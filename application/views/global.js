@@ -424,7 +424,7 @@ function toggle_pills(x__type){
 
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
-            $('.headline_body_' + x__type).html('<i class="far fa-yin-yang fa-spin"></i>');
+            $('.headline_body_' + x__type).html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
             //Nothing loaded, we need to load:
             if (current_type==12274){
                 $.post("/e/e_view_body_e", {
@@ -447,8 +447,6 @@ function toggle_pills(x__type){
         }
 
     }
-
-
 
     //Log Transaction:
     x_create({
@@ -608,6 +606,10 @@ function lazy_load(){
         elements_selector: "img.lazyimage"
     });
 }
+
+
+
+
 
 var init_in_process = 0;
 function init_remove(){
@@ -773,6 +775,18 @@ $(document).ready(function () {
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
         cover_upload(droppedFiles, 'file');
+    });
+
+    $(".load_coins").click(function(event) {
+
+        //Auto load if empty:
+        if($(this).attr('x__type')){
+
+        }
+
+        load_coin_list();
+
+        //load_page="1" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'" load_current_e="'.$current_e.'"
     });
 
     //Should we auto start?
