@@ -1741,22 +1741,6 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
     }
     $ui .= '</a>';
 
-    //TIME
-    /*
-    $view_i_time = view_i_time($i_stats);
-    if($view_i_time){
-        $ui .= '<a '.$href.' class="doblock">' . $view_i_time . '</a>';
-    }
-
-
-    //PROGRESS?
-    $completion_rate = $CI->X_model->completion_progress($x__source, $i);
-    if($completion_rate['completion_percentage'] > 0 && $completion_rate['completion_percentage'] < 100){
-        $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
-    }
-    */
-
-
     $ui .= '</div>';
 
 

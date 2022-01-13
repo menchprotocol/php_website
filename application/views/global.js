@@ -439,6 +439,7 @@ function toggle_pills(x__type){
                     e_sort_load(x__type);
                     initiate_algolia();
                     e_load_search(x__type);
+                    initiate_coin_list();
 
                 });
             } else {
@@ -790,6 +791,15 @@ function load_coin_list(x__type, e__id, page, counter, first_segment, current_e)
 
 }
 
+function initiate_coin_list(){
+    $(".load_coins").click(function(event) {
+        //Auto load if page is zero:
+        if(!parseInt($(this).attr('load_page'))){
+            load_coin_list($(this).attr('load_x__type'),$(this).attr('load_e__id'),$(this).attr('load_page'),$(this).attr('load_counter'),$(this).attr('load_first_segment'),$(this).attr('load_current_e'));
+        }
+    });
+}
+
 var algolia_index = false;
 $(document).ready(function () {
 
@@ -798,12 +808,7 @@ $(document).ready(function () {
         cover_upload(droppedFiles, 'file');
     });
 
-    $(".load_coins").click(function(event) {
-        //Auto load if page is zero:
-        if(!parseInt($(this).attr('load_page'))){
-            load_coin_list($(this).attr('load_x__type'),$(this).attr('load_e__id'),$(this).attr('load_page'),$(this).attr('load_counter'),$(this).attr('load_first_segment'),$(this).attr('load_current_e'));
-        }
-    });
+    initiate_coin_list();
 
     //Should we auto start?
     if (isAdvancedUpload) {
