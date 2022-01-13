@@ -434,6 +434,8 @@ function toggle_pills(headline_id){
                 }, function (data) {
                     //Update UI to confirm with member:
                     $('.headline_body_' + headline_id).html(data);
+
+                    //Reinstante search & sort
                 });
             } else {
 
@@ -1486,9 +1488,7 @@ function e__add(x__type, e_existing_id) {
             //Allow inline editing if enabled:
             x_set_start_text();
 
-            if(x__type==11029){
-                e_sort_portfolio_load();
-            }
+            e_sort_load(x__type);
 
             //Hide Coin:
             $('.mini-coin.coin-12274.coin-id-'+e_existing_id).fadeOut();
@@ -1975,7 +1975,7 @@ function i_note_activate(){
         set_autosize($(this));
 
         //Activate sorting:
-        i_note_sort_load(x__type);
+        i_notes_sort_load(x__type);
 
         var showFiles = function (files) {
             if(typeof files[0] !== 'undefined'){
@@ -2144,7 +2144,7 @@ function i_note_sort_apply(x__type) {
     }
 }
 
-function i_note_sort_load(x__type) {
+function i_notes_sort_load(x__type) {
 
 
     var sotrable_div = document.getElementById("i_notes_list_" + x__type);

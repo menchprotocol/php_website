@@ -14,7 +14,7 @@ $(document).ready(function () {
     //Source Loader:
     var portfolio_count = parseInt($('.new-list-11029').attr('current-count'));
     if(portfolio_count>0 && portfolio_count<parseInt(js_e___6404[13005]['m__message'])){
-        e_sort_portfolio_load();
+        e_sort_load(11029);
     }
 
     set_autosize($('.texttype__lg.text__6197_'+current_id()));
@@ -85,12 +85,12 @@ function e_x_form_unlock(result){
 }
 
 
-function e_sort_save() {
+function e_sort_save(x__type) {
 
     var new_x__spectrums = [];
     var sort_rank = 0;
 
-    $("#list-in-11029 .coinface-12274").each(function () {
+    $("#list-in-"+x__type+" .coinface-12274").each(function () {
         //Fetch variables for this idea:
         var e__id = parseInt($(this).attr('e__id'));
         var x__id = parseInt($(this).attr('x__id'));
@@ -104,7 +104,7 @@ function e_sort_save() {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/e/e_sort_save", {e__id: current_id(), new_x__spectrums: new_x__spectrums}, function (data) {
+        $.post("/e/e_sort_save", {e__id: current_id(), x__type:x__type, new_x__spectrums: new_x__spectrums}, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -139,14 +139,15 @@ function e_sort_reset(){
     }
 }
 
-function e_sort_portfolio_load() {
+function e_sort_load(x__type) {
 
     var element_key = null;
-    var theobject = document.getElementById("list-in-11029");
+    var theobject = document.getElementById("list-in-"+x__type);
     if (!theobject) {
         //due to duplicate ideas belonging in this idea:
         return false;
     }
+
 
     //Show sort icon:
     $('.sort_e, .sort_reset').removeClass('hidden');
@@ -156,7 +157,7 @@ function e_sort_portfolio_load() {
         draggable: ".coinface-12274", // Specifies which items inside the element should be sortable
         handle: ".sort_e", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/) {
-            e_sort_save();
+            e_sort_save(x__type);
         }
     });
 }
