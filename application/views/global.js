@@ -773,6 +773,10 @@ function load_coin_list(x__type, e__id, page, counter, first_segment, current_e)
 
     $('.coins_of_'+e__id+'_'+x__type).html('<i class="far fa-yin-yang fa-spin"></i>');
 
+    //Increment page:
+    page = page+1;
+    $(this).attr('load_page' , page);
+
     $.post("/e/e_load_coin", {
         x__type:x__type,
         e__id:e__id,
@@ -782,7 +786,6 @@ function load_coin_list(x__type, e__id, page, counter, first_segment, current_e)
         current_e:current_e,
     }, function (data) {
         $('.coins_of_'+e__id+'_'+x__type).html(data);
-        $(this).attr('load_page' , (page+1));
     });
 
 }
