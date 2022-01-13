@@ -2502,9 +2502,6 @@ video {
     .focus-coin .inner-content .css__title {
         font-size: 1.4em;
     }
-    .focus-coin.doedit .cover-content{
-        bottom:-13px;
-    }
     .the_counter{
         margin-top: -24px;
         font-size: 0.18em !important;

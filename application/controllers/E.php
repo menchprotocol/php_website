@@ -277,7 +277,7 @@ class E extends CI_Controller
 
             if($listed_items < $_POST['counter']){
                 //We have more to show:
-                $ui .= view_coin_line('javascript:void(0)" onclick="load_coin_list()', $x_i['i__id']==$current_i, $e___4593[$x_i['x__type']]['m__cover'], view_cover(12273,$x_i['i__cover']), view_i_title($x_i), view_x__message($x_i['x__message'],$x_i['x__type']));
+                //$ui .= view_coin_line('javascript:void(0)" onclick="load_coin_list()', $x_i['i__id']==$current_i, $e___4593[$x_i['x__type']]['m__cover'], view_cover(12273,$x_i['i__cover']), view_i_title($x_i), view_x__message($x_i['x__message'],$x_i['x__type']));
             }
 
             echo $ui;

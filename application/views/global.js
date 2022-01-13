@@ -769,6 +769,24 @@ function initiate_algolia(){
     });
 }
 
+function load_coin_list(x__type, e__id, page, counter, first_segment, current_e){
+
+    $('.coins_of_'+e__id+'_'+x__type).html('<i class="far fa-yin-yang fa-spin"></i>');
+
+    $.post("/e/e_load_coin", {
+        x__type:x__type,
+        e__id:e__id,
+        page:page,
+        counter:counter,
+        first_segment:first_segment,
+        current_e:current_e,
+    }, function (data) {
+        $('.coins_of_'+e__id+'_'+x__type).html(data);
+        $(this).attr('load_page' , (page+1));
+    });
+
+}
+
 var algolia_index = false;
 $(document).ready(function () {
 
@@ -778,15 +796,10 @@ $(document).ready(function () {
     });
 
     $(".load_coins").click(function(event) {
-
-        //Auto load if empty:
-        if($(this).attr('x__type')){
-
+        //Auto load if page is zero:
+        if(!parseInt($(this).attr('load_page'))){
+            load_coin_list($(this).attr('load_x__type'),$(this).attr('load_e__id'),$(this).attr('load_page'),$(this).attr('load_counter'),$(this).attr('load_first_segment'),$(this).attr('load_current_e'));
         }
-
-        load_coin_list();
-
-        //load_page="1" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'" load_current_e="'.$current_e.'"
     });
 
     //Should we auto start?
