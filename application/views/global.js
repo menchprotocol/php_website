@@ -776,7 +776,7 @@ function load_coin_list(x__type, e__id, page, counter, first_segment, current_e)
 
     //Increment page:
     page = page+1;
-    $(this).attr('load_page' , page);
+    $('.button_of_'+e__id+'_'+x__type).attr('load_page' , page);
 
     $.post("/e/e_load_coin", {
         x__type:x__type,
