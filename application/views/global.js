@@ -792,6 +792,7 @@ function load_coin_list(x__type, e__id, page, counter, first_segment, current_e)
 }
 
 function initiate_coin_list(){
+    console.log('nice');
     $(".load_coins").click(function(event) {
         //Auto load if page is zero:
         if(!parseInt($(this).attr('load_page'))){
