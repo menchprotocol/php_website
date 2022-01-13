@@ -395,8 +395,10 @@ function toggle_pills(headline_id){
     var x__down = 0;
     var x__right = 0;
     var current_id = 0;
-    current_id = current_id();
     var current_type = ( $('#focus__type').length ? parseInt($('#focus__type').val()) : 0 );
+
+
+    current_id = current_id();
     if(current_type==12273){
         x__right = current_id;
     } else if (current_type==12274){
