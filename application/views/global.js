@@ -390,6 +390,36 @@ function toggle_headline(x__type){
     });
 }
 
+
+function e_sort_load(x__type) {
+
+    if(!js_n___13911.includes(x__type)){
+        //Does not support sorting:
+        return false;
+    }
+
+    var element_key = null;
+    var theobject = document.getElementById("list-in-"+x__type);
+    if (!theobject) {
+        //due to duplicate ideas belonging in this idea:
+        return false;
+    }
+
+
+    //Show sort icon:
+    $('.sort_e, .sort_reset').removeClass('hidden');
+
+    var sort = Sortable.create(theobject, {
+        animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
+        draggable: ".coinface-12274", // Specifies which items inside the element should be sortable
+        handle: ".sort_e", // Restricts sort start click/touch to the specified element
+        onUpdate: function (evt/**Event*/) {
+            e_sort_save(x__type);
+        }
+    });
+}
+
+
 function toggle_pills(x__type){
 
     var x__down = 0;
