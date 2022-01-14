@@ -16,12 +16,12 @@ $e_of_i = e_of_i($i_focus['i__id']);
 
 ?>
 
-<style>
-    <?= ( !$e_of_i ? '.note-editor {display:none;}' : '' ) ?>
-</style>
-<input type="hidden" id="focus__type" value="12273" />
-<input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
-<script src="/application/views/i_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+    <style>
+        <?= ( !$e_of_i ? '.note-editor {display:none;}' : '' ) ?>
+    </style>
+    <input type="hidden" id="focus__type" value="12273" />
+    <input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
+    <script src="/application/views/i_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 <?php
 

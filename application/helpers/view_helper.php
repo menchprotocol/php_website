@@ -1084,9 +1084,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     } else {
 
         $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
-        if(!count($query)){
-            return null;
-        }
         $count_query = $query[0]['totals'];
 
         if($append_coin_icon){
@@ -1165,7 +1162,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             $query_filters['x__source'] = intval($_GET['load__e']);
         }
 
-    } elseif($x__type==11019){
+    } elseif($x__type==11019) {
 
         $order_columns = array();
         $join_objects = array('x__left');
@@ -1174,6 +1171,37 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
+        );
+
+    } elseif(in_array($x__type, $CI->config->item('n___7551'))){
+
+        $order_columns = array('x__spectrum' => 'ASC');
+        $join_objects = array('x__up');
+        $query_filters = array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => $x__type,
+            'x__right' => $i__id,
+        );
+
+    } elseif(in_array($x__type, $CI->config->item('n___4485'))){
+
+        //IDEA NOTES
+        $order_columns = array('x__spectrum' => 'ASC');
+        $join_objects = array('x__source');
+        $query_filters = array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => $x__type,
+            'x__right' => $i__id,
+        );
+
+    } elseif($x__type==12969){
+
+        $order_columns = array();
+        $join_objects = array('x__source');
+        $query_filters = array(
+            'x__left' => $i__id,
+            'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         );
 
     } else {
@@ -1193,9 +1221,6 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
     } else {
 
         $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
-        if(!count($query)){
-            return null;
-        }
         $count_query = $query[0]['totals'];
 
         if($append_coin_icon){
