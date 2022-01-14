@@ -1084,6 +1084,9 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     } else {
 
         $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
+        if(!count($query)){
+            return null;
+        }
         $count_query = $query[0]['totals'];
 
         if($append_coin_icon){
@@ -1190,6 +1193,9 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
     } else {
 
         $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
+        if(!count($query)){
+            return null;
+        }
         $count_query = $query[0]['totals'];
 
         if($append_coin_icon){
