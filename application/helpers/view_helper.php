@@ -699,9 +699,6 @@ function view_body_e($x__type, $counter, $e__id){
     $list_results = view_coins_e($x__type, $e__id, 1);
     $focus_e = ($e__id == $member_e['e__id'] ? $member_e : false);
     $ui = '';
-    if(!count($list_results)){
-        return false;
-    }
 
     if($x__type==4250){
 
@@ -852,9 +849,6 @@ function view_body_i($x__type, $counter, $i__id){
     if(!count($is)){
         return false;
     }
-    if(!count($list_results)){
-        return false;
-    }
 
 
     if(in_array($x__type, $CI->config->item('n___7551'))){
@@ -883,6 +877,7 @@ function view_body_i($x__type, $counter, $i__id){
             $ui .= view_i(11019, 0, null, $previous_i);
         }
         $ui .= '</div>';
+
         if($e_of_i){
             $ui .= '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
