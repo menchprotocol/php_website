@@ -434,16 +434,7 @@ function toggle_pills(x__type){
                     counter:$('.headline_body_' + x__type).attr('item-counter'),
                     i__id:current_id()
                 }, function (data) {
-
-                    //Update UI to confirm with member:
                     $('.headline_body_' + x__type).html(data);
-
-                    //Reinstante search & sort
-                    i_load_search(x__type);
-                    e_sort_load(x__type);
-                    initiate_algolia();
-                    load_coins();
-
                 });
             } else if (current_type==12274){
                 $.post("/e/e_view_body_e", {
@@ -451,17 +442,16 @@ function toggle_pills(x__type){
                     counter:$('.headline_body_' + x__type).attr('item-counter'),
                     e__id:current_id()
                 }, function (data) {
-                    //Update UI to confirm with member:
                     $('.headline_body_' + x__type).html(data);
-
-                    //Reinstante search & sort
-                    e_load_search(x__type);
-                    e_sort_load(x__type);
-                    initiate_algolia();
-                    load_coins();
-
                 });
             }
+
+            //Reinstante search & sort
+            e_load_search(x__type);
+            i_load_search(x__type);
+            e_sort_load(x__type);
+            initiate_algolia();
+            load_coins();
 
 
         }
@@ -1278,7 +1268,6 @@ function i_load_search(x__type) {
         alert('Search is currently disabled');
         return false;
     } else if(!js_n___14685.includes(x__type)){
-        alert('Idea Type ['+x__type+'] not supported to be added');
         return false;
     }
 
