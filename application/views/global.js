@@ -498,6 +498,7 @@ function initiate_foundation(x__type){
     i_note_activate();
     load_editor();
     x_type_preview_load();
+    init_remove();
 
     e_load_search(x__type);
     i_load_search(x__type);
