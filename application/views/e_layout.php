@@ -48,10 +48,12 @@ foreach($e___11089 as $x__type => $m) {
         continue;
     }
 
+    echo $x__type;
     $coin_count = view_coins_e($x__type, $e['e__id'], 0, false);
     if($coin_count > 0 || in_array($x__type , $this->config->item('n___28956'))){
         $item_counts[$x__type] = $coin_count;
     }
+    break;
 }
 
 //Determine focus/auto-load tab:
