@@ -439,7 +439,7 @@ function toggle_pills(x__type){
                     e_sort_load(x__type);
                     initiate_algolia();
                     e_load_search(x__type);
-                    initiate_coin_list();
+                    load_coins();
 
                 });
             } else {
@@ -479,7 +479,7 @@ function i_reset_discoveries(i__id){
 }
 
 
-function i_load_page(x__type, page, load_new_filter) {
+function view_load_page_i(x__type, page, load_new_filter) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
@@ -491,7 +491,7 @@ function i_load_page(x__type, page, load_new_filter) {
         $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     }
 
-    $.post("/i/i_load_page", {
+    $.post("/i/view_load_page_i", {
         x__type: x__type,
         page: page,
         focus__id: current_id(),
@@ -525,7 +525,7 @@ function i_load_page(x__type, page, load_new_filter) {
 
 
 
-function e_load_page(x__type, page, load_new_filter) {
+function view_load_page_e(x__type, page, load_new_filter) {
 
     if (load_new_filter) {
         //Replace load more with spinner:
@@ -537,7 +537,7 @@ function e_load_page(x__type, page, load_new_filter) {
         $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
     }
 
-    $.post("/e/e_load_page", {
+    $.post("/e/view_load_page_e", {
         x__type: x__type,
         page: page,
         focus__id: current_id(),
@@ -770,33 +770,58 @@ function initiate_algolia(){
     });
 }
 
-function load_coin_list(x__type, e__id, page, counter, first_segment, current_e){
+function e_load_coin(x__type, e__id, counter, first_segment){
 
-    $('.coins_of_'+e__id+'_'+x__type).html('<i class="far fa-yin-yang fa-spin"></i>');
+    if($('.coins_e_'+e__id+'_'+x__type).html().length){
+        //Already loaded:
+       return false;
+    }
 
-    //Increment page:
-    page = page+1;
-    $('.button_of_'+e__id+'_'+x__type).attr('load_page' , page);
+    $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/e/e_load_coin", {
         x__type:x__type,
         e__id:e__id,
-        page:page,
         counter:counter,
         first_segment:first_segment,
-        current_e:current_e,
     }, function (data) {
-        $('.coins_of_'+e__id+'_'+x__type).html(data);
+        $('.coins_e_'+e__id+'_'+x__type).html(data);
     });
 
 }
 
-function initiate_coin_list(){
-    $(".load_coins").click(function(event) {
-        //Auto load if page is zero:
-        if(!parseInt($(this).attr('load_page'))){
-            load_coin_list($(this).attr('load_x__type'),$(this).attr('load_e__id'),$(this).attr('load_page'),$(this).attr('load_counter'),$(this).attr('load_first_segment'),$(this).attr('load_current_e'));
-        }
+function i_load_coin(x__type, i__id, counter, first_segment, current_e){
+
+    if($('.coins_i_'+i__id+'_'+x__type).html().length){
+        //Already loaded:
+        return false;
+    }
+
+    $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+
+    $.post("/i/i_load_coin", {
+        x__type:x__type,
+        i__id:i__id,
+        counter:counter,
+        first_segment:first_segment,
+    }, function (data) {
+        $('.coins_i_'+i__id+'_'+x__type).html(data);
+    });
+
+}
+
+function load_message_27963(){
+    //Grab and load data:
+    $('#modal27963').modal('show');
+    $('.input_note_4231').val('testing...').focus();
+}
+
+function load_coins(){
+    $(".load_e_coins").click(function(event) {
+        e_load_coin($(this).attr('load_x__type'),$(this).attr('load_e__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+    });
+    $(".load_i_coins").click(function(event) {
+        i_load_coin($(this).attr('load_x__type'),$(this).attr('load_i__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
 }
 
@@ -808,7 +833,7 @@ $(document).ready(function () {
         cover_upload(droppedFiles, 'file');
     });
 
-    initiate_coin_list();
+    load_coins();
 
     //Should we auto start?
     if (isAdvancedUpload) {
@@ -1529,7 +1554,7 @@ function e__add(x__type, e_existing_id) {
             x_set_start_text();
 
             e_sort_load(x__type);
-            initiate_coin_list();
+            load_coins();
 
             //Hide Coin:
             $('.mini-coin.coin-12274.coin-id-'+e_existing_id).fadeOut();
@@ -1583,7 +1608,7 @@ function e_add_only_7551(x__type, e_existing_id) {
             input.focus();
 
             //Add new object to list:
-            add_to_list('add-e-'+x__type, '.coinface-12274', data.e_new_echo);
+            add_to_list('list-in-'+x__type, '.coinface-12274', data.e_new_echo);
 
             //Hide Coin:
             $('.mini-coin.coin-12274.coin-id-'+e_existing_id).fadeOut();

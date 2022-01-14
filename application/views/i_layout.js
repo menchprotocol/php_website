@@ -17,21 +17,6 @@ $(document).ready(function () {
 
     e_load_search(4983);
 
-    $('.editor_preview.editor_preview_4231').click(function (e) {
-
-        if(!click_has_class($(e.target), '.ignore-click')){
-            loadtab(14418, 14468);//Load Write Tab
-        }
-
-        //Watch for click to reverse to preview:
-        $('html').click(function(e2) {
-            if(!click_has_class($(e2.target), '.input_note_4231, .editor_preview_4231, .indifferent')){
-                revert_poweredit();
-            }
-        });
-
-    });
-
     //Alert for unsaved changes:
     window.onbeforeunload = function(event) {
         if(i_note_poweredit_has_changed(4231)){
@@ -68,11 +53,6 @@ $(document).ready(function () {
         }
 
     });
-
-    //Put focus on messages if no message:
-    if(!($('#i_notes_list_4231 .note_sortable').length)){
-        $('.input_note_4231').focus();
-    }
 
 
     //Activate Source-Only Inputs:

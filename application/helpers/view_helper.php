@@ -10,7 +10,7 @@ function view_show_more($see_more_type, $class, $href_link = null){
 }
 
 
-function i_load_page($x__type, $page, $limit, $list_count, $extra_class = null)
+function view_load_page_i($x__type, $page, $limit, $list_count, $extra_class = null)
 {
     /*
      * Gives an option to "Load More" sources when we have too many to show in one go
@@ -18,12 +18,12 @@ function i_load_page($x__type, $page, $limit, $list_count, $extra_class = null)
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
-    $href = 'href="javascript:void(0);" onclick="i_load_page('.$x__type.',' . $page . ', 0)"';
+    $href = 'href="javascript:void(0);" onclick="view_load_page_i('.$x__type.',' . $page . ', 0)"';
     return '<div class="coin_cover coin_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding load-more '.$extra_class.'">
                                 <div class="cover-wrapper"><a '.$href.' class="black-background-obs cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
                             </div>';
 }
-function e_load_page($x__type, $page, $limit, $list_count, $extra_class = null)
+function view_load_page_e($x__type, $page, $limit, $list_count, $extra_class = null)
 {
     /*
      * Gives an option to "Load More" sources when we have too many to show in one go
@@ -31,7 +31,7 @@ function e_load_page($x__type, $page, $limit, $list_count, $extra_class = null)
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
-    $href = 'href="javascript:void(0);" onclick="e_load_page('.$x__type.',' . $page . ', 0)"';
+    $href = 'href="javascript:void(0);" onclick="view_load_page_e('.$x__type.',' . $page . ', 0)"';
     return '<div class="coin_cover coin_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding load-more '.$extra_class.'">
                                 <div class="cover-wrapper"><a '.$href.' class="black-background-obs cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
                             </div>';
@@ -726,7 +726,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         if ($counter > count($list_results)) {
             //We have even more:
-            $ui .= i_load_page(13550, 1, $limit, $counter);
+            $ui .= view_load_page_i(13550, 1, $limit, $counter);
         }
 
         $ui .= '</div>';
@@ -757,7 +757,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         if ($counter > count($list_results)) {
             //Load even more if there...
-            $ui .= e_load_page($x__type, 1, $limit, $counter);
+            $ui .= view_load_page_e($x__type, 1, $limit, $counter);
         }
 
         $ui .= '</div>';
@@ -828,6 +828,124 @@ function view_body_e($x__type, $counter, $e__id){
         } else {
             $ui .= '<style> #list-in-' . $x__type . ' .x_sort {display:none !important;} </style>';
         }
+
+    }
+
+    return $ui;
+
+}
+
+
+
+function view_body_i($x__type, $counter, $i__id){
+
+    $CI =& get_instance();
+    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    $e_of_i = e_of_i($i__id);
+    $list_results = view_coins_i($x__type, $i__id, 1);
+    $ui = '';
+    $is = $CI->I_model->fetch(array(
+        'i__id' => $i__id,
+    ));
+    if(!count($is)){
+        return false;
+    }
+
+
+    if(in_array($x__type, $CI->config->item('n___7551'))){
+
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
+        foreach($list_results as $i_note) {
+            $ui .= view_e($x__type, $i_note,  null, $e_of_i);
+        }
+        $ui .= '</div>';
+
+        if($e_of_i && !in_array($x__type, $CI->config->item('n___12677'))) {
+            $ui .= '<div class="list-adder e-only-7551 e-i-' . $x__type . '" x__type="' . $x__type . '">
+                <div class="input-group border">
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.e-i-' . $x__type . ' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                    <input type="text"
+                           class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
+                           maxlength="' . view_memory(6404,6197) . '"                          
+                           placeholder="' . $e___11035[14055]['m__title'] . '">
+                </div><div class="algolia_pad_search row justify-content"></div></div>';
+        }
+
+    } elseif($x__type==11019){
+
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
+        foreach($list_results as $previous_i) {
+            $ui .= view_i(11019, 0, null, $previous_i);
+        }
+        $ui .= '</div>';
+        if($e_of_i){
+            $ui .= '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick add-input algolia_search dotransparent"
+                               maxlength="' . view_memory(6404,4736) . '"
+                               placeholder="'.$e___11035[14016]['m__title'].'">
+                    </div><div class="algolia_pad_search row justify-content"></div></div>';
+        }
+
+    } elseif($x__type==13542){
+
+        //IDEAS
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
+        foreach($list_results as $next_i) {
+            $ui .= view_i(13542, 0, $is[0], $next_i);
+        }
+        $ui .= '</div>';
+
+        if($e_of_i){
+            $ui .= '<div class="new-list-13542 list-adder '.superpower_active(10939).'">
+                <div class="input-group border">
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-13542 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                    <input type="text"
+                           class="form-control form-control-thick add-input algolia_search dotransparent"
+                           maxlength="' . view_memory(6404,4736) . '"
+                           placeholder="'.$e___11035[14016]['m__title'].'">
+                </div><div class="algolia_pad_search row justify-content"></div></div>';
+        }
+
+    } elseif($x__type==6255) {
+
+        //DISCOVERIES
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
+        foreach($list_results as $item){
+            $ui .= view_e(6255, $item);
+        }
+        $ui .= '</div>';
+
+    } elseif($x__type==12274){
+
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">'; //list-in-4983
+        foreach($list_results as $e_ref){
+            $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
+        }
+        $ui .= '</div>';
+        $ui .= '<div class="new-list-'.$x__type.' list-adder '.superpower_active(10939).'">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="'.$e___11035[14055]['m__title'].'">
+                    </div><div class="algolia_pad_search row justify-content"></div></div>';
+
+    } elseif(in_array($x__type, $CI->config->item('n___4485'))){
+
+        //IDEA NOTES
+        $ui .= view_i_note_list($x__type, false, $is[0], $list_results, $e_of_i);
+
+    } elseif($x__type==12969){
+
+        $ui .= '<div class="row justify-content">';
+        foreach($list_results as $e){
+            $ui .= view_e(12969, $e);
+        }
+        $ui .= '</div>';
 
     }
 
@@ -964,15 +1082,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
 
-        if($page_num < 0){
-
-            if(intval($count_query)){
-                return ' <i class="fas fa-circle zq'.$x__type.'"></i> '.intval($count_query);
-            } else {
-                return null;
-            }
-
-        } elseif($append_coin_icon){
+        if($append_coin_icon){
 
             if(!$count_query){
                 return null;
@@ -983,8 +1093,8 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title load_coins button_of_'.$e__id.'_'.$x__type.'" id="coingroup'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_page="0" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'" load_current_e="'.$current_e.'" ><span title="'.number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$coin_icon.view_number($count_query).'</span></button>';
-            $ui .= '<div class="dropdown-menu coins_of_'.$e__id.'_'.$x__type.'" aria-labelledby="coingroup'.$x__type.'_'.$e__id.'">';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title load_e_coins button_of_'.$e__id.'_'.$x__type.'" id="coin_e_group_'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'" load_current_e="'.$current_e.'" ><span title="'.number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$coin_icon.view_number($count_query).'</span></button>';
+            $ui .= '<div class="dropdown-menu coins_e_'.$e__id.'_'.$x__type.'" aria-labelledby="coin_e_group_'.$x__type.'_'.$e__id.'">';
                 //Menu To be loaded dynamically via AJAX
             $ui .= '</div>';
             $ui .= '</div>';
@@ -999,7 +1109,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 }
 
 
-function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
+function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true, $load_items = 0){
 
     /*
      *
@@ -1013,157 +1123,89 @@ function view_coins_i($x__type, $i, $page_num = 0, $append_coin_icon = true){
     if($x__type==12274){
 
         //SOURCES
+        $order_columns = array();
+        $join_objects = array();
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $i['i__id'],
+            'x__right' => $i__id,
             'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
-        $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
-        $count_query = $query[0]['totals'];
 
     } elseif($x__type==13542){
 
         //IDEAS
+        $order_columns = array();
+        $join_objects = array('x__right');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__left' => $i['i__id'],
+            'x__left' => $i__id,
         );
-        $query = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
-        $count_query = $query[0]['totals'];
 
     } elseif($x__type==6255){
 
         //DISCOVERIES
+        $order_columns = array();
+        $join_objects = array();
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
-            'x__left' => $i['i__id'],
+            'x__left' => $i__id,
         );
         if(isset($_GET['load__e'])){
             $query_filters['x__source'] = intval($_GET['load__e']);
         }
-        $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
-        $count_query = $query[0]['totals'];
 
     } elseif($x__type==11019){
 
-        $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
+        $order_columns = array();
+        $join_objects = array('x__left');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__right' => $i['i__id'],
-            'x__left !=' => $current_i,
+            'x__right' => $i__id,
         );
-        $query = $CI->X_model->fetch($query_filters, array('x__left'), 0);
-        $count_query = count($query);
 
     }
 
 
 
-
     //Return Results:
-    if($page_num < 0){
+    if($page_num > 0){
 
-        if(intval($count_query)){
-            return ' <i class="fas fa-circle zq'.$x__type.'"></i> '.intval($count_query);
-        } else {
-            return null;
-        }
-
-    } elseif($append_coin_icon){
-
-        if(!$count_query){
-            return null;
-        }
-
-        $e___11035 = $CI->config->item('e___11035'); //COINS
-        $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
-
-        $ui = '<div class="dropdown inline-block">';
-        $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="coingroup'.$x__type.'_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span title="'.number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$coin_icon.view_number($count_query).'</span></button>';
-        $ui .= '<div class="dropdown-menu" aria-labelledby="coingroup'.$x__type.'_'.$i['i__id'].'">';
-
-        if($x__type==12274){
-            //SOURCES
-            $e___4593 = $CI->config->item('e___4593'); //Transaction Types
-            $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
-            foreach($CI->X_model->fetch($query_filters, array('x__up'), view_memory(6404,13206), 0, array('x__type' => 'ASC', 'x__spectrum' => 'ASC')) as $source_e) {
-                $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
-            }
-        } elseif($x__type==13542){
-            //IDEAS
-            $e___4737 = $CI->config->item('e___4737'); //Idea Types
-            $superpower_10939 = superpower_active(10939, true);
-            $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-            foreach($CI->X_model->fetch($query_filters, array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i) {
-                $message_tooltip = '';
-
-
-                if(0 && $superpower_10939){
-                    $messages = '';
-                    foreach($CI->X_model->fetch(array(
-                        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type' => 4231,
-                        'x__right' => $next_i['i__id'],
-                    ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
-                        $messages .= $mes['x__message'].' ';
-                    }
-                    if($messages){
-                        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-                        $message_tooltip = '<span class="icon-block" title="'.$messages.'">'.$e___11035[4231]['m__cover'].'</span>';
-                    }
-                }
-
-                $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i).$message_tooltip, view_x__message($next_i['x__message'],$next_i['x__type']));
-            }
-        } elseif($x__type==6255){
-
-            //DISCOVERIES / SOURCES
-            $e___4593 = $CI->config->item('e___4593'); //Transaction Types
-            $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
-            foreach($CI->X_model->fetch($query_filters, array('x__source'), view_memory(6404,13206), 0, array('x__id' => 'DESC')) as $source_e) {
-                $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
-            }
-
-        } elseif($x__type==11019){
-
-            //PREVIOUS IDEAS
-            $e___4737 = $CI->config->item('e___4737'); //Idea Types
-            $superpower_10939 = superpower_active(10939, true);
-            foreach($query as $prev_i) {
-                $message_tooltip = '';
-                if(0 && $superpower_10939){
-                    $messages = '';
-                    foreach($CI->X_model->fetch(array(
-                        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type' => 4231,
-                        'x__right' => $prev_i['i__id'],
-                    ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
-                        $messages .= $mes['x__message'].' ';
-                    }
-                    if($messages){
-                        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-                        $message_tooltip = '<span class="icon-block" title="'.$messages.'">'.$e___11035[4231]['m__cover'].'</span>';
-                    }
-                }
-
-                $ui .= view_coin_line('/~'.$prev_i['i__id'], $prev_i['i__id']==$current_i, $e___4737[$prev_i['i__type']]['m__cover'], view_cover(12273,$prev_i['i__cover']), view_i_title($prev_i).$message_tooltip, view_x__message($prev_i['x__message'],$prev_i['x__type']));
-            }
-
-        }
-        $ui .= '</div>';
-        $ui .= '</div>';
-
-        return $ui;
+        $limit = view_memory(6404,11064);
+        return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
 
     } else {
-        //Just the count:
-        return intval($count_query);
+
+        $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
+        $count_query = $query[0]['totals'];
+
+        if($append_coin_icon){
+
+            if(!$count_query){
+                return null;
+            }
+
+            $e___11035 = $CI->config->item('e___11035'); //COINS
+            $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
+
+            $ui = '<div class="dropdown inline-block">';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title load_i_coins button_of_'.$i__id.'_'.$x__type.'" id="coin_i_group_'.$x__type.'_'.$i__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_i__id="'.$i__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$coin_icon.view_number($count_query).'</span></button>';
+            $ui .= '<div class="dropdown-menu coins_i_'.$i__id.'_'.$x__type.'" aria-labelledby="coin_i_group_'.$x__type.'_'.$i__id.'">';
+                //Menu To be loaded dynamically via AJAX
+            $ui .= '</div>';
+            $ui .= '</div>';
+
+            return $ui;
+
+        } else {
+            return intval($count_query);
+        }
+
     }
 
 }
@@ -1991,11 +2033,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
             $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
         }
         if($messages){
-            $message_tooltip = '<span class="mini-font">'.$messages.'</span>';
+            $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963()" class="mini-font">'.$messages.'</a>';
         }
     } elseif($discovery_mode && isset($i['x__message']) && strlen($i['x__message'])>0){ //&& $can_click
+
         if(superpower_active(12701, true)){
-            $message_tooltip = '<div class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</div>';
+            $message_tooltip = '<a href="javascript:void(0);" onclick="x_message_load(' . $i['x__id'] . ')" class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</a>';
         } else {
             //$message_tooltip = '<div class="mini-font">***HIDDEN***</div>';
         }
@@ -2032,10 +2075,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
     if($superpower_10939 && !$focus_coin && $show_coins){
 
         $ui .= '<div class="coin_coins">';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_i(11019,  $i).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_i(13542,  $i).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i).'</span>';
-        $ui .= '<span class="hideIfEmpty i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_i(11019,  $i['i__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_i(13542,  $i['i__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i['i__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i['i__id']).'</span>';
         $ui .= '</div>';
 
     }

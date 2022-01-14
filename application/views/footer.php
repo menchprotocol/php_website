@@ -253,6 +253,63 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
+    <!-- Edit Idea Message Modal -->
+    <div class="modal fade indifferent" id="modal27963" tabindex="-1" role="dialog" aria-labelledby="modal27963Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title css__title" id="modal27963Label"><?= $e___11035[27963]['m__cover'].' '.$e___11035[27963]['m__title'] ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%;"></textarea>
+                    <div id="current_text_4231" class="hidden"></div>
+                    <div class="note_error_4231 hideIfEmpty zq6255 msg alert alert-danger indifferent" style="margin:8px 0;"></div>
+                </div>
+                <div class="modal-footer">
+                    <table>
+                        <tr>
+                            <td style="width: 100%;">
+                                <?php
+                                //CONTROLLER
+                                echo '<div class="no-padding add_notes_4231">';
+                                echo '<div class="add_notes_form note_pad indifferent">';
+                                echo '<form class="box box4231" method="post" enctype="multipart/form-data">';
+
+                                //UPLOAD
+                                echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4231" />';
+                                echo '<label class="hidden"></label>';
+                                echo '<label class="btn inline-block btn-compact file_label_4231" for="fileIdeaType4231" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
+
+                                //GIF
+                                echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="images_modal(4231)" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
+
+                                //EMOJI
+                                echo '<span class="btn btn-compact inline-block" id="emoji_pick_type4231" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span>';
+
+
+                                echo '</form>';
+                                echo '</div>';
+                                echo '</div>';
+                                ?>
+                            </td>
+                            <td style="width: 50px;">
+                                <?= '<div class="save_button inline-block save_button_4231 hidden"><a href="javascript:i_note_poweredit_save(4231);" class="btn btn-default save_notes_4231" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>' ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
 
 
 
