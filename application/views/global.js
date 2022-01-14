@@ -426,6 +426,7 @@ function toggle_pills(x__type){
         if( !$('.headline_body_' + x__type).html().length ){
 
             $('.headline_body_' + x__type).html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
+
             //Nothing loaded, we need to load:
             if (current_type==12273){
                 $.post("/i/i_view_body_i", {
@@ -439,6 +440,9 @@ function toggle_pills(x__type){
 
                     //Reinstante search & sort
                     i_load_search(x__type);
+                    e_sort_load(x__type);
+                    initiate_algolia();
+                    load_coins();
 
                 });
             } else if (current_type==12274){
@@ -452,13 +456,14 @@ function toggle_pills(x__type){
 
                     //Reinstante search & sort
                     e_load_search(x__type);
+                    e_sort_load(x__type);
+                    initiate_algolia();
+                    load_coins();
 
                 });
             }
 
-            e_sort_load(x__type);
-            initiate_algolia();
-            load_coins();
+
         }
 
     }
