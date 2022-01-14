@@ -1278,7 +1278,7 @@ function i_load_search(x__type) {
         alert('Search is currently disabled');
         return false;
     } else if(!js_n___14685.includes(x__type)){
-        alert('Idea Type not supported to be added');
+        alert('Idea Type ['+x__type+'] not supported to be added');
         return false;
     }
 
