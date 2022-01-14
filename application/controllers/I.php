@@ -227,7 +227,7 @@ class I extends CI_Controller {
                 //SOURCES
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
-                foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], $_POST['page'], false, view_memory(6404,13206)) as $source_e) {
+                foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], 1, false, view_memory(6404,13206)) as $source_e) {
                     $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                     $listed_items++;
                 }
@@ -236,7 +236,7 @@ class I extends CI_Controller {
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
                 $superpower_10939 = superpower_active(10939, true);
                 $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
-                foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], $_POST['page'], false, view_memory(6404,13206)) as $next_i) {
+                foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], 1, false, view_memory(6404,13206)) as $next_i) {
                     $message_tooltip = '';
 
                     if(0 && $superpower_10939){
@@ -262,7 +262,7 @@ class I extends CI_Controller {
                 //DISCOVERIES / SOURCES
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
-                foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], $_POST['page'], false, view_memory(6404,13206)) as $source_e) {
+                foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], 1, false, view_memory(6404,13206)) as $source_e) {
                     $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                     $listed_items++;
                 }
@@ -272,7 +272,7 @@ class I extends CI_Controller {
                 //PREVIOUS IDEAS
                 $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
-                foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], $_POST['page'], false, view_memory(6404,13206)) as $prev_i) {
+                foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], 1, false, view_memory(6404,13206)) as $prev_i) {
                     $message_tooltip = '';
                     if(0){
                         $messages = '';
