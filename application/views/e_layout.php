@@ -10,13 +10,6 @@ $this->X_model->create(array(
     'x__spectrum' => $new_order,
 ));
 
-?>
-
-<input type="hidden" id="focus__type" value="12274" />
-<input type="hidden" id="focus__id" value="<?= $e['e__id'] ?>" />
-<script src="/application/views/e_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
-
-<?php
 
 //Focus Source:
 echo '<div class="row justify-content">';
@@ -70,3 +63,29 @@ foreach($item_counts as $x__type => $counter) {
 }
 
 ?>
+
+
+<input type="hidden" id="focus__type" value="12274" />
+<input type="hidden" id="focus__id" value="<?= $e['e__id'] ?>" />
+<script type="text/javascript">
+
+    //Define file upload variables:
+    var upload_control = $(".inputfile");
+    var $input = $('.drag-box').find('input[type="file"]'),
+        $label = $('.drag-box').find('label'),
+        showFiles = function (files) {
+            $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
+        };
+
+    $(document).ready(function () {
+
+        //Source Loader:
+        initiate_foundation(<?= $focus_tab ?>)
+
+        set_autosize($('.texttype__lg.text__6197_'+current_id()));
+
+
+    });
+
+
+</script>

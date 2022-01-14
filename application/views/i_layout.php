@@ -14,17 +14,6 @@ $this->X_model->create(array(
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e_of_i = e_of_i($i_focus['i__id']);
 
-?>
-
-    <style>
-        <?= ( !$e_of_i ? '.note-editor {display:none;}' : '' ) ?>
-    </style>
-    <input type="hidden" id="focus__type" value="12273" />
-    <input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
-    <script src="/application/views/i_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
-
-<?php
-
 if(!$e_of_i){
 
     //DO they already have a request?
@@ -112,3 +101,60 @@ foreach($this->config->item('e___20424') as $x__type => $m) {
 foreach($item_counts as $x__type => $counter) {
     echo view_pill($x__type, $counter, $e___11018[$x__type], ($x__type==$focus_tab ? view_body_i($x__type, $counter, $i_focus['i__id']) : null ), ($x__type==$focus_tab));
 }
+
+
+
+?>
+
+<style>
+    <?= ( !$e_of_i ? '.note-editor {display:none;}' : '' ) ?>
+</style>
+<input type="hidden" id="focus__type" value="12273" />
+<input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        initiate_foundation(<?= $focus_tab ?>);
+
+        //Alert for unsaved changes:
+        window.onbeforeunload = function(event) {
+            if(i_note_poweredit_has_changed(4231)){
+                return "you have unsaved changes. Are you sure you want to navigate away?";
+            }
+        };
+
+        //Look for power editor updates:
+        $('.x_set_class_text').keypress(function(e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) {
+                x_set_text(this);
+                e.preventDefault();
+            }
+        }).change(function() {
+            x_set_text(this);
+        });
+
+
+        $('.power_editor').on('change keyup paste', function(e) {
+
+            var x__type = $(this).attr('x__type');
+
+            //Toggle save button based on changed:
+            if(i_note_poweredit_has_changed(x__type)){
+                $('.save_button_'+x__type).removeClass('hidden');
+            } else {
+                $('.save_button_'+x__type).addClass('hidden');
+            }
+
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (e.ctrlKey && code== 13) {
+                i_note_poweredit_save(x__type);
+            }
+
+        });
+
+    });
+
+</script>
+

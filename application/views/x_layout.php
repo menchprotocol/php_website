@@ -111,45 +111,7 @@ if($top_i__id){
 
 }
 
-?>
-    <script>
-        var focus_i__type = <?= $i_focus['i__type'] ?>;
-    </script>
 
-    <input type="hidden" id="focus__type" value="12273" />
-    <input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
-    <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
-    <input type="hidden" id="click_count" value="0" />
-    <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
-    <input type="hidden" id="must_click" value="<?= ( count($x_completes) ? 0 : count($this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__up' => 27178, //Require Link Click
-        'x__right' => $i_focus['i__id'],
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    )))) ?>" />
-
-    <script src="/application/views/x_layout.js?v=<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
-
-<?php
-
-//PREVIOUS DISCOVERIES (Deprecated in favour of left menu)
-/*
-if($top_i__id){
-
-    $previous_x = $this->X_model->find_previous($member_e['e__id'], $top_i__id, $i_focus['i__id']);
-    if(count($previous_x)){
-
-        $body = '<div class="row justify-content list_26000">';
-        foreach($previous_x as $count => $sitemap_i){
-            $body .= view_i(14450, $top_i__id, null, $sitemap_i);
-        }
-        $body .= '</div>';
-
-        echo view_headline(26000, null, $e___11035[26000], $body, false);
-
-    }
-}
-*/
 
 
 echo '<div class="row justify-content">';
@@ -672,3 +634,86 @@ if($top_i__id) {
 
 
 ?>
+
+<script>
+    var focus_i__type = <?= $i_focus['i__type'] ?>;
+</script>
+
+<input type="hidden" id="focus__type" value="12273" />
+<input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
+<input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
+<input type="hidden" id="click_count" value="0" />
+<input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
+<input type="hidden" id="must_click" value="<?= ( count($x_completes) ? 0 : count($this->X_model->fetch(array(
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__up' => 27178, //Require Link Click
+    'x__right' => $i_focus['i__id'],
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+)))) ?>" />
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //Make progress more visible if possible:
+        var top_id = parseInt($('#top_i__id').val());
+        var top_progress = parseInt($('.list_26000 div:first-child .progress-done').attr('prograte'));
+        if(top_id>0 && top_progress>0){
+            //Display this progress:
+            $('.extra_progress').text(top_progress+'% Complete');
+        }
+
+        //Auto next a single answer:
+        if(js_n___28015.includes(parseInt($('.list-answers').attr('i__type')))){
+            //It is, see if it has only 1 option:
+            var single_id = 0;
+            var answer_count = 0;
+            $(".answer-item").each(function () {
+                single_id = parseInt($(this).attr('selection_i__id'));
+                answer_count++;
+            });
+            if(answer_count==1){
+                //Only 1 option, select and go next:
+                toggle_answer(single_id);
+            }
+        }
+
+        i_note_activate();
+
+        //Keep track of message link clicks:
+        $('.should-click').click(function(e) {
+            $('#click_count').val(parseInt($('#click_count').val())+1);
+        });
+
+        set_autosize($('#x_reply'));
+
+        //Watchout for file uplods:
+        $('.boxUpload').find('input[type="file"]').change(function () {
+            x_upload(droppedFiles, 'file');
+        });
+
+        //Should we auto start?
+        if (isAdvancedUpload) {
+
+            var droppedFiles = false;
+
+            $('.boxUpload').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            })
+                .on('dragover dragenter', function () {
+                    $('.userUploader').addClass('dynamic_saving');
+                })
+                .on('dragleave dragend drop', function () {
+                    $('.userUploader').removeClass('dynamic_saving');
+                })
+                .on('drop', function (e) {
+                    droppedFiles = e.originalEvent.dataTransfer.files;
+                    e.preventDefault();
+                    x_upload(droppedFiles, 'drop');
+                });
+        }
+
+    });
+</script>
+
