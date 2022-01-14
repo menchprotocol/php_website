@@ -920,14 +920,14 @@ function view_body_i($x__type, $counter, $i__id){
 
     } elseif($x__type==12274){
 
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">'; //list-in-4983
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-4983">';
         foreach($list_results as $e_ref){
             $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
         }
         $ui .= '</div>';
-        $ui .= '<div class="new-list-'.$x__type.' list-adder '.superpower_active(10939).'">
+        $ui .= '<div class="new-list-4983 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-4983 .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
