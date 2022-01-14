@@ -1184,8 +1184,8 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         $join_objects = array('x__source');
         $query_filters = array(
             'x__left' => $i__id,
-            'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //STARTED
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___7551'))){
@@ -1193,7 +1193,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         $order_columns = array('x__spectrum' => 'ASC');
         $join_objects = array('x__up');
         $query_filters = array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => $x__type,
             'x__right' => $i__id,
         );
@@ -1204,7 +1204,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         $order_columns = array('x__spectrum' => 'ASC');
         $join_objects = array('x__source');
         $query_filters = array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => $x__type,
             'x__right' => $i__id,
         );
