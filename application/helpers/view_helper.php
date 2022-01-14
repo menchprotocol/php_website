@@ -1128,7 +1128,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
 
         //SOURCES
         $order_columns = array();
-        $join_objects = array();
+        $join_objects = array('x__up');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
@@ -1152,7 +1152,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
 
         //DISCOVERIES
         $order_columns = array();
-        $join_objects = array();
+        $join_objects = array('x__source');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
@@ -1171,6 +1171,16 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
+        );
+
+    } elseif($x__type==12969){
+
+        $order_columns = array();
+        $join_objects = array('x__source');
+        $query_filters = array(
+            'x__left' => $i__id,
+            'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___7551'))){
@@ -1192,16 +1202,6 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => $x__type,
             'x__right' => $i__id,
-        );
-
-    } elseif($x__type==12969){
-
-        $order_columns = array();
-        $join_objects = array('x__source');
-        $query_filters = array(
-            'x__left' => $i__id,
-            'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         );
 
     } else {
