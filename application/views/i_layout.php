@@ -92,7 +92,7 @@ foreach($e___11018 as $x__type => $m) {
     }
 
     $coin_count = view_coins_i($x__type, $i_focus['i__id'], 0, false);
-    if($coin_count > 0 || in_array($x__type , $this->config->item('n___20424'))){
+    if($coin_count > 0 || in_array($x__type , $this->config->item('n___13530'))){
         $item_counts[$x__type] = $coin_count;
     }
 }
@@ -100,7 +100,7 @@ foreach($e___11018 as $x__type => $m) {
 
 //Determine focus/auto-load tab:
 $focus_tab = 0;
-foreach($this->config->item('e___13530') as $x__type => $m) {
+foreach($this->config->item('e___20424') as $x__type => $m) {
     if(isset($item_counts[$x__type]) && $item_counts[$x__type] > 0){
         $focus_tab = $x__type;
         break;
