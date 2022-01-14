@@ -424,9 +424,24 @@ function toggle_pills(x__type){
 
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
+
             $('.headline_body_' + x__type).html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
             //Nothing loaded, we need to load:
-            if (current_type==12274){
+            if (current_type==12273){
+                $.post("/i/i_view_body_i", {
+                    x__type:x__type,
+                    counter:$('.headline_body_' + x__type).attr('item-counter'),
+                    i__id:current_id()
+                }, function (data) {
+
+                    //Update UI to confirm with member:
+                    $('.headline_body_' + x__type).html(data);
+
+                    //Reinstante search & sort
+                    i_load_search(x__type);
+
+                });
+            } else if (current_type==12274){
                 $.post("/e/e_view_body_e", {
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('item-counter'),
@@ -436,15 +451,14 @@ function toggle_pills(x__type){
                     $('.headline_body_' + x__type).html(data);
 
                     //Reinstante search & sort
-                    e_sort_load(x__type);
-                    initiate_algolia();
                     e_load_search(x__type);
-                    load_coins();
 
                 });
-            } else {
-
             }
+
+            e_sort_load(x__type);
+            initiate_algolia();
+            load_coins();
         }
 
     }

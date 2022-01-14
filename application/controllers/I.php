@@ -214,6 +214,14 @@ class I extends CI_Controller {
 
     }
 
+    function i_view_body_i(){
+        //Authenticate Member:
+        if (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1 || !isset($_POST['counter']) || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
+        } else {
+            echo view_body_i($_POST['x__type'], $_POST['counter'], $_POST['i__id']);
+        }
+    }
 
     function i_load_coin(){
 
