@@ -559,7 +559,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 			else
 			{
 				$conditions = array($cond);
-				$joints = array();
+				$joints = array('');
 			}
 
 			$cond = ' ON ';
