@@ -482,6 +482,7 @@ function toggle_pills(x__type){
             e_sort_load(x__type);
             initiate_algolia();
             load_coins();
+            e_e_only_search_7551();
 
 
         }
@@ -2914,3 +2915,246 @@ function toggle_left_menu() {
         $('.sidebar').addClass('hidden');
     }
 }
+
+
+
+
+
+
+
+
+function i_note_poweredit_save(x__type){
+
+    //Only save if something changed:
+    if(!i_note_poweredit_has_changed(x__type)){
+        //Just revert to preview mode:
+        loadtab(14418, 14420); //Load Preview tab
+        return false;
+    }
+
+    var input_textarea = '.input_note_'+x__type;
+    $('.power-editor-' + x__type+', .tab-data-'+ x__type).addClass('dynamic_saving');
+    $('.save_notes_' + x__type).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
+
+    $.post("/i/i_note_poweredit_save", {
+        i__id: current_id(),
+        x__type: x__type,
+        field_value: $(input_textarea).val().trim()
+    }, function (data) {
+
+        $('.power-editor-' + x__type+', .tab-data-'+ x__type).removeClass('dynamic_saving');
+        $('.save_notes_' + x__type).attr('href', 'javascript:i_note_poweredit_save('+x__type+');');
+
+        //Update raw text input:
+        var new_text = data.input_clean.trim();
+        $(input_textarea).val(new_text + ' ');
+        $('#current_text_'+x__type).text(new_text);
+        autosize.update($(input_textarea));
+        $(input_textarea).focus();
+
+        if (!data.status) {
+
+            $('.save_notes_' + x__type).html(js_e___11035[14422]['m__cover'] + ' ' + js_e___11035[14422]['m__title']);
+
+            //Show Errors:
+            $(".note_error_"+x__type).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Message not saved because:<br />'+data.message);
+
+        } else {
+
+            //Show update success icon:
+            $('.save_notes_' + x__type).html(js_e___11035[14424]['m__cover']);
+
+            //Reset errors:
+            $(".note_error_"+x__type).html('');
+
+            //Update DISCOVERY:
+            $('.editor_preview_'+x__type).html(data.message);
+
+            //Tooltips:
+            $('[data-toggle="tooltip"]').tooltip();
+
+            //Hide Save BUtton:
+            $('.save_button_'+x__type).addClass('hidden');
+
+            //Load Images:
+            lazy_load();
+
+            if(x__type==4231 && new_text.length>0){
+                loadtab(14418, 14420); //Load Preview tab
+            }
+
+            watch_for_coin_cover_clicks();
+
+            setTimeout(function () {
+                $(input_textarea).focus();
+                $('.save_notes_' + x__type).html(js_e___11035[14422]['m__cover'] + ' ' + js_e___11035[14422]['m__title']);
+            }, 987);
+
+        }
+    });
+}
+
+
+
+function e_reset_discoveries(e__id){
+    //Confirm First:
+    var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE discovery history. This action cannot be undone and you will lose all your discovery coins.");
+    if (r == true) {
+        $('.e_reset_discoveries').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">REMOVING ALL...</b>');
+
+        //Redirect:
+        window.location = '/x/e_reset_discoveries/'+e__id;
+    } else {
+        return false;
+    }
+}
+
+
+
+
+function e_x_form_lock(){
+    $('#x__message').prop("disabled", true);
+
+    $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Uploading');
+
+}
+
+function e_x_form_unlock(result){
+
+    //What was the result?
+    if (!result.status) {
+        alert(result.message);
+    }
+
+    //Unlock either way:
+    $('#x__message').prop("disabled", false);
+
+    $('.btn-save').removeClass('grey').attr('href', 'javascript:x_message_save();').html('Save');
+
+    //Tooltips:
+    $('[data-toggle="tooltip"]').tooltip();
+
+    //Replace the upload form to reset:
+    upload_control.replaceWith( upload_control = upload_control.clone( true ) );
+}
+
+
+function e_sort_save(x__type) {
+
+    var new_x__spectrums = [];
+    var sort_rank = 0;
+
+    $("#list-in-"+x__type+" .coinface-12274").each(function () {
+        //Fetch variables for this idea:
+        var e__id = parseInt($(this).attr('e__id'));
+        var x__id = parseInt($(this).attr('x__id'));
+
+        sort_rank++;
+
+        //Store in DB:
+        new_x__spectrums[sort_rank] = x__id;
+    });
+
+    //It might be zero for lists that have jsut been emptied
+    if (sort_rank > 0) {
+        //Update backend:
+        $.post("/e/e_sort_save", {e__id: current_id(), x__type:x__type, new_x__spectrums: new_x__spectrums}, function (data) {
+            //Update UI to confirm with member:
+            if (!data.status) {
+                //There was some sort of an error returned!
+                alert(data.message);
+            }
+        });
+    }
+}
+
+function e_sort_reset(){
+    var r = confirm("Reset all Portfolio Source orders & sort alphabetically?");
+    if (r == true) {
+        $('.sort_reset').html('<i class="far fa-yin-yang fa-spin"></i>');
+
+        //Update via call:
+        $.post("/e/e_sort_reset", {
+            e__id: current_id()
+        }, function (data) {
+
+            if (!data.status) {
+
+                //Ooops there was an error!
+                alert(data.message);
+
+            } else {
+
+                //Refresh page:
+                window.location = '/@' + current_id();
+
+            }
+        });
+    }
+}
+
+
+
+function e_e_only_search_7551() {
+
+    if(!js_pl_id){
+        return false;
+    }
+
+    $(".e-only-7551").each(function () {
+        var element_focus = ".e-i-"+$(this).attr('x__type');
+
+        var base_creator_url = '/e/create/'+current_id()+'/?content_title=';
+
+        $(element_focus + ' .add-input').keypress(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if ((code == 13) || (e.ctrlKey && code == 13)) {
+                return e_add_only_7551($(this).attr('x__type'), 0);
+            }
+        });
+
+
+        if(parseInt(js_e___6404[12678]['m__message'])){
+
+            $(element_focus + ' .add-input').keyup(function () {
+
+                //Clear if no input:
+                if(!$(this).val().length){
+                    $('.e-i-'+$(this).attr('x__type')+' .algolia_pad_search').html('');
+                }
+
+            }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
+
+                source: function (q, cb) {
+
+                    $('.e-i-'+$(this).attr('x__type')+' .algolia_pad_search').html('');
+
+                    algolia_index.search(q, {
+                        filters: 's__type=12274',
+                        hitsPerPage: 21,
+                    }, function (error, content) {
+                        if (error) {
+                            cb([]);
+                            return;
+                        }
+                        cb(content.hits, content);
+                    });
+                },
+                templates: {
+                    suggestion: function (suggestion) {
+                        //If clicked, would trigger the autocomplete:selected above which will trigger the e__add() function
+                        $('.e-i-'+$(this).attr('x__type')+' .algolia_pad_search').append(view_s_js_coin(7551, suggestion, $(this).attr('x__type')));
+                        return false;
+                    },
+                    header: function (data) {
+                        return false;
+                    },
+                    empty: function (data) {
+                        return false;
+                    },
+                }
+            }]);
+        }
+    });
+}
+
