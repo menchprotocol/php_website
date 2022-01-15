@@ -81,7 +81,7 @@ foreach($e___11018 as $x__type => $m) {
     }
 
     $coin_count = view_coins_i($x__type, $i_focus['i__id'], 0, false);
-    if($coin_count > 0 || in_array($x__type , $this->config->item('n___13530'))){
+    if($coin_count > 0 || (in_array($x__type , $this->config->item('n___13530')) && superpower_active(10939, true))){
         $item_counts[$x__type] = $coin_count;
     }
 }
@@ -115,7 +115,7 @@ foreach($item_counts as $x__type => $counter) {
 
     $(document).ready(function () {
 
-        initiate_foundation(<?= $focus_tab ?>);
+        load_tab(<?= $focus_tab ?>);
 
         //Alert for unsaved changes:
         window.onbeforeunload = function(event) {

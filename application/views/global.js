@@ -466,7 +466,7 @@ function toggle_pills(x__type){
                     i__id:current_id()
                 }, function (data) {
                     $('.headline_body_' + x__type).html(data);
-                    initiate_foundation(x__type);
+                    load_tab(x__type);
                 });
             } else if (current_type==12274){
                 $.post("/e/e_view_body_e", {
@@ -475,7 +475,7 @@ function toggle_pills(x__type){
                     e__id:current_id()
                 }, function (data) {
                     $('.headline_body_' + x__type).html(data);
-                    initiate_foundation(x__type);
+                    load_tab(x__type);
                 });
             }
         }
@@ -491,7 +491,8 @@ function toggle_pills(x__type){
     });
 }
 
-function initiate_foundation(x__type){
+function load_tab(x__type){
+
     initiate_algolia();
     load_coins();
     e_e_only_search_7551();

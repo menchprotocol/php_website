@@ -42,7 +42,7 @@ foreach($e___11089 as $x__type => $m) {
     }
 
     $coin_count = view_coins_e($x__type, $e['e__id'], 0, false);
-    if($coin_count > 0 || in_array($x__type , $this->config->item('n___28956'))){
+    if($coin_count > 0 || ( in_array($x__type , $this->config->item('n___28956')) && superpower_active(10939, true) )){
         $item_counts[$x__type] = $coin_count;
     }
 }
@@ -80,7 +80,7 @@ foreach($item_counts as $x__type => $counter) {
     $(document).ready(function () {
 
         //Source Loader:
-        initiate_foundation(<?= $focus_tab ?>)
+        load_tab(<?= $focus_tab ?>)
 
         set_autosize($('.texttype__lg.text__6197_'+current_id()));
 
