@@ -83,8 +83,6 @@ function video_play(){
 //Full Story
 if(js_pl_id > 1){ //Any user other than Shervin
 
-
-
     /*
 
     <!-- Microsoft Clarify -->
@@ -229,7 +227,6 @@ function apply_all_load(apply_id, coin__id){
 
 
 function load_editor(){
-
 
     $('.mass_action_toggle').change(function () {
         $('.mass_action_item').addClass('hidden');
@@ -452,6 +449,7 @@ function toggle_pills(x__type){
         $('.headlinebody').addClass('hidden');
         $('.thepill' + x__type+ ' .nav-link').addClass('active');
         $('.headline_body_' + x__type).removeClass('hidden');
+        window.location.hash = '#'+x__type;
 
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
@@ -879,6 +877,10 @@ $(document).ready(function () {
     $('.coverUpload').find('input[type="file"]').change(function () {
         cover_upload(droppedFiles, 'file');
     });
+
+    if(window.location.hash) {
+        toggle_pills(window.location.hash.substring(1));
+    }
 
     load_coins();
 
