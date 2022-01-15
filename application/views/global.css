@@ -1572,6 +1572,9 @@ label {
 }
 
 
+.answer-item {
+    border:3px solid transparent;
+}
 
 
 
@@ -2839,7 +2842,6 @@ font-weight: bold !important;
 
 
 
-
 /* DARK */
 
 .custom_ui_13884_13886 .light-bg,
@@ -2950,6 +2952,7 @@ font-weight: bold !important;
     color: #FFFFFF;
 }
 
+.custom_ui_13884_13886 .answer-item,
 .custom_ui_13884_13886 .coinType12273,
 .custom_ui_13884_13886 .coinType12274,
 .custom_ui_13884_13886 .coinType6255,
@@ -3072,6 +3075,7 @@ color: #000000;
     border-bottom-color: #f0f0f0 !important; /* WAS WHITE */
 }
 
+.custom_ui_13884_13885 .answer-item,
 .custom_ui_13884_13885 .coinType12273,
 .custom_ui_13884_13885 .coinType12274,
 .custom_ui_13884_13885 .coinType6255,
