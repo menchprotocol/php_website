@@ -845,7 +845,7 @@ function load_message_27963(i__id){
         i__id:i__id,
     }, function (data) {
         if(data.status){
-            $('.input_note_4231').val(data.message).focus();
+            $('.input_note_4231').val(data.message.trim()).focus();
             set_autosize($('.input_note_4231'));
             setTimeout(function () {
                 autosize.update($(".input_note_4231"));
