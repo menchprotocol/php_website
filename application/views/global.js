@@ -839,6 +839,7 @@ function load_message_27963(i__id){
     $('.input_note_4231').val(''); //Reset until loaded
     $('.note_error_4231').html('');
     $('#modal27963').modal('show');
+    $('#modal_i__id').val(i__id);
 
     $.post("/i/load_message_27963", {
         i__id:i__id,
@@ -2874,7 +2875,7 @@ function save_message_27963(){
 
     message_saving = true;
     var x__type = 4231;
-    var i__id = current_id();
+    var i__id = $('#modal_i__id').val();
     var input_textarea = '.input_note_'+x__type;
     $(".note_error_"+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
