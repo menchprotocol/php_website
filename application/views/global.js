@@ -637,13 +637,6 @@ function loadtab(x__type, tab_data_id){
     $('.tab-group-'+x__type+'.tab-data-'+tab_data_id).removeClass('hidden');
     $('.tab-nav-'+x__type+'.tab-head-'+tab_data_id).addClass('active');
 
-    //If it has any:
-    autosize.update($(".tab-data-" + tab_data_id + " textarea"));
-    $(".tab-data-" + tab_data_id + " .power_editor").focus();
-
-    //Focus on potential input field if any:
-    //$('.input_note_'+tab_data_id).focus();
-
 }
 
 function lazy_load(){
@@ -700,21 +693,6 @@ function init_remove(){
 }
 
 
-function i_note_poweredit_has_changed(x__type){
-    var text_editor = $('.input_note_'+x__type).val().trim();
-    var text_preview = $('#current_text_'+x__type).text().trim();
-    return  text_editor != text_preview;
-}
-
-function i_note_poweredit_has_text(x__type){
-    return $('.input_note_'+x__type).val().trim().length > 0;
-}
-
-function revert_poweredit(){
-    if($('.tab-data-14420').hasClass('hidden') && !i_note_poweredit_has_changed(4231) && i_note_poweredit_has_text(4231)){
-        loadtab(14418, 14420); //Load Preview tab
-    }
-}
 
 function x_create(add_fields){
     return $.post("/x/x_create", add_fields);
@@ -856,9 +834,26 @@ function i_load_coin(x__type, i__id, counter, first_segment, current_e){
 }
 
 function load_message_27963(){
+
     //Grab and load data:
+    $('.input_note_4231').val(''); //Reset until loaded
+    $('.note_error_4231').html('');
     $('#modal27963').modal('show');
-    $('.input_note_4231').val('testing...').focus();
+
+    $.post("/i/load_message_27963", {
+        x__type:x__type,
+        i__id:i__id,
+        counter:counter,
+        first_segment:first_segment,
+    }, function (data) {
+        if(data.status){
+            $('.input_note_4231').val(data.message).focus();
+            autosize.update($(".input_note_4231"));
+        } else {
+            $('.note_error_4231').html(data.message);
+        }
+    });
+
 }
 
 function load_coins(){
@@ -938,7 +933,6 @@ $(document).ready(function () {
     lazy_load();
     set_autosize($('#sugg_note'));
     set_autosize($('.texttype__lg'));
-    watch_for_coin_cover_clicks();
 
     $('.trigger_modal').click(function (e) {
         var x__type = parseInt($(this).attr('x__type'));
@@ -989,8 +983,6 @@ $(document).ready(function () {
             if(search_on){
                 toggle_search();
             }
-
-            revert_poweredit();
 
         }
     });
@@ -1996,14 +1988,6 @@ function images_add(image_url, image_title){
     $('#modal14073').modal('hide');
     $('.input_note_' + x__type).val(( current_value.length ? current_value+"\n\n" : '' ) + image_url + '?e__title='+encodeURI(image_title));
 
-    //Save or Submit:
-    if(js_n___14311.includes(x__type)){
-        //Power Editor:
-        i_note_poweredit_save(x__type);
-    } else {
-        //Regular Editor:
-        i_note_add_text(x__type);
-    }
 }
 
 
@@ -2391,43 +2375,6 @@ function i_remove_note(x__id, x__type){
     }
 }
 
-function i_note_start_adding(x__type) {
-    $('.save_notes_' + x__type).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
-    $('.no_notes_' + x__type).remove();
-    $('.remove_loading').hide();
-}
-
-
-function i_note_end_adding(result, x__type) {
-
-    //Update UI to unlock:
-    $('.save_notes_' + x__type).html(js_e___11035[14421]['m__cover']).attr('href', 'javascript:i_note_add_text('+x__type+');');
-    $('.input_note_' + x__type).removeClass('dynamic_saving').focus();
-    $('.remove_loading').fadeIn();
-
-    //What was the result?
-    if (result.status) {
-
-        //Append data:
-        $(result.message).insertBefore( ".add_notes_" + x__type );
-
-        //Tooltips:
-        $('[data-toggle="tooltip"]').tooltip();
-
-        //Load Images:
-        lazy_load();
-
-        watch_for_coin_cover_clicks();
-
-        //Hide any errors:
-        $(".note_error_"+x__type).html('');
-
-    } else {
-
-        $(".note_error_"+x__type).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'+result.message);
-
-    }
-}
 
 function i_note_add_file(droppedFiles, uploadType, x__type) {
 
@@ -2435,9 +2382,6 @@ function i_note_add_file(droppedFiles, uploadType, x__type) {
     if ($('.box' + x__type).hasClass('dynamic_saving') || !isAdvancedUpload) {
         return false;
     }
-
-    //Lock message:
-    i_note_start_adding(x__type);
 
     var ajaxData = new FormData($('.box' + x__type).get(0));
     if (droppedFiles) {
@@ -2487,7 +2431,7 @@ function i_note_add_file(droppedFiles, uploadType, x__type) {
             }
 
             if(js_n___14311.includes(x__type)){
-                i_note_poweredit_save(x__type);
+                save_message_27963();
             } else {
                 i_note_end_adding(data, x__type);
             }
@@ -2503,12 +2447,6 @@ function i_note_add_file(droppedFiles, uploadType, x__type) {
 
 }
 
-function watch_for_coin_cover_clicks(){
-    //Watchout for source clicks if they have the superpower:
-    $('.trigger_coincover_edit').click(function (e) {
-        coin__load(parseInt($(this).attr('coin__type')), parseInt($(this).attr('coin__id')));
-    });
-}
 
 var currentlu_adding = false;
 function i_note_add_text(x__type) {
@@ -2517,9 +2455,6 @@ function i_note_add_text(x__type) {
         return false;
     }
     currentlu_adding = true;
-
-    //Lock message:
-    i_note_start_adding(x__type);
 
     //Update backend:
     $.post("/i/i_note_add_text", {
@@ -2930,73 +2865,46 @@ function toggle_left_menu() {
 
 
 
+var message_saving = false; //Prevent double saving
+function save_message_27963(){
 
-function i_note_poweredit_save(x__type){
-
-    //Only save if something changed:
-    if(!i_note_poweredit_has_changed(x__type)){
-        //Just revert to preview mode:
-        loadtab(14418, 14420); //Load Preview tab
+    if(message_saving){
         return false;
     }
 
+    message_saving = true;
+    var x__type = 4231;
+    var i__id = current_id();
     var input_textarea = '.input_note_'+x__type;
-    $('.power-editor-' + x__type+', .tab-data-'+ x__type).addClass('dynamic_saving');
-    $('.save_notes_' + x__type).html('<i class="far fa-yin-yang fa-spin"></i>').attr('href', '#');
+    $(".note_error_"+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/i/i_note_poweredit_save", {
-        i__id: current_id(),
-        x__type: x__type,
-        field_value: $(input_textarea).val().trim()
+    $.post("/i/save_message_27963", {
+        i__id:i__id,
+        field_value: $('.input_note_4231').val().trim()
     }, function (data) {
 
-        $('.power-editor-' + x__type+', .tab-data-'+ x__type).removeClass('dynamic_saving');
-        $('.save_notes_' + x__type).attr('href', 'javascript:i_note_poweredit_save('+x__type+');');
-
-        //Update raw text input:
-        var new_text = data.input_clean.trim();
-        $(input_textarea).val(new_text + ' ');
-        $('#current_text_'+x__type).text(new_text);
-        autosize.update($(input_textarea));
-        $(input_textarea).focus();
-
         if (!data.status) {
-
-            $('.save_notes_' + x__type).html(js_e___11035[14422]['m__cover'] + ' ' + js_e___11035[14422]['m__title']);
 
             //Show Errors:
             $(".note_error_"+x__type).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Message not saved because:<br />'+data.message);
 
         } else {
 
-            //Show update success icon:
-            $('.save_notes_' + x__type).html(js_e___11035[14424]['m__cover']);
+            $('#modal27963').modal('hide');
 
             //Reset errors:
             $(".note_error_"+x__type).html('');
 
             //Update DISCOVERY:
-            $('.editor_preview_'+x__type).html(data.message);
+            $('.messages_4231_'+i__id).html(data.message);
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
 
-            //Hide Save BUtton:
-            $('.save_button_'+x__type).addClass('hidden');
-
             //Load Images:
             lazy_load();
 
-            if(x__type==4231 && new_text.length>0){
-                loadtab(14418, 14420); //Load Preview tab
-            }
-
-            watch_for_coin_cover_clicks();
-
-            setTimeout(function () {
-                $(input_textarea).focus();
-                $('.save_notes_' + x__type).html(js_e___11035[14422]['m__cover'] + ' ' + js_e___11035[14422]['m__title']);
-            }, 987);
+            message_saving = false;
 
         }
     });

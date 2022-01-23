@@ -265,7 +265,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
                 <div class="modal-body">
                     <textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%;"></textarea>
-                    <div id="current_text_4231" class="hidden"></div>
                     <div class="note_error_4231 hideIfEmpty zq6255 msg alert alert-danger indifferent" style="margin:8px 0;"></div>
                 </div>
                 <div class="modal-footer">
@@ -273,6 +272,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <tr>
                             <td style="width: 100%;">
                                 <?php
+
                                 //CONTROLLER
                                 echo '<div class="no-padding add_notes_4231">';
                                 echo '<div class="add_notes_form note_pad indifferent">';
@@ -296,7 +296,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 ?>
                             </td>
                             <td style="width: 50px;">
-                                <?= '<div class="save_button inline-block save_button_4231 hidden"><a href="javascript:i_note_poweredit_save(4231);" class="btn btn-default save_notes_4231" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>' ?>
+                                <?= '<div class="save_button inline-block save_button_4231 hidden"><a href="javascript:save_message_27963()" class="btn btn-default save_notes_4231" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>' ?>
                             </td>
                         </tr>
                     </table>

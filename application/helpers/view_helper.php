@@ -1362,103 +1362,6 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i){
     $ui = '';
 
 
-    if(in_array($x__type, $CI->config->item('n___14311'))){
-
-        //POWER EDITOR
-        $tab_nav = '';
-        $tab_content = '';
-        foreach($CI->config->item('e___14418') as $x__type2 => $m) {
-
-            $default_active = false;
-            $tab_ui = '';
-
-            //Is this a caret menu?
-            if($x__type2==14468){
-
-                $textarea_content = '';
-                foreach($i_notes as $i_note) {
-                    $textarea_content .= $i_note['x__message']."\n";
-                }
-
-                //WRITE
-                $default_active = !strlen($textarea_content);
-
-
-                $tab_ui .= '<div class="power-editor-'.$x__type.'">';
-                $tab_ui .= '<textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_'.$x__type.'" x__type="' . $x__type . '" placeholder="Write..." style="margin:0 82px 0 41px; width:calc(100% - 82px);">'.$textarea_content.'</textarea>'; //doabsolute
-                $tab_ui .= '<div id="current_text_'.$x__type.'" class="hidden">'.$textarea_content.'</div>';
-
-                //Response result:
-                $tab_ui .= '<div class="note_error_'.$x__type.' hideIfEmpty zq6255 msg alert alert-danger indifferent" style="margin:8px 0;"></div>';
-
-
-                //CONTROLLER
-                $tab_ui .= '<div class="no-padding add_notes_' . $x__type .'">';
-                $tab_ui .= '<div class="add_notes_form note_pad indifferent">';
-                $tab_ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
-
-                if($handles_uploads){
-
-                    //UPLOAD
-                    $tab_ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
-                    $tab_ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
-                    $tab_ui .= '<label class="btn inline-block btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
-
-                    //GIF
-                    $tab_ui .= '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="images_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
-
-                }
-
-                if($supports_emoji){
-                    //EMOJI
-                    $tab_ui .= '<span class="btn btn-compact inline-block" id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span>';
-                }
-
-                //SAVE Button:
-                $tab_ui .= '<div class="save_button inline-block save_button_'.$x__type.' hidden"><a href="javascript:i_note_poweredit_save('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>';
-
-
-                $tab_ui .= '</form>';
-                $tab_ui .= '</div>';
-                $tab_ui .= '</div>';
-                $tab_ui .= '</div>';
-
-
-            } elseif($x__type2==14420){
-
-                if(!$default_active){
-                    $default_active = true;
-                }
-
-                //PREVIEW
-                $tab_ui .= '<div class="list-group hideIfEmpty '.( $e_of_i ? ' editor_preview ' : '' ).' editor_preview_'.$x__type.'">';
-                foreach($i_notes as $i_note) {
-                    $tab_ui .= $CI->X_model->message_view($i_note['x__message'], $has_discovery_mode, $member_e, $i['i__id']);
-                }
-                $tab_ui .= '</div>';
-
-            }
-
-
-            $tab_nav .= '<li class="nav-item"><a href="javascript:void(0);" onclick="loadtab(14418,'.$x__type2.');" class="nav-x tab-nav-14418 tab-head-'.$x__type2.' '.( $default_active ? ' active ' : '' ).'" title="'.$m['m__title'].( strlen($m['m__message']) ? ' '.$m['m__message'] : '' ).'" data-toggle="tooltip" data-placement="top">&nbsp;'.$m['m__cover'].'&nbsp;</a></li>';
-
-
-            $tab_content .= '<div class="tab-content tab-group-14418 tab-data-'.$x__type2.' power-editor-'.$x__type.( $default_active ? '' : ' hidden ' ).'">';
-            $tab_content .= $tab_ui;
-            $tab_content .= '</div>';
-
-        }
-
-
-        $ui .= '<ul class="nav nav-tabs nav-sm hidden">'; //Toggled automatically via JS
-        $ui .= $tab_nav;
-        $ui .= '</ul>';
-
-        //Show All Tab Content:
-        $ui .= $tab_content;
-
-    } else {
-
         //Show no-Message notifications for each message type:
         $ui .= '<div id="i_notes_list_'.$x__type.'" class="list-group">';
 
@@ -1517,7 +1420,6 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i){
 
         $ui .= '</div>';
 
-    }
 
     return $ui;
 
@@ -2073,7 +1975,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
             $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
         }
         if($messages){
-            $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963()" class="mini-font">'.$messages.'</a>';
+            $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963()" class="mini-font messages_4231_'.$i['i__id'].'">'.$messages.'</a>';
         }
     } elseif($discovery_mode && isset($i['x__message']) && strlen($i['x__message'])>0){ //&& $can_click
 

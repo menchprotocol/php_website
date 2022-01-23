@@ -117,13 +117,6 @@ foreach($item_counts as $x__type => $counter) {
 
         load_tab(<?= $focus_tab ?>);
 
-        //Alert for unsaved changes:
-        window.onbeforeunload = function(event) {
-            if(i_note_poweredit_has_changed(4231)){
-                return "you have unsaved changes. Are you sure you want to navigate away?";
-            }
-        };
-
         //Look for power editor updates:
         $('.x_set_class_text').keypress(function(e) {
             var code = (e.keyCode ? e.keyCode : e.which);
@@ -133,25 +126,6 @@ foreach($item_counts as $x__type => $counter) {
             }
         }).change(function() {
             x_set_text(this);
-        });
-
-
-        $('.power_editor').on('change keyup paste', function(e) {
-
-            var x__type = $(this).attr('x__type');
-
-            //Toggle save button based on changed:
-            if(i_note_poweredit_has_changed(x__type)){
-                $('.save_button_'+x__type).removeClass('hidden');
-            } else {
-                $('.save_button_'+x__type).addClass('hidden');
-            }
-
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if (e.ctrlKey && code== 13) {
-                i_note_poweredit_save(x__type);
-            }
-
         });
 
     });

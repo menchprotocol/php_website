@@ -313,6 +313,45 @@ class I extends CI_Controller {
     }
 
 
+    function load_message_27963(){
+
+        //Authenticate Member:
+        $member_e = superpower_unlocked(10939); //Superpower not required as it may be just a comment
+
+        if (!$member_e) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(10939),
+            ));
+
+        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Idea ID',
+            ));
+
+        }
+
+        $message = '';
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4231, //IDEA NOTES Messages
+            'x__right' => $_POST['i__id'],
+        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+            $message .= $x['x__message']."\n";
+        }
+
+
+        return view_json(array(
+            'status' => 1,
+            'message' => $message,
+        ));
+
+
+    }
+
     function i_note_add_text()
     {
 
@@ -720,10 +759,10 @@ class I extends CI_Controller {
 
 
 
-    function i_note_poweredit_save(){
+    function save_message_27963(){
 
         //Authenticate Member:
-        $member_e = superpower_unlocked();
+        $member_e = superpower_unlocked(10939);
         $e___12112 = $this->config->item('e___12112');
 
         if(!isset($_POST['field_value'])){
@@ -731,24 +770,13 @@ class I extends CI_Controller {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing message input',
-                'input_clean' => '',
             ));
 
         } elseif (!$member_e) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(),
-                'input_clean' => $_POST['field_value'],
-            ));
-
-        } elseif(!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14311'))){
-
-            //Not a power editor:
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid type',
-                'input_clean' => $_POST['field_value'],
+                'message' => view_unauthorized_message(10939),
             ));
 
         } elseif(!isset($_POST['i__id'])){
@@ -756,7 +784,6 @@ class I extends CI_Controller {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Idea ID',
-                'input_clean' => $_POST['field_value'],
             ));
 
         }
@@ -769,7 +796,6 @@ class I extends CI_Controller {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
-                'input_clean' => $_POST['field_value'],
             ));
         }
 
@@ -809,9 +835,9 @@ class I extends CI_Controller {
             return view_json(array(
                 'status' => 0,
                 'message' => $errors,
-                'input_clean' => $input_clean,
             ));
         }
+
 
         //Validation complete! Let's update messages...
         //DELETE all current notes, if any:
@@ -820,6 +846,7 @@ class I extends CI_Controller {
             'x__type' => $_POST['x__type'],
             'x__right' => $is[0]['i__id'],
         ), array(), 0) as $x) {
+
             //Remove Note:
             $this->X_model->update($x['x__id'], array(
                 'x__status' => 6173,
@@ -850,7 +877,6 @@ class I extends CI_Controller {
 
         }
 
-
         //Update Search Index:
         update_algolia(12273, $is[0]['i__id']);
 
@@ -858,7 +884,6 @@ class I extends CI_Controller {
         return view_json(array(
             'status' => 1,
             'message' => $textarea_content,
-            'input_clean' => $input_clean,
         ));
 
     }
