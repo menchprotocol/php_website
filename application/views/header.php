@@ -382,3 +382,45 @@ if(strlen($flash_message) > 0) {
 }
 
 ?>
+
+<div class="top_message_box hidden">
+
+    <h5 class="css__title"><?= $e___11035[27963]['m__cover'].' '.$e___11035[27963]['m__title'] ?></h5>
+
+    <input type="hidden" id="modal_i__id" value="0" />
+    <textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_4231" placeholder="Write..." style="margin:0; width:100%;"></textarea>
+    <div class="note_error_4231 hideIfEmpty zq6255 msg alert alert-danger indifferent" style="margin:8px 0;"></div>
+
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <?php
+
+                //CONTROLLER
+                echo '<div class="no-padding add_notes_4231">';
+                echo '<div class="add_notes_form note_pad indifferent">';
+                echo '<form class="box box4231" method="post" enctype="multipart/form-data">';
+
+                //UPLOAD
+                echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4231" />';
+                echo '<label class="hidden"></label>';
+                echo '<label class="btn inline-block btn-compact file_label_4231" for="fileIdeaType4231" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
+
+                //GIF
+                echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="images_modal(4231)" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
+
+                //EMOJI
+                echo '<span class="btn btn-compact inline-block" id="emoji_pick_type4231" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span>';
+
+
+                echo '</form>';
+                echo '</div>';
+                echo '</div>';
+                ?>
+            </td>
+            <td style="width: 50px;">
+                <?= '<div class="save_button inline-block"><a href="javascript:save_message_27963()" class="btn btn-default save_notes_4231" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>' ?>
+            </td>
+        </tr>
+    </table>
+</div>

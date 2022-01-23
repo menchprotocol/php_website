@@ -838,7 +838,7 @@ function load_message_27963(i__id){
     //Grab and load data:
     $('.input_note_4231').val(''); //Reset until loaded
     $('.note_error_4231').html('');
-    $('#modal27963').modal('show');
+    $('.top_message_box').removeClass('hidden');
     $('#modal_i__id').val(i__id);
 
     $.post("/i/load_message_27963", {
@@ -2877,7 +2877,6 @@ function save_message_27963(){
     var x__type = 4231;
     var i__id = $('#modal_i__id').val();
     var input_textarea = '.input_note_'+x__type;
-    $(".note_error_"+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/i/save_message_27963", {
         i__id:i__id,
@@ -2891,7 +2890,7 @@ function save_message_27963(){
 
         } else {
 
-            $('#modal27963').modal('hide');
+            $('.top_message_box').addClass('hidden');
 
             //Reset errors:
             $(".note_error_"+x__type).html('');
