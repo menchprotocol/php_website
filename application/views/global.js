@@ -845,7 +845,10 @@ function load_message_27963(i__id){
     }, function (data) {
         if(data.status){
             $('.input_note_4231').val(data.message).focus();
-            autosize.update($(".input_note_4231"));
+            set_autosize($('.input_note_4231'));
+            setTimeout(function () {
+                autosize.update($(".input_note_4231"));
+            }, 233);
         } else {
             $('.note_error_4231').html(data.message);
         }

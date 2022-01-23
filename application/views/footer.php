@@ -296,7 +296,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 ?>
                             </td>
                             <td style="width: 50px;">
-                                <?= '<div class="save_button inline-block save_button_4231 hidden"><a href="javascript:save_message_27963()" class="btn btn-default save_notes_4231" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>' ?>
+                                <?= '<div class="save_button inline-block"><a href="javascript:save_message_27963()" class="btn btn-default save_notes_4231" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>' ?>
                             </td>
                         </tr>
                     </table>

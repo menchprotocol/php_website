@@ -607,6 +607,8 @@ class X_model extends CI_Model
             return false;
         }
 
+        $simple_version = false; //disabled for now
+
         //Validate message:
         $msg_validation = $this->X_model->message_compile($message_input, $is_discovery_mode, $member_e, 0, $message_i__id, false, $simple_version);
 
