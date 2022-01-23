@@ -607,7 +607,6 @@ class X_model extends CI_Model
             return false;
         }
 
-        $simple_version = false; //disabled for now
 
         //Validate message:
         $msg_validation = $this->X_model->message_compile($message_input, $is_discovery_mode, $member_e, 0, $message_i__id, false, $simple_version);
@@ -988,9 +987,9 @@ class X_model extends CI_Model
 
 
             //Display:
-            if($simple_version){
-                $output_body_message = str_replace($identifier_string, ( $e_media_count > 0 ? '' : $edit_btn.$es[0]['e__title'] ), $output_body_message);
-            } elseif($on_its_own_line){
+            if($simple_version && 0){
+                //$output_body_message = str_replace($identifier_string, ( $e_media_count > 0 ? '' : $edit_btn.$es[0]['e__title'] ), $output_body_message);
+            } elseif($on_its_own_line || $simple_version){
                 $the_title = '<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].$tooltip_underdot.'">' . $es[0]['e__title'] . '</span>';
                 if($new_lines <= 1){
                     $output_body_message = $e_appendix.str_replace($identifier_string, ( !count($e_links) || !$is_discovery_mode ? '<span '.$tooltip_class.'>'.$the_title.'</span>' : '' ).$e_dropdown, $output_body_message); //'.$edit_btn.'
