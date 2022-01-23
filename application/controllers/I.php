@@ -877,6 +877,10 @@ class I extends CI_Controller {
 
         }
 
+        if(!strlen($textarea_content)){
+            $textarea_content = '<i class="no-message">Write Message...</i>';
+        }
+
         //Update Search Index:
         update_algolia(12273, $is[0]['i__id']);
 

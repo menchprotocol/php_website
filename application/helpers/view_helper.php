@@ -1976,7 +1976,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
             $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
         }
 
-        $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963(' . $i['i__id'] . ')" class="mini-font messages_4231_'.$i['i__id'].'">'.( strlen($messages) ? $messages : '<i class="grey" style="font-size: 0.5em; margin-top: 8px;">No Message Yet</i>' ) .'</a>';
+        $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963(' . $i['i__id'] . ')" class="mini-font messages_4231_'.$i['i__id'].'">'.( strlen($messages) ? $messages : '<i class="no-message">Write Message...</i>' ) .'</a>';
 
     } elseif($discovery_mode && isset($i['x__message']) && strlen($i['x__message'])>0){ //&& $can_click
 

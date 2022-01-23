@@ -1595,6 +1595,12 @@ label {
     border: 3px solid #FC1B44 !important;
 }
 
+.no-message{
+    color:#999999 !important;
+    font-size: 0.5em !important;
+    display: block;
+    margin-top: 5px;
+}
 
 .bg6255, .btn-6255, .nav6255 .nav-link.active {
     background-color: #FC1B44 !important;
