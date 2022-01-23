@@ -963,7 +963,11 @@ class X_model extends CI_Model
             //Add Dropdown frame IF any:
             $e_dropdown = '';
             if(count($e_links)){
-                if(count($e_links)==1){
+                if($simple_version){
+
+                    $e_dropdown .= '<u>'.$es[0]['e__title'].'</u>';
+
+                } elseif(count($e_links)==1){
 
                     //Just show one:
                     $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click should-click" title="'.$e_links[0]['e__title'].'">'.( $is_discovery_mode ? '<u>'.$es[0]['e__title'].'</u>' : '' ).'</a>';
@@ -982,12 +986,12 @@ class X_model extends CI_Model
 
             if($es[0]['e__id']==14874){
                 //Add Coin Stats:
-                $e_appendix .= '<div style="margin: 0 -41px;">'.view_coins().'</div>';
+                //$e_appendix .= '<div style="margin: 0 -41px;">'.view_coins().'</div>';
             }
 
 
             //Display:
-            if($simple_version){
+            if($simple_version && 0){
                 $output_body_message = str_replace($identifier_string, ( $e_media_count > 0 ? '' : $edit_btn.$es[0]['e__title'] ), $output_body_message);
             } elseif($on_its_own_line){
                 $the_title = '<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].$tooltip_underdot.'">' . $es[0]['e__title'] . '</span>';
