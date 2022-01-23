@@ -843,7 +843,7 @@ class I extends CI_Controller {
         //DELETE all current notes, if any:
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => $_POST['x__type'],
+            'x__type' => 4231,
             'x__right' => $is[0]['i__id'],
         ), array(), 0) as $x) {
 
@@ -863,7 +863,7 @@ class I extends CI_Controller {
             $x = $this->X_model->create(array(
                 'x__source' => $member_e['e__id'],
                 'x__spectrum' => ($count + 1),
-                'x__type' => intval($_POST['x__type']),
+                'x__type' => 4231,
                 'x__right' => $is[0]['i__id'],
                 'x__message' => $msg_validation['clean_message'],
                 'x__up' => ( count($msg_validation['note_references']) ? $msg_validation['note_references'][0] : 0 ),
