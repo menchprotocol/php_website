@@ -1966,6 +1966,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
     //IDEAs & Time & Message
     $message_tooltip = '';
     if(!$discovery_mode){ // && $can_click
+
         $messages = '';
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -1974,9 +1975,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
             $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
         }
-        if($messages){
-            $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963(' . $i['i__id'] . ')" class="mini-font messages_4231_'.$i['i__id'].'">'.( strlen($messages) ? $messages : '<i>No Message Yet</i>' ) .'</a>';
-        }
+
+        $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963(' . $i['i__id'] . ')" class="mini-font messages_4231_'.$i['i__id'].'">'.( strlen($messages) ? $messages : '<i>No Message Yet</i>' ) .'</a>';
+
     } elseif($discovery_mode && isset($i['x__message']) && strlen($i['x__message'])>0){ //&& $can_click
 
         if(superpower_active(12701, true)){
