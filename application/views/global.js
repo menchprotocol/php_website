@@ -833,7 +833,7 @@ function i_load_coin(x__type, i__id, counter, first_segment, current_e){
 
 }
 
-function load_message_27963(){
+function load_message_27963(i__id){
 
     //Grab and load data:
     $('.input_note_4231').val(''); //Reset until loaded
@@ -841,10 +841,7 @@ function load_message_27963(){
     $('#modal27963').modal('show');
 
     $.post("/i/load_message_27963", {
-        x__type:x__type,
         i__id:i__id,
-        counter:counter,
-        first_segment:first_segment,
     }, function (data) {
         if(data.status){
             $('.input_note_4231').val(data.message).focus();
