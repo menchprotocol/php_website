@@ -979,11 +979,6 @@ class X_model extends CI_Model
                 }
             }
 
-            if($es[0]['e__id']==14874){
-                //Add Coin Stats:
-                //$e_appendix .= '<div style="margin: 0 -41px;">'.view_coins().'</div>';
-            }
-
 
             //Display:
             if($simple_version){
