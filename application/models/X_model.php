@@ -985,7 +985,7 @@ class X_model extends CI_Model
             }
 
 
-            //Display:
+            //Displays:
             if($simple_version && 0){
                 $output_body_message = str_replace($identifier_string, ( $e_media_count > 0 ? '' : $edit_btn.$es[0]['e__title'] ), $output_body_message);
             } elseif($on_its_own_line){
