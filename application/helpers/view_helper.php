@@ -2063,7 +2063,15 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
     //IDEAs & Time & Message
     $message_tooltip = '';
-    if(!$discovery_mode){ // && $can_click
+    if(!$discovery_mode && $focus_coin){ // && $can_click
+
+        $message_tooltip = view_i_note_list(4231, false, $i, $CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 4231,
+            'x__right' => $i['i__id'],
+        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')), $e_of_i);
+
+        /*
         $messages = '';
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -2075,6 +2083,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
         if($messages){
             $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963()" class="mini-font">'.$messages.'</a>';
         }
+        */
+
     } elseif($discovery_mode && isset($i['x__message']) && strlen($i['x__message'])>0){ //&& $can_click
 
         if(superpower_active(12701, true)){
