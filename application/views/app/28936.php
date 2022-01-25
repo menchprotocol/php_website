@@ -128,7 +128,7 @@
             <p>It is a period of unrest as crypto is under attack. The financial systems are crumbling, and AnakInu has come to deal the final blow.</p>
             <p>Senator PalpatInu has turned the young Sith Lord, once believed to have the potential to become one of the most powerful JeDoges ever, to the Dark Side.</p>
             <p>After executing Order 69, AnakInu is now traveling many parsecs to capture LaunchPadme and bring her back to Moosetoofar. There, AnakInu will execute his plan to take over all the Inus and take crypto by storm. Nothing will stop the natural born Inu from achieving greatness.</p>
-            <p><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 300px; border-radius: 8px;"></p>
+            <p><img src="https://s3foundation.s3-us-west-2.amazonaws.com/782cac4db51caf39afc04e3b2c0e66c3.jpeg" style="max-width: 300px; border-radius: 0;"></p>
         </div>
 
         <p>(Click Anywhere to Continue)</p>

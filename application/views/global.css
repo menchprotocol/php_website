@@ -246,7 +246,7 @@ img.no-frame {
 
 .alert{
     padding:10px !important;
-    border-radius: 8px;
+    border-radius: 0;
     margin:0 0 13px 0 !important;
     border: 0 !important;
 }
@@ -593,7 +593,7 @@ label:focus,
     color: #FFF;
     font-weight: bold;
     font-size: 0.8em;
-    border-radius: 8px;
+    border-radius: 0;
     z-index: 1;
 }
 .btn-lrg{
@@ -666,7 +666,7 @@ label:focus,
 }
 .cover-photo img{
     border: 3px solid #FC1B44;
-    border-radius: 8px;
+    border-radius: 0;
     padding: 2px;
     height: 290px;
     width: 200px;
@@ -821,7 +821,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 
 .list-border{
     border: 1px solid transparent;
-    border-radius: 8px;
+    border-radius: 0;
     overflow: hidden;
     margin: 0 5px;
 }
@@ -874,7 +874,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 }
 .dropdown-menu {
     border:3px solid transparent;
-    border-radius: 8px;
+    border-radius: 0;
 }
 
 
@@ -906,7 +906,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 .nav-pills .nav-x.active, .nav-pills .show>.nav-x {
     color: #fff;
     background-color: #222222;
-    border-radius: 8px;
+    border-radius: 0;
 }
 
 .black.active, .black.active i, .grey.active, .grey.active i {
@@ -1181,7 +1181,7 @@ a.headline {
 
 
 .modal-content .form-control{
-    border-radius: 8px;
+    border-radius: 0;
     margin-bottom: 5px;
 }
 .platform-navigation .block-x, .platform-navigation .block-menu {
@@ -1242,7 +1242,7 @@ a.headline {
 .story-bar li{
     height: 3px;
     flex-grow: 1;
-    border-radius: 8px;
+    border-radius: 0;
     margin: 0 5px 0 0;
     display: flex;
     background-repeat: no-repeat;
@@ -1254,7 +1254,7 @@ a.headline {
 .story-bar .progress{
     height: 3px;
     flex-grow: 1;
-    border-radius: 8px;
+    border-radius: 0;
     margin: 0 5px;
     display: flex;
     background-repeat: no-repeat;
@@ -2022,7 +2022,7 @@ i, .btn .show-max {
 .chat-title span{
     z-index: 99999999;
     padding: 3px;
-    border-radius: 8px;
+    border-radius: 0;
     line-height: 125%;
 }
 .modal-body{
@@ -2144,7 +2144,7 @@ i, .btn .show-max {
 }
 .headline {
     padding: 8px 0;
-    border-radius: 8px;
+    border-radius: 0;
     margin-bottom: 13px;
 }
 .coin_cover{
@@ -2168,7 +2168,6 @@ i, .btn .show-max {
     line-height: 120%;
     font-size: 1em;
     display: block;
-    border-radius: 8px;
     vertical-align: middle;
 }
 .mini-coin .cover-content .inner-content {
@@ -2177,7 +2176,7 @@ i, .btn .show-max {
     line-height: 110%;
     font-size: 0.85em;
     display: block;
-    border-radius: 8px;
+    border-radius: 0;
     vertical-align: middle;
 }
 
@@ -2243,7 +2242,7 @@ i, .btn .show-max {
 }
 .modal-content{
     border: 3px solid transparent;
-    border-radius: 8px;
+    border-radius: 0;
 }
 .mass_action_toggle, .e_text_search, .mass_action_item{
     width: 100% !important;
@@ -2256,7 +2255,7 @@ i, .btn .show-max {
 }
 .gif-col img{
     width: 100%;
-    border-radius: 8px;
+    border-radius: 0;
 }
 .avatar-type-group{
     margin: 20px auto;
@@ -2348,7 +2347,7 @@ video {
     width: auto;
     max-width: 100%;
     max-height: 987px;
-    border-radius: 8px;
+    border-radius: 0;
 }
 
 .message2{
@@ -2627,11 +2626,11 @@ video {
 
 .custom_ui_13884_13886 .white-border {
     border: 3px solid #FFFFFF !important;
-    border-radius: 8px;
+    border-radius: 0;
 }
 .custom_ui_13884_13885 .white-border {
     border: 3px solid #222222 !important;
-    border-radius: 8px;
+    border-radius: 0;
 }
 
 .first_btn{
@@ -2673,7 +2672,7 @@ font-weight: normal !important;
 
 .fa-gif-wrap{
 border:2px solid transparent;
-border-radius: 8px;
+border-radius: 0;
 font-size: 0.8em !important;
 text-transform: uppercase;
 padding: 2px;
@@ -3110,7 +3109,7 @@ color: #000000;
 
 
 .nav-pills .nav-link{
-    border-radius: 8px;
+    border-radius: 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
@@ -3465,7 +3464,7 @@ h4.css__title{
 }
 .filter_table input {
     background-color: #FFF;
-    border-radius: 8px;
+    border-radius: 0;
     color: #000;
 }
 .filter_table td {
