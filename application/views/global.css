@@ -2959,10 +2959,12 @@ font-weight: bold !important;
     color: #FFFFFF;
 }
 
-.custom_ui_13884_13886 .answer-item,
+/*
 .custom_ui_13884_13886 .coinType12273,
 .custom_ui_13884_13886 .coinType12274,
 .custom_ui_13884_13886 .coinType6255,
+*/
+.custom_ui_13884_13886 .answer-item,
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 .headline,
 .custom_ui_13884_13886 .list-border .list-group-item,
@@ -3014,6 +3016,7 @@ color: #000000;
     background-color:transparent !important;
     color: #222222;
 }
+
 
 .custom_ui_13884_13885 .coinType12273 i.zq12273,
 .custom_ui_13884_13885 .coinType6255 i.zq6255,
@@ -3082,10 +3085,12 @@ color: #000000;
     border-bottom-color: #f0f0f0 !important; /* WAS WHITE */
 }
 
-.custom_ui_13884_13885 .answer-item,
+/*
 .custom_ui_13884_13885 .coinType12273,
 .custom_ui_13884_13885 .coinType12274,
 .custom_ui_13884_13885 .coinType6255,
+*/
+.custom_ui_13884_13885 .answer-item,
 .custom_ui_13884_13885 .modal-content,
 .custom_ui_13884_13885 .headline,
 .custom_ui_13884_13885 .list-border .list-group-item,
@@ -3131,7 +3136,7 @@ color: #000000;
 .custom_ui_28938_28953 .platform-large img,
 .custom_ui_28938_28953 .image-mini img,
 .custom_ui_28938_28953 .round-btn {
-    border-radius: 8px;
+    border-radius: 0;
 }
 
 
@@ -3157,7 +3162,7 @@ color: #000000;
 }
 .custom_ui_28938_28939 .nav-pills .nav-link,
 .custom_ui_28938_28939 .cover-content{
-    border-radius: 8px;
+    border-radius: 0;
 }
 .custom_ui_28938_28939 .nav{
     padding-top: 5px;
@@ -3182,7 +3187,7 @@ color: #000000;
 .custom_ui_28938_28940 .platform-large img,
 .custom_ui_28938_28940 .image-mini img,
 .custom_ui_28938_28940 .round-btn {
-    border-radius: 8px;
+    border-radius: 0;
 }
 
 
