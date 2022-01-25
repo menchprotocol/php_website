@@ -875,7 +875,10 @@ $(document).ready(function () {
     });
 
     if(window.location.hash) {
-        toggle_pills(window.location.hash.substring(1));
+        var the_hash = window.location.hash.substring(1);
+        if(Number.isInteger(the_hash) && !(the_hash == $('.nav-link.active').attr('x__type'))){
+            toggle_pills(the_hash);
+        }
     }
 
     load_coins();
