@@ -176,7 +176,7 @@ li a {
 
 
 .dropdown-item {
-    padding:5px 3px;
+    padding:8px 3px;
 }
 
 /* FONTS */
@@ -3189,6 +3189,11 @@ color: #000000;
 .custom_ui_28938_28940 .round-btn {
     border-radius: 0;
 }
+
+.cover-link.coinType12274{
+    border-radius: 50%;
+}
+
 
 
 
