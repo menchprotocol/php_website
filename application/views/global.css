@@ -1617,6 +1617,28 @@ label {
 }
 
 
+.nav-pills .nav-link{
+    border-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.cover-content{
+    border-radius: 0;
+}
+.cover-content *{
+    color: #000000 !important;
+}
+
+.coin-12273 .cover-content{
+    background: rgba(255,197,0,0.82);
+}
+.coin-12274 .cover-content{
+    background: rgba(0,122,253,0.82);
+}
+.coin-6255 .cover-content{
+    background: rgba(252,27,68,0.82);
+}
 
 
 .note-btn i {
@@ -1808,7 +1830,7 @@ i, .btn .show-max {
 }
 
 .inner-content .text_e_4736, .inner-content .text_e_6197 {
-    text-align: center;
+    text-align: left;
 }
 
 .texttype__sm{
@@ -2859,12 +2881,6 @@ font-weight: bold !important;
     background: rgba(34,34,34,0.80);
 }
 
-.custom_ui_13884_13886 .cover-content,
-.custom_ui_13884_13886 .edge-coin .cover-content,
-.custom_ui_13884_13886 .mini-coin .cover-content {
-    background: rgba(0,0,0,0.80);
-}
-
 .custom_ui_13884_13886,
 .custom_ui_13884_13886 .container,
 .custom_ui_13884_13886 .table-striped tbody tr,
@@ -2911,7 +2927,6 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .controller-nav,
 .custom_ui_13884_13886 .grey-background,
 .custom_ui_13884_13886 .grey-background i,
-.custom_ui_13884_13886 .cover-content *,
 .custom_ui_13884_13886 .inner-content .texttype__lg,
 .custom_ui_13884_13886 .coin_reverse .black-background i{
     color: #FFFFFF !important;
@@ -2987,11 +3002,7 @@ color: #000000;
 .custom_ui_13884_13885 .media-info {
     background: rgba(239,239,239,0.80);
 }
-.custom_ui_13884_13885 .cover-content,
-.custom_ui_13884_13885 .mini-coin .cover-content,
-.custom_ui_13884_13885 .edge-coin .cover-content {
-    background: rgba(255,255,255,0.80);
-}
+
 .custom_ui_13884_13885,
 .custom_ui_13884_13885 .standard-bg,
 .custom_ui_13884_13885 .container,
@@ -3074,7 +3085,6 @@ color: #000000;
     border-color: #222222 !important;
 }
 
-.custom_ui_13884_13885 .cover-content *,
 .custom_ui_13884_13885 .list-border,
 .custom_ui_13884_13885 .list-border .list-group-item,
 .custom_ui_13884_13885 .inner-content .texttype__lg {
@@ -3107,16 +3117,6 @@ color: #000000;
 
 
 
-.nav-pills .nav-link{
-    border-radius: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-.cover-content{
-    border-radius: 0;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
 
 
 /* SHAPE: Rounded Rectangle Tall */
@@ -3288,7 +3288,7 @@ color: #000000;
 
 .cover-content .msg {
     margin:0 2px 0 !important;
-    text-align: center !important;
+    text-align: left !important;
     padding-bottom: 3px !important;
 }
 
