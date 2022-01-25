@@ -176,7 +176,7 @@ li a {
 
 
 .dropdown-item {
-    padding:10px 20px 7px 1px;
+    padding:5px 3px 0 0;
 }
 
 /* FONTS */
@@ -3344,7 +3344,6 @@ color: #000000;
 
 .move_away{
     margin-right: 34px;
-    padding: 8px 8px 8px 0px;
 }
 
 .btn-superpower.active .fas.zq12274, .btn-superpower.active .far.zq12274, .btn-superpower.active .fal.zq12274, .btn-superpower.active .fad.zq12274 {
