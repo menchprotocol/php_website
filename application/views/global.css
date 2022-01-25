@@ -3296,6 +3296,9 @@ color: #000000;
     padding:55px 8px;
     text-align:center;
 }
+.inner-content .css__title{
+    text-align: center;
+}
 .select-btns .btn{
     font-size: 1.5em !important;
 }
