@@ -1830,7 +1830,7 @@ i, .btn .show-max {
 }
 
 .inner-content .text_e_4736, .inner-content .text_e_6197 {
-    text-align: left;
+    text-align: center;
 }
 
 .texttype__sm{
@@ -2063,7 +2063,6 @@ i, .btn .show-max {
     padding: 5px 0;
 }
 .mini-font{
-    font-size:0.8em !important;
     line-height: 100%;
 }
 .cover-progress{
@@ -3195,10 +3194,9 @@ color: #000000;
 
 
 
-/* CENTER */
 .inner-content,
 .msg{
-    text-align: center;
+    text-align: left;
 }
 .e-appendix{
     margin-left: 0;

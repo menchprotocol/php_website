@@ -1892,9 +1892,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
     //Top action menu:
     $ui .= '<table class="coin_coins"><tr>';
-    $ui .= '<td width="25%"><div>'.(!$discovery_mode && $editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</div></td>';
+    $ui .= '<td width="20%"><div>'.(!$discovery_mode && $editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</div></td>';
 
-    $ui .= '<td width="25%">';
+    $ui .= '<td width="20%">';
     if($focus_coin && !$discovery_mode && superpower_active(12700, true)){
 
         //Duration
@@ -1913,8 +1913,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
     }
     $ui .= '</td>';
 
-    $ui .= '<td width="25%"><div>'.($focus_coin ? ($discovery_mode ? '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'" class="'.superpower_active(10939).'">'.$e___11035[13563]['m__cover'].'</a>' : '<a href="/'.$i['i__id'].'">'.( i_is_startable($i) ? '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26124]['m__title'].'">'.$e___11035[26124]['m__cover'].'</span>' : '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26130]['m__title'].'">'.$e___11035[26130]['m__cover'].'</span>' ).'</a>' ) : ($has_sortable ? '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '') ).'</div></td>';
-    $ui .= '<td width="25%"><div>'.$o_menu.'</div></td>';
+    $ui .= '<td width="20%"><div>'.($focus_coin ? ($discovery_mode ? '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'" class="'.superpower_active(10939).'">'.$e___11035[13563]['m__cover'].'</a>' : '<a href="/'.$i['i__id'].'">'.( i_is_startable($i) ? '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26124]['m__title'].'">'.$e___11035[26124]['m__cover'].'</span>' : '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26130]['m__title'].'">'.$e___11035[26130]['m__cover'].'</span>' ).'</a>' ) : ($has_sortable ? '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '') ).'</div></td>';
+    $ui .= '<td width="20%"><div>'.$o_menu.'</div></td>';
+    $ui .= '<td width="20%"><div>'.( $can_click ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
     $ui .= '</tr></table>';
 
 
@@ -1924,12 +1925,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
 
     //Coin Cover
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
+    $ui .= '<div class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12273,$i['i__cover']) : '').'</div>';
 
-    $ui .= ( !$can_click ? '</div>' : '</a>' );
+    $ui .= '</div>';
     $ui .= '</div>'; //cover-wrapper
 
 
@@ -1948,7 +1949,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
     if($e_of_i && $editing_enabled){
         //Editable title:
         $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $editing_enabled, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
-    } elseif($can_click){
+    } elseif($can_click && 0){
         $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
         $ui .= $i_title;
@@ -2234,22 +2235,23 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //Top action menu:
     $ui .= '<table class="coin_coins"><tr>';
-    $ui .= '<td width="25%"><div>'.($source_of_e && $superpower_13422 && !$cache_app ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
-    $ui .= '<td width="25%">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</td>';
-    $ui .= '<td width="25%"><div>'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
-    $ui .= '<td width="25%"><div>'.$dropdown_ui.'</div></td>';
+    $ui .= '<td width="20%"><div>'.($source_of_e && $superpower_13422 && !$cache_app ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
+    $ui .= '<td width="20%">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</td>';
+    $ui .= '<td width="20%"><div>'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
+    $ui .= '<td width="20%"><div>'.$dropdown_ui.'</div></td>';
+    $ui .= '<td width="20%"><div>'.( $can_click ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
     $ui .= '</tr></table>';
 
 
 
 
     //Coin Cover
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.$cointype.' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$can_click || 1 ? '<div' : '<a href="'.$href.'"' ).' class="'.$cointype.' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover']) : '' ).'</div>';
 
-    $ui .= ( !$can_click ? '</div>' : '</a>' );
+    $ui .= ( !$can_click || 1 ? '</div>' : '</a>' );
     $ui .= '</div>';
 
 
@@ -2265,7 +2267,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, ( isset($e['x__spectrum']) ? ($e['x__spectrum']*100)+1 : 0  ), true);
     } else {
         //Static:
-        $ui .= '<div class="css__title">'.( $can_click ? '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
+        $ui .= '<div class="css__title">'.( $can_click && 0 ? '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
     }
 
 
