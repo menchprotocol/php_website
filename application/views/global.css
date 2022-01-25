@@ -1587,12 +1587,15 @@ label {
 
 .coinType12274{
     border: 3px solid #007AFD !important;
+    background-color: #007AFD;
 }
 .coinType12273{
     border: 3px solid #FFC500 !important;
+    background-color: #FFC500;
 }
 .coinType6255{
     border: 3px solid #FC1B44 !important;
+    background-color: #FC1B44;
 }
 
 .no-message{
