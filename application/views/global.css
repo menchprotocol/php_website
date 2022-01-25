@@ -510,7 +510,12 @@ img.no-frame {
 
 
 
-
+.nav12274{
+    margin-top: 3px;
+}
+.nav12274 .nav-link.active{
+    border-radius: 8px;
+}
 .nav12274 .nav-link.active .zq12274, .nav12273 .nav-link.active .zq12273, .nav6255 .nav-link.active .zq6255 {
     color: #FFFFFF !important;
 }
@@ -1729,7 +1734,7 @@ i, .btn .show-max {
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
 .icon-block { width:41px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
-.icon-block-xxs{ width:18px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
+.icon-block-xxs{ width:22px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
 .icon-block-xxs i{ font-size: 1.1em !important; }
 .icon-block-xs{ width:33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; }
@@ -2242,7 +2247,7 @@ i, .btn .show-max {
     margin: 0 !important;
 }
 .cover-content .msg{
-    font-size: 1em !important;
+    font-size: 0.89em !important;
 }
 
 .doright{
