@@ -877,7 +877,7 @@ $(document).ready(function () {
     if(window.location.hash) {
         var the_hash = window.location.hash.substring(1);
         console.log('it is / '+the_hash+' / '+$('.nav-link.active').attr('x__type') );
-        if(!(the_hash == $('.nav-link.active').attr('x__type'))){
+        if(!(the_hash == $('.nav-link.active').attr('x__type')) && isNormalInteger(the_hash)){
             toggle_pills(the_hash);
         }
     }
