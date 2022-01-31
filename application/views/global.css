@@ -3101,6 +3101,9 @@ color: #000000;
 
 
 /* STICKY COLOR: COLORFUL */
+.custom_ui_28979_28980 .coinType12274 .zq12274 {
+    color:#FFFFFF !important;
+}
 .custom_ui_28979_28980 .coinType12274{
     border: 3px solid #007AFD !important;
     background-color: #007AFD;
@@ -3416,7 +3419,6 @@ color: #000000;
     background-color: #000000 !important;
     color: #FFFFFF !important;
 }
-.coinType12274 .zq12274,
 .custom_ui_13884_13885 .round-btn i {
     color:#FFFFFF !important;
 }
