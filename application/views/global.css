@@ -3125,16 +3125,10 @@ color: #000000;
 
 
 /* STICKY COLOR: TRANSPARENT */
-.custom_ui_28979_28981 .coinType12274{
-    border: 3px solid transparent !important;
-    background-color: transparent;
-}
-.custom_ui_28979_28981 .coinType12273{
-    border: 3px solid transparent !important;
-    background-color: transparent;
-}
-.custom_ui_28979_28981 .coinType6255{
-    border: 3px solid transparent !important;
+.custom_ui_28979_28981 .coinType12274,
+.custom_ui_28979_28981 .coinType12273,
+.custom_ui_28979_28981 .coinType6255 {
+    border: 0 !important;
     background-color: transparent;
 }
 
