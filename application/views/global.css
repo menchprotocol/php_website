@@ -2225,6 +2225,9 @@ i, .btn .show-max {
 .cover-content .msg{
     font-size: 0.8em !important;
 }
+.focus-coin .cover-content .msg{
+    font-size: 1em !important;
+}
 
 .doright{
     text-align: right !important;
