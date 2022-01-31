@@ -690,6 +690,7 @@ class X_model extends CI_Model
          *
          * */
 
+        $simple_version = false;
 
         //Try to fetch session if recipient not provided:
         if(!isset($member_e['e__id'])){
