@@ -1621,6 +1621,7 @@ label {
 
 
 
+
 .note-btn i {
     color: #222222 !important;
 }
@@ -3112,6 +3113,9 @@ color: #000000;
 
 
 /* STICKY COLOR: COLORFUL */
+.custom_ui_28979_28980 .cover-content *{
+    color: #000000 !important;
+}
 .custom_ui_28979_28980 .coinType12274 .zq12274 {
     color:#FFFFFF !important;
 }
