@@ -2862,13 +2862,13 @@ font-weight: bold !important;
 .custom_ui_13884_13886.custom_ui_28979_28981 .coinType12273,
 .custom_ui_13884_13886.custom_ui_28979_28981 .coinType6255 {
     border: 3px solid #FFFFFF !important;
-    background-color: #222222;
+    background-color: #000000;
 }
 
 .custom_ui_13884_13886.custom_ui_28979_28981 .cover-content,
 .custom_ui_13884_13886 .light-bg,
 .custom_ui_13884_13886 .media-info {
-    background: rgba(34,34,34,0.80);
+    background: rgba(0,0,0,0.80);
 }
 
 .custom_ui_13884_13886,
