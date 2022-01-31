@@ -1591,19 +1591,6 @@ label {
 .grey, .grey i, .grey a, .grey .zq12274, .grey .zq12273, .grey .zq6255, .btn-grey, .btn-grey i, .mini-grey { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#222222 !important; }
 
-.coinType12274{
-    border: 3px solid #007AFD !important;
-    background-color: #007AFD;
-}
-.coinType12273{
-    border: 3px solid #FFC500 !important;
-    background-color: #FFC500;
-}
-.coinType6255{
-    border: 3px solid #FC1B44 !important;
-    background-color: #FC1B44;
-}
-
 .no-message{
     color:#999999 !important;
     font-size: 0.8em !important;
@@ -1635,15 +1622,6 @@ label {
     color: #000000 !important;
 }
 
-.coin-12273 .cover-content{
-    background: rgba(255,197,0,0.82);
-}
-.coin-12274 .cover-content{
-    background: rgba(0,122,253,0.82);
-}
-.coin-6255 .cover-content{
-    background: rgba(252,27,68,0.82);
-}
 
 
 .note-btn i {
@@ -2879,7 +2857,7 @@ font-weight: bold !important;
 
 
 /* DARK */
-
+.custom_ui_13884_13885 .custom_ui_28979_28980 .cover-content,
 .custom_ui_13884_13886 .light-bg,
 .custom_ui_13884_13886 .media-info {
     background: rgba(34,34,34,0.80);
@@ -3001,7 +2979,7 @@ color: #000000;
 
 
 /* WHITE */
-
+.custom_ui_13884_13885 .custom_ui_28979_28980 .cover-content,
 .custom_ui_13884_13885 .light-bg,
 .custom_ui_13884_13885 .media-info {
     background: rgba(239,239,239,0.80);
@@ -3120,6 +3098,45 @@ color: #000000;
 
 
 
+
+
+/* STICKY COLOR: COLORFUL */
+.custom_ui_28979_28980 .coinType12274{
+    border: 3px solid #007AFD !important;
+    background-color: #007AFD;
+}
+.custom_ui_28979_28980 .coinType12273{
+    border: 3px solid #FFC500 !important;
+    background-color: #FFC500;
+}
+.custom_ui_28979_28980 .coinType6255{
+    border: 3px solid #FC1B44 !important;
+    background-color: #FC1B44;
+}
+.custom_ui_28979_28980 .coin-12273 .cover-content{
+    background: rgba(255,197,0,0.82);
+}
+.custom_ui_28979_28980 .coin-12274 .cover-content{
+    background: rgba(0,122,253,0.82);
+}
+.custom_ui_28979_28980 .coin-6255 .cover-content{
+    background: rgba(252,27,68,0.82);
+}
+
+
+/* STICKY COLOR: TRANSPARENT */
+.custom_ui_28979_28981 .coinType12274{
+    border: 3px solid transparent !important;
+    background-color: transparent;
+}
+.custom_ui_28979_28981 .coinType12273{
+    border: 3px solid transparent !important;
+    background-color: transparent;
+}
+.custom_ui_28979_28981 .coinType6255{
+    border: 3px solid transparent !important;
+    background-color: transparent;
+}
 
 
 
