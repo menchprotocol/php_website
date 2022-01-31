@@ -2224,9 +2224,10 @@ i, .btn .show-max {
 }
 .cover-content .msg{
     font-size: 0.8em !important;
+    text-align: center;
 }
 .focus-coin .cover-content .msg{
-    font-size: 1em !important;
+    font-size: 1.1em !important;
 }
 
 .doright{
