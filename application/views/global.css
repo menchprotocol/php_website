@@ -3131,7 +3131,7 @@ color: #000000;
 .custom_ui_28979_28981 .coinType12274,
 .custom_ui_28979_28981 .coinType12273,
 .custom_ui_28979_28981 .coinType6255 {
-    border: 0 !important;
+    border: 3px solid transparent !important;
     background-color: transparent;
 }
 
