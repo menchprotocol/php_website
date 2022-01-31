@@ -2245,19 +2245,19 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $ui .= '<td width="20%">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</td>';
     $ui .= '<td width="20%"><div>'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
     $ui .= '<td width="20%"><div>'.$dropdown_ui.'</div></td>';
-    $ui .= '<td width="20%"><div>'.( $can_click ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
+    $ui .= '<td width="20%"><div>'.( $can_click && $show_text_editor ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
     $ui .= '</tr></table>';
 
 
 
 
     //Coin Cover
-    $ui .= ( !$can_click || 1 ? '<div' : '<a href="'.$href.'"' ).' class="'.$cointype.' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( $can_click && !$show_text_editor ? '<a href="'.$href.'"' : '<div' ).' class="'.$cointype.' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover']) : '' ).'</div>';
 
-    $ui .= ( !$can_click || 1 ? '</div>' : '</a>' );
+    $ui .= ( $can_click && !$show_text_editor ? '</a>' : '</div>' );
     $ui .= '</div>';
 
 
