@@ -2857,6 +2857,13 @@ font-weight: bold !important;
 
 
 /* DARK */
+.custom_ui_13884_13885.custom_ui_28979_28981 .coinType12274,
+.custom_ui_13884_13885.custom_ui_28979_28981 .coinType12273,
+.custom_ui_13884_13885.custom_ui_28979_28981 .coinType6255 {
+    border: 3px solid #FFFFFF !important;
+    background-color: #222222;
+}
+
 .custom_ui_13884_13885.custom_ui_28979_28981 .cover-content,
 .custom_ui_13884_13886 .light-bg,
 .custom_ui_13884_13886 .media-info {
@@ -2979,6 +2986,13 @@ color: #000000;
 
 
 /* WHITE */
+.custom_ui_13884_13885.custom_ui_28979_28981 .coinType12274,
+.custom_ui_13884_13885.custom_ui_28979_28981 .coinType12273,
+.custom_ui_13884_13885.custom_ui_28979_28981 .coinType6255 {
+    border: 3px solid #222222 !important;
+    background-color: #FFFFFF;
+}
+
 .custom_ui_13884_13885.custom_ui_28979_28981 .cover-content,
 .custom_ui_13884_13885 .light-bg,
 .custom_ui_13884_13885 .media-info {
@@ -3126,14 +3140,6 @@ color: #000000;
     background: rgba(252,27,68,0.82);
 }
 
-
-/* STICKY COLOR: TRANSPARENT */
-.custom_ui_28979_28981 .coinType12274,
-.custom_ui_28979_28981 .coinType12273,
-.custom_ui_28979_28981 .coinType6255 {
-    border: 3px solid transparent !important;
-    background-color: transparent;
-}
 
 
 
