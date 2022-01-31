@@ -602,6 +602,8 @@ class X_model extends CI_Model
          *
          * */
 
+        $simple_version = false;
+
         //This could happen with random messages
         if(strlen($message_input) < 1){
             return false;
