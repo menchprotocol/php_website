@@ -2085,9 +2085,7 @@ i, .btn .show-max {
 
 
 .headlinebody {
-    margin: -20px 0px 13px 0px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    margin: 0 0 21px 21px;
     min-height: 34px;
 }
 
