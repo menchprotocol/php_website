@@ -107,6 +107,9 @@
             width: 40px;
             margin-bottom: 13px;
         }
+        .row img {
+            max-width: 340px;
+        }
 
         .container {
             background: transparent !important;
@@ -271,12 +274,6 @@
     <div class="row justify-content-center" style="padding:55px 0;">
         <div class="col-10 col-md-6">
             <img src="/img/mcbroke/mirror.jpg">
-        </div>
-    </div>
-
-    <div class="row justify-content-center" style="padding:55px 0;">
-        <div class="col-10 col-md-6">
-            <img src="/img/mcbroke/sleep.jpg">
         </div>
     </div>
 
