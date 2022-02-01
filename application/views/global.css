@@ -2019,7 +2019,7 @@ i, .btn .show-max {
 }
 
 .cover-content .inner-content {
-    margin: 0;
+    margin: 5px 0 0 0;
     padding: 2px 3px 0;
     line-height: 120%;
     font-size: 1em;
@@ -2180,7 +2180,7 @@ textarea {
     line-height: 220%;
 }
 .focus-coin .inner-content .css__title {
-    font-size: 2.1em;
+    font-size: 1.9em;
     line-height: 110%;
 }
 
@@ -2949,11 +2949,6 @@ font-weight: bold !important;
 }
 .custom_ui_13884_13885 .nav-pills .nav-link.active {
     background-color:#000000 !important;
-    color: #FFFFFF !important;
-}
-.custom_ui_13884_13885 .nav12274 .nav-link.active .zq12274,
-.custom_ui_13884_13885 .nav12273 .nav-link.active .zq12273,
-.custom_ui_13884_13885 .nav6255 .nav-link.active .zq6255 {
     color: #FFFFFF !important;
 }
 
