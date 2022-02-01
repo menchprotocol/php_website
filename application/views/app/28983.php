@@ -108,7 +108,7 @@
             margin-bottom: 13px;
         }
         .row img {
-            max-width: 340px;
+            max-width: 100%;
         }
 
         .container {
@@ -385,8 +385,8 @@
 
 
     <div class="row justify-content-center" style="padding:55px 0;">
-        <h3>Apply to Join Our Team</h3>
         <div class="col-10 col-md-6">
+            <h3 style="text-align: center">Apply to Join Our Team</h3>
             <img src="/img/mcbroke/apply.jpg">
         </div>
     </div>
