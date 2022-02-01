@@ -1996,6 +1996,9 @@ i, .btn .show-max {
     line-height: 120%;
     text-align: center;
 }
+.focus-coin .cover-text {
+    padding: 13px;
+}
 .cover-text .mini-font {
     font-weight: bold !important;
 }
