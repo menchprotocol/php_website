@@ -3012,6 +3012,7 @@ font-weight: bold !important;
 .custom_ui_28979_28980 .btn.btn-12274,
 .custom_ui_28979_28980 .coinType12274 {
     border: 3px solid #007AFD;
+    background-color: #007AFD !important;
 }
 .custom_ui_28979_28980 .coin-12274 .cover-content {
     background: rgba(0,122,253,0.82);
