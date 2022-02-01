@@ -3296,7 +3296,12 @@ color: #000000;
 
 
 
-
+.btn-transparent{
+    border: 0;
+    background: transparent;
+    padding: 0;
+    line-height: 100%;
+}
 
 .coin_reverse .black-background {
     background-color: transparent !important;
