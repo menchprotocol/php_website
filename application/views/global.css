@@ -1930,8 +1930,11 @@ i, .btn .show-max {
 
 .btn-group.pull-right { margin: -50px 28px 7px 0 !important; }
 
-.headlinebody {
+.modal-body .headlinebody {
     margin: 0 0 21px 21px;
+}
+
+.headlinebody {
     min-height: 34px;
 }
 
