@@ -164,6 +164,9 @@
             margin: 34px auto;
         }
 
+        .rounded-corner{
+            border-radius: 24px;
+        }
 
         @media (max-width:1500px) {
             .logo_div img{
@@ -268,7 +271,7 @@
     <div class="row justify-content-center" style="padding:55px 0;">
         <div class="col-10 col-md-6">
             <h3 style="text-align: center">How Can I Help You Today?</h3>
-            <img src="/img/mcbroke/serve.jpg">
+            <img src="/img/mcbroke/serve.jpg" class="rounded-corner">
         </div>
     </div>
 
@@ -349,7 +352,7 @@
     <div class="row justify-content-center" style="padding:55px 0;">
         <div class="col-10 col-md-6">
             <h3 style="text-align: center">Why Did The Markets Crash?</h3>
-            <img src="/img/mcbroke/mirror.jpg">
+            <img src="/img/mcbroke/mirror.jpg" class="rounded-corner">
         </div>
     </div>
 
@@ -387,7 +390,7 @@
         <div class="col-10 col-md-6">
             <h3 style="text-align: center">Markets Not Doing Well?</h3>
             <h3 style="text-align: center">Apply to Join Our Team</h3>
-            <img src="/img/mcbroke/apply.jpg">
+            <img src="/img/mcbroke/apply.jpg" class="rounded-corner">
         </div>
     </div>
 
