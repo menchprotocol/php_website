@@ -1728,6 +1728,12 @@ i, .btn .show-max {
     height: 24px !important;
     margin: -6px 3px -5px 2px !important;
 }
+.icon-block-xxs img{
+    line-height: 100%;
+    width: 16px !important;
+    height: 16px !important;
+    margin: -6px 3px -5px 2px !important;
+}
 .platform-logo img{
     margin:-13px 0px 0px 3px !important;
 }
