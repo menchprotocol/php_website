@@ -1458,6 +1458,7 @@ label {
 
 .nav-pills .nav-link{
     margin: 0 3px;
+    border-radius: 0;
 }
 
 .cover-content{
