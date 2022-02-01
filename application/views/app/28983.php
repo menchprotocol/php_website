@@ -267,19 +267,8 @@
 
     <div class="row justify-content-center" style="padding:55px 0;">
         <div class="col-10 col-md-6">
+            <h3 style="text-align: center">How Can I Help You Today?</h3>
             <img src="/img/mcbroke/serve.jpg">
-        </div>
-    </div>
-
-    <div class="row justify-content-center" style="padding:55px 0;">
-        <div class="col-10 col-md-6">
-            <img src="/img/mcbroke/mirror.jpg">
-        </div>
-    </div>
-
-    <div class="row justify-content-center" style="padding:55px 0;">
-        <div class="col-10 col-md-6">
-            <img src="/img/mcbroke/train.jpg">
         </div>
     </div>
 
@@ -357,6 +346,16 @@
 
 
 
+    <div class="row justify-content-center" style="padding:55px 0;">
+        <div class="col-10 col-md-6">
+            <h3 style="text-align: center">Why Did The Markets Crash?</h3>
+            <img src="/img/mcbroke/mirror.jpg">
+        </div>
+    </div>
+
+
+
+
 
         <br />
         <br />
@@ -386,6 +385,7 @@
 
     <div class="row justify-content-center" style="padding:55px 0;">
         <div class="col-10 col-md-6">
+            <h3 style="text-align: center">Markets Not Doing Well?</h3>
             <h3 style="text-align: center">Apply to Join Our Team</h3>
             <img src="/img/mcbroke/apply.jpg">
         </div>
