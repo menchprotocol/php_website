@@ -205,75 +205,70 @@
 <div class="container" style="text-align: center; padding-bottom:147px !important;">
 
     <div class="row justify-content-center" style="padding:110px 0;">
-        <div class="col-12 col-md-5">
+        <div class="col-12">
             <h1 style="color: #e50201; font-size: 3em;">Welcome to McBroke.</h1>
-            <p>A community. An idea. A new force. A new technology. A new future.</p>
-        </div>
-        <div class="col-12 col-md-3">
-            <img src="/img/mcbroke/McBroke-trucker-hat@2x.jpg" style="max-width: 300px;">
-        </div>
-    </div>
-
-        <br />
-        <br />
-        <p>
-            <a class="btn btn-white" href="javascript:alert('Telegram Coming Soon...')"><i class="fab fa-telegram"></i> Telegram</a>
-            <a class="btn btn-white" href="#howtobuy"><i class="fas fa-usd-circle"></i> How to Buy</a>
-            <a class="btn btn-white" href="#roadmap"><i class="fas fa-route"></i> Roadmap</a>
-        </p>
-
-        <br />
-        <br />
-        <br />
-        <br />
-        <h2 class="text-center main_title">Tokenomics</h2>
-        <div class="row justify-content-center" style="text-align: center; color: #000;">
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover">1%</div>
-                <div class="info_box_title">Redistribution</div>
-                <div class="info_box_message">Simply hold and earn more McBroke passively!</div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover">4%</div>
-                <div class="info_box_title">Development</div>
-                <div class="info_box_message">All costs regarding project development</div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover">5%</div>
-                <div class="info_box_title">Marketing</div>
-                <div class="info_box_message">So the world hears about the best community on Binance</div>
-            </div>
-        </div>
-        <br />
-        <p style="text-align: center; color: #000 !important;">We also burn a specific amount of supply on milestones. Additionally, 5% of the 1% Redistribution tax gets burned with every transaction.</p>
-        <br />
-        <p>
-            <a class="btn btn-white" href="javascript:alert('Coming Soon...')"><i class="fas fa-file-certificate"></i> Contract</a>
-            <a class="btn btn-white" href="javascript:alert('Coming Soon...')"><i class="fas fa-lock"></i> IP Lock</a>
-            <a class="btn btn-white" href="javascript:alert('Coming Soon...')"><i class="fas fa-square"></i> Renounce</a>
-        </p>
-        <br />
-        <div class="center-icons">
-            <a href="javascript:alert('Coming Soon...')"><img src="/img/mcbroke/light-bscscan.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
-            <a href="javascript:alert('Coming Soon...')"><img src="/img/mcbroke/light-cmc.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
-            <a href="javascript:alert('Coinbase Listing Coming Soon...')"><img src="/img/mcbroke/coinbase.png" style="border-radius: 50%;"></a>
-            <a href="javascript:alert('Coin Gecko Listing Coming Soon...')"><img src="/img/mcbroke/coingecko.svg"></a>
-            <a href="javascript:alert('DexTools Link Coming Soon...')"><img src="/img/mcbroke/dextools.svg"></a>
-            <a href="javascript:alert('PooCoin Coming Soon...')"><img src="/img/mcbroke/poocoin.svg"></a>
-            <a href="javascript:alert('Twitter Coming Soon...')" target="_blank"><img src="/img/mcbroke/twitter.png"></a>
-        </div>
-
-
-
-
-
-
-    <div class="row justify-content-center" style="padding:55px 0;">
-        <div class="col-10 col-md-6">
-            <h3 style="text-align: center">How Can I Help You Today?</h3>
-            <img src="/img/mcbroke/serve.jpg" class="rounded-corner">
+            <h3 style="color: #e8be1e; font-size: 3em;">Ba da ba ba ba We mooning it.</h3>
+            <img src="/img/mcbroke/McBroke-trucker-hat@2x.jpg" style="max-width: 300px; margin: 34px 0;">
+            <p>We are a community of once rich now broke degens looking to make it back to the top. Together we will be rich again and we can finally quit our wagecuck job and find our way to wife-changing money. No applications required.</p>
+            <h3 style="color: #e50201; font-size: 3em;">No Applications Required</h3>
+            <p>See details below for entry.</p>
         </div>
     </div>
+
+    <br />
+    <br />
+    <p>
+        <a class="btn btn-white" href="javascript:alert('Telegram Coming Soon...')"><i class="fab fa-telegram"></i> Telegram</a>
+        <a class="btn btn-white" href="#howtobuy"><i class="fas fa-usd-circle"></i> How to Buy</a>
+        <a class="btn btn-white" href="#roadmap"><i class="fas fa-route"></i> Roadmap</a>
+    </p>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <h2 class="text-center main_title">$BROKE Tokenomics</h2>
+    <p style="color: #e50201;">Would you like gains with that?</p>
+    <img src="/img/mcbroke/serve.jpg" class="rounded-corner">
+    <div class="row justify-content-center" style="text-align: center; color: #000;">
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover">2%</div>
+            <div class="info_box_title">Reflections</div>
+            <div class="info_box_message">Simply hold and earn more McBroke passively!</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover">4%</div>
+            <div class="info_box_title">Buybacks</div>
+            <div class="info_box_message">We burn a specific amount of supply on milestones</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover">7%</div>
+            <div class="info_box_title">Marketing</div>
+            <div class="info_box_message">So the world hears about the best community on Binance</div>
+        </div>
+    </div>
+    <br />
+    <p style="text-align: center; color: #000 !important;">We serve you our 24/7 model to sustain the growth and success of the McBroke ecosystem. Additionally, 5% of the 2% reflections tax gets burned with every order. </p>
+    <br />
+    <p>
+        <a class="btn btn-white" href="javascript:alert('Coming Soon...')"><i class="fas fa-file-certificate"></i> Contract</a>
+        <a class="btn btn-white" href="javascript:alert('Coming Soon...')"><i class="fas fa-lock"></i> IP Lock</a>
+        <a class="btn btn-white" href="javascript:alert('Coming Soon...')"><i class="fas fa-square"></i> Renounce</a>
+    </p>
+    <br />
+    <div class="center-icons">
+        <a href="javascript:alert('Coming Soon...')"><img src="/img/mcbroke/light-bscscan.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
+        <a href="javascript:alert('Coming Soon...')"><img src="/img/mcbroke/light-cmc.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
+        <a href="javascript:alert('Coinbase Listing Coming Soon...')"><img src="/img/mcbroke/coinbase.png" style="border-radius: 50%;"></a>
+        <a href="javascript:alert('Coin Gecko Listing Coming Soon...')"><img src="/img/mcbroke/coingecko.svg"></a>
+        <a href="javascript:alert('DexTools Link Coming Soon...')"><img src="/img/mcbroke/dextools.svg"></a>
+        <a href="javascript:alert('PooCoin Coming Soon...')"><img src="/img/mcbroke/poocoin.svg"></a>
+        <a href="javascript:alert('Twitter Coming Soon...')" target="_blank"><img src="/img/mcbroke/twitter.png"></a>
+    </div>
+
+
+
+
 
 
 
@@ -282,7 +277,7 @@
     <br />
     <br />
     <a name="howtobuy">&nbsp;</a>
-    <h2 class="text-center main_title">How To Buy</h2>
+    <h2 class="text-center main_title">How To Get $BROKE?</h2>
     <div class="row justify-content-center" style="text-align: center; color: #000;">
         <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
             <div class="info_box_cover"><img src="/img/mcbroke/metamask-2728406-2261817.png" style="width:110px;"></div>
@@ -317,7 +312,7 @@
     <br />
     <br />
     <a name="roadmap">&nbsp;</a>
-    <h2 class="text-center main_title">Roadmap</h2>
+    <h2 class="text-center main_title">Our $BROKE Roadmap</h2>
     <div class="row justify-content-center" style="text-align: center; color: #000;">
         <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
             <div class="info_box_cover"><i class="fad fa-coffee-pot"></i></div>
@@ -332,7 +327,8 @@
         <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
             <div class="info_box_cover"><i class="fad fa-french-fries"></i></div>
             <div class="info_box_title">Phase 2</div>
-            <div class="info_box_message">Youtube/Twitter Campaigns
+            <div class="info_box_message">Website Revamp
+                <br />Youtube/Twitter Campaigns
                 <br />McBroke NFT
                 <br />Promotional Contests
             </div>
@@ -342,7 +338,7 @@
             <div class="info_box_title">Phase 3</div>
             <div class="info_box_message">McBroke DAO
                 <br />Partnerships & Livestreams
-                <br />Battle Farming Beta Release</div>
+                <br />Battle Farming Alpha</div>
         </div>
     </div>
 
@@ -364,37 +360,29 @@
     <br />
     <br />
     <a name="team">&nbsp;</a>
-    <h2 class="text-center main_title">Team</h2>
+    <h2 class="text-center main_title">Broke too? Join Our Team:</h2>
+    <img src="/img/mcbroke/apply.jpg" class="rounded-corner" style="max-width: 400px;">
     <div class="row justify-content-center" style="text-align: center; color: #000;">
         <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
             <div class="info_box_cover"><img src="/img/mcbroke/crying.jpg" style="height:150px;"></div>
-            <div class="info_box_title">McTech</div>
+            <div class="info_box_title">McFlurry</div>
             <div class="info_box_message">CTO & Developer</div>
         </div>
         <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
             <div class="info_box_cover"><img src="/img/mcbroke/crying.jpg" style="height:150px;"></div>
-            <div class="info_box_title">McPromote</div>
+            <div class="info_box_title">McNuggets</div>
             <div class="info_box_message">CMO & Product</div>
         </div>
         <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
             <div class="info_box_cover"><img src="/img/mcbroke/crying.jpg" style="height:150px;"></div>
-            <div class="info_box_title">McTalk</div>
+            <div class="info_box_title">McSauce</div>
             <div class="info_box_message">CCO & Community Growth</div>
         </div>
     </div>
 
 
 
-    <div class="row justify-content-center" style="padding:55px 0;">
-        <div class="col-10 col-md-6">
-            <h3 style="text-align: center">Need Cash? Join Our Team:</h3>
-            <img src="/img/mcbroke/apply.jpg" class="rounded-corner">
-        </div>
-    </div>
-
-
-
-    </div><!-- Container -->
+</div><!-- Container -->
 
 
 
