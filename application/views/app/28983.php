@@ -198,7 +198,7 @@
 
 <div class="container" style="text-align: center; padding-bottom:147px !important;">
 
-    <div class="row justify-content-center" style="padding:55px 0;">
+    <div class="row justify-content-center" style="padding:110px 0;">
         <div class="col-12 col-md-5">
             <h1 style="color: #e50201; font-size: 3em;">Welcome to McBroke.</h1>
             <p>A community. An idea. A new force. A new technology. A new future.</p>
@@ -261,6 +261,30 @@
 
 
 
+
+    <div class="row justify-content-center" style="padding:55px 0;">
+        <div class="col-10 col-md-6">
+            <img src="/img/mcbroke/serve.jpg">
+        </div>
+    </div>
+
+    <div class="row justify-content-center" style="padding:55px 0;">
+        <div class="col-10 col-md-6">
+            <img src="/img/mcbroke/mirror.jpg">
+        </div>
+    </div>
+
+    <div class="row justify-content-center" style="padding:55px 0;">
+        <div class="col-10 col-md-6">
+            <img src="/img/mcbroke/sleep.jpg">
+        </div>
+    </div>
+
+    <div class="row justify-content-center" style="padding:55px 0;">
+        <div class="col-10 col-md-6">
+            <img src="/img/mcbroke/train.jpg">
+        </div>
+    </div>
 
 
 
@@ -360,6 +384,15 @@
                 <div class="info_box_message">CCO & Community Growth</div>
             </div>
         </div>
+
+
+
+    <div class="row justify-content-center" style="padding:55px 0;">
+        <h3>Apply to Join Our Team</h3>
+        <div class="col-10 col-md-6">
+            <img src="/img/mcbroke/apply.jpg">
+        </div>
+    </div>
 
 
 
