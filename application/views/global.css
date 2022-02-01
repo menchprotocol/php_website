@@ -1143,6 +1143,7 @@ a.headline {
     display:inline-block;
     overflow: hidden;
     width: 100%;
+    padding: 3px;
 }
 
 
