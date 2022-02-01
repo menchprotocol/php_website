@@ -26,17 +26,6 @@
             display: none;
         }
 
-        .starwars-intro {
-            top: 0%;
-            margin: auto;
-            width: 100%;
-            max-width: 500px;
-            position: relative;
-            font-size: 1.8em;
-            color: #e8be1e;
-            text-align: justify;
-            transform: rotateX(30deg) scale(2);
-        }
         .info_box_title{
             font-size: 1.5em;
             padding:0 0 8px 0;
@@ -46,7 +35,7 @@
             line-height: 115% !important;
             text-align: center;
             max-width: 500px;
-            color: #e8be1e !important;
+            color: #000 !important;
             margin: 0 auto;
             display: block;
             padding-bottom: 13px;
@@ -57,7 +46,6 @@
         }
         a {
             color: #FFF !important;
-            text-decoration: underline;
         }
         .btn-yellow i, a.btn-yellow {
             color: #e8be1e !important;
@@ -204,18 +192,18 @@
 
 <div class="container fixed-top" style="padding-bottom: 0 !important;">
     <div class="logo_div"><img src="/img/mcbroke/McBroke-logo@2x.png"></div>
-    <div class="call_to_action"><a class="btn btn-white" href="javascript:alert('Launching Soon...')"><i class="fas fa-lock"></i> Buy Now</a></div>
+    <div class="call_to_action"><a class="btn btn-yellow" href="javascript:alert('Launching Soon...')"><i class="fas fa-lock"></i> Buy Now</a></div>
 </div>
 
 
 <div class="container" style="text-align: center; padding-bottom:147px !important;">
 
     <div class="row justify-content" style="margin-top: 50px;">
-        <div class="col-md-6 col-12">
+        <div class="col-6 col-md-5 col-lg-4">
             <h1 style="color: #e50201; font-size: 3em;">Welcome to McBroke.</h1>
             <p>A community. An idea. A new force. A new technology. A new future.</p>
         </div>
-        <div class="col-md-6 col-12">
+        <div class="col-6 col-md-5 col-lg-4">
             <img src="/img/mcbroke/McBroke-trucker-hat@2x.jpg" style="max-width: 300px;">
         </div>
     </div>
@@ -319,7 +307,7 @@
         <h2 class="text-center main_title">Roadmap</h2>
         <div class="row justify-content-center" style="text-align: center; color: #000;">
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><i class="fad fa-starship-freighter fa-spin-reverse-slow"></i></div>
+                <div class="info_box_cover"><i class="fad fa-coffee-pot"></i></div>
                 <div class="info_box_title">Phase 1</div>
                 <div class="info_box_message">
                     Lock & Burn Tokens
@@ -329,7 +317,7 @@
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><i class="fad fa-starfighter-alt fa-spin-reverse-slow"></i></div>
+                <div class="info_box_cover"><i class="fad fa-french-fries"></i></div>
                 <div class="info_box_title">Phase 2</div>
                 <div class="info_box_message">Youtube/Twitter Campaigns
                     <br />McBroke NFT
@@ -337,7 +325,7 @@
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><i class="fad fa-starfighter fa-spin-reverse-slow"></i></div>
+                <div class="info_box_cover"><i class="fad fa-burger-soda"></i></div>
                 <div class="info_box_title">Phase 3</div>
                 <div class="info_box_message">McBroke DAO
                     <br />Partnerships & Livestreams
