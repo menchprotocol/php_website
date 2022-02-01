@@ -169,10 +169,10 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo 'background: transparent !important; ';
             echo '}';
 
-            echo ' .halfbg, .msg span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
+            echo ' .halfbg, .msg>span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
             echo ' .mid-title { display:none !important; } ';
-            echo ' .halfbg, .msg span, .msg { line-height: 125% !important; } ';
-            echo ' .msg span u, .msg span a { line-height: 100% !important; padding:0 !important; } ';
+            echo ' .halfbg, .msg>span, .msg { line-height: 125% !important; } ';
+            echo ' .msg>span u, .msg>span a { line-height: 100% !important; padding:0 !important; } ';
 
             echo '.list-border, .msg { max-width: 600px; margin: 0 auto; }';
             echo ' @media (max-width:767px) { .list-border, .msg { max-width: calc(100% - 16px); margin: 0 auto; } }';
