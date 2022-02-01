@@ -277,81 +277,80 @@
 
 
 
-        <br />
-        <br />
-        <br />
-        <br />
-        <a name="howtobuy">&nbsp;</a>
-        <h2 class="text-center main_title">How To Buy</h2>
-        <div class="row justify-content-center" style="text-align: center; color: #000;">
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/img/mcbroke/metamask-2728406-2261817.png" style="width:110px;"></div>
-                <div class="info_box_title">Setup MetaMask</div>
-                <div class="info_box_message">First download MetaMask (a crypto wallet in the form of a browser extension) or TrustWallet (an app for your phone). After that, you will have to add the Binance Smart Chain to your network-list. (Click here for a step-by-step tutorial).</div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/img/mcbroke/coinbase.png" style="width:110px;" class="round"></div>
-                <div class="info_box_title">Buy & Send BNB</div>
-                <div class="info_box_message">Then Buy BNB on an exchange (i.e. Binance, Kraken, Coinbase etc.). Transfer the tokens to your MetaMask wallet address. BEP-20 addresses start with a "0x".</div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/img/mcbroke/pancakeswap-cake-logo.png" style="width:110px;"></div>
-                <div class="info_box_title">Swap on Pancake</div>
-                <div class="info_box_message">Finally click here to buy McBroke on PancakeSwap. Select McBroke or use our contract address. Set the slippage tolerance to 12% (sometimes it may be 18%, depending on how much demand there is).</div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <a name="howtobuy">&nbsp;</a>
+    <h2 class="text-center main_title">How To Buy</h2>
+    <div class="row justify-content-center" style="text-align: center; color: #000;">
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><img src="/img/mcbroke/metamask-2728406-2261817.png" style="width:110px;"></div>
+            <div class="info_box_title">Setup MetaMask</div>
+            <div class="info_box_message">First download MetaMask (a crypto wallet in the form of a browser extension) or TrustWallet (an app for your phone). After that, you will have to add the Binance Smart Chain to your network-list. (Click here for a step-by-step tutorial).</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><img src="/img/mcbroke/coinbase.png" style="width:110px;" class="round"></div>
+            <div class="info_box_title">Buy & Send BNB</div>
+            <div class="info_box_message">Then Buy BNB on an exchange (i.e. Binance, Kraken, Coinbase etc.). Transfer the tokens to your MetaMask wallet address. BEP-20 addresses start with a "0x".</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><img src="/img/mcbroke/pancakeswap-cake-logo.png" style="width:110px;"></div>
+            <div class="info_box_title">Swap on Pancake</div>
+            <div class="info_box_message">Finally click here to buy McBroke on PancakeSwap. Select McBroke or use our contract address. Set the slippage tolerance to 12% (sometimes it may be 18%, depending on how much demand there is).</div>
+        </div>
+    </div>
+
+    <div style="text-align: center; position: relative;">
+        <a href="https://www.youtube.com/watch?v=KpF41eS3YZQ" target="_blank" class="htb-link-video"><img src="https://www.babycake.app/images/play.svg" loading="lazy" style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;" alt="" class="play">
+            <div style="opacity: 0;" class="video-overlay"></div>
+        </a>
+    </div>
+
+
+
+
+
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <a name="roadmap">&nbsp;</a>
+    <h2 class="text-center main_title">Roadmap</h2>
+    <div class="row justify-content-center" style="text-align: center; color: #000;">
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><i class="fad fa-coffee-pot"></i></div>
+            <div class="info_box_title">Phase 1</div>
+            <div class="info_box_message">
+                Lock & Burn Tokens
+                <br />Listings CMC+BSCSCAN
+                <br />Contract Audits
+                <br />Rewards Dashboard
             </div>
         </div>
-
-        <div style="text-align: center; position: relative;">
-            <a href="https://www.youtube.com/watch?v=KpF41eS3YZQ" target="_blank" class="htb-link-video"><img src="https://www.babycake.app/images/play.svg" loading="lazy" style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;" alt="" class="play">
-                <div style="opacity: 0;" class="video-overlay"></div>
-            </a>
-        </div>
-
-
-
-
-
-
-        <br />
-        <br />
-        <br />
-        <br />
-        <a name="roadmap">&nbsp;</a>
-        <h2 class="text-center main_title">Roadmap</h2>
-        <div class="row justify-content-center" style="text-align: center; color: #000;">
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><i class="fad fa-coffee-pot"></i></div>
-                <div class="info_box_title">Phase 1</div>
-                <div class="info_box_message">
-                    Lock & Burn Tokens
-                    <br />Listings CMC+BSCSCAN
-                    <br />Contract Audits
-                    <br />Rewards Dashboard
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><i class="fad fa-french-fries"></i></div>
-                <div class="info_box_title">Phase 2</div>
-                <div class="info_box_message">Youtube/Twitter Campaigns
-                    <br />McBroke NFT
-                    <br />Promotional Contests
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><i class="fad fa-burger-soda"></i></div>
-                <div class="info_box_title">Phase 3</div>
-                <div class="info_box_message">McBroke DAO
-                    <br />Partnerships & Livestreams
-                    <br />Battle Farming Beta Release</div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><i class="fad fa-french-fries"></i></div>
+            <div class="info_box_title">Phase 2</div>
+            <div class="info_box_message">Youtube/Twitter Campaigns
+                <br />McBroke NFT
+                <br />Promotional Contests
             </div>
         </div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><i class="fad fa-burger-soda"></i></div>
+            <div class="info_box_title">Phase 3</div>
+            <div class="info_box_message">McBroke DAO
+                <br />Partnerships & Livestreams
+                <br />Battle Farming Beta Release</div>
+        </div>
+    </div>
 
 
 
 
     <div class="row justify-content-center" style="padding:55px 0;">
         <div class="col-10 col-md-6">
-            <h3 style="text-align: center">Why Did The Markets Crash?</h3>
             <img src="/img/mcbroke/mirror.jpg" class="rounded-corner">
         </div>
     </div>
@@ -360,36 +359,35 @@
 
 
 
-        <br />
-        <br />
-        <br />
-        <br />
-        <a name="team">&nbsp;</a>
-        <h2 class="text-center main_title">Team</h2>
-        <div class="row justify-content-center" style="text-align: center; color: #000;">
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/img/mcbroke/crying.jpg" style="height:150px;"></div>
-                <div class="info_box_title">McTech</div>
-                <div class="info_box_message">CTO & Developer</div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/img/mcbroke/crying.jpg" style="height:150px;"></div>
-                <div class="info_box_title">McSell</div>
-                <div class="info_box_message">CMO & Product</div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/img/mcbroke/crying.jpg" style="height:150px;"></div>
-                <div class="info_box_title">McTalk</div>
-                <div class="info_box_message">CCO & Community Growth</div>
-            </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <a name="team">&nbsp;</a>
+    <h2 class="text-center main_title">Team</h2>
+    <div class="row justify-content-center" style="text-align: center; color: #000;">
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><img src="/img/mcbroke/crying.jpg" style="height:150px;"></div>
+            <div class="info_box_title">McTech</div>
+            <div class="info_box_message">CTO & Developer</div>
         </div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><img src="/img/mcbroke/crying.jpg" style="height:150px;"></div>
+            <div class="info_box_title">McPromote</div>
+            <div class="info_box_message">CMO & Product</div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="info_box_cover"><img src="/img/mcbroke/crying.jpg" style="height:150px;"></div>
+            <div class="info_box_title">McTalk</div>
+            <div class="info_box_message">CCO & Community Growth</div>
+        </div>
+    </div>
 
 
 
     <div class="row justify-content-center" style="padding:55px 0;">
         <div class="col-10 col-md-6">
-            <h3 style="text-align: center">Markets Not Doing Well?</h3>
-            <h3 style="text-align: center">Apply to Join Our Team</h3>
+            <h3 style="text-align: center">Need Cash? Join Our Team:</h3>
             <img src="/img/mcbroke/apply.jpg" class="rounded-corner">
         </div>
     </div>
