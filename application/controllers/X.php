@@ -1428,7 +1428,7 @@ class X extends CI_Controller
                 } else {
 
                     //Just delete from UI using JS:
-                    $delete_element = '.coin___12274_' . $_POST['o__id'];
+                    $delete_element = '.coin___e_' . $_POST['o__id'];
 
                 }
 
@@ -1488,7 +1488,7 @@ class X extends CI_Controller
                 } else {
 
                     //Just delete from UI using JS:
-                    $delete_element = '.coin___12273_' . $_POST['o__id'];
+                    $delete_element = '.coin___i_' . $_POST['o__id'];
 
                 }
 
