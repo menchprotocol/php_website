@@ -2082,7 +2082,7 @@ i, .btn .show-max {
     overflow: visible;
 }
 
-
+div.btn-group.pull-right{ margin: -50px 28px 7px 0; }
 
 .headlinebody {
     margin: 0 0 21px 21px;
