@@ -57,6 +57,7 @@
         }
         a {
             color: #FFF !important;
+            text-decoration: underline;
         }
         .btn-yellow i, a.btn-yellow {
             color: #e8be1e !important;
@@ -67,11 +68,11 @@
             margin-bottom: 4px;
         }
         .btn-white i {
-            color: #FFF !important;
+            color: #000 !important;
         }
         .btn-white {
-            border: 3px solid #FFF !important;
-            color: #FFF !important;
+            border: 3px solid #000 !important;
+            color: #000 !important;
             margin-bottom: 4px;
         }
 
@@ -103,7 +104,7 @@
         }
         .main_title{
             font-size: 2.9em;
-            color: #FFF !important;
+            color: #000 !important;
             padding: 34px 0 0;
         }
 
@@ -135,7 +136,7 @@
             left:5px;
         }
         .logo_div img{
-            height:99px;
+            height:53px;
         }
         .call_to_action{
             position: fixed;
@@ -209,20 +210,15 @@
 
 <div class="container" style="text-align: center; padding-bottom:147px !important;">
 
-    <div class="row justify-content">
+    <div class="row justify-content" style="margin-top: 50px;">
         <div class="col-md-6 col-12">
-            <p>Welcome to McBroke.</p>
+            <h1 style="color: #e50201; font-size: 3em;">Welcome to McBroke.</h1>
             <p>A community. An idea. A new force. A new technology. A new future.</p>
         </div>
         <div class="col-md-6 col-12">
             <img src="/img/mcbroke/McBroke-trucker-hat@2x.jpg" style="max-width: 300px;">
         </div>
     </div>
-
-
-    <div class="container">
-
-        <p class="fixed-p"></p>
 
         <br />
         <br />
@@ -237,7 +233,7 @@
         <br />
         <br />
         <h2 class="text-center main_title">Tokenomics</h2>
-        <div class="row justify-content-center" style="text-align: center; color: #FFF;">
+        <div class="row justify-content-center" style="text-align: center; color: #000;">
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover">1%</div>
                 <div class="info_box_title">Redistribution</div>
@@ -255,7 +251,7 @@
             </div>
         </div>
         <br />
-        <p style="text-align: center; color: #FFF !important;">We also burn a specific amount of supply on milestones. Additionally, 5% of the 1% Redistribution tax gets burned with every transaction.</p>
+        <p style="text-align: center; color: #000 !important;">We also burn a specific amount of supply on milestones. Additionally, 5% of the 1% Redistribution tax gets burned with every transaction.</p>
         <br />
         <p>
             <a class="btn btn-white" href="javascript:alert('Coming Soon...')"><i class="fas fa-file-certificate"></i> Contract</a>
@@ -286,7 +282,7 @@
         <br />
         <a name="howtobuy">&nbsp;</a>
         <h2 class="text-center main_title">How To Buy</h2>
-        <div class="row justify-content-center" style="text-align: center; color: #FFF;">
+        <div class="row justify-content-center" style="text-align: center; color: #000;">
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><img src="/img/mcbroke/metamask-2728406-2261817.png" style="width:110px;"></div>
                 <div class="info_box_title">Setup MetaMask</div>
@@ -321,7 +317,7 @@
         <br />
         <a name="roadmap">&nbsp;</a>
         <h2 class="text-center main_title">Roadmap</h2>
-        <div class="row justify-content-center" style="text-align: center; color: #FFF;">
+        <div class="row justify-content-center" style="text-align: center; color: #000;">
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><i class="fad fa-starship-freighter fa-spin-reverse-slow"></i></div>
                 <div class="info_box_title">Phase 1</div>
@@ -359,7 +355,7 @@
         <br />
         <a name="team">&nbsp;</a>
         <h2 class="text-center main_title">Team</h2>
-        <div class="row justify-content-center" style="text-align: center; color: #FFF;">
+        <div class="row justify-content-center" style="text-align: center; color: #000;">
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><img src="/img/mcbroke/crying.jpg" style="height:150px;"></div>
                 <div class="info_box_title">McTech</div>
@@ -379,11 +375,7 @@
 
 
 
-
-
-
-    </div>
-</div><!-- Container -->
+    </div><!-- Container -->
 
 
 
