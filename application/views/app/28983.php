@@ -198,12 +198,12 @@
 
 <div class="container" style="text-align: center; padding-bottom:147px !important;">
 
-    <div class="row justify-content-center" style="margin-top: 50px;">
-        <div class="col-12 col-md-4 col-lg-3">
+    <div class="row justify-content-center" style="padding:55px 0;">
+        <div class="col-12 col-md-5">
             <h1 style="color: #e50201; font-size: 3em;">Welcome to McBroke.</h1>
             <p>A community. An idea. A new force. A new technology. A new future.</p>
         </div>
-        <div class="col-12 col-md-4 col-lg-3">
+        <div class="col-12 col-md-3">
             <img src="/img/mcbroke/McBroke-trucker-hat@2x.jpg" style="max-width: 300px;">
         </div>
     </div>
