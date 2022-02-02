@@ -4,7 +4,7 @@
 
     <meta charset="utf-8" />
     <meta name="theme-color" content="#f0f0f0">
-    <link rel="icon" href="/assets/favicon.png">
+    <link rel="icon" href="/img/sithlords/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sith Lords</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -69,7 +69,7 @@
         body, html {
             margin: 0;
             padding: 0;
-            background: #000 url('/assets/bg.png') center;
+            background: #000 url('/img/sithlords/bg.png') center;
             font-size: 16px;
         }
         .starwars-page {
@@ -289,8 +289,8 @@
 
 
 <div>
-    <iframe src="/assets/white.mp3" allow="autoplay" id="audio" style="display: none"></iframe>
-    <audio autoplay><source src="/assets/stars.mp3" type="audio/mp3"></audio>
+    <iframe src="/img/sithlords/white.mp3" allow="autoplay" id="audio" style="display: none"></iframe>
+    <audio autoplay><source src="/img/sithlords/stars.mp3" type="audio/mp3"></audio>
 </div>
 
 <div class="container">
@@ -317,7 +317,7 @@
 
 
 <div class="fixed-intro hidden container fixed-top" style="padding-bottom: 0 !important;">
-    <div class="logo_div"><img src="/assets/Sith Lords Logo Mark@2x.png"></div>
+    <div class="logo_div"><img src="/img/sithlords/Sith Lords Logo Mark@2x.png"></div>
     <div class="call_to_action"><a class="btn btn-white" href="javascript:alert('Launching Soon...')"><i class="fas fa-lock"></i> Buy Now</a></div>
 </div>
 
@@ -325,8 +325,8 @@
 <div class="fixed-intro hidden container" style="text-align: center; padding-bottom:147px !important;">
 
 
-    <img src="/assets/Background@2x.jpg" class="top_header">
-    <div class="fivesiths"><img src="/assets/Sith Lord Comp@2x.png"></div>
+    <img src="/img/sithlords/Background@2x.jpg" class="top_header">
+    <div class="fivesiths"><img src="/img/sithlords/Sith Lord Comp@2x.png"></div>
 
     <div class="container">
 
@@ -408,13 +408,13 @@
         </p>
         <br />
         <div class="center-icons">
-            <a href="javascript:alert('Coming Soon...')"><img src="/assets/light-bscscan.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
-            <a href="javascript:alert('Coming Soon...')"><img src="/assets/light-cmc.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
-            <a href="javascript:alert('Coinbase Listing Coming Soon...')"><img src="/assets/coinbase.png" style="border-radius: 50%;"></a>
-            <a href="javascript:alert('Coin Gecko Listing Coming Soon...')"><img src="/assets/coingecko.svg"></a>
-            <a href="javascript:alert('DexTools Link Coming Soon...')"><img src="/assets/dextools.svg"></a>
-            <a href="javascript:alert('PooCoin Coming Soon...')"><img src="/assets/poocoin.svg"></a>
-            <a href="https://twitter.com/sithlordsclub" target="_blank"><img src="/assets/twitter.png"></a>
+            <a href="javascript:alert('Coming Soon...')"><img src="/img/sithlords/light-bscscan.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
+            <a href="javascript:alert('Coming Soon...')"><img src="/img/sithlords/light-cmc.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
+            <a href="javascript:alert('Coinbase Listing Coming Soon...')"><img src="/img/sithlords/coinbase.png" style="border-radius: 50%;"></a>
+            <a href="javascript:alert('Coin Gecko Listing Coming Soon...')"><img src="/img/sithlords/coingecko.svg"></a>
+            <a href="javascript:alert('DexTools Link Coming Soon...')"><img src="/img/sithlords/dextools.svg"></a>
+            <a href="javascript:alert('PooCoin Coming Soon...')"><img src="/img/sithlords/poocoin.svg"></a>
+            <a href="https://twitter.com/sithlordsclub" target="_blank"><img src="/img/sithlords/twitter.png"></a>
         </div>
 
 
@@ -432,17 +432,17 @@
         <h2 class="text-center main_title">How To Buy</h2>
         <div class="row justify-content-center" style="text-align: center; color: #FFF;">
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/assets/metamask-2728406-2261817.png" style="width:110px;"></div>
+                <div class="info_box_cover"><img src="/img/sithlords/metamask-2728406-2261817.png" style="width:110px;"></div>
                 <div class="info_box_title">Setup MetaMask</div>
                 <div class="info_box_message">First download MetaMask (a crypto wallet in the form of a browser extension) or TrustWallet (an app for your phone). After that, you will have to add the Binance Smart Chain to your network-list. (Click here for a step-by-step tutorial).</div>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/assets/coinbase.png" style="width:110px;" class="round"></div>
+                <div class="info_box_cover"><img src="/img/sithlords/coinbase.png" style="width:110px;" class="round"></div>
                 <div class="info_box_title">Buy & Send BNB</div>
                 <div class="info_box_message">Then Buy BNB on an exchange (i.e. Binance, Kraken, Coinbase etc.). Transfer the tokens to your MetaMask wallet address. BEP-20 addresses start with a "0x".</div>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/assets/pancakeswap-cake-logo.png" style="width:110px;"></div>
+                <div class="info_box_cover"><img src="/img/sithlords/pancakeswap-cake-logo.png" style="width:110px;"></div>
                 <div class="info_box_title">Swap on Pancake</div>
                 <div class="info_box_message">Finally click here to buy Sith Lords on PancakeSwap. Select SithLords or use our contract address. Set the slippage tolerance to 12% (sometimes it may be 18%, depending on how much demand there is).</div>
             </div>
@@ -506,17 +506,17 @@
         <h2 class="text-center main_title">Team</h2>
         <div class="row justify-content-center" style="text-align: center; color: #FFF;">
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/assets/Starkiller@2x.png" style="height:150px;"></div>
+                <div class="info_box_cover"><img src="/img/sithlords/Starkiller@2x.png" style="height:150px;"></div>
                 <div class="info_box_title">Starkiller</div>
                 <div class="info_box_message">CTO & Developer</div>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/assets/Sith Emperor@2x.png" style="height:150px;"></div>
+                <div class="info_box_cover"><img src="/img/sithlords/Sith Emperor@2x.png" style="height:150px;"></div>
                 <div class="info_box_title">Sith Emperor</div>
                 <div class="info_box_message">CMO & Product</div>
             </div>
             <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
-                <div class="info_box_cover"><img src="/assets/Darth Lord@2x.png" style="height:150px;"></div>
+                <div class="info_box_cover"><img src="/img/sithlords/Darth Lord@2x.png" style="height:150px;"></div>
                 <div class="info_box_title">Darth Lord</div>
                 <div class="info_box_message">CCO & Community Growth</div>
             </div>
