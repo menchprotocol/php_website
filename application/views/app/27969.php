@@ -33,7 +33,7 @@ if(isset($_GET['i__id'])){
     //MESSAGES
     echo '<div style="padding-bottom: 34px;">';
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $is[0]['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
@@ -59,8 +59,8 @@ if(isset($_GET['e__id'])){
     foreach($this->X_model->fetch(array(
         'x__up' => $_GET['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $header){
 
         $list_body = '';
@@ -72,7 +72,7 @@ if(isset($_GET['e__id'])){
             $messages = ( strlen($ref_i['x__message']) ? '<div class="msg"><span>' . nl2br($ref_i['x__message']) . '</span></div>' : '');
             /*
             foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
                 'x__type' => 4231, //IDEA NOTES Messages
                 'x__right' => $ref_i['i__id'],
             ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
@@ -89,8 +89,8 @@ if(isset($_GET['e__id'])){
         foreach($this->X_model->fetch(array(
             'x__up' => $header['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $list_e){
 
 
@@ -105,8 +105,8 @@ if(isset($_GET['e__id'])){
                 //Search for URL:
                 foreach($this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
                     'x__down' => $list_e['e__id'],
                 ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $url){
                     $list_body .= build_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $url['x__message'], ( strlen($list_e['x__message']) ? '<div class="msg"><span>' . nl2br($list_e['x__message']) . '</span></div>' : '' ));

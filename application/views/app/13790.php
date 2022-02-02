@@ -70,17 +70,17 @@ $column_ideas = array();
 if(isset($_GET['xaxis_e']) && strlen($_GET['xaxis_e'])){
 
     $column_sources = $this->X_model->fetch(array(
-        'x__up' => $_GET['xaxis_e'], //PUBLIC
+        'x__up' => $_GET['xaxis_e'], //PRIVATE
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__up' => $_GET['xaxis_e'], //PUBLIC
-        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'x__up' => $_GET['xaxis_e'], //PRIVATE
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
     ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $link_i){
         array_push($column_ideas, $link_i);
     }
@@ -103,7 +103,7 @@ $unique_users_count = array();
 $count = 0;
 
 foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
     'x__left IN (' . join(',', array($_GET['i__id'])) . ')' => null, //IDEA LINKS
 ), array('x__source'), 0, 0, array('x__time' => 'DESC')) as $x){
@@ -116,7 +116,7 @@ foreach($this->X_model->fetch(array(
             'x__up IN (' . $_GET['include_e'] . ')' => null, //All of these
             'x__down' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         ))) != count(explode(',',$_GET['include_e']))){
         continue;
     }
@@ -124,7 +124,7 @@ foreach($this->X_model->fetch(array(
             'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
             'x__down' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         )))){
         continue;
     }
@@ -133,7 +133,7 @@ foreach($this->X_model->fetch(array(
             'x__left IN (' . $_GET['include_i'] . ')' => null, //All of these
             'x__source' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         ))) != count(explode(',',$_GET['include_i']))){
         continue;
     }
@@ -141,7 +141,7 @@ foreach($this->X_model->fetch(array(
             'x__left IN (' . $_GET['exclude_i'] . ')' => null, //All of these
             'x__source' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         )))){
         continue;
     }
@@ -166,7 +166,7 @@ foreach($this->X_model->fetch(array(
     foreach($column_sources as $e){
 
         $fetch_data = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
             'x__down' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => $e['e__id'],
@@ -193,7 +193,7 @@ foreach($this->X_model->fetch(array(
             'x__left' => $i['i__id'],
             'x__source' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         ), array(), 1);
 
         $body_content .= '<td >'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) || substr_count($i['i__title'], 'Full Name')  ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.view_cover(12273,$i['i__cover'], '✔️', ' ').'</span>'  ) : '<span title="'.$i['i__title'].'" data-placement="top" class="icon-block-xxs">'.view_cover(12273,$i['i__cover'], '✔️', ' ') ).'</span>'  : '').'</td>';
@@ -209,7 +209,7 @@ foreach($this->X_model->fetch(array(
     }
 
     $e_emails = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__down' => $x['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => 3288, //Email
@@ -237,7 +237,7 @@ foreach($column_sources as $e){
 foreach($column_ideas as $i){
 
     $has_limits = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__type' => 4983, //References
         'x__right' => $i['i__id'],
         'x__up' => 26189,

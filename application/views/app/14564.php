@@ -45,8 +45,8 @@ if($userInfo && isset($userInfo['email'])){
 
     //We have their email already?
     $member_emails = $this->X_model->fetch(array(
-        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
         'x__up' => 3288, //Email
         'x__message' => $userInfo['email'],

@@ -16,7 +16,7 @@ foreach($this->I_model->fetch(array('i__cover IS NULL' => null)) as $o){
 
     //IDEA SOURCE
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__right' => $o['i__id'],
         'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
@@ -27,7 +27,7 @@ foreach($this->I_model->fetch(array('i__cover IS NULL' => null)) as $o){
 
         //See if this source has a photo:
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
             'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //Inherit Cover Types
             'x__down' => $fetched_e['e__id'],
         )) as $e_image) {
@@ -94,7 +94,7 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
 
     //Source Profile Search:
     foreach($this->X_model->fetch(array( //SOURCE PROFILE
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //Inherit Cover Types
         'x__down' => $o['e__id'], //This child source
     ), array('x__up'), 0, 0, array()) as $fetched_e){
@@ -134,8 +134,8 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
         foreach($this->X_model->fetch(array(
             'x__down' => $o['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
         ), array('x__up'), 0, 0, array('LENGTH(x__message)' => 'DESC', 'e__spectrum' => 'DESC')) as $linked_e){
             if(strlen($linked_e['e__cover'])){
                 if(filter_var($linked_e['e__cover'], FILTER_VALIDATE_URL)){

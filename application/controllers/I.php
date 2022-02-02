@@ -336,7 +336,7 @@ class I extends CI_Controller {
 
         $message = '';
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $_POST['i__id'],
         ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
@@ -615,7 +615,7 @@ class I extends CI_Controller {
         $page = intval($_POST['page']);
         $query_filters = array(
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $focus__id,
         );

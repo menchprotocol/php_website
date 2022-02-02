@@ -5,8 +5,8 @@ if(isset($_GET['update_u_icons'])){
     $base_filters = array(
         'x__up' => 4430, //Members
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
     );
 
     if(!isset($_GET['force'])) {

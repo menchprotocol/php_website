@@ -27,17 +27,17 @@ if($memory_detected){
 //CONFIG VARS
 foreach($this->X_model->fetch(array(
     'x__up' => 4527,
-    'x__status IN (' . join(',', $n___7359) . ')' => null, //PUBLIC
+    'x__status IN (' . join(',', $n___7359) . ')' => null, //PRIVATE
     'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-    'e__type IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
+    'e__type IN (' . join(',', $n___7357) . ')' => null, //PRIVATE
 ), array('x__down'), 0) as $en){
 
     //Now fetch all its children:
     $child__e = $this->X_model->fetch(array(
         'x__up' => $en['x__down'],
-        'x__status IN (' . join(',', $n___7359) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $n___7359) . ')' => null, //PRIVATE
         'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-        'e__type IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
+        'e__type IN (' . join(',', $n___7357) . ')' => null, //PRIVATE
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
 
@@ -58,9 +58,9 @@ foreach($this->X_model->fetch(array(
         $child_parent_ids = array(); //To be populated soon
         foreach($this->X_model->fetch(array(
             'x__down' => $child['e__id'],
-            'x__status IN (' . join(',', $n___7359) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $n___7359) . ')' => null, //PRIVATE
             'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-            'e__type IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $n___7357) . ')' => null, //PRIVATE
         ), array('x__up'), 0) as $cp_en){
             array_push($child_parent_ids, intval($cp_en['e__id']));
         }
@@ -84,7 +84,7 @@ foreach($this->X_model->fetch(array(
     $memory_text .= '$config[\'x___'.$en['x__down'].'\'] = array('."\n";
     if($memory_detected){
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $en['x__down'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $link_i){

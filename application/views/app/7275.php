@@ -8,7 +8,7 @@
 
 $start_time = time();
 $query_filters = array(
-    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
 );
 if(isset($_GET['i__id'])){
     $query_filters['i__id'] = intval($_GET['i__id']);

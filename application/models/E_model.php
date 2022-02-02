@@ -59,8 +59,8 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__down' => $e['e__id'], //This child source
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
         ), array('x__up')) as $e_profile){
 
             //IN Custom UI?
@@ -83,7 +83,7 @@ class E_model extends CI_Model
                     'x__source' => $e['e__id'],
                     'x__type' => 5007, //TOGGLE SUPERPOWER
                     'x__up' => $e_profile['e__id'],
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
                 ), array(), 1); //Fetch the single most recent supoerpower toggle only
                 if(!count($last_advance_settings) || !substr_count($last_advance_settings[0]['x__message'] , ' DEACTIVATED')){
                     array_push($session_data['session_superpowers_activated'], intval($e_profile['e__id']));
@@ -658,7 +658,7 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__down' => $e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')).')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         ), array(), 0) as $e__profile){
 
             if(!in_array($e['e__id'], $metadata_this['p___13207']) && in_array($e__profile['x__up'], $this->config->item('n___13207'))){
@@ -1015,7 +1015,7 @@ class E_model extends CI_Model
                 foreach($this->X_model->fetch(array(
                     'x__up' => $focus__id,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
                     'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__down'), 0, 0) as $e__up){
 
@@ -1024,7 +1024,7 @@ class E_model extends CI_Model
                         'x__up' => $e__up['e__id'],
                         'x__down' => $x['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
                     )))){
 
                         //Must be added:

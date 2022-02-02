@@ -12,8 +12,8 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
     $e_x = $this->X_model->fetch(array(
         'x__source' => $_GET['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
     ), array('x__left'), 0, 0, array('x__spectrum' => 'ASC'));
 
     foreach($e_x as $priority => $x) {
@@ -24,7 +24,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
     $is = $this->I_model->fetch(array(
         'i__id' => $_GET['i__id'],
-        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
     ));
 
     if(count($is) < 1){

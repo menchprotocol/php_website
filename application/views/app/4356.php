@@ -11,7 +11,7 @@ $query_filters = array();
 if($i__id > 0){
     $query_filters['i__id'] = $i__id;
 } else {
-    $query_filters['i__type IN (' . join(',', $this->config->item('n___7355')) . ')'] = null; //PUBLIC
+    $query_filters['i__type IN (' . join(',', $this->config->item('n___7355')) . ')'] = null; //PRIVATE
 }
 
 foreach($this->I_model->fetch($query_filters) as $in){
@@ -19,7 +19,7 @@ foreach($this->I_model->fetch($query_filters) as $in){
 
     //First see if manually updated:
     if(count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
             'x__type' => 10650,
             'x__right' => $in['i__id'],
         ))) && $in['i__duration']!=view_memory(6404,12176)){
@@ -51,8 +51,8 @@ foreach($this->I_model->fetch($query_filters) as $in){
 
     //Then count the title of next ideas:
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $is_next){
@@ -67,7 +67,7 @@ foreach($this->I_model->fetch($query_filters) as $in){
 
     //Fetch All Messages for this:
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $in['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message){
@@ -87,8 +87,8 @@ foreach($this->I_model->fetch($query_filters) as $in){
             //Yes, see
             //Source Profile
             foreach($this->X_model->fetch(array(
-                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
                 'x__type IN (' . join(',', $this->config->item('n___12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                 'x__down' => $message['x__up'],
             ), array('x__up'), 0, 0, array('e__id' => 'ASC' /* Hack to get Text first */)) as $e_profile) {
