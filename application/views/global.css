@@ -3373,6 +3373,9 @@ font-weight: bold !important;
 .coin-12274 .inner-content .css__title{
     text-align: center;
 }
+.coin-12274 .cover-content{
+    border-radius: 10px;
+}
 .select-btns .btn{
     font-size: 1.5em !important;
 }
