@@ -1127,7 +1127,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
     if($x__type==12274){
 
         //SOURCES
-        $order_columns = array();
+        $order_columns = array('x__id' => 'ASC');
         $join_objects = array('x__up');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
@@ -1139,7 +1139,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
     } elseif($x__type==13542){
 
         //IDEAS
-        $order_columns = array();
+        $order_columns = array('x__spectrum' => 'ASC');
         $join_objects = array('x__right');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
@@ -1151,7 +1151,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
     } elseif($x__type==6255){
 
         //DISCOVERIES
-        $order_columns = array();
+        $order_columns = array('x__id' => 'DESC');
         $join_objects = array('x__source');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
@@ -1164,7 +1164,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
 
     } elseif($x__type==11019) {
 
-        $order_columns = array();
+        $order_columns = array('i__title' => 'ASC');
         $join_objects = array('x__left');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -1175,7 +1175,8 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
 
     } elseif($x__type==12969){
 
-        $order_columns = array();
+        //Started
+        $order_columns = array('x__spectrum' => 'ASC', 'x__id' => 'DESC');
         $join_objects = array('x__source');
         $query_filters = array(
             'x__left' => $i__id,
@@ -1185,6 +1186,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
 
     } elseif(in_array($x__type, $CI->config->item('n___7551'))){
 
+        //1x Source Ref
         $order_columns = array('x__spectrum' => 'ASC');
         $join_objects = array('x__up');
         $query_filters = array(
