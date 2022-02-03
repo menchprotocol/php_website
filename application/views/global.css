@@ -3350,9 +3350,9 @@ font-weight: bold !important;
 }
 
 .cover-content .msg {
-    margin:0 2px 0 !important;
+    margin:0 5px !important;
     text-align: left !important;
-    padding-bottom: 3px !important;
+    padding-bottom: 0 !important;
 }
 
 .editor_preview:hover{
@@ -3363,7 +3363,8 @@ font-weight: bold !important;
     text-align:center;
 }
 .inner-content .css__title{
-    text-align: center;
+    text-align: left;
+    padding: 0 5px !important;
 }
 .select-btns .btn{
     font-size: 1.5em !important;
