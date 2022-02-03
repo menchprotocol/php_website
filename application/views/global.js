@@ -2531,6 +2531,7 @@ function x_sort_load(x__type){
             var new_x_order = [];
             $("#list-in-"+x__type+" .cover_sort").each(function () {
                 var x_id = parseInt($(this).attr('x__id'));
+                console.log('x__id: ' + x_id);
                 if(x_id > 0){
                     sort_rank++;
                     new_x_order[sort_rank] = x_id;
