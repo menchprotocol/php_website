@@ -2539,7 +2539,6 @@ function x_sort_load(x__type){
 
             //Update order:
             if(sort_rank > 0){
-                console.log(new_x_order);
                 $.post("/x/x_sort_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
                     //Update UI to confirm with member:
                     if (!data.status) {
