@@ -1996,7 +1996,7 @@ i, .btn .show-max {
     text-align: center;
 }
 .focus-coin .cover-text {
-    padding: 13px;
+    padding: 8px;
 }
 .cover-text .mini-font {
     font-weight: bold !important;
@@ -2183,6 +2183,7 @@ textarea {
 .focus-coin .inner-content .css__title {
     font-size: 1.9em;
     line-height: 110%;
+    padding: 13px !important;
 }
 
 
