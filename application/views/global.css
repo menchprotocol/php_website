@@ -3367,6 +3367,9 @@ font-weight: bold !important;
     text-align: left;
     padding: 0 5px !important;
 }
+.coin-12274 .inner-content .css__title{
+    text-align: center;
+}
 .select-btns .btn{
     font-size: 1.5em !important;
 }
