@@ -2129,7 +2129,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
 
-    $source_of_e = $source_of_e && $member_e;
+    $source_of_e = ($superpower_13422) || ($source_of_e && $member_e);
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $supports_messages = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___20409')));
