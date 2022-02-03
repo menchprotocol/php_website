@@ -3231,6 +3231,7 @@ font-weight: bold !important;
 .custom_ui_28938_28940 .cover-btn{
     top: 50%;
 }
+
 .custom_ui_28938_28940 .cover-link {
     padding-top: 98%;
 }
@@ -3249,9 +3250,10 @@ font-weight: bold !important;
 
 .cover-link.coinType12274{
     border-radius: 50%;
-    top: 44%;
 }
-
+.cover-link.coinType12274 .cover-btn{
+    top: 44% !important;
+}
 
 
 
