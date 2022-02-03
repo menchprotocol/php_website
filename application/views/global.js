@@ -2530,16 +2530,16 @@ function x_sort_load(x__type){
             var sort_rank = 0;
             var new_x_order = [];
             $("#list-in-"+x__type+" .cover_sort").each(function () {
-                var x_id = parseInt($(this).attr('x__id'));
-                console.log('x__id: ' + x_id);
-                if(x_id > 0){
+                var x__id = parseInt($(this).attr('x__id'));
+                if(x__id > 0){
                     sort_rank++;
-                    new_x_order[sort_rank] = x_id;
+                    new_x_order[sort_rank] = x__id;
                 }
             });
 
             //Update order:
             if(sort_rank > 0){
+                console.log(new_x_order);
                 $.post("/x/x_sort_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
                     //Update UI to confirm with member:
                     if (!data.status) {
