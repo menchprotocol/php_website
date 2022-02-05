@@ -192,7 +192,8 @@ li a {
     line-height: 190%;
 }
 .msg, .msg-frame {
-    margin:0 10px;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
 }
 
 
