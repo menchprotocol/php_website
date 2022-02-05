@@ -3499,8 +3499,12 @@ h4.css__title{
 
 .large-frame{
     width: 100%;
-    margin: -16px auto 144% !important;
+    margin: -16px auto 0 !important;
     padding: 0;
+}
+
+.large-frame.with-background{
+    margin-bottom: 144% !important;
 }
 
 .sidebar a.css__title {
