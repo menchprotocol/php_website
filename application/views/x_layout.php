@@ -223,7 +223,7 @@ if($top_i__id) {
 
 
             //Open for list to be printed:
-            $select_answer = '<div class="row justify-content list-answers" i__type="' . $i_focus['i__type'] . '">';
+            $select_answer = '<div class="row list-answers" i__type="' . $i_focus['i__type'] . '" style="margin-left:10px !important;">';
 
             //List children to choose from:
             foreach ($is_next as $key => $next_i) {
