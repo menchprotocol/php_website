@@ -198,7 +198,7 @@ if(!$member_e){
 
 
         //SAVE & NEXT
-        echo '<div class="nav-controller"><div><a class="controller-nav btn btn-lrg btn-6255 go-next top-margin" href="javascript:void();" onclick="save_feedback()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__cover'].'</a></div></div>';
+        echo '<div class="nav-controller"><div><a class="btn btn-lrg btn-6255 go-next top-margin" href="javascript:void();" onclick="save_feedback()">'.$e___14709[14721]['m__title'].' '.$e___14709[14721]['m__cover'].'</a></div></div>';
 
 
         echo '</div>';

@@ -495,7 +495,7 @@ if(!$top_i__id){
         $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
         //Get Started
-        echo '<div class="nav-controller select-btns msg-frame"><a class="controller-nav btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
+        echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
         echo '<div class="doclear">&nbsp;</div>';
     }
 

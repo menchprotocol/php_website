@@ -23,7 +23,7 @@ echo view_e_settings(14517, true);
 
 //CONTINUE:
 echo '<div class="nav-controller">';
-echo '<div><a class="controller-nav btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="complete_setup()">'.$e___11035[14521]['m__title'].' '.$e___11035[14521]['m__cover'].'</a></div>';
+echo '<div><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="complete_setup()">'.$e___11035[14521]['m__title'].' '.$e___11035[14521]['m__cover'].'</a></div>';
 echo '</div>';
 
 
