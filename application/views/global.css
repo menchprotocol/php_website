@@ -1991,6 +1991,9 @@ i, .btn .show-max {
     text-align: left;
     margin-left: 5px;
 }
+.cover-text .msg {
+    margin: 0 !important;
+}
 .focus-coin .cover-text {
     padding: 8px;
 }
