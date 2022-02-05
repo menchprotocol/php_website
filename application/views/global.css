@@ -3496,7 +3496,7 @@ h4.css__title{
 
 .large-frame{
     width: calc(100% - 20px);
-    margin: 0 auto !important;
+    margin: 0 auto 144% !important;
     padding: 0;
 }
 
