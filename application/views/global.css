@@ -2213,9 +2213,7 @@ video {
 
 @media (max-width:767px) {
 
-    .large-frame{
-        width: calc(100% - 10px);
-    }
+
     .coin_coins>span{
         padding: 0 2px;
     }
@@ -3500,8 +3498,8 @@ h4.css__title{
 }
 
 .large-frame{
-    width: calc(100% - 20px);
-    margin: 0 auto 144% !important;
+    width: 100%;
+    margin: -16px auto 144% !important;
     padding: 0;
 }
 
