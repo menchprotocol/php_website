@@ -564,7 +564,7 @@ label:focus,
 
 .nav-controller {
     display: inline-block;
-    padding: 34px 0;
+    padding: 34px 41px;
 }
 
 .nav-controller div{
@@ -3264,6 +3264,7 @@ font-weight: bold !important;
 .justify-content {
     justify-content: center !important;
 }
+
 .content-image,
 .media-content{
     margin:0 auto;
