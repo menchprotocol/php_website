@@ -135,7 +135,7 @@ if($top_i__id){
 
 echo '<div class="light-bg large-frame">';
 
-echo '<h1 style="text-align: left; padding:5px !important;">'.( $has_cover && !$cover_image ? '<span class="icon-block-img">'.view_cover(12273,$i_focus['i__cover']).'</span> ' : '' ).$i_focus['i__title'].'</h1>';
+echo '<h1 class="msg-frame" style="text-align: left;">'.( $has_cover && !$cover_image ? '<span class="icon-block-img">'.view_cover(12273,$i_focus['i__cover']).'</span> ' : '' ).$i_focus['i__title'].'</h1>';
 
 //echo view_i(20417, $top_i__id, null, $i_focus);
 
@@ -495,7 +495,7 @@ if(!$top_i__id){
         $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
         //Get Started
-        echo '<div class="nav-controller select-btns"><a class="controller-nav btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
+        echo '<div class="nav-controller select-btns msg-frame"><a class="controller-nav btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
         echo '<div class="doclear">&nbsp;</div>';
     }
 

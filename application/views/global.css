@@ -191,8 +191,8 @@ li a {
 .regtext, .msg{
     line-height: 190%;
 }
-.msg {
-    margin:0 41px;
+.msg, .msg-frame {
+    margin:0 10px;
 }
 
 
@@ -564,7 +564,7 @@ label:focus,
 
 .nav-controller {
     display: inline-block;
-    padding: 21px 5px;
+    padding: 21px 0;
 }
 
 .nav-controller div{
@@ -2218,8 +2218,8 @@ video {
     .vid-padding { padding:55px 0; }
 
 
-    .msg {
-        margin: 0 5px 3px;
+    .msg, .msg-frame {
+        margin: 0 5px 0;
     }
 
     .cover-wrapper {
@@ -3498,6 +3498,7 @@ h4.css__title{
     width: calc(100% - 20px);
     margin: 0 auto 144% !important;
     padding: 0;
+    max-width: 800px;
 }
 
 .sidebar a.css__title {
