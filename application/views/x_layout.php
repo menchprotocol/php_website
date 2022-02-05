@@ -3,6 +3,25 @@
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 
+$has_cover = strlen(trim($i_focus['i__cover'])) > 0;
+$cover_image = filter_var($i_focus['i__cover'], FILTER_VALIDATE_URL);
+
+if($cover_image){
+    echo '<style> 
+
+    body { 
+    background: url("' . $i_focus['i__cover'] . '") no-repeat center center fixed !important; 
+    background-size: cover !important;
+    width: 100% !important;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    -o-background-size: cover !important;
+    top:0 !important;
+      left:0 !important;
+    height: 100% !important;
+    }
+    </style>';
+}
 
 
 //NEXT IDEAS
@@ -114,12 +133,24 @@ if($top_i__id){
 
 
 
-echo '<div class="row justify-content">';
-echo view_i(20417, $top_i__id, null, $i_focus);
-echo '</div>';
+echo '<div class="light-bg large-frame">';
 
+echo '<h1>'.( $has_cover && !$cover_image ? '<span class="icon-block-img">'.view_cover(12273,$i_focus['i__cover']).'</span> ' : '' ).$i_focus['i__title'].'</h1>';
 
+//echo view_i(20417, $top_i__id, null, $i_focus);
 
+//MESSAGES
+foreach($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type' => 4231, //IDEA NOTES Messages
+    'x__right' => $i_focus['i__id'],
+), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
+    echo $this->X_model->message_view(
+        $message_x['x__message'],
+        true,
+        $member_e
+    );
+}
 
 
 
@@ -517,7 +548,7 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1">';
                 $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
 
-                $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="$"><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].' '.$total_dues[0]['x__message'].'</span>';
+                $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="$"><span class="nav-title css__title">Pay '.$total_dues[0]['x__message'].'</span>';
                 //$control_btn .= '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="document.getElementById(\'paypal_form\').submit();">'.$e___4737[$i_focus['i__type']]['m__cover'].'</a><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].'</span>';
 
                 $control_btn .= '</form>';
@@ -612,6 +643,12 @@ if($top_i__id) {
     echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
 
 }
+
+
+
+
+
+echo '</div>';
 
 
 ?>

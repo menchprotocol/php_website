@@ -2950,7 +2950,7 @@ font-weight: bold !important;
     color: #000000 !important;
 }
 .custom_ui_13884_13885 .nav-link.active .css__title,
-.custom_ui_13884_13885 .nav-pills .nav-link.active i {
+.custom_ui_13884_13885 .nav-pills .nav-link.active .zq12273 {
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13885 .nav-pills .nav-link.active {
@@ -3501,6 +3501,11 @@ h4.css__title{
     border-right:1px solid #999;
 }
 
+.large-frame{
+    width: 80%;
+    marging-left: 10%;
+    padding: 10px;
+}
 
 .sidebar a.css__title {
     padding:5px 5px 5px 0;
