@@ -135,7 +135,7 @@ if($top_i__id){
 
 echo '<div class="light-bg large-frame">';
 
-echo '<h1>'.( $has_cover && !$cover_image ? '<span class="icon-block-img">'.view_cover(12273,$i_focus['i__cover']).'</span> ' : '' ).$i_focus['i__title'].'</h1>';
+echo '<h1 style="text-align: left;">'.( $has_cover && !$cover_image ? '<span class="icon-block-img">'.view_cover(12273,$i_focus['i__cover']).'</span> ' : '' ).$i_focus['i__title'].'</h1>';
 
 //echo view_i(20417, $top_i__id, null, $i_focus);
 
