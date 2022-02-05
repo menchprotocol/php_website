@@ -2213,6 +2213,9 @@ video {
 
 @media (max-width:767px) {
 
+    .large-frame{
+        width: calc(100% - 10px);
+    }
     .coin_coins>span{
         padding: 0 2px;
     }
@@ -3500,7 +3503,6 @@ h4.css__title{
     width: calc(100% - 20px);
     margin: 0 auto 144% !important;
     padding: 0;
-    max-width: 1200px;
 }
 
 .sidebar a.css__title {
