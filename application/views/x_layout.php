@@ -152,9 +152,6 @@ foreach($this->X_model->fetch(array(
     );
 }
 
-echo '</div>';
-
-
 
 
 if($top_i__id) {
@@ -647,6 +644,11 @@ if($top_i__id) {
 
 }
 
+
+
+
+
+echo '</div>';
 
 
 ?>
