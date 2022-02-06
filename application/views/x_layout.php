@@ -139,7 +139,7 @@ if($top_i__id){
 
 echo '<div class="light-bg large-frame '.( $show_bg ? ' with-background ' : '' ).'">';
 
-echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important;">'.( !$show_bg && strlen($i_focus['i__cover'])  ? '<span class="icon-block-img hideIfEmpty">'.view_cover(12273,$i_focus['i__cover']).'</span><br />' : '' ).$i_focus['i__title'].'</h1>';
+echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:3em;">'.( !$show_bg && strlen($i_focus['i__cover'])  ? '<span class="icon-block-img hideIfEmpty">'.view_cover(12273,$i_focus['i__cover']).'</span><br />' : '' ).$i_focus['i__title'].'</h1>';
 
 //echo view_i(20417, $top_i__id, null, $i_focus);
 
