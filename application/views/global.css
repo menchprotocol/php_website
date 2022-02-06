@@ -3236,6 +3236,9 @@ font-weight: bold !important;
     padding-top: 98%;
 }
 .custom_ui_28938_28940 .cover-link,
+.custom_ui_28938_28940 .round-btn {
+    border-radius: 0;
+}
 .custom_ui_28938_28940 .icons_large .block-icon img,
 .custom_ui_28938_28940 .note-btn > span > span,
 .custom_ui_28938_28940 .icon-block-img img,
@@ -3243,8 +3246,7 @@ font-weight: bold !important;
 .custom_ui_28938_28940 .icon-block img,
 .custom_ui_28938_28940 .icon-block-xs img,
 .custom_ui_28938_28940 .platform-large img,
-.custom_ui_28938_28940 .image-mini img,
-.custom_ui_28938_28940 .round-btn {
+.custom_ui_28938_28940 .image-mini img {
     border-radius: 50%;
 }
 
