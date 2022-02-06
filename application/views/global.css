@@ -1565,10 +1565,10 @@ i, .btn .show-max {
 }
 .msg-frame .icon-block-img img{
     line-height: 100%;
-    margin: 0 !important;
+    margin: 0 0 21px 0 !important;
     width: auto !important;
     height: auto !important;
-    max-width: 120px;
+    max-width: 233px;
     border-radius: 0 !important;
 }
 .icon-block-xs img{
