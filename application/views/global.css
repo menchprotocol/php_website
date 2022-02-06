@@ -3193,6 +3193,9 @@ font-weight: bold !important;
 .custom_ui_28938_28953 .cover-link {
     padding-top: 144%;
 }
+.custom_ui_28938_28953 .cover-link.coinType12274 {
+    padding-top: 100%;
+}
 .custom_ui_28938_28953 .cover-link,
 .custom_ui_28938_28953 .icons_large .block-icon img,
 .custom_ui_28938_28953 .note-btn > span > span,
