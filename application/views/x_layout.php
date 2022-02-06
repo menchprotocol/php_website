@@ -4,13 +4,18 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 
 $has_cover = strlen(trim($i_focus['i__cover'])) > 0;
-$cover_image = filter_var($i_focus['i__cover'], FILTER_VALIDATE_URL);
 
-if($cover_image){
-    echo '<style> 
-
+$has_bg = $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+    'x__type' => 4983, //References
+    'x__right' => $i_focus['i__id'],
+    'x__up' => 28621,
+), array(), 1);
+$show_bg = count($has_bg) && filter_var($has_bg[0]['x__message'], FILTER_VALIDATE_URL);
+if($show_bg){
+    echo '<style>
     body { 
-    background: url("' . $i_focus['i__cover'] . '") no-repeat center center fixed !important; 
+    background: url("' . $has_bg[0]['x__message'] . '") no-repeat center center fixed !important; 
     background-size: cover !important;
     width: 100% !important;
     -webkit-background-size: cover !important;
@@ -133,9 +138,9 @@ if($top_i__id){
 
 
 
-echo '<div class="light-bg large-frame '.( $cover_image ? ' with-background ' : '' ).'">';
+echo '<div class="light-bg large-frame '.( $show_bg ? ' with-background ' : '' ).'">';
 
-echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important;">'.( $has_cover && !$cover_image ? '<span class="icon-block-img">'.view_cover(12273,$i_focus['i__cover']).'</span><br />' : '' ).$i_focus['i__title'].'</h1>';
+echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important;"><div><span class="icon-block-img hideIfEmpty">'.view_cover(12273,$i_focus['i__cover']).'</span></div>'.$i_focus['i__title'].'</h1>';
 
 //echo view_i(20417, $top_i__id, null, $i_focus);
 
