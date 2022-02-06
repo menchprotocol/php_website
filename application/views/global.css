@@ -3245,10 +3245,13 @@ font-weight: bold !important;
 .custom_ui_28938_28940 .platform-large img,
 .custom_ui_28938_28940 .image-mini img,
 .custom_ui_28938_28940 .round-btn {
-    border-radius: 0;
+    border-radius: 50%;
 }
 
 .cover-link.coinType12274{
+    border-radius: 50%;
+}
+.cover-link.coinType6255{
     border-radius: 50%;
 }
 .cover-link.coinType12274 .cover-btn{
