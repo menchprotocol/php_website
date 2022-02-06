@@ -1566,7 +1566,9 @@ i, .btn .show-max {
 .msg-frame .icon-block-img img{
     line-height: 100%;
     margin: 0 !important;
-    max-width: 100px;
+    width: auto !important;
+    height: auto !important;
+    max-width: 120px;
     border-radius: 0 !important;
 }
 .icon-block-xs img{
