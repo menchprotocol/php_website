@@ -498,6 +498,7 @@ function load_tab(x__type){
     load_editor();
     x_type_preview_load();
     init_remove();
+    x_set_start_text();
 
     e_load_search(x__type);
     i_load_search(x__type);
