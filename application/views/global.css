@@ -3383,8 +3383,8 @@ font-weight: bold !important;
     cursor: text !important;
 }
 .select-btns{
-    padding:55px 0;
-    text-align:center;
+    padding:55px 0 55px 8px;
+    text-align:left;
 }
 .inner-content .css__title{
     text-align: left;
