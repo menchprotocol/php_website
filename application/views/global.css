@@ -76,7 +76,7 @@ body {
     max-width: 610px;
 }
 .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
-    margin: 0 auto;
+    margin: 0;
     max-width: 100%;
 }
 .ytframe{
@@ -126,7 +126,7 @@ h2 {
     padding:21px 10px;
     margin:0;
     font-size:2.10em;
-    text-align: center;
+    text-align: left;
 }
 
 a {
@@ -3294,8 +3294,8 @@ font-weight: bold !important;
 
 .content-image,
 .media-content{
-    margin:0 auto;
-    text-align: center;
+    margin:0;
+    text-align: left;
 }
 .nav-pills {
     justify-content: center;
@@ -3383,7 +3383,7 @@ font-weight: bold !important;
     cursor: text !important;
 }
 .select-btns{
-    padding:55px 8px;
+    padding:55px 0;
     text-align:center;
 }
 .inner-content .css__title{
