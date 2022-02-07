@@ -1308,7 +1308,7 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
 
     //Build Body UI:
-    $body = '<div class="row justify-content">';
+    $body = '<div class="row">';
     $is_first_incomplete = false;
     $found_first_incomplete = false;
     $found_first_complete = false;
