@@ -572,7 +572,7 @@ if(!$top_i__id){
 
         }
 
-        $buttons_ui .= '<div>'.( $control_btn ? $control_btn : '&nbsp;' ).'</div>';
+        $buttons_ui .= ( $control_btn ? '<div>'.$control_btn.'</div>' : '' );
 
         if($control_btn){
             $buttons_found++;
