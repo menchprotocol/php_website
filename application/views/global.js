@@ -449,7 +449,7 @@ function toggle_pills(x__type){
         $('.headlinebody').addClass('hidden');
         $('.thepill' + x__type+ ' .nav-link').addClass('active');
         $('.headline_body_' + x__type).removeClass('hidden');
-        window.location.hash = '#'+x__type;
+        //window.location.hash = '#'+x__type;
 
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
@@ -877,12 +877,10 @@ $(document).ready(function () {
         cover_upload(droppedFiles, 'file');
     });
 
-    if(window.location.hash) {
+    if(window.location.hash && 0) {
         var the_hash = window.location.hash.substring(1);
         if(!(the_hash == $('.nav-link.active').attr('x__type')) && isNormalInteger(the_hash)){
-            setTimeout(function () {
-                toggle_pills(the_hash);
-            }, 144);
+            toggle_pills(the_hash);
         }
     }
 
