@@ -1602,51 +1602,6 @@ function view__load__e($e){
 }
 
 
-function view_i_featured(){
-
-
-    $topic_id = intval(get_domain_setting(14877));
-    if(!$topic_id){
-        //No topic for this domain:
-        return false;
-    }
-
-    $CI =& get_instance();
-    $visible_ui = '';
-    $member_e = superpower_unlocked();
-    $counter = 0;
-
-    //$my_topics = ( $member_e ? array_intersect($CI->session->userdata('session_parent_ids'),  $CI->config->item('n___'.$topic_id)) : array() );
-
-    //Go through Featured Categories:
-    foreach($CI->config->item('e___'.$topic_id) as $e__id => $m) {
-
-        $query_filters = array(
-            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PRIVATE
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
-            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__up' => $e__id,
-        );
-        $query = $CI->X_model->fetch($query_filters, array('x__right'), view_memory(6404,13206), 0, array('i__spectrum' => 'DESC'));
-        if(!count($query)){
-            continue;
-        }
-
-        $ui = '<div class="row justify-content margin-top-down-half">';
-        foreach($query as $i){
-            $ui .= view_i(14877, 0, null, $i);
-        }
-        $query2 = $CI->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
-        $ui .= '</div>';
-
-
-        $visible_ui .= view_headline($e__id, null, $m, $ui, !$counter);
-        $counter++;
-    }
-
-    return $visible_ui;
-}
-
 function view_info_box(){
 
     $CI =& get_instance();
@@ -1823,7 +1778,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
     $show_coins = !$has_any_lock && !$discovery_mode;
     $show_custom_image = !$has_valid_url && $i['i__cover'];
-    $can_click = !$has_any_lock && !$focus_coin && (!$discovery_mode || $top_i__id || $superpower_10939);
+    $click_through = !$has_any_lock && !$focus_coin;
+    $can_click = $click_through && ($discovery_mode || $top_i__id || $superpower_10939);
 
 
     $ui  = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-xl-4 col-lg-6 col-md-8 col-10 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $has_soft_lock ? ' soft_lock ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
@@ -1917,7 +1873,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
 
     $ui .= '<td width="20%"><div>'.($focus_coin ? ($discovery_mode ? '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'" class="'.superpower_active(10939).'">'.$e___11035[13563]['m__cover'].'</a>' : '<a href="/'.$i['i__id'].'">'.( i_is_startable($i) ? '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26124]['m__title'].'">'.$e___11035[26124]['m__cover'].'</span>' : '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26130]['m__title'].'">'.$e___11035[26130]['m__cover'].'</span>' ).'</a>' ) : ($has_sortable ? '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '') ).'</div></td>';
     $ui .= '<td width="20%"><div>'.$o_menu.'</div></td>';
-    $ui .= '<td width="20%"><div>'.( $can_click ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
+    $ui .= '<td width="20%"><div>'.( !$can_click && $click_through ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
     $ui .= '</tr></table>';
 
 

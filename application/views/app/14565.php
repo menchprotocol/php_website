@@ -21,7 +21,39 @@ echo '</div>';
 
 
 //FEATURED IDEAS
-echo view_i_featured();
+$counter = 0;
+$visible_ui = '';
+$topic_id = intval(get_domain_setting(14877));
+if($topic_id){
+    //Go through Featured Categories:
+    foreach($this->config->item('e___'.$topic_id) as $e__id => $m) {
+
+        $query_filters = array(
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__up' => $e__id,
+        );
+        $query = $this->X_model->fetch($query_filters, array('x__right'), view_memory(6404,13206), 0, array('i__spectrum' => 'DESC'));
+        if(!count($query)){
+            continue;
+        }
+
+        $ui = '<div class="row justify-content margin-top-down-half">';
+        foreach($query as $i){
+            $ui .= view_i(14877, 0, null, $i);
+        }
+        $query2 = $this->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
+        $ui .= '</div>';
+
+
+        $visible_ui .= view_headline($e__id, null, $m, $ui, !$counter);
+        $counter++;
+    }
+}
+echo $visible_ui;
+
+
 
 
 //Info Boxes:
