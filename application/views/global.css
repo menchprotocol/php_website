@@ -2988,9 +2988,6 @@ font-weight: bold !important;
 .custom_ui_28979_28980 .cover-content *{
     color: #000000 !important;
 }
-.custom_ui_28979_28980 .coinType12274 .zq12274 {
-    color:#FFFFFF !important;
-}
 
 /* Colors */
 .custom_ui_28979_28980 .btn.btn-12274,
@@ -3035,7 +3032,7 @@ font-weight: bold !important;
 .custom_ui_28979_28980 .btn.btn-12274,
 .custom_ui_28979_28980 .coinType12274 {
     border: 3px solid #007AFD;
-    background-color: #007AFD !important;
+    background-color: #FFFFFF !important;
 }
 .custom_ui_28979_28980 .coin-12274 .cover-content {
     background: rgba(0,122,253,0.82);

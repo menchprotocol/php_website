@@ -504,7 +504,7 @@ class X_model extends CI_Model
             //Yes, generate message
             $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
             if(count($stats['email_addresses']) && strlen($sms_message)>view_memory(6404,27891)){
-                $sms_message  = 'We emailed ['.$subject.'] to '.join(' & ',$stats['email_addresses']).' (also check spam)';
+                $sms_message  = 'We emailed ['.$subject.'] to '.join(' & ',$stats['email_addresses']).' (may end up in spam)';
             }
 
 
