@@ -304,12 +304,12 @@ if(!$basic_header_footer){
 
                         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
                         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-                            //continue;
+                            continue;
                         }
 
                         $hosted_domains = array_intersect($this->config->item('n___14870'), $m['m__profile']);
                         if(count($hosted_domains) && !in_array(get_domain_setting(0), $hosted_domains)){
-                            //continue;
+                            continue;
                         }
 
                         $extra_class = null;
