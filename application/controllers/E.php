@@ -555,7 +555,7 @@ class E extends CI_Controller
         } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14055'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invaid Source Creation Type',
+                'message' => 'Invalid Source Creation Type',
             ));
         } elseif (!isset($_POST['e_existing_id']) || !isset($_POST['e_new_string']) || (intval($_POST['e_existing_id']) < 1 && strlen($_POST['e_new_string']) < 1)) {
             return view_json(array(
@@ -564,8 +564,9 @@ class E extends CI_Controller
             ));
         }
 
+        $adding_to_idea = ($_POST['x__type']==12274);
 
-        if($_POST['x__type']==4983){
+        if($adding_to_idea){
 
             //Validate Idea:
             $fetch_o = $this->I_model->fetch(array(
@@ -628,7 +629,7 @@ class E extends CI_Controller
             if (filter_var($_POST['e_new_string'], FILTER_VALIDATE_URL)) {
 
                 //Digest URL to see what type it is and if we have any errors:
-                $url_e = $this->E_model->url($_POST['e_new_string'], ( $_POST['x__type']==4983 ? $member_e['e__id'] /* Will Create if Not Found */ : 0 ));
+                $url_e = $this->E_model->url($_POST['e_new_string'], ( $adding_to_idea ? $member_e['e__id'] /* Will Create if Not Found */ : 0 ));
                 if (!$url_e['status']) {
                     return view_json($url_e);
                 }
@@ -639,7 +640,7 @@ class E extends CI_Controller
                 if($url_e['url_root']){
 
                     //Domain
-                    $focus_e = ( $_POST['x__type']==4983 ? $url_e['e_domain'] : array('e__id' => 1326) );
+                    $focus_e = ( $adding_to_idea ? $url_e['e_domain'] : array('e__id' => 1326) );
 
                     //Update domain to stay synced:
                     $_POST['e_new_string'] = $url_e['url_clean_domain'];
@@ -650,7 +651,7 @@ class E extends CI_Controller
                     $url_domain = $this->E_model->domain($_POST['e_new_string'], $member_e['e__id']);
 
                     //Add this source:
-                    $focus_e = ( $_POST['x__type']==4983 ? $url_e['e_url'] : $url_domain['e_domain'] );
+                    $focus_e = ( $adding_to_idea ? $url_e['e_url'] : $url_domain['e_domain'] );
 
                 }
 
@@ -675,10 +676,10 @@ class E extends CI_Controller
         $ur2 = array();
         $e_already_linked = 0;
 
-        if($_POST['x__type']==4983) {
+        if($adding_to_idea) {
 
             $e_already_linked = count($this->X_model->fetch(array(
-                'x__type' => 4983,
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__up' => $focus_e['e__id'],
                 'x__right' => $fetch_o[0]['i__id'],
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
