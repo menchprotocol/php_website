@@ -3187,6 +3187,70 @@ font-weight: bold !important;
 
 
 
+
+
+/* SHAPE: Rounded Square */
+.cover-btn{
+    top: 60%;
+}
+
+.cover-link {
+    padding-top: 98%;
+}
+.cover-link,
+.round-btn {
+    border-radius: 0;
+}
+.icons_large .block-icon img,
+.note-btn > span > span,
+.icon-block-img img,
+.icon-block-lg img,
+.icon-block img,
+.icon-block-xs img,
+.platform-large img,
+.image-mini img {
+    border-radius: 50%;
+}
+
+.cover-link.coinType12274{
+    border-radius: 50%;
+}
+/*
+.cover-link.coinType6255{
+    border-radius: 50%;
+}
+*/
+.cover-link.coinType12274 .cover-btn{
+    top: 44% !important;
+}
+
+
+
+
+
+.msg{
+    text-align: left;
+}
+.e-appendix{
+    margin-left: 0;
+    margin-right: 0;
+}
+.justify-content {
+    justify-content: center !important;
+}
+
+.content-image,
+.media-content{
+    margin:0;
+    text-align: left;
+}
+.nav-pills {
+    justify-content: center;
+}
+
+
+
+
 /* SHAPE: Rounded Rectangle Tall */
 .custom_ui_28938_28953 .cover-btn{
     top: 66%;
@@ -3239,64 +3303,11 @@ font-weight: bold !important;
 }
 
 
-/* SHAPE: Rounded Square */
-.custom_ui_28938_28940 .cover-btn{
-    top: 60%;
-}
-
-.custom_ui_28938_28940 .cover-link {
-    padding-top: 98%;
-}
-.custom_ui_28938_28940 .cover-link,
-.custom_ui_28938_28940 .round-btn {
-    border-radius: 0;
-}
-.custom_ui_28938_28940 .icons_large .block-icon img,
-.custom_ui_28938_28940 .note-btn > span > span,
-.custom_ui_28938_28940 .icon-block-img img,
-.custom_ui_28938_28940 .icon-block-lg img,
-.custom_ui_28938_28940 .icon-block img,
-.custom_ui_28938_28940 .icon-block-xs img,
-.custom_ui_28938_28940 .platform-large img,
-.custom_ui_28938_28940 .image-mini img {
-    border-radius: 50%;
-}
-
-.cover-link.coinType12274{
-    border-radius: 50%;
-}
-/*
-.cover-link.coinType6255{
-    border-radius: 50%;
-}
-*/
-.cover-link.coinType12274 .cover-btn{
-    top: 44% !important;
-}
 
 
 
 
 
-.msg{
-    text-align: left;
-}
-.e-appendix{
-    margin-left: 0;
-    margin-right: 0;
-}
-.justify-content {
-    justify-content: center !important;
-}
-
-.content-image,
-.media-content{
-    margin:0;
-    text-align: left;
-}
-.nav-pills {
-    justify-content: center;
-}
 
 
 
