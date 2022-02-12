@@ -9,4 +9,3 @@ $route['@(:num)']                   = "e/e_layout/$1";      //Source
 $route['~(:num)']                   = "i/i_layout/$1";      //Summarize
 $route['(:num)']                    = "x/x_layout/0/$1";    //Discovery Preview
 $route['(:num)/(:num)']             = "x/x_layout/$1/$2";   //Discovery Started
-$route['linktree']                  = 'app/load/27969';     //Custom URL

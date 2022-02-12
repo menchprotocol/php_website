@@ -31,7 +31,7 @@ if(isset($_GET['i__id'])){
     echo '<h1 style="padding-top: 21px;"><span class="halfbg">' . $is[0]['i__title'] . '</span></h1>';
 
     //MESSAGES
-    echo '<div style="padding-bottom: 34px;">';
+    echo '<div class="center-frame">';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__type' => 4231, //IDEA NOTES Messages
