@@ -235,7 +235,7 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
 
 <div style="text-align: center; color: #000; background-color: #FFCC00; padding: 21px 0 55px;">
 
-    <h2 class="text-center main_title">Our $BROKE Roadmap</h2>
+    <h2 class="text-center main_title">🌹 Rosy Roadmap</h2>
     <div style="text-align: center;"><img src="/img/mcbroke/mirror.jpg" class="rounded-corner"></div>
 
     <div class="row justify-content-center">
@@ -243,8 +243,8 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
             <div class="info_box_cover"><i class="fad fa-coffee-pot"></i></div>
             <div class="info_box_title">Phase 1</div>
             <div class="info_box_message" style="text-align: left; margin-left: 13px">
-                <i class="fas fa-check-circle"></i> Website V1
-                <br /><i class="fas fa-check-circle"></i> Lock & Burn Tokens
+                🌹 Website V1
+                <br />🌹 Lock & Burn Tokens
                 <br /><i class="fal fa-circle"></i> List on CMC & CG
                 <br /><i class="fal fa-circle"></i> Contract Audits
                 <br /><i class="fal fa-circle"></i> Rewards Dashboard
@@ -281,33 +281,28 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
 
 
 <a name="team">&nbsp;</a>
-<h2 class="text-center main_title">Our $BROKE Team</h2>
+<h2 class="text-center main_title">Our Team</h2>
 
 <div class="row justify-content-center" style="text-align: center; color: #000; ">
 
     <div class="col-12 col-md-4">
-        <div class="info_box_cover"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/29739cef8658db08fbbff40530eb1814.jpeg" style="height:150px;"></div>
+        <div class="info_box_cover">🌹</div>
         <div class="info_box_title">McFlurry</div>
         <div class="info_box_message">CTO & Developer</div>
     </div>
     <div class="col-12 col-md-4">
-        <div class="info_box_cover"><img src="/img/mcbroke/chicken.jpg" style="height:150px;"></div>
+        <div class="info_box_cover">🌹</div>
         <div class="info_box_title">McNuggets</div>
         <div class="info_box_message">CMO & Product</div>
     </div>
     <div class="col-12 col-md-4">
-        <div class="info_box_cover"><img src="/img/mcbroke/rib.jpg" style="height:150px;"></div>
+        <div class="info_box_cover">🌹</div>
         <div class="info_box_title">McRib</div>
         <div class="info_box_message">CCO & Community</div>
     </div>
 </div>
 
 
-<br />
-<br />
-<br />
-<br />
-<img src="/img/mcbroke/McBroke-trucker-hat@2x.jpg" style="max-width: 300px; margin: 34px 0; ">
 <br />
 <br />
 <br />
