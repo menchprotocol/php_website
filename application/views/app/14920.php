@@ -4,13 +4,21 @@
     }
 </style>
 
+<script>
+    $(document).ready(function () {
+        $("#favicon").attr("href","https://s3foundation.s3-us-west-2.amazonaws.com/60c08a626cb43cc1a37990ce9afbac42.png");
+    });
+</script>
 <?php
+
+
+
 
 $is = $this->I_model->fetch(array(
     'i__id' => get_domain_setting(14002),
 ));
 
-echo '<h1>' .view_cover(12273,$is[0]['i__cover']) . '</h1>';
+//echo '<h1>' .view_cover(12273,$is[0]['i__cover']) . '</h1>';
 
 //IDEA TITLE
 echo '<h1>' . $is[0]['i__title'] . '</h1>';
@@ -80,12 +88,13 @@ $social_nav = '<div class="center-icons">
 ?>
 
 
-<p>
-    <a class="btn btn-white" href="#tokenomics"><i class="fas fa-coins"></i> Tokenomics</a>
-    <a class="btn btn-white" href="#howtobuy"><i class="fas fa-usd-circle"></i> How to Buy</a>
-    <a class="btn btn-white" href="#roadmap"><i class="fas fa-clipboard-list-check"></i> Roadmap</a>
-    <a class="btn btn-white" href="#team"><i class="fas fa-users"></i> Team</a>
+<p class="justify-content" style="padding-bottom: 21px;">
+    <a class="btn btn-default" href="#tokenomics"><i class="fas fa-coins"></i> Tokenomics</a>
+    <a class="btn btn-default" href="#howtobuy"><i class="fas fa-usd-circle"></i> How to Buy</a>
+    <a class="btn btn-default" href="#roadmap"><i class="fas fa-clipboard-list-check"></i> Roadmap</a>
+    <a class="btn btn-default" href="#team"><i class="fas fa-users"></i> Team</a>
 </p>
+
 <?php echo $social_nav ?>
 
 <br />
@@ -99,9 +108,8 @@ $social_nav = '<div class="center-icons">
 <br />
 <br />
 <a name="tokenomics">&nbsp;</a>
-<h2 class="text-center main_title">$BROKE Tokenomics</h2>
+<h2 class="text-center main_title">Tokenomics</h2>
 <p style="color: #e50201 !important; font-weight: bold;">Would you like gains with that?</p>
-<img src="/img/mcbroke/serve.jpg" class="rounded-corner">
 
 <br />
 <div class="row justify-content-center" style="text-align: center; color: #000;">
@@ -129,9 +137,9 @@ $social_nav = '<div class="center-icons">
 <br />
 <br />
 <p>
-    <a class="btn btn-white" href="javascript:alert('Coming Soon...')"><i class="fas fa-file-certificate"></i> Contract</a>
-    <a class="btn btn-white" href="javascript:alert('Coming Soon...')"><i class="fas fa-lock"></i> IP Lock</a>
-    <a class="btn btn-white" href="javascript:alert('Coming Soon...')"><i class="fas fa-square"></i> Renounce</a>
+    <a class="btn btn-default" href="javascript:alert('Coming Soon...')"><i class="fas fa-file-certificate"></i> Contract</a>
+    <a class="btn btn-default" href="javascript:alert('Coming Soon...')"><i class="fas fa-lock"></i> IP Lock</a>
+    <a class="btn btn-default" href="javascript:alert('Coming Soon...')"><i class="fas fa-square"></i> Renounce</a>
 </p>
 
 <br />
@@ -142,7 +150,6 @@ $social_nav = '<div class="center-icons">
 <h2 class="text-center main_title">The $BROKE House Project</h2>
 <br />
 <p style="text-align: center; color: #000 !important;">We will donate project funds from order fees to homeless charities. Every month we will look to make a donation to a charity that is voted by our community.</p>
-<img src="/img/mcbroke/home.jpg" class="rounded-corner" style="margin: 0;">
 
 
 
@@ -159,7 +166,6 @@ $social_nav = '<div class="center-icons">
 <h2 class="text-center main_title">How To Be $BROKE?</h2>
 <br />
 <p style="color: #e50201 !important; font-weight: bold; font-size: 1.5em;" >in 3 easy steps...</p>
-<img src="/img/mcbroke/window-order.jpg" class="rounded-corner">
 
 <div style="text-align: center; position: relative; display: none;">
     <a href="https://www.youtube.com/watch?v=KpF41eS3YZQ" target="_blank" class="htb-link-video"><img src="https://www.babycake.app/images/play.svg" loading="lazy" style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;" alt="" class="play">
@@ -170,7 +176,6 @@ $social_nav = '<div class="center-icons">
 
 <div class="row justify-content-center">
     <div class="col-12 col-md-4">
-        <div class="info_box_cover"><img src="/img/mcbroke/metamask-2728406-2261817.png" style="width:110px;"></div>
         <div class="info_box_title">Setup MetaMask</div>
         <div class="info_box_message" style="text-align: left;">
             <ul>
@@ -205,7 +210,7 @@ $social_nav = '<div class="center-icons">
 
             <ul>
                 <li>
-                    You can <a class="btn btn-white" href="#howtobuy">BUY NOW</a> on PancakeSwap.
+                    You can <a class="btn btn-default" href="#howtobuy">BUY NOW</a> on PancakeSwap.
                 </li>
                 <li>
                     Select $BROKE or copy/paste contract address.
@@ -269,19 +274,6 @@ $social_nav = '<div class="center-icons">
 </div>
 
 
-
-
-
-<br />
-<br />
-<br />
-<br />
-<a name="team">&nbsp;</a>
-<h2 class="text-center main_title">You $BROKE? We are too, join us!</h2>
-<img src="/img/mcbroke/apply.jpg" class="rounded-corner" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
-
-
-
 <br />
 <br />
 <br />
@@ -292,7 +284,7 @@ $social_nav = '<div class="center-icons">
 <div class="row justify-content-center" style="text-align: center; color: #000; ">
 
     <div class="col-12 col-md-4">
-        <div class="info_box_cover"><img src="/img/mcbroke/oero.jpg" style="height:150px;"></div>
+        <div class="info_box_cover"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/29739cef8658db08fbbff40530eb1814.jpeg" style="height:150px;"></div>
         <div class="info_box_title">McFlurry</div>
         <div class="info_box_message">CTO & Developer</div>
     </div>
