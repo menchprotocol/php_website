@@ -317,7 +317,6 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
             <div class="info_box_message" style="text-align: left; margin-left: 13px">
                 <i class="fas fa-check-circle"></i> Website Launch
                 <br /><i class="fas fa-check-circle"></i> Lock & Burn Tokens
-                <br /><i class="fas fa-check-circle"></i> Doxx CEO (See White Paper)
                 <br /><i class="fas fa-check-circle"></i> Gift Ordering Engine V1
                 <br /><i class="fas fa-check-circle"></i> Available in 96 Countries
                 <br /><i class="fal fa-circle"></i> List on CMC & CG
