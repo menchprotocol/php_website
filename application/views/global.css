@@ -3576,3 +3576,9 @@ h4.css__title{
 .cover-text .msg {
     margin: 0 !important;
 }
+
+.main_title{
+    font-size: 2.9em;
+    color: #FFF !important;
+    padding: 34px 0 0;
+}

@@ -106,12 +106,11 @@ $social_nav = '<div class="center-icons">
 <br />
 <br />
 <br />
-<div style="text-align: center;">🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹</div>
+<div style="text-align: center;">🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹</div>
 <br />
 <br />
 <a name="tokenomics">&nbsp;</a>
 <h2 class="text-center main_title">Tokenomics</h2>
-<p style="color: #e50201 !important; font-weight: bold;">Would you like gains with that?</p>
 
 <br />
 <div class="row justify-content-center" style="text-align: center; color: #000;">
@@ -138,31 +137,15 @@ $social_nav = '<div class="center-icons">
 
 <br />
 <br />
-<p>
+<p style="text-align: center">
     <a class="btn btn-default" href="javascript:alert('Coming Soon...')"><i class="fas fa-file-certificate"></i> Contract</a>
     <a class="btn btn-default" href="javascript:alert('Coming Soon...')"><i class="fas fa-lock"></i> IP Lock</a>
-    <a class="btn btn-default" href="javascript:alert('Coming Soon...')"><i class="fas fa-square"></i> Renounce</a>
 </p>
 
-<br />
-<br />
-<div style="text-align: center;">🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹</div>
-<br />
-<br />
-<h2 class="text-center main_title">The $BROKE House Project</h2>
-<br />
-<p style="text-align: center; color: #000 !important;">We will donate project funds from order fees to homeless charities. Every month we will look to make a donation to a charity that is voted by our community.</p>
-
-
-
-
-
-
-
 
 <br />
 <br />
-<div style="text-align: center;">🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹</div>
+<div style="text-align: center;">🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹</div>
 <br />
 <a name="howtobuy">&nbsp;</a>
 <h2 class="text-center main_title">How To Be $BROKE?</h2>
@@ -178,6 +161,7 @@ $social_nav = '<div class="center-icons">
 
 <div class="row justify-content-center">
     <div class="col-12 col-md-4">
+        <div class="info_box_cover"><img src="/img/mcbroke/metamask-2728406-2261817.png" style="width:110px;"></div>
         <div class="info_box_title">Setup MetaMask</div>
         <div class="info_box_message" style="text-align: left;">
             <ul>
