@@ -153,7 +153,6 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
 <p style="padding-bottom: 21px; text-align: center">
     <a class="btn btn-default" href="#tokenomics"><i class="fas fa-coins"></i> Tokenomics</a>
     <a class="btn btn-default" href="#roadmap"><i class="fas fa-clipboard-list-check"></i> Roadmap</a>
-    <a class="btn btn-default" href="#team"><i class="fas fa-users"></i> Team</a>
     <?php echo $call_to_action; ?>
 </p>
 
@@ -305,12 +304,9 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
 <br />
 <br />
 <a name="roadmap">&nbsp;</a>
+<div style="text-align: center; color: #000; background-color: #e50201; padding: 21px 0 55px; border-radius: 10px;">
 
-
-
-<div style="text-align: center; color: #000; background-color: #e50201; padding: 21px 0 55px;">
-
-    <h2 class="text-center main_title">🌹 Rosy Roadmap</h2>
+    <h2 class="text-center main_title">Rosy Roadmap</h2>
     <br />
     <br />
 
