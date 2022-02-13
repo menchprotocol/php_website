@@ -1,3 +1,4 @@
+<div class="container">
 
 <?php
 
@@ -12,7 +13,7 @@ echo '<h1>' . $is[0]['i__title'] . '</h1>';
 
 
 //MESSAGES
-echo '<div class="center-frame">';
+echo '<div class="center-frame larger-font">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
     'x__type' => 4231, //IDEA NOTES Messages
@@ -317,3 +318,4 @@ $social_nav = '<div class="center-icons">
 <a name="team">&nbsp;</a>
 <?php echo $social_nav ?>
 
+</div>

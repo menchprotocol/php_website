@@ -3244,6 +3244,9 @@ font-weight: bold !important;
 .center-frame .msg {
     text-align: center;
 }
+.larger-font{
+    font-size: 1.2em !important;
+}
 .center-frame {
     padding-bottom: 34px;
 }
