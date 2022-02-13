@@ -142,11 +142,12 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
     <div class="col-12 col-md-4">
         <div class="info_box_cover">$49B</div>
         <div class="info_box_title redbold">Target Market</div>
-        <div class="info_box_message">Global floriculture market is estimated to have reached USD 49 Billion (by <a href="https://www.globenewswire.com/news-release/2021/12/14/2351482/0/en/Global-Floriculture-Market-Size-Expected-to-Acquire-USD-70-Billion-By-2026-Facts-Factors.html#:~:text=In%20this%20report%2C%20the%20global,USD%2070%20Billion%20by%202026.">Facts & Factors</a>)</div>
+        <div class="info_box_message">Global floriculture market is estimated to have reached USD 49 Billion (by <a href="https://www.globenewswire.com/news-release/2021/12/14/2351482/0/en/Global-Floriculture-Market-Size-Expected-to-Acquire-USD-70-Billion-By-2026-Facts-Factors.html#:~:text=In%20this%20report%2C%20the%20global,USD%2070%20Billion%20by%202026."><u>Facts & Factors</u></a>)</div>
     </div>
 </div>
 
 <br />
+<h3 class="text-center main_title">15% Tax as Follow:</h3>
 
 <div class="row justify-content-center" style="text-align: center; color: #000;">
     <div class="col-12 col-md-4">
