@@ -1635,7 +1635,7 @@ i, .btn .show-max {
 
 .icon-block-lg img {
     width: 46px !important;
-    height: 46px !important;
+    height: auto !important;
 }
 .social-footer{
     text-align: center;
@@ -2335,7 +2335,6 @@ video {
         width: 41px !important;
         margin: -13px 0 -8px -2px !important;
         margin: 0 !important;
-        height: 41px !important;
     }
     .container {
         max-width: none;
