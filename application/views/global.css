@@ -1633,6 +1633,17 @@ i, .btn .show-max {
     overflow: visible;
 }
 
+.center-icons {
+    text-align: center;
+}
+.center-icons a{
+    margin:8px 8px 8px 0;
+    display: inline-block;
+}
+.center-icons a img{
+    width: 34px;
+}
+
 .icon-block-lg img {
     width: 46px !important;
     height: auto !important;
