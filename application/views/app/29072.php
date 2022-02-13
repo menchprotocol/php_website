@@ -3,7 +3,7 @@
         max-width: 800px;
     }
     .text-logo{
-        color:#f23e6a !important;
+        color:#e50201 !important;
     }
     div {
         color: #FFFFFF;
@@ -28,7 +28,7 @@ $is = $this->I_model->fetch(array(
 ));
 
 //echo '<h1>' .view_cover(12273,$is[0]['i__cover']) . '</h1>';
-echo '<div style="text-align: center;"><img src="/img/valentinu/Valentinu Doge@2x.png" style="width:80%; text-align: center;" class="round"></div>';
+echo '<div style="text-align: center; padding: 55px;"><img src="/img/valentinu/Valentinu Doge@2x.png" style="width:80%; text-align: center;" class="round"></div>';
 
 //IDEA TITLE
 echo '<h1>' . $is[0]['i__title'] . '</h1>';
@@ -130,8 +130,28 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
 <br />
 <div class="row justify-content-center" style="text-align: center; color: #000;">
     <div class="col-12 col-md-4">
+        <div class="info_box_cover">8B</div>
+        <div class="info_box_title redbold">Total Tokens</div>
+        <div class="info_box_message">Towards our eCommerce platform to buy & deliver flowers in 96 countries across 4 continents</div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="info_box_cover">1%+</div>
+        <div class="info_box_title redbold">Holders</div>
+        <div class="info_box_message">Anyone holding 1% of more on the morning of Valentine Feb 14th 11A PST will have a bouque of flowers deliverd to their loved one across 96 supported countries.</div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="info_box_cover">$49B</div>
+        <div class="info_box_title redbold">Target Market</div>
+        <div class="info_box_message">Global floriculture market is estimated to have reached USD 49 Billion (by <a href="https://www.globenewswire.com/news-release/2021/12/14/2351482/0/en/Global-Floriculture-Market-Size-Expected-to-Acquire-USD-70-Billion-By-2026-Facts-Factors.html#:~:text=In%20this%20report%2C%20the%20global,USD%2070%20Billion%20by%202026.">Facts & Factors</a>)</div>
+    </div>
+</div>
+
+<br />
+
+<div class="row justify-content-center" style="text-align: center; color: #000;">
+    <div class="col-12 col-md-4">
         <div class="info_box_cover">9%</div>
-        <div class="info_box_title redbold">Flower Gifts</div>
+        <div class="info_box_title redbold">FLOWERS</div>
         <div class="info_box_message">Towards our eCommerce platform to buy & deliver flowers in 96 countries across 4 continents</div>
     </div>
     <div class="col-12 col-md-4">
