@@ -181,14 +181,20 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
 
 <br />
 <br />
+<br />
+<br />
+<br />
 <div style="text-align: center;">🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹</div>
 <br />
+<br />
+<br />
+<br />
 <a name="howtobuy">&nbsp;</a>
-<h2 class="text-center main_title">How To Be $BROKE?</h2>
+<h2 class="text-center main_title">How To Buy?</h2>
 <br />
 <p style="color: #e50201 !important; font-weight: bold; font-size: 1.5em;" >in 3 easy steps...</p>
 
-<div style="text-align: center; position: relative; display: none;">
+<div style="text-align: center; position: relative;">
     <a href="https://www.youtube.com/watch?v=KpF41eS3YZQ" target="_blank" class="htb-link-video"><img src="https://www.babycake.app/images/play.svg" loading="lazy" style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;" alt="" class="play">
         <div style="opacity: 0;" class="video-overlay"></div>
     </a>
@@ -256,10 +262,9 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
 
 
 
-<div style="text-align: center; color: #000; background-color: #FFCC00; padding: 21px 0 55px;">
+<div style="text-align: center; color: #000; background-color: #e50201; padding: 21px 0 55px;">
 
     <h2 class="text-center main_title">🌹 Rosy Roadmap</h2>
-    <div style="text-align: center;"><img src="/img/mcbroke/mirror.jpg" class="rounded-corner"></div>
 
     <div class="row justify-content-center">
         <div class="col-12 col-md-4">
