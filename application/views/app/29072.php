@@ -134,7 +134,7 @@ echo $visible_ui;
 
 //SOCIAL FOOTER
 $social_nav = '<div class="center-icons">
-    <a href="https://t.me/mcbrokebsc"><img src="/img/mcbroke/telegram.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
+    <a href="javascript:alert(\'Telegram Coming Soon...\')"><img src="/img/mcbroke/telegram.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
     <a href="javascript:alert(\'Twitter Coming Soon...\')" target="_blank"><img src="/img/mcbroke/twitter.png"></a>
     <a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-bscscan.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
     <a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-cmc.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
@@ -144,8 +144,8 @@ $social_nav = '<div class="center-icons">
 </div>';
 
 
-$call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-certificate"></i> White Paper</a>
-    <a class="btn btn-default" href="#"><i class="fas fa-usd-circle"></i> Buy Now</a>';
+$call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming Soon...\')"><i class="fas fa-file-certificate"></i> White Paper</a>
+    <a class="btn btn-default" href="javascript:alert(\'Coming Soon...\')"><i class="fas fa-usd-circle"></i> Buy Now</a>';
 
 ?>
 
