@@ -2,6 +2,9 @@
     .container{
         max-width: 800px;
     }
+    .text-logo{
+        color:#f23e6a;
+    }
 </style>
 
 <script>
@@ -9,9 +12,8 @@
         $("#favicon").attr("href","https://s3foundation.s3-us-west-2.amazonaws.com/60c08a626cb43cc1a37990ce9afbac42.png");
     });
 </script>
+
 <?php
-
-
 
 
 $is = $this->I_model->fetch(array(

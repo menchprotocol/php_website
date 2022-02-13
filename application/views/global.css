@@ -2159,6 +2159,7 @@ i, .btn .show-max {
 .cover-btn i {
     margin-top: -27%;
     font-size: 0.87em !important;
+    color: #000;
 }
 .focus-coin .cover-btn i {
     margin-top: -33%;
