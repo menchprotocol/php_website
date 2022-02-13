@@ -3,7 +3,7 @@
         max-width: 800px;
     }
     .text-logo{
-        color:#f23e6a;
+        color:#f23e6a !important;
     }
 </style>
 
@@ -90,7 +90,7 @@ $social_nav = '<div class="center-icons">
 ?>
 
 
-<p class="justify-content" style="padding-bottom: 21px;">
+<p style="padding-bottom: 21px; text-align: center">
     <a class="btn btn-default" href="#tokenomics"><i class="fas fa-coins"></i> Tokenomics</a>
     <a class="btn btn-default" href="#howtobuy"><i class="fas fa-usd-circle"></i> How to Buy</a>
     <a class="btn btn-default" href="#roadmap"><i class="fas fa-clipboard-list-check"></i> Roadmap</a>
