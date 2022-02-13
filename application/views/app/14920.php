@@ -146,7 +146,7 @@ $social_nav = '<div class="center-icons">
 
 <br />
 <br />
-<hr />
+<div style="text-align: center;">🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹</div>
 <br />
 <br />
 <h2 class="text-center main_title">The $BROKE House Project</h2>
@@ -162,7 +162,7 @@ $social_nav = '<div class="center-icons">
 
 <br />
 <br />
-<hr />
+<div style="text-align: center;">🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹</div>
 <br />
 <a name="howtobuy">&nbsp;</a>
 <h2 class="text-center main_title">How To Be $BROKE?</h2>

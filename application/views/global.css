@@ -2705,6 +2705,36 @@ font-weight: bold !important;
 
 
 
+/* QUICKSAND / CONTENT */
+.custom_ui_14506_26578 div,
+.custom_ui_14506_26578 p,
+.custom_ui_14506_26578 html,
+.custom_ui_14506_26578 body,
+.custom_ui_14506_26578 .doregular {
+    font-family: 'Open Sans', sans-serif;
+}
+/* QUICKSAND / HEADER */
+.custom_ui_14506_26578 h1,
+.custom_ui_14506_26578 h2,
+.custom_ui_14506_26578 .css__title,
+.custom_ui_14506_26578 .headline,
+.custom_ui_14506_26578 .btn,
+.custom_ui_14506_26578 .algolia_pad_search,
+.custom_ui_14506_26578 .progress-title,
+.custom_ui_14506_26578 .mid-text-line span,
+.custom_ui_14506_26578 .previous_answer,
+.custom_ui_14506_26578 .nav-x,
+.custom_ui_14506_26578 .texttype__lg,
+.custom_ui_14506_26578 .texttype__lg::placeholder,
+.custom_ui_14506_26578 .alert a,
+.custom_ui_14506_26578 .pull-middle {
+    font-family: 'Milonga', sans-serif;
+}
+
+
+
+
+
 
 
 
