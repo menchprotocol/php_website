@@ -4,6 +4,8 @@ $is = $this->I_model->fetch(array(
     'i__id' => get_domain_setting(14002),
 ));
 
+echo '<h1>' .view_cover(12273,$is[0]['i__cover']) . '</h1>';
+
 //IDEA TITLE
 echo '<h1>' . $is[0]['i__title'] . '</h1>';
 
@@ -55,7 +57,7 @@ echo $visible_ui;
 
 
 //Info Boxes:
-//echo view_info_box();
+echo view_info_box();
 
 
 //SOCIAL FOOTER
