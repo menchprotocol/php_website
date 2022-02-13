@@ -11,7 +11,7 @@
     .redbold {
         color: #e50201 !important;
     }
-    .user_nav_box{
+    .user_nav_box, .block-menu{
         display: none;
     }
 </style>
@@ -28,6 +28,7 @@ $is = $this->I_model->fetch(array(
 ));
 
 //echo '<h1>' .view_cover(12273,$is[0]['i__cover']) . '</h1>';
+echo '<div style="text-align: center;"><img src="/img/valentinu/Valentinu Doge@2x.png" style="width:80%; text-align: center;" class="round"></div>';
 
 //IDEA TITLE
 echo '<h1>' . $is[0]['i__title'] . '</h1>';
@@ -81,12 +82,6 @@ echo $visible_ui;
 
 //Info Boxes:
 //echo view_info_box();
-
-
-echo '<img src="/img/valentinu/Valentinu Doge B type@2x.png" style="width:110px;" class="round">';
-echo '<img src="/img/valentinu/Valentinu Doge B wide@2x.png" style="width:110px;" class="round">';
-echo '<img src="/img/valentinu/Valentinu Doge B@2x.png" style="width:110px;" class="round">';
-echo '<img src="/img/valentinu/Valentinu Doge@2x.png" style="width:110px;" class="round">';
 
 
 
