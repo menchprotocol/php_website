@@ -1,4 +1,8 @@
-<div class="container">
+<style>
+    .container{
+        max-width: 800px;
+    }
+</style>
 
 <?php
 
@@ -317,5 +321,3 @@ $social_nav = '<div class="center-icons">
 
 <a name="team">&nbsp;</a>
 <?php echo $social_nav ?>
-
-</div>
