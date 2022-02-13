@@ -8,6 +8,12 @@
     div {
         color: #FFFFFF;
     }
+    .redbold {
+        color: #e50201 !important;
+    }
+    .user_nav_box{
+        display: none;
+    }
 </style>
 
 <script>
@@ -125,28 +131,28 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
 <a name="tokenomics">&nbsp;</a>
 <h2 class="text-center main_title">Tokenomics</h2>
 
+
 <br />
 <div class="row justify-content-center" style="text-align: center; color: #000;">
     <div class="col-12 col-md-4">
         <div class="info_box_cover">9%</div>
-        <div class="info_box_title" style="color: #e50201 !important;">Flower Gifts</div>
+        <div class="info_box_title redbold">Flower Gifts</div>
         <div class="info_box_message">Towards our eCommerce platform to buy & deliver flowers in 96 countries across 4 continents</div>
     </div>
     <div class="col-12 col-md-4">
         <div class="info_box_cover">5%</div>
-        <div class="info_box_title" style="color: #e50201 !important;">Liquidity</div>
+        <div class="info_box_title redbold">Liquidity</div>
         <div class="info_box_message">To keep growing our liquidity pool & build a strong ecommerce business around gift deliveries</div>
     </div>
     <div class="col-12 col-md-4">
         <div class="info_box_cover">1%</div>
-        <div class="info_box_title" style="color: #e50201 !important;">Marketing</div>
+        <div class="info_box_title redbold">Marketing</div>
         <div class="info_box_message">So the world hears about our community of lovers who share a passion for making their partners feel special</div>
     </div>
 </div>
 <br />
 <br />
 
-<p style="text-align: center; color: #000 !important; font-weight: bold; font-size: 1.1em">We serve you our 24/7 model to sustain the growth and success of the Valentine Doge ecosystem.</p>
 
 <br />
 <br />

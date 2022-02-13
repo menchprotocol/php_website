@@ -255,7 +255,7 @@ if(!$basic_header_footer){
                 <tr>
                     <?php
 
-                    echo '<td class="block-x">';
+                    echo '<td class="block-x user_nav_box">';
                     if($member_e) {
 
                         //Load Left Menu
