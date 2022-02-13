@@ -15,6 +15,52 @@
     .user_nav_box, .block-menu{
         display: none;
     }
+
+    .htb-link-video{
+        position: relative;
+        z-index: 2;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        width: 650px;
+        height: 350px;
+        margin-top: 2.5em;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        border: 10px solid #fff;
+        border-radius: 24px;
+        background-image: url("https://www.babycake.app/images/video_image.png");
+        background-position: 50% 50%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        -webkit-transition: all 150ms ease;
+        transition: all 150ms ease;
+        margin: 34px auto;
+    }
+
+
+    @media (max-width:1500px) {
+        .htb-link-video {
+            width: 560px;
+            height: 290px;
+        }
+    }
+
+    @media (max-width:767px) {
+        .htb-link-video {
+            width: 280px;
+            height: 150px;
+        }
+    }
+
+
 </style>
 
 <script>
@@ -241,10 +287,10 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
                     You can <a class="btn btn-default" href="#howtobuy">BUY NOW</a> on PancakeSwap.
                 </li>
                 <li>
-                    Select $BROKE or copy/paste contract address.
+                    Select FLOWERS or copy/paste contract address.
                 </li>
                 <li>
-                    Set slippage tolerance to 12-18%
+                    Set slippage tolerance to 16-21%
                 </li>
 
             </ul>
@@ -265,36 +311,42 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
 <div style="text-align: center; color: #000; background-color: #e50201; padding: 21px 0 55px;">
 
     <h2 class="text-center main_title">🌹 Rosy Roadmap</h2>
+    <br />
+    <br />
 
     <div class="row justify-content-center">
         <div class="col-12 col-md-4">
-            <div class="info_box_cover"><i class="fad fa-coffee-pot"></i></div>
+            <div class="info_box_cover"><i class="fal fa-flower-daffodil"></i></div>
             <div class="info_box_title">Phase 1</div>
             <div class="info_box_message" style="text-align: left; margin-left: 13px">
-                🌹 Website V1
-                <br />🌹 Lock & Burn Tokens
+                <i class="fas fa-check-circle"></i> Website Launch
+                <br /><i class="fas fa-check-circle"></i> Lock & Burn Tokens
+                <br /><i class="fas fa-check-circle"></i> Doxx CEO (See White Paper)
+                <br /><i class="fas fa-check-circle"></i> Gift Ordering Engine V1
+                <br /><i class="fas fa-check-circle"></i> Available in 96 Countries
                 <br /><i class="fal fa-circle"></i> List on CMC & CG
                 <br /><i class="fal fa-circle"></i> Contract Audits
-                <br /><i class="fal fa-circle"></i> Rewards Dashboard
             </div>
         </div>
         <div class="col-12 col-md-4">
-            <div class="info_box_cover"><i class="fad fa-french-fries"></i></div>
+            <div class="info_box_cover"><i class="far fa-flower-daffodil"></i></div>
             <div class="info_box_title">Phase 2</div>
             <div class="info_box_message" style="text-align: left; margin-left: 13px">
-                <i class="fal fa-circle"></i> Website V2
+                <i class="fal fa-circle"></i> Gift Ordering Engine V2
                 <br /><i class="fal fa-circle"></i> Social Campaigns
                 <br /><i class="fal fa-circle"></i> Promotional Contests
-                <br /><i class="fal fa-circle"></i> The $BROKE House Project
+                <br /><i class="fal fa-circle"></i> Available in 120+ Countries
+                <br /><i class="fal fa-circle"></i> Florist Partnerships
             </div>
         </div>
         <div class="col-12 col-md-4">
-            <div class="info_box_cover"><i class="fad fa-burger-soda"></i></div>
+            <div class="info_box_cover"><i class="fas fa-flower-daffodil"></i></div>
             <div class="info_box_title">Phase 3</div>
             <div class="info_box_message" style="text-align: left; margin-left: 13px">
-                <i class="fal fa-circle"></i> The McBroke DAO
-                <br /><i class="fal fa-circle"></i> The McBroke NFT
+                <i class="fal fa-circle"></i> Expand Gift Selection
+                <br /><i class="fal fa-circle"></i> Lovers NFT Collection
                 <br /><i class="fal fa-circle"></i> More Partnerships
+                <br /><i class="fal fa-circle"></i> Available in 150+ Countries
                 <br /><i class="fal fa-circle"></i> Livestream Giveaways</div>
         </div>
     </div>
@@ -302,35 +354,6 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
 
 
 <br />
-<br />
-<br />
-<br />
-
-
-
-<a name="team">&nbsp;</a>
-<h2 class="text-center main_title">Our Team</h2>
-
-<div class="row justify-content-center" style="text-align: center; color: #000; ">
-
-    <div class="col-12 col-md-4">
-        <div class="info_box_cover">🌹</div>
-        <div class="info_box_title">McFlurry</div>
-        <div class="info_box_message">CTO & Developer</div>
-    </div>
-    <div class="col-12 col-md-4">
-        <div class="info_box_cover">🌹</div>
-        <div class="info_box_title">McNuggets</div>
-        <div class="info_box_message">CMO & Product</div>
-    </div>
-    <div class="col-12 col-md-4">
-        <div class="info_box_cover">🌹</div>
-        <div class="info_box_title">McRib</div>
-        <div class="info_box_message">CCO & Community</div>
-    </div>
-</div>
-
-
 <br />
 <br />
 <br />
