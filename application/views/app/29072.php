@@ -147,12 +147,12 @@ $call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-cer
 </div>
 
 <br />
-<h3 class="text-center main_title">15% Tax as Follow:</h3>
+<p>We charge a 15% Tax on every transaction to grow our ecommerce platform:</p>
 
 <div class="row justify-content-center" style="text-align: center; color: #000;">
     <div class="col-12 col-md-4">
         <div class="info_box_cover">9%</div>
-        <div class="info_box_title redbold">FLOWERS</div>
+        <div class="info_box_title redbold">Flower Gifts</div>
         <div class="info_box_message">Towards our eCommerce platform to buy & deliver flowers in 96 countries across 4 continents</div>
     </div>
     <div class="col-12 col-md-4">
