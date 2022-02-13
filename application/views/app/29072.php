@@ -176,38 +176,40 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
 <br />
 <div class="row justify-content-center" style="text-align: center; color: #000;">
     <div class="col-12 col-md-4">
-        <div class="info_box_cover">8B</div>
-        <div class="info_box_title redbold">Total Tokens</div>
-        <div class="info_box_message">Towards our eCommerce platform to buy & deliver flowers in 96 countries across 4 continents</div>
+        <div class="info_box_cover">❤️ 8B</div>
+        <div class="info_box_title redbold">FLOWERS</div>
+        <div class="info_box_message">Our mission is to deliver personalized flowers for every person on the planet.</div>
     </div>
     <div class="col-12 col-md-4">
-        <div class="info_box_cover">1%+</div>
+        <div class="info_box_cover">❤️‍🔥 1%+</div>
         <div class="info_box_title redbold">Holders</div>
-        <div class="info_box_message">Anyone holding 1% of more on the morning of Valentine Feb 14th 11A PST will have a bouque of flowers deliverd to their loved one across 96 supported countries.</div>
+        <div class="info_box_message">Investors holding 1%+ on Feb 14th 11A PST receive a same-day delivered flower bouquet.</div>
     </div>
     <div class="col-12 col-md-4">
-        <div class="info_box_cover">$49B</div>
-        <div class="info_box_title redbold">Target Market</div>
-        <div class="info_box_message">Global floriculture market is estimated to have reached USD 49 Billion (by <a href="https://www.globenewswire.com/news-release/2021/12/14/2351482/0/en/Global-Floriculture-Market-Size-Expected-to-Acquire-USD-70-Billion-By-2026-Facts-Factors.html#:~:text=In%20this%20report%2C%20the%20global,USD%2070%20Billion%20by%202026."><u>Facts & Factors</u></a>)</div>
+        <div class="info_box_cover">🥰 $70B</div>
+        <div class="info_box_title redbold">Market</div>
+        <div class="info_box_message">Global floral market is estimated to grow from $49B in 2020 to $70B in 2026<br /><a href="https://www.globenewswire.com/news-release/2021/12/14/2351482/0/en/Global-Floriculture-Market-Size-Expected-to-Acquire-USD-70-Billion-By-2026-Facts-Factors.html#:~:text=In%20this%20report%2C%20the%20global,USD%2070%20Billion%20by%202026." target="_blank"><u>*Source: Facts & Factors</u></a></div>
     </div>
 </div>
 
 <br />
-<p>We charge a 15% Tax on every transaction to grow our ecommerce platform:</p>
+<br />
+<br />
+<p>We collect a 15% tax to support the growth our ecommerce platform:</p>
 
 <div class="row justify-content-center" style="text-align: center; color: #000;">
     <div class="col-12 col-md-4">
-        <div class="info_box_cover">9%</div>
+        <div class="info_box_cover">🌹 9%</div>
         <div class="info_box_title redbold">Flower Gifts</div>
         <div class="info_box_message">Towards our eCommerce platform to buy & deliver flowers in 96 countries across 4 continents</div>
     </div>
     <div class="col-12 col-md-4">
-        <div class="info_box_cover">5%</div>
+        <div class="info_box_cover">💰 5%</div>
         <div class="info_box_title redbold">Liquidity</div>
         <div class="info_box_message">To keep growing our liquidity pool & build a strong ecommerce business around gift deliveries</div>
     </div>
     <div class="col-12 col-md-4">
-        <div class="info_box_cover">1%</div>
+        <div class="info_box_cover">📣 1%</div>
         <div class="info_box_title redbold">Marketing</div>
         <div class="info_box_message">So the world hears about our community of lovers who share a passion for making their partners feel special</div>
     </div>
@@ -317,8 +319,8 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
             <div class="info_box_message" style="text-align: left; margin-left: 13px">
                 <i class="fas fa-check-circle"></i> Website Launch
                 <br /><i class="fas fa-check-circle"></i> Lock & Burn Tokens
-                <br /><i class="fas fa-check-circle"></i> Gift Ordering Engine V1
-                <br /><i class="fas fa-check-circle"></i> Available in 96 Countries
+                <br /><i class="fas fa-check-circle"></i> Flower Order Form
+                <br /><i class="fas fa-check-circle"></i> 96 Countries
                 <br /><i class="fal fa-circle"></i> List on CMC & CG
                 <br /><i class="fal fa-circle"></i> Contract Audits
             </div>
@@ -330,7 +332,7 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
                 <i class="fal fa-circle"></i> Gift Ordering Engine V2
                 <br /><i class="fal fa-circle"></i> Social Campaigns
                 <br /><i class="fal fa-circle"></i> Promotional Contests
-                <br /><i class="fal fa-circle"></i> Available in 120+ Countries
+                <br /><i class="fal fa-circle"></i> 120+ Countries
                 <br /><i class="fal fa-circle"></i> Florist Partnerships
             </div>
         </div>
@@ -341,7 +343,7 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
                 <i class="fal fa-circle"></i> Expand Gift Selection
                 <br /><i class="fal fa-circle"></i> Lovers NFT Collection
                 <br /><i class="fal fa-circle"></i> More Partnerships
-                <br /><i class="fal fa-circle"></i> Available in 150+ Countries
+                <br /><i class="fal fa-circle"></i> 150+ Countries
                 <br /><i class="fal fa-circle"></i> Livestream Giveaways</div>
         </div>
     </div>
