@@ -5,8 +5,9 @@
     .text-logo{
         color:#e50201 !important;
     }
-    div {
+    div, p {
         color: #FFFFFF;
+        text-align: center;
     }
     .redbold {
         color: #e50201 !important;
