@@ -5,12 +5,13 @@
     .text-logo{
         color:#f23e6a !important;
     }
+    div {
+        color: #FFFFFF;
+    }
 </style>
 
 <script>
-    $(document).ready(function () {
-        $("#favicon").attr("href","https://s3foundation.s3-us-west-2.amazonaws.com/60c08a626cb43cc1a37990ce9afbac42.png");
-    });
+    $("#favicon").attr("href","https://s3foundation.s3-us-west-2.amazonaws.com/fed7ebd414ee52728a6d76c09293a7d0.png");
 </script>
 
 <?php
@@ -76,6 +77,13 @@ echo $visible_ui;
 //echo view_info_box();
 
 
+echo '<img src="/img/valentinu/Valentinu Doge B type@2x.png" style="width:110px;" class="round">';
+echo '<img src="/img/valentinu/Valentinu Doge B wide@2x.png" style="width:110px;" class="round">';
+echo '<img src="/img/valentinu/Valentinu Doge B@2x.png" style="width:110px;" class="round">';
+echo '<img src="/img/valentinu/Valentinu Doge@2x.png" style="width:110px;" class="round">';
+
+
+
 //SOCIAL FOOTER
 $social_nav = '<div class="center-icons">
     <a href="https://t.me/mcbrokebsc"><img src="/img/mcbroke/telegram.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
@@ -87,15 +95,20 @@ $social_nav = '<div class="center-icons">
     <a href="javascript:alert(\'PooCoin Coming Soon...\')"><img src="/img/mcbroke/poocoin.svg"></a>
 </div>';
 
+
+$call_to_action = '<a class="btn btn-default" href="#"><i class="fas fa-file-certificate"></i> White Paper</a>
+    <a class="btn btn-default" href="#"><i class="fas fa-usd-circle"></i> Buy Now</a>';
+
 ?>
 
 
 <p style="padding-bottom: 21px; text-align: center">
     <a class="btn btn-default" href="#tokenomics"><i class="fas fa-coins"></i> Tokenomics</a>
-    <a class="btn btn-default" href="#howtobuy"><i class="fas fa-usd-circle"></i> How to Buy</a>
     <a class="btn btn-default" href="#roadmap"><i class="fas fa-clipboard-list-check"></i> Roadmap</a>
     <a class="btn btn-default" href="#team"><i class="fas fa-users"></i> Team</a>
+    <?php echo $call_to_action; ?>
 </p>
+
 
 <?php echo $social_nav ?>
 
@@ -115,25 +128,25 @@ $social_nav = '<div class="center-icons">
 <br />
 <div class="row justify-content-center" style="text-align: center; color: #000;">
     <div class="col-12 col-md-4">
-        <div class="info_box_cover">2%</div>
-        <div class="info_box_title" style="color: #e50201 !important;">Reflections</div>
-        <div class="info_box_message">Simply hold and earn more McBroke passively!</div>
+        <div class="info_box_cover">9%</div>
+        <div class="info_box_title" style="color: #e50201 !important;">Flower Gifts</div>
+        <div class="info_box_message">Towards our eCommerce platform to buy & deliver flowers in 96 countries across 4 continents</div>
     </div>
     <div class="col-12 col-md-4">
-        <div class="info_box_cover">4%</div>
-        <div class="info_box_title" style="color: #e50201 !important;">Buybacks</div>
-        <div class="info_box_message">We burn a specific amount of supply on milestones</div>
+        <div class="info_box_cover">5%</div>
+        <div class="info_box_title" style="color: #e50201 !important;">Liquidity</div>
+        <div class="info_box_message">To keep growing our liquidity pool & build a strong ecommerce business around gift deliveries</div>
     </div>
     <div class="col-12 col-md-4">
-        <div class="info_box_cover">7%</div>
+        <div class="info_box_cover">1%</div>
         <div class="info_box_title" style="color: #e50201 !important;">Marketing</div>
-        <div class="info_box_message">So the world hears about our community on Binance</div>
+        <div class="info_box_message">So the world hears about our community of lovers who share a passion for making their partners feel special</div>
     </div>
 </div>
 <br />
 <br />
 
-<p style="text-align: center; color: #000 !important; font-weight: bold; font-size: 1.1em">We serve you our 24/7 model to sustain the growth and success of the McBroke ecosystem. Additionally, 5% of the 2% reflections tax gets burned with every order.</p>
+<p style="text-align: center; color: #000 !important; font-weight: bold; font-size: 1.1em">We serve you our 24/7 model to sustain the growth and success of the Valentine Doge ecosystem.</p>
 
 <br />
 <br />
@@ -265,6 +278,9 @@ $social_nav = '<div class="center-icons">
 <br />
 <br />
 
+
+
+<a name="team">&nbsp;</a>
 <h2 class="text-center main_title">Our $BROKE Team</h2>
 
 <div class="row justify-content-center" style="text-align: center; color: #000; ">
@@ -297,5 +313,10 @@ $social_nav = '<div class="center-icons">
 <br />
 <br />
 
-<a name="team">&nbsp;</a>
+
+<p style="padding-bottom: 21px; text-align: center">
+    <?php echo $call_to_action; ?>
+</p>
+
+
 <?php echo $social_nav ?>
