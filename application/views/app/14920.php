@@ -106,7 +106,7 @@ $social_nav = '<div class="center-icons">
 <br />
 <br />
 <br />
-<hr />
+<div style="text-align: center;">🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹🌹</div>
 <br />
 <br />
 <a name="tokenomics">&nbsp;</a>
