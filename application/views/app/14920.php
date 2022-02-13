@@ -105,17 +105,17 @@ $social_nav = '<div class="center-icons">
 
 <br />
 <div class="row justify-content-center" style="text-align: center; color: #000;">
-    <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+    <div class="col-12 col-md-4">
         <div class="info_box_cover">2%</div>
         <div class="info_box_title" style="color: #e50201 !important;">Reflections</div>
         <div class="info_box_message">Simply hold and earn more McBroke passively!</div>
     </div>
-    <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+    <div class="col-12 col-md-4">
         <div class="info_box_cover">4%</div>
         <div class="info_box_title" style="color: #e50201 !important;">Buybacks</div>
         <div class="info_box_message">We burn a specific amount of supply on milestones</div>
     </div>
-    <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+    <div class="col-12 col-md-4">
         <div class="info_box_cover">7%</div>
         <div class="info_box_title" style="color: #e50201 !important;">Marketing</div>
         <div class="info_box_message">So the world hears about our community on Binance</div>
@@ -169,7 +169,7 @@ $social_nav = '<div class="center-icons">
 
 
 <div class="row justify-content-center">
-    <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+    <div class="col-12 col-md-4">
         <div class="info_box_cover"><img src="/img/mcbroke/metamask-2728406-2261817.png" style="width:110px;"></div>
         <div class="info_box_title">Setup MetaMask</div>
         <div class="info_box_message" style="text-align: left;">
@@ -183,7 +183,7 @@ $social_nav = '<div class="center-icons">
             </ul>
         </div>
     </div>
-    <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+    <div class="col-12 col-md-4">
         <div class="info_box_cover"><img src="/img/mcbroke/coinbase.png" style="width:110px;" class="round"></div>
         <div class="info_box_title">Buy & Send BNB</div>
         <div class="info_box_message" style="text-align: left;">
@@ -198,7 +198,7 @@ $social_nav = '<div class="center-icons">
 
         </div>
     </div>
-    <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+    <div class="col-12 col-md-4">
         <div class="info_box_cover"><img src="/img/mcbroke/pancakeswap-cake-logo.png" style="width:110px;"></div>
         <div class="info_box_title">Swap on Pancake</div>
         <div class="info_box_message" style="text-align: left;">
@@ -235,7 +235,7 @@ $social_nav = '<div class="center-icons">
     <div style="text-align: center;"><img src="/img/mcbroke/mirror.jpg" class="rounded-corner"></div>
 
     <div class="row justify-content-center">
-        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+        <div class="col-12 col-md-4">
             <div class="info_box_cover"><i class="fad fa-coffee-pot"></i></div>
             <div class="info_box_title">Phase 1</div>
             <div class="info_box_message" style="text-align: left; margin-left: 13px">
@@ -246,7 +246,7 @@ $social_nav = '<div class="center-icons">
                 <br /><i class="fal fa-circle"></i> Rewards Dashboard
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+        <div class="col-12 col-md-4">
             <div class="info_box_cover"><i class="fad fa-french-fries"></i></div>
             <div class="info_box_title">Phase 2</div>
             <div class="info_box_message" style="text-align: left; margin-left: 13px">
@@ -256,7 +256,7 @@ $social_nav = '<div class="center-icons">
                 <br /><i class="fal fa-circle"></i> The $BROKE House Project
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+        <div class="col-12 col-md-4">
             <div class="info_box_cover"><i class="fad fa-burger-soda"></i></div>
             <div class="info_box_title">Phase 3</div>
             <div class="info_box_message" style="text-align: left; margin-left: 13px">
@@ -291,17 +291,17 @@ $social_nav = '<div class="center-icons">
 
 <div class="row justify-content-center" style="text-align: center; color: #000; ">
 
-    <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+    <div class="col-12 col-md-4">
         <div class="info_box_cover"><img src="/img/mcbroke/oero.jpg" style="height:150px;"></div>
         <div class="info_box_title">McFlurry</div>
         <div class="info_box_message">CTO & Developer</div>
     </div>
-    <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+    <div class="col-12 col-md-4">
         <div class="info_box_cover"><img src="/img/mcbroke/chicken.jpg" style="height:150px;"></div>
         <div class="info_box_title">McNuggets</div>
         <div class="info_box_message">CMO & Product</div>
     </div>
-    <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+    <div class="col-12 col-md-4">
         <div class="info_box_cover"><img src="/img/mcbroke/rib.jpg" style="height:150px;"></div>
         <div class="info_box_title">McRib</div>
         <div class="info_box_message">CCO & Community</div>
