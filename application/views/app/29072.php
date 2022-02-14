@@ -54,7 +54,7 @@
     }
 
     .social-footer li {
-        margin: 0 5px;
+        margin: 0 3px;
     }
     .social-footer {
         padding: 13px 0;
@@ -79,6 +79,9 @@
         .social-footer a img {
             width: 25px;
             margin-top: -9px;
+        }
+        .social-footer li {
+            margin: 0 2px;
         }
     }
 
