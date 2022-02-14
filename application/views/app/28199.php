@@ -27,12 +27,13 @@ foreach($this->X_model->fetch(array(
         $seconds_left = intval( intval($expires['x__message']) - (time()-strtotime($x_progress['x__time'])));
 
         if(!count($answered) && $seconds_left <= 0){
+
             //Answer not yet completed and no time left, delete response:
             $to_delete = 0;
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
-                'x__left' => $x_progress['x__right'],
+                'x__left' => $x_progress['x__left'],
                 'x__source' => $x_progress['e__id'],
             ), array(), 0) as $delete){
                 $to_delete++;
