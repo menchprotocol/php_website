@@ -20,6 +20,9 @@
     .user_nav_box, .block-menu{
         display: none;
     }
+    h1 {
+        font-size: 4.5em;
+    }
 
     .htb-link-video{
         position: relative;
@@ -80,7 +83,7 @@ $is = $this->I_model->fetch(array(
 ));
 
 //echo '<h1>' .view_cover(12273,$is[0]['i__cover']) . '</h1>';
-echo '<div style="text-align: center; padding: 55px;"><img src="/img/valentinu/Valentinu Doge@2x.png" style="width:80%; text-align: center;" class="round"></div>';
+echo '<div style="text-align: center; padding: 55px;"><img src="/img/valentinu/Valentinu Doge@2x.png" style="width:100%; text-align: center;" class="round"></div>';
 
 //IDEA TITLE
 echo '<h1>' . $is[0]['i__title'] . '</h1>';
