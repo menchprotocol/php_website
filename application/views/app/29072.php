@@ -139,17 +139,18 @@ echo $visible_ui;
 //echo view_info_box();
 
 
-
+//https://discord.gg/hWSnhkYbDA
 //SOCIAL FOOTER
 $social_nav = '<div class="center-icons">
-    <a href="jhttps://t.me/+rkr1EDILgxMyYWNh"><img src="/img/mcbroke/telegram.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
-    <a href="https://twitter.com/valentinudoge" target="_blank"><img src="/img/mcbroke/twitter.png"></a>
     <a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-bscscan.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
     <a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-cmc.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
     <a href="javascript:alert(\'Coin Gecko Listing Coming Soon...\')"><img src="/img/mcbroke/coingecko.svg"></a>
     <a href="javascript:alert(\'DexTools Link Coming Soon...\')"><img src="/img/mcbroke/dextools.svg"></a>
     <a href="javascript:alert(\'PooCoin Coming Soon...\')"><img src="/img/mcbroke/poocoin.svg"></a>
 </div>';
+
+<a href="jhttps://t.me/+rkr1EDILgxMyYWNh"><img src="/img/mcbroke/telegram.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
+    <a href="https://twitter.com/valentinudoge" target="_blank"><img src="/img/mcbroke/twitter.png"></a>
 
 
 $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming Soon...\')"><i class="fas fa-usd-circle"></i> Buy Now</a>';
@@ -163,7 +164,7 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
     <?php echo $call_to_action; ?>
 </p>
 
-
+<?php echo view_social() ?>
 <?php echo $social_nav ?>
 
 <br />
@@ -370,3 +371,5 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
 
 
 <?php echo $social_nav ?>
+
+<p style="font-size: 0.8em;">Legal Disclaimer: The information provided on this website does not constitute investment advice, financial advice, trading advice, or any other sort of advice and you should not treat any of the website's content as such. The Valentinu Doge team does not recommend that any cryptocurrency should be bought, sold, or held by you. Do conduct your own due diligence and consult your financial advisor before making any investment decisions. By purchasing Valentinu Doge, you agree that you are not purchasing a security or investment, and you agree to hold the team harmless and not liable for any losses or taxes you may incur. You also agree that the team is presenting the token "as is" and is not required to provide any support or services. You should have no expectation of any form from Valentinu Doge and its team. Valentinu Doge is an experimental token for social experiment and not a digital currency. Always make sure that you are in compliance with your local laws and regulations before you make any purchase.</p>
