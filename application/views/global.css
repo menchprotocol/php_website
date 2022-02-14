@@ -3582,3 +3582,10 @@ h4.css__title{
     color: #FFF !important;
     padding: 34px 0 0;
 }
+#timexpirycount{
+    padding: 8px;
+    border-radius: 10px;
+    background-color: #ffe584;
+    border:1px solid #000;
+    margin: 10px 0;
+}

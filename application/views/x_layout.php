@@ -28,6 +28,7 @@ if($show_bg){
 }
 
 
+
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
@@ -50,6 +51,67 @@ $top_completed = false; //Assume main intent not yet completed, unless proven ot
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 $is_discovarable = true;
 $i_stats = i_stats($i_focus['i__metadata']);
+
+
+//Check for time limits?
+if($top_i__id && !count($x_completes) && $x__source){
+
+    //See if any OR parents are completed with an expiry time:
+    foreach($this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+        'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //Select Next
+        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+        'x__right' => $i_focus['i__id'],
+    ), array('x__left')) as $parent_ors){
+
+        $does_expire = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__type' => 4983, //References
+            'x__up' => 28199,
+            'x__left' => $parent_ors['i__id'],
+        ));
+
+        if(count($does_expire) && intval($does_expire[0]['x__message'])>0){
+            //Display count down timer:
+            echo '<script>
+// Set the date were counting down to
+var countDownDate = new Date('.( $parent_ors['x__time'] + $does_expire[0]['x__message'] ).' * 1000);
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get todays date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="timexpirycount"
+  document.getElementById("timexpirycount").innerHTML = "Time Remaining to Complete:" + ( days>0 ? days + "d " : "" ) + ( hours>0 ? hours + "h " : "")
+  + ( minutes>0 ? minutes + "m " : "" ) + seconds + "s ";
+
+  // If the count down is finished, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    //Redirect to delete the discovery:
+    window.location = "/-28199?i__id='.$parent_ors['i__id'].'&top_i__id=".$top_i__id;
+  }
+  
+}, 1000);
+</script>';
+
+            break; //Cannot have multiple countdowns
+
+        }
+
+    }
+}
 
 
 if($top_i__id){
@@ -156,7 +218,7 @@ foreach($this->X_model->fetch(array(
     );
 }
 
-
+echo '<p id="timexpirycount" class="hideIfEmpty"></p>';
 
 if($top_i__id) {
     //LOCKED
