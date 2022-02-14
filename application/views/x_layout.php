@@ -75,7 +75,7 @@ if($top_i__id && !count($x_completes) && $x__source){
             //Display count down timer:
             echo '<script>
 // Set the date were counting down to
-var countDownDate = new Date('.( $parent_ors['x__time'] + $does_expire[0]['x__message'] ).' * 1000);
+var countDownDate = new Date('.( strtotime($parent_ors['x__time'] ) + $does_expire[0]['x__message'] ).' * 1000);
 
 // Update the count down every 1 second
 var x = setInterval(function() {
