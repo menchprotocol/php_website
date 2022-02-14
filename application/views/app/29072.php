@@ -150,10 +150,10 @@ echo $visible_ui;
 
 //SOCIAL FOOTER
 $social_nav = '<ul class="social-footer">
-    <li><a href="https://t.me/+rkr1EDILgxMyYWNh"><i class="fab fa-telegram"></i></a></li>
-    <li><a href="https://discord.gg/hWSnhkYbDA"><i class="fab fa-discord"></i></a></li>
-    <li><a href="https://twitter.com/valentinudoge"><i class="fab fa-twitter"></i></a></li>
-    <li><a href="mailto:support@valentinudoge.com"><i class="fal fa-envelope-open"></i></a></li>
+    <li><a href="https://t.me/+rkr1EDILgxMyYWNh" target="_blank"><i class="fab fa-telegram"></i></a></li>
+    <li><a href="https://discord.gg/hWSnhkYbDA" target="_blank"><i class="fab fa-discord"></i></a></li>
+    <li><a href="https://twitter.com/valentinudoge" target="_blank"><i class="fab fa-twitter"></i></a></li>
+    <li><a href="mailto:support@valentinudoge.com" target="_blank"><i class="fal fa-envelope-open"></i></a></li>
     <li><a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-cmc.svg" style="background-color:#FFF; border-radius: 50%;"></li>
     <li><a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-bscscan.svg" style="background-color:#FFF; border-radius: 50%;"></a></li>
     <li><a href="javascript:alert(\'Coin Gecko Listing Coming Soon...\')"><img src="/img/mcbroke/coingecko.svg"></a></li>
