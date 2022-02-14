@@ -13,7 +13,7 @@ foreach($this->X_model->fetch(array(
     //Now go through everyone who discovered this selection:
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+        'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //Discovery Expansions
         'x__left' => $expires['i__id'],
     ), array('x__source')) as $x_progress){
         //Now see if they have responded and completed the answer to this question:
