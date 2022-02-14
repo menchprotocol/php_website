@@ -156,6 +156,7 @@ $social_nav = '<ul class="social-footer">
 
 
 <div class="center-icons">
+    <a href="https://t.me/+rkr1EDILgxMyYWNh"><i class="fab fa-telegram"></i></a>
     <a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-bscscan.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
     <a href="javascript:alert(\'Coin Gecko Listing Coming Soon...\')"><img src="/img/mcbroke/coingecko.svg"></a>
     <a href="javascript:alert(\'DexTools Link Coming Soon...\')"><img src="/img/mcbroke/dextools.svg"></a>
