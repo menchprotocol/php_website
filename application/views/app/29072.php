@@ -72,7 +72,7 @@
         margin: 0 5px;
     }
     .social-footer {
-        margin: 13px 0;
+        padding: 13px 0;
     }
 
 
