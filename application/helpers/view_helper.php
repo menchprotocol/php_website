@@ -704,7 +704,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i) {
-            $ui .= view_i($x__type, 0, null, $i, null, $focus_e);
+            $ui .= view_i($x__type, 0, null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -720,7 +720,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-13550">';
         foreach($list_results as $i){
-            $ui .= view_i(13550, 0, null, $i,( strlen($i['x__message']) && trim($i['x__message'])!=$CI->uri->segment(1) ? $CI->X_model->message_view($i['x__message'], true) : null), $focus_e, null);
+            $ui .= view_i(13550, 0, null, $i, $focus_e, null);
         }
 
         if ($counter > count($list_results)) {
@@ -786,7 +786,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-10573">';
         foreach($list_results as $i){
-            $ui .= view_i(10573, 0, null, $i,null, $focus_e);
+            $ui .= view_i(10573, 0, null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -810,7 +810,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i) {
-            $ui .= view_i(4485, 0, null, $i, null, $focus_e);
+            $ui .= view_i(4485, 0, null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -818,7 +818,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
         foreach ($list_results as $i) {
-            $ui .= view_i($x__type, $i['i__id'], null, $i, null, $focus_e);
+            $ui .= view_i($x__type, $i['i__id'], null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -1321,7 +1321,7 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
         if(!$found_first_complete && $completion_rate['completion_percentage'] >= 100){
             $found_first_complete = true;
         }
-        $body .= view_i($x__type, $top_i__id, $i, $next_i, null, $member_e, $completion_rate, null, $is_first_incomplete);
+        $body .= view_i($x__type, $top_i__id, $i, $next_i, $member_e, $completion_rate, null, $is_first_incomplete);
         $is_first_incomplete = false; //False afterwards
     }
     $body .= '</div>';
@@ -1693,7 +1693,7 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
 }
 
 
-function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input = null, $focus_e = false, $completion_rate = null, $extra_class = null, $is_first_incomplete = false){
+function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $completion_rate = null, $extra_class = null, $is_first_incomplete = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1963,18 +1963,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $message_input
         //$ui .= '<div class="grey mini-font">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>';
     }
     $ui .= '</div>';
-
-
-    //Message
-    if($message_input){
-        if(!$has_soft_lock && !substr_count($message_input, '<a ') && !substr_count($message_input, '<iframe')){
-            //No HTML Tags, add link:
-            $ui .= '<a href="'.$href.'">'.$message_input.'</a>';
-        } else {
-            //Leave as is so HTML tags work:
-            $ui .= $message_input;
-        }
-    }
 
     $ui .= '</div></div>';
 

@@ -663,7 +663,7 @@ class I_model extends CI_Model
                 'x__right' => $i_new['i__id'],
             ), array('x__right'));
 
-            $new_i_html = view_i($x__type, 0, null, $new_i[0], null, $focus_e[0]);
+            $new_i_html = view_i($x__type, 0, null, $new_i[0], $focus_e[0]);
 
         } elseif($x__type == 10573){
 
@@ -690,7 +690,7 @@ class I_model extends CI_Model
                 'x__right' => $i_new['i__id'],
             ), array('x__right'));
 
-            $new_i_html = view_i($x__type, 0, null, $new_i[0], null, $focus_e[0]);
+            $new_i_html = view_i($x__type, 0, null, $new_i[0], $focus_e[0]);
 
         }
 
