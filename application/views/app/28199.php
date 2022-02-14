@@ -69,5 +69,5 @@ echo $links_deleted.' expired notes removed.';
 
 if(isset($filters['x__right'])){
     //We were deleting a single item, redirect back:
-    js_redirect('/'.$_GET['top_i__id'].'/'.$filters['x__right'], 5000);
+    js_redirect('/'.$_GET['top_i__id'].'/'.$filters['x__right'], 13000);
 }

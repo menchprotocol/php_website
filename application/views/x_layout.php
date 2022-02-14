@@ -100,7 +100,7 @@ var x = setInterval(function() {
   if (distance < 0) {
     clearInterval(x);
     //Redirect to delete the discovery:
-    window.location = "/-28199?i__id='.$parent_ors['i__id'].'&top_i__id='.$top_i__id.'";
+    //window.location = "/-28199?i__id='.$parent_ors['i__id'].'&top_i__id='.$top_i__id.'";
   }
   
 }, 1000);
