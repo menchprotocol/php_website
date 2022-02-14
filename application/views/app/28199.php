@@ -16,7 +16,7 @@ if($member_e && isset($_GET['i__id']) && intval($_GET['i__id'])>0){
 
 $links_deleted = 0;
 //Go through all expire seconds ideas:
-foreach($this->X_model->fetch($filters, array('x__right')) as $expires){
+foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
     echo '<hr /><div><a href="/~'.$expires['i__id'].'">'.$expires['i__title'].'</a></div>';
 
@@ -25,7 +25,7 @@ foreach($this->X_model->fetch($filters, array('x__right')) as $expires){
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //Discovery Expansions
         'x__left' => $expires['i__id'],
-    ), array('x__source')) as $x_progress){
+    ), array('x__source'), 0) as $x_progress){
 
         //Now see if the answer is completed:
         $answered = $this->X_model->fetch(array(
@@ -42,12 +42,14 @@ foreach($this->X_model->fetch($filters, array('x__right')) as $expires){
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
-                'x__left' => $x_progress['x__left'],
+                'x__left' => $expires['i__id'],
                 'x__source' => $x_progress['e__id'],
             ), array(), 0) as $delete){
+
                 $this->X_model->update($delete['x__id'], array(
                     'x__status' => 6173, //Transaction Deleted
                 ), $member_e['e__id'], 29085); //Time Expired
+
             }
 
             $links_deleted++;
