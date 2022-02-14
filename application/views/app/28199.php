@@ -24,7 +24,7 @@ foreach($this->X_model->fetch(array(
             'x__left' => $x_progress['x__right'],
             'x__source' => $x_progress['e__id'],
         ));
-        $seconds_left = intval($expires['x__message']) - (time()-strtotime($x_progress['x__time']));
+        $seconds_left = intval( intval($expires['x__message']) - (time()-strtotime($x_progress['x__time'])));
 
         if(!count($answered) && !$seconds_left){
             //Answer not yet completed and no time left, delete response:
