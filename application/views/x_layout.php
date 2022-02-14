@@ -72,10 +72,21 @@ if($top_i__id && !count($x_completes) && $x__source){
         ));
 
         if(count($does_expire) && intval($does_expire[0]['x__message'])>0){
-            //Display count down timer:
-            echo '<script>
+
+            //Fetch parent completion time:
+            $answered = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //Discoveries
+                'x__left' => $parent_ors['i__id'],
+                'x__source' => $x__source,
+            ));
+
+            if(count($answered)){
+
+                //Display count down timer:
+                echo '<script>
 // Set the date were counting down to
-var countDownDate = new Date('.( ( strtotime($parent_ors['x__time'] ) + $does_expire[0]['x__message'] + 1000) * 1000 ).' );
+var countDownDate = new Date('.( ( strtotime($answered[0]['x__time'] ) + $does_expire[0]['x__message'] + 1000) * 1000 ).' );
 
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -106,10 +117,10 @@ var x = setInterval(function() {
 }, 1000);
 </script>';
 
-            break; //Cannot have multiple countdowns
+                break; //Cannot have multiple countdowns
 
+            }
         }
-
     }
 }
 
