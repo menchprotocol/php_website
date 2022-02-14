@@ -176,14 +176,14 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
 <br />
 <div class="row justify-content-center" style="text-align: center; color: #000;">
     <div class="col-12 col-md-4">
-        <div class="info_box_cover">❤️ 8B</div>
-        <div class="info_box_title redbold">FLOWERS</div>
+        <div class="info_box_cover">🌹️ 8B</div>
+        <div class="info_box_title redbold">Flowers</div>
         <div class="info_box_message">Our mission is to deliver personalized flowers for every person on the planet.</div>
     </div>
     <div class="col-12 col-md-4">
         <div class="info_box_cover">❤️‍🔥 1%+</div>
         <div class="info_box_title redbold">Holders</div>
-        <div class="info_box_message">Investors holding 1%+ on Feb 14th 11A PST receive a same-day delivered flower bouquet.</div>
+        <div class="info_box_message">Investors holding 1%+ on Feb 14th 6p PST can schedule their flower bouquet for any day up to a year ahead.</div>
     </div>
     <div class="col-12 col-md-4">
         <div class="info_box_cover">🥰 $70B</div>
