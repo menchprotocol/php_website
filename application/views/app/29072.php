@@ -138,6 +138,7 @@ echo $visible_ui;
 //Info Boxes:
 //echo view_info_box();
 
+
 //SOCIAL FOOTER
 $social_nav = '<div class="center-icons">
     <a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-bscscan.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
@@ -153,12 +154,19 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
 ?>
 
 
-
 <p style="padding-bottom: 21px; text-align: center">
     <a class="btn btn-default" href="#tokenomics"><i class="fas fa-coins"></i> Tokenomics</a>
     <a class="btn btn-default" href="#roadmap"><i class="fas fa-clipboard-list-check"></i> Roadmap</a>
     <?php echo $call_to_action; ?>
 </p>
+
+
+<ul class="social-footer">
+    <li><a href="https://t.me/+rkr1EDILgxMyYWNh"><i class="fab fa-telegram"></i></a></li>
+    <li><a href="https://discord.gg/hWSnhkYbDA"><i class="fab fa-discord"></i></a></li>
+    <li><a href="https://twitter.com/valentinudoge"><i class="fab fa-twitter"></i></a></li>
+    <li><a href="mailto:support@valentinudoge.com"><i class="fal fa-envelope-open"></i></a></li>
+</ul>
 
 <?php echo view_social() ?>
 <?php echo $social_nav ?>
