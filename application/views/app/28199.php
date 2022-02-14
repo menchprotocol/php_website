@@ -26,7 +26,7 @@ foreach($this->X_model->fetch(array(
         ));
         $seconds_left = intval( intval($expires['x__message']) - (time()-strtotime($x_progress['x__time'])));
 
-        if(!count($answered) && !$seconds_left){
+        if(!count($answered) && $seconds_left <= 0){
             //Answer not yet completed and no time left, delete response:
             $to_delete = 0;
             foreach($this->X_model->fetch(array(
@@ -47,7 +47,7 @@ foreach($this->X_model->fetch(array(
         }
 
         //Now see if they have responded and completed the answer to this question:
-        echo '<div style="padding-left: 21px;"><a href="/@'.$x_progress['e__id'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="/-12722?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answered).'</a> '.( !count($answered) ? ( !$seconds_left ? ' DELETE '.$to_delete.' TRS ' : '['.$seconds_left.'] SEcs left' ) : '' ).'</div>';
+        echo '<div style="padding-left: 21px;"><a href="/@'.$x_progress['e__id'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="/-12722?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answered).'</a> '.( !count($answered) ? ( $seconds_left <= 0 ? ' DELETE '.$to_delete.' TRS ' : '['.$seconds_left.'] SEcs left' ) : '' ).'</div>';
 
     }
 
