@@ -138,8 +138,6 @@ echo $visible_ui;
 //Info Boxes:
 //echo view_info_box();
 
-
-//https://discord.gg/hWSnhkYbDA
 //SOCIAL FOOTER
 $social_nav = '<div class="center-icons">
     <a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-bscscan.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
@@ -149,13 +147,11 @@ $social_nav = '<div class="center-icons">
     <a href="javascript:alert(\'PooCoin Coming Soon...\')"><img src="/img/mcbroke/poocoin.svg"></a>
 </div>';
 
-<a href="jhttps://t.me/+rkr1EDILgxMyYWNh"><img src="/img/mcbroke/telegram.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
-    <a href="https://twitter.com/valentinudoge" target="_blank"><img src="/img/mcbroke/twitter.png"></a>
-
 
 $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming Soon...\')"><i class="fas fa-usd-circle"></i> Buy Now</a>';
 
 ?>
+
 
 
 <p style="padding-bottom: 21px; text-align: center">
