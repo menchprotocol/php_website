@@ -1,4 +1,7 @@
 <style>
+    body {
+        background: #000 url("/img/valentinu/bg-roses@2x.jpg") center;
+    }
     .container{
         max-width: 800px;
     }
