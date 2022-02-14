@@ -74,7 +74,10 @@
     .social-footer {
         padding: 13px 0;
     }
-
+    .social-footer a img {
+        width: 34px;
+        margin-top: -12px;
+    }
 
 </style>
 
@@ -145,26 +148,18 @@ echo $visible_ui;
 //Info Boxes:
 //echo view_info_box();
 
-
 //SOCIAL FOOTER
 $social_nav = '<ul class="social-footer">
     <li><a href="https://t.me/+rkr1EDILgxMyYWNh"><i class="fab fa-telegram"></i></a></li>
     <li><a href="https://discord.gg/hWSnhkYbDA"><i class="fab fa-discord"></i></a></li>
     <li><a href="https://twitter.com/valentinudoge"><i class="fab fa-twitter"></i></a></li>
     <li><a href="mailto:support@valentinudoge.com"><i class="fal fa-envelope-open"></i></a></li>
-    <li><a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-bscscan.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a></li>
-</ul>
-
-
-<div class="center-icons">
-    
-    <a href="javascript:alert(\'Coin Gecko Listing Coming Soon...\')"><img src="/img/mcbroke/coingecko.svg"></a>
-    <a href="javascript:alert(\'DexTools Link Coming Soon...\')"><img src="/img/mcbroke/dextools.svg"></a>
-    <a href="javascript:alert(\'PooCoin Coming Soon...\')"><img src="/img/mcbroke/poocoin.svg"></a>
-</div>
-
-'; //    <a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-cmc.svg" class="Footer_link__DBs2K" style="background-color:#FFF; border-radius: 50%;"></a>
-
+    <li><a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-cmc.svg" style="background-color:#FFF; border-radius: 50%;"></li>
+    <li><a href="javascript:alert(\'Coming Soon...\')"><img src="/img/mcbroke/light-bscscan.svg" style="background-color:#FFF; border-radius: 50%;"></a></li>
+    <li><a href="javascript:alert(\'Coin Gecko Listing Coming Soon...\')"><img src="/img/mcbroke/coingecko.svg"></a></li>
+    <li><a href="javascript:alert(\'DexTools Link Coming Soon...\')"><img src="/img/mcbroke/dextools.svg"></a></li>
+    <li><a href="javascript:alert(\'PooCoin Coming Soon...\')"><img src="/img/mcbroke/poocoin.svg"></a></li>
+</ul>';
 
 
 $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming Soon...\')"><i class="fas fa-usd-circle"></i> Buy Now</a>';
