@@ -20,8 +20,9 @@ foreach($this->X_model->fetch(array(
         //Now see if the answer is completed:
         $answered = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //Discovery Expansions
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //Discoveries
             'x__left' => $x_progress['x__right'],
+            'x__source' => $x_progress['e__id'],
         ));
 
         //Now see if they have responded and completed the answer to this question:
