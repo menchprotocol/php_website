@@ -21,6 +21,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
     echo '<hr /><div><a href="/~'.$expires['i__id'].'">'.$expires['i__title'].'</a></div>';
 
     //Now go through everyone who discovered this selection:
+    $counter = 0;
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //Discovery Expansions
@@ -57,7 +58,8 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
         }
 
         //Now see if they have responded and completed the answer to this question:
-        echo '<div style="padding-left: 21px;"><a href="/@'.$x_progress['e__id'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="/-12722?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answered).'</a> '.( !count($answered) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).'</div>';
+        $counter++;
+        echo '<div style="padding-left: 21px;">'.$counter.') <a href="/@'.$x_progress['e__id'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="/-12722?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answered).'</a> '.( !count($answered) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).'</div>';
 
     }
 
