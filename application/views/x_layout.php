@@ -68,7 +68,7 @@ if($top_i__id && !count($x_completes) && $x__source){
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
             'x__type' => 4983, //References
             'x__up' => 28199,
-            'x__left' => $parent_ors['i__id'],
+            'x__right' => $parent_ors['i__id'],
         ));
 
         if(count($does_expire) && intval($does_expire[0]['x__message'])>0){
