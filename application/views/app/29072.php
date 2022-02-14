@@ -68,6 +68,13 @@
         }
     }
 
+    .social-footer li {
+        margin: 0 5px;
+    }
+    .social-footer {
+        margin: 13px 0;
+    }
+
 
 </style>
 
