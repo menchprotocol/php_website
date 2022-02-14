@@ -225,7 +225,7 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
     <div class="col-12 col-md-4">
         <div class="info_box_cover">🌹 9%</div>
         <div class="info_box_title redbold">Flower Gifts</div>
-        <div class="info_box_message">Towards our eCommerce platform to buy & deliver flowers in 96 countries across 4 continents</div>
+        <div class="info_box_message">Towards our eCommerce platform to buy & deliver flowers in 42 countries across 4 continents</div>
     </div>
     <div class="col-12 col-md-4">
         <div class="info_box_cover">💰 5%</div>
@@ -344,7 +344,7 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
                 <i class="fas fa-check-circle"></i> Website Launch
                 <br /><i class="fas fa-check-circle"></i> Lock & Burn Tokens
                 <br /><i class="fas fa-check-circle"></i> Flower Order Form
-                <br /><i class="fas fa-check-circle"></i> 96 Countries
+                <br /><i class="fas fa-check-circle"></i> 42 Countries
                 <br /><i class="fal fa-circle"></i> List on CMC & CG
                 <br /><i class="fal fa-circle"></i> Contract Audits
             </div>
@@ -356,7 +356,7 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
                 <i class="fal fa-circle"></i> Gift Ordering Engine V2
                 <br /><i class="fal fa-circle"></i> Social Campaigns
                 <br /><i class="fal fa-circle"></i> Promotional Contests
-                <br /><i class="fal fa-circle"></i> 120+ Countries
+                <br /><i class="fal fa-circle"></i> 80+ Countries
                 <br /><i class="fal fa-circle"></i> Florist Partnerships
             </div>
         </div>
@@ -367,7 +367,7 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
                 <i class="fal fa-circle"></i> Expand Gift Selection
                 <br /><i class="fal fa-circle"></i> Lovers NFT Collection
                 <br /><i class="fal fa-circle"></i> More Partnerships
-                <br /><i class="fal fa-circle"></i> 150+ Countries
+                <br /><i class="fal fa-circle"></i> 120+ Countries
                 <br /><i class="fal fa-circle"></i> Livestream Giveaways</div>
         </div>
     </div>
