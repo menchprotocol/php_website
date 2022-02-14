@@ -15,13 +15,13 @@ foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
         'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //Discovery Expansions
         'x__left' => $expires['i__id'],
-    ), array('x__right')) as $x_progress){
+    ), array('x__source')) as $x_progress){
 
         //Now see if the answer is completed:
         $answered = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
             'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //Discovery Expansions
-            'x__left' => $x_progress['i__id'],
+            'x__left' => $x_progress['x__right'],
         ));
 
         //Now see if they have responded and completed the answer to this question:
