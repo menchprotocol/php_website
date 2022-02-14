@@ -1,6 +1,8 @@
 <style>
     body {
         background: #000 url("/img/valentinu/bg-roses@2x.jpg") center;
+        background-repeat: repeat;
+        background-attachment: fixed;
     }
     .container{
         max-width: 800px;
