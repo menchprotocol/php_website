@@ -149,8 +149,7 @@ $social_nav = '<div class="center-icons">
 </div>';
 
 
-$call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming Soon...\')"><i class="fas fa-file-certificate"></i> White Paper</a>
-    <a class="btn btn-default" href="javascript:alert(\'Coming Soon...\')"><i class="fas fa-usd-circle"></i> Buy Now</a>';
+$call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming Soon...\')"><i class="fas fa-usd-circle"></i> Buy Now</a>';
 
 ?>
 
@@ -311,7 +310,7 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
 <br />
 <br />
 <a name="roadmap">&nbsp;</a>
-<div style="text-align: center; color: #000; background-color: #e50201; padding: 21px 0 55px; border-radius: 10px;">
+<div style="text-align: center; color: #000; background-color: #000; padding: 21px 0 55px; border-radius: 10px;">
 
     <h2 class="text-center main_title">Rosy Roadmap</h2>
     <br />
