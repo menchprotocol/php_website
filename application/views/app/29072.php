@@ -53,6 +53,16 @@
         margin: 34px auto;
     }
 
+    .social-footer li {
+        margin: 0 5px;
+    }
+    .social-footer {
+        padding: 13px 0;
+    }
+    .social-footer a img {
+        width: 34px;
+        margin-top: -12px;
+    }
 
     @media (max-width:1500px) {
         .htb-link-video {
@@ -66,18 +76,12 @@
             width: 280px;
             height: 150px;
         }
+        .social-footer a img {
+            width: 25px;
+            margin-top: -9px;
+        }
     }
 
-    .social-footer li {
-        margin: 0 5px;
-    }
-    .social-footer {
-        padding: 13px 0;
-    }
-    .social-footer a img {
-        width: 34px;
-        margin-top: -12px;
-    }
 
 </style>
 
