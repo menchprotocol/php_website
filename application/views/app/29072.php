@@ -146,7 +146,14 @@ $social_nav = '<div class="center-icons">
     <a href="javascript:alert(\'Coin Gecko Listing Coming Soon...\')"><img src="/img/mcbroke/coingecko.svg"></a>
     <a href="javascript:alert(\'DexTools Link Coming Soon...\')"><img src="/img/mcbroke/dextools.svg"></a>
     <a href="javascript:alert(\'PooCoin Coming Soon...\')"><img src="/img/mcbroke/poocoin.svg"></a>
-</div>';
+</div>
+
+<ul class="social-footer">
+    <li><a href="https://t.me/+rkr1EDILgxMyYWNh"><i class="fab fa-telegram"></i></a></li>
+    <li><a href="https://discord.gg/hWSnhkYbDA"><i class="fab fa-discord"></i></a></li>
+    <li><a href="https://twitter.com/valentinudoge"><i class="fab fa-twitter"></i></a></li>
+    <li><a href="mailto:support@valentinudoge.com"><i class="fal fa-envelope-open"></i></a></li>
+</ul>';
 
 
 $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming Soon...\')"><i class="fas fa-usd-circle"></i> Buy Now</a>';
@@ -160,15 +167,7 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
     <?php echo $call_to_action; ?>
 </p>
 
-
-<ul class="social-footer">
-    <li><a href="https://t.me/+rkr1EDILgxMyYWNh"><i class="fab fa-telegram"></i></a></li>
-    <li><a href="https://discord.gg/hWSnhkYbDA"><i class="fab fa-discord"></i></a></li>
-    <li><a href="https://twitter.com/valentinudoge"><i class="fab fa-twitter"></i></a></li>
-    <li><a href="mailto:support@valentinudoge.com"><i class="fal fa-envelope-open"></i></a></li>
-</ul>
-
-<?php echo view_social() ?>
+<?php //echo view_social() ?>
 <?php echo $social_nav ?>
 
 <br />
