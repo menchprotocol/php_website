@@ -489,24 +489,7 @@ function toggle_pills(x__type){
     });
 }
 
-function load_tab(x__type){
 
-    console.log('loading tab '+x__type);
-
-    initiate_algolia();
-    load_coins();
-    e_e_only_search_7551();
-    i_note_activate();
-    load_editor();
-    x_type_preview_load();
-    init_remove();
-    x_set_start_text();
-
-    e_load_search(x__type);
-    i_load_search(x__type);
-    e_sort_load(x__type);
-    x_sort_load(x__type);
-}
 
 function i_reset_discoveries(i__id){
     //Confirm First:
@@ -1467,6 +1450,23 @@ function coin__save(){
 
 }
 
+function load_tab(x__type){
+    initiate_algolia();
+    load_coins();
+    e_e_only_search_7551();
+    i_note_activate();
+    load_editor();
+    x_type_preview_load();
+    init_remove();
+    x_set_start_text();
+    lazy_load();
+
+    e_load_search(x__type);
+    i_load_search(x__type);
+    e_sort_load(x__type);
+    x_sort_load(x__type);
+}
+
 
 var i_is_adding = false;
 function i__add(x__type, link_i__id) {
@@ -1530,6 +1530,7 @@ function i__add(x__type, link_i__id) {
 
             //Lookout for textinput updates
             x_set_start_text();
+            load_coins();
             set_autosize($('.texttype__lg'));
 
             //Hide Coin:
