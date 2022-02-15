@@ -721,6 +721,8 @@ function load_coin_count(){
 function update__cover(new_cover){
     $('#coin__cover').val( new_cover );
     update_cover_main(new_cover, '.demo_cover');
+    //Save and close:
+    coin__save();
 }
 function image_cover(cover_preview, cover_apply, new_title){
     return '<a href="#preview_cover" onclick="update__cover(\''+cover_apply+'\')">' + view_s_mini_js(12274, cover_preview, new_title) + '</a>';
