@@ -229,7 +229,6 @@ foreach($this->X_model->fetch(array(
     );
 }
 
-echo '<p id="timexpirycount" class="hideIfEmpty"></p>';
 
 if($top_i__id) {
     //LOCKED
@@ -726,6 +725,8 @@ if($top_i__id) {
 
 
 echo '</div>';
+
+echo '<p id="timexpirycount" class="hideIfEmpty"></p>';
 
 
 ?>
