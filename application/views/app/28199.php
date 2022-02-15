@@ -35,7 +35,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
             'x__left' => $x_progress['x__right'],
             'x__source' => $x_progress['e__id'],
         ));
-        $seconds_left = intval( intval( $expires['x__message']) + $buffer_time - time() - strtotime($x_progress['x__time'] ));
+        $seconds_left = intval( intval( $expires['x__message']) + $buffer_time - (time() - strtotime($x_progress['x__time'])));
 
         if(!count($answer_completed) && $seconds_left <= 0){
 
