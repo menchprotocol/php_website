@@ -54,6 +54,7 @@ if($topic_id){
 echo $visible_ui;
 
 
+echo view_coins();
 
 
 //Info Boxes:
