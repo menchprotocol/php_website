@@ -108,10 +108,10 @@ var x = setInterval(function() {
   + ( minutes>0 ? minutes + "m " : "" ) + seconds + "s";
 
   // If the count down is finished, write some text
-  if (distance < 0) {
+  if (distance <= 0) {
     clearInterval(x);
     //Redirect to delete the discovery:
-    //window.location = "/-28199?i__id='.$parent_ors['i__id'].'&top_i__id='.$top_i__id.'";
+    window.location = "/-28199?i__id='.$parent_ors['i__id'].'&top_i__id='.$top_i__id.'";
   }
   
 }, 1000);
