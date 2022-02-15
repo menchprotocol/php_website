@@ -57,10 +57,13 @@ echo $visible_ui;
 
 
 //Info Boxes:
-//echo view_info_box();
+echo view_info_box();
 
 
 //SOCIAL FOOTER
+echo view_social();
 
+
+echo '<p style="font-size: 0.8em; color: #999;">Us Humans Foundation | Nonprofit based in Vancouver, BC | 2017 - '.date('Y').'</p>';
 
 ?>
