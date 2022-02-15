@@ -11,14 +11,15 @@ if($member_e && isset($_GET['i__id']) && intval($_GET['i__id'])>0){
     $filters['x__right'] = intval($_GET['i__id']);
     $buffer_time = 0;
 } else {
-    $buffer_time = 120;
+    //Give it some extra time in case they are in Paypal making the payment
+    $buffer_time = 180;
 }
 
 $links_deleted = 0;
 //Go through all expire seconds ideas:
 foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
-    echo '<hr /><div><a href="/~'.$expires['i__id'].'">'.$expires['i__title'].'</a></div>';
+    //echo '<hr /><div><a href="/~'.$expires['i__id'].'">'.$expires['i__title'].'</a></div>';
 
     //Now go through everyone who discovered this selection:
     $counter = 0;
@@ -59,7 +60,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
         //Now see if they have responded and completed the answer to this question:
         $counter++;
-        echo '<div style="padding-left: 21px;">'.$counter.') <a href="/@'.$x_progress['e__id'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="/-12722?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['x__message']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['x__time'] ).' = '.$seconds_left.')</div>';
+        //echo '<div style="padding-left: 21px;">'.$counter.') <a href="/@'.$x_progress['e__id'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="/-12722?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['x__message']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['x__time'] ).' = '.$seconds_left.')</div>';
 
     }
 
