@@ -3294,6 +3294,12 @@ font-weight: bold !important;
     margin:0;
     text-align: left;
 }
+
+.center-frame .content-image,
+.center-frame .media-content{
+    margin:0 auto;
+    text-align: center;
+}
 .nav-pills {
     justify-content: center;
 }
