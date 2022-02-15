@@ -725,12 +725,6 @@ if($top_i__id) {
 
 }
 
-
-
-
-
-echo '</div>';
-
 //Show Progress:
 if($top_i__id > 0){
     echo '<p>'.$i_completion_rate['completion_percentage'].'% Completed</p>';
@@ -738,6 +732,12 @@ if($top_i__id > 0){
 
 //Show expiry time if any:
 echo '<p id="timexpirycount" class="hideIfEmpty"></p>';
+
+echo '</div>';
+
+
+
+
 
 
 ?>
