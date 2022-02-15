@@ -11,7 +11,7 @@ if($member_e && isset($_GET['i__id']) && intval($_GET['i__id'])>0){
     $filters['x__right'] = intval($_GET['i__id']);
     $buffer_time = 0;
 } else {
-    $buffer_time = 60;
+    $buffer_time = 30;
 }
 
 $links_deleted = 0;
