@@ -9,7 +9,7 @@ echo '<h1>' . $is[0]['i__title'] . '</h1>';
 
 
 //MESSAGES
-echo '<div style="padding-bottom: 21px;">';
+echo '<div class="center-frame">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
     'x__type' => 4231, //IDEA NOTES Messages
