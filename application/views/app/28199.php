@@ -66,7 +66,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
 }
 
-echo $links_deleted.' expired notes removed.';
+echo '<div style="text-align: center">'.$links_deleted.' expired notes removed.</div>';
 
 if(isset($filters['x__right'])){
     //We were deleting a single item, redirect back:
