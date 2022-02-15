@@ -119,6 +119,11 @@ var x = setInterval(function() {
 
                 break; //Cannot have multiple countdowns
 
+            } else {
+
+                //Already expired:
+                js_redirect('/'.$top_i__id.'/'.$parent_ors['i__id'], 0);
+
             }
         }
     }
