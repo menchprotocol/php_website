@@ -104,7 +104,7 @@ var x = setInterval(function() {
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
   // Display the result in the element with id="timexpirycount"
-  document.getElementById("timexpirycount").innerHTML = "Time Remaining to Complete:" + ( days>0 ? days + "d " : "" ) + ( hours>0 ? hours + "h " : "")
+  document.getElementById("timexpirycount").innerHTML = "<i class=\'far fa-fad fa-stopwatch\'></i> Time Remaining to Complete: " + ( days>0 ? days + "d " : "" ) + ( hours>0 ? hours + "h " : "")
   + ( minutes>0 ? minutes + "m " : "" ) + seconds + "s";
 
   // If the count down is finished, write some text
