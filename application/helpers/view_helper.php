@@ -676,11 +676,11 @@ function view_coins(){
         $ui .= '<div class="coin_cover no-padding col-xl-2 col-lg-3 col-md-4 col-sm-8 col-10">';
         $ui .= '<div>'.$m['m__cover'].'</div>';
         $ui .= '<b class="css__title coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b>';
-        $ui .= '<div>'.$m['m__title'].'</div>';
+        $ui .= '<div class="title">'.$m['m__title'].'</div>';
         $ui .= '</div>';
     }
     $ui .= '</div>';
-    $ui .= '<div class="row justify-content list-coins"><span style="min-width: 89px; min-height: 20px; text-align: right; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;Transactions <a href="/18032"><i class="fas fa-info-circle"></i></a></div>';
+    $ui .= '<div class="row justify-content list-coins"><span style="min-width: 89px; min-height: 20px; text-align: right; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;Transactions <a href="/18032"><i class="fas fa-info-circle" style="font-size: 0.8em;"></i></a></div>';
 
     return $ui;
 }

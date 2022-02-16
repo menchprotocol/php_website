@@ -2025,6 +2025,20 @@ i, .btn .show-max {
     margin:0 0 13px !important;
     padding: 21px 0 0 !important;
 }
+.coin_cover i{
+    font-size:13em;
+}
+.coin_cover b{
+    font-size: 3em;
+    margin: 21px 0;
+    display: block;
+}
+.coin_cover .title{
+    font-size: 2em;
+    font-weight: bold;
+    padding: 5px 0 55px;
+    display: block;
+}
 .mini-coin{
     margin: -8px 0 !important;
 }
