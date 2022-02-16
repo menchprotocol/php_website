@@ -13,7 +13,7 @@ $base_source = get_domain_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
 $login_url_path = ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' );
 $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
-$logo = ( !strlen($first_segment) && filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : '/img/'.$current_coin_id.'.png' );
+$logo = ( filter_var($domain_link, FILTER_VALIDATE_URL) && !$superpower_10939 ? $domain_link : '/img/'.$current_coin_id.'.png' );
 
 
 //Generate Body Class String:
