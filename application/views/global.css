@@ -2029,7 +2029,7 @@ i, .btn .show-max {
     font-size:13em !important;
 }
 .coin_cover .large_title{
-    font-size: 2.5em;
+    font-size: 2.1em;
     font-weight: bold;
     margin: 21px 0;
     display: block;
@@ -3221,7 +3221,7 @@ font-weight: bold !important;
 
 
 .coinType12274 {
-    border-radius:50%;
+    border-radius:50% !important;
 }
 
 /*

@@ -12,7 +12,7 @@ $current_coin_id = current_coin_id();
 $base_source = get_domain_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
 $login_url_path = ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' );
-$logo = '/img/'.$current_coin_id.'.png';
+$logo = ( !strlen($first_segment) && filter_var(get_domain('m__cover'), FILTER_VALIDATE_URL) ? get_domain('m__cover') : '/img/'.$current_coin_id.'.png' );
 
 
 //Generate Body Class String:
