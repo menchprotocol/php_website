@@ -2028,16 +2028,14 @@ i, .btn .show-max {
 .coin_cover i{
     font-size:13em !important;
 }
-.coin_cover b{
-    font-size: 3em;
+.coin_cover .css__title{
+    font-size: 2.5em;
+    font-weight: bold;
     margin: 21px 0;
     display: block;
 }
-.coin_cover .title{
-    font-size: 2em;
-    font-weight: bold;
+.coin_cover div.css__title{
     padding: 5px 0 55px;
-    display: block;
 }
 .mini-coin{
     margin: -8px 0 !important;
