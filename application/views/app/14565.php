@@ -4,6 +4,7 @@ $is = $this->I_model->fetch(array(
     'i__id' => get_domain_setting(14002),
 ));
 
+
 //IDEA TITLE
 echo '<h1>' . $is[0]['i__title'] . '</h1>';
 
@@ -18,6 +19,15 @@ foreach($this->X_model->fetch(array(
     echo $this->X_model->message_view( $x['x__message'], true);
 }
 echo '</div>';
+
+
+
+echo view_coins();
+
+
+//Info Boxes:
+echo view_info_box();
+
 
 
 //FEATURED IDEAS
@@ -54,17 +64,12 @@ if($topic_id){
 echo $visible_ui;
 
 
-echo view_coins();
-
-
-//Info Boxes:
-echo view_info_box();
 
 
 //SOCIAL FOOTER
 echo view_social();
 
 
-echo '<p style="font-size: 0.8em; color: #999;">Us Humans Foundation | Nonprofit based in Vancouver, BC | 2017 - '.date('Y').'</p>';
+echo '<p style="font-size: 0.8em; text-align: center;"><a href="https://drive.google.com/drive/folders/0B4X48PHkwK8sVzFZajBHWXNzTnM?resourcekey=0-VMWt8Zv1JWjHrSEpXn2QBA&usp=sharing" target="_blank"><u>Us Humans Foundation</u></a> | 2017 - '.date('Y').'</p>';
 
 ?>

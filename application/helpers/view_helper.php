@@ -667,15 +667,20 @@ function view_coins(){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $query = $CI->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
-    $ui = '<div class="row justify-content list-coins"><span style="min-width: 89px; min-height: 20px; text-align: right; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;Transactions</div>';
+    $ui = '';
 
     $ui .= '<div class="row justify-content margin-top-down list-coins">';
     $count = 0;
     foreach($CI->config->item('e___14874') as $e__id => $m) {
         $count++;
-        $ui .= '<div class="coin_cover coin_cover_'.$count.' no-padding col-xl-2 col-lg-3 col-md-4 col-sm-6 col-10"><div class="cover-wrapper"><div class="bg'.$e__id.' coinType'.$e__id.' cover-link"><div class="cover-btn"><div class="the_counter css__title"><div class="min-height"><b class="css__title coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b></div>'.$m['m__title'].'</div></div></div></div></div>';
+        $ui .= '<div class="coin_cover no-padding col-xl-2 col-lg-3 col-md-4 col-sm-8 col-10">';
+        $ui .= '<div>'.$m['m__cover'].'</div>';
+        $ui .= '<b class="css__title coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b>';
+        $ui .= '<div>'.$m['m__title'].'</div>';
+        $ui .= '</div>';
     }
     $ui .= '</div>';
+    $ui .= '<div class="row justify-content list-coins"><span style="min-width: 89px; min-height: 20px; text-align: right; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;Transactions on the Mench Ledger. <a href="/18032"><b>Learn More</b> <i class="fas fa-arrow-right"></i></a></div>';
 
     return $ui;
 }

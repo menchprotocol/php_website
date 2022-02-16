@@ -2251,9 +2251,6 @@ video {
         margin:0 5px 0;
     }
 
-    .coin_cover_3 {
-        margin-top:-28px !important;
-    }
 
     .the_counter{
         margin-top: -21px;
@@ -2383,9 +2380,6 @@ video {
     .the_counter{
         margin-top: -24px;
         font-size: 0.18em !important;
-    }
-    .coin_cover_3 {
-        margin-top:-21px !important;
     }
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
@@ -3253,14 +3247,6 @@ font-weight: bold !important;
     border-radius: 0;
 }
 
-.cover-link.coinType12274{
-    border-radius: 50%;
-}
-/*
-.cover-link.coinType6255{
-    border-radius: 50%;
-}
-*/
 .cover-link.coinType12274 .cover-btn{
     top: 44% !important;
 }
