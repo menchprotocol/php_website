@@ -2033,9 +2033,10 @@ i, .btn .show-max {
     font-weight: bold;
     margin: 21px 0;
     display: block;
+    min-height: 21px;
 }
 .coin_cover div.css__title{
-    padding: 5px 0 55px;
+    padding: 5px 0 34px;
 }
 .mini-coin{
     margin: -8px 0 !important;

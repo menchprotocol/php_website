@@ -669,7 +669,7 @@ function view_coins(){
     $query = $CI->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
     $ui = '';
 
-    $ui .= '<div class="row justify-content margin-top-down list-coins">';
+    $ui .= '<div class="row justify-content list-coins">';
     $count = 0;
     foreach($CI->config->item('e___14874') as $e__id => $m) {
         $count++;
@@ -680,7 +680,7 @@ function view_coins(){
         $ui .= '</div>';
     }
     $ui .= '</div>';
-    $ui .= '<div class="row justify-content list-coins"><span style="min-width: 89px; min-height: 20px; text-align: right; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;Transactions <a href="/18032"><i class="fas fa-info-circle" style="font-size: 1em !important; margin-left: 3px;"></i></a></div>';
+    $ui .= '<div class="row justify-content list-coins"><span style="min-width: 89px; min-height: 20px; text-align: right; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;Transactions <a href="/18032" data-toggle="tooltip" data-placement="top" title="Learn more about the Mench Ledger"><i class="fas fa-info-circle" style="font-size: 1em !important; margin-left: 3px;"></i></a></div>';
 
     return $ui;
 }
