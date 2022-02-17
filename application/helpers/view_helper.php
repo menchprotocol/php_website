@@ -675,7 +675,7 @@ function view_coins(){
         $count++;
         $ui .= '<div class="coin_cover no-padding col-xl-2 col-lg-3 col-md-4 col-sm-8 col-10">';
         $ui .= '<div class="large_cover">'.$m['m__cover'].'</div>';
-        $ui .= '<b class="css__title large_title zq'.$e__id.' coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b>';
+        $ui .= '<div class="css__title large_title zq'.$e__id.' "><b class="coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b></div>';
         $ui .= '<div class="css__title large_title zq'.$e__id.'">'.$m['m__title'].'</div>';
         $ui .= '</div>';
     }
