@@ -82,7 +82,7 @@ if(!$member_e){
         }
 
 
-        echo view_headline(14730, null, $e___14709[14730], '<div class="row justify-content">'.view_i(14730, $is[0]['i__id'], null, $is[0]).'</div>', true);
+        echo view_headline(14730, null, $e___14709[14730], '<div class="row">'.view_i(14730, $is[0]['i__id'], null, $is[0]).'</div>', true);
 
 
         //Continious Updates
