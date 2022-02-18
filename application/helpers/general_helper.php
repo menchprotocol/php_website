@@ -1834,6 +1834,18 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     }
 
                 }
+
+                //Fetch Discoveries
+                foreach($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__type IN (' . join(',', $this->config->item('n___29133')) . ')' => null, //Written Responses
+                    'x__source' => $s['e__id'], //This child source
+                ), array('x__source'), 0, 0, array('x__time' => 'DESC')) as $x){
+                    if (strlen($x['x__message']) > 0) {
+                        $export_row['s__keywords'] .= $x['x__message'] . ' ';
+                    }
+                }
+
                 $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));
 
             } elseif ($loop_obj == 12273) {

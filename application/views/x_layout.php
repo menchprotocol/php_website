@@ -727,7 +727,7 @@ if($top_i__id) {
 
 //Show Progress:
 if($top_i__id > 0){
-    echo '<p style="padding:10px;">'.$i_completion_rate['completion_percentage'].'% Completed</p>';
+    echo '<p style="padding:10px;">'.( $i_completion_rate['completion_percentage']>100 ? 100 : $i_completion_rate['completion_percentage'] ).'% Completed</p>';
 }
 
 //Show expiry time if any:
