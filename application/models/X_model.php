@@ -1469,8 +1469,8 @@ class X_model extends CI_Model
                         //Message Body:
                         ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
                         'You received this message because you are watching ['.$i['i__title'].']'."\n\n".
-                        $es_discoverer[0]['e__title'].': https://'.get_domain('m__message').'/@'.$es_discoverer[0]['e__id']."\n".
-                        $i['i__title'].': https://'.get_domain('m__message').'/~'.$i['i__id']."\n"
+                        $es_discoverer[0]['e__title'].':'."\n".'https://'.get_domain('m__message').'/@'.$es_discoverer[0]['e__id']."\n\n".
+                        $i['i__title'].':'."\n".'https://'.get_domain('m__message').'/~'.$i['i__id']."\n\n"
                     );
                 }
             }
