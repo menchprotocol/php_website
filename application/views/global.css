@@ -1290,9 +1290,11 @@ a.headline {
 .show-on-hover {
     display:none !important;
 }
-.list-group-item:hover .show-on-hover,
-.coin_cover:hover .show-on-hover{
+.list-group-item:hover .show-on-hover{
     display:inline-block !important;
+}
+.coin_cover:hover .show-on-hover{
+    display:block !important;
 }
 
 .score-range{
@@ -2362,7 +2364,15 @@ video {
         max-width: none;
     }
     .content-image{ max-height:144px; }
-    .show-on-hover { display:inline-block !important; }
+
+    .list-group-item .show-on-hover{
+        display:inline-block !important;
+    }
+    .coin_cover .show-on-hover{
+        display:block !important;
+    }
+
+
     .form-control-thick { padding-left: 26px; }
 
 
