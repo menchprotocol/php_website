@@ -1591,23 +1591,28 @@ function e__add(x__type, e_existing_id) {
         if (data.status) {
 
             if(data.e_already_linked){
-                alert('Note: This is already linked here! Make sure this double linking is intentional.');
+                var r = confirm("This is already linked here! Are you sure you want to double link it?");
+                if (r == true) {
+                    data.e_already_linked = false;
+                }
             }
 
-            //Raw input to make it ready for next URL:
-            input.focus();
+            if(!data.e_already_linked){
+                //Raw input to make it ready for next URL:
+                input.focus();
 
-            //Add new object to list:
-            add_to_list('list-in-'+x__type, '.coinface-12274', data.e_new_echo);
+                //Add new object to list:
+                add_to_list('list-in-'+x__type, '.coinface-12274', data.e_new_echo);
 
-            //Allow inline editing if enabled:
-            x_set_start_text();
+                //Allow inline editing if enabled:
+                x_set_start_text();
 
-            e_sort_load(x__type);
-            load_coins();
+                e_sort_load(x__type);
+                load_coins();
 
-            //Hide Coin:
-            $('.mini-coin.coin-12274.coin-id-'+e_existing_id).fadeOut();
+                //Hide Coin:
+                $('.mini-coin.coin-12274.coin-id-'+e_existing_id).fadeOut();
+            }
 
         } else {
             //We had an error:
