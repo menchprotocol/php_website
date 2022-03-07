@@ -1589,7 +1589,10 @@ function e__add(x__type, e_existing_id) {
         if (data.status) {
 
             if(data.e_already_linked){
-                alert('Note: This is already linked here! Make sure this double linking is intentional.');
+                var r = confirm("This is already linked here! Are you sure you want to double link it?");
+                if (r == false) {
+                    return false;
+                }
             }
 
             //Raw input to make it ready for next URL:
