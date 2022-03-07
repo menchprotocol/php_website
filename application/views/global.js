@@ -1562,8 +1562,6 @@ function e__add(x__type, e_existing_id) {
     //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
     e_is_adding = true;
 
-    $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
-
     var input = $('.new-list-'+x__type+' .add-input');
 
     var e_new_string = null;
@@ -1598,6 +1596,9 @@ function e__add(x__type, e_existing_id) {
             }
 
             if(!data.e_already_linked){
+
+                $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
+
                 //Raw input to make it ready for next URL:
                 input.focus();
 
