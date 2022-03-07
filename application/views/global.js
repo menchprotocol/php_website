@@ -1592,7 +1592,6 @@ function e__add(x__type, e_existing_id) {
                 var r = confirm("This is already linked here! Are you sure you want to double link it?");
                 if (r == false) {
                     return false;
-
                 }
             }
 
