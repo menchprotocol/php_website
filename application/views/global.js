@@ -1564,6 +1564,8 @@ function e__add(x__type, e_existing_id) {
 
     var input = $('.new-list-'+x__type+' .add-input');
 
+    var original_photo = $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html();
+    $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
     var e_new_string = null;
     if (e_existing_id == 0) {
         e_new_string = input.val();
@@ -1592,12 +1594,12 @@ function e__add(x__type, e_existing_id) {
                 var r = confirm("This is already linked here! Are you sure you want to double link it?");
                 if (r == true) {
                     data.e_already_linked = false;
+                } else {
+                    $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html(original_photo);
                 }
             }
 
             if(!data.e_already_linked){
-
-                $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
 
                 //Raw input to make it ready for next URL:
                 input.focus();
