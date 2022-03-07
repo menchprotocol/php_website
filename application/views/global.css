@@ -1238,30 +1238,6 @@ a.headline {
 }
 
 
-.show-on-hover span {
-    display: block;
-    margin-bottom: 5px;
-    width: 15px;
-    text-align: center;
-}
-.show-on-hover .btn-third {
-    position: absolute;
-    top: 3px;
-    right: 20px;
-}
-.show-on-hover .btn-fourth {
-    position: absolute;
-    top: 24px;
-    right: 20px;
-}
-.show-on-hover i {
-    font-size: 0.80em !important;
-}
-.note-btn .show-on-hover i {
-    font-size: 1.3em !important;
-}
-
-
 
 
 
