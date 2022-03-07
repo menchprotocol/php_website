@@ -1290,7 +1290,8 @@ a.headline {
 .show-on-hover {
     display:none !important;
 }
-.list-group-item:hover .show-on-hover {
+.list-group-item:hover .show-on-hover,
+.coin_cover:hover .show-on-hover{
     display:inline-block !important;
 }
 
