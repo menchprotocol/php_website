@@ -1602,7 +1602,7 @@ function e__add(x__type, e_existing_id) {
             if(!data.e_already_linked){
 
                 //Raw input to make it ready for next URL:
-                input.focus();
+                //input.focus();
 
                 //Add new object to list:
                 add_to_list('list-in-'+x__type, '.coinface-12274', data.e_new_echo);
