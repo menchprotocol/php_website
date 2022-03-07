@@ -1100,7 +1100,7 @@ $(document).ready(function () {
 
                         //Append filters:
                         algolia_index.search(q, {
-                            hitsPerPage: 100,
+                            hitsPerPage: 300,
                             filters:search_filters,
                         }, function (error, content) {
                             if (error) {
@@ -1319,7 +1319,7 @@ function i_load_search(x__type) {
             algolia_index.search(q, {
 
                 filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
-                hitsPerPage:100,
+                hitsPerPage: 300,
 
             }, function (error, content) {
                 if (error) {
@@ -1384,7 +1384,7 @@ function e_load_search(x__type) {
 
             algolia_index.search(q, {
                 filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
-                hitsPerPage:100,
+                hitsPerPage: 300,
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -3064,7 +3064,7 @@ function e_e_only_search_7551() {
 
                     algolia_index.search(q, {
                         filters: 's__type=12274',
-                        hitsPerPage: 100,
+                        hitsPerPage: 300,
                     }, function (error, content) {
                         if (error) {
                             cb([]);
