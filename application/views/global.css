@@ -1404,8 +1404,7 @@ label {
 
 
 .is-msg .on-hover {
-    /* Do not hide this for now: */
-    display: inline-block !important;
+    display: none !important;
 }
 
 .is-msg > div:hover .on-hover, .in-editing .on-hover {
