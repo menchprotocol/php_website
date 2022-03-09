@@ -83,6 +83,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         import { EmojiButton } from 'https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@latest/dist/index.min.js';
 
         $(".emoji-input").each(function () {
+            console.log('EMOJI'+x__type);
             var x__type = $(this).attr('x__type');
             const picker = new EmojiButton();
             const trigger = document.querySelector('#emoji_pick_type'+x__type);
