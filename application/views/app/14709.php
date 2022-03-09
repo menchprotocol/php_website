@@ -82,7 +82,8 @@ if(!$member_e){
         }
 
 
-        echo view_headline(14730, null, $e___14709[14730], '<div class="padded">'.$is[0]['i__title'].'</div>', true);
+        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14730]['m__cover'].'</span>'.$e___14709[14730]['m__title'].'</div>';
+        echo '<div class="padded">'.$is[0]['i__title'].'</div>';
 
 
         //Continious Updates
@@ -91,7 +92,7 @@ if(!$member_e){
 
 
         //Rate & Feedback:
-        echo '<div class="padded share_feedback hidden"><a href="javascript:void();" onclick="$(\'.share_feedback\').toggleClass(\'hidden\');"><u>Share, Rate & Review</u></a></div>';
+        echo '<div class="padded share_feedback hidden" style="padding-bottom: 0;"><a href="javascript:void();" onclick="$(\'.share_feedback\').toggleClass(\'hidden\');"><u>Share, Rate & Review</u></a></div>';
 
         echo '<div class="share_feedback">';
 
