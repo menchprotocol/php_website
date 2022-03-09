@@ -65,8 +65,18 @@ if(isset($_GET['e__id'])){
 
         $list_body = '';
 
+
         //Any Startable Referenced Ideas?
-        foreach(view_coins_e(12273, $header['e__id'], 1) as $ref_i){
+        foreach($this->X_model->fetch(array(
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__up' => $header['e__id'],
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__spectrum' => 'DESC')) as $ref_i){
+
+
+
+
 
             //Fetch Messages:
             $messages = ( strlen($ref_i['x__message']) ? '<div class="msg"><span>' . nl2br($ref_i['x__message']) . '</span></div>' : '');
