@@ -82,13 +82,12 @@ if(!$member_e){
         }
 
 
-        echo view_headline(14730, null, $e___14709[14730], $is[0]['i__title'], true);
+        echo view_headline(14730, null, $e___14709[14730], '<div class="padded">'.$is[0]['i__title'].'</div>', true);
 
 
         //Continious Updates
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14343]['m__cover'].'</span>'.$e___14709[14343]['m__title'].'</div>';
         echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14343]['m__message']).'</div>';
-
 
 
         //Rate & Feedback:
@@ -99,7 +98,6 @@ if(!$member_e){
 
         //Share
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[13024]['m__cover'].'</span>' . $e___14709[13024]['m__title'] . '</div>';
-        echo '<div class="padded">'.$is[0]['i__title'].':</div>';
         echo '<div class="padded"><input type="url" class="form-control border share_url" value=""></div>';
 
 
