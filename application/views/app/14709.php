@@ -87,8 +87,8 @@ if(!$member_e){
 
 
         //Continious Updates
-        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14343]['m__cover'].'</span>'.$e___14709[14343]['m__title'].'</div>';
-        echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14343]['m__message']).'</div>';
+        //echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14343]['m__cover'].'</span>'.$e___14709[14343]['m__title'].'</div>';
+        //echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14343]['m__message']).'</div>';
 
 
         //Rate & Feedback:
