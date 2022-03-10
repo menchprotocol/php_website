@@ -82,24 +82,23 @@ if(!$member_e){
         }
 
 
-        echo view_headline(14730, null, $e___14709[14730], '<div class="row">'.view_i(14730, $is[0]['i__id'], null, $is[0]).'</div>', true);
+        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14730]['m__cover'].'</span>'.$e___14709[14730]['m__title'].'</div>';
+        echo '<div class="padded">'.$is[0]['i__title'].'</div>';
 
 
         //Continious Updates
-        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14343]['m__cover'].'</span>'.$e___14709[14343]['m__title'].'</div>';
-        echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14343]['m__message']).'</div>';
-
+        //echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14343]['m__cover'].'</span>'.$e___14709[14343]['m__title'].'</div>';
+        //echo '<div class="padded">'.str_replace('%s', $is[0]['i__title'], $e___14709[14343]['m__message']).'</div>';
 
 
         //Rate & Feedback:
-        echo '<div class="padded share_feedback hidden"><a href="javascript:void();" onclick="$(\'.share_feedback\').toggleClass(\'hidden\');"><u>Share, Rate & Review</u></a></div>';
+        echo '<div class="padded share_feedback hidden" style="padding-bottom: 0;"><a href="javascript:void();" onclick="$(\'.share_feedback\').toggleClass(\'hidden\');"><u>Share, Rate & Review</u></a></div>';
 
         echo '<div class="share_feedback">';
 
 
         //Share
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[13024]['m__cover'].'</span>' . $e___14709[13024]['m__title'] . '</div>';
-        echo '<div class="padded">'.$is[0]['i__title'].':</div>';
         echo '<div class="padded"><input type="url" class="form-control border share_url" value=""></div>';
 
 

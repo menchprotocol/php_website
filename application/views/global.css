@@ -1238,30 +1238,6 @@ a.headline {
 }
 
 
-.show-on-hover span {
-    display: block;
-    margin-bottom: 5px;
-    width: 15px;
-    text-align: center;
-}
-.show-on-hover .btn-third {
-    position: absolute;
-    top: 3px;
-    right: 20px;
-}
-.show-on-hover .btn-fourth {
-    position: absolute;
-    top: 24px;
-    right: 20px;
-}
-.show-on-hover i {
-    font-size: 0.80em !important;
-}
-.note-btn .show-on-hover i {
-    font-size: 1.3em !important;
-}
-
-
 
 
 
@@ -1290,8 +1266,11 @@ a.headline {
 .show-on-hover {
     display:none !important;
 }
-.list-group-item:hover .show-on-hover {
+.list-group-item:hover .show-on-hover{
     display:inline-block !important;
+}
+.coin_cover:hover .show-on-hover{
+    display:block !important;
 }
 
 .score-range{
@@ -1404,8 +1383,7 @@ label {
 
 
 .is-msg .on-hover {
-    /* Do not hide this for now: */
-    display: inline-block !important;
+    display: none !important;
 }
 
 .is-msg > div:hover .on-hover, .in-editing .on-hover {
@@ -1569,7 +1547,8 @@ i, .btn .show-max {
     margin: 0 0 21px 0 !important;
     width: 100% !important;
     height: auto !important;
-    max-width: 377px;
+    max-width: 611px;
+    max-height: 611px;
     border-radius: 0 !important;
 }
 .icon-block-xs img{
@@ -2363,7 +2342,15 @@ video {
         max-width: none;
     }
     .content-image{ max-height:144px; }
-    .show-on-hover { display:inline-block !important; }
+
+    .list-group-item .show-on-hover{
+        display:inline-block !important;
+    }
+    .coin_cover .show-on-hover{
+        display:block !important;
+    }
+
+
     .form-control-thick { padding-left: 26px; }
 
 

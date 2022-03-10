@@ -1100,7 +1100,7 @@ $(document).ready(function () {
 
                         //Append filters:
                         algolia_index.search(q, {
-                            hitsPerPage: 55,
+                            hitsPerPage: 300,
                             filters:search_filters,
                         }, function (error, content) {
                             if (error) {
@@ -1319,7 +1319,7 @@ function i_load_search(x__type) {
             algolia_index.search(q, {
 
                 filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
-                hitsPerPage:34,
+                hitsPerPage: 300,
 
             }, function (error, content) {
                 if (error) {
@@ -1384,7 +1384,7 @@ function e_load_search(x__type) {
 
             algolia_index.search(q, {
                 filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
-                hitsPerPage:34,
+                hitsPerPage: 300,
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -1562,10 +1562,10 @@ function e__add(x__type, e_existing_id) {
     //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
     e_is_adding = true;
 
-    $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
-
     var input = $('.new-list-'+x__type+' .add-input');
 
+    var original_photo = $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html();
+    $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
     var e_new_string = null;
     if (e_existing_id == 0) {
         e_new_string = input.val();
@@ -1591,23 +1591,31 @@ function e__add(x__type, e_existing_id) {
         if (data.status) {
 
             if(data.e_already_linked){
-                alert('Note: This is already linked here! Make sure this double linking is intentional.');
+                var r = confirm("This is already linked here! Are you sure you want to double link it?");
+                if (r == true) {
+                    data.e_already_linked = false;
+                } else {
+                    $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html(original_photo);
+                }
             }
 
-            //Raw input to make it ready for next URL:
-            input.focus();
+            if(!data.e_already_linked){
 
-            //Add new object to list:
-            add_to_list('list-in-'+x__type, '.coinface-12274', data.e_new_echo);
+                //Raw input to make it ready for next URL:
+                //input.focus();
 
-            //Allow inline editing if enabled:
-            x_set_start_text();
+                //Add new object to list:
+                add_to_list('list-in-'+x__type, '.coinface-12274', data.e_new_echo);
 
-            e_sort_load(x__type);
-            load_coins();
+                //Allow inline editing if enabled:
+                x_set_start_text();
 
-            //Hide Coin:
-            $('.mini-coin.coin-12274.coin-id-'+e_existing_id).fadeOut();
+                e_sort_load(x__type);
+                load_coins();
+
+                //Hide Coin:
+                $('.mini-coin.coin-12274.coin-id-'+e_existing_id).fadeOut();
+            }
 
         } else {
             //We had an error:
@@ -3056,7 +3064,7 @@ function e_e_only_search_7551() {
 
                     algolia_index.search(q, {
                         filters: 's__type=12274',
-                        hitsPerPage: 21,
+                        hitsPerPage: 300,
                     }, function (error, content) {
                         if (error) {
                             cb([]);

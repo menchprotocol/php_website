@@ -314,7 +314,7 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
     //Editing menu:
     if($note_e){
 
-        $ui .= '<div class="note-editor edit-off"><span class="show-on-hover">';
+        $ui .= '<div class="note-editor edit-off"><span class="">'; //show-on-hover
 
             //SORT NOTE
             if(in_array($x['x__type'], $CI->config->item('n___4603'))){
@@ -1875,9 +1875,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     }
     $ui .= '</td>';
 
-    $ui .= '<td width="20%"><div>'.($focus_coin ? ($discovery_mode ? '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'" class="'.superpower_active(10939).'">'.$e___11035[13563]['m__cover'].'</a>' : '<a href="/'.$i['i__id'].'">'.( i_is_startable($i) ? '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26124]['m__title'].'">'.$e___11035[26124]['m__cover'].'</span>' : '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26130]['m__title'].'">'.$e___11035[26130]['m__cover'].'</span>' ).'</a>' ) : ($has_sortable ? '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '') ).'</div></td>';
-    $ui .= '<td width="20%"><div>'.$o_menu.'</div></td>';
-    $ui .= '<td width="20%"><div>'.( !$can_click ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
+    $ui .= '<td width="20%"><div class="show-on-hover">'.($focus_coin ? ($discovery_mode ? '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'" class="'.superpower_active(10939).'">'.$e___11035[13563]['m__cover'].'</a>' : '<a href="/'.$i['i__id'].'">'.( i_is_startable($i) ? '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26124]['m__title'].'">'.$e___11035[26124]['m__cover'].'</span>' : '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26130]['m__title'].'">'.$e___11035[26130]['m__cover'].'</span>' ).'</a>' ) : ($has_sortable ? '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '') ).'</div></td>';
+    $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
+    $ui .= '<td width="20%"><div class="show-on-hover">'.( !$can_click ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
     $ui .= '</tr></table>';
 
 
@@ -2087,7 +2087,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $href = ( $is_app ? '/-'.$e['e__id'] : '/@'.$e['e__id'] );
     $focus__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $has_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
-    $public_sources = $CI->config->item('n___14603');
+    $is_public =  in_array($e['e__type'], $CI->config->item('n___29297'));
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
     $source_is_e = $focus__id>0 && $e['e__id']==$focus__id;
@@ -2096,8 +2096,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     //Is Lock/Private?
     $lock_notice = 4755; //Only locked if private Source
     $has_hard_lock = in_array($e['e__id'], $CI->config->item('n___4755')) && !$superpower_12701 && (!$member_e || !$source_is_e);
-    $has_public = in_array($e['e__id'], $public_sources) || in_array($focus__id, $public_sources) || ($x__id > 0 && in_array($e['x__type'], $public_sources));
-    $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$has_public && !$source_of_e && !$superpower_13422));
+    $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$is_public && !$source_of_e && !$superpower_13422));
     $has_any_lock = !$superpower_12701 && ($has_soft_lock || $has_hard_lock);
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $supports_messages && $superpower_13422 && $x__id > 0;
     $show_text_editor = $source_of_e && !$has_any_lock;
@@ -2192,9 +2191,9 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $ui .= '<table class="coin_coins"><tr>';
     $ui .= '<td width="20%"><div>'.($source_of_e && $superpower_13422 && !$cache_app ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
     $ui .= '<td width="20%">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</td>';
-    $ui .= '<td width="20%"><div>'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
-    $ui .= '<td width="20%"><div>'.$dropdown_ui.'</div></td>';
-    $ui .= '<td width="20%"><div>'.( $can_click && $show_text_editor ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
+    $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
+    $ui .= '<td width="20%"><div class="show-on-hover">'.$dropdown_ui.'</div></td>';
+    $ui .= '<td width="20%"><div class="show-on-hover">'.( $can_click && $show_text_editor ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
     $ui .= '</tr></table>';
 
 
