@@ -972,7 +972,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
     if($x__type==11029){
 
-        //SOURCES
+        //DOWN
         $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
         $join_objects = array('x__down');
         $query_filters = array(
@@ -984,6 +984,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
     } elseif($x__type==11030){
 
+        //UP
         $order_columns = array('x__spectrum' => 'ASC', 'e__spectrum' => 'DESC', 'e__title' => 'ASC');
         $join_objects = array('x__up');
         $query_filters = array(

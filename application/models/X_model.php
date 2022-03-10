@@ -1465,10 +1465,9 @@ class X_model extends CI_Model
             if(count($es_discoverer)){
                 //Notify Idea Watchers
                 foreach($watchers as $watcher){
-                    $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered '.$i['i__title'],
+                    $this->X_model->send_dm($watcher['x__up'], 'New Play: '.$i['i__title'],
                         //Message Body:
-                        ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
-                        'You received this message because you are watching ['.$i['i__title'].']'."\n\n".
+                        $es_discoverer[0]['e__title'].' just played ['.$i['i__title'].']'.( strlen($add_fields['x__message']) ? ' with the value ['.$add_fields['x__message'].']' : '' )."\n\n".
                         $es_discoverer[0]['e__title'].':'."\n".'https://'.get_domain('m__message').'/@'.$es_discoverer[0]['e__id']."\n\n".
                         $i['i__title'].':'."\n".'https://'.get_domain('m__message').'/~'.$i['i__id']."\n\n"
                     );
