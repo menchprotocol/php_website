@@ -430,6 +430,52 @@ class E_model extends CI_Model
 
     }
 
+    function remove_duplicate_links($e__id){
+
+        //A function that scans source parent links and removes duplicates
+
+        $current_up = array();
+        $duplicates_removed = 0;
+
+        //Check parents to see if there are duplicates:
+        foreach($this->X_model->fetch(array(
+            'x__down' => $e__id,
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), array('x__up'), 0, 0, array('x__up' => 'ASC', 'x__id' => 'ASC')) as $x) {
+
+            //Does this match any in the list so far?
+            $duplicate_found = false;
+            foreach($current_up as $up){
+                if($up['x__up']==$x['x__up'] && $up['x__type']==$x['x__type'] && $up['x__status']==$x['x__status'] && $up['x__message']==$x['x__message']){
+                    $duplicate_found = true;
+                    break;
+                }
+            }
+
+            if($duplicate_found){
+                //Remove it:
+                $duplicates_removed++;
+                $this->X_model->update($x['x__id'], array(
+                    'x__status' => 6173,
+                ), $x['x__source'], 29331); //Duplicate Link Removed
+            } else {
+                //Add it to main list:
+                array_push($current_up, array(
+                    'x__up' => $x['x__up'],
+                    'x__type' => $x['x__type'],
+                    'x__status' => $x['x__status'],
+                    'x__message' => $x['x__message'],
+                ));
+            }
+
+        }
+
+        return $duplicates_removed;
+
+    }
+
     function remove($e__id, $x__source = 0, $migrate_i__id = 0){
 
         //Fetch all SOURCE LINKS:
@@ -470,6 +516,10 @@ class E_model extends CI_Model
                     }
 
                 }
+
+                //Clean Duplicates:
+                $this->E_model->remove_duplicate_links($migrate_i__id);
+
             }
 
         } else {
