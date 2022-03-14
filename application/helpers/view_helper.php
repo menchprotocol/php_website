@@ -1653,7 +1653,7 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
     $member_e = superpower_unlocked();
     $i_stats = i_stats($i['i__metadata']);
 
-    $href = 'href="javascript:void(0);"'.( $spots_remaining==0 ? ' onclick="alert(\'This Option is Not Available\')" ' : ' onclick="toggle_answer(' . $i['i__id'] . ')"' );
+    $href = 'href="javascript:void(0);"'.( $spots_remaining==0 && !$previously_selected ? ' onclick="alert(\'This Option is Not Available\')" ' : ' onclick="toggle_answer(' . $i['i__id'] . ')"' );
 
     $ui  = '<div class="coin_cover col-md-4 col-6 col-xl-2 col-lg-3 no-padding">';
     $ui .= '<div class="cover-wrapper">';

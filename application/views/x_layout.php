@@ -104,7 +104,7 @@ var x = setInterval(function() {
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
   // Display the result in the element with id="timexpirycount"
-  document.getElementById("timexpirycount").innerHTML = "<i class=\'far fa-fad fa-stopwatch\'></i> Time Remaining to Complete: " + ( days>0 ? days + "d " : "" ) + ( hours>0 ? hours + "h " : "")
+  document.getElementById("timexpirycount").innerHTML = ( days>0 ? days + "d " : "" ) + ( hours>0 ? hours + "h " : "")
   + ( minutes>0 ? minutes + "m " : "" ) + seconds + "s";
 
   // If the count down is finished, write some text
@@ -509,10 +509,12 @@ if($top_i__id) {
                 echo '<h2>How to Pay:</h2>';
                 echo '<ul style="list-style: none;">';
                     echo '<li>1. After completing your payment click on "<b style="color: #FF0000;">Return to Merchant</b>" to continue back here.</li>';
-                    echo '<li>2. Note: You can checkout as a guest, You do not need to create a Paypal account. You can pay with a credit or visa debit card.</li>';
+            echo '<li>2. You can checkout as a guest, You do not need to create a Paypal account. You can pay with a credit or visa debit card.</li>';
+            echo '<li>2. You have <span id="timexpirycount" class="hideIfEmpty"></span> to complete this step.a journery</li>';
                 echo '</ul>';
             echo '</div>';
-
+//Show expiry time if any:
+            echo '';
         }
 
     } elseif ($i_focus['i__type'] == 6683) {
@@ -729,9 +731,6 @@ if($top_i__id) {
     echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
 
 }
-
-//Show expiry time if any:
-echo '<p id="timexpirycount" class="hideIfEmpty"></p>';
 
 
 if($top_i__id > 0 && $i_completion_rate['completion_percentage']<100){
