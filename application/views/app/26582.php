@@ -95,6 +95,7 @@ echo '<div></div>';
 
     $(document).ready(function(){
         countChar();
+        set_autosize($('#message_text'));
     });
 
     function countChar() {
