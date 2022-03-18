@@ -34,7 +34,7 @@ if(!$member_e){
     $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $is[0]);
 
     //Fetch their discoveries:
-    if($completion_rate['completion_percentage'] < 99){
+    if($completion_rate['completion_percentage'] < 100){
 
         //Go to the top and find the next idea:
         $next_i__id = $this->X_model->find_next($member_e['e__id'], $is[0]['i__id'], $is[0]);
