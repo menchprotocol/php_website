@@ -1,5 +1,6 @@
 <?php
 
+
 //Set default loading:
 if(!isset($_GET['e__id']) && get_domain_setting(27972)>0){
     $_GET['e__id'] = get_domain_setting(27972);
@@ -10,6 +11,7 @@ if(!isset($_GET['i__id']) && get_domain_setting(14002) > 0){
 }
 
 if(isset($_GET['i__id'])){
+
     $is = $this->I_model->fetch(array(
         'i__id' => $_GET['i__id'],
     ));
@@ -126,3 +128,10 @@ if(isset($_GET['e__id'])){
     echo $ui;
 }
 
+
+
+//SOCIAL FOOTER
+echo view_social();
+
+
+echo '<p style="font-size: 0.8em; text-align: center;"><a href="https://drive.google.com/file/d/1GiQAtYzmJjmaUPxrrwPBXr44t9FRrWlAPFEe-917__iWcI2xR07U3_N88jyk5K7ophvKRk3AQHhXRs_q/view?usp=sharing" target="_blank"><u>Us Humans Foundation</u></a> | 2017 - '.date('Y').'</p>';
