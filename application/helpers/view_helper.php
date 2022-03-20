@@ -1325,6 +1325,11 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
 
+    //LIST TYPE
+    if($x__type==13980){
+        $body .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
+    }
+
     //Build Body UI:
     $body = '<div class="row">';
     $is_first_incomplete = false;
@@ -1354,11 +1359,6 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
         $ui .= view_headline(26104, count($next_is), $e___11035[26104], $body, in_array(26104, $CI->config->item('n___20424')));
 
     } else {
-
-        //LIST TYPE
-        if($x__type==13980){
-            $body .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
-        }
 
         $ui .= view_headline($x__type, null, $e___11035[$x__type], $body, true);
 
