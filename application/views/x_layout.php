@@ -510,7 +510,7 @@ if($top_i__id) {
                 echo '<ul style="list-style: none;">';
                     echo '<li>1. After completing your payment click on "<b style="color: #FF0000;">Return to Merchant</b>" to continue back here.</li>';
             echo '<li>2. You can checkout as a guest, You do not need to create a Paypal account. You can pay with a credit or visa debit card.</li>';
-            echo '<li>2. You have <span id="timexpirycount" class="hideIfEmpty"></span> to complete this step.</li>';
+            echo '<li>3. Complete payment within <span id="timexpirycount" class="hideIfEmpty"></span> to secure this spot.</li>';
                 echo '</ul>';
             echo '</div>';
 //Show expiry time if any:
