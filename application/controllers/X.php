@@ -648,7 +648,7 @@ class X extends CI_Controller
 
 
 
-    function x_layout($top_i__id, $i__id)
+    function x_layout($top_i__id, $i__id, $tag__id=0, $member__id=0)
     {
 
         /*
@@ -658,8 +658,52 @@ class X extends CI_Controller
          *
          * */
 
-        //Fetch data:
         $member_e = superpower_unlocked();
+
+
+        //Log link if not there:
+        if($tag__id>0 &&
+            $member__id>0 &&
+            count($this->X_model->fetch(array(
+                'x__up' => 4430, //MEMBERS
+                'x__down' => $member__id,
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            ))) && count($this->X_model->fetch(array(
+                'x__up' => 29393,
+                'x__down' => $tag__id,
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            )))){
+
+            if(!count($this->X_model->fetch(array(
+                'x__up' => $tag__id,
+                'x__down' => $member__id,
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            )))){
+                //Add source link:
+                $this->X_model->create(array(
+                    'x__type' => e_x__type(),
+                    'x__source' => ($member_e ? $member_e['e__id'] : $member__id),
+                    'x__up' => $tag__id,
+                    'x__down' => $member__id,
+                ));
+            }
+
+            //Log Reference:
+            $this->X_model->create(array(
+                'x__type' => 29393, //Log Referral
+                'x__source' => ($member_e ? $member_e['e__id'] : $member__id),
+                'x__up' => $tag__id,
+                'x__down' => $member__id,
+                'x__left' => $top_i__id,
+                'x__right' => $i__id,
+            ));
+
+        }
+
+        //Fetch data:
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
         ));
