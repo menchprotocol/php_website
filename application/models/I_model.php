@@ -342,8 +342,8 @@ class I_model extends CI_Model
 
         //Return the first top startable idea:
         $previous_is = $this->X_model->fetch(array(
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i['i__id'],
         ), array('x__left'), 0);
@@ -552,7 +552,7 @@ class I_model extends CI_Model
 
                 //Duplicate Check:
                 if(count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__up' => $focus_e[0]['e__id'],
                     'x__right' => $link_i[0]['i__id'],
@@ -569,7 +569,7 @@ class I_model extends CI_Model
 
                 //Duplicate Check:
                 if(count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type' => 10573, //STARRED
                     'x__up' => $focus_e[0]['e__id'],
                     'x__right' => $link_i[0]['i__id'],
@@ -657,7 +657,7 @@ class I_model extends CI_Model
 
             //Fetch Complete References:
             $new_i = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type' => 4983, //IDEA SOURCES
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
@@ -684,7 +684,7 @@ class I_model extends CI_Model
 
             $new_i = $this->X_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type' => 10573, //STARRED
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
@@ -783,8 +783,8 @@ class I_model extends CI_Model
 
         //Fetch children:
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $focus_in['i__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i){
@@ -937,7 +937,7 @@ class I_model extends CI_Model
                 //Check if it has this item:
                 $e__profile_id = intval(one_two_explode('@',' ',$action_command1));
                 $i_has_e = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $next_i['i__id'],
                     'x__up' => $e__profile_id,
@@ -1072,8 +1072,8 @@ class I_model extends CI_Model
         $total_child_weights = 0;
 
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i__id,
         ), array('x__right'), 0, 0, array(), 'i__id, i__spectrum') as $next_i){
@@ -1119,7 +1119,7 @@ class I_model extends CI_Model
             'x__up >' => 0,
             'x__right' => $i['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___13550')).')' => null, //SOURCE IDEAS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
         ), array('x__up'), 0) as $fetched_e) {
 
             $e_metadata_leaderboard = $this->E_model->metadata_leaderboard($fetched_e);
@@ -1146,8 +1146,8 @@ class I_model extends CI_Model
 
         //NEXT IDEAS
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i['i__id'],
         ), array('x__right'), 0) as $is_next){
@@ -1291,7 +1291,7 @@ class I_model extends CI_Model
 
         //read 1: Is there an OR parent that we can simply answer and unlock?
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__right' => $i['i__id'],
             'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null,
@@ -1304,8 +1304,8 @@ class I_model extends CI_Model
 
         //read 2: Are there any locked transaction parents that the member might be able to unlock?
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
             'x__right' => $i['i__id'],
         ), array('x__left'), 0) as $i_locked_parent){
@@ -1331,8 +1331,8 @@ class I_model extends CI_Model
 
         //read 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
         $is_next = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i['i__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));

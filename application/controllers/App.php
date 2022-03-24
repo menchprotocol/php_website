@@ -87,7 +87,7 @@ class App extends CI_Controller
                     'x__type' => 14599, //Cache App
                     'x__up' => $app_e__id,
                     'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                     $ui = $latest_cache['x__message'];
                     $cache_x__id = $latest_cache['x__id'];

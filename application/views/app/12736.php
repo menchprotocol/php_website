@@ -17,7 +17,7 @@ foreach($this->E_model->fetch() as $en) {
         'x__up' => 4430, //MEMBERS
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__down' => $en['e__id'],
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
     ), array(), 1));
     $is_x = count($this->X_model->fetch(array(
         'x__source' => $en['e__id'],

@@ -14,9 +14,9 @@ $daily_sales = array();
 //Generate list of payments:
 $payment_es = $this->X_model->fetch(array(
     'x__up' => 27004,
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
+    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
 ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
 
@@ -29,7 +29,7 @@ if (isset($_GET['e__id'])) {
             echo '<h2>'.$e['e__title'].'</h2>';
 
             $i_query = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
                 'x__up' => $e['e__id'],
@@ -47,7 +47,7 @@ if (isset($_GET['e__id'])) {
         echo '<div><a href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].'</a></div>';
 
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
             'x__up' => $e['e__id'],
@@ -77,14 +77,14 @@ foreach($i_query as $i){
     $currencies = array();
 
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
         'x__left' => $i['i__id'],
     ), array(), 0) as $x){
 
         if(isset($_GET['include_e']) && strlen($_GET['include_e']) && !count($this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__up IN (' . $_GET['include_e'] . ')' => null,
                 'x__down' => $x['x__source'],
             )))){
@@ -94,7 +94,7 @@ foreach($i_query as $i){
                 'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
                 'x__down' => $x['x__source'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             )))){
             continue;
         }
@@ -170,7 +170,7 @@ foreach($i_query as $i){
     $gross_payout += $payout;
 
     $has_limits = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
         'x__type' => 4983, //References
         'x__right' => $i['i__id'],
         'x__up' => 26189,

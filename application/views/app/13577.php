@@ -17,8 +17,8 @@ $animal = 0;
 foreach($this->X_model->fetch(array(
     'x__up' => 14986,
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
 ), array('x__down'), 0, 0) as $e){
 
     $count++;
@@ -82,7 +82,7 @@ foreach(array(
 
                 //Check if exists:
                 if(!count($this->X_model->fetch(array( //SOURCE PROFILE
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__up' => $type_id,
                     'e__cover' => $icon_code,

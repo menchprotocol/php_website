@@ -122,7 +122,7 @@ class E extends CI_Controller
 
                             //Count discoveries:
                             $x_coins = $this->X_model->fetch(array(
-                                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                                 'x__left' => $i__id,
                             ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
@@ -487,7 +487,7 @@ class E extends CI_Controller
                 'x__right' => $is[0]['i__id'],
                 'x__up' => $_POST['e_existing_id'],
                 'x__type' => $_POST['x__type'],
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             )))){
                 $e___7551 = $this->config->item('e___7551');
                 return view_json(array(
@@ -947,8 +947,8 @@ class E extends CI_Controller
             $query_filters = array(
                 'x__up' => $_POST['focus__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
             );
 
             if($_POST['enable_mulitiselect'] && $_POST['was_previously_selected']){
@@ -967,7 +967,7 @@ class E extends CI_Controller
                 'x__up IN (' . join(',', $possible_answers) . ')' => null,
                 'x__down' => $member_e['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             )) as $delete){
                 //Should usually delete a single option:
                 $this->X_model->update($delete['x__id'], array(
@@ -1119,7 +1119,7 @@ class E extends CI_Controller
 
         //Fetch existing email:
         $u_emails = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__down' => $member_e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
@@ -1226,7 +1226,7 @@ class E extends CI_Controller
 
         //Fetch existing password:
         $u_passwords = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3286, //Password
             'x__down' => $member_e['e__id'],
@@ -1344,11 +1344,11 @@ class E extends CI_Controller
 
         $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
         $u_emails = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
         ), array('x__down'));
 
 
@@ -1460,7 +1460,7 @@ class E extends CI_Controller
         //Authenticate password:
         $es[0]['is_masterpass_login'] = 0;
         $u_passwords = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3286, //Password
             'x__down' => $es[0]['e__id'],
@@ -1547,7 +1547,7 @@ class E extends CI_Controller
         //Cleanup/validate email:
         $_POST['input_email'] = trim(strtolower($_POST['input_email']));
         $u_emails = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
@@ -1616,7 +1616,7 @@ class E extends CI_Controller
                 'x__up' => $_POST['e__id'],
                 'x__down' => $_POST['x__source'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             ));
 
             if(count($already_added)){
@@ -1721,7 +1721,7 @@ class E extends CI_Controller
         if(intval($_POST['sign_i__id']) > 0){
             //Fetch the idea:
             $referrer_i = $this->I_model->fetch(array(
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
                 'i__id' => $_POST['sign_i__id'],
             ));
         } else {
@@ -1731,11 +1731,11 @@ class E extends CI_Controller
 
         //Search for email to see if it exists...
         $u_emails = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
         ), array('x__down'));
 
 
@@ -1745,7 +1745,7 @@ class E extends CI_Controller
             $u_passwords = $this->X_model->fetch(array(
                 'x__up' => 3286, //Password
                 'x__down' => $u_emails[0]['e__id'],
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             ));
         }

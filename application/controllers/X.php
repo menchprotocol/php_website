@@ -295,12 +295,12 @@ class X extends CI_Controller
         $member_e = superpower_unlocked();
         $current_is = $this->I_model->fetch(array(
             'i__id' => $current_i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ));
 
         $next_is = $this->I_model->fetch(array(
             'i__id' => $next_i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ));
 
         if(!count($current_is) || !count($next_is)){
@@ -319,7 +319,7 @@ class X extends CI_Controller
 
         //Mark this as complete since there is no child to choose from:
         if($member_e && in_array($current_is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE ALREADY?
                 'x__source' => $member_e['e__id'],
                 'x__left' => $current_is[0]['i__id'],
@@ -331,7 +331,7 @@ class X extends CI_Controller
         }
 
         if($member_e && in_array($next_is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE ALREADY?
                 'x__source' => $member_e['e__id'],
                 'x__left' => $next_is[0]['i__id'],
@@ -497,7 +497,7 @@ class X extends CI_Controller
         $member_e = superpower_unlocked();
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ));
 
         if(!$member_e){
@@ -512,7 +512,7 @@ class X extends CI_Controller
         //Should we check for auto next redirect if empty? Only if this is a selection:
         $next_url = null;
         if(!count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
             'x__source' => $member_e['e__id'],
             'x__left' => $is[0]['i__id'],
@@ -537,7 +537,7 @@ class X extends CI_Controller
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__up' => 27664, //Hard Redirect
                 'x__right' => $i__id,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             )) as $hard_redirect){
                 if(strlen($hard_redirect['x__message']) > 0){
 
@@ -588,7 +588,7 @@ class X extends CI_Controller
         $member_e = superpower_unlocked();
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ));
 
         if(!$member_e){
@@ -627,8 +627,8 @@ class X extends CI_Controller
         )))){
             //FIND NEXT IDEAS
             foreach($this->X_model->fetch(array(
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__left' => $previous_level_id,
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i){
@@ -886,7 +886,7 @@ class X extends CI_Controller
         //Validate Idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ));
         if(count($is)<1){
             return view_json(array(
@@ -918,7 +918,7 @@ class X extends CI_Controller
 
         //Delete previous answer(s):
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
             'x__left' => $is[0]['i__id'],
             'x__source' => $member_e['e__id'],
@@ -1058,7 +1058,7 @@ class X extends CI_Controller
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ));
         if(count($is) < 1){
             return view_json(array(
@@ -1069,7 +1069,7 @@ class X extends CI_Controller
 
         //Delete previous answer(s):
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
             'x__left' => $is[0]['i__id'],
             'x__source' => $member_e['e__id'],
@@ -1460,8 +1460,8 @@ class X extends CI_Controller
 
                     //Find Published Parents:
                     foreach($this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-                        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                         'x__right' => $_POST['o__id'],
                     ), array('x__left'), 1) as $previous_i) {
@@ -1556,7 +1556,7 @@ class X extends CI_Controller
 
         //How about the min & max selection?
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type' => 4983, //References
             'x__right' => $_POST['focus__id'],
             'x__up' => 26613, //Min Selection
@@ -1569,7 +1569,7 @@ class X extends CI_Controller
             }
         }
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type' => 4983, //References
             'x__right' => $_POST['focus__id'],
             'x__up' => 26614, //Max Selection
@@ -1727,7 +1727,7 @@ class X extends CI_Controller
 
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ));
         if (!count($is)) {
             return view_json(array(

@@ -443,7 +443,7 @@ class X_model extends CI_Model
             'x__up IN (' . join(',', $this->config->item('n___28904')) . ')' => null, //Manage Notifications
             'x__down' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
         ));
 
         if (!count($notification_levels)) {
@@ -474,7 +474,7 @@ class X_model extends CI_Model
 
         //Send Emails:
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
             'x__down' => $e__id,
@@ -513,7 +513,7 @@ class X_model extends CI_Model
             $sms_message = str_replace("\n"," ",$sms_message);
             //Send SMS
             foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up' => 4783, //Phone
                 'x__down' => $e__id,
@@ -890,8 +890,8 @@ class X_model extends CI_Model
             if(!$is_current_e || $string_references['ref_time_found']){
 
                 foreach($this->X_model->fetch(array(
-                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                     'x__down' => $referenced_e,
                 ), array('x__up'), 0, 0, array(
@@ -900,7 +900,7 @@ class X_model extends CI_Model
                 )) as $e_profile) {
 
                     if(in_array($e_profile['e__id'], $this->config->item('n___4755'))){
-                        //Private Transactions Not Allowed:
+                        //ACTIVE Transactions Not Allowed:
                         continue;
                     }
 
@@ -1012,8 +1012,8 @@ class X_model extends CI_Model
 
         //Fetch parents:
         foreach($this->X_model->fetch(array(
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
         ), array('x__left')) as $i_previous) {
@@ -1022,7 +1022,7 @@ class X_model extends CI_Model
             $is_or_i = in_array($i_previous['i__type'], $this->config->item('n___6193'));
             $is_fixed_x = in_array($i_previous['x__type'], $this->config->item('n___12840'));
             if($e__id>0 && ($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i_previous['i__id'],
                     'x__right' => $i__id,
@@ -1060,8 +1060,8 @@ class X_model extends CI_Model
         foreach ($this->X_model->fetch(array(
             'x__left' => $i['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i) {
 
             //Validate Find After:
@@ -1075,7 +1075,7 @@ class X_model extends CI_Model
             //Validate Selection:
             $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___12840'));
             if(($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
@@ -1087,7 +1087,7 @@ class X_model extends CI_Model
 
             //Return this if everything is completed, or if this is incomplete:
             if($top_completed || !count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                     'x__source' => $e__id,
                     'x__left' => $next_i['i__id'],
@@ -1151,7 +1151,7 @@ class X_model extends CI_Model
         //Validate Idea ID:
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ));
         if (count($is) != 1 || !i_is_startable($is[0])) {
             return 0;
@@ -1165,7 +1165,7 @@ class X_model extends CI_Model
                 'x__source' => $e__id,
                 'x__left' => $i__id,
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             )))){
 
             //Not added to their discoveries so far, let's go ahead and add it:
@@ -1195,7 +1195,7 @@ class X_model extends CI_Model
             foreach($this->X_model->fetch(array(
                 'x__id !=' => $home['x__id'], //Not the newly added idea
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__source' => $e__id, //Belongs to this Member
             ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $current_i){
 
@@ -1242,7 +1242,7 @@ class X_model extends CI_Model
 
             //Make sure previous transaction unlocks have NOT happened before:
             $existing_expansions = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type' => 6140, //DISCOVERY UNLOCK LINK
                 'x__source' => $e__id,
                 'x__left' => $i['i__id'],
@@ -1282,8 +1282,8 @@ class X_model extends CI_Model
             //Detect potential conditional steps to be Unlocked:
             $found_match = 0;
             $locked_x = $this->X_model->fetch(array(
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
                 'x__left' => $i['i__id'],
                 'x__right IN (' . join(',', $i__metadata['i___6283'][$i['i__id']]) . ')' => null, //Limit to cached answers
@@ -1362,8 +1362,8 @@ class X_model extends CI_Model
 
 
         $is_next = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i['i__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
@@ -1400,7 +1400,7 @@ class X_model extends CI_Model
 
                 //Always add all the first members to the full list:
                 $qualified_completed = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                     'x__left' => $next_i['i__id'],
                 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -1417,7 +1417,7 @@ class X_model extends CI_Model
 
                     //Update list of qualified members:
                     $qualified_completed = $this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                         'x__left' => $next_i['i__id'],
                     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -1452,7 +1452,7 @@ class X_model extends CI_Model
 
         //Fetch Source ID:
         $watchers = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type' => 10573, //WATCHERS
             'x__right' => $i['i__id'],
             'x__up > 0' => null,
@@ -1484,7 +1484,7 @@ class X_model extends CI_Model
 
             //IDEA TYPE SELECT NEXT
             $is_next_autoscan = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY ANSWERED
                 'x__source' => $add_fields['x__source'],
                 'x__left' => $i['i__id'],
@@ -1495,7 +1495,7 @@ class X_model extends CI_Model
 
             //IDEA TYPE ALL NEXT
             $is_next_autoscan = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0);
@@ -1512,7 +1512,7 @@ class X_model extends CI_Model
 
                 //No Messages
                 !count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type' => 4231, //IDEA NOTES Messages
                     'x__right' => $next_i['i__id'],
                 ))) &&
@@ -1520,7 +1520,7 @@ class X_model extends CI_Model
                 //One or less next
                 /*
                 count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $next_i['i__id'],
                 ))) <= 1 &&
@@ -1528,7 +1528,7 @@ class X_model extends CI_Model
 
                 //Not Already Completed:
                 !count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                     'x__source' => $add_fields['x__source'],
                     'x__left' => $next_i['i__id'],
@@ -1549,7 +1549,7 @@ class X_model extends CI_Model
 
             //ADD PROFILE?
             foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type' => 7545, //Profile Add
                 'x__right' => $i['i__id'],
             ), array('x__up')) as $x_tag){
@@ -1576,7 +1576,7 @@ class X_model extends CI_Model
                     //Make sure submission is image source reference:
                     foreach($this->X_model->fetch(array(
                         'x__type' => 4260, //IMAGES
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                         'x__down' => intval(str_replace('@','',$add_fields['x__message'])),
                     ), array('x__up'), 1, 0, array('e__spectrum' => 'DESC')) as $profile){
 
@@ -1600,7 +1600,7 @@ class X_model extends CI_Model
 
                     //Assign tag if parent/child transaction NOT previously assigned:
                     $existing_x = $this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
                         'x__down' => $add_fields['x__source'],
@@ -1696,14 +1696,14 @@ class X_model extends CI_Model
 
             //REMOVE PROFILE?
             foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type' => 26599, //Profile Remove
                 'x__right' => $i['i__id'],
             )) as $x_tag){
 
                 //Remove Profile IF previously assigned:
                 $existing_x = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
                     'x__down' => $add_fields['x__source'],
@@ -1791,8 +1791,8 @@ class X_model extends CI_Model
 
                 //Calculate min/max points for this based on answers:
                 foreach($this->X_model->fetch(array(
-                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $question_i__id,
                     'x__right IN (' . join(',', $answers_i__ids) . ')' => null, //Limit to cached answers
@@ -1827,7 +1827,7 @@ class X_model extends CI_Model
                 'x__source' => $e__id, //Belongs to this Member
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             ), array(), 0, 0, array(), 'COUNT(x__id) as total_completions');
 
             //Add to total answer count:
@@ -1838,8 +1838,8 @@ class X_model extends CI_Model
                 'x__source' => $e__id, //Belongs to this Member
                 'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
             ), array('x__right'), 500) as $answer_in) {
 
                 //Fetch recursively:
@@ -1871,8 +1871,8 @@ class X_model extends CI_Model
 
                 //Calculate min/max points for this based on answers:
                 foreach($this->X_model->fetch(array(
-                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $question_i__id,
                     'x__right IN (' . join(',', $answers_i__ids) . ')' => null, //Limit to cached answers
@@ -1907,7 +1907,7 @@ class X_model extends CI_Model
                 'x__source' => $e__id, //Belongs to this Member
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             ), array(), 0, 0, array(), 'COUNT(x__id) as total_completions');
 
             //Add to total answer count:
@@ -1918,8 +1918,8 @@ class X_model extends CI_Model
                 'x__source' => $e__id, //Belongs to this Member
                 'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
             ), array('x__right'), 500) as $answer_in) {
 
                 //Fetch recursively:
@@ -1977,7 +1977,7 @@ class X_model extends CI_Model
         //Count totals:
         $common_totals = $this->I_model->fetch(array(
             'i__id IN ('.join(',',$flat_common_x).')' => null,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ), 0, 0, array(), 'COUNT(i__id) as total_x');
 
 
@@ -1986,8 +1986,8 @@ class X_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
             'x__source' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ), array('x__left'), 0, 0, array(), 'COUNT(i__id) as completed_x, SUM(i__duration) as completed_seconds');
 
 
@@ -2015,8 +2015,8 @@ class X_model extends CI_Model
                 'x__source' => $e__id, //Belongs to this Member
                 'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
                 'x__right IN (' . join(',', $answer_array) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
             ), array('x__right')) as $expansion_in) {
 
                 //Fetch recursive:
@@ -2038,8 +2038,8 @@ class X_model extends CI_Model
                 'x__source' => $e__id, //Belongs to this Member
                 'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
                 'x__right IN (' . join(',', array_flatten($i__metadata['i___6283'])) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
             ), array('x__right')) as $expansion_in) {
 
                 //Fetch recursive:
@@ -2099,7 +2099,7 @@ class X_model extends CI_Model
                 'x__left' => $i__id,
                 'x__source' => $e__id,
                 'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             )));
 
         } else {
@@ -2109,7 +2109,7 @@ class X_model extends CI_Model
                 foreach($this->X_model->fetch(array(
                     'x__source' => $e__id,
                     'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 )) as $u_in){
                     array_push($u_x_ids, intval($u_in['x__left']));
                 }
@@ -2126,11 +2126,11 @@ class X_model extends CI_Model
 
         $is = $this->I_model->fetch(array(
             'i__id' => $question_i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PRIVATE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
         ));
         $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PRIVATE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
         ));
         if (!count($is)) {
             return array(
@@ -2167,7 +2167,7 @@ class X_model extends CI_Model
 
         //Delete ALL previous answers:
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY ANSWERED
             'x__source' => $e__id,
             'x__left' => $is[0]['i__id'],

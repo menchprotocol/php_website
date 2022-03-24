@@ -250,7 +250,7 @@ function i_is_startable($i)
     $CI =& get_instance();
     return in_array($i['i__type'], $CI->config->item('n___7355')) && (
             count($CI->X_model->fetch(array(
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__right' => $i['i__id'],
                 'x__up IN (' . join(',', $CI->config->item('n___26124')) . ')' => null, //Starting Topics
@@ -258,7 +258,7 @@ function i_is_startable($i)
             /* || count($CI->X_model->fetch(array(
                 'x__right' => $i['i__id'],
                 'x__type' => 10573, //STARRED
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
             ))) */
         );
 
@@ -462,7 +462,7 @@ function i_description($i__id){
 
     $CI =& get_instance();
     foreach($CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i__id,
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $fetched_e){
@@ -605,7 +605,7 @@ function reset_cache($x__source){
         'x__type' => 14599, //Cache App
         'x__up IN (' . join(',', $CI->config->item('n___14599')) . ')' => null, //Cache Apps
         'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
-        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
     )) as $delete_cahce){
         //Delete email:
         $count += $CI->X_model->update($delete_cahce['x__id'], array(
@@ -763,7 +763,7 @@ function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null
         //SOURCES
         $query_filters = array(
             'x__type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
 
         );
 
@@ -771,7 +771,7 @@ function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null
 
         //IDEAS
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
         );
 
@@ -779,7 +779,7 @@ function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null
 
         //DISCOVERIES
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
         );
 
@@ -1385,17 +1385,17 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
     if(strlen($i__id)){
         $query = array_merge($query, $CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___26582')) . ')' => null, //Send Instant Message
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
-            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PRIVATE
-            'x__left IN (' . $i__id . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //ACTIVE
+            'x__left IN (' . $i__id . ')' => null, //ACTIVE
         ), array('x__source'), 0, 0, array('x__id' => 'DESC')));
     }
 
     if(strlen($e__id)){
         $query = array_merge($query, $CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
-            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //ACTIVE
             'x__up IN (' . $e__id . ')' => null,
         ), array('x__down'), 0, 0, array('x__id' => 'DESC')));
     }
@@ -1412,7 +1412,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
             'x__up IN (' . join(',', $CI->config->item('n___28914')) . ')' => null, //Fully Unsubscribed
             'x__down' => $subscriber['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
         )))) {
             continue;
         }
@@ -1420,7 +1420,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         //Any exclusions?
         if(strlen($exclude_e) && count($CI->X_model->fetch(array(
                 'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__up IN (' . $exclude_e . ')' => null,
                 'x__down' => $subscriber['e__id'],
             )))){
@@ -1429,7 +1429,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
         if(strlen($include_e) && !count($CI->X_model->fetch(array(
                 'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__up IN (' . $include_e . ')' => null,
                 'x__down' => $subscriber['e__id'],
             )))){
@@ -1443,14 +1443,14 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
             'x__up' => 3288, //Email
             'x__down' => $subscriber['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
         ));
         $e_email = ( count($e_emails) && filter_var($e_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $e_emails[0]['x__message'] : false );
         $e_phones = $CI->X_model->fetch(array(
             'x__up' => 4783, //Phone
             'x__down' => $subscriber['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
         ));
         $e_phone = ( count($e_phones) && strlen($e_phones[0]['x__message'])>=10 ? $e_phones[0]['x__message'] : false );
 
@@ -1518,7 +1518,7 @@ function source_of_e($e__id, $member_e = array()){
         //Member has source in their portfolio
         || count($CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
             'x__up' => $member_e['e__id'],
             'x__down' => $e__id,
         )))
@@ -1550,7 +1550,7 @@ function e_of_i($i__id, $member_e = array()){
                     'x__source' => $member_e['e__id'],
                 ))) ||
                 count($CI->X_model->fetch(array( //IDEA SOURCE
-                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $i__id,
                     'x__up' => $member_e['e__id'],
@@ -1837,7 +1837,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
                 //Fetch Discoveries
                 foreach($CI->X_model->fetch(array(
-                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $CI->config->item('n___29133')) . ')' => null, //Written Responses
                     'x__source' => $s['e__id'], //This child source
                 ), array('x__source'), 0, 0, array('x__time' => 'DESC')) as $x){
@@ -1883,7 +1883,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
                 //Is SOURCE for any IDEA?
                 foreach($CI->X_model->fetch(array(
-                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PRIVATE
+                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $s['i__id'],
                     'x__up > ' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
