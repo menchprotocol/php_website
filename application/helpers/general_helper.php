@@ -714,7 +714,7 @@ function send_dm_template($member, $template_id){
     $e___26154 = $CI->config->item('e___26154'); //RECEIVED ON EMAIL
 
     //Send DM:
-    $CI->X_model->send_dm($member['e__id'], $e___26154[$template_id]['m__title'], $e___26154[$template_id]['m__message']);
+    $CI->X_model->send_dm($member['e__id'], $e___26154[$template_id]['m__title'], $e___26154[$template_id]['m__message'], array(), $template_id);
 
 }
 
@@ -1231,7 +1231,7 @@ function e__title_validate($string, $x__type = 0){
 }
 
 
-function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array()){
+function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0){
 
     $CI =& get_instance();
     $from_email = get_domain_setting(28614, $e__id);
@@ -1301,7 +1301,8 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
     //Log transaction:
     $CI->X_model->create(array_merge($x_data, array(
-        'x__type' => 12114,
+        'x__type' => 29399,
+        'x__down' => $template_id,
         'x__source' => $e__id,
         'x__message' => $subject."\n\n".$email_message,
         'x__metadata' => array(

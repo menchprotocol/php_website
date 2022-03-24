@@ -436,7 +436,7 @@ class X_model extends CI_Model
 
 
 
-    function send_dm($e__id, $subject, $plain_message, $x_data = array())
+    function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_id = 0)
     {
 
         $notification_levels = $this->X_model->fetch(array(
@@ -493,7 +493,7 @@ class X_model extends CI_Model
 
         if(count($stats['email_addresses']) > 0){
             //Send email:
-            send_email($stats['email_addresses'], $subject, $plain_message, $e__id, $x_data);
+            email_send($stats['email_addresses'], $subject, $plain_message, $e__id, $x_data, $template_id);
         }
 
 
@@ -556,6 +556,7 @@ class X_model extends CI_Model
                         'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
                         'x__source' => $e__id,
                         'x__message' => $single_message,
+                        'x__down' => $template_id,
                         'x__metadata' => array(
                             'post' => $post,
                             'response' => $y,
