@@ -1249,7 +1249,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     //Email has no word limit to add header & footer:
     $e___6287 = $CI->config->item('e___6287'); //APP
     $email_message = 'Hi '.$name.' 👋'."\n\n";
-    $email_message .= $email_body."\n\n";
+    $email_message .= str_replace('e__id',$e__id,$email_body)."\n\n";
     $email_message .= view_shuffle_message(12691)."\n";
     $email_message .= get_domain('m__title', $e__id);
     $email_message .= '<div><a href="https://'.get_domain('m__message').'/-28904" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
