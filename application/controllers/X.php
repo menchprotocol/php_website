@@ -660,10 +660,35 @@ class X extends CI_Controller
 
         $member_e = superpower_unlocked();
 
+        if(isset($_GET['x_e__id']) && intval($_GET['x_e__id'])>0){
+            //Delete previous answer(s):
+            $completed = 0;
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                'x__left' => $i__id,
+            )) as $x){
+                if(!count($this->X_model->fetch(array(
+                    'x__up' => $_GET['x_e__id'],
+                    'x__down' => $x['x__source'],
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                )))){
+                    //Add source link:
+                    $completed++;
+                    $this->X_model->create(array(
+                        'x__type' => e_x__type(),
+                        'x__source' => ($member_e ? $member_e['e__id'] : $x['x__source']),
+                        'x__up' => $_GET['x_e__id'],
+                        'x__down' => $x['x__source'],
+                    ));
+                }
+            }
+            echo '<div>'.$completed.' sources who played this idea added to @'.$_GET['x_e__id'].'</div>';
+        }
 
         //Log link if not there:
-        if($tag__id>0 &&
-            $member__id>0 &&
+        if($tag__id>0 && $member__id>0 &&
             count($this->X_model->fetch(array(
                 'x__up' => 4430, //MEMBERS
                 'x__down' => $member__id,
