@@ -2673,6 +2673,7 @@ function e_radio(focus__id, selected_e__id, enable_mulitiselect){
         selected_e__id: selected_e__id,
         enable_mulitiselect: enable_mulitiselect,
         was_previously_selected: was_previously_selected,
+        member__id_override: $('#member__id_override').val(),
     }, function (data) {
 
         $(notify_el).html(initial_icon);

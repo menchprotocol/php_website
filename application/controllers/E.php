@@ -915,14 +915,19 @@ class E extends CI_Controller
          *
          * */
 
-        $member_e = superpower_unlocked();
+        if(isset($_POST['member__id_override']) && intval($_POST['member__id_override']) > 0){
+            $member_e['e__id'] = intval($_POST['member__id_override']);
+        } else {
+            $member_e = superpower_unlocked();
+            if (!$member_e) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => view_unauthorized_message(),
+                ));
+            }
+        }
 
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['focus__id']) || intval($_POST['focus__id']) < 1) {
+        if (!isset($_POST['focus__id']) || intval($_POST['focus__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing parent source',
@@ -938,6 +943,7 @@ class E extends CI_Controller
                 'message' => 'Missing multi-select setting',
             ));
         }
+
 
 
         if(!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected']){
@@ -1001,7 +1007,9 @@ class E extends CI_Controller
 
 
         //Update Session:
-        $this->E_model->activate_session($member_e, true);
+        if(count($member_e) >= 2){
+            $this->E_model->activate_session($member_e, true);
+        }
 
 
         //All good:
