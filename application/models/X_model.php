@@ -344,6 +344,7 @@ class X_model extends CI_Model
                             if(count($before_data)){
                                 $x__metadata = unserialize($before_data[0]['x__metadata']);
                                 if(isset($x__metadata['txn_id']) && strlen($x__metadata['txn_id']) && $before_data[0]['x__type']==26595 && $before_data[0]['x__status']!=6173 && $value==6173){
+
                                     $cred_paypal = $this->config->item('cred_paypal');
                                     $ch=curl_init();
                                     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -1588,13 +1589,13 @@ class X_model extends CI_Model
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type' => 29430, //Remove Plays
                 'x__right' => $i['i__id'],
-            )) as $x_tag){
+            )) as $e_play_removal){
 
                 //Go through all Notes associated with this source:
                 foreach($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                    'x__up' => $x_tag['x__up'],
+                    'x__up' => $e_play_removal['x__up'],
                     'x__right !=' => $i['i__id'],
                 )) as $remove_i){
 
