@@ -1413,6 +1413,8 @@ label {
 
 .answer-item {
     border:3px solid transparent;
+    background-color:#FFFFFF !important;
+    color: #000000 !important;
 }
 
 
@@ -2856,7 +2858,6 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .coinType12274,
 .custom_ui_13884_13886 .coinType6255,
 */
-.custom_ui_13884_13886 .answer-item,
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 .list-border .list-group-item,
 .custom_ui_13884_13886 .doabsolute, .custom_ui_13884_13886 .black-background {
@@ -2996,7 +2997,6 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .coinType12274,
 .custom_ui_13884_13885 .coinType6255,
 */
-.custom_ui_13884_13885 .answer-item,
 .custom_ui_13884_13885 .modal-content,
 .custom_ui_13884_13885 .list-border .list-group-item,
 .custom_ui_13884_13885 .doabsolute,
