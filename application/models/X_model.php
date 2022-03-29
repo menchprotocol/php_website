@@ -329,6 +329,7 @@ class X_model extends CI_Model
 
                     //Log modification transaction for every field changed:
                     foreach($update_columns as $key => $value) {
+
                         if($before_data[0][$key]==$value){
                             continue;
                         }
@@ -342,7 +343,7 @@ class X_model extends CI_Model
                             //Is this a Paypal transaction being removed?
                             if(count($before_data)){
                                 $x__metadata = unserialize($before_data[0]['x__metadata']);
-                                if(isset($x__metadata['txn_id']) && strlen($x__metadata['txn_id']) && $before_data[0]['x__type']==26595 && $value==6173){
+                                if(isset($x__metadata['txn_id']) && strlen($x__metadata['txn_id']) && $before_data[0]['x__type']==26595 && $before_data[0]['x__status']!=6173 && $value==6173){
                                     $cred_paypal = $this->config->item('cred_paypal');
                                     $ch=curl_init();
                                     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -360,7 +361,7 @@ class X_model extends CI_Model
 
                                     //Log this refund:
                                     $this->X_model->create(array(
-                                        'x__source' => $x__source,
+                                        'x__source' => $before_data[0]['x__source'],
                                         'x__type' => 29432, //Paypal Full Refund
                                         'x__right' => $before_data[0]['x__right'],
                                         'x__left' => $before_data[0]['x__left'],
@@ -1602,7 +1603,7 @@ class X_model extends CI_Model
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                         'x__left' => $remove_i['x__right'], //IDEA LINKS
-                        'x__source' => $add_fields['x__source'],
+                        'x__source' => $member_e['e__id'],
                     )) as $remove_x){
 
                         //Remove this discovery:
