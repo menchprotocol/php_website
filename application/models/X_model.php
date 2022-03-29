@@ -294,12 +294,10 @@ class X_model extends CI_Model
             return false;
         }
 
-        if($x__source > 0){
-            //Fetch transaction before updating:
-            $before_data = $this->X_model->fetch(array(
-                'x__id' => $id,
-            ));
-        }
+        //Fetch transaction before updating:
+        $before_data = $this->X_model->fetch(array(
+            'x__id' => $id,
+        ));
 
         //Update metadata if needed:
         if(isset($update_columns['x__metadata']) && is_array($update_columns['x__metadata'])){
@@ -340,6 +338,41 @@ class X_model extends CI_Model
 
                             $e___6186 = $this->config->item('e___6186'); //Transaction Status
                             $x__message .= view_db_field($key) . ' updated from [' . $e___6186[$before_data[0][$key]]['m__title'] . '] to [' . $e___6186[$value]['m__title'] . ']'."\n";
+
+                            //Is this a Paypal transaction being removed?
+                            if(count($before_data)){
+                                $x__metadata = unserialize($before_data[0]['x__metadata']);
+                                if(isset($x__metadata['txn_id']) && strlen($x__metadata['txn_id']) && $before_data[0]['x__type']==26595 && $value!=26595){
+                                    $cred_paypal = $this->config->item('cred_paypal');
+                                    $ch=curl_init();
+                                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                                        'Content-Type: application/json',
+                                        'Authorization: Basic '.base64_encode($cred_paypal['client_id'].":".$cred_paypal['secret_key']),
+                                    ));
+                                    curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
+                                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                    curl_setopt($ch, CURLOPT_HEADER, false);
+                                    //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                                    curl_setopt($ch, CURLOPT_POST, true);
+                                    curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
+                                    $result = curl_exec($ch);
+                                    $y=json_decode($result,true);
+
+                                    //Log this refund:
+                                    $this->X_model->create(array(
+                                        'x__source' => $x__source,
+                                        'x__type' => 29432, //Paypal Full Refund
+                                        'x__right' => $before_data[0]['x__right'],
+                                        'x__left' => $before_data[0]['x__left'],
+                                        'x__up' => $before_data[0]['x__up'],
+                                        'x__down' => $before_data[0]['x__down'],
+                                        'x__reference' => $before_data[0]['x__id'],
+                                        'x__message' => $x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].' Refunded in Full',
+                                        'x__metadata' => $y,
+                                    ));
+
+                                }
+                            }
 
                         } elseif($key=='x__type'){
 
@@ -1548,6 +1581,39 @@ class X_model extends CI_Model
         $detected_x_type = x_detect_type($add_fields['x__message']);
         if ($detected_x_type['status']) {
 
+
+            //CLEAR PLAYS?
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'x__type' => 29430, //Remove Plays
+                'x__right' => $i['i__id'],
+            )) as $x_tag){
+
+                //Go through all Notes associated with this source:
+                foreach($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__up' => $x_tag['x__up'],
+                    'x__right !=' => $i['i__id'],
+                )) as $remove_i){
+
+                    //Remove all Discoveries made by this user:
+                    foreach($this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                        'x__left' => $remove_i['x__right'], //IDEA LINKS
+                        'x__source' => $add_fields['x__source'],
+                    )) as $remove_x){
+
+                        //Remove this discovery:
+                        $this->X_model->update($remove_x['x__id'], array(
+                            'x__status' => 6173,
+                        ), $member_e['e__id'], 29431 /* Play Auto Removed */);
+                    }
+                }
+            }
+
+
             //ADD PROFILE?
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
@@ -1726,6 +1792,8 @@ class X_model extends CI_Model
                     }
                 }
             }
+
+
         }
 
 
