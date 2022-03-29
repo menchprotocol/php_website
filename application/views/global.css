@@ -2750,7 +2750,7 @@ font-weight: bold !important;
     background-color: #000000;
 }
 
-.custom_ui_13884_13886.custom_ui_28979_28981 .cover-content,
+.custom_ui_13884_13886 .cover-content,
 .custom_ui_13884_13886 .light-bg {
     background: rgba(0,0,0,0.80);
 }
@@ -2889,7 +2889,7 @@ font-weight: bold !important;
     background-color: #FFFFFF;
 }
 
-.custom_ui_13884_13885.custom_ui_28979_28981 .cover-content,
+.custom_ui_13884_13885 .cover-content,
 .custom_ui_13884_13885 .light-bg {
     background: rgba(255,255,255,0.80) !important;
 }
