@@ -82,6 +82,7 @@ if(!$member_e){
         }
 
 
+
         echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[14730]['m__cover'].'</span>'.$e___14709[14730]['m__title'].'</div>';
         echo '<div class="padded">'.$is[0]['i__title'].'</div>';
 
@@ -97,9 +98,25 @@ if(!$member_e){
         echo '<div class="share_feedback">';
 
 
-        //Share
-        echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[13024]['m__cover'].'</span>' . $e___14709[13024]['m__title'] . '</div>';
-        echo '<div class="padded"><input type="url" class="form-control border share_url" value=""></div>';
+        if(!count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'x__type' => 4983, //References
+                'x__right' => $is[0]['i__id'],
+                'x__up' => 14709, //Disable Sharing
+            )))){
+            //Share This
+            echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[13024]['m__cover'].'</span>' . $e___14709[13024]['m__title'] . '</div>';
+            echo '<div class="padded"><input type="url" class="form-control border share_url" value=""></div>';
+            ?>
+            <script>
+                var new_url = "https://<?= get_server('SERVER_NAME') ?>/<?= $is[0]['i__id'] ?>";
+                $(document).ready(function () {
+                    $('.share_url').val(new_url);
+                });
+            </script>
+            <?php
+        }
+
 
 
         //SOCIAL FOOTER
@@ -141,6 +158,10 @@ if(!$member_e){
         ?>
         <script>
 
+            $(document).ready(function () {
+                set_autosize($('#feedback_writing_14720'));
+            });
+
             function go_to_next(){
                 window.location = '/@'+js_pl_id;
             }
@@ -176,19 +197,6 @@ if(!$member_e){
                 }
 
             }
-
-
-            var new_url = "https://<?= get_server('SERVER_NAME') ?>/<?= $is[0]['i__id'] ?>";
-
-            $(document).ready(function () {
-
-                $('.share_url').val(new_url);
-
-                set_autosize($('#feedback_writing_14720'));
-
-            });
-
-
         </script>
         <?php
         echo '</div>';
