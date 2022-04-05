@@ -102,7 +102,7 @@ if(!$member_e){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type' => 4983, //References
                 'x__right' => $is[0]['i__id'],
-                'x__up' => 14709, //Disable Sharing
+                'x__up' => 29443, //Disable Sharing
             )))){
             //Share This
             echo '<div class="headline top-margin"><span class="icon-block">'.$e___14709[13024]['m__cover'].'</span>' . $e___14709[13024]['m__title'] . '</div>';
