@@ -1295,7 +1295,7 @@ class E_model extends CI_Model
         $focus_e = $this->E_model->create(array(
             'e__title' => $e__title_validate['e__title_clean'],
             'e__cover' => $e__cover,
-            'e__type' => 6181,
+            'e__type' => 6181, //Private
         ), true, $x__source);
 
         //Return success:
