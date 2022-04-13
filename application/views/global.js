@@ -2757,7 +2757,7 @@ function isNormalInteger(str) {
 
 
 
-function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name, selected_e__id){
+function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
     /*
     *
@@ -2829,6 +2829,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name, se
             $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .dropi_' + element_id +'_'+o__id+ '_' + x__id).removeClass('active');
             $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .optiond_' + new_e__id+'_'+o__id+ '_' + x__id).addClass('active');
 
+            var selected_e__id = $('.dropd_'+element_id+'_'+o__id+'_'+x__id).attr('selected-val');
             $('.dropd_'+element_id+'_'+o__id+'_'+x__id).attr('selected-val' , new_e__id);
 
             if(element_id==6177){
