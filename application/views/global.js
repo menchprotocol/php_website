@@ -2757,7 +2757,7 @@ function isNormalInteger(str) {
 
 
 
-function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
+function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name, selected_e__id){
 
     /*
     *
@@ -2830,6 +2830,11 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
             $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .optiond_' + new_e__id+'_'+o__id+ '_' + x__id).addClass('active');
 
             $('.dropd_'+element_id+'_'+o__id+'_'+x__id).attr('selected-val' , new_e__id);
+
+            if(element_id==6177){
+                //Update source status:
+                $('.coin___12274_'+o__id+' .cover-link').removeClass('coinStatus'+selected_e__id).addClass('coinStatus'+new_e__id);
+            }
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
                 //Go to main idea page:

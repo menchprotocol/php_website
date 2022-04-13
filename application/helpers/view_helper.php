@@ -2388,7 +2388,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $
             } else{
 
                 //Idea Dropdown updater:
-                $anchor_url = 'href="javascript:void();" new-en-id="'.$e__id.'" onclick="update_dropdown('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"';
+                $anchor_url = 'href="javascript:void();" new-en-id="'.$e__id.'" onclick="update_dropdown('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).', '.$selected_e__id.')"';
 
             }
 
