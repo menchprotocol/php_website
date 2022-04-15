@@ -37,11 +37,11 @@ if(!isset($_GET['i__id'])){
             'x__left' => $_GET['i__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i) {
 
-            echo '<h3 style="margin:13px 0;"><a href="javascript:void(0);" onclick="$(\'.i_msg_'.$i['i__id'].'\').toggleClass(\'hidden\');" class="inner-content doblock">' . $i['i__title'] . '</a></h3>';
+            echo '<h3 style="margin:13px 0; padding-left:5px;"><a href="javascript:void(0);" onclick="$(\'.i_msg_'.$i['i__id'].'\').toggleClass(\'hidden\');" class="inner-content doblock">' . $i['i__title'] . '</a></h3>';
 
             //MESSAGES
             echo '<div style="border-bottom: 1px solid #000;">';
-            echo '<div class="i_msg_'.$i['i__id'].' hidden" style="padding:5px 0 34px 41px;">';
+            echo '<div class="i_msg_'.$i['i__id'].' hidden" style="padding:5px 5px 13px 34px;">';
             foreach ($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type' => 4231, //IDEA NOTES Messages
