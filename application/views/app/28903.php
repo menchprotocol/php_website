@@ -14,7 +14,7 @@ if(!isset($_GET['i__id'])){
         echo 'Invalid i__id';
     } else {
 
-        echo '<div class="container-center">';
+        echo '<div class="x">';
 
         //IDEA TITLE
         echo '<h1>' . $is[0]['i__title'] . '</h1>';
@@ -27,6 +27,7 @@ if(!isset($_GET['i__id'])){
         ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
             echo $this->X_model->message_view($x['x__message'], true);
         }
+        echo '<br /><br />';
 
         //1 Level of Next Ideas:
         foreach ($is_next = $this->X_model->fetch(array(
@@ -36,10 +37,10 @@ if(!isset($_GET['i__id'])){
             'x__left' => $_GET['i__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i) {
 
-            echo '<h3 style="margin-bottom: 21px;"><a href="javascript:void(0);" onclick="$(\'.i_msg_'.$i['i__id'].'\').toggleClass(\'hidden\');" class="inner-content doblock">' . $i['i__title'] . '</a></h3>';
+            echo '<h3 style="margin-bottom: 13px;"><a href="javascript:void(0);" onclick="$(\'.i_msg_'.$i['i__id'].'\').toggleClass(\'hidden\');" class="inner-content doblock">' . $i['i__title'] . '</a></h3>';
 
             //MESSAGES
-            echo '<div class="i_msg_'.$i['i__id'].' hidden" style="padding:5px 41px;">';
+            echo '<div class="i_msg_'.$i['i__id'].' hidden" style="padding:5px 0 21px 41px;">';
             foreach ($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type' => 4231, //IDEA NOTES Messages
