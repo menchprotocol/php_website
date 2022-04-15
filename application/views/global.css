@@ -3213,7 +3213,10 @@ font-weight: bold !important;
     background-color: #FC1B44 !important;
 }
 
-
+.container-center{
+    max-width: 610px;
+    margin: 0 auto;
+}
 
 .coinType12274 {
     border-radius:50% !important;

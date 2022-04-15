@@ -14,7 +14,7 @@ if(!isset($_GET['i__id'])){
         echo 'Invalid i__id';
     } else {
 
-        echo '<div class="container">';
+        echo '<div class="container-center">';
 
         //IDEA TITLE
         echo '<h1>' . $is[0]['i__title'] . '</h1>';
