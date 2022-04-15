@@ -742,12 +742,7 @@ echo '</div>';
 <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
 <input type="hidden" id="click_count" value="0" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
-<input type="hidden" id="must_click" value="<?= ( count($x_completes) ? 0 : count($this->X_model->fetch(array(
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-    'x__up' => 27178, //Require Link Click
-    'x__right' => $i_focus['i__id'],
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
-)))) ?>" />
+
 
 <script type="text/javascript">
 

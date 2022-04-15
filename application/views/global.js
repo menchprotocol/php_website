@@ -3102,12 +3102,6 @@ function e_e_only_search_7551() {
 
 function go_next(){
 
-    //Click Requirement?
-    if(parseInt($('#must_click').val()) && $(".should-click")[0] && !parseInt($('#click_count').val())){
-        alert('Click on the link ['+$('.should-click:first').text()+'] before going next.');
-        return false;
-    }
-
     var go_next_url = $('#go_next_url').val();
 
     //Attempts to go next if no submissions:
