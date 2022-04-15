@@ -40,7 +40,8 @@ if(!isset($_GET['i__id'])){
             echo '<h3 style="margin:13px 0;"><a href="javascript:void(0);" onclick="$(\'.i_msg_'.$i['i__id'].'\').toggleClass(\'hidden\');" class="inner-content doblock">' . $i['i__title'] . '</a></h3>';
 
             //MESSAGES
-            echo '<div class="i_msg_'.$i['i__id'].' hidden" style="padding:5px 0 34px 41px; border-bottom: 1px solid #000;">';
+            echo '<div style="border-bottom: 1px solid #000;">';
+            echo '<div class="i_msg_'.$i['i__id'].' hidden" style="padding:5px 0 34px 41px;">';
             foreach ($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__type' => 4231, //IDEA NOTES Messages
@@ -48,6 +49,7 @@ if(!isset($_GET['i__id'])){
             ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
                 echo $this->X_model->message_view($x['x__message'], true);
             }
+            echo '</div>';
             echo '</div>';
 
         }
