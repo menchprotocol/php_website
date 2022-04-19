@@ -944,14 +944,6 @@ function view_body_i($x__type, $counter, $i__id){
         //IDEA NOTES
         $ui .= view_i_note_list($x__type, false, $is[0], $list_results, $e_of_i);
 
-    } elseif($x__type==12969){
-
-        $ui .= '<div class="row justify-content">';
-        foreach($list_results as $e){
-            $ui .= view_e(12969, $e);
-        }
-        $ui .= '</div>';
-
     }
 
     return $ui;
@@ -2094,7 +2086,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $source_of_e = ($superpower_13422) || ($source_of_e && $member_e);
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
-    $supports_messages = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___20409')));
+    $supports_messages = ( $x__id > 0 && strlen($e['x__message']) );
 
     $is_app = $x__type==6287;
 
