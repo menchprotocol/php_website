@@ -2140,7 +2140,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
                 $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(4997,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
-            } elseif($e__id==13571 && $supports_messages && $superpower_13422){
+            } elseif($e__id==13571 && $x__id > 0 && $superpower_13422){
 
                 //Edit Message
                 $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>';
