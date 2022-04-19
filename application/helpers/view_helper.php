@@ -2184,7 +2184,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //Determine coin type: (Hack removed)
     $cointype = 'coinType12274';
-    if ($discovery_mode && 0) { // || substr_count($e['e__cover'], 'fas fa-circle zq6255')
+    if ($discovery_mode) { // || substr_count($e['e__cover'], 'fas fa-circle zq6255')
         $cointype = 'coinType12274 coinType6255';
         //} elseif (substr_count($e['e__cover'], 'fas fa-circle zq12273')) {
         //$cointype = 'coinType12273'; //Hack to make a source like an idea only for the source idea!
