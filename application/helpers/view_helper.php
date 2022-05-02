@@ -1088,13 +1088,31 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     //Return Results:
     if($page_num > 0){
 
-        $limit = view_memory(6404,11064);
-        return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
+        if($x__type==12274){
+
+            return array_merge(
+                view_coins_e(11029, $e__id, $page_num, $append_coin_icon),
+                view_coins_e(11030, $e__id, $page_num, $append_coin_icon)
+            );
+
+        } else {
+            $limit = view_memory(6404,11064);
+            return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
+        }
+
+
 
     } else {
 
-        $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
-        $count_query = $query[0]['totals'];
+        if($x__type==12274){
+
+            $count_query = view_coins_e(11029, $e__id, 0, false) + view_coins_e(11030, $e__id, 0, false);
+
+        } else {
+            $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
+            $count_query = $query[0]['totals'];
+        }
+
 
         if($append_coin_icon){
 
@@ -2292,8 +2310,9 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     //Coin Block
     if($superpower_10939 && !$is_app && !$focus_coin){
         $ui .= '<div class="coin_coins">';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_e(11030,  $e['e__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_e(11029,  $e['e__id']).'</span>';
+        //$ui .= '<span class="hideIfEmpty">'.view_coins_e(11030,  $e['e__id']).'</span>';
+        //$ui .= '<span class="hideIfEmpty">'.view_coins_e(11029,  $e['e__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_e(12274,  $e['e__id']).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(12273,  $e['e__id']).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(6255,  $e['e__id']).'</span>';
         $ui .= '</div>';
