@@ -1095,9 +1095,9 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         if($x__type==12274){
 
             return array_merge(
-                view_coins_e(11029, $e__id, $page_num, $append_coin_icon),
-                array('is_break' => true),
-                view_coins_e(11030, $e__id, $page_num, $append_coin_icon)
+                view_coins_e(11030, $e__id, $page_num, $append_coin_icon),
+                array(array('is_break' => true)),
+                view_coins_e(11029, $e__id, $page_num, $append_coin_icon)
             );
 
         } else {
