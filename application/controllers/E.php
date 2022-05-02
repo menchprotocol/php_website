@@ -256,7 +256,7 @@ class E extends CI_Controller
                 foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false, view_memory(6404,13206)) as $source_e) {
                     if(isset($source_e['is_break'])){
                         $ui .= '<hr />';
-                    } else {
+                    } elseif(isset($source_e['e__id'])){
                         $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                         $listed_items++;
                     }
