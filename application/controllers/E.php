@@ -250,15 +250,8 @@ class E extends CI_Controller
             $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
 
 
-            if($_POST['x__type']==11029){
+            if($_POST['x__type']==11029 || $_POST['x__type']==11030 || $_POST['x__type']==12274){
                 //SOURCES
-                $e___4593 = $this->config->item('e___4593'); //Transaction Types
-                foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false, view_memory(6404,13206)) as $source_e) {
-                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
-                    $listed_items++;
-                }
-            } elseif($_POST['x__type']==11030){
-                //PROFILES
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false, view_memory(6404,13206)) as $source_e) {
                     $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
