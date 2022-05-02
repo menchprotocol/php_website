@@ -1106,7 +1106,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         if($x__type==12274){
 
-            $count_query = view_coins_e(11029, $e__id, 0, false) + view_coins_e(11030, $e__id, 0, false);
+            $count_query = view_coins_e(11029, $e__id, $page_num, $append_coin_icon) + view_coins_e(11030, $e__id, $page_num, $append_coin_icon);
 
         } else {
             $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
