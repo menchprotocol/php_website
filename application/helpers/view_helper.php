@@ -685,8 +685,8 @@ function view_coins(){
     return $ui;
 }
 
-function view_coin_line($href, $is_current, $o__type, $o__cover, $o__title, $x__message = null){
-    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xs">'.$o__cover.'</span>'.$o__title.'<span class="pull-right inline-block">'.$o__type.'</span>'.( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).'</a>';
+function view_coin_line($href, $is_current, $x__type, $o__type, $o__cover, $o__title, $x__message = null){
+    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xs">'.$x__type.'</span><span class="icon-block-xs">'.$o__type.'</span><span class="icon-block-xs">'.$o__cover.'</span>'.$o__title./*'<span class="pull-right inline-block">'..'</span>'.*/( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).'</a>';
 }
 
 
@@ -1105,8 +1105,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
         }
 
-
-
     } else {
 
         if($x__type==12274){
@@ -1241,6 +1239,10 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             'x__right' => $i__id,
         );
 
+    } elseif($x__type==12273) {
+
+        //Will merge down below
+
     } else {
 
         return null;
@@ -1252,13 +1254,31 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
     //Return Results:
     if($page_num > 0){
 
-        $limit = view_memory(6404,11064);
-        return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
+        if($x__type==12273){
+
+            return array_merge(
+                view_coins_i(13542, $i__id, $page_num, $append_coin_icon),
+                array(array('is_break' => true)),
+                view_coins_i(11019, $i__id, $page_num, $append_coin_icon)
+            );
+
+        } else {
+            $limit = view_memory(6404,11064);
+            return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
+        }
 
     } else {
 
-        $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
-        $count_query = $query[0]['totals'];
+        if($x__type==12273){
+
+            $count_query =
+                view_coins_i(13542, $i__id, 0, false) +
+                view_coins_i(11019, $i__id, 0, false);
+
+        } else {
+            $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
+            $count_query = $query[0]['totals'];
+        }
 
         if($append_coin_icon){
 
@@ -2007,8 +2027,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
         $ui .= '<div class="coin_coins">';
         $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i['i__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_i(11019,  $i['i__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_i(13542,  $i['i__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_i(12273,  $i['i__id']).'</span>';
+        //$ui .= '<span class="hideIfEmpty">'.view_coins_i(11019,  $i['i__id']).'</span>';
+        //$ui .= '<span class="hideIfEmpty">'.view_coins_i(13542,  $i['i__id']).'</span>';
         $ui .= '<span class="hideIfEmpty i_reset_discoveries_'.$i['i__id'].'">'.view_coins_i(6255,  $i['i__id']).'</span>';
         $ui .= '</div>';
 

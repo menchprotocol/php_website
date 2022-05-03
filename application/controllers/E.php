@@ -246,40 +246,38 @@ class E extends CI_Controller
 
             $ui = '';
             $listed_items = 0;
-            $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
-            $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
-
 
             if($_POST['x__type']==11029 || $_POST['x__type']==11030 || $_POST['x__type']==12274){
                 //SOURCES
+                $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
+                $e___6177 = $this->config->item('e___6177'); //Source Types
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false, view_memory(6404,13206)) as $source_e) {
                     if(isset($source_e['is_break'])){
                         $ui .= '<hr />';
                     } elseif(isset($source_e['e__id'])){
-                        $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
+                        $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                         $listed_items++;
                     }
                 }
-            } elseif($_POST['x__type']==12273){
+            } elseif($_POST['x__type']==12273 || $_POST['x__type']==6255){
                 //IDEAS
+                $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
-                foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false, view_memory(6404,13206)) as $next_i) {
-                    $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
-                    $listed_items++;
-                }
-            } elseif($_POST['x__type']==6255){
-                //DISCOVERIES / IDEAS
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
-                foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false, view_memory(6404,13206)) as $x_i) {
-                    $ui .= view_coin_line('/i/i_go/'.$x_i['i__id'], $x_i['i__id']==$current_i, $e___4593[$x_i['x__type']]['m__cover'], view_cover(12273,$x_i['i__cover']), view_i_title($x_i), view_x__message($x_i['x__message'],$x_i['x__type']));
-                    $listed_items++;
+                foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false, view_memory(6404,13206)) as $next_i) {
+                    if(isset($next_i['is_break'])){
+                        $ui .= '<hr />';
+                    } elseif(isset($next_i['i__id'])){
+                        $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
+                        $listed_items++;
+                    }
                 }
             }
 
             if($listed_items < $_POST['counter']){
                 //We have more to show:
-                $ui .= view_coin_line('/@'.$_POST['e__id'], false, '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
+                $ui .= view_coin_line('/@'.$_POST['e__id'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
             }
 
             echo $ui;

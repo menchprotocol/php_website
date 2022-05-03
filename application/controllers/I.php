@@ -259,73 +259,26 @@ class I extends CI_Controller {
 
             $ui = '';
             $listed_items = 0;
-            if($_POST['x__type']==12274){
+            if($_POST['x__type']==12274 || $_POST['x__type']==6255){
+
                 //SOURCES
+                $e___6177 = $this->config->item('e___6177'); //Source Types
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
                 foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], 1, false, view_memory(6404,13206)) as $source_e) {
-                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
+                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                     $listed_items++;
                 }
-            } elseif($_POST['x__type']==13542){
+
+            } elseif($_POST['x__type']==13542 || $_POST['x__type']==11019){
+
                 //IDEAS
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
+                $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 $superpower_10939 = superpower_active(10939, true);
                 $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
                 foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], 1, false, view_memory(6404,13206)) as $next_i) {
-                    $message_tooltip = '';
-
-                    if(0 && $superpower_10939){
-                        $messages = '';
-                        foreach($this->X_model->fetch(array(
-                            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            'x__type' => 4231,
-                            'x__right' => $next_i['i__id'],
-                        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
-                            $messages .= $mes['x__message'].' ';
-                        }
-                        if($messages){
-                            $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-                            $message_tooltip = '<span class="icon-block" title="'.$messages.'">'.$e___11035[4231]['m__cover'].'</span>';
-                        }
-                    }
-
-                    $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i).$message_tooltip, view_x__message($next_i['x__message'],$next_i['x__type']));
-                    $listed_items++;
-                }
-            } elseif($_POST['x__type']==6255){
-
-                //DISCOVERIES / SOURCES
-                $e___4593 = $this->config->item('e___4593'); //Transaction Types
-                $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
-                foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], 1, false, view_memory(6404,13206)) as $source_e) {
-                    $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
-                    $listed_items++;
-                }
-
-            } elseif($_POST['x__type']==11019){
-
-                //PREVIOUS IDEAS
-                $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
-                $e___4737 = $this->config->item('e___4737'); //Idea Types
-                foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], 1, false, view_memory(6404,13206)) as $prev_i) {
-                    $message_tooltip = '';
-                    if(0){
-                        $messages = '';
-                        foreach($this->X_model->fetch(array(
-                            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            'x__type' => 4231,
-                            'x__right' => $prev_i['i__id'],
-                        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
-                            $messages .= $mes['x__message'].' ';
-                        }
-                        if($messages){
-                            $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-                            $message_tooltip = '<span class="icon-block" title="'.$messages.'">'.$e___11035[4231]['m__cover'].'</span>';
-                        }
-                    }
-
-                    $ui .= view_coin_line('/~'.$prev_i['i__id'], $prev_i['i__id']==$current_i, $e___4737[$prev_i['i__type']]['m__cover'], view_cover(12273,$prev_i['i__cover']), view_i_title($prev_i).$message_tooltip, view_x__message($prev_i['x__message'],$prev_i['x__type']));
+                    $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
                     $listed_items++;
                 }
 
@@ -333,7 +286,7 @@ class I extends CI_Controller {
 
             if($listed_items < $_POST['counter']){
                 //We have more to show:
-                $ui .= view_coin_line('/~'.$_POST['i__id'], false, '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
+                $ui .= view_coin_line('/~'.$_POST['i__id'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
             }
 
             echo $ui;
