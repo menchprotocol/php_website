@@ -1532,7 +1532,7 @@ i, .btn .show-max {
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
 .icon-block { width:41px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
-.icon-block-xxs{ width:22px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
+.icon-block-xxs{ width:24px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
 .icon-block-xxs i{ font-size: 1.1em !important; }
 .icon-block-xs{ width:33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; }
@@ -1561,7 +1561,7 @@ i, .btn .show-max {
 }
 .icon-block-xxs img{
     line-height: 100%;
-    width: 16px !important;
+    width: 18px !important;
     /*height: 16px !important;*/
     margin: -6px 3px -5px 2px !important;
 }
