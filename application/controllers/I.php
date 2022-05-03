@@ -274,7 +274,7 @@ class I extends CI_Controller {
                     }
                 }
 
-            } elseif($_POST['x__type']==13542 || $_POST['x__type']==11019){
+            } elseif($_POST['x__type']==13542 || $_POST['x__type']==11019 || $_POST['x__type']==12273){
 
                 //IDEAS
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
