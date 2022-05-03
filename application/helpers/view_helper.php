@@ -1257,9 +1257,9 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         if($x__type==12273){
 
             return array_merge(
-                view_coins_i(13542, $i__id, $page_num, $append_coin_icon),
+                view_coins_i(11019, $i__id, $page_num, $append_coin_icon),
                 array(array('is_break' => true)),
-                view_coins_i(11019, $i__id, $page_num, $append_coin_icon)
+                view_coins_i(13542, $i__id, $page_num, $append_coin_icon)
             );
 
         } else {
@@ -1272,8 +1272,8 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         if($x__type==12273){
 
             $count_query =
-                view_coins_i(13542, $i__id, 0, false) +
-                view_coins_i(11019, $i__id, 0, false);
+                view_coins_i(11019, $i__id, 0, false) +
+                view_coins_i(13542, $i__id, 0, false);
 
         } else {
             $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
