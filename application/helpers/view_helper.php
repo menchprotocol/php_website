@@ -686,7 +686,7 @@ function view_coins(){
 }
 
 function view_coin_line($href, $is_current, $x__type, $o__type, $o__cover, $o__title, $x__message = null){
-    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xs">'.$x__type.'</span><span class="icon-block-xs">'.$o__type.'</span><span class="icon-block-xs">'.$o__cover.'</span>'.$o__title./*'<span class="pull-right inline-block">'..'</span>'.*/( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).'</a>';
+    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xxs">'.$x__type.'</span><span class="icon-block-xxs">'.$o__type.'</span><span class="icon-block-xxs">'.$o__cover.'</span>'.$o__title./*'<span class="pull-right inline-block">'..'</span>'.*/( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).'</a>';
 }
 
 
