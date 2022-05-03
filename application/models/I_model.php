@@ -960,6 +960,7 @@ class I_model extends CI_Model
                         'x__up' => $e__profile_id,
                         'x__type' => $source_mapper[$action_e__id],
                         'x__right' => $next_i['i__id'],
+                        'x__message' => trim($action_command2),
                     ), true);
 
                     $applied_success++;

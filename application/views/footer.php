@@ -184,7 +184,17 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             //Start with the input wrapper:
                             $input_options .= '<span title="'.$e_list_action['m__message'].'" class="mass_id_'.$action_e__id.' inline-block '. ( $this_counter > 1 ? ' hidden ' : '' ) .' mass_action_item">';
 
-                            if(in_array($action_e__id, array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087))){
+                            if(in_array($action_e__id, array(12591,27080,27985,27082,27084,27086))){
+
+                                //Source search box:
+
+                                //String command:
+                                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border css__title">';
+
+                                //We don't need the second value field here:
+                                $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'" value="" />';
+
+                            } elseif(in_array($action_e__id, array(12592,27081,27986,27083,27085,27087))){
 
                                 //Source search box:
 
