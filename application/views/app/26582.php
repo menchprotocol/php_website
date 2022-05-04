@@ -107,7 +107,7 @@ foreach($this->X_model->fetch(array(
     echo '<td>'.$x__metadata['stats']['email_count'].'<br />Emails</td>';
     echo '<td>'.$x__metadata['stats']['phone_count'].'<br />SMS</td>';
     echo '<td>'.$x__metadata['stats']['error_count'].'<br />Errors</td>';
-    echo '<td>'.$fetched_e['x__message'].'</td>';
+    echo '<td>'.nl2br($fetched_e['x__message']).'</td>';
     echo '</tr>';
 
 }
