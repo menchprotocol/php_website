@@ -127,6 +127,8 @@ foreach($this->X_model->fetch(array(
     echo '<td>'.$sms_success[0]['totals'].'/'.$x__metadata['stats']['phone_count'].'<br />SMS'.( $sms_fail[0]['totals']>0 ? '<br />'.$sms_fail[0]['totals'].' FAILED' : '' ).'</td>';
     echo '</tr>';
 
+    echo '<tr></tr>';
+
     echo '<tr>';
     echo '<td colspan="7">'.nl2br($fetched_e['x__message']).( isset($x__metadata['message_text']) ? '<hr />'.nl2br($x__metadata['message_text']) : '' ).'<hr /></td>';
     echo '</tr>';
