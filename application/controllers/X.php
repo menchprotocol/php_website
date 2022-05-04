@@ -826,6 +826,7 @@ class X extends CI_Controller
 
         //Loop through all contacts and send messages:
         $stats = array(
+            'target' => count($message_list['unique_users_id']),
             'unique' => 0,
             'phone_count' => 0,
             'error_count' => 0,
@@ -836,6 +837,16 @@ class X extends CI_Controller
         $log_x = $this->X_model->create(array(
             'x__type' => 26582, //Send Instant Message
             'x__source' => $member_e['e__id'],
+            'x__message' => $_POST['message_subject'],
+            'x__metadata' => array(
+                'message_text' => $_POST['message_text'],
+                'i__id' => $_POST['i__id'],
+                'e__id' => $_POST['e__id'],
+                'exclude_e' => $_POST['exclude_e'],
+                'include_e' => $_POST['include_e'],
+                'all_recipients' => $message_list['unique_users_id'],
+                'stats' => $stats,
+            ),
         ));
 
         foreach($message_list['unique_users_id'] as $send_e__id){
@@ -853,11 +864,7 @@ class X extends CI_Controller
 
         //Also save final results:
         $this->X_model->update($log_x['x__id'], array(
-            'x__message' => $stats['unique'].'x ['.trim($_POST['message_subject']).']'."\n".trim($_POST['message_text']),
             'x__metadata' => array(
-                'message_subject' => $_POST['message_subject'],
-                'message_text' => $_POST['message_text'],
-                'all_recipients' => $message_list['unique_users_id'],
                 'stats' => $stats,
             ),
         ));

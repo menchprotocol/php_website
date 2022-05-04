@@ -92,22 +92,43 @@ echo '<div></div>';
 //Past message Sent:
 echo '<h2>Past Messages</h2>';
 
-echo '<table class="table table-condensed">';
+echo '<table class="table table-condensed table-striped">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
     'x__type' => 26582, //Instant Messages
 ), array('x__source'), 0, 0) as $fetched_e){
+
+    //Count Emails & Messages from Ledger:
+    $email_success = $this->X_model->fetch(array(
+        'x__type' => 29399,
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+        'x__reference' => $fetched_e['x__id'],
+    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+    $sms_success = $this->X_model->fetch(array(
+        'x__type' => 27676,
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+        'x__reference' => $fetched_e['x__id'],
+    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+    $sms_fail = $this->X_model->fetch(array(
+        'x__type' => 27678,
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+        'x__reference' => $fetched_e['x__id'],
+    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+
 
     $x__metadata = unserialize($fetched_e['x__metadata']);
     echo '<tr>';
     echo '<td><a href="/-4341?x__id='.$fetched_e['x__id'].'">'.$fetched_e['x__id'].'</a></td>';
     echo '<td>'. $fetched_e['x__time'].'</td>';
     echo '<td><a href="/@'.$fetched_e['x__source'].'">'. $fetched_e['e__title'].'</a></td>';
+    echo '<td>'.$x__metadata['stats']['target'].'<br />Targets</td>';
     echo '<td><a href="/-12722?x__id='.$fetched_e['x__id'].'">'.$x__metadata['stats']['unique'].'<br />Uniques</a></td>';
-    echo '<td>'.$x__metadata['stats']['email_count'].'<br />Emails</td>';
-    echo '<td>'.$x__metadata['stats']['phone_count'].'<br />SMS</td>';
-    echo '<td>'.$x__metadata['stats']['error_count'].'<br />Errors</td>';
-    echo '<td>'.nl2br($fetched_e['x__message']).'</td>';
+    echo '<td>'.$email_success[0]['totals'].'/'.$x__metadata['stats']['email_count'].'<br />Emails</td>';
+    echo '<td>'.$sms_success[0]['totals'].'/'.$x__metadata['stats']['phone_count'].'<br />SMS'.( $sms_fail[0]['totals']>0 ? '<br />'.$sms_fail[0]['totals'].' FAILED' : '' ).'</td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<td colspan="7">'.nl2br($fetched_e['x__message']).'<hr />'.nl2br($x__metadata['message_text']).'<hr /></td>';
     echo '</tr>';
 
 }
