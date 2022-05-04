@@ -130,7 +130,7 @@ foreach($this->X_model->fetch(array(
     echo '<tr></tr>';
 
     echo '<tr>';
-    echo '<td colspan="7">'.nl2br($fetched_e['x__message']).( isset($x__metadata['message_text']) ? '<hr />'.nl2br($x__metadata['message_text']) : '' ).'<hr /></td>';
+    echo '<td colspan="7">'.nl2br($fetched_e['x__message']).( isset($x__metadata['message_text']) && !substr_count($fetched_e['x__message'], $x__metadata['message_text']) ? '<hr />'.nl2br($x__metadata['message_text']) : '' ).'</td>';
     echo '</tr>';
 
 }
