@@ -101,7 +101,7 @@ foreach($this->X_model->fetch(array(
     $x__metadata = unserialize($fetched_e['x__metadata']);
     echo '<tr>';
     echo '<td><a href="/-4341?x__id='.$fetched_e['x__id'].'">'.$fetched_e['x__id'].'</a></td>';
-    echo '<td>'. date("Y-m-d H:i:s",$fetched_e['x__time']).'</td>';
+    echo '<td>'. $fetched_e['x__time'].'</td>';
     echo '<td><a href="/@'.$fetched_e['x__source'].'">'. $fetched_e['e__title'].'</a></td>';
     echo '<td><a href="/-12722?x__id='.$fetched_e['x__id'].'">'.$x__metadata['stats']['unique'].'<br />Uniques</a></td>';
     echo '<td>'.$x__metadata['stats']['email_count'].'<br />Emails</td>';
