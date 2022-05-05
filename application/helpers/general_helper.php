@@ -1458,12 +1458,12 @@ function message_list($i__id, $e__id, $exclude_e, $include_e, $continue_x__id = 
 
         $contacrt_forms = ( $e_email ? 1 : 0 ) + ( $e_phone ? 1 : 0 );
 
-        if($continue_x__id > 0 && $contacrt_forms > 0 && count($CI->X_model->fetch(array(
-                'x__type IN (29399, 27676)' => null, //Email & SMS Success
+        if($continue_x__id > 0 && $e_email && count($CI->X_model->fetch(array(
+                'x__type' => 29399, //Email Success
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__reference' => $continue_x__id,
                 'x__source' => $subscriber['e__id'],
-            ))) > 0){
+            )))){
                 continue;
         }
 
@@ -1471,7 +1471,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e, $continue_x__id = 
 
 
 
-        if(!$contacrt_forms){
+        if(!$e_email){
             //No way to reach them:
             continue;
         }
