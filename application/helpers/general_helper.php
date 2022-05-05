@@ -1460,7 +1460,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e, $continue_x__id = 
 
         if($continue_x__id > 0 && $contacrt_forms > 0 && count($CI->X_model->fetch(array(
                 'x__type IN (29399, 27676)' => null, //Email & SMS Success
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__reference' => $continue_x__id,
             ))) == $contacrt_forms){
                 continue;
