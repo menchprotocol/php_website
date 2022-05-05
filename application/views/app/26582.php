@@ -1,6 +1,6 @@
 <?php
 
-foreach(array('i__id','e__id','exclude_e','include_e') as $input){
+foreach(array('i__id','e__id','exclude_e','include_e','continue_x__id') as $input){
     if(!isset($_GET[$input])){
         $_GET[$input] = '';
     }
@@ -24,12 +24,12 @@ if(strlen($_GET['e__id'])){
     }
 }
 
-$message_list = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e'], ( isset($_GET['continue_x__id']) ? $_GET['continue_x__id'] : 0 ));
+$message_list = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e'], $_GET['continue_x__id']);
 $e___6287 = $this->config->item('e___6287'); //APP
 
 
 
-echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[13790]['m__cover'].' '.$e___6287[13790]['m__title'].'</a></div>';
+echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'&continue_x__id='.$_GET['continue_x__id'].'">'.$e___6287[13790]['m__cover'].' '.$e___6287[13790]['m__title'].'</a></div>';
 
 echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
 echo '<table class="table table-sm maxout filter_table"><tr>';
@@ -47,6 +47,11 @@ echo '</tr><tr>';
 echo '<td><div style="padding-right:5px;">';
 echo '<span class="mini-header">Includes Profile Source:</span>';
 echo '<input type="text" name="include_e" placeholder="id1,id2" value="' . $_GET['include_e'] . '" class="form-control border">';
+echo '</div></td>';
+
+echo '<td><div style="padding-right:5px;">';
+echo '<span class="mini-header">Continue X ID:</span>';
+echo '<input type="text" name="continue_x__id" placeholder="id1" value="' . $_GET['continue_x__id'] . '" class="form-control border">';
 echo '</div></td>';
 
 echo '<td><span class="mini-header">Excludes Profile Source:</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
@@ -172,6 +177,7 @@ echo '</table>';
             e__id: '<?= $_GET['e__id'] ?>',
             exclude_e: '<?= $_GET['exclude_e'] ?>',
             include_e: '<?= $_GET['include_e'] ?>',
+            continue_x__id: '<?= $_GET['continue_x__id'] ?>',
             message_subject: $('#message_subject').val(),
             message_text: $('#message_text').val(),
         }, function (data) {
