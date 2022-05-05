@@ -1463,7 +1463,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e, $continue_x__id = 
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
                 'x__reference' => $continue_x__id,
                 'x__source' => $subscriber['e__id'],
-            ))) == $contacrt_forms){
+            ))) > 0){
                 continue;
         }
 
