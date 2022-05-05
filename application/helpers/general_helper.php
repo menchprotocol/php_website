@@ -1368,7 +1368,7 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0){
 
 
 
-function message_list($i__id, $e__id, $exclude_e, $include_e){
+function message_list($i__id, $e__id, $exclude_e, $include_e, $continue_x__id = 0){
 
     $CI =& get_instance();
     $message_list = array(
@@ -1437,7 +1437,8 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
             continue;
         }
 
-        array_push($already_added, $subscriber['e__id']);
+
+
 
         //Fetch email & phone:
         $e_emails = $CI->X_model->fetch(array(
@@ -1455,7 +1456,21 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         ));
         $e_phone = ( count($e_phones) && strlen($e_phones[0]['x__message'])>=10 ? $e_phones[0]['x__message'] : false );
 
-        if(!$e_email && !$e_phone){
+        $contacrt_forms = ( $e_email ? 1 : 0 ) + ( $e_phone ? 1 : 0 );
+
+        if($continue_x__id > 0 && $contacrt_forms > 0 && count($CI->X_model->fetch(array(
+                'x__type IN (29399, 27676)' => null, //Email & SMS Success
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'x__reference' => $continue_x__id,
+            ))) == $contacrt_forms){
+                continue;
+        }
+
+        array_push($already_added, $subscriber['e__id']);
+
+
+
+        if(!$contacrt_forms){
             //No way to reach them:
             continue;
         }

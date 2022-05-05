@@ -24,7 +24,7 @@ if(strlen($_GET['e__id'])){
     }
 }
 
-$message_list = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e']);
+$message_list = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e'], ( isset($_GET['continue_x__id']) ? $_GET['continue_x__id'] : 0 ));
 $e___6287 = $this->config->item('e___6287'); //APP
 
 
