@@ -824,11 +824,6 @@ class X extends CI_Controller
         $message_list = message_list($_POST['i__id'], $_POST['e__id'], $_POST['exclude_e'], $_POST['include_e'], $_POST['continue_x__id']);
 
 
-        return view_json(array(
-            'status' => 0,
-            'message' => count($message_list['unique_users_id']),
-        ));
-
         //Loop through all contacts and send messages:
         $stats = array(
             'target' => count($message_list['unique_users_id']),
