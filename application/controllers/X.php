@@ -821,7 +821,7 @@ class X extends CI_Controller
         }
 
         //Determine Recipients:
-        $message_list = message_list($_POST['i__id'], $_POST['e__id'], $_POST['exclude_e'], $_POST['include_e']);
+        $message_list = message_list($_POST['i__id'], $_POST['e__id'], $_POST['exclude_e'], $_POST['include_e'], $_POST['continue_x__id']);
 
 
         //Loop through all contacts and send messages:
