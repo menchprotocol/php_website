@@ -1479,6 +1479,9 @@ class X_model extends CI_Model
             $add_fields['x__message'] = null;
         }
 
+        $x__source = ( isset($add_fields['x__source']) ? $add_fields['x__source'] : 0);
+        $domain_url = get_domain('m__message', $x__source);
+
         //Log completion transaction:
         $new_x = $this->X_model->create($add_fields);
 
@@ -1500,8 +1503,8 @@ class X_model extends CI_Model
                     $this->X_model->send_dm($watcher['x__up'], 'New Play: '.$i['i__title'],
                         //Message Body:
                         $es_discoverer[0]['e__title'].' just played ['.$i['i__title'].']'.( strlen($add_fields['x__message']) ? ' with the value ['.$add_fields['x__message'].']' : '' )."\n\n".
-                        $es_discoverer[0]['e__title'].':'."\n".'https://'.get_domain('m__message').'/@'.$es_discoverer[0]['e__id']."\n\n".
-                        $i['i__title'].':'."\n".'https://'.get_domain('m__message').'/~'.$i['i__id']."\n\n"
+                        $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
+                        $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n"
                     );
                 }
             }
