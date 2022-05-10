@@ -52,7 +52,6 @@ if(isset($_GET['e__id'])){
 
         $list_body = '';
 
-
         //Any Startable Referenced Ideas?
         foreach($this->X_model->fetch(array(
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
@@ -60,10 +59,6 @@ if(isset($_GET['e__id'])){
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $header['e__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__spectrum' => 'DESC')) as $ref_i){
-
-
-
-
 
             //Fetch Messages:
             $messages = ( strlen($ref_i['x__message']) ? '<div class="msg"><span>' . nl2br($ref_i['x__message']) . '</span></div>' : '');
@@ -114,7 +109,7 @@ if(isset($_GET['e__id'])){
 
         if($list_body){
             //Add this to the UI:
-            $ui .= '<div class="mid-title grey">'.view_cover(12274,$header['e__cover']).'&nbsp;'.$header['e__title'].'</div>';
+            $ui .= '<h4 style="padding-top: 21px;"><span class="halfbg">' .$header['e__title'] . '</span></h4>';
             $ui .= '<div class="list-group list-border">';
             $ui .= $list_body;
             $ui .= '</div>';
