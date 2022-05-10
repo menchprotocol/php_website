@@ -120,7 +120,7 @@ if(isset($_GET['e__id'])){
 
     echo $ui;
 
-    echo '<div class="doclear" style="padding-bottom:144px;">&nbsp;</div>';
+    echo '<div class="doclear" style="padding-bottom:377px;">&nbsp;</div>';
 
 }
 
