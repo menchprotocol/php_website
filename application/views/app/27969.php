@@ -119,5 +119,8 @@ if(isset($_GET['e__id'])){
     }
 
     echo $ui;
+
+    $ui .= '<div class="doclear" style="padding-bottom:144px;">&nbsp;</div>';
+
 }
 
