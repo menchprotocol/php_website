@@ -109,7 +109,7 @@ if(isset($_GET['e__id'])){
 
         if($list_body){
             //Add this to the UI:
-            $ui .= '<h4 style="padding-top: 21px; text-align:center;"><span class="halfbg" style="padding: 0 5px; font-weight:bold; font-size:1.1em;">' .$header['e__title'] . ':</span></h4>';
+            $ui .= '<h4 style="padding-top: 21px; text-align:center;"><span class="halfbg" style="padding: 0 5px;">' .$header['e__title'] . ':</span></h4>';
             $ui .= '<div class="list-group list-border">';
             $ui .= $list_body;
             $ui .= '</div>';
