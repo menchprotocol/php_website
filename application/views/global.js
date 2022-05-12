@@ -2519,6 +2519,7 @@ function set_autosize(theobject){
 
 
 
+var sorting_loaded = []; // more efficient than new Array()
 
 function x_sort_load(x__type){
 
@@ -2534,7 +2535,14 @@ function x_sort_load(x__type){
         return false;
     }
 
+    if(sorting_loaded.indexOf(x__type)){
+        console.log(x__type+' already loaded');
+        return false;
+    }
+
     console.log(x__type+' sorting load success');
+    sorting_loaded.push(x__type);
+
     //Load sorter:
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
