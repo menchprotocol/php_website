@@ -2535,7 +2535,7 @@ function x_sort_load(x__type){
         return false;
     }
 
-    if(sorting_loaded.indexOf(x__type)){
+    if(sorting_loaded.indexOf(x__type) >= 0){
         console.log(x__type+' already loaded');
         return false;
     }
