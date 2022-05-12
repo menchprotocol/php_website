@@ -1451,6 +1451,7 @@ function coin__save(){
 }
 
 function load_tab(x__type){
+
     initiate_algolia();
     load_coins();
     e_e_only_search_7551();

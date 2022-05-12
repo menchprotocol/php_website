@@ -546,7 +546,7 @@ class I_model extends CI_Model
                     );
                 }
 
-            } elseif($x__type==13550){
+            } elseif($x__type==13550 || $x__type==12273){
 
                 //References
 
@@ -645,7 +645,7 @@ class I_model extends CI_Model
 
             $new_i_html = view_i($x__type, 0, ( $is_upwards ? null : $focus_i[0] ), $new_i[0]);
 
-        } elseif($x__type == 13550){
+        } elseif($x__type == 13550 || $x__type==12273){
 
             //Add References
             $this->X_model->create(array(
