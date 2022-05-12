@@ -2534,6 +2534,7 @@ function x_sort_load(x__type){
         return false;
     }
 
+    console.log(x__type+' sorting load success');
     //Load sorter:
     var sort = Sortable.create(theobject, {
         animation: 150, // ms, animation speed moving items when sorting, `0` � without animation

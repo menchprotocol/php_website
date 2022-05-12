@@ -84,7 +84,6 @@ foreach($item_counts as $x__type => $counter) {
 
         set_autosize($('.texttype__lg.text__6197_'+current_id()));
 
-
     });
 
 

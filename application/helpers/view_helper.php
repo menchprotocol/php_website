@@ -753,7 +753,7 @@ function view_body_e($x__type, $counter, $e__id){
 
     } elseif($x__type==11029 || $x__type==11030){
 
-        $ui .= '<div id="list-in-'.$x__type.'" class="row justify-content hideIfEmpty">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
 
         foreach($list_results as $e) {
             $ui .= view_e($x__type, $e, null,  ($source_of_e || ($member_e && ($member_e['e__id']==$e['x__source']))));
