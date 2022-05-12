@@ -10,6 +10,7 @@ if(!isset($_GET['i__id']) && get_domain_setting(14002) > 0){
 }
 
 if(isset($_GET['i__id'])){
+
     $is = $this->I_model->fetch(array(
         'i__id' => $_GET['i__id'],
     ));
@@ -41,6 +42,7 @@ if(isset($_GET['i__id'])){
 
 
 if(isset($_GET['e__id'])){
+
 
     $ui = '';
     foreach($this->X_model->fetch(array(
@@ -91,6 +93,11 @@ if(isset($_GET['e__id'])){
 
                 //URL override in link message:
                 $list_body .= view_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $list_e['x__message'], null);
+
+            } elseif(filter_var($list_e['e__title'], FILTER_VALIDATE_EMAIL)){
+
+                //Hack to show email address
+                $list_body .= view_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'],'mailto:'.$list_e['e__title'], null);
 
             } else {
 
