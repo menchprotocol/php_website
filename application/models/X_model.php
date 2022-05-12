@@ -995,7 +995,12 @@ class X_model extends CI_Model
             $e_dropdown = '';
             if(count($e_links)){
 
-                if(count($e_links)==1){
+                if($simple_version){
+
+                    //Links not supported
+                    $e_dropdown .= $es[0]['e__title'];
+
+                } elseif(count($e_links)==1){
 
                     //Just show one:
                     $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click should-click" title="'.$e_links[0]['e__title'].'"><span class="icon-block-xxs">' . view_cover(12274,$es[0]['e__cover']).'</span><u>'.$es[0]['e__title'].'</u></a>';
