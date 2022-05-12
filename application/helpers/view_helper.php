@@ -723,7 +723,7 @@ function view_body_e($x__type, $counter, $e__id){
 
     } elseif($x__type==12273){
 
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-13550">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
             $ui .= view_i(13550, 0, null, $i, $focus_e, null);
         }
