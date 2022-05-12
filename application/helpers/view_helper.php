@@ -725,30 +725,30 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
-            $ui .= view_i(13550, 0, null, $i, $focus_e, null);
+            $ui .= view_i($x__type, 0, null, $i, $focus_e, null);
         }
 
         if ($counter > count($list_results)) {
             //We have even more:
-            $ui .= view_load_page_i(13550, 1, $limit, $counter);
+            $ui .= view_load_page_i($x__type, 1, $limit, $counter);
         }
 
         $ui .= '</div>';
 
-        $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load(13550)}); </script>' : '<style> #list-in-13550 .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
+        $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load('.$x__type.')}); </script>' : '<style> #list-in-'.$x__type.' .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
 
         if($superpower_10939 && !$source_is_e){
-            $ui .= '<div class="new-list-13550 list-group"><div class="list-group-item list-adder">
+            $ui .= '<div class="new-list-'.$x__type.' list-group"><div class="list-group-item list-adder">
                 <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-13550 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
                 </div><div class="algolia_pad_search row justify-content"></div></div></div>';
 
-            $ui .= '<script> $(document).ready(function () { i_load_search(13550); }); </script>';
+            $ui .= '<script> $(document).ready(function () { i_load_search('.$x__type.'); }); </script>';
         }
 
     } elseif($x__type==11029 || $x__type==11030){
