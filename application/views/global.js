@@ -3113,19 +3113,20 @@ function e_e_only_search_7551() {
 function go_next(){
 
     var go_next_url = $('#go_next_url').val();
+    var is_logged_in = (js_pl_id > 0);
 
     //Attempts to go next if no submissions:
-    if(focus_i__type==6683) {
+    if(is_logged_in && focus_i__type==6683) {
 
         //TEXT RESPONSE:
         return x_reply(go_next_url);
 
-    } else if (js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
+    } else if (is_logged_in && js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
 
         //SELECT ONE/SOME
         return x_select(go_next_url);
 
-    } else if (focus_i__type==7637 && !($('.file_saving_result').html().length) ) {
+    } else if (is_logged_in && focus_i__type==7637 && !($('.file_saving_result').html().length) ) {
 
         //Must upload file first:
         alert('You must upload file before going next.');
@@ -3133,7 +3134,7 @@ function go_next(){
     } else if(go_next_url && go_next_url.length > 0){
 
         //Go Next:
-        $('.go-next').html(( js_pl_id > 0 ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
+        $('.go-next').html(( is_logged_in ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
         window.location = go_next_url;
 
     }
