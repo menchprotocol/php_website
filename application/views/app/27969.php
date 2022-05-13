@@ -94,21 +94,23 @@ if(isset($_GET['e__id'])){
                 //URL override in link message:
                 $list_body .= view_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $list_e['x__message'], null);
 
-            } elseif(filter_var($list_e['e__title'], FILTER_VALIDATE_EMAIL)){
-
-                //Hack to show email address
-                $list_body .= view_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'],'mailto:'.$list_e['e__title'], null);
-
             } else {
 
-                //Search for URL:
+                //Search for URL/Emails:
                 foreach($this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
                     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
                     'x__down' => $list_e['e__id'],
                 ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $url){
-                    $list_body .= view_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $url['x__message'], ( strlen($list_e['x__message']) ? '<div class="msg"><span>' . nl2br($list_e['x__message']) . '</span></div>' : '' ));
+                    if(filter_var($url['x__message'], FILTER_VALIDATE_EMAIL)){
+                        $link = 'mailto:'.$url['x__message'];
+                    } elseif(filter_var($url['x__message'], FILTER_VALIDATE_URL) || substr($url['x__message'], 0, 1)=='/'){
+                        $link = $url['x__message'];
+                    } else {
+                        continue;
+                    }
+                    $list_body .= view_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $link, ( strlen($list_e['x__message']) ? '<div class="msg"><span>' . nl2br($list_e['x__message']) . '</span></div>' : '' ));
                 }
 
             }
