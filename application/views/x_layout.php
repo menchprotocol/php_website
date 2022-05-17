@@ -469,6 +469,9 @@ if($top_i__id) {
             }
         }
 
+        //Break down amount & currency
+        $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
+
 
         if(isset($_GET['cancel_pay']) && !count($x_completes)){
             echo '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
@@ -487,7 +490,8 @@ if($top_i__id) {
 
         } elseif(count($x_completes)){
 
-            echo '<div class="msg alert alert-success" role="alert">Payment received. You are ready to go next.</div>';
+            $x__metadata = unserialize($x_completes[0]['x__metadata']);
+            echo '<div class="msg alert alert-success" role="alert">A Paypal email confirmation has been sent to you which your proof of purchase. You paid '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['mc_currency']==$currency_parts[0] && $x__metadata['mc_gross'] < $currency_parts[1] ? ' (Saved '.number_format(($currency_parts[1] - $x__metadata['mc_gross']), 0).'!)' : '' ).' on '.$x__metadata['payment_date'].'. You can view your <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank">Paypal Transaction</a>. You are ready to go next.</div>';
 
         } else {
 
@@ -499,6 +503,20 @@ if($top_i__id) {
             echo '<li>2. You can checkout as a guest, You do not need to create a Paypal account. You can pay with a credit or visa debit card.</li>';
             echo '<li>3. Complete payment within <span id="timexpirycount" class="hideIfEmpty"></span> to secure this spot.</li>';
                 echo '</ul>';
+
+                $items_available = 0;
+
+                if(isset($_GET['quantity'])){
+                    //Is multi selectable, allow show down for quantity:
+                    echo '<div style="padding: 10px;">';
+                    echo '<select id="quantity_selector" class="form-control border">';
+                    foreach(array(1,2,3,4,5,6,7,8,9,10) as $quantity){
+                        echo '<option value="'.$quantity.'" '.( isset($_GET['quantity']) ? $_GET['quantity']==$quantity : $quantity==1 ).'>'.$quantity.' Ticket'.( $quantity > 1 ? 's' : '' ).'</option>';
+                    }
+                    echo '</select>';
+                    echo '</div>';
+                }
+
             echo '</div>';
 //Show expiry time if any:
             echo '';
@@ -607,6 +625,8 @@ if(!$top_i__id){
 
             if($i_focus['i__type'] == 26560 && !count($x_completes) && $valid_payment){
 
+                $quantity = ( isset($_GET['quantity']) ? $_GET['quantity'] : 1 );
+
                 //Break down amount & currency
                 $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
 
@@ -615,6 +635,7 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
                 $control_btn .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
                 $control_btn .= '<input type="hidden" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
+                $control_btn .= '<input type="hidden" name="quantity" id="quantity" value="'.$quantity.'">';
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
                 $control_btn .= '<input type="hidden" name="amount" value="'.$currency_parts[1].'">';
                 $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
@@ -781,6 +802,13 @@ echo '</div>';
         //Watchout for file uplods:
         $('.boxUpload').find('input[type="file"]').change(function () {
             x_upload(droppedFiles, 'file');
+        });
+
+        $('#quantity_selector').change(function() {
+            var new_quantity = $(this).val();
+            console.log('Update quantity to '+new_quantity);
+            $("#quantity").val(new_quantity);
+            //TODO Update total cost
         });
 
         //Should we auto start?

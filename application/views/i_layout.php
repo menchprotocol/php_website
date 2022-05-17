@@ -48,15 +48,6 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 }
 
 
-
-echo '<div class="row justify-content">';
-echo view_i(4250, 0, null, $i_focus);
-echo '</div>';
-
-
-//Source Menu:
-echo '<ul class="nav nav-pills nav12273"></ul>';
-
 $item_counts = array();
 $e___11018 = $this->config->item('e___11018');
 foreach($e___11018 as $x__type => $m) {
@@ -95,9 +86,24 @@ foreach($this->config->item('e___20424') as $x__type => $m) {
 }
 
 
+
+//Top Notes
+echo view_pill(11019,  $item_counts[11019], $e___11018[11019], view_body_i(11019, $item_counts[11019], $i_focus['i__id']), true);
+
+
+//Focus Notes
+echo '<div class="row justify-content">';
+echo view_i(4250, 0, null, $i_focus);
+echo '</div>';
+
+
+//Source Menu:
+//echo '<ul class="nav nav-pills nav12273"></ul>';
+
 //Print results:
 foreach($item_counts as $x__type => $counter) {
-    echo view_pill($x__type, $counter, $e___11018[$x__type], ($x__type==$focus_tab ? view_body_i($x__type, $counter, $i_focus['i__id']) : null ), ($x__type==$focus_tab));
+    //echo view_pill($x__type, $counter, $e___11018[$x__type], ($x__type==$focus_tab ? view_body_i($x__type, $counter, $i_focus['i__id']) : null ), ($x__type==$focus_tab));
+    echo view_pill($x__type, $counter, $e___11018[$x__type], view_body_i($x__type, $counter, $i_focus['i__id']), true);
 }
 
 
