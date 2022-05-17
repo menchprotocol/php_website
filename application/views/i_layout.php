@@ -92,7 +92,7 @@ echo view_pill(11019,  $item_counts[11019], $e___11018[11019], view_body_i(11019
 
 
 //Focus Notes
-echo '<div class="row justify-content">';
+echo '<div class="row justify-content" style="padding-bottom: 34px;">';
 echo view_i(4250, 0, null, $i_focus);
 echo '</div>';
 
