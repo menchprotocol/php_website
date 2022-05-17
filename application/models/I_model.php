@@ -533,8 +533,7 @@ class I_model extends CI_Model
                     );
                 }
 
-                //Tree Check if Next DEPRECATED: Because in some cases makes sense to have these mind maps
-                /*
+                //Tree Check if Next
                 if($x__type==13542 && count($this->X_model->find_previous(0, $link_i[0]['i__id'], $focus_i[0]['i__id']))){
                     return array(
                         'status' => 0,
@@ -546,7 +545,6 @@ class I_model extends CI_Model
                         'message' => 'Idea already added as next so it cannot be added as previous',
                     );
                 }
-                */
 
             } elseif($x__type==13550 || $x__type==12273){
 
