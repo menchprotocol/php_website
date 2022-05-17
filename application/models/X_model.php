@@ -184,14 +184,14 @@ class X_model extends CI_Model
 
                         //IDEA
                         $is = $this->I_model->fetch(array( 'i__id' => $add_fields[$var_index[$e__id]] ));
-                        $plain_message .= $m['m__title'] . ':'.$is[0]['i__title'].':'."\n".$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id']."\n\n";
+                        $plain_message .= $m['m__title'] . ': '.$is[0]['i__title'].':'."\n".$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id']."\n\n";
 
                     } elseif (in_array(6160 , $m['m__profile'])) {
 
                         //SOURCE
                         $es = $this->E_model->fetch(array( 'e__id' => $add_fields[$var_index[$e__id]] ));
                         if(count($es)){
-                            $plain_message .= $m['m__title'] . ':'.$es[0]['e__title']."\n".$this->config->item('base_url').'/@' . $es[0]['e__id'] . "\n\n";
+                            $plain_message .= $m['m__title'] . ': '.$es[0]['e__title']."\n".$this->config->item('base_url').'/@' . $es[0]['e__id'] . "\n\n";
                         }
 
                     } elseif (in_array(4367 , $m['m__profile'])) {
@@ -204,7 +204,7 @@ class X_model extends CI_Model
                 }
 
                 //Finally append DISCOVERY ID:
-                $plain_message .= 'TRANSACTION:'."\n".$this->config->item('base_url').'/-12722?x__id=' . $add_fields['x__id']."\n\n";
+                $plain_message .= 'TRANSACTION: #'.$add_fields['x__id']."\n".$this->config->item('base_url').'/-12722?x__id=' . $add_fields['x__id']."\n\n";
 
                 //Inform how to change settings:
                 $plain_message .= 'Manage your transaction notifications:'."\n".$this->config->item('base_url').'/@5967'."\n\n";
