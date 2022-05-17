@@ -1000,6 +1000,16 @@ class E extends CI_Controller
             'x__down' => $_POST['selected_e__id'],
         ));
 
+        //Add special transaction to monitor unsubscribes:
+        if($_POST['focus__id']==28904 && in_array($_POST['selected_e__id'], $this->config->item('n___29648'))){
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => 29648, //Communication Downgraded
+                'x__up' => $_POST['focus__id'],
+                'x__down' => $_POST['selected_e__id'],
+            ));
+        }
+
 
         //Update Session:
         if(count($member_e) >= 2){

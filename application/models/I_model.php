@@ -553,7 +553,7 @@ class I_model extends CI_Model
                 //Duplicate Check:
                 if(count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type' => 4983, //IDEA SOURCES
                     'x__up' => $focus_e[0]['e__id'],
                     'x__right' => $link_i[0]['i__id'],
                 )))){
