@@ -63,6 +63,7 @@ if($search_for_set){
 
     } else {
 
+        $replaced = 0;
         $confirmation_keyword = 'Replace '.count($matching_results);
         $replace_with_confirmed = (isset($_GET['confirm_statement']) && strtolower($_GET['confirm_statement'])==strtolower($confirmation_keyword));
 
@@ -79,12 +80,17 @@ if($search_for_set){
                     $res = $this->E_model->update($en['e__id'], array(
                         'e__title' => $new_outcome,
                     ), true, $member_e['e__id']);
+                    $replaced++;
                 }
             }
 
             echo view_e(12730, $en, null,  true);
         }
         echo '</div>';
+
+        if($replaced > 0){
+            echo '<div class="msg alert alert-danger" role="alert">Replaced '.$replaced.' titles</div>';
+        }
 
     }
 
