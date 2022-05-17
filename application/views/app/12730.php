@@ -71,14 +71,15 @@ if($search_for_set){
         foreach($matching_results as $count=>$en){
 
             if($replace_with_set){
+
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $new_outcome = str_replace(strtolower($_GET['search_for']),strtolower($_GET['replace_with']),$en['e__title']).$append_text;
+                $en['e__title'] = str_ireplace($_GET['search_for'],$_GET['replace_with'],$en['e__title']).$append_text;
 
                 if($replace_with_confirmed){
                     //Update idea:
                     $res = $this->E_model->update($en['e__id'], array(
-                        'e__title' => $new_outcome,
+                        'e__title' => $en['e__title'],
                     ), true, $member_e['e__id']);
                     $replaced++;
                 }
