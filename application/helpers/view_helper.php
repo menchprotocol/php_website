@@ -639,6 +639,9 @@ function view_cache($parent, $e__id, $micro_status = true, $data_placement = 'to
 
     $CI =& get_instance();
     $config_array = $CI->config->item('e___'.$parent);
+    if(!isset($config_array[$e__id])){
+        return false;
+    }
     $cache = $config_array[$e__id];
     if (!$cache) {
         //Could not find matching item
@@ -982,7 +985,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $query_filters = array(
             'x__up' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
 
@@ -1005,7 +1008,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $query_filters = array(
             'x__up' => $e__id,
             'x__type' => 10573, //STARRED
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
         );
         
@@ -1016,7 +1019,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $order_columns = array('x__spectrum' => 'ASC', 'x__id' => 'DESC'); //RECENT IDEAS
         $query_filters = array(
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $e__id,
         );
@@ -1039,8 +1042,8 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $query_filters = array(
             'x__source' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //STARTED
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
         );
 
     } elseif($x__type==6255){
@@ -1051,8 +1054,8 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $query_filters = array(
             'x__source' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___4485'))){
@@ -1163,7 +1166,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         $order_columns = array('x__id' => 'ASC');
         $join_objects = array('x__up');
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i__id,
             'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
@@ -1175,7 +1178,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         $order_columns = array('x__spectrum' => 'ASC');
         $join_objects = array('x__right');
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i__id,
@@ -1187,7 +1190,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         $order_columns = array('x__id' => 'DESC');
         $join_objects = array('x__source');
         $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
             'x__left' => $i__id,
         );
@@ -1214,7 +1217,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         $query_filters = array(
             'x__left' => $i__id,
             'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //STARTED
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___7551'))){
@@ -1326,7 +1329,7 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
         'x__up IN (' . join(',', $CI->config->item('n___'.$focus__id)) . ')' => null,
         'x__down' => $child___id,
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     )) as $sel){
         array_push($already_selected, $sel['x__up']);
     }
@@ -1584,7 +1587,7 @@ function view_e_settings($list_id, $is_open){
         } elseif ($acc_e__id == 3288 /* Email */) {
 
             $u_emails = $CI->X_model->fetch(array(
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__down' => $member_e['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up' => 3288, //Email
@@ -1730,7 +1733,7 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
     //Messages:
     $ui .= '<a '.$href.' class="hideIfEmpty doblock">';
     foreach($CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
@@ -1795,7 +1798,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $start_to_unlock = in_array($x__type, $CI->config->item('n___14377'));
     $parent_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___6193')) );
     $force_order = ($previous_i && count($CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4983, //References
             'x__right' => $previous_i['i__id'],
             'x__up' => 14488, //Force Order

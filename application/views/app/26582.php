@@ -99,24 +99,24 @@ echo '<h2>Past Messages</h2>';
 
 echo '<table class="table table-condensed table-striped">';
 foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 26582, //Instant Messages
 ), array('x__source'), 0, 0) as $fetched_e){
 
     //Count Emails & Messages from Ledger:
     $email_success = $this->X_model->fetch(array(
         'x__type' => 29399,
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__reference' => $fetched_e['x__id'],
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
     $sms_success = $this->X_model->fetch(array(
         'x__type' => 27676,
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__reference' => $fetched_e['x__id'],
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
     $sms_fail = $this->X_model->fetch(array(
         'x__type' => 27678,
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__reference' => $fetched_e['x__id'],
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 

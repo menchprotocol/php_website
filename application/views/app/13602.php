@@ -11,8 +11,8 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
         //IDEAS
         $unique = $this->X_model->fetch(array(
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
         ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -21,7 +21,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
         //SOURCE
         $unique = $this->X_model->fetch(array(
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
         ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -29,7 +29,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
         //DISCOVERY
         $unique = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -53,8 +53,8 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
             //IDEAS
             $query = $this->X_model->fetch(array(
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
@@ -65,7 +65,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
             //SOURCE
             $query = $this->X_model->fetch(array(
                 'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
@@ -75,7 +75,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
             //DISCOVERY
             $query = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,

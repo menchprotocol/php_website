@@ -109,7 +109,7 @@ echo '<h1>' . $is[0]['i__title'] . '</h1>';
 //MESSAGES
 echo '<div class="center-frame larger-font">';
 foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $is[0]['i__id'],
 ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
@@ -127,8 +127,8 @@ if($topic_id){
     foreach($this->config->item('e___'.$topic_id) as $e__id => $m) {
 
         $query_filters = array(
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $e__id,
         );

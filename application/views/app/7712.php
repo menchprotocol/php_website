@@ -21,7 +21,7 @@ foreach($this->I_model->fetch(array(
     ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $child_or){
 
         $x_coins = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
             'x__left' => $child_or['i__id'],
         ), array(), 1, 0, array(), 'COUNT(x__id) as totals');

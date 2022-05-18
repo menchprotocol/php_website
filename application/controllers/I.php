@@ -56,7 +56,7 @@ class I extends CI_Controller {
             //Delete previous answer(s):
             $completed = 0;
             foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                 'x__left' => $i__id,
             )) as $x){
@@ -64,7 +64,7 @@ class I extends CI_Controller {
                     'x__up' => $_GET['x_e__id'],
                     'x__down' => $x['x__source'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                     //Add source link:
                     $completed++;
@@ -325,7 +325,7 @@ class I extends CI_Controller {
 
         $message = '';
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $_POST['i__id'],
         ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
@@ -604,7 +604,7 @@ class I extends CI_Controller {
         $page = intval($_POST['page']);
         $query_filters = array(
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $focus__id,
         );

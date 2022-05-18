@@ -21,7 +21,7 @@ if(isset($_GET['i__id'])){
     //MESSAGES
     echo '<div class="center-frame">';
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $is[0]['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
@@ -48,7 +48,7 @@ if(isset($_GET['e__id'])){
     foreach($this->X_model->fetch(array(
         'x__up' => $_GET['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $header){
 
@@ -56,8 +56,8 @@ if(isset($_GET['e__id'])){
 
         //Any Startable Referenced Ideas?
         foreach($this->X_model->fetch(array(
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $header['e__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__spectrum' => 'DESC')) as $ref_i){
@@ -66,7 +66,7 @@ if(isset($_GET['e__id'])){
             $messages = ( strlen($ref_i['x__message']) ? '<div class="msg"><span>' . nl2br($ref_i['x__message']) . '</span></div>' : '');
             /*
             foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 4231, //IDEA NOTES Messages
                 'x__right' => $ref_i['i__id'],
             ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
@@ -83,7 +83,7 @@ if(isset($_GET['e__id'])){
         foreach($this->X_model->fetch(array(
             'x__up' => $header['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $list_e){
 
@@ -99,7 +99,7 @@ if(isset($_GET['e__id'])){
                 //Search for URL/Emails:
                 foreach($this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
                     'x__down' => $list_e['e__id'],
                 ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $url){

@@ -5,7 +5,7 @@ $e___11035 = $this->config->item('e___11035');
 
 $is = $this->I_model->fetch(array(
     'i__id' => ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 ),
-    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //ACTIVE
+    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
 ));
 
 
@@ -64,7 +64,7 @@ if(!$member_e){
 
         //See if submitted before?
         $was_sibmitted = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 14709, //RATE DISCOVERY
             'x__source' => $member_e['e__id'],
             'x__right' => $is[0]['i__id'],
@@ -99,7 +99,7 @@ if(!$member_e){
 
 
         if(!count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //ACTIVE
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 4983, //References
                 'x__right' => $is[0]['i__id'],
                 'x__up' => 29443, //Disable Sharing
