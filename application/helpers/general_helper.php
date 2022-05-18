@@ -1623,7 +1623,6 @@ function fetch_i_source($source_type, $i__id){
     $CI =& get_instance();
     foreach($CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
         'x__type' => 4983,
         'x__up' => $source_type,
         'x__right' => $i__id,
