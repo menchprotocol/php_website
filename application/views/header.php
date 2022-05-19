@@ -144,7 +144,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
                 //Is Video:
                 $bgVideo = '<div class="video_contain"><video autoplay muted loop><source src="'.$domain_background.'" type="video/mp4"></video></div>';
                 echo '.video_contain {
-    position: absolute;
+    position: fixed;
+    z-index: -1;
     top: -50%;
     left: -50%;
     width: 200%;
