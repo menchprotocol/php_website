@@ -2231,6 +2231,7 @@ textarea {
     min-height: 100%;
     transform: translateX(calc((100% - 100vw) / 2));
     z-index: -1;
+    display: block;
 }
 
 .message2{

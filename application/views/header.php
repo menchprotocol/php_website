@@ -142,8 +142,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             //Video of photo?
             if(substr($domain_background, -4)=='.mp4'){
                 //Is Video:
-                $bgVideo = '<video autoplay muted loop class="video_contain"><source src="'.$domain_background.'" type="video/mp4"></video>';
-
+                $bgVideo = '<video autoplay loop muted playsinline class="video_contain"><source src="'.$domain_background.'" type="video/mp4"></video>';
             } else {
 
                 //Is Photo:
