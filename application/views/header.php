@@ -143,15 +143,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             if(substr($domain_background, -4)=='.mp4'){
                 //Is Video:
                 $bgVideo = '<video autoplay muted loop class="video_contain"><source src="'.$domain_background.'" type="video/mp4"></video>';
-                echo '.video_contain {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    transform: translateX(calc((100% - 100vw) / 2));
-}
-';
 
             } else {
 

@@ -2223,6 +2223,15 @@ textarea {
     max-height: 987px;
     border-radius: 0;
 }
+.video_contain {
+    position: fixed;
+    right: 0;
+    top: 0;
+    min-width: 100%;
+    min-height: 100%;
+    transform: translateX(calc((100% - 100vw) / 2));
+    z-index: -1;
+}
 
 .message2{
     padding:5px 0 0 34px;
