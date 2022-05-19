@@ -149,6 +149,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     z-index: -1;
     top: 0;
     left: 0;
+    max-width:none !important;
+    min-width:100% !important;
 }';
 
             } else {
