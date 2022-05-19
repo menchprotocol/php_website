@@ -2217,7 +2217,7 @@ textarea {
     margin-left:5px;
 }
 
-video {
+.play_video {
     width: auto;
     max-width: 100%;
     max-height: 987px;

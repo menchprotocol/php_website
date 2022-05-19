@@ -149,7 +149,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     } elseif ($x__type == 4258 /* Video URL */) {
 
-        return  '<video width="100%" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="' . $x__message . '" type="video/mp4"></video>' ;
+        return  '<video width="100%" class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="' . $x__message . '" type="video/mp4"></video>' ;
 
     } elseif ($x__type == 4261 /* File URL */) {
 
