@@ -14,7 +14,7 @@ $basic_header_footer = isset($basic_header_footer) && intval($basic_header_foote
 $login_url_path = ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' );
 $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
 $logo = ( filter_var($domain_link, FILTER_VALIDATE_URL) && !$superpower_10939 ? $domain_link : '/img/'.$current_coin_id.'.png' );
-
+$bgVideo = null;
 
 //Generate Body Class String:
 $body_class = 'platform-'.$current_coin_id; //Always append current coin
@@ -139,7 +139,22 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
         } elseif(substr($domain_background, 0, 2)=='//' && !strlen($first_segment)){
 
-            echo 'body { 
+            //Video of photo?
+            if(substr($domain_background, -4)=='.mp4'){
+                //Is Video:
+                $bgVideo = '<video autoplay muted loop id="myVideo"><source src="'.$domain_background.'" type="video/mp4"></video>';
+                echo '#bgVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+}';
+
+            } else {
+
+                //Is Photo:
+                echo 'body { 
     background: url("'.$domain_background.'") no-repeat center center fixed !important; 
     background-size: cover !important;
     width: 100% !important;
@@ -150,9 +165,9 @@ foreach($this->config->item('e___13890') as $e__id => $m){
       left:0 !important;
     height: 100% !important;
     ';
-            echo '}';
+                echo '}';
 
-            echo 'body:after{
+                echo 'body:after{
       content:"" !important;
       position:fixed !important; /* stretch a fixed position to the whole screen */
       top:0 !important;
@@ -167,6 +182,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
       background-size: cover !important;
 }';
 
+            }
+
             echo '.container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
             echo 'background: transparent !important; ';
             echo '}';
@@ -177,8 +194,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
             echo '.list-border, .msg { max-width: 600px; margin: 0 auto !important; }';
             echo ' @media (max-width:767px) { .list-border, .msg { max-width: calc(100% - 16px); margin: 0 auto; } }';
-
-
 
             //Force Dark Mode:
             $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
@@ -196,7 +211,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
 
 echo '<body class="'.$body_class.'">';
-
+echo $bgVideo;
 
 //Load live chat?
 $live_chat_page_id = get_domain_setting(12899);
