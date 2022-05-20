@@ -47,11 +47,12 @@
         .isbox a {
             color: #FFF !important;
         }
-        .isbox {
+        .isbox>div {
             background-color: #bd344c !important;
             color:#FFF !important;
-            border-radius: 5px;
+            border-radius: 13px;
             padding: 20px;
+            margin: 20px;
         }
 
 
@@ -106,33 +107,33 @@
     <br />
 
     <div class="row">
-        <div class="isbox col-12 col-sm-6">
+        <div class="isbox col-12 col-sm-6"><div>
             <p>CLAIM & STAKE</p>
             <input type="text" class="form-control border" name="claim_stake" placeholder="1 BNB = 135000000 MM" value="">
             <a class="btn btn-white" style="display: block;" href="#">Contribute</a>
             <hr />
             <p>Your Contributed Amount</p>
             <p>Your Reserved Tokens</p>
-        </div>
-        <div class="isbox col-12 col-sm-6">
+            </div></div>
+        <div class="isbox col-12 col-sm-6"><div>
             <p>Presale is about to go live</p>
             <p>Starts in:</p>
             <p id="countdown" style="display: inline-block; font-size: 2em;"></p>
             <p>Exclusively available on Arbitrium Network</p>
             <a class="btn btn-white" href="#">Bridge</a>
-        </div>
+            </div></div>
     </div>
     <div class="row">
-        <div class="isbox col-12 col-sm-6">
+        <div class="isbox col-12 col-sm-6"><div>
             <p>POST SALE $MM PRICE</p>
             <p style="font-size: 2em;">$7.70 USD</p>
             <p>Graph here...</p>
-        </div>
-        <div class="isbox col-12 col-sm-6">
+            </div></div>
+        <div class="isbox col-12 col-sm-6"><div>
             <p>Total Filled</p>
             <p style="font-size: 2em;">0 / 250 BNB</p>
             <p>Graph here...</p>
-        </div>
+            </div></div>
     </div>
 
     <br />
