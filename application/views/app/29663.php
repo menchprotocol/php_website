@@ -32,11 +32,6 @@
         a {
             color: #FFF !important;
         }
-        .onebox {
-            background-color: #bd354a !important;
-            color:#FFF !important;
-            border-radius: 5px;
-        }
         .btn-white i {
             color: #FFF !important;
         }
@@ -45,6 +40,20 @@
             background-color: #6457d0;
             border-radius: 5px;
         }
+
+        .isbox .btn-white {
+            background-color: #1b1a22;
+        }
+        .isbox a {
+            color: #FFF !important;
+        }
+        .isbox {
+            background-color: #bd344c !important;
+            color:#FFF !important;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
 
     </style>
     <script>
@@ -128,16 +137,17 @@
 
     <br />
     <br />
+    <br />
 
     <p style="text-align: center; color: #FFF !important;">If presale is not sold out, remaining tokens are redistributed back into the rewards pools for staking, farming & activity.</p>
 
     <div class="row justify-content-center" style="text-align: center; color: #FFF;">
-        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+        <div class="col-12 col-sm-6">
             <div class="info_box_cover">50%</div>
             <div class="info_box_title">Liquidity</div>
             <div class="info_box_message">Half of the pre-sale will be auto-sent to support our liquidity pool.</div>
         </div>
-        <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+        <div class="col-12 col-sm-6">
             <div class="info_box_cover">50%</div>
             <div class="info_box_title">Treasury</div>
             <div class="info_box_message">Half of the pre-sale will be stored in our treasury for further development and marketing.</div>
