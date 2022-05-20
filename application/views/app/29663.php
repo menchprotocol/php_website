@@ -111,7 +111,6 @@
 
     <br />
     <br />
-    <br />
 
     <div class="row">
         <div class="isbox col-12 col-sm-6"><div>
@@ -143,7 +142,6 @@
             </div></div>
     </div>
 
-    <br />
     <br />
     <br />
 
