@@ -101,9 +101,6 @@
 
     <br />
     <div style="text-align: right;"><a class="btn btn-white" href="#">Connect Wallet</a></div>
-    <br />
-    <br />
-
     <p>Welcome</p>
     <h1>PRESALE STARTS SOON</h1>
 
