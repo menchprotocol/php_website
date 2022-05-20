@@ -23,11 +23,16 @@
             margin: 0;
             padding: 0;
             background: #1b1a22;
-            font-size: 16px;
+            font-size: 21px;
             color: #FFF !important;
         }
         h1 {
             font-family:'Montserrat', sans-serif;
+            font-size: 3em;
+        }
+        h2 {
+            font-family:'Montserrat', sans-serif;
+            font-size: 2em;
         }
         a {
             color: #FFF !important;
@@ -51,10 +56,9 @@
             background-color: #bd344c !important;
             color:#FFF !important;
             border-radius: 13px;
-            padding: 20px;
-            margin: 20px;
+            padding: 21px;
+            margin: 13px;
         }
-
 
     </style>
     <script>
@@ -95,14 +99,19 @@
 <div class="container">
 
 
-    <p style="font-size:0.8em;">Welcome</p>
+    <br />
+    <br />
+    <br />
+
+    <p>Welcome</p>
     <h1>PRESALE STARTS SOON</h1>
 
     <br />
 
-    <a class="btn btn-white" href="#">Tokenomics</a>
+    <a class="btn btn-white" href="#">Tokenomics</a> &nbsp;&nbsp;
     <a class="btn btn-white" href="#">Sales Guide</a>
 
+    <br />
     <br />
     <br />
 
@@ -144,13 +153,13 @@
 
     <div class="row justify-content-center" style="text-align: center; color: #FFF;">
         <div class="col-12 col-sm-6">
-            <div class="info_box_cover">50%</div>
-            <div class="info_box_title">Liquidity</div>
+            <h2 class="info_box_cover">50%</h2>
+            <h3 class="info_box_title">Liquidity</h3>
             <div class="info_box_message">Half of the pre-sale will be auto-sent to support our liquidity pool.</div>
         </div>
         <div class="col-12 col-sm-6">
-            <div class="info_box_cover">50%</div>
-            <div class="info_box_title">Treasury</div>
+            <h2 class="info_box_cover">50%</h2>
+            <h3 class="info_box_title">Treasury</h3>
             <div class="info_box_message">Half of the pre-sale will be stored in our treasury for further development and marketing.</div>
         </div>
     </div>
