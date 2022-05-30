@@ -957,8 +957,6 @@ function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null){
 
     if($i__id>0){
         $link = '/'.$i__id;
-    } elseif($e__id>0){
-        $link = '@'.$e__id;
     } else {
         $link = '/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link);
     }
