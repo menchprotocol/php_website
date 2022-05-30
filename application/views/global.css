@@ -2868,6 +2868,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .coinType12274,
 .custom_ui_13884_13886 .coinType6255,
 */
+
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 .list-border .list-group-item,
 .custom_ui_13884_13886 .doabsolute, .custom_ui_13884_13886 .black-background {
@@ -3364,6 +3365,8 @@ font-weight: bold !important;
 
 
 
+
+
 .btn-transparent{
     border: 0;
     background: transparent;
@@ -3599,4 +3602,9 @@ h4.css__title{
     font-size: 2.9em;
     color: #FFF !important;
     padding: 34px 0 0;
+}
+
+.glossy-bg .list-group-item {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    color: #FFFFFF !important;
 }
