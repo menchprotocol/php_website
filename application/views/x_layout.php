@@ -222,7 +222,7 @@ if($top_i__id > 0 && $i_completion_rate['completion_percentage']>=100){
     echo '<div class="msg alert alert-success" role="alert"><span class="icon-block">✅</span>100% Completed: You Are Now Reviewing Your Responses</div>';
 }
 
-echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.1em;">'.( !$show_bg && strlen($i_focus['i__cover'])  ? '<span class="icon-block-img hideIfEmpty" style="padding:8px 0;">'.view_cover(12273,$i_focus['i__cover']).'</span><br />' : '' ).$i_focus['i__title'].'</h1>';
+echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.1em;">'.( !$show_bg && strlen($i_focus['i__cover'])  ? '<div style="padding:8px 0;"><span class="icon-block-img hideIfEmpty">'.view_cover(12273,$i_focus['i__cover']).'</span></div>' : '' ).$i_focus['i__title'].'</h1>';
 
 //echo view_i(20417, $top_i__id, null, $i_focus);
 
