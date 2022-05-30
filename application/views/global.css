@@ -2823,6 +2823,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .close span,
 .custom_ui_13884_13886 .fa-gif-wrap,
 .custom_ui_13884_13886 .btn,
+.custom_ui_13884_13886 .form-control,
 .custom_ui_13884_13886 .btn:hover{
     color: #FFFFFF;
 }
