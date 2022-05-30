@@ -955,7 +955,15 @@ function view_body_i($x__type, $counter, $i__id){
 
 function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null){
 
-    return '<a href="/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link).'" class="list-group-item list-group-item-action flex-column align-items-start">
+    if($i__id>0){
+        $link = '/'.$i__id;
+    } elseif($e__id>0){
+        $link = '@'.$e__id;
+    } else {
+        $link = '/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link);
+    }
+
+    return '<a href="'.$link.'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
       <h4 class="css__title"><b><span class="icon-block-lg title-left">'.view_cover(($e__id>0 ? 12274 : 12273),$s__cover).'</span><span class="title-right">'.$s__title.'</span></b></h4>
       <small style="padding: 17px 3px 0 0;"><i class="far fa-chevron-right"></i></small>
