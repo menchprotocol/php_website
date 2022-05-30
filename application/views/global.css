@@ -3604,7 +3604,9 @@ h4.css__title{
     padding: 34px 0 0;
 }
 
-.glossy-bg .list-group-item {
+
+.custom_ui_13884_13886 .glossy-bg .list-group-item,
+.custom_ui_13884_13885 .glossy-bg .list-group-item {
     background-color: rgba(0, 0, 0, 0.8) !important;
     color: #FFFFFF !important;
 }
