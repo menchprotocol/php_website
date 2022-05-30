@@ -1279,7 +1279,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             $coins1 = view_coins_i(11019, $i__id, 0, false);
             $coins2 = view_coins_i(13542, $i__id, 0, false);
             $count_query = $coins1 + $coins2;
-            $visual_counter = $coins1.( coins2>0 ? '+'.$coins2 : '' );
+            $visual_counter = $coins1.( $coins2>0 ? '+'.$coins2 : '' );
 
         } else {
             $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
