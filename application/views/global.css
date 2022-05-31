@@ -3621,6 +3621,6 @@ h4.css__title{
     color: #FFFFFF !important;
 }
 
-.cover-content .css__title {
+.cover-content .css__title, .cover-content a {
     color: #000 !important;
 }
