@@ -3404,8 +3404,9 @@ font-weight: bold !important;
     cursor: text !important;
 }
 .select-btns{
-    padding:5px;
-    text-align:left;
+    padding: 0;
+    text-align: left;
+    margin-top: 10px;
 }
 .inner-content .css__title{
     text-align: left;
