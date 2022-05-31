@@ -3402,6 +3402,8 @@ font-weight: bold !important;
     padding-bottom: 0 !important;
 }
 
+
+
 .editor_preview:hover{
     cursor: text !important;
 }
@@ -3617,4 +3619,8 @@ h4.css__title{
 .custom_ui_13884_13885 .glossy-bg .list-group-item {
     background-color: rgba(0, 0, 0, 0.8) !important;
     color: #FFFFFF !important;
+}
+
+.cover-content .css__title {
+    color: #000 !important;
 }
