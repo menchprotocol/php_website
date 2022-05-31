@@ -257,7 +257,7 @@ if(!$basic_header_footer){
 
     //Do not show for /sign view
     ?>
-    <div class="container fixed-top menu_click" style="padding-bottom: 0 !important;">
+    <div class="container fixed-top" style="padding-bottom: 0 !important;">
         <div class="row justify-content">
             <table class="platform-navigation">
                 <tr>
@@ -267,7 +267,7 @@ if(!$basic_header_footer){
                     if($member_e) {
 
                         //Load Left Menu
-                        echo '<a href="javascript:void(0);" onclick="toggle_left_menu()" style="margin-left: 0;" class="icon-block">'.$e___11035[28646]['m__cover'].'</a>';
+                        echo '<a href="javascript:void(0);" onclick="toggle_left_menu()" style="margin-left: 0;" class="icon-block menu_click">'.$e___11035[28646]['m__cover'].'</a>';
 
                     } else {
 
