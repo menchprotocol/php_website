@@ -1231,7 +1231,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['e_phone']) || intval(preg_replace("/[^0-9]/", "", $_POST['e_phone'] ))<10000000) {
+        } elseif (!isset($_POST['e_phone']) || (strlen($_POST['e_phone'])>0 && intval(preg_replace("/[^0-9]/", "", $_POST['e_phone'] ))<10000000)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Phone number',
@@ -1273,7 +1273,7 @@ class E extends CI_Controller
 
                 $return = array(
                     'status' => 1,
-                    'message' => 'Email updated',
+                    'message' => 'Phone updated',
                 );
 
             } else {
