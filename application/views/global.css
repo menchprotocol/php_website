@@ -2862,11 +2862,9 @@ font-weight: bold !important;
     background-color: #FFFFFF !important;
 }
 
-.custom_ui_13884_13886 .light-bg {
+.custom_ui_13884_13886 .light-bg,
+.custom_ui_13884_13886 .fixed-top{
     background: rgba(0,0,0,0.80);
-}
-.custom_ui_13884_13886 .fixed-top {
-    background: rgba(34,34,34,0.80);
 }
 
 .custom_ui_13884_13886,
