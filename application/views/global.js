@@ -874,12 +874,14 @@ function toggle_left_menu() {
 }
 
 
-
 var algolia_index = false;
 $(document).ready(function () {
 
     window.addEventListener('click', function(e){
-        if (nav_toggeled && !document.getElementById('main_sidebar').contains(e.target)){
+        if (nav_toggeled
+            && !document.getElementById('main_sidebar').contains(e.target)
+            && !document.getElementById('main_topbar').contains(e.target)
+        ){
             //Close on outside click:
             toggle_left_menu();
         }

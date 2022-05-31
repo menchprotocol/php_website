@@ -257,7 +257,7 @@ if(!$basic_header_footer){
 
     //Do not show for /sign view
     ?>
-    <div class="container fixed-top" style="padding-bottom: 0 !important;">
+    <div class="container fixed-top" style="padding-bottom: 0 !important;" id="main_topbar">
         <div class="row justify-content">
             <table class="platform-navigation">
                 <tr>
