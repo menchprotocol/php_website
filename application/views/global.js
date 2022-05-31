@@ -884,7 +884,9 @@ $(document).ready(function () {
         }
     });
     $('.menu_click').click(function(event){
-        event.stopPropagation();
+        if (nav_toggeled){
+            event.stopPropagation();
+        }
     });
 
     //Watchout for file uplods:
