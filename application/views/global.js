@@ -866,6 +866,8 @@ function toggle_left_menu() {
             $.post("/e/toggle_left_menu", {}, function (data) {
                 $('.sidebar').html(data);
             });
+        } else {
+            nav_toggeled = false;
         }
         $('.sidebar').removeClass('hidden');
     } else {
