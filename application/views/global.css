@@ -2575,6 +2575,7 @@ font-weight: bold !important;
 
 
 /* SERIF / HEADER */
+.custom_ui_14506_14508.css__title.itemsetting,
 .custom_ui_14506_14508 h1,
 .custom_ui_14506_14508 h2,
 .custom_ui_14506_14508 .css__title,
@@ -2594,6 +2595,7 @@ font-weight: bold !important;
 }
 
 /* SANSSERIF / HEADER */
+.custom_ui_14506_14507.css__title.itemsetting
 .custom_ui_14506_14507 h1,
 .custom_ui_14506_14507 h2,
 .custom_ui_14506_14507 .css__title,
@@ -2613,6 +2615,7 @@ font-weight: bold !important;
 }
 
 /* CURSIVE / HEADER */
+.custom_ui_14506_14540.css__title.itemsetting
 .custom_ui_14506_14540 h1,
 .custom_ui_14506_14540 h2,
 .custom_ui_14506_14540 .css__title,
@@ -2631,6 +2634,7 @@ font-weight: bold !important;
 }
 
 /* CURSIVE / HEADER */
+.custom_ui_14506_28623.css__title.itemsetting
 .custom_ui_14506_28623 h1,
 .custom_ui_14506_28623 h2,
 .custom_ui_14506_28623 .css__title,
@@ -2649,6 +2653,7 @@ font-weight: bold !important;
 }
 
 /* QUICKSAND / HEADER */
+.custom_ui_14506_26578.css__title.itemsetting
 .custom_ui_14506_26578 h1,
 .custom_ui_14506_26578 h2,
 .custom_ui_14506_26578 .css__title,
@@ -2675,6 +2680,7 @@ font-weight: bold !important;
 
 
 /* QUICKSAND / CONTENT */
+.custom_ui_29700_29701.css__title.itemsetting
 .custom_ui_29700_29701 div,
 .custom_ui_29700_29701 p,
 .custom_ui_29700_29701 html,
@@ -2683,6 +2689,7 @@ font-weight: bold !important;
     font-family: 'Open Sans', sans-serif !important;
 }
 /* CURSIVE / CONTENT */
+.custom_ui_29700_29702.css__title.itemsetting
 .custom_ui_29700_29702 div,
 .custom_ui_29700_29702 p,
 .custom_ui_29700_29702 html,
@@ -2691,6 +2698,7 @@ font-weight: bold !important;
     font-family: 'Lato', sans-serif !important;
 }
 /* SANSSERIF / CONTENT */
+.custom_ui_29700_29703.css__title.itemsetting
 .custom_ui_29700_29703 div,
 .custom_ui_29700_29703 p,
 .custom_ui_29700_29703 html,
@@ -2699,6 +2707,7 @@ font-weight: bold !important;
     font-family: 'Rubik', sans-serif !important;
 }
 /* SERIF / CONTENT */
+.custom_ui_14506_14508custom_ui_29700_29704.css__title.itemsetting
 .custom_ui_29700_29704 div,
 .custom_ui_29700_29704 p,
 .custom_ui_29700_29704 html,

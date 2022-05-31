@@ -1352,7 +1352,7 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
     }
 
     foreach($CI->config->item('e___'.$focus__id) as $e__id => $m) {
-        $ui .= '<span class="custom_ui_'.$focus__id.'_'.$e__id.'"><a href="javascript:void(0);" onclick="e_radio('.$focus__id.','.$e__id.','.$enable_mulitiselect.')" class="list-group-item css__title itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__cover'].'</span>'.$m['m__title'].'</a></span>';
+        $ui .= '<span class=""><a href="javascript:void(0);" onclick="e_radio('.$focus__id.','.$e__id.','.$enable_mulitiselect.')" class="list-group-item css__title custom_ui_'.$focus__id.'_'.$e__id.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__cover'].'</span>'.$m['m__title'].'</a></span>';
         $count++;
     }
 
