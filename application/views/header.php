@@ -253,11 +253,11 @@ if(!$basic_header_footer){
         $show_side_menu = $domain_list;
     }
 
-    echo '<div class="sidebar hidden" id="main_sidebar"><div style="padding:5px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div></div>';
+    echo '<div class="sidebar hidden menu_click"><div style="padding:5px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div></div>';
 
     //Do not show for /sign view
     ?>
-    <div class="container fixed-top" style="padding-bottom: 0 !important;" id="main_topbar">
+    <div class="container fixed-top menu_click" style="padding-bottom: 0 !important;">
         <div class="row justify-content">
             <table class="platform-navigation">
                 <tr>

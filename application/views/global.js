@@ -877,14 +877,14 @@ function toggle_left_menu() {
 var algolia_index = false;
 $(document).ready(function () {
 
-    window.addEventListener('click', function(e){
-        if (nav_toggeled
-            && !document.getElementById('main_sidebar').contains(e.target)
-            && !document.getElementById('main_topbar').contains(e.target)
-        ){
-            //Close on outside click:
+    $(window).click(function() {
+        //Hide the menus if visible
+        if (nav_toggeled){
             toggle_left_menu();
         }
+    });
+    $('.menu_click').click(function(event){
+        event.stopPropagation();
     });
 
     //Watchout for file uplods:
