@@ -2608,7 +2608,7 @@ font-weight: bold !important;
 .custom_ui_14506_14507 .texttype__lg::placeholder,
 .custom_ui_14506_14507 .alert a,
 .custom_ui_14506_14507 .pull-middle {
-    font-family:'Montserrat', sans-serif;
+    font-family:'Montserrat', sans-serif !important;
     font-weight:800 !important;
 }
 
@@ -2627,7 +2627,7 @@ font-weight: bold !important;
 .custom_ui_14506_14540 .texttype__lg::placeholder,
 .custom_ui_14506_14540 .alert a,
 .custom_ui_14506_14540 .pull-middle {
-    font-family: 'Righteous', cursive;
+    font-family: 'Righteous', cursive !important;
 }
 
 /* CURSIVE / HEADER */
@@ -2645,7 +2645,7 @@ font-weight: bold !important;
 .custom_ui_14506_28623 .texttype__lg::placeholder,
 .custom_ui_14506_28623 .alert a,
 .custom_ui_14506_28623 .pull-middle {
-    font-family: 'Libre Baskerville', cursive;
+    font-family: 'Libre Baskerville', cursive !important;
 }
 
 /* QUICKSAND / HEADER */
@@ -2663,7 +2663,7 @@ font-weight: bold !important;
 .custom_ui_14506_26578 .texttype__lg::placeholder,
 .custom_ui_14506_26578 .alert a,
 .custom_ui_14506_26578 .pull-middle {
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Quicksand', sans-serif !important;
     font-weight: 700;
 }
 
@@ -2680,7 +2680,7 @@ font-weight: bold !important;
 .custom_ui_29700_29701 html,
 .custom_ui_29700_29701 body,
 .custom_ui_29700_29701 .doregular {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif !important;
 }
 /* CURSIVE / CONTENT */
 .custom_ui_29700_29702 div,
@@ -2688,7 +2688,7 @@ font-weight: bold !important;
 .custom_ui_29700_29702 html,
 .custom_ui_29700_29702 body,
 .custom_ui_29700_29702 .doregular {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Lato', sans-serif !important;
 }
 /* SANSSERIF / CONTENT */
 .custom_ui_29700_29703 div,
@@ -2696,7 +2696,7 @@ font-weight: bold !important;
 .custom_ui_29700_29703 html,
 .custom_ui_29700_29703 body,
 .custom_ui_29700_29703 .doregular {
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Rubik', sans-serif !important;
 }
 /* SERIF / CONTENT */
 .custom_ui_29700_29704 div,
