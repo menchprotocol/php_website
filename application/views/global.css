@@ -254,12 +254,12 @@ img.no-frame {
 }
 
 .alert-warning {
-    color: #222222;
+    color: #000001;
     background-color: #fff4b5;
     border-color: #fff4b5;
 }
 .alert-danger {
-    color: #222222;
+    color: #000001;
     background-color: #fbc4ce;
     border-color: #fbc4ce;
 }
@@ -271,7 +271,7 @@ img.no-frame {
 
 
 .alert-info {
-    color: #222222;
+    color: #000001;
     background-color: #b2defd;
     border-color: #b2defd;
 }
@@ -589,7 +589,7 @@ label:focus,
 
 .cover-image {
     width: 100%;
-    border:1px solid #222222;
+    border:1px solid #000001;
 }
 
 
@@ -846,7 +846,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 
 .nav-pills .nav-x.active, .nav-pills .show>.nav-x {
     color: #fff;
-    background-color: #222222;
+    background-color: #000001;
     border-radius: 0;
 }
 
@@ -885,7 +885,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 }
 
 .msg-nav > li > a {
-    color: #222222;
+    color: #000001;
     padding: 3px 5px;
     border-radius: 0;
 }
@@ -1296,7 +1296,7 @@ label {
 }
 
 .itemsetting{
-    color: #222222;
+    color: #000001;
     text-decoration: none;
     padding: 10px 0 !important;
     margin-bottom: 3px !important;
@@ -1369,7 +1369,7 @@ label {
 
 
 
-.btn-lrg i { color: #222222 !important; }
+.btn-lrg i { color: #000001 !important; }
 
 
 
@@ -1422,7 +1422,7 @@ label {
 
 
 .grey, .grey i, .grey a, .grey .zq12274, .grey .zq12273, .grey .zq6255, .btn-grey, .btn-grey i, .mini-grey { color:#999999 !important; }
-.black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#222222 !important; }
+.black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000001 !important; }
 
 .no-message{
     color:#999999 !important;
@@ -1444,7 +1444,7 @@ label {
 
 
 .note-btn i {
-    color: #222222 !important;
+    color: #000001 !important;
 }
 
 .inputfile {
@@ -1474,7 +1474,7 @@ label {
 }
 
 .inputfile:focus + label {
-    outline: 1px dotted #222222;
+    outline: 1px dotted #000001;
     outline: -webkit-focus-ring-color auto 5px;
 }
 
@@ -1664,7 +1664,7 @@ i, .btn .show-max {
 
 .texttype__sm{
     display: inline-block;
-    color: #222222;
+    color: #000001;
     padding: 0;
 }
 .texttype_4356_sm {
@@ -1672,12 +1672,12 @@ i, .btn .show-max {
     width: 55px;
     text-align: left;
     margin-left: -6px;
-    color: #222222 !important;
+    color: #000001 !important;
 }
 .texttype__lg {
     background-color: transparent;
     font-weight: bold;
-    color:#222222;
+    color:#000001;
     padding:0;
     margin-bottom: 5px;
     width: 100%;
@@ -1785,7 +1785,7 @@ i, .btn .show-max {
 }
 .list-group .headline{
     margin:5px 0;
-    color: #222222;
+    color: #000001;
 }
 .share-this .icon-block{
     cursor: pointer;
@@ -1807,7 +1807,7 @@ i, .btn .show-max {
 .show-min{display:none;}
 .btn-five{ margin-left:5px; }
 .list-group-item.active {
-    color:#222222;
+    color:#000001;
     z-index: 0;
 }
 
@@ -1817,7 +1817,7 @@ i, .btn .show-max {
 }
 
 .list-radio-select .list-group-item.active {
-    color:#222222 !important;
+    color:#000001 !important;
 }
 
 .top-icon{
@@ -2459,7 +2459,7 @@ textarea {
 }
 .divider{
     height: 1px;
-    background-color: #222222 !important;
+    background-color: #000001 !important;
 }
 .round-btn{
     display: inline-block;
@@ -2512,7 +2512,7 @@ textarea {
     border-radius: 0;
 }
 .custom_ui_13884_13885 .white-border {
-    border: 3px solid #222222 !important;
+    border: 3px solid #000001 !important;
     border-radius: 0;
 }
 
@@ -2784,7 +2784,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 div.dropdown-item,
 .custom_ui_13884_13886 .standard-bg,
 .custom_ui_13884_13886 .mid-text-line span{
-    background-color:#222222;
+    background-color:#000001;
     color: #FFFFFF;
 
 }
@@ -2794,7 +2794,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .sidebar,
 .custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu{
-    background-color:#222222 !important;
+    background-color:#000001 !important;
     color: #FFFFFF !important;
 }
 
@@ -2848,7 +2848,7 @@ font-weight: bold !important;
 .custom_ui_13884_13886 .nav-tabs .nav-x.active,
 .custom_ui_13884_13886 .nav-tabs .nav-x:focus,
 .custom_ui_13884_13886 .nav-tabs .nav-x:hover {
-    border-bottom-color: #222222 !important;
+    border-bottom-color: #000001 !important;
 }
 
 
@@ -2896,7 +2896,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885.custom_ui_28979_28981 .coinType12274,
 .custom_ui_13884_13885.custom_ui_28979_28981 .coinType12273,
 .custom_ui_13884_13885.custom_ui_28979_28981 .coinType6255 {
-    border: 3px solid #222222 !important;
+    border: 3px solid #000001 !important;
     background-color: #FFFFFF;
 }
 
@@ -2916,7 +2916,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .mid-text-line span
 {
     background-color: #f0f0f0;
-    color: #222222;
+    color: #000001;
 }
 .custom_ui_13884_13885 .x-list,
 .custom_ui_13884_13885 .accordion .card,
@@ -2928,11 +2928,11 @@ font-weight: bold !important;
 .custom_ui_13884_13885 textarea:not(.editing-mode),
 .custom_ui_13884_13885 .modal-content {
     background-color:#f0f0f0; /* WAS WHITE */
-    color: #222222;
+    color: #000001;
 }
 .custom_ui_13884_13885 .some-text{
     background-color:transparent !important;
-    color: #222222;
+    color: #000001;
 }
 
 
@@ -2949,7 +2949,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .grey-background,
 .custom_ui_13884_13885 .grey-background i,
 .custom_ui_13884_13885 .coin_reverse .black-background i{
-    color: #222222 !important;
+    color: #000001 !important;
 }
 .custom_ui_13884_13885 .black-background i,
 .custom_ui_13884_13885 .form-control:focus {
@@ -2963,7 +2963,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885 .fa-gif-wrap,
 .custom_ui_13884_13885 .btn,
 .custom_ui_13884_13885 .btn:hover{
-    color: #222222;
+    color: #000001;
 }
 
 .custom_ui_13884_13885 .black-background {
@@ -2988,7 +2988,7 @@ font-weight: bold !important;
 .custom_ui_13884_13885 #x_reply,
 .custom_ui_13884_13885 .fa-gif-wrap
 {
-    border-color: #222222 !important;
+    border-color: #000001 !important;
 }
 
 .custom_ui_13884_13885 .list-border,
