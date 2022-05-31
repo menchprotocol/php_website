@@ -15,7 +15,7 @@ $social_nav = '<div class="center-icons">
 <head>
 
     <meta charset="utf-8" />
-    <meta name="theme-color" content="#f0f0f0">
+    <meta name="theme-color" content="#FFFFFF">
     <link rel="icon" href="/img/mcbroke/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>McBroke || $BROKE - The Official BSC Token</title>

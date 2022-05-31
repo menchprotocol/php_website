@@ -277,11 +277,11 @@ echo '</table>';
     display:none !important;
 }
 #sortable_table .table-striped tr:nth-of-type(odd) td {
-    background-color: #f0f0f0 !important;
+    background-color: #FFFFFF !important;
     -webkit-print-color-adjust:exact;
 }
 #sortable_table .table-striped td {
-    border-bottom: 1px dotted #f0f0f0 !important;
+    border-bottom: 1px dotted #FFFFFF !important;
     font-size: 1.3em;
 }
 .fa-filter, .fa-sort{

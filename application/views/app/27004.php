@@ -320,11 +320,11 @@ if(count($i_query)){
         display:none !important;
     }
     .table-striped tr:nth-of-type(odd) td {
-        background-color: #f0f0f0 !important;
+        background-color: #FFFFFF !important;
         -webkit-print-color-adjust:exact;
     }
     .table-striped td {
-        border-bottom: 1px dotted #f0f0f0 !important;
+        border-bottom: 1px dotted #FFFFFF !important;
     }
     .fa-filter, .fa-sort{
         font-size: 1.1em !important;

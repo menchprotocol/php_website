@@ -29,7 +29,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
     <meta charset="utf-8" />
 
-    <meta name="theme-color" content="#f0f0f0">
+    <meta name="theme-color" content="#FFFFFF">
     <link rel="icon" id="favicon" href="<?= $logo ?>">
     <link rel="mask-icon" href="<?= $logo ?>" color="#000000">
     <?php

@@ -3,7 +3,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <meta name="theme-color" content="#f0f0f0">
+    <meta name="theme-color" content="#FFFFFF">
     <link rel="icon" href="/img/sithlords/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sith Lords</title>
