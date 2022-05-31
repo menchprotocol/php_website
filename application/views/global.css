@@ -2568,15 +2568,12 @@ font-weight: bold !important;
 
 
 
-/* SERIF / CONTENT */
-.custom_ui_14506_14508 div,
-.custom_ui_14506_14508 p,
-.custom_ui_14506_14508 html,
-.custom_ui_14506_14508 body,
-.custom_ui_14506_14508 .doregular {
-    font-family:'Roboto Slab', serif !important;
-    font-weight:400 !important;
-}
+
+
+
+
+
+
 /* SERIF / HEADER */
 .custom_ui_14506_14508 h1,
 .custom_ui_14506_14508 h2,
@@ -2596,20 +2593,6 @@ font-weight: bold !important;
     font-weight:800 !important;
 }
 
-
-
-
-
-
-
-/* SANSSERIF / CONTENT */
-.custom_ui_14506_14507 div,
-.custom_ui_14506_14507 p,
-.custom_ui_14506_14507 html,
-.custom_ui_14506_14507 body,
-.custom_ui_14506_14507 .doregular {
-    font-family: 'Rubik', sans-serif;
-}
 /* SANSSERIF / HEADER */
 .custom_ui_14506_14507 h1,
 .custom_ui_14506_14507 h2,
@@ -2629,18 +2612,6 @@ font-weight: bold !important;
     font-weight:800 !important;
 }
 
-
-
-
-
-/* CURSIVE / CONTENT */
-.custom_ui_14506_14540 div,
-.custom_ui_14506_14540 p,
-.custom_ui_14506_14540 html,
-.custom_ui_14506_14540 body,
-.custom_ui_14506_14540 .doregular {
-    font-family: 'Lato', sans-serif;
-}
 /* CURSIVE / HEADER */
 .custom_ui_14506_14540 h1,
 .custom_ui_14506_14540 h2,
@@ -2659,16 +2630,6 @@ font-weight: bold !important;
     font-family: 'Righteous', cursive;
 }
 
-
-
-/* CURSIVE / CONTENT */
-.custom_ui_14506_28623 div,
-.custom_ui_14506_28623 p,
-.custom_ui_14506_28623 html,
-.custom_ui_14506_28623 body,
-.custom_ui_14506_28623 .doregular {
-    font-family: 'Lato', sans-serif;
-}
 /* CURSIVE / HEADER */
 .custom_ui_14506_28623 h1,
 .custom_ui_14506_28623 h2,
@@ -2687,17 +2648,6 @@ font-weight: bold !important;
     font-family: 'Libre Baskerville', cursive;
 }
 
-
-
-
-/* QUICKSAND / CONTENT */
-.custom_ui_14506_26578 div,
-.custom_ui_14506_26578 p,
-.custom_ui_14506_26578 html,
-.custom_ui_14506_26578 body,
-.custom_ui_14506_26578 .doregular {
-    font-family: 'Open Sans', sans-serif;
-}
 /* QUICKSAND / HEADER */
 .custom_ui_14506_26578 h1,
 .custom_ui_14506_26578 h2,
@@ -2721,31 +2671,50 @@ font-weight: bold !important;
 
 
 
+
+
+
 /* QUICKSAND / CONTENT */
-.custom_ui_14506_29071 div,
-.custom_ui_14506_29071 p,
-.custom_ui_14506_29071 html,
-.custom_ui_14506_29071 body,
-.custom_ui_14506_29071 .doregular {
+.custom_ui_29700_29701 div,
+.custom_ui_29700_29701 p,
+.custom_ui_29700_29701 html,
+.custom_ui_29700_29701 body,
+.custom_ui_29700_29701 .doregular {
     font-family: 'Open Sans', sans-serif;
 }
-/* QUICKSAND / HEADER */
-.custom_ui_14506_29071 h1,
-.custom_ui_14506_29071 h2,
-.custom_ui_14506_29071 .css__title,
-.custom_ui_14506_29071 .headline,
-.custom_ui_14506_29071 .btn,
-.custom_ui_14506_29071 .algolia_pad_search,
-.custom_ui_14506_29071 .progress-title,
-.custom_ui_14506_29071 .mid-text-line span,
-.custom_ui_14506_29071 .previous_answer,
-.custom_ui_14506_29071 .nav-x,
-.custom_ui_14506_29071 .texttype__lg,
-.custom_ui_14506_29071 .texttype__lg::placeholder,
-.custom_ui_14506_29071 .alert a,
-.custom_ui_14506_29071 .pull-middle {
-    font-family: 'Dynalight', cursive;
+/* CURSIVE / CONTENT */
+.custom_ui_29700_29702 div,
+.custom_ui_29700_29702 p,
+.custom_ui_29700_29702 html,
+.custom_ui_29700_29702 body,
+.custom_ui_29700_29702 .doregular {
+    font-family: 'Lato', sans-serif;
 }
+/* SANSSERIF / CONTENT */
+.custom_ui_29700_29703 div,
+.custom_ui_29700_29703 p,
+.custom_ui_29700_29703 html,
+.custom_ui_29700_29703 body,
+.custom_ui_29700_29703 .doregular {
+    font-family: 'Rubik', sans-serif;
+}
+/* SERIF / CONTENT */
+.custom_ui_29700_29704 div,
+.custom_ui_29700_29704 p,
+.custom_ui_29700_29704 html,
+.custom_ui_29700_29704 body,
+.custom_ui_29700_29704 .doregular {
+    font-family:'Roboto Slab', serif !important;
+    font-weight:400 !important;
+}
+
+
+
+
+
+
+
+
 
 
 

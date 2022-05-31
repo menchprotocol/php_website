@@ -1352,7 +1352,7 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
     }
 
     foreach($CI->config->item('e___'.$focus__id) as $e__id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$focus__id.','.$e__id.','.$enable_mulitiselect.')" class="list-group-item css__title itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
+        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$focus__id.','.$e__id.','.$enable_mulitiselect.')" class="list-group-item css__title custom_ui_'.$focus__id.'_'.$e__id.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
         $count++;
     }
 
@@ -1603,6 +1603,20 @@ function view_e_settings($list_id, $is_open){
             $tab_ui .= '<span><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($u_emails) > 0 ? $u_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
                 <a href="javascript:void(0)" onclick="e_email()" class="btn btn-default">Save</a>
                 <span class="saving-account save_email"></span>';
+
+
+        } elseif ($acc_e__id == 4783 /* Phone */) {
+
+            $u_phones = $CI->X_model->fetch(array(
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__down' => $member_e['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__up' => 4783, //Phone
+            ));
+
+            $tab_ui .= '<span><input type="number" id="e_phone" class="form-control border dotransparent" value="' . (count($u_phones) > 0 ? $u_phones[0]['x__message'] : '') . '" placeholder="7781234567" /></span>
+                <a href="javascript:void(0)" onclick="e_phone()" class="btn btn-default">Save</a>
+                <span class="saving-account save_phone"></span>';
 
         } elseif ($acc_e__id == 3286 /* Password */) {
 
