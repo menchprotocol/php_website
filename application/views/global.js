@@ -854,8 +854,36 @@ function load_coins(){
     });
 }
 
+
+
+
+var nav_toggeled = false;
+function toggle_left_menu() {
+
+    if($('.sidebar').hasClass('hidden')){
+        if(!nav_toggeled){
+            nav_toggeled = true;
+            $.post("/e/toggle_left_menu", {}, function (data) {
+                $('.sidebar').html(data);
+            });
+        }
+        $('.sidebar').removeClass('hidden');
+    } else {
+        $('.sidebar').addClass('hidden');
+    }
+}
+
+
+
 var algolia_index = false;
 $(document).ready(function () {
+
+    window.addEventListener('click', function(e){
+        if (nav_toggeled && !document.getElementById('main_sidebar').contains(e.target)){
+            //Close on outside click:
+            toggle_left_menu();
+        }
+    });
 
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
@@ -2910,24 +2938,6 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
         }
     });
 }
-
-
-var nav_toggeled = false;
-function toggle_left_menu() {
-
-    if($('.sidebar').hasClass('hidden')){
-        if(!nav_toggeled){
-            nav_toggeled = true;
-            $.post("/e/toggle_left_menu", {}, function (data) {
-                $('.sidebar').html(data);
-            });
-        }
-        $('.sidebar').removeClass('hidden');
-    } else {
-        $('.sidebar').addClass('hidden');
-    }
-}
-
 
 
 
