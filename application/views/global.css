@@ -2761,6 +2761,9 @@ font-weight: bold !important;
     border: 3px solid #FFFFFF !important;
     background-color: #000000;
 }
+.custom_ui_13884_13886 .cover-link {
+    background-color: #FFFFFF !important;
+}
 
 .custom_ui_13884_13886 .light-bg {
     background: rgba(0,0,0,0.80);
