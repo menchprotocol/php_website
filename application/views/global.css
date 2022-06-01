@@ -2854,9 +2854,15 @@ font-weight: bold !important;
 .custom_ui_13884_13886.custom_ui_28979_28981 .coinType12274,
 .custom_ui_13884_13886.custom_ui_28979_28981 .coinType12273,
 .custom_ui_13884_13886.custom_ui_28979_28981 .coinType6255 {
-    border: 3px solid #FC1B44 !important;
+    border: 3px solid #FFFFFF !important;
     background-color: #000000;
 }
+
+.custom_ui_13884_13886.custom_ui_28979_28981 .coinType6255 {
+    border: 3px solid #FC1B44 !important;
+}
+
+
 
 .custom_ui_13884_13886 .cover-link {
     background-color: #FFFFFF !important;
