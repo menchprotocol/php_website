@@ -1285,7 +1285,7 @@ function coin__load(coin__type, coin__id){
     $('#search_cover').val('').focus();
     $("#upload_results, #icon_suggestions, #img_results_icons, #img_results_emojis, #img_results_tenor, #img_results_unsplash, #img_results_local").html('');
     $('#coin__title, #coin__cover').val('LOADING...');
-    $('#modal14937 .black-background-obs').removeClass('coinType12273').removeClass('coinType12274').addClass('coinType'+coin__type);
+    $('#modal14937 .black-background-obs').removeClass('isSelected').removeClass('coinType12274').addClass('coinType'+coin__type);
 
     $.post("/e/coin__load", {
         coin__type: coin__type,
@@ -1373,7 +1373,7 @@ function i_load_search(x__type) {
             },
             header: function (data) {
                 if(data.query && data.query.length){
-                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="coin_cover mini-coin coin-12273 coin-id-0 col-md-2 col-sm-3 col-4 col-xl-1 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12273"></i></div><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="black-background-obs cover-link coinType12273"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
+                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="coin_cover mini-coin coin-12273 coin-id-0 col-md-2 col-sm-3 col-4 col-xl-1 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12273"></i></div><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="black-background-obs cover-link isSelected"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
                 }
             },
             empty: function (data) {
@@ -3208,16 +3208,16 @@ function toggle_answer(i__id){
     var is_single_selection = (i__type == 6684);
     if(is_single_selection){
         //Single Selection, clear all:
-        $('.answer-item').removeClass('coinType12273');
+        $('.answer-item').removeClass('isSelected');
     }
 
     //Is setected?
-    if($('.x_select_'+i__id).hasClass('coinType12273')){
+    if($('.x_select_'+i__id).hasClass('isSelected')){
 
         //Previously Selected, delete selection:
         if(i__type == 7231 || i__type == 14861){
             //Multi Selection
-            $('.x_select_'+i__id).removeClass('coinType12273');
+            $('.x_select_'+i__id).removeClass('isSelected');
         }
 
         is_toggling = false;
@@ -3225,7 +3225,7 @@ function toggle_answer(i__id){
     } else {
 
         //Not selected, select now:
-        $('.x_select_'+i__id).addClass('coinType12273');
+        $('.x_select_'+i__id).addClass('isSelected');
 
         if(is_single_selection){
             //Auto submit answer:
@@ -3358,7 +3358,7 @@ function x_select(go_next_url){
     var selection_i__id = [];
     $(".answer-item").each(function () {
         var selection_i__id_this = parseInt($(this).attr('selection_i__id'));
-        if ($('.x_select_'+selection_i__id_this).hasClass('coinType12273')) {
+        if ($('.x_select_'+selection_i__id_this).hasClass('isSelected')) {
             selection_i__id.push(selection_i__id_this);
         }
     });

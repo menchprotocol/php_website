@@ -2858,7 +2858,7 @@ font-weight: bold !important;
     background-color: #000000;
 }
 
-.custom_ui_13884_13886.custom_ui_28979_28981 .coinType6255 {
+.isSelected {
     border: 3px solid #FC1B44 !important;
 }
 
@@ -2966,11 +2966,6 @@ font-weight: bold !important;
     color: #FFFFFF;
 }
 
-/*
-.custom_ui_13884_13886 .coinType12273,
-.custom_ui_13884_13886 .coinType12274,
-.custom_ui_13884_13886 .coinType6255,
-*/
 
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 .list-border .list-group-item,

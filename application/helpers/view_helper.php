@@ -1733,7 +1733,7 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
     $ui  = '<div class="coin_cover col-md-4 col-6 col-xl-2 col-lg-3 no-padding">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<table class="coin_coins"></table>'; //For UI height adjustment
-    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background-obs cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' coinType12273 ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
+    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background-obs cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' isSelected ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.(!$has_valid_url && $i['i__cover'] ? view_cover(12273,$i['i__cover']) : '').'</div>';
@@ -2258,8 +2258,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $cointype = 'coinType12274';
     if ($discovery_mode) { // || substr_count($e['e__cover'], 'fas fa-circle zq6255')
         $cointype = 'coinType12274 coinType6255';
-        //} elseif (substr_count($e['e__cover'], 'fas fa-circle zq12273')) {
-        //$cointype = 'coinType12273'; //Hack to make a source like an idea only for the source idea!
     }
     $cointype = $cointype . ' coinStatus'.$e['e__type'].' ';
 
