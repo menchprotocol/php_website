@@ -632,10 +632,6 @@ class X extends CI_Controller
 
         $member_e = superpower_unlocked();
 
-        if($member_e && $member_e['e__id']==1){
-            //die('hi shervin');
-        }
-
         //Log link if not there:
         if($tag__id>0 && $member__id>0 &&
             count($this->X_model->fetch(array(
@@ -686,7 +682,7 @@ class X extends CI_Controller
             $top_is = $this->I_model->fetch(array(
                 'i__id' => $top_i__id,
             ));
-        } elseif($member_e) {
+        } elseif($member_e && 0) {
 
             //See if this idea belongs to any of this members starting points, if so, redirect:
             $starting_is = $this->X_model->ids($member_e['e__id']);
