@@ -698,6 +698,7 @@ class X extends CI_Controller
                 //Just go to the first one for now:
                 //TODO If more than one option give the user choice on where to start
                 echo $i__id.'/';
+                echo array_shift(array_values($crossovers)).'/';
                 print_r($crossovers);
                 die();
                 //return redirect_message('/'.$crossovers[0].'/'.$i__id);
