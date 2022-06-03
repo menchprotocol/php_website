@@ -692,6 +692,7 @@ function cookie_delete(){
 }
 
 function cookie_check() {
+    return false;
     date_default_timezone_set(view_memory(6404,11079));
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
