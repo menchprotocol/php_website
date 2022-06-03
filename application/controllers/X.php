@@ -633,7 +633,7 @@ class X extends CI_Controller
         $member_e = superpower_unlocked();
 
         if($member_e && $member_e['e__id']==1){
-            die('hi shervin');
+            //die('hi shervin');
         }
 
         //Log link if not there:
