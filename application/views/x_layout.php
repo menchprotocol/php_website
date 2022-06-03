@@ -39,6 +39,9 @@ $is_next = $this->X_model->fetch(array(
 
 
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
+if($x__source==1){
+    die('hi shervin');
+}
 $top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
