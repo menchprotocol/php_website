@@ -694,16 +694,9 @@ class X extends CI_Controller
             //Move recursively up to see if we cross any starting points:
             $parent_is = $this->I_model->recursive_parent_ids($i__id);
             $crossovers = array_intersect($starting_is, $parent_is);
-            if(count($crossovers) > 0){
-                //Just go to the first one for now:
-                //TODO If more than one option give the user choice on where to start
-                echo $i__id.'/';
-                echo array_pop(array_reverse($crossovers)).'/';
-                print_r($crossovers);
-                die();
-                //return redirect_message('/'.$crossovers[0].'/'.$i__id);
+            foreach($crossovers as $key => $crossover){
+                return redirect_message('/'.$crossover.'/'.$i__id);
             }
-
         }
 
         //Make sure we found it:
