@@ -688,9 +688,6 @@ class X extends CI_Controller
             $starting_is = $this->X_model->ids($member_e['e__id']);
             if(in_array($i__id, $starting_is)){
                 //This is a starting point itself, so go there:
-                if($member_e && $member_e['e__id']==1){
-                    die('hi shervin 1');
-                }
                 return redirect_message('/'.$i__id.'/'.$i__id);
             }
 
@@ -700,10 +697,10 @@ class X extends CI_Controller
             if(count($crossovers) > 0){
                 //Just go to the first one for now:
                 //TODO If more than one option give the user choice on where to start
-                if($member_e && $member_e['e__id']==1){
-                    die('hi shervin 2');
-                }
-                return redirect_message('/'.$crossovers[0].'/'.$i__id);
+                echo $i__id.'/';
+                print_r($crossovers);
+                die();
+                //return redirect_message('/'.$crossovers[0].'/'.$i__id);
             }
 
         }
