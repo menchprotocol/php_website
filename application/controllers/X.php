@@ -632,6 +632,10 @@ class X extends CI_Controller
 
         $member_e = superpower_unlocked();
 
+        if($member_e && $member_e['e__id']==1){
+            die('hi shervin');
+        }
+
         //Log link if not there:
         if($tag__id>0 && $member__id>0 &&
             count($this->X_model->fetch(array(
