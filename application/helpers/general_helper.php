@@ -704,7 +704,7 @@ function i_is_available($i__id, $log_tnx = false){
         }
         if(!$meets_inc1_prereq){
             if($log_tnx){
-                $this->X_model->create(array(
+                $CI->X_model->create(array(
                     'x__type' => 29737, //Access Blocked
                     'x__source' => $x__source,
                     'x__left' => $i__id,
@@ -741,7 +741,7 @@ function i_is_available($i__id, $log_tnx = false){
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
             if($log_tnx){
-                $this->X_model->create(array(
+                $CI->X_model->create(array(
                     'x__type' => 29737, //Access Blocked
                     'x__source' => $x__source,
                     'x__left' => $i__id,
@@ -782,7 +782,7 @@ function i_is_available($i__id, $log_tnx = false){
 
         if(!$excludes_all){
             if($log_tnx){
-                $this->X_model->create(array(
+                $CI->X_model->create(array(
                     'x__type' => 29737, //Access Blocked
                     'x__source' => $x__source,
                     'x__left' => $i__id,
@@ -799,7 +799,7 @@ function i_is_available($i__id, $log_tnx = false){
     if(i_spots_remaining($i__id)==0){
         //Limit is reached, cannot complete this at this time:
         if($log_tnx){
-            $this->X_model->create(array(
+            $CI->X_model->create(array(
                 'x__type' => 29737, //Access Blocked
                 'x__source' => $x__source,
                 'x__left' => $i__id,
