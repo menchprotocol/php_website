@@ -356,9 +356,7 @@ class X extends CI_Controller
 
         //Check to see if added to read for logged-in members:
         if(!$member_e){
-
             return redirect_message('/-4269?i__id='.$i__id);
-
         }
 
         //Add this Idea to their read If not there:
@@ -394,6 +392,11 @@ class X extends CI_Controller
                     return redirect_message('/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is currently not active & cannot be started at this time.</div>');
 
                 }
+            }
+
+            //Make sure it's available:
+            if(!i_is_available($i__id)){
+                return redirect_message('/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You are not eligible to start this idea at this time.</div>');
             }
 
             //All good, add to start:
@@ -502,6 +505,8 @@ class X extends CI_Controller
             return redirect_message('/'.$top_i__id);
         } elseif(!count($is)) {
             return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
+        } elseif(!i_is_available($i__id)) {
+            return redirect_message('/'.$top_i__id.'/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You are not eligible to complete this idea at this time.</div>');
         }
 
 
@@ -693,8 +698,8 @@ class X extends CI_Controller
 
             //Move recursively up to see if we cross any starting points:
             $parent_is = $this->I_model->recursive_parent_ids($i__id);
-            $crossovers = array_intersect($starting_is, $parent_is);
-            foreach($crossovers as $key => $crossover){
+            foreach(array_intersect($starting_is, $parent_is) as $crossover){
+                //TODO 2nd+ pathways are ignored, give user the choice if 2+ options exist
                 return redirect_message('/'.$crossover.'/'.$i__id);
             }
         }

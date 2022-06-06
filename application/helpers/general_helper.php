@@ -650,6 +650,137 @@ function i_unlockable($i){
     return in_array($i['i__type'], $CI->config->item('n___7355') /* PRIVATE */);
 }
 
+function i_spots_remaining($i__id){
+
+    $CI =& get_instance();
+    
+    //Any Limits on Selection?
+    $spots_remaining = -1; //No limits
+    $has_limits = $CI->X_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type' => 4983, //References
+        'x__right' => $i__id,
+        'x__up' => 26189,
+    ), array(), 1);
+    if(count($has_limits) && is_numeric($has_limits[0]['x__message'])){
+        //We have a limit! See if we've met it already:
+        $spots_remaining = intval($has_limits[0]['x__message'])-view_coins_i(6255,  $i__id, 0, false);
+        if($spots_remaining < 0){
+            $spots_remaining = 0;
+        }
+    }
+    
+    return $spots_remaining;
+}
+
+function i_is_available($i__id){
+
+    $CI =& get_instance();
+    $member_e = superpower_unlocked();
+    $x__source = ( $member_e ? $member_e['e__id'] : 0 );
+
+    //Any Inclusion Any Requirements?
+    $fetch_13865 = $CI->X_model->fetch(array(
+        'x__right' => $i__id,
+        'x__type' => 13865, //Must Include Any
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //ACTIVE
+    ), array('x__up'), 0);
+    if(count($fetch_13865)){
+        //Let's see if they meet any of these PREREQUISITES:
+        $meets_inc1_prereq = false;
+        if($x__source > 0){
+            foreach($fetch_13865 as $e_pre){
+                if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
+                        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__up' => $e_pre['x__up'],
+                        'x__down' => $x__source,
+                    )))){
+                    $meets_inc1_prereq = true;
+                    break;
+                }
+            }
+        }
+        if(!$meets_inc1_prereq){
+            return false;
+        }
+    }
+
+    //Any Inclusion All Requirements?
+    $fetch_27984 = $CI->X_model->fetch(array(
+        'x__right' => $i__id,
+        'x__type' => 27984, //Must Include All
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //ACTIVE
+    ), array('x__up'), 0);
+    if(count($fetch_27984)){
+        //Let's see if they meet all of these PREREQUISITES:
+        $meets_inc2_prereq = 0;
+        if($x__source > 0){
+            foreach($fetch_27984 as $e_pre){
+                if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
+                        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__up' => $e_pre['x__up'],
+                        'x__down' => $x__source,
+                    )))){
+                    $meets_inc2_prereq++;
+                }
+            }
+        }
+        if($meets_inc2_prereq < count($fetch_27984)){
+            //Did not meet all requirements:
+            return false;
+        }
+    }
+
+    //Any Exclusion All Requirements?
+    $fetch_26600 = $CI->X_model->fetch(array(
+        'x__right' => $i__id,
+        'x__type' => 26600, //Must Exclude All
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //ACTIVE
+    ), array('x__up'), 0);
+    if(count($fetch_26600)){
+        //Let's see if they meet any of these PREREQUISITES:
+        $excludes_all = false;
+        if($x__source > 0){
+            foreach($fetch_26600 as $e_pre){
+                if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
+                        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__up' => $e_pre['x__up'],
+                        'x__down' => $x__source,
+                    )))){
+                    //Found an exclusion, so skip this:
+                    $excludes_all = false;
+                    break;
+                } else {
+                    $excludes_all = true;
+                }
+            }
+        }
+
+        if(!$excludes_all){
+            return false;
+        }
+    }
+
+
+    //Any Limits on Selection?
+    if(i_spots_remaining($i__id)==0){
+        //Limit is reached, cannot complete this at this time:
+        return false;
+    }
+    
+
+    //All good:
+    return true;
+
+}
+
+
 function redirect_message($url, $message = null, $log_error = false)
 {
     //An error handling function that would redirect member to $url with optional $message

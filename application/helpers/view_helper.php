@@ -956,7 +956,6 @@ function view_body_i($x__type, $counter, $i__id){
 function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null){
 
     //$link = '/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link);
-    
 
     return '<a href="'.$link.'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
@@ -1719,7 +1718,9 @@ function view_info_box(){
     return $ui;
 }
 
-function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
+
+
+function view_i_select($i, $x__source, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1727,6 +1728,8 @@ function view_i_select($i, $x__source, $previously_selected, $spots_remaining){
     $i_title = view_i_title($i);
     $member_e = superpower_unlocked();
     $i_stats = i_stats($i['i__metadata']);
+    $spots_remaining = i_spots_remaining($i['i__id']);
+
 
     $href = 'href="javascript:void(0);"'.( $spots_remaining==0 && !$previously_selected ? ' onclick="alert(\'This Option is Not Available\')" ' : ' onclick="toggle_answer(' . $i['i__id'] . ')"' );
 

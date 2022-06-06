@@ -314,109 +314,10 @@ if($top_i__id) {
             //List children to choose from:
             foreach ($is_next as $key => $next_i) {
 
-                //Any Inclusion Any Requirements?
-                $fetch_13865 = $this->X_model->fetch(array(
-                    'x__right' => $next_i['i__id'],
-                    'x__type' => 13865, //Must Include Any
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
-                ), array('x__up'), 0);
-                if(count($fetch_13865)){
-                    //Let's see if they meet any of these PREREQUISITES:
-                    $meets_inc1_prereq = false;
-                    if($x__source > 0){
-                        foreach($fetch_13865 as $e_pre){
-                            if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($this->X_model->fetch(array(
-                                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                    'x__up' => $e_pre['x__up'],
-                                    'x__down' => $x__source,
-                                )))){
-                                $meets_inc1_prereq = true;
-                                break;
-                            }
-                        }
-                    }
-                    if(!$meets_inc1_prereq){
-                        continue;
-                    }
-                }
-
-                //Any Inclusion All Requirements?
-                $fetch_27984 = $this->X_model->fetch(array(
-                    'x__right' => $next_i['i__id'],
-                    'x__type' => 27984, //Must Include All
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
-                ), array('x__up'), 0);
-                if(count($fetch_27984)){
-                    //Let's see if they meet all of these PREREQUISITES:
-                    $meets_inc2_prereq = 0;
-                    if($x__source > 0){
-                        foreach($fetch_27984 as $e_pre){
-                            if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($this->X_model->fetch(array(
-                                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                    'x__up' => $e_pre['x__up'],
-                                    'x__down' => $x__source,
-                                )))){
-                                $meets_inc2_prereq++;
-                            }
-                        }
-                    }
-                    if($meets_inc2_prereq < count($fetch_27984)){
-                        //Did not meet all requirements:
-                        continue;
-                    }
-                }
-
-                //Any Exclusion All Requirements?
-                $fetch_26600 = $this->X_model->fetch(array(
-                    'x__right' => $next_i['i__id'],
-                    'x__type' => 26600, //Must Exclude All
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
-                ), array('x__up'), 0);
-                if(count($fetch_26600)){
-                    //Let's see if they meet any of these PREREQUISITES:
-                    $excludes_all = false;
-                    if($x__source > 0){
-                        foreach($fetch_26600 as $e_pre){
-                            if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($this->X_model->fetch(array(
-                                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'x__up' => $e_pre['x__up'],
-                                'x__down' => $x__source,
-                            )))){
-                                //Found an exclusion, so skip this:
-                                $excludes_all = false;
-                                break;
-                            } else {
-                                $excludes_all = true;
-                            }
-                        }
-                    }
-
-                    if(!$excludes_all){
-                        continue;
-                    }
-                }
-
-
-                //Any Limits on Selection?
-                $spots_remaining = -1; //No limits
-                $has_limits = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 4983, //References
-                    'x__right' => $next_i['i__id'],
-                    'x__up' => 26189,
-                ), array(), 1);
-                if(count($has_limits) && is_numeric($has_limits[0]['x__message'])){
-                    //We have a limit! See if we've met it already:
-                    $spots_remaining = intval($has_limits[0]['x__message'])-view_coins_i(6255,  $next_i['i__id'], 0, false);
-                    if($spots_remaining < 0){
-                        $spots_remaining = 0;
-                    }
+                //Make sure it meets the conditions:
+                if(!i_is_available($next_i['i__id'])){
+                    //This option is not available:
+                    continue;
                 }
 
 
@@ -429,7 +330,7 @@ if($top_i__id) {
                     'x__source' => $x__source,
                 )));
 
-                $select_answer .= view_i_select($next_i, $x__source, $previously_selected, $spots_remaining);
+                $select_answer .= view_i_select($next_i, $x__source, $previously_selected);
 
             }
 
