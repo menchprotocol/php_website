@@ -673,7 +673,7 @@ function i_spots_remaining($i__id){
     return $spots_remaining;
 }
 
-function i_is_available($i__id){
+function i_is_available($i__id, $log_tnx = false){
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();
@@ -703,6 +703,15 @@ function i_is_available($i__id){
             }
         }
         if(!$meets_inc1_prereq){
+            if($log_tnx){
+                $this->X_model->create(array(
+                    'x__type' => 29737, //Access Blocked
+                    'x__source' => $x__source,
+                    'x__left' => $i__id,
+                    'x__up' => 13865,
+                    'x__down' => ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ),
+                ));
+            }
             return false;
         }
     }
@@ -731,6 +740,15 @@ function i_is_available($i__id){
         }
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
+            if($log_tnx){
+                $this->X_model->create(array(
+                    'x__type' => 29737, //Access Blocked
+                    'x__source' => $x__source,
+                    'x__left' => $i__id,
+                    'x__up' => 27984,
+                    'x__down' => ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ),
+                ));
+            }
             return false;
         }
     }
@@ -763,6 +781,15 @@ function i_is_available($i__id){
         }
 
         if(!$excludes_all){
+            if($log_tnx){
+                $this->X_model->create(array(
+                    'x__type' => 29737, //Access Blocked
+                    'x__source' => $x__source,
+                    'x__left' => $i__id,
+                    'x__up' => 26600,
+                    'x__down' => ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ),
+                ));
+            }
             return false;
         }
     }
@@ -771,6 +798,14 @@ function i_is_available($i__id){
     //Any Limits on Selection?
     if(i_spots_remaining($i__id)==0){
         //Limit is reached, cannot complete this at this time:
+        if($log_tnx){
+            $this->X_model->create(array(
+                'x__type' => 29737, //Access Blocked
+                'x__source' => $x__source,
+                'x__left' => $i__id,
+                'x__up' => 26189,
+            ));
+        }
         return false;
     }
     

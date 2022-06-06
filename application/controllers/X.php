@@ -395,8 +395,8 @@ class X extends CI_Controller
             }
 
             //Make sure it's available:
-            if(!i_is_available($i__id)){
-                return redirect_message('/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You are not eligible to start this idea at this time.</div>');
+            if(!i_is_available($i__id, true)){
+                return redirect_message('/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You cannot start this idea at this time.</div>');
             }
 
             //All good, add to start:
@@ -505,8 +505,8 @@ class X extends CI_Controller
             return redirect_message('/'.$top_i__id);
         } elseif(!count($is)) {
             return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
-        } elseif(!i_is_available($i__id)) {
-            return redirect_message('/'.$top_i__id.'/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You are not eligible to complete this idea at this time.</div>');
+        } elseif(!i_is_available($i__id, true)) {
+            return redirect_message('/'.$top_i__id.'/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You cannot complete this idea at this time.</div>');
         }
 
 
