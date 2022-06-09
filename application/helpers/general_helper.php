@@ -653,7 +653,8 @@ function i_unlockable($i){
 function i_spots_remaining($i__id){
 
     $CI =& get_instance();
-    
+    $member_e = superpower_unlocked();
+
     //Any Limits on Selection?
     $spots_remaining = -1; //No limits
     $has_limits = $CI->X_model->fetch(array(
@@ -662,9 +663,19 @@ function i_spots_remaining($i__id){
         'x__right' => $i__id,
         'x__up' => 26189,
     ), array(), 1);
-    if(count($has_limits) && is_numeric($has_limits[0]['x__message'])){
+    if(count($has_limits) && strlen($has_limits[0]['x__message']) && is_numeric($has_limits[0]['x__message'])){
         //We have a limit! See if we've met it already:
-        $spots_remaining = intval($has_limits[0]['x__message'])-view_coins_i(6255,  $i__id, 0, false);
+        $query_filters = array(
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+            'x__left' => $i__id,
+        );
+        if($member_e){
+            //Do not count current user to give them option to edit & resubmit:
+            $query_filters['x__source !='] = $member_e['e__id'];
+        }
+        $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
+        $spots_remaining = intval($has_limits[0]['x__message'])-$query[0]['totals'];
         if($spots_remaining < 0){
             $spots_remaining = 0;
         }
