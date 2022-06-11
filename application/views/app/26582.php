@@ -78,7 +78,7 @@ echo '<div style="padding: 10px 0;"><input type="text" class="form-control white
 
 
 echo '<div style="border:3px solid #000000; padding:8px; border-radius: 0;">';
-echo '<p>Hi '.$member_e['e__title'].' 👋</p>';
+echo '<p>'.view_shuffle_message(29749).' '.$member_e['e__title'].' '.view_shuffle_message(29750).'</p>';
 echo '<textarea class="form-control" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
 echo '<p>'.view_shuffle_message(12691).'</p>';
 echo '<p>'.get_domain('m__title', $member_e['e__id']).'</p>';
