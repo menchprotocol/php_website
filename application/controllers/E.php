@@ -1583,44 +1583,29 @@ class E extends CI_Controller
             ));
         }
 
+
         //Authenticate password:
         $es[0]['is_masterpass_login'] = 0;
-        $u_passwords = $this->X_model->fetch(array(
+
+        //Is this the master password?
+        if(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']) == view_memory(6404,13014)){
+
+            $es[0]['is_masterpass_login'] = 1;
+
+        } elseif(!count($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3286, //Password
+            'x__message' => hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $es[0]['e__id']),
             'x__down' => $es[0]['e__id'],
-        ));
-        if (count($u_passwords) == 0) {
-            //They do not have a password assigned yet!
+        )))) {
+
             return view_json(array(
                 'status' => 0,
-                'message' => 'An active login password has not been assigned to your account yet. You can assign a new password using the Forgot Password Button.',
+                'message' => 'Incorrect password',
             ));
-        } elseif (!in_array($u_passwords[0]['x__status'], $this->config->item('n___7359') /* PRIVATE */)) {
-            //They do not have a password assigned yet!
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Password transaction is not public. Contact us to adjust your account.',
-            ));
-        } elseif ($u_passwords[0]['x__message'] != hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $es[0]['e__id'])) {
 
-            //Is this the master password?
-            if(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']) == view_memory(6404,13014)){
-
-                $es[0]['is_masterpass_login'] = 1;
-
-            } else {
-
-                //Bad password
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Incorrect password',
-                ));
-
-            }
         }
-
 
         //Assign session & log transaction:
         $this->E_model->activate_session($es[0]);
