@@ -92,7 +92,7 @@ echo view_pill(11019,  $item_counts[11019], $e___11018[11019], view_body_i(11019
 
 
 //Focus Notes
-echo '<div class="row justify-content" style="padding-bottom: 55px;">';
+echo '<div class="row justify-content" id="thisNode" style="padding-bottom: 55px;">';
 echo view_i(4250, 0, null, $i_focus);
 echo '</div>';
 
@@ -121,6 +121,10 @@ foreach($item_counts as $x__type => $counter) {
 <script type="text/javascript">
 
     $(document).ready(function () {
+
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $("#thisNode").offset().top
+        }, 100);
 
         load_tab(<?= $focus_tab ?>);
 
