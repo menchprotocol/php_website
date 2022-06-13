@@ -389,10 +389,6 @@ function current_link(){
     return 'https://' .get_server('SERVER_NAME') . get_server('REQUEST_URI');
 }
 
-function words_to_seconds($text){
-    //Average reading speed assumed to be 250 words/minute
-    return ( strlen($text) ? round( (substr_count($text, ' ') + 1) / view_memory(6404,26019) * 60 , 4 ) : 0 );
-}
 
 function is_https_url($url){
     return substr($url, 0, 8) == 'https://';
@@ -491,31 +487,11 @@ function i__spectrum_calculator($i){
 
     //Set Weight to Max Time for now:
     $i_stats = i_stats($i['i__metadata']);
-    $weight = $i_stats['i___6162'];
-
-    /*
-    $count_x = $CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__right='.$i['i__id'].' OR x__left='.$i['i__id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-
-    //IDEAS
-    $counts = $CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-        '(x__right='.$i['i__id'].' OR x__left='.$i['i__id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-
-    //Returns the weight of a idea:
-    $weight = ( $count_x[0]['totals'] * view_memory(6404,12568) )
-        + ( $counts[0]['totals'] * view_memory(6404,12565) );
-
-    */
 
     //Should we update?
-    if($weight != $i['i__spectrum']){
+    if($i_stats['i___6170'] != $i['i__spectrum']){
         return $CI->I_model->update($i['i__id'], array(
-            'i__spectrum' => $weight,
+            'i__spectrum' => $i_stats['i___6170'],
         ));
     } else {
         return 0;
@@ -1010,10 +986,6 @@ function i_stats($i__metadata){
         //IDEAS
         'i___6169' => ( isset($metadata['i___6169']) && $metadata['i___6169']>=2 ? $metadata['i___6169']-1 : 0 ),
         'i___6170' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? $metadata['i___6170']-1 : 0 ),
-
-        'i___6161' => ( isset($metadata['i___6161']) ? $metadata['i___6161'] : view_memory(6404,12427) ),
-        'i___6162' => ( isset($metadata['i___6162']) ? $metadata['i___6162'] : view_memory(6404,12427) ),
-        'i___13292' => ( isset($metadata['i___6162']) ? round(($metadata['i___6161']+$metadata['i___6162'])/2) : view_memory(6404,12427) ),
 
         //LEADERBOARD SOURCES
         'array_13207' => $array_13207,

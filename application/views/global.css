@@ -55,9 +55,6 @@ body {
 .doright{
     text-align: right !important;
 }
-.span__4356{
-    display: inline-block;
-}
 .media-content {
     border-radius: 0 !important;
     max-width: 610px;
@@ -1667,13 +1664,6 @@ i, .btn .show-max {
     color: #000000;
     padding: 0;
 }
-.texttype_4356_sm {
-    padding:0;
-    width: 55px;
-    text-align: left;
-    margin-left: -6px;
-    color: #000000 !important;
-}
 .texttype__lg {
     background-color: transparent;
     font-weight: bold;
@@ -1993,9 +1983,6 @@ i, .btn .show-max {
     padding: 0 8px;
 }
 
-.text_e_4356{
-    text-align: right;
-}
 .cover-text {
     line-height: 120%;
     text-align: left;

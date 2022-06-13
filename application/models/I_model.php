@@ -23,10 +23,6 @@ class I_model extends CI_Model
             return false;
         }
 
-        if(!isset($add_fields['i__duration']) || $add_fields['i__duration'] < view_memory(6404,12427)){
-            $add_fields['i__duration'] = view_memory(6404,12176);
-        }
-
         //Lets now add:
         $this->db->insert('table__i', $add_fields);
 
@@ -168,11 +164,6 @@ class I_model extends CI_Model
                     $x__message = view_db_field($key) . ' updated from [' . $e___4737[$before_data[0][$key]]['m__title'] . '] to [' . $e___4737[$value]['m__title'] . ']';
                     $x__up = $value;
                     $x__down = $before_data[0][$key];
-
-                } elseif($key=='i__duration') {
-
-                    $x__type = 10650; //Idea updated Completion Time
-                    $x__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } elseif($key=='i__cover') {
 
@@ -1107,8 +1098,6 @@ class I_model extends CI_Model
         $metadata_this = array(
             'p___6169' => 1,
             'p___6170' => 1,
-            'p___6161' => $i['i__duration'],
-            'p___6162' => $i['i__duration'],
             'p___13207' => array(), //Leaderboard Sources
             'p___ids' => array($i['i__id']), //Keeps Track of the IDs scanned here
         );
@@ -1141,8 +1130,6 @@ class I_model extends CI_Model
         $metadata_local = array(
             'localp___6169'=> null,
             'localp___6170'=> null,
-            'localp___6161'=> null,
-            'localp___6162'=> null,
         );
 
         //NEXT IDEAS
@@ -1171,16 +1158,10 @@ class I_model extends CI_Model
                 if(is_null($metadata_local['localp___6169']) || $metadata_recursion['p___6169'] < $metadata_local['localp___6169']){
                     $metadata_local['localp___6169'] = $metadata_recursion['p___6169'];
                 }
-                if(is_null($metadata_local['localp___6161']) || $metadata_recursion['p___6161'] < $metadata_local['localp___6161']){
-                    $metadata_local['localp___6161'] = $metadata_recursion['p___6161'];
-                }
 
                 //MAX
                 if(is_null($metadata_local['localp___6170']) || $metadata_recursion['p___6170'] > $metadata_local['localp___6170']){
                     $metadata_local['localp___6170'] = $metadata_recursion['p___6170'];
-                }
-                if(is_null($metadata_local['localp___6162']) || $metadata_recursion['p___6162'] > $metadata_local['localp___6162']){
-                    $metadata_local['localp___6162'] = $metadata_recursion['p___6162'];
                 }
 
             } elseif(in_array($i['i__type'], $this->config->item('n___12884'))){
@@ -1191,13 +1172,9 @@ class I_model extends CI_Model
                 if(is_null($metadata_local['localp___6169']) || $metadata_recursion['p___6169'] < $metadata_local['localp___6169']){
                     $metadata_local['localp___6169'] = $metadata_recursion['p___6169'];
                 }
-                if(is_null($metadata_local['localp___6161']) || $metadata_recursion['p___6161'] < $metadata_local['localp___6161']){
-                    $metadata_local['localp___6161'] = $metadata_recursion['p___6161'];
-                }
 
                 //MAX
                 $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
-                $metadata_this['p___6162'] += intval($metadata_recursion['p___6162']);
 
             } elseif(in_array($i['i__type'], $this->config->item('n___14862'))){
 
@@ -1205,11 +1182,9 @@ class I_model extends CI_Model
 
                 //MIN: They can select none
                 $metadata_local['localp___6169'] = 0;
-                $metadata_local['localp___6161'] = 0;
 
                 //MAX
                 $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
-                $metadata_this['p___6162'] += intval($metadata_recursion['p___6162']);
 
             } else {
 
@@ -1217,11 +1192,9 @@ class I_model extends CI_Model
 
                 //MIN
                 $metadata_this['p___6169'] += intval($metadata_recursion['p___6169']);
-                $metadata_this['p___6161'] += intval($metadata_recursion['p___6161']);
 
                 //MAX
                 $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
-                $metadata_this['p___6162'] += intval($metadata_recursion['p___6162']);
 
             }
 
@@ -1250,19 +1223,11 @@ class I_model extends CI_Model
         if(!is_null($metadata_local['localp___6170'])){
             $metadata_this['p___6170'] += intval($metadata_local['localp___6170']);
         }
-        if(!is_null($metadata_local['localp___6161'])){
-            $metadata_this['p___6161'] += intval($metadata_local['localp___6161']);
-        }
-        if(!is_null($metadata_local['localp___6162'])){
-            $metadata_this['p___6162'] += intval($metadata_local['localp___6162']);
-        }
 
         //Save to DB
         update_metadata(12273, $i['i__id'], array(
             'i___6169' => intval($metadata_this['p___6169']),
             'i___6170' => intval($metadata_this['p___6170']),
-            'i___6161' => intval($metadata_this['p___6161']),
-            'i___6162' => intval($metadata_this['p___6162']),
             'i___13207' => $metadata_this['p___13207'], //LEADERBOARD Sources
         ));
 

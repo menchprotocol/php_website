@@ -2063,7 +2063,7 @@ class X_model extends CI_Model
             'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ), array('x__left'), 0, 0, array(), 'COUNT(i__id) as completed_x, SUM(i__duration) as completed_seconds');
+        ), array('x__left'), 0, 0, array(), 'COUNT(i__id) as completed_x');
 
 
         //Calculate common steps and expansion steps recursively for this u:

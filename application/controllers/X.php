@@ -164,59 +164,6 @@ class X extends CI_Controller
                 'status' => 1,
             ));
 
-        } elseif($_POST['cache_e__id']==4356 /* DISCOVERY TIME */){
-
-            $is = $this->I_model->fetch(array(
-                'i__id' => $_POST['s__id'],
-                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-            ));
-
-            if(!count($is)){
-
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Invalid Idea ID.',
-                    'original_val' => '',
-                ));
-
-            } elseif(!is_numeric($_POST['field_value']) || $_POST['field_value'] < 0){
-
-                return view_json(array(
-                    'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' must be a number greater than zero.',
-                    'original_val' => $is[0]['i__duration'],
-                ));
-
-            } elseif($_POST['field_value'] > view_memory(6404,4356)){
-
-                $hours = rtrim(number_format((view_memory(6404,4356)/3600), 1), '.0');
-                return view_json(array(
-                    'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' should be less than '.$hours.' Hour'.view__s($hours).', or '.view_memory(6404,4356).' Seconds long. You can break down your idea into smaller ideas.',
-                    'original_val' => $is[0]['i__duration'],
-                ));
-
-            } elseif($_POST['field_value'] < view_memory(6404,12427)){
-
-                return view_json(array(
-                    'status' => 0,
-                    'message' => $e___12112[$_POST['cache_e__id']]['m__title'].' should be at-least '.view_memory(6404,12427).' Seconds long. It takes time to discover ideas ;)',
-                    'original_val' => $is[0]['i__duration'],
-                ));
-
-            } else {
-
-                //All good, go ahead and update:
-                $this->I_model->update($_POST['s__id'], array(
-                    'i__duration' => $_POST['field_value'],
-                ), true, $member_e['e__id']);
-
-                return view_json(array(
-                    'status' => 1,
-                ));
-
-            }
-
         } else {
 
             return view_json(array(

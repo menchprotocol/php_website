@@ -37,44 +37,6 @@ function view_load_page_e($x__type, $page, $limit, $list_count, $extra_class = n
                             </div>';
 }
 
-function view_i_time($i_stats, $give_right_space = false, $micro_sign = false){
-
-    //TIME STATS
-    if(!$i_stats['i___6161']){
-        return null;
-    }
-
-    $has_any_diff = $i_stats['i___6169'] != $i_stats['i___6170'];
-    $has_notable_diff = ($i_stats['i___6161'] * view_memory(6404,14579)) < $i_stats['i___6162'] && (($i_stats['i___6162']-$i_stats['i___6161']) >= 60 );
-    $has_micro = $i_stats['i___6161']<60 && $i_stats['i___6162']<60;
-
-    //Has Time
-    $CI =& get_instance();
-    $e___13544 = $CI->config->item('e___13544'); //IDEA TREE COUNT
-    $ui = '<div class="inline-block '.( $give_right_space ? ' css__title grey ' : ' mini-font ' ).'">';
-
-    if(!$micro_sign && $i_stats['i___6170']>0){
-        $ui .= ( $has_any_diff && !$micro_sign ? number_format(intval($i_stats['i___6169']), 0).'<span class="mid-range">-</span>' : '' ).number_format(intval($i_stats['i___6170']), 0).' '.$e___13544[26155]['m__title'].view__s(intval($i_stats['i___6170'])).'<span class="mid-range">&middot;</span>';
-    }
-
-    if($has_micro){
-        //SECONDS
-        $ui .= ( $has_notable_diff && !$micro_sign ? $i_stats['i___6161'].'<span class="mid-range">-</span>' : '' ).$i_stats['i___6162'].( $micro_sign ? '"' : ' sec' );
-    } else {
-        //MINUTES
-        $ui .= ( $has_notable_diff && !$micro_sign ? round_minutes($i_stats['i___6161']).'<span class="mid-range">-</span>' : '' ).round_minutes($i_stats['i___6162']).( $micro_sign ? '\'' : ' min' );
-    }
-
-    if($give_right_space){
-        $ui .= '<span class="icon-block-xs">&nbsp;</span>';
-    }
-
-    $ui .= '</div>';
-
-    return $ui;
-
-}
-
 function view_db_field($field_name){
 
     //Takes a database field name and returns a human-friendly version
@@ -220,7 +182,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
                 //Header For Time
                 if($end_time){
                     $seconds = $end_time-$start_time;
-                    $embed_html_code .= '<div class="css__title subtle-line mini-grey"><span class="icon-block-xs">'.$e___11035[13292]['m__cover'].'</span>'.( $seconds<60 ? $seconds.' SEC.' : round_minutes($seconds).' MIN' ).' <span class="inline-block">FROM '.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).'</span></div>';
+                    $embed_html_code .= '<div class="css__title subtle-line mini-grey">'.( $seconds<60 ? $seconds.' SEC.' : round_minutes($seconds).' MIN' ).' <span class="inline-block">FROM '.view_time_hours($start_time, true).' TO '.view_time_hours($end_time, true).'</span></div>';
                 }
 
                 $embed_html_code .= '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe id="youtubeplayer'.$video_id.'"  src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div>';
@@ -1935,12 +1897,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $ui .= '<td width="20%"><div>'.(!$discovery_mode && $editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</div></td>';
 
     $ui .= '<td width="20%">';
-    if($focus_coin && !$discovery_mode && superpower_active(12700, true)){
-
-        //Duration
-        $ui .= view_input_text(4356, $i['i__duration'], $i['i__id'], $e_of_i, 0).' '.$e___11035[4356]['m__cover'];
-
-    } elseif(!$has_any_lock && $toolbar && $superpower_12700 && isset($i['x__type'])){
+    if(!$has_any_lock && $toolbar && $superpower_12700 && isset($i['x__type'])){
 
         if(in_array($i['x__type'], $CI->config->item('n___4486'))){
             //Idea Links
@@ -2034,12 +1991,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
     }
 
-    //$view_i_time = view_i_time($i_stats);
     $ui .= '<div class="cover-text">';
 
-    $view_i_time = null;
-    if($message_tooltip || $view_i_time){
-        $ui .= '<div class="">' . $message_tooltip . ( $view_i_time ? $view_i_time : '' ) . '</div>'; //grey
+    if($message_tooltip){
+        $ui .= '<div class="">' . $message_tooltip . '</div>'; //grey
     }
 
     if(count($minter)){
