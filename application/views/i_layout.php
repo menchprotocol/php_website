@@ -124,7 +124,7 @@ foreach($item_counts as $x__type => $counter) {
 
         $([document.documentElement, document.body]).animate({
             scrollTop: $("#thisNode").offset().top
-        }, 0);
+        }, 89);
 
         load_tab(<?= $focus_tab ?>);
 
