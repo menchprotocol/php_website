@@ -301,7 +301,18 @@ class X_model extends CI_Model
 
         //Update metadata if needed:
         if(isset($update_columns['x__metadata']) && is_array($update_columns['x__metadata'])){
-            $update_columns['x__metadata'] = serialize($update_columns['x__metadata']);
+            //Merge this update into existing metadata:
+            if(strlen($before_data[0]['x__metadata'])){
+
+                //We have something, merge:
+                $x__metadata = unserialize($before_data[0]['x__metadata']);
+                $merged_array = array_merge($x__metadata, $update_columns['x__metadata']);
+                $update_columns['x__metadata'] = serialize($merged_array);
+
+            } else {
+                //We have nothing, insert entire thing:
+                $update_columns['x__metadata'] = serialize($update_columns['x__metadata']);
+            }
         }
 
         //Set content to null if defined as empty:
