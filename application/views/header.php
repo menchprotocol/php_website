@@ -113,7 +113,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js" type="text/javascript"></script>
 
 
-    <link href="https://fonts.googleapis.com/css?family=<?= view_memory(6404,29711) ?>&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
@@ -124,13 +123,65 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <link href="/application/views/global.css?v=dir3<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
     <script src="/application/views/global.js?v=dir3<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
+
+    <!-- Load Fonts Dynamically -->
     <?php
+    echo '<style> ';
+
+    //Font Helps:
+    $e___29711 = $this->config->item('e___29711'); //Google Font Family
+    $e___29763 = $this->config->item('e___29763'); //CSS Font Family
+
+    $google_fonts = array();
+
+    //Header Fonts
+    foreach($this->config->item('e___14506') as $e__id => $m){
+        if(isset($e___29711[$e__id]) && isset($e___29763[$e__id])){
+            array_push($google_fonts, $e___29711[$e__id]['m__message']);
+            echo '
+            .custom_ui_14506_'.$e__id.'.css__title.itemsetting,
+            .custom_ui_14506_'.$e__id.' h1,
+            .custom_ui_14506_'.$e__id.' h2,
+            .custom_ui_14506_'.$e__id.' .css__title,
+            .custom_ui_14506_'.$e__id.' .headline,
+            .custom_ui_14506_'.$e__id.' .btn,
+            .custom_ui_14506_'.$e__id.' .algolia_pad_search,
+            .custom_ui_14506_'.$e__id.' .progress-title,
+            .custom_ui_14506_'.$e__id.' .mid-text-line span,
+            .custom_ui_14506_'.$e__id.' .previous_answer,
+            .custom_ui_14506_'.$e__id.' .nav-x,
+            .custom_ui_14506_'.$e__id.' .texttype__lg,
+            .custom_ui_14506_'.$e__id.' .texttype__lg::placeholder,
+            .custom_ui_14506_'.$e__id.' .alert a,
+            .custom_ui_14506_'.$e__id.' .pull-middle {
+                font-family:'.$e___29763[$e__id]['m__message'].' !important;
+            }';
+        }
+    }
+
+
+    //Content Fonts
+    foreach($this->config->item('e___29700') as $e__id => $m){
+        if(isset($e___29711[$e__id]) && isset($e___29763[$e__id])){
+            array_push($google_fonts, $e___29711[$e__id]['m__message']);
+            echo '
+            .custom_ui_29700_'.$e__id.'.css__title.itemsetting,
+            .custom_ui_29700_'.$e__id.' div,
+            .custom_ui_29700_'.$e__id.' p,
+            .custom_ui_29700_'.$e__id.' html,
+            .custom_ui_29700_'.$e__id.' body,
+            .custom_ui_29700_'.$e__id.' .doregular {
+                font-family: '.$e___29763[$e__id]['m__message'].' !important;
+            }';
+        }
+    }
+
+
     $domain_background = get_domain_setting(28621);
     if(strlen($domain_background)){
 
         $apply_css = 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span';
 
-        echo '<style> ';
         if(substr($domain_background, 0, 1)=='#'){
 
             echo 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
@@ -191,9 +242,11 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
 
         }
-        echo ' </style>';
     }
+    echo ' </style>';
     ?>
+
+    <link href="https://fonts.googleapis.com/css?family=<?= join('|',$google_fonts) ?>&display=swap" rel="stylesheet">
 
 </head>
 
