@@ -155,7 +155,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             .custom_ui_14506_'.$e__id.' .alert a,
             .custom_ui_14506_'.$e__id.' .pull-middle {
                 font-family:'.$e___29763[$e__id]['m__message'].' !important;
-            }';
+            }
+            ';
         }
     }
 
@@ -172,7 +173,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             .custom_ui_29700_'.$e__id.' body,
             .custom_ui_29700_'.$e__id.' .doregular {
                 font-family: '.$e___29763[$e__id]['m__message'].' !important;
-            }';
+            }
+            ';
         }
     }
 
