@@ -3188,7 +3188,7 @@ function go_next(){
 
         //Go Next:
         $('.go-next').html(( is_logged_in ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
-        window.location = go_next_url;
+        //window.location = go_next_url;
 
     }
 }
@@ -3379,7 +3379,7 @@ function x_select(go_next_url){
         if (data.status) {
             //Go to redirect message:
             $('.go-next').html('<i class="fas fa-check-circle"></i>');
-            window.location = go_next_url;
+            //window.location = go_next_url;
         } else {
             //Show error:
             alert(data.message);
