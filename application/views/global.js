@@ -3297,6 +3297,10 @@ function x_upload(droppedFiles, uploadType) {
 
 function x_reply_save(go_next_url){
 
+    if(!$('#x_reply').val().length){
+        return false;
+    }
+
     $.post("/x/x_reply", {
         i__id:current_id(),
         top_i__id:$('#top_i__id').val(),
