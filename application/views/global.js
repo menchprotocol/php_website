@@ -3309,7 +3309,7 @@ function x_reply_save(go_next_url){
         if (data.status) {
             //Go to redirect message:
             $('.go-next').html('<i class="fas fa-check-circle"></i>');
-            window.location = go_next_url;
+            //window.location = go_next_url;
         } else {
             //Show error:
             alert(data.message);
