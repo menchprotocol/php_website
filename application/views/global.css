@@ -804,7 +804,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0;
 }
 
-.halfbg {
+h4 .halfbg {
     border-radius: 13px;
 }
 
@@ -1868,7 +1868,7 @@ i, .btn .show-max {
     z-index: 99999999;
     padding: 3px;
     border-radius: 14px;
-    line-height: 140%;
+    line-height: 150%;
 }
 .modal-body{
     padding: 10px;
@@ -2078,7 +2078,7 @@ i, .btn .show-max {
     margin:0;
 }
 .cover-content .msg, .cover-content .msg>span {
-    line-height: 140% !important;
+    line-height: 150% !important;
 }
 .cover-content .icon-block-xs img {
     margin: 1px 0 0 3px !important;
