@@ -439,7 +439,7 @@ if($top_i__id) {
             $message_ui .= view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
         }
 
-        $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
+        $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); }); </script>';
 
         echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
 
