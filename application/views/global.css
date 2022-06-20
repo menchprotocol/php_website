@@ -1437,7 +1437,7 @@ label {
 }
 
 .cover-content{
-    border-radius: 14px;
+    border-radius: 0;
 }
 
 
@@ -3076,7 +3076,7 @@ font-weight: bold !important;
 }
 .cover-link,
 .round-btn {
-    border-radius: 14px;
+    border-radius: 0;
 }
 .icons_large .block-icon img,
 .note-btn > span > span,
