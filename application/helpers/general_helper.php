@@ -660,7 +660,83 @@ function i_spots_remaining($i__id){
     return $spots_remaining;
 }
 
-function i_is_available($i__id, $log_tnx = false){
+function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__down){
+
+    $CI =& get_instance();
+    $return_i__id = $i__id;
+
+    //Log Access Block:
+    if($log_tnx){
+        $access_blocked = $CI->X_model->create(array(
+            'x__type' => 29737, //Access Blocked
+            'x__source' => $x__source,
+            'x__left' => $i__id,
+            'x__up' => $x__up,
+            'x__down' => $x__down,
+            'x__message' => $log_message,
+        ));
+    }
+
+    //Delete Current Selection:
+    foreach($CI->X_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___12326')) . ')' => null, //Discovery Expansions
+        'x__right' => $i__id, //This was select as an answer to x__left
+    ), array('x__left'), 0) as $x_progress) {
+
+        //Delete this selection:
+        $CI->X_model->update($x_progress['x__id'], array(
+            'x__status' => 6173, //Transaction Removed
+            'x__reference' => ( $log_tnx ? $access_blocked['x__id'] : 0 ),
+        ), $x__source, 29782 /* Access Block Deleted */);
+
+        //Delete question discovery so the user can re-select:
+        foreach($CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+            'x__source' => $x__source,
+            'x__left' => $x_progress['x__left'],
+        ), array(), 0) as $x){
+
+            $CI->X_model->update($x['x__id'], array(
+                'x__status' => 6173, //Transaction Removed
+                'x__reference' => ( $log_tnx ? $access_blocked['x__id'] : 0 ),
+            ), $x__source, 29782 /* Access Block Deleted */);
+
+            //Delete other possible Selections:
+            foreach($CI->X_model->fetch(array(
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('n___12326')) . ')' => null, //Discovery Expansions
+                'x__left' => $x_progress['x__left'],
+            ), array('x__right'), 0) as $x2){
+                $CI->X_model->update($x2['x__id'], array(
+                    'x__status' => 6173, //Transaction Removed
+                    'x__reference' => ( $log_tnx ? $access_blocked['x__id'] : 0 ),
+                ), $x__source, 29782 /* Access Block Deleted */);
+            }
+
+        }
+
+        //Guide them back to the top:
+        $return_i__id = $x_progress['x__left'];
+
+        //We can only handle 1 question for now
+        //TODO If multiple questions found, see which one is within top_i__id
+        break;
+
+    }
+
+    //Return false:
+    return array(
+        'status' => false,
+        'return_i__id' => $return_i__id,
+        'message' => $log_message,
+    );
+
+
+}
+
+function i_is_available($i__id, $log_tnx){
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();
@@ -690,16 +766,7 @@ function i_is_available($i__id, $log_tnx = false){
             }
         }
         if(!$meets_inc1_prereq){
-            if($log_tnx){
-                $CI->X_model->create(array(
-                    'x__type' => 29737, //Access Blocked
-                    'x__source' => $x__source,
-                    'x__left' => $i__id,
-                    'x__up' => 13865,
-                    'x__down' => ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ),
-                ));
-            }
-            return false;
+            return access_blocked($log_tnx, "You cannot play this note because you are missing [".$e_pre['e__title']."]",$x__source, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
@@ -712,6 +779,7 @@ function i_is_available($i__id, $log_tnx = false){
     ), array('x__up'), 0);
     if(count($fetch_27984)){
         //Let's see if they meet all of these PREREQUISITES:
+        $missing_es = '';
         $meets_inc2_prereq = 0;
         if($x__source > 0){
             foreach($fetch_27984 as $e_pre){
@@ -722,21 +790,15 @@ function i_is_available($i__id, $log_tnx = false){
                         'x__down' => $x__source,
                     )))){
                     $meets_inc2_prereq++;
+                } else {
+                    //Missing:
+                    $missing_es .= ( strlen($missing_es) ? ' & ' : '' ).$e_pre['e__title'];
                 }
             }
         }
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
-            if($log_tnx){
-                $CI->X_model->create(array(
-                    'x__type' => 29737, //Access Blocked
-                    'x__source' => $x__source,
-                    'x__left' => $i__id,
-                    'x__up' => 27984,
-                    'x__down' => ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ),
-                ));
-            }
-            return false;
+            return access_blocked($log_tnx, "You cannot play this note because you are missing [".$missing_es."]",$x__source, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
@@ -768,16 +830,7 @@ function i_is_available($i__id, $log_tnx = false){
         }
 
         if(!$excludes_all){
-            if($log_tnx){
-                $CI->X_model->create(array(
-                    'x__type' => 29737, //Access Blocked
-                    'x__source' => $x__source,
-                    'x__left' => $i__id,
-                    'x__up' => 26600,
-                    'x__down' => ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ),
-                ));
-            }
-            return false;
+            return access_blocked($log_tnx, "You cannot play this note because you belong to [".$e_pre['e__title']."]",$x__source, $i__id, 26600, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
@@ -785,20 +838,14 @@ function i_is_available($i__id, $log_tnx = false){
     //Any Limits on Selection?
     if(i_spots_remaining($i__id)==0){
         //Limit is reached, cannot complete this at this time:
-        if($log_tnx){
-            $CI->X_model->create(array(
-                'x__type' => 29737, //Access Blocked
-                'x__source' => $x__source,
-                'x__left' => $i__id,
-                'x__up' => 26189,
-            ));
-        }
-        return false;
+        return access_blocked($log_tnx, "You cannot play this note because there are no spots remaining.", $x__source, $i__id, 26189, 0);
     }
     
 
     //All good:
-    return true;
+    return array(
+        'status' => true,
+    );
 
 }
 

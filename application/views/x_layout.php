@@ -315,7 +315,8 @@ if($top_i__id) {
             foreach ($is_next as $key => $next_i) {
 
                 //Make sure it meets the conditions:
-                if(!i_is_available($next_i['i__id'])){
+                $i_is_available = i_is_available($next_i['i__id'], false);
+                if(!$i_is_available['status']){
                     //This option is not available:
                     continue;
                 }

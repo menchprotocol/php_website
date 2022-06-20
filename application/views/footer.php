@@ -8,7 +8,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     $e___11035 = $this->config->item('e___11035'); //NAVIGATION
     $e___14393 = $this->config->item('e___14393'); //SUGGEST
     $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
-    $e___14937 = $this->config->item('e___14937'); //SOURCE ICON
 
     //Apply to All Sources
     if(superpower_active(12703, true)){

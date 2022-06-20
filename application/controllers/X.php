@@ -342,8 +342,9 @@ class X extends CI_Controller
             }
 
             //Make sure it's available:
-            if(!i_is_available($i__id, true)){
-                return redirect_message('/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You cannot start this idea at this time.</div>');
+            $i_is_available = i_is_available($i__id, true);
+            if(!$i_is_available['status']){
+                return redirect_message('/'.$i_is_available['return_i__id'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_available['message'].'</div>');
             }
 
             //All good, add to start:
@@ -441,6 +442,7 @@ class X extends CI_Controller
         }
 
         $member_e = superpower_unlocked();
+        $i_is_available = i_is_available($i__id, true);
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -452,8 +454,8 @@ class X extends CI_Controller
             return redirect_message('/'.$top_i__id);
         } elseif(!count($is)) {
             return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
-        } elseif(!i_is_available($i__id, true)) {
-            return redirect_message('/'.$top_i__id.'/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You cannot complete this idea at this time.</div>');
+        } elseif(!$i_is_available['status']){
+            return redirect_message('/'.$top_i__id.'/'.$i_is_available['return_i__id'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_available['message'].'</div>');
         }
 
 
@@ -1577,7 +1579,7 @@ class X extends CI_Controller
 
 
         //We have something to save:
-        return view_json($this->X_model->x_answer($member_e['e__id'], $_POST['top_i__id'], $_POST['focus__id'], ( $nothing_seected ? array() : $_POST['selection_i__id'] )));
+        return view_json($this->X_model->x_save_select($member_e['e__id'], $_POST['top_i__id'], $_POST['focus__id'], ( $nothing_seected ? array() : $_POST['selection_i__id'] )));
 
     }
 

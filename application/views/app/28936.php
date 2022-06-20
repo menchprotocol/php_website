@@ -235,7 +235,7 @@
             -ms-flex-align: center;
             align-items: center;
             border: 10px solid #fff;
-            border-radius: 24px;
+            border-radius: 13px;
             background-image: url("https://www.babycake.app//images/video_image.png");
             background-position: 50% 50%;
             background-size: cover;
