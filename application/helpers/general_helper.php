@@ -662,12 +662,12 @@ function i_spots_remaining($i__id){
 
 function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__down){
 
-    $CI =& get_instance();
     $return_i__id = $i__id;
 
     //Log Access Block:
     if($log_tnx){
 
+        $CI =& get_instance();
         $access_blocked = $CI->X_model->create(array(
             'x__type' => 29737, //Access Blocked
             'x__source' => $x__source,
@@ -678,6 +678,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
         ));
 
         //Delete Current Selection:
+        /*
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___12326')) . ')' => null, //Discovery Expansions
@@ -688,7 +689,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
             $CI->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Transaction Removed
                 'x__reference' => $access_blocked['x__id'],
-            ), $x__source, 29782 /* Access Block Deleted */);
+            ), $x__source, 29782 );
 
             //Delete question discovery so the user can re-select:
             foreach($CI->X_model->fetch(array(
@@ -701,7 +702,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
                 $CI->X_model->update($x['x__id'], array(
                     'x__status' => 6173, //Transaction Removed
                     'x__reference' => $access_blocked['x__id'],
-                ), $x__source, 29782 /* Access Block Deleted */);
+                ), $x__source, 29782 );
 
                 //Delete other possible Selections:
                 foreach($CI->X_model->fetch(array(
@@ -712,7 +713,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
                     $CI->X_model->update($x2['x__id'], array(
                         'x__status' => 6173, //Transaction Removed
                         'x__reference' => $access_blocked['x__id'],
-                    ), $x__source, 29782 /* Access Block Deleted */);
+                    ), $x__source, 29782 );
                 }
 
             }
@@ -725,6 +726,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
             break;
 
         }
+        */
     }
 
     //Return false:
