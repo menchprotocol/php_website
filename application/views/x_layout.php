@@ -662,7 +662,7 @@ echo '</div>';
 <input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
 <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
 <input type="hidden" id="click_count" value="0" />
-<input type="hidden" id="go_next_url" value="" />
+<input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 
 
 <script type="text/javascript">
