@@ -813,7 +813,7 @@ h4 .halfbg {
     border-bottom: 3px solid transparent;
 }
 .dropdown-menu {
-    border:3px solid transparent;
+    border:0;
     border-radius: 14px;
     padding:0;
 }
