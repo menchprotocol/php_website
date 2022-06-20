@@ -88,33 +88,38 @@ if($top_i__id && !count($x_completes) && $x__source){
 // Set the date were counting down to
 var countDownDate = new Date('.( ( strtotime($answered[0]['x__time'] ) + $does_expire[0]['x__message'] ) * 1000 ).' );
 
-// Update the count down every 1 second
-var x = setInterval(function() {
 
-  // Get todays date and time
-  var now = new Date().getTime();
+if($(\'#timexpirycount\').length){
+	// Update the count down every 1 second
+    var x = setInterval(function() {
+    
+      // Get todays date and time
+      var now = new Date().getTime();
+    
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+    
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+      // Display the result in the element with id="timexpirycount"
+      document.getElementById("timexpirycount").innerHTML = ( days>0 ? days + "d " : "" ) + ( hours>0 ? hours + "h " : "")
+      + ( minutes>0 ? minutes + "m " : "" ) + seconds + "s";
+    
+      // If the count down is finished, write some text
+      if (distance <= 1) {
+        clearInterval(x);
+        //Redirect to delete the discovery:
+        window.location = "/-28199?i__id='.$parent_ors['i__id'].'&top_i__id='.$top_i__id.'";
+      }
+      
+    }, 1000);
+}
+            
 
-  // Find the distance between now and the count down date
-  var distance = countDownDate - now;
-
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  // Display the result in the element with id="timexpirycount"
-  document.getElementById("timexpirycount").innerHTML = ( days>0 ? days + "d " : "" ) + ( hours>0 ? hours + "h " : "")
-  + ( minutes>0 ? minutes + "m " : "" ) + seconds + "s";
-
-  // If the count down is finished, write some text
-  if (distance <= 1) {
-    clearInterval(x);
-    //Redirect to delete the discovery:
-    window.location = "/-28199?i__id='.$parent_ors['i__id'].'&top_i__id='.$top_i__id.'";
-  }
-  
-}, 1000);
 </script>';
 
                 break; //Cannot have multiple countdowns
