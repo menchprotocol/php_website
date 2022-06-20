@@ -678,33 +678,21 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
         ));
 
         //Delete Current Selection:
-        /*
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___12326')) . ')' => null, //Discovery Expansions
             'x__right' => $i__id, //This was select as an answer to x__left
         ), array('x__left'), 0) as $x_progress) {
 
-            //Delete this selection:
-            $CI->X_model->update($x_progress['x__id'], array(
-                'x__status' => 6173, //Transaction Removed
-                'x__reference' => $access_blocked['x__id'],
-            ), $x__source, 29782 );
-
-            //Delete question discovery so the user can re-select:
+            //Find all answers
             foreach($CI->X_model->fetch(array(
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                 'x__source' => $x__source,
                 'x__left' => $x_progress['x__left'],
-            ), array(), 0) as $x){
+            ), array('x__right'), 0) as $x){
 
-                $CI->X_model->update($x['x__id'], array(
-                    'x__status' => 6173, //Transaction Removed
-                    'x__reference' => $access_blocked['x__id'],
-                ), $x__source, 29782 );
-
-                //Delete other possible Selections:
+                //Delete all Selections:
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___12326')) . ')' => null, //Discovery Expansions
@@ -716,6 +704,12 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
                     ), $x__source, 29782 );
                 }
 
+                //Delete question discovery so the user can re-select:
+                $CI->X_model->update($x['x__id'], array(
+                    'x__status' => 6173, //Transaction Removed
+                    'x__reference' => $access_blocked['x__id'],
+                ), $x__source, 29782 );
+
             }
 
             //Guide them back to the top:
@@ -726,7 +720,6 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
             break;
 
         }
-        */
     }
 
     //Return false:
