@@ -1498,20 +1498,27 @@ class X_model extends CI_Model
         $x__source = ( isset($add_fields['x__source']) ? $add_fields['x__source'] : 0);
         $domain_url = get_domain('m__message', $x__source);
 
+        $search_fields = $add_fields;
+        if(isset($search_fields['x__metadata'])){
+            unset($search_fields['x__metadata']);
+        }
+
         //Log completion transaction if not duplicate:
-        $check_duplicate = $this->X_model->fetch($add_fields);
-        if(!count($check_duplicate) || 1){
-
-            $new_x = $this->X_model->create($add_fields);
-
-        } else {
+        $check_duplicate = $this->X_model->fetch($search_fields);
+        if(in_array($add_fields['x__type'], $this->config->item('n___27005')) && count($check_duplicate)){
 
             $new_x = $check_duplicate[0];
 
             //Update Time:
+            /*
             $this->X_model->update($new_x['x__id'], array(
                 'x__time' => date("Y-m-d H:i:s"),
             ), $x__source, 29800); //Re-Discovery
+            */
+
+        } else {
+
+            $new_x = $this->X_model->create($add_fields);
 
         }
 
