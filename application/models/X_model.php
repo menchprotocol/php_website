@@ -1500,7 +1500,7 @@ class X_model extends CI_Model
 
         //Log completion transaction if not duplicate:
         $check_duplicate = $this->X_model->fetch($add_fields);
-        if(!count($check_duplicate)){
+        if(!count($check_duplicate) || 1){
 
             $new_x = $this->X_model->create($add_fields);
 
