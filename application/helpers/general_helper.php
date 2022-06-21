@@ -728,8 +728,9 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
             break;
 
         }
+        */
+
     }
-    */
 
     //Return false:
     return array(
