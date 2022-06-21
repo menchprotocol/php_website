@@ -762,7 +762,7 @@ function i_is_available($i__id, $log_tnx){
             }
         }
         if(!$meets_inc1_prereq){
-            return access_blocked($log_tnx, "You cannot play this note because you are missing [".$e_pre['e__title']."]",$x__source, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, "You cannot play this note because you are missing a requirement",$x__source, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
