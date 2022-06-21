@@ -3014,7 +3014,7 @@ font-weight: bold !important;
 }
 .custom_ui_28979_28980 .btn-6255,
 .custom_ui_28979_28980 .coinType6255{
-    /* border: 3px solid #FC1B44 !important; */
+    border: 3px solid #FC1B44 !important;
     border: 0;
     background-color: #FC1B44;
 }
