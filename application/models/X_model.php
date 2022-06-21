@@ -1508,12 +1508,11 @@ class X_model extends CI_Model
 
             $new_x = $check_duplicate[0];
 
-            //Log duplicate attempt:
-            $this->X_model->create(array(
-                'x__message' => 'Duplicate discovery attempt blocked',
-                'x__type' => 4246, //Platform Bug Reports
-                'x__metadata' => $add_fields,
-            ));
+            //Update Time:
+            $this->X_model->update($new_x['x__id'], array(
+                'x__time' => date("Y-m-d H:i:s"),
+            ), $x__source, 29800); //Re-Discovery
+
         }
 
         //Fetch Source ID:

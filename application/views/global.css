@@ -3436,3 +3436,7 @@ h4.css__title{
 .cover-content .css__title, .cover-content a, .cover-content {
     color: #000 !important;
 }
+
+hr {
+    border-top: 1px solid rgba(0,0,0,1);
+}
