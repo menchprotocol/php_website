@@ -677,11 +677,13 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
             'x__message' => $log_message,
         ));
 
+        /*
         //Delete Current Selection:
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___12326')) . ')' => null, //Discovery Expansions
             'x__right' => $i__id, //This was select as an answer to x__left
+            'x__left > 0' => null,
         ), array('x__left'), 0) as $x_progress) {
 
             //Find all answers
@@ -690,7 +692,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
                 'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                 'x__source' => $x__source,
                 'x__left' => $x_progress['x__left'],
-            ), array('x__right'), 0) as $x){
+            ), array(), 0) as $x){
 
                 //Delete all Selections:
                 foreach($CI->X_model->fetch(array(
@@ -712,6 +714,12 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
 
             }
 
+            //Delete this answer:
+            $CI->X_model->update($x_progress['x__id'], array(
+                'x__status' => 6173, //Transaction Removed
+                'x__reference' => $access_blocked['x__id'],
+            ), $x__source, 29782 );
+
             //Guide them back to the top:
             $return_i__id = $x_progress['x__left'];
 
@@ -721,6 +729,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
 
         }
     }
+    */
 
     //Return false:
     return array(
