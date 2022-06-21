@@ -1498,8 +1498,23 @@ class X_model extends CI_Model
         $x__source = ( isset($add_fields['x__source']) ? $add_fields['x__source'] : 0);
         $domain_url = get_domain('m__message', $x__source);
 
-        //Log completion transaction:
-        $new_x = $this->X_model->create($add_fields);
+        //Log completion transaction if not duplicate:
+        $check_duplicate = $this->X_model->fetch($add_fields);
+        if(!count($check_duplicate)){
+
+            $new_x = $this->X_model->create($add_fields);
+
+        } else {
+
+            $new_x = $check_duplicate[0];
+
+            //Log duplicate attempt:
+            $this->X_model->create(array(
+                'x__message' => 'Duplicate discovery attempt blocked',
+                'x__type' => 4246, //Platform Bug Reports
+                'x__metadata' => $add_fields,
+            ));
+        }
 
         //Fetch Source ID:
         $watchers = $this->X_model->fetch(array(

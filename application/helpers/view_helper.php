@@ -2405,7 +2405,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $
                 }
 
                 //Basic transaction:
-                $anchor_url = ( $e__id==$selected_e__id ? 'href="javascript:void();"' : 'href="'.$m['m__message'].'" lol ' );
+                $anchor_url = ( $e__id==$selected_e__id ? 'href="javascript:void();"' : 'href="'.$m['m__message'].'" ' );
 
             } else{
 
