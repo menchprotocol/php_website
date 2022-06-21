@@ -772,7 +772,7 @@ function i_is_available($i__id, $log_tnx){
             }
         }
         if(!$meets_inc1_prereq){
-            return access_blocked($log_tnx, "You cannot play this note because you are missing a requirement",$x__source, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, "You cannot play this note because you are missing a requirement, make sure you are logged in with the same email address that we sent you the email.",$x__source, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
@@ -804,7 +804,7 @@ function i_is_available($i__id, $log_tnx){
         }
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
-            return access_blocked($log_tnx, "You cannot play this note because you are missing [".$missing_es."]",$x__source, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, "You cannot play this note because you are missing [".$missing_es."], make sure you are logged in with the same email address that we sent you the email.",$x__source, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
