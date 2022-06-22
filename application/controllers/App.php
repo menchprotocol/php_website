@@ -26,7 +26,7 @@ class App extends CI_Controller
     }
 
 
-    function load($app_e__id = 14563 /* Error if none provided */){
+    function load($app_e__id = 14563 /* Error if none provided */, $i__id = 0, $e__id = 0){
 
         $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
         if(!$memory_detected){
@@ -34,6 +34,12 @@ class App extends CI_Controller
             $app_e__id = 4527;
         }
 
+        if($i__id > 0){
+            $_GET['i__id'] = $i__id;
+        }
+        if($e__id > 0){
+            $_GET['e__id'] = $e__id;
+        }
 
         //Validate App
         if($memory_detected && !in_array($app_e__id, $this->config->item('n___6287'))){
