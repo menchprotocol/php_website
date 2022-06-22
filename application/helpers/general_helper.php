@@ -677,7 +677,6 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
             'x__message' => $log_message,
         ));
 
-        /*
         //Delete Current Selection:
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -728,7 +727,6 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
             break;
 
         }
-        */
 
     }
 
