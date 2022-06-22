@@ -408,7 +408,7 @@ if($top_i__id) {
             echo '<div class="msg alert alert-warning" role="alert">';
                 echo '<h2>How to Pay:</h2>';
                 echo '<ul style="list-style: none;">';
-                    echo '<li>1. After completing your payment click on "<b style="color: #FF0000;">Return to Merchant</b>" to continue back here.</li>';
+                    echo '<li>1. You are *not done* after you completed your payment! You must click on "<b style="color: #FF0000;">Return to Merchant</b>" to continue back here.</li>';
             echo '<li>2. You can checkout as a guest, You do not need to create a Paypal account. You can pay with a credit or visa debit card.</li>';
             echo '<li class="timeframe hidden">3. Complete payment within <span id="timexpirycount" class="hideIfEmpty"></span> to secure this spot.</li>';
                 echo '</ul>';
