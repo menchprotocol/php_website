@@ -438,10 +438,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </form>
                             </div>
 
-
-                        </div>
-                        <div class="col-12 col-sm-9">
-
                             <!-- Power Edit (Required Superpower) -->
                             <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
 
@@ -468,6 +464,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </td>
                                 </tr>
                             </table>
+
+
+                        </div>
+                        <div class="col-12 col-sm-9">
 
                             <div id="upload_results" class="center"></div>
                             <div id="img_results_emojis" class="icons_small"></div>
