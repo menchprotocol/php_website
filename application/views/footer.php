@@ -415,64 +415,70 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                 <div class="modal-body block_search_results">
 
-                    <!-- IMAGE DROP STARTS -->
-                    <div class="coverUploader">
-                    <form class="box coverUpload" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-12 col-sm-3">
+
+                            <!-- IMAGE DROP STARTS -->
+                            <div class="coverUploader">
+                                <form class="box coverUpload" method="post" enctype="multipart/form-data">
+
+                                <!-- COVER PREVIEW -->
+                                <a name="preview_cover" style="height: 1px;">&nbsp;</a>
+                                <div class="coin_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
+                                    <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
+                                    <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="coin__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>
+                                </div>
+
+                                    <!-- Power Edit (Required Superpower) -->
+                                    <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
+                                    <input type="hidden" id="coin__type" value="0" />
+                                    <input type="hidden" id="coin__id" value="0" />
 
 
-                    <!-- COVER PREVIEW -->
-                    <a name="preview_cover" style="height: 1px;">&nbsp;</a>
-                    <div class="coin_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
-                        <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
-                        <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="coin__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>
+                                    <!-- IMAGE DROP ENDS -->
+                            </form>
+                            </div>
+
+
+                        </div>
+                        <div class="col-12 col-sm-9">
+                            <!-- CONTROLLER -->
+                            <table style="width: 100%; margin-bottom: 34px;">
+                                <tr>
+                                    <td style="width: 100%;">
+                                        <!-- SEARCH -->
+                                        <input id="search_cover" type="text" style="padding-left: 0; padding-right: 0;" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
+
+                                    </td>
+                                    <td>
+                                        <!-- DELETE -->
+                                        <a class="icon-block" href="javascript:void(0);" title="Clear Cover" onclick="update__cover('')"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                    <td>
+                                        <!-- UPLOAD -->
+                                        <input class="inputfile" type="file" name="file" id="coverUpload" />
+                                        <label class="icon-block" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
+                                    </td>
+                                    <td>
+                                        <!-- SAVE -->
+                                        <button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div id="upload_results" class="center"></div>
+                            <div id="img_results_emojis" class="icons_small"></div>
+                            <div class="doclear">&nbsp;</div>
+                            <div id="icon_suggestions" class="icons_small"></div>
+                            <div id="img_results_icons" class="icons_small"></div>
+                            <div class="doclear">&nbsp;</div>
+                            <div id="img_results_local" class="icons_large"></div>
+                            <div id="img_results_tenor" class="icons_large"></div>
+                            <div id="img_results_unsplash" class="icons_large"></div>
+                            <div class="doclear">&nbsp;</div>
+
+                        </div>
                     </div>
-
-                    <!-- Power Edit (Required Superpower) -->
-                    <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
-                    <input type="hidden" id="coin__type" value="0" />
-                    <input type="hidden" id="coin__id" value="0" />
-
-
-                    <!-- CONTROLLER -->
-                    <table style="width: 100%; margin-bottom: 34px;">
-                        <tr>
-                            <td style="width: 100%;">
-                                <!-- SEARCH -->
-                                <input id="search_cover" type="text" style="padding-left: 0; padding-right: 0;" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
-
-                            </td>
-                            <td>
-                                <!-- DELETE -->
-                                <a class="icon-block" href="javascript:void(0);" title="Clear Cover" onclick="update__cover('')"><i class="fas fa-trash-alt"></i></a>
-                            </td>
-                            <td>
-                                <!-- UPLOAD -->
-                                <input class="inputfile" type="file" name="file" id="coverUpload" />
-                                <label class="icon-block" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
-                            </td>
-                            <td>
-                                <!-- SAVE -->
-                                <button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button>
-                            </td>
-                        </tr>
-                    </table>
-
-
-                    <!-- IMAGE DROP ENDS -->
-                    </div>
-                    </form>
-
-
-                    <div id="upload_results" class="center"></div>
-                    <div id="img_results_emojis" class="icons_small"></div>
-                    <div class="doclear">&nbsp;</div>
-                    <div id="icon_suggestions" class="icons_small"></div>
-                    <div id="img_results_icons" class="icons_small"></div>
-                    <div class="doclear">&nbsp;</div>
-                    <div id="img_results_local" class="icons_large"></div>
-                    <div id="img_results_tenor" class="icons_large"></div>
-                    <div id="img_results_unsplash" class="icons_large"></div>
-                    <div class="doclear">&nbsp;</div>
 
                 </div>
             </div>
