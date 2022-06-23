@@ -429,8 +429,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="coin__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>
                                 </div>
 
-                                    <!-- Power Edit (Required Superpower) -->
-                                    <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
+
                                     <input type="hidden" id="coin__type" value="0" />
                                     <input type="hidden" id="coin__id" value="0" />
 
@@ -442,6 +441,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         </div>
                         <div class="col-12 col-sm-9">
+
+                            <!-- Power Edit (Required Superpower) -->
+                            <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
+
                             <!-- CONTROLLER -->
                             <table style="width: 100%; margin-bottom: 34px;">
                                 <tr>
