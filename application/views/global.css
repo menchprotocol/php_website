@@ -1679,7 +1679,7 @@ i, .btn .show-max {
 .border-dotted {
     margin-bottom: 0;
     border-bottom: 1px dotted #999 !important;
-    border-radius: 14px !important;
+    border-radius: 0 !important;
 }
 
 

@@ -787,12 +787,12 @@ function i_is_available($i__id, $log_tnx){
         $meets_inc2_prereq = 0;
         if($x__source > 0){
             foreach($fetch_27984 as $e_pre){
-                if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
+                if($x__source && (( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__up' => $e_pre['x__up'],
                         'x__down' => $x__source,
-                    )))){
+                    ))))){
                     $meets_inc2_prereq++;
                 } else {
                     //Missing:
@@ -802,7 +802,7 @@ function i_is_available($i__id, $log_tnx){
         }
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
-            return access_blocked($log_tnx, "You cannot play this note because you are missing [".$missing_es."], make sure you are logged in with the same email address that we sent you the email.",$x__source, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, "You cannot play this note because you are ".( $x__source ? "missing [".$missing_es."]" : "not logged in" ).", make sure you are logged in with the same email address that we sent you the email.",$x__source, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 

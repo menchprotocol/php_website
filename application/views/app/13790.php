@@ -156,9 +156,11 @@ foreach($this->X_model->fetch(array(
 
     //Member
     $completion_rate = $this->X_model->completion_progress($x['e__id'], $this_top[0]);
+    $perfect_point = str_pad($completion_rate['completion_percentage'], 3, '0', STR_PAD_LEFT);
+    $perfect_point = ( $perfect_point>100 ? 100 : $perfect_point );
 
     $body_content .= '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;"><u>'.$x['e__title'].'</u></a></td>';
-    $body_content .= '<td>'.str_pad($completion_rate['completion_percentage'], 3, '0', STR_PAD_LEFT).'%</td>';
+    $body_content .= '<td>'.$perfect_point.'%</td>';
 
 
 
