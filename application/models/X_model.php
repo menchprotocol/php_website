@@ -1535,9 +1535,19 @@ class X_model extends CI_Model
                 'e__id' => $add_fields['x__source'],
             ));
             if(count($es_discoverer)){
+
+                //Fetch Discoverer contact:
+                $u_phones = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__down' => $add_fields['x__source'],
+                    'x__up' => 4783, //Phone
+                ));
+                $u_clean_phone = ( count($u_phones) > 0 ? preg_replace('/\D/', '', $u_phones[0]['x__message']).' ' : '' );
+
                 //Notify Idea Watchers
                 foreach($watchers as $watcher){
-                    $this->X_model->send_dm($watcher['x__up'], 'New Play: '.$i['i__title'],
+                    $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' '.$u_clean_phone.'Played: '.$i['i__title'],
                         //Message Body:
                         $es_discoverer[0]['e__title'].' just played ['.$i['i__title'].']'.( strlen($add_fields['x__message']) ? ' with the value ['.$add_fields['x__message'].']' : '' )."\n\n".
                         $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
