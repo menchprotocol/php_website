@@ -144,11 +144,10 @@ foreach($i_query as $i){
         $transaction_content .= '<td style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($this_commission, 2).'</td>';
-        $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="Transaction ID">'. $x['x__id'].'</td>';
-
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($x__metadata['mc_fee']/$x__metadata['mc_gross']*100).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
         $transaction_content .= '<td style="text-align: right;" title="'.(( $x__metadata['mc_gross']>0 ? $this_payout/$x__metadata['mc_gross'] : 0 )*100).'%"><b>$'.number_format($this_payout, 2).'</b></td>';
         $transaction_content .= '<td style="text-align: right;">'.$x__metadata['mc_currency'].'</td>';
+        $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="Transaction ID">'. $x['x__id'].'</td>';
         $transaction_content .= '<td style="text-align: right;" id="refund_'.$x['x__id'].'"><a href="#" onclick="paypal_refund('.$x['x__id'].', '.number_format($x__metadata['mc_gross'], 2).')" style="font-weight:bold;"><u>Refund</u></a> <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank"><i class="fas fa-info-circle"></i></a> <a href="/-4341?x__id='.$x['x__id'].'" target="_blank"><i class="fas fa-atlas"></i></a></td>';
 
         $transaction_content .= '</tr>';
@@ -190,10 +189,10 @@ foreach($i_query as $i){
     $body_content .= '<td style="text-align: right;">$'.number_format(( $total_units > 0 ? $total_revenue / $total_units : 0 ), 2).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($total_revenue, 2).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($total_commission, 2).'</td>';
-    $body_content .= '<td class="advance_columns hidden" style="text-align: right;" >&nbsp;</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
     $body_content .= '<td style="text-align: right;" title="'.(( $total_revenue>0 ? $payout/$total_revenue : 0 )*100).'%"><b>$'.number_format($payout, 2).'</b></td>';
     $body_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
+    $body_content .= '<td class="advance_columns hidden" style="text-align: right;" >&nbsp;</td>';
     $body_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>Edit</u></a></td>';
     $body_content .= '</tr>';
     $body_content .= $transaction_content;
@@ -214,10 +213,10 @@ if(count($i_query)){
     echo '<th style="text-align: right;" id="th_average">Price</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Revenue</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Commission</th>';
-    echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Transaction ID</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal Fee</th>';
     echo '<th style="text-align: right;" id="th_payout">Payout</th>';
     echo '<th style="text-align: right;" id="th_currency">&nbsp;</th>';
+    echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Transaction ID</th>';
     echo '<th style="text-align: right;">Action</th>';
     echo '</tr>';
     echo $body_content;
@@ -229,10 +228,10 @@ if(count($i_query)){
     echo '<th style="text-align: right;">$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden">+$'.number_format($gross_revenue, 2).'</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
-    echo '<th style="text-align: right;" class="advance_columns hidden" title="'.($commission_rate*100).'%">&nbsp;</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
     echo '<th style="text-align: right;" title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></th>';
     echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
+    echo '<th style="text-align: right;" class="advance_columns hidden">&nbsp;</th>';
     echo '<th style="text-align: right;">&nbsp;</th>';
     echo '</tr>';
     echo '</table>';
