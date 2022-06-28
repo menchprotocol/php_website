@@ -65,10 +65,6 @@ if (isset($_GET['e__id'])) {
 }
 
 
-echo '<a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-plus-circle"></i></a>';
-echo '<a href="javascript:void(0)" onclick="$(\'.tr_row\').addClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-minus-circle"></i></a>';
-echo '<br />';
-
 //List all payment Ideas and their total earnings
 $x_updated = 0;
 $body_content = '';
@@ -209,10 +205,9 @@ if(count($i_query)){
 
     echo '<div style="text-align: center;"><a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" class="texttransparent">Toggle Advance Columns</a></div>';
 
-
     echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
     echo '<tr style="vertical-align: baseline;">';
-    echo '<th id="th_primary">Paid Ideas</th>';
+    echo '<th id="th_primary">Paid Ideas <a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-plus-circle"></i></a> <a href="javascript:void(0)" onclick="$(\'.tr_row\').addClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-minus-circle"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid">Sold</th>';
     echo '<th style="text-align: right;" id="th_paid">Limit</th>';
     echo '<th style="text-align: right;" id="th_average">Price</th>';
