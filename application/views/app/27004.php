@@ -65,8 +65,8 @@ if (isset($_GET['e__id'])) {
 }
 
 
-echo '<a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;">+</a>';
-echo '<a href="javascript:void(0)" onclick="$(\'.tr_row\').addClass(\'hidden\');" style="font-weight:bold;">-</a>';
+echo '<a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-plus-circle"></i></a>';
+echo '<a href="javascript:void(0)" onclick="$(\'.tr_row\').addClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-minus-circle"></i></a>';
 echo '<br />';
 
 //List all payment Ideas and their total earnings
