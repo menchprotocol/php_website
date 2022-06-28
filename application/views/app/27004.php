@@ -64,6 +64,11 @@ if (isset($_GET['e__id'])) {
 
 }
 
+
+echo '<a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;">+</a>';
+echo '<a href="javascript:void(0)" onclick="$(\'.tr_row\').addClass(\'hidden\');" style="font-weight:bold;">-</a>';
+echo '<br />';
+
 //List all payment Ideas and their total earnings
 $x_updated = 0;
 $body_content = '';
@@ -136,7 +141,6 @@ foreach($i_query as $i){
         ));
         $this_commission = $x__metadata['mc_gross']*$commission_rate;
         $this_payout = $x__metadata['mc_gross']-$x__metadata['mc_fee']-$this_commission;
-
 
         $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden" title="Transaction #'.$x['x__id'].'">';
         $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
