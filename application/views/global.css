@@ -3259,7 +3259,7 @@ font-weight: bold !important;
     background-color: transparent;
 }
 .table-striped tbody tr:nth-of-type(even){
-    background-color: #FFF;
+    background-color: #EFEFEF;
 }
 
 
