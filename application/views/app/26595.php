@@ -21,7 +21,7 @@ if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=
 
     if($top_i__id>0 && $i__id>0 && in_array($currency_type, $this->config->item('n___26661')) && $x__source>0 && count($next_is) && $pay_amount>0){
 
-        //Mark idea as complete:
+        //Mark idea as complete if not already:
         $this->X_model->mark_complete($top_i__id, $next_is[0], array(
             'x__type' => 26595,
             'x__source' => $x__source,

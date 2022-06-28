@@ -1505,16 +1505,9 @@ class X_model extends CI_Model
 
         //Log completion transaction if not duplicate:
         $check_duplicate = $this->X_model->fetch($search_fields);
-        if(in_array($add_fields['x__type'], $this->config->item('n___27005')) && count($check_duplicate)){
+        if(in_array($add_fields['x__type'], $this->config->item('n___27005')) && isset($check_duplicate[0]) && is_array($check_duplicate[0])){
 
             $new_x = $check_duplicate[0];
-
-            //Update Time:
-            /*
-            $this->X_model->update($new_x['x__id'], array(
-                'x__time' => date("Y-m-d H:i:s"),
-            ), $x__source, 29800); //Re-Discovery
-            */
 
         } else {
 
