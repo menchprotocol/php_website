@@ -32,7 +32,7 @@ class I extends CI_Controller {
     }
 
 
-    function i_layout($i__id){
+    function i_layout($i__id, $append_e__id = 0){
 
         //Validate/fetch Idea:
         $is = $this->I_model->fetch(array(
@@ -52,8 +52,8 @@ class I extends CI_Controller {
         }
 
         //Import Discoveries?
-        if(isset($_GET['x_e__id']) && intval($_GET['x_e__id'])>0){
-            //Delete previous answer(s):
+        if($append_e__id>0){
+
             $completed = 0;
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -61,7 +61,7 @@ class I extends CI_Controller {
                 'x__left' => $i__id,
             )) as $x){
                 if(!count($this->X_model->fetch(array(
-                    'x__up' => $_GET['x_e__id'],
+                    'x__up' => $append_e__id,
                     'x__down' => $x['x__source'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -71,12 +71,12 @@ class I extends CI_Controller {
                     $this->X_model->create(array(
                         'x__type' => e_x__type(),
                         'x__source' => ($member_e ? $member_e['e__id'] : $x['x__source']),
-                        'x__up' => $_GET['x_e__id'],
+                        'x__up' => $append_e__id,
                         'x__down' => $x['x__source'],
                     ));
                 }
             }
-            echo '<div>'.$completed.' sources who played this idea added to @'.$_GET['x_e__id'].'</div>';
+            echo '<div>'.$completed.' sources who played this idea added to @'.$append_e__id.'</div>';
         }
 
         //Load views:
