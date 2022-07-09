@@ -1055,8 +1055,12 @@ class X_model extends CI_Model
 
 
 
-    function find_previous($e__id, $top_i__id, $i__id)
+    function find_previous($e__id, $top_i__id, $i__id, $stopper_i_id = 0)
     {
+
+        if($stopper_i_id>0 && $stopper_i_id==$i__id){
+            return 0;
+        }
 
         //Fetch parents:
         foreach($this->X_model->fetch(array(
@@ -1085,7 +1089,7 @@ class X_model extends CI_Model
             }
 
             //Keep looking:
-            $top_search = $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id']);
+            $top_search = $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id'], ( $stopper_i_id>0 ? $stopper_i_id : $i__id ));
             if(count($top_search)){
                 array_push($top_search, $i_previous);
                 return $top_search;
@@ -1100,11 +1104,11 @@ class X_model extends CI_Model
 
 
 
-    function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false, $start_i_id = 0)
+    function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false, $stopper_i_id = 0)
     {
 
-        if($start_i_id>0 && $start_i_id==$i['i__id']){
-            return false;
+        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
+            return 0;
         }
 
         $is_or_i = in_array($i['i__type'], $this->config->item('n___6193'));
@@ -1149,7 +1153,7 @@ class X_model extends CI_Model
 
 
             //Keep looking deeper:
-            $found_next = $this->X_model->find_next($e__id, $top_i__id, $next_i, 0, false, $top_completed, ( $start_i_id>0 ? $start_i_id : $i['i__id'] ));
+            $found_next = $this->X_model->find_next($e__id, $top_i__id, $next_i, 0, false, $top_completed, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
             if ($found_next) {
                 return $found_next;
             }

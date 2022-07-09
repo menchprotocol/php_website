@@ -326,7 +326,11 @@ class I_model extends CI_Model
         return $stats;
     }
 
-    function top_startable($i){
+    function top_startable($i, $stopper_i_id = 0){
+
+        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
+            return array();
+        }
 
         $top_startable = array();
 
@@ -358,7 +362,7 @@ class I_model extends CI_Model
 
         //Recursively go up and try to find startable idea:
         foreach($previous_is as $previous_i) {
-            $top_startable_recursive = $this->I_model->top_startable($previous_i);
+            $top_startable_recursive = $this->I_model->top_startable($previous_i, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
             if(count($top_startable_recursive)){
                 $top_startable = array_merge($top_startable, $top_startable_recursive);
             }
@@ -695,7 +699,11 @@ class I_model extends CI_Model
 
 
 
-    function recursive_child_ids($i__id, $first_level = true){
+    function recursive_child_ids($i__id, $first_level = true, $stopper_i_id = 0){
+
+        if($stopper_i_id>0 && $stopper_i_id==$i__id){
+            return array();
+        }
 
         $recursive_i_ids = array();
 
@@ -708,7 +716,7 @@ class I_model extends CI_Model
 
             array_push($recursive_i_ids, intval($next_i['i__id']));
 
-            $recursive_is = $this->I_model->recursive_child_ids($next_i['i__id'], false);
+            $recursive_is = $this->I_model->recursive_child_ids($next_i['i__id'], false, ( $stopper_i_id>0 ? $stopper_i_id : $i__id ));
 
             //Add to current array if we found anything:
             if(count($recursive_is) > 0){
@@ -725,7 +733,11 @@ class I_model extends CI_Model
 
     }
 
-    function recursive_parent_ids($i__id, $first_level = true){
+    function recursive_parent_ids($i__id, $first_level = true, $stopper_i_id = 0){
+
+        if($stopper_i_id>0 && $stopper_i_id==$i__id){
+            return array();
+        }
 
         $recursive_i_ids = array();
 
@@ -738,7 +750,7 @@ class I_model extends CI_Model
 
             array_push($recursive_i_ids, intval($next_i['i__id']));
 
-            $recursive_is = $this->I_model->recursive_parent_ids($next_i['i__id'], false);
+            $recursive_is = $this->I_model->recursive_parent_ids($next_i['i__id'], false, ( $stopper_i_id>0 ? $stopper_i_id : $i__id ));
 
             //Add to current array if we found anything:
             if(count($recursive_is) > 0){
@@ -755,7 +767,7 @@ class I_model extends CI_Model
 
 
 
-    function metadata_common_base($focus_in){
+    function metadata_common_base($focus_in, $stopper_i_id = 0){
 
         //Set variables:
         $is_first_in = ( !isset($focus_in['x__id']) ); //First idea does not have a transaction, just the idea
@@ -771,6 +783,10 @@ class I_model extends CI_Model
             'p___12885' => array(), //Ideas that allows members to select one or more
             'p___6283' => array(), //Ideas that may exist as a transaction to expand read via Conditional Idea transactions
         );
+
+        if($stopper_i_id>0 && $stopper_i_id==$focus_in['i__id']){
+            return $metadata_this;
+        }
 
         //Fetch children:
         foreach($this->X_model->fetch(array(
@@ -802,7 +818,7 @@ class I_model extends CI_Model
                 array_push($metadata_this['p___6168'], intval($next_i['i__id']));
 
                 //Go recursively down:
-                $child_recursion = $this->I_model->metadata_common_base($next_i);
+                $child_recursion = $this->I_model->metadata_common_base($next_i, ( $stopper_i_id>0 ? $stopper_i_id : $focus_in['i__id'] ));
 
 
                 //Aggregate recursion data:
@@ -1084,7 +1100,7 @@ class I_model extends CI_Model
 
 
 
-    function metadata_e_insights($i)
+    function metadata_e_insights($i, $stopper_i_id = 0)
     {
 
         /*
@@ -1101,6 +1117,10 @@ class I_model extends CI_Model
             'p___13207' => array(), //Leaderboard Sources
             'p___ids' => array($i['i__id']), //Keeps Track of the IDs scanned here
         );
+
+        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
+            return $metadata_this;
+        }
 
 
         //AGGREGATE IDEA SOURCES
@@ -1146,7 +1166,7 @@ class I_model extends CI_Model
             }
 
             //RECURSION
-            $metadata_recursion = $this->I_model->metadata_e_insights($is_next);
+            $metadata_recursion = $this->I_model->metadata_e_insights($is_next, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
 
 
             //CONDITIONAL OR SELECT ONE
