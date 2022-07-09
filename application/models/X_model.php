@@ -1100,8 +1100,12 @@ class X_model extends CI_Model
 
 
 
-    function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false)
+    function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false, $start_i_id = 0)
     {
+
+        if($start_i_id>0 && $start_i_id==$i['i__id']){
+            return false;
+        }
 
         $is_or_i = in_array($i['i__type'], $this->config->item('n___6193'));
         $found_trigger = false;
@@ -1145,7 +1149,7 @@ class X_model extends CI_Model
 
 
             //Keep looking deeper:
-            $found_next = $this->X_model->find_next($e__id, $top_i__id, $next_i, 0, false, $top_completed);
+            $found_next = $this->X_model->find_next($e__id, $top_i__id, $next_i, 0, false, $top_completed, ( $start_i_id>0 ? $start_i_id : $i['i__id'] ));
             if ($found_next) {
                 return $found_next;
             }
