@@ -1067,7 +1067,7 @@ class I_model extends CI_Model
     }
 
 
-    function weight($i__id)
+    function weight($i__id, $stopper_i_id = 0)
     {
 
         /*
@@ -1076,6 +1076,9 @@ class I_model extends CI_Model
          *
          * */
 
+        if($stopper_i_id>0 && $stopper_i_id==$i__id){
+            return 0;
+        }
 
         $total_child_weights = 0;
 
@@ -1085,7 +1088,7 @@ class I_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i__id,
         ), array('x__right'), 0, 0, array(), 'i__id, i__spectrum') as $next_i){
-            $total_child_weights += $next_i['i__spectrum'] + $this->I_model->weight($next_i['i__id']);
+            $total_child_weights += $next_i['i__spectrum'] + $this->I_model->weight($next_i['i__id'], ( $stopper_i_id>0 ? $stopper_i_id : $i__id ));
         }
 
         //Update This Level:
@@ -1258,7 +1261,7 @@ class I_model extends CI_Model
 
 
 
-    function unlock_paths($i)
+    function unlock_paths($i, $stopper_i_id = 0)
     {
         /*
          *
@@ -1266,6 +1269,9 @@ class I_model extends CI_Model
          *
          * */
 
+        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
+            return array();
+        }
 
         //Validate this locked idea:
         if(!i_unlockable($i)){
@@ -1297,7 +1303,7 @@ class I_model extends CI_Model
         ), array('x__left'), 0) as $i_locked_parent){
             if(i_unlockable($i_locked_parent)){
                 //Need to check recursively:
-                foreach($this->I_model->unlock_paths($i_locked_parent) as $locked_path){
+                foreach($this->I_model->unlock_paths($i_locked_parent, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] )) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $locked_path['i__id'])) {
                         array_push($child_unlock_paths, $locked_path);
                     }
@@ -1332,7 +1338,7 @@ class I_model extends CI_Model
             if(i_unlockable($next_i)){
 
                 //Need to check recursively:
-                foreach($this->I_model->unlock_paths($next_i) as $locked_path){
+                foreach($this->I_model->unlock_paths($next_i, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] )) as $locked_path){
                     if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $locked_path['i__id'])) {
                         array_push($child_unlock_paths, $locked_path);
                     }

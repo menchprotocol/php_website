@@ -1854,8 +1854,12 @@ class X_model extends CI_Model
 
     }
 
-    function completion_marks($e__id, $i, $top_level = true)
+    function completion_marks($e__id, $i, $top_level = true, $stopper_i_id = 0)
     {
+
+        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
+            return 0;
+        }
 
         //Fetch/validate read Common Ideas:
         $i__metadata = unserialize($i['i__metadata']);
@@ -1962,7 +1966,7 @@ class X_model extends CI_Model
             ), array('x__right'), 500) as $answer_in) {
 
                 //Fetch recursively:
-                $recursive_stats = $this->X_model->completion_marks($e__id, $answer_in, false);
+                $recursive_stats = $this->X_model->completion_marks($e__id, $answer_in, false, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
 
                 $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
                 $metadata_this['steps_answered_marks'] += $answer_marks_index[$answer_in['i__id']] + $recursive_stats['steps_answered_marks'];
@@ -2042,7 +2046,7 @@ class X_model extends CI_Model
             ), array('x__right'), 500) as $answer_in) {
 
                 //Fetch recursively:
-                $recursive_stats = $this->X_model->completion_marks($e__id, $answer_in, false);
+                $recursive_stats = $this->X_model->completion_marks($e__id, $answer_in, false, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
 
                 $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
                 $metadata_this['steps_answered_marks'] += $answer_marks_index[$answer_in['i__id']] + $recursive_stats['steps_answered_marks'];
