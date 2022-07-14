@@ -2078,9 +2078,12 @@ class X_model extends CI_Model
 
 
 
-    function completion_progress($e__id, $i, $top_level = true)
+    function completion_progress($e__id, $i, $top_level = true, $stopper_i_id = 0)
     {
 
+        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
+            return false;
+        }
         if(!isset($i['i__metadata'])){
             return false;
         }
@@ -2143,7 +2146,7 @@ class X_model extends CI_Model
             ), array('x__right')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->X_model->completion_progress($e__id, $expansion_in, false);
+                $recursive_stats = $this->X_model->completion_progress($e__id, $expansion_in, false, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
@@ -2166,7 +2169,7 @@ class X_model extends CI_Model
             ), array('x__right')) as $expansion_in) {
 
                 //Fetch recursive:
-                $recursive_stats = $this->X_model->completion_progress($e__id, $expansion_in, false);
+                $recursive_stats = $this->X_model->completion_progress($e__id, $expansion_in, false, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
 
                 //Addup completion stats for this:
                 $metadata_this['steps_total'] += $recursive_stats['steps_total'];
