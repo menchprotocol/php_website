@@ -2004,7 +2004,7 @@ i, .btn .show-max {
 }
 .coin_cover{
     position: relative;
-    margin:0 0 13px !important;
+    margin:0 auto 13px auto !important;
     padding: 21px 0 0 !important;
 }
 .coin_cover .large_cover i{
