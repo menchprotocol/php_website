@@ -191,7 +191,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
         } elseif (substr_count($url, 'facebook.com/') == 1 && substr_count($url, '/videos/') == 1 && is_numeric(one_two_explode('/videos/','/',$url))) {
 
-            $video_id = trim(one_two_explode('/videos/','',$url));
+            $video_id = trim(one_two_explode('/videos/','/',$url));
             $clean_url = $url;
             $embed_html_code = '<div class="media-content ignore-click"><iframe src="https://www.facebook.com/plugins/video.php?height=314&href='.urlencode($url).'&show_text=false&width=560&t=0" width="560" height="314" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe></div>';
 
@@ -1372,7 +1372,7 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     if(in_array($x__type, $CI->config->item('n___14945'))){
 
         //IDEA TYPE
-        $ui .= view_headline(26104, count($next_is), $e___11035[26104], $body, in_array(26104, $CI->config->item('n___20424')));
+        $ui .= view_headline(26104, count($next_is), $e___11035[26104], $body, isset($_GET['open']));
 
     } else {
 
