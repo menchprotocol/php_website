@@ -189,7 +189,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
             }
 
-        } elseif (substr_count($url, 'facebook.com/') == 1 && substr_count($url, '/videos/') == 1 && is_numeric(one_two_explode('/videos/','',$url))) {
+        } elseif (substr_count($url, 'facebook.com/') == 1 && substr_count($url, '/videos/') == 1 && is_numeric(one_two_explode('/videos/','/',$url))) {
 
             $video_id = trim(one_two_explode('/videos/','',$url));
             $clean_url = $url;
