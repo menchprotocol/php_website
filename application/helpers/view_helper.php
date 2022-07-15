@@ -193,7 +193,7 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
             $video_id = trim(one_two_explode('/videos/','/',$url));
             $clean_url = $url;
-            $embed_html_code = '<div class="media-content ignore-click"><iframe src="https://www.facebook.com/plugins/video.php?height=314&href='.urlencode($url).'&show_text=false&width=560&t=0" width="560" height="314" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe></div>';
+            $embed_html_code = '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="https://www.facebook.com/plugins/video.php?href='.urlencode($url).'&show_text=false&t=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe></div></div>';
 
         } elseif (substr_count($url, 'vimeo.com/') == 1 && is_numeric(one_two_explode('vimeo.com/','?',$url))) {
 
