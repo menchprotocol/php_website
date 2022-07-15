@@ -189,16 +189,18 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
             }
 
+        } elseif (substr_count($url, 'facebook.com/') == 1 && substr_count($url, '/videos/') == 1 && is_numeric(one_two_explode('/videos/','',$url))) {
+
+            $video_id = trim(one_two_explode('/videos/','',$url));
+            $clean_url = $url;
+            $embed_html_code = '<div class="media-content ignore-click"><iframe src="https://www.facebook.com/plugins/video.php?height=314&href='.urlencode($url).'&show_text=false&width=560&t=0" width="560" height="314" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe></div>';
+
         } elseif (substr_count($url, 'vimeo.com/') == 1 && is_numeric(one_two_explode('vimeo.com/','?',$url))) {
 
             //Seems to be Vimeo:
             $video_id = trim(one_two_explode('vimeo.com/', '?', $url));
-
-            //This should be an integer!
-            if (intval($video_id) == $video_id) {
-                $clean_url = 'https://vimeo.com/' . $video_id;
-                $embed_html_code = '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="https://user.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="vm-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div><div class="doclear">&nbsp;</div></div>';
-            }
+            $clean_url = 'https://vimeo.com/' . $video_id;
+            $embed_html_code = '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="https://user.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="vm-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div><div class="doclear">&nbsp;</div></div>';
 
         } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
 
