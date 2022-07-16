@@ -1550,7 +1550,7 @@ class X_model extends CI_Model
                 foreach($watchers as $watcher){
                     $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' '.$u_clean_phone.'Played: '.$i['i__title'],
                         //Message Body:
-                        $es_discoverer[0]['e__title'].' just played ['.$i['i__title'].']'.( strlen($add_fields['x__message']) ? ' with the value ['.$add_fields['x__message'].']' : '' )."\n\n".
+                        $es_discoverer[0]['e__title'].' just played ['.$i['i__title'].']'.( strlen($add_fields['x__message']) ? ' with the value:'."\n\n".$add_fields['x__message']."\n" : '' )."\n\n".
                         $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
                         $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n"
                     );

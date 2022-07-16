@@ -1437,12 +1437,26 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $from_email = get_domain_setting(28614, $e__id);
 
     $name = 'New User';
+    $ReplyToAddresses = array($from_email);
+
     if($e__id > 0){
         $es = $CI->E_model->fetch(array(
             'e__id' => $e__id,
         ));
         if(count($es)){
+
             $name = $es[0]['e__title'];
+
+            //Also fetch email for this user to populate the reply to:
+            $e_emails = $CI->X_model->fetch(array(
+                'x__up' => 3288, //Email
+                'x__down' => $e__id,
+                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            ));
+            if(count($e_emails) && filter_var($e_emails[0]['x__message'], FILTER_VALIDATE_EMAIL)){
+                array_push($ReplyToAddresses, trim($e_emails[0]['x__message']));
+            }
         }
     }
 
@@ -1495,7 +1509,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
                 ),
             ),
         ),
-        'ReplyToAddresses' => array($from_email),
+        'ReplyToAddresses' => $ReplyToAddresses,
         'ReturnPath' => $from_email,
     ));
 
