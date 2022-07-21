@@ -1538,21 +1538,39 @@ class X_model extends CI_Model
             if(count($es_discoverer)){
 
                 //Fetch Discoverer contact:
-                $u_phones = $this->X_model->fetch(array(
+                $u_list_phone = '';
+                $u_clean_phone = '';
+                foreach($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $add_fields['x__source'],
                     'x__up' => 4783, //Phone
-                ));
-                $u_clean_phone = ( count($u_phones) > 0 ? preg_replace('/\D/', '', $u_phones[0]['x__message']).' ' : '' );
+                )) as $x_progress){
+                    $u_clean_phone = preg_replace('/\D/', '', $x_progress['x__message']);
+                    $u_list_phone .= 'Phone:'."\n".$u_clean_phone."\n\n";
+                }
+
+                //Fetch Full Legal Name:
+                $u_list_name = '';
+                foreach($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                    'x__left' => 15736, //What's your Full Legal Name that Matches your ID
+                    'x__source' => $add_fields['x__source'],
+                )) as $x_progress){
+                    $u_list_name .= 'Full Name:'."\n".$x_progress['x__message']."\n\n";
+                }
+
 
                 //Notify Idea Watchers
                 foreach($watchers as $watcher){
-                    $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' '.$u_clean_phone.'Played: '.$i['i__title'],
+                    $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' '.( $u_clean_phone ? $u_clean_phone.' ' : '' ).'Played: '.$i['i__title'],
                         //Message Body:
-                        $es_discoverer[0]['e__title'].' just played ['.$i['i__title'].']'.( strlen($add_fields['x__message']) ? ' with the value:'."\n\n".$add_fields['x__message']."\n" : '' )."\n\n".
                         $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
-                        $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n"
+                        $u_list_name.
+                        $u_list_phone.
+                        $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
+                        ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' )
                     );
                 }
             }
