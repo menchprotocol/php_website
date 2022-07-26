@@ -593,11 +593,6 @@ class X extends CI_Controller
                 'x__down' => $member__id,
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ))) && count($this->X_model->fetch(array(
-                'x__up' => 29393,
-                'x__down' => $tag__id,
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
 
             if(!count($this->X_model->fetch(array(
