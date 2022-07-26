@@ -1546,7 +1546,7 @@ class X_model extends CI_Model
                     'x__down' => $add_fields['x__source'],
                     'x__up' => 4783, //Phone
                 )) as $x_progress){
-                    $u_clean_phone = preg_replace('/\D/', '', $x_progress['x__message']);
+                    $u_clean_phone = clean_phone($u_clean_phone);
                     $u_list_phone .= 'Phone:'."\n".$u_clean_phone."\n\n";
                 }
 

@@ -128,7 +128,7 @@ foreach($this->X_model->fetch(array(
     echo '<td><a href="/@'.$fetched_e['x__source'].'">'. $fetched_e['e__title'].'</a></td>';
     echo '<td>'.( isset($x__metadata['stats']['target']) ? $x__metadata['stats']['target'] : 0 ).'<br />Targets</td>';
     echo '<td><a href="/-12722?x__id='.$fetched_e['x__id'].'">'.$x__metadata['stats']['unique'].'<br />Uniques</a></td>';
-    echo '<td>'.$email_success[0]['totals'].'/'.$x__metadata['stats']['email_count'].'<br />Emails</td>';
+    echo '<td>'.$email_success[0]['totals'].'/'.$x__metadata['stats']['email_count'].'<br />Emails'.( isset($x__metadata['stats']['target']) && $x__metadata['stats']['target']>$email_success[0]['totals'] ? '<div><a href="/-26582?continue_x__id='.$fetched_e['x__id'].'">Resume</a></div>' : '' ).'</td>';
     echo '<td>'.$sms_success[0]['totals'].'/'.$x__metadata['stats']['phone_count'].'<br />SMS'.( $sms_fail[0]['totals']>0 ? '<br />'.$sms_fail[0]['totals'].' FAILED' : '' ).'</td>';
     echo '</tr>';
 
