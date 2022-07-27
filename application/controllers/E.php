@@ -531,6 +531,106 @@ class E extends CI_Controller
     }
 
 
+    function e_clone(){
+
+        //Auth member and check required variables:
+        $member_e = superpower_unlocked(10939);
+
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(10939),
+            ));
+        } elseif (intval($_POST['e__id']) < 1) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Parent Source',
+            ));
+        }
+
+
+        //Validate Source:
+        $fetch_o = $this->E_model->fetch(array(
+            'e__id' => $_POST['e__id'],
+        ));
+        if (count($fetch_o) < 1) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid parent source ID',
+            ));
+        }
+
+
+
+        //Create:
+        $added_e = $this->E_model->verify_create($fetch_o[0]['e__title']." Clone", $member_e['e__id'], $fetch_o[0]['e__cover']);
+        if(!$added_e['status']){
+            //We had an error, return it:
+            return view_json($added_e);
+        } else {
+            //Assign new source:
+            $focus_e = $added_e['new_e'];
+        }
+
+
+        //Children:
+        foreach($this->X_model->fetch(array(
+            'x__up' => $_POST['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ), array(), 0) as $x) {
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => $x['x__type'],
+                'x__up' => $focus_e['e__id'],
+                'x__down' => $x['x__down'],
+                'x__message' => $x['x__message'],
+            ));
+        }
+
+
+        //Parents:
+        foreach($this->X_model->fetch(array(
+            'x__down' => $_POST['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ), array(), 0) as $x) {
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => $x['x__type'],
+                'x__up' => $x['x__up'],
+                'x__down' => $focus_e['e__id'],
+                'x__message' => $x['x__message'],
+            ));
+        }
+
+        //Ideas:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right > 0' => null,
+            'x__up' => $_POST['e__id'],
+        ), array(), 0) as $x){
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => $x['x__type'],
+                'x__up' => $focus_e['e__id'],
+                'x__down' => $x['x__down'],
+                'x__left' => $x['x__left'],
+                'x__right' => $x['x__right'],
+                'x__message' => $x['x__message'],
+            ));
+        }
+
+
+        return view_json(array(
+            'status' => 1,
+            'new_e__id' => $focus_e['e__id'],
+        ));
+
+
+    }
+
     function e__add()
     {
 

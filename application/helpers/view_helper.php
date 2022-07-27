@@ -1868,6 +1868,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             } elseif($e__id==26001){
                 //Reset discoveries
                 $action_buttons .= '<a href="javascript:void(0);" onclick="i_reset_discoveries('.$i['i__id'].')" class="dropdown-item css__title i_reset_discoveries_'.$i['i__id'].'">'.$anchor.'</a>';
+            } elseif($e__id==29771){
+                //Clone:
+                $action_buttons .= '<a href="javascript:void(0);" onclick="i_clone('.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
             } elseif($e__id==28636 && $superpower_12700 && isset($i['x__id']) && $i['x__id']>0){
                 //Transaction Details
                 $action_buttons .= '<a href="/-4341?x__id='.$i['x__id'].'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
@@ -2181,6 +2184,11 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
                 //Edit Message
                 $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>';
+
+            } elseif($e__id==29771){
+
+                //Clone:
+                $action_buttons .= '<a href="javascript:void(0);" onclick="e_clone('.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif($e__id==10673 && $source_of_e && $x__id > 0){
 

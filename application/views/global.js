@@ -491,6 +491,32 @@ function toggle_pills(x__type){
 
 
 
+function i_clone(i__id){
+    //Go ahead and delete:
+    $.post("/i/i_clone", {
+        i__id:i__id
+    }, function (data) {
+        if(data.status){
+            window.location = '/~'+data.new_i__id;
+        } else {
+            alert('ERROR:' + data.message);
+        }
+    });
+}
+
+function e_clone(e__id){
+    //Go ahead and delete:
+    $.post("/e/e_clone", {
+        e__id:e__id
+    }, function (data) {
+        if(data.status){
+            window.location = '/@'+data.new_e__id;
+        } else {
+            alert('ERROR:' + data.message);
+        }
+    });
+}
+
 function i_reset_discoveries(i__id){
     //Confirm First:
     var r = confirm("You are about to delete all discoveries made on this idea?");

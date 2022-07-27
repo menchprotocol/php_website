@@ -32,6 +32,103 @@ class I extends CI_Controller {
     }
 
 
+    function i_clone(){
+
+        //Auth member and check required variables:
+        $member_e = superpower_unlocked(10939);
+
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'messagCloe' => view_unauthorized_message(10939),
+            ));
+        } elseif (intval($_POST['i__id']) < 1) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Parent Source',
+            ));
+        }
+
+
+        //Validate Source:
+        $fetch_o = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+        ));
+        if (count($fetch_o) < 1) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid parent idea ID',
+            ));
+        }
+
+
+        //Create:
+        $i_new = $this->I_model->create(array(
+            'i__title' => $fetch_o[0]['e__title']." Clone",
+            'i__type' => $fetch_o[0]['i__type'],
+            'i__cover' => $fetch_o[0]['i__cover'],
+        ), $member_e['e__id']);
+
+
+        //Fetch children:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__left' => $_POST['i__id'],
+        ), array(), 0) as $x){
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => $x['x__type'],
+                'x__left' => $i_new['i__id'],
+                'x__right' => $x['x__right'],
+                'x__message' => $x['x__message'],
+            ));
+        }
+
+
+        //Parents:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__right' => $_POST['i__id'],
+        ), array(), 0) as $x){
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => $x['x__type'],
+                'x__left' => $x['x__left'],
+                'x__right' => $i_new['i__id'],
+                'x__message' => $x['x__message'],
+            ));
+        }
+
+        //Sources:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $_POST['i__id'],
+            'x__up > 0' => null,
+        ), array(), 0) as $x){
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => $x['x__type'],
+                'x__right' => $i_new['i__id'],
+                'x__up' => $x['x__up'],
+                'x__down' => $x['x__down'],
+                'x__left' => $x['x__left'],
+                'x__message' => $x['x__message'],
+            ));
+        }
+
+
+        return view_json(array(
+            'status' => 1,
+            'new_i__id' => $i_new['i__id'],
+        ));
+
+
+    }
+
+
     function i_layout($i__id, $append_e__id = 0){
 
         //Validate/fetch Idea:
