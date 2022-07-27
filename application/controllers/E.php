@@ -585,6 +585,10 @@ class E extends CI_Controller
                 'x__up' => $focus_e['e__id'],
                 'x__down' => $x['x__down'],
                 'x__message' => $x['x__message'],
+                'x__spectrum' => $x['x__spectrum'],
+                'x__reference' => $x['x__reference'],
+                'x__metadata' => $x['x__metadata'],
+                'x__status' => $x['x__status'],
             ));
         }
 
@@ -601,6 +605,10 @@ class E extends CI_Controller
                 'x__up' => $x['x__up'],
                 'x__down' => $focus_e['e__id'],
                 'x__message' => $x['x__message'],
+                'x__spectrum' => $x['x__spectrum'],
+                'x__reference' => $x['x__reference'],
+                'x__metadata' => $x['x__metadata'],
+                'x__status' => $x['x__status'],
             ));
         }
 
@@ -619,6 +627,10 @@ class E extends CI_Controller
                 'x__left' => $x['x__left'],
                 'x__right' => $x['x__right'],
                 'x__message' => $x['x__message'],
+                'x__spectrum' => $x['x__spectrum'],
+                'x__reference' => $x['x__reference'],
+                'x__metadata' => $x['x__metadata'],
+                'x__status' => $x['x__status'],
             ));
         }
 

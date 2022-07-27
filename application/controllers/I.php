@@ -82,6 +82,10 @@ class I extends CI_Controller {
                 'x__left' => $i_new['i__id'],
                 'x__right' => $x['x__right'],
                 'x__message' => $x['x__message'],
+                'x__spectrum' => $x['x__spectrum'],
+                'x__reference' => $x['x__reference'],
+                'x__metadata' => $x['x__metadata'],
+                'x__status' => $x['x__status'],
             ));
         }
 
@@ -98,6 +102,10 @@ class I extends CI_Controller {
                 'x__left' => $x['x__left'],
                 'x__right' => $i_new['i__id'],
                 'x__message' => $x['x__message'],
+                'x__spectrum' => $x['x__spectrum'],
+                'x__reference' => $x['x__reference'],
+                'x__metadata' => $x['x__metadata'],
+                'x__status' => $x['x__status'],
             ));
         }
 
@@ -116,6 +124,10 @@ class I extends CI_Controller {
                 'x__down' => $x['x__down'],
                 'x__left' => $x['x__left'],
                 'x__message' => $x['x__message'],
+                'x__spectrum' => $x['x__spectrum'],
+                'x__reference' => $x['x__reference'],
+                'x__metadata' => $x['x__metadata'],
+                'x__status' => $x['x__status'],
             ));
         }
 
