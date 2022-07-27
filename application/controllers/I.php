@@ -64,7 +64,7 @@ class I extends CI_Controller {
 
         //Create:
         $i_new = $this->I_model->create(array(
-            'i__title' => $fetch_o[0]['e__title']." Clone",
+            'i__title' => $fetch_o[0]['i__title']." Clone",
             'i__type' => $fetch_o[0]['i__type'],
             'i__cover' => $fetch_o[0]['i__cover'],
         ), $member_e['e__id']);
@@ -99,8 +99,8 @@ class I extends CI_Controller {
             $this->X_model->create(array(
                 'x__source' => $member_e['e__id'],
                 'x__type' => $x['x__type'],
-                'x__left' => $x['x__left'],
                 'x__right' => $i_new['i__id'],
+                'x__left' => $x['x__left'],
                 'x__message' => $x['x__message'],
                 'x__spectrum' => $x['x__spectrum'],
                 'x__reference' => $x['x__reference'],
