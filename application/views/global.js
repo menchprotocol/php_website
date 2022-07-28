@@ -1,14 +1,5 @@
 
 
-//Google Analytics
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-92774608-1');
-
-
-
-
 // url Async requesting function
 function images_api_getasync(api_id, query, callback) {
     // create the request object
