@@ -16,7 +16,7 @@ if(isset($_GET['i__id'])){
     ));
 
     //IDEA TITLE
-    echo '<h1 style="padding-top: 21px;"><span class="halfbg">' . $is[0]['i__title'] . '</span></h1>';
+    echo '<h1 style="padding-top: 21px;"><span class="">' . $is[0]['i__title'] . '</span></h1>';
 
     //MESSAGES
     echo '<div class="center-frame">';
