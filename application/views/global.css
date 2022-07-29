@@ -3109,6 +3109,9 @@ font-weight: bold !important;
 .center-frame .msg a {
     color:#000;
 }
+.center-frame .msg .icon-block-xxs{
+    display:none;
+}
 .larger-font{
     font-size: 1.2em !important;
 }
