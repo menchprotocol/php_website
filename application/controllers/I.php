@@ -70,6 +70,28 @@ class I extends CI_Controller {
         ), $member_e['e__id']);
 
 
+        //Messages:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4231, //IDEA NOTES Messages
+            'x__right' => $_POST['i__id'],
+        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => $x['x__type'],
+                'x__right' => $i_new['i__id'],
+                'x__left' => $x['x__left'],
+                'x__up' => $x['x__up'],
+                'x__down' => $x['x__down'],
+                'x__message' => $x['x__message'],
+                'x__spectrum' => $x['x__spectrum'],
+                'x__reference' => $x['x__reference'],
+                'x__metadata' => $x['x__metadata'],
+                'x__status' => $x['x__status'],
+            ));
+        }
+
+
         //Fetch children:
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
