@@ -15,7 +15,7 @@ class I_model extends CI_Model
     }
 
 
-    function create($add_fields, $x__source = 0)
+    function create($add_fields, $x__source = 0, $add_source = true)
     {
 
         //What is required to create a new Idea?
@@ -43,13 +43,16 @@ class I_model extends CI_Model
                     'x__type' => 4250, //New Idea Created
                 ));
 
-                //Also add as source:
-                $this->X_model->create(array(
-                    'x__source' => $x__source,
-                    'x__up' => $x__source,
-                    'x__type' => 4983, //IDEA SOURCES
-                    'x__right' => $add_fields['i__id'],
-                ), true);
+                //Also add as source if not there:
+                if($add_source){
+                    $this->X_model->create(array(
+                        'x__source' => $x__source,
+                        'x__type' => 4983, //IDEA SOURCES
+                        'x__up' => $x__source,
+                        'x__right' => $add_fields['i__id'],
+                    ), true);
+                }
+
 
                 //Fetch to return the complete source data:
                 $is = $this->I_model->fetch(array(

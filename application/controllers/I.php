@@ -67,7 +67,12 @@ class I extends CI_Controller {
             'i__title' => $fetch_o[0]['i__title']." Clone",
             'i__type' => $fetch_o[0]['i__type'],
             'i__cover' => $fetch_o[0]['i__cover'],
-        ), $member_e['e__id']);
+        ), $member_e['e__id'], !count($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__up' => $member_e['e__id'],
+            'x__right' => $_POST['i__id'],
+        ))));
 
 
         //Messages:
