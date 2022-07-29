@@ -3101,10 +3101,13 @@ font-weight: bold !important;
 .msg{
     text-align: left;
 }
-.center-frame .msg, .center-frame .msg a {
+.center-frame .msg {
     text-align: center;
     color:#000;
     font-size:1.5em;
+}
+.center-frame .msg a {
+    color:#000;
 }
 .larger-font{
     font-size: 1.2em !important;
