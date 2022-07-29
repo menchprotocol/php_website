@@ -146,7 +146,7 @@ li a {
     font-weight: bold;
     height: 34px;
     overflow: hidden;
-    line-height: 190%;
+    line-height: 150%;
     margin-top: -8px;
     margin-right: 5px;
     margin-bottom: 5px;
@@ -186,7 +186,7 @@ li a {
 }
 
 .regtext, .msg{
-    line-height: 190%;
+    line-height: 150%;
 }
 .msg, .msg-frame {
     margin-left: 10px !important;
@@ -498,7 +498,7 @@ img.no-frame {
 .x-info{
     padding:21px 0 21px 41px;
     margin:0;
-    line-height: 190%;
+    line-height: 150%;
 }
 .message_content{
     margin-left: 41px;
@@ -942,13 +942,13 @@ textarea.note-textarea{
     /*background-color: transparent !important;*/
     box-shadow: none;
     padding: 0;
-    line-height: 190% !important;
+    line-height: 150% !important;
 }
 
 .note-textarea.edit-on {
     margin:0 0 0 41px;
     padding:5px 0;
-    line-height: 190% !important;
+    line-height: 150% !important;
 }
 
 .table-btn{
@@ -1052,7 +1052,7 @@ a.headline {
     padding-left:41px;
     padding-right:41px;
     display: block;
-    line-height: 190%;
+    line-height: 150%;
 }
 .space-content .btn{
     margin:-10px 0 0 0;
