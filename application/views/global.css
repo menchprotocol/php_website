@@ -3103,11 +3103,7 @@ font-weight: bold !important;
 }
 .center-frame .msg {
     text-align: center;
-    color:#000;
     font-size:1.5em;
-}
-.center-frame .msg a {
-    color:#000;
 }
 .center-frame .msg .icon-block-xxs{
     display:none;
