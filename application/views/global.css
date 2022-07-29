@@ -186,7 +186,7 @@ li a {
 }
 
 .regtext, .msg{
-    line-height: 130%;
+    line-height: 125%;
 }
 .msg, .msg-frame {
     margin-left: 10px !important;
