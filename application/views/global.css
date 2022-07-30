@@ -1412,7 +1412,7 @@ label {
 
 
 .answer-item {
-    border:3px solid transparent;
+    border:3px solid #000;
     background-color:#FFFFFF !important;
     color: #000000 !important;
 }
