@@ -138,7 +138,7 @@ li a {
     text-decoration: none;
 }
 .special-text{
-    font-size: 1.304em;
+    font-size: 1.4em;
     display: block;
     float: left;
     padding-top: 5px;
@@ -1144,7 +1144,7 @@ a.headline {
 }
 
 .platform-navigation .block-x .fas, .block-x .fal, .block-x .far, .block-x .fad{
-    font-size: 1.12em;
+    font-size: 1.2em;
 }
 
 .coin-type{
@@ -1507,7 +1507,7 @@ label {
 }
 
 i, .btn .show-max {
-    font-size: 1.3044em !important;
+    font-size: 1.44em !important;
 }
 
 .icon-block-lg i {
@@ -1595,7 +1595,7 @@ i, .btn .show-max {
     margin-top: 11px;
     border-radius: 14px !important;
     display: inline-block;
-    font-size: 1.304em;
+    font-size: 1.4em;
 }
 .platform-logo i{
     font-size: 1em !important;
@@ -1764,7 +1764,7 @@ i, .btn .show-max {
 
 .headline{
     padding: 0;
-    font-size: 1.304em;
+    font-size: 1.4em;
     text-align: left;
     display: block;
 }
@@ -1963,7 +1963,7 @@ i, .btn .show-max {
     right: 10px;
 }
 .coin-cover-2right i{
-    font-size: 1.12em !important;
+    font-size: 1.2em !important;
 }
 .focus-coin .coin-cover-right {
     top: 45px;
@@ -2233,7 +2233,7 @@ textarea {
 }
 
 .h4, h4 {
-    font-size: 1.12rem;
+    font-size: 1.2rem;
 }
 
 .vid-padding { padding:160px 0; }
@@ -2388,7 +2388,7 @@ textarea {
 }
 @media (max-width:576px) {
     .focus-coin .inner-content .css__title {
-        font-size: 1.304em;
+        font-size: 1.4em;
     }
     .the_counter{
         margin-top: -24px;
@@ -3109,7 +3109,7 @@ font-weight: bold !important;
     display:none;
 }
 .larger-font{
-    font-size: 1.12em !important;
+    font-size: 1.2em !important;
 }
 .center-frame {
     padding-bottom: 34px;
@@ -3157,11 +3157,11 @@ font-weight: bold !important;
 /* MEDIUM */
 .custom_ui_13491_13493 .msg,
 .custom_ui_13491_13493 .regtext{
-    font-size:1.31em;
+    font-size:1.22em;
 }
 .custom_ui_13491_13493 .msg i,
 .custom_ui_13491_13493 .regtext i{
-    font-size:1.31em;
+    font-size:1.22em;
 } /* To get to 1.44em*/
 
 
