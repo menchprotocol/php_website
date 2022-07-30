@@ -1144,7 +1144,7 @@ a.headline {
 }
 
 .platform-navigation .block-x .fas, .block-x .fal, .block-x .far, .block-x .fad{
-    font-size: 1.2em;
+    font-size: 1.12em;
 }
 
 .coin-type{
@@ -1963,7 +1963,7 @@ i, .btn .show-max {
     right: 10px;
 }
 .coin-cover-2right i{
-    font-size: 1.2em !important;
+    font-size: 1.12em !important;
 }
 .focus-coin .coin-cover-right {
     top: 45px;
@@ -2233,7 +2233,7 @@ textarea {
 }
 
 .h4, h4 {
-    font-size: 1.2rem;
+    font-size: 1.12rem;
 }
 
 .vid-padding { padding:160px 0; }
@@ -3109,7 +3109,7 @@ font-weight: bold !important;
     display:none;
 }
 .larger-font{
-    font-size: 1.2em !important;
+    font-size: 1.12em !important;
 }
 .center-frame {
     padding-bottom: 34px;

@@ -341,7 +341,7 @@ if(count($i_query)){
     tr th{
        padding: 8px 0 !important;
         font-weight: bold;
-        font-size: 1.2em;
+        font-size: 1.12em;
     }
     tr td {
         padding: 5px 0 !important;
