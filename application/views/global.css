@@ -3075,6 +3075,9 @@ textarea {
 .cover-link {
     padding-top: 149%;
 }
+.cover-link.coinType6255, .cover-link.coinType12273, .cover-link.coinType12274 {
+    padding-top: 98%;
+}
 .cover-link,
 .round-btn {
     border-radius: 0;
