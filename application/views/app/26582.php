@@ -68,8 +68,8 @@ echo '</form>';
 
 echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');"><i class="fad fa-search-plus"></i> '.$message_list['unique_users_count'].' Unique Recipients = '.$message_list['email_count'].' Emails + '.$message_list['phone_count'].' SMS</a></div>';
 
-echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 14px;">'.$message_list['full_list'].'</textarea>';
-echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 14px;">'.$message_list['email_list'].'</textarea>';
+echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 0;">'.$message_list['full_list'].'</textarea>';
+echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 0;">'.$message_list['email_list'].'</textarea>';
 
 
 echo '<div style="padding: 0 10px 13px;">';
@@ -77,7 +77,7 @@ echo '<div style="padding: 10px 0;"><input type="text" class="form-control white
 
 
 
-echo '<div style="border:3px solid #000000; padding:8px; border-radius: 14px;">';
+echo '<div style="border:3px solid #000000; padding:8px; border-radius: 0;">';
 echo '<p>'.view_shuffle_message(29749).' '.$member_e['e__title'].' '.view_shuffle_message(29750).'</p>';
 echo '<textarea class="form-control" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
 echo '<p>'.view_shuffle_message(12691).'</p>';

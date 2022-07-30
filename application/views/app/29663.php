@@ -53,7 +53,7 @@
         .isbox>div {
             background-color: #bd344c !important;
             color:#FFF !important;
-            border-radius: 13px;
+            border-radius: 0;
             padding: 21px;
             margin: 13px;
         }

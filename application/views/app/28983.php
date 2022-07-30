@@ -71,7 +71,7 @@ $social_nav = '<div class="center-icons">
         }
         .btn {
             font-weight: bold !important;
-            border-radius: 13px;
+            border-radius: 0;
         }
         .btn-white i {
             color: #000 !important;
@@ -110,7 +110,7 @@ $social_nav = '<div class="center-icons">
             text-align: center;
         }
         .info_box_cover img{
-            border-radius: 13px;
+            border-radius: 0;
         }
         .main_title{
             font-size: 2.9em;
@@ -179,7 +179,7 @@ $social_nav = '<div class="center-icons">
             -ms-flex-align: center;
             align-items: center;
             border: 10px solid #fff;
-            border-radius: 13px;
+            border-radius: 0;
             background-image: url("https://www.babycake.app//images/video_image.png");
             background-position: 50% 50%;
             background-size: cover;
@@ -190,7 +190,7 @@ $social_nav = '<div class="center-icons">
         }
 
         .rounded-corner{
-            border-radius: 13px;
+            border-radius: 0;
         }
 
         @media (max-width:1500px) {
@@ -241,7 +241,7 @@ $social_nav = '<div class="center-icons">
             display: block;
             max-width: 80%;
             padding: 8px 10px;
-            border-radius: 13px;
+            border-radius: 0;
             line-height: 150%;
         }
 

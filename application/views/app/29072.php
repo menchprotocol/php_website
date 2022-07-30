@@ -43,7 +43,7 @@
         -ms-flex-align: center;
         align-items: center;
         border: 10px solid #fff;
-        border-radius: 13px;
+        border-radius: 0;
         background-image: url("https://www.babycake.app/images/video_image.png");
         background-position: 50% 50%;
         background-size: cover;
@@ -330,7 +330,7 @@ $call_to_action = '<a class="btn btn-default" href="javascript:alert(\'Coming So
 <br />
 <br />
 <a name="roadmap">&nbsp;</a>
-<div style="text-align: center; color: #000; background-color: #000; padding: 21px 0 55px; border-radius: 13px;">
+<div style="text-align: center; color: #000; background-color: #000; padding: 21px 0 55px; border-radius: 0;">
 
     <h2 class="text-center main_title">Rosy Roadmap</h2>
     <br />
