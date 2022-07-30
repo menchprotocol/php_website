@@ -1666,7 +1666,7 @@ function view_info_box(){
         foreach($CI->config->item('e___'.$e__id) as $m) {
             $counter++;
             $title_parts = explode(' ', $m['m__title'], 2);
-            $ui .= '<div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
+            $ui .= '<div class="col-6 col-md-4 col-xl-2 col-lg-3 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
             $ui .= '<div class="info_box">';
             $ui .= '<div class="info_box_cover">'.$m['m__cover'].'</div>';
             $ui .= '<div class="info_box_title css__title">'.$title_parts[0].'<br />'.$title_parts[1].'</div>';
@@ -1702,7 +1702,7 @@ function view_i_select($i, $x__source, $previously_selected){
 
     $href = 'href="javascript:void(0);"'.( $spots_remaining==0 && !$previously_selected ? ' onclick="alert(\'This Option is Not Available\')" ' : ' onclick="toggle_answer(' . $i['i__id'] . ')"' );
 
-    $ui  = '<div class="coin_cover col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3 no-padding">';
+    $ui  = '<div class="coin_cover col-6 col-md-4 col-xl-2 col-lg-3 no-padding">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<table class="coin_coins"></table>'; //For UI height adjustment
     $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background-obs cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' isSelected ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';

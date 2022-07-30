@@ -380,17 +380,17 @@
         <br />
         <h2 class="text-center main_title">Tokenomics</h2>
         <div class="row justify-content-center" style="text-align: center; color: #FFF;">
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover">1%</div>
                 <div class="info_box_title">Redistribution</div>
                 <div class="info_box_message">Simply hold and earn more Sith Lords passively!</div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover">4%</div>
                 <div class="info_box_title">Development</div>
                 <div class="info_box_message">All costs regarding project development</div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover">5%</div>
                 <div class="info_box_title">Marketing</div>
                 <div class="info_box_message">So the world hears about the best community on Binance</div>
@@ -429,17 +429,17 @@
         <a name="howtobuy">&nbsp;</a>
         <h2 class="text-center main_title">How To Buy</h2>
         <div class="row justify-content-center" style="text-align: center; color: #FFF;">
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><img src="/img/sithlords/metamask-2728406-2261817.png" style="width:110px;"></div>
                 <div class="info_box_title">Setup MetaMask</div>
                 <div class="info_box_message">First download MetaMask (a crypto wallet in the form of a browser extension) or TrustWallet (an app for your phone). After that, you will have to add the Binance Smart Chain to your network-list. (Click here for a step-by-step tutorial).</div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><img src="/img/sithlords/coinbase.png" style="width:110px;" class="round"></div>
                 <div class="info_box_title">Buy & Send BNB</div>
                 <div class="info_box_message">Then Buy BNB on an exchange (i.e. Binance, Kraken, Coinbase etc.). Transfer the tokens to your MetaMask wallet address. BEP-20 addresses start with a "0x".</div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><img src="/img/sithlords/pancakeswap-cake-logo.png" style="width:110px;"></div>
                 <div class="info_box_title">Swap on Pancake</div>
                 <div class="info_box_message">Finally click here to buy Sith Lords on PancakeSwap. Select SithLords or use our contract address. Set the slippage tolerance to 12% (sometimes it may be 18%, depending on how much demand there is).</div>
@@ -464,7 +464,7 @@
         <a name="roadmap">&nbsp;</a>
         <h2 class="text-center main_title">Roadmap</h2>
         <div class="row justify-content-center" style="text-align: center; color: #FFF;">
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><i class="fad fa-starship-freighter fa-spin-reverse-slow"></i></div>
                 <div class="info_box_title">Phase 1</div>
                 <div class="info_box_message">
@@ -474,7 +474,7 @@
                     <br />Rewards Dashboard
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><i class="fad fa-starfighter-alt fa-spin-reverse-slow"></i></div>
                 <div class="info_box_title">Phase 2</div>
                 <div class="info_box_message">Youtube/Twitter Campaigns
@@ -482,7 +482,7 @@
                     <br />Promotional Contests
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><i class="fad fa-starfighter fa-spin-reverse-slow"></i></div>
                 <div class="info_box_title">Phase 3</div>
                 <div class="info_box_message">Sith Lords DAO
@@ -503,17 +503,17 @@
         <a name="team">&nbsp;</a>
         <h2 class="text-center main_title">Team</h2>
         <div class="row justify-content-center" style="text-align: center; color: #FFF;">
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><img src="/img/sithlords/Starkiller@2x.png" style="height:150px;"></div>
                 <div class="info_box_title">Starkiller</div>
                 <div class="info_box_message">CTO & Developer</div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><img src="/img/sithlords/Sith Emperor@2x.png" style="height:150px;"></div>
                 <div class="info_box_title">Sith Emperor</div>
                 <div class="info_box_message">CMO & Product</div>
             </div>
-            <div class="col-12 col-sm-6 col-md-4 col-xl-2 col-lg-3">
+            <div class="col-6 col-md-4 col-xl-2 col-lg-3">
                 <div class="info_box_cover"><img src="/img/sithlords/Darth Lord@2x.png" style="height:150px;"></div>
                 <div class="info_box_title">Darth Lord</div>
                 <div class="info_box_message">CCO & Community Growth</div>
