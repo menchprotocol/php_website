@@ -1904,7 +1904,7 @@ i, .btn .show-max {
     display: block;
     margin: 0 8px;
     top:39px;
-    max-height: 72%;
+    max-height: 69%;
     top: 47px;
 }
 /*
@@ -3069,7 +3069,7 @@ textarea {
 
 /* SHAPE: Rounded Square */
 .cover-btn{
-    top: 72%;
+    top: 69%;
 }
 
 .cover-link {
