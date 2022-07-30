@@ -1549,7 +1549,7 @@ i, .btn .show-max {
     margin: 0 0 21px 0 !important;
     width: auto !important;
     height: auto !important;
-    max-width: 610px;
+    max-width: 100%;
     max-height: 610px;
     border-radius: 14px !important;
 }
