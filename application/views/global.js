@@ -508,25 +508,6 @@ function e_clone(e__id){
     });
 }
 
-function i_reset_discoveries(i__id){
-    //Confirm First:
-    var r = confirm("You are about to delete all discoveries made on this idea?");
-    if (r != true) {
-        return false;
-    }
-
-    //Go ahead and delete:
-    $('.i_reset_discoveries_'+i__id).fadeOut();
-    $.post("/x/i_reset_discoveries", {
-        i__id:i__id
-    }, function (data) {
-        //Update UI to confirm with member:
-        alert(data.message);
-    });
-
-}
-
-
 function view_load_page_i(x__type, page, load_new_filter) {
 
     if (load_new_filter) {

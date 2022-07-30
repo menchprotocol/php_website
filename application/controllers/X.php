@@ -1626,61 +1626,6 @@ class X extends CI_Controller
     }
 
 
-    function i_reset_discoveries(){
-
-        $member_e = superpower_unlocked(12701);
-
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(12701),
-            ));
-        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Starting Idea',
-            ));
-        }
-
-        //Fetch their current progress transactions:
-        $progress_x = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
-            'x__left' => $_POST['i__id'],
-        ), array(), 0);
-
-        if(!count($progress_x)){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Nothing found to be removed',
-            ));
-        }
-
-        $message = 'Removed all '.count($progress_x).' discoveries';
-
-        //Log transaction:
-        $clear_all_x = $this->X_model->create(array(
-            'x__type' => 26001,
-            'x__source' => $member_e['e__id'],
-            'x__left' => $_POST['i__id'],
-            'x__message' => $message,
-        ));
-
-        //Delete all progressions:
-        foreach($progress_x as $progress_x){
-            $this->X_model->update($progress_x['x__id'], array(
-                'x__status' => 6173, //Transaction Removed
-                'x__reference' => $clear_all_x['x__id'], //To indicate when it was deleted
-            ), $member_e['e__id'], 26001 /* Reset All discoveries */);
-        }
-
-        return view_json(array(
-            'status' => 1,
-            'message' => $message,
-        ));
-
-    }
-
     function x_save(){
 
         //Authenticate Member:
