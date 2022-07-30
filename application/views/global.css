@@ -1412,7 +1412,7 @@ label {
 
 
 .answer-item {
-    border:3px solid #000;
+    border:3px solid #000 !important;
     background-color:#FFFFFF !important;
     color: #000000 !important;
 }
@@ -2004,8 +2004,8 @@ i, .btn .show-max {
 }
 .coin_cover{
     position: relative;
-    margin:0 auto 13px auto !important;
-    padding: 13px 0 0 !important;
+    margin:0 auto 10px auto !important;
+    padding: 0 !important;
 }
 .coin_cover .large_cover i{
     font-size:13em !important;
@@ -3073,7 +3073,7 @@ textarea {
 }
 
 .cover-link {
-    padding-top: 98%;
+    padding-top: 149%;
 }
 .cover-link,
 .round-btn {
