@@ -331,7 +331,7 @@ if(count($i_query)){
         border-bottom: 1px dotted #FFFFFF !important;
     }
     .fa-filter, .fa-sort{
-        font-size: 1.1em !important;
+        font-size: 1.01em !important;
         margin-bottom: 3px;
     }
     th{
@@ -345,7 +345,7 @@ if(count($i_query)){
     }
     tr td {
         padding: 5px 0 !important;
-        font-size: 1.1em;
+        font-size: 1.01em;
     }
     .tr_row td{
         padding: 1px 0 !important;

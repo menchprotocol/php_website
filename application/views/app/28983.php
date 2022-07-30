@@ -57,7 +57,7 @@ $social_nav = '<div class="center-icons">
             padding-bottom: 13px;
         }
         p, .info_box_message{
-            font-size: 1.2em;
+            font-size: 1.01em;
         }
         p {
             max-width: 80%;
@@ -269,7 +269,7 @@ $social_nav = '<div class="center-icons">
 
         <div class="col-12">
             <h1 style="color: #e50201; font-size: 3.5em; font-weight: bold;">Welcome to McBroke.</h1>
-            <h3 style=" color: #000000; font-size: 1.1em;">The Binance Smart Chain's home of the GibRope Sandwich & The McRekt.</h3> <br />
+            <h3 style=" color: #000000; font-size: 1.01em;">The Binance Smart Chain's home of the GibRope Sandwich & The McRekt.</h3> <br />
             <a class="btn btn-white" href="javascript:alert('Launching Soon...')"><i class="fas fa-exchange"></i> Buy Now</a>
             <a class="btn btn-white" href="#learn"><i class="fas fa-info"></i> Learn More</a><br />
             <br/>
@@ -281,7 +281,7 @@ $social_nav = '<div class="center-icons">
 
 
 
-            <p style="font-size: 1.1em;">Or see details below for entry.</p><br /><br /><br />
+            <p style="font-size: 1.01em;">Or see details below for entry.</p><br /><br /><br />
 
             <a name="learn">&nbsp;</a><br />
             <br /><br /><hr /><br /><br />
@@ -347,7 +347,7 @@ $social_nav = '<div class="center-icons">
     <br />
     <br />
 
-    <p style="text-align: center; color: #000 !important; font-weight: bold; font-size: 1.1em">We serve you our 24/7 model to sustain the growth and success of the McBroke ecosystem. Additionally, 5% of the 2% reflections tax gets burned with every order.</p>
+    <p style="text-align: center; color: #000 !important; font-weight: bold; font-size: 1.01em">We serve you our 24/7 model to sustain the growth and success of the McBroke ecosystem. Additionally, 5% of the 2% reflections tax gets burned with every order.</p>
 
     <br />
     <br />

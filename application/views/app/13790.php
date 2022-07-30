@@ -287,7 +287,7 @@ echo '</table>';
     font-size: 1.3em;
 }
 .fa-filter, .fa-sort{
-    font-size: 1.1em !important;
+    font-size: 1.01em !important;
     margin-bottom: 3px;
 }
 #sortable_table th{
