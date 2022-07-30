@@ -138,7 +138,7 @@ li a {
     text-decoration: none;
 }
 .special-text{
-    font-size: 1.4em;
+    font-size: 1.304em;
     display: block;
     float: left;
     padding-top: 5px;
@@ -1507,7 +1507,7 @@ label {
 }
 
 i, .btn .show-max {
-    font-size: 1.44em !important;
+    font-size: 1.3044em !important;
 }
 
 .icon-block-lg i {
@@ -1595,7 +1595,7 @@ i, .btn .show-max {
     margin-top: 11px;
     border-radius: 14px !important;
     display: inline-block;
-    font-size: 1.4em;
+    font-size: 1.304em;
 }
 .platform-logo i{
     font-size: 1em !important;
@@ -1764,7 +1764,7 @@ i, .btn .show-max {
 
 .headline{
     padding: 0;
-    font-size: 1.4em;
+    font-size: 1.304em;
     text-align: left;
     display: block;
 }
@@ -2388,7 +2388,7 @@ textarea {
 }
 @media (max-width:576px) {
     .focus-coin .inner-content .css__title {
-        font-size: 1.4em;
+        font-size: 1.304em;
     }
     .the_counter{
         margin-top: -24px;
