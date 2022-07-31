@@ -54,37 +54,45 @@ $i_stats = i_stats($i_focus['i__metadata']);
 
 
 //Check for time limits?
-if($top_i__id && !count($x_completes) && $x__source){
+if($top_i__id && $x__source){
 
-    //See if any OR parents are completed with an expiry time:
-    foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //Select Next
-        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-        'x__right' => $i_focus['i__id'],
-    ), array('x__left')) as $parent_ors){
+    //Show navigation:
+    if($x__source==1 && $top_i__id!=$i_focus['i__id']){
+        echo view_breadcrumb($top_i__id, $i_focus['i__id']);
+    }
 
-        $does_expire = $this->X_model->fetch(array(
+    //We check expire time if not completed?
+    if(!count($x_completes)){
+
+        //See if any OR parents are completed with an expiry time:
+        foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4983, //References
-            'x__up' => 28199,
-            'x__right' => $parent_ors['i__id'],
-        ));
+            'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //Select Next
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'x__right' => $i_focus['i__id'],
+        ), array('x__left')) as $parent_ors){
 
-        if(count($does_expire) && intval($does_expire[0]['x__message'])>0){
-
-            //Fetch parent completion time:
-            $answered = $this->X_model->fetch(array(
+            $does_expire = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //Discoveries
-                'x__left' => $parent_ors['i__id'],
-                'x__source' => $x__source,
+                'x__type' => 4983, //References
+                'x__up' => 28199,
+                'x__right' => $parent_ors['i__id'],
             ));
 
-            if(count($answered)){
+            if(count($does_expire) && intval($does_expire[0]['x__message'])>0){
 
-                //Display count down timer:
-                echo '<script>
+                //Fetch parent completion time:
+                $answered = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //Discoveries
+                    'x__left' => $parent_ors['i__id'],
+                    'x__source' => $x__source,
+                ));
+
+                if(count($answered)){
+
+                    //Display count down timer:
+                    echo '<script>
 // Set the date were counting down to
 var countDownDate = new Date('.( ( strtotime($answered[0]['x__time'] ) + $does_expire[0]['x__message'] ) * 1000 ).' );
 
@@ -124,16 +132,18 @@ if($(\'#timexpirycount\').length){
 
 </script>';
 
-                break; //Cannot have multiple countdowns
+                    break; //Cannot have multiple countdowns
 
-            } else {
+                } else {
 
-                //Already expired:
-                js_redirect('/'.$top_i__id.'/'.$parent_ors['i__id'], 0);
+                    //Already expired:
+                    js_redirect('/'.$top_i__id.'/'.$parent_ors['i__id'], 0);
 
+                }
             }
         }
     }
+
 }
 
 
