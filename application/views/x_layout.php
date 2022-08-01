@@ -58,7 +58,22 @@ if($top_i__id && $x__source){
 
     //Show navigation:
     if($x__source==1 && $top_i__id!=$i_focus['i__id']){
-        echo view_breadcrumb($top_i__id, $i_focus['i__id']);
+
+        $find_previous = $this->X_model->find_previous($x__source, $top_i__id, $i_focus['i__id']);
+        if(count($find_previous)){
+
+            $nav_list = array();
+            foreach($find_previous as $parent_i){
+                array_push($nav_list, '<li class="breadcrumb-item"><a href="/'.$top_i__id.'/'.$parent_i['i__id'].'"><span class="icon-block-xs">'.view_cover(12273,$parent_i['i__cover']).'</span>'.$parent_i['i__title'].'</a></li>');
+            }
+
+            echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
+                . join('', array_reverse($nav_list))
+                .'</ol></nav>';
+
+
+        }
+
     }
 
     //We check expire time if not completed?

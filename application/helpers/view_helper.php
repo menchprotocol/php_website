@@ -2044,24 +2044,6 @@ function view_social(){
 }
 
 
-function view_breadcrumb($top_i__id, $next_parent){
-
-    $CI =& get_instance();
-    $nav_list = array();
-    foreach($CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-        'x__right' => $next_parent,
-    ), array('x__left'), 0) as $parent_i){
-        array_push($nav_list, '<li class="breadcrumb-item"><a href="/'.$top_i__id.'/'.$parent_i['i__id'].'"><span class="icon-block-xs">'.view_cover(12273,$parent_i['i__cover']).'</span>'.$parent_i['i__title'].'</a></li>');
-        break;
-    }
-
-    return '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
-    . join('', array_reverse($nav_list))
-    .'</ol></nav>';
-
-}
 
 function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad = false){
 
