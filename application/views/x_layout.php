@@ -68,7 +68,7 @@ if($top_i__id && $x__source){
             }
 
             echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
-                . join('', array_reverse($nav_list))
+                . join('', $nav_list)
                 .'</ol></nav>';
 
 
