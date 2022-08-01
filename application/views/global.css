@@ -2239,6 +2239,15 @@ textarea {
 
 .vid-padding { padding:160px 0; }
 
+
+.breadcrumb-item+.breadcrumb-item::before {
+    display: inline-block;
+    color: #6c757d;
+    content: ">";
+}
+
+
+
 @media (max-width:767px) {
 
 
