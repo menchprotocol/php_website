@@ -2244,8 +2244,11 @@ textarea {
     display: inline-block;
     color: #6c757d;
     content: ">";
+    padding-right: 0;
 }
-
+.breadcrumb-item {
+    margin: 3px 0;
+}
 
 
 @media (max-width:767px) {
