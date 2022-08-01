@@ -52,6 +52,9 @@ $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n_
 $is_discovarable = true;
 $i_stats = i_stats($i_focus['i__metadata']);
 
+if(count($x_completes)){
+    $_GET['open'] = true;
+}
 
 //Check for time limits?
 if($top_i__id && $x__source){
