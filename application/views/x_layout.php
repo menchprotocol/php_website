@@ -310,7 +310,7 @@ if($top_i__id) {
             )))) {
 
                 array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i_focus, array(
-                    'x__type' => 4559, //DISCOVERY MESSAGES
+                    'x__type' => 4559, //READ STATEMENT
                     'x__source' => $x__source,
                 )));
 

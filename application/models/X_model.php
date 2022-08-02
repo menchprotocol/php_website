@@ -1528,10 +1528,14 @@ class X_model extends CI_Model
         if(isset($search_fields['x__metadata'])){
             unset($search_fields['x__metadata']);
         }
+        if(isset($search_fields['x__reference'])){
+            unset($search_fields['x__reference']);
+        }
 
         //Log completion transaction if not duplicate:
         $check_duplicate = $this->X_model->fetch($search_fields);
-        if(in_array($add_fields['x__type'], $this->config->item('n___27005')) && isset($check_duplicate[0]) && is_array($check_duplicate[0])){
+        //in_array($add_fields['x__type'], $this->config->item('n___27005')) &&
+        if(isset($check_duplicate[0]['x__id'])){
 
             $new_x = $check_duplicate[0];
 
@@ -1539,63 +1543,63 @@ class X_model extends CI_Model
 
             $new_x = $this->X_model->create($add_fields);
 
-        }
+            //Fetch Source ID:
+            $watchers = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 10573, //WATCHERS
+                'x__right' => $i['i__id'],
+                'x__up > 0' => null,
+            ), array(), 0);
+            if(count($watchers)){
 
-        //Fetch Source ID:
-        $watchers = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 10573, //WATCHERS
-            'x__right' => $i['i__id'],
-            'x__up > 0' => null,
-        ), array(), 0);
-        if(count($watchers)){
+                $es_discoverer = $this->E_model->fetch(array(
+                    'e__id' => $add_fields['x__source'],
+                ));
+                if(count($es_discoverer)){
 
-            $es_discoverer = $this->E_model->fetch(array(
-                'e__id' => $add_fields['x__source'],
-            ));
-            if(count($es_discoverer)){
+                    //Fetch Discoverer contact:
+                    $u_list_phone = '';
+                    $u_clean_phone = '';
+                    foreach($this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__down' => $add_fields['x__source'],
+                        'x__up' => 4783, //Phone
+                    )) as $x_progress){
+                        $u_clean_phone = clean_phone($u_clean_phone);
+                        $u_list_phone .= 'Phone:'."\n".$u_clean_phone."\n\n";
+                    }
 
-                //Fetch Discoverer contact:
-                $u_list_phone = '';
-                $u_clean_phone = '';
-                foreach($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__down' => $add_fields['x__source'],
-                    'x__up' => 4783, //Phone
-                )) as $x_progress){
-                    $u_clean_phone = clean_phone($u_clean_phone);
-                    $u_list_phone .= 'Phone:'."\n".$u_clean_phone."\n\n";
-                }
-
-                //Fetch Full Legal Name:
-                $u_list_name = '';
-                foreach($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
-                    'x__left' => 15736, //What's your Full Legal Name that Matches your ID
-                    'x__source' => $add_fields['x__source'],
-                )) as $x_progress){
-                    $u_list_name .= 'Full Name:'."\n".$x_progress['x__message']."\n\n";
-                }
+                    //Fetch Full Legal Name:
+                    $u_list_name = '';
+                    foreach($this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                        'x__left' => 15736, //What's your Full Legal Name that Matches your ID
+                        'x__source' => $add_fields['x__source'],
+                    )) as $x_progress){
+                        $u_list_name .= 'Full Name:'."\n".$x_progress['x__message']."\n\n";
+                    }
 
 
 
-                //Notify Idea Watchers
-                $sent_watchers = array();
-                foreach($watchers as $watcher){
-                    if(!in_array(intval($watcher['x__up']), $sent_watchers)){
-                        array_push($sent_watchers, intval($watcher['x__up']));
-                        $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' '.( $u_clean_phone ? $u_clean_phone.' ' : '' ).'Played: '.$i['i__title'],
-                            //Message Body:
-                            $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
-                            ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
-                            $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
-                            $u_list_name.
-                            $u_list_phone
-                        );
+                    //Notify Idea Watchers
+                    $sent_watchers = array();
+                    foreach($watchers as $watcher){
+                        if(!in_array(intval($watcher['x__up']), $sent_watchers)){
+                            array_push($sent_watchers, intval($watcher['x__up']));
+                            $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' '.( $u_clean_phone ? $u_clean_phone.' ' : '' ).'Played: '.$i['i__title'],
+                                //Message Body:
+                                $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
+                                ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
+                                $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
+                                $u_list_name.
+                                $u_list_phone
+                            );
+                        }
                     }
                 }
+
             }
 
         }
