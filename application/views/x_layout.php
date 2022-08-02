@@ -256,16 +256,24 @@ echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important;
 //echo view_i(20417, $top_i__id, null, $i_focus);
 
 //MESSAGES
+$messages_string = false;
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $i_focus['i__id'],
 ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
-    echo $this->X_model->message_view(
+    $messages_string .= $this->X_model->message_view(
         $message_x['x__message'],
         true,
         $member_e
     );
+}
+
+if($messages_string){
+    echo $messages_string;
+} elseif(!$messages_string && in_array($i_focus['i__type'], $this->config->item('n___12330'))) {
+    //We can auto complete:
+    echo '<script> $(document).ready(function () { go_next() }); </script>';
 }
 
 
