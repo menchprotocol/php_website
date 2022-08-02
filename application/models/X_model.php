@@ -1225,7 +1225,7 @@ class X_model extends CI_Model
             )))){
 
             //Add member to Domain Member Groups if nto already there:
-            $domain_member_group = intval(substr(get_domain_setting(30095, $e__id), 1));
+            $domain_member_group = intval(substr(get_domain_setting(30095), 1));
             if($domain_member_group && !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links

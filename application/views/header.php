@@ -314,7 +314,7 @@ if(!$basic_header_footer){
 
     if(superpower_unlocked(28651)){
         $e___28646 = $this->config->item('e___28646');
-        $domain_list = intval(substr(get_domain_setting(28646, 1)));
+        $domain_list = intval(substr(get_domain_setting(28646), 1));
         $show_side_menu = $domain_list;
     }
 
