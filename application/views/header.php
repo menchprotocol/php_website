@@ -332,12 +332,12 @@ if(!$basic_header_footer){
                     if($member_e && $superpower_28651) {
 
                         //Load Left Menu
-                        echo '<a href="javascript:void(0);" onclick="toggle_left_menu()" style="margin-left: 0;" class="icon-block menu_click">'.view_cover(12274,$member_e['e__cover']).'</a>';
+                        echo '<a href="javascript:void(0);" onclick="toggle_left_menu()" data-toggle="tooltip" data-placement="right" title="'.$member_e['e__title'].'" style="margin-left: 0;" class="icon-block menu_click">'.view_cover(12274,$member_e['e__cover']).'</a>';
 
                     } elseif($member_e) {
 
                         //Load Left Menu to Home
-                        echo '<a href="/@'.$member_e['e__id'].'" style="margin-left: 0;" class="icon-block menu_click">'.view_cover(12274,$member_e['e__cover']).'</a>';
+                        echo '<a href="/@'.$member_e['e__id'].'" data-toggle="tooltip" data-placement="right" title="'.$member_e['e__title'].'" style="margin-left: 0;" class="icon-block menu_click">'.view_cover(12274,$member_e['e__cover']).'</a>';
 
                     } else {
 
