@@ -2251,6 +2251,10 @@ textarea {
     color:#000;
 }
 
+.breadcrumb {
+    border-radius: 0;
+}
+
 .breadcrumb-item a {
     color:#000000 !important;
 }
