@@ -1224,6 +1224,22 @@ class X_model extends CI_Model
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
 
+            //Add member to Domain Member Groups if nto already there:
+            $domain_member_group = intval(substr(get_domain_setting(30095, $e__id), 1));
+            if($domain_member_group && !count($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
+                    'x__up' => $domain_member_group,
+                    'x__down' => $e__id,
+                )))){
+                $this->X_model->create(array(
+                    'x__type' => e_x__type(),
+                    'x__up' => $domain_member_group,
+                    'x__down' => $e__id,
+                    'x__source' => $e__id, //Belongs to this Member
+                ));
+            }
+
             //Not added to their discoveries so far, let's go ahead and add it:
             $i_rank = 1;
             $home = $this->X_model->create(array(
@@ -1236,6 +1252,8 @@ class X_model extends CI_Model
 
             //Can we auto complete since they have already read this idea?
             if(in_array($is[0]['i__type'], $this->config->item('n___12330'))){
+
+                //TODO Alwats auto complete for starting ideas
 
                 //YES, Mark as complete:
                 $this->X_model->mark_complete($is[0]['i__id'], $is[0], array(
