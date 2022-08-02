@@ -93,8 +93,8 @@ class E extends CI_Controller
                     foreach(view_coins_e(6255, $member_e['e__id'], 1, false, 10) as $item){
                         $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
                     }
+                    $sidebar_ui .= '<hr />';
                 }
-                $sidebar_ui .= '<hr />';
 
             } elseif($x__type==12896){
 
@@ -111,8 +111,8 @@ class E extends CI_Controller
                     foreach($i_notes_query as $item) {
                         $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
                     }
+                    $sidebar_ui .= '<hr />';
                 }
-                $sidebar_ui .= '<hr />';
 
             } elseif($x__type==28646){
 
