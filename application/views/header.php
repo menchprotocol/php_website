@@ -310,9 +310,9 @@ if(strlen($live_chat_page_id)>10){
 
 if(!$basic_header_footer){
 
+    $superpower_28651 = superpower_active(28651, true);
     $show_side_menu = false;
-
-    if(superpower_unlocked(28651)){
+    if($superpower_28651){
         $e___28646 = $this->config->item('e___28646');
         $domain_list = intval(substr(get_domain_setting(28646), 1));
         $show_side_menu = $domain_list;
@@ -329,10 +329,15 @@ if(!$basic_header_footer){
                     <?php
 
                     echo '<td class="block-x user_nav_box">';
-                    if($member_e) {
+                    if($member_e && $superpower_28651) {
 
                         //Load Left Menu
-                        echo '<a href="javascript:void(0);" onclick="toggle_left_menu()" style="margin-left: 0;" class="icon-block menu_click">'.$e___11035[28646]['m__cover'].'</a>';
+                        echo '<a href="javascript:void(0);" onclick="toggle_left_menu()" style="margin-left: 0;" class="icon-block menu_click">'.view_cover(12274,$member_e['e__cover']).'</a>';
+
+                    } elseif($member_e) {
+
+                        //Load Left Menu to Home
+                        echo '<a href="/@'.$member_e['e__id'].'" style="margin-left: 0;" class="icon-block menu_click">'.view_cover(12274,$member_e['e__cover']).'</a>';
 
                     } else {
 
