@@ -49,6 +49,7 @@ class E extends CI_Controller
 
         //Start building the sidebar
         $sidebar_ui = '';
+        $sidebar_ui .= '<a href="/@'.$member_e['e__id'].'" class="css__title"><span class="icon-block-xs">'.$member_e['e__cover'].'</span>'.$member_e['e__title'].'</a><hr />';
 
         foreach($this->config->item('e___28658') as $x__type => $m) {
 
