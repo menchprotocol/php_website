@@ -81,6 +81,7 @@ class E extends CI_Controller
                         $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
                         $sidebar_ui .= '<a href="/x/x_next/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>['.$completion_rate['completion_percentage'].'%] '.$item['i__title'].'</a>';
                     }
+                    $sidebar_ui .= '<hr />';
                 }
 
             } elseif($x__type==6255){
@@ -93,6 +94,7 @@ class E extends CI_Controller
                         $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
                     }
                 }
+                $sidebar_ui .= '<hr />';
 
             } elseif($x__type==12896){
 
@@ -110,6 +112,7 @@ class E extends CI_Controller
                         $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
                     }
                 }
+                $sidebar_ui .= '<hr />';
 
             } elseif($x__type==28646){
 
