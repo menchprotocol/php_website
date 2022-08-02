@@ -2251,6 +2251,10 @@ textarea {
     color:#000;
 }
 
+.breadcrumb-item a {
+    color:#000000 !important;
+}
+
 
 @media (max-width:767px) {
 
