@@ -242,7 +242,9 @@ if($top_i__id){
 }
 
 
-
+if($top_completed || $i_focus['i__type']==6684){
+    echo '<script> $(document).ready(function () { $(".go-next-group").addClass(\'hidden\'); }); </script>';
+}
 
 echo '<div class="light-bg large-frame '.( $show_bg ? ' with-background ' : '' ).'">';
 
@@ -583,7 +585,7 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1">';
                 $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
 
-                $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="$"><span class="nav-title css__title">Pay '.$total_dues[0]['x__message'].'</span>';
+                $control_btn .= '<input type="submit" class="round-btn adj-btn go-next-group" name="pay_now" id="pay_now" value="$"><span class="nav-title css__title">Pay '.$total_dues[0]['x__message'].'</span>';
                 //$control_btn .= '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="document.getElementById(\'paypal_form\').submit();">'.$e___4737[$i_focus['i__type']]['m__cover'].'</a><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].'</span>';
 
                 $control_btn .= '</form>';
@@ -591,15 +593,15 @@ if(!$top_i__id){
             } else {
 
                 //NEXT
-                $control_btn = '<a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a>';
-                $control_btn .= '<span class="nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'<div class="extra_progress hideIfEmpty"></div></span>';
+                $control_btn = '<a class="go-next-group controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a>';
+                $control_btn .= '<span class="go-next-group nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'<div class="extra_progress hideIfEmpty"></div></span>';
 
             }
 
         } elseif($e__id==26280){
 
             //PREVIOUS
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="history.back()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn go-next-group" href="javascript:void(0);" onclick="history.back()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
         }
 
