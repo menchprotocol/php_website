@@ -1309,6 +1309,21 @@ class X extends CI_Controller
 
         } elseif($_POST['coin__type']==12274){
 
+            //Reset member session data if this data belongs to the logged-in member:
+            if ($_POST['coin__id'] == $member_e['e__id']) {
+
+                $es = $this->E_model->fetch(array(
+                    'e__id' => intval($_POST['coin__id']),
+                ));
+                if(count($es)){
+                    //Re-activate Session with new data:
+                    $es[0]['e__title'] = trim($_POST['coin__title']);
+                    $es[0]['e__cover'] = trim($_POST['coin__cover']);
+                    $this->E_model->activate_session($es[0], true);
+                }
+
+            }
+
             //SOURCE
             $this->E_model->update($_POST['coin__id'], array(
                 'e__title' => trim($_POST['coin__title']),
