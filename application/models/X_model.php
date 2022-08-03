@@ -1528,14 +1528,10 @@ class X_model extends CI_Model
         if(isset($search_fields['x__metadata'])){
             unset($search_fields['x__metadata']);
         }
-        if(isset($search_fields['x__reference'])){
-            unset($search_fields['x__reference']);
-        }
 
         //Log completion transaction if not duplicate:
         $check_duplicate = $this->X_model->fetch($search_fields);
-        //in_array($add_fields['x__type'], $this->config->item('n___27005')) &&
-        if(isset($check_duplicate[0]['x__id'])){
+        if(in_array($add_fields['x__type'], $this->config->item('n___27005')) && isset($check_duplicate[0]['x__id'])){
 
             $new_x = $check_duplicate[0];
 
@@ -1543,6 +1539,9 @@ class X_model extends CI_Model
 
             $new_x = $this->X_model->create($add_fields);
 
+        }
+
+        if(!isset($check_duplicate[0]['x__id'])){
             //Fetch Source ID:
             $watchers = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1601,7 +1600,6 @@ class X_model extends CI_Model
                 }
 
             }
-
         }
 
 
