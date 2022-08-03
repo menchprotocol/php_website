@@ -19,7 +19,7 @@ if(isset($_GET['i__id'])){
     echo '<h1 style="padding-top: 55px !important;"><span>' . $is[0]['i__title'] . '</span></h1>';
 
     //MESSAGES
-    echo '<div class="center-frame">';
+    echo '<div class="center-frame hide-subline">';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages

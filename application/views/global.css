@@ -1907,15 +1907,18 @@ i, .btn .show-max {
     max-height: 69%;
     top:50px;
 }
-/*
-.coin-12274 .cover-content{
-    top: 16px;
+.hide-subline .subtle-line {
+    display: none;
 }
-.coin-12274 .coin_coins{
-    margin-top: -45px;
-    margin-bottom: 45px;
-}
-*/
+    /*
+    .coin-12274 .cover-content{
+        top: 16px;
+    }
+    .coin-12274 .coin_coins{
+        margin-top: -45px;
+        margin-bottom: 45px;
+    }
+    */
 .mini-coin .cover-content {
     top:24px;
 }
