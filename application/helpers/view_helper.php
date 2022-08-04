@@ -1343,7 +1343,7 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
 
     //LIST TYPE
     if($x__type==13980){
-        $body .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
+        $body .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');$(\'.go-next-group\').removeClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
     }
 
     //Build Body UI:
