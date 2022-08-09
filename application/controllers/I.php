@@ -206,11 +206,11 @@ class I extends CI_Controller {
                     //Add source link:
                     $completed++;
                     $this->X_model->create(array(
-                        'x__type' => e_x__type(),
                         'x__source' => ($member_e ? $member_e['e__id'] : $x['x__source']),
                         'x__up' => $append_e__id,
                         'x__down' => $x['x__source'],
                         'x__message' => $x['x__message'],
+                        'x__type' => e_x__type($x['x__message']),
                     ));
                 }
             }
