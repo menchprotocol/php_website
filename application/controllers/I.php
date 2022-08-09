@@ -195,10 +195,11 @@ class I extends CI_Controller {
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
                 'x__left' => $i__id,
-            )) as $x){
+            ), array(), 0) as $x){
                 if(!count($this->X_model->fetch(array(
                     'x__up' => $append_e__id,
                     'x__down' => $x['x__source'],
+                    'x__message' => $x['x__message'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
@@ -209,6 +210,7 @@ class I extends CI_Controller {
                         'x__source' => ($member_e ? $member_e['e__id'] : $x['x__source']),
                         'x__up' => $append_e__id,
                         'x__down' => $x['x__source'],
+                        'x__message' => $x['x__message'],
                     ));
                 }
             }
