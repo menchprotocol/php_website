@@ -32,7 +32,7 @@ class I extends CI_Controller {
     }
 
 
-    function i_clone(){
+    function i_copy(){
 
         //Auth member and check required variables:
         $member_e = superpower_unlocked(10939);
@@ -64,7 +64,7 @@ class I extends CI_Controller {
 
         //Create:
         $i_new = $this->I_model->create(array(
-            'i__title' => $fetch_o[0]['i__title']." Clone",
+            'i__title' => $fetch_o[0]['i__title']." Copy",
             'i__type' => $fetch_o[0]['i__type'],
             'i__cover' => $fetch_o[0]['i__cover'],
         ), $member_e['e__id'], !count($this->X_model->fetch(array(

@@ -482,9 +482,9 @@ function toggle_pills(x__type){
 
 
 
-function i_clone(i__id){
+function i_copy(i__id){
     //Go ahead and delete:
-    $.post("/i/i_clone", {
+    $.post("/i/i_copy", {
         i__id:i__id
     }, function (data) {
         if(data.status){
@@ -495,9 +495,9 @@ function i_clone(i__id){
     });
 }
 
-function e_clone(e__id){
+function e_copy(e__id){
     //Go ahead and delete:
-    $.post("/e/e_clone", {
+    $.post("/e/e_copy", {
         e__id:e__id
     }, function (data) {
         if(data.status){

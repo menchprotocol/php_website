@@ -535,7 +535,7 @@ class E extends CI_Controller
     }
 
 
-    function e_clone(){
+    function e_copy(){
 
         //Auth member and check required variables:
         $member_e = superpower_unlocked(10939);
@@ -567,7 +567,7 @@ class E extends CI_Controller
 
 
         //Create:
-        $added_e = $this->E_model->verify_create($fetch_o[0]['e__title']." Clone", $member_e['e__id'], $fetch_o[0]['e__cover']);
+        $added_e = $this->E_model->verify_create($fetch_o[0]['e__title']." Copy", $member_e['e__id'], $fetch_o[0]['e__cover']);
         if(!$added_e['status']){
             //We had an error, return it:
             return view_json($added_e);
