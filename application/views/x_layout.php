@@ -242,14 +242,11 @@ if($top_i__id){
 }
 
 
-if($top_completed || $i_focus['i__type']==6684){
-    echo '<script> $(document).ready(function () { $(".go-next-group").addClass(\'hidden\'); }); </script>';
-}
-
 echo '<div class="light-bg large-frame '.( $show_bg ? ' with-background ' : '' ).'">';
 
 //Show Progress:
-if($top_i__id > 0 && $i_completion_rate['completion_percentage']>=100){
+if($top_completed){
+    echo '<script> $(document).ready(function () { $(".go-next-group").addClass(\'hidden\'); }); </script>';
     echo '<div class="msg alert alert-success" role="alert"><span class="icon-block">✅</span>100% Completed: You Are Now Reviewing Your Responses</div>';
 }
 
@@ -273,8 +270,8 @@ foreach($this->X_model->fetch(array(
 
 if($messages_string){
     echo $messages_string;
-} elseif(!$messages_string && in_array($i_focus['i__type'], $this->config->item('n___12330'))) {
-    //We can auto complete:
+} elseif(!$messages_string && !count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12330'))) {
+    //Auto complete:
     echo '<script> $(document).ready(function () { go_next() }); </script>';
 }
 
@@ -680,7 +677,7 @@ if($top_i__id) {
 }
 
 
-if($top_i__id > 0 && $i_completion_rate['completion_percentage']<100){
+if($top_i__id > 0 && !$top_completed){
     echo '<p style="padding:10px;">'.$i_completion_rate['completion_percentage'].'% Completed</p>';
 }
 
