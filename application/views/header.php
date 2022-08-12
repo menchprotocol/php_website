@@ -416,6 +416,11 @@ if(!$basic_header_footer){
                             //APP
                             $href = 'href="/-'.$x__type.( $x__type==4269 ? $login_url_path : '' ).'"';
 
+                        } elseif(substr($m['m__message'], 0, 1)=='/'){
+
+                            //Direct Link
+                            $href = 'href="'.$m['m__message'].'"';
+
                         } else {
 
                             continue;
