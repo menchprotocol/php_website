@@ -669,7 +669,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
 
         $CI =& get_instance();
         $access_blocked = $CI->X_model->create(array(
-            'x__type' => 29737, //Access Blocked
+            'x__type' => ( $x__source>0 ? 29737 : 30341 ), //Access Blocked
             'x__source' => $x__source,
             'x__left' => $i__id,
             'x__up' => $x__up,
