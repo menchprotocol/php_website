@@ -244,6 +244,7 @@ gtag(\'config\', \''.$google_analytics_code.'\');';
             echo '}';
 
             echo ' .halfbg, .msg>span, .fixed-top { background: rgba(0, 0, 0, 0.5) !important; } ';
+            echo ' .msg>span { display: block; padding: 3px 0; } ';
             //echo ' .halfbg, .msg>span, .msg { line-height: 150% !important; } ';
             echo ' .msg>span u, .msg>span a { line-height: 100% !important; padding:0 !important; } ';
 
