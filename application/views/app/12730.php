@@ -50,7 +50,7 @@ if($search_for_set){
 
     $matching_results = $this->E_model->fetch(array(
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'LOWER(e__title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
+        'e__title LIKE \'%'.$_GET['search_for'].'%\'' => null,
     ));
 
     //List the matching search:
