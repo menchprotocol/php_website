@@ -1153,7 +1153,7 @@ a.headline {
     padding-top: 2px;
 }
 .text-logo{
-    font-size: 1.75em;
+    font-size: 1.25em;
     display: inline-block;
     padding-top: 0;
     padding-left: 0;
@@ -1162,7 +1162,7 @@ a.headline {
     height: 42px;
     overflow: hidden;
     line-height: 151%;
-    margin-bottom: -8px;
+    margin-bottom: -18px;
 }
 .x-list {
     padding:15px 0;
