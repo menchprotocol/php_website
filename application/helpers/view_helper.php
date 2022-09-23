@@ -1671,7 +1671,7 @@ function view_info_box(){
             foreach($CI->config->item('e___'.$e__id) as $m) {
                 $counter++;
                 $title_parts = explode(' ', $m['m__title'], 2);
-                $ui .= '<div class="col-12 col-sm-4 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
+                $ui .= '<div class="col-12 col-sm-6 col-md-4 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
                 $ui .= '<div class="info_box">';
                 $ui .= '<div class="info_box_cover">'.$m['m__cover'].'</div>';
                 $ui .= '<div class="info_box_title css__title">'.$title_parts[0].'<br />'.$title_parts[1].'</div>';
