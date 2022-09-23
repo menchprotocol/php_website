@@ -2011,7 +2011,7 @@ i, .btn .show-max {
     padding: 0 !important;
 }
 .coin_cover .large_cover i{
-    font-size:13em !important;
+    font-size:5em !important;
 }
 .coin_cover .large_title{
     font-size: 2.1em;
@@ -2021,7 +2021,7 @@ i, .btn .show-max {
     min-height: 25px;
 }
 .coin_cover div.css__title{
-    padding: 5px 0 34px;
+    padding: 0;
 }
 .mini-coin{
     margin: -8px 0 !important;
@@ -2164,7 +2164,7 @@ i, .btn .show-max {
 }
 .list-coins .coin_cover {
     text-align: center;
-    padding: 0 8px !important;
+    padding: 0 8px 34px !important;
 }
 .the_counter{
     margin-top: -52px;
