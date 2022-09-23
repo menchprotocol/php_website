@@ -1656,31 +1656,38 @@ function view_info_box(){
     $e__id = intval(get_domain_setting(14903));
     $ui = '';
 
-    if($e__id && isset($e___11035[$e__id])){
+    if($e__id){
 
-        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-        $max_limit = view_memory(6404,14903);
-        $ui .= '<h2 class="info_box_header css__title">' . $e___11035[$e__id]['m__title'] . '</h2>';
-        $ui .= '<div class="row justify-content">';
-        $counter = 0;
-        foreach($CI->config->item('e___'.$e__id) as $m) {
-            $counter++;
-            $title_parts = explode(' ', $m['m__title'], 2);
-            $ui .= '<div class="col-6 col-md-4 col-xl-2 col-lg-3 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
-            $ui .= '<div class="info_box">';
-            $ui .= '<div class="info_box_cover">'.$m['m__cover'].'</div>';
-            $ui .= '<div class="info_box_title css__title">'.$title_parts[0].'<br />'.$title_parts[1].'</div>';
-            $ui .= '<div class="info_box_message">'.$m['m__message'].'</div>';
+        $es = $CI->E_model->fetch(array(
+            'e__id' => $e__id,
+        ));
+
+        if(count($es)){
+
+            $max_limit = view_memory(6404,14903);
+            $ui .= '<h2 class="info_box_header css__title">' . $es[0]['e__title'] . '</h2>';
+            $ui .= '<div class="row justify-content">';
+            $counter = 0;
+            foreach($CI->config->item('e___'.$e__id) as $m) {
+                $counter++;
+                $title_parts = explode(' ', $m['m__title'], 2);
+                $ui .= '<div class="col-6 col-md-4 col-xl-2 col-lg-3 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
+                $ui .= '<div class="info_box">';
+                $ui .= '<div class="info_box_cover">'.$m['m__cover'].'</div>';
+                $ui .= '<div class="info_box_title css__title">'.$title_parts[0].'<br />'.$title_parts[1].'</div>';
+                $ui .= '<div class="info_box_message">'.$m['m__message'].'</div>';
+                $ui .= '</div>';
+                $ui .= '</div>';
+            }
+
+            //Show option to expand:
+            if($counter > $max_limit){
+                $ui .= '<div class="col-6 info_box_message"><a href="javascript:void(0);" onclick="$(\'.extra_info_box\').toggleClass(\'hidden\');">See More...</a></div>';
+            }
+
             $ui .= '</div>';
-            $ui .= '</div>';
-        }
 
-        //Show option to expand:
-        if($counter > $max_limit){
-            $ui .= '<div class="col-6 info_box_message"><a href="javascript:void(0);" onclick="$(\'.extra_info_box\').toggleClass(\'hidden\');">See More...</a></div>';
         }
-
-        $ui .= '</div>';
     }
 
 
