@@ -640,7 +640,7 @@ function view_coins(){
     $count = 0;
     foreach($CI->config->item('e___14874') as $e__id => $m) {
         $count++;
-        $ui .= '<div class="coin_cover no-padding col-xl-2 col-lg-3 col-md-4 col-sm-8 col-10">';
+        $ui .= '<div class="coin_cover no-padding col-12 col-sm-6 col-md-4">';
         $ui .= '<div class="large_cover">'.$m['m__cover'].'</div>';
         $ui .= '<div class="css__title large_title zq'.$e__id.' "><b class="coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b></div>';
         $ui .= '<div class="css__title large_title zq'.$e__id.'">'.$m['m__title'].'</div>';
