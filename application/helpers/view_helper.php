@@ -1666,7 +1666,7 @@ function view_info_box(){
 
             $max_limit = view_memory(6404,14903);
             $ui .= '<h2 class="info_box_header css__title">' . $es[0]['e__title'] . '</h2>';
-            $ui .= '<div class="row justify-content">';
+            $ui .= '<div class="row justify-content" style="margin-bottom: 55px;">';
             $counter = 0;
             foreach($CI->config->item('e___'.$e__id) as $m) {
                 $counter++;
