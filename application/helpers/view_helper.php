@@ -1656,7 +1656,7 @@ function view_info_box(){
     $e__id = intval(get_domain_setting(14903));
     $ui = '';
 
-    if($e__id){
+    if($e__id && isset($e___11035[$e__id])){
 
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
         $max_limit = view_memory(6404,14903);
