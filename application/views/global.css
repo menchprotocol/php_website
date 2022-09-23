@@ -1764,10 +1764,9 @@ i, .btn .show-max {
 
 .headline{
     padding: 0;
-    font-size: 1.4em;
+    font-size: 1.25em;
     text-align: left;
     display: block;
-    margin-top: 21px;
 }
 
 .headline i{
@@ -2003,7 +2002,7 @@ i, .btn .show-max {
     font-weight: bold !important;
 }
 .headline {
-    padding: 8px 0;
+    padding: 5px 0;
 }
 .coin_cover{
     position: relative;
