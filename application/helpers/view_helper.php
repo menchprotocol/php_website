@@ -647,7 +647,7 @@ function view_coins(){
         $ui .= '</div>';
     }
     $ui .= '</div>';
-    $ui .= '<div class="row justify-content list-coins"><span style="min-width: 89px; min-height: 20px; text-align: right; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;Transactions <a href="/18032" data-toggle="tooltip" data-placement="top" title="Learn more about the Mench Ledger"><i class="fas fa-info-circle" style="font-size: 1em !important; margin-left: 3px;"></i></a></div>';
+    $ui .= '<div class="row justify-content list-coins"><span style="min-width: 89px; min-height: 20px; text-align: right; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;Transactions <a href="/18032" data-toggle="tooltip" data-placement="top" title="Learn more about our open-source Ledger that holds all data"><i class="fas fa-info-circle" style="font-size: 1em !important; margin-left: 3px;"></i></a></div>';
 
     return $ui;
 }
@@ -1671,7 +1671,7 @@ function view_info_box(){
             foreach($CI->config->item('e___'.$e__id) as $m) {
                 $counter++;
                 $title_parts = explode(' ', $m['m__title'], 2);
-                $ui .= '<div class="col-6 col-md-4 col-xl-2 col-lg-3 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
+                $ui .= '<div class="col-12 col-sm-4 '.( $counter>$max_limit ? ' extra_info_box hidden ' : '' ).'">';
                 $ui .= '<div class="info_box">';
                 $ui .= '<div class="info_box_cover">'.$m['m__cover'].'</div>';
                 $ui .= '<div class="info_box_title css__title">'.$title_parts[0].'<br />'.$title_parts[1].'</div>';
