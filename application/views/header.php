@@ -356,6 +356,7 @@ if(!$basic_header_footer){
 
                     echo $echo_left_nav;
 
+                    echo '<td>';
                     echo '<div class="max_width">';
 
                     echo '<div class="left_nav top_nav" style="text-align: '.( $echo_left_nav ? 'center'  : 'left' ).';">';
