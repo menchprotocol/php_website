@@ -161,7 +161,7 @@
             text-align: center;
         }
         .main_title{
-            font-size: 2.9em;
+            font-size: 2.4em;
             color: #FFF !important;
             padding: 34px 0 0;
         }
