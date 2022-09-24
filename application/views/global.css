@@ -110,12 +110,12 @@ body {
 
 table td { border: none !important; }
 
-.texttype__lg { font-size:4.20em; }
+.texttype__lg { font-size:3.3em; }
 
 h1 {
     padding:34px 8px 55px !important;
     margin:0;
-    font-size:4.20em;
+    font-size:3.3em;
     text-align: center;
 }
 
