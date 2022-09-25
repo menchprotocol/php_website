@@ -2510,10 +2510,12 @@ textarea {
     border-radius: 50%;
     width: 89px;
     height: 89px;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 .info-head{
     display: block;
-    margin:34px 0 13px;
+    margin:10px 0;
     text-align: center;
 }
 .info_box_title{
