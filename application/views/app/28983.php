@@ -104,16 +104,7 @@ $social_nav = '<div class="center-icons">
             -webkit-animation: fa-spin-reverse 20s infinite linear;
             animation: fa-spin-reverse 20s infinite linear;
         }
-        .info_box_cover{
-            font-size:4em;
-            padding: 34px 0 3px;
-            text-align: center;
-        }
-        .info_box_cover img{
-            border-radius: 0;
-            width: 55px;
-            height: 55px;
-        }
+
         .main_title{
             font-size: 2.4em;
             color: #000 !important;
