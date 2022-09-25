@@ -170,7 +170,8 @@ if($domain_info_boxes){
         }
 
         if($info_item){
-            echo '<div class="row justify-content maxwidth" style="margin-bottom: 55px;"><h2 class="info-head">'.$info_box['e__title'].'</h2>'.$info_item.'</div>';
+            echo '<h2 class="info-head">'.$info_box['e__title'].'</h2>';
+            echo '<div class="row justify-content maxwidth" style="margin-bottom: 55px;">'.$info_item.'</div>';
         }
 
     }
