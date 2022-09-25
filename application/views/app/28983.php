@@ -111,6 +111,8 @@ $social_nav = '<div class="center-icons">
         }
         .info_box_cover img{
             border-radius: 0;
+            width: 55px;
+            height: 55px;
         }
         .main_title{
             font-size: 2.4em;
