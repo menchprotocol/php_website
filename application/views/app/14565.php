@@ -158,7 +158,7 @@ if($domain_info_boxes){
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0) as $info_box) {
-            $info_item .= '<div class="col-12 col-sm-6 col-md-4 maxwidth">';
+            $info_item .= '<div class="col-12 col-sm-6 col-md-4">';
             $info_item .= '<div class="info_box">';
             $info_item .= '<div class="info_box_cover">'.view_cover(12274, $info_box['e__cover']).'</div>';
             $info_item .= '<div class="info_box_title css__title">'.$info_box['m__title'].'</div>';
@@ -170,7 +170,7 @@ if($domain_info_boxes){
         }
 
         if($info_item){
-            echo '<div class="row justify-content" style="margin-bottom: 55px;">'.$info_item.'</div>';
+            echo '<div class="row justify-content maxwidth" style="margin-bottom: 55px;">'.$info_item.'</div>';
         }
 
     }
