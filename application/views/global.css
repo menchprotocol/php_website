@@ -2506,7 +2506,7 @@ textarea {
     text-align: center;
     font-size: 3.4em;
 }
-.info_box_cover img{
+.center-cropped{
     border-radius: 50%;
     width: 89px;
     height: 89px;
