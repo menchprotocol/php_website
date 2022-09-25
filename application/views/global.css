@@ -57,10 +57,11 @@ body {
 }
 .media-content, .maxwidth {
     border-radius: 0 !important;
-    max-width: 610px;
+    max-width: 600px;
+    margin: 0 auto;
 }
 .x__message video {
-    max-width: 610px;
+    max-width: 600px;
     border-radius: 0 !important;
 }
 .x__message img, .i_content img, .content-image {
@@ -70,7 +71,7 @@ body {
     display: block;
 }
 .platform-12273 .media-content, .platform-12273 .x__message video {
-    max-width: 610px;
+    max-width: 600px;
 }
 .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
     margin: 0;
@@ -1549,8 +1550,8 @@ i, .btn .show-max {
     margin: 0 0 21px 0 !important;
     width: 100% !important;
     height: auto !important;
-    max-width: 610px;
-    max-height: 610px;
+    max-width: 600px;
+    max-height: 600px;
     border-radius: 0 !important;
 }
 .icon-block-xs img{
@@ -3065,7 +3066,7 @@ textarea {
 }
 
 .container-center{
-    max-width: 610px;
+    max-width: 600px;
     margin: 0 auto;
 }
 
