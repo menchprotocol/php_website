@@ -161,7 +161,7 @@ if($domain_info_boxes){
             $info_item .= '<div class="col-12 col-sm-6 col-md-4">';
             $info_item .= '<div class="info_box">';
             $info_item .= '<div class="info_box_cover">'.view_cover(12274, $info_box['e__cover']).'</div>';
-            $info_item .= '<div class="info_box_title css__title">'.$info_box['m__title'].'</div>';
+            $info_item .= '<div class="info_box_title css__title">'.$info_box['e__title'].'</div>';
             if(strlen($info_box['x__message'])){
                 $info_item .= '<div class="info_box_message">'.$info_box['x__message'].'</div>';
             }
