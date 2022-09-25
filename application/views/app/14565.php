@@ -235,7 +235,10 @@ if($social_id){
 //echo '<p style="font-size: 0.8em; text-align: center;"><a href="https://drive.google.com/file/d/1GiQAtYzmJjmaUPxrrwPBXr44t9FRrWlAPFEe-917__iWcI2xR07U3_N88jyk5K7ophvKRk3AQHhXRs_q/view?usp=sharing" target="_blank"><u>Us Humans Foundation</u></a> | 2017 - '.date('Y').'</p>';
 
 
-echo '<div class="doclear" style="padding-bottom:987px;">&nbsp;</div>';
+if(get_domain_setting(28621)){
+    echo '<div class="doclear" style="padding-bottom:987px;">&nbsp;</div>';
+}
+
 
 
 ?>

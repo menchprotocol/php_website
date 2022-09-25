@@ -97,7 +97,7 @@
             transform: rotateX(30deg) scale(2);
         }
         .info_box_title{
-            font-size: 1.5em;
+            font-size: 1.9em;
             padding:0 0 8px 0;
             font-weight: bold;
         }

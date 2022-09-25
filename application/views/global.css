@@ -203,7 +203,7 @@ li a {
 }
 
 .large-icon{
-    font-size: 1.5em;
+    font-size: 1.9em;
     padding: 2px 4px 0 0;
 }
 
@@ -1648,7 +1648,7 @@ i, .btn .show-max {
 }
 .social-footer li{
     display: inline-block;
-    font-size: 1.5em;
+    font-size: 1.9em;
     margin: 0 10px;
 }
 .texttype__sm {
@@ -2014,7 +2014,7 @@ i, .btn .show-max {
     font-size:5em !important;
 }
 .coin_cover .large_title{
-    font-size: 2.1em;
+    font-size: 2.5em;
     font-weight: bold;
     margin: 21px 0 0;
     display: block;
@@ -2424,7 +2424,7 @@ textarea {
         font-size: 2.4em;
     }
     h2{
-        font-size: 1.5em;
+        font-size: 1.9em;
     }
     .cover-btn{
         font-size: 8em;
@@ -2488,7 +2488,7 @@ textarea {
 .adj-btn{
     border: 0;
     font-weight: 800 !important;
-    font-size: 2.1em;
+    font-size: 2.5em;
     padding: 1px 0 0 0;
 }
 
@@ -2525,7 +2525,7 @@ textarea {
 }
 .info_box_title{
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1.9em;
     padding: 0 21px;
     line-height: 110%;
 }
@@ -3147,7 +3147,7 @@ textarea {
 }
 .center-frame .msg {
     text-align: center;
-    font-size:1.5em;
+    font-size:1.9em;
 }
 .center-frame .msg .icon-block-xxs{
     display:none;
@@ -3213,7 +3213,7 @@ textarea {
 /* LARGE */
 .custom_ui_13491_13494 .msg,
 .custom_ui_13491_13494 .regtext {
-    font-size:1.5em;
+    font-size:1.9em;
 }
 .custom_ui_13491_13494 .msg i,
 .custom_ui_13491_13494 .regtext i {
@@ -3284,7 +3284,7 @@ textarea {
     border-radius: 0;
 }
 .select-btns .btn{
-    font-size: 1.5em !important;
+    font-size: 1.9em !important;
 }
 
 .doabsolute {

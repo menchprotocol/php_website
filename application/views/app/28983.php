@@ -42,7 +42,7 @@ $social_nav = '<div class="center-icons">
         }
 
         .info_box_title{
-            font-size: 1.5em;
+            font-size: 1.9em;
             padding:0 0 8px 0;
             font-weight: bold;
             color: #e50201;
@@ -283,7 +283,7 @@ $social_nav = '<div class="center-icons">
 
                     <img src="/img/mcbroke/skeeping.jpg" class="rounded-corner" style="max-width:100%;">
                 </div>
-                <div class="col-12 col-sm-8" style= "font-size: 1.5em; line-height: 110%; text-align: left;">
+                <div class="col-12 col-sm-8" style= "font-size: 1.9em; line-height: 110%; text-align: left;">
                     <br />
                     <br />
                     We are a community of once rich now broke investors wandering crypto looking to make it back to the 🔝
@@ -374,7 +374,7 @@ $social_nav = '<div class="center-icons">
     <a name="howtobuy">&nbsp;</a>
     <h2 class="text-center main_title">How To Be $BROKE?</h2>
     <br />
-    <p style="color: #e50201 !important; font-weight: bold; font-size: 1.5em;" >in 3 easy steps...</p>
+    <p style="color: #e50201 !important; font-weight: bold; font-size: 1.9em;" >in 3 easy steps...</p>
     <img src="/img/mcbroke/window-order.jpg" class="rounded-corner">
 
     <div style="text-align: center; position: relative; display: none;">
