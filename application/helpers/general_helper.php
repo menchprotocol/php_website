@@ -1582,7 +1582,7 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0){
         if(!isset($e___domain_sett[$source_id]) || !strlen($e___domain_sett[$source_id]['m__message'])){
             return ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,$setting_id) : false );
         }
-        $skip_first_word = in_array($setting_id, $CI->config->item('n___26090')) || in_array($setting_id, $CI->config->item('n___26155')) || substr($e___domain_sett[$source_id]['m__message'], 1)=='@';
+        $skip_first_word = in_array($setting_id, $CI->config->item('n___26090')) || in_array($setting_id, $CI->config->item('n___26155')) || substr($e___domain_sett[$source_id]['m__message'], 1)=='@' || substr($e___domain_sett[$source_id]['m__message'], 1)=='/';
         return ( $skip_first_word ? substr($e___domain_sett[$source_id]['m__message'], 1) : $e___domain_sett[$source_id]['m__message'] );
     }
 

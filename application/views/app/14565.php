@@ -2,8 +2,8 @@
 
 
 //Primary Idea:
-if(!isset($_GET['i__id']) && strlen(intval(get_domain_setting(14002)))){
-    $_GET['i__id'] = intval(get_domain_setting(14002));
+if(!isset($_GET['i__id']) && strlen(get_domain_setting(14002))){
+    $_GET['i__id'] = get_domain_setting(14002);
 }
 
 if(isset($_GET['i__id'])){
@@ -45,7 +45,7 @@ if(isset($_GET['i__id'])){
 
 //Sitemap:
 if(!isset($_GET['e__id']) && strlen(get_domain_setting(27972))){
-    $_GET['e__id'] = intval(get_domain_setting(27972));
+    $_GET['e__id'] = get_domain_setting(27972);
 }
 if(isset($_GET['e__id'])){
 
@@ -142,7 +142,7 @@ if(isset($_GET['e__id'])){
 
 
 //Info Box(es):
-$domain_info_boxes = intval(get_domain_setting(14903));
+$domain_info_boxes = get_domain_setting(14903);
 if($domain_info_boxes){
 
     foreach($this->X_model->fetch(array(
@@ -153,7 +153,6 @@ if($domain_info_boxes){
     ), array('x__down'), 0) as $info_box) {
 
         //Does it have valid children?
-        $ui = '<div class="row justify-content" style="margin-bottom: 55px;">';
         $info_item = null;
         foreach($this->X_model->fetch(array(
             'x__up' => $info_box['e__id'],
@@ -172,12 +171,10 @@ if($domain_info_boxes){
             $info_item .= '</div>';
         }
 
-        $ui .= $info_item;
-        $ui .= '</div>';
-
         if($info_item){
-            echo $ui;
+            echo '<div class="row justify-content" style="margin-bottom: 55px;">'.$info_item.'</div>';
         }
+
     }
 }
 
