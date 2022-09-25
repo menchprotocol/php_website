@@ -2508,10 +2508,14 @@ textarea {
 }
 .info_box_cover img{
     border-radius: 50%;
-    width: 55px;
-    height: 55px;
+    width: 89px;
+    height: 89px;
 }
-
+.info-head{
+    display: block;
+    margin:21px 0;
+    text-align: center;
+}
 .info_box_title{
     text-align: center;
     font-size: 1.5em;
