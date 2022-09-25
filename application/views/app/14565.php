@@ -124,7 +124,7 @@ if(isset($_GET['e__id'])){
         if($list_body){
             //Add this to the UI:
             $ui .= '<h4 style="padding-top: 34px; text-align:center;"><span class="halfbg" style="padding: 5px;"><span class="icon-block-xxs">'.view_cover(12273,$header['e__cover'], '✔️', ' ').'</span> ' .$header['e__title'] . '</span></h4>';
-            $ui .= '<div class="list-group list-border glossy-bg">';
+            $ui .= '<div class="list-group list-border glossy-bg maxwidth">';
             $ui .= $list_body;
             $ui .= '</div>';
             $ui .= '<div class="doclear" style="padding-bottom: 55px;">&nbsp;</div>';
@@ -133,8 +133,6 @@ if(isset($_GET['e__id'])){
     }
 
     echo $ui;
-
-    echo '<div class="doclear" style="padding-bottom:987px;">&nbsp;</div>';
 
 }
 
@@ -172,7 +170,7 @@ if($domain_info_boxes){
         }
 
         if($info_item){
-            echo '<div class="row justify-content" style="margin-bottom: 55px;">'.$info_item.'</div>';
+            echo '<div class="row justify-content maxwidth" style="margin-bottom: 55px;">'.$info_item.'</div>';
         }
 
     }
@@ -230,5 +228,9 @@ if($social_id){
 */
 
 //echo '<p style="font-size: 0.8em; text-align: center;"><a href="https://drive.google.com/file/d/1GiQAtYzmJjmaUPxrrwPBXr44t9FRrWlAPFEe-917__iWcI2xR07U3_N88jyk5K7ophvKRk3AQHhXRs_q/view?usp=sharing" target="_blank"><u>Us Humans Foundation</u></a> | 2017 - '.date('Y').'</p>';
+
+
+echo '<div class="doclear" style="padding-bottom:987px;">&nbsp;</div>';
+
 
 ?>
