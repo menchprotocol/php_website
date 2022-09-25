@@ -22,7 +22,7 @@ echo '</div>';
 
 
 
-echo view_coins();
+//echo view_coins();
 
 
 //Info Boxes:
