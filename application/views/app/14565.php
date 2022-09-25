@@ -148,7 +148,7 @@ if($domain_info_boxes){
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__down'), 0) as $info_box) {
+    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_box) {
 
         //Does it have valid children?
         $info_item = null;
@@ -157,7 +157,7 @@ if($domain_info_boxes){
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__down'), 0) as $info_element) {
+        ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_element) {
             $info_item .= '<div class="col-12 col-sm-6 col-md-4">';
             $info_item .= '<div class="info_box">';
             $info_item .= '<div class="info_box_cover">'.( filter_var($info_element['e__cover'], FILTER_VALIDATE_URL) ? '<div class="center-cropped" style="background-image: url(\''.$info_element['e__cover'].'\');"></div>' : view_cover(12274, $info_element['e__cover']) ).'</div>';

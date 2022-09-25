@@ -2508,14 +2508,15 @@ textarea {
 }
 .center-cropped{
     border-radius: 50%;
-    width: 89px;
-    height: 89px;
+    width: 144px;
+    height: 144px;
     position: relative;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     display: block;
     overflow: hidden;
+    margin: 0 auto;
 }
 .info-head{
     display: block;
