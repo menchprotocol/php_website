@@ -162,7 +162,7 @@ if($domain_info_boxes){
             $info_item .= '<div class="info_box">';
             $info_item .= '<div class="info_box_cover">'.view_cover(12274, $info_element['e__cover']).'</div>';
             $info_item .= '<div class="info_box_title css__title">'.$info_element['e__title'].'</div>';
-            if(strlen($info_box['x__message'])){
+            if(strlen($info_element['x__message'])){
                 $info_item .= '<div class="info_box_message">'.$info_element['x__message'].'</div>';
             }
             $info_item .= '</div>';
