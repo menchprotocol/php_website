@@ -160,8 +160,12 @@ if($domain_info_boxes){
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_element) {
             $info_item .= '<div class="col-12 col-sm-6 col-md-4">';
             $info_item .= '<div class="info_box">';
-            $info_item .= '<div class="info_box_cover">'.( filter_var($info_element['e__cover'], FILTER_VALIDATE_URL) ? '<div class="center-cropped" style="background-image: url(\''.$info_element['e__cover'].'\');"></div>' : view_cover(12274, $info_element['e__cover']) ).'</div>';
-            $info_item .= '<div class="info_box_title css__title">'.$info_element['e__title'].'</div>';
+            if(filter_var($info_element['e__cover'], FILTER_VALIDATE_URL)){
+                $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['e__cover'].'\');"></div>'.'</div>';
+            } else {
+                $info_item .= '<div class="info_box_cover">'.view_cover(12274, $info_element['e__cover']).'</div>';
+                $info_item .= '<div class="info_box_title css__title">'.$info_element['e__title'].'</div>';
+            }
             if(strlen($info_element['x__message'])){
                 $info_item .= '<div class="info_box_message">'.$info_element['x__message'].'</div>';
             }
