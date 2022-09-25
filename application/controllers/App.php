@@ -15,16 +15,9 @@ class App extends CI_Controller
     }
 
     function index(){
-        //App directory is a modal, redirect for now:
-        $home_app = intval(get_domain_setting(14879));
-        if($home_app){
-            $this->load($home_app);
-        } else {
-            //Redirect to key idea:
-            return redirect_message('/'.get_domain_setting(14002));
-        }
+        //Default Home Page:
+        $this->load(27969);
     }
-
 
     function load($app_e__id = 14563 /* Error if none provided */, $i__id = 0, $e__id = 0){
 

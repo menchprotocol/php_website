@@ -1,40 +1,193 @@
 <?php
 
-$is = $this->I_model->fetch(array(
-    'i__id' => get_domain_setting(14002),
-));
 
-
-//IDEA TITLE
-echo '<h1 class="maxwidth">' . $is[0]['i__title'] . '</h1>';
-
-
-//MESSAGES
-echo '<div class="center-frame maxwidth">';
-foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 4231, //IDEA NOTES Messages
-    'x__right' => $is[0]['i__id'],
-), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
-    echo $this->X_model->message_view( $x['x__message'], true);
+//Primary Idea:
+if(!isset($_GET['i__id']) && get_domain_setting(14002) > 0){
+    $_GET['i__id'] = get_domain_setting(14002);
 }
-echo '</div>';
+if(isset($_GET['i__id'])){
+    
+    $is = $this->I_model->fetch(array(
+        'i__id' => $_GET['i__id'],
+    ));
+
+    if(count($is)){
+        //TITLE
+        echo '<h1 class="maxwidth">' . $is[0]['i__title'] . '</h1>';
+
+        //MESSAGES
+        echo '<div class="center-frame hide-subline maxwidth">';
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4231, //IDEA NOTES Messages
+            'x__right' => $is[0]['i__id'],
+        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
+
+            $msg = $this->X_model->message_view( $x['x__message'], true);
+
+            if(substr_count($msg, '//www.youtube.com/embed/')==1){
+                //YouTube video link
+                echo '<div class="video-frame vid-padding" style="text-align: center;"><a href="javascript:void(0)" onclick="video_play()"><i class="fad fa-play-circle" style="color: #000; font-size:8em !important;"></i></a></div>';
+                echo '<div class="video-frame hidden">'.$msg.'</div>';
+            } else {
+                echo $msg;
+            }
+
+        }
+        echo '</div>';
+    }
+
+}
 
 
 
-//echo view_coins();
+//Sitemap:
+if(!isset($_GET['e__id']) && get_domain_setting(27972)>0){
+    $_GET['e__id'] = get_domain_setting(27972);
+}
+if(isset($_GET['e__id'])){
+
+    $ui = '';
+    foreach($this->X_model->fetch(array(
+        'x__up' => $_GET['e__id'],
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $header){
+
+        $list_body = '';
+
+        //Any Startable Referenced Ideas?
+        foreach($this->X_model->fetch(array(
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__up' => $header['e__id'],
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__spectrum' => 'DESC')) as $ref_i){
+
+            //Fetch Messages:
+            $messages = ( strlen($ref_i['x__message']) ? '<div class="msg"><span>' . nl2br($ref_i['x__message']) . '</span></div>' : '');
+            /*
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 4231, //IDEA NOTES Messages
+                'x__right' => $ref_i['i__id'],
+            ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
+                $messages .= $this->X_model->message_view( $x['x__message'], true, array(), 0, true);
+            }
+            */
 
 
-//Info Boxes:
-echo view_info_box();
+            //Print list:
+            $list_body .= view_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], '/'.$ref_i['i__id'] ,$messages);
+        }
+
+        //Any child sources?
+        foreach($this->X_model->fetch(array(
+            'x__up' => $header['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+        ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $list_e){
+
+
+            //Make sure this has a valid URL:
+            if(substr($list_e['x__message'], 0, 1)=='/'){
+
+                //URL override in link message:
+                $list_body .= view_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $list_e['x__message'], null);
+
+            } else {
+
+                //Search for URL/Emails:
+                foreach($this->X_model->fetch(array(
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+                    'x__down' => $list_e['e__id'],
+                ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $url){
+                    if(filter_var($url['x__message'], FILTER_VALIDATE_EMAIL)){
+                        $link = 'mailto:'.$url['x__message'];
+                    } elseif(filter_var($url['x__message'], FILTER_VALIDATE_URL) || substr($url['x__message'], 0, 1)=='/'){
+                        $link = $url['x__message'];
+                    } else {
+                        continue;
+                    }
+                    $list_body .= view_item($list_e['e__id'],0, $list_e['e__title'], $list_e['e__cover'], $link, ( strlen($list_e['x__message']) ? '<div class="msg"><span>' . nl2br($list_e['x__message']) . '</span></div>' : '' ));
+                }
+
+            }
+        }
+
+        if($list_body){
+            //Add this to the UI:
+            $ui .= '<h4 style="padding-top: 34px; text-align:center;"><span class="halfbg" style="padding: 5px;"><span class="icon-block-xxs">'.view_cover(12273,$header['e__cover'], '✔️', ' ').'</span> ' .$header['e__title'] . '</span></h4>';
+            $ui .= '<div class="list-group list-border glossy-bg">';
+            $ui .= $list_body;
+            $ui .= '</div>';
+            $ui .= '<div class="doclear" style="padding-bottom: 55px;">&nbsp;</div>';
+        }
+
+    }
+
+    echo $ui;
+
+    echo '<div class="doclear" style="padding-bottom:987px;">&nbsp;</div>';
+
+}
 
 
 
-//FEATURED IDEAS
-$counter = 0;
-$visible_ui = '';
-$topic_id = intval(get_domain_setting(14877));
-if($topic_id){
+
+//Info Box(es):
+$domain_info_boxes = intval(get_domain_setting(14903));
+if($domain_info_boxes){
+
+    foreach($this->X_model->fetch(array(
+        'x__up' => $domain_info_boxes,
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    ), array('x__down'), 0) as $info_box) {
+
+        //Does it have valid children?
+        $ui = '<div class="row justify-content" style="margin-bottom: 55px;">';
+        $info_item = null;
+        foreach($this->X_model->fetch(array(
+            'x__up' => $info_box['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), array('x__down'), 0) as $info_box) {
+            $info_item .= '<div class="col-12 col-sm-6 col-md-4">';
+            $info_item .= '<div class="info_box">';
+            $info_item .= '<div class="info_box_cover">'.view_cover(12274, $info_box['e__cover']).'</div>';
+            $info_item .= '<div class="info_box_title css__title">'.$info_box['m__title'].'</div>';
+            if(strlen($info_box['x__message'])){
+                $info_item .= '<div class="info_box_message">'.$info_box['x__message'].'</div>';
+            }
+            $info_item .= '</div>';
+            $info_item .= '</div>';
+        }
+
+        $ui .= $info_item;
+        $ui .= '</div>';
+
+        if($info_item){
+            echo $ui;
+        }
+    }
+}
+
+
+
+
+//Featured Topics
+/*
+$topic_id = intval(get_domain_setting(27972));
+if($topic_id && count($this->config->item('e___'.$topic_id))){
+    $counter = 0;
+    $visible_ui = '';
     //Go through Featured Categories:
     foreach($this->config->item('e___'.$topic_id) as $e__id => $m) {
 
@@ -51,7 +204,7 @@ if($topic_id){
 
         $ui = '<div class="row justify-content margin-top-down-half">';
         foreach($query as $i){
-            $ui .= view_i(14877, 0, null, $i);
+            $ui .= view_i(27972, 0, null, $i);
         }
         $query2 = $this->X_model->fetch($query_filters, array('x__right'), 1, 0, array(), 'COUNT(x__id) as totals');
         $ui .= '</div>';
@@ -60,15 +213,22 @@ if($topic_id){
         $visible_ui .= view_headline($e__id, null, $m, $ui, !$counter);
         $counter++;
     }
+    echo $visible_ui;
 }
-echo $visible_ui;
 
 
 
 
 //SOCIAL FOOTER
-echo view_social();
-
+$social_id = intval(get_domain_setting(14904));
+if($social_id){
+    echo '<ul class="social-footer">';
+    foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
+        echo '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';
+    }
+    echo '</ul>';
+}
+*/
 
 //echo '<p style="font-size: 0.8em; text-align: center;"><a href="https://drive.google.com/file/d/1GiQAtYzmJjmaUPxrrwPBXr44t9FRrWlAPFEe-917__iWcI2xR07U3_N88jyk5K7ophvKRk3AQHhXRs_q/view?usp=sharing" target="_blank"><u>Us Humans Foundation</u></a> | 2017 - '.date('Y').'</p>';
 

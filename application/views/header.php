@@ -424,6 +424,22 @@ if(!$basic_header_footer){
                             //APP
                             $href = 'href="/-'.$x__type.( $x__type==4269 ? $login_url_path : '' ).'"';
 
+                        } elseif(in_array($x__type, $this->config->item('n___14925'))){
+
+                            //Domain Setting
+                            $setting_value =  get_domain_setting($x__type);
+                            if($setting_value){
+                                if($x__type==28615){
+                                    //Phone
+                                    $m['m__title'] = $setting_value;
+                                    $href = 'href="tel:'.preg_replace("/[^0-9]/", "", $setting_value).'"';
+                                } elseif($x__type==28614){
+                                    //Email
+                                    $m['m__title'] = $setting_value;
+                                    $href = 'href="mailto:'.$setting_value.'"';
+                                }
+                            }
+
                         } elseif(substr($m['m__message'], 0, 1)=='/'){
 
                             //Direct Link
