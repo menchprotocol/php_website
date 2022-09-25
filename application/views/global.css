@@ -2510,8 +2510,12 @@ textarea {
     border-radius: 50%;
     width: 89px;
     height: 89px;
-    background-position: center center;
+    position: relative;
     background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: block;
+    overflow: hidden;
 }
 .info-head{
     display: block;
