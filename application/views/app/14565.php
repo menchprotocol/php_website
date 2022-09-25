@@ -6,11 +6,11 @@ $is = $this->I_model->fetch(array(
 
 
 //IDEA TITLE
-echo '<h1>' . $is[0]['i__title'] . '</h1>';
+echo '<h1 class="maxwidth">' . $is[0]['i__title'] . '</h1>';
 
 
 //MESSAGES
-echo '<div class="center-frame">';
+echo '<div class="center-frame maxwidth">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages

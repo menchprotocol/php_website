@@ -55,7 +55,7 @@ body {
 .doright{
     text-align: right !important;
 }
-.media-content {
+.media-content, .maxwidth {
     border-radius: 0 !important;
     max-width: 610px;
 }
