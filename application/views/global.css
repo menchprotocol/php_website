@@ -1634,8 +1634,11 @@ i, .btn .show-max {
 .social-footer{
     text-align: center;
     list-style: none;
-    padding: 89px 0 34px;
-    margin: 0;
+    margin: 89px 0 34px;
+    padding: 13px 0;
+    display: block;
+    margin: 0 auto;
+    max-width: 600px;
 }
 .social2-footer{
     text-align: left;
