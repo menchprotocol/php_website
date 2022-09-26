@@ -247,7 +247,7 @@ if($social_id){
 $domain_year_started = get_domain_setting(30379);
 $domain_company_name = get_domain_setting(30380);
 if($domain_year_started || $domain_company_name){
-    echo '<p style="font-size: 0.8em; text-align: center;" class="social-footer '.( $domain_background ? ' halfbg ' : '' ).'">'.( $domain_company_name ? $domain_company_name.' | ' : '' ).( $domain_year_started ? $domain_year_started.' - '.date('Y') : '' ).'</p>';
+    echo '<p class="social-footer '.( $domain_background ? ' halfbg ' : '' ).'">'.( $domain_company_name ? $domain_company_name.' | ' : '' ).( $domain_year_started ? $domain_year_started.' - '.date('Y') : '' ).'</p>';
 }
 
 
