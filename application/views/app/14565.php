@@ -198,7 +198,7 @@ if($domain_info_boxes){
 //Featured Topics
 /*
 $topic_id = intval(get_domain_setting(27972));
-if($topic_id && count($this->config->item('e___'.$topic_id))){
+if($topic_id && is_array($this->config->item('e___'.$topic_id))){
     $counter = 0;
     $visible_ui = '';
     //Go through Featured Categories:
@@ -235,7 +235,7 @@ if($topic_id && count($this->config->item('e___'.$topic_id))){
 
 //SOCIAL FOOTER
 $social_id = intval(get_domain_setting(14904));
-if($social_id && count($this->config->item('e___'.$social_id))){
+if($social_id && is_array($this->config->item('e___'.$social_id))){
     echo '<ul class="social-footer '.( $domain_background ? ' halfbg ' : '' ).'">';
     foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
         echo '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';

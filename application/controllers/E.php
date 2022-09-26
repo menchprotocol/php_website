@@ -135,7 +135,7 @@ class E extends CI_Controller
                         }
                     }
 
-                    if(count($this->config->item('e___'.$domain_list))){
+                    if(is_array($this->config->item('e___'.$domain_list))){
                         $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].' Sources</div>';
                         foreach($this->config->item('e___'.$domain_list) as $e__id => $m2){
 
