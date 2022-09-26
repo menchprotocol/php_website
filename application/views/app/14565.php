@@ -79,11 +79,19 @@ if(isset($_GET['e__id'])){
             }
             */
 
+            $is_flat_list = count($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__up' => 26562, //Total Due
+                'x__right' => $ref_i['i__id'],
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            )));
+
 
             //Print list:
-            $list_body .= view_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], '/'.$ref_i['i__id'] ,$messages);
+            $list_body .= view_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], ($is_flat_list ? '/:' : '/' ).$ref_i['i__id'] ,$messages);
         }
 
+        /*
         //Any child sources?
         foreach($this->X_model->fetch(array(
             'x__up' => $header['e__id'],
@@ -120,6 +128,7 @@ if(isset($_GET['e__id'])){
 
             }
         }
+        */
 
         if($list_body){
             //Add this to the UI:
