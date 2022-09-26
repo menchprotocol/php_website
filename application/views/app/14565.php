@@ -1,5 +1,7 @@
 <?php
 
+$domain_background = get_domain_setting(28621);
+
 
 //Primary Idea:
 if(!isset($_GET['i__id']) && strlen(get_domain_setting(14002))){
@@ -234,7 +236,7 @@ if($topic_id && count($this->config->item('e___'.$topic_id))){
 //SOCIAL FOOTER
 $social_id = intval(get_domain_setting(14904));
 if($social_id){
-    echo '<ul class="social-footer">';
+    echo '<ul class="social-footer '.( $domain_background ? ' halfbg ' : '' ).'">';
     foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
         echo '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';
     }
@@ -242,10 +244,14 @@ if($social_id){
 }
 
 
-//echo '<p style="font-size: 0.8em; text-align: center;"><a href="https://drive.google.com/file/d/1GiQAtYzmJjmaUPxrrwPBXr44t9FRrWlAPFEe-917__iWcI2xR07U3_N88jyk5K7ophvKRk3AQHhXRs_q/view?usp=sharing" target="_blank"><u>Us Humans Foundation</u></a> | 2017 - '.date('Y').'</p>';
+$domain_year_started = intval(get_domain_setting(30379));
+if($domain_year_started){
+    $domain_company_name = intval(get_domain_setting(30379));
+    echo '<p style="font-size: 0.8em; text-align: center;">'.( $domain_company_name ? $domain_company_name.' | ' : '' ).$domain_year_started.' - '.date('Y').'</p>';
+}
 
 
-if(get_domain_setting(28621)){
+if($domain_background){
     echo '<div class="doclear" style="padding-bottom:987px;">&nbsp;</div>';
 }
 
