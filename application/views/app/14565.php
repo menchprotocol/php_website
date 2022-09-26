@@ -83,7 +83,7 @@ if(isset($_GET['e__id'])){
 
             $is_flat_list = count($this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__up' => 26562, //Total Due
+                'x__up' => 30378, //Flat List Ideas
                 'x__right' => $ref_i['i__id'],
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
@@ -246,7 +246,7 @@ if($social_id){
 
 $domain_year_started = intval(get_domain_setting(30379));
 if($domain_year_started){
-    $domain_company_name = intval(get_domain_setting(30379));
+    $domain_company_name = intval(get_domain_setting(30380));
     echo '<p style="font-size: 0.8em; text-align: center;">'.( $domain_company_name ? $domain_company_name.' | ' : '' ).$domain_year_started.' - '.date('Y').'</p>';
 }
 
