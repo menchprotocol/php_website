@@ -260,7 +260,7 @@ if($social_id && is_array($this->config->item('e___'.$social_id))){
 $domain_year_started = get_domain_setting(30379);
 $domain_company_name = get_domain_setting(30380);
 if($domain_year_started || $domain_company_name){
-    echo '<p class="social-footer '.( $domain_background ? ' halfbg ' : '' ).'">'.( $domain_company_name ? $domain_company_name.' | ' : '' ).( $domain_year_started ? $domain_year_started.' - '.date('Y') : '' ).'</p>';
+    echo '<p class="social-footer '.( $domain_background ? ' halfbg ' : '' ).'" style="padding-top:0;">'.( $domain_company_name ? $domain_company_name.' | ' : '' ).( $domain_year_started ? $domain_year_started.' - '.date('Y') : '' ).'</p>';
 }
 
 
