@@ -139,7 +139,7 @@ li a {
     text-decoration: none;
 }
 .special-text{
-    font-size: 1.7em;
+    font-size: 1.5em;
     display: block;
     float: left;
     padding-top: 5px;
@@ -1508,7 +1508,7 @@ label {
 }
 
 i, .btn .show-max {
-    font-size: 1.7em !important;
+    font-size: 1.5em !important;
 }
 
 .icon-block-lg i {
@@ -1596,7 +1596,7 @@ i, .btn .show-max {
     margin-top: 11px;
     border-radius: 0 !important;
     display: inline-block;
-    font-size: 1.7em;
+    font-size: 1.5em;
 }
 .platform-logo i{
     font-size: 1em !important;
@@ -1749,7 +1749,7 @@ i, .btn .show-max {
     display: block;
     width: 90px;
     margin: 0 auto;
-    font-size: 1.7em;
+    font-size: 1.5em;
     text-align: center;
     height: 30px;
     padding-top: 7px;
@@ -2410,13 +2410,13 @@ textarea {
         width:40px;
     }
     .btn-lrg{
-        font-size: 1.7em !important;
+        font-size: 1.5em !important;
     }
 
 }
 @media (max-width:576px) {
     .focus-coin .inner-content .css__title {
-        font-size: 1.7em;
+        font-size: 1.5em;
     }
     .the_counter{
         margin-top: -24px;
@@ -3209,7 +3209,7 @@ textarea {
 .custom_ui_13491_13493 .msg i,
 .custom_ui_13491_13493 .regtext i{
     font-size:1.131em;
-} /* To get to 1.7em*/
+} /* To get to 1.5em*/
 
 
 
