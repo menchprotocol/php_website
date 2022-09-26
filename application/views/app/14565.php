@@ -235,10 +235,13 @@ if($topic_id && is_array($this->config->item('e___'.$topic_id))){
 
 //SOCIAL FOOTER
 $social_id = intval(get_domain_setting(14904));
+$e___14925 = $this->config->item('e___14925'); //Domain Setting
 if($social_id && is_array($this->config->item('e___'.$social_id))){
     echo '<ul class="social-footer '.( $domain_background ? ' halfbg ' : '' ).'">';
 
-    $e___14925 = $this->config->item('e___14925'); //Domain Setting
+    foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
+        echo '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';
+    }
 
     $domain_phone =  get_domain_setting(28615);
     if($domain_phone){
@@ -248,10 +251,6 @@ if($social_id && is_array($this->config->item('e___'.$social_id))){
     $domain_email =  get_domain_setting(28614);
     if($domain_email){
         echo '<li><a href="mailto:'.$domain_email.'" title="'.$e___14925[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___14925[28614]['m__cover'].'</a></li>';
-    }
-
-    foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
-        echo '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';
     }
 
     echo '</ul>';
