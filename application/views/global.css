@@ -1639,6 +1639,7 @@ i, .btn .show-max {
     display: block;
     margin: 0 auto;
     max-width: 600px;
+    width: calc(100% - 16px);
 }
 .social2-footer{
     text-align: left;

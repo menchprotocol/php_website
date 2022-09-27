@@ -462,13 +462,37 @@ if($top_i__id) {
 
     } elseif ($i_focus['i__type'] == 6683) {
 
-        //Write `skip` if you prefer not to answer...
-        $message_ui = '<textarea class="border i_content padded x_input '.( count($this->X_model->fetch(array(
+        //Do we have a response?
+        $previous_response = (count($x_completes) ? trim($x_completes[0]['x__message']) : false );
+        if(!$previous_response && $x__source){
+            //Does this have any append sources?
+            foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 7545, //Profile Add
                 'x__right' => $i_focus['i__id'],
-                'x__up' => 4783, //Phone
-            ))) ? ' phone_verify_4783 ' : '' ).'" placeholder="" id="x_reply">' . (count($x_completes) ? trim($x_completes[0]['x__message']) : '') . '</textarea>';
+            )) as $append_source){
+                //Does the user have this source with any values?
+                foreach($this->X_model->fetch(array(
+                    'x__up' => $append_source['x__up'],
+                    'x__down' => $x__source,
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                ), array(), 0, 0) as $profile_appended) {
+                    if(strlen($profile_appended['x__source'])){
+                        $previous_response = $profile_appended['x__source'];
+                    }
+                    if(strlen($previous_response)){
+                        break;
+                    }
+                }
+                if(strlen($previous_response)){
+                    break;
+                }
+            }
+        }
+
+
+        $message_ui = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
 
         if (count($x_completes)) {
             //Next Ideas:
