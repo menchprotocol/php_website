@@ -478,8 +478,8 @@ if($top_i__id) {
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ), array(), 0, 0) as $profile_appended) {
-                    if(strlen($profile_appended['x__source'])){
-                        $previous_response = $profile_appended['x__source'];
+                    if(strlen($profile_appended['x__message'])){
+                        $previous_response = $profile_appended['x__message'];
                     }
                     if(strlen($previous_response)){
                         break;
