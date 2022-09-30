@@ -55,10 +55,14 @@ body {
 .doright{
     text-align: right !important;
 }
-.media-content, .maxwidth {
+.media-content {
     border-radius: 0 !important;
     max-width: 600px !important;
-    /* margin: 0 auto !important; */
+}
+.maxwidth {
+    border-radius: 0 !important;
+    max-width: 600px !important;
+    margin: 0 auto !important;
 }
 .x__message video {
     max-width: 600px;
