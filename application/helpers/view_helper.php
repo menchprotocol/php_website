@@ -402,7 +402,7 @@ function view_number($number)
     } else {
         $formatting = array(
             'multiplier' => (1 / 1000),
-            'decimals' => 0,
+            'decimals' => 1,
             'suffix' => 'K',
         );
     }
