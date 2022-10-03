@@ -206,6 +206,57 @@ if(isset($_GET['e__id'])){
 
 }
 
+$faq_i__id = get_domain_setting(30422);
+if($faq_i__id){
+
+    $is_faq = $this->I_model->fetch(array(
+        'i__id' => $faq_i__id,
+    ));
+
+    echo '<div class="container-center">';
+
+    //IDEA TITLE
+    echo '<h1>' . $is_faq[0]['i__title'] . '</h1>';
+
+    //MESSAGES
+    foreach ($this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type' => 4231, //IDEA NOTES Messages
+        'x__right' => $faq_i__id,
+    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+        echo $this->X_model->message_view($x['x__message'], true);
+    }
+
+    echo '<br /><br />';
+
+    //1 Level of Next Ideas:
+    foreach ($is_next = $this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+        'x__left' => $faq_i__id,
+    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i) {
+
+        echo '<h3 style="margin:13px 0; padding-left:5px; font-size:1.3em;"><a href="javascript:void(0);" onclick="$(\'.i_msg_'.$i['i__id'].'\').toggleClass(\'hidden\');" class="inner-content doblock css__title">' . $i['i__title'] . '</a></h3>';
+
+        //MESSAGES
+        echo '<div style="border-bottom: 1px solid #000;">';
+        echo '<div class="i_msg_'.$i['i__id'].' hidden" style="padding:5px 5px 13px 21px;">';
+        foreach ($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4231, //IDEA NOTES Messages
+            'x__right' => $i['i__id'],
+        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+            echo $this->X_model->message_view($x['x__message'], true);
+        }
+        echo '</div>';
+        echo '</div>';
+
+    }
+
+    echo '</div>';
+}
+
 
 
 //Featured Topics
