@@ -297,6 +297,8 @@ if($topic_id && is_array($this->config->item('e___'.$topic_id))){
 */
 
 
+echo '<br /><br />';
+
 //SOCIAL FOOTER
 $social_id = intval(get_domain_setting(14904));
 $e___14925 = $this->config->item('e___14925'); //Domain Setting
