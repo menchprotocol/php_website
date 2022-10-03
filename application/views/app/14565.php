@@ -222,7 +222,7 @@ if($faq_i__id){
     echo '<div class="container-center">';
 
     //IDEA TITLE
-    echo '<h2>' . $is_faq[0]['i__title'] . '</h2>';
+    echo '<h2 class="info-head">' . $is_faq[0]['i__title'] . '</h2>';
 
     //MESSAGES
     foreach ($this->X_model->fetch(array(
