@@ -2273,6 +2273,9 @@ textarea {
 
 @media (max-width:767px) {
 
+    .info_box_title{
+        font-size: 1.5em;
+    }
 
     .coin_coins>span{
         padding: 0 2px;
@@ -2429,10 +2432,10 @@ textarea {
     }
     .col2nd { padding-left: 41px !important; padding-top: 8px; }
     h1{
-        font-size: 2.1em;
+        font-size: 2.2em;
     }
     h2{
-        font-size: 1.7em;
+        font-size: 1.9em;
     }
     .cover-btn{
         font-size: 8em;

@@ -96,11 +96,6 @@
             text-align: justify;
             transform: rotateX(30deg) scale(2);
         }
-        .info_box_title{
-            font-size: 1.9em;
-            padding:0 0 8px 0;
-            font-weight: bold;
-        }
         p, .text-center {
             line-height: 115% !important;
             text-align: center;

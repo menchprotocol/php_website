@@ -41,12 +41,7 @@ $social_nav = '<div class="center-icons">
             display: none;
         }
 
-        .info_box_title{
-            font-size: 1.9em;
-            padding:0 0 8px 0;
-            font-weight: bold;
-            color: #e50201;
-        }
+
         p, .text-center {
             line-height: 115% !important;
             text-align: center;
