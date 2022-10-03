@@ -52,57 +52,6 @@ if(isset($_GET['i__id'])){
 
 
 
-//Info Box(es):
-$domain_info_boxes = get_domain_setting(14903);
-if($domain_info_boxes){
-
-    foreach($this->X_model->fetch(array(
-        'x__up' => $domain_info_boxes,
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_box) {
-
-        //Does it have valid children?
-        $info_item = null;
-        foreach($this->X_model->fetch(array(
-            'x__up' => $info_box['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_element) {
-            $info_item .= '<div class="col-12 col-sm-6 col-md-4">';
-            $info_item .= '<div class="info_box">';
-            if(filter_var($info_element['e__cover'], FILTER_VALIDATE_URL)){
-                $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['e__cover'].'\');"></div>'.'</div>';
-            } else {
-                $info_item .= '<div class="info_box_cover">'.view_cover(12274, $info_element['e__cover']).'</div>';
-                $info_item .= '<div class="info_box_title css__title">'.$info_element['e__title'].'</div>';
-            }
-            if(strlen($info_element['x__message'])){
-                $info_item .= '<div class="info_box_message">'.$info_element['x__message'].'</div>';
-            }
-            $info_item .= '</div>';
-            $info_item .= '</div>';
-        }
-
-        if($info_item){
-            echo '<h2 class="info-head">'.$info_box['e__title'].'</h2>';
-            echo '<div class="row justify-content" style="margin-bottom: 89px;">'.$info_item.'</div>';
-        }
-
-    }
-}
-
-
-
-
-
-
-
-
-
-
 
 //Sitemap:
 if(!isset($_GET['e__id']) && strlen(get_domain_setting(27972))){
@@ -205,6 +154,62 @@ if(isset($_GET['e__id'])){
     echo $ui;
 
 }
+
+
+
+
+
+
+
+
+
+//Info Box(es):
+$domain_info_boxes = get_domain_setting(14903);
+if($domain_info_boxes){
+
+    foreach($this->X_model->fetch(array(
+        'x__up' => $domain_info_boxes,
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_box) {
+
+        //Does it have valid children?
+        $info_item = null;
+        foreach($this->X_model->fetch(array(
+            'x__up' => $info_box['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_element) {
+            $info_item .= '<div class="col-12 col-sm-6 col-md-4">';
+            $info_item .= '<div class="info_box">';
+            if(filter_var($info_element['e__cover'], FILTER_VALIDATE_URL)){
+                $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['e__cover'].'\');"></div>'.'</div>';
+            } else {
+                $info_item .= '<div class="info_box_cover">'.view_cover(12274, $info_element['e__cover']).'</div>';
+                $info_item .= '<div class="info_box_title css__title">'.$info_element['e__title'].'</div>';
+            }
+            if(strlen($info_element['x__message'])){
+                $info_item .= '<div class="info_box_message">'.$info_element['x__message'].'</div>';
+            }
+            $info_item .= '</div>';
+            $info_item .= '</div>';
+        }
+
+        if($info_item){
+            echo '<h2 class="info-head">'.$info_box['e__title'].'</h2>';
+            echo '<div class="row justify-content" style="margin-bottom: 89px;">'.$info_item.'</div>';
+        }
+
+    }
+}
+
+
+
+
+
+
 
 $faq_i__id = get_domain_setting(30422);
 if($faq_i__id){
