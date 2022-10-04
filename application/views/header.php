@@ -41,16 +41,22 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= ( isset($title) ? $title.' | ' : '' ) . get_domain('m__title') ?></title>
     <?php
-    echo '<script type="text/javascript"> ';
 
     //Do we have Google Analytics?
     $google_analytics_code = get_domain_setting(30033);
     if(strlen($google_analytics_code) > 0){
-        echo 'window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag(\'js\', new Date());
-gtag(\'config\', \''.$google_analytics_code.'\');';
+        echo '<script async src="https://www.googletagmanager.com/gtag/js?id=G-8V6ZC7D3BC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag(\'js\', new Date());
+
+  gtag(\'config\', \''.$google_analytics_code.'\');
+</script>';
     }
+
+
+    echo '<script type="text/javascript"> ';
 
     //MEMBER VARIABLES
     echo ' var js_session_superpowers_activated = ' . json_encode( ($member_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
