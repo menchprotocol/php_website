@@ -6,7 +6,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     foreach($this->X_model->fetch(array(
         'x__status' => 6175, //Pending
         'x__type' => 26582, //Send Instant Message
-        'x__time >=' => time(), //Time to send it
+        'x__time >=' => date('Y-m-d H:i:s'), //Time to send it
     )) as $send_message){
 
         //Mark as sending so other cron job does not pick this up:
