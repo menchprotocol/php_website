@@ -1,6 +1,6 @@
 <?php
 
-if($is_u_request && 0){
+if(!$is_u_request || isset($_GET['cron'])){
 
     //Look for messages to process, if any:
     foreach($this->X_model->fetch(array(
@@ -52,8 +52,6 @@ if($is_u_request && 0){
     }
 
 } else {
-
-    echo ( $is_u_request ? 'Yes' : 'No' );
 
     //Show UI to schedule new messages:
 
@@ -140,7 +138,7 @@ if($is_u_request && 0){
 
     echo '<div id="charNum"></div>';
 
-    echo '<input type="datetime-local" id="message_time" value="'.date('Y-m-d\TH:i', (strtotime()+3600)).'">';
+    echo '<input type="datetime-local" id="message_time" value="'.date('Y-m-d\TH:i', (time()+3600)).'">';
 
     echo '</div>';
 
