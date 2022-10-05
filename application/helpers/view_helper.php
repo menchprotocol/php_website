@@ -532,7 +532,7 @@ function view_x($x, $has_x__reference = false)
 
 
     //DOMAIN
-    $ui .= '<div class="simple-line"><a href="https://'.$e___14870[$x['x__domain']]['m__message'].'" target="_blank" class="css__title"><span class="icon-block">'.$e___4341[14870]['m__cover'].'</span><span class="icon-block">'.$e___14870[$x['x__domain']]['m__cover']. '</span>' . $e___14870[$x['x__domain']]['m__title'] . '</a></div>';
+    $ui .= '<div class="simple-line">'.( isset($e___14870[$x['x__domain']]) ? '<a href="https://'.$e___14870[$x['x__domain']]['m__message'].'" target="_blank" class="css__title"><span class="icon-block">'.$e___4341[14870]['m__cover'].'</span><span class="icon-block">'.$e___14870[$x['x__domain']]['m__cover']. '</span>' . $e___14870[$x['x__domain']]['m__title'] . '</a>' : 'Unknown Domain' ).'</div>';
 
 
     $ui .= '</div>';
