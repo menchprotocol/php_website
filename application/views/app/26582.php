@@ -189,7 +189,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         echo '<td>'.$e___6186[$fetched_e['x__status']]['m__cover'].'</td>';
         echo '<td>'. $fetched_e['x__time'].'</td>';
         echo '<td><a href="/@'.$fetched_e['x__source'].'">'. $fetched_e['e__title'].'</a></td>';
-        echo '<td>'.( isset($x__metadata['stats']['target']) ? $x__metadata['stats']['target'] : 0 ).'<br />Targets</td>';
+        echo '<td>'.@$x__metadata['stats']['target'].'<br />Targets</td>';
         echo '<td><a href="/-12722?x__id='.$fetched_e['x__id'].'">'.( isset($x__metadata['stats']['unique']) ? $x__metadata['stats']['unique'] : 0 ).'<br />Uniques</a></td>';
         echo '<td>'.$email_success[0]['totals'].'/'.@$x__metadata['stats']['email_count'].'<br />Emails</td>';
         echo '<td>'.$sms_success[0]['totals'].'/'.@$x__metadata['stats']['phone_count'].'<br />SMS'.( $sms_fail[0]['totals']>0 ? '<br />'.$sms_fail[0]['totals'].' FAILED' : '' ).'</td>';
@@ -198,7 +198,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         echo '<tr></tr>';
 
         echo '<tr>';
-        echo '<td colspan="7">'.nl2br($fetched_e['x__message']).( isset($x__metadata['message_text']) && !substr_count($fetched_e['x__message'], $x__metadata['message_text']) ? '<hr />'.nl2br($x__metadata['message_text']) : '' ).'</td>';
+        echo '<td colspan="8">'.nl2br($fetched_e['x__message']).( isset($x__metadata['message_text']) && !substr_count($fetched_e['x__message'], $x__metadata['message_text']) ? '<hr />'.nl2br($x__metadata['message_text']) : '' ).'</td>';
         echo '</tr>';
 
     }
