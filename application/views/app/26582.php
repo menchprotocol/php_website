@@ -145,7 +145,8 @@ if(!$is_u_request || isset($_GET['cron'])){
 
     echo '<div id="charNum"></div>';
 
-    echo '<input type="datetime-local" id="message_time" value="'.date('Y-m-d\TH:i', (time()+3600)).'">';
+
+    echo '<input type="datetime-local" id="message_time" value="'.date('Y-m-d\TH:i', (time()+3600)).'" style="border:3px solid #000000; padding:8px; border-radius: 0; margin-top:21px;">';
 
     echo '</div>';
 
