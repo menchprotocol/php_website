@@ -187,9 +187,9 @@ if(!$is_u_request || isset($_GET['cron'])){
         echo '<tr>';
         echo '<td><a href="/-4341?x__id='.$fetched_e['x__id'].'">'.$fetched_e['x__id'].'</a></td>';
         echo '<td>'.$e___6186[$fetched_e['x__status']]['m__cover'].'</td>';
-        echo '<td>'. $fetched_e['x__time'].'</td>';
+        echo '<td>'. substr($fetched_e['x__time'], 0, 19).'</td>';
         echo '<td><a href="/@'.$fetched_e['x__source'].'">'. $fetched_e['e__title'].'</a></td>';
-        echo '<td>'.@$x__metadata['stats']['target'].'<br />Targets</td>';
+        echo '<td>'.@intval($x__metadata['stats']['target']).'<br />Targets</td>';
         echo '<td><a href="/-12722?x__id='.$fetched_e['x__id'].'">'.( isset($x__metadata['stats']['unique']) ? $x__metadata['stats']['unique'] : 0 ).'<br />Uniques</a></td>';
         echo '<td>'.$email_success[0]['totals'].'/'.@$x__metadata['stats']['email_count'].'<br />Emails</td>';
         echo '<td>'.$sms_success[0]['totals'].'/'.@$x__metadata['stats']['phone_count'].'<br />SMS'.( $sms_fail[0]['totals']>0 ? '<br />'.$sms_fail[0]['totals'].' FAILED' : '' ).'</td>';
