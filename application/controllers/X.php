@@ -753,7 +753,7 @@ class X extends CI_Controller
         $log_x = $this->X_model->create(array(
             'x__type' => 26582, //Send Instant Message
             'x__status' => 6175, //Drafting until it's sent via Cron Job
-            'x__time' => strtotime($_POST['message_time']),
+            'x__time' => date('Y-m-d H:i:s', strtotime($_POST['message_time'])),
             'x__source' => $member_e['e__id'],
             'x__message' => $_POST['message_subject'],
             'x__metadata' => array(
