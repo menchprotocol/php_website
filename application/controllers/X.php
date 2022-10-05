@@ -715,7 +715,7 @@ class X extends CI_Controller
     }
 
 
-    function x_send_message(){
+    function x_schedule_message(){
 
         //Authenticate Member:
         $member_e = superpower_unlocked();
@@ -740,84 +740,36 @@ class X extends CI_Controller
                 'message' => 'Missing Message Body',
             ));
 
-        }
+        } elseif (!isset($_POST['message_time']) || !strtotime($_POST['message_time'])) {
 
-        //Determine Recipients:
-        $message_list = message_list($_POST['i__id'], $_POST['e__id'], $_POST['exclude_e'], $_POST['include_e'], $_POST['continue_x__id']);
-
-
-        //Loop through all contacts and send messages:
-        $stats = array(
-            'target' => count($message_list['unique_users_id']),
-            'unique' => 0,
-            'phone_count' => 0,
-            'error_count' => 0,
-            'email_count' => 0,
-        );
-
-        if($_POST['continue_x__id'] > 0){
-
-            $log_x['x__id'] = $_POST['continue_x__id'];
-
-            //Also save final results:
-            $this->X_model->update($log_x['x__id'], array(
-                'x__message' => $_POST['message_subject'],
-                'x__metadata' => array(
-                    'message_text' => $_POST['message_text'],
-                    'i__id' => $_POST['i__id'],
-                    'e__id' => $_POST['e__id'],
-                    'exclude_e' => $_POST['exclude_e'],
-                    'include_e' => $_POST['include_e'],
-                    'all_recipients' => $message_list['unique_users_id'],
-                    'stats' => $stats,
-                ),
-            ));
-
-        } else {
-
-            //Log mass message transaction:
-            $log_x = $this->X_model->create(array(
-                'x__type' => 26582, //Send Instant Message
-                'x__source' => $member_e['e__id'],
-                'x__message' => $_POST['message_subject'],
-                'x__metadata' => array(
-                    'message_text' => $_POST['message_text'],
-                    'i__id' => $_POST['i__id'],
-                    'e__id' => $_POST['e__id'],
-                    'exclude_e' => $_POST['exclude_e'],
-                    'include_e' => $_POST['include_e'],
-                    'all_recipients' => $message_list['unique_users_id'],
-                    'stats' => $stats,
-                ),
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Message Time',
             ));
 
         }
 
-
-        foreach($message_list['unique_users_id'] as $send_e__id){
-
-            $results = $this->X_model->send_dm($send_e__id, trim($_POST['message_subject']), trim($_POST['message_text']), array('x__reference' => $log_x['x__id']));
-
-            if($results['status']){
-                $stats['unique']++;
-                $stats['email_count'] += $results['email_count'];
-                $stats['phone_count'] += $results['phone_count'];
-            } else {
-                $stats['error_count']++;
-            }
-        }
-
-        //Also save final results:
-        $this->X_model->update($log_x['x__id'], array(
+        //Log mass message transaction:
+        $log_x = $this->X_model->create(array(
+            'x__type' => 26582, //Send Instant Message
+            'x__status' => 6175, //Drafting until it's sent via Cron Job
+            'x__time' => strtotime($_POST['message_time']),
+            'x__source' => $member_e['e__id'],
+            'x__message' => $_POST['message_subject'],
             'x__metadata' => array(
-                'stats' => $stats,
+                'message_subject' => $_POST['message_subject'],
+                'message_text' => $_POST['message_text'],
+                'message_time' => $_POST['message_time'],
+                'i__id' => $_POST['i__id'],
+                'e__id' => $_POST['e__id'],
+                'exclude_e' => $_POST['exclude_e'],
+                'include_e' => $_POST['include_e'],
             ),
         ));
 
-
         return view_json(array(
-            'status' => ( $stats['unique']>0 ? 1 : 0 ),
-            'message' => 'Sent messages to '.$stats['unique'].' recipients ('.$log_x['x__id'].'): '.$stats['email_count'].' Email & '.$stats['phone_count'].' SMS. '.$stats['email_count'].' Errors/Unsubscribed.',
+            'status' => ( isset($log_x['x__id']) ? 1 : 0 ),
+            'message' => 'Scheduled messages for '.$_POST['message_time'],
         ));
 
     }

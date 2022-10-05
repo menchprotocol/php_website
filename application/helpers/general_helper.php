@@ -1590,7 +1590,7 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0){
 
 
 
-function message_list($i__id, $e__id, $exclude_e, $include_e, $continue_x__id = 0){
+function message_list($i__id, $e__id, $exclude_e, $include_e){
 
     $CI =& get_instance();
     $message_list = array(
@@ -1679,15 +1679,6 @@ function message_list($i__id, $e__id, $exclude_e, $include_e, $continue_x__id = 
         $e_phone = ( count($e_phones) && strlen($e_phones[0]['x__message'])>=10 ? $e_phones[0]['x__message'] : false );
 
         $contacrt_forms = ( $e_email ? 1 : 0 ) + ( $e_phone ? 1 : 0 );
-
-        if($continue_x__id > 0 && $e_email && count($CI->X_model->fetch(array(
-                'x__type' => 29399, //Email Success
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__reference' => $continue_x__id,
-                'x__source' => $subscriber['e__id'],
-            )))){
-                continue;
-        }
 
         array_push($already_added, $subscriber['e__id']);
 
