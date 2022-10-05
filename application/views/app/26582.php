@@ -156,11 +156,11 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '<div></div>';
 
     //Past message Sent:
-    echo '<h2>Past Messages</h2>';
+    echo '<h2>Scheduled Messages</h2>';
 
     echo '<table class="table table-condensed table-striped">';
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //Active
         'x__type' => 26582, //Instant Messages
     ), array('x__source'), 0, 0) as $fetched_e){
 
