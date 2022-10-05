@@ -49,6 +49,12 @@ if(!$is_u_request || isset($_GET['cron'])){
             ),
         ));
 
+        //Show result:
+        echo $send_message['x__id'].' sent '.$stats['unique'].' messages: '.$stats['email_count'].' Emails & '.$stats['phone_count'].' SMS';
+
+        //Do max 1 per cron job (per minute)
+        break;
+
     }
 
 } else {
