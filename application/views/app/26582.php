@@ -87,6 +87,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
     $message_list = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e']);
     $e___6287 = $this->config->item('e___6287'); //APP
+    $e___6186 = $this->config->item('e___6186'); //Transaction Status
 
 
     echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[13790]['m__cover'].' '.$e___6287[13790]['m__title'].'</a></div>';
@@ -185,12 +186,13 @@ if(!$is_u_request || isset($_GET['cron'])){
         $x__metadata = unserialize($fetched_e['x__metadata']);
         echo '<tr>';
         echo '<td><a href="/-4341?x__id='.$fetched_e['x__id'].'">'.$fetched_e['x__id'].'</a></td>';
+        echo '<td>'.$e___6186[$fetched_e['x__status']]['m__cover'].'</td>';
         echo '<td>'. $fetched_e['x__time'].'</td>';
         echo '<td><a href="/@'.$fetched_e['x__source'].'">'. $fetched_e['e__title'].'</a></td>';
         echo '<td>'.( isset($x__metadata['stats']['target']) ? $x__metadata['stats']['target'] : 0 ).'<br />Targets</td>';
-        echo '<td><a href="/-12722?x__id='.$fetched_e['x__id'].'">'.$x__metadata['stats']['unique'].'<br />Uniques</a></td>';
-        echo '<td>'.$email_success[0]['totals'].'/'.$x__metadata['stats']['email_count'].'<br />Emails</td>';
-        echo '<td>'.$sms_success[0]['totals'].'/'.$x__metadata['stats']['phone_count'].'<br />SMS'.( $sms_fail[0]['totals']>0 ? '<br />'.$sms_fail[0]['totals'].' FAILED' : '' ).'</td>';
+        echo '<td><a href="/-12722?x__id='.$fetched_e['x__id'].'">'.( isset($x__metadata['stats']['unique']) ? $x__metadata['stats']['unique'] : 0 ).'<br />Uniques</a></td>';
+        echo '<td>'.$email_success[0]['totals'].'/'.@$x__metadata['stats']['email_count'].'<br />Emails</td>';
+        echo '<td>'.$sms_success[0]['totals'].'/'.@$x__metadata['stats']['phone_count'].'<br />SMS'.( $sms_fail[0]['totals']>0 ? '<br />'.$sms_fail[0]['totals'].' FAILED' : '' ).'</td>';
         echo '</tr>';
 
         echo '<tr></tr>';
