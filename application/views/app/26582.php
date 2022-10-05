@@ -264,7 +264,7 @@ if(!$is_u_request || isset($_GET['cron'])){
                 $.post("/x/x_schedule_delete", {
                     x__id: x__id,
                 }, function (data) {
-                    $('.semail'+x__id).fadeOut();
+                    $('.semail'+x__id).remove();
                 });
             }
         }
