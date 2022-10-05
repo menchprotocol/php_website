@@ -715,6 +715,12 @@ class X extends CI_Controller
     }
 
 
+    function x_schedule_delete(){
+        $this->X_model->update($_POST['x__id'], array(
+            'x__status' => 6173, //Deleted
+        ));
+    }
+
     function x_schedule_message(){
 
         //Authenticate Member:

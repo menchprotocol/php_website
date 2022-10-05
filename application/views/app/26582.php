@@ -184,8 +184,8 @@ if(!$is_u_request || isset($_GET['cron'])){
 
 
         $x__metadata = unserialize($fetched_e['x__metadata']);
-        echo '<tr>';
-        echo '<td><a href="/-4341?x__id='.$fetched_e['x__id'].'">'.$fetched_e['x__id'].'</a></td>';
+        echo '<tr class="semail'.$fetched_e['x__id'].'">';
+        echo '<td><a href="/-4341?x__id='.$fetched_e['x__id'].'">'.$fetched_e['x__id'].'</a> <a href="javascript:x_schedule_delete('.$fetched_e['x__id'].')">x</a></td>';
         echo '<td>'.$e___6186[$fetched_e['x__status']]['m__cover'].'</td>';
         echo '<td>'. substr($fetched_e['x__time'], 0, 19).'</td>';
         echo '<td><a href="/@'.$fetched_e['x__source'].'">'. $fetched_e['e__title'].'</a></td>';
@@ -195,10 +195,10 @@ if(!$is_u_request || isset($_GET['cron'])){
         echo '<td>'.$sms_success[0]['totals'].'/'.@intval($x__metadata['stats']['phone_count']).'<br />SMS'.( $sms_fail[0]['totals']>0 ? '<br />'.$sms_fail[0]['totals'].' FAILED' : '' ).'</td>';
         echo '</tr>';
 
-        echo '<tr></tr>';
+        echo '<tr class="semail'.$fetched_e['x__id'].'"></tr>';
 
 
-        echo '<tr><td colspan="8">'.nl2br($fetched_e['x__message']).( isset($x__metadata['message_text']) ? '<hr />'.nl2br($x__metadata['message_text']) : '' ).'</td></tr>';
+        echo '<tr class="semail'.$fetched_e['x__id'].'"><td colspan="8">'.nl2br($fetched_e['x__message']).( isset($x__metadata['message_text']) ? '<hr />'.nl2br($x__metadata['message_text']) : '' ).'</td></tr>';
 
     }
     echo '</table>';
@@ -256,6 +256,17 @@ if(!$is_u_request || isset($_GET['cron'])){
 
             });
 
+        }
+
+        function x_schedule_delete(x__id){
+            var r = confirm("Remove Email "+x__id+"?");
+            if (r == true) {
+                $.post("/x/x_schedule_delete", {
+                    x__id: x__id,
+                }, function (data) {
+                    $('.semail'+x__id).fadeOut();
+                });
+            }
         }
 
     </script>
