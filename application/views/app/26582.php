@@ -89,8 +89,7 @@ echo '<div id="charNum"></div>';
 
 echo '</div>';
 
-echo date('Y-m-d\TH:i');
-echo '<input type="datetime-local" id="meeting-time" value="'.''.'">';
+echo '<input type="datetime-local" id="meeting-time" value="'.date('Y-m-d\TH:i').'">';
 
 echo '<div id="send_message_btn" style="padding: 10px;"><a class="btn btn-default" href="javascript:void(0);"  onclick="send_message();">Schedule Message for '.$message_list['unique_users_count'].' Members <i class="fas fa-arrow-right"></i></a></div>';
 
