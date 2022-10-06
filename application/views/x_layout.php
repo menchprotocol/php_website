@@ -696,7 +696,7 @@ if($top_i__id) {
 } else {
 
     //NEXT IDEAS
-    echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
+    echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e, true);
 
 }
 

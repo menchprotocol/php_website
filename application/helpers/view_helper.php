@@ -1330,7 +1330,7 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
 }
 
 
-function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
+function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e, $check_available = false){
 
     //If no list just return the next step:
     if(!count($next_is)){
@@ -1352,6 +1352,15 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     $found_first_incomplete = false;
     $found_first_complete = false;
     foreach($next_is as $key => $next_i){
+
+        if($check_available){
+            $i_is_available = i_is_available($next_i['i__id'], false);
+            if(!$i_is_available['status']){
+                //This option is not available:
+                continue;
+            }
+        }
+
         $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
         if(!$found_first_incomplete && $completion_rate['completion_percentage'] < 100){
             $is_first_incomplete = true;
@@ -1362,6 +1371,7 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
         }
         $body .= view_i($x__type, $top_i__id, $i, $next_i, $member_e, $completion_rate, null, $is_first_incomplete);
         $is_first_incomplete = false; //False afterwards
+
     }
     $body .= '</div>';
 
