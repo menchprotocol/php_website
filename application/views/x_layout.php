@@ -37,6 +37,15 @@ $is_next = $this->X_model->fetch(array(
     'x__left' => $i_focus['i__id'],
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
+//Filter Next Ideas:
+foreach($is_next as $in_key => $in_value){
+    $i_is_available = i_is_available($in_value['i__id'], false);
+    if(!$i_is_available['status']){
+        //Remove this option:
+        unset($is_next[$in_key]);
+    }
+}
+
 
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
@@ -351,11 +360,11 @@ if($top_i__id) {
             foreach ($is_next as $key => $next_i) {
 
                 //Make sure it meets the conditions:
-                $i_is_available = i_is_available($next_i['i__id'], false);
-                if(!$i_is_available['status']){
+               // $i_is_available = i_is_available($next_i['i__id'], false);
+               // if(!$i_is_available['status']){
                     //This option is not available:
-                    continue;
-                }
+                    //continue;
+                //}
 
 
                 //Has this been previously selected?
@@ -696,7 +705,7 @@ if($top_i__id) {
 } else {
 
     //NEXT IDEAS
-    echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e, true);
+    echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
 
 }
 
