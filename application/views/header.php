@@ -434,11 +434,9 @@ if(!$basic_header_footer){
                             if($setting_value){
                                 if($x__type==28615){
                                     //Phone
-                                    $m['m__title'] = $setting_value;
                                     $href = 'href="tel:'.preg_replace("/[^0-9]/", "", $setting_value).'"';
                                 } elseif($x__type==28614){
                                     //Email
-                                    $m['m__title'] = $setting_value;
                                     $href = 'href="mailto:'.$setting_value.'"';
                                 }
                             }
