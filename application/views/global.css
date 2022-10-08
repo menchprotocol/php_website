@@ -3507,6 +3507,11 @@ hr {
     border-color: #FC1B44 !important;
 }
 
+.source_cover img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
 
 .action_bar a {
     color: #999;

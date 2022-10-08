@@ -1808,7 +1808,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui = '<div class="idea_cover">';
 
             $ui .= '<table><tr>';
-            $ui .= '<td><a href="/@'.$i_creators[0]['e__id'].'">'.view_cover(12273, $i_creators[0]['e__cover']).'</a></td>';
+            $ui .= '<td><a href="/@'.$i_creators[0]['e__id'].'" class="source_cover">'.view_cover(12273, $i_creators[0]['e__cover']).'</a></td>';
             $ui .= '<td>';
 
 
