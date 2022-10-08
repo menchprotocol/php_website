@@ -1,6 +1,5 @@
 <?php
 
-echo 'hi';
 
 //Just Viewing:
 $new_order = ( $this->session->userdata('session_page_count') + 1 );

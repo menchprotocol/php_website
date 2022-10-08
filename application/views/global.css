@@ -3506,3 +3506,16 @@ hr {
 .custom_ui_13884_13885.custom_ui_28979_28981 .coinType6255.cover-link {
     border-color: #FC1B44 !important;
 }
+
+
+.action_bar a {
+    color: #999;
+    padding: 5px 10px;
+    margin: 0 10px;
+}
+.message_bar{
+    margin-bottom: 10px;
+}
+.title_bar {
+    padding-bottom: 2px;
+}
