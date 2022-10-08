@@ -165,6 +165,10 @@ foreach($i_query as $i){
     $payout = $total_revenue-$total_commission-$total_paypal_fee;
 
 
+    if($i['i__type']==6183 && !$total_units){
+        continue;
+    }
+
     $gross_units += $total_units;
     $gross_revenue += $total_revenue;
     $gross_paypal_fee += $total_paypal_fee;
