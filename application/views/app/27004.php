@@ -102,7 +102,7 @@ foreach($i_query as $i){
 
         $x__metadata = unserialize($x['x__metadata']);
         if(doubleval($x__metadata['mc_gross']) <= 0){
-            continue;
+            //continue;
         }
         $total_units++;
         $total_paypal_fee += doubleval($x__metadata['mc_fee']);
