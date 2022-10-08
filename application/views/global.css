@@ -3513,6 +3513,16 @@ hr {
     border-radius: 50%;
 }
 
+.idea_cover {
+    margin-bottom: 10px;
+}
+.idea_cover table{
+    width: 100%;
+}
+.idea_cover td{
+    vertical-align: top;
+}
+
 .action_bar a {
     color: #999;
     padding: 5px 10px;

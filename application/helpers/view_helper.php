@@ -1808,9 +1808,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui = '<div class="idea_cover">';
 
             $ui .= '<table><tr>';
-            $ui .= '<td><a href="/@'.$i_creators[0]['e__id'].'" class="source_cover">'.view_cover(12273, $i_creators[0]['e__cover']).'</a></td>';
-            $ui .= '<td>';
 
+            $ui .= '<td><a href="/@'.$i_creators[0]['e__id'].'" class="source_cover">'.view_cover(12273, $i_creators[0]['e__cover']).'</a></td>';
+
+            $ui .= '<td>';
 
                 $ui .= '<div class="title_bar"><a href="/@'.$i_creators[0]['e__id'].'"><b>'.$i_creators[0]['e__title'].'</b> <span style="color:#999;">@' . $i_creators[0]['e__id'] . '</span></a> · <a href="/'.$i['i__id'].'"><span style="color:#999;">' . view_time_difference(strtotime($i_creators[0]['x__time'])) . '</span></a></div>';
 
@@ -1838,8 +1839,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
             $ui .= '</td>';
             $ui .= '</tr></table>';
-
-
 
         $ui .= '</div>';
 
