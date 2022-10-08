@@ -132,8 +132,9 @@ foreach($i_query as $i){
 
 
         $item_parts = explode('-',$x__metadata['item_number']);
+
         $es = $this->E_model->fetch(array(
-            'e__id' => $item_parts[3],
+            'e__id' => (isset($item_parts[3]) ? $item_parts[3] : $x['x__source'] ),
         ));
         $this_commission = $x__metadata['mc_gross']*$commission_rate;
         $this_payout = $x__metadata['mc_gross']-$x__metadata['mc_fee']-$this_commission;
