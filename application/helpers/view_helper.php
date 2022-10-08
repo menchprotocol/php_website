@@ -1800,7 +1800,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     if($member_e['e__id']==1){
 
         //Fetch Creator:
-        $i_creators = $this->X_model->fetch(array(
+        $i_creators = $CI->X_model->fetch(array(
             'x__type' => 4250, //New Idea Created
             'x__right' => $i['i__id'],
         ), array('x__source'), 0);
