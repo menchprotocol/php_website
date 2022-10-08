@@ -146,7 +146,7 @@ foreach($i_query as $i){
         $transaction_content .= '<td style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($this_commission, 2).'</td>';
-        $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($x__metadata['mc_fee']/$x__metadata['mc_gross']*100).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
+        $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $x__metadata['mc_gross'] > 0 ? ($x__metadata['mc_fee']/$x__metadata['mc_gross']*100) : 0 ).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
         $transaction_content .= '<td style="text-align: right;" title="'.(( $x__metadata['mc_gross']>0 ? $this_payout/$x__metadata['mc_gross'] : 0 )*100).'%"><b>$'.number_format($this_payout, 2).'</b></td>';
         $transaction_content .= '<td style="text-align: right;">'.$x__metadata['mc_currency'].'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="Transaction ID">'. $x['x__id'].'</td>';
