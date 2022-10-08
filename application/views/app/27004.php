@@ -3,6 +3,7 @@
 $commission_rate = doubleval(view_memory(6404,27017))/100;
 
 $gross_units = 0;
+$gross_tickets = 0;
 $gross_revenue = 0;
 $gross_paypal_fee = 0;
 $gross_commission = 0;
