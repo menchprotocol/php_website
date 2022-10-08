@@ -158,12 +158,10 @@ class I extends CI_Controller {
             ));
         }
 
-
         return view_json(array(
             'status' => 1,
             'new_i__id' => $i_new['i__id'],
         ));
-
 
     }
 
@@ -214,7 +212,9 @@ class I extends CI_Controller {
                     ));
                 }
             }
+
             echo '<div>'.$completed.' sources who played this idea added to @'.$append_e__id.'</div>';
+
         }
 
         //Load views:
@@ -222,7 +222,7 @@ class I extends CI_Controller {
             'title' => $is[0]['i__title'],
             'i_focus' => $is[0],
         ));
-        $this->load->view('i_layout', array(
+        $this->load->view(( $member_e['e__id']==1 ? 'i2_layout' : 'i_layout' ), array(
             'i_focus' => $is[0],
             'member_e' => $member_e,
         ));
@@ -236,7 +236,6 @@ class I extends CI_Controller {
         //Make sure it's a logged in member:
         $member_e = superpower_unlocked(10939, true);
         $success_message = null;
-
 
         if(superpower_unlocked(12700)){
 
