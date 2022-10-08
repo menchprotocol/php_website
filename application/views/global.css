@@ -3515,10 +3515,9 @@ hr {
 
 .idea_cover {
     margin-bottom: 10px;
-}
-.idea_cover table{
     width: 100%;
 }
+
 .idea_cover td{
     vertical-align: top;
 }
