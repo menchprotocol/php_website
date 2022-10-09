@@ -3527,6 +3527,10 @@ hr {
     padding: 5px 10px;
     margin: 0 10px;
 }
+.action_bar a:first-of-type {
+    padding-left: 0;
+    margin-left: 0;
+}
 .message_bar{
     margin-bottom: 10px;
 }
