@@ -3507,11 +3507,20 @@ hr {
     border-color: #FC1B44 !important;
 }
 
-.source_cover img {
+.source_cover div.img {
+    border:0;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: block;
+    overflow: hidden;
     width: 48px;
     height: 48px;
     border-radius: 50%;
+    margin: 0 3px;
 }
+
 
 .idea_cover {
     margin-bottom: 10px;
@@ -3533,6 +3542,9 @@ hr {
 }
 .message_bar{
     margin-bottom: 10px;
+}
+.message_bar .msg{
+    margin:0 !important;
 }
 .title_bar {
     padding-bottom: 2px;

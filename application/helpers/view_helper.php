@@ -335,7 +335,11 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 function view_cover($coin__type, $cover_code, $noicon_default = null, $icon_prefix = '')
 {
     //A simple function to display the Member Icon OR the default icon if not available:
-    if(filter_var($cover_code, FILTER_VALIDATE_URL)){
+    if(filter_var($cover_code, FILTER_VALIDATE_URL) && $noicon_default){
+
+        return $icon_prefix.'<div class="img" style="background-image:url(\''.$cover_code.'\');"></div>';
+
+    } elseif(filter_var($cover_code, FILTER_VALIDATE_URL)){
 
         return $icon_prefix.'<img src="'.$cover_code.'"'.( substr_count($cover_code, 'class=') ? ' class="'.str_replace(',',' ',one_two_explode('class=','&', $cover_code)).'" ' : '' ).'/>';
 
@@ -1809,9 +1813,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
             $ui .= '<table><tr>';
 
-            $ui .= '<td style="width: 60px; text-align: center;"><a href="/@'.$i_creators[0]['e__id'].'" class="source_cover">'.view_cover(12273, $i_creators[0]['e__cover']).'</a></td>';
+            $ui .= '<td><a href="/@'.$i_creators[0]['e__id'].'" class="source_cover">'.view_cover(12273, $i_creators[0]['e__cover'], true).'</a></td>';
 
-            $ui .= '<td>';
+            $ui .= '<td style="width: 100%;">';
 
                 $ui .= '<div class="title_bar"><a href="/@'.$i_creators[0]['e__id'].'"><b>'.$i_creators[0]['e__title'].'</b> <span style="color:#999;">@' . $i_creators[0]['e__id'] . '</span></a> · <a href="/'.$i['i__id'].'"><span style="color:#999;">' . view_time_difference(strtotime($i_creators[0]['x__time'])) . '</span></a></div>';
 
