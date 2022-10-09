@@ -769,7 +769,7 @@ function i_is_available($i__id, $log_tnx){
                 }
             }
         }
-        if(!$meets_inc1_prereq){
+        if(!$meets_inc1_prereq && $x__source > 0){
             return access_blocked($log_tnx, "You cannot play this note because you are missing a requirement, make sure you are logged in with the same email address that we sent you the email.",$x__source, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
@@ -800,7 +800,7 @@ function i_is_available($i__id, $log_tnx){
                 }
             }
         }
-        if($meets_inc2_prereq < count($fetch_27984)){
+        if($meets_inc2_prereq < count($fetch_27984) && $x__source > 0){
             //Did not meet all requirements:
             return access_blocked($log_tnx, "You cannot play this note because you are ".( $x__source ? "missing [".$missing_es."]" : "not logged in" ).", make sure you are logged in with the same email address that we sent you the email.",$x__source, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
@@ -833,7 +833,7 @@ function i_is_available($i__id, $log_tnx){
             }
         }
 
-        if(!$excludes_all){
+        if(!$excludes_all && $x__source > 0){
             return access_blocked($log_tnx, "You cannot play this note because you belong to [".$e_pre['e__title']."]",$x__source, $i__id, 26600, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
