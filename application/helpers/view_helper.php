@@ -1801,7 +1801,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $can_click = !$has_any_lock && !$focus_coin && ($discovery_mode || !$editing_enabled);
 
 
-    if($member_e['e__id']==1 && !isset($_GET['skip'])){
+    if($member_e['e__id']==1 && isset($_GET['new'])){
 
         //Fetch Creator:
         $i_creators = $CI->X_model->fetch(array(
