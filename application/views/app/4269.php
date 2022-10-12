@@ -16,6 +16,7 @@ if(superpower_unlocked()) {
 
     $es = $this->E_model->fetch(array(
         'e__id' => $cookie_parts[0],
+        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
 
     if(count($es) && $cookie_parts[2]==md5($cookie_parts[0].$cookie_parts[1].$this->config->item('cred_password_salt'))){

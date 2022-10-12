@@ -177,6 +177,7 @@ class E extends CI_Controller
         //Validate source ID and fetch data:
         $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
         if (count($es) < 1) {
             return redirect_message(home_url());
@@ -556,6 +557,7 @@ class E extends CI_Controller
         //Validate Source:
         $fetch_o = $this->E_model->fetch(array(
             'e__id' => $_POST['e__id'],
+            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
         if (count($fetch_o) < 1) {
             return view_json(array(
@@ -695,6 +697,7 @@ class E extends CI_Controller
             //Validate Source:
             $fetch_o = $this->E_model->fetch(array(
                 'e__id' => $_POST['focus__id'],
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
             if (count($fetch_o) < 1) {
                 return view_json(array(
@@ -996,6 +999,7 @@ class E extends CI_Controller
             //SOURCE
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['coin__id'],
+                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
             if(count($es)){
                 return view_json(array(
