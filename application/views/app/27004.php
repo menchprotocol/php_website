@@ -50,7 +50,7 @@ if (isset($_GET['e__id'])) {
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
+            'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Expanded Payment Idea
             'x__up' => $e['e__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $i_assigned){
             array_push($assigned_i_ids, $i_assigned['x__right']);
@@ -60,7 +60,7 @@ if (isset($_GET['e__id'])) {
     //Show all non-assigned payment ideas:
     $i_query = $this->I_model->fetch(array(
         'i__id NOT IN (' . join(',', $assigned_i_ids) . ')' => null,
-        'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
+        'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Strict Payment Idea
     ), 0, 0, array('i__title' => 'ASC'));
 
 }
