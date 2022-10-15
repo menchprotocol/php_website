@@ -2085,7 +2085,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__id'] = intval($s['i__id']);
                 $export_row['s__url'] = '/i/i_go/' . $s['i__id'];
                 $export_row['s__status'] = intval($s['i__type']);
-                $export_row['s__cover'] =  $s['i__cover'];
+                $export_row['s__cover'] = '';
                 $export_row['s__title'] = $s['i__title'];
                 $export_row['s___weight'] = intval($s['i__spectrum']);
 
@@ -2103,11 +2103,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 //Featured?
                 if (i_is_startable($s)) {
                     array_push($export_row['_tags'], 'is_featured');
-                }
-
-                //Is this an image?
-                if(strlen($s['i__cover'])){
-                    array_push($export_row['_tags'], 'has_image');
                 }
 
                 //Is SOURCE for any IDEA?

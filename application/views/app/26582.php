@@ -52,9 +52,6 @@ if(!$is_u_request || isset($_GET['cron'])){
         //Show result:
         echo $send_message['x__id'].' sent '.$stats['unique'].' messages: '.$stats['email_count'].' Emails & '.$stats['phone_count'].' SMS';
 
-        //Do max 1 per cron job (per minute)
-        break;
-
     }
 
 } else {
@@ -73,7 +70,7 @@ if(!$is_u_request || isset($_GET['cron'])){
             'i__id IN (' . $_GET['i__id'] . ')' => null,
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
         )) as $i){
-            echo '<h2><a href="/i/i_go/'.$i['i__id'].'"><span class="icon-block-img">'.view_cover(12273,$i['i__cover']).'</span> '.$i['i__title'].'</a></h2>';
+            echo '<h2><a href="/i/i_go/'.$i['i__id'].'">'.$i['i__title'].'</a></h2>';
         }
     }
     if(strlen($_GET['e__id'])){

@@ -168,11 +168,6 @@ class I_model extends CI_Model
                     $x__up = $value;
                     $x__down = $before_data[0][$key];
 
-                } elseif($key=='i__cover') {
-
-                    $x__type = 14962; //Idea updated Cover
-                    $x__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
-
                 } else {
 
                     //Should not log updates since not specifically programmed:
@@ -381,7 +376,6 @@ class I_model extends CI_Model
         $i_new = $this->I_model->create(array(
             'i__title' => $i['i__title'],
             'i__type' => $i['i__type'],
-            'i__cover' => $i['i__cover'],
         ), $x__source);
 
         //Copy related transactions:
@@ -606,7 +600,6 @@ class I_model extends CI_Model
             //Create new Idea:
             $i_new = $this->I_model->create(array(
                 'i__title' => $i__title_validation['i_clean_title'],
-                'i__cover' => ( isset($focus_i[0]['i__cover']) ? $focus_i[0]['i__cover'] : null ),
                 'i__type' => 6677, //New Default Ideas
             ), $x__source);
 

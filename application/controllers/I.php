@@ -66,7 +66,6 @@ class I extends CI_Controller {
         $i_new = $this->I_model->create(array(
             'i__title' => $fetch_o[0]['i__title']." Copy",
             'i__type' => $fetch_o[0]['i__type'],
-            'i__cover' => $fetch_o[0]['i__cover'],
         ), $member_e['e__id'], !count($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
@@ -422,7 +421,7 @@ class I extends CI_Controller {
                     if(isset($next_i['is_break'])){
                         $ui .= '<hr />';
                     } elseif(isset($next_i['i__id'])){
-                        $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
+                        $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], null, view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
                         $listed_items++;
                     }
                 }

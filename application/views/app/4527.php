@@ -91,7 +91,7 @@ foreach($this->X_model->fetch(array(
             $memory_text .= '     '.$link_i['i__id'].' => array('."\n";
             $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',$link_i['i__title'])).'\','."\n";
             $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$link_i['x__message'])).'\','."\n";
-            $memory_text .= '        \'m__cover\' => \''.view_cover(12274, $link_i['i__cover']).'\','."\n";
+            $memory_text .= '        \'m__cover\' => \'\','."\n";
             $memory_text .= '     ),'."\n";
         }
     }

@@ -3,32 +3,6 @@
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 
-$has_cover = strlen(trim($i_focus['i__cover'])) > 0;
-
-$show_bg = count($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 4983, //References
-        'x__right' => $i_focus['i__id'],
-        'x__up' => 28621,
-    ), array(), 1)) && filter_var($i_focus['i__cover'], FILTER_VALIDATE_URL);
-if($show_bg){
-    echo '<style>
-    body { 
-    background: url("' . $i_focus['i__cover'] . '") no-repeat center center fixed !important; 
-    background-size: cover !important;
-    width: 100% !important;
-    -webkit-background-size: cover !important;
-    -moz-background-size: cover !important;
-    -o-background-size: cover !important;
-    top:0 !important;
-      left:0 !important;
-    height: 100% !important;
-    }
-    </style>';
-}
-
-
-
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -74,7 +48,7 @@ if($top_i__id && $x__source){
         if(count($find_previous)){
             $nav_list = array();
             foreach($find_previous as $parent_i){
-                array_push($nav_list, '<li class="breadcrumb-item"><a href="/'.$top_i__id.'/'.$parent_i['i__id'].'"><span class="icon-block-xs">'.view_cover(12273,$parent_i['i__cover']).'</span>'.$parent_i['i__title'].'</a></li>');
+                array_push($nav_list, '<li class="breadcrumb-item"><a href="/'.$top_i__id.'/'.$parent_i['i__id'].'">'.$parent_i['i__title'].'</a></li>');
             }
             echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
                 . join('', $nav_list)
@@ -251,7 +225,7 @@ if($top_i__id){
 }
 
 
-echo '<div class="light-bg large-frame '.( $show_bg ? ' with-background ' : '' ).'">';
+echo '<div class="light-bg large-frame">';
 
 //Show Progress:
 if($top_completed){
@@ -259,7 +233,7 @@ if($top_completed){
     echo '<div class="msg alert alert-success" role="alert"><span class="icon-block">✅</span>100% Completed: You Are Now Reviewing Your Responses</div>';
 }
 
-echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.( !$show_bg && strlen($i_focus['i__cover'])  ? '<div style="padding:8px 0;"><span class="icon-block-img hideIfEmpty">'.view_cover(12273,$i_focus['i__cover']).'</span></div>' : '' ).$i_focus['i__title'].'</h1>';
+echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$i_focus['i__title'].'</h1>';
 
 //echo view_i(20417, $top_i__id, null, $i_focus);
 

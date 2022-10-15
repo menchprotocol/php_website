@@ -1262,7 +1262,6 @@ class X extends CI_Controller
             //IDEA
             $this->I_model->update($_POST['coin__id'], array(
                 'i__title' => trim($_POST['coin__title']),
-                'i__cover' => trim($_POST['coin__cover']),
             ), true, $member_e['e__id']);
 
         } elseif($_POST['coin__type']==12274){

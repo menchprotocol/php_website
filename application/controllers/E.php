@@ -79,7 +79,7 @@ class E extends CI_Controller
                     $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$counter.' '.$m['m__title'].'</div>';
                     foreach(view_coins_e(12969, $member_e['e__id'], 1) as $item){
                         $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
-                        $sidebar_ui .= '<a href="/x/x_next/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>['.$completion_rate['completion_percentage'].'%] '.$item['i__title'].'</a>';
+                        $sidebar_ui .= '<a href="/x/x_next/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'">['.$completion_rate['completion_percentage'].'%] '.$item['i__title'].'</a>';
                     }
                     $sidebar_ui .= '<hr />';
                 }
@@ -91,7 +91,7 @@ class E extends CI_Controller
                 if($counter){
                     $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$counter.' '.$m['m__title'].'</div>';
                     foreach(view_coins_e(6255, $member_e['e__id'], 1, false, 10) as $item){
-                        $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
+                        $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'">'.$item['i__title'].'</a>';
                     }
                     $sidebar_ui .= '<hr />';
                 }
@@ -109,7 +109,7 @@ class E extends CI_Controller
                 if($counter > 0){
                     $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$counter.' '.$m['m__title'].'</div>';
                     foreach($i_notes_query as $item) {
-                        $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'"><span class="icon-block-xs">'.view_cover(12273,$item['i__cover']).'</span>'.$item['i__title'].'</a>';
+                        $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'">'.$item['i__title'].'</a>';
                     }
                     $sidebar_ui .= '<hr />';
                 }
@@ -274,7 +274,7 @@ class E extends CI_Controller
                     if(isset($next_i['is_break'])){
                         $ui .= '<hr />';
                     } elseif(isset($next_i['i__id'])){
-                        $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_cover(12273,$next_i['i__cover']), view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
+                        $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], null, view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
                         $listed_items++;
                     }
                 }
@@ -991,7 +991,7 @@ class E extends CI_Controller
                 return view_json(array(
                     'status' => 1,
                     'coin__title' => $is[0]['i__title'],
-                    'coin__cover' => $is[0]['i__cover'],
+                    'coin__cover' => null,
                     'icon_suggestions' => $icon_suggestions,
                 ));
             }

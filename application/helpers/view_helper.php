@@ -76,7 +76,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
         ));
         if(count($ideas)){
-            return '<div><span class="icon-block-xs">'.view_cover(12273,$ideas[0]['i__cover']). '</span><a href="/i/i_go'.$x__message.'" target="_blank" class="ignore-click" style="font-size:0.89em;">'.$ideas[0]['i__title'].'</a></div>';
+            return '<div><a href="/i/i_go'.$x__message.'" target="_blank" class="ignore-click" style="font-size:0.89em;">'.$ideas[0]['i__title'].'</a></div>';
         } else {
             return $x__message.' ⚠️ INVALID ID';
         }
@@ -657,7 +657,7 @@ function view_coins(){
 }
 
 function view_coin_line($href, $is_current, $x__type, $o__type, $o__cover, $o__title, $x__message = null){
-    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xxs">'.$x__type.'</span><span class="icon-block-xxs">'.$o__type.'</span><span class="icon-block-xxs">'.$o__cover.'</span>'.$o__title./*'<span class="pull-right inline-block">'..'</span>'.*/( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).'</a>';
+    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xxs">'.$x__type.'</span><span class="icon-block-xxs">'.$o__type.'</span>'.( strlen($o__cover) ? '<span class="icon-block-xxs">'.$o__cover.'</span>' : '' ).$o__title./*'<span class="pull-right inline-block">'..'</span>'.*/( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).'</a>';
 }
 
 
@@ -1661,7 +1661,6 @@ function view_i_select($i, $x__source, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
-    $has_valid_url = filter_var($i['i__cover'], FILTER_VALIDATE_URL);
     $i_title = view_i_title($i);
     $member_e = superpower_unlocked();
     $i_stats = i_stats($i['i__metadata']);
@@ -1673,10 +1672,7 @@ function view_i_select($i, $x__source, $previously_selected){
     $ui  = '<div class="coin_cover col-6 col-md-4 col-xl-2 col-lg-3 no-padding">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<table class="coin_coins"></table>'; //For UI height adjustment
-    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background-obs cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' isSelected ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
-
-    //ICON?
-    $ui .= '<div class="cover-btn">'.(!$has_valid_url && $i['i__cover'] ? view_cover(12273,$i['i__cover']) : '').'</div>';
+    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background-obs cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' isSelected ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'">';
 
     $ui .= '</a>';
     $ui .= '</div>';
@@ -1791,13 +1787,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     }
 
 
-    $has_valid_url = filter_var($i['i__cover'], FILTER_VALIDATE_URL);
     $toolbar = $editing_enabled && $superpower_12673;
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
     $show_coins = !$has_any_lock && !$discovery_mode;
-    $show_custom_image = !$has_valid_url && $i['i__cover'];
     $can_click = !$has_any_lock && !$focus_coin && ($discovery_mode || !$editing_enabled);
 
 
@@ -1944,10 +1938,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
         //Coin Cover
-        $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$i['i__cover'].'\');"' : '' ).'>';
+        $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background-obs cover-link">';
 
-        //ICON?
-        $ui .= '<div class="cover-btn">'.( $show_custom_image ? view_cover(12273,$i['i__cover']) : '' ).'</div>';
 
         $ui .= ( !$can_click ? '</div>' : '</a>' );
         $ui .= '</div>'; //cover-wrapper

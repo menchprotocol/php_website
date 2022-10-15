@@ -98,7 +98,7 @@ if(isset($_GET['e__id'])){
 
 
             //Print list:
-            $list_body .= view_item(0,$ref_i['i__id'], $ref_i['i__title'], $ref_i['i__cover'], ($is_flat_list ? '/:' : '/' ).$ref_i['i__id'] ,$messages);
+            $list_body .= view_item(0,$ref_i['i__id'], $ref_i['i__title'], null, ($is_flat_list ? '/:' : '/' ).$ref_i['i__id'] ,$messages);
         }
 
         /*
