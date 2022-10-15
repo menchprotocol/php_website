@@ -1795,7 +1795,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $can_click = !$has_any_lock && !$focus_coin && ($discovery_mode || !$editing_enabled);
 
 
-    if($member_e['e__id']==13546){
+    if(0 && is_new()){
 
         //Fetch Creator:
         $i_creators = $CI->X_model->fetch(array(
@@ -1806,8 +1806,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
         $ui = '<div class="col-sm-6 col-lg-4 mb-4">
       <div class="card">
-      
-        <svg class="bd-placeholder-img card-img-top" width="100%" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"/><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
 
         <div class="card-body">
           <h5 class="card-title">'.$i['i__title'].'</h5>
@@ -1825,6 +1823,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             <small class="text-muted"> · ' . view_time_difference(strtotime($i_creators[0]['x__time'])) . '</small>
           </p>
         </div>
+        
+         <svg class="bd-placeholder-img card-img-top" width="100%" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"/><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
       
       </div>
     </div>';
@@ -1860,10 +1860,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
     } else {
-
-        $ui = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-xl-4 col-lg-6 col-md-8 col-sm-10 col-12 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $has_soft_lock ? ' soft_lock ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
-
-        $ui .= '<div class="cover-wrapper">';
 
 
         //LOCKED
@@ -1926,9 +1922,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
 
-
         //Top action menu:
-        $ui .= '<table class="coin_coins"><tr>';
+        $ui = '<table class="coin_coins"><tr>';
         $ui .= '<td width="20%"><div>'.(!$discovery_mode && $editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</div></td>';
 
         $ui .= '<td width="20%">';
@@ -1950,6 +1945,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '<td width="20%"><div class="show-on-hover">'.( !$can_click && $member_e ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
         $ui .= '</tr></table>';
 
+        $ui .= '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-xl-4 col-lg-6 col-md-8 col-sm-10 col-12 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $has_soft_lock ? ' soft_lock ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
+
+        $ui .= '<div class="cover-wrapper">';
 
 
 
@@ -1961,7 +1959,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
         $ui .= ( !$can_click ? '</div>' : '</a>' );
         $ui .= '</div>'; //cover-wrapper
-
 
 
         //Title Cover
@@ -2036,6 +2033,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
         $ui .= '</div></div>';
 
+        $ui .= '</div>';
 
         if($superpower_10939 && !$focus_coin && $show_coins){
 
@@ -2048,8 +2046,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             $ui .= '</div>';
 
         }
-
-        $ui .= '</div>';
 
     }
 

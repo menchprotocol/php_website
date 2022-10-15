@@ -895,6 +895,11 @@ function cookie_delete(){
     setcookie('auth_cookie', null, -1, '/');
 }
 
+function is_new(){
+    $member_e = superpower_unlocked();
+    return (isset($member_e['e__id']) && $member_e['e__id']==13546);
+}
+
 function cookie_check() {
     date_default_timezone_set(view_memory(6404,11079));
     $CI =& get_instance();
