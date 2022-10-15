@@ -1795,13 +1795,39 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $can_click = !$has_any_lock && !$focus_coin && ($discovery_mode || !$editing_enabled);
 
 
-    if($member_e['e__id']==1 && isset($_GET['new'])){
+    if($member_e['e__id']==13546){
 
         //Fetch Creator:
         $i_creators = $CI->X_model->fetch(array(
             'x__type' => 4250, //New Idea Created
             'x__right' => $i['i__id'],
         ), array('x__source'), 0);
+
+
+        $ui = '<div class="col-sm-6 col-lg-4 mb-4">
+      <div class="card">
+      
+        <svg class="bd-placeholder-img card-img-top" width="100%" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"/><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
+
+        <div class="card-body">
+          <h5 class="card-title">'.$i['i__title'].'</h5>
+          <p class="card-text">';
+        foreach($CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 4231,
+            'x__right' => $i['i__id'],
+        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
+            $ui .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
+        }
+        echo '</p>
+          <p class="card-text">
+            <a href="/@'.$i_creators[0]['e__id'].'"><b>'.$i_creators[0]['e__title'].'</b></a>
+            <small class="text-muted"> · ' . view_time_difference(strtotime($i_creators[0]['x__time'])) . '</small>
+          </p>
+        </div>
+      
+      </div>
+    </div>';
 
         $ui = '<div class="idea_cover">';
 
@@ -1811,18 +1837,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
             $ui .= '<td style="width: 100%;">';
 
-                $ui .= '<div class="title_bar"><a href="/@'.$i_creators[0]['e__id'].'"><b>'.$i_creators[0]['e__title'].'</b> <span style="color:#999;">@' . $i_creators[0]['e__id'] . '</span></a> · <a href="/'.$i['i__id'].'"><span style="color:#999;">' . view_time_difference(strtotime($i_creators[0]['x__time'])) . '</span></a></div>';
-
 
                 $ui .= '<div class="message_bar">';
                 $ui .= $CI->X_model->message_view($i['i__title'], true, $member_e, 0, true);
-                foreach($CI->X_model->fetch(array(
-                    'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type' => 4231,
-                    'x__right' => $i['i__id'],
-                ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
-                    $ui .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
-                }
+
                 $ui .= '</div>';
 
 
