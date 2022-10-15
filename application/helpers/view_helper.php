@@ -932,7 +932,7 @@ function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null){
 
     return '<a href="'.$link.'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
-      <h4 class="css__title"><b><span class="icon-block-lg title-left">'.view_cover(($e__id>0 ? 12274 : 12273),$s__cover).'</span><span class="title-right">'.$s__title.'</span></b></h4>
+      <h4 class="css__title"><b>'.( $s__cover ? '<span class="icon-block-lg title-left">'.view_cover(($e__id>0 ? 12274 : 12273),$s__cover).'</span>' : '' ).'<span class="title-right">'.$s__title.'</span></b></h4>
       <small style="padding: 17px 3px 0 0;"><i class="far fa-chevron-right"></i></small>
     </div>
     '.( strlen($desc) ? '<p>'.$desc.'</p>' : '' ) .'
