@@ -1672,6 +1672,11 @@ i, .btn .show-max {
     padding-left: 5px;
 }
 
+.coin-12274 .inner-content .text_e_4736, .coin-12274 .inner-content .text_e_6197 {
+    text-align: center;
+    padding-left: 0;
+}
+
 .texttype__sm{
     display: inline-block;
     color: #000000;
@@ -2773,7 +2778,6 @@ textarea {
     background-color: #FFFFFF;
 }
 
-.cover-content,
 .custom_ui_13884_13885 .light-bg,
 .custom_ui_13884_13885 .fixed-top{
     background: rgba(255,255,255,0.80) !important;
