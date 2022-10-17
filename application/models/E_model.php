@@ -143,6 +143,22 @@ class E_model extends CI_Model
             'x__down' => $added_e['new_e']['e__id'],
         ));
 
+        //Add member to Domain Member Groups if nto already there:
+        $domain_member_group = intval(substr(get_domain_setting(30095), 1));
+        if($domain_member_group && !count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
+                'x__up' => $domain_member_group,
+                'x__down' => $added_e['new_e']['e__id'],
+            )))){
+            $this->X_model->create(array(
+                'x__source' => $added_e['new_e']['e__id'], //Belongs to this Member
+                'x__type' => e_x__type(),
+                'x__up' => $domain_member_group,
+                'x__down' => $added_e['new_e']['e__id'],
+            ));
+        }
+
         //Now update Algolia:
         update_algolia(12274,  $added_e['new_e']['e__id']);
 

@@ -1996,9 +1996,10 @@ i, .btn .show-max {
 }
 
 .coin_coins{
-    width: 100%;
+    width: calc(100% - 10px);
     height: 45px;
     text-align: center;
+    margin: 0 5px;
 }
 .coin_coins>span{
     padding: 0 8px;
