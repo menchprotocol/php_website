@@ -602,35 +602,35 @@ class X extends CI_Controller
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
-                //Add source link:
-                $this->X_model->create(array(
-                    'x__type' => e_x__type(),
-                    'x__source' => ($member_e ? $member_e['e__id'] : $member__id),
-                    'x__up' => $tag__id,
-                    'x__down' => $member__id,
+
+                $es_tag = $this->E_model->fetch(array(
+                    'e__id' => $tag__id,
                 ));
+                if(count($es_tag)){
+
+                    //Add source link:
+                    $this->X_model->create(array(
+                        'x__type' => e_x__type(),
+                        'x__source' => ($member_e ? $member_e['e__id'] : $member__id),
+                        'x__up' => $tag__id,
+                        'x__down' => $member__id,
+                    ));
+
+                    //Log Reference:
+                    $this->X_model->create(array(
+                        'x__type' => 29393, //Log Referral
+                        'x__source' => ($member_e ? $member_e['e__id'] : $member__id),
+                        'x__up' => $tag__id,
+                        'x__down' => $member__id,
+                        'x__left' => $top_i__id,
+                        'x__right' => $i__id,
+                    ));
+
+                    //Inform user of changes:
+                    $flash_message = '<div class="msg alert alert-warning" role="alert">You have been successfully added to '.view_cover(12274,$es_tag[0]['e__cover']).' '.$es_tag[0]['e__title'].'</div>';
+
+                }
             }
-
-            $es_tag = $this->E_model->fetch(array(
-                'e__id' => $tag__id,
-            ));
-            if(count($es_tag)){
-
-                //Log Reference:
-                $this->X_model->create(array(
-                    'x__type' => 29393, //Log Referral
-                    'x__source' => ($member_e ? $member_e['e__id'] : $member__id),
-                    'x__up' => $tag__id,
-                    'x__down' => $member__id,
-                    'x__left' => $top_i__id,
-                    'x__right' => $i__id,
-                ));
-
-                //Inform user of changes:
-                $flash_message = '<div class="msg alert alert-warning" role="alert">You have been successfully added to '.view_cover(12274,$es_tag[0]['e__cover']).' '.$es_tag[0]['e__title'].'</div>';
-
-            }
-
         }
 
         //Fetch data:
