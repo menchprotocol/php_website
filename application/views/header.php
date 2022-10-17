@@ -482,7 +482,7 @@ echo '<div id="container_search" class="container hidden hideIfEmpty"><div class
 echo '<div id="container_content" class="container">';
 
 //Any message we need to show here?
-if (!isset($flash_message)) {
+if (!isset($flash_message) || !strlen($flash_message)) {
     $flash_message = $this->session->flashdata('flash_message');
 }
 

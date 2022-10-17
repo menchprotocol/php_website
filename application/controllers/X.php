@@ -584,6 +584,7 @@ class X extends CI_Controller
          *
          * */
 
+        $flash_message = null;
         $member_e = superpower_unlocked();
 
         //Log link if not there:
@@ -610,15 +611,25 @@ class X extends CI_Controller
                 ));
             }
 
-            //Log Reference:
-            $this->X_model->create(array(
-                'x__type' => 29393, //Log Referral
-                'x__source' => ($member_e ? $member_e['e__id'] : $member__id),
-                'x__up' => $tag__id,
-                'x__down' => $member__id,
-                'x__left' => $top_i__id,
-                'x__right' => $i__id,
+            $es_tag = $this->E_model->fetch(array(
+                'e__id' => $tag__id,
             ));
+            if(count($es_tag)){
+
+                //Log Reference:
+                $this->X_model->create(array(
+                    'x__type' => 29393, //Log Referral
+                    'x__source' => ($member_e ? $member_e['e__id'] : $member__id),
+                    'x__up' => $tag__id,
+                    'x__down' => $member__id,
+                    'x__left' => $top_i__id,
+                    'x__right' => $i__id,
+                ));
+
+                //Inform user of changes:
+                $flash_message = '<div class="msg alert alert-warning" role="alert">You have been successfully added to '.view_cover(12274,$es_tag[0]['e__cover']).' '.$es_tag[0]['e__title'].'</div>';
+
+            }
 
         }
 
@@ -704,6 +715,7 @@ class X extends CI_Controller
         $this->load->view('header', array(
             'title' => $is[0]['i__title'].( $top_i__id > 0 ? ' | '.$top_is[0]['i__title'] : '' ),
             'i_focus' => $is[0],
+            'flash_message' => $flash_message,
         ));
         $this->load->view('x_layout', array(
             'i_top' => ( $top_i__id > 0 ? $top_is[0] : false ),
