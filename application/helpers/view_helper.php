@@ -1926,7 +1926,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-xl-4 col-lg-6 col-md-8 col-sm-10 col-12 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $has_soft_lock ? ' soft_lock ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
 
-        $ui .= '<table class="coin_coins" style="background-color: #d7ab15 !important;"><tr>';
+        $ui .= '<table class="coin_coins"><tr>'; //style="background-color: #d7ab15 !important;"
         $ui .= '<td width="20%"><div>'.(!$discovery_mode && $editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</div></td>';
 
         $ui .= '<td width="20%">';
