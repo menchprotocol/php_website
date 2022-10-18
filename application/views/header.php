@@ -340,8 +340,9 @@ if(!$basic_header_footer){
 
                     $echo_left_nav = null;
 
-                    if($member_e && $superpower_28651) {
+                    if(0 && $member_e && $superpower_28651) {
 
+                        //TODO Fix Bugs
                         //Load Left Menu
                         $echo_left_nav .= '<td class="block-x user_nav_box">';
                         $echo_left_nav .= '<a href="javascript:void(0);" onclick="toggle_left_menu()" data-toggle="tooltip" data-placement="right" title="'.$member_e['e__title'].'" style="margin-left: 0;" class="icon-block menu_click">'.view_cover(12274,$member_e['e__cover']).'</a>';
