@@ -1547,7 +1547,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 function get_domain_setting($setting_id = 0, $initiator_e__id = 0){
 
     $CI =& get_instance();
-    $no_domain = 14923; //No Domain ID
+    $no_domain = 2783; //Mench is Default Domain
     $source_id = $no_domain; //Assume no domain unless found below...
     $server_name = get_server('SERVER_NAME');
 
