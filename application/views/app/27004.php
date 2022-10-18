@@ -241,7 +241,7 @@ if(count($i_query)){
     echo '<th style="text-align: right;">'.$gross_units.'</th>';
     echo '<th style="text-align: right;">'.$gross_tickets.'</th>';
     echo '<th style="text-align: right;">&nbsp;</th>';
-    echo '<th style="text-align: right;">$'.number_format(( $gross_units > 0 ? $gross_revenue / $gross_units : 0 ), 2).'</th>';
+    echo '<th style="text-align: right;">$'.number_format(( $gross_tickets > 0 ? $gross_revenue / $gross_tickets : 0 ), 2).'</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden">+$'.number_format($gross_revenue, 2).'</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
