@@ -1927,9 +1927,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
         $ui .= '<table class="coin_coins" '.( !$discovery_mode ? ' style="background-color: #d7ab15 !important;" ' : '' ).'><tr>';
-        $ui .= '<td width="20%"><div class="show-on-hover">'.(!$discovery_mode && $editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</div></td>';
+        $ui .= '<td width="20%"><div>'.(!$discovery_mode && $editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</div></td>';
 
-        $ui .= '<td width="20%">';
+        $ui .= '<td width="20%"><div class="show-on-hover">';
         if(!$has_any_lock && $toolbar && $superpower_12700 && isset($i['x__type'])){
 
             if(in_array($i['x__type'], $CI->config->item('n___4486'))){
@@ -1941,11 +1941,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             }
 
         }
-        $ui .= '</td>';
+        $ui .= '</div></td>';
 
         $ui .= '<td width="20%"><div class="show-on-hover">'.($focus_coin ? ($discovery_mode ? '<a href="/~'.$i['i__id'].'" title="'.$e___11035[13563]['m__title'].'" class="'.superpower_active(10939).'">'.$e___11035[13563]['m__cover'].'</a>' : '<a href="/'.$i['i__id'].'">'.( i_is_startable($i) ? '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26124]['m__title'].'">'.$e___11035[26124]['m__cover'].'</span>' : '<span data-toggle="tooltip" data-placement="top" title="'.$e___11035[26130]['m__title'].'">'.$e___11035[26130]['m__cover'].'</span>' ).'</a>' ) : ($has_sortable ? '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '') ).'</div></td>';
-        $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
         $ui .= '<td width="20%"><div class="show-on-hover">'.( !$can_click && $member_e ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
         $ui .= '</tr></table>';
 
 
