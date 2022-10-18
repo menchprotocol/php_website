@@ -2019,7 +2019,7 @@ i, .btn .show-max {
     font-weight: bold !important;
 }
 .headline {
-    padding: 5px 0;
+    padding: 5px 0 8px;
 }
 .coin_cover{
     position: relative;
@@ -3434,6 +3434,10 @@ h4.css__title{
     width: 100%;
     margin: -16px auto 0 !important;
     padding: 0;
+}
+.large-frame>div{
+    padding-left: 8px;
+    padding-bottom: 5px;
 }
 
 .large-frame.with-background{

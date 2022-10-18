@@ -2773,7 +2773,7 @@ function e_phone(){
     $('.save_phone').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/e/e_phone", {
+    $.post("/e/e_fullname", {
         e_phone: $('#e_phone').val(),
     }, function (data) {
 
@@ -2789,7 +2789,7 @@ function e_phone(){
 
             //Disappear in a while:
             setTimeout(function () {
-                $('.save_email').html('');
+                $('.save_phone').html('');
             }, 1597);
 
         }

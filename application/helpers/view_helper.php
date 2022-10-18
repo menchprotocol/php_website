@@ -1591,6 +1591,19 @@ function view_e_settings($list_id, $is_open){
                 <a href="javascript:void(0)" onclick="e_phone()" class="btn btn-default">Save</a>
                 <span class="saving-account save_phone"></span>';
 
+        } elseif ($acc_e__id == 30198 /* Full Name */) {
+
+            $u_names = $CI->X_model->fetch(array(
+                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__down' => $member_e['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__up' => 30198, //Full Name
+            ));
+
+            $tab_ui .= '<span><input type="text" id="e_fullname" class="form-control border dotransparent" value="' . (count($u_names) > 0 ? $u_names[0]['x__message'] : '') . '" placeholder="Will Smith" /></span>
+                <a href="javascript:void(0)" onclick="e_fullname()" class="btn btn-default">Save</a>
+                <span class="saving-account save_name"></span>';
+
         } elseif ($acc_e__id == 3286 /* Password */) {
 
             $tab_ui .= '<span><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
