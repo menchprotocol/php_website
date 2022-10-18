@@ -27,7 +27,7 @@ if (isset($_GET['e__id'])) {
     foreach($payment_es as $e){
         if($e['e__id']==$_GET['e__id']){
 
-            echo '<h2>'.$e['e__title'].'<span style="padding-left: 13px;"><a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');"><i class="fal fa-filter"></i></a></span></h2>';
+            echo '<h2>'.$e['e__title'].'<span style="padding-left: 13px;"><a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');"><i class="fal fa-cog"></i></a></span></h2>';
 
             $i_query = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
