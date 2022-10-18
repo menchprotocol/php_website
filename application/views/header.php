@@ -351,7 +351,7 @@ if(!$basic_header_footer){
 
                         //Load Left Menu to Home
                         $echo_left_nav .= '<td class="block-x user_nav_box">';
-                        $echo_left_nav .= '<a href="/@'.$member_e['e__id'].'" data-toggle="tooltip" data-placement="right" title="'.$member_e['e__title'].'" style="margin-left: 0; width:36px; height:36px; " class="center-cropped menu_click">'.view_cover(12274,$member_e['e__cover']).'</a>';
+                        $echo_left_nav .= '<a href="/@'.$member_e['e__id'].'" data-toggle="tooltip" data-placement="right" title="'.$member_e['e__title'].'" style="margin-left: 0;" class="menu_click">'.view_cover(12274,$member_e['e__cover'], 1).'</a>';
                         $echo_left_nav .= '</td>';
 
                     } else {
