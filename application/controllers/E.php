@@ -1341,6 +1341,114 @@ class E extends CI_Controller
 
 
 
+    function e_fullname()
+    {
+
+        $member_e = superpower_unlocked();
+
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['e_fullname']) || !strlen($_POST['e_fullname'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Full Name',
+            ));
+        }
+
+
+        //Cleanup:
+        $_POST['e_fullname'] = trim($_POST['e_fullname']);
+
+        //Fetch existing phone:
+        $u_names = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__down' => $member_e['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 30198, //Name
+        ));
+        if (count($u_names) > 0) {
+
+            if (strlen($_POST['e_fullname']) == 0) {
+
+                //Delete phone:
+                $this->X_model->update($u_names[0]['x__id'], array(
+                    'x__status' => 6173, //Transaction Removed
+                ), $member_e['e__id'], 6224 /* Member Account Updated */);
+
+                $return = array(
+                    'status' => 1,
+                    'message' => 'Full Name deleted',
+                );
+
+            } elseif ($u_names[0]['x__message'] != $_POST['e_fullname']) {
+
+                //Update if not the same:
+                $this->X_model->update($u_names[0]['x__id'], array(
+                    'x__message' => $_POST['e_fullname'],
+                ), $member_e['e__id'], 6224 /* Member Account Updated */);
+
+                $return = array(
+                    'status' => 1,
+                    'message' => 'Full Name updated',
+                );
+
+            } else {
+
+                $return = array(
+                    'status' => 0,
+                    'message' => 'Full Name unchanged',
+                );
+
+            }
+
+        } elseif (strlen($_POST['e_fullname']) > 0) {
+
+            //Create new transaction:
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__down' => $member_e['e__id'],
+                'x__type' => e_x__type($_POST['e_fullname']),
+                'x__up' => 30198, //Full Name
+                'x__message' => $_POST['e_fullname'],
+            ), true);
+
+            $return = array(
+                'status' => 1,
+                'message' => 'Full Name added',
+            );
+
+        } else {
+
+            $return = array(
+                'status' => 0,
+                'message' => 'Full Name unchanged',
+            );
+
+        }
+
+
+        if($return['status']){
+            //Log Account Update transaction type:
+            $_POST['account_update_function'] = 'e_fullname'; //Add this variable to indicate which My Account function created this transaction
+            $this->X_model->create(array(
+                'x__source' => $member_e['e__id'],
+                'x__type' => 6224, //My Account updated
+                'x__message' => 'My Account '.$return['message']. ( strlen($_POST['e_fullname']) > 0 ? ': '.$_POST['e_fullname'] : ''),
+                'x__metadata' => $_POST,
+            ));
+        }
+
+
+        //Return results:
+        return view_json($return);
+
+
+    }
+
+
     function e_phone()
     {
 
