@@ -2130,7 +2130,7 @@ class X_model extends CI_Model
         $common_totals = $this->I_model->fetch(array(
             'i__id IN ('.join(',',$flat_common_x).')' => null,
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ), 0, 0, array(), 'COUNT(i__id) as total_x');
+        ), 0, 0, array(), 'COUNT(DISTINCT i__id) as total_x');
 
 
         //Count completed so far:
@@ -2140,13 +2140,14 @@ class X_model extends CI_Model
             'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ), array('x__left'), 0, 0, array(), 'COUNT(i__id) as completed_x');
+        ), array('x__left'), 0, 0, array(), 'COUNT(DISTINCT i__id) as completed_x');
 
 
         //Calculate common steps and expansion steps recursively for this u:
         $metadata_this = array(
             'steps_total' => intval($common_totals[0]['total_x']),
             'steps_completed' => intval($common_completed[0]['completed_x']),
+            'steps_incomplete' => intval($common_completed[0]['completed_x']),
         );
 
 
