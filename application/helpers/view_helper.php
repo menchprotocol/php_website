@@ -1927,7 +1927,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
         $ui .= '<table class="coin_coins" '.( !$discovery_mode ? ' style="background-color: #d7ab15 !important;" ' : '' ).'><tr>';
-        $ui .= '<td width="20%"><div>'.(!$discovery_mode && $editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.(!$discovery_mode && $editing_enabled ? view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']) : '').'</div></td>';
 
         $ui .= '<td width="20%">';
         if(!$has_any_lock && $toolbar && $superpower_12700 && isset($i['x__type'])){
