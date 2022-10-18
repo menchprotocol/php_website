@@ -340,7 +340,7 @@ if(!$basic_header_footer){
 
                     $echo_left_nav = null;
 
-                    if(0 && $member_e && $superpower_28651) {
+                    if($member_e && $superpower_28651) {
 
                         //TODO Fix Bugs
                         //Load Left Menu

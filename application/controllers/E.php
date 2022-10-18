@@ -120,7 +120,7 @@ class E extends CI_Controller
                 $domain_list = intval(substr(get_domain_setting(28646), 1));
                 if($domain_list){
 
-                    if(count($this->config->item('x___'.$domain_list))){
+                    if(is_array($this->config->item('x___'.$domain_list)) && count($this->config->item('x___'.$domain_list))){
                         $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].' Ideas</div>';
                         foreach($this->config->item('x___'.$domain_list) as $i__id => $m2){
 
