@@ -3438,6 +3438,7 @@ h4.css__title{
 .large-frame>div{
     padding-left: 8px;
     padding-bottom: 5px;
+    width: calc(100% - 8px);
 }
 
 .large-frame.with-background{
