@@ -1145,7 +1145,7 @@ a.headline {
     display: block;
     text-align: center;
     margin-left:5px;
-    padding:10px 10px 10px;
+    padding:0px 0px 0px 2px;
 }
 
 .platform-navigation .block-x .fas, .block-x .fal, .block-x .far, .block-x .fad{
@@ -3524,6 +3524,11 @@ hr {
     height: 48px;
     border-radius: 50%;
     margin: 0 3px;
+}
+
+.source_cover-mini {
+    width: 34px;
+    height: 34px;
 }
 
 
