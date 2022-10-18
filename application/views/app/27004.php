@@ -225,8 +225,8 @@ if(count($i_query)){
     echo '<th style="text-align: right;" id="th_paid">Transactions</th>';
     echo '<th style="text-align: right;" id="th_paid">Tickets</th>';
     echo '<th style="text-align: right;" id="th_paid">Limit</th>';
-    echo '<th style="text-align: right;" id="th_average">Price</th>';
-    echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Gross Sales</th>';
+    echo '<th style="text-align: right;" id="th_average">Net Ticket</th>';
+    echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Net Total</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Platform Fee</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal Fee</th>';
     echo '<th style="text-align: right;" id="th_payout">NET Payout</th>';
