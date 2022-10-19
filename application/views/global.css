@@ -194,8 +194,8 @@ li a {
     line-height: 144%;
 }
 .msg, .msg-frame {
-    margin-left: 10px !important;
-    margin-right: 10px !important;
+    margin-left: 8px !important;
+    margin-right: 8px !important;
 }
 
 
@@ -3436,9 +3436,8 @@ h4.css__title{
     padding: 0;
 }
 .large-frame>div{
-    padding-left: 8px;
     padding-bottom: 5px;
-    width: calc(100% - 8px);
+    width: calc(100% - 16px);
 }
 
 .large-frame.with-background{
