@@ -375,7 +375,7 @@ if(!$basic_header_footer){
                     //Domain Source
                     //'.($member_e ? '/@'.$member_e['e__id'] : '/' ).'
                     $domain_cover = get_domain('m__cover');
-                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.get_domain_setting(0).'">'.view_cover(12274, get_domain('m__cover'), 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b>'.'</a>';
+                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.get_domain_setting(0).'">'.view_cover(12274, one_two_explode('"','"',get_domain('m__cover')), 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$base_source.'">'.get_domain('m__title').'</b>'.'</a>';
 
                     echo '</div>';
 
