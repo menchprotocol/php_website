@@ -55,8 +55,8 @@ if($_GET['run']){
                 'x__status' => 6173,
             ));
             */
-            echo 'Cannot find @'.$x['x__source'].' before ['.$target_time.']<br />';
-            break;
+            //echo 'Cannot find @'.$x['x__source'].' before ['.$target_time.']<br />';
+            //break;
         }
 
     }
