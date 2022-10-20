@@ -33,7 +33,6 @@ if($_GET['run']){
         //Find the most recent get started before this:
         $starteing_id = 0;
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__source' => $x['x__source'],
             'x__type' => 4235, //Get started
             'x__time <=' => substr($x['x__time'], 0, 19), //Get started
