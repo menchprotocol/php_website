@@ -119,9 +119,9 @@ foreach($i_query as $i){
         $total_units++;
 
         $this_tickets = 1;//Default assumption:
-        for($i=2;$i<=20;$i++){
-            if(substr_count(strtolower($i['i__title']),$i.'x')==1){
-                $this_tickets = $i;
+        for($t=2;$t<=20;$t++){
+            if(substr_count(strtolower($i['i__title']),$t.'x')==1){
+                $this_tickets = $t;
                 break;
             }
         }
