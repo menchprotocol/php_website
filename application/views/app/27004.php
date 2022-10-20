@@ -22,48 +22,6 @@ $payment_es = $this->X_model->fetch(array(
     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
 ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
-if(isset($_GET['run'])){
-    $count = 0;
-    $total = 0;
-    foreach($this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
-        'x__right' => 0,
-    ), array(), 0) as $x){
-
-        //Find the most recent get started before this:
-        $total++;
-        $starteing_id = 0;
-        $target_time = date("Y-m-d H:i:s", (strtotime(substr($x['x__time'], 0, 19))+1));
-
-        foreach($this->X_model->fetch(array(
-            'x__source' => $x['x__source'],
-            'x__type' => 4235, //Get started
-            'x__time <=' => $target_time, //Get started
-        ), array(), 1, 0, array('x__time' => 'DESC')) as $s){
-            $starteing_id =  $s['x__left'];
-            $this->X_model->update($x['x__id'], array(
-                'x__right' => $starteing_id,
-            ));
-            break;
-        }
-
-
-        if($starteing_id > 0){
-            $count++;
-        } else {
-            /*
-            $this->X_model->update($x['x__id'], array(
-                'x__status' => 6173,
-            ));
-            */
-            //echo 'Cannot find @'.$x['x__source'].' before ['.$target_time.']<br />';
-            //break;
-        }
-
-    }
-    echo $count.'/'.$total.' Updated';
-}
-
 
 if (isset($_GET['e__id'])) {
 
