@@ -351,7 +351,7 @@ if(count($i_query)){
                     $is = $this->I_model->fetch(array(
                         'i__id' => $origin,
                     ));
-                    echo "['".( count($is) ? '/'.$origin.' '.$is[0]['i__title'] : 'Unknown!' )."', ".number_format($sales, 0, '.', '')."],";
+                    echo "['".$origin."', ".number_format($sales, 0, '.', '')."],";
                 }
                 ?>
             ]);
