@@ -344,12 +344,13 @@ if(count($i_query)){
         function drawChart3() {
             var chart = new google.visualization.PieChart(document.getElementById('chart_origin_div'));
             var options = {
-                title: 'Sales by Source',
+                title: 'Sales by Promoters',
                 hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:45}
             }
             var data = google.visualization.arrayToDataTable([
                 ['Origin', 'Sales'],
                 <?php
+                sort($daily_sales);
                 foreach($origin_sales as $origin => $sales){
                     if(($sales/$gross_revenue)>=0.5){
                         //This item has more than 50% of sales, remove it:
