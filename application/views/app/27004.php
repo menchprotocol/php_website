@@ -36,7 +36,7 @@ if($_GET['run']){
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__source' => $x['x__source'],
             'x__type' => 4235, //Get started
-            'x__time <=' => $x['x__time'], //Get started
+            'x__time <=' => substr($x['x__time'], 0, 19), //Get started
         )) as $s){
             $starteing_id =  $x['x__left'];
             $this->X_model->update($x['x__id'], array(
@@ -45,6 +45,7 @@ if($_GET['run']){
             break;
         }
 
+        $total++;
         if($starteing_id > 0){
             $count++;
         } else {
@@ -52,7 +53,6 @@ if($_GET['run']){
             break;
         }
 
-        $total++;
     }
     echo $count.'/'.$total.' Updated';
 }
