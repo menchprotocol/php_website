@@ -203,7 +203,7 @@ foreach($i_query as $i){
         $transaction_content .= '</tr>';
 
         if($x__metadata['mc_gross'] > 0){
-            $date = date("md", strtotime($x['x__time']));
+            $date = date("n.j", strtotime($x['x__time']));
             if(isset($daily_sales[$date])){
                 $daily_sales[$date] += $x__metadata['mc_gross'];
             } else {
@@ -349,12 +349,16 @@ if(count($i_query)){
                 ['Origin', 'Sales'],
                 <?php
                 foreach($origin_sales as $origin => $sales){
+                    if(($sales/$gross_revenue)>=0.5){
+                        //This item has more than 50% of sales, remove it:
+                        continue;
+                    }
                     if($sales > 0){
                         //Fetch this origin:
                         $is = $this->I_model->fetch(array(
                             'i__id' => $origin,
                         ));
-                        echo "['".( count($is) ? str_replace('\'','`',$is[0]['i__title']) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
+                        echo "['".( count($is) ? '$'.$sales.' '.str_replace('\'','`',$is[0]['i__title']) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
                     }
                 }
                 ?>
