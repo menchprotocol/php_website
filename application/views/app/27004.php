@@ -3,7 +3,8 @@
 $commission_rate = doubleval(view_memory(6404,27017))/100;
 
 $gross_units = 0;
-$gross_tickets = 0;
+$gross_free_tickets = 0;
+$gross_paid_tickets = 0;
 $gross_revenue = 0;
 $gross_paypal_fee = 0;
 $gross_commission = 0;
@@ -229,9 +230,13 @@ foreach($i_query as $i){
     }
 
 
+    if($total_revenue > 0){
+        $gross_paid_tickets += $total_tickets;
+    } else {
+        $gross_free_tickets += $total_tickets;
+    }
 
     $gross_units += $total_units;
-    $gross_tickets += $total_tickets;
     $gross_revenue += $total_revenue;
     $gross_paypal_fee += $total_paypal_fee;
     $gross_commission += $total_commission;
@@ -274,7 +279,8 @@ if(count($i_query)){
     echo '<tr style="vertical-align: baseline;">';
     echo '<th id="th_primary">Paid Ideas <a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-plus-circle"></i></a> <a href="javascript:void(0)" onclick="$(\'.tr_row\').addClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-minus-circle"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid">Transactions</th>';
-    echo '<th style="text-align: right;" id="th_paid">Tickets</th>';
+    echo '<th style="text-align: right;" id="th_paid">Free Tickets</th>';
+    echo '<th style="text-align: right;" id="th_paid">Paid Tickets</th>';
     echo '<th style="text-align: right;" id="th_paid">Limit</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Net Total</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Platform Fee</th>';
@@ -290,13 +296,14 @@ if(count($i_query)){
     echo '<tr>';
     echo '<th style="text-align: right;" id="th_primary">Totals</th>';
     echo '<th style="text-align: right;">'.$gross_units.'</th>';
-    echo '<th style="text-align: right;">'.$gross_tickets.'</th>';
+    echo '<th style="text-align: right;">'.$gross_free_tickets.'</th>';
+    echo '<th style="text-align: right;">'.$gross_paid_tickets.'</th>';
     echo '<th style="text-align: right;">&nbsp;</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden">+$'.number_format($gross_revenue, 2).'</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" title="'.($commission_rate*100).'%">-$'.number_format($gross_commission, 2).'</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" title="'.(( $gross_revenue>0 ? $gross_paypal_fee/$gross_revenue : 0 )*100).'%">-$'.number_format($gross_paypal_fee, 2).'</th>';
     echo '<th style="text-align: right;" title="'.(( $gross_revenue>0 ? $gross_payout/$gross_revenue : 0 )*100).'%"><b>$'.number_format($gross_payout, 2).'</b></th>';
-    echo '<th style="text-align: right;">$'.number_format(( $gross_tickets > 0 ? $gross_payout / $gross_tickets : 0 ), 2).'</th>';
+    echo '<th style="text-align: right;">$'.number_format(( $gross_paid_tickets > 0 ? $gross_payout / $gross_paid_tickets : 0 ), 2).'</th>';
     echo '<th style="text-align: right;">'.join(', ',$gross_currencies).'</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden">&nbsp;</th>';
     echo '<th style="text-align: right;">&nbsp;</th>';
