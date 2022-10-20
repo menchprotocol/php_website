@@ -327,6 +327,7 @@ if(count($i_query)){
             chart.draw(data, options);
         }
 
+        google.charts.setOnLoadCallback(drawChart3);
         function drawChart3() {
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_origin_div'));
             var options = {
