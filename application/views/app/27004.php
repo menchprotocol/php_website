@@ -160,18 +160,21 @@ foreach($i_query as $i){
 
         $transaction_content .= '</tr>';
 
-        $date = date("md", strtotime($x['x__time']));
-        if(isset($daily_sales[$date])){
-            $daily_sales[$date] += $x__metadata['mc_gross'];
-        } else {
-            $daily_sales[$date] = $x__metadata['mc_gross'];
-        }
+        if($x__metadata['mc_gross'] > 0){
+            $date = date("md", strtotime($x['x__time']));
+            if(isset($daily_sales[$date])){
+                $daily_sales[$date] += $x__metadata['mc_gross'];
+            } else {
+                $daily_sales[$date] = $x__metadata['mc_gross'];
+            }
 
-        $origin_source = $x['x__left'];
-        if(isset($origin_sales[$origin_source])){
-            $origin_sales[$origin_source] += $x__metadata['mc_gross'];
-        } else {
-            $origin_sales[$origin_source] = $x__metadata['mc_gross'];
+            $origin_source = $x['x__right'];
+            if(isset($origin_sales[$origin_source])){
+                $origin_sales[$origin_source] += $x__metadata['mc_gross'];
+            } else {
+                $origin_sales[$origin_source] = $x__metadata['mc_gross'];
+            }
+
         }
 
     }
