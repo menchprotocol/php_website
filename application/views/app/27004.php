@@ -167,7 +167,7 @@ foreach($i_query as $i){
             $daily_sales[$date] = $x__metadata['mc_gross'];
         }
 
-        $origin_source = intval($x['x__right']);
+        $origin_source = $x['x__right'];
         if(isset($origin_sales[$origin_source])){
             $origin_sales[$origin_source] += $x__metadata['mc_gross'];
         } else {
