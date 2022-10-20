@@ -341,7 +341,7 @@ if(count($i_query)){
 
         google.charts.setOnLoadCallback(drawChart3);
         function drawChart3() {
-            var chart = new google.visualization.ColumnChart(document.getElementById('chart_origin_div'));
+            var chart = new google.visualization.PieChart(document.getElementById('chart_origin_div'));
             var options = {
                 hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:45}
             }
