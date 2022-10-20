@@ -28,7 +28,7 @@ if($_GET['run']){
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE ALREADY?
         'x__right' => 0,
-    )) as $x){
+    ), array(), 0) as $x){
 
         //Find the most recent get started before this:
         $starteing_id = 0;
