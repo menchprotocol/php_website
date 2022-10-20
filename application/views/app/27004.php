@@ -212,9 +212,9 @@ foreach($i_query as $i){
 
             $origin_source = $x['x__right'];
             if(isset($origin_sales[$origin_source])){
-                $origin_sales[$origin_source] += $x__metadata['mc_gross'];
+                $origin_sales[$origin_source] += number_format($x__metadata['mc_gross'], 0, '','');
             } else {
-                $origin_sales[$origin_source] = $x__metadata['mc_gross'];
+                $origin_sales[$origin_source] = number_format($x__metadata['mc_gross'], 0, '','');
             }
 
         }
