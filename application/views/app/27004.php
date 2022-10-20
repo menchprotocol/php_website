@@ -39,11 +39,17 @@ if($_GET['run']){
             'x__time <=' => $x['x__time'], //Get started
         )) as $s){
             $starteing_id =  $x['x__left'];
+            $this->X_model->update($x['x__id'], array(
+                'x__right' => $starteing_id,
+            ));
             break;
         }
 
         if($starteing_id > 0){
             $count++;
+        } else {
+            echo 'Cannot find @'.$x['x__source'].' Before ['.$x['x__time'].']';
+            break;
         }
 
         $total++;
