@@ -26,6 +26,9 @@ $payment_es = $this->X_model->fetch(array(
 if (isset($_GET['e__id'])) {
 
     //Show header:
+    $e___6287 = $this->config->item('e___6287'); //APP
+    echo '<div><a href="/-27004">'.$e___6287[27004]['m__title'].'</a></div>';
+
     foreach($payment_es as $e){
         if($e['e__id']==$_GET['e__id']){
 
@@ -45,9 +48,10 @@ if (isset($_GET['e__id'])) {
 
     //Fetch all assigned ideas:
     $assigned_i_ids = array();
+    echo '<ul class="list-group">';
     foreach($payment_es as $e){
 
-        echo '<div><a href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].'</a></div>';
+        echo '<a href="/-27004?e__id='.$e['e__id'].'" class="list-group-item">'.$e['e__title'].'<span class="badge badge-primary badge-pill"><i class="far fa-chevron-right"></i></span></a>';
 
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -58,6 +62,7 @@ if (isset($_GET['e__id'])) {
             array_push($assigned_i_ids, $i_assigned['x__right']);
         }
     }
+    echo '</ul>';
 
     //Show all non-assigned payment ideas:
     $i_query = $this->I_model->fetch(array(
