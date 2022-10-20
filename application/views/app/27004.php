@@ -51,7 +51,7 @@ if (isset($_GET['e__id'])) {
     echo '<ul class="list-group">';
     foreach($payment_es as $e){
 
-        echo '<a href="/-27004?e__id='.$e['e__id'].'" class="list-group-item">'.$e['e__title'].'<span class="badge badge-primary badge-pill"><i class="far fa-chevron-right"></i></span></a>';
+        echo '<li class="list-group-item"><a href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].'<span class="badge badge-primary badge-pill"><i class="far fa-chevron-right"></i></span></a></li>';
 
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
