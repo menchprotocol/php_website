@@ -328,7 +328,12 @@ if(count($i_query)){
                 <?php
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
-                    if(($sales/$gross_revenue)>=0.5){
+                    if(($sales/$gross_revenue)>=0.5 || count($this->X_model->fetch(array(
+                            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                            'x__right' => $origin,
+                            'x__up' => 30564, //None Promoter
+                        )))){
                         //This item has more than 50% of sales, remove it:
                         continue;
                     }
