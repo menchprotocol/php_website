@@ -2,6 +2,7 @@
 
 $commission_rate = doubleval(view_memory(6404,27017))/100;
 
+$e___6287 = $this->config->item('e___6287'); //APP
 $gross_units = 0;
 $gross_free_tickets = 0;
 $gross_paid_tickets = 0;
@@ -26,8 +27,7 @@ $payment_es = $this->X_model->fetch(array(
 if (isset($_GET['e__id'])) {
 
     //Show header:
-    $e___6287 = $this->config->item('e___6287'); //APP
-    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -30px;"><a href="/-27004"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
+    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -21px;"><a href="/-27004"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
 
     foreach($payment_es as $e){
         if($e['e__id']==$_GET['e__id']){
@@ -48,6 +48,7 @@ if (isset($_GET['e__id'])) {
 
     //Fetch all assigned ideas:
     $assigned_i_ids = array();
+    echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
     echo '<div class="list-group" style="max-width: 600px; margin: 0 auto; display: block;">';
     foreach($payment_es as $e){
 
