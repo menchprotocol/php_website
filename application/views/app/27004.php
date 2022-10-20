@@ -118,7 +118,8 @@ foreach($i_query as $i){
     //Total earnings:
     $transaction_content = '';
     $total_units = 0;
-    $total_tickets = 0;
+    $total_free_tickets = 0;
+    $total_paid_tickets = 0;
     $total_revenue = 0;
     $total_paypal_fee = 0;
     $currencies = array();
@@ -147,12 +148,17 @@ foreach($i_query as $i){
         }
 
         $x__metadata = unserialize($x['x__metadata']);
-        if(doubleval($x__metadata['mc_gross']) <= 0){
+        $is_free = (doubleval($x__metadata['mc_gross']) <= 0);
+        if($is_free){
             //continue;
         }
         $total_units++;
         $this_tickets = ( substr_count(strtolower($i['i__title']),'2x ')==1 ? 2 : ( substr_count(strtolower($i['i__title']),'3x ')==1 ? 3 : ( substr_count(strtolower($i['i__title']),'4x ')==1 ? 4 : ( substr_count(strtolower($i['i__title']),'5x ')==1 ? 5 : ( substr_count(strtolower($i['i__title']),'6x ')==1 ? 6 : 1 ) ) ) ) );
-        $total_tickets += $this_tickets;
+        if($is_free){
+            $total_free_tickets += $this_tickets;
+        } else {
+            $total_paid_tickets += $this_tickets;
+        }
         $total_paypal_fee += doubleval($x__metadata['mc_fee']);
         $total_revenue += doubleval($x__metadata['mc_gross']);
         if(!in_array($x__metadata['mc_currency'], $currencies) && strlen($x__metadata['mc_currency'])>0){
@@ -190,7 +196,8 @@ foreach($i_query as $i){
         $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden" title="Transaction #'.$x['x__id'].'">';
         $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
         $transaction_content .= '<td style="text-align: right;">1</td>';
-        $transaction_content .= '<td style="text-align: right;">'.$this_tickets.'</td>';
+        $transaction_content .= '<td style="text-align: right;">'.( $is_free ? $this_tickets : 0 ).'</td>';
+        $transaction_content .= '<td style="text-align: right;">'.( $is_free ? 0 : $this_tickets ).'</td>';
         $transaction_content .= '<td style="text-align: right;">&nbsp;</td>';
         $transaction_content .= '<td style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($x__metadata['mc_gross'], 2).'</td>';
@@ -230,12 +237,9 @@ foreach($i_query as $i){
     }
 
 
-    if($total_revenue > 0){
-        $gross_paid_tickets += $total_tickets;
-    } else {
-        $gross_free_tickets += $total_tickets;
-    }
 
+    $gross_paid_tickets += $total_paid_tickets;
+    $gross_free_tickets += $total_free_tickets;
     $gross_units += $total_units;
     $gross_revenue += $total_revenue;
     $gross_paypal_fee += $total_paypal_fee;
@@ -257,7 +261,8 @@ foreach($i_query as $i){
     $body_content .= '<tr>';
     $body_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
     $body_content .= '<td style="text-align: right;">'.$total_units.'</td>';
-    $body_content .= '<td style="text-align: right;">'.$total_tickets.'</td>';
+    $body_content .= '<td style="text-align: right;">'.$total_free_tickets.'</td>';
+    $body_content .= '<td style="text-align: right;">'.$total_paid_tickets.'</td>';
     $body_content .= '<td style="text-align: right;">'.$available_units.'</td>';
     $body_content .= '<td style="text-align: right;">$'.number_format(( $total_units > 0 ? $total_revenue / $total_units : 0 ), 2).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($total_revenue, 2).'</td>';
