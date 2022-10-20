@@ -1167,7 +1167,7 @@ a.headline {
     height: 42px;
     overflow: hidden;
     line-height: 151%;
-    margin-bottom: -13px;
+    margin-bottom: -15px;
 }
 .x-list {
     padding:15px 0;
@@ -1595,9 +1595,9 @@ i, .btn .show-max {
     width: 34px !important;
     height: 34px !important;
     margin-left: 3px !important;
-    margin-right: 3px !important;
+    margin-right: 5px !important;
     margin-bottom: -7px !important;
-    margin-top: 3px;
+    margin-top: 1px;
     border-radius: 0 !important;
     display: inline-block;
     font-size: 1.5em;
