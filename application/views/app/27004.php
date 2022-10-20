@@ -31,24 +31,44 @@ if($_GET['run']){
     ), array(), 0) as $x){
 
         //Find the most recent get started before this:
+        $total++;
         $starteing_id = 0;
         foreach($this->X_model->fetch(array(
             'x__source' => $x['x__source'],
             'x__type' => 4235, //Get started
             'x__time <=' => date("Y-m-d H:i:s", (strtotime(substr($x['x__time'], 0, 19))+1)), //Get started
-        )) as $s){
-            $starteing_id =  $x['x__left'];
+        ), array(), 1, 0, array('x__time' => 'DESC')) as $s){
+            $starteing_id =  $s['x__left'];
             $this->X_model->update($x['x__id'], array(
                 'x__right' => $starteing_id,
             ));
             break;
         }
 
-        $total++;
+        if(!$starteing_id){
+            //Try again:
+            foreach($this->X_model->fetch(array(
+                'x__source' => $s['x__source'],
+                'x__type' => 4235, //Get started
+            ), array(), 1) as $s){
+                $starteing_id =  $s['x__left'];
+                $this->X_model->update($x['x__id'], array(
+                    'x__right' => $starteing_id,
+                ));
+                break;
+            }
+        }
+
+
         if($starteing_id > 0){
             $count++;
         } else {
-            echo 'Cannot find @'.$x['x__source'].' Before ['.$x['x__time'].']';
+            /*
+            $this->X_model->update($x['x__id'], array(
+                'x__status' => 6173,
+            ));
+            */
+            echo 'Cannot find @'.$x['x__source'].'<br />';
             break;
         }
 
