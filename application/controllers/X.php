@@ -267,7 +267,7 @@ class X extends CI_Controller
         //Mark this as complete since there is no child to choose from:
         if($member_e && in_array($current_is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE ALREADY?
+                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                 'x__source' => $member_e['e__id'],
                 'x__left' => $current_is[0]['i__id'],
             )))){
@@ -279,7 +279,7 @@ class X extends CI_Controller
 
         if($member_e && in_array($next_is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE ALREADY?
+                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                 'x__source' => $member_e['e__id'],
                 'x__left' => $next_is[0]['i__id'],
             )))){

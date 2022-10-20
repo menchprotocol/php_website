@@ -21,11 +21,11 @@ $payment_es = $this->X_model->fetch(array(
     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
 ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
-if($_GET['run']){
+if(isset($_GET['run'])){
     $count = 0;
     $total = 0;
     foreach($this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE ALREADY?
+        'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
         'x__right' => 0,
     ), array(), 0) as $x){
 
@@ -307,21 +307,9 @@ if(count($i_query)){
 
 
 
-
-
-    ksort($daily_sales);
-
-    //Create % chart:
-    $total_sales = 0;
-    $daily_percent = array();
-    foreach($daily_sales as $day => $sales){
-        $total_sales += $sales;
-        $daily_percent[$day] = $total_sales/$gross_revenue*100;
-    }
-
+    //Show Charts:
     echo '<div id="chart_div" style="margin:0 0 21px;"></div>';
     echo '<div id="chart_origin_div" style="margin:0 0 21px;"></div>';
-    echo '<div id="chart_div_percent" style="margin:0 0 21px;"></div>';
     ?>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -329,33 +317,8 @@ if(count($i_query)){
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['corechart']});
 
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
 
-        // Callback that creates and populates a data table,
-        // instantiates the pie chart, passes in the data and
-        // draws it.
-        function drawChart() {
-            return false;
-            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_percent'));
-            var options = {
-                hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:45}
-            }
-            var data = google.visualization.arrayToDataTable([
-                ['Day', 'Percent'],
-                <?php
-                foreach($daily_percent as $day => $sales){
-                    echo "['".$day."', ".$sales."],";
-                }
-                ?>
-            ]);
-            chart.draw(data, options);
-        }
-
-
-        // Set a callback to run when the Google Visualization API is loaded.
         google.charts.setOnLoadCallback(drawChart2);
-
         function drawChart2() {
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
             var options = {
@@ -364,6 +327,7 @@ if(count($i_query)){
             var data = google.visualization.arrayToDataTable([
                 ['Day', 'Sales'],
                 <?php
+                ksort($daily_sales);
                 foreach($daily_sales as $day => $sales){
                     echo "['".$day."', ".number_format($sales, 0, '.', '')."],";
                 }
@@ -371,6 +335,7 @@ if(count($i_query)){
             ]);
             chart.draw(data, options);
         }
+
 
         google.charts.setOnLoadCallback(drawChart3);
         function drawChart3() {
@@ -382,7 +347,11 @@ if(count($i_query)){
                 ['Origin', 'Sales'],
                 <?php
                 foreach($origin_sales as $origin => $sales){
-                    echo "['".$origin."', ".number_format($sales, 0, '.', '')."],";
+                    //Fetch this origin:
+                    $is = $this->I_model->fetch(array(
+                        'i__id' => $origin,
+                    ));
+                    echo "['".( count($is) ? '/'.$origin.' '.$is[0]['i__title'] : 'Unknown!' )."', ".number_format($sales, 0, '.', '')."],";
                 }
                 ?>
             ]);
