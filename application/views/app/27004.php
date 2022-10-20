@@ -329,7 +329,9 @@ if(count($i_query)){
                 <?php
                 ksort($daily_sales);
                 foreach($daily_sales as $day => $sales){
-                    echo "['".$day."', ".number_format($sales, 0, '.', '')."],";
+                    if($sales > 0){
+                        echo "['".$day."', ".number_format($sales, 0, '.', '')."],";
+                    }
                 }
                 ?>
             ]);
@@ -347,11 +349,13 @@ if(count($i_query)){
                 ['Origin', 'Sales'],
                 <?php
                 foreach($origin_sales as $origin => $sales){
-                    //Fetch this origin:
-                    $is = $this->I_model->fetch(array(
-                        'i__id' => $origin,
-                    ));
-                    echo "['".$origin."', ".number_format($sales, 0, '.', '')."],";
+                    if($sales > 0){
+                        //Fetch this origin:
+                        $is = $this->I_model->fetch(array(
+                            'i__id' => $origin,
+                        ));
+                        echo "['".( count($is) ? str_replace('\'','`',$is[0]['i__title']) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
+                    }
                 }
                 ?>
             ]);
