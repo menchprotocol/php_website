@@ -35,7 +35,7 @@ if($_GET['run']){
         foreach($this->X_model->fetch(array(
             'x__source' => $x['x__source'],
             'x__type' => 4235, //Get started
-            'x__time <=' => substr($x['x__time'], 0, 19), //Get started
+            'x__time <=' => date("Y-m-d H:i:s", (strtotime(substr($x['x__time'], 0, 19))+1)), //Get started
         )) as $s){
             $starteing_id =  $x['x__left'];
             $this->X_model->update($x['x__id'], array(
