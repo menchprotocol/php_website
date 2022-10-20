@@ -36,6 +36,7 @@ if($_GET['run']){
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__source' => $x['x__source'],
             'x__type' => 4235, //Get started
+            'x__time <=' => $x['x__time'], //Get started
         )) as $s){
             $starteing_id =  $x['x__left'];
             break;
