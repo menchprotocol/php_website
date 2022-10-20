@@ -322,6 +322,7 @@ if(count($i_query)){
         function drawChart2() {
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
             var options = {
+                title: 'Sales by Day',
                 hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:45}
             }
             var data = google.visualization.arrayToDataTable([
@@ -343,6 +344,7 @@ if(count($i_query)){
         function drawChart3() {
             var chart = new google.visualization.PieChart(document.getElementById('chart_origin_div'));
             var options = {
+                title: 'Sales by Source',
                 hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:45}
             }
             var data = google.visualization.arrayToDataTable([
@@ -358,7 +360,7 @@ if(count($i_query)){
                         $is = $this->I_model->fetch(array(
                             'i__id' => $origin,
                         ));
-                        echo "['".( count($is) ? '$'.$sales.' '.str_replace('\'','`',$is[0]['i__title']) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
+                        echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',$is[0]['i__title']) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
                     }
                 }
                 ?>
