@@ -116,7 +116,7 @@ foreach($i_query as $i){
             //continue;
         }
         $total_units++;
-        $this_tickets = ( substr_count(strtolower($i['i__title']),'2x ')==1 ? 2 : ( substr_count(strtolower($i['i__title']),'3x ')==1 ? 3 : ( substr_count(strtolower($i['i__title']),'4x ')==1 ? 4 : ( substr_count(strtolower($i['i__title']),'5x ')==1 ? 5 : ( substr_count(strtolower($i['i__title']),'6x ')==1 ? 6 : 1 ) ) ) ) );
+        $this_tickets = ( substr_count(strtolower($i['i__title']),'2x')==1 ? 2 : ( substr_count(strtolower($i['i__title']),'3x')==1 ? 3 : ( substr_count(strtolower($i['i__title']),'4x')==1 ? 4 : ( substr_count(strtolower($i['i__title']),'5x')==1 ? 5 : ( substr_count(strtolower($i['i__title']),'6x')==1 ? 6 : 1 ) ) ) ) );
         if($is_free){
             $total_free_tickets += $this_tickets;
         } else {
