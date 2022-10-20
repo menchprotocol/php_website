@@ -27,7 +27,7 @@ if (isset($_GET['e__id'])) {
 
     //Show header:
     $e___6287 = $this->config->item('e___6287'); //APP
-    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -21px;"><a href="/-27004">'.$e___6287[27004]['m__title'].'</a></div>';
+    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -30px;"><a href="/-27004"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
 
     foreach($payment_es as $e){
         if($e['e__id']==$_GET['e__id']){
