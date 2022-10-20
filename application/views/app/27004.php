@@ -350,7 +350,7 @@ if(count($i_query)){
             var data = google.visualization.arrayToDataTable([
                 ['Origin', 'Sales'],
                 <?php
-                sort($daily_sales);
+                asort($daily_sales);
                 foreach($origin_sales as $origin => $sales){
                     if(($sales/$gross_revenue)>=0.5){
                         //This item has more than 50% of sales, remove it:
