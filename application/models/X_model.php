@@ -1498,6 +1498,7 @@ class X_model extends CI_Model
     function mark_complete($top_i__id, $i, $add_fields) {
 
         //Always add Idea to x__left
+        $add_fields['x__right'] = $top_i__id;
         $add_fields['x__left'] = $i['i__id'];
 
         if (!isset($add_fields['x__message'])) {

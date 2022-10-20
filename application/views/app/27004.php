@@ -21,6 +21,35 @@ $payment_es = $this->X_model->fetch(array(
     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
 ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
+if($_GET['run']){
+    $count = 0;
+    $total = 0;
+    foreach($this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE ALREADY?
+        'x__right' => 0,
+    )) as $x){
+
+        //Find the most recent get started before this:
+        $starteing_id = 0;
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__source' => $x['x__source'],
+            'x__type' => 4235, //Get started
+        )) as $s){
+            $starteing_id =  $x['x__left'];
+            break;
+        }
+
+        if($starteing_id > 0){
+            $count++;
+        }
+
+        $total++;
+    }
+    echo $count.'/'.$total.' Updated';
+}
+
 
 if (isset($_GET['e__id'])) {
 
