@@ -227,7 +227,7 @@ foreach($i_query as $i){
     $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_commission!=0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
     $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_paypal_fee!=0 ? '-$'.number_format($total_paypal_fee, 2) : '&nbsp;').'</td>';
     $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td style="text-align: right;"><b>'.( $payout>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
+    $ticket_type_content .= '<td style="text-align: right;"><b>'.( $total_tickets>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
     $ticket_type_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
     $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;" >&nbsp;</td>';
     $ticket_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>Edit</u></a></td>';
