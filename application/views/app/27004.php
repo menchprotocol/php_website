@@ -31,7 +31,7 @@ if (isset($_GET['e__id'])) {
     foreach($payment_es as $e){
         if($e['e__id']==$_GET['e__id']){
 
-            echo '<h2>'.$e['e__title'].'<span style="padding-left: 13px;"><a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');"><i class="fal fa-cog"></i></a></span></h2>';
+            echo '<h2>'.$e['e__title'].'</h2>';
 
             $i_query = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -219,7 +219,7 @@ foreach($i_query as $i){
     }
 
     $ticket_type_content .= '<tr class="css__title">';
-    $ticket_type_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
+    $ticket_type_content .= '<td>'.( $total_tickets>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a>' : $i['i__title'] ).'</td>';
     $ticket_type_content .= '<td style="text-align: right;">'.$total_transactions.'</td>';
     $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_transactions.'</td>';
     $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? $total_tickets : '&nbsp;' ).'</td>';
@@ -241,7 +241,7 @@ if(count($i_query)){
 
     echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
     echo '<tr style="vertical-align: baseline;" class="css__title">';
-    echo '<th id="th_primary">Paid Ideas <a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-plus-circle"></i></a> <a href="javascript:void(0)" onclick="$(\'.tr_row\').addClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-minus-circle"></i></a></th>';
+    echo '<th id="th_primary"><a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-plus-circle"></i></a> <a href="javascript:void(0)" onclick="$(\'.tr_row\').addClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-minus-circle"></i></a> <a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-exchange"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid">Transactions</th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Limit</th>';
     echo '<th style="text-align: right;" id="th_paid">Tickets</th>';
@@ -254,6 +254,7 @@ if(count($i_query)){
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Transaction ID</th>';
     echo '<th style="text-align: right;">Action</th>';
     echo '</tr>';
+
     echo $ticket_type_content;
 
     echo '<tr class="css__title">';
