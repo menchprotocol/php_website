@@ -3535,6 +3535,11 @@ div.img {
     height: 34px;
 }
 
+.source_cover_micro div.img {
+    width: 18px;
+    height: 18px;
+}
+
 
 .idea_cover {
     margin-bottom: 10px;

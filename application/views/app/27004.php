@@ -156,7 +156,7 @@ foreach($i_query as $i){
         $this_payout = $x__metadata['mc_gross']-$x__metadata['mc_fee']-$this_commission;
 
         $transaction_content .= '<tr class="transaction_columns transactions_'.$i['i__id'].' hidden" title="Transaction #'.$x['x__id'].'">';
-        $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block source_cover_mini">'.view_cover(12274,$es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'<a href="/-4341?x__id='.$x['x__id'].'" class="advance_columns hidden" style="margin-left:8px;" target="_blank">'.$x['x__id'].'</a></td>';
+        $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block source_cover_micro">'.view_cover(12274,$es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'<a href="/-4341?x__id='.$x['x__id'].'" class="advance_columns hidden" style="margin-left:8px;" target="_blank">'.$x['x__id'].'</a></td>';
         $transaction_content .= '<td style="text-align: right;">1</td>';
         $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
         $transaction_content .= '<td style="text-align: right;">'.$this_tickets.'</td>';
