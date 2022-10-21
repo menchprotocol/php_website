@@ -157,7 +157,7 @@ foreach($i_query as $i){
 
         $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden" title="Transaction #'.$x['x__id'].'">';
         $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
-        $transaction_content .= '<td style="text-align: right;">1</td>';
+        $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">1</td>';
         $transaction_content .= '<td style="text-align: right;">&nbsp;</td>';
         $transaction_content .= '<td style="text-align: right;">'.$this_tickets.'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
@@ -221,7 +221,7 @@ foreach($i_query as $i){
     $body_content .= '<tr>';
     $body_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
     $body_content .= '<td style="text-align: right;">'.( $total_units>0 ? $total_units : '&nbsp;' ).'</td>';
-    $body_content .= '<td style="text-align: right;">'.$available_units.'</td>';
+    $body_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_units.'</td>';
     $body_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? $total_tickets : '&nbsp;' ).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_revenue>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_commission!=0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
@@ -243,7 +243,7 @@ if(count($i_query)){
     echo '<tr style="vertical-align: baseline;">';
     echo '<th id="th_primary">Paid Ideas <a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-plus-circle"></i></a> <a href="javascript:void(0)" onclick="$(\'.tr_row\').addClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-minus-circle"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid">Transactions</th>';
-    echo '<th style="text-align: right;" id="th_paid">Limit</th>';
+    echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Limit</th>';
     echo '<th style="text-align: right;" id="th_paid">Tickets</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Sales</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Platform Fee</th>';
@@ -259,7 +259,7 @@ if(count($i_query)){
     echo '<tr>';
     echo '<th style="text-align: right;" id="th_primary">Totals</th>';
     echo '<th style="text-align: right;">'.$gross_units.'</th>';
-    echo '<th style="text-align: right;">&nbsp;</th>';
+    echo '<th style="text-align: right;" class="advance_columns hidden">&nbsp;</th>';
     echo '<th style="text-align: right;">'.$gross_tickets.'</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden">'.'$'.number_format($gross_revenue, 2).'</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden">-$'.number_format($gross_commission, 2).'</th>';
