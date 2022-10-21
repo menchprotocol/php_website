@@ -158,7 +158,7 @@ foreach($i_query as $i){
         $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden" title="Transaction #'.$x['x__id'].'">';
         $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
         $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">1</td>';
-        $transaction_content .= '<td style="text-align: right;">1</td>';
+        $transaction_content .= '<td style="text-align: right;">&nbsp;</td>';
         $transaction_content .= '<td style="text-align: right;">'.$this_tickets.'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($this_commission, 2).'</td>';
