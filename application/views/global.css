@@ -3516,7 +3516,7 @@ hr {
     border-color: #FC1B44 !important;
 }
 
-.source_cover div.img {
+div.img {
     border:0;
     position: relative;
     background-repeat: no-repeat;
