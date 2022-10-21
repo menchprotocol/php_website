@@ -26,7 +26,7 @@ $payment_es = $this->X_model->fetch(array(
 if (isset($_GET['e__id'])) {
 
     //Show header:
-    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -21px;"><a href="/-27004"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
+    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="/-27004"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
 
     foreach($payment_es as $e){
         if($e['e__id']==$_GET['e__id']){
@@ -241,7 +241,7 @@ if(count($i_query)){
 
     echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
     echo '<tr style="vertical-align: baseline;" class="css__title">';
-    echo '<th id="th_primary"><a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-plus-circle"></i></a> <a href="javascript:void(0)" onclick="$(\'.tr_row\').addClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-minus-circle"></i></a> <a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-exchange"></i></a></th>';
+    echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Transactions"><i class="fas fa-exchange rotate90"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="fas fa-exchange"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid">Transactions</th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Limit</th>';
     echo '<th style="text-align: right;" id="th_paid">Tickets</th>';
@@ -257,7 +257,7 @@ if(count($i_query)){
 
     echo $ticket_type_content;
 
-    echo '<tr class="css__title">';
+    echo '<tr class="css__title" style="font-size:1.3em;">';
     echo '<th style="text-align: left; font-weight: bold;" id="th_primary">Totals</th>';
     echo '<th style="text-align: right; font-weight: bold;">'.$gross_transactions.'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">&nbsp;</th>';
