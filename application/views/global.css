@@ -3527,7 +3527,7 @@ div.img {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    margin: 0 3px;
+    margin: 0 auto;
 }
 
 .source_cover_mini div.img {
@@ -3536,8 +3536,9 @@ div.img {
 }
 
 .source_cover_micro div.img {
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
+    margin-bottom: -8px;
 }
 
 
