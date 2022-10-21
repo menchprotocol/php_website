@@ -228,7 +228,6 @@ foreach($i_query as $i){
     $ticket_type_content .= '<td style="text-align: right;"><b>'.( $total_tickets>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
     $ticket_type_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
     $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;" >&nbsp;</td>';
     $ticket_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>Edit</u></a></td>';
     $ticket_type_content .= '</tr>';
     $ticket_type_content .= $transaction_content;
@@ -250,7 +249,6 @@ if(count($i_query)){
     echo '<th style="text-align: right;" id="th_payout">NET Payout</th>';
     echo '<th style="text-align: right;" id="th_currency">&nbsp;</th>';
     echo '<th style="text-align: right;" id="th_average">AVG Ticket</th>';
-    echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Transaction ID</th>';
     echo '<th style="text-align: right;">Action</th>';
     echo '</tr>';
 
@@ -268,7 +266,6 @@ if(count($i_query)){
     echo '<th style="text-align: right; font-weight: bold;">'.join(', ',$gross_currencies).'</th>';
     echo '<th style="text-align: right; font-weight: bold;">$'.number_format(( $gross_tickets > 0 ? $gross_payout / $gross_tickets : 0 ), 2).'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">&nbsp;</th>';
-    echo '<th style="text-align: right; font-weight: bold;">&nbsp;</th>';
     echo '</tr>';
     echo '</table>';
     echo ( $x_updated > 0 ? '<div>'.$x_updated.' Halfed!<hr /></div>' : '' );
