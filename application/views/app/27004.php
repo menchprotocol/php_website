@@ -239,8 +239,8 @@ foreach($i_query as $i){
     $body_content .= '<td style="text-align: right;">$'.number_format(( $total_units > 0 ? $total_revenue / $total_units : 0 ), 2).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;">+$'.number_format($total_revenue, 2).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($total_commission, 2).'</td>';
-    $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
     $body_content .= '<td style="text-align: right;" title="'.(( $total_revenue>0 ? $payout/$total_revenue : 0 )*100).'%"><b>$'.number_format($payout, 2).'</b></td>';
+    $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
     $body_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" >&nbsp;</td>';
     $body_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>Edit</u></a></td>';
@@ -263,7 +263,7 @@ if(count($i_query)){
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Platform Fee</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal Fee</th>';
     echo '<th style="text-align: right;" id="th_payout">NET Payout</th>';
-    echo '<th style="text-align: right;" id="th_average">Net Ticket</th>';
+    echo '<th style="text-align: right;" id="th_average">Avg. Ticket</th>';
     echo '<th style="text-align: right;" id="th_currency">&nbsp;</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Transaction ID</th>';
     echo '<th style="text-align: right;">Action</th>';
@@ -328,7 +328,7 @@ if(count($i_query)){
         function drawChart3() {
             var chart = new google.visualization.PieChart(document.getElementById('chart_origin_div'));
             var options = {
-                title: 'Sales by Promoters',
+                title: 'Sales by Promoter',
                 hAxis: {showTextEvery:1, slantedText:true, slantedTextAngle:45}
             }
             var data = google.visualization.arrayToDataTable([
