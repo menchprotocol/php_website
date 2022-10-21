@@ -265,7 +265,7 @@ if(count($i_query)){
     echo '<th style="text-align: right; font-weight: bold;"><b>$'.number_format($gross_payout, 2).'</b></th>';
     echo '<th style="text-align: right; font-weight: bold;">'.join(', ',$gross_currencies).'</th>';
     echo '<th style="text-align: right; font-weight: bold;">$'.number_format(( $gross_tickets > 0 ? $gross_payout / $gross_tickets : 0 ), 2).'</th>';
-    echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">&nbsp;</th>';
+    echo '<th style="text-align: right; font-weight: bold;">&nbsp;</th>';
     echo '</tr>';
     echo '</table>';
     echo ( $x_updated > 0 ? '<div>'.$x_updated.' Halfed!<hr /></div>' : '' );
