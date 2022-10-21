@@ -237,7 +237,7 @@ foreach($i_query as $i){
 
 if(count($i_query)){
 
-    echo '<table id="sortable_table" class="table table-sm table-striped image-mini" style="margin: 0 5px; width:calc(100%-10px) !important;">';
+    echo '<table id="sortable_table" class="table table-sm table-striped image-mini" style="margin: 0 5px; width:calc(100% - 10px) !important;">';
     echo '<tr style="vertical-align: baseline;" class="css__title">';
     echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.transaction_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Transactions"><i class="fas fa-arrows-v"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="fas fa-arrows-h"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid">Transactions</th>';
