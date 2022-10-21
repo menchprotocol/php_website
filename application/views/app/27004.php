@@ -75,7 +75,7 @@ if (isset($_GET['e__id'])) {
 
 //List all payment Ideas and their total earnings
 $x_updated = 0;
-$body_content = '';
+$ticket_type_content = '';
 foreach($i_query as $i){
 
     //Total earnings:
@@ -218,21 +218,21 @@ foreach($i_query as $i){
         $transaction_content .= '<tr class="tr_row hidden"></tr>';
     }
 
-    $body_content .= '<tr>';
-    $body_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
-    $body_content .= '<td style="text-align: right;">'.( $total_units>0 ? $total_units : '&nbsp;' ).'</td>';
-    $body_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_units.'</td>';
-    $body_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? $total_tickets : '&nbsp;' ).'</td>';
-    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_revenue>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
-    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_commission!=0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
-    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_paypal_fee!=0 ? '-$'.number_format($total_paypal_fee, 2) : '&nbsp;').'</td>';
-    $body_content .= '<td style="text-align: right;">'.( $total_tickets>0 && $payout>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
-    $body_content .= '<td style="text-align: right;"><b>'.( $payout>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
-    $body_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
-    $body_content .= '<td class="advance_columns hidden" style="text-align: right;" >&nbsp;</td>';
-    $body_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>Edit</u></a></td>';
-    $body_content .= '</tr>';
-    $body_content .= $transaction_content;
+    $ticket_type_content .= '<tr>';
+    $ticket_type_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
+    $ticket_type_content .= '<td style="text-align: right;">'.( $total_units>0 ? $total_units : '&nbsp;' ).'</td>';
+    $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_units.'</td>';
+    $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? $total_tickets : '&nbsp;' ).'</td>';
+    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_revenue>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
+    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_commission!=0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
+    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_paypal_fee!=0 ? '-$'.number_format($total_paypal_fee, 2) : '&nbsp;').'</td>';
+    $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
+    $ticket_type_content .= '<td style="text-align: right;"><b>'.( $payout>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
+    $ticket_type_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
+    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;" >&nbsp;</td>';
+    $ticket_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>Edit</u></a></td>';
+    $ticket_type_content .= '</tr>';
+    $ticket_type_content .= $transaction_content;
 
 }
 
@@ -254,7 +254,7 @@ if(count($i_query)){
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Transaction ID</th>';
     echo '<th style="text-align: right;">Action</th>';
     echo '</tr>';
-    echo $body_content;
+    echo $ticket_type_content;
 
     echo '<tr>';
     echo '<th style="text-align: left; font-weight: bold;" id="th_primary">Totals</th>';
