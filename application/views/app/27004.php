@@ -227,7 +227,7 @@ foreach($i_query as $i){
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($total_commission, 2).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.(( $total_revenue>0 ? $total_paypal_fee/$total_revenue : 0 )*100).'%">-$'.number_format($total_paypal_fee, 2).'</td>';
     $body_content .= '<td style="text-align: right;"><b>$'.number_format($payout, 2).'</b></td>';
-    $body_content .= '<td style="text-align: right;">$'.number_format(( $total_units > 0 ? $payout / $total_units : 0 ), 2).'</td>';
+    $body_content .= '<td style="text-align: right;">$'.number_format(( $total_tickets > 0 ? $payout / $total_tickets : 0 ), 2).'</td>';
     $body_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
     $body_content .= '<td class="advance_columns hidden" style="text-align: right;" >&nbsp;</td>';
     $body_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'" style="font-weight:bold;"><u>Edit</u></a></td>';
