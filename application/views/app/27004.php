@@ -223,9 +223,9 @@ foreach($i_query as $i){
     $ticket_type_content .= '<td style="text-align: right;">'.( $total_units>0 ? $total_units : '&nbsp;' ).'</td>';
     $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_units.'</td>';
     $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? $total_tickets : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_revenue>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_commission!=0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_paypal_fee!=0 ? '-$'.number_format($total_paypal_fee, 2) : '&nbsp;').'</td>';
+    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_tickets>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
+    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_tickets>0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
+    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_tickets>0 ? '-$'.number_format($total_paypal_fee, 2) : '&nbsp;').'</td>';
     $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
     $ticket_type_content .= '<td style="text-align: right;"><b>'.( $total_tickets>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
     $ticket_type_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
