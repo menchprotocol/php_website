@@ -155,7 +155,7 @@ foreach($i_query as $i){
         $this_commission = $x__metadata['mc_gross']*$commission_rate;
         $this_payout = $x__metadata['mc_gross']-$x__metadata['mc_fee']-$this_commission;
 
-        $transaction_content .= '<tr class="tr_row transactions_'.$i['i__id'].' hidden" title="Transaction #'.$x['x__id'].'">';
+        $transaction_content .= '<tr class="tr_row css__title transactions_'.$i['i__id'].' hidden" title="Transaction #'.$x['x__id'].'">';
         $transaction_content .= '<td><div style="padding-left: 34px;">'.( count($es) ? '<a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</div></td>';
         $transaction_content .= '<td style="text-align: right;">1</td>';
         $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
@@ -218,7 +218,7 @@ foreach($i_query as $i){
         $transaction_content .= '<tr class="tr_row hidden"></tr>';
     }
 
-    $ticket_type_content .= '<tr>';
+    $ticket_type_content .= '<tr class="css__title">';
     $ticket_type_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
     $ticket_type_content .= '<td style="text-align: right;">'.$total_transactions.'</td>';
     $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_transactions.'</td>';
@@ -239,7 +239,7 @@ foreach($i_query as $i){
 
 if(count($i_query)){
 
-    echo '<table id="sortable_table" class="table table-sm table-striped image-mini">';
+    echo '<table id="sortable_table" class="table table-sm table-striped image-mini css__title">';
     echo '<tr style="vertical-align: baseline;">';
     echo '<th id="th_primary">Paid Ideas <a href="javascript:void(0)" onclick="$(\'.tr_row\').removeClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-plus-circle"></i></a> <a href="javascript:void(0)" onclick="$(\'.tr_row\').addClass(\'hidden\');" style="font-weight:bold;"><i class="fas fa-minus-circle"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid">Transactions</th>';
