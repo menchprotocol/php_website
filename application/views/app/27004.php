@@ -220,12 +220,12 @@ foreach($i_query as $i){
 
     $body_content .= '<tr>';
     $body_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
-    $body_content .= '<td style="text-align: right;">'.$total_units.'</td>';
+    $body_content .= '<td style="text-align: right;">'.( $total_units>0 ? $total_units : '&nbsp;' ).'</td>';
     $body_content .= '<td style="text-align: right;">'.$available_units.'</td>';
-    $body_content .= '<td style="text-align: right;">'.$total_tickets.'</td>';
-    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_revenue>0 ? '$'.number_format($total_revenue, 2) : '' ).'</td>';
-    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_commission!=0 ? '-$'.number_format($total_commission, 2) : '' ).'</td>';
-    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_paypal_fee!=0 ? '-$'.number_format($total_paypal_fee, 2) : '').'</td>';
+    $body_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? $total_tickets : '&nbsp;' ).'</td>';
+    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_revenue>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
+    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_commission!=0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
+    $body_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_paypal_fee!=0 ? '-$'.number_format($total_paypal_fee, 2) : '&nbsp;').'</td>';
     $body_content .= '<td style="text-align: right;">'.( $total_tickets>0 && $payout>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
     $body_content .= '<td style="text-align: right;"><b>'.( $payout>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
     $body_content .= '<td style="text-align: right;">'.join(', ',$currencies).'</td>';
