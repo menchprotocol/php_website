@@ -3,7 +3,7 @@
 $commission_rate = doubleval(view_memory(6404,27017))/100;
 
 $e___6287 = $this->config->item('e___6287'); //APP
-$gross_units = 0;
+$gross_transactions = 0;
 $gross_tickets = 0;
 $gross_revenue = 0;
 $gross_paypal_fee = 0;
@@ -80,7 +80,7 @@ foreach($i_query as $i){
 
     //Total earnings:
     $transaction_content = '';
-    $total_units = 0;
+    $total_transactions = 0;
     $total_tickets = 0;
     $total_revenue = 0;
     $total_paypal_fee = 0;
@@ -110,7 +110,7 @@ foreach($i_query as $i){
         }
 
         $x__metadata = unserialize($x['x__metadata']);
-        $total_units++;
+        $total_transactions++;
 
         $this_tickets = 1;//Default assumption:
         for($t=2;$t<=20;$t++){
@@ -193,14 +193,14 @@ foreach($i_query as $i){
     $payout = $total_revenue-$total_commission-$total_paypal_fee;
 
 
-    if($i['i__type']==6183 && !$total_units){
+    if($i['i__type']==6183 && !$total_transactions){
         continue;
     }
 
 
 
     $gross_tickets += $total_tickets;
-    $gross_units += $total_units;
+    $gross_transactions += $total_transactions;
     $gross_revenue += $total_revenue;
     $gross_paypal_fee += $total_paypal_fee;
     $gross_commission += $total_commission;
@@ -212,16 +212,16 @@ foreach($i_query as $i){
         'x__right' => $i['i__id'],
         'x__up' => 26189,
     ), array(), 1);
-    $available_units = (count($has_limits) && is_numeric($has_limits[0]['x__message']) ? intval($has_limits[0]['x__message']) : '∞');
+    $available_transactions = (count($has_limits) && is_numeric($has_limits[0]['x__message']) ? intval($has_limits[0]['x__message']) : '∞');
 
-    if(fmod($total_units, 2)==1){
+    if(fmod($total_transactions, 2)==1){
         $transaction_content .= '<tr class="tr_row hidden"></tr>';
     }
 
     $ticket_type_content .= '<tr>';
     $ticket_type_content .= '<td><a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a></td>';
-    $ticket_type_content .= '<td style="text-align: right;">'.( $total_units>0 ? $total_units : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_units.'</td>';
+    $ticket_type_content .= '<td style="text-align: right;">'.$total_transactions.'</td>';
+    $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_transactions.'</td>';
     $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? $total_tickets : '&nbsp;' ).'</td>';
     $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_tickets>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
     $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_tickets>0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
@@ -258,7 +258,7 @@ if(count($i_query)){
 
     echo '<tr>';
     echo '<th style="text-align: left; font-weight: bold;" id="th_primary">Totals</th>';
-    echo '<th style="text-align: right; font-weight: bold;">'.$gross_units.'</th>';
+    echo '<th style="text-align: right; font-weight: bold;">'.$gross_transactions.'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">&nbsp;</th>';
     echo '<th style="text-align: right; font-weight: bold;">'.$gross_tickets.'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.'$'.number_format($gross_revenue, 2).'</th>';
