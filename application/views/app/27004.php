@@ -156,7 +156,7 @@ foreach($i_query as $i){
         $this_payout = $x__metadata['mc_gross']-$x__metadata['mc_fee']-$this_commission;
 
         $transaction_content .= '<tr class="transaction_columns transactions_'.$i['i__id'].' hidden" title="Transaction #'.$x['x__id'].'">';
-        $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block source_cover_micro">'.view_cover(12274,$es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'<a href="/-4341?x__id='.$x['x__id'].'" class="advance_columns hidden" style="margin-left:8px;" target="_blank">'.$x['x__id'].'</a></td>';
+        $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block source_cover_micro">'.view_cover(12274,$es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</td>';
         $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">1</td>';
         $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
         $transaction_content .= '<td style="text-align: right;">'.$this_tickets.'x</td>';
@@ -166,7 +166,7 @@ foreach($i_query as $i){
         $transaction_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
         $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$x__metadata['mc_currency'].'</td>';
         $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden"><b>$'.number_format(($this_payout/$this_tickets), 2).'</b></td>';
-        $transaction_content .= '<td style="text-align: right;" id="refund_'.$x['x__id'].'"><a href="#" onclick="paypal_refund('.$x['x__id'].', '.number_format($x__metadata['mc_gross'], 2).')" style="font-weight:bold;"><u>Refund</u></a> <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank"><i class="fas fa-info-circle"></i></a> <a href="/-4341?x__id='.$x['x__id'].'" target="_blank"><i class="fas fa-atlas"></i></a></td>';
+        $transaction_content .= '<td style="text-align: right;" id="refund_'.$x['x__id'].'"><a href="#" onclick="paypal_refund('.$x['x__id'].', '.number_format($x__metadata['mc_gross'], 2).')" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Process Full Refund"><u><i class="fal fa-hands-usd" style="font-size:1em !important;"></i></u></a> <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> <a href="/-4341?x__id='.$x['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
 
         $transaction_content .= '</tr>';
 
@@ -228,7 +228,7 @@ foreach($i_query as $i){
     $ticket_type_content .= '<td style="text-align: right;"><b>'.( $total_tickets>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
     $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.join(', ',$currencies).'</td>';
     $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $total_tickets>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size: 0.8em !important;"></i></a></td>';
+    $ticket_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
     $ticket_type_content .= '</tr>';
     $ticket_type_content .= $transaction_content;
 
