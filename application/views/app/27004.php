@@ -228,7 +228,7 @@ foreach($i_query as $i){
     $ticket_type_content .= '<td style="text-align: right;"><b>'.( $total_tickets>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
     $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.join(', ',$currencies).'</td>';
     $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'"><i class="fal fa-cog"></i></a></td>';
+    $ticket_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size: 0.8em;"></i></a></td>';
     $ticket_type_content .= '</tr>';
     $ticket_type_content .= $transaction_content;
 
@@ -254,7 +254,7 @@ if(count($i_query)){
 
     echo $ticket_type_content;
 
-    echo '<tr class="css__title" style="font-size:1.3em;">';
+    echo '<tr class="css__title" style="font-size:1.1em;">';
     echo '<th style="text-align: left; font-weight: bold;" id="th_primary">Totals</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.$gross_transactions.'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">&nbsp;</th>';
