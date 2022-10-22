@@ -228,7 +228,7 @@ foreach($i_query as $i){
     $ticket_type_content .= '<td style="text-align: right;"><b>'.( $total_tickets>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
     $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.join(', ',$currencies).'</td>';
     $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size: 0.8em;"></i></a></td>';
+    $ticket_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size: 0.8em !important;"></i></a></td>';
     $ticket_type_content .= '</tr>';
     $ticket_type_content .= $transaction_content;
 
@@ -242,19 +242,19 @@ if(count($i_query)){
     echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.transaction_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Transactions"><i class="fas fa-arrows-v"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="fas fa-arrows-h"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Transactions</th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Limit</th>';
-    echo '<th style="text-align: right;" id="th_paid">Tickets<br />Sold</th>';
+    echo '<th style="text-align: right;" id="th_paid">Units</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Sales</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Platform<br />Fee</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal<br />Fee</th>';
-    echo '<th style="text-align: right;" id="th_payout">NET<br />Payout</th>';
+    echo '<th style="text-align: right;" id="th_payout">Payout</th>';
     echo '<th style="text-align: right;" id="th_currency" class="advance_columns hidden">&nbsp;</th>';
-    echo '<th style="text-align: right;" id="th_average">Average<br />Ticket</th>';
+    echo '<th style="text-align: right;" id="th_average">AVG<br />Unit</th>';
     echo '<th style="text-align: right;">&nbsp;</th>';
     echo '</tr>';
 
     echo $ticket_type_content;
 
-    echo '<tr class="css__title" style="font-size:1.1em;">';
+    echo '<tr class="css__title">';
     echo '<th style="text-align: left; font-weight: bold;" id="th_primary">Totals</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.$gross_transactions.'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">&nbsp;</th>';
