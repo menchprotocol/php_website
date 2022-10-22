@@ -163,9 +163,9 @@ foreach($i_query as $i){
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($this_commission, 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $x__metadata['mc_gross'] > 0 ? ($x__metadata['mc_fee']/$x__metadata['mc_gross']*100) : 0 ).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
+        $transaction_content .= '<td style="text-align: left;"><b>$'.number_format(($this_payout/$this_tickets), 2).'</b></td>';
         $transaction_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
         $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$x__metadata['mc_currency'].'</td>';
-        $transaction_content .= '<td style="text-align: right;"><b>$'.number_format(($this_payout/$this_tickets), 2).'</b></td>';
         $transaction_content .= '<td style="text-align: right;" id="refund_'.$x['x__id'].'"><a href="#" onclick="paypal_refund('.$x['x__id'].', '.number_format($x__metadata['mc_gross'], 2).')" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Process Full Refund"><u><i class="fal fa-hands-usd" style="font-size:1em !important;"></i></u></a> <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> <a href="/-4341?x__id='.$x['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
 
         $transaction_content .= '</tr>';
@@ -225,9 +225,9 @@ foreach($i_query as $i){
     $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_tickets>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
     $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_tickets>0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
     $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_tickets>0 ? '-$'.number_format($total_paypal_fee, 2) : '&nbsp;').'</td>';
+    $ticket_type_content .= '<td style="text-align: left;">'.( $total_tickets>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
     $ticket_type_content .= '<td style="text-align: right;"><b>'.( $total_tickets>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
     $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.join(', ',$currencies).'</td>';
-    $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
     $ticket_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
     $ticket_type_content .= '</tr>';
     $ticket_type_content .= $transaction_content;
@@ -242,13 +242,13 @@ if(count($i_query)){
     echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.transaction_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Transactions"><i class="fas fa-arrows-v"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="fas fa-arrows-h"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Transactions</th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Limit</th>';
-    echo '<th style="text-align: right;" id="th_paid">Units</th>';
+    echo '<th style="text-align: right;" id="th_paid">Tickets</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Sales</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Platform<br />Fee</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal<br />Fee</th>';
+    echo '<th style="text-align: left;" id="th_average">AVG<br />Ticket</th>';
     echo '<th style="text-align: right;" id="th_payout">Payout</th>';
     echo '<th style="text-align: right;" id="th_currency" class="advance_columns hidden">&nbsp;</th>';
-    echo '<th style="text-align: right;" id="th_average">AVG<br />Unit</th>';
     echo '<th style="text-align: right;">&nbsp;</th>';
     echo '</tr>';
 
@@ -262,9 +262,9 @@ if(count($i_query)){
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.'$'.number_format($gross_revenue, 2).'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">-$'.number_format($gross_commission, 2).'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">-$'.number_format($gross_paypal_fee, 2).'</th>';
+    echo '<th style="text-align: left; font-weight: bold;">$'.number_format(( $gross_tickets > 0 ? $gross_payout / $gross_tickets : 0 ), 2).'</th>';
     echo '<th style="text-align: right; font-weight: bold;"><b>$'.number_format($gross_payout, 2).'</b></th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.join(', ',$gross_currencies).'</th>';
-    echo '<th style="text-align: right; font-weight: bold;">$'.number_format(( $gross_tickets > 0 ? $gross_payout / $gross_tickets : 0 ), 2).'</th>';
     echo '<th style="text-align: right; font-weight: bold;">&nbsp;</th>';
     echo '</tr>';
     echo '</table>';
