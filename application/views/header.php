@@ -338,38 +338,10 @@ if(!$basic_header_footer){
                 <tr>
                     <?php
 
-                    $echo_left_nav = null;
-
-                    if($member_e && $superpower_28651) {
-
-                        //TODO Fix Bugs
-                        //Load Left Menu
-                        $echo_left_nav .= '<td class="block-x user_nav_box">';
-                        $echo_left_nav .= '<a href="javascript:void(0);" onclick="toggle_left_menu()" data-toggle="tooltip" data-placement="right" title="'.$member_e['e__title'].'" style="margin-left: 0;" class="icon-block menu_click">'.view_cover(12274,$member_e['e__cover']).'</a>';
-                        $echo_left_nav .= '</td>';
-
-                    } elseif($member_e) {
-
-                        //Load Left Menu to Home
-                        $echo_left_nav .= '<td class="block-x user_nav_box">';
-                        $echo_left_nav .= '<a href="/@'.$member_e['e__id'].'" data-toggle="tooltip" data-placement="right" title="'.$member_e['e__title'].'" style="margin-left: 0;" class="menu_click source_cover source_cover_mini">'.view_cover(12274,$member_e['e__cover'], 1).'</a>';
-                        $echo_left_nav .= '</td>';
-
-                    } else {
-
-                        //Login:
-                        //$echo_left_nav .= '<td class="block-x user_nav_box">';
-                        //$echo_left_nav .= '<a href="/-4269'.$login_url_path.'" style="margin-left: 0;" class="icon-block">'.$e___11035[4269]['m__cover'].'</a>';
-                        //$echo_left_nav .= '</td>';
-
-                    }
-
-                    echo $echo_left_nav;
-
                     echo '<td>';
                     echo '<div class="max_width">';
 
-                    echo '<div class="left_nav top_nav" style="text-align: '.( $echo_left_nav ? 'center'  : 'left' ).';">';
+                    echo '<div class="left_nav top_nav" style="text-align: left;">';
 
                     //$my_source = '<span class="platform-circle icon-block mini_6197_'.$member_e['e__id'].'">'.view_cover(12274,$member_e['e__cover']).'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin_id, $member_e['e__id']).'</span>' : '' ).'</span>';
                     //Domain Source
@@ -393,7 +365,7 @@ if(!$basic_header_footer){
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    echo '<span class="icon-block">' . $e___13479[$menu_type]['m__cover'] .'</span>';
+                    echo '<span class="icon-block source_cover source_cover_mini">' . ( $member_e ? view_cover(12274,$member_e['e__cover'], 1) : $e___13479[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
