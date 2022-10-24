@@ -1167,7 +1167,7 @@ a.headline {
     height: 42px;
     overflow: hidden;
     line-height: 151%;
-    margin-bottom: -15px;
+    margin-bottom: -11px;
 }
 .x-list {
     padding:15px 0;
@@ -1345,6 +1345,10 @@ label {
     border: 0;
     padding: 10px;
     border-radius: 0 !important;
+}
+
+.platform-navigation .btn{
+    padding: 3px 0 1px !important;
 }
 
 .coin-cover .btn{
@@ -1594,7 +1598,7 @@ i, .btn .show-max {
     line-height: 130%;
     width: 34px !important;
     height: 34px !important;
-    margin-left: 2px !important;
+    margin-left: 4px !important;
     margin-right: 5px !important;
     margin-bottom: -7px !important;
     margin-top: 2px;
