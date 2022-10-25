@@ -49,7 +49,7 @@ if(isset($_POST)){
         'x__type' => 4246, //Platform Bug Reports
         'x__message' => 'Payment Attempt',
         'x__metadata' => array(
-            'new_x' => $_POST,
+            'new_x' => $new_x,
             'post' => $_POST,
         ),
     ));
