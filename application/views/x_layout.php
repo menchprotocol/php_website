@@ -438,8 +438,6 @@ if($top_i__id) {
 
         } else {
 
-            $commission_rate = ( doubleval(view_memory(6404,27017)) + doubleval(view_memory(6404,30590)) + doubleval(view_memory(6404,30612)) )/100;
-
 
             $e___26661 = $this->config->item('e___26661');
 
@@ -470,53 +468,62 @@ if($top_i__id) {
                     'x__up' => 30589, //Digest Fees
                 ));
 
+                $commission_rate = ( count($digest_fees) ? 0 : ( doubleval(view_memory(6404,27017)) + doubleval(view_memory(6404,30590)) + doubleval(view_memory(6404,30612)) )/100 );
+                $fee_total = number_format($commission_rate*$currency_parts[1], 2);
+                $unit_total = number_format($fee_total+$currency_parts[1], 2);
 
 
                 echo '<input type="hidden" id="max_allowed" value="'.( count($multi_selectable) && is_numeric($multi_selectable[0]['x__message']) && $multi_selectable[0]['x__message']>1 ? intval($multi_selectable[0]['x__message']) : view_memory(6404,29651) ).'" />';
                 echo '<input type="hidden" id="unit_price" value="'.number_format($currency_parts[1], 2).'" />';
-                echo '<input type="hidden" id="fee_rate" value="'.$commission_rate.'" />';
+                echo '<input type="hidden" id="fee_total" value="'.$fee_total.'" />';
 
                 //Is multi selectable, allow show down for quantity:
                 echo '<div class="msg alert alert-warning table_checkout" role="alert">';
                 echo '<table class="table table-condensed">';
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn" style="width:40% !important;">Tickets:</td>';
-                echo '<td class="table-btn first_btn ticket_price_ui" style="width:40% !important;">';
-                if(count($multi_selectable)){
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="far fa-minus-circle"></i></a>';
-                    echo '<span id="current_tickets" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="far fa-plus-circle"></i></a>';
-                } else {
-                    echo '<span id="current_tickets" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
-                }
-                echo '</td>';
-                echo '<td class="table-btn first_btn" style="width:20% !important;">&nbsp;</td>';
-                echo '</tr>';
-
-
-
-                echo '<tr>';
                 echo '<td class="table-btn first_btn">Price:</td>';
-                echo '<td class="table-btn first_btn price_ui">'.number_format($currency_parts[1], 2).'</td>';
+                echo '<td class="table-btn first_btn">'.number_format($currency_parts[1], 2).'</td>';
                 echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
                 echo '</tr>';
 
-                if(!count($digest_fees)){
+                echo '<tr>';
+                echo '<td class="table-btn first_btn">Fee:</td>';
+                echo '<td class="table-btn first_btn">'.number_format($fee_total, 2).'</td>';
+                echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
+                echo '</tr>';
+
+                echo '<tr>';
+                echo '<td class="table-btn first_btn">Total:</td>';
+                echo '<td class="table-btn first_btn unit_total">'.$unit_total.'</td>';
+                echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
+                echo '</tr>';
+
+
+
+                if(count($multi_selectable)){
 
                     echo '<tr>';
-                    echo '<td class="table-btn first_btn">Fee:</td>';
-                    echo '<td class="table-btn first_btn fee_ui">'.number_format(($currency_parts[1]*$commission_rate), 2).'</td>';
-                    echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
+                    echo '<td class="table-btn first_btn" style="width:40% !important;">Tickets:</td>';
+                    echo '<td class="table-btn first_btn ticket_price_ui" style="width:40% !important;">';
+                    echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="far fa-minus-circle"></i></a>';
+                    echo '<span id="current_tickets" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
+                    echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="far fa-plus-circle"></i></a>';
+                    echo '</td>';
+                    echo '<td class="table-btn first_btn" style="width:20% !important;">&nbsp;</td>';
                     echo '</tr>';
 
                     echo '<tr>';
-                    echo '<td class="table-btn first_btn">Total:</td>';
-                    echo '<td class="table-btn first_btn total_ui">'.number_format((($currency_parts[1]*$commission_rate)+$currency_parts[1]),2).'</td>';
+                    echo '<td class="table-btn first_btn">Due:</td>';
+                    echo '<td class="table-btn first_btn total_ui">'.$unit_total.'</td>';
                     echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
                     echo '</tr>';
 
                 }
+
+
+
+
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn">Delivery:</td>';
@@ -832,20 +839,13 @@ echo '</div>';
         }
 
         busy_processing = true;
-        var unit_price = parseFloat($("#unit_price").val());
-        var fee_rate = parseFloat($("#fee_rate").val());
-        var new_price = new_quantity * unit_price;
-        var new_fee = ( new_price * fee_rate );
-        var new_total = ( new_price + new_fee );
+        var unit_total = parseFloat($("#unit_total").val());
+        var new_total = ( unit_total * new_quantity );
 
         //Update UI:
-        $("#current_tickets").text(new_quantity);
-        $(".price_ui").text(new_price.toFixed(2));
-        $(".fee_ui").text(new_fee.toFixed(2));
-        $(".total_ui").text(new_total.toFixed(2));
-
-        //Update Paypal form:
         $("#paypal_quantity").val(new_quantity);
+        $("#current_tickets").text(new_quantity);
+        $(".total_ui").text(new_total.toFixed(2));
 
         busy_processing = false;
 
