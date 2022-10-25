@@ -498,9 +498,9 @@ if($top_i__id) {
                     echo '<tr>';
                     echo '<td class="table-btn first_btn" style="text-align: right;">Tickets:&nbsp;&nbsp;</td>';
                     echo '<td class="table-btn first_btn ticket_price_ui">';
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
-                    echo '<span id="current_tickets" class="css__title" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="fas fa-plus-circle"></i></a>';
+                    echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)" style="padding: 5px 10px;"><i class="fas fa-minus-circle"></i></a>';
+                    echo '<span id="current_tickets" class="css__title" style="display: inline-block; min-width: 20px; text-align: center;">'.$starting_quantity.'</span>';
+                    echo '<a href="javascript:void(0);" onclick="ticket_increment(1)" style="padding: 5px 10px;"><i class="fas fa-plus-circle"></i></a>';
                     echo '</td>';
                     echo '</tr>';
 
@@ -706,10 +706,10 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i_focus['i__title'].'">';
                 $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
 
-                $control_btn .= '<input type="hidden" id="paypal_amount" name="amount" value="'.$unit_total.'">';
+                $control_btn .= '<input type="hidden" name="amount" value="'.$unit_total.'">';
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
                 $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
-                $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
+                $control_btn .= '<input type="hidden" name="notify_url" value="https://'.get_domain('m__message').'/-26595">';
                 $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?cancel_pay=1">';
                 $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1">';
                 $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
@@ -832,7 +832,6 @@ echo '</div>';
 <input type="hidden" id="focus__type" value="12273" />
 <input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
 <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
-<input type="hidden" id="click_count" value="0" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 
 
@@ -864,12 +863,6 @@ echo '</div>';
         }
 
         i_note_activate();
-
-        //Keep track of message link clicks:
-        $('.should-click').click(function(e) {
-            $('#click_count').val(parseInt($('#click_count').val())+1);
-        });
-
         set_autosize($('#x_reply'));
 
         //Watchout for file uplods:
