@@ -499,8 +499,8 @@ if($top_i__id) {
 
                     echo '<tr>';
                     echo '<td class="table-btn first_btn" style="width:40% !important;">Tickets:</td>';
-                    echo '<td class="table-btn first_btn" style="width:15% !important;">&nbsp;</td>';
-                    echo '<td class="table-btn first_btn ticket_price_ui" style="width:45% !important;">';
+                    echo '<td class="table-btn first_btn" style="width:13% !important;">&nbsp;</td>';
+                    echo '<td class="table-btn first_btn ticket_price_ui" style="width:47% !important;">';
                     echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
                     echo '<span id="current_tickets" class="css__title" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
                     echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="fas fa-plus-circle"></i></a>';
@@ -511,7 +511,7 @@ if($top_i__id) {
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn">Total:</td>';
-                echo '<td class="table-btn first_btn css__title">'.$currency_parts[0].'</td>';
+                echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
                 echo '<td class="table-btn first_btn total_ui css__title">'.$unit_total.'</td>';
                 echo '</tr>';
 
