@@ -496,8 +496,8 @@ if($top_i__id) {
                 if(count($multi_selectable)){
 
                     echo '<tr>';
-                    echo '<td class="table-btn first_btn" style="text-align: right; width:50% !important;">Tickets:&nbsp;&nbsp;</td>';
-                    echo '<td class="table-btn first_btn ticket_price_ui" style="width:50% !important;">';
+                    echo '<td class="table-btn first_btn" style="text-align: right; width:45% !important;">Tickets:&nbsp;&nbsp;</td>';
+                    echo '<td class="table-btn first_btn ticket_price_ui" style="width:55% !important;">';
                     echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
                     echo '<span id="current_tickets" class="css__title" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
                     echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="fas fa-plus-circle"></i></a>';
