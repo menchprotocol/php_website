@@ -416,7 +416,7 @@ if($top_i__id) {
         } elseif(count($x_completes)){
 
             $x__metadata = unserialize($x_completes[0]['x__metadata']);
-            echo '<div class="msg alert alert-success" role="alert">A Paypal email confirmation has been sent to you which your proof of purchase. You paid '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['mc_currency']==$currency_parts[0] && $x__metadata['mc_gross'] < $currency_parts[1] ? ' (Saved '.number_format(($currency_parts[1] - $x__metadata['mc_gross']), 0).'!)' : '' ).' on '.$x__metadata['payment_date'].'. You can view your <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank">Paypal Transaction</a>. You are ready to go next.</div>';
+            echo '<div class="msg alert alert-success" role="alert">A Paypal email confirmation has been sent to you which your proof of purchase. You paid '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['mc_currency']==$currency_parts[0] && $x__metadata['mc_gross'] < $currency_parts[1] ? ' (Saved '.number_format(($currency_parts[1] - $x__metadata['mc_gross']), 0).'!)' : '' ).' on '.$x__metadata['payment_date'].'. You can view your <a href="https://www.paypal.com/myaccount/activities/details/'.$x__metadata['txn_id'].'" target="_blank">Paypal Transaction</a>. You are ready to go next.</div>';
 
             //Invite Your Friends (If 2 or more Tickets):
             if(is_new()){
