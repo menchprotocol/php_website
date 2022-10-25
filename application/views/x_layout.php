@@ -506,9 +506,9 @@ if($top_i__id) {
                     echo '<tr>';
                     echo '<td class="table-btn first_btn" style="width:40% !important;">Tickets:</td>';
                     echo '<td class="table-btn first_btn ticket_price_ui" style="width:40% !important;">';
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="far fa-minus-circle"></i></a>';
+                    echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
                     echo '<span id="current_tickets" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="far fa-plus-circle"></i></a>';
+                    echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="fas fa-plus-circle"></i></a>';
                     echo '</td>';
                     echo '<td class="table-btn first_btn" style="width:20% !important;">&nbsp;</td>';
                     echo '</tr>';
@@ -839,7 +839,7 @@ echo '</div>';
         }
 
         busy_processing = true;
-        var unit_total = parseFloat($(".unit_total").val());
+        var unit_total = parseFloat($(".unit_total").text());
         var new_total = ( unit_total * new_quantity );
 
         //Update UI:
