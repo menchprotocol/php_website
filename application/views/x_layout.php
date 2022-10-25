@@ -446,8 +446,8 @@ if($top_i__id) {
 
                 echo '<tr>';
                 echo '<td class=""><input type="text" placeholder="Full Name" class="form-control white-border border maxout" /></td>';
-                echo '<td class=""><input type="email" placeholder="Email Address" class="form-control white-border border maxout" /></td>';
-                echo '<td class=""><input type="number" placeholder="Phone Number" class="form-control white-border border maxout" /></td>';
+                echo '<td class=""><input type="email" placeholder="Email" class="form-control white-border border maxout" /></td>';
+                echo '<td class=""><input type="number" placeholder="Cell Phone" class="form-control white-border border maxout" /></td>';
                 echo '</tr>';
 
                 echo '</table>';

@@ -8,15 +8,20 @@ if(isset($_POST)){
     //Remove Server Identity:
     unset($_SERVER['SERVER_NAME']);
     if(!isset($_POST['payment_status']) || $_POST['payment_status']!='Completed' || !isset($_POST['item_number'])){
+
         //Report issue:
         $this->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'Unexpected Paypal Call',
-            'x__metadata' => $_POST,
+            'x__metadata' => array(
+                'new_x' => $new_x,
+                'post' => $_POST,
+            ),
         ));
         echo 'Bad Paypal Post Data!';
 
     } else {
+
         $item_numbers = explode('-',$_POST['item_number']);
         $top_i__id = intval($item_numbers[0]);
         $i__id = intval($item_numbers[1]);
@@ -41,18 +46,19 @@ if(isset($_POST)){
             ));
 
         } else {
+
+            $this->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__message' => 'Invalid item number',
+                'x__metadata' => array(
+                    'new_x' => $new_x,
+                    'post' => $_POST,
+                ),
+            ));
+
             echo 'Invalid item number';
         }
     }
-
-    $this->X_model->create(array(
-        'x__type' => 4246, //Platform Bug Reports
-        'x__message' => 'Payment Attempt',
-        'x__metadata' => array(
-            'new_x' => $new_x,
-            'post' => $_POST,
-        ),
-    ));
 
 } else {
     echo 'Missing Paypal Post Data!';
