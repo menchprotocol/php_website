@@ -483,7 +483,7 @@ if($top_i__id) {
                 echo '<table class="table table-condensed">';
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn" style="width:60% !important;">Tickets:</td>';
+                echo '<td class="table-btn first_btn" style="width:50% !important;">Tickets:</td>';
                 echo '<td class="table-btn first_btn ticket_price_ui" style="width:30% !important;" colspan="2">';
                 if(count($multi_selectable)){
                     echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="far fa-minus-circle"></i></a>';
@@ -500,7 +500,7 @@ if($top_i__id) {
                 echo '<tr>';
                 echo '<td class="table-btn first_btn">Price:</td>';
                 echo '<td class="table-btn first_btn price_ui">'.$currency_parts[1].'</td>';
-                echo '<td class="table-btn first_btn" style="width:10% !important;">'.$currency_parts[0].'</td>';
+                echo '<td class="table-btn first_btn" style="width:20% !important;">'.$currency_parts[0].'</td>';
                 echo '</tr>';
 
                 if(!count($digest_fees)){
