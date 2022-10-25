@@ -483,12 +483,12 @@ if($top_i__id) {
                 if($unit_fee > 0){
                     echo '<tr>';
                     echo '<td class="table-btn first_btn" style="text-align: right;">Price:&nbsp;&nbsp;</td>';
-                    echo '<td class="table-btn first_btn">'.$currency_parts[0].' '.$unit_price.'</td>';
+                    echo '<td class="table-btn first_btn">'.$unit_price.' '.$currency_parts[0].'</td>';
                     echo '</tr>';
 
                     echo '<tr>';
                     echo '<td class="table-btn first_btn" style="text-align: right;">Fee:&nbsp;&nbsp;</td>';
-                    echo '<td class="table-btn first_btn">'.$currency_parts[0].' '.$unit_fee.'</td>';
+                    echo '<td class="table-btn first_btn">'.$unit_fee.' '.$currency_parts[0].'</td>';
                     echo '</tr>';
                 }
 
@@ -508,7 +508,7 @@ if($top_i__id) {
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn" style="text-align: right;  width:40% !important;">Total:&nbsp;&nbsp;</td>';
-                echo '<td class="table-btn first_btn" style="width:60% !important;">'.$currency_parts[0].' <span class="total_ui css__title">'.$unit_total.'</span></td>';
+                echo '<td class="table-btn first_btn" style="width:60% !important;"><span class="total_ui css__title">'.$unit_total.'</span> '.$currency_parts[0].'</td>';
                 echo '</tr>';
 
                 echo '<tr>';
