@@ -837,18 +837,18 @@ echo '</div>';
         var unit_price = parseFloat($("#unit_price").val());
         var fee_rate = parseFloat($("#fee_rate").val());
         var new_price = new_quantity * unit_price;
-        var new_fee = ( new_price * fee_rate ).toFixed(2);
-        var new_total = ( new_price + new_fee ).toFixed(2);
+        var new_fee = ( new_price * fee_rate );
+        var new_total = ( new_price + new_fee );
 
         //Update UI:
         $("#current_tickets").text(new_quantity);
         $(".price_ui").text(new_price);
-        $(".fee_ui").text(new_fee);
-        $(".total_ui").text(new_total);
+        $(".fee_ui").text(new_fee.toFixed(2));
+        $(".total_ui").text(new_total.toFixed(2));
 
         //Update Paypal form:
         $("#paypal_quantity").val(new_quantity);
-        $("#paypal_amount").val(new_price);
+        $("#paypal_amount").val(new_total.toFixed(2));
         $("#paypal_item_number").val("<?= $base_item_number ?>"+new_quantity);
         $("#paypal_item_name").val(new_quantity+'x '+$('h1.msg-frame').text());
 
