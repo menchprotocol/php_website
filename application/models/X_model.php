@@ -1498,9 +1498,6 @@ class X_model extends CI_Model
     function mark_complete($top_i__id, $i, $add_fields) {
 
         //Always add Idea to x__left
-        if(!isset($add_fields['x__right']) || !intval($add_fields['x__right'])){
-            $add_fields['x__right'] = $top_i__id;
-        }
         $add_fields['x__left'] = $i['i__id'];
 
         if (!isset($add_fields['x__message'])) {
@@ -1511,13 +1508,18 @@ class X_model extends CI_Model
         $domain_url = get_domain('m__message', $x__source);
 
         $search_fields = $add_fields;
+
+        if(!isset($add_fields['x__right']) || !intval($add_fields['x__right'])){
+            $add_fields['x__right'] = $top_i__id;
+        }
+
         if(isset($search_fields['x__metadata'])){
             unset($search_fields['x__metadata']);
         }
 
         //Log completion transaction if not duplicate:
         $check_duplicate = $this->X_model->fetch($search_fields);
-        if(in_array($add_fields['x__type'], $this->config->item('n___27005')) && isset($check_duplicate[0]['x__id'])){
+        if(in_array($add_fields['x__type'], $this->config->item('n___30469')) && isset($check_duplicate[0]['x__id'])){
 
             $new_x = $check_duplicate[0];
 
