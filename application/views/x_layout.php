@@ -483,8 +483,8 @@ if($top_i__id) {
                 echo '<table class="table table-condensed">';
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn" style="width:50% !important;">Tickets:</td>';
-                echo '<td class="table-btn first_btn ticket_price_ui" style="width:30% !important;" colspan="2">';
+                echo '<td class="table-btn first_btn" style="width:40% !important;">Tickets:</td>';
+                echo '<td class="table-btn first_btn ticket_price_ui" style="width:40% !important;">';
                 if(count($multi_selectable)){
                     echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="far fa-minus-circle"></i></a>';
                     echo '<span id="current_tickets" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
@@ -493,6 +493,7 @@ if($top_i__id) {
                     echo '<span id="current_tickets" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
                 }
                 echo '</td>';
+                echo '<td class="table-btn first_btn" style="width:20% !important;">&nbsp;</td>';
                 echo '</tr>';
 
 
@@ -500,7 +501,7 @@ if($top_i__id) {
                 echo '<tr>';
                 echo '<td class="table-btn first_btn">Price:</td>';
                 echo '<td class="table-btn first_btn price_ui">'.$currency_parts[1].'</td>';
-                echo '<td class="table-btn first_btn" style="width:20% !important;">'.$currency_parts[0].'</td>';
+                echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
                 echo '</tr>';
 
                 if(!count($digest_fees)){
@@ -521,7 +522,8 @@ if($top_i__id) {
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn">Delivery:</td>';
-                echo '<td class="table-btn first_btn" colspan="2"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have you on our guest list. Your phone is your ticket. Locate your tickets in your account - or in your app. When you go mobile, your tickets will not be emailed to you or available for print." style="border-bottom: 1px dotted #999;">Guest List <i class="fas fa-info-circle" style="font-size: 0.9em !important;"></i></span></td>';
+                echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have you on our guest list. Your phone is your ticket. Locate your tickets in your account - or in your app. When you go mobile, your tickets will not be emailed to you or available for print." style="border-bottom: 1px dotted #999;">Guest List <i class="fas fa-info-circle" style="font-size: 0.9em !important;"></i></span></td>';
+                echo '<td class="table-btn first_btn" style="width:20% !important;">&nbsp;</td>';
                 echo '</tr>';
 
 
