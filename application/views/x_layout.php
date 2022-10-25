@@ -692,9 +692,6 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$starting_quantity.'">'; //Dynamic Variable
                 $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i_focus['i__title'].'">';
                 $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
-                if(is_new()) {
-                    $control_btn .= '<input type="hidden" id="paypal_tax" name="tax" value="'.$fee_total.'">'; //Dynamic Variable
-                }
 
                 $control_btn .= '<input type="hidden" id="paypal_amount" name="amount" value="'.$unit_total.'">';
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
