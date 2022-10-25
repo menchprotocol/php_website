@@ -14,7 +14,9 @@ body {
 }
 
 
-
+.table td, .table th {
+    padding: 0;
+}
 [class*="col-"], .no-side-padding {padding-left:0px !important;padding-right:0px !important;}
 .no-left-padding {padding-left:0px !important;}
 .row {
@@ -1596,7 +1598,6 @@ i, .btn .show-max {
 .table_checkout {
     padding: 10px 5px 5px !important;
     margin: 0 !important;
-    width: 100% !important;
 }
 .table_checkout table{
     width: 500px;
@@ -3460,7 +3461,6 @@ h4.css__title{
 }
 .large-frame>div{
     padding-bottom: 5px;
-    width: calc(100% - 16px);
 }
 
 .large-frame.with-background{
