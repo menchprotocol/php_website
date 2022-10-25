@@ -513,7 +513,7 @@ if($top_i__id) {
 
                     echo '<tr>';
                     echo '<td class="table-btn first_btn">Total:</td>';
-                    echo '<td class="table-btn first_btn total_ui">'.number_format((($currency_parts[1]*$commission_rate)+$currency_parts[1]),
+                    echo '<td class="table-btn first_btn total_ui">'.number_format((($currency_parts[1]*$commission_rate)+$currency_parts[1]),2).'</td>';
                     echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
                     echo '</tr>';
 
