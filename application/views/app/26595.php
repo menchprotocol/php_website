@@ -3,11 +3,7 @@
 //Called when the paypal payment is complete:
 if(isset($_POST)){
 
-    $this->X_model->create(array(
-        'x__type' => 4246, //Platform Bug Reports
-        'x__message' => 'Payment Attempt',
-        'x__metadata' => $_POST,
-    ));
+    $new_x = array();
 
     //Remove Server Identity:
     unset($_SERVER['SERVER_NAME']);
@@ -48,6 +44,15 @@ if(isset($_POST)){
             echo 'Invalid item number';
         }
     }
+
+    $this->X_model->create(array(
+        'x__type' => 4246, //Platform Bug Reports
+        'x__message' => 'Payment Attempt',
+        'x__metadata' => array(
+            'new_x' => $_POST,
+            'post' => $_POST,
+        ),
+    ));
 
 } else {
     echo 'Missing Paypal Post Data!';
