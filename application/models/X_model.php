@@ -1516,6 +1516,10 @@ class X_model extends CI_Model
         if(isset($search_fields['x__metadata'])){
             unset($search_fields['x__metadata']);
         }
+        if(!isset($search_fields['x__status'])){
+            //Only search active:
+            $search_fields['x__status IN (' . join(',', $this->config->item('n___7360')) . ')'] = null;
+        }
 
         //Log completion transaction if not duplicate:
         $check_duplicate = $this->X_model->fetch($search_fields);

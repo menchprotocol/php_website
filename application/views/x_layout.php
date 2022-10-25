@@ -67,10 +67,7 @@ if($is_payment){
             ));
 
 
-
-
             //Break down amount & currency
-            $e___26661 = $this->config->item('e___26661');
             $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
             $unit_price = number_format($currency_parts[1], 2);
             $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) || !is_new() ? 0 : ( doubleval(view_memory(6404,27017)) + doubleval(view_memory(6404,30590)) + doubleval(view_memory(6404,30612)) )/100 ), 2);
