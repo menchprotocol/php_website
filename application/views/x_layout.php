@@ -819,6 +819,47 @@ echo '</div>';
 
 <script type="text/javascript">
 
+    var busy_processing = false;
+    function ticket_increment(increment){
+
+        if(busy_processing){
+            return false;
+        }
+
+        busy_processing = true;
+
+        var new_quantity = parseInt($('#current_tickets').text()) + increment;
+        var max_allowed = parseInt($('#max_allowed').val());
+        if(new_quantity<1){
+            //Invalid new quantity
+            return false;
+        } else if (new_quantity>max_allowed){
+            alert('Error: Max Allowed is '+max_allowed);
+            return false;
+        }
+
+        var unit_price = parseFloat($("#unit_price").val());
+        var fee_rate = parseFloat($("#fee_rate").val());
+        var new_price = new_quantity * unit_price;
+        var new_fee = ( new_price * fee_rate ).toFixed(2);
+        var new_total = ( new_price * new_fee ).toFixed(2);
+
+        //Update UI:
+        $("#current_tickets").text(new_quantity);
+        $(".price_ui").text(new_price);
+        $(".fee_ui").text(new_fee);
+        $(".total_ui").text(new_total);
+
+        //Update Paypal form:
+        $("#paypal_quantity").val(new_quantity);
+        $("#paypal_amount").val(new_price);
+        $("#paypal_item_number").val("<?= $base_item_number ?>"+new_quantity);
+        $("#paypal_item_name").val(new_quantity+'x '+$('h1.msg-frame').text());
+
+        busy_processing = false;
+
+    }
+
     $(document).ready(function () {
 
         //Make progress more visible if possible:
@@ -857,48 +898,6 @@ echo '</div>';
         $('.boxUpload').find('input[type="file"]').change(function () {
             x_upload(droppedFiles, 'file');
         });
-
-        var busy_processing = false;
-        function ticket_increment(increment){
-
-            if(busy_processing){
-                return false;
-            }
-
-            busy_processing = true;
-
-            var new_quantity = parseInt($('#current_tickets').text()) + increment;
-            var max_allowed = parseInt($('#max_allowed').val());
-            if(new_quantity<1){
-                //Invalid new quantity
-                return false;
-            } else if (new_quantity>max_allowed){
-                alert('Error: Max Allowed is '+max_allowed);
-                return false;
-            }
-
-            var unit_price = parseFloat($("#unit_price").val());
-            var fee_rate = parseFloat($("#fee_rate").val());
-            var new_price = new_quantity * unit_price;
-            var new_fee = ( new_price * fee_rate ).toFixed(2);
-            var new_total = ( new_price * new_fee ).toFixed(2);
-
-            //Update UI:
-            $("#current_tickets").text(new_quantity);
-            $(".price_ui").text(new_price);
-            $(".fee_ui").text(new_fee);
-            $(".total_ui").text(new_total);
-
-            //Update Paypal form:
-            $("#paypal_quantity").val(new_quantity);
-            $("#paypal_amount").val(new_price);
-            $("#paypal_item_number").val("<?= $base_item_number ?>"+new_quantity);
-            $("#paypal_item_name").val(new_quantity+'x '+$('h1.msg-frame').text());
-
-            busy_processing = false;
-
-        }
-
 
         //Should we auto start?
         if (isAdvancedUpload) {
