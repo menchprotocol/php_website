@@ -20,7 +20,7 @@ foreach($is_next as $in_key => $in_value){
     }
 }
 
-
+$i_focus['i__title'] = str_replace('"','',$i_focus['i__title']);
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
@@ -34,6 +34,32 @@ $top_completed = false; //Assume main intent not yet completed, unless proven ot
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 $is_discovarable = true;
 $i_stats = i_stats($i_focus['i__metadata']);
+$base_item_number = '';
+
+$is_payment = in_array($i_focus['i__type'] , $this->config->item('n___30469'));
+$starting_quantity = 1;
+if($is_payment){
+    //Fetch Value
+    $total_dues = $this->X_model->fetch(array(
+        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__up' => 26562, //Total Due
+        'x__right' => $i_focus['i__id'],
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    ));
+
+    $valid_payment = false;
+    if($x__source>0 && count($total_dues)){
+        $detected_x_type = x_detect_type($total_dues[0]['x__message']);
+        if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
+            $valid_payment = true;
+        }
+    }
+
+    //Break down amount & currency
+    $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
+    $base_item_number = $top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'-';
+
+}
 
 if(count($x_completes)){
     $_GET['open'] = true;
@@ -372,27 +398,7 @@ if($top_i__id) {
 
         }
 
-    } elseif ($i_focus['i__type'] == 26560) {
-
-        //Fetch Value
-        $total_dues = $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__up' => 26562, //Total Due
-            'x__right' => $i_focus['i__id'],
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ));
-
-        $valid_payment = false;
-        if($x__source>0 && count($total_dues)){
-            $detected_x_type = x_detect_type($total_dues[0]['x__message']);
-            if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
-                $valid_payment = true;
-            }
-        }
-
-        //Break down amount & currency
-        $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
-
+    } elseif ($is_payment) {
 
         if(isset($_GET['cancel_pay']) && !count($x_completes)){
             echo '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
@@ -415,7 +421,7 @@ if($top_i__id) {
             echo '<div class="msg alert alert-success" role="alert">A Paypal email confirmation has been sent to you which your proof of purchase. You paid '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['mc_currency']==$currency_parts[0] && $x__metadata['mc_gross'] < $currency_parts[1] ? ' (Saved '.number_format(($currency_parts[1] - $x__metadata['mc_gross']), 0).'!)' : '' ).' on '.$x__metadata['payment_date'].'. You can view your <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank">Paypal Transaction</a>. You are ready to go next.</div>';
 
             //Invite Your Friends (If 2 or more Tickets):
-            if(0){
+            if(is_new()){
 
                 echo '<h2>Add Your Friends to the Guest List</h2>';
                 echo '<p>So they can get inside independantly. If not invited, they must check-in with you.</p>';
@@ -434,25 +440,23 @@ if($top_i__id) {
 
         } else {
 
-            $platform_fee = view_memory(6404,27017);
-            $commission_rate = doubleval($platform_fee)/100;
+            $commission_rate = ( doubleval(view_memory(6404,27017)) + doubleval(view_memory(6404,30590)) + doubleval(view_memory(6404,30612)) )/100;
 
 
             $e___26661 = $this->config->item('e___26661');
-            echo '<div class="msg alert alert-warning" role="alert">';
+
+            if(!is_new()){
+
+                echo '<div class="msg alert alert-warning" role="alert">';
                 echo '<h2>Payment Instructions:</h2>';
                 echo '<ul style="list-style: none;">';
-                    echo '<li>1. You are *not done* after you completed your payment! You must click on "<b style="color: #FF0000;">Return to Merchant</b>" to continue back here.</li>';
-            echo '<li>2. You can checkout as a guest, You do not need to create a Paypal account. You can pay with a credit or visa debit card.</li>';
-            echo '<li class="timeframe hidden">3. Complete payment within <span id="timexpirycount" class="hideIfEmpty"></span> to secure this spot.</li>';
+                echo '<li>1. You are *not done* after you completed your payment! You must click on "<b style="color: #FF0000;">Return to Merchant</b>" to continue back here.</li>';
+                echo '<li>2. You can checkout as a guest, You do not need to create a Paypal account. You can pay with a credit or visa debit card.</li>';
+                echo '<li class="timeframe hidden">3. Complete payment within <span id="timexpirycount" class="hideIfEmpty"></span> to secure this spot.</li>';
                 echo '</ul>';
-            echo '</div>';
+                echo '</div>';
 
-            if(($x__source==1 || is_new())){
-
-                //Is multi selectable, allow show down for quantity:
-                echo '<table class="table table-condensed">';
-
+            } else {
 
                 //Is this multi selectable?
                 $multi_selectable = $this->X_model->fetch(array(
@@ -461,28 +465,6 @@ if($top_i__id) {
                     'x__right' => $i_focus['i__id'],
                     'x__up' => 29651, //Multi Selectable
                 ));
-                if(count($multi_selectable)){
-
-                    echo '<input type="hidden" id="max_tickets" value="'.( is_numeric($multi_selectable[0]['x__message']) && $multi_selectable[0]['x__message']>1 ? intval($multi_selectable[0]['x__message']) : view_memory(6404,29651) ).'" />';
-
-                    echo '<tr>';
-                    echo '<td class="table-btn first_btn">Ticket(s):</td>';
-                    echo '<td class="table-btn first_btn ticket_price_ui" colspan="2">';
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="far fa-plus-circle"></i></a>';
-                    echo '<span id="current_tickets" style="padding: 0 10px; font-weight: bold;">1</span>';
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="far fa-minus-circle"></i></a>';
-                    echo '</td>';
-                    echo '</tr>';
-
-                }
-
-                echo '<tr>';
-                echo '<td class="table-btn first_btn">Price:</td>';
-                echo '<td class="table-btn first_btn price_ui"></td>';
-                echo '<td class="table-btn first_btn ticket_currency_ui"></td>';
-                echo '</tr>';
-
-                //Who Pays Taxes/Fees?
                 $digest_fees = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
@@ -490,27 +472,55 @@ if($top_i__id) {
                     'x__up' => 30589, //Digest Fees
                 ));
 
-                if(!count($digest_fees)){
+
+
+                echo '<input type="hidden" id="max_allowed" value="'.( count($multi_selectable) && is_numeric($multi_selectable[0]['x__message']) && $multi_selectable[0]['x__message']>1 ? intval($multi_selectable[0]['x__message']) : view_memory(6404,29651) ).'" />';
+                echo '<input type="hidden" id="unit_price" value="'.number_format($currency_parts[1], 2).'" />';
+                echo '<input type="hidden" id="fee_rate" value="'.$commission_rate.'" />';
+
+
+                //Is multi selectable, allow show down for quantity:
+                echo '<div class="msg alert alert-warning" role="alert">';
+                echo '<table class="table table-condensed" style="max-width: 500px;">';
+
+                if(count($multi_selectable)){
 
                     echo '<tr>';
-                    echo '<td class="table-btn first_btn">Fee:</td>';
-                    echo '<td class="table-btn first_btn fee_ui"></td>';
-                    echo '<td class="table-btn first_btn ticket_currency_ui"></td>';
-                    echo '</tr>';
-
-                    echo '<tr>';
-                    echo '<td class="table-btn first_btn">Total:</td>';
-                    echo '<td class="table-btn first_btn total_ui"></td>';
-                    echo '<td class="table-btn first_btn ticket_currency_ui"></td>';
+                    echo '<td class="table-btn first_btn css__title">Ticket(s)</td>';
+                    echo '<td class="table-btn first_btn ticket_price_ui" colspan="2">';
+                    echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="far fa-minus-circle"></i></a>';
+                    echo '<span id="current_tickets" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
+                    echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="far fa-plus-circle"></i></a>';
+                    echo '</td>';
                     echo '</tr>';
 
                 }
 
+                echo '<tr>';
+                echo '<td class="table-btn first_btn css__title">Price</td>';
+                echo '<td class="table-btn first_btn price_ui">'.$currency_parts[1].'</td>';
+                echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
+                echo '</tr>';
 
+                if(!count($digest_fees)){
+
+                    echo '<tr>';
+                    echo '<td class="table-btn first_btn css__title">Fee</td>';
+                    echo '<td class="table-btn first_btn fee_ui">'.number_format(($currency_parts[1]*$commission_rate), 2).'</td>';
+                    echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
+                    echo '</tr>';
+
+                    echo '<tr>';
+                    echo '<td class="table-btn first_btn css__title">Total</td>';
+                    echo '<td class="table-btn first_btn total_ui">'.number_format((($currency_parts[1]*$commission_rate)+$currency_parts[1]), 2).'</td>';
+                    echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
+                    echo '</tr>';
+
+                }
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn">Delivery:</td>';
-                echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have you on our guest list. Your phone is your ticket. Locate your tickets in your account - or in your app. When you go mobile, your tickets will not be emailed to you or available for print." style="border-bottom: 1px dotted #999;">Guest List</span></td>';
+                echo '<td class="table-btn first_btn css__title">Delivery Method</td>';
+                echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have you on our guest list. Your phone is your ticket. Locate your tickets in your account - or in your app. When you go mobile, your tickets will not be emailed to you or available for print." style="border-bottom: 1px dotted #999;">Guest List <i class="fas fa-info-circle"></i></span></td>';
                 echo '<td class="table-btn first_btn"></td>';
                 echo '</tr>';
 
@@ -518,31 +528,24 @@ if($top_i__id) {
                 echo '<tr>';
                 echo '<td colspan="3">';
 
+
                 if(!count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $i_focus['i__id'],
                     'x__up' => 30615, //Is Refundable
                 )))){
-                    echo '<div style="padding: 10px 0;"><b>*All Sales Final: No Refunds or Transfers</b></div>';
+                    echo '<div class="sub_note">*All Sales Final: No Refunds/Transfers</div>';
                 }
-
-
-                //Must Agree to Terms of Service
-                echo '<div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="agreedToTerms">
-      <label class="form-check-label" for="agreedToTerms">
-        I have read and agree to the current <a href="/-14373" target="_blank">Terms of Use</a>.
-      </label>
-    </div>';
+                echo '<div class="sub_note">*You can checkout as a guest: No need to create a Paypal account</div>';
+                echo '<div class="sub_note">*Once paid, click on "Return to Merchant" to continue back here</div>';
 
                 echo '</td>';
                 echo '</tr>';
 
                 echo '</table>';
+                echo '</div>';
 
-                echo '<a href="/" class="btn btn-primary btn-lg btn-block">Pay Now</a>';
-                
             }
 
 
@@ -657,7 +660,7 @@ if(!$top_i__id){
 
         $control_btn = '';
 
-        if($e__id==13877 && $top_i__id && !$in_my_discoveries){
+        if($e__id==13877 && $top_i__id && !$in_my_discoveries && !$is_payment){
 
             //Is Saved already by this member?
             $is_saves = $this->X_model->fetch(array(
@@ -673,23 +676,29 @@ if(!$top_i__id){
 
             $control_btn = null;
 
-            if($i_focus['i__type'] == 26560 && !count($x_completes) && $valid_payment){
+            if($is_payment && !count($x_completes) && $valid_payment){
 
                 //Load Paypal Pay button:
                 $control_btn = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
-                $control_btn .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
-                $control_btn .= '<input type="hidden" name="item_name" value="'.$i_focus['i__title'].'">';
-                $control_btn .= '<input type="hidden" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
-                $control_btn .= '<input type="hidden" name="quantity" id="quantity" value="1">';
+
+                //Dynamic Variables:
+                $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i_focus['i__title'].'">';
+                $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$starting_quantity.'">';
+                $control_btn .= '<input type="hidden" id="paypal_amount" name="amount" value="'.$currency_parts[1].'">';
+                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$base_item_number.$starting_quantity.'">';
+
+                //Fixed Variables:
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
-                $control_btn .= '<input type="hidden" name="amount" id="amount" value="'.$currency_parts[1].'">';
                 $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
                 $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
                 $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?cancel_pay=1">';
                 $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1">';
                 $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
+                $control_btn .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
 
-                $control_btn .= '<input type="submit" class="round-btn adj-btn go-next-group" name="pay_now" id="pay_now" value="$"><span class="nav-title css__title">PayPal</span>';
+                $control_btn .= '<input type="submit" class="round-btn adj-btn go-next-group" name="pay_now" id="pay_now" value="Pay Now">';
+
+                //$control_btn .= '<span class="nav-title css__title">PayPal</span>';
                 //$control_btn .= '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="document.getElementById(\'paypal_form\').submit();">'.$e___4737[$i_focus['i__type']]['m__cover'].'</a><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].'</span>';
 
                 $control_btn .= '</form>';
@@ -849,16 +858,45 @@ echo '</div>';
             x_upload(droppedFiles, 'file');
         });
 
-        function ticket_increment(val){
-            var new_quantity = parseInt($(this).val());
+        var busy_processing = false;
+        function ticket_increment(increment){
+
+            if(busy_processing){
+                return false;
+            }
+
+            busy_processing = true;
+
+            var new_quantity = parseInt($('#current_tickets').text()) + increment;
+            var max_allowed = parseInt($('#max_allowed').val());
+            if(new_quantity<1){
+                //Invalid new quantity
+                return false;
+            } else if (new_quantity>max_allowed){
+                alert('Error: Max Allowed is '+max_allowed);
+                return false;
+            }
+
             var unit_price = parseFloat($("#unit_price").val());
+            var fee_rate = parseFloat($("#fee_rate").val());
             var new_price = new_quantity * unit_price;
+            var new_fee = ( new_price * fee_rate ).toFixed(2);
+            var new_total = ( new_price * new_fee ).toFixed(2);
 
-            $("#quantity").val(new_quantity);
-            console.log('Update quantity to '+new_quantity);
+            //Update UI:
+            $("#current_tickets").text(new_quantity);
+            $(".price_ui").text(new_price);
+            $(".fee_ui").text(new_fee);
+            $(".total_ui").text(new_total);
 
-            $("#amount").val(new_price);
-            console.log('Updated Total Price to '+new_price);
+            //Update Paypal form:
+            $("#paypal_quantity").val(new_quantity);
+            $("#paypal_amount").val(new_price);
+            $("#paypal_item_number").val("<?= $base_item_number ?>"+new_quantity);
+            $("#paypal_item_name").val(new_quantity+'x '+$('h1.msg-frame').text());
+
+            busy_processing = false;
+
         }
 
 

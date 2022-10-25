@@ -1593,7 +1593,11 @@ i, .btn .show-max {
     height: 20px !important;
 }
 
-
+.sub_note{
+    padding: 5px;
+    font-size: 0.9em !important;
+    font-weight: bold;
+}
 .platform-logo{
     line-height: 130%;
     width: 34px !important;
