@@ -1592,16 +1592,24 @@ i, .btn .show-max {
     width: 20px !important;
     height: 20px !important;
 }
-.table_checkout{
-    max-width: 500px;
+
+.table_checkout {
+    padding: 10px 5px 5px !important;
+    margin: 0 !important;
+    width: 100% !important;
 }
-.table_checkout td{
+.table_checkout table{
+    width: 500px;
+}
+.table_checkout table td{
     min-height: 34px;
+    font-weight: bold;
+    padding: 0 !important;
 }
 
 
 .sub_note{
-    padding: 5px 0 0 0;
+    padding: 0px 0 5px 5px;
     font-size: 0.8em !important;
     font-weight: bold;
 }

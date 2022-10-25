@@ -479,47 +479,50 @@ if($top_i__id) {
                 echo '<input type="hidden" id="fee_rate" value="'.$commission_rate.'" />';
 
                 //Is multi selectable, allow show down for quantity:
-                echo '<div class="msg alert alert-warning" role="alert">';
-                echo '<table class="table table-condensed table_checkout">';
+                echo '<div class="msg alert alert-warning table_checkout" role="alert">';
+                echo '<table class="table table-condensed">';
 
+                echo '<tr>';
+                echo '<td class="table-btn first_btn" style="width:60% !important;">Tickets:</td>';
+                echo '<td class="table-btn first_btn ticket_price_ui" style="width:30% !important;" colspan="2">';
                 if(count($multi_selectable)){
-
-                    echo '<tr>';
-                    echo '<td class="table-btn first_btn css__title">Tickets:</td>';
-                    echo '<td class="table-btn first_btn ticket_price_ui" colspan="2">';
                     echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="far fa-minus-circle"></i></a>';
                     echo '<span id="current_tickets" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
                     echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="far fa-plus-circle"></i></a>';
-                    echo '</td>';
-                    echo '</tr>';
-
+                } else {
+                    echo '<span id="current_tickets" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
                 }
+                echo '</td>';
+                echo '</tr>';
+
+
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn css__title" style="width: 50%">Price:</td>';
-                echo '<td class="table-btn first_btn"  style="width: 15%">'.$currency_parts[0].'</td>';
-                echo '<td class="table-btn first_btn price_ui"  style="width: 35%">'.$currency_parts[1].'</td>';
+                echo '<td class="table-btn first_btn">Price:</td>';
+                echo '<td class="table-btn first_btn price_ui">'.$currency_parts[1].'</td>';
+                echo '<td class="table-btn first_btn" style="width:10% !important;">'.$currency_parts[0].'</td>';
                 echo '</tr>';
 
                 if(!count($digest_fees)){
 
                     echo '<tr>';
-                    echo '<td class="table-btn first_btn css__title">Fee:</td>';
-                    echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
+                    echo '<td class="table-btn first_btn">Fee:</td>';
                     echo '<td class="table-btn first_btn fee_ui">'.number_format(($currency_parts[1]*$commission_rate), 2).'</td>';
+                    echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
                     echo '</tr>';
 
                     echo '<tr>';
-                    echo '<td class="table-btn first_btn css__title">Total:</td>';
+                    echo '<td class="table-btn first_btn">Total:</td>';
+                    echo '<td class="table-btn first_btn total_ui">'.number_format((($currency_parts[1]*$commission_rate)+$currency_parts[1]),
                     echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
-                    echo '<td class="table-btn first_btn total_ui">'.number_format((($currency_parts[1]*$commission_rate)+$currency_parts[1]), 2).'</td>';
+                    2).'</td>';
                     echo '</tr>';
 
                 }
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn css__title">Delivery:</td>';
-                echo '<td class="table-btn first_btn" colspan="2"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have you on our guest list. Your phone is your ticket. Locate your tickets in your account - or in your app. When you go mobile, your tickets will not be emailed to you or available for print." style="border-bottom: 1px dotted #999;">Guest List <i class="fas fa-info-circle"></i></span></td>';
+                echo '<td class="table-btn first_btn">Delivery:</td>';
+                echo '<td class="table-btn first_btn" colspan="2"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have you on our guest list. Your phone is your ticket. Locate your tickets in your account - or in your app. When you go mobile, your tickets will not be emailed to you or available for print." style="border-bottom: 1px dotted #999;">Guest List <i class="fas fa-info-circle" style="font-size: 0.9em !important;"></i></span></td>';
                 echo '</tr>';
 
 
