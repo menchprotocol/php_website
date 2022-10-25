@@ -838,7 +838,7 @@ echo '</div>';
         var fee_rate = parseFloat($("#fee_rate").val());
         var new_price = new_quantity * unit_price;
         var new_fee = ( new_price * fee_rate ).toFixed(2);
-        var new_total = ( new_price * new_fee ).toFixed(2);
+        var new_total = ( new_price + new_fee ).toFixed(2);
 
         //Update UI:
         $("#current_tickets").text(new_quantity);
