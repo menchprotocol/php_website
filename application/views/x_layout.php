@@ -714,7 +714,7 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
                 $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
-                $control_btn .= '<input type="hidden" name="notify_url" value="https://'.get_domain('m__message').'/-26595">';
+                $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
                 $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?cancel_pay=1">';
                 $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1">';
                 $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
