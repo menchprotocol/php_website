@@ -500,7 +500,7 @@ if($top_i__id) {
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn">Price:</td>';
-                echo '<td class="table-btn first_btn price_ui">'.$currency_parts[1].'</td>';
+                echo '<td class="table-btn first_btn price_ui">'.number_format($currency_parts[1], 2).'</td>';
                 echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
                 echo '</tr>';
 
@@ -845,7 +845,7 @@ echo '</div>';
 
         //Update UI:
         $("#current_tickets").text(new_quantity);
-        $(".price_ui").text(new_price);
+        $(".price_ui").text(new_price.toFixed(2));
         $(".fee_ui").text(new_fee.toFixed(2));
         $(".total_ui").text(new_total.toFixed(2));
 

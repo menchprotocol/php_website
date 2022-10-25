@@ -1603,9 +1603,8 @@ i, .btn .show-max {
     width: 290px;
 }
 .table_checkout table td{
-    min-height: 34px;
     font-weight: bold;
-    padding: 0 !important;
+    padding: 3px 0 !important;
 }
 
 
