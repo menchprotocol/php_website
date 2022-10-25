@@ -648,7 +648,7 @@ if($top_i__id) {
 
     } else {
 
-        echo '<div class="msg alert alert-danger" role="alert">Error: Missing core variables.</div>';
+        //echo '<div class="msg alert alert-danger" role="alert">Error: Missing core variables.</div>';
 
     }
 
@@ -708,7 +708,7 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
                 $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$starting_quantity.'">'; //Dynamic Variable
                 $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i_focus['i__title'].'">';
-                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.( isset($detected_x_type['x__type']) ? $detected_x_type['x__type'] : 0 ).'-'.$x__source.'">';
+                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
 
                 $control_btn .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
