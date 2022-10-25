@@ -265,7 +265,7 @@ class X extends CI_Controller
         }
 
         //Mark this as complete since there is no child to choose from:
-        if($member_e && in_array($current_is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
+        if($member_e && in_array($current_is[0]['i__type'], $this->config->item('n___30646')) && !count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                 'x__source' => $member_e['e__id'],
@@ -277,7 +277,7 @@ class X extends CI_Controller
             ));
         }
 
-        if($member_e && in_array($next_is[0]['i__type'], $this->config->item('n___4559')) && !count($this->X_model->fetch(array(
+        if($member_e && in_array($next_is[0]['i__type'], $this->config->item('n___30646')) && !count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
                 'x__source' => $member_e['e__id'],
@@ -468,7 +468,7 @@ class X extends CI_Controller
             'x__left' => $is[0]['i__id'],
         )))){
             //Not yet completed, should we complete?
-            if(in_array($is[0]['i__type'], $this->config->item('n___4559'))){
+            if(in_array($is[0]['i__type'], $this->config->item('n___30646'))){
                 //Yes we can:
                 $this->X_model->mark_complete($top_i__id, $is[0], array(
                     'x__type' => 4559, //DISCOVERY MESSAGES

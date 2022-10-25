@@ -1621,12 +1621,13 @@ class X_model extends CI_Model
                 in_array($next_i['i__type'], $this->config->item('n___12330')) &&
 
                 //No Messages
+                /*
                 !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 4231, //IDEA NOTES Messages
                     'x__right' => $next_i['i__id'],
                 ))) &&
-
+                */
 
                 //One or less next
                 /*

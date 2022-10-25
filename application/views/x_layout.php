@@ -792,7 +792,7 @@ if($top_i__id) {
      *
      * */
 
-    if (in_array($i_focus['i__type'], $this->config->item('n___4559'))) {
+    if (in_array($i_focus['i__type'], $this->config->item('n___30646'))) {
         //DISCOVERY ONLY
         echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
     }
