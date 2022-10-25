@@ -416,7 +416,7 @@ if($top_i__id) {
         } elseif(count($x_completes)){
 
             $x__metadata = unserialize($x_completes[0]['x__metadata']);
-            echo '<div class="msg alert alert-success" role="alert">A Paypal email confirmation has been sent to you which your proof of purchase. You paid '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['mc_currency']==$currency_parts[0] && $x__metadata['mc_gross'] < $currency_parts[1] ? ' (Saved '.number_format(($currency_parts[1] - $x__metadata['mc_gross']), 0).'!)' : '' ).' on '.$x__metadata['payment_date'].'. You can view your <a href="https://www.paypal.com/myaccount/activities/details/'.$x__metadata['txn_id'].'" target="_blank">Paypal Transaction</a>. You are ready to go next.</div>';
+            echo '<div class="msg alert alert-success" role="alert">A Paypal email confirmation has been sent to you which your proof of purchase. You paid '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['mc_currency']==$currency_parts[0] && $x__metadata['mc_gross'] < $currency_parts[1] ? ' (Saved '.number_format(($currency_parts[1] - $x__metadata['mc_gross']), 0).'!)' : '' ).' on '.$x__metadata['payment_date'].'. You should have received a PayPal email receipt. You are now ready to go next.</div>';
 
             //Invite Your Friends (If 2 or more Tickets):
             if(is_new()){
@@ -441,6 +441,17 @@ if($top_i__id) {
 
             $e___26661 = $this->config->item('e___26661');
 
+            $digest_fees = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $i_focus['i__id'],
+                'x__up' => 30589, //Digest Fees
+            ));
+
+            $commission_rate = 0;
+            $fee_total = 0;
+            $unit_total = number_format($currency_parts[1], 2);
+
             if(!is_new()){
 
                 echo '<div class="msg alert alert-warning" role="alert">';
@@ -460,12 +471,6 @@ if($top_i__id) {
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $i_focus['i__id'],
                     'x__up' => 29651, //Multi Selectable
-                ));
-                $digest_fees = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                    'x__right' => $i_focus['i__id'],
-                    'x__up' => 30589, //Digest Fees
                 ));
 
                 $commission_rate = ( count($digest_fees) ? 0 : ( doubleval(view_memory(6404,27017)) + doubleval(view_memory(6404,30590)) + doubleval(view_memory(6404,30612)) )/100 );
