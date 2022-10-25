@@ -398,6 +398,31 @@ if($top_i__id) {
 
     } elseif ($is_payment) {
 
+
+        $e___26661 = $this->config->item('e___26661');
+
+        $digest_fees = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $i_focus['i__id'],
+            'x__up' => 30589, //Digest Fees
+        ));
+
+        //Is this multi selectable?
+        $multi_selectable = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $i_focus['i__id'],
+            'x__up' => 29651, //Multi Selectable
+        ));
+
+        $unit_price = number_format($currency_parts[1], 2);
+        $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) || !is_new() ? 0 : ( doubleval(view_memory(6404,27017)) + doubleval(view_memory(6404,30590)) + doubleval(view_memory(6404,30612)) )/100 ), 2);
+        $unit_total = number_format($unit_fee+$currency_parts[1], 2);
+        $max_allowed = ( count($multi_selectable) && is_numeric($multi_selectable[0]['x__message']) && $multi_selectable[0]['x__message']>1 ? intval($multi_selectable[0]['x__message']) : view_memory(6404,29651) );
+
+
+
         if(isset($_GET['cancel_pay']) && !count($x_completes)){
             echo '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
         }
@@ -437,30 +462,6 @@ if($top_i__id) {
             }
 
         } else {
-
-
-            $e___26661 = $this->config->item('e___26661');
-
-            $digest_fees = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i_focus['i__id'],
-                'x__up' => 30589, //Digest Fees
-            ));
-
-            //Is this multi selectable?
-            $multi_selectable = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i_focus['i__id'],
-                'x__up' => 29651, //Multi Selectable
-            ));
-
-            $unit_price = number_format($currency_parts[1], 2);
-            $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) || !is_new() ? 0 : ( doubleval(view_memory(6404,27017)) + doubleval(view_memory(6404,30590)) + doubleval(view_memory(6404,30612)) )/100 ), 2);
-            $unit_total = number_format($unit_fee+$currency_parts[1], 2);
-            $max_allowed = ( count($multi_selectable) && is_numeric($multi_selectable[0]['x__message']) && $multi_selectable[0]['x__message']>1 ? intval($multi_selectable[0]['x__message']) : view_memory(6404,29651) );
-
 
             if(!is_new()){
 
@@ -519,17 +520,17 @@ if($top_i__id) {
                 echo '</table>';
 
 
+                echo '<div class="sub_note css__title">Remember:</div>';
                 if(!count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $i_focus['i__id'],
                     'x__up' => 30615, //Is Refundable
                 )))){
-                    echo '<div class="sub_note">*Final Sale: No Refunds/Transfers</div>';
+                    echo '<div class="sub_note">* Final Sale: No Refunds/Transfers</div>';
                 }
-                echo '<div class="sub_note">*You can checkout as a guest: No need to create a Paypal account</div>';
-                echo '<div class="sub_note">*Once paid, click on "Return to Merchant" to continue back here</div>';
-
+                echo '<div class="sub_note">* No need to create a Paypal account: You can checkout as a guest</div>';
+                echo '<div class="sub_note">* Once you paid, click on "Return to Merchant" to continue back here</div>';
 
                 echo '</div>';
 
