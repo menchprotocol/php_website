@@ -839,7 +839,7 @@ echo '</div>';
         }
 
         busy_processing = true;
-        var unit_total = parseFloat($("#unit_total").val());
+        var unit_total = parseFloat($(".unit_total").val());
         var new_total = ( unit_total * new_quantity );
 
         //Update UI:
