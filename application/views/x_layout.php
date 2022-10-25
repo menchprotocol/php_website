@@ -476,6 +476,7 @@ if($top_i__id) {
                 echo '<input type="hidden" id="max_allowed" value="'.( count($multi_selectable) && is_numeric($multi_selectable[0]['x__message']) && $multi_selectable[0]['x__message']>1 ? intval($multi_selectable[0]['x__message']) : view_memory(6404,29651) ).'" />';
                 echo '<input type="hidden" id="unit_price" value="'.number_format($currency_parts[1], 2).'" />';
                 echo '<input type="hidden" id="fee_total" value="'.$fee_total.'" />';
+                echo '<input type="hidden" id="unit_total" value="'.$unit_total.'" />';
 
                 //Is multi selectable, allow show down for quantity:
                 echo '<div class="msg alert alert-warning table_checkout" role="alert">';
@@ -495,7 +496,7 @@ if($top_i__id) {
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn">Total:</td>';
-                echo '<td class="table-btn first_btn unit_total">'.$unit_total.'</td>';
+                echo '<td class="table-btn first_btn">'.$unit_total.'</td>';
                 echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
                 echo '</tr>';
 
@@ -839,8 +840,9 @@ echo '</div>';
         }
 
         busy_processing = true;
-        var unit_total = parseFloat($(".unit_total").text());
+        var unit_total = parseFloat($("#unit_total").val());
         var new_total = ( unit_total * new_quantity );
+        console.log(new_total);
 
         //Update UI:
         $("#paypal_quantity").val(new_quantity);
