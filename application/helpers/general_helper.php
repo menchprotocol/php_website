@@ -896,8 +896,7 @@ function cookie_delete(){
 }
 
 function is_new(){
-    $member_e = superpower_unlocked();
-    return (isset($member_e['e__id']) && ($member_e['e__id']==13546 || $member_e['e__id']==1)); //
+    return isset($_GET['new']);
 }
 
 function cookie_check() {
