@@ -1594,8 +1594,8 @@ i, .btn .show-max {
 }
 
 .sub_note{
-    padding: 5px;
-    font-size: 0.9em !important;
+    padding: 5px 0 0 0;
+    font-size: 0.8em !important;
     font-weight: bold;
 }
 .platform-logo{

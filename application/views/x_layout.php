@@ -497,9 +497,9 @@ if($top_i__id) {
                 }
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn css__title">Price</td>';
-                echo '<td class="table-btn first_btn price_ui">'.$currency_parts[1].'</td>';
-                echo '<td class="table-btn first_btn">'.$currency_parts[0].'</td>';
+                echo '<td class="table-btn first_btn css__title" style="width: 50%">Price</td>';
+                echo '<td class="table-btn first_btn price_ui"  style="width: 25%">'.$currency_parts[1].'</td>';
+                echo '<td class="table-btn first_btn"  style="width: 25%">'.$currency_parts[0].'</td>';
                 echo '</tr>';
 
                 if(!count($digest_fees)){
@@ -520,8 +520,7 @@ if($top_i__id) {
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn css__title">Delivery Method</td>';
-                echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have you on our guest list. Your phone is your ticket. Locate your tickets in your account - or in your app. When you go mobile, your tickets will not be emailed to you or available for print." style="border-bottom: 1px dotted #999;">Guest List <i class="fas fa-info-circle"></i></span></td>';
-                echo '<td class="table-btn first_btn"></td>';
+                echo '<td class="table-btn first_btn" colspan="2"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have you on our guest list. Your phone is your ticket. Locate your tickets in your account - or in your app. When you go mobile, your tickets will not be emailed to you or available for print." style="border-bottom: 1px dotted #999;">Guest List <i class="fas fa-info-circle"></i></span></td>';
                 echo '</tr>';
 
 
@@ -822,12 +821,6 @@ echo '</div>';
     var busy_processing = false;
     function ticket_increment(increment){
 
-        if(busy_processing){
-            return false;
-        }
-
-        busy_processing = true;
-
         var new_quantity = parseInt($('#current_tickets').text()) + increment;
         var max_allowed = parseInt($('#max_allowed').val());
         if(new_quantity<1){
@@ -836,8 +829,11 @@ echo '</div>';
         } else if (new_quantity>max_allowed){
             alert('Error: Max Allowed is '+max_allowed);
             return false;
+        } else if(busy_processing){
+            return false;
         }
 
+        busy_processing = true;
         var unit_price = parseFloat($("#unit_price").val());
         var fee_rate = parseFloat($("#fee_rate").val());
         var new_price = new_quantity * unit_price;
