@@ -522,7 +522,7 @@ if($top_i__id) {
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn">Delivery:</td>';
-                echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have you on our guest list. Your phone is your ticket. Locate your tickets in your account - or in your app. When you go mobile, your tickets will not be emailed to you or available for print." style="border-bottom: 1px dotted #999;">Guest List <i class="fas fa-info-circle" style="font-size: 0.9em !important;"></i></span></td>';
+                echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have your name on the guest list. We *Will Not* email your a PDF Tickets or Bar code. Paypal email receipt is your proof of payment." style="border-bottom: 1px dotted #999;">Guest List <i class="fas fa-info-circle" style="font-size: 0.9em !important;"></i></span></td>';
                 echo '<td class="table-btn first_btn" style="width:20% !important;">&nbsp;</td>';
                 echo '</tr>';
 

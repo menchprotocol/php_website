@@ -1600,7 +1600,7 @@ i, .btn .show-max {
     margin: 0 !important;
 }
 .table_checkout table{
-    width: 290px;
+    max-width: 290px;
 }
 .table_checkout table td{
     font-weight: bold;
