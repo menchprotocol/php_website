@@ -3,6 +3,12 @@
 //Called when the paypal payment is complete:
 if(isset($_POST)){
 
+    $this->X_model->create(array(
+        'x__type' => 4246, //Platform Bug Reports
+        'x__message' => 'Payment Attempt',
+        'x__metadata' => $_POST,
+    ));
+
     //Remove Server Identity:
     unset($_SERVER['SERVER_NAME']);
     if(!isset($_POST['payment_status']) || $_POST['payment_status']!='Completed' || !isset($_POST['item_number'])){
@@ -31,7 +37,7 @@ if(isset($_POST)){
         if($top_i__id>0 && $i__id>0 && in_array($currency_type, $this->config->item('n___26661')) && $x__source>0 && count($next_is) && $pay_amount>0){
 
             //Mark idea as complete if not already:
-            $this->X_model->mark_complete($top_i__id, $next_is[0], array(
+            $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
                 'x__type' => 26595,
                 'x__source' => $x__source,
                 'x__up' => $currency_type,
