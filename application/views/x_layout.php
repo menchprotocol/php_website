@@ -553,12 +553,15 @@ if($top_i__id) {
 
                         busy_processing = true;
                         var unit_total = <?= $unit_total; ?>;
+                        var unit_fee = <?= $unit_fee; ?>;
+                        var handling_total = ( unit_fee * new_quantity );
                         var new_total = ( unit_total * new_quantity );
 
                         //Update UI:
                         $("#paypal_quantity").val(new_quantity);
                         $("#current_tickets").text(new_quantity);
                         $(".total_ui").text(new_total.toFixed(2));
+                        $("#paypal_handling").val(handling_total);
 
                         busy_processing = false;
 
@@ -702,11 +705,12 @@ if(!$top_i__id){
                 //Load Paypal Pay button:
                 $control_btn = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
 
+                $control_btn .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
                 $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$starting_quantity.'">'; //Dynamic Variable
                 $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i_focus['i__title'].'">';
                 $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
 
-                $control_btn .= '<input type="hidden" name="amount" value="'.$unit_total.'">';
+                $control_btn .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
                 $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
                 $control_btn .= '<input type="hidden" name="notify_url" value="https://'.get_domain('m__message').'/-26595">';
