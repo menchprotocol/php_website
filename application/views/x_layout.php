@@ -496,8 +496,8 @@ if($top_i__id) {
                 if(count($multi_selectable)){
 
                     echo '<tr>';
-                    echo '<td class="table-btn first_btn" style="text-align: right; width:45% !important;">Tickets:&nbsp;&nbsp;</td>';
-                    echo '<td class="table-btn first_btn ticket_price_ui" style="width:55% !important;">';
+                    echo '<td class="table-btn first_btn" style="text-align: right;">Tickets:&nbsp;&nbsp;</td>';
+                    echo '<td class="table-btn first_btn ticket_price_ui">';
                     echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
                     echo '<span id="current_tickets" class="css__title" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
                     echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="fas fa-plus-circle"></i></a>';
@@ -507,8 +507,8 @@ if($top_i__id) {
                 }
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn" style="text-align: right;">Total:&nbsp;&nbsp;</td>';
-                echo '<td class="table-btn first_btn css__title">'.$currency_parts[0].' <span class="total_ui">'.$unit_total.'</span></td>';
+                echo '<td class="table-btn first_btn" style="text-align: right;  width:45% !important;">Total:&nbsp;&nbsp;</td>';
+                echo '<td class="table-btn first_btn css__title" style="width:55% !important;">'.$currency_parts[0].' <span class="total_ui">'.$unit_total.'</span></td>';
                 echo '</tr>';
 
                 echo '<tr>';
