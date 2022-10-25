@@ -498,9 +498,9 @@ if($top_i__id) {
                     echo '<tr>';
                     echo '<td class="table-btn first_btn" style="text-align: right;">Tickets:&nbsp;&nbsp;</td>';
                     echo '<td class="table-btn first_btn ticket_price_ui">';
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)" style="padding: 5px 10px;"><i class="fas fa-minus-circle"></i></a>';
-                    echo '<span id="current_tickets" class="css__title" style="display: inline-block; min-width: 20px; text-align: center;">'.$starting_quantity.'</span>';
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(1)" style="padding: 5px 10px;"><i class="fas fa-plus-circle"></i></a>';
+                    echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)" style="padding:3px; display: inline-block;"><i class="fas fa-minus-circle"></i></a>';
+                    echo '<span id="current_tickets" class="css__title" style="display: inline-block; min-width:31px; text-align: center;">'.$starting_quantity.'</span>';
+                    echo '<a href="javascript:void(0);" onclick="ticket_increment(1)" style="padding:3px; display: inline-block;"><i class="fas fa-plus-circle"></i></a>';
                     echo '</td>';
                     echo '</tr>';
 
