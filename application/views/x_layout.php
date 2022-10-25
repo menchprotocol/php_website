@@ -692,7 +692,8 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$starting_quantity.'">'; //Dynamic Variable
                 $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i_focus['i__title'].'">';
                 $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
-                $control_btn .= '<input type="hidden" id="paypal_amount" name="amount" value="'.number_format((($currency_parts[1] * $commission_rate) + $currency_parts[1]), 2).'">';
+                $control_btn .= '<input type="hidden" id="paypal_amount" name="amount" value="'.$unit_total.'">';
+                $control_btn .= '<input type="hidden" id="paypal_tax" name="tax" value="'.$fee_total.'">'; //Dynamic Variable
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
                 $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
                 $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
@@ -842,7 +843,6 @@ echo '</div>';
         busy_processing = true;
         var unit_total = parseFloat($("#unit_total").val());
         var new_total = ( unit_total * new_quantity );
-        console.log(new_total);
 
         //Update UI:
         $("#paypal_quantity").val(new_quantity);
