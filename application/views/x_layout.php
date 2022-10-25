@@ -482,12 +482,12 @@ if($top_i__id) {
 
                 if($unit_fee > 0){
                     echo '<tr>';
-                    echo '<td class="table-btn first_btn" style="text-align: right;">Price:</td>';
+                    echo '<td class="table-btn first_btn" style="text-align: right; padding-right: 5px;">Price:</td>';
                     echo '<td class="table-btn first_btn">'.$currency_parts[0].' '.$unit_price.'</td>';
                     echo '</tr>';
 
                     echo '<tr>';
-                    echo '<td class="table-btn first_btn" style="text-align: right;">Fee:</td>';
+                    echo '<td class="table-btn first_btn" style="text-align: right; padding-right: 5px;">Fee:</td>';
                     echo '<td class="table-btn first_btn">'.$currency_parts[0].' '.$unit_fee.'</td>';
                     echo '</tr>';
                 }
@@ -496,7 +496,7 @@ if($top_i__id) {
                 if(count($multi_selectable)){
 
                     echo '<tr>';
-                    echo '<td class="table-btn first_btn" style="text-align: right; width:50% !important;">Tickets:</td>';
+                    echo '<td class="table-btn first_btn" style="text-align: right; padding-right: 5px; width:50% !important;">Tickets:</td>';
                     echo '<td class="table-btn first_btn ticket_price_ui" style="width:50% !important;">';
                     echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
                     echo '<span id="current_tickets" class="css__title" style="padding: 0 10px; font-weight: bold;">'.$starting_quantity.'</span>';
@@ -507,12 +507,12 @@ if($top_i__id) {
                 }
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn" style="text-align: right;">Total:</td>';
+                echo '<td class="table-btn first_btn" style="text-align: right; padding-right: 5px;">Total:</td>';
                 echo '<td class="table-btn first_btn css__title">'.$currency_parts[0].' <span class="total_ui">'.$unit_total.'</span></td>';
                 echo '</tr>';
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn" style="text-align: right;">Delivery:</td>';
+                echo '<td class="table-btn first_btn" style="text-align: right; padding-right: 5px;">Delivery:</td>';
                 echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have your name on our guest list. We *do not* email PDF Tickets or bar codes. Paypal email receipt is your proof of payment." style="border-bottom: 1px dotted #999;">ID At Door <i class="fas fa-info-circle" style="font-size: 0.8em !important;"></i></span></td>';
                 echo '</tr>';
 
