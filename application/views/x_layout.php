@@ -34,7 +34,6 @@ $top_completed = false; //Assume main intent not yet completed, unless proven ot
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
 $is_discovarable = true;
 $i_stats = i_stats($i_focus['i__metadata']);
-$base_item_number = '';
 
 $is_payment = in_array($i_focus['i__type'] , $this->config->item('n___30469'));
 $starting_quantity = 1;
@@ -57,7 +56,6 @@ if($is_payment){
 
     //Break down amount & currency
     $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
-    $base_item_number = $top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'-';
 
 }
 
@@ -683,13 +681,10 @@ if(!$top_i__id){
                 //Load Paypal Pay button:
                 $control_btn = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
 
-                //Dynamic Variables:
+                $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$starting_quantity.'">'; //Dynamic Variable
                 $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i_focus['i__title'].'">';
-                $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$starting_quantity.'">';
-                $control_btn .= '<input type="hidden" id="paypal_amount" name="amount" value="'.$currency_parts[1].'">';
-                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$base_item_number.$starting_quantity.'">';
-
-                //Fixed Variables:
+                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
+                $control_btn .= '<input type="hidden" id="paypal_amount" name="amount" value="'.number_format((($currency_parts[1] * $commission_rate) + $currency_parts[1]), 2).'">';
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
                 $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
                 $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
@@ -851,9 +846,6 @@ echo '</div>';
 
         //Update Paypal form:
         $("#paypal_quantity").val(new_quantity);
-        $("#paypal_amount").val(new_total.toFixed(2));
-        $("#paypal_item_number").val("<?= $base_item_number ?>"+new_quantity);
-        $("#paypal_item_name").val(new_quantity+'x '+$('h1.msg-frame').text());
 
         busy_processing = false;
 
