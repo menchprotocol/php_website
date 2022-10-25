@@ -1592,6 +1592,13 @@ i, .btn .show-max {
     width: 20px !important;
     height: 20px !important;
 }
+.table_checkout{
+    max-width: 500px;
+}
+.table_checkout td{
+    min-height: 34px;
+}
+
 
 .sub_note{
     padding: 5px 0 0 0;
