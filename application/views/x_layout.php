@@ -37,26 +37,50 @@ $i_stats = i_stats($i_focus['i__metadata']);
 
 $is_payment = in_array($i_focus['i__type'] , $this->config->item('n___30469'));
 $starting_quantity = 1;
+$detected_x_type = 0;
+
 if($is_payment){
-    //Fetch Value
+
+    //Payment Settings:
     $total_dues = $this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__up' => 26562, //Total Due
-        'x__right' => $i_focus['i__id'],
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__right' => $i_focus['i__id'],
+        'x__up' => 26562, //Total Due
     ));
 
-    $valid_payment = false;
     if($x__source>0 && count($total_dues)){
         $detected_x_type = x_detect_type($total_dues[0]['x__message']);
         if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
-            $valid_payment = true;
+
+            $digest_fees = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $i_focus['i__id'],
+                'x__up' => 30589, //Digest Fees
+            ));
+            $multi_selectable = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $i_focus['i__id'],
+                'x__up' => 29651, //Multi Selectable
+            ));
+
+
+
+
+            //Break down amount & currency
+            $e___26661 = $this->config->item('e___26661');
+            $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
+            $unit_price = number_format($currency_parts[1], 2);
+            $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) || !is_new() ? 0 : ( doubleval(view_memory(6404,27017)) + doubleval(view_memory(6404,30590)) + doubleval(view_memory(6404,30612)) )/100 ), 2);
+            $unit_total = number_format($unit_fee+$currency_parts[1], 2);
+            $max_allowed = ( count($multi_selectable) && is_numeric($multi_selectable[0]['x__message']) && $multi_selectable[0]['x__message']>1 ? intval($multi_selectable[0]['x__message']) : view_memory(6404,29651) );
+
+        } else {
+            $is_payment = false;
         }
     }
-
-    //Break down amount & currency
-    $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
-
 }
 
 if(count($x_completes)){
@@ -398,40 +422,11 @@ if($top_i__id) {
 
     } elseif ($is_payment) {
 
-
-        $e___26661 = $this->config->item('e___26661');
-
-        $digest_fees = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $i_focus['i__id'],
-            'x__up' => 30589, //Digest Fees
-        ));
-
-        //Is this multi selectable?
-        $multi_selectable = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $i_focus['i__id'],
-            'x__up' => 29651, //Multi Selectable
-        ));
-
-        $unit_price = number_format($currency_parts[1], 2);
-        $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) || !is_new() ? 0 : ( doubleval(view_memory(6404,27017)) + doubleval(view_memory(6404,30590)) + doubleval(view_memory(6404,30612)) )/100 ), 2);
-        $unit_total = number_format($unit_fee+$currency_parts[1], 2);
-        $max_allowed = ( count($multi_selectable) && is_numeric($multi_selectable[0]['x__message']) && $multi_selectable[0]['x__message']>1 ? intval($multi_selectable[0]['x__message']) : view_memory(6404,29651) );
-
-
-
         if(isset($_GET['cancel_pay']) && !count($x_completes)){
             echo '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
         }
 
-        if(!$valid_payment){
-
-            echo '<div class="msg alert alert-danger" role="alert">Error: Idea missing valid payment amount.</div>';
-
-        } elseif(isset($_GET['process_pay']) && !count($x_completes)){
+        if(isset($_GET['process_pay']) && !count($x_completes)){
 
             echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
 
@@ -651,6 +646,10 @@ if($top_i__id) {
         echo '</form>';
         echo '</div>';
 
+    } else {
+
+        echo '<div class="msg alert alert-danger" role="alert">Error: Missing core variables.</div>';
+
     }
 
 }
@@ -701,7 +700,7 @@ if(!$top_i__id){
 
             $control_btn = null;
 
-            if($is_payment && !count($x_completes) && $valid_payment){
+            if($is_payment && !count($x_completes)){
 
                 //Load Paypal Pay button:
                 $control_btn = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
@@ -709,7 +708,7 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
                 $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$starting_quantity.'">'; //Dynamic Variable
                 $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i_focus['i__title'].'">';
-                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
+                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.( isset($detected_x_type['x__type']) ? $detected_x_type['x__type'] : 0 ).'-'.$x__source.'">';
 
                 $control_btn .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';

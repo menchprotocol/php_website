@@ -1498,6 +1498,9 @@ class X_model extends CI_Model
     function mark_complete($top_i__id, $i, $add_fields) {
 
         //Always add Idea to x__left
+        if($top_i__id>0 && (!isset($add_fields['x__right']) || intval($add_fields['x__right'])==0)){
+            $add_fields['x__right'] = $top_i__id;
+        }
         $add_fields['x__left'] = $i['i__id'];
 
         if (!isset($add_fields['x__message'])) {
@@ -1509,9 +1512,6 @@ class X_model extends CI_Model
 
         $search_fields = $add_fields;
 
-        if(!isset($add_fields['x__right']) || !intval($add_fields['x__right'])){
-            $add_fields['x__right'] = $top_i__id;
-        }
 
         if(isset($search_fields['x__metadata'])){
             unset($search_fields['x__metadata']);
