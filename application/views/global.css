@@ -1600,7 +1600,7 @@ i, .btn .show-max {
     margin: 0 !important;
 }
 .table_checkout table{
-    max-width: 290px;
+    max-width: 230px;
 }
 .table_checkout table td{
     font-weight: bold;
@@ -3444,7 +3444,7 @@ h4.css__title{
 
 .sidebar {
     height: 100%;
-    width: 240px;
+    width: 280px;
     position: fixed;
     z-index: 1;
     top: 43px;
