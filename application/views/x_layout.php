@@ -507,8 +507,8 @@ if($top_i__id) {
                 }
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn" style="text-align: right;  width:45% !important;">Total:&nbsp;&nbsp;</td>';
-                echo '<td class="table-btn first_btn css__title" style="width:55% !important;">'.$currency_parts[0].' <span class="total_ui">'.$unit_total.'</span></td>';
+                echo '<td class="table-btn first_btn" style="text-align: right;  width:40% !important;">Total:&nbsp;&nbsp;</td>';
+                echo '<td class="table-btn first_btn" style="width:60% !important;">'.$currency_parts[0].' <span class="total_ui css__title">'.$unit_total.'</span></td>';
                 echo '</tr>';
 
                 echo '<tr>';
