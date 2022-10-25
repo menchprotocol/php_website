@@ -1,17 +1,16 @@
 <?php
 
 //Called when the paypal payment is complete:
-if(isset($_POST) && isset($_POST['payment_status'])){
+if(isset($_POST)){
 
     //Remove Server Identity:
     unset($_SERVER['SERVER_NAME']);
-    if($_POST['payment_status']!='Completed' || !isset($_POST['item_number'])){
+    if(!isset($_POST['payment_status']) || $_POST['payment_status']!='Completed' || !isset($_POST['item_number'])){
         //Report issue:
         $this->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'Invalid Paypal Call',
+            'x__message' => 'Unexpected Paypal Call',
             'x__metadata' => $_POST,
-
         ));
     }
 
@@ -43,7 +42,7 @@ if(isset($_POST) && isset($_POST['payment_status'])){
     }
 
 } else {
-    echo 'Invalid Paypal Post Data: '.print_r($_POST, true);
+    echo 'Missing Paypal Post Data!';
 }
 
 
