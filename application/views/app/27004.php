@@ -112,15 +112,19 @@ foreach($i_query as $i){
         $x__metadata = unserialize($x['x__metadata']);
         $total_transactions++;
 
-        $this_tickets = 1;//Default assumption:
-        for($t=20;$t>=2;$t--){
-            if(substr_count(strtolower($i['i__title']),$t.'x')==1){
-                $this_tickets = $t;
-                break;
+        $this_quantity = 1;//Default assumption:
+        if($x__metadata['quantity']){
+            $this_quantity = $x__metadata['quantity'];
+        } else {
+            for($t=20;$t>=2;$t--){
+                if(substr_count(strtolower($i['i__title']),$t.'x')==1){
+                    $this_quantity = $t;
+                    break;
+                }
             }
         }
 
-        $total_tickets += $this_tickets;
+        $total_tickets += $this_quantity;
         $total_paypal_fee += doubleval($x__metadata['mc_fee']);
         $total_revenue += doubleval($x__metadata['mc_gross']);
         if(!in_array($x__metadata['mc_currency'], $currencies) && strlen($x__metadata['mc_currency'])>0){
@@ -159,11 +163,11 @@ foreach($i_query as $i){
         $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block source_cover_micro">'.view_cover(12274,$es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</td>';
         $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">1</td>';
         $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-        $transaction_content .= '<td style="text-align: right;">'.$this_tickets.'&nbsp;x</td>';
+        $transaction_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($this_commission, 2).'</td>';
         $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $x__metadata['mc_gross'] > 0 ? ($x__metadata['mc_fee']/$x__metadata['mc_gross']*100) : 0 ).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
-        $transaction_content .= '<td style="text-align: left;"><b>&nbsp;$'.number_format(($this_payout/$this_tickets), 2).'</b></td>';
+        $transaction_content .= '<td style="text-align: left;"><b>&nbsp;$'.number_format(($this_payout/$this_quantity), 2).'</b></td>';
         $transaction_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
         $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$x__metadata['mc_currency'].'</td>';
         $transaction_content .= '<td style="text-align: right;" id="refund_'.$x['x__id'].'">'.( $x__metadata['mc_gross']>0 && strlen($x__metadata['txn_id'])>0 ? '<a href="#" onclick="paypal_refund('.$x['x__id'].', '.number_format($x__metadata['mc_gross'], 2).')" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Process Full Refund"><u><i class="fal fa-hands-usd" style="font-size:1em !important;"></i></u></a> <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="/-4341?x__id='.$x['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';

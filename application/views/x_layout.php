@@ -101,89 +101,6 @@ if($top_i__id && $x__source){
         }
     }
 
-    //We check expire time if not completed?
-    if(!count($x_completes)){
-
-        //See if any OR parents are completed with an expiry time:
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //Select Next
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'x__right' => $i_focus['i__id'],
-        ), array('x__left')) as $parent_ors){
-
-            $does_expire = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 4983, //References
-                'x__up' => 28199,
-                'x__right' => $parent_ors['i__id'],
-            ));
-
-            if(count($does_expire) && intval($does_expire[0]['x__message'])>0){
-
-                //Fetch parent completion time:
-                $answered = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //Discoveries
-                    'x__left' => $parent_ors['i__id'],
-                    'x__source' => $x__source,
-                ));
-
-                if(count($answered)){
-
-                    //Display count down timer:
-                    echo '<script>
-// Set the date were counting down to
-var countDownDate = new Date('.( ( strtotime($answered[0]['x__time'] ) + $does_expire[0]['x__message'] ) * 1000 ).' );
-
-
-if($(\'#timexpirycount\').length){
-	// Update the count down every 1 second
-    var x = setInterval(function() {
-    
-      // Get todays date and time
-      var now = new Date().getTime();
-    
-      // Find the distance between now and the count down date
-      var distance = countDownDate - now;
-    
-      // Time calculations for days, hours, minutes and seconds
-      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-      // Display the result in the element with id="timexpirycount"
-      document.getElementById("timexpirycount").innerHTML = ( days>0 ? days + "d " : "" ) + ( hours>0 ? hours + "h " : "")
-      + ( minutes>0 ? minutes + "m " : "" ) + seconds + "s";
-    
-      // If the count down is finished, write some text
-      if (distance <= 1) {
-        clearInterval(x);
-        //Redirect to delete the discovery:
-        window.location = "/-28199?i__id='.$parent_ors['i__id'].'&top_i__id='.$top_i__id.'";
-      } else {
-        $(\'.timeframe\').removeClass(\'hidden\');
-      }
-      
-    }, 1000);
-}
-            
-
-</script>';
-
-                    break; //Cannot have multiple countdowns
-
-                } else {
-
-                    //Already expired:
-                    js_redirect('/'.$top_i__id.'/'.$parent_ors['i__id'], 0);
-
-                }
-            }
-        }
-    }
-
 }
 
 
@@ -433,137 +350,131 @@ if($top_i__id) {
         } elseif(count($x_completes)){
 
             $x__metadata = unserialize($x_completes[0]['x__metadata']);
-            echo '<div class="msg alert alert-success" role="alert">Paypal receipt email sent for your payment of '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].' on '.$x__metadata['payment_date'].'.<br /><br />You are now ready to go next.</div>';
+            echo '<div class="msg alert alert-success" role="alert">Paypal receipt email sent for your payment of '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['quantity']>1 ? ' for '.$x__metadata['quantity'].' tickets' : '' ).' on '.$x__metadata['payment_date'].'. You are now ready to go next.</div>';
 
             //Invite Your Friends (If 2 or more Tickets):
-            if(is_new()){
+            if($x__metadata['quantity']>1 && is_new()){
 
-                echo '<h2>Add Your Friends to the Guest List</h2>';
+                //TODO Complete
+
+                echo '<h2>Invite Your Friends</h2>';
                 echo '<p>So they can get inside independantly. If not invited, they must check-in with you.</p>';
+                echo '<input type="hidden" id="paypal_quantity" value="'.$x__metadata['quantity'].'" />';
 
+                for($f=2;$f<=$x__metadata['quantity'];$f++) {
+                    echo '<div class="row">';
+                    echo '<div class="col-6 col-md-4 col-lg-3">Ticket '.$f.' Name:</div>';
+                    echo '<div class="col-6 col-md-4 col-lg-3"><input type="text" id="invite_name_'.$f.'" placeholder="Full Name" class="form-control white-border border maxout" /></div>';
+                    echo '</div>';
+                    echo '<div class="row">';
+                    echo '<div class="col-6 col-md-4 col-lg-3"><input type="email" id="invite_email_'.$f.'" placeholder="Email" class="form-control white-border border maxout" /></div>';
+                    echo '<div class="col-6 col-md-4 col-lg-3"><input type="number" id="invite_phone_'.$f.'" placeholder="Cell Phone" class="form-control white-border border maxout" /></div>';
+                    echo '</div>';
+                    echo '<br /><br />';
+                }
 
-                echo '<table class="table table-condensed">';
+                echo '<h3>Custom Message</h3>';
+                echo '<textarea class="border i_content padded x_input" placeholder="" id="invite_message"></textarea>';
+                echo '<script> $(document).ready(function () { set_autosize($(\'#invite_message\')); }); </script>';
 
-                echo '<tr>';
-                echo '<td class=""><input type="text" placeholder="Full Name" class="form-control white-border border maxout" /></td>';
-                echo '<td class=""><input type="email" placeholder="Email" class="form-control white-border border maxout" /></td>';
-                echo '<td class=""><input type="number" placeholder="Cell Phone" class="form-control white-border border maxout" /></td>';
-                echo '</tr>';
-
-                echo '</table>';
             }
 
         } else {
 
-            if(!is_new()){
-
-                echo '<div class="msg alert alert-warning" role="alert">';
-                echo '<h2>Payment Instructions:</h2>';
-                echo '<ul style="list-style: none;">';
-                echo '<li>1. You are *not done* after you completed your payment! You must click on "<b style="color: #FF0000;">Return to Merchant</b>" to continue back here.</li>';
-                echo '<li>2. You can checkout as a guest, You do not need to create a Paypal account. You can pay with a credit or visa debit card.</li>';
-                echo '<li class="timeframe hidden">3. Complete payment within <span id="timexpirycount" class="hideIfEmpty"></span> to secure this spot.</li>';
-                echo '</ul>';
-                echo '</div>';
-
-            } else {
-
-                //Is multi selectable, allow show down for quantity:
-                echo '<div class="msg alert alert-warning table_checkout" role="alert">';
-                echo '<table class="table table-condensed">';
+            //Is multi selectable, allow show down for quantity:
+            echo '<div class="msg alert alert-warning table_checkout" role="alert">';
+            echo '<table class="table table-condensed">';
 
 
-                if($unit_fee > 0){
-                    echo '<tr>';
-                    echo '<td class="table-btn first_btn" style="text-align: right;">Price:&nbsp;&nbsp;</td>';
-                    echo '<td class="table-btn first_btn">'.$unit_price.' '.$currency_parts[0].'</td>';
-                    echo '</tr>';
-
-                    echo '<tr>';
-                    echo '<td class="table-btn first_btn" style="text-align: right;">Fee:&nbsp;&nbsp;</td>';
-                    echo '<td class="table-btn first_btn">'.$unit_fee.' '.$currency_parts[0].'</td>';
-                    echo '</tr>';
-                }
-
-
-                if(count($multi_selectable)){
-
-                    echo '<tr>';
-                    echo '<td class="table-btn first_btn" style="text-align: right;">Tickets:&nbsp;&nbsp;</td>';
-                    echo '<td class="table-btn first_btn ticket_price_ui">';
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
-                    echo '<span id="current_tickets" class="css__title" style="display: inline-block; min-width:34px; text-align: center;">'.$starting_quantity.'</span>';
-                    echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="fas fa-plus-circle"></i></a>';
-                    echo '</td>';
-                    echo '</tr>';
-
-                }
-
+            if($unit_fee > 0){
                 echo '<tr>';
-                echo '<td class="table-btn first_btn" style="text-align: right;  width:34% !important;">Total:&nbsp;&nbsp;</td>';
-                echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.$unit_total.'</span> '.$currency_parts[0].'</td>';
+                echo '<td class="table-btn first_btn" style="text-align: right;">Price:&nbsp;&nbsp;</td>';
+                echo '<td class="table-btn first_btn">'.$unit_price.' '.$currency_parts[0].'</td>';
                 echo '</tr>';
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn" style="text-align: right;">Delivery:&nbsp;&nbsp;</td>';
-                echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have your name on our guest list. We *do not* email PDF Tickets or bar codes. Paypal email receipt is your proof of payment." style="border-bottom: 1px dotted #999;">ID At Door <i class="fas fa-info-circle" style="font-size: 0.8em !important;"></i></span></td>';
+                echo '<td class="table-btn first_btn" style="text-align: right;">Fee:&nbsp;&nbsp;</td>';
+                echo '<td class="table-btn first_btn">'.$unit_fee.' '.$currency_parts[0].'</td>';
                 echo '</tr>';
+            }
 
-                echo '</table>';
 
+            if(count($multi_selectable)){
 
-                echo '<div class="sub_note css__title">Remember:</div>';
-                if(!count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                    'x__right' => $i_focus['i__id'],
-                    'x__up' => 30615, //Is Refundable
-                )))){
-                    echo '<div class="sub_note">* Final Sale: No Refunds/Transfers</div>';
-                }
-                echo '<div class="sub_note">* No need to create a Paypal account: You can checkout as a guest</div>';
-                echo '<div class="sub_note">* Once you paid, click on "Return to Merchant" to continue back here</div>';
-
-                echo '</div>';
-
-                ?>
-
-                <script type="text/javascript">
-                    var busy_processing = false;
-                    function ticket_increment(increment){
-
-                        var new_quantity = parseInt($('#current_tickets').text()) + increment;
-                        var max_allowed = <?= $max_allowed ?>;
-                        if(new_quantity<1){
-                            //Invalid new quantity
-                            return false;
-                        } else if (new_quantity>max_allowed){
-                            alert('Error: Max Allowed is '+max_allowed);
-                            return false;
-                        } else if(busy_processing){
-                            return false;
-                        }
-
-                        busy_processing = true;
-                        var unit_total = <?= $unit_total; ?>;
-                        var unit_fee = <?= $unit_fee; ?>;
-                        var handling_total = ( unit_fee * new_quantity );
-                        var new_total = ( unit_total * new_quantity );
-
-                        //Update UI:
-                        $("#paypal_quantity").val(new_quantity);
-                        $("#current_tickets").text(new_quantity);
-                        $(".total_ui").text(new_total.toFixed(2));
-                        $("#paypal_handling").val(handling_total);
-
-                        busy_processing = false;
-
-                    }
-                </script>
-
-                <?php
+                echo '<tr>';
+                echo '<td class="table-btn first_btn" style="text-align: right;">Tickets:&nbsp;&nbsp;</td>';
+                echo '<td class="table-btn first_btn ticket_price_ui">';
+                echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
+                echo '<span id="current_tickets" class="css__title" style="display: inline-block; min-width:34px; text-align: center;">'.$starting_quantity.'</span>';
+                echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="fas fa-plus-circle"></i></a>';
+                echo '</td>';
+                echo '</tr>';
 
             }
+
+            echo '<tr>';
+            echo '<td class="table-btn first_btn" style="text-align: right;  width:34% !important;">Total:&nbsp;&nbsp;</td>';
+            echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.$unit_total.'</span> '.$currency_parts[0].'</td>';
+            echo '</tr>';
+
+            echo '<tr>';
+            echo '<td class="table-btn first_btn" style="text-align: right;">Delivery:&nbsp;&nbsp;</td>';
+            echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have your name on our guest list. We *do not* email PDF Tickets or bar codes. Paypal email receipt is your proof of payment." style="border-bottom: 1px dotted #999;">ID At Door <i class="fas fa-info-circle" style="font-size: 0.8em !important;"></i></span></td>';
+            echo '</tr>';
+
+            echo '</table>';
+
+
+            echo '<div class="sub_note css__title">Remember:</div>';
+            if(!count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $i_focus['i__id'],
+                'x__up' => 30615, //Is Refundable
+            )))){
+                echo '<div class="sub_note">* Final Sale: No Refunds/Transfers</div>';
+            }
+            echo '<div class="sub_note">* No need to create a Paypal account: You can checkout as a guest</div>';
+            echo '<div class="sub_note">* Once you paid, click on "Return to Merchant" to continue back here</div>';
+
+            echo '</div>';
+
+            ?>
+
+            <script type="text/javascript">
+                var busy_processing = false;
+                function ticket_increment(increment){
+
+                    var new_quantity = parseInt($('#current_tickets').text()) + increment;
+                    var max_allowed = <?= $max_allowed ?>;
+                    if(new_quantity<1){
+                        //Invalid new quantity
+                        return false;
+                    } else if (new_quantity>max_allowed){
+                        alert('Error: Max Allowed is '+max_allowed);
+                        return false;
+                    } else if(busy_processing){
+                        return false;
+                    }
+
+                    busy_processing = true;
+                    var unit_total = <?= $unit_total; ?>;
+                    var unit_fee = <?= $unit_fee; ?>;
+                    var handling_total = ( unit_fee * new_quantity );
+                    var new_total = ( unit_total * new_quantity );
+
+                    //Update UI:
+                    $("#paypal_quantity").val(new_quantity);
+                    $("#current_tickets").text(new_quantity);
+                    $(".total_ui").text(new_total.toFixed(2));
+                    $("#paypal_handling").val(handling_total);
+
+                    busy_processing = false;
+
+                }
+            </script>
+
+            <?php
 
 
         }
