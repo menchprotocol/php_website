@@ -61,7 +61,7 @@ class E_model extends CI_Model
             'x__down' => $e['e__id'], //This child source
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
-        ), array('x__up')) as $e_profile){
+        ), array('x__up'), 0) as $e_profile){
 
             //IN Custom UI?
             foreach($this->config->item('e___13890') as $e__id => $m){
