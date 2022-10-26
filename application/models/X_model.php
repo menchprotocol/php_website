@@ -539,7 +539,7 @@ class X_model extends CI_Model
 
         if(count($stats['email_addresses']) > 0){
             //Send email:
-            email_send($stats['email_addresses'], $subject, $plain_message, $e__id, $x_data, $template_id);
+            email_send($stats['email_addresses'], $subject, $plain_message, $e__id, $x_data, $template_id, $x__domain);
         }
 
 

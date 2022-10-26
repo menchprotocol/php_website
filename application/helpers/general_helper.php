@@ -1443,7 +1443,7 @@ function clean_phone($phone){
     return $phone_numbers;
 }
 
-function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0){
+function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0, $x__domain = 0){
 
     $CI =& get_instance();
     $from_email = get_domain_setting(28614, $e__id);
@@ -1477,8 +1477,8 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message = view_shuffle_message(29749).' '.$name.' '.view_shuffle_message(29750)."\n\n";
     $email_message .= str_replace('e__id',$e__id,$email_body)."\n\n";
     $email_message .= view_shuffle_message(12691)."\n";
-    $email_message .= get_domain('m__title', $e__id);
-    $email_message .= '<div><a href="https://'.get_domain('m__message').'/-28904'.( $e__id>0 ? '?e__id='.$e__id.'&e__hash='.md5($e__id.$CI->config->item('cred_password_salt')) : '' ).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
+    $email_message .= get_domain('m__title', $e__id, $x__domain);
+    $email_message .= '<div><a href="https://'.get_domain('m__message', $e__id, $x__domain).'/-28904'.( $e__id>0 ? '?e__id='.$e__id.'&e__hash='.md5($e__id.$CI->config->item('cred_password_salt')) : '' ).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
 
 
 
