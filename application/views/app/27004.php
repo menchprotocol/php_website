@@ -74,9 +74,63 @@ if (isset($_GET['e__id'])) {
 }
 
 
+$sale_type_content = '';
+
+if(isset($_GET['e__id'])){
+
+    $other_es = $this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
+        'x__up' => $_GET['e__id'], //Member
+        'x__down NOT IN (' . join(',', $all_sources) . ')' => null, //Not the Ones we Already Have
+    ), array('x__down'), 0);
+
+    if(count($other_es)){
+
+        //Show Other Sources:
+        $sale_type_content .= '<tr class="css__title">';
+        $sale_type_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_sources\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>Coming But Not Registered</u></a></td>';
+        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">0</td>';
+        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden"></td>';
+        $sale_type_content .= '<td style="text-align: right;">'.count($other_es).'&nbsp;x'.'</td>';
+        $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+        $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+        $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+        $sale_type_content .= '<td style="text-align: left;">$0.00</td>';
+        $sale_type_content .= '<td style="text-align: right;">&nbsp;</td>';
+        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+        $sale_type_content .= '<td style="text-align: right;"><a href="/@'.$_GET['e__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
+        $sale_type_content .= '</tr>';
+
+        //Doo We Have other?
+        foreach($other_es as $other_e){
+            $sale_type_content .= '<tr class="transaction_columns thr_sources hidden">';
+            $sale_type_content .= '<td><span class="icon-block source_cover_micro">'.view_cover(12274,$other_e['e__cover'],true).'</span><a href="/@'.$other_e['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['e__title'].'</u></a></td>';
+            $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $sale_type_content .= '<td style="text-align: right;">1&nbsp;x</td>';
+            $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+            $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+            $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+            $sale_type_content .= '<td style="text-align: left;">&nbsp;</td>';
+            $sale_type_content .= '<td style="text-align: right;">&nbsp;</td>';
+            $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $sale_type_content .= '<td style="text-align: right;"><a href="/-4341?x__id='.$other_e['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
+            $sale_type_content .= '</tr>';
+            $gross_sales++;
+
+        }
+    }
+
+
+
+}
+
+
+
+
 //List all payment Ideas and their total earnings
 $x_updated = 0;
-$sale_type_content = '';
 foreach($i_query as $i){
 
     //Total earnings:
@@ -241,57 +295,6 @@ foreach($i_query as $i){
     $sale_type_content .= $transaction_content;
 
 }
-
-if(isset($_GET['e__id'])){
-
-    $other_es = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
-        'x__up' => $_GET['e__id'], //Member
-        'x__down NOT IN (' . join(',', $all_sources) . ')' => null, //Not the Ones we Already Have
-    ), array('x__down'), 0);
-
-    if(count($other_es)){
-
-        //Show Other Sources:
-        $sale_type_content .= '<tr class="css__title">';
-        $sale_type_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_sources\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>Others</u></a></td>';
-        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">0</td>';
-        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden"></td>';
-        $sale_type_content .= '<td style="text-align: right;">'.count($other_es).'&nbsp;x'.'</td>';
-        $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-        $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-        $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-        $sale_type_content .= '<td style="text-align: left;">&nbsp;</td>';
-        $sale_type_content .= '<td style="text-align: right;">&nbsp;</td>';
-        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-        $sale_type_content .= '<td style="text-align: right;"><a href="/@'.$_GET['e__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
-        $sale_type_content .= '</tr>';
-
-        //Doo We Have other?
-        foreach($other_es as $other_e){
-            $sale_type_content .= '<tr class="transaction_columns thr_sources hidden">';
-            $sale_type_content .= '<td><span class="icon-block source_cover_micro">'.view_cover(12274,$other_e['e__cover'],true).'</span><a href="/@'.$other_e['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['e__title'].'</u></a></td>';
-            $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $sale_type_content .= '<td style="text-align: right;">1&nbsp;x</td>';
-            $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-            $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-            $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-            $sale_type_content .= '<td style="text-align: left;">&nbsp;</td>';
-            $sale_type_content .= '<td style="text-align: right;">&nbsp;</td>';
-            $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $sale_type_content .= '<td style="text-align: right;"><a href="/-4341?x__id='.$other_e['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
-            $sale_type_content .= '</tr>';
-            $gross_sales++;
-
-        }
-    }
-
-
-
-}
-
 
 
 if(count($i_query)){
