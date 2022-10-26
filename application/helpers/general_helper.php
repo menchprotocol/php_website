@@ -1567,7 +1567,7 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 
         }
     }
 
-    
+
         /*
     } elseif($initiator_e__id > 0){
         //Look for the original domain of the initiator:

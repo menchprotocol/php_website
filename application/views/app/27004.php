@@ -113,7 +113,7 @@ foreach($i_query as $i){
         $total_transactions++;
 
         $this_quantity = 1;//Default assumption:
-        if($x__metadata['quantity']){
+        if($x__metadata['quantity']>1){
             $this_quantity = $x__metadata['quantity'];
         } else {
             for($t=20;$t>=2;$t--){
