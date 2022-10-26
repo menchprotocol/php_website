@@ -258,14 +258,14 @@ if(isset($_GET['e__id'])){
 
         //Show Other Sources:
         $other_source_content .= '<tr class="css__title">';
-        $other_source_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_sources\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>Others</u></a></td>';
+        $other_source_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_sources\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>Coming But Not Registered</u></a></td>';
         $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">0</td>';
         $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden"></td>';
         $other_source_content .= '<td style="text-align: right;">'.count($other_es).'&nbsp;x'.'</td>';
         $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
         $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
         $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-        $other_source_content .= '<td style="text-align: left;">$0.00</td>';
+        $other_source_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
         $other_source_content .= '<td style="text-align: right;">&nbsp;</td>';
         $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
         $other_source_content .= '<td style="text-align: right;"><a href="/@'.$_GET['e__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
@@ -281,7 +281,7 @@ if(isset($_GET['e__id'])){
             $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-            $other_source_content .= '<td style="text-align: left;">$0.00</td>';
+            $other_source_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
             $other_source_content .= '<td style="text-align: right;">&nbsp;</td>';
             $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $other_source_content .= '<td style="text-align: right;"><a href="/-4341?x__id='.$other_e['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
