@@ -350,9 +350,9 @@ if($top_i__id) {
         } elseif(count($x_completes)){
 
             $x__metadata = unserialize($x_completes[0]['x__metadata']);
-            echo '<div class="msg alert alert-success" role="alert">Paypal receipt email sent for your payment of '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['quantity']>1 ? ' for '.$x__metadata['quantity'].' tickets' : '' ).' on '.$x__metadata['payment_date'].'. You are now ready to go next.</div>';
+            echo '<div class="msg alert alert-success" role="alert">Paypal receipt email sent for your payment of '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['quantity']>1 ? ' for '.$x__metadata['quantity'].' items' : '' ).' on '.$x__metadata['payment_date'].'. You are now ready to go next.</div>';
 
-            //Invite Your Friends (If 2 or more Tickets):
+            //Invite Your Friends (If 2 or more items):
             if($x__metadata['quantity']>1 && is_new()){
 
                 //TODO Complete
@@ -363,7 +363,7 @@ if($top_i__id) {
 
                 for($f=2;$f<=$x__metadata['quantity'];$f++) {
                     echo '<div class="row">';
-                    echo '<div class="col-6 col-md-4 col-lg-3">Ticket '.$f.' Name:</div>';
+                    echo '<div class="col-6 col-md-4 col-lg-3">Ticket #'.$f.' Name:</div>';
                     echo '<div class="col-6 col-md-4 col-lg-3"><input type="text" id="invite_name_'.$f.'" placeholder="Full Name" class="form-control white-border border maxout" /></div>';
                     echo '</div>';
                     echo '<div class="row">';
@@ -402,11 +402,11 @@ if($top_i__id) {
             if(count($multi_selectable)){
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn" style="text-align: right;">Tickets:&nbsp;&nbsp;</td>';
-                echo '<td class="table-btn first_btn ticket_price_ui">';
-                echo '<a href="javascript:void(0);" onclick="ticket_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
-                echo '<span id="current_tickets" class="css__title" style="display: inline-block; min-width:34px; text-align: center;">'.$starting_quantity.'</span>';
-                echo '<a href="javascript:void(0);" onclick="ticket_increment(1)"><i class="fas fa-plus-circle"></i></a>';
+                echo '<td class="table-btn first_btn" style="text-align: right;">Quantity:&nbsp;&nbsp;</td>';
+                echo '<td class="table-btn first_btn sale_price_ui">';
+                echo '<a href="javascript:void(0);" onclick="sale_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
+                echo '<span id="current_sales" class="css__title" style="display: inline-block; min-width:34px; text-align: center;">'.$starting_quantity.'</span>';
+                echo '<a href="javascript:void(0);" onclick="sale_increment(1)"><i class="fas fa-plus-circle"></i></a>';
                 echo '</td>';
                 echo '</tr>';
 
@@ -443,9 +443,9 @@ if($top_i__id) {
 
             <script type="text/javascript">
                 var busy_processing = false;
-                function ticket_increment(increment){
+                function sale_increment(increment){
 
-                    var new_quantity = parseInt($('#current_tickets').text()) + increment;
+                    var new_quantity = parseInt($('#current_sales').text()) + increment;
                     var max_allowed = <?= $max_allowed ?>;
                     if(new_quantity<1){
                         //Invalid new quantity
@@ -465,7 +465,7 @@ if($top_i__id) {
 
                     //Update UI:
                     $("#paypal_quantity").val(new_quantity);
-                    $("#current_tickets").text(new_quantity);
+                    $("#current_sales").text(new_quantity);
                     $(".total_ui").text(new_total.toFixed(2));
                     $("#paypal_handling").val(handling_total);
 

@@ -4,7 +4,7 @@ $commission_rate = doubleval(view_memory(6404,27017))/100;
 
 $e___6287 = $this->config->item('e___6287'); //APP
 $gross_transactions = 0;
-$gross_tickets = 0;
+$gross_sales = 0;
 $gross_revenue = 0;
 $gross_paypal_fee = 0;
 $gross_commission = 0;
@@ -75,13 +75,13 @@ if (isset($_GET['e__id'])) {
 
 //List all payment Ideas and their total earnings
 $x_updated = 0;
-$ticket_type_content = '';
+$sale_type_content = '';
 foreach($i_query as $i){
 
     //Total earnings:
     $transaction_content = '';
     $total_transactions = 0;
-    $total_tickets = 0;
+    $total_sales = 0;
     $total_revenue = 0;
     $total_paypal_fee = 0;
     $currencies = array();
@@ -124,7 +124,7 @@ foreach($i_query as $i){
             }
         }
 
-        $total_tickets += $this_quantity;
+        $total_sales += $this_quantity;
         $total_paypal_fee += doubleval($x__metadata['mc_fee']);
         $total_revenue += doubleval($x__metadata['mc_gross']);
         if(!in_array($x__metadata['mc_currency'], $currencies) && strlen($x__metadata['mc_currency'])>0){
@@ -202,7 +202,7 @@ foreach($i_query as $i){
 
 
 
-    $gross_tickets += $total_tickets;
+    $gross_sales += $total_sales;
     $gross_transactions += $total_transactions;
     $gross_revenue += $total_revenue;
     $gross_paypal_fee += $total_paypal_fee;
@@ -221,20 +221,20 @@ foreach($i_query as $i){
         $transaction_content .= '<tr class="transaction_columns hidden"></tr>';
     }
 
-    $ticket_type_content .= '<tr class="css__title">';
-    $ticket_type_content .= '<td>'.( $total_tickets>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a>' : $i['i__title'] ).'</td>';
-    $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_transactions.'</td>';
-    $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_transactions.'</td>';
-    $ticket_type_content .= '<td style="text-align: right;">'.( $total_tickets>0 ? $total_tickets.'&nbsp;x' : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_tickets>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_tickets>0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_tickets>0 ? '-$'.number_format($total_paypal_fee, 2) : '&nbsp;').'</td>';
-    $ticket_type_content .= '<td style="text-align: left;">&nbsp;'.( $total_tickets>0 ? '$'.number_format(($payout/$total_tickets), 2) : '&nbsp;' ).'</td>';
-    $ticket_type_content .= '<td style="text-align: right;"><b>'.( $total_tickets>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
-    $ticket_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.join(', ',$currencies).'</td>';
-    $ticket_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
-    $ticket_type_content .= '</tr>';
-    $ticket_type_content .= $transaction_content;
+    $sale_type_content .= '<tr class="css__title">';
+    $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a>' : $i['i__title'] ).'</td>';
+    $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_transactions.'</td>';
+    $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_transactions.'</td>';
+    $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';
+    $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
+    $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales>0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
+    $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales>0 ? '-$'.number_format($total_paypal_fee, 2) : '&nbsp;').'</td>';
+    $sale_type_content .= '<td style="text-align: left;">&nbsp;'.( $total_sales>0 ? '$'.number_format(($payout/$total_sales), 2) : '&nbsp;' ).'</td>';
+    $sale_type_content .= '<td style="text-align: right;"><b>'.( $total_sales>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
+    $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.join(', ',$currencies).'</td>';
+    $sale_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
+    $sale_type_content .= '</tr>';
+    $sale_type_content .= $transaction_content;
 
 }
 
@@ -246,7 +246,7 @@ if(count($i_query)){
     echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.transaction_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Transactions"><i class="fas fa-arrows-v"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="fas fa-arrows-h"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Transactions</th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Limit</th>';
-    echo '<th style="text-align: right;" id="th_paid">Tickets</th>';
+    echo '<th style="text-align: right;" id="th_paid">Quantity</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_rev">Sales</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Platform<br />Fee</th>';
     echo '<th style="text-align: right;" class="advance_columns hidden" id="th_payout">Paypal<br />Fee</th>';
@@ -256,17 +256,17 @@ if(count($i_query)){
     echo '<th style="text-align: right;">&nbsp;</th>';
     echo '</tr>';
 
-    echo $ticket_type_content;
+    echo $sale_type_content;
 
     echo '<tr class="css__title">';
     echo '<th style="text-align: left; font-weight: bold;" id="th_primary">Totals</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.$gross_transactions.'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">&nbsp;</th>';
-    echo '<th style="text-align: right; font-weight: bold;">'.$gross_tickets.'&nbsp;x</th>';
+    echo '<th style="text-align: right; font-weight: bold;">'.$gross_sales.'&nbsp;x</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.'$'.number_format($gross_revenue, 2).'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">-$'.number_format($gross_commission, 2).'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">-$'.number_format($gross_paypal_fee, 2).'</th>';
-    echo '<th style="text-align: left; font-weight: bold;">&nbsp;$'.number_format(( $gross_tickets > 0 ? $gross_payout / $gross_tickets : 0 ), 2).'</th>';
+    echo '<th style="text-align: left; font-weight: bold;">&nbsp;$'.number_format(( $gross_sales > 0 ? $gross_payout / $gross_sales : 0 ), 2).'</th>';
     echo '<th style="text-align: right; font-weight: bold;"><b>$'.number_format($gross_payout, 2).'</b></th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.join(', ',$gross_currencies).'</th>';
     echo '<th style="text-align: right; font-weight: bold;">&nbsp;</th>';
