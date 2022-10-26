@@ -2285,7 +2285,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Coin Cover
-    $ui .= ( $can_click && !$show_text_editor ? '<a href="'.$href.'"' : '<div' ).' class="'.$cointype.' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( $can_click && !$show_text_editor ? '<a href="'.$href.'"' : '<div' ).' class="'.$cointype.( !$source_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover']) : '' ).'</div>';
