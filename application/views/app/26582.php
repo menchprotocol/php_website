@@ -30,7 +30,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
         foreach($message_list['unique_users_id'] as $send_e__id){
 
-            $results = $this->X_model->send_dm($send_e__id, $x__metadata['message_subject'], $x__metadata['message_text'], array('x__reference' => $send_message['x__id']));
+            $results = $this->X_model->send_dm($send_e__id, $x__metadata['message_subject'], $x__metadata['message_text'], array('x__reference' => $send_message['x__id']), 0, $send_message['x__domain']);
 
             if($results['status']){
                 $stats['unique']++;
@@ -185,7 +185,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         echo '<tr class="semail'.$fetched_e['x__id'].'">';
         echo '<td><a href="/-4341?x__id='.$fetched_e['x__id'].'">'.$fetched_e['x__id'].'</a> <a href="javascript:x_schedule_delete('.$fetched_e['x__id'].')">x</a></td>';
         echo '<td>'.$e___6186[$fetched_e['x__status']]['m__cover'].'</td>';
-        echo '<td>'. substr($fetched_e['x__time'], 0, 19).'</td>';
+        echo '<td>'. substr($fetched_e['x__time'], 0, 19).'<br />Domain: <a href="/@'.$fetched_e['x__domain'].'">@'.$fetched_e['x__domain'].'</a></td>';
         echo '<td><a href="/@'.$fetched_e['x__source'].'">'. $fetched_e['e__title'].'</a></td>';
         echo '<td>'.@intval($x__metadata['stats']['target']).'<br />Targets</td>';
         echo '<td><a href="/-12722?x__id='.$fetched_e['x__id'].'">'.@intval($x__metadata['stats']['unique']).'<br />Uniques</a></td>';

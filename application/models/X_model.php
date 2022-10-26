@@ -482,7 +482,7 @@ class X_model extends CI_Model
 
 
 
-    function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_id = 0)
+    function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_id = 0, $x__domain = 0)
     {
 
         $notification_levels = $this->X_model->fetch(array(
