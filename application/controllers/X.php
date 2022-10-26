@@ -588,48 +588,50 @@ class X extends CI_Controller
         $member_e = superpower_unlocked();
 
         //Log link if not there:
-        if($tag__id>0 && $member__id>0 &&
-            count($this->X_model->fetch(array(
+        if(
+            $tag__id>0
+            && $member__id>0
+            && count($this->X_model->fetch(array(
                 'x__up' => 4430, //MEMBERS
                 'x__down' => $member__id,
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))){
-
-            if(!count($this->X_model->fetch(array(
+            )))
+            && !count($this->X_model->fetch(array(
                 'x__up' => $tag__id,
                 'x__down' => $member__id,
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))){
+            )))
+        ){
 
-                $es_tag = $this->E_model->fetch(array(
-                    'e__id' => $tag__id,
+            $x__source = ($member__id > 0 ? $member__id : ($member_e ? $member_e['e__id'] : 0));
+            $es_tag = $this->E_model->fetch(array(
+                'e__id' => $tag__id,
+            ));
+            if(count($es_tag)){
+
+                //Add source link:
+                $this->X_model->create(array(
+                    'x__type' => e_x__type(),
+                    'x__source' => $x__source,
+                    'x__up' => $tag__id,
+                    'x__down' => $x__source,
                 ));
-                if(count($es_tag)){
 
-                    //Add source link:
-                    $this->X_model->create(array(
-                        'x__type' => e_x__type(),
-                        'x__source' => ($member_e ? $member_e['e__id'] : $member__id),
-                        'x__up' => $tag__id,
-                        'x__down' => $member__id,
-                    ));
+                //Log Reference:
+                $this->X_model->create(array(
+                    'x__type' => 29393, //Log Referral
+                    'x__source' => $x__source,
+                    'x__up' => $tag__id,
+                    'x__down' => $x__source,
+                    'x__left' => $top_i__id,
+                    'x__right' => $i__id,
+                ));
 
-                    //Log Reference:
-                    $this->X_model->create(array(
-                        'x__type' => 29393, //Log Referral
-                        'x__source' => ($member_e ? $member_e['e__id'] : $member__id),
-                        'x__up' => $tag__id,
-                        'x__down' => $member__id,
-                        'x__left' => $top_i__id,
-                        'x__right' => $i__id,
-                    ));
+                //Inform user of changes:
+                $flash_message = '<div class="msg alert alert-warning" role="alert">You\'ve been added to '.view_cover(12274,$es_tag[0]['e__cover']).' '.$es_tag[0]['e__title'].'</div>';
 
-                    //Inform user of changes:
-                    $flash_message = '<div class="msg alert alert-warning" role="alert">You\'ve been added to '.view_cover(12274,$es_tag[0]['e__cover']).' '.$es_tag[0]['e__title'].'</div>';
-
-                }
             }
         }
 
