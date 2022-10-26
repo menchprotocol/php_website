@@ -425,7 +425,7 @@ if($top_i__id) {
             echo '</table>';
 
 
-            echo '<div class="sub_note css__title">Remember:</div>';
+            echo '<div class="sub_note css__title">Note:</div>';
             if(!count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
