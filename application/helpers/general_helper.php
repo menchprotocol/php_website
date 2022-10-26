@@ -1546,8 +1546,8 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 13601){
 
     $CI =& get_instance();
-    $no_domain = 13601; //Atlas Camp
-    $source_id = $no_domain; //Assume no domain unless found below...
+    $no_domain = 1111;
+    $source_id = $x__domain; //Assume no domain unless found below...
     $server_name = get_server('SERVER_NAME');
 
     if(!$initiator_e__id){
@@ -1558,12 +1558,17 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 
     }
 
     if(strlen($server_name)){
+
         foreach($CI->config->item('e___14870') as $x__type => $m) {
             if ($server_name == $m['m__message']){
                 $source_id = $x__type;
                 break;
             }
         }
+    }
+
+    
+        /*
     } elseif($initiator_e__id > 0){
         //Look for the original domain of the initiator:
         foreach($CI->X_model->fetch(array(
@@ -1572,7 +1577,8 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 
         ), array(), 1, 0, array('x__id' => 'ASC')) as $x_domain){
             $source_id = $x_domain['x__domain'];
         }
-    }
+        */
+
 
 
     if(!$setting_id){
