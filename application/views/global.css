@@ -1566,7 +1566,7 @@ i, .btn .show-max {
     max-height: 600px;
     border-radius: 0 !important;
 }
-.icon-block-xs img{
+.icon-block-xs img, .icon-block-xxs img{
     line-height: 100%;
     width: 21px !important;
     /*height: 21px !important;*/
