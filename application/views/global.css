@@ -538,7 +538,9 @@ img.no-frame {
     border-radius: 8px;
 }
 
-
+button {
+    color: #000000;
+}
 
 textarea:hover,
 input:hover,
