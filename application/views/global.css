@@ -1349,10 +1349,6 @@ label {
     border-radius: 0 !important;
 }
 
-.coin_coins .btn {
-    padding: 5px;
-}
-
 .platform-navigation .btn{
     padding: 3px 0 1px !important;
 }
@@ -2116,8 +2112,11 @@ i, .btn .show-max {
     margin-top: 0px;
 }
 
+.coinType12274.cover-link {
+    margin-top:64px;
+}
 
-.coinType12274.cover-link, .coinType12274.cover-link.ready-only {
+.coinType12274.cover-link.ready-only {
     margin-top:37px;
 }
 .focus-coin .coinType12274.cover-link {
@@ -3616,3 +3615,6 @@ div.img {
     margin:0 !important;
 }
 
+.coin_coins .btn {
+    padding: 5px;
+}
