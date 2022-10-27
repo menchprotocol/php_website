@@ -1337,13 +1337,13 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
 function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
 
     //If no list just return the next step:
+    $CI =& get_instance();
     if(!count($next_is)){
         return false;
-    } elseif(!in_array($x__type, $this->config->item('n___13369'))){
+    } elseif(!in_array($x__type, $CI->config->item('n___13369'))){
         return false;
     }
 
-    $CI =& get_instance();
     $e___13369 = $CI->config->item('e___13369'); //NAVIGATION
 
     //Build Body UI:
