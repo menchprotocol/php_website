@@ -1025,7 +1025,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         //DISCOVERIES
         $join_objects = array('x__left');
-        $order_columns = array('x__type = \'4235\' DESC' => null, 'x__id' => 'DESC'); //LATEST DISCOVERIES
+        $order_columns = array('x__type = \'4235\' DESC' => null, 'x__type = \'26595\' DESC' => null, 'x__id' => 'DESC'); //LATEST DISCOVERIES
         $query_filters = array(
             'x__source' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
@@ -1913,7 +1913,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
         } elseif($discovery_mode && isset($i['x__type']) && $i['x__type']>0){
             $e___4593 = $CI->config->item('e___4593'); //Transaction Types
-            $ui .= $e___4593[$i['x__type']]['m__cover'];
+            $ui .= '<div title="'.$e___4593[$i['x__type']]['m__title'].'">'.$e___4593[$i['x__type']]['m__cover'].'</div>';
         }
         $ui .= '</div></td>';
 
