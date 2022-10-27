@@ -1023,9 +1023,15 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
     } elseif($x__type==6255){
 
+        //Determine Sort:
+        $order_columns = array();
+        foreach($CI->config->item('e___6255') as $x__sort_id => $sort) {
+            $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
+        }
+        $order_columns['x__id'] = 'DESC';
+
         //DISCOVERIES
         $join_objects = array('x__left');
-        $order_columns = array('x__type = \'4235\' DESC' => null, 'x__type = \'26595\' DESC' => null, 'x__id' => 'DESC'); //LATEST DISCOVERIES
         $query_filters = array(
             'x__source' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
