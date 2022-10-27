@@ -3585,12 +3585,18 @@ div.img {
     height: 34px;
 }
 
-.source_cover_micro div.img,
+.source_cover_micro div.img {
+    width: 24px;
+    height: 24px;
+    margin-bottom: -8px;
+}
+
 .icon-block-xxs div.img,
 .icon-block-xs div.img {
     width: 24px;
     height: 24px;
-    margin-bottom: -8px;
+    margin-bottom: -6px;
+    margin-left: -3px;
 }
 
 
