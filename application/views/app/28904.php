@@ -7,7 +7,7 @@ if($e__id > 0){
     foreach($this->E_model->fetch(array(
         'e__id' => $e__id,
     )) as $e){
-        echo '<h2 style="text-align: center;"><span class="icon-block">'.view_cover(12274,$e['e__cover']).'</span> '.$e['e__title'].'</h2>';
+        echo '<h3 style="text-align: center; margin: -10px 0 21px 0;">'.$e['e__title'].'</h3>';
     }
     echo '<div style="max-width: 540px; margin: 0 auto;">'.view_radio_e(28904, $e__id, 0).'</div>';
     echo '<input type="hidden" id="member__id_override" value="'.$e__id.'" />';
