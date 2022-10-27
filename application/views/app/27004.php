@@ -258,7 +258,7 @@ if(isset($_GET['e__id'])){
 
         //Show Other Sources:
         $other_source_content .= '<tr class="css__title">';
-        $other_source_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_sources\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>Coming But Not Registered</u></a></td>';
+        $other_source_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_sources\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>Others</u></a></td>';
         $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">0</td>';
         $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden"></td>';
         $other_source_content .= '<td style="text-align: right;">'.count($other_es).'&nbsp;x'.'</td>';
