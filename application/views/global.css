@@ -1566,7 +1566,7 @@ i, .btn .show-max {
     max-height: 600px;
     border-radius: 0 !important;
 }
-.icon-block-xs img, .icon-block-xxs img{
+.icon-block-xs img{
     line-height: 100%;
     width: 21px !important;
     /*height: 21px !important;*/
@@ -3585,7 +3585,9 @@ div.img {
     height: 34px;
 }
 
-.source_cover_micro div.img {
+.source_cover_micro div.img,
+.icon-block-xxs div.img,
+.icon-block-xs div.img {
     width: 24px;
     height: 24px;
     margin-bottom: -8px;
