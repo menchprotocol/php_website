@@ -1339,55 +1339,22 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     //If no list just return the next step:
     if(!count($next_is)){
         return false;
+    } elseif(!in_array($x__type, $this->config->item('n___13369'))){
+        return false;
     }
 
     $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $body = '';
-
-    //LIST TYPE
-    if($x__type==13980){
-        $body .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');$(\'.go-next-group\').removeClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
-    }
+    $e___13369 = $CI->config->item('e___13369'); //NAVIGATION
 
     //Build Body UI:
-    $body .= '<div class="row">';
-    $is_first_incomplete = false;
-    $found_first_incomplete = false;
-    $found_first_complete = false;
+    $body = '<div class="row">';
     foreach($next_is as $key => $next_i){
         $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
-        if(!$found_first_incomplete && $completion_rate['completion_percentage'] < 100){
-            $is_first_incomplete = true;
-            $found_first_incomplete = true;
-        }
-        if(!$found_first_complete && $completion_rate['completion_percentage'] >= 100){
-            $found_first_complete = true;
-        }
-        $body .= view_i($x__type, $top_i__id, $i, $next_i, $member_e, $completion_rate, null, $is_first_incomplete);
-        $is_first_incomplete = false; //False afterwards
-
+        $body .= view_i($x__type, $top_i__id, $i, $next_i, $member_e, $completion_rate, null);
     }
     $body .= '</div>';
 
-
-    $ui = '';
-
-    //Show idea type?
-    if(in_array($x__type, $CI->config->item('n___14945'))){
-
-        //IDEA TYPE
-        $ui .= view_headline(26104, count($next_is), $e___11035[26104], $body, isset($_GET['open']));
-
-    } else {
-
-        $ui .= view_headline($x__type, null, $e___11035[$x__type], $body, true);
-
-    }
-
-
-
-    return $ui;
+    return view_headline($x__type, count($next_is), $e___13369[$x__type], $body, isset($_GET['open']));
 
 }
 
@@ -2089,7 +2056,7 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
 
     $CI =& get_instance();
     $e___26006 = $CI->config->item('e___26006'); //Toggle Headline
-    return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' . ( !is_null($counter) ? '<span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span> ' : '' ).$m['m__title'].'<span class="icon-block pull-right headline_title_'.$x__type.'"><span class="icon_26007 '.( !$is_open ? ' hidden ' : '' ).'">'.$e___26006[26008]['m__cover'].'</span><span class="icon_26008 '.( $is_open ? ' hidden ' : '' ).'">'.$e___26006[26007]['m__cover'].'</span></span></a>'.'<div class="headlinebody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
+    return '<a class="headline" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block">'.$m['m__cover'].'</span>' .$m['m__title'].( !is_null($counter) ? ' [<span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span>]' : '' ).'<span class="icon-block pull-right headline_title_'.$x__type.'"><span class="icon_26007 '.( !$is_open ? ' hidden ' : '' ).'">'.$e___26006[26008]['m__cover'].'</span><span class="icon_26008 '.( $is_open ? ' hidden ' : '' ).'">'.$e___26006[26007]['m__cover'].'</span></span></a>'.'<div class="headlinebody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
 
 }
 
