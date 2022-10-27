@@ -1025,7 +1025,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         //DISCOVERIES
         $join_objects = array('x__left');
-        $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
+        $order_columns = array('x__type = \'4235\' DESC' => null, 'x__id' => 'DESC'); //LATEST DISCOVERIES
         $query_filters = array(
             'x__source' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
