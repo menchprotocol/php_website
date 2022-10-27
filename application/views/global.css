@@ -2050,6 +2050,10 @@ i, .btn .show-max {
     margin:0 auto 10px auto !important;
     padding: 0 !important;
 }
+
+.coin_cover.coinface-12274{
+    margin:0 auto 55px auto !important;
+}
 .coin_cover .large_cover i{
     font-size:5em !important;
 }
