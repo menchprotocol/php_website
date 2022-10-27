@@ -1229,7 +1229,7 @@ class X_model extends CI_Model
                 'x__type' => 4235,
                 'x__source' => $e__id, //Belongs to this Member
                 'x__left' => $is[0]['i__id'], //The Idea they are adding
-                'x__right' => $recommender_i__id, //Store the recommended idea
+                'x__right' => $is[0]['i__id'], //Store the recommended idea
                 'x__spectrum' => $i_rank, //Always place at the top of their discoveries
             ));
 
