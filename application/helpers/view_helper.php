@@ -2206,9 +2206,10 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 //Reset my discoveries
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_reset_discoveries('.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
-            } elseif(substr($m['m__message'], 0, 1)=='?') {
+            } elseif($e__id=13670 && substr($CI->uri->segment(1), 0, 1)=='~') {
 
-                $action_buttons .= '<a href="/'.$CI->uri->segment(1). $m['m__message'] . $e['e__id'] . '" class="dropdown-item css__title">'.$anchor.'</a>';
+                //Filter applies only when browsing an idea
+                $action_buttons .= '<a href="/'.$CI->uri->segment(1). '?load__e=' . $e['e__id'] . '" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif(substr($m['m__message'], 0, 1)=='/') {
 

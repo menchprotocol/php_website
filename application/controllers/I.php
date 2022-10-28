@@ -221,7 +221,7 @@ class I extends CI_Controller {
             'title' => $is[0]['i__title'],
             'i_focus' => $is[0],
         ));
-        $this->load->view(( is_new() ? 'i2_layout' : 'i_layout' ), array(
+        $this->load->view('i_layout', array(
             'i_focus' => $is[0],
             'member_e' => $member_e,
         ));
