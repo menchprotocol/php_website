@@ -109,14 +109,17 @@ if(superpower_unlocked()) {
 
         <script type="text/javascript">
 
-            //Disable social login for Instagram as it has a bug within auth0
-            var ua = navigator.userAgent || navigator.vendor || window.opera;
-            var isInstagram = (ua.indexOf('Instagram') > -1) ? true : false;
-            if (document.documentElement.classList ){
-                if (isInstagram) {
-                    $('.social-frame').addClass('hidden');
+            $(document).ready(function () {
+                //Disable social login for Instagram as it has a bug within auth0
+                var ua = navigator.userAgent || navigator.vendor || window.opera;
+                var isInstagram = (ua.indexOf('Instagram') > -1) ? true : false;
+                if (document.documentElement.classList ){
+                    if (isInstagram) {
+                        $('.social-frame').addClass('hidden');
+                    }
                 }
-            }
+            });
+
 
 
             var go_next_icon = '<?= $e___11035[12211]['m__cover'] ?>';
