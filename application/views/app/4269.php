@@ -109,6 +109,16 @@ if(superpower_unlocked()) {
 
         <script type="text/javascript">
 
+            //Disable social login for Instagram as it has a bug within auth0
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            var isInstagram = (ua.indexOf('Instagram') > -1) ? true : false;
+            if (document.documentElement.classList ){
+                if (isInstagram) {
+                    $('.social-frame').addClass('hidden');
+                }
+            }
+
+
             var go_next_icon = '<?= $e___11035[12211]['m__cover'] ?>';
             var sign_i__id = <?= $sign_i__id ?>;
             var referrer_url = '<?= @$_GET['url'] ?>';
@@ -365,10 +375,12 @@ if(superpower_unlocked()) {
 
 
                     //SOCIAL LOGIN:
+                    echo '<div class="social-frame">';
                     echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
                     echo $e___11035[14436]['m__title'].' '.$e___11035[14436]['m__cover'];
                     echo '</a></div>';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
+                    echo '</div>';
                     ?>
 
                     <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__cover'].'</span>'.$e___4269[3288]['m__title'] ?></span>
