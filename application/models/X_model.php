@@ -1248,24 +1248,6 @@ class X_model extends CI_Model
                 $next_i__id = $this->X_model->find_next($e__id, $is[0]['i__id'], $is[0]);
             }
 
-            //Move other ideas down in the read List:
-            foreach($this->X_model->fetch(array(
-                'x__id !=' => $home['x__id'], //Not the newly added idea
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__source' => $e__id, //Belongs to this Member
-            ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $current_i){
-
-                //Increase rank:
-                $i_rank++;
-
-                //Update order:
-                $this->X_model->update($current_i['x__id'], array(
-                    'x__spectrum' => $i_rank,
-                ), $e__id, 10681 /* Ideas Ordered Automatically  */);
-
-            }
-
         }
 
         return $next_i__id;

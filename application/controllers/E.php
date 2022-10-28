@@ -71,20 +71,7 @@ class E extends CI_Controller
             }
 
 
-            if($x__type==12969){
-
-                //STARTED
-                $counter = view_coins_e(12969, $member_e['e__id'], 0, false);
-                if($counter){
-                    $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$counter.' '.$m['m__title'].'</div>';
-                    foreach(view_coins_e(12969, $member_e['e__id'], 1) as $item){
-                        $completion_rate = $this->X_model->completion_progress($member_e['e__id'], $item);
-                        $sidebar_ui .= '<a href="/x/x_next/'.$item['i__id'].'/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'">['.$completion_rate['completion_percentage'].'%] '.$item['i__title'].'</a>';
-                    }
-                    $sidebar_ui .= '<hr />';
-                }
-
-            } elseif($x__type==6255){
+            if($x__type==6255){
 
                 //RECENT DISCOVERIES
                 $counter = view_coins_e($x__type, $member_e['e__id'], 0, false);

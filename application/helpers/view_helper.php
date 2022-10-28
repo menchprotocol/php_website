@@ -989,9 +989,16 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         
     } elseif($x__type==12273){
 
+        //Determine Sort:
+        $order_columns = array();
+        foreach($CI->config->item('e___13550') as $x__sort_id => $sort) {
+            $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
+        }
+        $order_columns['x__spectrum'] = 'ASC';
+        $order_columns['x__id'] = 'DESC';
+
         //IDEAS
         $join_objects = array('x__right');
-        $order_columns = array('x__type = \'10573\' DESC' => null, 'x__spectrum' => 'ASC', 'x__id' => 'DESC'); //RECENT IDEAS
         $query_filters = array(
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1008,17 +1015,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'x__type' => 12896,
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-        );
-
-    } elseif($x__type==12969){
-
-        $join_objects = array('x__left');
-        $order_columns = array('x__spectrum' => 'ASC'); //Custom Sort
-        $query_filters = array(
-            'x__source' => $e__id,
-            'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //STARTED
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
         );
 
     } elseif($x__type==6255){
@@ -1190,17 +1186,6 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
-        );
-
-    } elseif($x__type==12969){
-
-        //Started
-        $order_columns = array('x__spectrum' => 'ASC', 'x__id' => 'DESC');
-        $join_objects = array('x__source');
-        $query_filters = array(
-            'x__left' => $i__id,
-            'x__type IN (' . join(',', $CI->config->item('n___12969')) . ')' => null, //STARTED
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___7551'))){
@@ -1755,7 +1740,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $has_any_lock = $has_soft_lock || $has_hard_lock;
     $lock_notice = ( $force_order ? 14488 : 14377 );
 
-    if(in_array($x__type, $CI->config->item('n___14454')) && !$is_completed){
+    if(in_array($i['i__type'], $CI->config->item('n___14454')) && !$is_completed){
         $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
     } elseif(strlen($e___13369[$x__type]['m__message'])){
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
