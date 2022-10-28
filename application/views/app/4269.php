@@ -109,8 +109,8 @@ if(superpower_unlocked()) {
 
         <script type="text/javascript">
 
+            //Disable social login for Instagram as it has a bug within auth0
             $(document).ready(function () {
-                //Disable social login for Instagram as it has a bug within auth0
                 var ua = navigator.userAgent || navigator.vendor || window.opera;
                 var isInstagram = (ua.indexOf('Instagram') > -1) ? true : false;
                 if (document.documentElement.classList ){

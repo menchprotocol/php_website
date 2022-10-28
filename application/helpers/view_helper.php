@@ -2206,6 +2206,10 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 //Reset my discoveries
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_reset_discoveries('.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
+            } elseif(substr($m['m__message'], 0, 1)=='?') {
+
+                $action_buttons .= '<a href="/'.$CI->uri->segment(1). $m['m__message'] . $e['e__id'] . '" class="dropdown-item css__title">'.$anchor.'</a>';
+
             } elseif(substr($m['m__message'], 0, 1)=='/') {
 
                 //Custom Anchor
@@ -2244,7 +2248,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $ui .= '<td width="20%">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</td>';
     $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
     $ui .= '<td width="20%"><div class="show-on-hover">'.( $can_click && $show_text_editor ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
-    $ui .= '<td width="20%"><div class="show-on-hover">'.$dropdown_ui.'</div></td>';
+    $ui .= '<td width="20%"><div class="show-on-hover" title="' . ( isset($e['x__time']) ? view_time_difference(strtotime($e['x__time'])) . ' Ago: '.$e['x__time'] : '' ).'">'.$dropdown_ui.'</div></td>';
     $ui .= '</tr></table>';
 
 
@@ -2299,32 +2303,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         }
     }
 
-
-
-    //Toolbar (Member Discoveries)
-    if($has_x_progress && superpower_active(13758, true)){
-
-        $ui .= '<div class="center">';
-
-        //Show Filter?
-        if(superpower_active(14005, true) && (!isset($_GET['load__e']) || $_GET['load__e']!=$e['e__id'])){
-            $ui .= '<a href="/'.$CI->uri->segment(1).'?load__e='.$e['e__id'].'" class="icon-block-xs" title="'.$e___11035[13670]['m__title'].'">'.$e___11035[13670]['m__cover'].'</a>';
-        }
-
-        //Total Progress
-        if(isset($_GET['progress'])){
-            $is = $CI->I_model->fetch(array(
-                'i__id' => $e['x__left'],
-            ));
-            $completion_rate = $CI->X_model->completion_progress($e['x__source'], $is[0]);
-            $ui .= '<span style="min-width:34px;" class="inline-block" title="'.$e['x__source'].'/'.$e['x__left'].'">' . $completion_rate['completion_percentage'] . '%</span>';
-        }
-
-        //Method & Time:
-        $ui .= '<span style="min-width:147px;" title="'.$e['x__time'].'" class="inline-block"><span class="icon-block-xs">'.view_cache(12227, $e['x__type']).'</span>' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span>';
-
-        $ui .= '</div>';
-    }
 
     $ui .= '</div></div>';
 
