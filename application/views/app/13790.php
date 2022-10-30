@@ -212,7 +212,7 @@ foreach($this->X_model->fetch(array(
 
     }
 
-    $this_quantity--;
+    $this_quantity = $this_quantity-1;
 
 
 
