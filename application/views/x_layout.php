@@ -437,7 +437,7 @@ if($top_i__id) {
                 'x__right' => $i_focus['i__id'],
                 'x__up' => 30615, //Is Refundable
             )))){
-                echo '<div class="sub_note">* Final Sale: No Refunds/Transfers</div>';
+                echo '<div class="sub_note">* Final Sale: No Refunds or Transfers</div>';
             }
             echo '<div class="sub_note">* No need to create a Paypal account: You can checkout as a guest</div>';
             echo '<div class="sub_note">* Once you paid, click on "Return to Merchant" to continue back here</div>';

@@ -159,8 +159,68 @@ foreach($this->X_model->fetch(array(
     $perfect_point = str_pad($completion_rate['completion_percentage'], 3, '0', STR_PAD_LEFT);
     $perfect_point = ( $perfect_point>100 ? 100 : $perfect_point );
 
-    $body_content .= '<td><a href="/@'.$x['e__id'].'" style="font-weight:bold;"><u>'.$x['e__title'].'</u></a></td>';
-    $body_content .= '<td>'.$perfect_point.'%</td>';
+
+
+
+    //IDEAS
+    $this_quantity = 1;
+    $name = '';
+    foreach($column_ideas as $i){
+
+        $discoveries = $this->X_model->fetch(array(
+            'x__left' => $i['i__id'],
+            'x__source' => $x['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 1);
+
+        if(count($discoveries)){
+            $x__metadata = unserialize($discoveries[0]['x__metadata']);
+            if($x__metadata['quantity'] >= 2){
+                $this_quantity = $x__metadata['quantity'];
+            }
+
+            if($x__metadata['quantity']<2){
+                for($t=20;$t>=2;$t--){
+                    if(substr_count(strtolower($i['i__title']),$t.'x')==1){
+                        $this_quantity = $t;
+                        break;
+                    }
+                }
+            }
+
+            if($i['i__id']==15736){
+                $name = $discoveries[0]['x__message'];
+            }
+        }
+
+
+
+
+
+        $idea_content .= '<td >'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) || substr_count($i['i__title'], 'Full Name')  ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['x__message'].'</span>' : '<span '.$underdot_class.'>'.$i['i__title'].'</span>'  ) : '<span>'.$i['i__title'] ).'</span>'  : '').'</td>';
+
+        if(count($discoveries)){
+            if(!isset($count_totals['i'][$i['i__id']])){
+                $count_totals['i'][$i['i__id']] = 0;
+            }
+            //$count_totals['i'][$i['i__id']] += ( strlen($discoveries[0]['x__message'])>0 && in_array(e_x__type($discoveries[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']) : 1 );
+            $count_totals['i'][$i['i__id']]++;
+        }
+
+    }
+
+    $this_quantity--;
+
+
+
+
+
+
+    $body_content .= '<td>'.$name.' '.( $this_quantity > 0 ? '+'.$this_quantity : '' ).' [<a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>]</td>';
+    //$body_content .= '<td>'.$perfect_point.'%</td>';
+
+
 
 
 
@@ -188,27 +248,7 @@ foreach($this->X_model->fetch(array(
         }
     }
 
-    //IDEAS
-    foreach($column_ideas as $i){
 
-        $discoveries = $this->X_model->fetch(array(
-            'x__left' => $i['i__id'],
-            'x__source' => $x['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array(), 1);
-
-        $body_content .= '<td >'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) || substr_count($i['i__title'], 'Full Name')  ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['x__message'].'</span>' : '<span '.$underdot_class.'>'.$i['i__title'].'</span>'  ) : '<span>'.$i['i__title'] ).'</span>'  : '').'</td>';
-
-        if(count($discoveries)){
-            if(!isset($count_totals['i'][$i['i__id']])){
-                $count_totals['i'][$i['i__id']] = 0;
-            }
-            //$count_totals['i'][$i['i__id']] += ( strlen($discoveries[0]['x__message'])>0 && in_array(e_x__type($discoveries[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']) : 1 );
-            $count_totals['i'][$i['i__id']]++;
-        }
-
-    }
 
     $e_emails = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

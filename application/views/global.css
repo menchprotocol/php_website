@@ -3600,7 +3600,7 @@ div.img {
 }
 
 .coin-12274 .inner-content .msg {
-    text-align: center;
+    text-align: center !important;
 }
 
 .idea_cover {
