@@ -1711,7 +1711,14 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         $first_name = one_two_explode('',' ', $subscriber['e__title']);
         array_push( $message_list['unique_users_id'],  intval($subscriber['e__id']));
 
-        $message_list['full_list'] .= $subscriber['e__title']."\t".$e_email."\t".$e_phone."\n";
+        $u_names = $CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__down' => $subscriber['e__id'],
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__up' => 30198, //Full Name
+        ));
+
+        $message_list['full_list'] .= ( count($u_names) ? $u_names[0]['x__message'] : $subscriber['e__title'] )."\t".$e_email."\t".$e_phone."\n";
 
     }
 
