@@ -219,7 +219,8 @@ foreach($this->X_model->fetch(array(
 
 
 
-    $body_content .= '<td>'.$name.' '.( $this_quantity > 0 ? '+'.$this_quantity : '' ).' [<a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>]</td>';
+    $plus_info = ' '.( $this_quantity > 0 ? '+'.$this_quantity : '' );
+    $body_content .= '<td>'.( strlen($name) ? $name.$plus_info.' [<a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>]' : $x['e__title'].$plus_info ).'</td>';
     //$body_content .= '<td>'.$perfect_point.'%</td>';
 
 
