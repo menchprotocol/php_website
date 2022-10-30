@@ -147,7 +147,7 @@ if(isset($_GET['e__id'])){
             $ui .= $list_body;
             $ui .= '</div>';
         } else {
-            $ui .= '<div class="glossy-bg maxwidth" style="padding: 10px;">Nothing Yet...</div>';
+            $ui .= '<h4 style="padding-top: 8px; text-align:center;"><span class="halfbg" style="padding: 5px;">Nothing Yet...</span></h4>';
         }
         $ui .= '<div class="doclear" style="padding-bottom: 55px;">&nbsp;</div>';
 
