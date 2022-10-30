@@ -1711,7 +1711,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         $first_name = one_two_explode('',' ', $subscriber['e__title']);
         array_push( $message_list['unique_users_id'],  intval($subscriber['e__id']));
 
-        $message_list['full_list'] .= $first_name."\t".$e_email."\t".$e_phone."\n";
+        $message_list['full_list'] .= $subscriber['e__title']."\t".$e_email."\t".$e_phone."\n";
 
     }
 
