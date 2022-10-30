@@ -163,6 +163,7 @@ foreach($this->X_model->fetch(array(
 
 
     //IDEAS
+    $idea_content = '';
     $this_quantity = 1;
     $name = '';
     foreach($column_ideas as $i){
@@ -247,6 +248,9 @@ foreach($this->X_model->fetch(array(
             $count_totals['e'][$e['e__id']]++;
         }
     }
+
+
+    $body_content .= $idea_content;
 
 
 
