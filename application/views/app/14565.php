@@ -147,7 +147,7 @@ if(isset($_GET['e__id'])){
             $ui .= $list_body;
             $ui .= '</div>';
         } else {
-            $ui .= '<h4 style="padding-top: 3px; text-align:center;"><span class="halfbg" style="padding: 5px; font-size: 0.8em !important;">Nothing Yet... <a href="/-4269"><u>Create an Account</u></a> to be Notifie.</span></h4>';
+            $ui .= '<h4 style="padding-top: 3px; text-align:center;"><span class="halfbg" style="padding: 5px; font-size: 0.8em !important;">Nothing Yet... <a href="/-4269"><u>Create an Account</u></a> to be notified.</span></h4>';
         }
         $ui .= '<div class="doclear" style="padding-bottom: 55px;">&nbsp;</div>';
 
