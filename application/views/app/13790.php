@@ -176,12 +176,13 @@ foreach($this->X_model->fetch(array(
         ), array(), 1);
 
         if(count($discoveries)){
+
             $x__metadata = unserialize($discoveries[0]['x__metadata']);
-            if($x__metadata['quantity'] >= 2){
+            if(isset($x__metadata['quantity']) && $x__metadata['quantity'] >= 2){
                 $this_quantity = $x__metadata['quantity'];
             }
 
-            if($x__metadata['quantity']<2){
+            if($this_quantity<2){
                 for($t=20;$t>=2;$t--){
                     if(substr_count(strtolower($i['i__title']),$t.'x')==1){
                         $this_quantity = $t;
