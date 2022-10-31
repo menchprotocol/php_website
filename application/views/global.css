@@ -3242,7 +3242,7 @@ textarea {
     margin-right: 0;
 }
 .justify-content {
-    justify-content: left !important;
+    justify-content: center !important;
 }
 
 .content-image,
