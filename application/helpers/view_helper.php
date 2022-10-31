@@ -1925,7 +1925,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '</div></td>';
 
         $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
-        $ui .= '<td width="20%"><div class="show-on-hover">'.( !$can_click && $member_e ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.( $can_click ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
         $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
         $ui .= '</tr></table>';
 
