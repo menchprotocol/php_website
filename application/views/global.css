@@ -1963,6 +1963,10 @@ i, .btn .show-max {
     top:24px;
 }
 
+#container_search .mini-coin .cover-content {
+    top:8px;
+}
+
 .coin-cover{
     position: absolute;
     width: 24px;
@@ -2128,10 +2132,21 @@ i, .btn .show-max {
     margin-top:77px;
 }
 
+#container_search .cover-link {
+    margin-top:0;
+    margin-bottom: 28px;
+}
+
 .cover-content .inner-content .css__title {
     padding:3px 0 0;
     display: block;
     min-height: 21px;
+}
+
+#container_search .cover-content .inner-content .css__title {
+    max-height: 110px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .full-width-btn {
