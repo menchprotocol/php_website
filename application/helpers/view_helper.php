@@ -1095,7 +1095,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             $coins2 = view_coins_e(11030, $e__id, 0, false);
             $count_query = $coins1 + $coins2;
             $visual_counter = view_number($coins1+$coins2);
-            $title_desc = $e___11035[11019]['m__title'].': '.number_format($coins1, 0).' & '.$e___11035[13542]['m__title'].': '.number_format($coins2, 0).'  '.$e___11035[$x__type]['m__title'];
+            $title_desc = number_format($coins1, 0).' '.$e___11035[11019]['m__title'].' & '.number_format($coins2, 0).' '.$e___11035[13542]['m__title'];
 
         } else {
             $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
@@ -1252,7 +1252,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             $coins2 = view_coins_i(13542, $i__id, 0, false);
             $count_query = $coins1 + $coins2;
             $visual_counter = view_number($count_query);
-            $title_desc = $e___11035[11019]['m__title'].': '.number_format($coins1, 0).' & '.$e___11035[13542]['m__title'].': '.number_format($coins2, 0).'  '.$e___11035[$x__type]['m__title'];
+            $title_desc = number_format($coins1, 0).' '.$e___11035[11019]['m__title'].' & '.number_format($coins2, 0).' '.$e___11035[13542]['m__title'];
 
         } else {
 
