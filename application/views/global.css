@@ -1964,7 +1964,9 @@ i, .btn .show-max {
 }
 
 #container_search .mini-coin .cover-content {
-    top:8px;
+    top: 3px;
+    padding-top: 1px;
+    padding-bottom: 1px;
 }
 
 .coin-cover{
