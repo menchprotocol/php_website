@@ -102,11 +102,9 @@ echo '</div>';
 
 //Print results:
 foreach($item_counts as $x__type => $counter) {
-    //echo view_pill($x__type, $counter, $e___11018[$x__type], ($x__type==$focus_tab ? view_body_i($x__type, $counter, $i_focus['i__id']) : null ), ($x__type==$focus_tab));
-    if($x__type==11019){
-        continue;
-    }
-    echo view_pill($x__type, $counter, $e___11018[$x__type], view_body_i($x__type, $counter, $i_focus['i__id']), true);
+    //echo view_pill($x__type, $counter, $e___11018[$x__type], view_body_i($x__type, $counter, $i_focus['i__id']), true);
+    //if($x__type==11019){ continue; }
+    echo view_pill($x__type, $counter, $e___11018[$x__type], ($x__type==$focus_tab ? view_body_i($x__type, $counter, $i_focus['i__id']) : null ), ($x__type==$focus_tab));
 }
 
 
