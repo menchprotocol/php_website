@@ -93,8 +93,33 @@ if($top_i__id && $x__source){
         if(count($find_previous)){
             $nav_list = array();
             foreach($find_previous as $parent_i){
-                array_push($nav_list, '<li class="breadcrumb-item"><a href="/'.$top_i__id.'/'.$parent_i['i__id'].'">'.$parent_i['i__title'].'</a></li>');
+
+                //Does this have a child list?
+                $dropdown_button = '';
+                $query_subset = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'x__left' => $parent_i['i__id'],
+                ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+
+                if(count($query_subset) >= 2){
+                    //Otherwise no point in listing:
+                    $dropdown_button .= '<div class="dropdown inline-block">';
+                    $dropdown_button .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$parent_i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                    $dropdown_button .= '<span class="icon-block source_cover source_cover_mini"><i class="far fa-angle-down"></i></span>';
+                    $dropdown_button .= '</button>';
+                    $dropdown_button .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$parent_i['i__id'].'">';
+                    foreach ($query_subset as $i_subset) {
+                        $dropdown_button .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item css__title">'.$i_subset['i__title'].'</a>';
+                    }
+                    $dropdown_button .= '</div>';
+                    $dropdown_button .= '</div>';
+                }
+
+                array_push($nav_list, '<li class="breadcrumb-item"><a href="/'.$top_i__id.'/'.$parent_i['i__id'].'">'.$parent_i['i__title'].'</a>'.$dropdown_button.'</li>');
             }
+
             echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
                 . join('', $nav_list)
                 .'</ol></nav>';
