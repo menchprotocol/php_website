@@ -92,7 +92,10 @@ if($top_i__id && $x__source){
         $find_previous = $this->X_model->find_previous($x__source, $top_i__id, $i_focus['i__id']);
         if(count($find_previous)){
             $nav_list = array();
+            $main_branch = array($i_focus['i__id']);
             foreach($find_previous as $parent_i){
+
+                array_push($main_branch, $parent_i['i__id']);
 
                 //Does this have a child list?
                 $dropdown_button = '';
@@ -111,7 +114,7 @@ if($top_i__id && $x__source){
                     $dropdown_button .= '</button>';
                     $dropdown_button .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$parent_i['i__id'].'">';
                     foreach ($query_subset as $i_subset) {
-                        $dropdown_button .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item css__title '.( $i_subset['i__id']==$i_focus['i__id'] ? ' active ' : '' ).'">'.$i_subset['i__title'].'</a>';
+                        $dropdown_button .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item css__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.$i_subset['i__title'].'</a>';
                     }
                     $dropdown_button .= '</div>';
                     $dropdown_button .= '</div>';
@@ -120,7 +123,7 @@ if($top_i__id && $x__source){
                 array_push($nav_list, '<li class="breadcrumb-item"><a href="/'.$top_i__id.'/'.$parent_i['i__id'].'">'.$parent_i['i__title'].'</a>'.$dropdown_button.'</li>');
             }
 
-            echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
+            echo '<nav aria-label="breadcrumb" title="BRANCH: '.join(', ',$main_branch).'"><ol class="breadcrumb">'
                 . join('', $nav_list)
                 .'</ol></nav>';
         }
