@@ -178,19 +178,19 @@ foreach($i_query as $i){
 
         $transaction_content .= '</tr>';
 
-        if($x__metadata['mc_gross'] > 0){
+        if($this_payout > 0){
             $date = date("md", strtotime($x['x__time']));
             if(isset($daily_sales[$date])){
-                $daily_sales[$date] += $x__metadata['mc_gross'];
+                $daily_sales[$date] += $this_payout;
             } else {
-                $daily_sales[$date] = $x__metadata['mc_gross'];
+                $daily_sales[$date] = $this_payout;
             }
 
             $origin_source = $x['x__right'];
             if(isset($origin_sales[$origin_source])){
-                $origin_sales[$origin_source] += number_format($x__metadata['mc_gross'], 0, '','');
+                $origin_sales[$origin_source] += number_format($this_payout, 0, '','');
             } else {
-                $origin_sales[$origin_source] = number_format($x__metadata['mc_gross'], 0, '','');
+                $origin_sales[$origin_source] = number_format($this_payout, 0, '','');
             }
 
         }
