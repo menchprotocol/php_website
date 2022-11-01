@@ -85,51 +85,52 @@ if(count($x_completes)){
 }
 
 //Check for time limits?
-if($top_i__id && $x__source){
+if($top_i__id && $x__source && $top_i__id!=$i_focus['i__id']){
 
-    //Show navigation:
-    if($top_i__id!=$i_focus['i__id']){
-        $find_previous = $this->X_model->find_previous($x__source, $top_i__id, $i_focus['i__id']);
-        if(count($find_previous)){
+    $find_previous = $this->X_model->find_previous($x__source, $top_i__id, $i_focus['i__id']);
+    if(count($find_previous)){
 
-            $nav_list = array();
-            $main_branch = array(intval($i_focus['i__id']));
-
-            foreach($find_previous as $parent_i){
-                array_push($main_branch, intval($parent_i['i__id']));
-            }
-
-            foreach($find_previous as $parent_i){
-                //Does this have a child list?
-                $dropdown_button = '';
-                $query_subset = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'x__left' => $parent_i['i__id'],
-                ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
-
-                if(count($query_subset) >= 2){
-                    //Otherwise no point in listing:
-                    $dropdown_button .= '<div class="dropdown inline-block">';
-                    $dropdown_button .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$parent_i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    $dropdown_button .= '<span class="icon-block source_cover source_cover_mini"><i class="far fa-chevron-square-down"></i></span>';
-                    $dropdown_button .= '</button>';
-                    $dropdown_button .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$parent_i['i__id'].'">';
-                    foreach ($query_subset as $i_subset) {
-                        $dropdown_button .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item css__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.$i_subset['i__title'].'</a>';
-                    }
-                    $dropdown_button .= '</div>';
-                    $dropdown_button .= '</div>';
-                }
-
-                array_push($nav_list, '<li class="breadcrumb-item"><a href="/'.$top_i__id.'/'.$parent_i['i__id'].'">'.$parent_i['i__title'].'</a>'.$dropdown_button.'</li>');
-            }
-
-            echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
-                . join('', $nav_list)
-                .'</ol></nav>';
+        $nav_list = array();
+        $main_branch = array(intval($i_focus['i__id']));
+        foreach($find_previous as $parent_i){
+            //First add-up the main branch:
+            array_push($main_branch, intval($parent_i['i__id']));
         }
+
+        echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">';
+        foreach($find_previous as $parent_i){
+
+            //Does this have a child list?
+            $query_subset = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                'x__left' => $parent_i['i__id'],
+            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+
+
+            echo '<li class="breadcrumb-item">';
+            echo '<a href="/'.$top_i__id.'/'.$parent_i['i__id'].'"><u>'.$parent_i['i__title'].'</u></a>';
+
+            //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
+            if(count($query_subset) >= 2){
+                //Show other branches:
+                echo '<div class="dropdown inline-block">';
+                echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$parent_i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                echo '<span class="icon-block source_cover source_cover_mini"><i class="far fa-chevron-square-down"></i></span>';
+                echo '</button>';
+                echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$parent_i['i__id'].'">';
+                foreach ($query_subset as $i_subset) {
+                    echo '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item css__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.$i_subset['i__title'].'</a>';
+                }
+                echo '</div>';
+                echo '</div>';
+            }
+
+            echo '</li>';
+        }
+        echo '</ol></nav>';
+
     }
 
 }
