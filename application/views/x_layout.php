@@ -91,12 +91,15 @@ if($top_i__id && $x__source){
     if($top_i__id!=$i_focus['i__id']){
         $find_previous = $this->X_model->find_previous($x__source, $top_i__id, $i_focus['i__id']);
         if(count($find_previous)){
+
             $nav_list = array();
-            $main_branch = array($i_focus['i__title']);
+            $main_branch = array(intval($i_focus['i__id']));
+
             foreach($find_previous as $parent_i){
+                array_push($main_branch, intval($parent_i['i__id']));
+            }
 
-                array_push($main_branch, $parent_i['i__title']);
-
+            foreach($find_previous as $parent_i){
                 //Does this have a child list?
                 $dropdown_button = '';
                 $query_subset = $this->X_model->fetch(array(
@@ -123,7 +126,7 @@ if($top_i__id && $x__source){
                 array_push($nav_list, '<li class="breadcrumb-item"><a href="/'.$top_i__id.'/'.$parent_i['i__id'].'">'.$parent_i['i__title'].'</a>'.$dropdown_button.'</li>');
             }
 
-            echo '<nav aria-label="breadcrumb" title="BRANCH: '.join(', ',$main_branch).'"><ol class="breadcrumb">'
+            echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
                 . join('', $nav_list)
                 .'</ol></nav>';
         }
