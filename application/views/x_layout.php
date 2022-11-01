@@ -107,11 +107,11 @@ if($top_i__id && $x__source){
                     //Otherwise no point in listing:
                     $dropdown_button .= '<div class="dropdown inline-block">';
                     $dropdown_button .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$parent_i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    $dropdown_button .= '<span class="icon-block source_cover source_cover_mini"><i class="far fa-angle-down"></i></span>';
+                    $dropdown_button .= '<span class="icon-block source_cover source_cover_mini"><i class="far fa-chevron-square-down"></i></span>';
                     $dropdown_button .= '</button>';
                     $dropdown_button .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$parent_i['i__id'].'">';
                     foreach ($query_subset as $i_subset) {
-                        $dropdown_button .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item css__title">'.$i_subset['i__title'].'</a>';
+                        $dropdown_button .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item css__title '.( $i_subset['i__id']==$i_focus['i__id'] ? ' active ' : '' ).'">'.$i_subset['i__title'].'</a>';
                     }
                     $dropdown_button .= '</div>';
                     $dropdown_button .= '</div>';

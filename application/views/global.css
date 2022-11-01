@@ -1351,6 +1351,12 @@ label {
     border-radius: 0 !important;
 }
 
+.breadcrumb-item .btn{
+    padding: 0 !important;
+    font-size: 0.8em !important;
+    color: #6c757d !important;
+}
+
 .platform-navigation .btn{
     padding: 3px 0 1px !important;
 }
@@ -2499,6 +2505,10 @@ textarea {
 
 .breadcrumb-item a {
     color:#000000 !important;
+}
+
+.breadcrumb-item .breadcrumb-item a {
+    border-bottom: 1px solid #6c757d;
 }
 
 
