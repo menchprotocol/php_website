@@ -92,10 +92,10 @@ if($top_i__id && $x__source){
         $find_previous = $this->X_model->find_previous($x__source, $top_i__id, $i_focus['i__id']);
         if(count($find_previous)){
             $nav_list = array();
-            $main_branch = array($i_focus['i__id']);
+            $main_branch = array($i_focus['i__title']);
             foreach($find_previous as $parent_i){
 
-                array_push($main_branch, $parent_i['i__id']);
+                array_push($main_branch, $parent_i['i__title']);
 
                 //Does this have a child list?
                 $dropdown_button = '';
