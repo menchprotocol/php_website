@@ -1722,12 +1722,12 @@ function e_add_only_7551(x__type, e_existing_id) {
 
 
 
-function x_message_save() {
+function x_message_save(new_x__message = null) {
 
     //Prepare data to be modified for this idea:
     var modify_data = {
         x__id: $('#modal13571 .modal_x__id').val(),
-        x__message: $('#x__message').val(),
+        x__message: ( new_x__message ? new_x__message : $('#x__message').val() ),
     };
 
     //Show spinner:
@@ -1818,6 +1818,8 @@ function x_type_preview() {
 
             $('#x__type_preview').html(data.x__type_preview);
             $('#x__message_preview').html(data.x__message_preview);
+            $('#x__history_preview').html(data.x__history_preview);
+
             lazy_load();
             $('[data-toggle="tooltip"]').tooltip();
 

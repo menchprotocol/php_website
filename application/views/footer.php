@@ -393,6 +393,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </td>
                         </tr>
                     </table>
+                    <div id="x__history_preview" class="hideIfEmpty" style="margin-top: 10px;"></div>
                 </div>
             </div>
         </div>

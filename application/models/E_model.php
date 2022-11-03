@@ -114,7 +114,7 @@ class E_model extends CI_Model
     }
 
 
-    function add_member($full_name, $email, $image_url = null){
+    function add_member($full_name, $email, $image_url = null, $x__domain = 0){
 
         //All good, create new source:
         $added_e = $this->E_model->verify_create($full_name, 0, ( filter_var($image_url, FILTER_VALIDATE_URL) ? $image_url : random_cover(12279) ));
@@ -134,6 +134,7 @@ class E_model extends CI_Model
             'x__type' => e_x__type(),
             'x__source' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
+            'x__domain' => $x__domain,
         ));
         $this->X_model->create(array(
             'x__type' => e_x__type(trim(strtolower($email))),
@@ -141,10 +142,11 @@ class E_model extends CI_Model
             'x__up' => 3288, //Email
             'x__source' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
+            'x__domain' => $x__domain,
         ));
 
         //Add member to Domain Member Groups if nto already there:
-        $domain_member_group = intval(substr(get_domain_setting(30095), 1));
+        $domain_member_group = intval(substr(get_domain_setting(30095, $added_e['new_e']['e__id'], $x__domain), 1));
         if($domain_member_group && !count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links

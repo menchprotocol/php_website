@@ -1543,11 +1543,10 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
 }
 
-function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 13601){
+function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 0){
 
     $CI =& get_instance();
-    $no_domain = 1111;
-    $source_id = $x__domain; //Assume no domain unless found below...
+    $source_id = 0; //Assume no domain unless found below...
     $server_name = get_server('SERVER_NAME');
 
     if(!$initiator_e__id){
@@ -1558,7 +1557,6 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 
     }
 
     if(strlen($server_name)){
-
         foreach($CI->config->item('e___14870') as $x__type => $m) {
             if ($server_name == $m['m__message']){
                 $source_id = $x__type;
@@ -1567,34 +1565,30 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 
         }
     }
 
-
-        /*
-    } elseif($initiator_e__id > 0){
+    if(!$source_id && $initiator_e__id > 0) {
         //Look for the original domain of the initiator:
-        foreach($CI->X_model->fetch(array(
+        foreach ($CI->X_model->fetch(array(
             'x__source' => $initiator_e__id,
-            'x__domain !=' => $no_domain,
-        ), array(), 1, 0, array('x__id' => 'ASC')) as $x_domain){
+        ), array(), 1, 0, array('x__id' => 'ASC')) as $x_domain) {
             $source_id = $x_domain['x__domain'];
         }
-        */
+    }
 
+
+    $source_id = ( $source_id ? $source_id : ( $x__domain > 0 ? $x__domain : 13601 /* Atlas */ ) );
 
 
     if(!$setting_id){
         return $source_id;
-    } elseif($setting_id && $source_id==$no_domain) {
-        //We have a setting for No Domain
-        return ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,$setting_id) : 0 );
-    } else {
-        //No Domain detected
-        $e___domain_sett = $CI->config->item('e___'.$setting_id); //DOMAINS
-        if(!isset($e___domain_sett[$source_id]) || !strlen($e___domain_sett[$source_id]['m__message'])){
-            return ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,$setting_id) : false );
-        }
-        $skip_first_word = in_array($setting_id, $CI->config->item('n___26090')) || in_array($setting_id, $CI->config->item('n___26155')) || substr($e___domain_sett[$source_id]['m__message'], 0, 1)=='@' || (substr($e___domain_sett[$source_id]['m__message'], 0, 1)=='/' && is_numeric(substr($e___domain_sett[$source_id]['m__message'], 1, 1)));
-        return ( $skip_first_word ? substr($e___domain_sett[$source_id]['m__message'], 1) : $e___domain_sett[$source_id]['m__message'] );
     }
+
+
+    $e___domain_sett = $CI->config->item('e___'.$setting_id); //DOMAINS
+    if(!isset($e___domain_sett[$source_id]) || !strlen($e___domain_sett[$source_id]['m__message'])){
+        return ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,$setting_id) : false );
+    }
+    $skip_first_word = in_array($setting_id, $CI->config->item('n___26090')) || in_array($setting_id, $CI->config->item('n___26155')) || substr($e___domain_sett[$source_id]['m__message'], 0, 1)=='@' || (substr($e___domain_sett[$source_id]['m__message'], 0, 1)=='/' && is_numeric(substr($e___domain_sett[$source_id]['m__message'], 1, 1)));
+    return ( $skip_first_word ? substr($e___domain_sett[$source_id]['m__message'], 1) : $e___domain_sett[$source_id]['m__message'] );
 
 }
 

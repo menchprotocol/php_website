@@ -58,12 +58,52 @@ class X extends CI_Controller
 
         }
 
+        $x__history_preview = '';
+
+        if(!$this->session->userdata('x__history_preview')){
+
+            //Generate history preview, if any:
+            $array_history = array($_POST['x__message']);
+
+            foreach($this->X_model->fetch(array(
+                'x__up' => $e_x[0]['x__up'],
+                'x__down' => $e_x[0]['x__down'],
+                'x__type' => 10657, //Past Deleted
+            ), array(), 0) as $x_history) {
+                $x__metadata = unserialize($x_history['x__metadata']);
+                if(!in_array($x__metadata['fields_changed'][0]['before'], $array_history)){
+                    array_push($array_history, $x__metadata['fields_changed'][0]['before']);
+                }
+                if(!in_array($x__metadata['fields_changed'][0]['after'], $array_history)){
+                    array_push($array_history, $x__metadata['fields_changed'][0]['after']);
+                }
+            }
+
+            foreach($array_history as $image){
+                $x__history_preview .= '<a href="javascript:void(0)" onclick="x_message_save('.$image.');" class="icon-block">'.view_cover(12273, $image, true).'</a>';
+            }
+
+
+            $this->session->set_userdata('x__history_preview', $x__history_preview);
+            $in_history = 0;
+
+        } else {
+
+            $in_history = 1;
+            $x__history_preview = $this->session->userdata('x__history_preview');
+
+        }
+
+
+
 
 
         return view_json(array(
             'status' => 1,
             'x__type_preview' => '<b class="css__title">' . $e___4592[$detected_x_type['x__type']]['m__cover'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
             'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">'.view_x__message($_POST['x__message'], $detected_x_type['x__type'], null, true).'</span>' : ''),
+            'in_history' => $in_history,
+            'x__history_preview' => $x__history_preview,
         ));
 
     }
