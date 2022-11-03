@@ -1913,6 +1913,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             //Idea Links
             $link_dropdown .= view_input_dropdown(4486, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
             $link_visibility = 'show-on-hover';//No need to be visible by default
+        } elseif(isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___6255'))){
+            //Discoveries
+            $link_visibility = 'show-on-hover';//No need to be visible by default
         } elseif(isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___13550'))){
             //Idea Source Reference
             $link_dropdown .= view_input_dropdown(13550, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
