@@ -60,7 +60,9 @@ class X extends CI_Controller
 
         $x__history_preview = '';
 
-        if(!$this->session->userdata('x__history_preview')){
+        $session_name = 'session_'.date("YmdHms");
+
+        if(!$this->session->userdata($session_name)){
 
             //Generate history preview, if any:
             $array_history = array($_POST['x__message']);
@@ -84,13 +86,13 @@ class X extends CI_Controller
             }
 
 
-            $this->session->set_userdata('x__history_preview', $x__history_preview);
+            $this->session->set_userdata($session_name, $x__history_preview);
             $in_history = 0;
 
         } else {
 
             $in_history = 1;
-            $x__history_preview = $this->session->userdata('x__history_preview');
+            $x__history_preview = $this->session->userdata($session_name);
 
         }
 
