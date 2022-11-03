@@ -1,9 +1,6 @@
 <?php
 
 $terms_i__id = get_domain_setting(14373);
-if(!$terms_i__id){
-    $terms_i__id = substr(view_memory(6404,14373), 1);
-}
 
 if($terms_i__id){
 

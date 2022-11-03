@@ -1584,11 +1584,16 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 
 
 
     $e___domain_sett = $CI->config->item('e___'.$setting_id); //DOMAINS
+
     if(!isset($e___domain_sett[$source_id]) || !strlen($e___domain_sett[$source_id]['m__message'])){
-        return ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,$setting_id) : false );
+        $target_return = ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,$setting_id) : false );
+    } else {
+        $target_return = $e___domain_sett[$source_id]['m__message'];
     }
-    $skip_first_word = in_array($setting_id, $CI->config->item('n___26090')) || in_array($setting_id, $CI->config->item('n___26155')) || substr($e___domain_sett[$source_id]['m__message'], 0, 1)=='@' || (substr($e___domain_sett[$source_id]['m__message'], 0, 1)=='/' && is_numeric(substr($e___domain_sett[$source_id]['m__message'], 1, 1)));
-    return ( $skip_first_word ? substr($e___domain_sett[$source_id]['m__message'], 1) : $e___domain_sett[$source_id]['m__message'] );
+
+    $skip_first_word = in_array($setting_id, $CI->config->item('n___26090')) || in_array($setting_id, $CI->config->item('n___26155')) || substr($target_return, 0, 1)=='@' || (substr($target_return, 0, 1)=='/' && is_numeric(substr($target_return, 1, 1)));
+
+    return ( $skip_first_word ? substr($target_return, 1) : $target_return );
 
 }
 
