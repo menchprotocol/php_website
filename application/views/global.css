@@ -2126,12 +2126,8 @@ i, .btn .show-max {
     margin-top: 0px;
 }
 
-.coinType12274.cover-link {
-    margin-top:64px;
-}
-
-.coinType12274.cover-link.ready-only {
-    margin-top:37px;
+.coinType12274.cover-link.ready-only, .coinType12274.cover-link {
+    margin-top:38px;
 }
 .focus-coin .coinType12274.cover-link {
     margin-top:94px;
