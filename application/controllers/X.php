@@ -85,6 +85,11 @@ class X extends CI_Controller
                         array_push($array_history, $x__metadata['fields_changed'][0]['after']);
                     }
                 }
+
+                if(count($array_history)){
+                    $x__history_preview .= '<div>History:</div>';
+                }
+
                 foreach($array_history as $image){
                     $x__history_preview .= '<a href="javascript:void(0)" onclick="x_message_save(\''.$image.'\');" class="icon-block-lg">'.view_cover(12273, $image, true).'</a>';
                 }
@@ -107,7 +112,7 @@ class X extends CI_Controller
         return view_json(array(
             'status' => 1,
             'x__type_preview' => '<b class="css__title">' . $e___4592[$detected_x_type['x__type']]['m__cover'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
-            'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">'.view_x__message($_POST['x__message'], $detected_x_type['x__type'], null, true).'</span>' : ''),
+            'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">'.view_x__message(( substr($_POST['x__message'], 0, 2)=='//' ? 'https:'.$_POST['x__message'] : $_POST['x__message']  ), $detected_x_type['x__type'], null, true).'</span>' : ''),
             'in_history' => $in_history,
             'x__history_preview' => $x__history_preview,
         ));
