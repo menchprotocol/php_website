@@ -65,11 +65,16 @@ class X extends CI_Controller
         if(!$this->session->userdata($session_name)){
 
             //Generate history preview, if any:
-            if(count($e_x)){
+
+            if($_POST['x__id']>0){
+                //See if this is duplicate to either transaction:
+                $xs = $this->X_model->fetch(array(
+                    'x__id' => $_POST['x__id'],
+                ));
                 $array_history = array($_POST['x__message']);
                 foreach($this->X_model->fetch(array(
-                    'x__up' => $e_x[0]['x__up'],
-                    'x__down' => $e_x[0]['x__down'],
+                    'x__up' => $xs[0]['x__up'],
+                    'x__down' => $xs[0]['x__down'],
                     'x__type' => 10657, //Past Deleted
                 ), array(), 0) as $x_history) {
                     $x__metadata = unserialize($x_history['x__metadata']);
