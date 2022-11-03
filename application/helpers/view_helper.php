@@ -1907,6 +1907,18 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
 
+        $link_dropdown = '';
+        $link_visibility = ''; //visible by default
+        if(in_array($i['x__type'], $CI->config->item('n___4486'))){
+            //Idea Links
+            $link_dropdown .= view_input_dropdown(4486, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
+        } elseif(in_array($i['x__type'], $CI->config->item('n___13550'))){
+            //Idea Source Reference
+            $link_dropdown .= view_input_dropdown(13550, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
+            $link_visibility = 'show-on-hover';//No need to be visible by default
+        }
+
+
         //Top action menu:
         $ui = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-xl-4 col-lg-6 col-md-8 col-sm-10 col-12 ' : ' edge-coin col-xl-2 col-lg-3 col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $has_soft_lock ? ' soft_lock ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_hard_lock ? ' title="'.$e___11035[$x__type]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : ( $has_soft_lock ? ' title="'.$e___11035[$lock_notice]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).'>';
 
@@ -1922,17 +1934,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         }
         $ui .= '</div></td>';
 
-        $ui .= '<td width="20%"><div class="show-on-hover">';
+        $ui .= '<td width="20%"><div class="'.$link_visibility.'">';
         if(!$has_any_lock && $toolbar && $superpower_12700 && isset($i['x__type'])){
-
-            if(in_array($i['x__type'], $CI->config->item('n___4486'))){
-                //Idea Links
-                $ui .= view_input_dropdown(4486, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
-            } elseif(in_array($i['x__type'], $CI->config->item('n___13550'))){
-                //Idea Source Reference
-                $ui .= view_input_dropdown(13550, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
-            }
-
+            $ui .= $link_dropdown;
         }
         $ui .= '</div></td>';
 
