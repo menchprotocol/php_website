@@ -2130,7 +2130,7 @@ i, .btn .show-max {
     margin-top:37px;
 }
 .focus-coin .coinType12274.cover-link, .focus-coin .coinType12274.cover-link.ready-only {
-    margin-top:55px;
+    margin-top:65px;
 }
 
 #container_search .cover-link {
@@ -2720,6 +2720,10 @@ textarea {
 .custom_ui_13884_13886 .coin-12274 .cover-content{
     background: rgba(0,0,0,0.00) !important;
 }
+.custom_ui_13884_13886 .coin-12274.not-allowed .cover-content{
+    background: rgba(0,0,0,0.80) !important;
+}
+
 
 .custom_ui_13884_13886,
 .custom_ui_13884_13886 body,
@@ -2854,6 +2858,10 @@ textarea {
 .custom_ui_13884_13885 .coin-12274 .cover-content{
     background: rgba(255,255,255,0.00) !important;
 }
+.custom_ui_13884_13885 .coin-12274.not-allowed .cover-content{
+    background: rgba(255,255,255,0.80) !important;
+}
+
 
 .custom_ui_13884_13885,
 .custom_ui_13884_13885 .standard-bg,
