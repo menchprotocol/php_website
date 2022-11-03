@@ -334,12 +334,15 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 
 function view_cover($coin__type, $cover_code, $noicon_default = null, $icon_prefix = '')
 {
+
+    $valid_url = ( filter_var($cover_code, FILTER_VALIDATE_URL) || substr($cover_code, 0, 2)=='//' );
+
     //A simple function to display the Member Icon OR the default icon if not available:
-    if(filter_var($cover_code, FILTER_VALIDATE_URL) && $noicon_default){
+    if($valid_url && $noicon_default){
 
         return $icon_prefix.'<div class="img" style="background-image:url(\''.$cover_code.'\');"></div>';
 
-    } elseif(filter_var($cover_code, FILTER_VALIDATE_URL)){
+    } elseif($valid_url){
 
         return $icon_prefix.'<img src="'.$cover_code.'"'.( substr_count($cover_code, 'class=') ? ' class="'.str_replace(',',' ',one_two_explode('class=','&', $cover_code)).'" ' : '' ).'/>';
 
