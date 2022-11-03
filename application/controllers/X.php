@@ -31,10 +31,6 @@ class X extends CI_Controller
         //Will Contain every possible Member Transaction Connector:
         $e___4592 = $this->config->item('e___4592');
 
-        if(substr($_POST['x__message'], 0, 2)=='//'){
-            $_POST['x__message'] = 'https:'.$_POST['x__message'];
-        }
-
         //See what this is:
         $detected_x_type = x_detect_type($_POST['x__message']);
 
