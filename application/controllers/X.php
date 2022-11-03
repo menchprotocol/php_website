@@ -65,26 +65,25 @@ class X extends CI_Controller
         if(!$this->session->userdata($session_name)){
 
             //Generate history preview, if any:
-            $array_history = array($_POST['x__message']);
-
-            foreach($this->X_model->fetch(array(
-                'x__up' => $e_x[0]['x__up'],
-                'x__down' => $e_x[0]['x__down'],
-                'x__type' => 10657, //Past Deleted
-            ), array(), 0) as $x_history) {
-                $x__metadata = unserialize($x_history['x__metadata']);
-                if(!in_array($x__metadata['fields_changed'][0]['before'], $array_history)){
-                    array_push($array_history, $x__metadata['fields_changed'][0]['before']);
+            if(count($e_x)){
+                $array_history = array($_POST['x__message']);
+                foreach($this->X_model->fetch(array(
+                    'x__up' => $e_x[0]['x__up'],
+                    'x__down' => $e_x[0]['x__down'],
+                    'x__type' => 10657, //Past Deleted
+                ), array(), 0) as $x_history) {
+                    $x__metadata = unserialize($x_history['x__metadata']);
+                    if(!in_array($x__metadata['fields_changed'][0]['before'], $array_history)){
+                        array_push($array_history, $x__metadata['fields_changed'][0]['before']);
+                    }
+                    if(!in_array($x__metadata['fields_changed'][0]['after'], $array_history)){
+                        array_push($array_history, $x__metadata['fields_changed'][0]['after']);
+                    }
                 }
-                if(!in_array($x__metadata['fields_changed'][0]['after'], $array_history)){
-                    array_push($array_history, $x__metadata['fields_changed'][0]['after']);
+                foreach($array_history as $image){
+                    $x__history_preview .= '<a href="javascript:void(0)" onclick="x_message_save(\''.$image.'\');" class="icon-block-xs">'.view_cover(12273, $image, true).'</a>';
                 }
             }
-
-            foreach($array_history as $image){
-                $x__history_preview .= '<a href="javascript:void(0)" onclick="x_message_save(\''.$image.'\');" class="icon-block-xs">'.view_cover(12273, $image, true).'</a>';
-            }
-
 
             $this->session->set_userdata($session_name, $x__history_preview);
             $in_history = 0;
