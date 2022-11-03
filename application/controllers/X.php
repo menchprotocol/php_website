@@ -71,7 +71,7 @@ class X extends CI_Controller
                 $xs = $this->X_model->fetch(array(
                     'x__id' => $_POST['x__id'],
                 ));
-                $array_history = array($_POST['x__message']);
+                $array_history = array();
                 foreach($this->X_model->fetch(array(
                     'x__up' => $xs[0]['x__up'],
                     'x__down' => $xs[0]['x__down'],
@@ -87,7 +87,7 @@ class X extends CI_Controller
                 }
 
                 if(count($array_history)){
-                    $x__history_preview .= '<div>History:</div>';
+                    $x__history_preview .= '<div style="margin: 13px 0;">History:</div>';
                 }
 
                 foreach($array_history as $image){
