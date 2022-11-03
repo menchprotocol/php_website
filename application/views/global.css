@@ -2720,7 +2720,10 @@ textarea {
 .custom_ui_13884_13886 .coin-12274 .cover-content{
     background: rgba(0,0,0,0.00) !important;
 }
-.custom_ui_13884_13886 .coin-12274.not-allowed .cover-content{
+ .custom_ui_13884_13886 .coin-12274.mini-coin .cover-content,
+ .custom_ui_13884_13886 .coin-12274.not-allowed .cover-content,
+.custom_ui_13884_13886 .coin-12274.ready-only .cover-content
+{
     background: rgba(0,0,0,0.80) !important;
 }
 
