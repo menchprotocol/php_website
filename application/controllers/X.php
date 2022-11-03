@@ -86,7 +86,7 @@ class X extends CI_Controller
                     }
                 }
                 foreach($array_history as $image){
-                    $x__history_preview .= '<a href="javascript:void(0)" onclick="x_message_save(\''.$image.'\');" class="icon-block-xs">'.view_cover(12273, $image, true).'</a>';
+                    $x__history_preview .= '<a href="javascript:void(0)" onclick="x_message_save(\''.$image.'\');" class="icon-block-lg">'.view_cover(12273, $image, true).'</a>';
                 }
             }
 
