@@ -2715,7 +2715,10 @@ textarea {
 
 .custom_ui_13884_13886 .light-bg,
 .custom_ui_13884_13886 .fixed-top{
-    background: rgba(0,0,0,0.80);
+    background: rgba(0,0,0,1.00);
+}
+.custom_ui_13884_13886 .coin-12274 .cover-content{
+    background: rgba(0,0,0,0.00) !important;
 }
 
 .custom_ui_13884_13886,
@@ -2848,7 +2851,7 @@ textarea {
     background: rgba(255,255,255,1.00) !important;
 }
 
-.coin-12274 .cover-content{
+.custom_ui_13884_13885 .coin-12274 .cover-content{
     background: rgba(255,255,255,0.00) !important;
 }
 
