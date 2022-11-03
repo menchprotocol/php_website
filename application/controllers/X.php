@@ -78,10 +78,10 @@ class X extends CI_Controller
                     'x__type' => 10657, //Past Deleted
                 ), array(), 0) as $x_history) {
                     $x__metadata = unserialize($x_history['x__metadata']);
-                    if(!in_array($x__metadata['fields_changed'][0]['before'], $array_history)){
+                    if(strlen($x__metadata['fields_changed'][0]['before'])>1 && !in_array($x__metadata['fields_changed'][0]['before'], $array_history)){
                         array_push($array_history, $x__metadata['fields_changed'][0]['before']);
                     }
-                    if(!in_array($x__metadata['fields_changed'][0]['after'], $array_history)){
+                    if(strlen($x__metadata['fields_changed'][0]['after'])>1 && !in_array($x__metadata['fields_changed'][0]['after'], $array_history)){
                         array_push($array_history, $x__metadata['fields_changed'][0]['after']);
                     }
                 }
