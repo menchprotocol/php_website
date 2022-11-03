@@ -31,6 +31,10 @@ class X extends CI_Controller
         //Will Contain every possible Member Transaction Connector:
         $e___4592 = $this->config->item('e___4592');
 
+        if(substr($_POST['x__message'], 0, 2)=='//'){
+            $_POST['x__message'] = 'https:'.$_POST['x__message'];
+        }
+
         //See what this is:
         $detected_x_type = x_detect_type($_POST['x__message']);
 
@@ -108,11 +112,10 @@ class X extends CI_Controller
 
 
 
-
         return view_json(array(
             'status' => 1,
             'x__type_preview' => '<b class="css__title">' . $e___4592[$detected_x_type['x__type']]['m__cover'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
-            'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">'.view_x__message(( substr($_POST['x__message'], 0, 2)=='//' ? 'https:'.$_POST['x__message'] : $_POST['x__message']  ), $detected_x_type['x__type'], null, true).'</span>' : ''),
+            'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">'.view_x__message($_POST['x__message'], $detected_x_type['x__type'], null, true).'</span>' : ''),
             'in_history' => $in_history,
             'x__history_preview' => $x__history_preview,
         ));
