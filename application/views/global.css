@@ -3368,6 +3368,9 @@ textarea {
 .coin-12274 .cover-content{
     border-radius: 0;
 }
+.coin-12274 .mini-font {
+    text-align: center;
+}
 .select-btns .btn{
     font-size: 1.9em !important;
 }
