@@ -2843,9 +2843,12 @@ textarea {
     background-color: #FFFFFF;
 }
 
-.coin-12274 .cover-content,
 .custom_ui_13884_13885 .light-bg,
 .custom_ui_13884_13885 .fixed-top{
+    background: rgba(255,255,255,1.00) !important;
+}
+
+.coin-12274 .cover-content{
     background: rgba(255,255,255,0.00) !important;
 }
 
