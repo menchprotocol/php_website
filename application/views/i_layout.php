@@ -92,7 +92,7 @@ echo view_headline(11019,  $previous_count, $e___11035[11019], view_body_i(11019
 
 
 //Focus Notes
-echo '<div class="row justify-content" id="thisNode" style="padding-bottom: 55px;">';
+echo '<div class="row justify-content" id="thisNode" style="padding-bottom:5px;">';
 echo view_i(4250, 0, null, $i_focus);
 echo '</div>';
 
