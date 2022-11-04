@@ -86,7 +86,7 @@ foreach($this->config->item('e___20424') as $x__type => $m) {
 
 
 //Top Notes
-echo view_pill(11019,  $item_counts[11019], $e___11018[11019], view_body_i(11019, $item_counts[11019], $i_focus['i__id']), false);
+echo view_headline(11019,  $item_counts[11019], $e___11018[11019], view_body_i(11019, $item_counts[11019], $i_focus['i__id']), false);
 
 
 //Focus Notes
