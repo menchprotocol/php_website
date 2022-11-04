@@ -11,6 +11,13 @@ $this->X_model->create(array(
 ));
 
 
+//Top Notes
+$e___11018 = $this->config->item('e___11018');
+$following_count = view_coins_e(11030, $e['e__id'], 0, false);
+echo view_pill(11030,  $following_count, $e___11018[11030], view_body_e(11030, $following_count, $e['e__id']), false);
+
+
+
 //Focus Source:
 echo '<div class="row justify-content">';
 echo view_e(4251, $e, null, source_of_e($e['e__id']));

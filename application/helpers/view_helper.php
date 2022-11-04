@@ -967,7 +967,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
 
-    } elseif($x__type==11030){
+    } elseif($x__type==11030 || $x__type==12274){
 
         //UP
         $order_columns = array('x__spectrum' => 'ASC', 'e__spectrum' => 'DESC', 'e__title' => 'ASC');
@@ -1060,10 +1060,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'x__type' => $x__type,
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         );
-
-    } elseif($x__type==12274) {
-
-        //Will merge later on
 
     } else {
 
