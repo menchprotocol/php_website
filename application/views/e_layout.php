@@ -87,7 +87,8 @@ foreach($item_counts as $x__type => $counter) {
     $(document).ready(function () {
 
         //Source Loader:
-        load_tab(<?= $focus_tab ?>)
+        load_tab(11030);
+        load_tab(<?= $focus_tab ?>);
 
         set_autosize($('.texttype__lg.text__6197_'+current_id()));
 
