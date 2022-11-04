@@ -12,9 +12,9 @@ $this->X_model->create(array(
 
 
 //Top Notes
-$e___11018 = $this->config->item('e___11018');
+$e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $following_count = view_coins_e(11030, $e['e__id'], 0, false);
-echo view_pill(11030,  $following_count, $e___11018[11030], view_body_e(11030, $following_count, $e['e__id']), false);
+echo view_pill(11030,  $following_count, $e___11035[11030], view_body_e(11030, $following_count, $e['e__id']), false);
 
 
 
