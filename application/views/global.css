@@ -1950,7 +1950,7 @@ i, .btn .show-max {
     overflow-y: auto;
     display: block;
     margin: 0 8px;
-    max-height: 69%;
+    max-height: 64%;
     top:50px;
 }
 .hide-subline .subtle-line {

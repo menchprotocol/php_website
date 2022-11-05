@@ -2143,8 +2143,8 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
 
-    $source_of_e = ($superpower_13422) || ($source_of_e && $member_e);
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
+    $source_of_e = ($superpower_13422) || ($source_of_e && $member_e) || ($x__id && ($e['x__up']==$member_e['e__id'] || $e['x__down']==$member_e['e__id']));
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
     $supports_messages = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___20409')));
 
@@ -2153,7 +2153,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     $href = ( $is_app ? '/-'.$e['e__id'] : '/@'.$e['e__id'] );
     $focus__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
-    $has_x_progress = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___12227')));
+    $has_x_progress = ( $x__id > 0 && (in_array($e['x__type'], $CI->config->item('n___12227')) || $source_of_e));
     $is_public =  in_array($e['e__type'], $CI->config->item('n___29297'));
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
