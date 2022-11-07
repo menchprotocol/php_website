@@ -680,7 +680,7 @@ class X extends CI_Controller
                 ));
 
                 //Inform user of changes:
-                $flash_message = '<div class="msg alert alert-warning" role="alert">You\'ve been added to '.view_cover(12274,$es_tag[0]['e__cover']).' '.$es_tag[0]['e__title'].'</div>';
+                $flash_message = '<div class="msg alert alert-warning" role="alert">You\'ve been added to '.view_cover(12274,$es_tag[0]['e__cover'], true).' '.$es_tag[0]['e__title'].'</div>';
 
             }
         }

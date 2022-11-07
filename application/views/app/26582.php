@@ -78,7 +78,7 @@ if(!$is_u_request || isset($_GET['cron'])){
             'e__id IN (' . $_GET['e__id'] . ')' => null,
             'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         )) as $e){
-            echo '<h2><a href="/@'.$e['e__id'].'"><span class="icon-block-img">'.view_cover(12274,$e['e__cover']).'</span> '.$e['e__title'].'</a></h2>';
+            echo '<h2><a href="/@'.$e['e__id'].'"><span class="icon-block-img">'.view_cover(12274,$e['e__cover'], true).'</span> '.$e['e__title'].'</a></h2>';
         }
     }
 

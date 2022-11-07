@@ -88,7 +88,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
         if(count($sources)){
-            return '<div><span class="icon-block-xs">'.view_cover(12274,$sources[0]['e__cover']). '</span><a href="/'.$x__message.'" target="_blank" class="ignore-click" style="font-size:0.89em;">'.$sources[0]['e__title'].'</a></div>';
+            return '<div><span class="icon-block-xs">'.view_cover(12274,$sources[0]['e__cover'], true). '</span><a href="/'.$x__message.'" target="_blank" class="ignore-click" style="font-size:0.89em;">'.$sources[0]['e__title'].'</a></div>';
         } else {
             return $x__message.' ⚠️ INVALID ID';
         }
@@ -338,7 +338,7 @@ function view_cover($coin__type, $cover_code, $noicon_default = null, $icon_pref
     $valid_url = ( filter_var($cover_code, FILTER_VALIDATE_URL) || substr($cover_code, 0, 2)=='//' );
 
     //A simple function to display the Member Icon OR the default icon if not available:
-    if($valid_url && ($noicon_default || $coin__type==12274)){
+    if($valid_url && $noicon_default){
 
         return $icon_prefix.'<div class="img" style="background-image:url(\''.$cover_code.'\');"></div>';
 
@@ -445,7 +445,7 @@ function view_x($x, $has_x__reference = false)
 
 
     //SOURCE
-    $ui .= '<div class="simple-line"><a href="/@'.$add_e[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4364]['m__cover']. '</span><span class="icon-block">'.view_cover(12274,$add_e[0]['e__cover']) . '</span>' . $add_e[0]['e__title'] . '</a></div>';
+    $ui .= '<div class="simple-line"><a href="/@'.$add_e[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4364]['m__cover']. '</span><span class="icon-block">'.view_cover(12274,$add_e[0]['e__cover'], true) . '</span>' . $add_e[0]['e__title'] . '</a></div>';
 
 
     //HIDE PRIVATE INFO?
@@ -515,7 +515,7 @@ function view_x($x, $has_x__reference = false)
                 //SOURCE
                 $es = $CI->E_model->fetch(array('e__id' => $x[$var_index[$e__id]]));
 
-                $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$es[0]['e__cover']). '</span>'.$es[0]['e__title'].'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$es[0]['e__cover'], true). '</span>'.$es[0]['e__title'].'</a></div>';
 
             } elseif(in_array(6202 , $m['m__profile'])){
 
@@ -2103,7 +2103,7 @@ function view_e_line($e)
 {
 
     $ui = '<a href="/@'.$e['e__id'].'" class="doblock">';
-    $ui .= '<span class="icon-block">'.view_cover(12274, $e['e__cover']).'</span>';
+    $ui .= '<span class="icon-block">'.view_cover(12274, $e['e__cover'], true).'</span>';
     $ui .= '<span class="css__title">'.$e['e__title'].'<span class="grey" style="padding-left:8px;">' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span></span>';
     $ui .= '</a>';
     return $ui;
@@ -2281,7 +2281,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $ui .= ( $can_click && !$show_text_editor ? '<a href="'.$href.'"' : '<div' ).' class="'.$cointype.( !$source_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
 
     //ICON?
-    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover']) : '' ).'</div>';
+    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover'], true) : '' ).'</div>';
 
     $ui .= ( $can_click && !$show_text_editor ? '</a>' : '</div>' );
     $ui .= '</div>';
