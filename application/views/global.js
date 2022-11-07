@@ -1292,7 +1292,7 @@ function coin__load(coin__type, coin__id){
             $('#coin__type').val(coin__type);
             $('#coin__id').val(coin__id);
             $('#coin__title').val(data.coin__title);
-            $('#coin__cover').val(data.coin__cover);
+            $('#coin__cover').val(data.coin__cover).focus();
             update_cover_main(data.coin__cover, '.demo_cover');
 
             //Any suggestions to auto load?
