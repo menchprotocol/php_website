@@ -338,7 +338,7 @@ function view_cover($coin__type, $cover_code, $noicon_default = null, $icon_pref
     $valid_url = ( filter_var($cover_code, FILTER_VALIDATE_URL) || substr($cover_code, 0, 2)=='//' );
 
     //A simple function to display the Member Icon OR the default icon if not available:
-    if($valid_url && $noicon_default){
+    if($valid_url && ($noicon_default || $coin__type==12274)){
 
         return $icon_prefix.'<div class="img" style="background-image:url(\''.$cover_code.'\');"></div>';
 
@@ -660,7 +660,7 @@ function view_coins(){
 }
 
 function view_coin_line($href, $is_current, $x__type, $o__type, $o__cover, $o__title, $x__message = null){
-    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'"><span class="icon-block-xxs">'.$x__type.'</span><span class="icon-block-xxs">'.$o__type.'</span>'.( strlen($o__cover) ? '<span class="icon-block-xxs">'.$o__cover.'</span>' : '' ).$o__title./*'<span class="pull-right inline-block">'..'</span>'.*/( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).'</a>';
+    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item move_away css__title '.( $is_current ? ' active ' : '' ).'">'.( $x__type ? '<span class="icon-block-xxs">'.$x__type.'</span>' : '' ).( $o__type ? '<span class="icon-block-xxs">'.$o__type.'</span>' : '' ).( strlen($o__cover) ? '<span class="icon-block-xxs">'.$o__cover.'</span>' : '' ).$o__title./*'<span class="pull-right inline-block">'..'</span>'.*/( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).'</a>';
 }
 
 
@@ -2177,6 +2177,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //LOCKED
+    $edit_button = null;
     $dropdown_ui = false;
     if($source_of_e && !$cache_app) {
 
@@ -2196,6 +2197,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
                 //COIN COVER
                 $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
+                $edit_button = '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="icon-block">'.$m['m__cover'].'</a>';
 
             } elseif($e__id==4997 && superpower_active(12703, true)){
 
@@ -2266,7 +2268,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     //Top action menu:
     $ui .= '<table class="coin_coins"><tr>';
     $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && !$cache_app ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
-    $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</div></td>';
+    $ui .= '<td width="20%">'.$edit_button.'</td>'; //<div class="show-on-hover">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</div>
     $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
     $ui .= '<td width="20%"><div class="show-on-hover">'.( $can_click && $show_text_editor ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
     $ui .= '<td width="20%"><div class="show-on-hover" title="' . ( isset($e['x__time']) ? view_time_difference(strtotime($e['x__time'])) . ' Ago: '.$e['x__time'] : '' ).'">'.$dropdown_ui.'</div></td>';

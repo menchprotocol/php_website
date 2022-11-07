@@ -248,7 +248,7 @@ class E extends CI_Controller
                     if(isset($source_e['is_break'])){
                         $ui .= '<hr />';
                     } elseif(isset($source_e['e__id'])){
-                        $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__type']]['m__cover'], view_cover(12274,$source_e['e__cover']), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
+                        $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, null, $e___6177[$source_e['e__type']]['m__cover'], view_cover(12274,$source_e['e__cover'], true), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                         $listed_items++;
                     }
                 }
