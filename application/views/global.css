@@ -3668,3 +3668,7 @@ div.img {
 .coin_coins .btn {
     padding: 5px;
 }
+
+.demo_cover .cover-content {
+    top:-34px !important;
+}
