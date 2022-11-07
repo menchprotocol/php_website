@@ -1304,7 +1304,7 @@ function coin__load(coin__type, coin__id){
 
             setTimeout(function () {
                 $('#coin__cover').focus();
-            }, 89);
+            }, 147);
 
         } else {
 
