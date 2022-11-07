@@ -2849,7 +2849,7 @@ textarea {
 .custom_ui_13884_13885.custom_ui_28979_28981 .coinType12273,
 .custom_ui_13884_13885.custom_ui_28979_28981 .coinType6255 {
     border: 3px solid #000000 !important;
-    background-color: #FFFFFF;
+    background-color: #000000; /* #FFFFFF */
 }
 
 .custom_ui_13884_13885 .light-bg,
