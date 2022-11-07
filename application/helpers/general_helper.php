@@ -635,7 +635,7 @@ function i_spots_remaining($i__id){
     $spots_remaining = -1; //No limits
     $has_limits = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__right' => $i__id,
         'x__up' => 26189,
     ), array(), 1);
@@ -1852,7 +1852,7 @@ function fetch_i_source($source_type, $i__id){
     $CI =& get_instance();
     foreach($CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__up' => $source_type,
         'x__right' => $i__id,
     ), array(), 0, 0) as $x){
