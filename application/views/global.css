@@ -3041,7 +3041,7 @@ textarea {
 .custom_ui_28979_28980 .btn.btn-12274,
 .custom_ui_28979_28980 .coinType12274 {
     border: 3px solid #007AFD;
-    background-color: #FFFFFF !important;
+    background-color: #007AFD !important;
 }
 .custom_ui_28979_28980 .coin-12274 .cover-content {
     background: rgba(0,122,253,0.82);
@@ -3141,7 +3141,7 @@ textarea {
 .custom_ui_28979_28980 .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle,
 .custom_ui_28979_28980 .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle:focus,
 .custom_ui_28979_28980 .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle:hover {
-    background-color: transparent;
+    background-color: #FC1B44;
     color: #FC1B44;
     /* border: 3px solid #FC1B44; */
 }
