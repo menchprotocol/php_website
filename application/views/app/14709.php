@@ -100,7 +100,7 @@ if(!$member_e){
 
         if(!count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 4983, //References
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__right' => $is[0]['i__id'],
                 'x__up' => 29443, //Disable Sharing
             )))){
