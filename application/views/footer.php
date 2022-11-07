@@ -6,7 +6,6 @@ $member_e = superpower_unlocked();
 if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-    $e___14393 = $this->config->item('e___14393'); //SUGGEST
     $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
 
     //Apply to All Sources
@@ -261,96 +260,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
-
-
-
-
-
-    <!-- SUGGEST Modal -->
-    <div class="modal fade indifferent" id="modal14393" tabindex="-1" role="dialog" aria-labelledby="modal14393Label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title css__title" id="modal14393Label"><?= $e___11035[14393]['m__cover'].' '.$e___11035[14393]['m__title'] ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <?php
-
-                    //Current URL:
-                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14927]['m__cover'].'</span>'.$e___14393[14927]['m__title'].'</div>';
-                    echo '<div class="current_url padded hideIfEmpty inline-block"></div>';
-
-
-
-                    //Type
-                    echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14394]['m__cover'].'</span>'.$e___14393[14394]['m__title'].'</div>';
-                    $counter_options = 0;
-                    foreach($this->config->item('e___14394') /* SUGGESTION TYPE */ as $x__type => $m){
-                        $counter_options++;
-                        echo '<div class="form-check">
-                    <input class="form-check-input" type="radio" name="sugg_type" id="formRadio'.$x__type.'" value="'.$x__type.'" '.( $counter_options==1 ? ' checked ' : '' ).'>
-                    <label class="form-check-label" for="formRadio'.$x__type.'">' . $m['m__title'] . '</label>
-                </div>';
-                    }
-
-                    //Details
-                    echo '<div class="headline top-margin"><span class="icon-block">'.$e___14393[14395]['m__cover'].'</span>'.$e___14393[14395]['m__title'].'</div>';
-                    echo '<div class="padded"><textarea class="form-control text-edit border" id="sugg_note" data-lpignore="true" placeholder="More details here..."></textarea></div>';
-
-                    ?>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" onclick="x_suggestion()" class="btn btn-default">SUBMIT</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-    <!-- SHARE Modal -->
-    <div class="modal fade" id="modal13024" tabindex="-1" role="dialog" aria-labelledby="modal13024Label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title css__title" id="modal13024Label"><?= $e___11035[13024]['m__cover'].' '.$e___11035[13024]['m__title'] ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <?php
-                    //URL
-                    $current_link = current_link();
-                    echo '<div class="headline"><span class="icon-block">'.$e___14393[14927]['m__cover'].'</span>'.$e___14393[14927]['m__title'].'</div>';
-                    echo '<div class="padded"><input type="url" class="form-control border share_url" value="'.$current_link.'"></div>';
-                    ?>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
     <!-- APP Modal -->
     <div class="modal fade indifferent" id="modal6287" tabindex="-1" role="dialog" aria-labelledby="modal6287Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title" id="modal14393Label"><?= $e___11035[6287]['m__cover'].' '.$e___11035[6287]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title" id="modal6287Label"><?= $e___11035[6287]['m__cover'].' '.$e___11035[6287]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -408,7 +323,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title" id="modal14393Label"><?= $e___11035[14937]['m__cover'].' '.$e___11035[14937]['m__title'] ?></h5>
+                    <h5 class="modal-title css__title" id="modal14937Label"><?= $e___11035[14937]['m__cover'].' '.$e___11035[14937]['m__title'] ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

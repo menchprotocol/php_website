@@ -1725,19 +1725,6 @@ class X extends CI_Controller
     }
 
 
-    function x_suggestion(){
-        //Save Suggestion:
-        $x = $this->X_model->create(array(
-            'x__source' => intval($_POST['js_pl_id']),
-            'x__type' => 14393,
-            'x__down' => intval($_POST['sugg_type']),
-            'x__message' => trim($_POST['sugg_note']).' '.$_POST['sugg_url'],
-        ));
-        return view_json(array(
-            'status' => 1,
-        ));
-    }
-
     function x_remove(){
 
         /*

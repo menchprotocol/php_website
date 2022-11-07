@@ -970,10 +970,7 @@ $(document).ready(function () {
             x__up: x__type,
         });
         //Log Viewed Transaction
-        if(x__type==14393){
-            //Current
-            $('.current_url').text(window.location.href);
-        } else if(x__type==6287){
+        if(x__type==6287){
             //Load App Modal:
             $.post("/app/load_index", {}, function (data) {
                 $('#modal6287 .modal-body').html(data.status ? data.load_index : data.message );
@@ -1834,44 +1831,6 @@ function x_type_preview() {
 
 }
 
-
-function x_suggestion(){
-
-    //Make sure all inputs are completed:
-    var sugg_type = parseInt($('input[name="sugg_type"]:checked').val());
-    var sugg_note = $("#sugg_note").val();
-
-    if(sugg_type < 1){
-        alert('You must select suggestion type to continue.');
-        $("#sugg_type").focus();
-        return false;
-    } else if(sugg_note.length < 1){
-        alert('You must write suggestion note to continue.');
-        $("#sugg_note").focus();
-        return false;
-    } else if(js_pl_id < 1){
-        alert('You must be logged-in to continue.');
-        return false;
-    }
-
-    //All good, submit:
-    $.post("/x/x_suggestion", {
-        js_pl_id:js_pl_id,
-        sugg_type:sugg_type,
-        sugg_note:sugg_note,
-        sugg_url:window.location.href,
-    }, function (data) {
-
-        //Inform Member:
-        alert('You ROCK! We will review your suggestion and get back to you if necessary.');
-
-        //Close Modal:
-        $('#modal14393').modal('hide');
-        $("#sugg_note").val('');
-        $("#sugg_type").val('0');
-
-    });
-}
 
 
 //For the drag and drop file uploader:
