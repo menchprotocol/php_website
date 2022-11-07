@@ -73,7 +73,7 @@ foreach($this->X_model->fetch(array(
         $memory_text .= '     '.$child['e__id'].' => array('."\n";
         $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',$child['e__title'])).'\','."\n";
         $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$child['x__message'])).'\','."\n";
-        $memory_text .= '        \'m__cover\' => \''.view_cover(12274, $child['e__cover']).'\','."\n";
+        $memory_text .= '        \'m__cover\' => \''.str_replace('\'','\\\'',view_cover(12274, $child['e__cover'])).'\','."\n";
         $memory_text .= '        \'m__profile\' => array('.join(',',$child_parent_ids).'),'."\n";
         $memory_text .= '     ),'."\n";
 
