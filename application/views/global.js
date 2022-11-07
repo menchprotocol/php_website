@@ -1294,7 +1294,6 @@ function coin__load(coin__type, coin__id){
             $('#coin__title').val(data.coin__title);
             $('#coin__cover').val(data.coin__cover);
             update_cover_main(data.coin__cover, '.demo_cover');
-            $('#coin__cover').focus();
 
             //Any suggestions to auto load?
             if(data.icon_suggestions.length){
@@ -1302,6 +1301,10 @@ function coin__load(coin__type, coin__id){
                     $("#icon_suggestions").append(image_cover(item.cover_preview, item.cover_apply, item.new_title));
                 });
             }
+
+            setTimeout(function () {
+                $('#coin__cover').focus();
+            }, 89);
 
         } else {
 
