@@ -1930,9 +1930,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '<td width="20%"><div class="'.$type_visibility.'">';
         if(!$discovery_mode && $editing_enabled){
             $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
-        } elseif($discovery_mode && isset($i['x__type']) && $i['x__type']>0){
-            $e___4593 = $CI->config->item('e___4593'); //Transaction Types
-            $ui .= '<div title="'.$e___4593[$i['x__type']]['m__title'].'">'.$e___4593[$i['x__type']]['m__cover'].'</div>';
         }
         $ui .= '</div></td>';
 
@@ -2269,7 +2266,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     //Top action menu:
     $ui .= '<table class="coin_coins"><tr>';
     $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && !$cache_app ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
-    $ui .= '<td width="20%"><div class="show-on-hover">'.$edit_button.'</div></td>'; //<div class="show-on-hover">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</div>
+    $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '' /*'<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>'*/ ) : '').'</div></td>'; //<div class="show-on-hover">'.$edit_button.'</div>
     $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
     $ui .= '<td width="20%"><div class="show-on-hover">'.( $can_click && $show_text_editor ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
     $ui .= '<td width="20%"><div class="show-on-hover" title="' . ( isset($e['x__time']) ? view_time_difference(strtotime($e['x__time'])) . ' Ago: '.$e['x__time'] : '' ).'">'.$dropdown_ui.'</div></td>';
