@@ -624,7 +624,7 @@ class X extends CI_Controller
 
 
 
-    function x_layout($top_i__id = 0, $i__id, $tag__id=0, $member__id=0)
+    function x_layout($top_i__id, $i__id, $tag__id=0, $member__id=0)
     {
 
         /*
@@ -642,7 +642,7 @@ class X extends CI_Controller
             $tag__id>0
             && $member__id>0
             && count($this->X_model->fetch(array(
-                'x__up' => 4430, //MEMBERS
+                'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
                 'x__down' => $member__id,
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
