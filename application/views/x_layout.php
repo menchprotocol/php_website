@@ -796,7 +796,7 @@ echo '</div>';
             'x__up' => 30811, //Hard Redirect
         )) as $redirect){
             if(filter_var($redirect['x__message'], FILTER_VALIDATE_URL)){
-                echo 'js_redirect(\''.$redirect['x__message'].'\', 13);';
+                echo 'js_redirect(\''.$redirect['x__message'].'\', 890);';
                 break;
             }
         }

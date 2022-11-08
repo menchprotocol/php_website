@@ -1866,7 +1866,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
                     $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
                 } elseif($e__id==12589){
                     $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
-                } elseif($e__id==30795){
+                } elseif($e__id==30795 && !$discovery_mode){
                     $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
                 } elseif($e__id==6155 && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155')) && ($x__type!=6255 || $superpower_10939)){
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'">'.$anchor.'</a>'; //UNLINK
@@ -2197,7 +2197,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
                 //COIN COVER
                 $edit_button = '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="icon-block">'.$m['m__cover'].'</a>';
-                continue;
+                //continue;
                 $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif($e__id==4997 && superpower_active(12703, true)){
