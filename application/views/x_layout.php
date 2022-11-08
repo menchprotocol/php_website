@@ -784,23 +784,23 @@ echo '</div>';
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 
 
+<?php
+foreach($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__right' => $i_focus['i__id'],
+    'x__up' => 30811, //Hard Redirect
+)) as $redirect){
+    if(filter_var($redirect['x__message'], FILTER_VALIDATE_URL)){
+        js_redirect($redirect['x__message'], 890);
+        break;
+    }
+}
+?>
+
 <script type="text/javascript">
 
     $(document).ready(function () {
-
-        <?php
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $i_focus['i__id'],
-            'x__up' => 30811, //Hard Redirect
-        )) as $redirect){
-            if(filter_var($redirect['x__message'], FILTER_VALIDATE_URL)){
-                js_redirect($redirect['x__message'], 890);
-                break;
-            }
-        }
-        ?>
 
         //Make progress more visible if possible:
         var top_id = parseInt($('#top_i__id').val());
