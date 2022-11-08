@@ -1565,18 +1565,7 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 
         }
     }
 
-    if(!$source_id && $initiator_e__id > 0) {
-        //Look for the original domain of the initiator:
-        foreach ($CI->X_model->fetch(array(
-            'x__source' => $initiator_e__id,
-        ), array(), 1, 0, array('x__id' => 'ASC')) as $x_domain) {
-            $source_id = $x_domain['x__domain'];
-        }
-    }
-
-
     $source_id = ( $source_id ? $source_id : ( $x__domain > 0 ? $x__domain : 13601 /* Atlas */ ) );
-
 
     if(!$setting_id){
         return $source_id;
