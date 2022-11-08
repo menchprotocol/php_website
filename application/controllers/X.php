@@ -624,7 +624,7 @@ class X extends CI_Controller
 
 
 
-    function x_layout($top_i__id, $i__id, $tag__id=0, $member__id=0)
+    function x_layout($top_i__id = 0, $i__id, $tag__id=0, $member__id=0)
     {
 
         /*
