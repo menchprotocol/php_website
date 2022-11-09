@@ -738,7 +738,7 @@ class I extends CI_Controller {
         $items_per_page = view_memory(6404,11064);
         $x__type = intval($_POST['x__type']);
         $focus__id = intval($_POST['focus__id']);
-        $page = intval($_POST['page']);
+        $page = intval($_POST['page'])+1;
 
         $list_results = view_coins_e($x__type, $focus__id, $page);
         $child_count = view_coins_e($x__type, $focus__id,0, false);
