@@ -736,8 +736,17 @@ class I extends CI_Controller {
 
         $superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEAGING
         $items_per_page = view_memory(6404,11064);
+        $x__type = intval($_POST['x__type']);
         $focus__id = intval($_POST['focus__id']);
         $page = intval($_POST['page']);
+
+        $list_results = view_coins_e($x__type, $focus__id, $page);
+        $child_count = view_coins_e($x__type, $focus__id,0, false);
+        $es = $this->E_model->fetch(array(
+            'e__id' => $focus__id,
+        ));
+
+        /*
         $query_filters = array(
             'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -751,13 +760,19 @@ class I extends CI_Controller {
         foreach($extra_items as $item) {
             echo view_i(13550, 0, null, $item);
         }
-
         //Count total children:
         $child_count = $this->X_model->fetch($query_filters, array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
+        */
+
+
+        foreach($list_results as $i) {
+            echo view_i($x__type, 0, null, $i, $es[0]);
+        }
+
 
         //Do we need another load more button?
-        if ($child_count[0]['totals'] > (($page * $items_per_page) + count($extra_items))) {
-            echo view_load_page_i($_POST['x__type'], ($page + 1), $items_per_page, $child_count[0]['totals']);
+        if ($child_count > (($page * $items_per_page) + count($list_results))) {
+            echo view_load_page_i($x__type, ($page + 1), $items_per_page, $child_count);
         }
 
     }
