@@ -1,4 +1,27 @@
+<?php
 
+$total = 0;
+$found = 0;
+foreach($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type' => 4235, //DISCOVERY COIN
+), array(), 0) as $x){
+    $total++;
+    //Does this have
+    if(count($this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+        'x__left' => $x['x__left'],
+        'x__source' => $x['x__source'],
+        'x__id != ' => $x['x__id'], //DISCOVERY COIN
+    ), array('x__left'), 0))){
+        $found++;
+    }
+}
+
+echo $found.'/'.$total.' Found<hr />';
+
+?>
 <main class="d-flex flex-nowrap">
 
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
