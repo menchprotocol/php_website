@@ -2,24 +2,36 @@
 
 $total = 0;
 $found = 0;
+$stats = array();
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4235, //DISCOVERY COIN
 ), array(), 0) as $x){
     $total++;
+    $totalito = 0;
     //Does this have
-    if(count($this->X_model->fetch(array(
+    foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
         'x__left' => $x['x__left'],
         'x__source' => $x['x__source'],
         'x__id != ' => $x['x__id'], //DISCOVERY COIN
-    ), array('x__left'), 0))){
+    ), array('x__left'), 0) as $other_type){
+        $totalito++;
+        if(isset($stats[$other_type['x__type']])){
+            $stats[$other_type['x__type']]++;
+        } else {
+            $stats[$other_type['x__type']] = 1;
+        }
+    }
+
+    if($totalito>0){
         $found++;
     }
 }
 
 echo $found.'/'.$total.' Found<hr />';
+print_r($stats).'<hr />';
 
 ?>
 <main class="d-flex flex-nowrap">
