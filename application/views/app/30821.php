@@ -5,7 +5,7 @@ $found = 0;
 $stats = array();
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 4235, //DISCOVERY COIN
+    'x__type' => 4235,
 ), array(), 0) as $x){
     $total++;
     $totalito = 0;
@@ -17,11 +17,19 @@ foreach($this->X_model->fetch(array(
         'x__source' => $x['x__source'],
         'x__id != ' => $x['x__id'], //DISCOVERY COIN
     ), array('x__left'), 0) as $other_type){
-        $totalito++;
-        if(isset($stats[$other_type['x__type']])){
-            $stats[$other_type['x__type']]++;
+
+        if($other_type['x__type']==4559){
+            //Delete this:
+            $this->X_model->update($other_type['x__id'], array(
+                'x__status' => 6173, //Transaction Removed
+            ));
         } else {
-            $stats[$other_type['x__type']] = 1;
+            $totalito++;
+            if(isset($stats[$other_type['x__type']])){
+                $stats[$other_type['x__type']]++;
+            } else {
+                $stats[$other_type['x__type']] = 1;
+            }
         }
     }
 
