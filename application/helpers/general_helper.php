@@ -236,34 +236,6 @@ function int_hash($string){
     }
 }
 
-function i_is_startable($i)
-{
-
-    /*
-     * For an idea to be startable it must be either:
-     *
-     * 1) Assigned to a startable topic
-     * 2) Added to the starred list by someone
-     *
-     * */
-
-    $CI =& get_instance();
-    return in_array($i['i__type'], $CI->config->item('n___7355')) && (
-            count($CI->X_model->fetch(array(
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i['i__id'],
-                'x__up IN (' . join(',', $CI->config->item('n___26124')) . ')' => null, //Starting Topics
-            )))
-            /* || count($CI->X_model->fetch(array(
-                'x__right' => $i['i__id'],
-                'x__type' => 10573, //STARRED
-                'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            ))) */
-        );
-
-}
-
 
 function x_detect_type($string)
 {
@@ -2105,8 +2077,8 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 }
                 $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));
 
-                //Featured?
-                if (i_is_startable($s)) {
+                //Startable?
+                if (in_array($s['i__type'], $CI->config->item('n___26124'))) {
                     array_push($export_row['_tags'], 'is_featured');
                 }
 

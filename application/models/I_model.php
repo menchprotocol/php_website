@@ -348,7 +348,7 @@ class I_model extends CI_Model
 
         //Try to find a startable parent idea:
         foreach($previous_is as $previous_i) {
-            if(i_is_startable($previous_i)){
+            if(in_array($previous_i['i__type'], $this->config->item('n___26124'))){
                 array_push($top_startable, $previous_i);
             }
         }

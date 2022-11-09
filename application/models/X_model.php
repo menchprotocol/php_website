@@ -1208,7 +1208,7 @@ class X_model extends CI_Model
             'i__id' => $i__id,
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
-        if (count($is) != 1 || !i_is_startable($is[0])) {
+        if (count($is) != 1 || !in_array($is[0]['i__type'], $this->config->item('n___26124'))) {
             return 0;
         }
 
@@ -1224,29 +1224,16 @@ class X_model extends CI_Model
             )))){
 
             //Not added to their discoveries so far, let's go ahead and add it:
-            $i_rank = 1;
-            $home = $this->X_model->create(array(
+            $this->X_model->create(array(
                 'x__type' => 4235,
                 'x__source' => $e__id, //Belongs to this Member
                 'x__left' => $is[0]['i__id'], //The Idea they are adding
                 'x__right' => $is[0]['i__id'], //Store the recommended idea
-                'x__spectrum' => $i_rank, //Always place at the top of their discoveries
+                'x__spectrum' => 1, //Always place at the top of their discoveries
             ));
 
-            //Can we auto complete since they have already read this idea?
-            if(in_array($is[0]['i__type'], $this->config->item('n___12330'))){
-
-                //TODO Alwats auto complete for starting ideas
-
-                //YES, Mark as complete:
-                $this->X_model->mark_complete($is[0]['i__id'], $is[0], array(
-                    'x__type' => 4559, //DISCOVERY MESSAGES
-                    'x__source' => $e__id,
-                ));
-
-                //Now find next idea:
-                $next_i__id = $this->X_model->find_next($e__id, $is[0]['i__id'], $is[0]);
-            }
+            //Now find next idea:
+            $next_i__id = $this->X_model->find_next($e__id, $is[0]['i__id'], $is[0]);
 
         }
 

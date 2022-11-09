@@ -606,7 +606,7 @@ if($top_i__id) {
 
 if(!$top_i__id){
 
-    if(i_is_startable($i_focus)){
+    if(in_array($i_focus['i__type'], $this->config->item('n___26124'))){
         $discovery_e = ( $is_discovarable ? 4235 : 14022 );
 
         //Get Started

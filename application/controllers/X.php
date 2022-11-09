@@ -369,7 +369,7 @@ class X extends CI_Controller
                 return redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid idea ID</div>', true);
             }
 
-            if(!i_is_startable($is[0])){
+            if(!in_array($is[0]['i__type'], $this->config->item('n___26124'))){
 
                 //Try to find the top registrable idea:
                 $top_startable = $this->I_model->top_startable($is[0]);
