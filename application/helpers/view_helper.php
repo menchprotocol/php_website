@@ -997,7 +997,10 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         foreach($CI->config->item('e___13550') as $x__sort_id => $sort) {
             $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
-        $order_columns['x__spectrum'] = 'ASC';
+        foreach($CI->config->item('e___4737') as $x__sort_id => $sort) {
+            $order_columns['i__type = \''.$x__sort_id.'\' DESC'] = null;
+        }
+        //$order_columns['x__spectrum'] = 'ASC';
         $order_columns['x__id'] = 'DESC';
 
         //IDEAS
