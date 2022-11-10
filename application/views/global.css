@@ -1165,7 +1165,7 @@ a.headline {
 .text-logo {
     font-size: 1.25em;
     display: inline-block;
-    padding-top: 8px;
+    padding-top: 7px;
     padding-left: 0;
     font-weight: bold;
     max-width: calc(100% - 43px);
@@ -1176,7 +1176,7 @@ a.headline {
 }
 
 .platform-logo div.img {
-    margin-bottom: -8px;
+    margin-bottom: -4px;
 }
 
 .x-list {
