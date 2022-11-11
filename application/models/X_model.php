@@ -353,7 +353,7 @@ class X_model extends CI_Model
 
                             //Is this a Paypal transaction being removed?
                             if(count($before_data)){
-                                $x__metadata = unserialize($before_data[0]['x__metadata']);
+                                $x__metadata = @unserialize($before_data[0]['x__metadata']);
                                 if(isset($x__metadata['txn_id']) && strlen($x__metadata['txn_id']) && $before_data[0]['x__type']==26595 && $before_data[0]['x__status']!=6173 && $value==6173){
 
                                     $cred_paypal = $this->config->item('cred_paypal');
