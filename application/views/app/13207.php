@@ -14,7 +14,7 @@ if(intval($community_list) && is_array($this->config->item('e___'.$community_lis
     $list_count = 0;
     foreach($this->config->item('e___'.$community_list) as $x__type => $m) {
 
-        if($is_open){
+        if($is_open || 1){
             //WITH MOST IDEAS
             /*
             $group_by = 'e__id, e__title, e__cover, e__metadata, e__type, e__spectrum';
