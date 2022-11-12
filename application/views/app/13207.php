@@ -11,7 +11,6 @@ if(intval($community_list) && is_array($this->config->item('e___'.$community_lis
 
 
     $is_open = true;
-    $list_count = 0;
     foreach($this->config->item('e___'.$community_list) as $x__type => $m) {
 
         //WITH MOST IDEAS
@@ -42,10 +41,9 @@ if(intval($community_list) && is_array($this->config->item('e___'.$community_lis
 
         $ui .= '</div>';
 
-        echo view_pill($x__type, view_coins_e(11029, $x__type, 0, false), $m, $ui, $is_open);
+        echo view_pill($x__type, view_coins_e(11029, $x__type, 0, false), $m, $ui, false);
 
         $is_open = false;
-        $list_count++;
 
     }
 
