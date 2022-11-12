@@ -1418,10 +1418,10 @@ function clean_phone($phone){
 function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0, $x__domain = 0){
 
     $CI =& get_instance();
-    $from_email = get_domain_setting(28614, $e__id);
+    $domain_email = get_domain_setting(28614, $e__id);
 
-    $name = 'New User';
-    $ReplyToAddresses = array($from_email);
+    $name = 'Dear User';
+    $ReplyToAddresses = array('"'.get_domain('m__title', $e__id).'" <'.$domain_email.'>');
 
     if($e__id > 0){
         $es = $CI->E_model->fetch(array(
@@ -1464,7 +1464,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
     $response = $CI->CLIENT->sendEmail(array(
         // Source is required
-        'Source' => $from_email,
+        'Source' => $domain_email,
         // Destination is required
         'Destination' => array(
             'ToAddresses' => $to_emails,
@@ -1494,7 +1494,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
             ),
         ),
         'ReplyToAddresses' => $ReplyToAddresses,
-        'ReturnPath' => $from_email,
+        'ReturnPath' => $domain_email,
     ));
 
     //Log transaction:
