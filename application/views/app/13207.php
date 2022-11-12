@@ -24,26 +24,20 @@ if(intval($community_list) && is_array($this->config->item('e___'.$community_lis
         ), array('x__up'), 0, 0, array('totals' => 'DESC'), 'COUNT(x__id) as totals, '.$group_by, $group_by);
         */
 
-        $e_list = $this->X_model->fetch(array(
-            'x__up' => $x__type,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array('x__down'), 100, 0, array('x__id' => 'DESC'));
+        $total_count = view_coins_e(11029, $x__type, 0, false);
+        if($total_count){
+            $ui = '<div class="row justify-content">';
+            //Children:
+            foreach(view_coins_e(11029, $x__type, 1, false) as $count=>$e) {
+                $ui .= view_e(13207, $e, null, true);
+            }
 
-        if(!count($e_list)){
-            continue;
+            $ui .= '</div>';
+
+            echo view_pill($x__type, $total_count, $m, $ui, $is_open);
+
+            $is_open = false;
         }
-        $ui = '<div class="row justify-content">';
-        //Children:
-        foreach($e_list as $count=>$e) {
-            $ui .= view_e(13207, $e, null, true);
-        }
-
-        $ui .= '</div>';
-
-        echo view_pill($x__type, view_coins_e(11029, $x__type, 0, false), $m, $ui, $is_open);
-
-        $is_open = false;
 
     }
 
