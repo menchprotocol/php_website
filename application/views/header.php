@@ -320,14 +320,6 @@ if(strlen($live_chat_page_id)>10){
 
 if(!$basic_header_footer){
 
-    $superpower_28651 = superpower_active(28651, true);
-    $show_side_menu = false;
-    if($superpower_28651){
-        $e___28646 = $this->config->item('e___28646');
-        $domain_list = intval(substr(get_domain_setting(28646), 1));
-        $show_side_menu = $domain_list;
-    }
-
     echo '<div class="sidebar hidden menu_click"><div style="padding:5px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div></div>';
 
     //Do not show for /sign view
@@ -343,9 +335,7 @@ if(!$basic_header_footer){
 
                     echo '<div class="left_nav top_nav" style="text-align: left;">';
 
-                    //$my_source = '<span class="platform-circle icon-block mini_6197_'.$member_e['e__id'].'">'.view_cover(12274,$member_e['e__cover']).'</span><span class="css__title text-logo"><b class="text__6197_'.$member_e['e__id'].'">'.$member_e['e__title'].'</b>'.( 0 /* Disabled for now */ && $superpower_10939 && $first_segment!='@'.$member_e['e__id'] ? ' <span style="font-size: 0.75em; display: inline-block;">'.view_coins_e($current_coin_id, $member_e['e__id']).'</span>' : '' ).'</span>';
                     //Domain Source
-                    //'.($member_e ? '/@'.$member_e['e__id'] : '/' ).'
                     $domain_cover = get_domain('m__cover');
                     $domain_logo = one_two_explode('"','"', $domain_cover);
                     echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.get_domain_setting(0).'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$base_source.'" style="padding-top: '.( filter_var($domain_logo, FILTER_VALIDATE_URL) ? '3px' : '7px' ).';">'.get_domain('m__title').'</b>'.'</a>';
