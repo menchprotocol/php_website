@@ -41,7 +41,7 @@ if(intval($community_list) && is_array($this->config->item('e___'.$community_lis
 
         $ui .= '</div>';
 
-        echo view_pill($x__type, view_coins_e(11029, $x__type, 0, false), $m, $ui, false);
+        echo view_pill($x__type, view_coins_e(11029, $x__type, 0, false), $m, $ui, $is_open);
 
         $is_open = false;
 
