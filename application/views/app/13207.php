@@ -15,7 +15,7 @@ if(intval($community_list) && is_array($this->config->item('e___'.$community_lis
     foreach($this->config->item('e___'.$community_list) as $x__type => $m) {
 
         if(!$is_open){
-            continue;
+            //continue;
         }
 
         //WITH MOST IDEAS
