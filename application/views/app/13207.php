@@ -1,11 +1,9 @@
 <?php
 
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$group_by = 'e__id, e__title, e__cover, e__metadata, e__type, e__spectrum';
 $community_list = get_domain_setting(13207);
 
 if(intval($community_list) && is_array($this->config->item('e___'.$community_list))){
-
 
     //Community
     //echo view_coins();
@@ -16,10 +14,13 @@ if(intval($community_list) && is_array($this->config->item('e___'.$community_lis
     $list_count = 0;
     foreach($this->config->item('e___'.$community_list) as $x__type => $m) {
 
-
+        if(!$is_open){
+            continue;
+        }
 
         //WITH MOST IDEAS
         /*
+        $group_by = 'e__id, e__title, e__cover, e__metadata, e__type, e__spectrum';
         $e_list = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
