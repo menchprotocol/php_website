@@ -26,12 +26,11 @@ if(intval($community_list) && is_array($this->config->item('e___'.$community_lis
 
         $total_count = view_coins_e(11029, $x__type, 0, false);
         if($total_count){
+
             $ui = '<div class="row justify-content">';
-            //Children:
             foreach(view_coins_e(11029, $x__type, 1, false) as $count=>$e) {
                 $ui .= view_e(13207, $e, null, true);
             }
-
             $ui .= '</div>';
 
             echo view_pill($x__type, $total_count, $m, $ui, $is_open);
