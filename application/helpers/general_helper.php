@@ -1418,7 +1418,7 @@ function clean_phone($phone){
 function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0, $x__domain = 0){
 
     $CI =& get_instance();
-    $domain_email = '"'.get_domain('m__title', $e__id).'" <'.get_domain_setting(28614, $e__id).'>';
+    $domain_email = '"'.get_domain('m__title', $e__id, $x__domain).'" <'.get_domain_setting(28614, $e__id, $x__domain).'>';
 
     $name = 'New User';
     $ReplyToAddresses = array($domain_email);
@@ -1686,7 +1686,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
 }
 
-function get_domain($var_field, $initiator_e__id = 0, $x__domain = 13601){
+function get_domain($var_field, $initiator_e__id = 0, $x__domain = 0){
     $CI =& get_instance();
     $domain_source = get_domain_setting(0, $initiator_e__id, $x__domain);
     $e___14870 = $CI->config->item('e___14870'); //DOMAINS
