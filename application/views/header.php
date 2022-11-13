@@ -67,7 +67,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
-    echo ' var domain__id = ' . $domain__id . '; ';
+    echo ' var domain__id = "' . $domain__id . '"; ';
 
     //JAVASCRIPT PLATFORM MEMORYwq
     foreach($this->config->item('e___11054') as $x__type => $m){
