@@ -9,7 +9,7 @@ $e___13479 = $this->config->item('e___13479');
 $e___14874 = $this->config->item('e___14874'); //COINS
 $superpower_10939 = $member_e && superpower_active(10939, true);
 $current_coin_id = current_coin_id();
-$base_source = get_domain_setting(0);
+$domain__id = get_domain_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
 $login_url_path = ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' );
 $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
@@ -67,7 +67,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
-    echo ' var base_source = ' . $base_source . '; ';
+    echo ' var domain__id = ' . $domain__id . '; ';
 
     //JAVASCRIPT PLATFORM MEMORYwq
     foreach($this->config->item('e___11054') as $x__type => $m){
@@ -338,7 +338,7 @@ if(!$basic_header_footer){
                     //Domain Source
                     $domain_cover = get_domain('m__cover');
                     $domain_logo = one_two_explode('"','"', $domain_cover);
-                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.get_domain_setting(0).'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$base_source.'" style="padding-top: '.( filter_var($domain_logo, FILTER_VALIDATE_URL) ? '3px' : '7px' ).';">'.get_domain('m__title').'</b>'.'</a>';
+                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.get_domain_setting(0).'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$domain__id.'" style="padding-top: '.( filter_var($domain_logo, FILTER_VALIDATE_URL) ? '3px' : '7px' ).';">'.get_domain('m__title').'</b>'.'</a>';
 
                     echo '</div>';
 
@@ -465,7 +465,6 @@ if(strlen($flash_message) > 0) {
 
     <h5 class="css__title"><?= $e___11035[27963]['m__cover'].' '.$e___11035[27963]['m__title'] ?></h5>
 
-    <input type="hidden" id="domain__id" value="0" />
     <input type="hidden" id="modal_i__id" value="0" />
     <textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%;"></textarea>
     <div class="note_error_4231 hideIfEmpty zq6255 msg alert alert-danger indifferent" style="margin:8px 0;"></div>
