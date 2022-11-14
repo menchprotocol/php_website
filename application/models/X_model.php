@@ -359,6 +359,13 @@ class X_model extends CI_Model
 
                                 if($paypal_client_id && $paypal_secret_key && isset($x__metadata['txn_id']) && strlen($x__metadata['txn_id']) && $before_data[0]['x__type']==26595 && $before_data[0]['x__status']!=6173 && $value==6173){
 
+                                    $input = http_build_query(array(
+                                        'amount' => array(
+                                            'value' => number_format(($x__metadata['mc_gross']/2),2)."",
+                                            'currency_code' => $x__metadata['mc_currency'],
+                                        )
+                                    ));
+
                                     $ch=curl_init();
                                     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                                         'Content-Type: application/json',
@@ -369,12 +376,7 @@ class X_model extends CI_Model
                                     curl_setopt($ch, CURLOPT_HEADER, false);
                                     //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                                     curl_setopt($ch, CURLOPT_POST, true);
-                                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
-                                        'amount' => array(
-                                            'value' => number_format(($x__metadata['mc_gross']/2),2),
-                                            'currency_code' => $x__metadata['mc_currency'],
-                                        )
-                                    )));
+                                    curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
                                     $result = curl_exec($ch);
                                     $y=json_decode($result,true);
 
@@ -388,7 +390,10 @@ class X_model extends CI_Model
                                         'x__down' => $before_data[0]['x__down'],
                                         'x__reference' => $before_data[0]['x__id'],
                                         'x__message' => $x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].' Refunded in Full',
-                                        'x__metadata' => $y,
+                                        'x__metadata' => array(
+                                            'input' => $input,
+                                            'output' => $y,
+                                        ),
                                     ));
 
                                 }
