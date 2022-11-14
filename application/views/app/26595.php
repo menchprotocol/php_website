@@ -7,7 +7,7 @@ if(isset($_POST)){
 
     //Remove Server Identity:
     unset($_SERVER['SERVER_NAME']);
-    if(!isset($_POST['payment_status']) || $_POST['payment_status']!='Completed' || !isset($_POST['item_number'])){
+    if(!(isset($_POST['payment_status']) && $_POST['payment_status']=='Completed')){
 
         //Report issue:
         $this->X_model->create(array(
