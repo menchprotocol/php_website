@@ -45,7 +45,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     //Do we have Google Analytics?
     $google_analytics_code = get_domain_setting(30033);
     if(strlen($google_analytics_code) > 0){
-        echo '<script async src="https://www.googletagmanager.com/gtag/js?id=G-8V6ZC7D3BC"></script>
+        echo '<script async src="https://www.googletagmanager.com/gtag/js?id='.$google_analytics_code.'"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}

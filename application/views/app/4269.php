@@ -19,7 +19,7 @@ if(superpower_unlocked()) {
         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
 
-    if(count($es) && $cookie_parts[2]==md5($cookie_parts[0].$cookie_parts[1].$this->config->item('cred_password_salt'))){
+    if(count($es) && $cookie_parts[2]==md5($cookie_parts[0].$cookie_parts[1].view_memory(6404,30863))){
 
         //Assign session & log transaction:
         $this->E_model->activate_session($es[0], false, true);

@@ -1573,7 +1573,7 @@ class E extends CI_Controller
             'x__down' => $member_e['e__id'],
         ));
 
-        $hashed_password = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $member_e['e__id']));
+        $hashed_password = strtolower(hash('sha256', view_memory(6404,30863) . $_POST['input_password'] . $member_e['e__id']));
 
 
         if (count($u_passwords) > 0) {
@@ -1730,7 +1730,7 @@ class E extends CI_Controller
 
 
         //Add Password:
-        $hash = strtolower(hash('sha256', $this->config->item('cred_password_salt') . $_POST['password_reset'] . $member_result['e']['e__id']));
+        $hash = strtolower(hash('sha256', view_memory(6404,30863) . $_POST['password_reset'] . $member_result['e']['e__id']));
         $this->X_model->create(array(
             'x__type' => e_x__type($hash),
             'x__message' => $hash,
@@ -1803,7 +1803,7 @@ class E extends CI_Controller
         $es[0]['is_masterpass_login'] = 0;
 
         //Is this the master password?
-        if(hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password']) == view_memory(6404,13014)){
+        if(hash('sha256', view_memory(6404,30863) . $_POST['input_password']) == view_memory(6404,13014)){
 
             $es[0]['is_masterpass_login'] = 1;
 
@@ -1811,7 +1811,7 @@ class E extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3286, //Password
-            'x__message' => hash('sha256', $this->config->item('cred_password_salt') . $_POST['input_password'] . $es[0]['e__id']),
+            'x__message' => hash('sha256', view_memory(6404,30863) . $_POST['input_password'] . $es[0]['e__id']),
             'x__down' => $es[0]['e__id'],
         )))) {
 

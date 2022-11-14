@@ -354,13 +354,15 @@ class X_model extends CI_Model
                             //Is this a Paypal transaction being removed?
                             if(count($before_data)){
                                 $x__metadata = @unserialize($before_data[0]['x__metadata']);
-                                if(isset($x__metadata['txn_id']) && strlen($x__metadata['txn_id']) && $before_data[0]['x__type']==26595 && $before_data[0]['x__status']!=6173 && $value==6173){
+                                $paypal_client_id = get_domain_setting(30857);
+                                $paypal_secret_key = get_domain_setting(30858);
 
-                                    $cred_paypal = $this->config->item('cred_paypal');
+                                if($paypal_client_id && $paypal_secret_key && isset($x__metadata['txn_id']) && strlen($x__metadata['txn_id']) && $before_data[0]['x__type']==26595 && $before_data[0]['x__status']!=6173 && $value==6173){
+
                                     $ch=curl_init();
                                     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                                         'Content-Type: application/json',
-                                        'Authorization: Basic '.base64_encode($cred_paypal['client_id'].":".$cred_paypal['secret_key']),
+                                        'Authorization: Basic '.base64_encode($paypal_client_id.":".$paypal_secret_key),
                                     ));
                                     curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
                                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -545,18 +547,20 @@ class X_model extends CI_Model
 
 
         //Should we send SMS?
-        if(in_array($notification_levels[0]['x__up'], $this->config->item('n___28915'))){
+        $twilio_account_sid = get_domain_setting(30859);
+        $twilio_auth_token = get_domain_setting(30860);
+        $twilio_from_number = get_domain_setting(27673);
+        if(in_array($notification_levels[0]['x__up'], $this->config->item('n___28915')) && $twilio_account_sid && $twilio_auth_token && $twilio_from_number){
 
             //Yes, generate message
             $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
             if(count($stats['email_addresses']) && strlen($sms_message)>view_memory(6404,27891)){
                 $sms_message  = 'We emailed ['.$subject.'] to '.join(' & ',$stats['email_addresses']).' (Might go to Spam)';
             }
- 
 
             //Breakup into smaller SMS friendly messages
-            $cred_twilio = $this->config->item('cred_twilio');
             $sms_message = str_replace("\n"," ",$sms_message);
+
             //Send SMS
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -568,17 +572,17 @@ class X_model extends CI_Model
                 foreach(explode('|||',wordwrap($sms_message, view_memory(6404,27891), "|||")) as $single_message){
 
                     $post = array(
-                        'From' => view_memory(6404,27673), //Twilio From number
+                        'From' => $twilio_from_number,
                         'Body' => $single_message,
                         'To' => $e_data['x__message'],
                     );
 
-                    $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$cred_twilio['account_sid']."/SMS/Messages");
+                    $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$twilio_account_sid."/SMS/Messages");
                     curl_setopt($x, CURLOPT_POST, true);
                     curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
                     curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-                    curl_setopt($x, CURLOPT_USERPWD, $cred_twilio['account_sid'].":".$cred_twilio['auth_token']);
+                    curl_setopt($x, CURLOPT_USERPWD, $twilio_account_sid.":".$twilio_auth_token);
                     curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
                     $y = curl_exec($x);
                     curl_close($x);
@@ -614,6 +618,7 @@ class X_model extends CI_Model
                 $stats['phone_count']++;
 
             }
+
         }
 
         return array(

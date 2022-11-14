@@ -970,7 +970,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     } elseif($x__type==11030 || $x__type==12274){
 
         //UP
-        $order_columns = array('x__spectrum' => 'ASC', 'e__spectrum' => 'DESC', 'e__title' => 'ASC');
+        $order_columns = array('e__title' => 'ASC');
         $join_objects = array('x__up');
         $query_filters = array(
             'x__down' => $e__id,

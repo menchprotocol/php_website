@@ -39,7 +39,7 @@ class E_model extends CI_Model
 
                 //Create Cookie:
                 $cookie_time = time();
-                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.md5($e['e__id'].$cookie_time.$this->config->item('cred_password_salt'));
+                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.md5($e['e__id'].$cookie_time.view_memory(6404,30863));
                 setcookie('auth_cookie', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
 
             }

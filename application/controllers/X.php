@@ -448,35 +448,9 @@ class X extends CI_Controller
             ));
         }
 
-        /*
-        $_POST['refund_total'] = doubleval($_POST['refund_total']);
-        $x__metadata = unserialize($transactions[0]['x__metadata']);
-        $cred_paypal = $this->config->item('cred_paypal');
-        $post = array(
-            'amount' => array(
-                'total' => number_format($_POST['refund_total'], 2),
-                'currency' => $x__metadata['mc_currency']
-            ),
-        );
-        $ch=curl_init();
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Authorization: Basic '.base64_encode($cred_paypal['client_id'].":".$cred_paypal['secret_key']),
-        ));
-        curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "{}"); //http_build_query($post)
-        $result = curl_exec($ch);
-        $y=json_decode($result,true);
-        */
-
         $this->X_model->update($transactions[0]['x__id'], array(
             'x__status' => 6173, //Transaction Deleted
         ), $member_e['e__id'], 27794 /* Paypal Refund */);
-
 
         return view_json(array(
             'status' => 1,

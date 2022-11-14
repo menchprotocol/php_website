@@ -15,10 +15,8 @@ function includes_any($string, $items)
 function load_algolia($index_name)
 {
     //Loads up algolia search engine functions
-    $CI =& get_instance();
-    $cred_algolia = $CI->config->item('cred_algolia');
     require_once('application/libraries/algoliasearch.php');
-    $client = new \AlgoliaSearch\Client($cred_algolia['application_id'], $cred_algolia['api_key']);
+    $client = new \AlgoliaSearch\Client(view_memory(6404,30861), view_memory(6404,30862));
     return $client->initIndex($index_name);
 }
 
@@ -1164,7 +1162,10 @@ function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local
     $s3 = new Aws\S3\S3Client([
         'version' => 'latest',
         'region' => 'us-west-2',
-        'credentials' => $CI->config->item('cred_aws'),
+        'credentials' => [
+            'key' => view_memory(6404,30864),
+            'secret' => view_memory(6404,30865),
+        ],
     ]);
     $result = $s3->putObject(array(
         'Bucket' => 's3foundation', //Same bucket for now
@@ -1450,7 +1451,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message .= str_replace('e__id',$e__id,$email_body)."\n\n";
     $email_message .= view_shuffle_message(12691)."\n";
     $email_message .= get_domain('m__title', $e__id, $x__domain);
-    $email_message .= '<div><a href="https://'.get_domain('m__message', $e__id, $x__domain).'/-28904'.( $e__id>0 ? '?e__id='.$e__id.'&e__hash='.md5($e__id.$CI->config->item('cred_password_salt')) : '' ).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
+    $email_message .= '<div><a href="https://'.get_domain('m__message', $e__id, $x__domain).'/-28904'.( $e__id>0 ? '?e__id='.$e__id.'&e__hash='.md5($e__id.view_memory(6404,30863)) : '' ).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
 
 
 
@@ -1459,7 +1460,10 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $CI->CLIENT = new Aws\Ses\SesClient([
         'version' => 'latest',
         'region' => 'us-west-2',
-        'credentials' => $CI->config->item('cred_aws'),
+        'credentials' => [
+            'key' => view_memory(6404,30864),
+            'secret' => view_memory(6404,30865),
+        ],
     ]);
 
     $response = $CI->CLIENT->sendEmail(array(
