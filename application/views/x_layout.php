@@ -73,6 +73,8 @@ if($is_payment){
             $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : ( doubleval(view_memory(6404,27017)) + doubleval(view_memory(6404,30590)) + doubleval(view_memory(6404,30612)) )/100 ), 2);
             $unit_total = number_format($unit_fee+$currency_parts[1], 2);
             $max_allowed = ( count($multi_selectable) && is_numeric($multi_selectable[0]['x__message']) && $multi_selectable[0]['x__message']>1 ? intval($multi_selectable[0]['x__message']) : view_memory(6404,29651) );
+            $spots_remaining = i_spots_remaining($i_focus['i__id']);
+            $max_allowed = ( $spots_remaining < $max_allowed ? $spots_remaining : $max_allowed );
 
         } else {
             $is_payment = false;
