@@ -1751,8 +1751,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $has_any_lock = $has_soft_lock || $has_hard_lock;
     $lock_notice = ( $force_order ? 14488 : 14377 );
 
-    if(in_array($i['i__type'], $CI->config->item('n___14454')) && !$is_completed){
-        $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
+    if(in_array($i['i__type'], $CI->config->item('n___14454')) && !$is_completed) {
+        if($top_i__id){
+            $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
+        } else {
+            $href = '/~'.$i['i__id'];
+        }
     } elseif(strlen($e___13369[$x__type]['m__message'])){
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
     } elseif(in_array($x__type, $CI->config->item('n___14742')) && $previous_i && $member_e && $top_i__id){
