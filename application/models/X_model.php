@@ -376,7 +376,7 @@ class X_model extends CI_Model
                                     curl_setopt($ch, CURLOPT_HEADER, false);
                                     //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                                     curl_setopt($ch, CURLOPT_POST, true);
-                                    curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
+                                    curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
                                     $result = curl_exec($ch);
                                     $y=json_decode($result,true);
 
