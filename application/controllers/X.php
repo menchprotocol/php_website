@@ -527,7 +527,7 @@ class X extends CI_Controller
             ));
 
             //Go to Rating App since it's first completion:
-            return redirect_message('/-14709?i__id='.$top_i__id);
+            return redirect_message('/'.$top_i__id.'/'.$top_i__id);
 
         }
     }
