@@ -364,12 +364,17 @@ class X_model extends CI_Model
                                         'Content-Type: application/json',
                                         'Authorization: Basic '.base64_encode($paypal_client_id.":".$paypal_secret_key),
                                     ));
-                                    curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
+                                    curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v2/payments/captures/".$x__metadata['txn_id']."/refund");
                                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                                     curl_setopt($ch, CURLOPT_HEADER, false);
                                     //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                                     curl_setopt($ch, CURLOPT_POST, true);
-                                    curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
+                                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
+                                        'amount' => array(
+                                            'value' => number_format(($x__metadata['mc_gross']/2),2),
+                                            'currency_code' => $x__metadata['mc_currency'],
+                                        )
+                                    )));
                                     $result = curl_exec($ch);
                                     $y=json_decode($result,true);
 
