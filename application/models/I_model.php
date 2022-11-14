@@ -729,6 +729,161 @@ class I_model extends CI_Model
 
     }
 
+    function recursive_clone($i__id, $do_template, $x__source, $top_i = null) {
+
+
+        //Create Clone -or- Link & move-on?
+        //Validate Idea:
+        $top_i = $this->I_model->fetch(array(
+            'i__id' => $i__id,
+        ));
+        if (count($top_i) < 1) {
+            return array(
+                'status' => 0,
+                'message' => 'Invalid idea ID',
+                'new_i__id' => 0,
+            );
+        }
+
+        if($do_template && count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $i__id,
+                'x__up' => 30856, //Force Template Reference
+            )))){
+
+            if($top_i){
+                //We just link to here and end the clone:
+                $this->X_model->create(array(
+                    'x__source' => $x__source,
+                    'x__type' => 4228,
+                    'x__left' => $top_i['i__id'],
+                    'x__right' => $i__id,
+c                ));
+                return array(
+                    'status' => 1,
+                    'new_i__id' => $i__id,
+                );
+            } else {
+                return array(
+                    'status' => 0,
+                    'message' => 'Idea Linked to @30856',
+                    'new_i__id' => 0,
+                );
+            }
+
+        }
+
+
+        $i_new = $this->I_model->create(array(
+            'i__title' => $top_i[0]['i__title']." Copy",
+            'i__type' => $top_i[0]['i__type'],
+        ), $x__source, !count($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__up' => $x__source,
+            'x__right' => $i__id,
+        ))));
+
+
+        //Clone Messages:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4231, //IDEA NOTES Messages
+            'x__right' => $i__id,
+        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+            $this->X_model->create(array(
+                'x__source' => $x__source,
+                'x__type' => $x['x__type'],
+                'x__right' => $i_new['i__id'],
+                'x__left' => $x['x__left'],
+                'x__up' => $x['x__up'],
+                'x__down' => $x['x__down'],
+                'x__message' => $x['x__message'],
+                'x__spectrum' => $x['x__spectrum'],
+                'x__reference' => $x['x__reference'],
+                'x__metadata' => $x['x__metadata'],
+                'x__status' => $x['x__status'],
+            ));
+        }
+
+
+        //Always Link Sources:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $i__id,
+            'x__up > 0' => null,
+        ), array(), 0) as $x){
+            $this->X_model->create(array(
+                'x__source' => $x__source,
+                'x__type' => $x['x__type'],
+                'x__right' => $i_new['i__id'],
+                'x__up' => $x['x__up'],
+                'x__down' => $x['x__down'],
+                'x__left' => $x['x__left'],
+                'x__message' => $x['x__message'],
+                'x__spectrum' => $x['x__spectrum'],
+                'x__reference' => $x['x__reference'],
+                'x__metadata' => $x['x__metadata'],
+                'x__status' => $x['x__status'],
+            ));
+        }
+
+
+        //Always Link Parents:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__right' => $i__id,
+        ), array(), 0) as $x){
+            $this->X_model->create(array(
+                'x__source' => $x__source,
+                'x__type' => $x['x__type'],
+                'x__right' => $i_new['i__id'],
+                'x__left' => $x['x__left'],
+                'x__message' => $x['x__message'],
+                'x__spectrum' => $x['x__spectrum'],
+                'x__reference' => $x['x__reference'],
+                'x__metadata' => $x['x__metadata'],
+                'x__status' => $x['x__status'],
+            ));
+        }
+
+
+        //Fetch children:
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__left' => $i__id,
+        ), array(), 0) as $x){
+            if($do_template){
+                //Clone Children Recursively:
+                $this->I_model->recursive_clone($x['x__right'], $do_template, $x__source, $top_i[0]);
+            } else {
+                //Link Children:
+                $this->X_model->create(array(
+                    'x__source' => $x__source,
+                    'x__type' => $x['x__type'],
+                    'x__left' => $i_new['i__id'],
+                    'x__right' => $x['x__right'],
+                    'x__message' => $x['x__message'],
+                    'x__spectrum' => $x['x__spectrum'],
+                    'x__reference' => $x['x__reference'],
+                    'x__metadata' => $x['x__metadata'],
+                    'x__status' => $x['x__status'],
+                ));
+            }
+        }
+
+        return array(
+            'status' => 1,
+            'new_i__id' => $i_new['i__id'],
+        );
+
+    }
+
+
     function recursive_parent_ids($i__id, $first_level = true, $stopper_i_id = 0){
 
         if($stopper_i_id>0 && $stopper_i_id==$i__id){

@@ -483,10 +483,11 @@ function toggle_pills(x__type){
 
 
 
-function i_copy(i__id){
+function i_copy(i__id, do_template){
     //Go ahead and delete:
     $.post("/i/i_copy", {
-        i__id:i__id
+        i__id:i__id,
+        do_template:do_template
     }, function (data) {
         if(data.status){
             window.location = '/~'+data.new_i__id;

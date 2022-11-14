@@ -47,120 +47,14 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid Parent Source',
             ));
-        }
-
-
-        //Validate Source:
-        $fetch_o = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-        ));
-        if (count($fetch_o) < 1) {
+        } elseif (!isset($_POST['do_template'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid parent idea ID',
+                'message' => 'Missing template parameter',
             ));
         }
 
-
-        //Create:
-        $i_new = $this->I_model->create(array(
-            'i__title' => $fetch_o[0]['i__title']." Copy",
-            'i__type' => $fetch_o[0]['i__type'],
-        ), $member_e['e__id'], !count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__up' => $member_e['e__id'],
-            'x__right' => $_POST['i__id'],
-        ))));
-
-
-        //Messages:
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $_POST['i__id'],
-        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
-            $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
-                'x__type' => $x['x__type'],
-                'x__right' => $i_new['i__id'],
-                'x__left' => $x['x__left'],
-                'x__up' => $x['x__up'],
-                'x__down' => $x['x__down'],
-                'x__message' => $x['x__message'],
-                'x__spectrum' => $x['x__spectrum'],
-                'x__reference' => $x['x__reference'],
-                'x__metadata' => $x['x__metadata'],
-                'x__status' => $x['x__status'],
-            ));
-        }
-
-
-        //Fetch children:
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__left' => $_POST['i__id'],
-        ), array(), 0) as $x){
-            $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
-                'x__type' => $x['x__type'],
-                'x__left' => $i_new['i__id'],
-                'x__right' => $x['x__right'],
-                'x__message' => $x['x__message'],
-                'x__spectrum' => $x['x__spectrum'],
-                'x__reference' => $x['x__reference'],
-                'x__metadata' => $x['x__metadata'],
-                'x__status' => $x['x__status'],
-            ));
-        }
-
-
-        //Parents:
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__right' => $_POST['i__id'],
-        ), array(), 0) as $x){
-            $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
-                'x__type' => $x['x__type'],
-                'x__right' => $i_new['i__id'],
-                'x__left' => $x['x__left'],
-                'x__message' => $x['x__message'],
-                'x__spectrum' => $x['x__spectrum'],
-                'x__reference' => $x['x__reference'],
-                'x__metadata' => $x['x__metadata'],
-                'x__status' => $x['x__status'],
-            ));
-        }
-
-        //Sources:
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $_POST['i__id'],
-            'x__up > 0' => null,
-        ), array(), 0) as $x){
-            $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
-                'x__type' => $x['x__type'],
-                'x__right' => $i_new['i__id'],
-                'x__up' => $x['x__up'],
-                'x__down' => $x['x__down'],
-                'x__left' => $x['x__left'],
-                'x__message' => $x['x__message'],
-                'x__spectrum' => $x['x__spectrum'],
-                'x__reference' => $x['x__reference'],
-                'x__metadata' => $x['x__metadata'],
-                'x__status' => $x['x__status'],
-            ));
-        }
-
-        return view_json(array(
-            'status' => 1,
-            'new_i__id' => $i_new['i__id'],
-        ));
+        return view_json($this->I_model->recursive_clone(intval($_POST['i__id']), intval($_POST['do_template']), $member_e['e__id']));
 
     }
 

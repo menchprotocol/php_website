@@ -1879,9 +1879,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
                     $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
                 } elseif($e__id==6155 && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155')) && ($x__type!=6255 || $superpower_10939)){
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'">'.$anchor.'</a>'; //UNLINK
+                } elseif($e__id==30873){
+                    //Template:
+                    $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 1)" class="dropdown-item css__title">'.$anchor.'</a>';
                 } elseif($e__id==29771){
                     //Clone:
-                    $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
+                    $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item css__title">'.$anchor.'</a>';
                 } elseif($e__id==28636 && $superpower_12700 && isset($i['x__id']) && $i['x__id']>0){
                     //Transaction Details
                     $action_buttons .= '<a href="/-4341?x__id='.$i['x__id'].'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
@@ -2218,10 +2221,15 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 //Edit Message
                 $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>';
 
+            } elseif($e__id==30873){
+
+                //Template:
+                $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].', 1)" class="dropdown-item css__title">'.$anchor.'</a>';
+
             } elseif($e__id==29771){
 
                 //Clone:
-                $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
+                $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].', 0)" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif($e__id==10673 && $source_of_e && $x__id > 0){
 

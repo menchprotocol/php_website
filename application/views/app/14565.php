@@ -316,7 +316,8 @@ $domain_email =  get_domain_setting(28614);
 $e___14925 = $this->config->item('e___14925'); //Domain Setting
 if($social_id && is_array($this->config->item('e___'.$social_id))){
 
-    echo '<ul class="social-footer '.( $domain_background ? ' halfbg ' : '' ).'">';
+    echo '<div class="social-footer">';
+    echo '<ul class="social-ul '.( $domain_background ? ' halfbg ' : '' ).'">';
 
     foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
         echo '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';
@@ -331,6 +332,7 @@ if($social_id && is_array($this->config->item('e___'.$social_id))){
     }
 
     echo '</ul>';
+    echo '</div>';
 
 } elseif($domain_phone || $domain_email) {
 

@@ -1161,6 +1161,9 @@ a.headline {
     padding-left: 8px;
     padding-top: 2px;
 }
+.social-ul{
+    display: inline-block;
+}
 
 .text-logo {
     font-size: 1.25em;

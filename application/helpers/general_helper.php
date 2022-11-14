@@ -1451,8 +1451,10 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message .= str_replace('e__id',$e__id,$email_body)."\n\n";
     $email_message .= view_shuffle_message(12691)."\n";
     $email_message .= get_domain('m__title', $e__id, $x__domain);
-    $email_message .= '<div><a href="https://'.get_domain('m__message', $e__id, $x__domain).'/-28904'.( $e__id>0 ? '?e__id='.$e__id.'&e__hash='.md5($e__id.view_memory(6404,30863)) : '' ).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
-
+    if($e__id > 0){
+        //User specific notifications:
+        $email_message .= '<div><a href="https://'.get_domain('m__message', $e__id, $x__domain).'/-28904?e__id='.$e__id.'&e__hash='.md5($e__id.view_memory(6404,30863)).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
+    }
 
 
     //Loadup amazon SES:
