@@ -1754,8 +1754,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     if(in_array($i['i__type'], $CI->config->item('n___14454')) && !$is_completed) {
         if($top_i__id){
             $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
-        } else {
+        } elseif($superpower_10939) {
             $href = '/~'.$i['i__id'];
+        } else {
+            $href = '/'.$i['i__id'];
         }
     } elseif(strlen($e___13369[$x__type]['m__message'])){
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
