@@ -473,6 +473,8 @@ if($top_i__id) {
             )))){
                 echo '<div class="sub_note">* Final Sale: No Refunds or Transfers</div>';
             }
+
+            echo '<div class="sub_note">* By purchasing a ticket you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a></div>';
             echo '<div class="sub_note">* No need to create a Paypal account: You can checkout as a guest</div>';
             echo '<div class="sub_note">* Once you paid, click on "Return to Merchant" to continue back here</div>';
 
@@ -650,8 +652,6 @@ if(!$top_i__id){
             if($is_payment && !count($x_completes)){
 
                 $control_btn = '';
-
-                $control_btn .= '<div class="form-check">By purchasing this ticket you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a></div>';
 
                 //Load Paypal Pay button:
                 $control_btn .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
