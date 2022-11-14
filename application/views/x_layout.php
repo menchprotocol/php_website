@@ -651,10 +651,7 @@ if(!$top_i__id){
 
                 $control_btn = '';
 
-                $control_btn .= '<div class="form-check">
-    <input type="checkbox" class="form-check-input" id="AgreetoTerms">
-    <label class="form-check-label" for="AgreetoTerms">I Agree to <a href="/-14373"><u>Terms of Use</u></a></label>
-  </div>';
+                $control_btn .= '<div class="form-check">By purchasing this ticket you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a></div>';
 
                 //Load Paypal Pay button:
                 $control_btn .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
