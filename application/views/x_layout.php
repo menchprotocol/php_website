@@ -461,14 +461,6 @@ if($top_i__id) {
             echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have your name on our guest list. We *do not* email PDF Tickets or bar codes. Paypal email receipt is your proof of payment." style="border-bottom: 1px dotted #999;">ID At Door <i class="fas fa-info-circle" style="font-size: 0.8em !important;"></i></span></td>';
             echo '</tr>';
 
-            echo '<tr>';
-            echo '<td class="table-btn first_btn" style="text-align: right;">&nbsp;</td>';
-            echo '<td class="table-btn first_btn"><div class="form-check">
-    <input type="checkbox" class="form-check-input" id="AgreetoTerms" checked="checked">
-    <label class="form-check-label" for="AgreetoTerms">I Agree to <a href="/-14373"><u>Terms of Use</u></a></label>
-  </div></td>';
-            echo '</tr>';
-
             echo '</table>';
 
 
@@ -657,8 +649,15 @@ if(!$top_i__id){
 
             if($is_payment && !count($x_completes)){
 
+                $control_btn = '';
+
+                $control_btn .= '<div class="form-check">
+    <input type="checkbox" class="form-check-input" id="AgreetoTerms">
+    <label class="form-check-label" for="AgreetoTerms">I Agree to <a href="/-14373"><u>Terms of Use</u></a></label>
+  </div>';
+
                 //Load Paypal Pay button:
-                $control_btn = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
+                $control_btn .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
 
                 $control_btn .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
                 $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$starting_quantity.'">'; //Dynamic Variable
