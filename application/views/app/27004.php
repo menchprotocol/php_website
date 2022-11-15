@@ -246,12 +246,15 @@ $other_source_content = '';
 
 if(isset($_GET['e__id'])){
 
-    $other_es = $this->X_model->fetch(array(
+    $filters = array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
         'x__up' => $_GET['e__id'], //Member
-        'x__down NOT IN (' . join(',', $all_sources) . ')' => null, //Not the Ones we Already Have
-    ), array('x__down'), 0);
+    );
+    if(count($all_sources)){
+        $filters[ 'x__down NOT IN (' . join(',', $all_sources) . ')'] = null;
+    }
+    $other_es = $this->X_model->fetch($filters, array('x__down'), 0);
 
 
     if(count($other_es)){
