@@ -37,7 +37,7 @@ foreach($this->E_model->fetch() as $en) {
         $stats['x_not_e_count']++;
         $this->X_model->create(array(
             'x__type' => e_x__type(),
-            'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
+            'x__up' => 4430, //Active Member
             'x__source' => $en['e__id'],
             'x__down' => $en['e__id'],
         ));

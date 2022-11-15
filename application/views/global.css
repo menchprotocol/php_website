@@ -1163,6 +1163,8 @@ a.headline {
 }
 .social-ul{
     display: inline-block;
+    margin: 0;
+    padding: 10px;
 }
 
 .text-logo {

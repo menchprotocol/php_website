@@ -130,7 +130,7 @@ class E_model extends CI_Model
 
         //Add Member:
         $this->X_model->create(array(
-            'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
+            'x__up' => 4430, //Active Member
             'x__type' => e_x__type(),
             'x__source' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
