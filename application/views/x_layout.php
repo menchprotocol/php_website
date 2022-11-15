@@ -14,7 +14,7 @@ $is_next = $this->X_model->fetch(array(
 //Filter Next Ideas:
 $first_child = 0;
 foreach($is_next as $in_key => $in_value){
-    if(!$first_child){
+    if(!$first_child && in_array($in_value['i__type'], $this->config->item('n___12330'))){
         $first_child = $in_value['i__id'];
     }
     $i_is_available = i_is_available($in_value['i__id'], false);
@@ -250,20 +250,18 @@ foreach($this->X_model->fetch(array(
     );
 }
 
-if(!$messages_string){
-    //Get the message for the single child, if any:
-    if($first_child>0 && count($is_next)==1){
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $first_child,
-        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
-            $messages_string .= $this->X_model->message_view(
-                $message_x['x__message'],
-                true,
-                $member_e
-            );
-        }
+//Get the message for the single child, if any:
+if($first_child>0 && count($is_next)==1){
+    foreach($this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type' => 4231, //IDEA NOTES Messages
+        'x__right' => $first_child,
+    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
+        $messages_string .= $this->X_model->message_view(
+            $message_x['x__message'],
+            true,
+            $member_e
+        );
     }
 }
 

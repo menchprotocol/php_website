@@ -1216,9 +1216,6 @@ class X_model extends CI_Model
             return 0;
         }
 
-        $next_i__id = $i__id;
-
-
         //Make sure not previously added to this Member's discoveries:
         if(!count($this->X_model->fetch(array(
                 'x__source' => $e__id,
@@ -1228,20 +1225,32 @@ class X_model extends CI_Model
             )))){
 
             //Not added to their discoveries so far, let's go ahead and add it:
-            $this->X_model->create(array(
-                'x__type' => 4235,
-                'x__source' => $e__id, //Belongs to this Member
-                'x__left' => $is[0]['i__id'], //The Idea they are adding
-                'x__right' => $is[0]['i__id'], //Store the recommended idea
-                'x__spectrum' => 1, //Always place at the top of their discoveries
+            $this->X_model->mark_complete($is[0]['i__id'], $is[0], array(
+                'x__type' => 4235, //Get Started
+                'x__source' => $e__id,
             ));
 
-            //Now find next idea:
-            $next_i__id = $this->X_model->find_next($e__id, $is[0]['i__id'], $is[0]);
-
+            //Mark next level as done too? Only if Single show:
+            $is_next = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                'x__left' => $is[0]['i__id'],
+            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+            if(count($is_next)==1){
+                foreach($is_next as $single_child){
+                    if(in_array($single_child['i__type'], $this->config->item('n___12330'))){
+                        $this->X_model->mark_complete($is[0]['i__id'], $single_child, array(
+                            'x__type' => 4559, //DISCOVERY MESSAGES
+                            'x__source' => $e__id,
+                        ));
+                    }
+                }
+            }
         }
 
-        return $next_i__id;
+        //Now return next idea:
+        return $this->X_model->find_next($e__id, $is[0]['i__id'], $is[0]);
 
     }
 
