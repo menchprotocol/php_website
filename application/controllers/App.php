@@ -169,7 +169,7 @@ class App extends CI_Controller
                 ));
                 if(count($is)){
                     $log_data['x__left'] = $is[0]['i__id'];
-                    $title = $is[0]['i__title'].' | '.$title;
+                    $title = first_line($is[0]['i__title']).' | '.$title;
                 }
             }
         }

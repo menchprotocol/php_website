@@ -329,9 +329,9 @@ function view_s_js_coin(x__type, suggestion, action_id){
     } else if(x__type==26013){
         //Link Source
         return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-md-2 col-sm-3 col-4 col-xl-1 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26013]['m__cover']+'</div><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
-    } else if(x__type==7551){
+    } else if(x__type==13550){
         //1x Source
-        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-md-2 col-sm-3 col-4 col-xl-1 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[7551]['m__cover']+'</div><a href="javascript:void(0);" onclick="e_add_only_7551('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-md-2 col-sm-3 col-4 col-xl-1 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[13550]['m__cover']+'</div><a href="javascript:void(0);" onclick="e_add_only_13550('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
     }
 
 }
@@ -1490,7 +1490,7 @@ function load_tab(x__type){
 
     initiate_algolia();
     load_coins();
-    e_e_only_search_7551();
+    e_e_only_search_13550();
     i_note_activate();
     load_editor();
     x_type_preview_load();
@@ -1664,7 +1664,7 @@ function e__add(x__type, e_existing_id) {
 
 
 
-function e_add_only_7551(x__type, e_existing_id) {
+function e_add_only_13550(x__type, e_existing_id) {
 
 
     //if e_existing_id>0 it means we're adding an existing source, in which case e_new_string should be null
@@ -1686,7 +1686,7 @@ function e_add_only_7551(x__type, e_existing_id) {
     $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Add via Ajax:
-    $.post("/e/e_add_only_7551", {
+    $.post("/e/e_add_only_13550", {
 
         i__id: current_id(),
         x__type: x__type,
@@ -3089,13 +3089,13 @@ function e_sort_reset(){
 
 
 
-function e_e_only_search_7551() {
+function e_e_only_search_13550() {
 
     if(!js_pl_id){
         return false;
     }
 
-    $(".e-only-7551").each(function () {
+    $(".e-only-13550").each(function () {
         var element_focus = ".e-i-"+$(this).attr('x__type');
 
         var base_creator_url = '/e/create/'+current_id()+'/?content_title=';
@@ -3103,7 +3103,7 @@ function e_e_only_search_7551() {
         $(element_focus + ' .add-input').keypress(function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if ((code == 13) || (e.ctrlKey && code == 13)) {
-                return e_add_only_7551($(this).attr('x__type'), 0);
+                return e_add_only_13550($(this).attr('x__type'), 0);
             }
         });
 
@@ -3137,7 +3137,7 @@ function e_e_only_search_7551() {
                 templates: {
                     suggestion: function (suggestion) {
                         //If clicked, would trigger the autocomplete:selected above which will trigger the e__add() function
-                        $('.e-i-'+$(this).attr('x__type')+' .algolia_pad_search').append(view_s_js_coin(7551, suggestion, $(this).attr('x__type')));
+                        $('.e-i-'+$(this).attr('x__type')+' .algolia_pad_search').append(view_s_js_coin(13550, suggestion, $(this).attr('x__type')));
                         return false;
                     },
                     header: function (data) {

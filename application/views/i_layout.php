@@ -86,13 +86,6 @@ foreach($this->config->item('e___20424') as $x__type => $m) {
 }
 
 
-
-//Top Notes
-//$e___11035 = $this->config->item('e___11035'); //NAVIGATION
-//$previous_count = view_coins_i(11019, $i_focus['i__id'], 0, false);
-//echo view_headline(11019,  $previous_count, $e___11035[11019], view_body_i(11019, $previous_count, $i_focus['i__id']), true);
-
-
 //Focus Notes
 echo '<div class="row justify-content" id="thisNode" style="padding-bottom:5px;">';
 echo view_i(4250, 0, null, $i_focus);

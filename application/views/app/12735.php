@@ -32,12 +32,6 @@ foreach($this->I_model->fetch() as $in) {
         'x__right' => $in['i__id'],
     ), array(), 0, 0, array('x__id' => 'ASC')); //Order in case we have extra & need to remove
 
-    $i_notes = $this->X_model->fetch(array( //Idea Transactions
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___4485')) . ')' => null, //IDEA NOTES
-        'x__right' => $in['i__id'],
-    ), array(), 0);
-
     if(!count($i_creators)) {
         $stats['creator_missing']++;
         $this->X_model->create(array(
@@ -84,16 +78,6 @@ foreach($this->I_model->fetch() as $in) {
             'x__up' => $creator_id,
             'x__right' => $in['i__id'],
         ));
-
-    } elseif($is_deleted && count($i_notes)){
-
-        //Extra SOURCES
-        foreach($i_notes as $i_note){
-            //Delete this transaction:
-            $stats['note_deleted'] += $this->X_model->update($i_note['x__id'], array(
-                'x__status' => 6173, //Transaction Deleted
-            ), $member_e['e__id'], 13579 /* Idea Transaction Unpublished */);
-        }
 
     }
 }

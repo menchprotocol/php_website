@@ -7,7 +7,7 @@ $active_i = $this->I_model->fetch(array(
 ));
 
 //Give an overview:
-echo '<p>When the validation criteria change within the i__title_validate() function, this page lists all the ideas that no longer have a valid outcome.</p>';
+echo '<p>When the validation criteria change within the i__validate_title() function, this page lists all the ideas that no longer have a valid outcome.</p>';
 
 
 //List the matching search:
@@ -22,9 +22,9 @@ echo '</tr>';
 $invalid_outcomes = 0;
 foreach($active_i as $count=>$in){
 
-    $i__title_validation = i__title_validate($in['i__title']);
+    $i__validate_title = i__validate_title($in['i__title']);
 
-    if(!$i__title_validation['status']){
+    if(!$i__validate_title['status']){
 
         $invalid_outcomes++;
 

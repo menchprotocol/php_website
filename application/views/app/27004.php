@@ -204,8 +204,6 @@ foreach($i_query as $i){
         continue;
     }
 
-
-
     $gross_sales += $total_sales;
     $gross_transactions += $total_transactions;
     $gross_revenue += $total_revenue;
@@ -244,6 +242,13 @@ foreach($i_query as $i){
 
 $other_source_content = '';
 
+
+
+
+
+
+
+
 if(isset($_GET['e__id'])){
 
     $filters = array(
@@ -261,7 +266,6 @@ if(isset($_GET['e__id'])){
 
         $e___4593 = $this->config->item('e___4593');
 
-
         //Show Other Sources:
         $other_source_content .= '<tr class="css__title">';
         $other_source_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_sources\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$e___4593[29393]['m__title'].'</u></a></td>';
@@ -276,6 +280,7 @@ if(isset($_GET['e__id'])){
         $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
         $other_source_content .= '<td style="text-align: right;"><a href="/@'.$_GET['e__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
         $other_source_content .= '</tr>';
+
 
         //Doo We Have other?
         foreach($other_es as $other_e){
@@ -293,8 +298,8 @@ if(isset($_GET['e__id'])){
             $other_source_content .= '<td style="text-align: right;"><a href="/-4341?x__id='.$other_e['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
             $other_source_content .= '</tr>';
             $gross_sales++;
-
         }
+
     }
 
 }

@@ -590,16 +590,16 @@ class I_model extends CI_Model
             //We are NOT adding an existing Idea, but instead, we're creating a new Idea
 
             //Validate Idea Outcome:
-            $i__title_validation = i__title_validate($i__title);
-            if(!$i__title_validation['status']){
+            $i__validate_title = i__validate_title($i__title);
+            if(!$i__validate_title['status']){
                 //We had an error, return it:
-                return $i__title_validation;
+                return $i__validate_title;
             }
 
 
             //Create new Idea:
             $i_new = $this->I_model->create(array(
-                'i__title' => $i__title_validation['i_clean_title'],
+                'i__title' => $i__validate_title['i_clean_title'],
                 'i__type' => 6677, //New Default Ideas
             ), $x__source);
 

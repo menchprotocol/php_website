@@ -54,17 +54,17 @@ if($search_for_set){
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
                 $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['i__title']).$append_text;
-                $i__title_validation = i__title_validate($new_outcome);
+                $i__validate_title = i__validate_title($new_outcome);
 
-                if($i__title_validation['status']){
+                if($i__validate_title['status']){
                     $qualifying_replacements++;
                 }
             }
 
-            if($replace_with_confirmed && $i__title_validation['status']){
+            if($replace_with_confirmed && $i__validate_title['status']){
                 //Update idea:
                 $this->I_model->update($in['i__id'], array(
-                    'i__title' => $i__title_validation['i_clean_title'],
+                    'i__title' => $i__validate_title['i_clean_title'],
                 ), true, $member_e['e__id']);
             }
 
@@ -75,7 +75,7 @@ if($search_for_set){
             if($replace_with_set){
 
                 echo '<td style="text-align: left;">'.$new_outcome.'</td>';
-                echo '<td style="text-align: left;">'.( !$i__title_validation['status'] ? '<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i__title_validation['message'] : ( $replace_with_confirmed && $i__title_validation['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                echo '<td style="text-align: left;">'.( !$i__validate_title['status'] ? '<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i__validate_title['message'] : ( $replace_with_confirmed && $i__validate_title['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
             } else {
                 //Show parents now:
                 echo '<td style="text-align: left;">';

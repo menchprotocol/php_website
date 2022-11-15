@@ -158,10 +158,10 @@ class X extends CI_Controller
             }
 
             //Validate Idea Outcome:
-            $i__title_validation = i__title_validate($_POST['field_value']);
-            if(!$i__title_validation['status']){
+            $i__validate_title = i__validate_title($_POST['field_value']);
+            if(!$i__validate_title['status']){
                 //We had an error, return it:
-                return view_json(array_merge($i__title_validation, array(
+                return view_json(array_merge($i__validate_title, array(
                     'original_val' => $is[0]['i__title'],
                 )));
             }

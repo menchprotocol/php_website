@@ -1308,7 +1308,7 @@ function js_redirect($url, $timer = 13){
 </script>';
 }
 
-function i__title_validate($string){
+function i__validate_title($string){
 
     $title_clean = trim($string);
     while(substr_count($title_clean , '  ') > 0){
@@ -2076,10 +2076,12 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__keywords'] = '';
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $CI->config->item('n___4485')) . ')' => null, //IDEA NOTES
+                    'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //Idea Source Links
                     'x__right' => $s['i__id'],
                 ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $keyword) {
-                    $export_row['s__keywords'] .= $keyword['x__message'] . ' ';
+                    if(strlen($keyword['x__message'])){
+                        $export_row['s__keywords'] .= $keyword['x__message'] . ' ';
+                    }
                 }
                 $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));
 

@@ -252,7 +252,6 @@ function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();
-    $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $e___6186 = $CI->config->item('e___6186'); //Transaction Status
     $e___11035 = $CI->config->item('e___11035');
     $supports_emoji = (in_array($x__type, $CI->config->item('n___14990')));
@@ -790,11 +789,11 @@ function view_body_e($x__type, $counter, $e__id){
             $ui .= '<script> $(document).ready(function () { i_load_search(10573); }); </script>';
 
         }
-    } elseif(in_array($x__type, $CI->config->item('n___4485'))){
+    } elseif(in_array($x__type, $CI->config->item('n___13550'))){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i) {
-            $ui .= view_i(4485, 0, null, $i, $focus_e);
+            $ui .= view_i(13550, 0, null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -835,7 +834,7 @@ function view_body_i($x__type, $counter, $i__id){
     }
 
 
-    if(in_array($x__type, $CI->config->item('n___7551'))){
+    if(in_array($x__type, $CI->config->item('n___13550'))){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i_note) {
@@ -844,7 +843,7 @@ function view_body_i($x__type, $counter, $i__id){
         $ui .= '</div>';
 
         if($e_of_i && !in_array($x__type, $CI->config->item('n___12677'))) {
-            $ui .= '<div class="list-adder e-only-7551 e-i-' . $x__type . '" x__type="' . $x__type . '">
+            $ui .= '<div class="list-adder e-only-13550 e-i-' . $x__type . '" x__type="' . $x__type . '">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.e-i-' . $x__type . ' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                     <input type="text"
@@ -918,7 +917,7 @@ function view_body_i($x__type, $counter, $i__id){
                                placeholder="'.$e___11035[14055]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
 
-    } elseif(in_array($x__type, $CI->config->item('n___4485'))){
+    } elseif(in_array($x__type, $CI->config->item('n___13550'))){
 
         //IDEA NOTES
         $ui .= view_i_note_list($x__type, false, $is[0], $list_results, $e_of_i);
@@ -1041,7 +1040,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
         );
 
-    } elseif(in_array($x__type, $CI->config->item('n___4485'))){
+    } elseif(in_array($x__type, $CI->config->item('n___13550'))){
 
         //IDEA NOTES
         $join_objects = array('x__right');
@@ -1194,22 +1193,11 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             'x__right' => $i__id,
         );
 
-    } elseif(in_array($x__type, $CI->config->item('n___7551'))){
+    } elseif(in_array($x__type, $CI->config->item('n___13550'))){
 
         //1x Source Ref
         $order_columns = array('x__spectrum' => 'ASC');
         $join_objects = array('x__up');
-        $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => $x__type,
-            'x__right' => $i__id,
-        );
-
-    } elseif(in_array($x__type, $CI->config->item('n___4485'))){
-
-        //IDEA NOTES
-        $order_columns = array('x__spectrum' => 'ASC');
-        $join_objects = array('x__source');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => $x__type,
@@ -1365,7 +1353,6 @@ function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i){
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
-    $e___4485 = $CI->config->item('e___4485'); //IDEA NOTES
     $supports_emoji = (in_array($x__type, $CI->config->item('n___14990')));
     $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
     $member_e = superpower_unlocked();
@@ -2157,7 +2144,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
     $source_of_e = ($superpower_13422) || ($source_of_e && $member_e) || ($x__id && ($e['x__up']==$member_e['e__id'] || $e['x__down']==$member_e['e__id']));
-    $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___4485')));
+    $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___13550')));
     $supports_messages = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___20409')));
 
 

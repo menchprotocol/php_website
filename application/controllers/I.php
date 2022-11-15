@@ -112,7 +112,7 @@ class I extends CI_Controller {
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $is[0]['i__title'],
+            'title' => first_line($is[0]['i__title']),
             'i_focus' => $is[0],
         ));
         $this->load->view('i_layout', array(
@@ -391,7 +391,7 @@ class I extends CI_Controller {
                 'message' => 'Invalid Idea ID',
             ));
 
-        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___4485'))) {
+        } elseif (!isset($_POST['x__type'])) {
 
             return view_json(array(
                 'status' => 0,

@@ -78,7 +78,7 @@ class E extends CI_Controller
                 if($counter){
                     $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$counter.' '.$m['m__title'].'</div>';
                     foreach(view_coins_e(6255, $member_e['e__id'], 1, false, 10) as $item){
-                        $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'">'.$item['i__title'].'</a>';
+                        $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title">'.first_line($item['i__title']).'</a>';
                     }
                     $sidebar_ui .= '<hr />';
                 }
@@ -96,7 +96,7 @@ class E extends CI_Controller
                 if($counter > 0){
                     $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$counter.' '.$m['m__title'].'</div>';
                     foreach($i_notes_query as $item) {
-                        $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title" title="'.$item['i__title'].'">'.$item['i__title'].'</a>';
+                        $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title">'.first_line($item['i__title']).'</a>';
                     }
                     $sidebar_ui .= '<hr />';
                 }
@@ -409,7 +409,7 @@ class E extends CI_Controller
 
     }
 
-    function e_add_only_7551()
+    function e_add_only_13550()
     {
 
         //Auth member and check required variables:
@@ -425,7 +425,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
             ));
-        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___7551'))) {
+        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___13550'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea Note Type ID',
@@ -476,10 +476,10 @@ class E extends CI_Controller
                 'x__type' => $_POST['x__type'],
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
-                $e___7551 = $this->config->item('e___7551');
+                $e___13550 = $this->config->item('e___13550');
                 return view_json(array(
                     'status' => 0,
-                    'message' => $es[0]['e__title'].' is already added as idea '.$e___7551[$_POST['x__type']]['m__title'],
+                    'message' => $es[0]['e__title'].' is already added as idea '.$e___13550[$_POST['x__type']]['m__title'],
                 ));
             }
 

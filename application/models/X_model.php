@@ -748,7 +748,6 @@ class X_model extends CI_Model
         }
 
         $e___6177 = $this->config->item('e___6177');
-        $e___4485 = $this->config->item('e___4485');
 
         //Cleanup:
         $message_input = trim($message_input);
@@ -824,7 +823,7 @@ class X_model extends CI_Model
                 //POWER EDITOR UNLIMITED SOURCES
                 $min_e = 0;
                 $max_e = 99;
-            } elseif(in_array($message_type_e__id, $this->config->item('n___7551'))){
+            } elseif(in_array($message_type_e__id, $this->config->item('n___13550'))){
                 //IDEA NOTES 1X SOURCE REFERENCE REQUIRED
                 $min_e = 1;
                 $max_e = 1;
@@ -1639,8 +1638,7 @@ class X_model extends CI_Model
         $detected_x_type = x_detect_type($add_fields['x__message']);
         if ($detected_x_type['status']) {
 
-
-            //CLEAR PLAYS?
+            //Forget PLAYS?
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 29430, //Remove Plays
@@ -1667,10 +1665,11 @@ class X_model extends CI_Model
                         $this->X_model->update($remove_x['x__id'], array(
                             'x__status' => 6173,
                         ), $member_e['e__id'], 29431 /* Play Auto Removed */);
+
                     }
                 }
-            }
 
+            }
 
             //ADD PROFILE?
             foreach($this->X_model->fetch(array(
