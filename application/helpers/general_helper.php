@@ -1830,6 +1830,9 @@ function fetch_i_source($source_type, $i__id){
     return 0;
 }
 
+function first_line($string){
+    return $string;
+}
 
 function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 {
