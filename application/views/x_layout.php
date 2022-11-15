@@ -649,7 +649,8 @@ if(!$top_i__id){
 
             $control_btn = null;
 
-            if($is_payment && !count($x_completes)){
+            $paypal_email =  get_domain_setting(30882);
+            if($is_payment && !count($x_completes) && filter_var($paypal_email, FILTER_VALIDATE_URL)){
 
                 $control_btn = '';
 
@@ -668,7 +669,7 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?cancel_pay=1">';
                 $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1">';
                 $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
-                $control_btn .= '<input type="hidden" name="business" value="'.view_memory(6404,26595).'">';
+                $control_btn .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
 
                 $control_btn .= '<input type="submit" class="round-btn adj-btn go-next-group" name="pay_now" id="pay_now" value=">">';
                 $control_btn .= '<span class="nav-title css__title">Pay Now</span>';
