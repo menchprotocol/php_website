@@ -12,7 +12,11 @@ $is_next = $this->X_model->fetch(array(
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
 //Filter Next Ideas:
+$first_child = 0;
 foreach($is_next as $in_key => $in_value){
+    if(!$first_child){
+        $first_child = $in_value['i__id'];
+    }
     $i_is_available = i_is_available($in_value['i__id'], false);
     if(!$i_is_available['status']){
         //Remove this option:
@@ -244,6 +248,23 @@ foreach($this->X_model->fetch(array(
         true,
         $member_e
     );
+}
+
+if(!$messages_string){
+    //Get the message for the single child, if any:
+    if($first_child>0 && count($is_next)==1){
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4231, //IDEA NOTES Messages
+            'x__right' => $first_child,
+        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
+            $messages_string .= $this->X_model->message_view(
+                $message_x['x__message'],
+                true,
+                $member_e
+            );
+        }
+    }
 }
 
 if($messages_string){
