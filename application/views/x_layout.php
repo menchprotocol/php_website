@@ -650,7 +650,7 @@ if(!$top_i__id){
             $control_btn = null;
 
             $paypal_email =  get_domain_setting(30882);
-            if($is_payment && !count($x_completes) && filter_var($paypal_email, FILTER_VALIDATE_URL)){
+            if($is_payment && !count($x_completes) && filter_var($paypal_email, FILTER_VALIDATE_EMAIL)){
 
                 $control_btn = '';
 
