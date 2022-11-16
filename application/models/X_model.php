@@ -1645,12 +1645,12 @@ class X_model extends CI_Model
 
         $member_e = superpower_unlocked();
         $detected_x_type = x_detect_type($add_fields['x__message']);
-        if ($detected_x_type['status']) {
+        if ($detected_x_type['status'] && $member_e) {
 
-            //Forget PLAYS?
+            //Remove Discoveries?
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 29430, //Remove Plays
+                'x__type' => 29430, //Remove Discovery
                 'x__right' => $i['i__id'],
             )) as $e_play_removal){
 
@@ -1676,6 +1676,38 @@ class X_model extends CI_Model
                         ), $member_e['e__id'], 29431 /* Play Auto Removed */);
 
                     }
+                }
+
+            }
+
+            //Clone Templates?
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 30898, //Clone Template
+                'x__right' => $i['i__id'],
+            )) as $e_clone_template){
+
+                $clone_urls = '';
+
+                //Go through all Notes associated with this source:
+                foreach($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__up' => $e_clone_template['x__up'],
+                    'x__right !=' => $i['i__id'],
+                ), array('x__right'), 0) as $clone_i){
+                    $new_title = $clone_i['i__title'].' '.$member_e['e__title'];
+                    $result = $this->I_model->recursive_clone($clone_i['i__id'], 0, $member_e['e__id'], null, $new_title);
+                    if($result['status']){
+                        $clone_urls .= $new_title.':'."\n".'https://'.get_domain('m__message', $member_e['e__id']).'/'."\n\n";
+                    }
+                }
+
+                //TODO Go through all follower sources and clone then too?
+
+                if(strlen($clone_urls)){
+                    //Send DM with all the new clone Ideas:
+                    $this->X_model->send_dm($member_e['e__id'], $i['i_title'], $clone_urls);
                 }
 
             }
