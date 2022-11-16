@@ -402,6 +402,14 @@ if($top_i__id) {
 
         }
 
+    } elseif ($i_focus['i__type']==30350) {
+
+        //Set Date
+
+    } elseif ($i_focus['i__type']==30874) {
+
+        //Event
+
     } elseif ($is_payment) {
 
         if(isset($_GET['cancel_pay']) && !count($x_completes)){
