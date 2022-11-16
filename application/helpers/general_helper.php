@@ -1410,7 +1410,7 @@ function e__title_validate($string, $x__type = 0){
 
 function clean_phone($phone){
     $phone_numbers = preg_replace('/\D/', '', $phone);
-    if(substr_count($phone_numbers)==10){
+    if(strlen($phone_numbers)==10){
         $phone_numbers = '+1'.$phone_numbers;
     }
     return $phone_numbers;
