@@ -113,6 +113,12 @@ if($top_i__id && $x__source && $top_i__id!=$i_focus['i__id']){
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $parent_i['i__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+            foreach($query_subset as $key=>$value){
+                $i_is_available = i_is_available($value['i__id'], false);
+                if(!$i_is_available['status']){
+                    unset($query_subset[$key]);
+                }
+            }
 
             echo '<li class="breadcrumb-item">';
             echo '<a href="/'.$top_i__id.'/'.$parent_i['i__id'].'"><u>'.$parent_i['i__title'].'</u></a>';
@@ -250,7 +256,7 @@ foreach($this->X_model->fetch(array(
     );
 }
 
-//Get the message for the single child, if any:
+//HACK#24 Get the message for the single child, if any:
 if($first_child>0 && count($is_next)==1){
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
