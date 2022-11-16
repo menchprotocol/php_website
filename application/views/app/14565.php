@@ -321,16 +321,15 @@ if($social_id && is_array($this->config->item('e___'.$social_id))){
     echo '<div class="list-group list-border glossy-bg maxwidth">';
 
     foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
-        echo view_item(0,0, $m['m__title'], $m['m__cover'], '/-14904?e__id='.$e__id , $m['m__message']);
+        echo view_item(0,0, $m['m__title'], $m['m__cover'], '/-14904?e__id='.$e__id , $m['m__message'], true);
     }
     if($domain_phone){
-        echo view_item(0,0, $domain_phone, $e___14925[28615]['m__cover'], 'tel:'.preg_replace("/[^0-9]/", "", $domain_phone) , $m['m__message']);
+        echo view_item(0,0, $domain_phone, $e___14925[28615]['m__cover'], 'tel:'.preg_replace("/[^0-9]/", "", $domain_phone) , $m['m__message'], true);
     }
     if($domain_email){
-        echo view_item(0,0, $domain_email, $e___14925[28614]['m__cover'], 'mailto:'.$domain_email, "" , $m['m__message']);
+        echo view_item(0,0, $domain_email, $e___14925[28614]['m__cover'], 'mailto:'.$domain_email, "" , $m['m__message'], true);
     }
 
-    echo $list_body;
     echo '</div>';
     echo '<div class="doclear" style="padding-bottom: 55px;">&nbsp;</div>';
 
