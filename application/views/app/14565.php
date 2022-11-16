@@ -327,7 +327,7 @@ if($social_id && is_array($this->config->item('e___'.$social_id))){
         echo view_item(0,0, $domain_phone, $e___14925[28615]['m__cover'], 'tel:'.preg_replace("/[^0-9]/", "", $domain_phone) , $m['m__message'], true);
     }
     if($domain_email){
-        echo view_item(0,0, $domain_email, $e___14925[28614]['m__cover'], 'mailto:'.$domain_email, "" , $m['m__message'], true);
+        echo view_item(0,0, $domain_email, $e___14925[28614]['m__cover'], 'mailto:'.$domain_email, $m['m__message'], true);
     }
 
     echo '</div>';
