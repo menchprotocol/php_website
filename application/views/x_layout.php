@@ -115,7 +115,12 @@ if($top_i__id && $x__source && $top_i__id!=$i_focus['i__id']){
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             foreach($query_subset as $key=>$value){
                 $i_is_available = i_is_available($value['i__id'], false);
-                if(!$i_is_available['status']){
+                if(!$i_is_available['status'] || !count($this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+                        'x__source' => $x__source,
+                        'x__left' => $value['i__id'],
+                    )))){
                     unset($query_subset[$key]);
                 }
             }
