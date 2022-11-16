@@ -1707,7 +1707,7 @@ class X_model extends CI_Model
 
                 if(strlen($clone_urls)){
                     //Send DM with all the new clone Ideas:
-                    $this->X_model->send_dm($member_e['e__id'], $i['i_title'], $clone_urls);
+                    $this->X_model->send_dm($member_e['e__id'], $i['i__title'], $clone_urls);
                 }
 
             }
