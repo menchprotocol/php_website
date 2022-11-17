@@ -1468,7 +1468,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
         ],
     ]);
 
-    $response = $CI->CLIENT->sendEmail(array(
+    $response = @$CI->CLIENT->sendEmail(array(
         // Source is required
         'Source' => $domain_email,
         // Destination is required
@@ -1913,6 +1913,27 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         }
     }
 
+    //Featured Tree for all Domains:
+    /*
+    $features = array();
+    foreach($this->config->item('e___30829') as $x__type => $m) {
+        if(in_array($x__type , $this->config->item('n___14880')) && strlen($m['m__message']) && is_array($this->config->item('n___'.substr($m['m__message'], 1))) && count($this->config->item('n___'.substr($m['m__message'], 1)))){
+
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__up IN (' . join(',', $this->config->item('n___'.substr($m['m__message'], 1))) . ')' => null, //SOURCE IDEAS
+            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $link_i){
+                $memory_text .= '     '.$link_i['i__id'].' => array('."\n";
+                $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',$link_i['i__title'])).'\','."\n";
+                $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$link_i['x__message'])).'\','."\n";
+                $memory_text .= '        \'m__cover\' => \'\','."\n";
+                $memory_text .= '     ),'."\n";
+            }
+        }
+    }
+    */
+
 
     $all_export_rows = array();
     $all_db_rows = array();
@@ -2087,6 +2108,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     }
                 }
                 $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));
+
 
                 //Startable?
                 if (in_array($s['i__type'], $CI->config->item('n___26124'))) {

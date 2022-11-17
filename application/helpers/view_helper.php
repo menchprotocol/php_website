@@ -2208,6 +2208,11 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 //Edit Message
                 $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>';
 
+            } elseif($e__id==6287 && superpower_active(12699, true)){
+
+                //App Store
+                $action_buttons .= '<a href="/-'.$e['e__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+
             } elseif($e__id==30873){
 
                 //Template:

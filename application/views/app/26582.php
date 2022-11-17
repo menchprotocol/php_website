@@ -160,11 +160,14 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '<h2>Scheduled Messages</h2>';
 
     echo '<table class="table table-condensed table-striped">';
+    $displayed = false;
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //Active
         'x__type' => 26582, //Instant Messages
-    ), array('x__source'), 0, 0) as $fetched_e){
+        'x__domain' => get_domain_setting(0),
+    ), array('x__source')) as $fetched_e){
 
+        $displayed = true;
         //Count Emails & Messages from Ledger:
         $email_success = $this->X_model->fetch(array(
             'x__type' => 29399,
@@ -200,6 +203,9 @@ if(!$is_u_request || isset($_GET['cron'])){
 
         echo '<tr class="semail'.$fetched_e['x__id'].'"><td colspan="8">'.nl2br($fetched_e['x__message']).( isset($x__metadata['message_text']) ? '<hr />'.nl2br($x__metadata['message_text']) : '' ).'</td></tr>';
 
+    }
+    if(!$displayed){
+        echo '<p>Nothing yet...</p>';
     }
     echo '</table>';
 
