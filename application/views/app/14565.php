@@ -314,9 +314,27 @@ $social_id = intval(get_domain_setting(14904));
 $domain_phone =  get_domain_setting(28615);
 $domain_email =  get_domain_setting(28614);
 $e___14925 = $this->config->item('e___14925'); //Domain Setting
-
 if($social_id && is_array($this->config->item('e___'.$social_id))){
 
+    echo '<div class="social-footer">';
+    echo '<ul class="social-ul '.( $domain_background ? ' halfbg ' : '' ).'">';
+
+    foreach($this->config->item('e___'.$social_id) as $e__id => $m) {
+        echo '<li><a href="/-14904?e__id='.$e__id.'" title="'.$m['m__title'].'" data-toggle="tooltip" data-placement="top">'.$m['m__cover'].'</a></li>';
+    }
+
+    if($domain_phone){
+        echo '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$e___14925[28615]['m__title'].'">'.$e___14925[28615]['m__cover'].'</a></li>';
+    }
+
+    if($domain_email){
+        echo '<li><a href="mailto:'.$domain_email.'" title="'.$e___14925[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___14925[28614]['m__cover'].'</a></li>';
+    }
+
+    echo '</ul>';
+    echo '</div>';
+
+    /*
     echo '<h4 style="padding-top: 34px; text-align:center;"><span class="halfbg" style="padding: 5px;"><span class="icon-block-xxs">'.$e___14925[14904]['m__cover'].'</span> ' .$e___14925[14904]['m__title'] . ':</span></h4>';
     echo '<div class="list-group list-border glossy-bg maxwidth">';
 
@@ -332,6 +350,7 @@ if($social_id && is_array($this->config->item('e___'.$social_id))){
 
     echo '</div>';
     echo '<div class="doclear" style="padding-bottom: 55px;">&nbsp;</div>';
+    */
 
 } elseif($domain_phone || $domain_email) {
 
