@@ -1468,7 +1468,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
         ],
     ]);
 
-    $response = @$CI->CLIENT->sendEmail(array(
+    $response = $CI->CLIENT->sendEmail(array(
         // Source is required
         'Source' => $domain_email,
         // Destination is required
