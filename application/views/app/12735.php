@@ -66,20 +66,6 @@ foreach($this->I_model->fetch() as $in) {
         ));
     }
 
-
-    if(!$is_deleted && !count($i_e)){
-
-        //Missing SOURCE
-        $stats['e_missing']++;
-        $creator_id = ( count($i_e) ? $i_e[0]['x__source'] : $member_e['x__up'] );
-        $this->X_model->create(array(
-            'x__type' => 4983, //IDEA SOURCES
-            'x__source' => $creator_id,
-            'x__up' => $creator_id,
-            'x__right' => $in['i__id'],
-        ));
-
-    }
 }
 
 echo nl2br(print_r($stats, true));

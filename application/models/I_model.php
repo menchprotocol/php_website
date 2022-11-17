@@ -15,7 +15,7 @@ class I_model extends CI_Model
     }
 
 
-    function create($add_fields, $x__source = 0, $add_source = true)
+    function create($add_fields, $x__source = 0)
     {
 
         //What is required to create a new Idea?
@@ -42,17 +42,6 @@ class I_model extends CI_Model
                     'x__message' => $add_fields['i__title'],
                     'x__type' => 4250, //New Idea Created
                 ));
-
-                //Also add as source if not there:
-                if($add_source){
-                    $this->X_model->create(array(
-                        'x__source' => $x__source,
-                        'x__type' => 4983, //IDEA SOURCES
-                        'x__up' => $x__source,
-                        'x__right' => $add_fields['i__id'],
-                    ), true);
-                }
-
 
                 //Fetch to return the complete source data:
                 $is = $this->I_model->fetch(array(
@@ -778,12 +767,7 @@ c                ));
         $i_new = $this->I_model->create(array(
             'i__title' => ( $clone_title ? $clone_title : $this_i[0]['i__title']." Copy" ),
             'i__type' => $this_i[0]['i__type'],
-        ), $x__source, !count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__up' => $x__source,
-            'x__right' => $i__id,
-        ))));
+        ), $x__source);
 
 
         //Clone Messages:
