@@ -729,7 +729,7 @@ class I_model extends CI_Model
 
     }
 
-    function recursive_clone($i__id, $do_recursive, $x__source, $previous_i = null, $clone_title = null) {
+    function recursive_clone($i__id, $do_recursive, $x__source, $previous_i = null, $clone_title = null, $exclude_es = array()) {
 
 
         //Create Clone -or- Link & move-on?
@@ -807,14 +807,18 @@ c                ));
             ));
         }
 
-
         //Always Link Sources:
-        foreach($this->X_model->fetch(array(
+        $filters = array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i__id,
             'x__up > 0' => null,
-        ), array(), 0) as $x){
+        );
+        if(count($exclude_es)){
+            $filters['x__up NOT IN (' . join(',', $exclude_es) . ')'] = null;
+        }
+
+        foreach($this->X_model->fetch($filters, array(), 0) as $x){
             $this->X_model->create(array(
                 'x__source' => $x__source,
                 'x__type' => $x['x__type'],

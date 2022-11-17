@@ -1696,10 +1696,20 @@ class X_model extends CI_Model
                     'x__up' => $e_clone_template['x__up'],
                     'x__right !=' => $i['i__id'],
                 ), array('x__right'), 0) as $clone_i){
-                    $new_title = $clone_i['i__title'].' '.$member_e['e__title'];
-                    $result = $this->I_model->recursive_clone($clone_i['i__id'], 0, $member_e['e__id'], null, $new_title);
+                    $new_title = $member_e['e__title'].' '.$clone_i['i__title'];
+                    $result = $this->I_model->recursive_clone($clone_i['i__id'], 0, $member_e['e__id'], null, $new_title, array($e_clone_template['x__up']));
                     if($result['status']){
-                        $clone_urls .= $new_title.':'."\n".'https://'.get_domain('m__message', $member_e['e__id']).'/'."\n\n";
+
+                        //Add as watcher:
+                        $this->X_model->create(array(
+                            'x__type' => 10573, //IDEA SOURCES
+                            'x__source' => $member_e['e__id'],
+                            'x__up' => $member_e['e__id'],
+                            'x__right' => $result['new_i__id'],
+                        ));
+
+                        //New link:
+                        $clone_urls .= $new_title.':'."\n".'https://'.get_domain('m__message', $member_e['e__id']).'/'.$result['new_i__id']."\n\n";
                     }
                 }
 
@@ -1707,6 +1717,7 @@ class X_model extends CI_Model
 
                 if(strlen($clone_urls)){
                     //Send DM with all the new clone Ideas:
+                    $clone_urls = $clone_urls.'You have been added as a watcher so you will be notified when anyone starts using your links.';
                     $this->X_model->send_dm($member_e['e__id'], $i['i__title'], $clone_urls);
                 }
 
