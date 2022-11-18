@@ -11,7 +11,7 @@ $e___6287 = $this->config->item('e___6287'); //APP
 $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
 
 //Fetch Main Idea:
-if(isset($_GET['i__id'])){
+if(strlen($_GET['i__id'])){
     foreach($this->I_model->fetch(array(
         'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
     ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
