@@ -1468,10 +1468,10 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $CI->CLIENT = new Aws\Ses\SesClient([
         'version' => 'latest',
         'region' => 'us-west-2',
-        'credentials' => [
+        'credentials' => array(
             'key' => 'AKIAU6W53O6UUDIDYNG3',
             'secret' => $CI->config->item('aws_secret'),
-        ],
+        ),
     ]);
 
     $response = $CI->CLIENT->sendEmail(array(
