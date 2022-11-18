@@ -1467,17 +1467,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
     //Loadup amazon SES:
     require_once('application/libraries/aws/aws-autoloader.php');
-
-    $CI->CLIENT = SesClient::factory(array(
-        'version'=> 'latest',
-        'region' => 'us-west-2',
-        'credentials' => array(
-            'key' => $CI->config->item('cred_aws_key'),
-            'secret' => $CI->config->item('cred_aws_secret'),
-        )
-    ));
-
-    /*
+    //$CI->CREDENTIALS = new Aws\Credentials\Credentials($CI->config->item('cred_aws_key'), $CI->config->item('cred_aws_secret'));
     $CI->CLIENT = new Aws\Ses\SesClient([
         'version' => 'latest',
         'region' => 'us-west-2',
@@ -1486,7 +1476,6 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
             'secret' => $CI->config->item('cred_aws_secret'),
         ],
     ]);
-    */
 
     $response = $CI->CLIENT->sendEmail(array(
         // Source is required
