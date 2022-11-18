@@ -1213,7 +1213,7 @@ class X_model extends CI_Model
             'i__id' => $i__id,
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
-        if (count($is) != 1 || !in_array($is[0]['i__type'], $this->config->item('n___26124'))) {
+        if (count($is) != 1) {
             return 0;
         }
 

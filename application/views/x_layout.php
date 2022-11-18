@@ -36,7 +36,6 @@ $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
 $in_my_discoveries = ( $top_i__id && $top_i__id==$i_focus['i__id'] );
 $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$is_discovarable = true;
 $i_stats = i_stats($i_focus['i__metadata']);
 
 $is_payment = in_array($i_focus['i__type'] , $this->config->item('n___30469'));
@@ -648,13 +647,11 @@ if($top_i__id) {
 
 if(!$top_i__id){
 
-    if(in_array($i_focus['i__type'], $this->config->item('n___26124'))){
-        $discovery_e = ( $is_discovarable ? 4235 : 14022 );
+    $discovery_e = 4235;
 
-        //Get Started
-        echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
-        echo '<div class="doclear">&nbsp;</div>';
-    }
+    //Get Started
+    echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
+    echo '<div class="doclear">&nbsp;</div>';
 
 } else {
 

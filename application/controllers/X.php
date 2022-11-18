@@ -369,28 +369,6 @@ class X extends CI_Controller
                 return redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid idea ID</div>', true);
             }
 
-            if(!in_array($is[0]['i__type'], $this->config->item('n___26124'))){
-
-                //Try to find the top registrable idea:
-                $top_startable = $this->I_model->top_startable($is[0]);
-                if(count($top_startable)){
-
-                    return redirect_message('/'.$top_startable[0]['i__id']);
-
-                } else {
-
-                    //Cannot be started:
-                    $this->X_model->create(array(
-                        'x__source' => $member_e['e__id'],
-                        'x__left' => $i__id,
-                        'x__type' => 14604,
-                    ));
-
-                    return redirect_message('/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is currently not active & cannot be started at this time.</div>');
-
-                }
-            }
-
             //Make sure it's available:
             $i_is_available = i_is_available($i__id, true);
             if(!$i_is_available['status']){

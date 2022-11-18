@@ -15,8 +15,9 @@ function includes_any($string, $items)
 function load_algolia($index_name)
 {
     //Loads up algolia search engine functions
+    $CI =& get_instance();
     require_once('application/libraries/algoliasearch.php');
-    $client = new \AlgoliaSearch\Client(view_memory(6404,30861), view_memory(6404,30862));
+    $client = new \AlgoliaSearch\Client($CI->config->item('cred_algolia_app_id'), $CI->config->item('cred_algolia_api_key'));
     return $client->initIndex($index_name);
 }
 
@@ -1162,10 +1163,7 @@ function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local
     $s3 = new Aws\S3\S3Client([
         'version' => 'latest',
         'region' => 'us-west-2',
-        'credentials' => [
-            'key' => view_memory(6404,30864),
-            'secret' => view_memory(6404,30865),
-        ],
+        'credentials' => $CI->config->item('cred_aws'),
     ]);
     $result = $s3->putObject(array(
         'Bucket' => 's3foundation', //Same bucket for now
@@ -1464,10 +1462,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $CI->CLIENT = new Aws\Ses\SesClient([
         'version' => 'latest',
         'region' => 'us-west-2',
-        'credentials' => [
-            'key' => view_memory(6404,30864),
-            'secret' => view_memory(6404,30865),
-        ],
+        'credentials' => $CI->config->item('cred_aws'),
     ]);
 
     $response = $CI->CLIENT->sendEmail(array(
@@ -1916,25 +1911,14 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
     }
 
     //Featured Tree for all Domains:
-    /*
-    $features = array();
+    $features_sources = array();
     foreach($this->config->item('e___30829') as $x__type => $m) {
-        if(in_array($x__type , $this->config->item('n___14880')) && strlen($m['m__message']) && is_array($this->config->item('n___'.substr($m['m__message'], 1))) && count($this->config->item('n___'.substr($m['m__message'], 1)))){
-
-            foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__up IN (' . join(',', $this->config->item('n___'.substr($m['m__message'], 1))) . ')' => null, //SOURCE IDEAS
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $link_i){
-                $memory_text .= '     '.$link_i['i__id'].' => array('."\n";
-                $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',$link_i['i__title'])).'\','."\n";
-                $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$link_i['x__message'])).'\','."\n";
-                $memory_text .= '        \'m__cover\' => \'\','."\n";
-                $memory_text .= '     ),'."\n";
+        if(in_array($x__type , $this->config->item('n___14870')) && strlen($m['m__message']) && is_array($this->config->item('n___'.substr($m['m__message'], 1))) && count($this->config->item('n___'.substr($m['m__message'], 1)))){
+            foreach($this->config->item('n___'.substr($m['m__message'], 1)) as $featured_e){
+                $features_sources[$featured_e] = $x__type;
             }
         }
     }
-    */
 
 
     $all_export_rows = array();
@@ -2113,9 +2097,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
 
                 //Startable?
-                if (in_array($s['i__type'], $CI->config->item('n___26124'))) {
-                    array_push($export_row['_tags'], 'is_featured');
-                }
+                //                    array_push($export_row['_tags'], 'is_featured');
 
                 //Is SOURCE for any IDEA?
                 foreach($CI->X_model->fetch(array(

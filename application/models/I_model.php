@@ -313,51 +313,6 @@ class I_model extends CI_Model
         return $stats;
     }
 
-    function top_startable($i, $stopper_i_id = 0){
-
-        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
-            return array();
-        }
-
-        $top_startable = array();
-
-
-        //Return the first top startable idea:
-        $previous_is = $this->X_model->fetch(array(
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__right' => $i['i__id'],
-        ), array('x__left'), 0);
-        if(!count($previous_is)){
-            //No parent, so no change to find startable
-            return $top_startable;
-        }
-
-
-        //Try to find a startable parent idea:
-        foreach($previous_is as $previous_i) {
-            if(in_array($previous_i['i__type'], $this->config->item('n___26124'))){
-                array_push($top_startable, $previous_i);
-            }
-        }
-        if(count($top_startable)){
-            //Bingo:
-            return $top_startable;
-        }
-
-
-        //Recursively go up and try to find startable idea:
-        foreach($previous_is as $previous_i) {
-            $top_startable_recursive = $this->I_model->top_startable($previous_i, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
-            if(count($top_startable_recursive)){
-                $top_startable = array_merge($top_startable, $top_startable_recursive);
-            }
-        }
-
-        return $top_startable;
-
-    }
 
     function duplicate($i, $copy_to__id, $x__source)
     {
