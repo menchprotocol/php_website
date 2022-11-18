@@ -1462,18 +1462,16 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
         $email_message .= '<div><a href="https://'.get_domain('m__message', $e__id, $x__domain).'/-28904?e__id='.$e__id.'&e__hash='.md5($e__id.view_memory(6404,30863)).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
     }
 
-    putenv("AWS_ACCESS_KEY_ID=" . $CI->config->item('cred_aws_key'));
-    putenv("AWS_SECRET_ACCESS_KEY=" . $CI->config->item('cred_aws_secret'));
+    //putenv("AWS_ACCESS_KEY_ID=" . $CI->config->item('cred_aws_key'));
+    //putenv("AWS_SECRET_ACCESS_KEY=" . $CI->config->item('cred_aws_secret'));
 
     //Loadup amazon SES:
     require_once('application/libraries/aws/aws-autoloader.php');
+    $credentials = new Aws\Credentials\Credentials($CI->config->item('cred_aws_key'), $CI->config->item('cred_aws_secret'));
     $CI->CLIENT = new Aws\Ses\SesClient([
         'version' => 'latest',
         'region' => 'us-west-2',
-        'credentials' => [
-            'key' => $CI->config->item('cred_aws_key'),
-            'secret' => $CI->config->item('cred_aws_secret'),
-        ],
+        'credentials' => $credentials,
     ]);
 
     $response = $CI->CLIENT->sendEmail(array(
