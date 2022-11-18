@@ -11,13 +11,14 @@ $e___6287 = $this->config->item('e___6287'); //APP
 $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
 
 //Fetch Main Idea:
-$is = $this->I_model->fetch(array(
-    'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
-), 0, 0, array('i__id' => 'ASC'));
-
-foreach($is as $loaded_i){
-    echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a></h2>';
+if(isset($_GET['i__id'])){
+    foreach($this->I_model->fetch(array(
+        'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
+    ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
+        echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a></h2>';
+    }
 }
+
 
 
 
