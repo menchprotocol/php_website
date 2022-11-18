@@ -79,6 +79,7 @@ if($is_payment){
             $max_allowed = ( count($multi_selectable) && is_numeric($multi_selectable[0]['x__message']) && $multi_selectable[0]['x__message']>1 ? intval($multi_selectable[0]['x__message']) : view_memory(6404,29651) );
             $spots_remaining = i_spots_remaining($i_focus['i__id']);
             $max_allowed = ( $spots_remaining < $max_allowed ? $spots_remaining : $max_allowed );
+            $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
 
         } else {
             $is_payment = false;
