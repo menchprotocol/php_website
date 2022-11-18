@@ -1460,8 +1460,8 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     }
 
     $aws_key = $CI->config->item('cred_aws');
-    putenv("AWS_ACCESS_KEY_ID=" . $aws_key->key);
-    putenv("AWS_SECRET_ACCESS_KEY=" . $aws_key->secret);
+    //putenv("AWS_ACCESS_KEY_ID=" . $aws_key->key);
+    //putenv("AWS_SECRET_ACCESS_KEY=" . $aws_key->secret);
 
     //Loadup amazon SES:
     require_once('application/libraries/aws/aws-autoloader.php');
