@@ -1163,10 +1163,7 @@ function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local
     $s3 = new Aws\S3\S3Client([
         'version' => 'latest',
         'region' => 'us-west-2',
-        'credentials' => [
-            'key' => 'AKIAU6W53O6UUDIDYNG3',
-            'secret' => $CI->config->item('aws_secret'),
-        ],
+        'credentials' => $CI->config->item('cred_aws'),
     ]);
     $result = $s3->putObject(array(
         'Bucket' => 's3foundation', //Same bucket for now
@@ -1468,10 +1465,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $CI->CLIENT = new Aws\Ses\SesClient([
         'version' => 'latest',
         'region' => 'us-west-2',
-        'credentials' => array(
-            'key' => 'AKIAU6W53O6UUDIDYNG3',
-            'secret' => $CI->config->item('aws_secret'),
-        ),
+        'credentials' => $CI->config->item('cred_aws'),
     ]);
 
     $response = $CI->CLIENT->sendEmail(array(
