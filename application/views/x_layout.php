@@ -470,7 +470,7 @@ if($top_i__id) {
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn" style="text-align: right;">Fee:&nbsp;&nbsp;</td>';
-                echo '<td class="table-btn first_btn" title="hi">'.$unit_fee.' '.$currency_parts[0].'</td>';
+                echo '<td class="table-btn first_btn" title="'.(doubleval(get_domain_setting(30590, $x__source)) .' / '. doubleval(get_domain_setting(27017, $x__source)) .' / '. doubleval(get_domain_setting(30612, $x__source))).'">'.$unit_fee.' '.$currency_parts[0].'</td>';
                 echo '</tr>';
             }
 
