@@ -1464,7 +1464,17 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
     //Loadup amazon SES:
     require_once('application/libraries/aws/aws-autoloader.php');
+    $SesClient = new SesClient([
+        'profile' => 'default',
+        'version' => 'latest',
+        'region'  => 'us-west-2',
+        'credentials' => $CI->config->item('cred_aws'),
+    ]);
+
+
     //$cred = new Aws\Credentials\Credentials($CI->config->item('cred_aws_key'), $CI->config->item('cred_aws_secret'));
+
+    /*
     $CI->CLIENT = new Aws\Ses\SesClient([
         'version' => 'latest',
         'region' => 'us-west-2',
@@ -1519,6 +1529,8 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
             'response' => $response,
         ),
     )));
+
+    */
 
     return $response;
 
