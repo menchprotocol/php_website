@@ -1416,11 +1416,6 @@ function clean_phone($phone){
 
 function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0, $x__domain = 0){
 
-    $member_e = superpower_unlocked();
-    if(!$member_e || $member_e['e__id']!=1){
-        return false;
-    }
-
     $CI =& get_instance();
     $domain_email = '"'.get_domain('m__title', $e__id, $x__domain).'" <'.get_domain_setting(28614, $e__id, $x__domain).'>';
 
