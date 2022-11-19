@@ -1462,14 +1462,14 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     //Loadup amazon SES:
     require_once('application/libraries/aws/aws-autoloader.php');
 
-    $CI->CLIENT = new Aws\Ses\SesClient([
-        'profile' => 'default',
+    $client = new Aws\Ses\SesClient([
+        //'profile' => 'default',
         'version' => 'latest',
         'region' => 'us-west-2',
         'credentials' => $CI->config->item('cred_aws'),
     ]);
 
-    $response = $CI->CLIENT->sendEmail(array(
+    $response = $client->sendEmail(array(
         // Source is required
         'Source' => $domain_email,
         // Destination is required
