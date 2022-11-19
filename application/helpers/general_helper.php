@@ -1464,11 +1464,11 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
     //Loadup amazon SES:
     require_once('application/libraries/aws/aws-autoloader.php');
-    //$cred = new Aws\Credentials\Credentials($CI->config->item('cred_aws_key'), $CI->config->item('cred_aws_secret'));
+    $cred = new Aws\Credentials\Credentials($CI->config->item('cred_aws_key'), $CI->config->item('cred_aws_secret'));
     $CI->CLIENT = new Aws\Ses\SesClient([
         'version' => 'latest',
         'region' => 'us-west-2',
-        'credentials' => $CI->config->item('cred_aws'),
+        'credentials' => $cred,//$CI->config->item('cred_aws')
     ]);
 
     $response = $CI->CLIENT->sendEmail(array(
