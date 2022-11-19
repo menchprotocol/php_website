@@ -946,7 +946,7 @@ class X_model extends CI_Model
                     'e__spectrum' => 'DESC',
                 )) as $e_profile) {
 
-                    if(in_array($e_profile['e__id'], $this->config->item('n___4755'))){
+                    if(in_array($e_profile['e__type'], $this->config->item('n___30956'))){
                         //ACTIVE Transactions Not Allowed:
                         continue;
                     }

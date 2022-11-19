@@ -166,7 +166,7 @@ class E extends CI_Controller
         }
 
         //Make sure not a private source:
-        if(in_array($es[0]['e__type'], $this->config->item('n___4755')) && (!$member_e || $member_e['e__id']==$e__id)){
+        if(in_array($es[0]['e__type'], $this->config->item('n___30956')) && (!$member_e || $member_e['e__id']==$e__id)){
             $member_e = superpower_unlocked(12701, true);
         }
 
