@@ -1464,7 +1464,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
     $CI->CLIENT = new Aws\Ses\SesClient([
         //'profile' => 'default',
-        'version' => 'latest',
+        'version' => '2013-04-01',
         'region' => 'us-west-2',
         'credentials' => $CI->config->item('cred_aws'),
     ]);
