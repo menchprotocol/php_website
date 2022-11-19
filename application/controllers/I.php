@@ -84,7 +84,7 @@ class I extends CI_Controller {
             $completed = 0;
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__left' => $i__id,
             ), array(), 0) as $x){
                 if(!count($this->X_model->fetch(array(

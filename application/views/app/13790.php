@@ -71,7 +71,7 @@ if(strlen($_GET['i__id'])){
             'x__up' => $_GET['xaxis_e'], //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
         foreach($this->X_model->fetch(array(
@@ -102,7 +102,7 @@ if(strlen($_GET['i__id'])){
 
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
         'x__left IN (' . join(',', array($_GET['i__id'])) . ')' => null, //IDEA LINKS
     ), array('x__source'), 0, 0, array('x__time' => 'DESC')) as $x){
 
@@ -130,7 +130,7 @@ if(strlen($_GET['i__id'])){
         if(isset($_GET['include_i']) && intval($_GET['include_i']) && count($this->X_model->fetch(array(
                 'x__left IN (' . $_GET['include_i'] . ')' => null, //All of these
                 'x__source' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ))) != count(explode(',',$_GET['include_i']))){
             continue;
@@ -138,7 +138,7 @@ if(strlen($_GET['i__id'])){
         if(isset($_GET['exclude_i']) && intval($_GET['exclude_i']) && count($this->X_model->fetch(array(
                 'x__left IN (' . $_GET['exclude_i'] . ')' => null, //All of these
                 'x__source' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
             continue;
@@ -169,7 +169,7 @@ if(strlen($_GET['i__id'])){
             $discoveries = $this->X_model->fetch(array(
                 'x__left' => $i['i__id'],
                 'x__source' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
 

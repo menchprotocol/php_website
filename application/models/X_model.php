@@ -937,7 +937,7 @@ class X_model extends CI_Model
             if(!$is_current_e || $string_references['ref_time_found']){
 
                 foreach($this->X_model->fetch(array(
-                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                     'x__down' => $referenced_e,
@@ -1148,7 +1148,7 @@ class X_model extends CI_Model
             //Return this if everything is completed, or if this is incomplete:
             if($top_completed || !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__source' => $e__id,
                     'x__left' => $next_i['i__id'],
                 )))){
@@ -1441,7 +1441,7 @@ class X_model extends CI_Model
                 //Always add all the first members to the full list:
                 $qualified_completed = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__left' => $next_i['i__id'],
                 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -1458,7 +1458,7 @@ class X_model extends CI_Model
                     //Update list of qualified members:
                     $qualified_completed = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__left' => $next_i['i__id'],
                     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -1548,7 +1548,7 @@ class X_model extends CI_Model
                     $u_list_name = '';
                     foreach($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__left' => 15736, //What's your Full Legal Name that Matches your ID
                         'x__source' => $add_fields['x__source'],
                     )) as $x_progress){
@@ -1630,7 +1630,7 @@ class X_model extends CI_Model
                 //Not Already Completed:
                 !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__source' => $add_fields['x__source'],
                     'x__left' => $next_i['i__id'],
                 )))){
@@ -1666,7 +1666,7 @@ class X_model extends CI_Model
                     //Remove all Discoveries made by this user:
                     foreach($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__left' => $remove_i['x__right'], //IDEA LINKS
                         'x__source' => $member_e['e__id'],
                     )) as $remove_x){
@@ -2008,7 +2008,7 @@ class X_model extends CI_Model
             //Now let's check member answers to see what they have done:
             $total_completion = $this->X_model->fetch(array(
                 'x__source' => $e__id, //Belongs to this Member
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 0, 0, array(), 'COUNT(x__id) as total_completions');
@@ -2088,7 +2088,7 @@ class X_model extends CI_Model
             //Now let's check member answers to see what they have done:
             $total_completion = $this->X_model->fetch(array(
                 'x__source' => $e__id, //Belongs to this Member
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 0, 0, array(), 'COUNT(x__id) as total_completions');
@@ -2169,7 +2169,7 @@ class X_model extends CI_Model
 
         //Count completed so far:
         $common_completed = $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__source' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -2317,7 +2317,7 @@ class X_model extends CI_Model
         ));
         $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ));
         if (!count($is)) {
             return array(

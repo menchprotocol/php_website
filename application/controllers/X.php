@@ -317,7 +317,7 @@ class X extends CI_Controller
         //Mark this as complete since there is no child to choose from:
         if($member_e && in_array($current_is[0]['i__type'], $this->config->item('n___30646')) && !count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__source' => $member_e['e__id'],
                 'x__left' => $current_is[0]['i__id'],
             )))){
@@ -329,7 +329,7 @@ class X extends CI_Controller
 
         if($member_e && in_array($next_is[0]['i__type'], $this->config->item('n___30646')) && !count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__source' => $member_e['e__id'],
                 'x__left' => $next_is[0]['i__id'],
             )))){
@@ -465,7 +465,7 @@ class X extends CI_Controller
         $next_url = null;
         if(!count($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__source' => $member_e['e__id'],
             'x__left' => $is[0]['i__id'],
         )))){
@@ -883,7 +883,7 @@ class X extends CI_Controller
         //Delete previous answer(s):
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $is[0]['i__id'],
             'x__source' => $member_e['e__id'],
         )) as $x_progress){
@@ -1034,7 +1034,7 @@ class X extends CI_Controller
         //Delete previous answer(s):
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $is[0]['i__id'],
             'x__source' => $member_e['e__id'],
         )) as $x_progress){
@@ -1577,7 +1577,7 @@ class X extends CI_Controller
         //Fetch their current progress transactions:
         $progress_x = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null,
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__source' => $e__id,
         ), array(), 0);
 

@@ -12,7 +12,7 @@ foreach($this->X_model->fetch(array(
     //Does this have
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
         'x__left' => $x['x__left'],
         'x__source' => $x['x__source'],
         'x__id != ' => $x['x__id'], //DISCOVERY COIN

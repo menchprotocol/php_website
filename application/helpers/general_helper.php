@@ -614,7 +614,7 @@ function i_spots_remaining($i__id){
         //We have a limit! See if we've met it already:
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $i__id,
         );
         if($member_e){
@@ -659,7 +659,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
             //Find all answers
             foreach($CI->X_model->fetch(array(
                 'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__source' => $x__source,
                 'x__left' => $x_progress['x__left'],
             ), array(), 0) as $x){
@@ -722,7 +722,7 @@ function i_is_available($i__id, $log_tnx){
         'x__right' => $i__id,
         'x__type' => 13865, //Must Include Any
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__up'), 0);
     if(count($fetch_13865)){
         //Let's see if they meet any of these PREREQUISITES:
@@ -750,7 +750,7 @@ function i_is_available($i__id, $log_tnx){
         'x__right' => $i__id,
         'x__type' => 27984, //Must Include All
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__up'), 0);
     if(count($fetch_27984)){
         //Let's see if they meet all of these PREREQUISITES:
@@ -782,7 +782,7 @@ function i_is_available($i__id, $log_tnx){
         'x__right' => $i__id,
         'x__type' => 26600, //Must Exclude All
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__up'), 0);
     if(count($fetch_26600)){
         //Let's see if they meet any of these PREREQUISITES:
@@ -959,7 +959,7 @@ function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null
         //DISCOVERIES
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
         );
 
     } else {
@@ -1580,9 +1580,9 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
     $query = array();
     if(strlen($i__id)){
         $query = array_merge($query, $CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___26582')) . ')' => null, //Send Instant Message
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
             'x__left IN (' . $i__id . ')' => null, //ACTIVE
         ), array('x__source'), 0, 0, array('x__id' => 'DESC')));
     }
@@ -1591,7 +1591,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         $query = array_merge($query, $CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
             'x__up IN (' . $e__id . ')' => null,
         ), array('x__down'), 0, 0, array('x__id' => 'DESC')));
     }

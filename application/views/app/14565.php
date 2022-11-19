@@ -64,7 +64,7 @@ if(isset($_GET['e__id'])){
         'x__up' => $_GET['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $header){
 
         $list_body = '';
@@ -107,7 +107,7 @@ if(isset($_GET['e__id'])){
             'x__up' => $header['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $list_e){
 
 
@@ -123,7 +123,7 @@ if(isset($_GET['e__id'])){
                 foreach($this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                     'x__down' => $list_e['e__id'],
                 ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC')) as $url){
                     if(filter_var($url['x__message'], FILTER_VALIDATE_EMAIL)){

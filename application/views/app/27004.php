@@ -20,7 +20,7 @@ $payment_es = $this->X_model->fetch(array(
     'x__up' => 27004,
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
 ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
 
@@ -89,7 +89,7 @@ foreach($i_query as $i){
 
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
         'x__left' => $i['i__id'],
     ), array(), 0) as $x){
 

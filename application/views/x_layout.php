@@ -29,7 +29,7 @@ $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
     'x__source' => $x__source,
     'x__left' => $i_focus['i__id'],
 )) : array() );
@@ -117,7 +117,7 @@ if($top_i__id && $x__source && $top_i__id!=$i_focus['i__id']){
                 $i_is_available = i_is_available($value['i__id'], false);
                 if(!$i_is_available['status'] || !count($this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__source' => $x__source,
                         'x__left' => $value['i__id'],
                     )))){
@@ -310,7 +310,7 @@ if($top_i__id) {
             //Mark this as complete since there is no child to choose from:
             if (!count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null, //DISCOVERY COMPLETE
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__source' => $x__source,
                 'x__left' => $i_focus['i__id'],
             )))) {

@@ -6,7 +6,7 @@ $longest_id = 0;
 $cron_jobs = $this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     'x__up' => 7274,
 ), array('x__down'), view_memory(6404,11064), 0, array('x__message' => 'ASC'));
 foreach($cron_jobs as $cron_job){

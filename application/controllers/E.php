@@ -114,7 +114,7 @@ class E extends CI_Controller
                             //Count discoveries:
                             $x_coins = $this->X_model->fetch(array(
                                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERY COIN
+                                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                                 'x__left' => $i__id,
                             ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
                             $sidebar_ui .= '<a href="/~'.$i__id.'" class="css__title" title="'.$m2['m__title'].'"><span class="icon-block-xs">'.$m2['m__cover'].'</span>'.( $x_coins[0]['totals']>0 ? number_format($x_coins[0]['totals'], 0).' ' : '' ).$m2['m__title'].'</a>';
@@ -1056,7 +1056,7 @@ class E extends CI_Controller
                 'x__up' => $_POST['focus__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
             );
 
             if($_POST['enable_mulitiselect'] && $_POST['was_previously_selected']){
@@ -1689,7 +1689,7 @@ class E extends CI_Controller
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'));
 
 
@@ -1791,7 +1791,7 @@ class E extends CI_Controller
         $es = $this->E_model->fetch(array(
             'e__id' => $_POST['sign_e__id'],
         ));
-        if (!in_array($es[0]['e__type'], $this->config->item('n___7357') /* PRIVATE */)) {
+        if (!in_array($es[0]['e__type'], $this->config->item('n___7357') /* PUBLIC */)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Your account source is not public. Contact us to adjust your account.',
@@ -2061,7 +2061,7 @@ class E extends CI_Controller
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'));
 
 
