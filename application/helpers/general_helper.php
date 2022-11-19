@@ -1911,14 +1911,16 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
     }
 
     //Featured Tree for all Domains:
+    /*
     $features_sources = array();
-    foreach($this->config->item('e___30829') as $x__type => $m) {
-        if(in_array($x__type , $this->config->item('n___14870')) && strlen($m['m__message']) && is_array($this->config->item('n___'.substr($m['m__message'], 1))) && count($this->config->item('n___'.substr($m['m__message'], 1)))){
-            foreach($this->config->item('n___'.substr($m['m__message'], 1)) as $featured_e){
+    foreach($CI->config->item('e___30829') as $x__type => $m) {
+        if(in_array($x__type , $CI->config->item('n___14870')) && strlen($m['m__message']) && is_array($CI->config->item('n___'.substr($m['m__message'], 1))) && count($CI->config->item('n___'.substr($m['m__message'], 1)))){
+            foreach($CI->config->item('n___'.substr($m['m__message'], 1)) as $featured_e){
                 $features_sources[$featured_e] = $x__type;
             }
         }
     }
+    */
 
 
     $all_export_rows = array();
