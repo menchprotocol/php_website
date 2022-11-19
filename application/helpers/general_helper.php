@@ -1463,8 +1463,8 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     require_once('application/libraries/aws/aws-autoloader.php');
 
     $CI->CLIENT = new Aws\Ses\SesClient([
-        //'profile' => 'default',
-        'version' => '2013-04-01',
+        'profile' => 'default',
+        'version' => 'latest',
         'region' => 'us-west-2',
         'credentials' => $CI->config->item('cred_aws'),
     ]);
