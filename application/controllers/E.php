@@ -156,11 +156,6 @@ class E extends CI_Controller
 
         $member_e = superpower_unlocked();
 
-        //Make sure not a private source:
-        if(in_array($e__id, $this->config->item('n___4755')) && (!$member_e || $member_e['e__id']==$e__id)){
-            $member_e = superpower_unlocked(12701, true);
-        }
-
         //Validate source ID and fetch data:
         $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
@@ -168,6 +163,11 @@ class E extends CI_Controller
         ));
         if (count($es) < 1) {
             return redirect_message(home_url());
+        }
+
+        //Make sure not a private source:
+        if(in_array($es[0]['e__type'], $this->config->item('n___4755')) && (!$member_e || $member_e['e__id']==$e__id)){
+            $member_e = superpower_unlocked(12701, true);
         }
 
         //Load views:

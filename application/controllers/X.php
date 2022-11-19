@@ -1577,7 +1577,7 @@ class X extends CI_Controller
         //Fetch their current progress transactions:
         $progress_x = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
+            'x__type IN (' . join(',', $this->config->item('n___12229')) . ')' => null,
             'x__source' => $e__id,
         ), array(), 0);
 

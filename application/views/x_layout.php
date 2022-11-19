@@ -216,11 +216,12 @@ if($top_i__id){
             //Set completion method:
             if(!count($unlock_paths)){
 
-                //No path found:
-                array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i_focus, array(
-                    'x__type' => 7492, //TERMINATE
+                $this->X_model->create(array(
+                    'x__type' => 4246, //Platform Bug Reports
                     'x__source' => $x__source,
-                )));
+                    'x__left' => $i_focus['i__id'],
+                    'x__message' => 'unlock_paths() Failed to find a path',
+                ));
 
             }
         }
@@ -647,10 +648,8 @@ if($top_i__id) {
 
 if(!$top_i__id){
 
-    $discovery_e = 4235;
-
     //Get Started
-    echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[$discovery_e]['m__title'].' '.$e___11035[$discovery_e]['m__cover'].'</a></div>';
+    echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__cover'].'</a></div>';
     echo '<div class="doclear">&nbsp;</div>';
 
 } else {

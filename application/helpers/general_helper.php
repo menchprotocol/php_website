@@ -1459,6 +1459,9 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
         $email_message .= '<div><a href="https://'.get_domain('m__message', $e__id, $x__domain).'/-28904?e__id='.$e__id.'&e__hash='.md5($e__id.view_memory(6404,30863)).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
     }
 
+    print_r($CI->config->item('cred_aws'));
+    die($CI->config->item('cred_algolia_app_id') .' / '. $CI->config->item('cred_algolia_api_key'));
+
     //Loadup amazon SES:
     require_once('application/libraries/aws/aws-autoloader.php');
 
