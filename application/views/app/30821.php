@@ -5,7 +5,7 @@ $found = 0;
 $stats = array();
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 4235,
+    'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
 ), array(), 0) as $x){
     $total++;
     $totalito = 0;

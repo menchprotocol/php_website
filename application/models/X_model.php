@@ -1218,16 +1218,25 @@ class X_model extends CI_Model
         }
 
         //Make sure not previously added to this Member's discoveries:
-        if(!count($this->X_model->fetch(array(
-                'x__source' => $e__id,
-                'x__left' => $i__id,
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))){
+        $xs = $this->X_model->fetch(array(
+            'x__source' => $e__id,
+            'x__left' => $i__id,
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ));
+        if(count($xs)){
 
-            //Not added to their discoveries so far, let's go ahead and add it:
-            $this->X_model->mark_complete($is[0]['i__id'], $is[0], array(
-                'x__type' => 4235, //Get Started
+            //Already has a starting point:
+            $top_i__id =  $xs[0]['x__left'];
+
+        } else {
+
+            //This is the new top ID
+            $top_i__id =  $is[0]['i__id'];
+
+            //New Starting Point:
+            $this->X_model->mark_complete($top_i__id, $is[0], array(
+                'x__type' => 4235, //Get started Needs Answer?
                 'x__source' => $e__id,
             ));
 
@@ -1236,22 +1245,23 @@ class X_model extends CI_Model
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                'x__left' => $is[0]['i__id'],
+                'x__left' => $top_i__id,
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             if(count($is_next)==1){
                 foreach($is_next as $single_child){
                     if(in_array($single_child['i__type'], $this->config->item('n___12330'))){
-                        $this->X_model->mark_complete($is[0]['i__id'], $single_child, array(
+                        $this->X_model->mark_complete($top_i__id, $single_child, array(
                             'x__type' => 4559, //DISCOVERY MESSAGES
                             'x__source' => $e__id,
                         ));
                     }
                 }
             }
+
         }
 
         //Now return next idea:
-        return $this->X_model->find_next($e__id, $is[0]['i__id'], $is[0]);
+        return $this->X_model->find_next($e__id, $top_i__id, $is[0]);
 
     }
 
@@ -1703,7 +1713,7 @@ class X_model extends CI_Model
 
                         //Add as watcher:
                         $this->X_model->create(array(
-                            'x__type' => 10573, //IDEA SOURCES
+                            'x__type' => 10573, //WATCHERS
                             'x__source' => $member_e['e__id'],
                             'x__up' => $member_e['e__id'],
                             'x__right' => $result['new_i__id'],
@@ -1720,6 +1730,16 @@ class X_model extends CI_Model
                     //Send DM with all the new clone Ideas:
                     $clone_urls = $clone_urls.'You have been added as a watcher so you will be notified when anyone starts using your links.';
                     $this->X_model->send_dm($member_e['e__id'], $i['i__title'], $clone_urls);
+
+                    //Also DM all watchers of the idea:
+                    foreach($this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type' => 10573, //WATCHERS
+                        'x__right' => $i['i__id'],
+                        'x__up > 0' => null,
+                    ), array(), 0) as $watcher){
+                        $this->X_model->send_dm($watcher['x__up'], $i['i__title'], $clone_urls);
+                    }
                 }
 
             }
@@ -2275,7 +2295,7 @@ class X_model extends CI_Model
 
     function ids($e__id, $i__id = 0){
 
-        //Simply returns all the idea IDs for a u's discoveries:
+        //Simply returns all the idea IDs for a users starting points
         if($i__id > 0){
 
             if(!$e__id){

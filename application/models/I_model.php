@@ -501,12 +501,12 @@ class I_model extends CI_Model
 
             } elseif($x__type==10573){
 
-                //My Ideas
+                //Watch
 
                 //Duplicate Check:
                 if(count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 10573, //STARRED
+                    'x__type' => 10573, //Watch
                     'x__up' => $focus_e[0]['e__id'],
                     'x__right' => $link_i[0]['i__id'],
                 )))){
@@ -602,17 +602,17 @@ class I_model extends CI_Model
 
         } elseif($x__type == 10573){
 
-            //My Ideas
+            //Watch
 
             //Add to top of my ideas:
             $this->X_model->create(array(
-                'x__type' => 10573, //STARRED
+                'x__type' => 10573, //Watch
                 'x__source' => $x__source,
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
                 'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type' => 10573, //STARRED
+                        'x__type' => 10573, //Watch
                         'x__up' => $focus_e[0]['e__id'],
                     )),
             ), true);
@@ -620,7 +620,7 @@ class I_model extends CI_Model
             $new_i = $this->X_model->fetch(array(
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 10573, //STARRED
+                'x__type' => 10573, //Watch
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
             ), array('x__right'));

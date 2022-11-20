@@ -984,7 +984,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         $join_objects = array('x__right');
         $query_filters = array(
             'x__up' => $e__id,
-            'x__type' => 10573, //STARRED
+            'x__type' => 10573, //WATCHERS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
         );
@@ -1721,7 +1721,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $superpower_12673 = superpower_active(12673, true);
     $is_completed = ($completion_rate['completion_percentage']>=100);
     $is_started = ($completion_rate['completion_percentage']>0);
-    $start_to_unlock = in_array($x__type, $CI->config->item('n___14377'));
     $parent_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___6193')) );
     $force_order = ( $previous_i && count($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1731,12 +1730,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         ), array(), 1)));
     $locking_enabled = !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($force_order && $discovery_mode);
     $has_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
-    $has_soft_lock = $locking_enabled && !$is_completed && ($has_hard_lock || (!$is_first_incomplete && ($force_order || ($start_to_unlock && !$is_started))));
+    $has_soft_lock = $locking_enabled && !$is_completed && ($has_hard_lock || (!$is_first_incomplete && ($force_order || !$is_started)));
     $has_sortable = !$focus_coin && !$has_soft_lock && $editing_enabled && in_array($x__type, $CI->config->item('n___4603'));
     $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i);
     $has_any_lock = $has_soft_lock || $has_hard_lock;
-    $lock_notice = ( $force_order ? 14488 : 14377 );
 
     if(in_array($i['i__type'], $CI->config->item('n___14454')) && !$is_completed) {
         if($top_i__id){
