@@ -282,7 +282,7 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
             echo ' @media (max-width:767px) { .list-border, .msg { max-width: calc(100% - 16px); margin: 0 auto; } }';
 
             //Force Dark Mode:
-            $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
+            //$body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
 
         }
     }
