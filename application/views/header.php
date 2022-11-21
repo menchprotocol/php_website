@@ -60,7 +60,6 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
 
 
     echo '<script type="text/javascript"> ';
-
     //MEMBER VARIABLES
     echo ' var js_session_superpowers_activated = ' . json_encode( ($member_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
     echo ' var superpower_js_10939 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(10939, $this->session->userdata('session_superpowers_activated'))) . '; ';
@@ -82,6 +81,19 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
 
     echo '</script>';
     ?>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(window).scroll(function() {
+                var height = $(window).scrollTop();
+                console.log(height);
+                if(height  > 500) {
+                    $('.fixed-top').removeClass('top-header-position');
+                }
+            });
+        });
+    </script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -259,6 +271,8 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
             echo '}';
 
             echo ' .halfbg, .msg>span, .fixed-top { background: rgba(0, 0, 0, 0.69) !important; } ';
+            echo ' .top-header-position .fixed-top { background: none !important; } ';
+
             echo ' .msg>span { display: block; padding: 3px 0; } ';
             //echo ' .halfbg, .msg>span, .msg { line-height: 150% !important; } ';
             echo ' .msg>span u, .msg>span a { line-height: 100% !important; padding:0 !important; } ';
@@ -327,7 +341,7 @@ if(!$basic_header_footer){
 
     //Do not show for /sign view
     ?>
-    <div class="container fixed-top" style="padding-bottom: 0 !important; min-height: 38px;">
+    <div class="container fixed-top top-header-position" style="padding-bottom: 0 !important; min-height: 38px;">
         <div class="row justify-content">
             <table class="platform-navigation">
                 <tr>
