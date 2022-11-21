@@ -8,49 +8,48 @@ if(!isset($_GET['i__id']) && strlen(get_domain_setting(14002))){
     $_GET['i__id'] = get_domain_setting(14002);
 }
 
-if(isset($_GET['i__id'])){
-    
-    $is = $this->I_model->fetch(array(
-        'i__id' => $_GET['i__id'],
-    ));
+if(!isset($_GET['i__id'])){
+    die('Error: Primary Idea not set');
+}
 
-    if(count($is)){
+$is = $this->I_model->fetch(array(
+    'i__id' => $_GET['i__id'],
+));
 
-        //TITLE
-        echo '<h1 class="maxwidth" style="margin: 144px auto 377px !important;">' . $is[0]['i__title'] . '</h1>';
-
-        echo '<div class="halfbg">';
-
-        //MESSAGES
-        echo '<div class="center-frame hide-subline maxwidth">';
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $is[0]['i__id'],
-        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
-
-            $msg = $this->X_model->message_view( $x['x__message'], true);
-
-            if(substr_count($msg, '//www.youtube.com/embed/')==1){
-                //YouTube video link
-                echo '<div class="video-frame vid-padding" style="text-align: center;"><a href="javascript:void(0)" onclick="video_play()"><i class="fad fa-play-circle" style="font-size:8em !important;"></i></a></div>';
-                echo '<div class="video-frame hidden">'.$msg.'</div>';
-            } else {
-                echo $msg;
-            }
-
-        }
-        echo '</div>';
-    }
-
-} else {
-
-    echo '<div class="halfbg">';
-
+if(!count($is)){
+    die('Error: Primary Idea not found');
 }
 
 
 
+//TITLE
+echo '<h1 class="maxwidth" style="margin: 144px auto 377px !important;">' . $is[0]['i__title'] . '</h1>';
+
+
+//Start darker background:
+echo '<div class="halfbg narrow-bar">';
+
+
+//MESSAGES
+echo '<div class="center-frame hide-subline maxwidth">';
+foreach($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type' => 4231, //IDEA NOTES Messages
+    'x__right' => $is[0]['i__id'],
+), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
+
+    $msg = $this->X_model->message_view( $x['x__message'], true);
+
+    if(substr_count($msg, '//www.youtube.com/embed/')==1){
+        //YouTube video link
+        echo '<div class="video-frame vid-padding" style="text-align: center;"><a href="javascript:void(0)" onclick="video_play()"><i class="fad fa-play-circle" style="font-size:8em !important;"></i></a></div>';
+        echo '<div class="video-frame hidden">'.$msg.'</div>';
+    } else {
+        echo $msg;
+    }
+
+}
+echo '</div>';
 
 
 

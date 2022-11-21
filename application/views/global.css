@@ -3756,3 +3756,8 @@ main {
 .halfbg .glossy-bg .list-group-item {
     background: none !important;
 }
+.narrow-bar {
+    padding-top: 21px;
+    max-width: 600px;
+    margin: 0 auto;
+}
