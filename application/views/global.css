@@ -59,15 +59,15 @@ body {
 }
 .media-content {
     border-radius: 0 !important;
-    max-width: 600px !important;
+    max-width: 880px !important;
 }
 .maxwidth {
     border-radius: 0 !important;
-    max-width: 600px !important;
+    max-width: 880px !important;
     margin: 0 auto !important;
 }
 .x__message video {
-    max-width: 600px;
+    max-width: 880px;
     border-radius: 0 !important;
 }
 .x__message img, .i_content img, .content-image {
@@ -77,7 +77,7 @@ body {
     display: block;
 }
 .platform-12273 .media-content, .platform-12273 .x__message video {
-    max-width: 600px;
+    max-width: 880px;
 }
 .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
     margin: 0;
@@ -122,7 +122,7 @@ table td { border: none !important; }
 h1 {
     padding:34px 8px 55px !important;
     margin:0;
-    font-size:3.3em;
+    font-size:6.3em;
     text-align: center;
 }
 
@@ -1578,7 +1578,7 @@ i, .btn .show-max {
     margin: 0 0 21px 0 !important;
     width: 100% !important;
     height: auto !important;
-    max-width: 600px;
+    max-width: 880px;
     max-height: 600px;
     border-radius: 0 !important;
 }
@@ -1684,7 +1684,7 @@ i, .btn .show-max {
     padding: 13px 0;
     display: block;
     margin: 0 auto;
-    max-width: 600px;
+    max-width: 880px;
     width: calc(100% - 16px);
 }
 .social2-footer{
@@ -3187,7 +3187,7 @@ textarea {
 }
 
 .container-center{
-    max-width: 600px;
+    max-width: 880px;
     margin: 0 auto;
 }
 
