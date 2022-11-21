@@ -3015,7 +3015,9 @@ h4.css__title{
 
 
 
-
+.list-group-item-action:hover {
+    background-color: #000 !important;
+}
 
 /* STICKY COLOR: COLORFUL */
 .custom_ui_28979_28980 .cover-content *{
