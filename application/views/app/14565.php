@@ -165,6 +165,7 @@ if(isset($_GET['e__id'])){
 
 
 
+echo '<div class="halfbg">';
 
 
 //Info Box(es):
@@ -203,10 +204,8 @@ if($domain_info_boxes){
         }
 
         if($info_item){
-            echo '<div class="halfbg">';
             echo '<h2 class="info-head">'.$info_box['e__title'].'</h2>';
             echo '<div class="row justify-content" style="margin-bottom: 89px;">'.$info_item.'</div>';
-            echo '</div>';
         }
 
     }
@@ -225,7 +224,7 @@ if($faq_i__id){
         'i__id' => $faq_i__id,
     ));
 
-    echo '<div class="container-center halfbg">';
+    echo '<div class="container-center">';
 
     //IDEA TITLE
     echo '<h2 class="info-head">' . $is_faq[0]['i__title'] . '</h2>';
@@ -267,6 +266,8 @@ if($faq_i__id){
     echo '</div>';
 }
 
+
+echo '</div>';
 
 
 //Featured Topics
@@ -365,6 +366,9 @@ if($social_id && is_array($this->config->item('e___'.$social_id))){
     echo '</ul>';
 
 }
+
+
+echo '</div>';
 
 
 if($domain_background){
