@@ -237,7 +237,6 @@ if($faq_i__id){
         echo $this->X_model->message_view($x['x__message'], true);
     }
 
-    echo '<br /><br />';
     echo '<div class="halfbg">';
 
     //1 Level of Next Ideas:
