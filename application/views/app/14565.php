@@ -29,9 +29,9 @@ if(isset($_GET['i__id'])){
 
             $msg = $this->X_model->message_view( $x['x__message'], true);
 
-            if(substr_count($msg, '//www.youtube.com/embed/')==1){
+            if(0 && substr_count($msg, '//www.youtube.com/embed/')==1){
                 //YouTube video link
-                echo '<div class="video-frame vid-padding" style="text-align: center;"><a href="javascript:void(0)" onclick="video_play()"><i class="fad fa-play-circle" style="color:#FFFFFF; font-size:8em !important;"></i></a></div>';
+                echo '<div class="video-frame vid-padding" style="text-align: center;"><a href="javascript:void(0)" onclick="video_play()"><i class="fad fa-play-circle" style="font-size:8em !important;"></i></a></div>';
                 echo '<div class="video-frame hidden">'.$msg.'</div>';
             } else {
                 echo $msg;
