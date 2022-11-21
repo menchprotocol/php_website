@@ -247,6 +247,7 @@ if($faq_i__id){
         echo '<h3 style="margin:13px 0; padding-left:5px; font-size:1.3em;"><a href="javascript:void(0);" onclick="$(\'.i_msg_'.$i['i__id'].'\').toggleClass(\'hidden\');" class="inner-content doblock css__title">' . $i['i__title'] . '</a></h3>';
 
         //MESSAGES
+        echo '<div style="border-bottom: 1px solid #CCC;">';
         echo '<div class="i_msg_'.$i['i__id'].' hidden" style="padding:5px 5px 13px 21px;">';
         foreach ($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -255,6 +256,7 @@ if($faq_i__id){
         ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
             echo $this->X_model->message_view($x['x__message'], true);
         }
+        echo '</div>';
         echo '</div>';
 
     }
