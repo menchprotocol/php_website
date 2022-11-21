@@ -300,9 +300,6 @@ foreach($this->X_model->fetch(array(
     echo '<div style="padding-top: 10px; padding-left: 41px;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank">'.$x['x__message'].'</a>' : $x['x__message'] ) . '</div>';
     echo '</div>';
 
-foreach( as $x) {
-
-}
 }
 echo '</div>';
 
