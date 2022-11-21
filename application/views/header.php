@@ -374,7 +374,7 @@ if(!$basic_header_footer){
                     echo '<td class="block-menu">';
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    echo '<span class="icon-block source_cover source_cover_mini">' . ( $member_e ? view_cover(12274,$member_e['e__cover'], 1) : $e___13479[$menu_type]['m__cover'] ) .'</span>';
+                    echo '<span class="icon-block source_cover source_cover_mini menu-icon">' . ( $member_e ? view_cover(12274,$member_e['e__cover'], 1) : $e___13479[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
