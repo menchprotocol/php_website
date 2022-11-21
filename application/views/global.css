@@ -1681,7 +1681,7 @@ i, .btn .show-max {
     text-align: center;
     list-style: none;
     margin: 89px 0 34px;
-    padding: 13px 0;
+    padding: 13px 0 34px;
     display: block;
     margin: 0 auto;
     max-width: 880px;
