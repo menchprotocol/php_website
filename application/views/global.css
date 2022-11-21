@@ -3730,6 +3730,10 @@ main {
     overflow-y: auto;
 }
 
+.source-featured{
+    padding: 21px 0;
+}
+
 .source-info{
     padding: 10px;
 }

@@ -248,22 +248,6 @@ if($top_completed){
 //echo view_i(6255, $top_i__id, null, $i_focus);
 
 
-//Featured Sources:
-echo '<div class="source-featured">';
-foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-    'e__type IN (' . join(',', $this->config->item('n___30977')) . ')' => null, //Featured
-    'x__right' => $i_focus['i__id'],
-), array('x__up'), 0) as $x){
-    echo '<div class="source-info">';
-    echo '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>';
-    echo '<span>'.$x['e__title'] . '</span>';
-    echo '<div>'.$x['x__message'] . '</div>';
-    echo '</div>';
-}
-echo '</div>';
-
 
 
 //MESSAGES
@@ -298,6 +282,27 @@ if($first_child>0 && count($is_next)==1){
 } else {
     echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$i_focus['i__title'].'</h1>';
 }
+
+
+
+//Featured Sources:
+echo '<div class="source-featured">';
+foreach($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'e__type IN (' . join(',', $this->config->item('n___30977')) . ')' => null, //Featured
+    'x__right' => $i_focus['i__id'],
+), array('x__up'), 0) as $x){
+    echo '<div class="source-info">';
+    echo '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>';
+    echo '<span style="font-size:1.5em; font-weight: bold;">'.$x['e__title'] . '</span>';
+    echo '<div style="padding-top: 10px; padding-left: 41px;">'.$x['x__message'] . '</div>';
+    echo '</div>';
+}
+echo '</div>';
+
+
+
 
 if($messages_string){
     echo $messages_string;
