@@ -153,7 +153,7 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
         $(window).scroll(function() {
             var height = $(window).scrollTop();
             console.log(height);
-            if(height  > 500) {
+            if(height  > 89) {
                 $('.fixed-top').removeClass('top-header-position');
             } else {
                 $('.fixed-top').addClass('top-header-position');

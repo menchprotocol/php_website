@@ -17,7 +17,9 @@ if(isset($_GET['i__id'])){
     if(count($is)){
 
         //TITLE
-        echo '<h1 class="maxwidth" style="margin: 89px auto 387px !important;">' . $is[0]['i__title'] . '</h1>';
+        echo '<h1 class="maxwidth" style="margin: 144px auto 233px !important;">' . $is[0]['i__title'] . '</h1>';
+
+        echo '<div class="halfbg">';
 
         //MESSAGES
         echo '<div class="center-frame hide-subline maxwidth">';
@@ -41,12 +43,11 @@ if(isset($_GET['i__id'])){
         echo '</div>';
     }
 
+} else {
+
+    echo '<div class="halfbg">';
+
 }
-
-
-
-
-echo '<div class="halfbg">';
 
 
 
