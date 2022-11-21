@@ -3740,3 +3740,8 @@ main {
 }
 
 .home_black_font h1 { color:#000000 !important; }
+
+.halfbg .halfbg,
+.halfbg .glossy-bg .list-group-item {
+    background: none !important;
+}
