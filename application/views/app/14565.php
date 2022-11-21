@@ -186,7 +186,7 @@ if($domain_info_boxes){
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_element) {
-            $info_item .= '<div class="col-12 col-sm-6 col-md-4">';
+            $info_item .= '<div class="col-12 col-sm-6 col-md-4 halfbg">';
             $info_item .= '<div class="info_box">';
             if(filter_var($info_element['e__cover'], FILTER_VALIDATE_URL)){
                 $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['e__cover'].'\');"></div>'.'</div>';
@@ -247,6 +247,7 @@ if($faq_i__id){
         'x__left' => $faq_i__id,
     ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i) {
 
+        echo '<div class="halfbg">';
         echo '<h3 style="margin:13px 0; padding-left:5px; font-size:1.3em;"><a href="javascript:void(0);" onclick="$(\'.i_msg_'.$i['i__id'].'\').toggleClass(\'hidden\');" class="inner-content doblock css__title">' . $i['i__title'] . '</a></h3>';
 
         //MESSAGES
@@ -259,6 +260,7 @@ if($faq_i__id){
         ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
             echo $this->X_model->message_view($x['x__message'], true);
         }
+        echo '</div>';
         echo '</div>';
         echo '</div>';
 
