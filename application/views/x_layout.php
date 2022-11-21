@@ -281,6 +281,18 @@ if($first_child>0 && count($is_next)==1){
     }
 } else {
     echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$i_focus['i__title'].'</h1>';
+
+
+
+
+if($messages_string){
+    echo $messages_string;
+} elseif(!$messages_string && !count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12330'))) {
+    //Auto complete:
+    echo '<script> $(document).ready(function () { go_next() }); </script>';
+}
+
+
 }
 
 
@@ -304,15 +316,6 @@ foreach($this->X_model->fetch(array(
 }
 echo '</div>';
 
-
-
-
-if($messages_string){
-    echo $messages_string;
-} elseif(!$messages_string && !count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12330'))) {
-    //Auto complete:
-    echo '<script> $(document).ready(function () { go_next() }); </script>';
-}
 
 
 if($top_i__id) {
