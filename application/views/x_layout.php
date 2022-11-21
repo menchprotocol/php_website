@@ -307,10 +307,9 @@ foreach($this->X_model->fetch(array(
     'x__up > 0' => null,
 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
 
-    echo '<div class="source-info">';
+    echo '<div class="source-info" title="'.$x['e__title'] . '">';
     echo '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>';
-    echo '<span>'.$x['e__title'] . '</span>';
-    echo '<div style="padding-top: 10px; padding-left: 41px; font-size:1.3em; font-weight: bold;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline; line-height:120%;">'.$x['x__message'].'</a>' : $x['x__message'] ) . '</div>';
+    echo '<span style="font-size:1.3em; font-weight: bold;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline; line-height:120%;">'.$x['x__message'].'</a>' : $x['x__message'] ) . '</span>';
     echo '</div>';
 
 }
