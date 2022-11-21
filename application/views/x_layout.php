@@ -3,6 +3,19 @@
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 
+//Any Hard Redirects?
+foreach($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__right' => $i_focus['i__id'],
+    'x__up' => 30811, //Hard Redirect
+)) as $redirect){
+    if(filter_var($redirect['x__message'], FILTER_VALIDATE_URL)){
+        js_redirect($redirect['x__message'], 1550);
+        break;
+    }
+}
+
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -24,10 +37,10 @@ foreach($is_next as $in_key => $in_value){
     }
 }
 
-$one_child_hack = ($first_child>0 && count($is_next)==1);
 $i_focus['i__title'] = str_replace('"','',$i_focus['i__title']);
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
+$one_child_hack = ($first_child>0 && count($is_next)==1 && !$top_i__id);
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -246,8 +259,6 @@ if($top_completed){
 }
 
 
-//echo view_i(6255, $top_i__id, null, $i_focus);
-
 
 
 
@@ -287,8 +298,11 @@ if($one_child_hack){
 
 
 if($messages_string){
+
+    echo 'hiii';
     echo $messages_string;
-} elseif(!$messages_string && !count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12330'))) {
+
+} elseif(!count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12330'))) {
     //Auto complete:
     echo '<script> $(document).ready(function () { go_next() }); </script>';
 }
@@ -846,21 +860,6 @@ echo '</div>';
 <input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
 <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
-
-
-<?php
-foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-    'x__right' => $i_focus['i__id'],
-    'x__up' => 30811, //Hard Redirect
-)) as $redirect){
-    if(filter_var($redirect['x__message'], FILTER_VALIDATE_URL)){
-        js_redirect($redirect['x__message'], 1550);
-        break;
-    }
-}
-?>
 
 <script type="text/javascript">
 
