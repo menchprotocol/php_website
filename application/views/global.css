@@ -223,7 +223,7 @@ li a {
 }
 
 a.btn, .btn.dropdown-toggle, label.btn {
-    padding:2px 10px 10px 10px;
+    padding:10px;
     text-decoration: none;
 }
 
