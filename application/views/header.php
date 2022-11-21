@@ -21,6 +21,9 @@ $body_class = 'platform-'.$current_coin_id; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
 }
+if(in_array($domain__id, $this->config->item('n___30984'))){
+    $body_class .= ' home_black_font ';
+}
 
 
 ?><!doctype html>
