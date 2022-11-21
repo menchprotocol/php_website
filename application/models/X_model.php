@@ -663,8 +663,6 @@ class X_model extends CI_Model
         //Validate message:
         $msg_validation = $this->X_model->message_compile($message_input, $is_discovery_mode, $member_e, 0, $message_i__id, false, $simple_version);
 
-        print_r($msg_validation);
-
 
         //Did we have ane error in message validation?
         if(!isset($msg_validation['output_messages'])){
@@ -1054,7 +1052,7 @@ class X_model extends CI_Model
         return array(
             'status' => 1,
             'clean_message' => trim($message_input),
-            'output_messages' => ( strlen(trim($output_body_message)) ? '<div '.( is_new() ? '' : 'class="msg"' ).'><span>' . nl2br($output_body_message) . '</span></div>' : null ),
+            'output_messages' => ( strlen(trim($message_input)) ? '<div '.( is_new() ? '' : 'class="msg"' ).'><span>' . nl2br($output_body_message) . '</span></div>' : null ),
             'note_references' => $note_references,
         );
     }
