@@ -292,6 +292,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'e__type IN (' . join(',', $this->config->item('n___30977')) . ')' => null, //Featured
     'x__right' => $i_focus['i__id'],
+    'x__up > 0' => null,
 ), array('x__up'), 0, array('e__title' => 'DESC')) as $x){
 
     echo '<div class="source-info">';
