@@ -3761,3 +3761,10 @@ main {
     max-width: 600px;
     margin: 0 auto;
 }
+
+
+
+.home_black_font .top-header-position .icon-block i,
+.home_black_font .top-header-position .css__title {
+    color:#000000 !important;
+}
