@@ -83,21 +83,6 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
     ?>
 
 
-    <script type="text/javascript">
-        $(document).ready(function(){
-
-            $(window).resize(function(e){
-                console.log(e);
-            });
-
-            $(window).scroll(function (event) {
-                var sc = $(window).scrollTop();
-                console.log(sc);
-            });
-
-        })
-    </script>
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -162,6 +147,24 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
 
     <link href="/application/views/global.css?v=dir3<?= view_memory(6404,11060) ?>" rel="stylesheet"/>
     <script src="/application/views/global.js?v=dir3<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        $(window).scroll(function() {
+            if($(window).scrollTop() + $(window).height() == $(document).height()) {
+                console.log('bottom');
+            }
+        });
+
+
+        $(window).scroll(function() {
+            var height = $(window).scrollTop();
+            console.log(height);
+            if(height  > 500) {
+                $('.fixed-top').removeClass('top-header-position');
+            }
+        });
+    </script>
 
 
     <!-- Load Fonts Dynamically -->
