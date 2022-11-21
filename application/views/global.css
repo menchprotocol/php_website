@@ -3742,7 +3742,6 @@ main {
 .home_black_font h1 { color:#000000 !important; }
 
 .halfbg .halfbg,
-.halfbg .msg>span,
-.halfbg .glossy-bg .list-group-item {
+.halfbg .msg>span {
     background: none !important;
 }
