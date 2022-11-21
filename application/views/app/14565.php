@@ -31,7 +31,7 @@ echo '<div class="halfbg narrow-bar">';
 
 
 //MESSAGES
-echo '<div class="center-frame hide-subline maxwidth">';
+echo '<div class="center-frame hide-subline maxwidth narrower-bar">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
@@ -144,7 +144,7 @@ if(isset($_GET['e__id'])){
         //Add this to the UI:
         if($list_body){
             $ui .= '<h4 style="padding-top: 34px; text-align:center;"><span class="halfbg" style="padding: 5px;"><span class="icon-block-xxs">'.view_cover(12273,$header['e__cover'], '✔️', ' ').'</span> ' .$header['e__title'] . ':</span></h4>';
-            $ui .= '<div class="list-group list-border glossy-bg maxwidth">';
+            $ui .= '<div class="list-group list-border glossy-bg maxwidth narrower-bar">';
             $ui .= $list_body;
             $ui .= '</div>';
             $ui .= '<div class="doclear" style="padding-bottom: 55px;">&nbsp;</div>';

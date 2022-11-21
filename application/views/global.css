@@ -3760,9 +3760,13 @@ main {
     background: none !important;
 }
 .narrow-bar {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 21px 8px 0;
+}
+
+.narrower-bar {
+    max-width: 600px;
 }
 
 
