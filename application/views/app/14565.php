@@ -238,6 +238,7 @@ if($faq_i__id){
     }
 
     echo '<br /><br />';
+    echo '<div class="halfbg">';
 
     //1 Level of Next Ideas:
     foreach ($this->X_model->fetch(array(
@@ -247,7 +248,6 @@ if($faq_i__id){
         'x__left' => $faq_i__id,
     ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i) {
 
-        echo '<div class="halfbg">';
         echo '<h3 style="margin:13px 0; padding-left:5px; font-size:1.3em;"><a href="javascript:void(0);" onclick="$(\'.i_msg_'.$i['i__id'].'\').toggleClass(\'hidden\');" class="inner-content doblock css__title">' . $i['i__title'] . '</a></h3>';
 
         //MESSAGES
@@ -262,10 +262,10 @@ if($faq_i__id){
         }
         echo '</div>';
         echo '</div>';
-        echo '</div>';
 
     }
 
+    echo '</div>';
     echo '</div>';
 }
 
