@@ -3778,7 +3778,8 @@ main {
 
 
 
-.halfbg .glossy-bg .list-group-item-action:hover {
+.halfbg .glossy-bg .list-group-item-action:hover,
+.halfbg .glossy-bg .list-group-item-action:hover .css__title{
     background: #FFFFFF !important;
     color: #000000 !important;
 }
