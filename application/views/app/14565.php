@@ -46,6 +46,7 @@ if(isset($_GET['i__id'])){
 
 
 
+echo '<div class="halfbg">';
 
 
 
@@ -162,7 +163,6 @@ if(isset($_GET['e__id'])){
 
 
 
-echo '<div class="halfbg">';
 
 
 
