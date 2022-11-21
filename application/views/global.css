@@ -3729,3 +3729,7 @@ main {
 .scrollarea {
     overflow-y: auto;
 }
+
+.source-info{
+    padding: 10px;
+}
