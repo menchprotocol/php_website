@@ -3778,6 +3778,6 @@ main {
 
 
 
-.list-group-item-action:hover {
-    background-color: #000 !important;
+.halfbg .glossy-bg .list-group-item-action:hover {
+    background: #000000 !important;
 }
