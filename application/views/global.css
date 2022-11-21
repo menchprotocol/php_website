@@ -2487,6 +2487,13 @@ textarea {
     font-size: 1.2rem;
     margin-bottom: 13px;
 }
+.h4, h4 {
+    font-size: 1.2rem;
+    margin-bottom: 13px;
+}
+h4.css__title{
+    margin-bottom: 0;
+}
 
 .vid-padding { padding:160px 0; }
 
