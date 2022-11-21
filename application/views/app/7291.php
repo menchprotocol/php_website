@@ -45,7 +45,7 @@ if($client_id && $client_secret && $server_name){
 
 } else {
 
-    echo 'Going to home...';
+    echo 'Going to home: '.$client_id.' / '.$client_secret.' / '. $server_name;
 
     js_redirect('/', 13);
 
