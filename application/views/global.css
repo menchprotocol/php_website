@@ -12,6 +12,9 @@ body {
     font-weight: 400;
     line-height: 110%;
 }
+body.home_black_font {
+    background-color: #FFFFFF !important;
+}
 
 
 .table td, .table th {
@@ -3752,9 +3755,7 @@ main {
     padding: 10px 0;
 }
 
-body.home_black_font {
-    background-color: #FFFFFF !important;
-}
+
 .home_black_font h1 { color:#000000 !important; }
 
 .halfbg .halfbg,
