@@ -84,19 +84,18 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
 
 
     <script type="text/javascript">
-        $(window).scroll(function() {
-            if($(window).scrollTop() + $(window).height() == $(document).height()) {
-                console.log('bottom');
-            }
-        });
+        $(document).ready(function(){
 
-        $(window).scroll(function() {
-            var height = $(window).scrollTop();
-            console.log(height);
-            if(height  > 500) {
-                $('.fixed-top').removeClass('top-header-position');
-            }
-        });
+            $(window).resize(function(e){
+                console.log(e);
+            });
+
+            $(window).scroll(function (event) {
+                var sc = $(window).scrollTop();
+                console.log(sc);
+            });
+
+        })
     </script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-92774608-1"></script>
