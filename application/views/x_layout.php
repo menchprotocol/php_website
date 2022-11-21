@@ -292,12 +292,17 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'e__type IN (' . join(',', $this->config->item('n___30977')) . ')' => null, //Featured
     'x__right' => $i_focus['i__id'],
-), array('x__up'), 0) as $x){
+), array('x__up'), 0, array('e__title' => 'ASC')) as $x){
+
     echo '<div class="source-info">';
     echo '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>';
     echo '<span style="font-size:1.5em; font-weight: bold;">'.$x['e__title'] . '</span>';
-    echo '<div style="padding-top: 10px; padding-left: 41px;">'.$x['x__message'] . '</div>';
+    echo '<div style="padding-top: 10px; padding-left: 41px;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank">'.$x['x__message'].'</a>' : $x['x__message'] ) . '</div>';
     echo '</div>';
+
+foreach( as $x) {
+
+}
 }
 echo '</div>';
 

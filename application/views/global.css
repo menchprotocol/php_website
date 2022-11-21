@@ -3731,7 +3731,7 @@ main {
 }
 
 .source-featured{
-    padding: 21px 0;
+    padding: 13px 0 !important;
 }
 
 .source-info{
