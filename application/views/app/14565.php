@@ -225,7 +225,7 @@ if($faq_i__id){
         'i__id' => $faq_i__id,
     ));
 
-    echo '<div class="container-center">';
+    echo '<div class="container-center halfbg">';
 
     //IDEA TITLE
     echo '<h2 class="info-head">' . $is_faq[0]['i__title'] . '</h2>';
@@ -238,8 +238,6 @@ if($faq_i__id){
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
         echo $this->X_model->message_view($x['x__message'], true);
     }
-
-    echo '<div class="halfbg">';
 
     //1 Level of Next Ideas:
     foreach ($this->X_model->fetch(array(
@@ -266,7 +264,6 @@ if($faq_i__id){
 
     }
 
-    echo '</div>';
     echo '</div>';
 }
 
