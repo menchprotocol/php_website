@@ -3117,7 +3117,7 @@ h4.css__title{
 }
 .custom_ui_28979_28980 .coinType12273 {
     border: 3px solid #FFC500 !important;
-    background-color: #FFC500;
+    background-color: #FFC500 !important;
 }
 .custom_ui_28979_28980 .coin-12273 .cover-content {
     background: rgba(255,197,0,0.82);
