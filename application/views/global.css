@@ -3015,9 +3015,6 @@ h4.css__title{
 
 
 
-.list-group-item-action:hover {
-    background-color: #000 !important;
-}
 
 /* STICKY COLOR: COLORFUL */
 .custom_ui_28979_28980 .cover-content *{
@@ -3777,4 +3774,10 @@ main {
 .home_black_font .top-header-position .menu-icon i,
 .home_black_font .top-header-position .text-logo {
     color:#000000 !important;
+}
+
+
+
+.list-group-item-action:hover {
+    background-color: #000 !important;
 }
