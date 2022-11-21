@@ -3779,5 +3779,6 @@ main {
 
 
 .halfbg .glossy-bg .list-group-item-action:hover {
-    background: #000000 !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
 }
