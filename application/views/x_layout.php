@@ -274,7 +274,6 @@ if($one_child_hack){
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $first_child,
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
-        echo $message_x['x__message'];
         $messages_string .= $this->X_model->message_view(
             $message_x['x__message'],
             true,
