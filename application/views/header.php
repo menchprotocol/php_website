@@ -255,8 +255,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo 'background: transparent !important; ';
             echo '}';
 
-            //echo ' .halfbg, .msg>span, .fixed-top { background: rgba(0, 0, 0, 0.69) !important; } ';
-            echo ' .msg>span { background: rgba(0, 0, 0, 0.69) !important; } ';
+            echo ' .halfbg, .msg>span, .fixed-top { background: rgba(0, 0, 0, 0.69) !important; } ';
             echo ' .msg>span { display: block; padding: 3px 0; } ';
             //echo ' .halfbg, .msg>span, .msg { line-height: 150% !important; } ';
             echo ' .msg>span u, .msg>span a { line-height: 100% !important; padding:0 !important; } ';
