@@ -24,6 +24,7 @@ foreach($is_next as $in_key => $in_value){
     }
 }
 
+$one_child_hack = ($first_child>0 && count($is_next)==1);
 $i_focus['i__title'] = str_replace('"','',$i_focus['i__title']);
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
@@ -264,8 +265,8 @@ foreach($this->X_model->fetch(array(
     );
 }
 
-//HACK#24 Get the message for the single child, if any:
-if($first_child>0 && count($is_next)==1){
+//$one_child_hack Get the message for the single child, if any:
+if($one_child_hack){
     echo '<h2 class="msg-frame" style="text-align: left; padding: 10px 0 !important;">'.$i_focus['i__title'].'</h2>';
     echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$is_next[0]['i__title'].'</h1>';
     foreach($this->X_model->fetch(array(
@@ -816,7 +817,7 @@ if($top_i__id) {
         echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
     }
 
-} else {
+} elseif(!$one_child_hack) {
 
     //NEXT IDEAS
     echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);

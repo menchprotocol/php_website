@@ -1093,11 +1093,11 @@ function fetch_cookie_order($cookie_name){
 function member_setting($e__id){
     $CI =& get_instance();
     $session_var = $CI->session->userdata('session_custom_ui_'.$e__id);
-    $domain_id = get_domain_setting(14926, $e__id);
+    $theme_id = get_domain_setting(14926, $e__id);
 
-    if(!$session_var && $domain_id){
+    if(!$session_var && $theme_id){
         //Find the default value:
-        $account_defaults = array_intersect($CI->config->item('n___'.$domain_id), $CI->config->item('n___'.$e__id));
+        $account_defaults = array_intersect($CI->config->item('n___'.$theme_id), $CI->config->item('n___'.$e__id));
         if(count($account_defaults)){
             //We should find it by now:
             $session_var = end($account_defaults);

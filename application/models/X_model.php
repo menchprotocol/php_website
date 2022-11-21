@@ -1240,7 +1240,7 @@ class X_model extends CI_Model
                 'x__source' => $e__id,
             ));
 
-            //HACK#24: Mark next level as done too? Only if Single show:
+            //$one_child_hack: Mark next level as done too? Only if Single show:
             $is_next = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
