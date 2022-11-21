@@ -292,7 +292,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'e__type IN (' . join(',', $this->config->item('n___30977')) . ')' => null, //Featured
     'x__right' => $i_focus['i__id'],
-), array('x__up'), 0, array('e__title' => 'ASC')) as $x){
+), array('x__up'), 0, array('e__title' => 'DESC')) as $x){
 
     echo '<div class="source-info">';
     echo '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>';
