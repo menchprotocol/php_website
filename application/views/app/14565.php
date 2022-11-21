@@ -162,10 +162,8 @@ if(isset($_GET['e__id'])){
 
 
 
-
-
-
 echo '<div class="halfbg">';
+
 
 
 //Info Box(es):
@@ -266,8 +264,6 @@ if($faq_i__id){
     echo '</div>';
 }
 
-
-echo '</div>';
 
 
 //Featured Topics
