@@ -3732,8 +3732,9 @@ main {
 
 .source-featured{
     padding: 13px 0 !important;
+    margin: 0 !important;
 }
 
 .source-info{
-    padding: 10px;
+    padding: 10px 0;
 }
