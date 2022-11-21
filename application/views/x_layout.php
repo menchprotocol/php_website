@@ -278,7 +278,7 @@ foreach($this->X_model->fetch(array(
 
 //$one_child_hack Get the message for the single child, if any:
 if($one_child_hack){
-    echo '<h2 class="msg-frame" style="text-align: left; padding: 10px 0 !important;">'.$i_focus['i__title'].'</h2>';
+    echo '<h3 class="msg-frame" style="text-align: left; padding: 10px 0 0 !important;">'.$i_focus['i__title'].'</h3>';
     echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$is_next[0]['i__title'].'</h1>';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
