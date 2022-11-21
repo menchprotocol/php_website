@@ -3759,13 +3759,9 @@ main {
     background: none !important;
 }
 .narrow-bar {
-    max-width: 1000px;
+    max-width: 987px;
     margin: 0 auto;
     padding: 21px 8px 0;
-}
-
-.narrower-bar {
-    max-width: 600px;
 }
 
 
