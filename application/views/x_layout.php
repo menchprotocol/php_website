@@ -264,6 +264,7 @@ foreach($this->X_model->fetch(array(
 
 //HACK#24 Get the message for the single child, if any:
 if($first_child>0 && count($is_next)==1){
+    echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$is_next[0]['i__title'].'</h1>';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
