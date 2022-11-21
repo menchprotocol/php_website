@@ -15,7 +15,7 @@ if($client_id && $client_secret && $server_name){
 
     require 'vendor/autoload.php';
 
-    $auth0 = new Auth0([
+    $auth0 = new Auth0\SDK\Auth0([
         'domain' => 'mench.auth0.com',
         'client_id' => $client_id,
         'client_secret' => $client_secret,
@@ -44,6 +44,8 @@ if($client_id && $client_secret && $server_name){
 
 
 } else {
+
+    echo 'Going to home...';
 
     js_redirect('/', 13);
 
