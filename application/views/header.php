@@ -272,7 +272,7 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
             echo '}';
 
             echo ' .halfbg, .msg>span, .fixed-top { background: rgba(0, 0, 0, 0.69) !important; } ';
-            echo ' .top-header-position .fixed-top { background: none !important; } ';
+            echo ' .top-header-position.fixed-top { background: none !important; } ';
 
             echo ' .msg>span { display: block; padding: 3px 0; } ';
             //echo ' .halfbg, .msg>span, .msg { line-height: 150% !important; } ';
