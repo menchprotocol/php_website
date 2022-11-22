@@ -20,8 +20,9 @@ foreach($this->X_model->fetch(array(
     $responses++;
     if(!preg_match($preg_match[0]['x__message'], $x['x__message'])) {
         $failed++;
-        echo $x['x__message'].'<hr />';
-
+        $this->X_model->update($x['x__id'], array(
+            'x__status' => 6173,
+        ));
     }
 }
 
