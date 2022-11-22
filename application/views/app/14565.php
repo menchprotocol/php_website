@@ -2,7 +2,6 @@
 
 $domain_background = get_domain_setting(28621);
 
-
 //Primary Idea:
 if(!isset($_GET['i__id']) && strlen(get_domain_setting(14002))){
     $_GET['i__id'] = get_domain_setting(14002);

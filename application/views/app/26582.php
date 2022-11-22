@@ -1,5 +1,21 @@
 <?php
 
+$responses = 0;
+$failed = 0;
+foreach($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type' => 6144,
+    'x__right' => 15736,
+), array(), 0) as $x) {
+    $responses++;
+    if(!preg_match("/[a-zA-Z\'\-]{2,}\s{1,}[a-zA-Z\'\-]{2,}/", $x['x__message'])) {
+        echo $x['x__message'].'<hr />';
+    }
+}
+
+echo $failed.'/'.$responses.' FAILED!<hr /><hr /><hr />';
+
+
 if(!$is_u_request || isset($_GET['cron'])){
 
     //Look for messages to process, if any:
