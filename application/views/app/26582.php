@@ -9,7 +9,9 @@ foreach($this->X_model->fetch(array(
 ), array(), 0) as $x) {
     $responses++;
     if(!preg_match("/[a-zA-Z\'\-]{2,}\s{1,}[a-zA-Z\'\-]{2,}/", $x['x__message'])) {
-        echo $x['x__message'].'<hr />';
+        if($x['x__message'] == trim($x['x__message']) && strpos($x['x__message'], ' ') !== false){
+            echo $x['x__message'].'<hr />';
+        }
     }
 }
 
