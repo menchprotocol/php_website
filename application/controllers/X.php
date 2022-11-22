@@ -1031,6 +1031,8 @@ class X extends CI_Controller
             ));
         }
 
+        $_POST['x_reply'] = trim($_POST['x_reply']);
+
         //Any Preg Match?
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
