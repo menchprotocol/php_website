@@ -20,9 +20,8 @@ foreach($this->X_model->fetch(array(
     $responses++;
     if(!preg_match($preg_match[0]['x__message'], $x['x__message'])) {
         $failed++;
-        if($x['x__message'] == trim($x['x__message']) && strpos($x['x__message'], ' ') !== false){
-            echo $x['x__message'].'<hr />';
-        }
+        echo $x['x__message'].'<hr />';
+
     }
 }
 
