@@ -2,13 +2,24 @@
 
 $responses = 0;
 $failed = 0;
+
+$preg_match = $this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__right' => 15736,
+    'x__up' => 26611, //Preg Match
+));
+
+echo $preg_match[0]['x__message'].'<hr />';
+
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 6144,
     'x__left' => 15736,
 ), array(), 0) as $x) {
     $responses++;
-    if(!preg_match("/[a-zA-Z\'\-]{2,}\s{1,}[a-zA-Z\'\-]{2,}/", $x['x__message'])) {
+    if(!preg_match($preg_match[0]['x__message'], $x['x__message'])) {
+        $failed++;
         if($x['x__message'] == trim($x['x__message']) && strpos($x['x__message'], ' ') !== false){
             echo $x['x__message'].'<hr />';
         }
