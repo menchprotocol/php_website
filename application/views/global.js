@@ -3288,8 +3288,8 @@ function x_upload(droppedFiles, uploadType) {
 
 function x_reply_save(go_next_url){
     $.post("/x/x_reply", {
-        i__id:current_id(),
         top_i__id:$('#top_i__id').val(),
+        i__id:current_id(),
         x_reply:$('#x_reply').val(),
     }, function (data) {
         if (data.status) {

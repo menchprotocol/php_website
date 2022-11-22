@@ -1031,6 +1031,43 @@ class X extends CI_Controller
             ));
         }
 
+        //Any Preg Match?
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $_POST['i__id'],
+            'x__up' => 26611, //Preg Match
+        )) as $preg_match){
+            if(!preg_match($preg_match['x__message'], $_POST['x_reply'])) {
+
+                //Do we have a custom message:
+                $preg_match_message = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__right' => $_POST['i__id'],
+                    'x__up' => 30998, //Preg Match Error
+                ));
+
+                $error_message = ( count($preg_match_message) && strlen($preg_match_message[0]['x__message']) ? $preg_match_message[0]['x__message'] : 'Invalid Input, Please try again...' );
+
+                //Log preg match failure
+                $this->X_model->create(array(
+                    'x__type' => 30998, //Preg Match Error Message
+                    'x__source' => $member_e['e__id'],
+                    'x__message' => $error_message,
+                    'x__left' => $_POST['top_i__id'],
+                    'x__right' => $_POST['i__id'],
+                ));
+
+                //We have an error, let the user know:
+                return view_json(array(
+                    'status' => 0,
+                    'message' => $error_message,
+                ));
+
+            }
+        }
+
         //Delete previous answer(s):
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
