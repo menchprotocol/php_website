@@ -1,34 +1,5 @@
 <?php
 
-$responses = 0;
-$failed = 0;
-
-$preg_match = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-    'x__right' => 15736,
-    'x__up' => 26611, //Preg Match
-));
-
-echo $preg_match[0]['x__message'].'<hr />';
-
-foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 6144,
-    'x__left' => 15736,
-), array(), 0) as $x) {
-    $responses++;
-    if(!preg_match($preg_match[0]['x__message'], $x['x__message'])) {
-        $failed++;
-        $this->X_model->update($x['x__id'], array(
-            'x__status' => 6173,
-        ));
-    }
-}
-
-echo $failed.'/'.$responses.' FAILED!<hr /><hr /><hr />';
-
-
 if(!$is_u_request || isset($_GET['cron'])){
 
     //Look for messages to process, if any:
