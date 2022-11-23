@@ -967,7 +967,7 @@ class E extends CI_Controller
                 'x__down' => $_POST['coin__id'],
                 'x__type' => 10653, //Source Icon Update
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array(), 200, 0, array('x__id' => 'ASC')) as $x) {
+            ), array(), 0, 0, array('x__id' => 'ASC')) as $x) {
                 $x__metadata = unserialize($x['x__metadata']);
                 if(strlen($x__metadata['before'])){
                     $cover = one_two_explode('class="','"',$x__metadata['before']);
