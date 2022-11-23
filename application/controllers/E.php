@@ -1011,7 +1011,6 @@ class E extends CI_Controller
             ));
             if(count($is)){
                 return view_json(array(
-                    'counted' => $counted,
                     'status' => 1,
                     'coin__title' => $is[0]['i__title'],
                     'coin__cover' => null,
@@ -1026,6 +1025,7 @@ class E extends CI_Controller
             ));
             if(count($es)){
                 return view_json(array(
+                    'counted' => $counted,
                     'status' => 1,
                     'coin__title' => $es[0]['e__title'],
                     'coin__cover' => $es[0]['e__cover'],
