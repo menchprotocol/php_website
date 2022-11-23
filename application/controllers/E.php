@@ -964,12 +964,14 @@ class E extends CI_Controller
 
 
             //Find Past Selected Icons for Source:
+            $counted = 0;
             $unique_covers = array();
             foreach($this->X_model->fetch(array(
                 'x__down' => $_POST['coin__id'],
                 'x__type' => 10653, //Source Icon Update
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ), array(), 0, 0, array('x__id' => 'DESC')) as $x) {
+                $counted++;
                 $x__metadata = unserialize($x['x__metadata']);
                 if(strlen($x__metadata['before'])){
                     $cover = one_two_explode('class="','"',$x__metadata['before']);
@@ -1013,6 +1015,7 @@ class E extends CI_Controller
                     'coin__title' => $is[0]['i__title'],
                     'coin__cover' => null,
                     'icon_suggestions' => $icon_suggestions,
+                    'counted' => $counted,
                 ));
             }
         } elseif($_POST['coin__type']==12274){
