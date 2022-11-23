@@ -973,7 +973,7 @@ class E extends CI_Controller
                 $x__metadata = unserialize($x['x__metadata']);
                 if(strlen($x__metadata['before'])){
                     $cover = one_two_explode('class="','"',$x__metadata['before']);
-                    if(!in_array($cover, $unique_covers)){
+                    if(strlen($cover) && (!in_array($cover, $unique_covers) || 1)){
                         array_push($unique_covers, $cover);
                         array_push($icon_suggestions, array(
                             'cover_preview' => $cover,
