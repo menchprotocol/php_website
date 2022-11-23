@@ -969,7 +969,7 @@ class E extends CI_Controller
                 'x__down' => $_POST['coin__id'],
                 'x__type' => 10653, //Source Icon Update
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array(), 0, 0, array('x__id' => 'ASC')) as $x) {
+            ), array(), 0, 0, array('x__id' => 'DESC')) as $x) {
                 $x__metadata = unserialize($x['x__metadata']);
                 if(strlen($x__metadata['before'])){
                     $cover = one_two_explode('class="','"',$x__metadata['before']);
@@ -981,17 +981,6 @@ class E extends CI_Controller
                             'new_title' => $x['x__time'],
                         ));
                     }
-
-                    $cover2 = one_two_explode('class="','"',$x__metadata['after']);
-                    if(!in_array($cover2, $unique_covers)){
-                        array_push($unique_covers, $cover);
-                        array_push($icon_suggestions, array(
-                            'cover_preview' => $cover2,
-                            'cover_apply' => $cover2,
-                            'new_title' => $x['x__time'],
-                        ));
-                    }
-
                 }
             }
 

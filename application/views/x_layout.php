@@ -53,7 +53,7 @@ $i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n_
 $i_stats = i_stats($i_focus['i__metadata']);
 
 $is_payment = in_array($i_focus['i__type'] , $this->config->item('n___30469'));
-$starting_quantity = 1;
+$min_allowed = 1;
 $detected_x_type = 0;
 
 if($is_payment){
@@ -76,12 +76,20 @@ if($is_payment){
                 'x__right' => $i_focus['i__id'],
                 'x__up' => 30589, //Digest Fees
             ));
-            $multi_selectable = $this->X_model->fetch(array(
+            $cart_max = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__right' => $i_focus['i__id'],
-                'x__up' => 29651, //Multi Selectable
+                'x__up' => 29651, //Cart Max Quantity
             ));
+            $cart_min = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $i_focus['i__id'],
+                'x__up' => 31008, //Cart Min Quantity
+            ));
+
+
 
 
             //Break down amount & currency
@@ -89,10 +97,11 @@ if($is_payment){
             $unit_price = number_format($currency_parts[1], 2);
             $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(get_domain_setting(30590, $x__source)) + doubleval(get_domain_setting(27017, $x__source)) + doubleval(get_domain_setting(30612, $x__source)))/100 ), 2);
             $unit_total = number_format($unit_fee+$currency_parts[1], 2);
-            $max_allowed = ( count($multi_selectable) && is_numeric($multi_selectable[0]['x__message']) && $multi_selectable[0]['x__message']>1 ? intval($multi_selectable[0]['x__message']) : view_memory(6404,29651) );
+            $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view_memory(6404,29651) );
             $spots_remaining = i_spots_remaining($i_focus['i__id']);
             $max_allowed = ( $spots_remaining < $max_allowed ? $spots_remaining : $max_allowed );
             $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
+            $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && $cart_min[0]['x__message']>0 ? intval($cart_max[0]['x__message']) : $min_allowed );
 
         } else {
             $is_payment = false;
@@ -517,13 +526,13 @@ if($top_i__id) {
             }
 
 
-            if(count($multi_selectable)){
+            if($max_allowed > 1){
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn" style="text-align: right;">Quantity:&nbsp;&nbsp;</td>';
                 echo '<td class="table-btn first_btn sale_price_ui">';
                 echo '<a href="javascript:void(0);" onclick="sale_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
-                echo '<span id="current_sales" class="css__title" style="display: inline-block; min-width:34px; text-align: center;">'.$starting_quantity.'</span>';
+                echo '<span id="current_sales" class="css__title" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
                 echo '<a href="javascript:void(0);" onclick="sale_increment(1)"><i class="fas fa-plus-circle"></i></a>';
                 echo '</td>';
                 echo '</tr>';
@@ -567,11 +576,14 @@ if($top_i__id) {
 
                     var new_quantity = parseInt($('#current_sales').text()) + increment;
                     var max_allowed = <?= $max_allowed ?>;
+                    var min_allowed = <?= $min_allowed ?>;
                     if(new_quantity<1){
                         //Invalid new quantity
                         return false;
+                    } else if (new_quantity<min_allowed){
+                        return false;
                     } else if (new_quantity>max_allowed){
-                        alert('Error: Max Allowed is '+max_allowed);
+                        alert('Error: Maximum Allowed is '+max_allowed);
                         return false;
                     } else if(busy_processing){
                         return false;
@@ -733,7 +745,7 @@ if(!$top_i__id){
                 $control_btn .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
 
                 $control_btn .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
-                $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$starting_quantity.'">'; //Dynamic Variable
+                $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable
                 $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i_focus['i__title'].'">';
                 $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
 
