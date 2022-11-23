@@ -1011,11 +1011,11 @@ class E extends CI_Controller
             ));
             if(count($is)){
                 return view_json(array(
+                    'counted' => $counted,
                     'status' => 1,
                     'coin__title' => $is[0]['i__title'],
                     'coin__cover' => null,
                     'icon_suggestions' => $icon_suggestions,
-                    'counted' => $counted,
                 ));
             }
         } elseif($_POST['coin__type']==12274){
