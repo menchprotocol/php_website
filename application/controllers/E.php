@@ -969,9 +969,9 @@ class E extends CI_Controller
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ), array(), 0, 0, array('x__id' => 'ASC')) as $x) {
                 $x__metadata = unserialize($x['x__metadata']);
-                if(strlen($x__metadata['before'])){
+                if(isset($x__metadata['field']) && $x__metadata['field']=='e__cover' && strlen($x__metadata['before'])){
                     $cover = one_two_explode('class="','"',$x__metadata['before']);
-                    if(!in_array($cover, $unique_covers)){
+                    if(!in_array($cover, $unique_covers) || 1){
                         array_push($unique_covers, $cover);
                         array_push($icon_suggestions, array(
                             'cover_preview' => $cover,
