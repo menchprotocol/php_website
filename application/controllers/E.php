@@ -969,9 +969,10 @@ class E extends CI_Controller
             ), array(), 200, 0, array('x__id' => 'ASC')) as $x) {
                 $x__metadata = unserialize($x['x__metadata']);
                 if(strlen($x__metadata['before'])){
+                    $cover = one_two_explode('class="','"',$x__metadata['before']);
                     array_push($icon_suggestions, array(
-                        'cover_preview' => $x__metadata['before'],
-                        'cover_apply' => $x__metadata['before'],
+                        'cover_preview' => $cover,
+                        'cover_apply' => $cover,
                         'new_title' => $x['x__time'],
                     ));
                 }
