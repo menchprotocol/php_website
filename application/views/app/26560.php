@@ -45,8 +45,17 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && ( $superpower_31000 ||
 
         //Show list of recent tickets sold.
 
+    } elseif($member_e) {
+
+        //Search for my tickets and group based on Upcoming & Past:
+        echo 'You have no upcoming tickets';
+
     } else {
         echo 'Missing ticket ID & timestamp. Make sure to click on the link that was emailed to you to manage your ticket.';
+    }
+
+    if($member_e){
+
     }
 
 
