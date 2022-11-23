@@ -5,11 +5,14 @@ $superpower_31000 = $member_e && superpower_active(31000, true);
 if($superpower_31000 || (isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__time']) && strlen($_GET['x__time']) > 0)){
 
     echo '<p>Admin Ticketing UI Enabled!</p>';
-    $x = $this->X_model->fetch(array(
-        'x__id' => $_GET['x__id'],
-    ));
 
-    if(!count($x)){
+    if(isset($_GET['x__id'])){
+        $x = $this->X_model->fetch(array(
+            'x__id' => $_GET['x__id'],
+        ));
+    }
+
+    if(isset($_GET['x__id']) && !count($x)){
 
         if($superpower_31000){
             //Show list of recent tickets sold.
