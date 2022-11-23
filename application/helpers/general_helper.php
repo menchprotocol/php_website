@@ -1090,6 +1090,12 @@ function fetch_cookie_order($cookie_name){
     return $new_order_value;
 }
 
+function generateQR($url, $width = 150, $height = 150) {
+    $url    = urlencode($url);
+    $image  = '<img src="http://chart.apis.google.com/chart?chs='.$width.'x'.$height.'&cht=qr&chl='.$url.'" alt="QR code" width="'.$width.'" height="'.$height.'"/>';
+    return $image;
+}
+
 function member_setting($e__id){
     $CI =& get_instance();
     $session_var = $CI->session->userdata('session_custom_ui_'.$e__id);
