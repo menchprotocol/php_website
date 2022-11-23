@@ -3029,7 +3029,7 @@ h4.css__title{
     color: #FFFFFF !important;
 }
 .mini-coin .cover-content .inner-content a,
-.coinface-12274 .cover-content .inner-content .form-control {
+.coinface-12274 .cover-content .inner-content * {
     color: #000000 !important;
 }
 
