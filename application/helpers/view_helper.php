@@ -448,7 +448,7 @@ function view_x($x, $has_x__reference = false)
 
 
     //HIDE PRIVATE INFO?
-    if(in_array($x['e__type'] , $CI->config->item('n___30956')) && (!$member_e || $x['x__source']!=$member_e['e__id']) && !superpower_active(12701, true) && $add_e[0]['e__id']!=14068){
+    if(isset($x['e__type']) && in_array($x['e__type'] , $CI->config->item('n___30956')) && (!$member_e || $x['x__source']!=$member_e['e__id']) && !superpower_active(12701, true) && $add_e[0]['e__id']!=14068){
 
         //Hide Information:
         $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="css__title" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';

@@ -955,8 +955,14 @@ class E extends CI_Controller
             ));
         }
 
+
+
         //Any suggestions?
         $icon_suggestions = array();
+
+        //Find Past Selected Icons:
+
+
         if($_POST['coin__type']==12274 && $member_e['e__id']==$_POST['coin__id']){
             //Show animal icons:
             foreach($this->config->item('e___12279') as $e__id => $m) {
