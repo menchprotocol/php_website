@@ -5,6 +5,12 @@ $i__id = ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 );
 $is = $this->I_model->fetch(array(
     'i__id' => $i__id,
 ));
+if(!count($is)){
+    die('Invalid Idea ID');
+}
+
+echo '<h2>' . $is[0]['i__title'] . '</h2>';
+
 $preg_match = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
@@ -12,12 +18,11 @@ $preg_match = $this->X_model->fetch(array(
     'x__up' => 26611,
 ));
 
-if(count($is) && count($preg_match)){
+if(count($preg_match)){
 
     $responses = 0;
     $failed = 0;
 
-    echo '<h2>' . $is[0]['i__title'] . '</h2>';
     echo '<p>Mismatches against ['.$preg_match[0]['x__message'].'] are:</p>';
 
     foreach($this->X_model->fetch(array(
@@ -41,6 +46,10 @@ if(count($is) && count($preg_match)){
     }
 
     echo $failed.'/'.$responses.' FAILED!<hr /><hr /><hr />';
+
+} else {
+
+    echo 'Preg match not set for this idea';
 
 }
 
