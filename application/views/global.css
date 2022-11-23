@@ -3028,8 +3028,7 @@ h4.css__title{
 .custom_ui_13884_13886 .coin-12274 .cover-content *{
     color: #FFFFFF !important;
 }
-.mini-coin .cover-content .inner-content a,
-.coinface-12274 .cover-content .inner-content * {
+.mini-coin .cover-content .inner-content a {
     color: #000000 !important;
 }
 
