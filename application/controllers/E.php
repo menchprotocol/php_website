@@ -993,7 +993,7 @@ class E extends CI_Controller
                 array_push($icon_suggestions, array(
                     'cover_preview' => $cover,
                     'cover_apply' => $cover,
-                    'new_title' => $m['m__title'],
+                    'new_title' => $cover.' ('.$m['m__title'].')',
                 ));
 
 
