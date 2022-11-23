@@ -959,12 +959,12 @@ class E extends CI_Controller
 
         //Any suggestions?
         $icon_suggestions = array();
-        $unique_covers = array();
 
         if($_POST['coin__type']==12274){
 
 
             //Find Past Selected Icons for Source:
+            $unique_covers = array();
             foreach($this->X_model->fetch(array(
                 'x__down' => $_POST['coin__id'],
                 'x__type' => 10653, //Source Icon Update
@@ -972,11 +972,12 @@ class E extends CI_Controller
             ), array(), 0, 0, array('x__id' => 'DESC')) as $x) {
                 $x__metadata = unserialize($x['x__metadata']);
                 if(strlen($x__metadata['before'])){
-                    if(strlen($x__metadata['before']) && (!in_array($x__metadata['before'], $unique_covers))){
-                        array_push($unique_covers, $x__metadata['before']);
+                    $cover = ( substr_count($x__metadata['before'], 'class="') ? one_two_explode('class="','"',$x__metadata['before']) : $x__metadata['before'] );
+                    if(strlen($cover) && !in_array($cover, $unique_covers)){
+                        array_push($unique_covers, $cover);
                         array_push($icon_suggestions, array(
-                            'cover_preview' => $x__metadata['before'],
-                            'cover_apply' => $x__metadata['before'],
+                            'cover_preview' => $cover,
+                            'cover_apply' => $cover,
                             'new_title' => $x['x__time'],
                         ));
                     }
@@ -1022,8 +1023,6 @@ class E extends CI_Controller
             ));
             if(count($es)){
                 return view_json(array(
-                    'unique_covers_count' => count($unique_covers),
-                    'unique_covers' => $unique_covers,
                     'status' => 1,
                     'coin__title' => $es[0]['e__title'],
                     'coin__cover' => $es[0]['e__cover'],
