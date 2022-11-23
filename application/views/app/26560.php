@@ -2,7 +2,7 @@
 $member_e = superpower_unlocked();
 $superpower_31000 = $member_e && superpower_active(31000, true);
 
-if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && ( $superpower_31000 || (isset($_GET['x__time']) && strlen($_GET['x__time']) > 0))){
+if($superpower_31000 || (isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__time']) && strlen($_GET['x__time']) > 0)){
 
     echo '<p>Admin Ticketing UI Enabled!</p>';
     $x = $this->X_model->fetch(array(
@@ -10,7 +10,12 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && ( $superpower_31000 ||
     ));
 
     if(!count($x)){
-        die('Invalid Ticket ID URL');
+        if($superpower_31000){
+            //Show list of recent tickets sold.
+
+        } else {
+            die('Invalid Ticket ID URL');
+        }
     }
     $tr_time = strtotime($x[0]['x__time']);
 
@@ -20,10 +25,6 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && ( $superpower_31000 ||
         echo 'Unverified<br />';
     }
 
-
-
-
-
     if($superpower_31000){
         echo 'CECKED IN 1 TICKET<br />';
         echo 'CECKED IN OTHER 2 IN GROUP?<br />';
@@ -31,7 +32,6 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && ( $superpower_31000 ||
         echo 'Unverified<br />';
 
     }
-
 
     $url = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x[0]['x__id'].'&x__time='.$tr_time;
     echo $url;
@@ -41,11 +41,6 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && ( $superpower_31000 ||
 
 }
 
-if($superpower_31000){
-
-    //Show list of recent tickets sold.
-
-}
 
 
 if($member_e) {
