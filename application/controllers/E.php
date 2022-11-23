@@ -960,7 +960,24 @@ class E extends CI_Controller
         //Any suggestions?
         $icon_suggestions = array();
 
-        //Find Past Selected Icons:
+        if($_POST['coin__type']==12274){
+            //Find Past Selected Icons for Source:
+            foreach($this->X_model->fetch(array(
+                'x__down' => $_POST['coin__id'],
+                'x__type' => 10653, //Source Icon Update
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            ), array(), 200, 0, array('x__id' => 'ASC')) as $x) {
+                $x__metadata = unserialize($x['x__metadata']);
+                if(strlen($x__metadata['before'])){
+                    array_push($icon_suggestions, array(
+                        'cover_preview' => $x__metadata['before'],
+                        'cover_apply' => $x__metadata['before'],
+                        'new_title' => $x['x__time'],
+                    ));
+                }
+            }
+        }
+
 
 
         if($_POST['coin__type']==12274 && $member_e['e__id']==$_POST['coin__id']){
