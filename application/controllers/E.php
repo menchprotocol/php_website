@@ -961,6 +961,8 @@ class E extends CI_Controller
         $icon_suggestions = array();
 
         if($_POST['coin__type']==12274){
+
+
             //Find Past Selected Icons for Source:
             $unique_covers = array();
             foreach($this->X_model->fetch(array(
@@ -971,7 +973,7 @@ class E extends CI_Controller
                 $x__metadata = unserialize($x['x__metadata']);
                 if(isset($x__metadata['field']) && $x__metadata['field']=='e__cover' && strlen($x__metadata['before'])){
                     $cover = one_two_explode('class="','"',$x__metadata['before']);
-                    if(!in_array($cover, $unique_covers) || 1){
+                    if(!in_array($cover, $unique_covers)){
                         array_push($unique_covers, $cover);
                         array_push($icon_suggestions, array(
                             'cover_preview' => $cover,
@@ -982,23 +984,24 @@ class E extends CI_Controller
 
                 }
             }
-        }
 
-
-
-        if($_POST['coin__type']==12274 && $member_e['e__id']==$_POST['coin__id']){
-            //Show animal icons:
-            foreach($this->config->item('e___12279') as $e__id => $m) {
-                $cover = one_two_explode('class="','"',$m['m__cover']);
-                array_push($icon_suggestions, array(
-                    'cover_preview' => $cover,
-                    'cover_apply' => $cover,
-                    'new_title' => $cover.' ('.$m['m__title'].')',
-                ));
-
-
+            if($member_e['e__id']==$_POST['coin__id']){
+                //Show animal icons:
+                foreach($this->config->item('e___12279') as $e__id => $m) {
+                    $cover = one_two_explode('class="','"',$m['m__cover']);
+                    array_push($icon_suggestions, array(
+                        'cover_preview' => $cover,
+                        'cover_apply' => $cover,
+                        'new_title' => $cover.' ('.$m['m__title'].')',
+                    ));
+                }
             }
+
+
         }
+
+
+
 
         if($_POST['coin__type']==12273){
             //IDEA
