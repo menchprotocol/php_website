@@ -4,7 +4,7 @@ $superpower_31000 = $member_e && superpower_active(31000, true);
 
 if($superpower_31000 || (isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__time']) && strlen($_GET['x__time']) > 0)){
 
-    echo '<p>Admin Ticketing UI Enabled!</p>';
+    echo '<p style="text-align: center">Admin Ticketing UI Enabled!</p>';
 
     if(isset($_GET['x__id'])){
         $x = $this->X_model->fetch(array(
@@ -55,8 +55,8 @@ if($superpower_31000 || (isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && 
 if($member_e) {
 
     //Search for my tickets and group based on Upcoming & Past:
-    echo 'You have no upcoming tickets';
+    echo '<p style="text-align: center">You have no upcoming tickets</p>';
 
 } else {
-    echo 'Missing ticket ID & timestamp. Make sure to click on the link that was emailed to you to manage your ticket.';
+    echo '<p style="text-align: center">Missing ticket ID & timestamp. Make sure to click on the link that was emailed to you to manage your ticket.</p>';
 }
