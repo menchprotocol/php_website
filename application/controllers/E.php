@@ -983,13 +983,18 @@ class E extends CI_Controller
 
         if($_POST['coin__type']==12274 && $member_e['e__id']==$_POST['coin__id']){
             //Show animal icons:
+            $unique_covers = array();
             foreach($this->config->item('e___12279') as $e__id => $m) {
                 $cover = one_two_explode('class="','"',$m['m__cover']);
-                array_push($icon_suggestions, array(
-                    'cover_preview' => $cover,
-                    'cover_apply' => $cover,
-                    'new_title' => $m['m__title'],
-                ));
+                if(!in_array($cover, $unique_covers)){
+                    array_push($icon_suggestions, array(
+                        'cover_preview' => $cover,
+                        'cover_apply' => $cover,
+                        'new_title' => $m['m__title'],
+                    ));
+                    array_push($unique_covers, $cover);
+                }
+
             }
         }
 
