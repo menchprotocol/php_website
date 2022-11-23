@@ -972,7 +972,7 @@ class E extends CI_Controller
             ), array(), 0, 0, array('x__id' => 'DESC')) as $x) {
                 $x__metadata = unserialize($x['x__metadata']);
                 if(strlen($x__metadata['before'])){
-                    if(strlen($x__metadata['before']) && (!in_array($x__metadata['before'], $unique_covers) || 1)){
+                    if(strlen($x__metadata['before']) && (!in_array($x__metadata['before'], $unique_covers))){
                         array_push($unique_covers, $x__metadata['before']);
                         array_push($icon_suggestions, array(
                             'cover_preview' => $x__metadata['before'],
@@ -1022,6 +1022,7 @@ class E extends CI_Controller
             ));
             if(count($es)){
                 return view_json(array(
+                    'unique_covers_count' => count($unique_covers),
                     'unique_covers' => $unique_covers,
                     'status' => 1,
                     'coin__title' => $es[0]['e__title'],
