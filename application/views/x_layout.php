@@ -320,7 +320,6 @@ echo '<div class="source-featured">';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-    'e__type IN (' . join(',', $this->config->item('n___30977')) . ')' => null, //Featured
     'x__right' => $i_focus['i__id'],
     'x__up > 0' => null,
 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
@@ -334,6 +333,10 @@ foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ));
+    }
+
+    if(!in_array($x['e__type'], $this->config->item('n___30977')) && !count($member_follows)){
+        continue;
     }
 
     echo '<div class="source-info">';
