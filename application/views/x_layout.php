@@ -336,7 +336,8 @@ foreach($this->X_model->fetch(array(
         ));
     }
 
-    if(!in_array($x['e__type'], $this->config->item('n___30977')) && !count($member_follows)){
+    $is_featured = in_array($x['e__type'], $this->config->item('n___30977'));
+    if(!$is_featured && !count($member_follows)){
         continue;
     }
 
@@ -345,6 +346,10 @@ foreach($this->X_model->fetch(array(
         if(strlen($member_follow['x__message'])){
             $messages .= '<h2 title="Posted ' . $member_follow['x__time'] . '" style="padding:13px 0 0 40px;">' . $member_follow['x__message'] . '</h2>';
         }
+    }
+
+    if(!$is_featured && !$messages){
+        continue;
     }
 
 
