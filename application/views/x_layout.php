@@ -339,14 +339,19 @@ foreach($this->X_model->fetch(array(
         continue;
     }
 
-    echo '<div class="source-info">';
-    echo '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>';
-    echo '<span>'.$x['e__title'] . ':</span>';
+    $messages = '';
     foreach($member_follows as $member_follow){
         if(strlen($member_follow['x__message'])){
-            echo '<h2 title="Posted ' . $member_follow['x__time'] . '" style="padding:13px 0 0 40px;">' . $member_follow['x__message'] . '</h2>';
+            $messages .= '<h2 title="Posted ' . $member_follow['x__time'] . '" style="padding:13px 0 0 40px;">' . $member_follow['x__message'] . '</h2>';
         }
     }
+
+
+    echo '<div class="source-info">';
+    echo '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>';
+    echo '<span>'.$x['e__title'] . ( strlen($messages) ? ':' : '' ) . '</span>';
+    echo $messages;
+
     echo '<div style="padding-top: 10px; padding-left: 41px; font-size:1.2em; font-weight: bold; line-height:120%;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;">'.$x['x__message'].'</a>' : nl2br($x['x__message']) ) . '</div>';
     echo '</div>';
 
