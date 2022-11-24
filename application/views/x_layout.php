@@ -110,6 +110,7 @@ if($is_payment){
 }
 
 if(count($x_completes)){
+    echo 'Is completed';
     $_GET['open'] = true;
 }
 
