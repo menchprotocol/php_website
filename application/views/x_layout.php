@@ -2,6 +2,7 @@
 
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___4737 = $this->config->item('e___4737'); //Idea Types
+$is_or_idea = in_array($i_focus['i__type'], $this->config->item('n___7712'));
 
 //Any Hard Redirects?
 foreach($this->X_model->fetch(array(
@@ -109,8 +110,7 @@ if($is_payment){
     }
 }
 
-if(count($x_completes)){
-    echo 'Is completed';
+if($is_or_idea || count($x_completes)){
     $_GET['open'] = true;
 }
 
@@ -335,7 +335,6 @@ foreach($this->X_model->fetch(array(
 echo '</div>';
 
 
-
 if($top_i__id) {
     //LOCKED
     if ($i_type_meet_requirement) {
@@ -351,7 +350,7 @@ if($top_i__id) {
         //List Children if any:
         echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
 
-    } elseif (in_array($i_focus['i__type'], $this->config->item('n___7712'))) {
+    } elseif ($is_or_idea) {
 
         //SELECT ANSWER
 
