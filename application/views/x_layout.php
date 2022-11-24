@@ -341,7 +341,7 @@ foreach($this->X_model->fetch(array(
     echo '<span>'.$x['e__title'] . ':</span>';
     foreach($member_follows as $member_follow){
         if(strlen($member_follow['x__message'])){
-            echo '<h3 title="Posted ' . $member_follow['x__time'] . '">' . $member_follow['x__message'] . '</h3>';
+            echo '<h2 title="Posted ' . $member_follow['x__time'] . '" style="padding:21px 0 0 41px;">' . $member_follow['x__message'] . '</h2>';
         }
     }
     echo '<div style="padding-top: 10px; padding-left: 41px; font-size:1.2em; font-weight: bold; line-height:120%;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;">'.$x['x__message'].'</a>' : nl2br($x['x__message']) ) . '</div>';
