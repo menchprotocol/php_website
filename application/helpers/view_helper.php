@@ -1721,7 +1721,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $superpower_12673 = superpower_active(12673, true);
     $is_completed = ($completion_rate['completion_percentage']>=100);
     $is_started = ($completion_rate['completion_percentage']>0);
-    $parent_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___6193')) );
+    $parent_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
     $force_order = ( $previous_i && count($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS

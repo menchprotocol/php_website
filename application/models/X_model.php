@@ -1075,7 +1075,7 @@ class X_model extends CI_Model
         ), array('x__left')) as $i_previous) {
 
             //Validate Selection:
-            $is_or_i = in_array($i_previous['i__type'], $this->config->item('n___6193'));
+            $is_or_i = in_array($i_previous['i__type'], $this->config->item('n___7712'));
             $is_fixed_x = in_array($i_previous['x__type'], $this->config->item('n___12840'));
             if($e__id>0 && ($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1115,7 +1115,7 @@ class X_model extends CI_Model
             return 0;
         }
 
-        $is_or_i = in_array($i['i__type'], $this->config->item('n___6193'));
+        $is_or_i = in_array($i['i__type'], $this->config->item('n___7712'));
         $found_trigger = false;
         foreach ($this->X_model->fetch(array(
             'x__left' => $i['i__id'],
