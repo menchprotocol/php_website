@@ -2361,14 +2361,14 @@ class X_model extends CI_Model
         if($is[0]['i__type'] == 6684){
 
             //ONE ANSWER
-            $x__type = 6157; //Award Coin
-            $i_x__type = 12336; //Save Answer
+            $x__type = ( count($answer_i__ids) ? 6157 : 31022 ); //Answer One or Skip
+            $i_x__type = 12336; //Save Answer, if any
 
         } elseif($is[0]['i__type'] == 7231 || $is[0]['i__type'] == 14861){
 
             //SOME ANSWERS
-            $x__type = 7489; //Award Coin
-            $i_x__type = 12334; //Save Answer
+            $x__type = ( count($answer_i__ids) ? 7489 : 31022 ); //Answer Some or Skip
+            $i_x__type = 12334; //Save Answer, if any
 
         }
 

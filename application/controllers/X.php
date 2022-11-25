@@ -1012,10 +1012,10 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Top idea ID.',
             ));
-        } elseif (!isset($_POST['x_reply']) || !strlen($_POST['x_reply'])) {
+        } elseif (!isset($_POST['x_reply'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Write a response before going next.',
+                'message' => 'Missing Response Variable.',
             ));
         }
 
@@ -1031,7 +1031,22 @@ class X extends CI_Controller
             ));
         }
 
+
         $_POST['x_reply'] = trim($_POST['x_reply']);
+
+        //Can Skip?
+        $can_skip = count($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $_POST['i__id'],
+            'x__up' => 28239, //Can Skip
+        )));
+        if(!$can_skip && !strlen($_POST['x_reply'])){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Write a response before going next.',
+            ));
+        }
 
         //Any Preg Match?
         foreach($this->X_model->fetch(array(
@@ -1070,7 +1085,7 @@ class X extends CI_Controller
             }
         }
 
-        //Delete previous answer(s):
+        //Delete previous answer(s) if any:
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -1084,7 +1099,7 @@ class X extends CI_Controller
 
         //Save new answer:
         $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
-            'x__type' => 6144,
+            'x__type' => ( strlen($_POST['x_reply']) ? 6144 : 31022 ), //Responded or Skipped
             'x__source' => $member_e['e__id'],
             'x__message' => $_POST['x_reply'],
         ));
@@ -1092,7 +1107,7 @@ class X extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => 'Answer Saved',
+            'message' => 'Saved & Next...',
         ));
 
     }
@@ -1564,14 +1579,28 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Top idea id.',
             ));
-        } elseif (in_array($_POST['focus_i__type'], $this->config->item('n___14958')) && $nothing_seected) {
+        } elseif (!in_array($_POST['focus_i__type'], $this->config->item('n___7712'))) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid selection type',
+            ));
+        }
+
+        //Can they skip without selecting anything?
+        $can_skip = count($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $_POST['focus__id'],
+            'x__up' => 28239, //Can Skip
+        )));
+        if(!$can_skip && $nothing_seected){
             return view_json(array(
                 'status' => 0,
                 'message' => 'You must select an item before going next.',
             ));
         }
 
-        //How about the min & max selection?
+        //How about the min selection?
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
@@ -1585,6 +1614,8 @@ class X extends CI_Controller
                 ));
             }
         }
+
+        //How about  max selection?
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS

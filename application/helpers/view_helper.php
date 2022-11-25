@@ -2141,7 +2141,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
     $source_of_e = ($superpower_13422) || ($source_of_e && $member_e) || ($x__id && ($e['x__up']==$member_e['e__id'] || $e['x__down']==$member_e['e__id']));
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___13550')));
-    $supports_messages = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___20409')));
 
 
     $is_app = $x__type==6287;
@@ -2159,7 +2158,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $has_hard_lock = in_array($e['e__type'], $CI->config->item('n___30956')) && !$superpower_12701 && (!$member_e || !$source_is_e);
     $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$is_public && !$source_of_e && !$superpower_13422));
     $has_any_lock = !$superpower_12701 && ($has_soft_lock || $has_hard_lock);
-    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $supports_messages && $superpower_13422 && $x__id > 0;
+    $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $superpower_13422 && $x__id > 0;
     $show_text_editor = $source_of_e && !$has_any_lock;
     $can_click = !$focus_coin; //Allow clicking for all
 
@@ -2319,7 +2318,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     //Message
     if ($x__id > 0) {
-        if(!$has_any_lock && $supports_messages){
+        if(!$has_any_lock){
 
             $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
 

@@ -2045,6 +2045,11 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     array_push($export_row['_tags'], 'has_image');
                 }
 
+                //Is Featured Source?
+                if(in_array($s['e__type'], $CI->config->item('n___30977'))){
+                    array_push($export_row['_tags'], 'is_featured');
+                }
+
                 //Fetch Profiles:
                 $export_row['s__keywords'] = '';
                 foreach($CI->X_model->fetch(array(
