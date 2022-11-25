@@ -1,7 +1,7 @@
 <?php
 
 $member_e = superpower_unlocked();
-if($member_e && isset($_GET['reset'])){
+if($member_e){
     //Remove all Active Cache:
     echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Deleted '.reset_cache($member_e['e__id']).' active caches</div>';
 }
