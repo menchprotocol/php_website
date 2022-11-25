@@ -16,9 +16,20 @@ foreach($this->config->item('e___28917') as $x__type => $m) {
         ), array('x__down'), 0) as $x) {
             $total_members++;
             if((time()-strtotime($x['x__time']))>(86400*intval($m['m__message']))){
+
+                //Remove from Snooze:
                 $this->X_model->update($x['x__id'], array(
                     'x__status' => 6173, //Transaction Removed
                 ), $x['x__source'], 28917 /* Unsnooze */);
+
+                //Add to subscribers:
+                $this->X_model->create(array(
+                    'x__type' => e_x__type(),
+                    'x__up' => 4430, //Active Member
+                    'x__source' => $x['x__source'],
+                    'x__down' => $x['x__source'],
+                ));
+
                 $unsnooze_members++;
             }
         }
