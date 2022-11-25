@@ -931,6 +931,25 @@ function view_body_i($x__type, $counter, $i__id){
 function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m_cover = false){
 
     //$link = '/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link);
+    if(!$desc && $i__id>0){
+        $CI =& get_instance();
+        $member_e = superpower_unlocked();
+        foreach($CI->X_model->fetch(array(
+            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4231, //IDEA NOTES Messages
+            'x__right' => $i__id,
+        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x){
+            $intval = substr($message_x['x__message'], 1);
+            if(substr($message_x['x__message'], 0, 1)=='@' && is_numeric($intval) && count($CI->X_model->fetch(array(
+                    'x__type' => 4260, //IMAGES
+                    'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__down' => intval($intval),
+                )))){
+                $desc .= $CI->X_model->message_view($message_x['x__message'], true, $member_e, 0, true);
+                break;
+            }
+        }
+    }
 
     return '<a href="'.$link.'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
