@@ -14,7 +14,7 @@ foreach($this->config->item('e___28917') as $x__type => $m) {
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array(), 'x__id') as $x) {
             $total_members++;
-            if((time()-strlen($x['x__time']))>(86400*intval($m['m__message']))){
+            if((time()-strtotime($x['x__time']))>(86400*intval($m['m__message']))){
                 $unsnooze_members++;
             }
         }
