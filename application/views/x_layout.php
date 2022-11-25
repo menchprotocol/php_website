@@ -38,6 +38,8 @@ foreach($is_next as $in_key => $in_value){
     }
 }
 
+
+
 $i_focus['i__title'] = str_replace('"','',$i_focus['i__title']);
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
@@ -62,6 +64,61 @@ $can_skip = count($this->X_model->fetch(array(
 $is_payment = in_array($i_focus['i__type'] , $this->config->item('n___30469'));
 $min_allowed = 1;
 $detected_x_type = 0;
+
+
+
+
+
+//Featured Sources:
+$relevant_sources = '';
+foreach($this->X_model->fetch(array(
+    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__right' => $i_focus['i__id'],
+    'x__up > 0' => null,
+), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
+
+    //See if this member also follows this featured source?
+    $member_follows = array();
+    if($x__source>0){
+        $member_follows = $this->X_model->fetch(array(
+            'x__up' => $x['e__id'],
+            'x__down' => $x__source,
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ));
+    }
+
+    $is_featured = in_array($x['e__type'], $this->config->item('n___30977'));
+    if(!$is_featured && !count($member_follows)){
+        continue;
+    }
+
+    $messages = '';
+    foreach($member_follows as $member_follow){
+        if(strlen($member_follow['x__message'])){
+            $messages .= '<h2 title="Posted ' . $member_follow['x__time'] . '" style="padding:13px 0 0 40px;">' . $member_follow['x__message'] . '</h2>';
+        }
+    }
+
+    if(!$is_featured && !$messages){
+        continue;
+    }
+
+
+    $relevant_sources .= '<div class="source-info">';
+    $relevant_sources .= '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>';
+    $relevant_sources .= '<span>'.$x['e__title'] . ( strlen($messages) ? ':' : '' ) . '</span>';
+    $relevant_sources .= $messages;
+
+    $relevant_sources .= '<div style="padding-top: 10px; padding-left: 41px; font-size:1.2em; font-weight: bold; line-height:120%;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;">'.$x['x__message'].'</a>' : nl2br($x['x__message']) ) . '</div>';
+    $relevant_sources .= '</div>';
+
+}
+
+$double_column = strlen($relevant_sources) > 0;
+
+
 
 if($is_payment){
 
@@ -275,23 +332,50 @@ if($top_completed){
     echo '<div class="msg alert alert-success" role="alert"><span class="icon-block">✅</span>100% Completed: You Are Now Reviewing Your Responses</div>';
 }
 
-
-
-
-
 //MESSAGES
 $messages_string = false;
+$messages_image = false;
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $i_focus['i__id'],
 ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
-    $messages_string .= $this->X_model->message_view(
+    $is_image = substr($message_x['x__message'], 0, 1)=='@' && is_numeric(substr($message_x['x__message'], 1)) && count($this->X_model->fetch(array(
+            'x__type' => 4260, //IMAGES
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__down' => intval(substr($message_x['x__message'], 1)),
+        )));
+
+    $this_message = $this->X_model->message_view(
         $message_x['x__message'],
         true,
         $member_e
     );
+
+    if($is_image && $double_column && !$messages_image){
+        $messages_image = $this_message;
+    } else {
+        $messages_string .= $this_message;
+    }
+
 }
+
+if($double_column){
+
+    //Image & Side Content:
+
+
+    //Main Content Continues:
+    echo '<div class="col-12 col-sm-8">';
+    echo '</div>';
+
+
+}
+
+
+
+
+
 
 //$one_child_hack Get the message for the single child, if any:
 if($one_child_hack){
@@ -321,54 +405,11 @@ if($messages_string){
 }
 
 
-
-//Featured Sources:
-echo '<div class="source-featured">';
-foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-    'x__right' => $i_focus['i__id'],
-    'x__up > 0' => null,
-), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
-
-    //See if this member also follows this featured source?
-    $member_follows = array();
-    if($x__source>0){
-        $member_follows = $this->X_model->fetch(array(
-            'x__up' => $x['e__id'],
-            'x__down' => $x__source,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ));
-    }
-
-    $is_featured = in_array($x['e__type'], $this->config->item('n___30977'));
-    if(!$is_featured && !count($member_follows)){
-        continue;
-    }
-
-    $messages = '';
-    foreach($member_follows as $member_follow){
-        if(strlen($member_follow['x__message'])){
-            $messages .= '<h2 title="Posted ' . $member_follow['x__time'] . '" style="padding:13px 0 0 40px;">' . $member_follow['x__message'] . '</h2>';
-        }
-    }
-
-    if(!$is_featured && !$messages){
-        continue;
-    }
-
-
-    echo '<div class="source-info">';
-    echo '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>';
-    echo '<span>'.$x['e__title'] . ( strlen($messages) ? ':' : '' ) . '</span>';
-    echo $messages;
-
-    echo '<div style="padding-top: 10px; padding-left: 41px; font-size:1.2em; font-weight: bold; line-height:120%;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;">'.$x['x__message'].'</a>' : nl2br($x['x__message']) ) . '</div>';
+if(strlen($relevant_sources)){
+    echo '<div class="source-featured">';
+    echo $relevant_sources;
     echo '</div>';
-
 }
-echo '</div>';
 
 
 if($top_i__id) {
@@ -582,7 +623,7 @@ if($top_i__id) {
 
             echo '<tr>';
             echo '<td class="table-btn first_btn" style="text-align: right;">Delivery:&nbsp;&nbsp;</td>';
-            echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Bring your ID as we would have your name on our guest list. We *do not* email PDF Tickets or bar codes. Paypal email receipt is your proof of payment." style="border-bottom: 1px dotted #999;">ID At Door <i class="fas fa-info-circle" style="font-size: 0.8em !important;"></i></span></td>';
+            echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Your tickets will be waiting for you at the venus pick-up location on the day of the event. Please bring photo ID and the card used for purchase. We *do not* email PDF Tickets or bar codes." style="border-bottom: 1px dotted #999;">Will Call (Free) <i class="fas fa-info-circle" style="font-size: 0.8em !important;"></i></span></td>';
             echo '</tr>';
 
             echo '</table>';

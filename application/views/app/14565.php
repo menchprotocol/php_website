@@ -21,7 +21,11 @@ if(!count($is)){
 
 
 //TITLE
-echo '<h1 class="maxwidth" style="margin: '.( in_array(get_domain_setting(0), $this->config->item('n___31025')) ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . $is[0]['i__title'] . '</h1>';
+$domain_id = get_domain_setting(0);
+$expanded_space = in_array($domain_id , $this->config->item('n___31025'));
+$double_contact = in_array($domain_id , $this->config->item('n___31029'));
+
+echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . $is[0]['i__title'] . '</h1>';
 
 
 //Start darker background:
@@ -50,6 +54,35 @@ foreach($this->X_model->fetch(array(
 echo '</div>';
 
 
+
+
+//SOCIAL FOOTER
+$social_id = intval(get_domain_setting(14904));
+$domain_phone =  get_domain_setting(28615);
+$domain_email =  get_domain_setting(28614);
+$e___14925 = $this->config->item('e___14925'); //Domain Setting
+$has_social = $social_id && is_array($this->config->item('e___'.$social_id));
+
+$contact_us = '';
+if($domain_phone || $domain_email) {
+
+    $contact_us .= '<ul class="social-footer '.( $domain_background ? ' halfbg ' : '' ).'">';
+    if($domain_phone){
+        $contact_us .= '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$e___14925[28615]['m__title'].'">'.$e___14925[28615]['m__cover'].' '.$domain_phone.'</a></li>';
+    }
+
+    if($domain_email){
+        $contact_us .= '<li><a href="mailto:'.$domain_email.'" title="'.$e___14925[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___14925[28614]['m__cover'].' '.$domain_email.'</a></li>';
+    }
+    $contact_us .= '</ul>';
+
+}
+
+if($double_contact){
+    echo '<div style="padding: 20px 0;">';
+    echo $contact_us;
+    echo '</div>';
+}
 
 
 //Sitemap:
@@ -304,12 +337,8 @@ if($topic_id && is_array($this->config->item('e___'.$topic_id))){
 
 echo '<br /><br />';
 
-//SOCIAL FOOTER
-$social_id = intval(get_domain_setting(14904));
-$domain_phone =  get_domain_setting(28615);
-$domain_email =  get_domain_setting(28614);
-$e___14925 = $this->config->item('e___14925'); //Domain Setting
-if($social_id && is_array($this->config->item('e___'.$social_id))){
+
+if($has_social){
 
     echo '<div class="social-footer">';
     echo '<ul class="social-ul '.( $domain_background ? ' halfbg ' : '' ).'">';
@@ -347,17 +376,9 @@ if($social_id && is_array($this->config->item('e___'.$social_id))){
     echo '<div class="doclear" style="padding-bottom: 55px;">&nbsp;</div>';
     */
 
-} elseif($domain_phone || $domain_email) {
+} else {
 
-    echo '<ul class="social-footer '.( $domain_background ? ' halfbg ' : '' ).'">';
-    if($domain_phone){
-        echo '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$e___14925[28615]['m__title'].'">'.$e___14925[28615]['m__cover'].' '.$domain_phone.'</a></li>';
-    }
-
-    if($domain_email){
-        echo '<li><a href="mailto:'.$domain_email.'" title="'.$e___14925[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___14925[28614]['m__cover'].' '.$domain_email.'</a></li>';
-    }
-    echo '</ul>';
+    echo $contact_us;
 
 }
 
