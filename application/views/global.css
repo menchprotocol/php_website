@@ -3776,3 +3776,7 @@ main {
     background: #FFFFFF !important;
     color: #000000 !important;
 }
+
+.list-group-item-action img {
+    max-height: 610px;
+}
