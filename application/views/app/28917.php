@@ -1,5 +1,6 @@
 <?php
 
+//Auto unsnooze members who is time for them to get unsnoozed.
 
 foreach($this->config->item('e___28917') as $x__type => $m) {
     if(isset($m['m__message']) && intval($m['m__message'])>0){
@@ -15,14 +16,14 @@ foreach($this->config->item('e___28917') as $x__type => $m) {
         ), array('x__down'), 0) as $x) {
             $total_members++;
             if((time()-strtotime($x['x__time']))>(86400*intval($m['m__message']))){
+                $this->X_model->update($x['x__id'], array(
+                    'x__status' => 6173, //Transaction Removed
+                ), $x['x__source'], 28917 /* Unsnooze */);
                 $unsnooze_members++;
-                echo $x['x__time'].' / ';
             }
         }
 
-        echo $unsnooze_members.'/'.$total_members.' Members Unsnoozing from '.$m['m__title'].': '.intval($m['m__message']).' Days<hr />';
-
-        //Count Members, and any who are eligible to come back as a subscriber?
+        echo $unsnooze_members.'/'.$total_members.' Members Unsnoozed from '.$m['m__title'].'<hr />';
 
     }
 }
