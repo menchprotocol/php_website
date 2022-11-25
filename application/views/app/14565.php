@@ -242,13 +242,6 @@ if($domain_info_boxes){
 
 
 
-if($double_contact){
-    echo '<div style="padding: 20px 0;">';
-    echo $contact_us;
-    echo '</div>';
-}
-
-
 
 $faq_i__id = get_domain_setting(30422);
 if($faq_i__id){
