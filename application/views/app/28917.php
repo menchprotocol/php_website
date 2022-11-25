@@ -16,6 +16,7 @@ foreach($this->config->item('e___28917') as $x__type => $m) {
             $total_members++;
             if((time()-strtotime($x['x__time']))>(86400*intval($m['m__message']))){
                 $unsnooze_members++;
+                echo $x['x__time'].' / ';
             }
         }
 
