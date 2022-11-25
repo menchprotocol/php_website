@@ -8,10 +8,10 @@ foreach($this->config->item('e___28917') as $x__type => $m) {
         $unsnooze_members = 0;
 
         foreach($this->X_model->fetch(array(
-            'x__up' => $_POST['e__id'],
+            'x__up' => $x__type,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array(), 'x__id') as $x) {
             $total_members++;
             if((time()-strlen($x['x__time']))>(86400*intval($m['m__message']))){
