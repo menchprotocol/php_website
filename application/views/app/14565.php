@@ -21,7 +21,7 @@ if(!count($is)){
 
 
 //TITLE
-echo '<h1 class="maxwidth" style="margin: 144px auto 377px !important;">' . $is[0]['i__title'] . '</h1>';
+echo '<h1 class="maxwidth" style="margin: 89px auto 233px !important;">' . $is[0]['i__title'] . '</h1>';
 
 
 //Start darker background:

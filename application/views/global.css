@@ -789,7 +789,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 .list-border .msg {
     text-align: left !important;
     font-size: 1em !important;
-    margin: 0 1px 1px 55px !important;
+    margin: 0 !important;
 }
 .key-ref{
     font-weight: bold;
