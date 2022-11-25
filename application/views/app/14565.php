@@ -242,7 +242,11 @@ if($domain_info_boxes){
 
 
 
-
+if($double_contact){
+    echo '<div style="padding: 20px 0;">';
+    echo $contact_us;
+    echo '</div>';
+}
 
 
 
