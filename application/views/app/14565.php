@@ -172,7 +172,7 @@ if($domain_info_boxes){
         'x__up' => $domain_info_boxes,
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_box) {
 
         //Does it have valid children?
@@ -181,7 +181,7 @@ if($domain_info_boxes){
             'x__up' => $info_box['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_element) {
             $info_item .= '<div class="col-12 col-sm-6 col-md-4">';
             $info_item .= '<div class="info_box">';
