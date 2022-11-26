@@ -428,6 +428,8 @@ if(!$basic_header_footer){
                                     //Email
                                     $href = 'href="mailto:'.$setting_value.'"';
                                 }
+                            } else {
+                                continue;
                             }
 
                         } elseif(substr($m['m__message'], 0, 1)=='/'){
