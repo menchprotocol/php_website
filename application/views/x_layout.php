@@ -398,6 +398,7 @@ if($double_column){
     echo '<div class="col-12 col-sm-4">';
     echo $messages_image;
     echo $relevant_sources;
+    echo '<br />';
     echo '</div>';
 
 
