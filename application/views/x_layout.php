@@ -366,14 +366,14 @@ if($double_column){
 
     //Image & Side Content:
     echo '<div class="row">';
-    echo '<div class="col-12 col-sm-4">';
+    echo '<div class="col-12 col-sm-3">';
     echo $messages_image;
     echo '<br />';
     echo $relevant_sources;
     echo '</div>';
 
     //Main Content Continues:
-    echo '<div class="col-12 col-sm-8">';
+    echo '<div class="col-12 col-sm-9">';
 
 }
 
