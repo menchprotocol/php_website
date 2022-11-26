@@ -362,13 +362,7 @@ foreach($this->X_model->fetch(array(
 
 }
 
-if($double_column){
 
-    //Main Content Continues:
-    echo '<div class="row">';
-    echo '<div class="col-12 col-sm-7 col-md-8">';
-
-}
 
 
 
@@ -392,6 +386,23 @@ if($one_child_hack){
     }
 } else {
     echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$i_focus['i__title'].'</h1>';
+}
+
+
+if($double_column){
+
+    //Main Content Continues:
+    echo '<div class="row">';
+
+    //Image & Side Content:
+    echo '<div class="col-12 col-sm-5 col-md-4">';
+    echo $messages_image;
+    echo $relevant_sources;
+    echo '</div>';
+
+    
+    echo '<div class="col-12 col-sm-7 col-md-8">';
+
 }
 
 
@@ -928,13 +939,6 @@ if($top_i__id > 0 && !$top_completed){
 
 if($double_column){
     echo '</div>';
-
-    //Image & Side Content:
-    echo '<div class="col-12 col-sm-5 col-md-4">';
-    echo $messages_image;
-    echo $relevant_sources;
-    echo '</div>';
-
     echo '</div>';
 }
 
