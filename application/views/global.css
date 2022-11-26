@@ -28,7 +28,7 @@ body.home_black_font {
     width: 100%;
 }
 .container {
-    max-width:100%;
+    max-width:768px !important;
     padding:0;
 }
 .padded {
@@ -2644,9 +2644,6 @@ h4.css__title{
         margin: -13px 0 -8px -2px !important;
         margin: 0 !important;
     }
-    .container {
-        max-width: none;
-    }
     .content-image{ max-height:144px; }
 
     .list-group-item .show-on-hover{
@@ -3192,7 +3189,7 @@ h4.css__title{
 }
 
 .container-center{
-    max-width: 880px;
+    max-width: 768px;
     margin: 0 auto;
 }
 
