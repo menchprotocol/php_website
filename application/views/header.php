@@ -166,7 +166,7 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
     <?php
 
     if($member_e && $member_e['e__id']==1){
-        echo '<style> .container { max-width:600px !important; } </style>';
+        echo '<style> .container { max-width:960px !important; } </style>';
     }
 
     echo '<style> ';
