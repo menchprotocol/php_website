@@ -164,6 +164,11 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
 
     <!-- Load Fonts Dynamically -->
     <?php
+
+    if($member_e && $member_e['e__id']==1){
+        echo '<style> .container { max-width:720px !important; } </style>';
+    }
+
     echo '<style> ';
 
     //Font Helps:

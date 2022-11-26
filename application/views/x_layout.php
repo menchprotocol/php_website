@@ -400,7 +400,7 @@ if($double_column){
     echo $relevant_sources;
     echo '</div>';
 
-    
+
     echo '<div class="col-12 col-sm-7 col-md-8">';
 
 }
