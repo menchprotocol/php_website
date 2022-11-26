@@ -28,7 +28,7 @@ body.home_black_font {
     width: 100%;
 }
 .container {
-    max-width:768px !important;
+    max-width:600px !important;
     padding:0;
 }
 .padded {
@@ -3196,7 +3196,7 @@ h4.css__title{
 }
 
 .container-center{
-    max-width: 768px;
+    max-width: 600px;
     margin: 0 auto;
 }
 
