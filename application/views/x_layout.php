@@ -119,7 +119,6 @@ foreach($this->X_model->fetch(array(
 $double_column = strlen($relevant_sources) > 0;
 
 
-
 if($is_payment){
 
     //Payment Settings:
@@ -324,6 +323,9 @@ if($top_i__id){
 }
 
 
+
+
+
 echo '<div class="light-bg large-frame">';
 
 //Show Progress:
@@ -363,12 +365,14 @@ foreach($this->X_model->fetch(array(
 if($double_column){
 
     //Image & Side Content:
-
+    echo '<div class="col-12 col-sm-4">';
+    echo $messages_image;
+    echo '<br />';
+    echo $relevant_sources;
+    echo '</div>';
 
     //Main Content Continues:
     echo '<div class="col-12 col-sm-8">';
-    echo '</div>';
-
 
 }
 
@@ -405,7 +409,7 @@ if($messages_string){
 }
 
 
-if(strlen($relevant_sources)){
+if(!$double_column && strlen($relevant_sources)){
     echo '<div class="source-featured">';
     echo $relevant_sources;
     echo '</div>';
@@ -923,6 +927,13 @@ if($top_i__id) {
 
 if($top_i__id > 0 && !$top_completed){
     echo '<p style="padding:10px;">'.$i_completion_rate['completion_percentage'].'% Completed</p>';
+}
+
+
+
+
+if($double_column){
+    echo '</div>';
 }
 
 echo '</div>';
