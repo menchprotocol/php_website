@@ -132,7 +132,7 @@ h1 {
 h2 {
     padding:21px 10px;
     margin:0;
-    font-size:1.9em;
+    font-size:1.7em;
     text-align: left;
 }
 h3{
@@ -216,7 +216,7 @@ li a {
 }
 
 .large-icon{
-    font-size: 1.9em;
+    font-size: 1.7em;
     padding: 2px 4px 0 0;
 }
 
@@ -2335,7 +2335,7 @@ i, .btn .show-max {
 }
 .info_box_title{
     text-align: center;
-    font-size: 1.9em;
+    font-size: 1.7em;
     padding: 0 21px;
     line-height: 110%;
 }
@@ -2451,7 +2451,7 @@ textarea {
     line-height: 220%;
 }
 .focus-coin .inner-content .css__title {
-    font-size: 1.9em;
+    font-size: 1.7em;
     line-height: 110%;
     padding: 13px !important;
 }
@@ -2690,7 +2690,7 @@ h4.css__title{
         font-size: 2.7em;
     }
     h2{
-        font-size: 1.9em;
+        font-size: 1.7em;
     }
     .cover-btn{
         font-size: 8em;
@@ -3248,7 +3248,7 @@ h4.css__title{
 }
 .center-frame .msg {
     text-align: center;
-    font-size:1.9em;
+    font-size:1.7em;
 }
 .center-frame .msg .icon-block-xxs{
     display:none;
@@ -3314,7 +3314,7 @@ h4.css__title{
 /* LARGE */
 .custom_ui_13491_13494 .msg,
 .custom_ui_13491_13494 .regtext {
-    font-size:1.9em;
+    font-size:1.7em;
 }
 .custom_ui_13491_13494 .msg i,
 .custom_ui_13491_13494 .regtext i {
@@ -3388,7 +3388,7 @@ h4.css__title{
     text-align: center;
 }
 .select-btns .btn{
-    font-size: 1.9em !important;
+    font-size: 1.7em !important;
 }
 
 .doabsolute {
