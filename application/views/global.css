@@ -151,6 +151,13 @@ a:hover {
 li a {
     text-decoration: none;
 }
+
+.social-footer li a {
+    padding: 8px;
+    margin: 5px;
+    display: inline-block;
+}
+
 .special-text{
     font-size: 1.5em;
     display: block;
@@ -3257,7 +3264,7 @@ h4.css__title{
     font-size: 1.2em !important;
 }
 .center-frame {
-    padding-bottom: 34px;
+    padding:0 34px 34px;
 }
 .e-appendix{
     margin-left: 0;
