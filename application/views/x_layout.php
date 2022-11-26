@@ -395,13 +395,13 @@ if($double_column){
     echo '<div class="row">';
 
     //Image & Side Content:
-    echo '<div class="col-12 col-sm-5">';
+    echo '<div class="col-12 col-sm-4">';
     echo $messages_image;
     echo $relevant_sources;
     echo '</div>';
 
 
-    echo '<div class="col-12 col-sm-7">';
+    echo '<div class="col-12 col-sm-8">';
 
 }
 
