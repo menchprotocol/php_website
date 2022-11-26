@@ -365,6 +365,7 @@ foreach($this->X_model->fetch(array(
 if($double_column){
 
     //Image & Side Content:
+    echo '<div class="row">';
     echo '<div class="col-12 col-sm-4">';
     echo $messages_image;
     echo '<br />';
@@ -933,6 +934,7 @@ if($top_i__id > 0 && !$top_completed){
 
 
 if($double_column){
+    echo '</div>';
     echo '</div>';
 }
 
