@@ -1705,13 +1705,7 @@ class E extends CI_Controller
                 'message' => 'Invaid passcode. Check your email (and spam folder) and try again.',
                 'focus_input_field' => 'new_account_passcode',
             ));
-        } elseif (strlen($_POST['password_reset'])<1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing password',
-                'focus_input_field' => 'password_reset',
-            ));
-        } elseif (strlen($_POST['password_reset']) < view_memory(6404,11066)) {
+        } elseif (strlen($_POST['password_reset'])>0 && strlen($_POST['password_reset']) < view_memory(6404,11066)) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'New password must be '.view_memory(6404,11066).' characters or longer',
@@ -1767,16 +1761,18 @@ class E extends CI_Controller
 
 
 
-        //Add Password:
-        $hash = strtolower(hash('sha256', view_memory(6404,30863) . $_POST['password_reset'] . $member_result['e']['e__id']));
-        $this->X_model->create(array(
-            'x__type' => e_x__type($hash),
-            'x__message' => $hash,
-            'x__up' => 3286, //Password
-            'x__source' => $member_result['e']['e__id'],
-            'x__down' => $member_result['e']['e__id'],
-        ));
+        //Add Password if any:
+        if(strlen($_POST['password_reset'])){
+            $hash = strtolower(hash('sha256', view_memory(6404,30863) . $_POST['password_reset'] . $member_result['e']['e__id']));
+            $this->X_model->create(array(
+                'x__type' => e_x__type($hash),
+                'x__message' => $hash,
+                'x__up' => 3286, //Password
+                'x__source' => $member_result['e']['e__id'],
+                'x__down' => $member_result['e']['e__id'],
+            ));
 
+        }
 
         if (strlen(urldecode($_POST['referrer_url'])) > 1) {
 

@@ -1551,7 +1551,7 @@ class X_model extends CI_Model
                         'x__up' => 4783, //Phone
                     )) as $x_progress){
                         $u_clean_phone = clean_phone($x_progress['x__message']);
-                        $u_list_phone .= 'Phone:'."\n".$u_clean_phone."\n\n";
+                        $u_list_phone .= 'Phone:'."\n".$u_clean_phone."\n";
                     }
 
                     //Fetch Full Legal Name:
@@ -1572,7 +1572,9 @@ class X_model extends CI_Model
                     foreach($watchers as $watcher){
                         if(!in_array(intval($watcher['x__up']), $sent_watchers)){
                             array_push($sent_watchers, intval($watcher['x__up']));
-                            $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' '.( $u_clean_phone ? $u_clean_phone.' ' : '' ).'Discovered: '.$i['i__title'],
+
+                            //'.( $u_clean_phone ? $u_clean_phone.' ' : '' ).'
+                            $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered: '.$i['i__title'],
                                 //Message Body:
                                 $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
                                 ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
