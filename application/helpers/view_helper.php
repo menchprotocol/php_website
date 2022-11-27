@@ -353,7 +353,7 @@ function view_cover($coin__type, $cover_code, $noicon_default = null, $icon_pref
 
         return $icon_prefix.$cover_code;
 
-    } elseif($noicon_default) {
+    } elseif($noicon_default && $noicon_default!=1) {
 
         return $icon_prefix.$noicon_default;
 
