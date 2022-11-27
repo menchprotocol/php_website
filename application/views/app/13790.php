@@ -338,7 +338,7 @@ if(strlen($_GET['i__id'])){
             cursor: ns-resize !important;
         }
         #sortable_table th, #sortable_table td{
-            border:1px solid #000 !important;
+            border: 1px solid #000 !important;
         }
 
         #sortable_table th:hover, #sortable_table th:active{
