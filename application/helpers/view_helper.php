@@ -2170,7 +2170,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $is_cache = in_array($x__type, $this->config->item('n___14599'));
+    $is_cache = in_array($x__type, $CI->config->item('n___14599'));
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
     $superpower_13422 = superpower_active(13422, true);
