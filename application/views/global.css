@@ -125,7 +125,7 @@ table td { border: none !important; }
 h1 {
     padding:34px 8px 55px !important;
     margin:0;
-    font-size:3.4em;
+    font-size:3.7em;
     text-align: center;
 }
 
@@ -435,7 +435,7 @@ img.no-frame {
     display: block;
     float: left;
     text-align: center;
-    font-size: 3.4em !important;
+    font-size: 3.7em !important;
     margin:13px 0 0 0 !important;
     padding: 0 !important;
 }
@@ -2321,7 +2321,7 @@ i, .btn .show-max {
 .info_box_cover{
     padding:21px 0;
     text-align: center;
-    font-size: 3.4em;
+    font-size: 3.7em;
 }
 .center-cropped{
     border-radius: 50%;
