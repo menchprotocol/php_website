@@ -3786,5 +3786,9 @@ main {
 }
 
 .menu_header {
-    font-size: 0.9em !important;
+    font-size: 1.2em !important;
+    padding: 8px 3px;
+}
+.menu_header, .menu_header i {
+    color:#777777 !important;
 }

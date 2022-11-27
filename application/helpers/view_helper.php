@@ -1243,8 +1243,10 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
 
             $e___31003 = $CI->config->item('e___31003'); //Expanded Coins
             return array_merge(
+
                 array(array('raw_html' => '<h3 class="menu_header"><span class="icon-block">'.$e___31003[11019]['m__cover'].'</span>'.$e___31003[11019]['m__title'].'</h3>')),
                 view_coins_i(11019, $i__id, $page_num, $append_coin_icon),
+
                 array(array('raw_html' => '<br /><h3 class="menu_header"><span class="icon-block">'.$e___31003[13542]['m__cover'].'</span>'.$e___31003[13542]['m__title'].'</h3>')),
                 view_coins_i(13542, $i__id, $page_num, $append_coin_icon)
             );
