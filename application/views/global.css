@@ -2212,7 +2212,7 @@ i, .btn .show-max {
 }
 
 .modal-dialog{
-    max-width:1534px;
+    max-width:600px;
 }
 .modal-content{
     border:1px solid transparent;
