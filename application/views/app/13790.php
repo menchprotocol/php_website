@@ -328,7 +328,7 @@ if(strlen($_GET['i__id'])){
         }
         #sortable_table .table-striped td {
             border-bottom: 1px dotted #FFFFFF !important;
-            font-size: 1.3em;
+            font-size: 1.15em;
         }
         .fa-filter, .fa-sort{
             font-size: 1.01em !important;
