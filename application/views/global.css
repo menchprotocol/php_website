@@ -2059,7 +2059,7 @@ i, .btn .show-max {
 
 .coin_coins{
     width: calc(100% - 10px);
-    height: 45px;
+    height: 37px;
     text-align: center;
     margin: 0 5px;
 }
