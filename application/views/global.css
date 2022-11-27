@@ -843,7 +843,7 @@ h4 .halfbg {
 
 
 .nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
-    border: 3px solid transparent;
+    border:2px solid transparent;
     border-top-left-radius: 13px;
     border-top-right-radius: 13px;
     position: relative;
@@ -858,7 +858,7 @@ h4 .halfbg {
 
 #x_reply{
     padding: 5px;
-    border: 3px solid transparent !important;
+    border:2px solid transparent !important;
     height: 55px;
     border-radius: 0 !important;
 }
@@ -1455,7 +1455,7 @@ label {
 
 
 .answer-item {
-    border:3px solid #000 !important;
+    border:2px solid #000 !important;
     background-color:#FFFFFF !important;
     color: #000000 !important;
 }
@@ -2215,7 +2215,7 @@ i, .btn .show-max {
     max-width:1534px;
 }
 .modal-content{
-    border: 3px solid transparent;
+    border:2px solid transparent;
     border-radius: 0;
 }
 .mass_action_toggle, .e_text_search, .mass_action_item{
@@ -2357,11 +2357,11 @@ i, .btn .show-max {
 }
 
 .custom_ui_13884_13886 .white-border {
-    border: 3px solid #FFFFFF !important;
+    border:2px solid #FFFFFF !important;
     border-radius: 0;
 }
 .custom_ui_13884_13885 .white-border {
-    border: 3px solid #000000 !important;
+    border:2px solid #000000 !important;
     border-radius: 0;
 }
 
@@ -2371,7 +2371,7 @@ i, .btn .show-max {
 }
 
 .btn.btn-default {
-    border: 3px solid transparent;
+    border:2px solid transparent;
 }
 
 
@@ -2727,12 +2727,12 @@ h4.css__title{
 .custom_ui_13884_13886.custom_ui_28979_28981 .coinType12274,
 .custom_ui_13884_13886.custom_ui_28979_28981 .coinType12273,
 .custom_ui_13884_13886.custom_ui_28979_28981 .coinType6255 {
-    border: 3px solid #FFFFFF !important;
+    border:2px solid #FFFFFF !important;
     background-color: #000000;
 }
 
 .isSelected {
-    border: 3px solid #FC1B44 !important;
+    border:2px solid #FC1B44 !important;
 }
 
 
@@ -2838,11 +2838,11 @@ h4.css__title{
 
 
 .custom_ui_13884_13886 .black-background {
-    border:3px solid #000000;
+    border:2px solid #000000;
 }
 
 .custom_ui_13884_13886 .doborderless .black-background {
-    border:3px solid #000000 !important;
+    border:2px solid #000000 !important;
 }
 .custom_ui_13884_13886 .black-background i{
     color: #FFFFFF;
@@ -2876,7 +2876,7 @@ h4.css__title{
 .custom_ui_13884_13885.custom_ui_28979_28981 .coinType12274,
 .custom_ui_13884_13885.custom_ui_28979_28981 .coinType12273,
 .custom_ui_13884_13885.custom_ui_28979_28981 .coinType6255 {
-    border: 3px solid #000000 !important;
+    border:2px solid #000000 !important;
     background-color: #FFFFFF;
 }
 
@@ -2950,10 +2950,10 @@ h4.css__title{
 }
 
 .custom_ui_13884_13885 .black-background {
-    border:3px solid #FFFFFF;
+    border:2px solid #FFFFFF;
 }
 .custom_ui_13884_13885 .doborderless .black-background {
-    border:3px solid #FFFFFF !important;
+    border:2px solid #FFFFFF !important;
 }
 .btn-tiny{
     font-size: 0.55em !important;
@@ -3064,7 +3064,7 @@ h4.css__title{
 }
 .custom_ui_28979_28980 .btn.btn-12274,
 .custom_ui_28979_28980 .coinType12274 {
-    border: 3px solid #007AFD;
+    border:2px solid #007AFD;
     background-color: #FFFFFF !important;
 }
 .custom_ui_28979_28980 .coin-12274 .cover-content {
@@ -3100,11 +3100,11 @@ h4.css__title{
 .custom_ui_28979_28980 .open > .navbar .navbar-nav > li > a.btn.btn-12273.dropdown-toggle:hover {
     /* background-color: transparent; */
     color: #FFC500;
-    /* border: 3px solid #FFC500; */
+    /* border:2px solid #FFC500; */
 }
 .custom_ui_28979_28980 .btn-12273 { border-color:#FFC500 !important; }
 .custom_ui_28979_28980 .btn.btn-12273 {
-    border: 3px solid #FFC500;
+    border:2px solid #FFC500;
     color: #000000;
 }
 .custom_ui_28979_28980 .btn-superpower.active i.zq12273,
@@ -3119,7 +3119,7 @@ h4.css__title{
     color:#FFC500 !important;
 }
 .custom_ui_28979_28980 .coinType12273 {
-    border: 3px solid #FFC500 !important;
+    border:2px solid #FFC500 !important;
     background-color: #FFC500 !important;
 }
 .custom_ui_28979_28980 .coin-12273 .cover-content {
@@ -3158,19 +3158,19 @@ h4.css__title{
 .custom_ui_28979_28980 .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle:hover {
     background-color: #FFFFFF;
     color: #FC1B44;
-    /* border: 3px solid #FC1B44; */
+    /* border:2px solid #FC1B44; */
 }
 .custom_ui_28979_28980 .btn-6255 i,
 .custom_ui_28979_28980 .btn-superpower.active i.zq6255 {
     color:#FC1B44 !important;
 }
 .custom_ui_28979_28980 .btn.btn-6255 {
-    border: 3px solid #FC1B44;
+    border:2px solid #FC1B44;
     color: #FC1B44;
 }
 .custom_ui_28979_28980 .btn-6255,
 .custom_ui_28979_28980 .coinType6255{
-    border: 3px solid #FC1B44 !important;
+    border:2px solid #FC1B44 !important;
     border: 0;
     background-color: #FC1B44;
 }
@@ -3803,8 +3803,4 @@ p.menu_header {
 
 .menu_header, .menu_header .icon-block-xxs i {
     color:#000000 !important;
-}
-
-.edge-coin .cover-wrapper .cover-link {
-    border: 0 !important;
 }

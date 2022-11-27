@@ -135,7 +135,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
 
 
-    echo '<div style="border:3px solid #000000; padding:8px; border-radius: 0;">';
+    echo '<div style="border:2px solid #000000; padding:8px; border-radius: 0;">';
     echo '<p>'.view_shuffle_message(29749).' '.$member_e['e__title'].' '.view_shuffle_message(29750).'</p>';
     echo '<textarea class="form-control" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
     echo '<p>'.view_shuffle_message(12691).'</p>';
@@ -145,7 +145,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '<div id="charNum"></div>';
 
 
-    echo '<input type="datetime-local" id="message_time" value="'.date('Y-m-d\TH:i', (time()+3600)).'" style="border:3px solid #000000; padding:8px; border-radius: 0; margin-top:21px;">';
+    echo '<input type="datetime-local" id="message_time" value="'.date('Y-m-d\TH:i', (time()+3600)).'" style="border:2px solid #000000; padding:8px; border-radius: 0; margin-top:21px;">';
 
     echo '</div>';
 
