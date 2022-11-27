@@ -3788,12 +3788,16 @@ main {
 .menu_header {
     font-size: 1em !important;
     font-weight:bold;
-    padding: 13px 0px 8px;
+    padding: 13px 0 0;
     border-top: 1px solid #777777;
 }
 
 .menu_header:first-of-type {
     border-top: none;
+}
+
+p.menu_header {
+    padding: 0 0 0 25px;
 }
 
 
