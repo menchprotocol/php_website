@@ -1537,7 +1537,7 @@ function i__add(x__type, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list("list-in-" + x__type, sort_handler, '<div id="tempLoader" class="col-6 col-md-4 col-xl-2 col-lg-3 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
+    add_to_list("list-in-" + x__type, sort_handler, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
 
 
     //Update backend:
