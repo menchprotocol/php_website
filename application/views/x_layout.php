@@ -164,8 +164,7 @@ if($is_payment){
             $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
             $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message']) : $min_allowed );
             $min_allowed = ( $min_allowed < 1 ? 1 : $min_allowed );
-            $unit_total = number_format($min_allowed*($unit_fee+$currency_parts[1]), 2);
-
+            $unit_total = number_format($unit_fee+$currency_parts[1], 2);
 
         } else {
             $is_payment = false;
@@ -583,7 +582,7 @@ if($top_i__id) {
             }
 
 
-            if($max_allowed > 1){
+            if($max_allowed > 1 || $min_allowed > 1){
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn" style="text-align: right;">Quantity:&nbsp;&nbsp;</td>';
@@ -598,7 +597,7 @@ if($top_i__id) {
 
             echo '<tr>';
             echo '<td class="table-btn first_btn" style="text-align: right;  width:34% !important;">Total:&nbsp;&nbsp;</td>';
-            echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.$unit_total.'</span> '.$currency_parts[0].'</td>';
+            echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].'</td>';
             echo '</tr>';
 
             echo '<tr>';
@@ -803,12 +802,12 @@ if(!$top_i__id){
                 //Load Paypal Pay button:
                 $control_btn .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
 
-                $control_btn .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
+                $control_btn .= '<input type="hidden" id="paypal_handling" name="handling" value="'.($unit_fee*$min_allowed).'">';
                 $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable
                 $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i_focus['i__title'].'">';
                 $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
 
-                $control_btn .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
+                $control_btn .= '<input type="hidden" name="amount" value="'.($unit_price*$min_allowed).'">';
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
                 $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
                 $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
