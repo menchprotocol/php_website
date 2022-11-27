@@ -26,10 +26,10 @@ $is_next = $this->X_model->fetch(array(
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
 //Filter Next Ideas:
-$first_child = 0;
+$first_child = array();
 foreach($is_next as $in_key => $in_value){
     if(!$first_child && in_array($in_value['i__type'], $this->config->item('n___12330'))){
-        $first_child = $in_value['i__id'];
+        $first_child = $in_value;
     }
     $i_is_available = i_is_available($in_value['i__id'], false);
     if(!$i_is_available['status']){
@@ -43,7 +43,7 @@ foreach($is_next as $in_key => $in_value){
 $i_focus['i__title'] = str_replace('"','',$i_focus['i__title']);
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
-$one_child_hack = ($first_child>0 && count($is_next)==1 && !$top_i__id);
+$one_child_hack = (count($first_child) && count($is_next)==1 && !$top_i__id);
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -363,7 +363,7 @@ if($one_child_hack){
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
-        'x__right' => $first_child,
+        'x__right' => $first_child['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
         $messages_string .= $this->X_model->message_view(
             $message_x['x__message'],
