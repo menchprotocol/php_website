@@ -2170,7 +2170,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $is_cache = in_array($x__type, $CI->config->item('n___14599'));
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
     $superpower_13422 = superpower_active(13422, true);
@@ -2179,6 +2178,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $focus_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
+    $is_cache = in_array($x__type, $CI->config->item('n___14599'));
 
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
     $source_of_e = ($superpower_13422) || ($source_of_e && $member_e) || ($x__id && ($e['x__up']==$member_e['e__id'] || $e['x__down']==$member_e['e__id']));
@@ -2345,7 +2345,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, ( isset($e['x__spectrum']) ? ($e['x__spectrum']*100)+1 : 0  ), true);
     } else {
         //Static:
-        $ui .= '<div class="css__title">'.( $can_click && 0 ? '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
+        $ui .= '<div class="css__title">'.( $is_cache ? '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
     }
 
 
