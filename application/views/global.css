@@ -3789,7 +3789,7 @@ main {
     font-size: 1em !important;
     font-weight:bold;
     padding: 13px 0 0;
-    border-top: 1px solid #777777;
+    border-top: 1px solid #000000;
 }
 
 .menu_header:first-of-type {
@@ -3802,5 +3802,5 @@ p.menu_header {
 
 
 .menu_header, .menu_header .icon-block-xxs i {
-    color:#777777 !important;
+    color:#000000 !important;
 }
