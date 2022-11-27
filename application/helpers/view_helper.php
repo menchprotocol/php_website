@@ -1093,9 +1093,11 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         if($x__type==12274){
 
+            $e___31003 = $CI->config->item('e___31003'); //Expanded Coins
             return array_merge(
+                array(array('raw_html' => '<h3 class="menu_header"><span class="icon-block">'.$e___31003[11030]['m__cover'].'</span>'.$e___31003[11030]['m__title'].'</h3>')),
                 view_coins_e(11030, $e__id, $page_num, $append_coin_icon),
-                array(array('is_break' => true)),
+                array(array('raw_html' => '<br /><h3 class="menu_header"><span class="icon-block">'.$e___31003[11029]['m__cover'].'</span>'.$e___31003[11029]['m__title'].'</h3>')),
                 view_coins_e(11029, $e__id, $page_num, $append_coin_icon)
             );
 
@@ -1239,9 +1241,11 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
 
         if($x__type==12273){
 
+            $e___31003 = $CI->config->item('e___31003'); //Expanded Coins
             return array_merge(
+                array(array('raw_html' => '<h3 class="menu_header"><span class="icon-block">'.$e___31003[11019]['m__cover'].'</span>'.$e___31003[11019]['m__title'].'</h3>')),
                 view_coins_i(11019, $i__id, $page_num, $append_coin_icon),
-                array(array('is_break' => true)),
+                array(array('raw_html' => '<br /><h3 class="menu_header"><span class="icon-block">'.$e___31003[13542]['m__cover'].'</span>'.$e___31003[13542]['m__title'].'</h3>')),
                 view_coins_i(13542, $i__id, $page_num, $append_coin_icon)
             );
 

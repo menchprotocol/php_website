@@ -3784,3 +3784,7 @@ main {
 .list-group-item-action img {
     max-height: 377px;
 }
+
+.menu_header {
+    font-size: 0.9em !important;
+}
