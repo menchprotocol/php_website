@@ -1973,9 +1973,9 @@ i, .btn .show-max {
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    margin: 0 8px;
+    margin: 0 6px;
     max-height: 64%;
-    top:50px;
+    top:47px;
 }
 .hide-subline .subtle-line {
     display: none;
@@ -2135,7 +2135,7 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    padding:2px 0;
+    padding:5px 0;
 }
 .cover-link {
     border:0;
