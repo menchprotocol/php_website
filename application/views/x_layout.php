@@ -127,6 +127,7 @@ if($is_payment){
         'x__up' => 26562, //Total Due
     ));
 
+    $unit_fee = 0;
     if($x__source>0 && count($total_dues)){
         $detected_x_type = x_detect_type($total_dues[0]['x__message']);
         if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
