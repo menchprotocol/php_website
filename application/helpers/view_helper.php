@@ -1137,7 +1137,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             }
 
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
-            $coin_icon = '<span class="icon-block-xs">'.$e___11035[$x__type]['m__cover'].'</span>';
+            $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
             $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title load_e_coins button_of_'.$e__id.'_'.$x__type.'" id="coin_e_group_'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'" load_current_e="'.$current_e.'" ><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$coin_icon.$visual_counter.'</span></button>';
@@ -1297,7 +1297,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
                 return null;
             }
 
-            $coin_icon = '<span class="icon-block-xs">'.$e___11035[$x__type]['m__cover'].'</span>';
+            $coin_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
             $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title load_i_coins button_of_'.$i__id.'_'.$x__type.'" id="coin_i_group_'.$x__type.'_'.$i__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_i__id="'.$i__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$coin_icon.$visual_counter.'</span></button>';
