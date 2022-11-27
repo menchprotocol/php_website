@@ -401,7 +401,6 @@ if($double_column){
     echo '<br />';
     echo '</div>';
 
-
     echo '<div class="col-12">';
 
 }

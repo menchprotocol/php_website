@@ -132,7 +132,7 @@ h1 {
 h2 {
     padding:21px 10px;
     margin:0;
-    font-size:1.5em;
+    font-size:1.3em;
     text-align: left;
 }
 h3{
@@ -159,7 +159,7 @@ li a {
 }
 
 .special-text{
-    font-size: 1.5em;
+    font-size: 1.3em;
     display: block;
     float: left;
     padding-top: 5px;
@@ -223,7 +223,7 @@ li a {
 }
 
 .large-icon{
-    font-size: 1.5em;
+    font-size: 1.3em;
     padding: 2px 4px 0 0;
 }
 
@@ -1550,7 +1550,7 @@ label {
 }
 
 i, .btn .show-max {
-    font-size: 1.5em !important;
+    font-size: 1.3em !important;
 }
 
 .icon-block-lg i {
@@ -1656,7 +1656,7 @@ i, .btn .show-max {
     margin-top: 2px;
     border-radius: 0 !important;
     display: inline-block;
-    font-size: 1.5em;
+    font-size: 1.3em;
 }
 .platform-logo i{
     font-size: 1em !important;
@@ -1816,7 +1816,7 @@ i, .btn .show-max {
     display: block;
     width: 90px;
     margin: 0 auto;
-    font-size: 1.5em;
+    font-size: 1.3em;
     text-align: center;
     height: 30px;
     padding-top: 7px;
@@ -2342,7 +2342,7 @@ i, .btn .show-max {
 }
 .info_box_title{
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1.3em;
     padding: 0 21px;
     line-height: 110%;
 }
@@ -2458,7 +2458,7 @@ textarea {
     line-height: 220%;
 }
 .focus-coin .inner-content .css__title {
-    font-size: 1.5em;
+    font-size: 1.3em;
     line-height: 110%;
     padding: 13px !important;
 }
@@ -2539,7 +2539,7 @@ h4.css__title{
 @media (max-width:767px) {
 
     .info_box_title{
-        font-size: 1.5em;
+        font-size: 1.3em;
     }
 
     .coin_coins>span{
@@ -2680,13 +2680,13 @@ h4.css__title{
         width:40px;
     }
     .btn-lrg{
-        font-size: 1.5em !important;
+        font-size: 1.3em !important;
     }
 
 }
 @media (max-width:576px) {
     .focus-coin .inner-content .css__title {
-        font-size: 1.5em;
+        font-size: 1.3em;
     }
     .the_counter{
         margin-top: -24px;
@@ -2697,7 +2697,7 @@ h4.css__title{
         font-size: 2.7em;
     }
     h2{
-        font-size: 1.5em;
+        font-size: 1.3em;
     }
     .cover-btn{
         font-size: 8em;
@@ -3255,7 +3255,7 @@ h4.css__title{
 }
 .center-frame .msg {
     text-align: center;
-    font-size:1.5em;
+    font-size:1.3em;
 }
 .center-frame .msg .icon-block-xxs{
     display:none;
@@ -3314,14 +3314,14 @@ h4.css__title{
 .custom_ui_13491_13493 .msg i,
 .custom_ui_13491_13493 .regtext i{
     font-size:1.131em;
-} /* To get to 1.5em*/
+} /* To get to 1.3em*/
 
 
 
 /* LARGE */
 .custom_ui_13491_13494 .msg,
 .custom_ui_13491_13494 .regtext {
-    font-size:1.5em;
+    font-size:1.3em;
 }
 .custom_ui_13491_13494 .msg i,
 .custom_ui_13491_13494 .regtext i {
@@ -3395,7 +3395,7 @@ h4.css__title{
     text-align: center;
 }
 .select-btns .btn{
-    font-size: 1.5em !important;
+    font-size: 1.3em !important;
 }
 
 .doabsolute {
