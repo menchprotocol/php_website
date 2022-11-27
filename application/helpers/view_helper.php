@@ -2380,7 +2380,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Coin Block
-    if(($superpower_10939 || $is_cache) && !$is_app && !$focus_coin){
+    if($superpower_10939 && !$is_cache && !$is_app && !$focus_coin){
         $ui .= '<div class="coin_coins"><div class="show-on-hover">';
         $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_e(12273,  $e['e__id']).'</span>';
         $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_e(12274,  $e['e__id']).'</span>';
