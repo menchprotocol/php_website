@@ -3788,9 +3788,15 @@ main {
 .menu_header {
     font-size: 1em !important;
     font-weight:bold;
-    padding: 8px 0px;
-    border-bottom: 1px solid #777777;
+    padding: 13px 0px 8px;
+    border-top: 1px solid #777777;
 }
+
+.menu_header:first-of-type {
+    border-top: none;
+}
+
+
 .menu_header, .menu_header .icon-block-xxs i {
     color:#777777 !important;
 }

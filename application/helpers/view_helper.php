@@ -1098,9 +1098,9 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             $view_coins_e_11029 = view_coins_e(11029, $e__id, $page_num, $append_coin_icon);
 
             return array_merge(
-                array(array('raw_html' => '<h3 class="menu_header"><span class="icon-block-xxs">'.$e___31003[11030]['m__cover'].'</span>'.$e___31003[11030]['m__title'].':</h3>')),
+                array(array('raw_html' => '<h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[11030]['m__cover'].'</span>'.$e___31003[11030]['m__title'].':</h3>')),
                 ( count($view_coins_e_11030) ? $view_coins_e_11030 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) ),
-                array(array('raw_html' => '<br /><h3 class="menu_header"><span class="icon-block-xxs">'.$e___31003[11029]['m__cover'].'</span>'.$e___31003[11029]['m__title'].':</h3>')),
+                array(array('raw_html' => '<br /><h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[11029]['m__cover'].'</span>'.$e___31003[11029]['m__title'].':</h3>')),
                 ( count($view_coins_e_11029) ? $view_coins_e_11029 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) )
             );
 
@@ -1250,9 +1250,9 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
 
             return array_merge(
 
-                array(array('raw_html' => '<h3 class="menu_header"><span class="icon-block-xxs">'.$e___31003[11019]['m__cover'].'</span>'.$e___31003[11019]['m__title'].':</h3>')),
+                array(array('raw_html' => '<h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[11019]['m__cover'].'</span>'.$e___31003[11019]['m__title'].':</h3>')),
                 ( count($view_coins_i_11019) ? $view_coins_i_11019 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) ),
-                array(array('raw_html' => '<br /><h3 class="menu_header"><span class="icon-block-xxs">'.$e___31003[13542]['m__cover'].'</span>'.$e___31003[13542]['m__title'].':</h3>')),
+                array(array('raw_html' => '<br /><h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[13542]['m__cover'].'</span>'.$e___31003[13542]['m__title'].':</h3>')),
                 ( count($view_coins_i_13542) ? $view_coins_i_13542 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) )
             );
 
