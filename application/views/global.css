@@ -3804,3 +3804,7 @@ p.menu_header {
 .menu_header, .menu_header .icon-block-xxs i {
     color:#000000 !important;
 }
+
+.edge-coin .cover-wrapper .cover-link {
+    border: 0 !important;
+}
