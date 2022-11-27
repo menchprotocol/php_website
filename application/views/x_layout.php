@@ -158,13 +158,14 @@ if($is_payment){
             $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
             $unit_price = number_format($currency_parts[1], 2);
             $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(get_domain_setting(30590, $x__source)) + doubleval(get_domain_setting(27017, $x__source)) + doubleval(get_domain_setting(30612, $x__source)))/100 ), 2);
-            $unit_total = number_format($unit_fee+$currency_parts[1], 2);
             $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view_memory(6404,29651) );
             $spots_remaining = i_spots_remaining($i_focus['i__id']);
             $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
             $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
             $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message']) : $min_allowed );
             $min_allowed = ( $min_allowed < 1 ? 1 : $min_allowed );
+            $unit_total = number_format($min_allowed*($unit_fee+$currency_parts[1]), 2);
+
 
         } else {
             $is_payment = false;
