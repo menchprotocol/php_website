@@ -2080,8 +2080,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         if($superpower_10939 && !$focus_coin && $show_coins){
 
             $ui .= '<div class="coin_coins"><div class="show-on-hover">';
-            $ui .= '<span class="hideIfEmpty">'.view_coins_i(12273,  $i['i__id']).'</span>';
-            $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i['i__id']).'</span>';
+            $ui .= '<span class="hideIfEmpty" style="padding-right:3px;">'.view_coins_i(12273,  $i['i__id']).'</span>';
+            $ui .= '<span class="hideIfEmpty" style="padding-right:3px;">'.view_coins_i(12274,  $i['i__id']).'</span>';
             $ui .= '<span class="hideIfEmpty">'.view_coins_i(6255,  $i['i__id']).'</span>';
             $ui .= '</div></div>';
 
@@ -2381,8 +2381,8 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     //Coin Block
     if($superpower_10939 && !$is_app && !$focus_coin){
         $ui .= '<div class="coin_coins"><div class="show-on-hover">';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_e(12273,  $e['e__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_e(12274,  $e['e__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty" style="padding-right:3px;">'.view_coins_e(12273,  $e['e__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty" style="padding-right:3px;">'.view_coins_e(12274,  $e['e__id']).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(6255,  $e['e__id']).'</span>';
         $ui .= '</div></div>';
     }
