@@ -1954,6 +1954,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         } elseif(isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___13550'))){
             //Idea Source Reference
             $link_dropdown .= view_input_dropdown(13550, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
+            $link_visibility = 'show-on-hover';//No need to be visible by default
+            $type_visibility = 'show-on-hover';//No need to be visible by default
         }
 
 
@@ -2077,11 +2079,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
         if($superpower_10939 && !$focus_coin && $show_coins){
 
-            $ui .= '<div class="coin_coins">';
+            $ui .= '<div class="coin_coins"><div class="show-on-hover">';
             $ui .= '<span class="hideIfEmpty">'.view_coins_i(12273,  $i['i__id']).'</span>';
             $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i['i__id']).'</span>';
             $ui .= '<span class="hideIfEmpty">'.view_coins_i(6255,  $i['i__id']).'</span>';
-            $ui .= '</div>';
+            $ui .= '</div></div>';
 
         }
 
