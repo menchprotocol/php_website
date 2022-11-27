@@ -638,6 +638,9 @@ if($top_i__id) {
                         //Invalid new quantity
                         return false;
                     } else if (new_quantity<min_allowed){
+                        if(min_allowed>1){
+                            alert('Error: Minimum Allowed is '+min_allowed);
+                        }
                         return false;
                     } else if (new_quantity>max_allowed){
                         alert('Error: Maximum Allowed is '+max_allowed);
