@@ -1170,7 +1170,6 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
     if($x__type==12274){
 
         //SOURCES
-        $order_columns = array('x__id' => 'ASC');
         $join_objects = array('x__up');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1178,6 +1177,16 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             'x__right' => $i__id,
             'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
+
+        //Determine Sort:
+        $order_columns = array();
+        foreach($CI->config->item('e___13550') as $x__sort_id => $sort) {
+            $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
+        }
+        foreach($CI->config->item('e___6177') as $x__sort_id => $sort) {
+            $order_columns['e__type = \''.$x__sort_id.'\' DESC'] = null;
+        }
+        $order_columns['e__title'] = 'ASC';
 
     } elseif($x__type==13542){
 
