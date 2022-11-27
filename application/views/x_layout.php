@@ -76,6 +76,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'x__right' => $i_focus['i__id'],
     'x__up > 0' => null,
+    'x__up !=' => get_domain_setting(0),
 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
 
     //See if this member also follows this featured source?
