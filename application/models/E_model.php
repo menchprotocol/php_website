@@ -93,15 +93,45 @@ class E_model extends CI_Model
         }
 
 
+
+        //Fetch Platform Defaults:
+        $platform_defaults = array_intersect($this->config->item('n___6404'), $this->config->item('n___14926')); // Platform Defaults x Website Theme
+
+        //Fetch Website Defaults:
+        $website_defaults = array();
+        foreach($this->X_model->fetch(array(
+            'x__up' => get_domain_setting(0),
+            'x__down IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 0) as $x) {
+            array_push($website_defaults, intval($x['x__down']));
+        }
+
+
         //Determine Account Defaults if missing any of the CUSTOM UI
         foreach($this->config->item('e___13890') as $e__id => $m){
             if(!$session_data['session_custom_ui_'.$e__id]){
+
+                //First try to find Website Default, if any:
                 foreach($this->config->item('e___'.$e__id) as $e__id2 => $m2){
-                    if(in_array($e__id2, $this->config->item('n___'.get_domain_setting(14926)) /* ACCOUNT DEFAULTS */ )){
+                    if(in_array($e__id2, $website_defaults )){
                         $session_data['session_custom_ui_'.$e__id] = $e__id2;
                         break;
                     }
                 }
+
+                //If not found, try platform defaults:
+                if(!$session_data['session_custom_ui_'.$e__id]){
+                    //First try to find Website Default, if any:
+                    foreach($this->config->item('e___'.$e__id) as $e__id2 => $m2){
+                        if(in_array($e__id2, $platform_defaults )){
+                            $session_data['session_custom_ui_'.$e__id] = $e__id2;
+                            break;
+                        }
+                    }
+                }
+
             }
         }
 
