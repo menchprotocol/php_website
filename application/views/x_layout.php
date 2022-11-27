@@ -116,8 +116,6 @@ foreach($this->X_model->fetch(array(
 
 }
 
-$double_column = strlen($relevant_sources) > 0;
-
 
 if($is_payment){
 
@@ -336,30 +334,16 @@ if($top_completed){
 
 //MESSAGES
 $messages_string = false;
-$messages_image = false;
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $i_focus['i__id'],
 ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
-    $is_image = substr($message_x['x__message'], 0, 1)=='@' && is_numeric(substr($message_x['x__message'], 1)) && count($this->X_model->fetch(array(
-            'x__type' => 4260, //IMAGES
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__down' => intval(substr($message_x['x__message'], 1)),
-        )));
-
-    $this_message = $this->X_model->message_view(
+    $messages_string .= $this->X_model->message_view(
         $message_x['x__message'],
         true,
         $member_e
     );
-
-    if($is_image && $double_column && !$messages_image){
-        $messages_image = $this_message;
-    } else {
-        $messages_string .= $this_message;
-    }
-
 }
 
 
@@ -389,23 +373,6 @@ if($one_child_hack){
 }
 
 
-if($double_column){
-
-    //Main Content Continues:
-    echo '<div class="row">';
-
-    //Image & Side Content:
-    echo '<div class="col-12">';
-    echo $messages_image;
-    echo $relevant_sources;
-    echo '<br />';
-    echo '</div>';
-
-    echo '<div class="col-12">';
-
-}
-
-
 if($messages_string){
     echo $messages_string;
 } elseif(!count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12330'))) {
@@ -414,7 +381,7 @@ if($messages_string){
 }
 
 
-if(!$double_column && strlen($relevant_sources)){
+if(strlen($relevant_sources)){
     echo '<div class="source-featured">';
     echo $relevant_sources;
     echo '</div>';
@@ -798,7 +765,6 @@ if(!$top_i__id){
 
     foreach($this->config->item('e___13289') as $e__id => $m2) {
 
-
         $superpower_actives = array_intersect($this->config->item('n___10957'), $m2['m__profile']);
         if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
             continue;
@@ -935,12 +901,6 @@ if($top_i__id > 0 && !$top_completed){
 }
 
 
-
-
-if($double_column){
-    echo '</div>';
-    echo '</div>';
-}
 
 echo '</div>';
 
