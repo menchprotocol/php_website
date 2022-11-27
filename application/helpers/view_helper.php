@@ -1970,7 +1970,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
         } elseif($discovery_mode && isset($i['x__type']) && $i['x__type']>0){
             $e___4593 = $CI->config->item('e___4593'); //Transaction Types
-            $ui .= '<div title="'.$e___4593[$i['x__type']]['m__title'].'">'.$e___4593[$i['x__type']]['m__cover'].'</div>';
+            //$ui .= '<div title="'.$e___4593[$i['x__type']]['m__title'].'">'.$e___4593[$i['x__type']]['m__cover'].'</div>';
         }
         $ui .= '</div></td>';
 
