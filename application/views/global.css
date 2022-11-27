@@ -3786,9 +3786,11 @@ main {
 }
 
 .menu_header {
-    font-size: 1.2em !important;
-    padding: 8px 3px;
+    font-size: 1em !important;
+    font-weight:bold;
+    padding: 8px 0px;
+    border-bottom: 1px solid #777777;
 }
-.menu_header, .menu_header i {
+.menu_header, .menu_header .icon-block-xxs i {
     color:#777777 !important;
 }
