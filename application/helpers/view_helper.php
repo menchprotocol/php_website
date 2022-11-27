@@ -2170,6 +2170,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    $is_cache = in_array($x__type, $this->config->item('n___14599'));
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12706 = superpower_active(12706, true);
     $superpower_13422 = superpower_active(13422, true);
@@ -2198,9 +2199,9 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     //Is Lock/Private?
     $has_hard_lock = in_array($e['e__type'], $CI->config->item('n___30956')) && !$superpower_12701 && (!$member_e || !$source_is_e);
     $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$is_public && !$source_of_e && !$superpower_13422));
-    $has_any_lock = !$superpower_12701 && ($has_soft_lock || $has_hard_lock);
+    $has_any_lock = $is_cache || (!$superpower_12701 && ($has_soft_lock || $has_hard_lock));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $superpower_13422 && $x__id > 0;
-    $show_text_editor = $source_of_e && !$has_any_lock;
+    $show_text_editor = $source_of_e && !$has_any_lock && !$is_cache;
     $can_click = !$focus_coin; //Allow clicking for all
 
     //Source UI
