@@ -72,7 +72,7 @@ function video_play(){
 
 
 //Full Story
-if(js_pl_id > 1 && js_e___30849[domain__id]['m__message'].length>1){ //Any user other than Shervin
+if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user other than Shervin
 
     /*
 
@@ -99,11 +99,11 @@ if(js_pl_id > 1 && js_e___30849[domain__id]['m__message'].length>1){ //Any user 
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
     */
 
-    console.log('Activated Recording for Org '+js_e___30849[domain__id]['m__message'])
+    console.log('Activated Recording for Org '+js_e___30849[website_id]['m__message'])
     window['_fs_debug'] = false;
     window['_fs_host'] = 'fullstory.com';
     window['_fs_script'] = 'edge.fullstory.com/s/fs.js';
-    window['_fs_org'] = js_e___30849[domain__id]['m__message'];
+    window['_fs_org'] = js_e___30849[website_id]['m__message'];
     window['_fs_namespace'] = 'FS';
     (function(m,n,e,t,l,o,g,y){
         if (e in m) {if(m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].');} return;}

@@ -55,7 +55,7 @@ class E_model extends CI_Model
         //Fetch Platform Defaults:
         $platform_theme = array();
         foreach($this->X_model->fetch(array(
-            'x__up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme
+            'x__up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
             'x__down' => 6404, //Platform Default
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -66,7 +66,7 @@ class E_model extends CI_Model
         //Fetch Website Defaults:
         $website_theme = array();
         foreach($this->X_model->fetch(array(
-            'x__up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme
+            'x__up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
             'x__down' => website_setting(0), //Website ID
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -87,7 +87,7 @@ class E_model extends CI_Model
             //Push to parent IDs:
             array_push($session_data['session_parent_ids'], intval($e_profile['e__id']));
 
-            //User Theme?
+            //Website Theme Items?
             if(in_array($e_profile['e__id'], $this->config->item('n___14926'))){
                 array_push($user_theme, intval($e_profile['e__id']));
             }
@@ -215,7 +215,7 @@ class E_model extends CI_Model
 
 
 
-    function add_member($full_name, $email, $image_url = null, $x__domain = 0){
+    function add_member($full_name, $email, $image_url = null, $x__website = 0){
 
         //All good, create new source:
         $added_e = $this->E_model->verify_create($full_name, 0, ( filter_var($image_url, FILTER_VALIDATE_URL) ? $image_url : random_cover(12279) ));
@@ -235,7 +235,7 @@ class E_model extends CI_Model
             'x__type' => e_x__type(),
             'x__source' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
-            'x__domain' => $x__domain,
+            'x__website' => $x__website,
         ));
         $this->X_model->create(array(
             'x__type' => e_x__type(trim(strtolower($email))),
@@ -243,11 +243,11 @@ class E_model extends CI_Model
             'x__up' => 3288, //Email
             'x__source' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
-            'x__domain' => $x__domain,
+            'x__website' => $x__website,
         ));
 
         //Add member to Domain Member Groups if nto already there:
-        foreach($this->E_model->scissor_e($x__domain, 30095) as $e_item) {
+        foreach($this->E_model->scissor_e($x__website, 30095) as $e_item) {
             //Add if link not already there:
             if(!count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

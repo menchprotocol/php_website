@@ -1316,10 +1316,10 @@ function clean_phone($phone){
     return $phone_numbers;
 }
 
-function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0, $x__domain = 0){
+function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0, $x__website = 0){
 
     $CI =& get_instance();
-    $domain_email = '"'.get_domain('m__title', $e__id, $x__domain).'" <'.website_setting(28614, $e__id, $x__domain).'>';
+    $domain_email = '"'.get_domain('m__title', $e__id, $x__website).'" <'.website_setting(28614, $e__id, $x__website).'>';
 
     $name = 'New User';
     $ReplyToAddresses = array($domain_email);
@@ -1350,10 +1350,10 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message = view_shuffle_message(29749).' '.$name.' '.view_shuffle_message(29750)."\n\n";
     $email_message .= str_replace('e__id',$e__id,$email_body)."\n\n";
     $email_message .= view_shuffle_message(12691)."\n";
-    $email_message .= get_domain('m__title', $e__id, $x__domain);
+    $email_message .= get_domain('m__title', $e__id, $x__website);
     if($e__id > 0){
         //User specific notifications:
-        $email_message .= '<div><a href="https://'.get_domain('m__message', $e__id, $x__domain).'/-28904?e__id='.$e__id.'&e__hash='.md5($e__id.view_memory(6404,30863)).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
+        $email_message .= '<div><a href="https://'.get_domain('m__message', $e__id, $x__website).'/-28904?e__id='.$e__id.'&e__hash='.md5($e__id.view_memory(6404,30863)).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
     }
 
     //Loadup amazon SES:
@@ -1420,7 +1420,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
 }
 
-function website_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 0){
+function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0){
 
     $CI =& get_instance();
     $source_id = 0; //Assume no domain unless found below...
@@ -1442,7 +1442,7 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 0){
         }
     }
 
-    $source_id = ( $source_id ? $source_id : ( $x__domain > 0 ? $x__domain : 13601 /* Atlas */ ) );
+    $source_id = ( $source_id ? $source_id : ( $x__website > 0 ? $x__website : 13601 /* Atlas */ ) );
 
     if(!$setting_id){
         return $source_id;
@@ -1589,9 +1589,9 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
 }
 
-function get_domain($var_field, $initiator_e__id = 0, $x__domain = 0){
+function get_domain($var_field, $initiator_e__id = 0, $x__website = 0){
     $CI =& get_instance();
-    $domain_source = website_setting(0, $initiator_e__id, $x__domain);
+    $domain_source = website_setting(0, $initiator_e__id, $x__website);
     $e___14870 = $CI->config->item('e___14870'); //DOMAINS
     return $e___14870[$domain_source][$var_field];
 }

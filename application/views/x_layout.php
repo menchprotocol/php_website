@@ -686,7 +686,7 @@ if(!$top_i__id){
 
     foreach($this->config->item('e___13289') as $e__id => $m2) {
 
-        $superpower_actives = array_intersect($this->config->item('n___10957'), $m2['m__profile']);
+        $superpower_actives = array_intersect($this->config->item('n___10957'), $m2['m__following']);
         if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
             continue;
         }

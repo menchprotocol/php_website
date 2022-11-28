@@ -50,8 +50,8 @@ class X_model extends CI_Model
         }
 
         //Set some defaults:
-        if (!isset($add_fields['x__domain'])) {
-            $add_fields['x__domain'] = website_setting(0, $add_fields['x__source']);
+        if (!isset($add_fields['x__website'])) {
+            $add_fields['x__website'] = website_setting(0, $add_fields['x__source']);
         }
 
 
@@ -180,13 +180,13 @@ class X_model extends CI_Model
                         continue;
                     }
 
-                    if (in_array(6202 , $m['m__profile'])) {
+                    if (in_array(6202 , $m['m__following'])) {
 
                         //IDEA
                         $is = $this->I_model->fetch(array( 'i__id' => $add_fields[$var_index[$e__id]] ));
                         $plain_message .= $m['m__title'] . ': '.$is[0]['i__title'].':'."\n".$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id']."\n\n";
 
-                    } elseif (in_array(6160 , $m['m__profile'])) {
+                    } elseif (in_array(6160 , $m['m__following'])) {
 
                         //SOURCE
                         $es = $this->E_model->fetch(array( 'e__id' => $add_fields[$var_index[$e__id]] ));
@@ -194,7 +194,7 @@ class X_model extends CI_Model
                             $plain_message .= $m['m__title'] . ': '.$es[0]['e__title']."\n".$this->config->item('base_url').'/@' . $es[0]['e__id'] . "\n\n";
                         }
 
-                    } elseif (in_array(4367 , $m['m__profile'])) {
+                    } elseif (in_array(4367 , $m['m__following'])) {
 
                         //DISCOVERY
                         $plain_message .= $m['m__title'] . ':'."\n".$this->config->item('base_url').'/-12722?x__id=' . $add_fields[$var_index[$e__id]]."\n\n";
@@ -484,7 +484,7 @@ class X_model extends CI_Model
 
 
 
-    function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_id = 0, $x__domain = 0)
+    function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_id = 0, $x__website = 0)
     {
 
         $notification_levels = $this->X_model->fetch(array(
@@ -541,7 +541,7 @@ class X_model extends CI_Model
 
         if(count($stats['email_addresses']) > 0){
             //Send email:
-            email_send($stats['email_addresses'], $subject, $plain_message, $e__id, $x_data, $template_id, $x__domain);
+            email_send($stats['email_addresses'], $subject, $plain_message, $e__id, $x_data, $template_id, $x__website);
         }
 
 

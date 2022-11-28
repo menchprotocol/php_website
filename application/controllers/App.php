@@ -49,7 +49,7 @@ class App extends CI_Controller
         if($memory_detected && $is_u_request){
             //Needs superpowers?
             $member_e = superpower_unlocked();
-            $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__profile']);
+            $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__following']);
             if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 die(view_unauthorized_message(end($superpower_actives)));
             }
@@ -82,7 +82,7 @@ class App extends CI_Controller
             if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
                 //Fetch Most Recent Cache:
                 foreach($this->X_model->fetch(array(
-                    'x__domain' => website_setting(0),
+                    'x__website' => website_setting(0),
                     'x__type' => 14599, //Cache App
                     'x__up' => $app_e__id,
                     'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
@@ -319,10 +319,10 @@ class App extends CI_Controller
 
     }
 
-    function auth0_create($sign_i__id, $x__domain = 0){
+    function auth0_create($sign_i__id, $x__website = 0){
 
         //New account to be created:
-        $member_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']), null, $x__domain); //, urldecode($_GET['image_url'])
+        $member_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']), null, $x__website); //, urldecode($_GET['image_url'])
         if(!$member_result['status']) {
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports

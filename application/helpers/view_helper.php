@@ -437,7 +437,7 @@ function view_x($x, $has_x__reference = false)
             'm__cover' => '<i class="fas fa-exclamation-circle"></i>',
             'm__title' => 'Transaction Type Not Synced in PHP Cache',
             'm__message' => '',
-            'm__profile' => array(),
+            'm__following' => array(),
         );
 
     }
@@ -484,21 +484,21 @@ function view_x($x, $has_x__reference = false)
                 continue;
             }
 
-            if(in_array(6160 , $m['m__profile'])){
+            if(in_array(6160 , $m['m__following'])){
 
                 //SOURCE
                 $es = $CI->E_model->fetch(array('e__id' => $x[$var_index[$e__id]]));
 
                 $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$es[0]['e__cover'], true). '</span>'.$es[0]['e__title'].'</a></div>';
 
-            } elseif(in_array(6202 , $m['m__profile'])){
+            } elseif(in_array(6202 , $m['m__following'])){
 
                 //IDEA
                 $is = $CI->I_model->fetch(array('i__id' => $x[$var_index[$e__id]]));
 
                 $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Status */, $is[0]['i__type'], true, 'right', $is[0]['i__id']).'</span>'.view_i_title($is[0]).'</a></div>';
 
-            } elseif(in_array(4367 , $m['m__profile'])){
+            } elseif(in_array(4367 , $m['m__following'])){
 
                 //PARENT DISCOVERY
                 $xs = $CI->X_model->fetch(array('x__id' => $x[$var_index[$e__id]]));
@@ -513,7 +513,7 @@ function view_x($x, $has_x__reference = false)
 
 
     //DOMAIN
-    $ui .= '<div class="simple-line">'.( isset($e___14870[$x['x__domain']]) ? '<a href="https://'.$e___14870[$x['x__domain']]['m__message'].'" target="_blank" class="css__title"><span class="icon-block">'.$e___4341[14870]['m__cover'].'</span><span class="icon-block">'.$e___14870[$x['x__domain']]['m__cover']. '</span>' . $e___14870[$x['x__domain']]['m__title'] . '</a>' : 'Unknown Domain' ).'</div>';
+    $ui .= '<div class="simple-line">'.( isset($e___14870[$x['x__website']]) ? '<a href="https://'.$e___14870[$x['x__website']]['m__message'].'" target="_blank" class="css__title"><span class="icon-block">'.$e___4341[14870]['m__cover'].'</span><span class="icon-block">'.$e___14870[$x['x__website']]['m__cover']. '</span>' . $e___14870[$x['x__website']]['m__title'] . '</a>' : 'Unknown Domain' ).'</div>';
 
 
     $ui .= '</div>';
@@ -1458,21 +1458,21 @@ function view_e_settings($list_id, $is_open){
     foreach($CI->config->item('e___'.$list_id) as $acc_e__id => $acc_detail) {
 
         //Skip if domain specific:
-        $hosted_domains = array_intersect($CI->config->item('n___14870'), $acc_detail['m__profile']);
+        $hosted_domains = array_intersect($CI->config->item('n___14870'), $acc_detail['m__following']);
         if(count($hosted_domains) && !in_array(website_setting(0), $hosted_domains)){
             continue;
         }
 
         //Skip if missing superpower:
-        $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__profile']);
+        $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__following']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
             continue;
         }
 
         //Print account fields that are either Single Selectable or Multi Selectable:
-        $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__profile']);
-        $has_multi_selectable = in_array(6122, $acc_detail['m__profile']);
-        $has_single_selectable = in_array(6204, $acc_detail['m__profile']);
+        $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__following']);
+        $has_multi_selectable = in_array(6122, $acc_detail['m__following']);
+        $has_single_selectable = in_array(6204, $acc_detail['m__following']);
         $tab_ui = null;
 
         //Switch if part of domain settings:
@@ -1860,7 +1860,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             foreach($CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' )) as $e__id => $m) {
 
                 //Skip if missing superpower:
-                $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
+                $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
                 if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                     //Missing Superpower
                     continue;
@@ -2192,7 +2192,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         //Generate Buttons:
         foreach($CI->config->item(( $focus_coin ? 'e___12887' : 'e___14956' )) as $e__id => $m) {
 
-            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
+            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 //Missing Superpower
                 continue;
@@ -2407,8 +2407,6 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $
         return false;
     }
 
-    $e___4527 = $CI->config->item('e___4527');
-
     $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'" title="'.$e___12079[$cache_e__id]['m__title'].'">';
 
     $ui .= '<button type="button" '.( $e_of_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'"' ).' >';
@@ -2422,7 +2420,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $
 
         foreach($e___this as $e__id => $m) {
 
-            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__profile']);
+            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
 
             //What type of URL?
             if(substr($m['m__message'], 0, 1)=='/'){

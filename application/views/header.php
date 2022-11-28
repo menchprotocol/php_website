@@ -6,8 +6,10 @@ $second_segment = $this->uri->segment(2);
 $i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13479 = $this->config->item('e___13479');
+$e___4527 = $this->config->item('e___4527');
+$e___14870 = $this->config->item('e___14870'); //Website Partner
 $current_coin_id = current_coin_id();
-$website_e__id = website_setting(0);
+$website_id = website_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
 $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
 $logo = ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : '/img/'.$current_coin_id.'.png' );
@@ -16,9 +18,29 @@ $bgVideo = null;
 //Generate Body Class String:
 $body_class = 'platform-'.$current_coin_id; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
-    $body_class .= ' custom_ui_'.$e__id.'_'.$this->session->userdata('session_custom_ui_'.$e__id).' ';
+    if($member_e){
+        //Look at their session:
+        $body_class .= ' custom_ui_'.$e__id.'_'.$this->session->userdata('session_custom_ui_'.$e__id).' ';
+    } else {
+
+        $this_class = '';
+
+        //Fetch Website Defaults:
+        foreach(array_intersect($this->config->item('n___'.$e__id), $e___14870[$website_id]['m__following']) as $this_e_id) {
+            $this_class = ' custom_ui_'.$e__id.'_'.$this_e_id.' ';
+        }
+
+        //If not found, fetch platform defaults:
+        if(!strlen($this_class)){
+            foreach(array_intersect($this->config->item('n___'.$e__id), $e___4527[6404]['m__following']) as $this_e_id) {
+                $this_class = ' custom_ui_'.$e__id.'_'.$this_e_id.' ';
+            }
+        }
+
+        $body_class .= $this_class;
+    }
 }
-if(in_array($website_e__id, $this->config->item('n___30984'))){
+if(in_array($website_id, $this->config->item('n___30984'))){
     $body_class .= ' home_black_font ';
 }
 
@@ -66,7 +88,7 @@ if(in_array($website_e__id, $this->config->item('n___30984'))){
     echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
-    echo ' var domain__id = "' . $website_e__id . '"; ';
+    echo ' var website_id = "' . $website_id . '"; ';
 
     //JAVASCRIPT PLATFORM MEMORYwq
     foreach($this->config->item('e___11054') as $x__type => $m){
@@ -359,7 +381,7 @@ if(!$basic_header_footer){
                     //Domain Source
                     $domain_cover = get_domain('m__cover');
                     $domain_logo = one_two_explode('"','"', $domain_cover);
-                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_e__id.'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$website_e__id.'" style="padding-top: '.( filter_var($domain_logo, FILTER_VALIDATE_URL) ? '3px' : '7px' ).';">'.get_domain('m__title').'</b>'.'</a>';
+                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$website_id.'" style="padding-top: '.( filter_var($domain_logo, FILTER_VALIDATE_URL) ? '3px' : '7px' ).';">'.get_domain('m__title').'</b>'.'</a>';
 
                     echo '</div>';
 
@@ -382,13 +404,13 @@ if(!$basic_header_footer){
                     echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
 
-                        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__profile']);
+                        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__following']);
                         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                             continue;
                         }
 
-                        $hosted_domains = array_intersect($this->config->item('n___14870'), $m['m__profile']);
-                        if(count($hosted_domains) && !in_array($website_e__id, $hosted_domains)){
+                        $hosted_domains = array_intersect($this->config->item('n___14870'), $m['m__following']);
+                        if(count($hosted_domains) && !in_array($website_id, $hosted_domains)){
                             continue;
                         }
 

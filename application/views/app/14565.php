@@ -1,9 +1,9 @@
 <?php
 
 //TITLE
-$website_e__id = website_setting(0);
-$expanded_space = in_array($website_e__id , $this->config->item('n___31025'));
-$double_contact = in_array($website_e__id , $this->config->item('n___31029'));
+$website_id = website_setting(0);
+$expanded_space = in_array($website_id , $this->config->item('n___31025'));
+$double_contact = in_array($website_id , $this->config->item('n___31029'));
 
 //Fetch Primary Idea & Secondary Idea List:
 
@@ -13,7 +13,7 @@ foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 10573, //Watching
     'x__right > 0' => null,
-    'x__up' => $website_e__id,
+    'x__up' => $website_id,
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $this_i){
     if(!count($primary_i)){
         $primary_i = $this_i;
@@ -25,7 +25,7 @@ foreach($this->X_model->fetch(array(
 
 //Secondary Ideas:
 foreach($this->X_model->fetch(array(
-    'x__up' => $website_e__id,
+    'x__up' => $website_id,
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'x__type !=' => 10573, //Not Watching
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -110,7 +110,7 @@ if($double_contact){
 
 
 //Any Info Boxes?
-foreach($this->E_model->scissor_e($website_e__id, 14903) as $e_item) {
+foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
     //Any Children?
     $info_item = null;
     foreach($this->X_model->fetch(array(
@@ -176,7 +176,7 @@ if(strlen($secondary_ideas)){
 
 //Social UI and contact us
 $social_ui = '';
-foreach($this->E_model->scissor_e($website_e__id, 14904) as $social_box) {
+foreach($this->E_model->scissor_e($website_id, 14904) as $social_box) {
     $social_ui .= '<li><a href="/-14904?e__id='.$social_box['e__id'].'" title="'.$social_box['e__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover(12274, $social_box['e__cover'], true).'</a></li>';
 }
 if($social_ui){
