@@ -7,18 +7,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
     //List this members discoveries so they can choose:
-    echo '<div>Choose one of your discoveries to debug:</div><br />';
-
-    $e_x = $this->X_model->fetch(array(
-        'x__source' => $_GET['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-    ), array('x__left'), 0, 0, array('x__spectrum' => 'ASC'));
-
-    foreach($e_x as $priority => $x) {
-        echo '<div>' . ($priority + 1) . ') <a href="?i__id=' . $x['i__id'] . '&e__id=' . $_GET['e__id'] . '">' . view_i_title($x) . '</a></div>';
-    }
+    echo '<div>Enter i__id to begin...</div><br />';
 
 } else {
 

@@ -42,7 +42,7 @@ foreach($is_next as $in_key => $in_value){
 
 $i_focus['i__title'] = str_replace('"','',$i_focus['i__title']);
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
-$top_i__id = ( $i_top && $this->X_model->ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
+$top_i__id = ( $i_top && $this->X_model->started_ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
 $one_child_hack = (count($first_child) && count($is_next)==1 && !$top_i__id);
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

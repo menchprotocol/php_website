@@ -236,19 +236,19 @@ class X extends CI_Controller
             if($_POST['apply_id']==4997){
 
                 //Source list:
-                $counter = view_coins_e(11029, $_POST['coin__id'], 0, false);
+                $counter = view_coins_e(11029, $_POST['coin__id'], 0, false, 500);
                 if(!$counter){
                     echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Sources yet...</div>';
                 } else {
                     echo '<div class="msg alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' source'.view__s($counter).':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
-                    foreach(view_coins_e(11029, $_POST['coin__id'], 1) as $e) {
+                    foreach(view_coins_e(11029, $_POST['coin__id'], 1, true, 500) as $e) {
                         array_push($ids, $e['e__id']);
                         echo view_e(11029, $e);
                     }
                     echo '</div>';
-                    echo '<div class="dotransparent">'.join(',',$ids).'</div>';
+                    echo '<div class="dotransparent" title="Total of '.count($ids).'">'.join(', ',$ids).'</div>';
                 }
 
             } elseif($_POST['apply_id']==12589){
@@ -359,7 +359,7 @@ class X extends CI_Controller
         //Add this Idea to their read If not there:
         $next_i__id = $i__id;
 
-        if(!in_array($i__id, $this->X_model->ids($member_e['e__id']))){
+        if(!in_array($i__id, $this->X_model->started_ids($member_e['e__id']))){
 
             //Make sure they can start this:
             $is = $this->I_model->fetch(array(
@@ -452,7 +452,7 @@ class X extends CI_Controller
 
         if(!$member_e){
             return redirect_message('/-4269?i__id='.$top_i__id);
-        } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
+        } elseif(!$this->X_model->started_ids($member_e['e__id'], $top_i__id)) {
             return redirect_message('/'.$top_i__id);
         } elseif(!count($is)) {
             return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
@@ -521,7 +521,7 @@ class X extends CI_Controller
 
         if(!$member_e){
             return redirect_message('/-4269?i__id='.$top_i__id);
-        } elseif(!$this->X_model->ids($member_e['e__id'], $top_i__id)) {
+        } elseif(!$this->X_model->started_ids($member_e['e__id'], $top_i__id)) {
             return redirect_message('/'.$top_i__id);
         } elseif(!count($is)) {
             return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
@@ -1720,7 +1720,7 @@ class X extends CI_Controller
                 'message' => 'Missing Top Idea ID',
             ));
 
-        } elseif(!$this->X_model->ids($member_e['e__id'], $_POST['top_i__id'])){
+        } elseif(!$this->X_model->started_ids($member_e['e__id'], $_POST['top_i__id'])){
 
             return view_json(array(
                 'status' => 0,

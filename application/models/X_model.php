@@ -1759,7 +1759,7 @@ class X_model extends CI_Model
     }
 
 
-    function ids($e__id, $i__id = 0){
+    function started_ids($e__id, $i__id = 0){
 
         //Simply returns all the idea IDs for a users starting points
         if($i__id > 0){
@@ -1770,8 +1770,9 @@ class X_model extends CI_Model
 
             return count($this->X_model->fetch(array(
                 'x__left' => $i__id,
+                'x__right' => $i__id,
                 'x__source' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
@@ -1780,8 +1781,9 @@ class X_model extends CI_Model
             $u_x_ids = array();
             if($e__id > 0){
                 foreach($this->X_model->fetch(array(
+                    'x__left=x__right' => null,
                     'x__source' => $e__id,
-                    'x__type IN (' . join(',', $this->config->item('n___12969')) . ')' => null, //STARTED
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )) as $u_in){
                     array_push($u_x_ids, intval($u_in['x__left']));
