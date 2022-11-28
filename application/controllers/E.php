@@ -14,23 +14,6 @@ class E extends CI_Controller
 
     }
 
-
-    function index()
-    {
-        //source:
-        $member_e = superpower_unlocked(null);
-
-        $e___11035 = $this->config->item('e___11035');
-        $this->load->view('header', array(
-            'title' => $e___11035[13207]['m__title'],
-        ));
-        $this->load->view('e/home', array(
-            'member_e' => $member_e,
-        ));
-        $this->load->view('footer');
-    }
-
-
     function e_view_body_e(){
         //Authenticate Member:
         if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !isset($_POST['counter']) || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
@@ -104,7 +87,7 @@ class E extends CI_Controller
             } elseif($x__type==28646){
 
                 //ADMIN MENU
-                $domain_list = intval(substr(get_domain_setting(28646), 1));
+                $domain_list = intval(substr(website_setting(28646), 1));
                 if($domain_list){
 
                     if(is_array($this->config->item('x___'.$domain_list)) && count($this->config->item('x___'.$domain_list))){

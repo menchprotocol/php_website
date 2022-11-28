@@ -68,31 +68,6 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
         return view_url_embed($x__message, $full_message);
 
-
-    } elseif ($x__type == 26155 /* Idea */) {
-
-        $ideas = $CI->I_model->fetch(array(
-            'i__id' => substr($x__message, 1),
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-        ));
-        if(count($ideas)){
-            return '<div><a href="/i/i_go'.$x__message.'" target="_blank" class="ignore-click" style="font-size:0.89em;">'.$ideas[0]['i__title'].'</a></div>';
-        } else {
-            return $x__message.' ⚠️ INVALID ID';
-        }
-
-    } elseif ($x__type == 26090 /* Source */) {
-
-        $sources = $CI->E_model->fetch(array(
-            'e__id' => substr($x__message, 1),
-            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-        ));
-        if(count($sources)){
-            return '<div><span class="icon-block-xs">'.view_cover(12274,$sources[0]['e__cover'], true). '</span><a href="/'.$x__message.'" target="_blank" class="ignore-click" style="font-size:0.89em;">'.$sources[0]['e__title'].'</a></div>';
-        } else {
-            return $x__message.' ⚠️ INVALID ID';
-        }
-
     } elseif ($x__type == 26092 /* CAD */) {
 
         return str_replace('CAD ','$',$x__message);
@@ -1247,7 +1222,6 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
     }
 
 
-
     //Return Results:
     if($page_num > 0){
 
@@ -1342,10 +1316,11 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
         array_push($already_selected, $sel['x__up']);
     }
 
-    if(!count($already_selected) && in_array($focus__id, $CI->config->item('n___6204'))){
-        //FIND DEFAULT:
+    if(!count($already_selected) && in_array($focus__id, $CI->config->item('n___6204')) && superpower_unlocked()){
+        //FIND DEFAULT if set in session of this user:
         foreach($CI->config->item('e___'.$focus__id) as $e__id2 => $m2){
-            if(in_array($e__id2, $CI->config->item('n___'.get_domain_setting(14926)) /* ACCOUNT DEFAULTS */ )){
+            $var_id = @$CI->session->userdata('session_custom_ui_'.$focus__id);
+            if($var_id==$e__id2){
                 $already_selected = array($e__id2);
                 break;
             }
@@ -1353,7 +1328,7 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
     }
 
     foreach($CI->config->item('e___'.$focus__id) as $e__id => $m) {
-        $ui .= '<span class=""><a href="javascript:void(0);" onclick="e_radio('.$focus__id.','.$e__id.','.$enable_mulitiselect.')" class="list-group-item css__title custom_ui_'.$focus__id.'_'.$e__id.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '"><span class="icon-block change-results">'.$m['m__cover'].'</span>'.$m['m__title'].'</a></span>';
+        $ui .= '<span class=""><a href="javascript:void(0);" onclick="e_radio('.$focus__id.','.$e__id.','.$enable_mulitiselect.')" class="list-group-item css__title custom_ui_'.$focus__id.'_'.$e__id.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '">'.( strlen($m['m__cover']) ? '<span class="icon-block change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].'</a></span>';
         $count++;
     }
 
@@ -1378,8 +1353,8 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     //Build Body UI:
     $body = '<div class="row">';
     foreach($next_is as $key => $next_i){
-        $completion_rate = $CI->X_model->completion_progress($member_e['e__id'], $next_i);
-        $body .= view_i($x__type, $top_i__id, $i, $next_i, $member_e, $completion_rate, null);
+        $tree_progress = $CI->X_model->tree_progress($member_e['e__id'], $next_i);
+        $body .= view_i($x__type, $top_i__id, $i, $next_i, $member_e, $tree_progress, null);
     }
     $body .= '</div>';
 
@@ -1484,7 +1459,7 @@ function view_e_settings($list_id, $is_open){
 
         //Skip if domain specific:
         $hosted_domains = array_intersect($CI->config->item('n___14870'), $acc_detail['m__profile']);
-        if(count($hosted_domains) && !in_array(get_domain_setting(0), $hosted_domains)){
+        if(count($hosted_domains) && !in_array(website_setting(0), $hosted_domains)){
             continue;
         }
 
@@ -1502,7 +1477,7 @@ function view_e_settings($list_id, $is_open){
 
         //Switch if part of domain settings:
         if(in_array($acc_e__id, $CI->config->item('n___14925'))){
-            $domain_specific_id = intval(get_domain_setting($acc_e__id));
+            $domain_specific_id = intval(website_setting($acc_e__id));
             if($domain_specific_id){
                 //Replace with domain specific:
                 $acc_e__id = $domain_specific_id;
@@ -1671,7 +1646,6 @@ function view_i_select($i, $x__source, $previously_selected){
     $CI =& get_instance();
     $i_title = view_i_title($i);
     $member_e = superpower_unlocked();
-    $i_stats = i_stats($i['i__metadata']);
     $spots_remaining = i_spots_remaining($i['i__id']);
 
 
@@ -1717,7 +1691,7 @@ function view_i_select($i, $x__source, $previously_selected){
 }
 
 
-function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $completion_rate = null, $extra_class = null, $is_first_incomplete = false){
+function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $tree_progress = null, $extra_class = null, $is_first_incomplete = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1744,12 +1718,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
     $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__id > 0 && $focus_e && $discovery_mode;
 
-    if(is_null($completion_rate)){
+    if(is_null($tree_progress)){
         if($load_completion){ //Load Completion Bar
-            $completion_rate = $CI->X_model->completion_progress($focus_e['e__id'], $i);
+            $tree_progress = $CI->X_model->tree_progress($focus_e['e__id'], $i);
         } else {
             //set zero:
-            $completion_rate['completion_percentage'] = 0;
+            $tree_progress['fixed_completed_percentage'] = 0;
         }
     }
 
@@ -1758,8 +1732,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $superpower_10939 = superpower_active(10939, true);
     $superpower_12700 = superpower_active(12700, true);
     $superpower_12673 = superpower_active(12673, true);
-    $is_completed = ($completion_rate['completion_percentage']>=100);
-    $is_started = ($completion_rate['completion_percentage']>0);
+    $is_completed = ($tree_progress['fixed_completed_percentage']>=100);
+    $is_started = ($tree_progress['fixed_completed_percentage']>0);
     $parent_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
     $force_order = ( $previous_i && count($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1771,7 +1745,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $has_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
     $has_soft_lock = $locking_enabled && !$is_completed && ($has_hard_lock || (!$is_first_incomplete && ($force_order || !$is_started)));
     $has_sortable = !$focus_coin && !$has_soft_lock && $editing_enabled && in_array($x__type, $CI->config->item('n___4603'));
-    $i_stats = i_stats($i['i__metadata']);
     $i_title = view_i_title($i);
     $has_any_lock = $has_soft_lock || $has_hard_lock;
 
@@ -2009,7 +1982,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '<div class="cover-content">';
 
         if($load_completion && $is_started && !$is_completed){
-            $ui .= '<div class="cover-progress">'.view_x_progress($completion_rate, $i).'</div>';
+            $ui .= '<div class="cover-progress">'.view_x_progress($tree_progress, $i).'</div>';
         }
 
         $ui .= '<div class="inner-content">';
@@ -2123,15 +2096,13 @@ function view_pill($x__type, $counter, $m, $ui = null, $is_open = true){
 
 }
 
-function view_x_progress($completion_rate, $i){
+function view_x_progress($tree_progress, $i){
 
-    if(!isset($completion_rate['steps_total'])){
+    if(!isset($tree_progress['fixed_total'])){
         return '<div class="progress-bg-list progress_'.$i['i__id'].'"><div class="progress-done" style="width:0%" prograte="0"></div></div>';
     }
 
-    return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$completion_rate['completion_percentage'].'% COMPLETED"><div class="progress-done" style="width:'.$completion_rate['completion_percentage'].'%" prograte="'.$completion_rate['completion_percentage'].'"></div></div>';
-    //: '.$completion_rate['steps_completed'].'/'.$completion_rate['steps_total'].' IDEAS DISCOVERY
-    //data-toggle="tooltip" data-placement="top"
+    return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$tree_progress['fixed_completed_percentage'].'% COMPLETED"><div class="progress-done" style="width:'.$tree_progress['fixed_completed_percentage'].'%" prograte="'.$tree_progress['fixed_completed_percentage'].'"></div></div>';
 
 }
 

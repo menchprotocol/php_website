@@ -28,11 +28,6 @@ class E_model extends CI_Model
             'session_superpowers_activated' => array(),
         );
 
-        //Load Customizable UI:
-        foreach($this->config->item('e___13890') as $e__id => $m){
-            $session_data['session_custom_ui_'.$e__id] = 0;
-        }
-
         if(!$update_session){
 
             if(!$is_cookie){
@@ -44,7 +39,6 @@ class E_model extends CI_Model
 
             }
 
-
             //Append stats variables:
             $session_data['session_page_count'] = 0;
 
@@ -55,24 +49,50 @@ class E_model extends CI_Model
 
         }
 
-        //PROFILE
+
+
+
+        //Fetch Platform Defaults:
+        $platform_theme = array();
         foreach($this->X_model->fetch(array(
+            'x__up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme
+            'x__down' => 6404, //Platform Default
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 0) as $x) {
+            array_push($platform_theme, intval($x['x__up']));
+        }
+
+        //Fetch Website Defaults:
+        $website_theme = array();
+        foreach($this->X_model->fetch(array(
+            'x__up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme
+            'x__down' => website_setting(0), //Website ID
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 0) as $x) {
+            array_push($website_theme, intval($x['x__up']));
+        }
+
+
+        //Fetch User Defaults:
+        $user_theme = array();
+        foreach($this->X_model->fetch(array(
             'x__down' => $e['e__id'], //This child source
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $e_profile){
 
-            //IN Custom UI?
-            foreach($this->config->item('e___13890') as $e__id => $m){
-                if(in_array($e_profile['e__id'], $this->config->item('n___'.$e__id))){
-                    $session_data['session_custom_ui_'.$e__id] = intval($e_profile['e__id']);
-                }
-            }
-
             //Push to parent IDs:
             array_push($session_data['session_parent_ids'], intval($e_profile['e__id']));
 
+            //User Theme?
+            if(in_array($e_profile['e__id'], $this->config->item('n___14926'))){
+                array_push($user_theme, intval($e_profile['e__id']));
+            }
+
+            //Superpower?
             if(in_array($e_profile['e__id'], $this->config->item('n___10957'))){
 
                 //It's unlocked!
@@ -93,45 +113,42 @@ class E_model extends CI_Model
         }
 
 
-
-        //Fetch Platform Defaults:
-        $platform_defaults = array_intersect($this->config->item('n___6404'), $this->config->item('n___14926')); // Platform Defaults x Website Theme
-
-        //Fetch Website Defaults:
-        $website_defaults = array();
-        foreach($this->X_model->fetch(array(
-            'x__up' => get_domain_setting(0),
-            'x__down IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array(), 0) as $x) {
-            array_push($website_defaults, intval($x['x__down']));
-        }
-
-
         //Determine Account Defaults if missing any of the CUSTOM UI
         foreach($this->config->item('e___13890') as $e__id => $m){
-            if(!$session_data['session_custom_ui_'.$e__id]){
 
-                //First try to find Website Default, if any:
+            //Set Default:
+            $session_data['session_custom_ui_'.$e__id] = 0;
+
+            //First try to find User Theme, if any:
+            if(!$session_data['session_custom_ui_'.$e__id]){
                 foreach($this->config->item('e___'.$e__id) as $e__id2 => $m2){
-                    if(in_array($e__id2, $website_defaults )){
+                    if(in_array($e__id2, $user_theme )){
                         $session_data['session_custom_ui_'.$e__id] = $e__id2;
                         break;
                     }
                 }
+            }
 
-                //If not found, try platform defaults:
-                if(!$session_data['session_custom_ui_'.$e__id]){
-                    //First try to find Website Default, if any:
-                    foreach($this->config->item('e___'.$e__id) as $e__id2 => $m2){
-                        if(in_array($e__id2, $platform_defaults )){
-                            $session_data['session_custom_ui_'.$e__id] = $e__id2;
-                            break;
-                        }
+            //Then try to find Website Theme, if any:
+            if(!$session_data['session_custom_ui_'.$e__id]){
+                foreach($this->config->item('e___'.$e__id) as $e__id2 => $m2){
+                    if(in_array($e__id2, $website_theme )){
+                        $session_data['session_custom_ui_'.$e__id] = $e__id2;
+                        break;
                     }
                 }
+            }
 
+
+            //Finally try Platform Theme:
+            if(!$session_data['session_custom_ui_'.$e__id]){
+                //First try to find Website Default, if any:
+                foreach($this->config->item('e___'.$e__id) as $e__id2 => $m2){
+                    if(in_array($e__id2, $platform_theme )){
+                        $session_data['session_custom_ui_'.$e__id] = $e__id2;
+                        break;
+                    }
+                }
             }
         }
 
@@ -142,6 +159,62 @@ class E_model extends CI_Model
         return $e;
 
     }
+
+
+    function scissor_e($main_id, $sub_id){
+
+        $all_results = $this->X_model->fetch(array(
+            'x__up' => $main_id,
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
+
+        //Remove if not in the secondary group:
+        foreach($all_results as $key => $primary_list){
+            if(!count($this->X_model->fetch(array(
+                'x__up' => $sub_id,
+                'x__down' => $primary_list['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            )))){
+                unset($all_results[$key]);
+            }
+        }
+
+        //Return matching results:
+        return $all_results;
+
+    }
+
+    function scissor_i($main_id, $sub_id){
+
+        $all_results = $this->X_model->fetch(array(
+            'x__up' => $main_id,
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+
+        //Remove if not in the secondary group:
+        foreach($all_results as $key => $primary_list){
+            if(!count($this->X_model->fetch(array(
+                'x__up' => $sub_id,
+                'x__right' => $primary_list['i__id'],
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            )))){
+                unset($all_results[$key]);
+            }
+        }
+
+        //Return matching results:
+        return $all_results;
+
+    }
+
 
 
     function add_member($full_name, $email, $image_url = null, $x__domain = 0){
@@ -176,30 +249,33 @@ class E_model extends CI_Model
         ));
 
         //Add member to Domain Member Groups if nto already there:
-        $domain_member_group = intval(substr(get_domain_setting(30095, $added_e['new_e']['e__id'], $x__domain), 1));
-        if($domain_member_group && !count($this->X_model->fetch(array(
+        foreach($this->E_model->scissor_e($x__domain, 30095) as $e_item) {
+            //Add if link not already there:
+            if(!count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
-                'x__up' => $domain_member_group,
+                'x__up' => $e_item['e__id'],
                 'x__down' => $added_e['new_e']['e__id'],
             )))){
-            $this->X_model->create(array(
-                'x__source' => $added_e['new_e']['e__id'], //Belongs to this Member
-                'x__type' => e_x__type(),
-                'x__up' => $domain_member_group,
-                'x__down' => $added_e['new_e']['e__id'],
-            ));
+                $this->X_model->create(array(
+                    'x__source' => $added_e['new_e']['e__id'], //Belongs to this Member
+                    'x__type' => e_x__type(),
+                    'x__up' => $e_item['e__id'],
+                    'x__down' => $added_e['new_e']['e__id'],
+                ));
+            }
         }
+
 
         //Now update Algolia:
         update_algolia(12274,  $added_e['new_e']['e__id']);
 
 
         //Send Welcome Email if any:
-        $welcome_message = intval(get_domain_setting(14929));
-        if($welcome_message){
-            send_dm_template($added_e['new_e'], $welcome_message);
+        foreach($this->E_model->scissor_e(website_setting(0), 14929) as $e_item) {
+            $this->X_model->send_dm($added_e['new_e']['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
         }
+
 
 
         //Assign session & log login transaction:
@@ -224,12 +300,6 @@ class E_model extends CI_Model
 
         //Transform text:
         $add_fields['e__title'] = $add_fields['e__title'];
-
-        if (isset($add_fields['e__metadata'])) {
-            $add_fields['e__metadata'] = serialize($add_fields['e__metadata']);
-        } else {
-            $add_fields['e__metadata'] = null;
-        }
 
         //Lets now add:
         $this->db->insert('table__e', $add_fields);
@@ -319,11 +389,6 @@ class E_model extends CI_Model
         //Transform text:
         if(isset($update_columns['e__title'])){
             $update_columns['e__title'] = $update_columns['e__title'];
-        }
-
-        //Cleanup metadata if needed:
-        if(isset($update_columns['e__metadata']) && is_array($update_columns['e__metadata'])){
-            $update_columns['e__metadata'] = serialize($update_columns['e__metadata']);
         }
 
         //Update:
@@ -743,39 +808,6 @@ class E_model extends CI_Model
     }
 
 
-
-
-    function metadata_leaderboard($e, $level = 1){
-
-        //Goes through $max_search_levels of sources to find expert channels, people & organizations
-        $metadata_this = array(
-            'p___13207' => array(),
-        );
-
-        //SOURCE PROFILE
-        foreach($this->X_model->fetch(array(
-            'x__down' => $e['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')).')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array(), 0) as $e__profile){
-
-            if(!in_array($e['e__id'], $metadata_this['p___13207']) && in_array($e__profile['x__up'], $this->config->item('n___13207'))){
-                array_push($metadata_this['p___13207'], intval($e['e__id']));
-            }
-
-            //Go another level?
-            if($level < view_memory(6404,14051)){
-                $metadata_recursion = $this->E_model->metadata_leaderboard($e__profile, ($level + 1));
-                foreach($metadata_recursion['p___13207'] as $e__id) {
-                    if (!in_array($e__id, $metadata_this['p___13207'])) {
-                        array_push($metadata_this['p___13207'], intval($e__id));
-                    }
-                }
-            }
-        }
-
-        return $metadata_this;
-    }
 
 
 
@@ -1307,27 +1339,6 @@ class E_model extends CI_Model
             'message' => $applied_success . ' of ' . count($children) . ' sources updated',
         );
 
-    }
-
-    function child_count($e__id, $e_statuses)
-    {
-
-        //Count the active children of source:
-        $list_e_count = 0;
-
-        //Do a child count:
-        $list_e_count = $this->X_model->fetch(array(
-            'x__up' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__type IN (' . join(',', $e_statuses) . ')' => null,
-        ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
-
-        if (count($list_e_count) > 0) {
-            $list_e_count = intval($list_e_count[0]['totals']);
-        }
-
-        return $list_e_count;
     }
 
 

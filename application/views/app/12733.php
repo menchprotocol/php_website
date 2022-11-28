@@ -35,13 +35,9 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
         //List the idea:
         view_json(array(
-            'I_model' => array(
-                'metadata_common_base' => $this->I_model->metadata_common_base($is[0]),
-            ),
             'X_model' => array(
                 'find_next' => $this->X_model->find_next($_GET['e__id'], $is[0]['i__id'], $is[0], 0, false),
-                'completion_progress' => $this->X_model->completion_progress($_GET['e__id'], $is[0]),
-                'completion_marks' => $this->X_model->completion_marks($_GET['e__id'], $is[0]),
+                'tree_progress' => $this->X_model->tree_progress($_GET['e__id'], $is[0]),
             ),
         ));
 

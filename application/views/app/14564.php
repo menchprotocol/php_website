@@ -9,8 +9,8 @@ header("Pragma: no-cache");
 require 'vendor/autoload.php';
 $auth0 = new Auth0\SDK\Auth0([
     'domain' => 'mench.auth0.com',
-    'client_id' => get_domain_setting(14881),
-    'client_secret' => get_domain_setting(14882),
+    'client_id' => website_setting(14881),
+    'client_secret' => website_setting(14882),
     'redirect_uri' => 'https://'.get_server('SERVER_NAME').'/-14564',
     'scope' => 'openid profile email',
 ]);
@@ -78,7 +78,7 @@ if($userInfo && isset($userInfo['email'])){
 
     } else {
 
-        header('Location: /app/auth0_create/'.$sign_i__id.'/'.get_domain_setting().'?name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&image_url='.urlencode($userInfo['picture']).'&url='.urlencode($redirect_url));
+        header('Location: /app/auth0_create/'.$sign_i__id.'/'.website_setting().'?name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&image_url='.urlencode($userInfo['picture']).'&url='.urlencode($redirect_url));
 
     }
 

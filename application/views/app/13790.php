@@ -153,8 +153,8 @@ if(strlen($_GET['i__id'])){
         ));
 
         //Member
-        $completion_rate = $this->X_model->completion_progress($x['e__id'], $this_top[0]);
-        $perfect_point = str_pad($completion_rate['completion_percentage'], 3, '0', STR_PAD_LEFT);
+        $tree_progress = $this->X_model->tree_progress($x['e__id'], $this_top[0]);
+        $perfect_point = str_pad($tree_progress['fixed_completed_percentage'], 3, '0', STR_PAD_LEFT);
         $perfect_point = ( $perfect_point>100 ? 100 : $perfect_point );
 
 

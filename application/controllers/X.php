@@ -643,24 +643,35 @@ class X extends CI_Controller
         ));
 
         if($top_i__id > 0){
+
             $top_is = $this->I_model->fetch(array(
                 'i__id' => $top_i__id,
             ));
+
         } elseif($member_e) {
 
-            //See if this idea belongs to any of this members starting points, if so, redirect:
-            $starting_is = $this->X_model->ids($member_e['e__id']);
-            if(in_array($i__id, $starting_is)){
-                //This is a starting point itself, so go there:
-                return redirect_message('/'.$i__id.'/'.$i__id);
+            //Fetch parent tree discovery trace to see if we find anything:
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__source' => $member_e['e__id'],
+                'x__left' => $i__id,
+                'x__right > 0' => null,
+            )) as $x){
+                return redirect_message('/'.$x['x__right'].'/'.$i__id);
             }
 
-            //Move recursively up to see if we cross any starting points:
-            $parent_is = $this->I_model->recursive_parent_ids($i__id);
-            foreach(array_intersect($starting_is, $parent_is) as $crossover){
-                //TODO 2nd+ pathways are ignored, give user the choice if 2+ options exist
-                return redirect_message('/'.$crossover.'/'.$i__id);
+            //Try top level discoveries:
+            foreach($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__source' => $member_e['e__id'],
+                'x__left IN (' . join(',', $this->I_model->recursive_parent_ids($i__id)) . ')' => null,
+                'x__right > 0' => null,
+            )) as $x){
+                return redirect_message('/'.$x['x__right'].'/'.$i__id);
             }
+
         }
 
         //Make sure we found it:

@@ -113,11 +113,6 @@ class I_model extends CI_Model
             $before_data = $this->I_model->fetch(array('i__id' => $id));
         }
 
-        //Cleanup metadata if needed:
-        if(isset($update_columns['i__metadata']) && is_array($update_columns['i__metadata'])) {
-            $update_columns['i__metadata'] = serialize($update_columns['i__metadata']);
-        }
-
         //Update:
         $this->db->where('i__id', $id);
         $this->db->update('table__i', $update_columns);
@@ -639,9 +634,9 @@ class I_model extends CI_Model
 
 
 
-    function recursive_child_ids($i__id, $first_level = true, $stopper_i_id = 0){
+    function recursive_child_ids($i__id, $first_level = true, $loop_breaker_i_id = 0){
 
-        if($stopper_i_id>0 && $stopper_i_id==$i__id){
+        if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i__id){
             return array();
         }
 
@@ -656,13 +651,15 @@ class I_model extends CI_Model
 
             array_push($recursive_i_ids, intval($next_i['i__id']));
 
-            $recursive_is = $this->I_model->recursive_child_ids($next_i['i__id'], false, ( $stopper_i_id>0 ? $stopper_i_id : $i__id ));
+            //AND Idea? Follow through...
+            if(in_array($next_i['i__type'], $this->config->item('n___6192'))){
+                $recursive_is = $this->I_model->recursive_child_ids($next_i['i__id'], false, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i__id ));
 
-            //Add to current array if we found anything:
-            if(count($recursive_is) > 0){
-                $recursive_i_ids = array_merge($recursive_i_ids, $recursive_is);
+                //Add to current array if we found anything:
+                if(count($recursive_is) > 0){
+                    $recursive_i_ids = array_merge($recursive_i_ids, $recursive_is);
+                }
             }
-
         }
 
         if($first_level){
@@ -827,9 +824,11 @@ c                ));
     }
 
 
-    function recursive_parent_ids($i__id, $first_level = true, $stopper_i_id = 0){
 
-        if($stopper_i_id>0 && $stopper_i_id==$i__id){
+
+    function recursive_parent_ids($i__id, $first_level = true, $loop_breaker_i_id = 0){
+
+        if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i__id){
             return array();
         }
 
@@ -844,7 +843,7 @@ c                ));
 
             array_push($recursive_i_ids, intval($next_i['i__id']));
 
-            $recursive_is = $this->I_model->recursive_parent_ids($next_i['i__id'], false, ( $stopper_i_id>0 ? $stopper_i_id : $i__id ));
+            $recursive_is = $this->I_model->recursive_parent_ids($next_i['i__id'], false, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i__id ));
 
             //Add to current array if we found anything:
             if(count($recursive_is) > 0){
@@ -861,126 +860,6 @@ c                ));
 
 
 
-    function metadata_common_base($focus_in, $stopper_i_id = 0){
-
-        //Set variables:
-        $is_first_in = ( !isset($focus_in['x__id']) ); //First idea does not have a transaction, just the idea
-        $select_12883 = in_array($focus_in['i__type'] , $this->config->item('n___12883')); //IDEA TYPE SELECT ONE
-        $select_12884 = in_array($focus_in['i__type'] , $this->config->item('n___12884')); //IDEA TYPE SELECT SOME
-        $select_14862 = in_array($focus_in['i__type'] , $this->config->item('n___14862')); //IDEA TYPE SELECT ANY or NONE
-        $children_one = array(); //To be populated only if $focus_in is select one
-        $children_some = array(); //To be populated only if $focus_in is select some
-        $conditional_x = array(); //To be populated only for Conditional Ideas
-        $metadata_this = array(
-            'p___6168' => array(), //The idea structure that would be shared with all members regardless of their quick replies (OR Idea Answers)
-            'p___6228' => array(), //Ideas that may exist as a transaction to expand read by answering OR ideas
-            'p___12885' => array(), //Ideas that allows members to select one or more
-            'p___6283' => array(), //Ideas that may exist as a transaction to expand read via Conditional Idea transactions
-        );
-
-        if($stopper_i_id>0 && $stopper_i_id==$focus_in['i__id']){
-            return $metadata_this;
-        }
-
-        //Fetch children:
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__left' => $focus_in['i__id'],
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i){
-
-            //Determine action based on parent idea type:
-            if(in_array($next_i['x__type'], $this->config->item('n___12842'))){
-
-                //Conditional Idea Transaction:
-                array_push($conditional_x, intval($next_i['i__id']));
-
-            } elseif($select_12883){
-
-                //OR parent Idea with Fixed Idea Transaction:
-                array_push($children_one, intval($next_i['i__id']));
-
-            } elseif($select_12884 || $select_14862){
-
-                //OR parent Idea with Fixed Idea Transaction:
-                array_push($children_some, intval($next_i['i__id']));
-
-            } else {
-
-                //AND parent Idea with Fixed Idea Transaction:
-                array_push($metadata_this['p___6168'], intval($next_i['i__id']));
-
-                //Go recursively down:
-                $child_recursion = $this->I_model->metadata_common_base($next_i, ( $stopper_i_id>0 ? $stopper_i_id : $focus_in['i__id'] ));
-
-
-                //Aggregate recursion data:
-                if(count($child_recursion['p___6168']) > 0){
-                    array_push($metadata_this['p___6168'], $child_recursion['p___6168']);
-                }
-
-                //Merge expansion steps:
-                if(count($child_recursion['p___6228']) > 0){
-                    foreach($child_recursion['p___6228'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['p___6228'])){
-                            $metadata_this['p___6228'][$key] = $value;
-                        }
-                    }
-                }
-                if(count($child_recursion['p___12885']) > 0){
-                    foreach($child_recursion['p___12885'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['p___12885'])){
-                            $metadata_this['p___12885'][$key] = $value;
-                        }
-                    }
-                }
-                if(count($child_recursion['p___6283']) > 0){
-                    foreach($child_recursion['p___6283'] as $key => $value){
-                        if(!array_key_exists($key, $metadata_this['p___6283'])){
-                            $metadata_this['p___6283'][$key] = $value;
-                        }
-                    }
-                }
-            }
-        }
-
-
-        //Was this an OR branch that needs it's children added to the array?
-        if($select_12883 && count($children_one) > 0){
-            $metadata_this['p___6228'][$focus_in['i__id']] = $children_one;
-        }
-        if(($select_12884 || $select_14862) && count($children_some) > 0){
-            $metadata_this['p___12885'][$focus_in['i__id']] = $children_some;
-        }
-        if(count($conditional_x) > 0){
-            $metadata_this['p___6283'][$focus_in['i__id']] = $conditional_x;
-        }
-
-
-        //Save common base:
-        if($is_first_in){
-
-            //Make sure to add main idea to common idea:
-            if(count($metadata_this['p___6168']) > 0){
-                $metadata_this['p___6168'] = array_merge( array(intval($focus_in['i__id'])) , array($metadata_this['p___6168']));
-            } else {
-                $metadata_this['p___6168'] = array(intval($focus_in['i__id']));
-            }
-
-            update_metadata(12273, $focus_in['i__id'], array(
-                'i___6168' => $metadata_this['p___6168'],
-                'i___6228' => $metadata_this['p___6228'],
-                'i___12885' => $metadata_this['p___12885'],
-                'i___6283' => $metadata_this['p___6283'],
-            ));
-
-        }
-
-        //Return results:
-        return $metadata_this;
-
-    }
 
     function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $x__source)
     {
@@ -1161,292 +1040,5 @@ c                ));
     }
 
 
-    function weight($i__id, $stopper_i_id = 0)
-    {
-
-        /*
-         *
-         * Addup weights recursively
-         *
-         * */
-
-        if($stopper_i_id>0 && $stopper_i_id==$i__id){
-            return 0;
-        }
-
-        $total_child_weights = 0;
-
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'x__left' => $i__id,
-        ), array('x__right'), 0, 0, array(), 'i__id, i__spectrum') as $next_i){
-            $total_child_weights += $next_i['i__spectrum'] + $this->I_model->weight($next_i['i__id'], ( $stopper_i_id>0 ? $stopper_i_id : $i__id ));
-        }
-
-        //Update This Level:
-        if($total_child_weights > 0){
-            $this->db->query("UPDATE table__i SET i__spectrum=i__spectrum+".$total_child_weights." WHERE i__id=".$i__id.";");
-        }
-
-        //Return data:
-        return $total_child_weights;
-
-    }
-
-
-
-    function metadata_e_insights($i, $stopper_i_id = 0)
-    {
-
-        /*
-         *
-         * Generates Idea Tree Insights like
-         * min/max ideas, time & referenced
-         * expert sources/channels.
-         *
-         * */
-
-        $metadata_this = array(
-            'p___6169' => 1,
-            'p___6170' => 1,
-            'p___13207' => array(), //Leaderboard Sources
-            'p___ids' => array($i['i__id']), //Keeps Track of the IDs scanned here
-        );
-
-        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
-            return $metadata_this;
-        }
-
-
-        //AGGREGATE IDEA SOURCES
-        foreach($this->X_model->fetch(array(
-            //Already for for x__up & x__down
-            'x__up >' => 0,
-            'x__right' => $i['i__id'],
-            'x__type IN (' . join(',', $this->config->item('n___13550')).')' => null, //SOURCE IDEAS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array('x__up'), 0) as $fetched_e) {
-
-            $e_metadata_leaderboard = $this->E_model->metadata_leaderboard($fetched_e);
-
-            foreach($e_metadata_leaderboard['p___13207'] as $e__id) {
-                if (!in_array($e__id, $metadata_this['p___13207'])) {
-                    array_push($metadata_this['p___13207'], intval($e__id));
-                }
-            }
-
-            //MEMBERS:
-            if (!in_array($fetched_e['x__source'], $metadata_this['p___13207'])) {
-                array_push($metadata_this['p___13207'], intval($fetched_e['x__source']));
-            }
-        }
-
-
-        $metadata_local = array(
-            'localp___6169'=> null,
-            'localp___6170'=> null,
-        );
-
-        //NEXT IDEAS
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__left' => $i['i__id'],
-        ), array('x__right'), 0) as $is_next){
-
-            //Members
-            if (!in_array($is_next['x__source'], $metadata_this['p___13207'])) {
-                array_push($metadata_this['p___13207'], intval($is_next['x__source']));
-            }
-
-            //RECURSION
-            $metadata_recursion = $this->I_model->metadata_e_insights($is_next, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
-
-
-            //CONDITIONAL OR SELECT ONE
-            if(in_array($is_next['x__type'], $this->config->item('n___12842')) || in_array($i['i__type'], $this->config->item('n___12883'))){
-
-                //ONE
-
-                //MIN
-                if(is_null($metadata_local['localp___6169']) || $metadata_recursion['p___6169'] < $metadata_local['localp___6169']){
-                    $metadata_local['localp___6169'] = $metadata_recursion['p___6169'];
-                }
-
-                //MAX
-                if(is_null($metadata_local['localp___6170']) || $metadata_recursion['p___6170'] > $metadata_local['localp___6170']){
-                    $metadata_local['localp___6170'] = $metadata_recursion['p___6170'];
-                }
-
-            } elseif(in_array($i['i__type'], $this->config->item('n___12884'))){
-
-                //SELECT SOME
-
-                //MIN
-                if(is_null($metadata_local['localp___6169']) || $metadata_recursion['p___6169'] < $metadata_local['localp___6169']){
-                    $metadata_local['localp___6169'] = $metadata_recursion['p___6169'];
-                }
-
-                //MAX
-                $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
-
-            } elseif(in_array($i['i__type'], $this->config->item('n___14862'))){
-
-                //SELECT ANY OR NONE
-
-                //MIN: They can select none
-                $metadata_local['localp___6169'] = 0;
-
-                //MAX
-                $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
-
-            } else {
-
-                //ALL
-
-                //MIN
-                $metadata_this['p___6169'] += intval($metadata_recursion['p___6169']);
-
-                //MAX
-                $metadata_this['p___6170'] += intval($metadata_recursion['p___6170']);
-
-            }
-
-
-            //LEADERBOARD SOURCES
-            foreach($metadata_recursion['p___13207'] as $e__id) {
-                if (!in_array($e__id, $metadata_this['p___13207'])) {
-                    array_push($metadata_this['p___13207'], intval($e__id));
-                }
-            }
-
-
-            //AGGREGATE IDS
-            foreach($metadata_recursion['p___ids'] as $i__id) {
-                if (!in_array(intval($i__id), $metadata_this['p___ids'])) {
-                    array_push($metadata_this['p___ids'], intval($i__id));
-                }
-            }
-        }
-
-
-        //ADD LOCAL MIN/MAX
-        if(!is_null($metadata_local['localp___6169'])){
-            $metadata_this['p___6169'] += intval($metadata_local['localp___6169']);
-        }
-        if(!is_null($metadata_local['localp___6170'])){
-            $metadata_this['p___6170'] += intval($metadata_local['localp___6170']);
-        }
-
-        //Save to DB
-        update_metadata(12273, $i['i__id'], array(
-            'i___6169' => intval($metadata_this['p___6169']),
-            'i___6170' => intval($metadata_this['p___6170']),
-            'i___13207' => $metadata_this['p___13207'], //LEADERBOARD Sources
-        ));
-
-        //Return data:
-        return $metadata_this;
-
-    }
-
-
-
-    function unlock_paths($i, $stopper_i_id = 0)
-    {
-        /*
-         *
-         * Finds the pathways, if any, on how to unlock $i
-         *
-         * */
-
-        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
-            return array();
-        }
-
-        //Validate this locked idea:
-        if(!i_unlockable($i)){
-            return array();
-        }
-
-        $child_unlock_paths = array();
-
-
-        //read 1: Is there an OR parent that we can simply answer and unlock?
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'x__right' => $i['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null,
-        ), array('x__left'), 0) as $i_or_parent){
-            if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $i_or_parent['i__id'])) {
-                array_push($child_unlock_paths, $i_or_parent);
-            }
-        }
-
-
-        //read 2: Are there any locked transaction parents that the member might be able to unlock?
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
-            'x__right' => $i['i__id'],
-        ), array('x__left'), 0) as $i_locked_parent){
-            if(i_unlockable($i_locked_parent)){
-                //Need to check recursively:
-                foreach($this->I_model->unlock_paths($i_locked_parent, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] )) as $locked_path){
-                    if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $locked_path['i__id'])) {
-                        array_push($child_unlock_paths, $locked_path);
-                    }
-                }
-            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $i_locked_parent['i__id'])) {
-                array_push($child_unlock_paths, $i_locked_parent);
-            }
-        }
-
-
-        //Return if we have options for step 1 OR step 2:
-        if(count($child_unlock_paths) > 0){
-            //Return OR parents for unlocking this idea:
-            return $child_unlock_paths;
-        }
-
-
-        //read 3: We don't have any OR parents, let's see how we can complete all children to meet the requirements:
-        $is_next = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'x__left' => $i['i__id'],
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
-        if(count($is_next) < 1){
-            //No children, no path:
-            return array();
-        }
-
-        //Go through children to see if any/all can be completed:
-        foreach($is_next as $next_i){
-            if(i_unlockable($next_i)){
-
-                //Need to check recursively:
-                foreach($this->I_model->unlock_paths($next_i, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] )) as $locked_path){
-                    if(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $locked_path['i__id'])) {
-                        array_push($child_unlock_paths, $locked_path);
-                    }
-                }
-
-            } elseif(count($child_unlock_paths)==0 || !filter_array($child_unlock_paths, 'i__id', $next_i['i__id'])) {
-
-                //Not locked, so this can be completed:
-                array_push($child_unlock_paths, $next_i);
-
-            }
-        }
-        return $child_unlock_paths;
-
-    }
 
 }

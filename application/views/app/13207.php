@@ -1,45 +1,44 @@
 <?php
 
-$e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$community_list = get_domain_setting(13207);
+$community_pills = '';
+$is_open = true;
 
-if(intval($community_list) && is_array($this->config->item('e___'.$community_list))){
+foreach($this->E_model->scissor_e(website_setting(0), 13207) as $e_item) {
 
-    //Community
-    //echo view_coins();
-    echo '<ul class="nav nav-pills nav12274"></ul>';
+    //Community Members?
+    foreach($this->X_model->fetch(array(
+        'x__up' => $e_item['e__id'],
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'x__id' => 'DESC')) as $x) {
 
+        $total_count = view_coins_e(11029, $e_item['e__id'], 0, false);
 
-    $is_open = true;
-    foreach($this->config->item('e___'.$community_list) as $x__type => $m) {
-
-        //WITH MOST IDEAS
-        /*
-        $group_by = 'e__id, e__title, e__cover, e__metadata, e__type, e__spectrum';
-        $e_list = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__up >' => 0,
-            ' EXISTS (SELECT 1 FROM table__x WHERE e__id=x__down AND x__up='.$x__type.' AND x__type IN (' . join(',', $this->config->item('n___4592')) . ') AND x__status IN ('.join(',', $this->config->item('n___7359')).')) ' => null,
-        ), array('x__up'), 0, 0, array('totals' => 'DESC'), 'COUNT(x__id) as totals, '.$group_by, $group_by);
-        */
-
-        $total_count = view_coins_e(11029, $x__type, 0, false);
         if($total_count){
 
             $ui = '<div class="row justify-content">';
-            foreach(view_coins_e(11029, $x__type, 1, false) as $count=>$e) {
+            foreach(view_coins_e(11029, $e_item['e__id'], 1, false) as $count=>$e) {
                 $ui .= view_e(13207, $e, null, true);
             }
             $ui .= '</div>';
 
-            echo view_pill($x__type, $total_count, $m, $ui, $is_open);
+            $community_pills .= view_pill($e_item['e__id'], $total_count, array(
+                'm__cover' => view_cover(12274,$e_item['e__cover'], true),
+                'm__title' => $e_item['e__title'],
+                'm__message' => $e_item['x__message'],
+            ), $ui, $is_open);
 
             $is_open = false;
         }
-
     }
+}
 
+
+if(strlen($community_pills)){
+
+    //Community
+    echo '<ul class="nav nav-pills nav12274"></ul>';
+    echo $community_pills;
 
 } else {
 
@@ -47,6 +46,3 @@ if(intval($community_list) && is_array($this->config->item('e___'.$community_lis
 
 }
 
-
-
-?>

@@ -438,10 +438,6 @@ class I extends CI_Controller {
         ), true);
 
 
-        //Save Extra References if any:
-        $this->X_model->save_note_extra_sources($x['x__id'], $member_e['e__id'], $msg_validation['note_references'], intval($_POST['i__id']), false);
-
-
         //Print the challenge:
         return view_json(array(
             'status' => 1,
@@ -738,9 +734,6 @@ class I extends CI_Controller {
                 'x__up' => ( count($msg_validation['note_references']) ? $msg_validation['note_references'][0] : 0 ),
             ), $member_e['e__id'], 10679 /* IDEA NOTES updated Content */, update_description($messages[0]['x__message'], $msg_validation['clean_message']));
 
-            //Update extra references:
-            $this->X_model->save_note_extra_sources($x['x__id'], $member_e['e__id'], $msg_validation['note_references'], $messages['x__right'], true);
-
         }
 
 
@@ -887,8 +880,6 @@ class I extends CI_Controller {
                 'x__status' => 6173,
             ), $member_e['e__id'], 13579);
 
-            //Remove Extra References:
-            $this->X_model->save_note_extra_sources($x['x__id'], $member_e['e__id'], array(), $is[0]['i__id'], true);
         }
 
 
@@ -903,9 +894,6 @@ class I extends CI_Controller {
                 'x__message' => $msg_validation['clean_message'],
                 'x__up' => ( count($msg_validation['note_references']) ? $msg_validation['note_references'][0] : 0 ),
             ));
-
-            //Update extra references:
-            $this->X_model->save_note_extra_sources($x['x__id'], $member_e['e__id'], $msg_validation['note_references'], $is[0]['i__id'], false);
 
             //GENERATE New Preview:
             $textarea_content .= $this->X_model->message_view($msg_validation['clean_message'], false, $member_e, $is[0]['i__id']);

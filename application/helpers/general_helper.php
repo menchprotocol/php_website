@@ -58,18 +58,6 @@ function fetch_file_ext($url)
 }
 
 
-function array_flatten($hierarchical_array){
-    if(!$hierarchical_array){
-        return array();
-    }
-    $result = array();
-    array_walk_recursive($hierarchical_array, function ($v, $k) use (&$result) {
-        $result[] = $v;
-    });
-    return $result;
-}
-
-
 function extract_e_references($x__message)
 {
 
@@ -267,28 +255,6 @@ function x_detect_type($string)
         //It's a URL, see what type (this could fail if duplicate, etc...):
         return $CI->E_model->url($string);
 
-    } elseif (substr($string, 0, 1)=='@' && is_numeric(substr($string, 1)) && count($CI->E_model->fetch(array(
-            'e__id' => substr($string, 1),
-            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-        )))) {
-
-        //Source:
-        return array(
-            'status' => 1,
-            'x__type' => 26090,
-        );
-
-    } elseif (substr($string, 0, 1)=='/' && is_numeric(substr($string, 1)) && count($CI->I_model->fetch(array(
-            'i__id' => substr($string, 1),
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-        )))) {
-
-        //Idea:
-        return array(
-            'status' => 1,
-            'x__type' => 26155,
-        );
-
     } elseif (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//' && !$has_space) {
 
         //Relative URL
@@ -453,16 +419,17 @@ function i_description($i__id){
 
 function i__spectrum_calculator($i){
 
-    //DISCOVERY
+    //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
-
-    //Set Weight to Max Time for now:
-    $i_stats = i_stats($i['i__metadata']);
+    $count_x = $CI->X_model->fetch(array(
+        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        '(x__left='.$i['i__id'].' OR x__right='.$i['i__id'].')' => null,
+    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Should we update?
-    if($i_stats['i___6170'] != $i['i__spectrum']){
+    if($count_x[0]['totals'] != $i['i__spectrum']){
         return $CI->I_model->update($i['i__id'], array(
-            'i__spectrum' => $i_stats['i___6170'],
+            'i__spectrum' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -472,29 +439,17 @@ function i__spectrum_calculator($i){
 
 function e__spectrum_calculator($e){
 
-    //DISCOVERIES
+    //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
-
     $count_x = $CI->X_model->fetch(array(
         'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__source='.$e['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
-    //IDEAS
-    $counts = $CI->X_model->fetch(array(
-        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].')' => null,
-    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-
-    //Returns the weight of a source:
-    $weight = ( $count_x[0]['totals'] * view_memory(6404,12568) )
-            + ( $counts[0]['totals'] * view_memory(6404,12565) );
-
     //Should we update?
-    if($weight != $e['e__spectrum']){
+    if($count_x[0]['totals'] != $e['e__spectrum']){
         return $CI->E_model->update($e['e__id'], array(
-            'e__spectrum' => $weight,
+            'e__spectrum' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -533,10 +488,7 @@ function format_percentage($percent){
 
 function new_member_redirect($e__id, $sign_i__id){
     //Is there a redirect app?
-    $new_member_app = intval(get_domain_setting(14880, $e__id));
-    if($new_member_app) {
-        return '/-' . $new_member_app . ($sign_i__id > 0 ? '?i__id='.$sign_i__id : ( isset($_GET['url']) ? '?url='.$_GET['url'] : '' ) );
-    } elseif($sign_i__id > 0) {
+    if($sign_i__id > 0) {
         return '/' . $sign_i__id;
     } elseif(isset($_GET['url'])) {
         return $_GET['url'];
@@ -885,24 +837,6 @@ function cookie_check() {
 }
 
 
-function send_dm_template($member, $template_id){
-
-    $CI =& get_instance();
-
-    ##Email Body
-    $e___26154 = $CI->config->item('e___26154'); //RECEIVED ON EMAIL
-
-    //Send DM:
-    $CI->X_model->send_dm($member['e__id'], $e___26154[$template_id]['m__title'], $e___26154[$template_id]['m__message'], array(), $template_id);
-
-}
-
-function sortByWeight($a, $b) {
-    if(isset($a['e__spectrum']) && isset($b['e__spectrum'])){
-        return $b['e__spectrum'] - $a['e__spectrum'];
-    }
-}
-
 function superpower_active($superpower_e__id, $boolean_only = false){
 
     if( intval($superpower_e__id)>0 ){
@@ -997,28 +931,6 @@ function var_index(){
 }
 
 
-function i_stats($i__metadata){
-
-    //Calculates average based on metadata:
-    $metadata = unserialize($i__metadata);
-
-    $array_13207 = ( isset($metadata['i___13207']) ? $metadata['i___13207'] : array() );
-
-    $e_count = count($array_13207);
-
-    //Return stats:
-    return array(
-
-        //IDEAS
-        'i___6169' => ( isset($metadata['i___6169']) && $metadata['i___6169']>=2 ? $metadata['i___6169']-1 : 0 ),
-        'i___6170' => ( isset($metadata['i___6170']) && $metadata['i___6170']>=2 ? $metadata['i___6170']-1 : 0 ),
-
-        //LEADERBOARD SOURCES
-        'array_13207' => $array_13207,
-        'count_13207' => count($array_13207),
-    );
-
-}
 
 function home_url(){
     $CI =& get_instance();
@@ -1094,22 +1006,6 @@ function generateQR($url, $width = 150, $height = 150) {
     $url    = urlencode($url);
     $image  = '<img src="http://chart.apis.google.com/chart?chs='.$width.'x'.$height.'&cht=qr&chl='.$url.'" alt="QR code" width="'.$width.'" height="'.$height.'"/>';
     return $image;
-}
-
-function member_setting($e__id){
-    $CI =& get_instance();
-    $session_var = $CI->session->userdata('session_custom_ui_'.$e__id);
-    $theme_id = get_domain_setting(14926, $e__id);
-
-    if(!$session_var && $theme_id){
-        //Find the default value:
-        $account_defaults = array_intersect($CI->config->item('n___'.$theme_id), $CI->config->item('n___'.$e__id));
-        if(count($account_defaults)){
-            //We should find it by now:
-            $session_var = end($account_defaults);
-        }
-    }
-    return $session_var;
 }
 
 function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local = false, $page_title = null)
@@ -1423,7 +1319,7 @@ function clean_phone($phone){
 function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0, $x__domain = 0){
 
     $CI =& get_instance();
-    $domain_email = '"'.get_domain('m__title', $e__id, $x__domain).'" <'.get_domain_setting(28614, $e__id, $x__domain).'>';
+    $domain_email = '"'.get_domain('m__title', $e__id, $x__domain).'" <'.website_setting(28614, $e__id, $x__domain).'>';
 
     $name = 'New User';
     $ReplyToAddresses = array($domain_email);
@@ -1524,7 +1420,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
 }
 
-function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 0){
+function website_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 0){
 
     $CI =& get_instance();
     $source_id = 0; //Assume no domain unless found below...
@@ -1561,9 +1457,7 @@ function get_domain_setting($setting_id = 0, $initiator_e__id = 0, $x__domain = 
         $target_return = $e___domain_sett[$source_id]['m__message'];
     }
 
-    $skip_first_word = in_array($setting_id, $CI->config->item('n___26090')) || in_array($setting_id, $CI->config->item('n___26155')) || substr($target_return, 0, 1)=='@' || (substr($target_return, 0, 1)=='/' && is_numeric(substr($target_return, 1, 1)));
-
-    return ( $skip_first_word ? substr($target_return, 1) : $target_return );
+    return $target_return;
 
 }
 
@@ -1697,7 +1591,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
 function get_domain($var_field, $initiator_e__id = 0, $x__domain = 0){
     $CI =& get_instance();
-    $domain_source = get_domain_setting(0, $initiator_e__id, $x__domain);
+    $domain_source = website_setting(0, $initiator_e__id, $x__domain);
     $e___14870 = $CI->config->item('e___14870'); //DOMAINS
     return $e___14870[$domain_source][$var_field];
 }
@@ -1818,21 +1712,6 @@ function sources_currently_sorted($e__id){
     ), array(), 1) );
 }
 
-function fetch_i_source($source_type, $i__id){
-    $CI =& get_instance();
-    foreach($CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__up' => $source_type,
-        'x__right' => $i__id,
-    ), array(), 0, 0) as $x){
-        //Eliminates % mark if there
-        return intval($x['x__message']);
-    }
-    //Not found? return zero:
-    return 0;
-}
-
 function first_line($string){
     return $string;
 }
@@ -1932,7 +1811,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
     $all_export_rows = array();
     $all_db_rows = array();
     $synced_count = 0;
-    $loop_filed_name = '';
 
     foreach($fetch_objects as $loop_obj){
 
@@ -1942,8 +1820,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         //Fetch item(s) for updates including their parents:
         if ($loop_obj == 12273) {
 
-            $loop_filed_id = 'i__id';
-            $loop_filed_name = 'i__metadata';
             $limits['x__type'] = 4250;
 
             if($s__id){
@@ -1957,8 +1833,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
         } elseif ($loop_obj == 12274) {
 
-            $loop_filed_id = 'e__id';
-            $loop_filed_name = 'e__metadata';
             $limits['x__type'] = 4251;
 
             if($s__id){
@@ -1997,23 +1871,23 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
             //Attempt to fetch Algolia object ID from object Metadata:
             if($s__type){
 
-                if (strlen($s[$loop_filed_name]) > 0) {
-
-                    //We have a metadata, so we might have the Algolia ID stored. Let's check:
-                    $metadata = unserialize($s[$loop_filed_name]);
-                    if (isset($metadata['algolia__id']) && intval($metadata['algolia__id']) > 0) {
-                        //We found it! Let's just update existing algolia record
-                        $export_row['objectID'] = intval($metadata['algolia__id']);
-                    }
-
+                if (intval($s['algolia__id']) > 0) {
+                    //We found it! Let's just update existing algolia record
+                    $export_row['objectID'] = intval($s['algolia__id']);
                 }
 
             } else {
 
                 //Clear possible metadata algolia ID's that have been cached:
-                update_metadata($loop_obj, $s[$loop_filed_id], array(
-                    'algolia__id' => null, //Since all objects have been mass deleted!
-                ));
+                if ($loop_obj == 12273) {
+                    $CI->I_model->update($s['i__id'], array(
+                        'algolia__id' => null,
+                    ));
+                } elseif ($loop_obj == 12274) {
+                    $CI->E_model->update($s['e__id'], array(
+                        'algolia__id' => null,
+                    ));
+                }
 
             }
 
@@ -2167,11 +2041,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 //Delete from algolia:
                 $algolia_results = $search_index->deleteObject($all_export_rows[0]['objectID']);
 
-                //also set its algolia_id to 0 locally:
-                update_metadata($s__type, $all_db_rows[0][$focus_field_id], array(
-                    'algolia__id' => null, //Since this item has been deleted!
-                ));
-
                 $synced_count += 1;
 
             } else {
@@ -2190,12 +2059,22 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 //We do not have an index to an Algolia object locally, so create a new index:
                 $algolia_results = $search_index->addObjects($all_export_rows);
 
+
+                //also set its algolia_id to 0 locally:
+
+
                 //Now update local database with the new objectIDs:
                 if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1 ) {
                     foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
-                        update_metadata($s__type, $all_db_rows[$key][$focus_field_id], array(
-                            'algolia__id' => $algolia_id, //The newly created algolia object
-                        ));
+                        if ($s__type == 12273) {
+                            $CI->I_model->update($all_db_rows[$key][$focus_field_id], array(
+                                'algolia__id' => $algolia_id,
+                            ));
+                        } elseif ($s__type == 12274) {
+                            $CI->E_model->update($all_db_rows[$key][$focus_field_id], array(
+                                'algolia__id' => $algolia_id,
+                            ));
+                        }
                     }
                 }
 
@@ -2226,9 +2105,16 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
             foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
 
-                update_metadata(( isset($all_db_rows[$key]['i__id']) ? 12273 : 12274), $all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
-                    'algolia__id' => intval($algolia_id),
-                ));
+                if (isset($all_db_rows[$key]['i__id'])) {
+                    $CI->I_model->update($all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
+                        'algolia__id' => intval($algolia_id),
+                    ));
+                } else {
+                    $CI->E_model->update($all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
+                        'algolia__id' => intval($algolia_id),
+                    ));
+                }
+
             }
         }
 
@@ -2246,7 +2132,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
 }
 
-function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
+function x__metadata_update($x__id, $new_fields, $x__source = 0)
 {
 
     $CI =& get_instance();
@@ -2255,7 +2141,6 @@ function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
      *
      * Enables the easy manipulation of the text metadata field which holds cache data for developers
      *
-     * $s__type:           DISCOVERY, SOURCE OR IDEA
      *
      * $obj:                    The Member, Idea or Transaction itself.
      *                          We're looking for the $obj ID and METADATA
@@ -2265,36 +2150,14 @@ function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
      *
      * */
 
-    if (!in_array($s__type, $CI->config->item('n___14874')) || $s__id < 1 || count($new_fields) < 1) {
+    if ($x__id < 1 || count($new_fields) < 1) {
         return false;
     }
 
     //Fetch metadata for this object:
-    if ($s__type == 12273) {
-
-        $obj_filed_id = 'i__id';
-        $obj_filed_name = 'i__metadata';
-        $db_objects = $CI->I_model->fetch(array(
-            $obj_filed_id => $s__id,
-        ));
-
-    } elseif ($s__type == 12274) {
-
-        $obj_filed_id = 'e__id';
-        $obj_filed_name = 'e__metadata';
-        $db_objects = $CI->E_model->fetch(array(
-            $obj_filed_id => $s__id,
-        ));
-
-    } elseif ($s__type == 6255) {
-
-        $obj_filed_id = 'x__id';
-        $obj_filed_name = 'x__metadata';
-        $db_objects = $CI->X_model->fetch(array(
-            $obj_filed_id => $s__id,
-        ));
-
-    }
+    $db_objects = $CI->X_model->fetch(array(
+        'x__id' => $x__id,
+    ));
 
     if (count($db_objects) < 1) {
         return false;
@@ -2302,7 +2165,7 @@ function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
 
 
     //Prepare newly fetched metadata:
-    $metadata = (strlen($db_objects[0][$obj_filed_name]) > 0 ? unserialize($db_objects[0][$obj_filed_name]) : array() );
+    $metadata = (strlen($db_objects[0]['x__metadata']) > 0 ? unserialize($db_objects[0]['x__metadata']) : array() );
 
     //Go through all the new fields and see if they differ from current metadata fields:
     foreach($new_fields as $metadata_key => $metadata_value) {
@@ -2321,29 +2184,10 @@ function update_metadata($s__type, $s__id, $new_fields, $x__source = 0)
         }
     }
 
-    //Now update DB without logging any transactions as this is considered a back-end update:
-    if ($s__type == 12273) {
-
-        $affected_rows = $CI->I_model->update($s__id, array(
-            'i__metadata' => $metadata,
-        ), false, $x__source);
-
-    } elseif ($s__type == 12274) {
-
-        $affected_rows = $CI->E_model->update($s__id, array(
-            'e__metadata' => $metadata,
-        ), false, $x__source);
-
-    } elseif ($s__type == 6255) {
-
-        $affected_rows = $CI->X_model->update($s__id, array(
-            'x__metadata' => $metadata,
-        ));
-
-    }
-
     //Should be all good:
-    return $affected_rows;
+    return $CI->X_model->update($x__id, array(
+        'x__metadata' => $metadata,
+    ));
 
 }
 

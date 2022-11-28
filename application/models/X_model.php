@@ -51,7 +51,7 @@ class X_model extends CI_Model
 
         //Set some defaults:
         if (!isset($add_fields['x__domain'])) {
-            $add_fields['x__domain'] = get_domain_setting(0, $add_fields['x__source']);
+            $add_fields['x__domain'] = website_setting(0, $add_fields['x__source']);
         }
 
 
@@ -354,8 +354,8 @@ class X_model extends CI_Model
                             //Is this a Paypal transaction being removed?
                             if(count($before_data)){
                                 $x__metadata = @unserialize($before_data[0]['x__metadata']);
-                                $paypal_client_id = get_domain_setting(30857);
-                                $paypal_secret_key = get_domain_setting(30858);
+                                $paypal_client_id = website_setting(30857);
+                                $paypal_secret_key = website_setting(30858);
 
                                 if($paypal_client_id && $paypal_secret_key && isset($x__metadata['txn_id']) && strlen($x__metadata['txn_id']) && $before_data[0]['x__type']==26595 && $before_data[0]['x__status']!=6173 && $value==6173){
 
@@ -547,9 +547,9 @@ class X_model extends CI_Model
 
 
         //Should we send SMS?
-        $twilio_account_sid = get_domain_setting(30859);
-        $twilio_auth_token = get_domain_setting(30860);
-        $twilio_from_number = get_domain_setting(27673);
+        $twilio_account_sid = website_setting(30859);
+        $twilio_auth_token = website_setting(30860);
+        $twilio_from_number = website_setting(27673);
         if(in_array($notification_levels[0]['x__up'], $this->config->item('n___28915')) && $twilio_account_sid && $twilio_auth_token && $twilio_from_number){
 
             //Yes, generate message
@@ -692,44 +692,6 @@ class X_model extends CI_Model
 
     }
 
-
-    function save_note_extra_sources($x__id, $x__source, $note_references, $i__id, $delete_previous){
-
-        if(!$x__id){
-            return false;
-        }
-
-        //Remove first one as already saved:
-        array_shift($note_references);
-
-        //Also remove all current extra sources:
-        if($delete_previous){
-            foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type' => 14947, //Note Extra Sources
-                'x__reference' => $x__id,
-            ), array(), 0) as $delete_x) {
-                $this->X_model->update($delete_x['x__id'], array(
-                    'x__status' => 6173,
-                ));
-            }
-        }
-
-        //Now see if any more left to save?
-        if(count($note_references)){
-            //Yes we have more than one which means we need to store them separately:
-            foreach($note_references as $extra_references){
-                $this->X_model->create(array(
-                    'x__source' => $x__source,
-                    'x__type' => 14947, //Note Extra Source
-                    'x__right' => $i__id,
-                    'x__reference' => $x__id,
-                    'x__up' => $extra_references,
-                ));
-            }
-        }
-
-    }
 
     function message_compile($message_input, $is_discovery_mode, $member_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true, $simple_version = false)
     {
@@ -1059,10 +1021,10 @@ class X_model extends CI_Model
 
 
 
-    function find_previous($e__id, $top_i__id, $i__id, $stopper_i_id = 0)
+    function find_previous($e__id, $top_i__id, $i__id, $loop_breaker_i_id = 0)
     {
 
-        if($stopper_i_id>0 && $stopper_i_id==$i__id){
+        if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i__id){
             return 0;
         }
 
@@ -1093,7 +1055,7 @@ class X_model extends CI_Model
             }
 
             //Keep looking:
-            $top_search = $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id'], ( $stopper_i_id>0 ? $stopper_i_id : $i__id ));
+            $top_search = $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id'], ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i__id ));
             if(count($top_search)){
                 array_push($top_search, $i_previous);
                 return $top_search;
@@ -1108,10 +1070,10 @@ class X_model extends CI_Model
 
 
 
-    function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false, $stopper_i_id = 0)
+    function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false, $loop_breaker_i_id = 0)
     {
 
-        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
+        if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i['i__id']){
             return 0;
         }
 
@@ -1157,7 +1119,7 @@ class X_model extends CI_Model
 
 
             //Keep looking deeper:
-            $found_next = $this->X_model->find_next($e__id, $top_i__id, $next_i, 0, false, $top_completed, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
+            $found_next = $this->X_model->find_next($e__id, $top_i__id, $next_i, 0, false, $top_completed, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i['i__id'] ));
             if ($found_next) {
                 return $found_next;
             }
@@ -1265,226 +1227,6 @@ class X_model extends CI_Model
 
     }
 
-
-
-
-    function completion_recursive_up($e__id, $top_i__id, $i, $is_bottom_level = true){
-
-        /*
-         *
-         * Let's see how many steps get unlocked @6410
-         *
-         * */
-
-        //First let's make sure this entire Idea completed by member:
-        $completion_rate = $this->X_model->completion_progress($e__id, $i);
-
-
-        if($completion_rate['completion_percentage'] < 100){
-            //Not completed, so can't go further up:
-            return array();
-        }
-
-
-        //Look at Conditional Idea Transactions ONLY at this level:
-        $i__metadata = unserialize($i['i__metadata']);
-        if(isset($i__metadata['i___6283'][$i['i__id']]) && count($i__metadata['i___6283'][$i['i__id']]) > 0){
-
-            //Make sure previous transaction unlocks have NOT happened before:
-            $existing_expansions = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 6140, //DISCOVERY UNLOCK LINK
-                'x__source' => $e__id,
-                'x__left' => $i['i__id'],
-                'x__right IN (' . join(',', $i__metadata['i___6283'][$i['i__id']]) . ')' => null, //Limit to cached answers
-            ));
-
-            if(count($existing_expansions) > 0){
-
-                //Oh we do have an expansion that previously happened! So skip this:
-                /*
-                 * This was being triggered but I am not sure if its normal or not!
-                 * For now will comment out so no errors are logged
-                 * TODO: See if you can make sense of this section. The question is
-                 * if we would ever try to process a conditional step twice? If it
-                 * happens, is it an error or not, and should simply be ignored?
-                 *
-                $this->X_model->create(array(
-                    'x__left' => $i['i__id'],
-                    'x__right' => $existing_expansions[0]['x__right'],
-                    'x__message' => 'completion_recursive_up() detected duplicate Label Expansion entries',
-                    'x__type' => 4246, //Platform Bug Reports
-                    'x__source' => $e__id,
-                ));
-                */
-
-                return array();
-
-            }
-
-
-            //Yes, Let's calculate u's score for this idea:
-            $u_marks = $this->X_model->completion_marks($e__id, $i);
-
-
-
-
-            //Detect potential conditional steps to be Unlocked:
-            $found_match = 0;
-            $locked_x = $this->X_model->fetch(array(
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12842')) . ')' => null, //IDEA LINKS ONE-WAY
-                'x__left' => $i['i__id'],
-                'x__right IN (' . join(',', $i__metadata['i___6283'][$i['i__id']]) . ')' => null, //Limit to cached answers
-            ), array('x__right'), 0, 0);
-
-
-            foreach($locked_x as $locked_x) {
-
-                if($u_marks['steps_answered_score']>=fetch_i_source(4735, $locked_x['i__id']) && $u_marks['steps_answered_score']<=fetch_i_source(4739, $locked_x['i__id'])){
-
-                    //Found a match:
-                    $found_match++;
-
-                    //Unlock read:
-                    $this->X_model->create(array(
-                        'x__type' => 6140, //DISCOVERY UNLOCK LINK
-                        'x__source' => $e__id,
-                        'x__left' => $i['i__id'],
-                        'x__right' => $locked_x['i__id'],
-                        'x__metadata' => array(
-                            'completion_rate' => $completion_rate,
-                            'u_marks' => $u_marks,
-                            'condition_ranges' => $locked_x,
-                        ),
-                    ));
-
-                }
-            }
-
-            //We must have exactly 1 match by now:
-            if($found_match != 1){
-                $this->X_model->create(array(
-                    'x__message' => 'completion_recursive_up() found ['.$found_match.'] routing logic matches!',
-                    'x__type' => 4246, //Platform Bug Reports
-                    'x__source' => $e__id,
-                    'x__left' => $i['i__id'],
-                    'x__metadata' => array(
-                        'completion_rate' => $completion_rate,
-                        'u_marks' => $u_marks,
-                        'conditional_ranges' => $locked_x,
-                    ),
-                ));
-            }
-        }
-
-
-        //Now go up since we know there are more levels...
-        if($is_bottom_level){
-            //Go through parents ideas and detect intersects with member ideas
-            foreach(array_reverse($this->X_model->find_previous($e__id, $top_i__id, $i['i__id'])) as $p_i) {
-                $this->X_model->completion_recursive_up($e__id, $top_i__id, $p_i, false);
-            }
-        }
-
-
-        return true;
-    }
-
-
-    function unlock_locked_step($e__id, $i){
-
-        /*
-         * A function that starts from a locked idea and checks:
-         *
-         * 1. List members who have completed ALL/ANY (Depending on AND/OR Lock) of its children
-         * 2. If > 0, then goes up recursively to see if these completions unlock other completions
-         *
-         * */
-
-        if(!i_unlockable($i)){
-            return array(
-                'status' => 0,
-                'message' => 'Not a valid locked idea type and status',
-            );
-        }
-
-
-        $is_next = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-            'x__left' => $i['i__id'],
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
-        if(count($is_next) < 1){
-            return array(
-                'status' => 0,
-                'message' => 'Idea has no child ideas',
-            );
-        }
-
-
-
-        /*
-         *
-         * Now we need to determine idea completion method.
-         *
-         * It's one of these two cases:
-         *
-         * AND Ideas are completed when all their children are completed
-         *
-         * OR Ideas are completed when a single child is completed
-         *
-         * */
-        $requires_all_children = in_array($i['i__type'], $this->config->item('n___13987') /* REQUIRE ALL CHILDREN */ );
-
-        //Generate list of members who have completed it:
-        $qualified_completed = array();
-
-        //Go through children and see how many completed:
-        foreach($is_next as $count => $next_i){
-
-            //Fetch members who completed this:
-            if($count==0){
-
-                //Always add all the first members to the full list:
-                $qualified_completed = $this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__left' => $next_i['i__id'],
-                ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-
-                if($requires_all_children && count($qualified_completed)==0){
-                    //No members found that would meet all children requirements:
-                    break;
-                }
-
-            } else {
-
-                //2nd Update onwards, by now we must have a base:
-                if($requires_all_children){
-
-                    //Update list of qualified members:
-                    $qualified_completed = $this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__left' => $next_i['i__id'],
-                    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-
-                }
-
-            }
-        }
-
-        if(count($qualified_completed) > 0){
-            return array(
-                'status' => 0,
-                'message' => 'No users found to have completed',
-            );
-        }
-
-    }
 
 
 
@@ -1929,271 +1671,26 @@ class X_model extends CI_Model
         }
 
 
-        //Process completion automations:
-        $this->X_model->completion_recursive_up($add_fields['x__source'], $top_i__id, $i);
-
         return $new_x;
 
     }
 
-    function completion_marks($e__id, $i, $top_level = true, $stopper_i_id = 0)
+
+
+    function tree_progress($e__id, $i, $top_level = true, $loop_breaker_i_id = 0)
     {
 
-        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
-            return 0;
-        }
-
-        //Fetch/validate read Common Ideas:
-        $i__metadata = unserialize($i['i__metadata']);
-        if(!isset($i__metadata['i___6168'])){
-
-            //Should not happen, log error:
-            $this->X_model->create(array(
-                'x__message' => 'completion_marks() Detected member discoveries without i___6168 value!',
-                'x__type' => 4246, //Platform Bug Reports
-                'x__source' => $e__id,
-                'x__left' => $i['i__id'],
-            ));
-
-            return 0;
-        }
-
-        //Generate flat steps:
-        $flat_common_x = array_flatten($i__metadata['i___6168']);
-
-        //Calculate common steps and expansion steps recursively for this u:
-        $metadata_this = array(
-            //Generic assessment marks stats:
-            'steps_question_count' => 0, //The parent idea
-            'steps_marks_min' => 0,
-            'steps_marks_max' => 0,
-
-            //Member answer stats:
-            'steps_answered_count' => 0, //How many they have answered so far
-            'steps_answered_marks' => 0, //Indicates completion score
-
-            //Calculated at the end:
-            'steps_answered_score' => 0, //Used to determine which label to be unlocked...
-        );
-
-
-        //Process Answer ONE:
-        if(isset($i__metadata['i___6228']) && count($i__metadata['i___6228']) > 0){
-
-            //We need expansion steps (OR Ideas) to calculate question/answers:
-            //To save all the marks for specific answers:
-            $question_i__ids = array();
-            $answer_marks_index = array();
-
-            //Go through these expansion steps:
-            foreach($i__metadata['i___6228'] as $question_i__id => $answers_i__ids ){
-
-                //Calculate local min/max marks:
-                array_push($question_i__ids, $question_i__id);
-                $metadata_this['steps_question_count'] += 1;
-                $local_min = null;
-                $local_max = null;
-
-                //Calculate min/max points for this based on answers:
-                foreach($this->X_model->fetch(array(
-                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'x__left' => $question_i__id,
-                    'x__right IN (' . join(',', $answers_i__ids) . ')' => null, //Limit to cached answers
-                ), array('x__right')) as $i_answer){
-
-
-                    //Assign to this question:
-                    $answer_marks_index[$i_answer['i__id']] = fetch_i_source(4358, $i_answer['i__id']);
-
-                    //Addup local min/max marks:
-                    if(is_null($local_min) || $answer_marks_index[$i_answer['i__id']] < $local_min){
-                        $local_min = $answer_marks_index[$i_answer['i__id']];
-                    }
-                    if(is_null($local_max) || $answer_marks_index[$i_answer['i__id']] > $local_max){
-                        $local_max = $answer_marks_index[$i_answer['i__id']];
-                    }
-                }
-
-                //Did we have any marks for this question?
-                if(!is_null($local_min)){
-                    $metadata_this['steps_marks_min'] += $local_min;
-                }
-                if(!is_null($local_max)){
-                    $metadata_this['steps_marks_max'] += $local_max;
-                }
-            }
-
-
-
-            //Now let's check member answers to see what they have done:
-            $total_completion = $this->X_model->fetch(array(
-                'x__source' => $e__id, //Belongs to this Member
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array(), 0, 0, array(), 'COUNT(x__id) as total_completions');
-
-            //Add to total answer count:
-            $metadata_this['steps_answered_count'] += $total_completion[0]['total_completions'];
-
-            //Go through answers:
-            foreach($this->X_model->fetch(array(
-                'x__source' => $e__id, //Belongs to this Member
-                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
-                'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            ), array('x__right'), 500) as $answer_in) {
-
-                //Fetch recursively:
-                $recursive_stats = $this->X_model->completion_marks($e__id, $answer_in, false, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
-
-                $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
-                $metadata_this['steps_answered_marks'] += $answer_marks_index[$answer_in['i__id']] + $recursive_stats['steps_answered_marks'];
-
-            }
-        }
-
-
-        //Process Answer SOME:
-        if(isset($i__metadata['i___12885']) && count($i__metadata['i___12885']) > 0){
-
-            //We need expansion steps (OR Ideas) to calculate question/answers:
-            //To save all the marks for specific answers:
-            $question_i__ids = array();
-            $answer_marks_index = array();
-
-            //Go through these expansion steps:
-            foreach($i__metadata['i___12885'] as $question_i__id => $answers_i__ids ){
-
-                //Calculate local min/max marks:
-                array_push($question_i__ids, $question_i__id);
-                $metadata_this['steps_question_count'] += 1;
-                $local_min = null;
-                $local_max = null;
-
-                //Calculate min/max points for this based on answers:
-                foreach($this->X_model->fetch(array(
-                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'x__left' => $question_i__id,
-                    'x__right IN (' . join(',', $answers_i__ids) . ')' => null, //Limit to cached answers
-                ), array('x__right')) as $i_answer){
-
-                    //Extract Transaction Metadata:
-                    $possible_answer_metadata = unserialize($i_answer['x__metadata']);
-
-                    //Assign to this question:
-                    $answer_marks_index[$i_answer['i__id']] = fetch_i_source(4358, $i_answer['i__id']);
-
-                    //Addup local min/max marks:
-                    if(is_null($local_min) || $answer_marks_index[$i_answer['i__id']] < $local_min){
-                        $local_min = $answer_marks_index[$i_answer['i__id']];
-                    }
-                }
-
-                //Did we have any marks for this question?
-                if(!is_null($local_min)){
-                    $metadata_this['steps_marks_min'] += $local_min;
-                }
-
-                //Always Add local max:
-                $metadata_this['steps_marks_max'] += $answer_marks_index[$i_answer['i__id']];
-
-            }
-
-
-
-            //Now let's check member answers to see what they have done:
-            $total_completion = $this->X_model->fetch(array(
-                'x__source' => $e__id, //Belongs to this Member
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array(), 0, 0, array(), 'COUNT(x__id) as total_completions');
-
-            //Add to total answer count:
-            $metadata_this['steps_answered_count'] += $total_completion[0]['total_completions'];
-
-            //Go through answers:
-            foreach($this->X_model->fetch(array(
-                'x__source' => $e__id, //Belongs to this Member
-                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
-                'x__left IN (' . join(',', $question_i__ids ) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            ), array('x__right'), 500) as $answer_in) {
-
-                //Fetch recursively:
-                $recursive_stats = $this->X_model->completion_marks($e__id, $answer_in, false, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
-
-                $metadata_this['steps_answered_count'] += $recursive_stats['steps_answered_count'];
-                $metadata_this['steps_answered_marks'] += $answer_marks_index[$answer_in['i__id']] + $recursive_stats['steps_answered_marks'];
-
-            }
-        }
-
-
-
-        if($top_level && $metadata_this['steps_answered_count'] > 0){
-
-            $divider = ( $metadata_this['steps_marks_max'] - $metadata_this['steps_marks_min'] );
-
-            if($divider > 0){
-                //See assessment summary:
-                $metadata_this['steps_answered_score'] = floor(( ($metadata_this['steps_answered_marks'] - $metadata_this['steps_marks_min']) / $divider )  * 100 );
-            } else {
-                //See assessment summary:
-                $metadata_this['steps_answered_score'] = 0;
-            }
-
-        }
-
-
-        //Return results:
-        return $metadata_this;
-
-    }
-
-
-
-    function completion_progress($e__id, $i, $top_level = true, $stopper_i_id = 0)
-    {
-
-        if($stopper_i_id>0 && $stopper_i_id==$i['i__id']){
-            return false;
-        }
-        if(!isset($i['i__metadata'])){
+        if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i['i__id']){
             return false;
         }
 
-        //Fetch/validate discoveries Common Ideas:
-        $i__metadata = unserialize($i['i__metadata']);
-        if(!isset($i__metadata['i___6168'])){
-            //Since it's not there yet we assume the idea it self only!
-            $i__metadata['i___6168'] = array($i['i__id']);
-        }
+        $recursive_child_ids = $this->I_model->recursive_child_ids($i['i__id']);
 
-
-        //Generate flat steps:
-        $flat_common_x = array_flatten($i__metadata['i___6168']);
-
-
-        //Count totals:
-        $common_totals = $this->I_model->fetch(array(
-            'i__id IN ('.join(',',$flat_common_x).')' => null,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ), 0, 0, array(), 'COUNT(DISTINCT i__id) as total_x');
-
-
-        //Count completed so far:
+        //Count completed:
         $common_completed = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__source' => $e__id, //Belongs to this Member
-            'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
+            'x__left IN (' . join(',', $recursive_child_ids ) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ), array('x__left'), 0, 0, array(), 'COUNT(DISTINCT i__id) as completed_x');
@@ -2201,64 +1698,28 @@ class X_model extends CI_Model
 
         //Calculate common steps and expansion steps recursively for this u:
         $metadata_this = array(
-            'steps_total' => intval($common_totals[0]['total_x']),
-            'steps_completed' => intval($common_completed[0]['completed_x']),
-            'steps_incomplete' => intval($common_completed[0]['completed_x']),
+            'fixed_total' => count($recursive_child_ids),
+            'fixed_discovered' => intval($common_completed[0]['completed_x']),
         );
 
 
-        //Expansion Answer ONE
-        $answer_array = array();
-        if(isset($i__metadata['i___6228']) && count($i__metadata['i___6228']) > 0) {
-            $answer_array = array_merge($answer_array , array_flatten($i__metadata['i___6228']));
-        }
-        if(isset($i__metadata['i___12885']) && count($i__metadata['i___12885']) > 0) {
-            $answer_array = array_merge($answer_array , array_flatten($i__metadata['i___12885']));
-        }
+        //Now let's check possible expansions:
+        foreach($this->X_model->fetch(array(
+            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
+            'x__source' => $e__id, //Belongs to this Member
+            'x__left IN (' . join(',', $recursive_child_ids ) . ')' => null,
+            'x__right > 0' => null,
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        ), array('x__right')) as $expansion_in) {
 
-        if(count($answer_array)){
+            //Fetch recursive:
+            $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, false, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i['i__id'] ));
 
-            //Now let's check member answers to see what they have done:
-            foreach($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
-                'x__source' => $e__id, //Belongs to this Member
-                'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
-                'x__right IN (' . join(',', $answer_array) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            ), array('x__right')) as $expansion_in) {
+            //Addup completion stats for this:
+            $metadata_this['fixed_total'] += $tree_progress['fixed_total'];
+            $metadata_this['fixed_discovered'] += $tree_progress['fixed_discovered'];
 
-                //Fetch recursive:
-                $recursive_stats = $this->X_model->completion_progress($e__id, $expansion_in, false, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
-
-                //Addup completion stats for this:
-                $metadata_this['steps_total'] += $recursive_stats['steps_total'];
-                $metadata_this['steps_completed'] += $recursive_stats['steps_completed'];
-            }
-        }
-
-
-        //Expansion steps Recursive
-        if(isset($i__metadata['i___6283']) && count($i__metadata['i___6283']) > 0){
-
-            //Now let's check if member has unlocked any Miletones:
-            foreach($this->X_model->fetch(array(
-                'x__type' => 6140, //DISCOVERY UNLOCK LINK
-                'x__source' => $e__id, //Belongs to this Member
-                'x__left IN (' . join(',', $flat_common_x ) . ')' => null,
-                'x__right IN (' . join(',', array_flatten($i__metadata['i___6283'])) . ')' => null,
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            ), array('x__right')) as $expansion_in) {
-
-                //Fetch recursive:
-                $recursive_stats = $this->X_model->completion_progress($e__id, $expansion_in, false, ( $stopper_i_id>0 ? $stopper_i_id : $i['i__id'] ));
-
-                //Addup completion stats for this:
-                $metadata_this['steps_total'] += $recursive_stats['steps_total'];
-                $metadata_this['steps_completed'] += $recursive_stats['steps_completed'];
-
-            }
         }
 
 
@@ -2279,11 +1740,11 @@ class X_model extends CI_Model
              * */
 
             //Set default seconds per step:
-            $metadata_this['completion_percentage'] = 0;
+            $metadata_this['fixed_completed_percentage'] = 0;
 
             //Calculate completion rate based on estimated time cost:
-            if($metadata_this['steps_total'] > 0){
-                $metadata_this['completion_percentage'] = intval(ceil( $metadata_this['steps_completed'] / $metadata_this['steps_total'] * 100 ));
+            if($metadata_this['fixed_total'] > 0){
+                $metadata_this['fixed_completed_percentage'] = intval(ceil( $metadata_this['fixed_discovered'] / $metadata_this['fixed_total'] * 100 ));
             }
 
 

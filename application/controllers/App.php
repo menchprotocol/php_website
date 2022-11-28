@@ -82,7 +82,7 @@ class App extends CI_Controller
             if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
                 //Fetch Most Recent Cache:
                 foreach($this->X_model->fetch(array(
-                    'x__domain' => get_domain_setting(0),
+                    'x__domain' => website_setting(0),
                     'x__type' => 14599, //Cache App
                     'x__up' => $app_e__id,
                     'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),

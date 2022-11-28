@@ -141,7 +141,7 @@ foreach($i_query as $i){
             $this->X_model->update($x['x__id'], array(
                 'x__message' => number_format(($x__metadata['mc_gross']/2),2),
             ));
-            update_metadata(6255, $x['x__id'], array(
+            x__metadata_update($x['x__id'], array(
                 'mc_fee' => number_format(($x__metadata['mc_fee']/2),2),
                 'mc_gross' => number_format(($x__metadata['mc_gross']/2),2),
                 'mc_gross_old' => $x__metadata['mc_gross'],

@@ -933,7 +933,7 @@ $(document).ready(function () {
     if ($(".list-coins")[0]){
         //Update COINS every 3 seconds:
         $(function () {
-            setInterval(load_coin_count, js_e___6404[14874]['m__message']);
+            setInterval(load_coin_count, js_e___6404[31003]['m__message']);
         });
     }
 
@@ -2654,7 +2654,7 @@ function e_radio(focus__id, selected_e__id, enable_mulitiselect){
         return false;
     }
 
-    //Updating Font?
+    //Updating Customizable Theme?
     if(js_n___13890.includes(focus__id)){
         current_focus = focus__id;
         $('body').removeClass('custom_ui_'+focus__id+'_');

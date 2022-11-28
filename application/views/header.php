@@ -6,12 +6,9 @@ $second_segment = $this->uri->segment(2);
 $i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13479 = $this->config->item('e___13479');
-$e___14874 = $this->config->item('e___14874'); //COINS
-$superpower_10939 = $member_e && superpower_active(10939, true);
 $current_coin_id = current_coin_id();
-$domain__id = get_domain_setting(0);
+$website_e__id = website_setting(0);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
-$login_url_path = ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' );
 $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
 $logo = ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : '/img/'.$current_coin_id.'.png' );
 $bgVideo = null;
@@ -19,9 +16,12 @@ $bgVideo = null;
 //Generate Body Class String:
 $body_class = 'platform-'.$current_coin_id; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
-    $body_class .= ' custom_ui_'.$e__id.'_'.member_setting($e__id).' ';
+    $sess_var = $this->session->userdata('session_custom_ui_'.$e__id);
+    if(strlen($sess_var)){
+        $body_class .= ' custom_ui_'.$e__id.'_'.$sess_var.' ';
+    }
 }
-if(in_array($domain__id, $this->config->item('n___30984'))){
+if(in_array($website_e__id, $this->config->item('n___30984'))){
     $body_class .= ' home_black_font ';
 }
 
@@ -46,7 +46,7 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
     <?php
 
     //Do we have Google Analytics?
-    $google_analytics_code = get_domain_setting(30033);
+    $google_analytics_code = website_setting(30033);
     if(strlen($google_analytics_code) > 0){
         echo '<script async src="https://www.googletagmanager.com/gtag/js?id='.$google_analytics_code.'"></script>
 <script>
@@ -69,7 +69,7 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
     echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
-    echo ' var domain__id = "' . $domain__id . '"; ';
+    echo ' var domain__id = "' . $website_e__id . '"; ';
 
     //JAVASCRIPT PLATFORM MEMORYwq
     foreach($this->config->item('e___11054') as $x__type => $m){
@@ -218,10 +218,13 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
     }
 
 
-    $domain_background = get_domain_setting(28621);
+    $domain_background = website_setting(28621);
     if(strlen($domain_background)){
 
         $apply_css = 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span';
+
+        //Make sure we have enough padding at the bottom:
+        echo '.bottom_spacer {  padding-bottom:987px !important; } ';
 
         if(substr($domain_background, 0, 1)=='#'){
 
@@ -287,6 +290,8 @@ if(in_array($domain__id, $this->config->item('n___30984'))){
 
         }
     }
+
+
     echo ' </style>';
     ?>
 
@@ -303,7 +308,7 @@ echo '<body class="'.$body_class.'">';
 echo $bgVideo;
 
 //Load live chat?
-$live_chat_page_id = get_domain_setting(12899);
+$live_chat_page_id = website_setting(12899);
 if(strlen($live_chat_page_id)>10){
     ?>
     <!-- Messenger Chat Plugin Code -->
@@ -357,7 +362,7 @@ if(!$basic_header_footer){
                     //Domain Source
                     $domain_cover = get_domain('m__cover');
                     $domain_logo = one_two_explode('"','"', $domain_cover);
-                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.get_domain_setting(0).'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$domain__id.'" style="padding-top: '.( filter_var($domain_logo, FILTER_VALIDATE_URL) ? '3px' : '7px' ).';">'.get_domain('m__title').'</b>'.'</a>';
+                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_e__id.'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$website_e__id.'" style="padding-top: '.( filter_var($domain_logo, FILTER_VALIDATE_URL) ? '3px' : '7px' ).';">'.get_domain('m__title').'</b>'.'</a>';
 
                     echo '</div>';
 
@@ -386,7 +391,7 @@ if(!$basic_header_footer){
                         }
 
                         $hosted_domains = array_intersect($this->config->item('n___14870'), $m['m__profile']);
-                        if(count($hosted_domains) && !in_array(get_domain_setting(0), $hosted_domains)){
+                        if(count($hosted_domains) && !in_array($website_e__id, $hosted_domains)){
                             continue;
                         }
 
@@ -412,12 +417,12 @@ if(!$basic_header_footer){
                         } elseif(in_array($x__type, $this->config->item('n___6287'))){
 
                             //APP
-                            $href = 'href="/-'.$x__type.( $x__type==4269 ? $login_url_path : '' ).'"';
+                            $href = 'href="/-'.$x__type.( $x__type==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
 
                         } elseif(in_array($x__type, $this->config->item('n___14925'))){
 
                             //Domain Setting
-                            $setting_value =  get_domain_setting($x__type);
+                            $setting_value =  website_setting($x__type);
                             if($setting_value){
                                 if($x__type==28615){
                                     //Phone

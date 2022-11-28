@@ -1,7 +1,6 @@
 <?php
 
 //Calculates the weekly coins issued:
-$e___14874 = $this->config->item('e___14874'); //COINS
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $last_x_days = 7;
 
@@ -12,7 +11,7 @@ $x__time_start = date("Y-m-d H:i:s", $x__time_start_timestamp);
 $x__time_end = date("Y-m-d H:i:s", $x__time_end_timestamp);
 
 //Email Body
-$plain_message = 'In the last '.$last_x_days.' day'.view__s($last_x_days).' '.$e___11035[14874]['m__title'].' grew:'."\n";
+$plain_message = 'Here is what happened in the last '.$last_x_days.' day'.view__s($last_x_days).':'."\n";
 
 foreach($this->config->item('e___14874') as $x__type => $m) {
 

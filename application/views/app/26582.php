@@ -86,7 +86,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     $e___6287 = $this->config->item('e___6287'); //APP
     $e___6186 = $this->config->item('e___6186'); //Transaction Status
 
-    $twilio_setup = get_domain_setting(30859) && get_domain_setting(30860) && get_domain_setting(27673);
+    $twilio_setup = website_setting(30859) && website_setting(30860) && website_setting(27673);
 
 
     echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[13790]['m__cover'].' '.$e___6287[13790]['m__title'].'</a> | '.( $twilio_setup ? '<span><i class="fas fa-check-circle"></i> Twilio Activated</span>' : '<span style="color:#FF0000;"><i class="fas fa-times-circle"></i> Twilio SMS is Pending Setup</span>' ).'</div>';
@@ -164,7 +164,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //Active
         'x__type' => 26582, //Instant Messages
-        'x__domain' => get_domain_setting(0),
+        'x__domain' => website_setting(0),
     ), array('x__source')) as $fetched_e){
 
         $displayed = true;

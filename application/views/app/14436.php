@@ -1,7 +1,7 @@
 <?php
 
-$client_id = get_domain_setting(14881);
-$client_secret = get_domain_setting(14882);
+$client_id = website_setting(14881);
+$client_secret = website_setting(14882);
 $server_name = get_server('SERVER_NAME');
 
 use Auth0\SDK\Auth0;

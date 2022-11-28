@@ -23,14 +23,6 @@ if(!$obj || $obj==12273){
         $stats['i_updated'] += i__spectrum_calculator($in);
     }
 
-    //Now addup weights starting from key Idea:
-    foreach($this->config->item('e___14870') as $e__id => $m){
-        if($e__id!=14923){
-            $domain_sett = $this->config->item('e___'.$e__id);
-            $stats['i_total_weights_'.$e__id] = $this->I_model->weight($domain_sett[14002]['m__message']);
-        }
-    }
-
 }
 
 

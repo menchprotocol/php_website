@@ -34,9 +34,6 @@ $is = $this->I_model->fetch(array(
 ));
 foreach($is as $in){
 
-    //Prep metadata:
-    $i__metadata = ( strlen($in['i__metadata']) > 0 ? unserialize($in['i__metadata']) : array());
-
     //Add Idea node:
     $this->db->insert('gephi_nodes', array(
         'id' => $id_prefix[12273].$in['i__id'],

@@ -52,8 +52,6 @@ $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
 )) : array() );
 $in_my_discoveries = ( $top_i__id && $top_i__id==$i_focus['i__id'] );
 $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
-$i_type_meet_requirement = in_array($i_focus['i__type'], $this->config->item('n___7309'));
-$i_stats = i_stats($i_focus['i__metadata']);
 $can_skip = count($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
@@ -76,7 +74,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'x__right' => $i_focus['i__id'],
     'x__up > 0' => null,
-    'x__up !=' => get_domain_setting(0),
+    'x__up !=' => website_setting(0),
 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
 
     //See if this member also follows this featured source?
@@ -157,7 +155,7 @@ if($is_payment){
             //Break down amount & currency
             $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
             $unit_price = number_format($currency_parts[1], 2);
-            $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(get_domain_setting(30590, $x__source)) + doubleval(get_domain_setting(27017, $x__source)) + doubleval(get_domain_setting(30612, $x__source)))/100 ), 2);
+            $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__source)) + doubleval(website_setting(27017, $x__source)) + doubleval(website_setting(30612, $x__source)))/100 ), 2);
             $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view_memory(6404,29651) );
             $spots_remaining = i_spots_remaining($i_focus['i__id']);
             $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
@@ -245,76 +243,8 @@ if($top_i__id){
     $is_this = $this->I_model->fetch(array(
         'i__id' => $top_i__id,
     ));
-    $i_completion_rate = $this->X_model->completion_progress($x__source, $is_this[0]);
-    $top_completed = $i_completion_rate['completion_percentage'] >= 100;
-
-
-
-    if($i_type_meet_requirement){
-
-        //Reverse check answers to see if they have previously unlocked a path:
-        $unlocked_connections = $this->X_model->fetch(array(
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
-            'x__right' => $i_focus['i__id'],
-            'x__source' => $x__source,
-        ), array('x__left'), 1);
-
-        if(count($unlocked_connections) > 0){
-
-            //They previously have unlocked a path here!
-
-            //Determine DISCOVERY COIN type based on it's connection type's parents that will hold the appropriate read coin.
-            $x_completion_type_id = 0;
-            foreach($this->config->item('e___12327') /* DISCOVERY UNLOCKS */ as $e__id => $m2){
-                if(in_array($unlocked_connections[0]['x__type'], $m2['m__profile'])){
-                    $x_completion_type_id = $e__id;
-                    break;
-                }
-            }
-
-            //Could we determine the coin type?
-            if($x_completion_type_id > 0){
-
-                //Yes, Issue coin:
-                array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i_focus, array(
-                    'x__type' => $x_completion_type_id,
-                    'x__source' => $x__source,
-                )));
-
-            } else {
-
-                //Oooops, we could not find it, report bug:
-                $this->X_model->create(array(
-                    'x__type' => 4246, //Platform Bug Reports
-                    'x__source' => $x__source,
-                    'x__message' => 'x_layout() found idea connector ['.$unlocked_connections[0]['x__type'].'] without a valid unlock method @12327',
-                    'x__left' => $i_focus['i__id'],
-                    'x__reference' => $unlocked_connections[0]['x__id'],
-                ));
-
-            }
-
-        } else {
-
-            //Try to find paths to unlock:
-            $unlock_paths = $this->I_model->unlock_paths($i_focus);
-
-            //Set completion method:
-            if(!count($unlock_paths)){
-
-                $this->X_model->create(array(
-                    'x__type' => 4246, //Platform Bug Reports
-                    'x__source' => $x__source,
-                    'x__left' => $i_focus['i__id'],
-                    'x__message' => 'unlock_paths() Failed to find a path',
-                ));
-
-            }
-        }
-    }
-
+    $tree_progress = $this->X_model->tree_progress($x__source, $is_this[0]);
+    $top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
     $go_next_url = ( $top_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i_focus['i__id'];
 
 } else {
@@ -393,22 +323,7 @@ if(strlen($relevant_sources)){
 
 if($top_i__id) {
     //LOCKED
-    if ($i_type_meet_requirement) {
-
-        //Requirement lock
-        if (!count($x_completes) && !count($unlocked_connections) && count($unlock_paths)) {
-
-            //List Unlock paths:
-            echo view_i_list(13979, $top_i__id, $i_focus, $unlock_paths, $member_e);
-
-        }
-
-        //List Children if any:
-        echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
-
-    } elseif ($is_or_idea) {
-
-        //SELECT ANSWER
+    if ($is_or_idea) {
 
         //Has no children:
         if (!count($is_next)) {
@@ -577,7 +492,7 @@ if($top_i__id) {
 
                 echo '<tr>';
                 echo '<td class="table-btn first_btn" style="text-align: right;">Fee:&nbsp;&nbsp;</td>';
-                echo '<td class="table-btn first_btn" title="'.(doubleval(get_domain_setting(30590, $x__source)) .' / '. doubleval(get_domain_setting(27017, $x__source)) .' / '. doubleval(get_domain_setting(30612, $x__source))).'">'.$unit_fee.' '.$currency_parts[0].'</td>';
+                echo '<td class="table-btn first_btn" title="'.(doubleval(website_setting(30590, $x__source)) .' / '. doubleval(website_setting(27017, $x__source)) .' / '. doubleval(website_setting(30612, $x__source))).'">'.$unit_fee.' '.$currency_parts[0].'</td>';
                 echo '</tr>';
             }
 
@@ -794,7 +709,7 @@ if(!$top_i__id){
 
             $control_btn = null;
 
-            $paypal_email =  get_domain_setting(30882);
+            $paypal_email =  website_setting(30882);
             if($is_payment && !count($x_completes) && filter_var($paypal_email, FILTER_VALIDATE_EMAIL)){
 
                 $control_btn = '';
@@ -864,21 +779,6 @@ if(!$top_i__id){
 //IDAS
 if($top_i__id) {
 
-    //PREVIOUSLY UNLOCKED:
-    $unlocked_x = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        'x__type' => 6140, //DISCOVERY UNLOCK LINK
-        'x__source' => $x__source,
-        'x__left' => $i_focus['i__id'],
-    ), array('x__right'), 0);
-
-    //Did we have any steps unlocked?
-    if (count($unlocked_x) > 0) {
-        echo view_i_list(13978, $top_i__id, $i_focus, $unlocked_x, $member_e);
-    }
-
-
     /*
      *
      * IDEA TYPE INPUT CONTROLLER
@@ -903,7 +803,7 @@ if($top_i__id) {
 
 
 if($top_i__id > 0 && !$top_completed){
-    echo '<p style="padding:10px;">'.$i_completion_rate['completion_percentage'].'% Completed</p>';
+    echo '<p style="padding:10px;">'.$tree_progress['fixed_completed_percentage'].'% Completed</p>';
 }
 
 
