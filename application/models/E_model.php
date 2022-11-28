@@ -177,8 +177,7 @@ class E_model extends CI_Model
                 'x__down' => $primary_list['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-            )))){
+            ), array(), 0))){
                 unset($all_results[$key]);
             }
         }
