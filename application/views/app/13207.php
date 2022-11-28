@@ -22,10 +22,10 @@ foreach($this->E_model->scissor_e(website_setting(0), 13207) as $e_item) {
             }
             $ui .= '</div>';
 
-            $community_pills .= view_pill($e_item['e__id'], $total_count, array(
-                'm__cover' => view_cover(12274,$e_item['e__cover'], true),
-                'm__title' => $e_item['e__title'],
-                'm__message' => $e_item['x__message'],
+            $community_pills .= view_pill($x['e__id'], $total_count, array(
+                'm__cover' => view_cover(12274,$x['e__cover'], true),
+                'm__title' => $x['e__title'],
+                'm__message' => $x['x__message'],
             ), $ui, $is_open);
 
             $is_open = false;
