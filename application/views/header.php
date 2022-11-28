@@ -16,10 +16,7 @@ $bgVideo = null;
 //Generate Body Class String:
 $body_class = 'platform-'.$current_coin_id; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
-    $sess_var = $this->session->userdata('session_custom_ui_'.$e__id);
-    if(strlen($sess_var)){
-        $body_class .= ' custom_ui_'.$e__id.'_'.$sess_var.' ';
-    }
+    $body_class .= ' custom_ui_'.$e__id.'_'.$this->session->userdata('session_custom_ui_'.$e__id).' ';
 }
 if(in_array($website_e__id, $this->config->item('n___30984'))){
     $body_class .= ' home_black_font ';
