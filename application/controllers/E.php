@@ -142,7 +142,6 @@ class E extends CI_Controller
         //Validate source ID and fetch data:
         $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
-            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
         if (count($es) < 1) {
             return redirect_message(home_url());
