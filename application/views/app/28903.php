@@ -40,7 +40,7 @@ if(!isset($_GET['i__id'])){
             echo '<h3 style="margin:13px 0 21px; padding-left:5px; font-size:1.15em;"><a href="javascript:void(0);" onclick="$(\'.i_msg_'.$i['i__id'].'\').toggleClass(\'hidden\');" class="inner-content doblock css__title">' . $i['i__title'] . '</a></h3>';
 
             //MESSAGES
-            echo '<div class="i_msg_'.$i['i__id'].' hidden" style="padding:5px 5px 13px 21px;">';
+            echo '<div class="i_msg_'.$i['i__id'].' hidden" style="padding:5px;">';
             foreach ($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 4231, //IDEA NOTES Messages
