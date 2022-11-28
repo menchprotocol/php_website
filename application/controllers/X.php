@@ -661,15 +661,18 @@ class X extends CI_Controller
                 return redirect_message('/'.$x['x__right'].'/'.$i__id);
             }
 
-            //Try top level discoveries:
-            foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__source' => $member_e['e__id'],
-                'x__left IN (' . join(',', $this->I_model->recursive_parent_ids($i__id)) . ')' => null,
-                'x__right > 0' => null,
-            )) as $x){
-                return redirect_message('/'.$x['x__right'].'/'.$i__id);
+            $recursive_is = $this->I_model->recursive_parent_ids($i__id);
+            if(count($recursive_is)){
+                //Try top level discoveries:
+                foreach($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'x__source' => $member_e['e__id'],
+                    'x__left IN (' . join(',', $recursive_is) . ')' => null,
+                    'x__right > 0' => null,
+                )) as $x){
+                    return redirect_message('/'.$x['x__right'].'/'.$i__id);
+                }
             }
 
         }
