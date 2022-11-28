@@ -14,12 +14,13 @@ $this->X_model->create(array(
 //Always Load Followings at top
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $following_count = view_coins_e(11030, $e['e__id'], 0, false);
+echo '<div class="top_headline hidden">';
 echo view_body_e(11030, $following_count, $e['e__id']);
-
+echo '</div>';
 
 
 //Focus Source:
-echo '<div class="row justify-content">';
+echo '<div class="main_item row justify-content">';
 echo view_e(4251, $e, null, source_of_e($e['e__id']));
 echo '</div>';
 
@@ -85,6 +86,13 @@ foreach($item_counts as $x__type => $counter) {
         };
 
     $(document).ready(function () {
+
+
+        $('.top_headline').removeClass('hidden');
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(".main_item").offset().top
+        }, 5);
+
 
         //Source Loader:
         load_tab(11030);
