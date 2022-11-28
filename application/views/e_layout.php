@@ -87,9 +87,9 @@ foreach($item_counts as $x__type => $counter) {
 
     $(document).ready(function () {
 
-        var $container = $("html,body");
-        var $scrollTo = $('.main_item');
-        $container.animate({scrollTop: $scrollTo.offset().top - $container.offset().top + $container.scrollTop(), scrollLeft: 0},34);
+        $('html, body').animate({
+            scrollTop: $('.main_item').offset().top
+        }, 'fast');
 
         //Source Loader:
         load_tab(11030);
