@@ -29,7 +29,7 @@ body {
     padding:0;
 }
 .padded {
-    margin: 0 41px 25px;
+    margin: 0 40px 25px;
 }
 
 .edit-off .padded, .edit-on .padded {
@@ -215,7 +215,7 @@ li a {
 
 .add-input{
     margin-bottom: 5px;
-    padding: 5px 0 5px 41px !important;
+    padding: 5px 0 5px 40px !important;
     width: 100%;
 }
 
@@ -225,7 +225,7 @@ li a {
 }
 
 .form-control-thick{
-    padding:7px 10px 7px 41px;
+    padding:7px 10px 7px 40px;
 }
 
 .btn {
@@ -323,7 +323,7 @@ img.no-frame {
     padding: 0;
 }
 .accordion .card-body{
-    padding: 13px 21px 21px 41px;
+    padding: 13px 21px 21px 40px;
 }
 .card-body .padded, .card-body .list-group {
     margin: 0 0 13px;
@@ -494,7 +494,7 @@ img.no-frame {
 
 .nav-tabs {
     margin:0 0 13px 0;
-    padding-left: 41px !important;
+    padding-left: 40px !important;
     padding-top: 0;
 }
 
@@ -514,12 +514,12 @@ img.no-frame {
 }
 
 .x-info{
-    padding:21px 0 21px 41px;
+    padding:21px 0 21px 40px;
     margin:0;
     line-height: 150%;
 }
 .message_content{
-    margin-left: 41px;
+    margin-left: 40px;
 }
 .i-footer .message_content{
     margin-left:0;
@@ -577,7 +577,7 @@ label:focus,
 
 .right-adj {
     margin-top:-22px;
-    margin-right:41px !important;
+    margin-right:40px !important;
 }
 
 .nav-controller {
@@ -966,7 +966,7 @@ textarea.note-textarea{
 }
 
 .note-textarea.edit-on {
-    margin:0 0 0 41px;
+    margin:0 0 0 40px;
     padding:5px 0;
     line-height: 150% !important;
 }
@@ -1060,17 +1060,17 @@ a.headline {
     cursor: grab;
 }
 .space-left{
-    padding-left: 41px !important;
+    padding-left: 40px !important;
 }
 .space-all{
-    padding:13px 41px !important;
+    padding:13px 40px !important;
 }
 .space-sides{
-    padding:0 41px !important;
+    padding:0 40px !important;
 }
 .space-content{
-    padding-left:41px;
-    padding-right:41px;
+    padding-left:40px;
+    padding-right:40px;
     display: block;
     line-height: 150%;
 }
@@ -1083,7 +1083,7 @@ a.headline {
 .title-block{
     display: block;
     padding:0 !important;
-    margin:-20px 5px 0 41px !important;
+    margin:-20px 5px 0 40px !important;
 }
 .title-no-right {
     padding-right:5px !important;
@@ -1112,7 +1112,7 @@ a.headline {
     margin-bottom: 21px;
 }
 .left-margin{
-    margin-left: 41px;
+    margin-left: 40px;
     display: inline-block;
 }
 .left-half-margin{
@@ -1283,7 +1283,7 @@ a.headline {
 }
 
 .url_truncate {
-    max-width: calc(100% - 41px);
+    max-width: calc(100% - 40px);
     overflow: hidden;
     display: inline-block;
 }
@@ -1571,7 +1571,7 @@ i, .btn .show-max {
 .block{ display: block !important; width: 100%; }
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
-.icon-block { width:41px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
+.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
 .icon-block-xxs{ width:24px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
 .icon-block-xxs i{ font-size: 1.1em !important; }
 .icon-block-xs{ width:33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 110% !important; }
@@ -1765,9 +1765,9 @@ i, .btn .show-max {
     width:         calc(100% - 82px);
 }
 .i-info, .cover-title, .width-icon-block {
-    width: -webkit-calc(100% - 41px) !important;
-    width:    -moz-calc(100% - 41px) !important;
-    width:         calc(100% - 41px) !important;
+    width: -webkit-calc(100% - 40px) !important;
+    width:    -moz-calc(100% - 40px) !important;
+    width:         calc(100% - 40px) !important;
 }
 .block-one {
     padding-top: 5px;
@@ -2364,7 +2364,7 @@ i, .btn .show-max {
 
 .first_btn{
     padding-right: 13px !important;
-    width: 41px !important;
+    width: 40px !important;
 }
 
 .btn.btn-default {
@@ -2604,7 +2604,7 @@ h4.css__title{
 
     .superpower-message{
         display: block;
-        padding:5px 41px;
+        padding:5px 40px;
     }
 
     h1{
@@ -2619,7 +2619,7 @@ h4.css__title{
         margin: 0 5px;
     }
     .icon-tweak{ padding-left: 8px; }
-    .name-block{ margin-left: 41px; }
+    .name-block{ margin-left: 40px; }
 
 
     .title-block{
@@ -2644,7 +2644,7 @@ h4.css__title{
     }
 
     .icon-block-lg img {
-        width: 41px !important;
+        width: 40px !important;
         margin: -13px 0 -8px -2px !important;
         margin: 0 !important;
     }
@@ -2689,7 +2689,7 @@ h4.css__title{
         margin-top: -24px;
         font-size: 0.18em !important;
     }
-    .col2nd { padding-left: 41px !important; padding-top: 8px; }
+    .col2nd { padding-left: 40px !important; padding-top: 8px; }
     h1{
         font-size: 2.7em;
     }
@@ -3402,7 +3402,7 @@ h4.css__title{
 }
 .editor_preview{
     padding:5px 0 !important;
-    margin: 0 41px;
+    margin: 0 40px;
     border-radius: 0 !important;
 }
 
@@ -3441,7 +3441,7 @@ h4.css__title{
 
 
 .add_notes_form{
-    margin-left: 41px;
+    margin-left: 40px;
 }
 .note_pad{
     border-bottom-left-radius: 10px !important;

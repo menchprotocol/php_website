@@ -353,7 +353,7 @@ if(superpower_unlocked()) {
 
             <div class="text-center platform-large"><?= get_domain('m__cover') ?></div>
 
-            <div class="login-content" style="margin-top:41px;">
+            <div class="login-content" style="margin-top:40px;">
 
                 <!-- Step 1: Enter Email -->
                 <div id="step2" class="signup-steps hidden">

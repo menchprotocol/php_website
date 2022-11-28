@@ -110,7 +110,7 @@ foreach($this->X_model->fetch(array(
     $relevant_sources .= '<span>'.$x['e__title'] . ( strlen($messages) ? ':' : '' ) . '</span>';
     $relevant_sources .= $messages;
 
-    $relevant_sources .= '<div style="padding-top: 10px; padding-left: 41px; font-size:1.2em; font-weight: bold; line-height:120%;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;">'.$x['x__message'].'</a>' : nl2br($x['x__message']) ) . '</div>';
+    $relevant_sources .= '<div style="padding-top: 10px; padding-left: 40px; font-size:1.2em; font-weight: bold; line-height:120%;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;">'.$x['x__message'].'</a>' : nl2br($x['x__message']) ) . '</div>';
     $relevant_sources .= '</div>';
 
 }
