@@ -1685,6 +1685,9 @@ class X_model extends CI_Model
         }
 
         $recursive_child_ids = $this->I_model->recursive_child_ids($i['i__id']);
+        if(!count($recursive_child_ids)){
+            return false;
+        }
 
         //Count completed:
         $common_completed = $this->X_model->fetch(array(
