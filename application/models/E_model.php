@@ -203,7 +203,6 @@ class E_model extends CI_Model
                 'x__right' => $primary_list['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             )))){
                 unset($all_results[$key]);
             }
