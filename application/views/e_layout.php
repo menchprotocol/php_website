@@ -89,9 +89,7 @@ foreach($item_counts as $x__type => $counter) {
 
 
         $('.top_headline').removeClass('hidden');
-        $([document.documentElement, document.body]).animate({
-            scrollTop: $(".main_item").offset().top
-        }, 5);
+        scrollTo = $('.main_item');
 
 
         //Source Loader:
