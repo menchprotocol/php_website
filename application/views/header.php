@@ -40,9 +40,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         $body_class .= $this_class;
     }
 }
-if(in_array($website_id, $this->config->item('n___30984'))){
-    $body_class .= ' home_black_font ';
-}
 
 
 ?><!doctype html>

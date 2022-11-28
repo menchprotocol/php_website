@@ -4,7 +4,9 @@
 $website_id = website_setting(0);
 $expanded_space = in_array($website_id , $this->config->item('n___31025'));
 $double_contact = in_array($website_id , $this->config->item('n___31029'));
-
+if(in_array($website_id, $this->config->item('n___30984'))){
+    echo ' <script> $(\'body\').addClass(\'home_black_font\'); </script> ';
+}
 //Fetch Primary Idea & Secondary Idea List:
 
 $primary_i = array();
@@ -141,9 +143,6 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
     }
 
 }
-
-
-
 
 
 
