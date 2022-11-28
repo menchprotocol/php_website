@@ -322,7 +322,7 @@ if(strlen($relevant_sources)){
 
 
 if($top_i__id) {
-    //LOCKED
+
     if ($is_or_idea) {
 
         //Has no children:
@@ -423,14 +423,6 @@ if($top_i__id) {
             echo '</div>';
 
         }
-
-    } elseif ($i_focus['i__type']==30350) {
-
-        //Set Date
-
-    } elseif ($i_focus['i__type']==30874) {
-
-        //Event
 
     } elseif ($is_payment) {
 
@@ -660,6 +652,14 @@ if($top_i__id) {
         echo '</form>';
         echo '</div>';
 
+    } elseif ($i_focus['i__type']==30350) {
+
+        //Set Date
+
+    } elseif ($i_focus['i__type']==30874) {
+
+        //Event
+
     } else {
 
         //echo '<div class="msg alert alert-danger" role="alert">Error: Missing core variables.</div>';
@@ -851,7 +851,6 @@ echo '</div>';
             }
         }
 
-        i_note_activate();
         set_autosize($('#x_reply'));
 
         //Watchout for file uplods:

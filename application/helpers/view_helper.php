@@ -213,99 +213,6 @@ function view_i_title($i){
 }
 
 
-function view_i_note($x__type, $has_discovery_mode, $x, $note_e = false)
-{
-
-    /*
-     *
-     * A wrapper function that helps manage messages
-     * by giving the message additional platform functions
-     * such as editing and changing message type.
-     *
-     * */
-
-
-    $CI =& get_instance();
-    $member_e = superpower_unlocked();
-    $e___6186 = $CI->config->item('e___6186'); //Transaction Status
-    $e___11035 = $CI->config->item('e___11035');
-    $supports_emoji = (in_array($x__type, $CI->config->item('n___14990')));
-    $referenced_ideas = (in_array($x__type, $CI->config->item('n___13550')));
-    $editable_discovery = (in_array($x__type, $CI->config->item('n___14043')));
-
-
-    //Build the HTML UI:
-    $ui = '';
-    $ui .= '<div class="list-group-item is-msg note_sortable msg_e_type_' . $x['x__type'] . '" id="ul-nav-' . $x['x__id'] . '" x__id="' . $x['x__id'] . '">'; //title="'.$x['e__title'].' Posted On '.substr($x['x__time'], 0, 19).'" data-toggle="tooltip" data-placement="top"
-    $ui .= '<div style="overflow:visible !important;">';
-
-    if($editable_discovery && isset($x['e__id'])){
-        //Show member:
-        $ui .= view_e_line($x);
-    }
-
-    //Type & Delivery Method:
-    $ui .= '<div class="text_message edit-off" id="msgbody_' . $x['x__id'] . '">';
-    $ui .= $CI->X_model->message_view($x['x__message'], $has_discovery_mode, $member_e, $x['x__right']);
-    $ui .= '</div>';
-
-    //Editing menu:
-    if($note_e){
-
-        $ui .= '<div class="note-editor edit-off"><span class="">'; //show-on-hover
-
-            //SORT NOTE
-            if(in_array($x['x__type'], $CI->config->item('n___4603'))){
-                $ui .= '<span title="'.$e___11035[13909]['m__title'].'" class="i_note_sorting">'.$e___11035[13909]['m__cover'].'</span>';
-            }
-
-            //MODIFY NOTE
-            $ui .= '<span title="'.$e___11035[13574]['m__title'].'"><a href="javascript:void(0);" class="load_i_note_editor '.( $supports_emoji ? 'load_emoji_editor' : '' ).'" x__id="' . $x['x__id'] . '" onclick="load_i_note_editor(' . $x['x__id'] . ');">'.$e___11035[13574]['m__cover'].'</a></span>';
-
-            //REMOVE NOTE
-            $ui .= '<span title="'.$e___11035[13579]['m__title'].'"><a href="javascript:void(0);" onclick="i_remove_note(' . $x['x__id'] . ', '.$x['x__type'].')">'.$e___11035[13579]['m__cover'].'</a></span>';
-
-        $ui .= '</span></div>';
-
-
-        //Text editing:
-        $ui .= '<textarea onkeyup="count_13574(' . $x['x__id'] . ')" name="x__message'.$x['x__id'].'" id="message_body_' . $x['x__id'] . '" class="edit-on hidden msg note-textarea edit-note algolia_search" x__id="'.$x['x__id'].'" placeholder="'.stripslashes($x['x__message']).'">' . $x['x__message'] . '</textarea>';
-
-
-        //Update result & Show potential errors
-        $ui .= '<div class="edit-updates hideIfEmpty"></div>';
-
-
-        //Editing menu:
-        $ui .= '<table class="table table-condensed edit-on hidden" style="margin:0 41px 0;"><tr>';
-
-
-        //SAVE
-        $ui .= '<td class="table-btn"><a class="btn btn-default" href="javascript:i_note_update_text(' . $x['x__id'] . ',' . $x['x__type'] . ');" title="'.$e___11035[14039]['m__title'].'">'.$e___11035[14039]['m__cover'].'</a></td>';
-
-        //CANCEL
-        $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact btn-grey" title="'.$e___11035[13502]['m__title'].'" href="javascript:cancel_13574(' . $x['x__id'] . ');">'.$e___11035[13502]['m__cover'].'</a></td>';
-
-        if($supports_emoji){
-            //EMOJI
-            $ui .= '<td class="table-btn emoji_edit hidden first_btn"><span class="btn btn-compact btn-grey" id="emoji_pick_id'.$x['x__id'].'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span></td>';
-        }
-
-
-        //TEXT COUNTER
-        $ui .= '<td style="padding:10px 0 0 0;"><span id="NoteCounter' . $x['x__id'] . '" class="hidden some-text"><span id="charEditingNum' . $x['x__id'] . '">0</span>/' . view_memory(6404,4485) . ' CHARACTERS</span></td>';
-
-        $ui .= '</tr></table>';
-
-    }
-
-    $ui .= '</div>';
-    $ui .= '</div>';
-
-    return $ui;
-}
-
-
 function view_cover($coin__type, $cover_code, $noicon_default = null, $icon_prefix = '')
 {
 
@@ -647,7 +554,6 @@ function view_body_e($x__type, $counter, $e__id){
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $superpower_10939 = superpower_active(10939, true);
-    $source_is_e = $e__id==$member_e['e__id'];
     $source_of_e = source_of_e($e__id);
     $list_results = view_coins_e($x__type, $e__id, 1);
     $focus_e = ($e__id == $member_e['e__id'] ? $member_e : false);
@@ -683,10 +589,10 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '</div>';
 
-        $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load('.$x__type.')}); </script>' : '<style> #list-in-'.$x__type.' .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
+        //TODO Enable sorting for Watching Ideas? $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load('.$x__type.')}); </script>' : '<style> #list-in-'.$x__type.' .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
-        if($superpower_10939 && !$source_is_e){
+        if($superpower_10939){
             $ui .= '<div class="new-list-'.$x__type.' list-group"><div class="list-group-item list-adder">
                 <div class="input-group border">
                     <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
@@ -699,13 +605,9 @@ function view_body_e($x__type, $counter, $e__id){
             $ui .= '<script> $(document).ready(function () { i_load_search('.$x__type.'); }); </script>';
         }
 
-    } elseif($x__type==12274){
+    } elseif($x__type==12274 || $x__type==11029 || $x__type==11030){
 
-        $ui .= view_body_e(11030, $counter, $e__id);
-        $ui .= view_body_e(11029, $counter, $e__id);
-
-    } elseif($x__type==11029 || $x__type==11030){
-
+        $x__type = 11029; //Sources Imply Followers
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
 
         foreach($list_results as $e) {
@@ -737,33 +639,6 @@ function view_body_e($x__type, $counter, $e__id){
 
         }
 
-    } elseif($x__type==10573){
-
-        //Need 2 or more to sort...
-        $ui .= ( count($list_results) >= 2 ? '<script> $(document).ready(function () {x_sort_load(10573)}); </script>' : '<style> #list-in-10573 .x_sort {display:none !important;} </style>' );
-
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-10573">';
-        foreach($list_results as $i){
-            $ui .= view_i(10573, 0, null, $i, $focus_e);
-        }
-        $ui .= '</div>';
-
-
-        //Add Idea:
-        if($superpower_10939 && $source_is_e){
-            //Give Option to Add New Idea:
-            $ui .= '<div class="new-list-10573 list-group"><div class="list-group-item list-adder">
-                <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-10573 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
-                    <input type="text"
-                           class="form-control form-control-thick algolia_search dotransparent add-input"
-                           maxlength="' . view_memory(6404,4736) . '"
-                           placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content"></div></div></div>';
-
-            $ui .= '<script> $(document).ready(function () { i_load_search(10573); }); </script>';
-
-        }
     } elseif(in_array($x__type, $CI->config->item('n___13550'))){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
@@ -812,8 +687,8 @@ function view_body_i($x__type, $counter, $i__id){
     if(in_array($x__type, $CI->config->item('n___13550'))){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
-        foreach($list_results as $i_note) {
-            $ui .= view_e($x__type, $i_note,  null, $e_of_i);
+        foreach($list_results as $this_i) {
+            $ui .= view_e($x__type, $this_i,  null, $e_of_i);
         }
         $ui .= '</div>';
 
@@ -847,7 +722,7 @@ function view_body_i($x__type, $counter, $i__id){
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
         }
 
-    } elseif($x__type==13542){
+    } elseif($x__type==12273 || $x__type==13542){
 
         //IDEAS
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
@@ -878,6 +753,7 @@ function view_body_i($x__type, $counter, $i__id){
 
     } elseif($x__type==12274){
 
+        //SOURCES
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">'; //list-in-4983
         foreach($list_results as $e_ref){
             $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
@@ -891,11 +767,6 @@ function view_body_i($x__type, $counter, $i__id){
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
-
-    } elseif(in_array($x__type, $CI->config->item('n___13550'))){
-
-        //IDEA NOTES
-        $ui .= view_i_note_list($x__type, false, $is[0], $list_results, $e_of_i);
 
     }
 
@@ -1358,79 +1229,6 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
 
 }
 
-
-function view_i_note_list($x__type, $has_discovery_mode, $i, $i_notes, $e_of_i){
-
-    $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035');
-    $supports_emoji = (in_array($x__type, $CI->config->item('n___14990')));
-    $handles_uploads = (in_array($x__type, $CI->config->item('n___12359')));
-    $member_e = superpower_unlocked();
-    $ui = '';
-
-
-        //Show no-Message notifications for each message type:
-        $ui .= '<div id="i_notes_list_'.$x__type.'" class="list-group">';
-
-        //List current notes:
-        foreach($i_notes as $i_note) {
-            $ui .= view_i_note($x__type, $has_discovery_mode, $i_note, ($i_note['x__source']==$member_e['e__id'] || $e_of_i));
-        }
-
-        //ADD NEW:
-        if(!in_array($x__type, $CI->config->item('n___12677')) && $e_of_i){
-
-            $ui .= '<div class="no-padding add_notes_' . $x__type .'">';
-            $ui .= '<div class="add_notes_form">';
-            $ui .= '<form class="box box' . $x__type . '" method="post" enctype="multipart/form-data" class="'.superpower_active(10939).'">';
-
-            $ui .= '<textarea onkeyup="i_note_count_new('.$x__type.')" class="form-control msg note-textarea regular_editor dotransparent algolia_search new-note '.( $supports_emoji ? 'emoji-input' : '' ).' input_note_'.$x__type.'" x__type="' . $x__type . '" style="margin-top: 10px;" placeholder="Write..."></textarea>';
-
-            //Response result:
-            $ui .= '<div class="note_error_'.$x__type.' hideIfEmpty zq6255 msg alert alert-danger" style="margin:8px 0;"></div>';
-
-
-            //CONTROLLER
-            $ui .= '<table class="table table-condensed"><tr>';
-
-            if($handles_uploads){
-
-                //UPLOAD
-                $ui .= '<td class="table-btn first_btn">';
-                $ui .= '<label class="hidden"></label>'; //To catch & store unwanted uploaded file name
-                $ui .= '<label class="btn  btn-compact file_label_'.$x__type.'" for="fileIdeaType'.$x__type.'" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
-                $ui .= '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType'.$x__type.'" />';
-                $ui .= '</td>';
-
-                //GIF
-                $ui .= '<td class="table-btn first_btn"><a class="btn btn-compact " href="javascript:void(0);" onclick="images_modal(' . $x__type . ')" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a></td>';
-
-            }
-
-            if($supports_emoji){
-                //EMOJI
-                $ui .= '<td class="table-btn first_btn"><span class="btn btn-compact " id="emoji_pick_type'.$x__type.'" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span></td>';
-            }
-
-            //Add
-            $ui .= '<td class="table-btn first_btn"><a href="javascript:i_note_add_text('.$x__type.');" class="btn btn-default save_notes_'.$x__type.'" style="width:104px;" data-toggle="tooltip" data-placement="bottom" title="Shortcut: Ctrl + Enter">'.$e___11035[14421]['m__cover'].' '.$e___11035[14421]['m__title'].'</a></td>';
-
-
-            //File counter:
-            $ui .= '<td style="padding:10px 0 0 0;"><span id="ideaNoteNewCount' . $x__type . '" class="hidden some-text"><span id="charNum' . $x__type . '">0</span>/' . view_memory(6404,4485).' CHARACTERS</span></td>';
-            $ui .= '</tr></table>';
-            $ui .= '</form>';
-            $ui .= '</div>';
-            $ui .= '</div>';
-        }
-
-
-        $ui .= '</div>';
-
-
-    return $ui;
-
-}
 
 function view_shuffle_message($e__id){
     $CI =& get_instance();

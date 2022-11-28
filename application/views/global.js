@@ -450,7 +450,7 @@ function toggle_pills(x__type){
 
             //Nothing loaded, we need to load:
             if (current_type==12273){
-                $.post("/i/i_view_body_i", {
+                $.post("/i/view_body_i", {
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('item-counter'),
                     i__id:current_id()
@@ -459,7 +459,7 @@ function toggle_pills(x__type){
                     load_tab(x__type);
                 });
             } else if (current_type==12274){
-                $.post("/e/e_view_body_e", {
+                $.post("/e/view_body_e", {
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('item-counter'),
                     e__id:current_id()
@@ -1491,7 +1491,6 @@ function load_tab(x__type){
     initiate_algolia();
     load_coins();
     e_e_only_search_13550();
-    i_note_activate();
     load_editor();
     x_type_preview_load();
     init_remove();
@@ -1557,7 +1556,7 @@ function i__add(x__type, link_i__id) {
 
             if(x__type==13542){
                 //Next Ideas map to ideas so increment counter:
-                i_note_counter(12273, +1);
+                x_type_counter(12273, +1);
             }
 
             x_sort_load(x__type);
@@ -1697,7 +1696,7 @@ function e_add_only_13550(x__type, e_existing_id) {
 
         if (data.status) {
 
-            i_note_counter(x__type, +1);
+            x_type_counter(x__type, +1);
 
             //Raw input to make it ready for next URL:
             input.focus();
@@ -1786,7 +1785,7 @@ function e_remove(x__id, x__type) {
         }, function (data) {
             if (data.status) {
 
-                i_note_counter(x__type, -1);
+                x_type_counter(x__type, -1);
                 $(".cover_x_" + x__id).fadeOut();
                 setTimeout(function () {
                     $(".cover_x_" + x__id).remove();
@@ -2075,134 +2074,16 @@ function x_set_text(this_handler){
 
 
 
-/*
-*
-* IDEA NOTES
-*
-* */
-function i_note_activate(){
-    //Loop through all new idea inboxes:
-    $(".new-note").each(function () {
-
-        var x__type = parseInt($(this).attr('x__type'));
-
-        //Initiate @ search for all idea text areas:
-        i_note_e_search($(this));
-
-        set_autosize($(this));
-
-        //Activate sorting:
-        i_notes_sort_load(x__type);
-
-        var showFiles = function (files) {
-            if(typeof files[0] !== 'undefined'){
-                $('.box' + x__type).find('label').text(files.length > 1 ? ($('.box' + x__type).find('input[type="file"]').attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
-            }
-        };
-
-        $('.box' + x__type).find('input[type="file"]').on('drop', function (e) {
-            droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
-            showFiles(droppedFiles);
-        });
-
-        $('.box' + x__type).find('input[type="file"]').on('change', function (e) {
-            showFiles(e.target.files);
-        });
-
-        //Watch for message creation:
-        $('.regular_editor').keydown(function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if (e.ctrlKey && code== 13) {
-                i_note_add_text($(this).attr('x__type'));
-            }
-        });
-
-        //Watchout for file uplods:
-        $('.box' + x__type).find('input[type="file"]').change(function () {
-            i_note_add_file(droppedFiles, 'file', x__type);
-        });
-
-
-        //Should we auto start?
-        if (isAdvancedUpload) {
-
-            var droppedFiles = false;
-
-            $('.box' + x__type).on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                $('.power-editor-' + x__type+', .tab-data-'+ x__type).addClass('dynamic_saving');
-            })
-                /*
-            .on('dragover dragenter', function () {
-                $('.power-editor-' + x__type+', .tab-data-'+ x__type).addClass('dynamic_saving');
-            })
-            .on('dragleave dragend drop', function () {
-                $('.power-editor-' + x__type+', .tab-data-'+ x__type).removeClass('dynamic_saving');
-            })
-                */
-            .on('drop', function (e) {
-                droppedFiles = e.originalEvent.dataTransfer.files;
-                e.preventDefault();
-                i_note_add_file(droppedFiles, 'drop', x__type);
-                $('.power-editor-' + x__type+', .tab-data-'+ x__type).removeClass('dynamic_saving');
-            });
-        }
-
-    });
-}
-
-function i_note_counter(x__type, adjustment_count){
+function x_type_counter(x__type, adjustment_count){
     var current_count = parseInt( $('.xtypecounter'+x__type).text().length ? $('.xtypecounter'+x__type).text() : 0 );
     var new_count = current_count + adjustment_count;
     $('.xtypecounter'+x__type).text(new_count);
 }
 
-function i_note_count_new(x__type) {
-
-    //Update count:
-    var len = $('.input_note_' + x__type).val().length;
-    if (len > js_e___6404[4485]['m__message']) {
-        $('#charNum' + x__type).addClass('overload').text(len);
-    } else {
-        $('#charNum' + x__type).removeClass('overload').text(len);
-    }
-
-    //Only show counter if getting close to limit:
-    if(len > ( js_e___6404[4485]['m__message'] * js_e___6404[12088]['m__message'] )){
-        $('#ideaNoteNewCount' + x__type).removeClass('hidden');
-    } else {
-        $('#ideaNoteNewCount' + x__type).addClass('hidden');
-    }
-
-}
-
-function count_13574(x__id) {
-    //See if this is a valid text message editing:
-    if (!($('#charEditingNum' + x__id).length)) {
-        return false;
-    }
-    //Update count:
-    var len = $('#message_body_' + x__id).val().length;
-    if (len > js_e___6404[4485]['m__message']) {
-        $('#charEditingNum' + x__id).addClass('overload').text(len);
-    } else {
-        $('#charEditingNum' + x__id).removeClass('overload').text(len);
-    }
-
-    //Only show counter if getting close to limit:
-    if(len > ( js_e___6404[4485]['m__message'] * js_e___6404[12088]['m__message'] )){
-        $('#NoteCounter' + x__id).removeClass('hidden');
-    } else {
-        $('#NoteCounter' + x__id).addClass('hidden');
-    }
-}
 
 
 
-
-function i_note_e_search(obj) {
-
+function text_search(obj) {
     if(parseInt(js_e___6404[12678]['m__message'])){
         obj.textcomplete([
             {
@@ -2235,278 +2116,6 @@ function i_note_e_search(obj) {
     }
 }
 
-function i_note_sort_apply(x__type) {
-
-    var new_x__spectrums = [];
-    var sort_rank = 0;
-    var this_x__id = 0;
-
-    $(".msg_e_type_" + x__type).each(function () {
-        this_x__id = parseInt($(this).attr('x__id'));
-        if (this_x__id > 0) {
-            sort_rank++;
-            new_x__spectrums[sort_rank] = this_x__id;
-        }
-    });
-
-    //Update backend if any:
-    if(sort_rank > 0){
-        $.post("/i/i_note_sort", {new_x__spectrums: new_x__spectrums}, function (data) {
-            //Only show message if there was an error:
-            if (!data.status) {
-                //Show error:
-                alert(data.message);
-            }
-        });
-    }
-}
-
-function i_notes_sort_load(x__type) {
-
-
-    var sotrable_div = document.getElementById("i_notes_list_" + x__type);
-    if(!sotrable_div){
-        return false;
-    }
-    var inner_content = null;
-
-    var sort_msg = Sortable.create( sotrable_div , {
-        animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        handle: ".i_note_sorting", // Restricts sort start click/touch to the specified element
-        draggable: ".note_sortable", // Specifies which items inside the element should be sortable
-        onUpdate: function (evt/**Event*/) {
-            //Apply new sort:
-            i_note_sort_apply(x__type);
-        },
-        //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
-        onChoose: function (evt/**Event*/) {
-            //See if this is a YouTube or Vimeo iFrame that needs to be temporarily deleted:
-            var x__id = $(evt.item).attr('x__id');
-            if ($('#ul-nav-' + x__id).find('.video-sorting').length !== 0) {
-                inner_content = $('#msgbody_' + x__id).html();
-                $('#msgbody_' + x__id).css('height', $('#msgbody_' + x__id).height()).html('SORT VIDEO UP/DOWN');
-            } else {
-                inner_content = null;
-            }
-        },
-        onEnd: function (evt/**Event*/) {
-            if (inner_content) {
-                var x__id = $(evt.item).attr('x__id');
-                $('#msgbody_' + x__id).html(inner_content);
-            }
-        }
-    });
-
-}
-
-function load_i_note_editor(x__id) {
-
-    //Start editing:
-    $("#ul-nav-" + x__id).addClass('in-editing');
-    $("#ul-nav-" + x__id + " .edit-off").addClass('hidden');
-    $("#ul-nav-" + x__id + " .edit-on").removeClass('hidden');
-    $("#ul-nav-" + x__id + ">div").css('width', '100%');
-
-    //Set focus to end of text:
-    var textinput = $("#ul-nav-" + x__id + " textarea");
-    var data = textinput.val();
-    textinput.focus().val('').val(data);
-    autosize.update(textinput);
-
-
-    //Initiate search:
-    i_note_e_search(textinput);
-
-    //Try to initiate the editor, which only applies to text messages:
-    count_13574(x__id);
-
-}
-
-function cancel_13574(x__id) {
-    //Revert editing:
-    $("#ul-nav-" + x__id).removeClass('in-editing');
-    $("#ul-nav-" + x__id + " .edit-off").removeClass('hidden');
-    $("#ul-nav-" + x__id + " .edit-on").addClass('hidden');
-    $("#ul-nav-" + x__id + ">div").css('width', 'inherit');
-}
-
-function i_note_update_text(x__id, x__type) {
-
-    //Revert View:
-    cancel_13574(x__id);
-
-    //Clear Message:
-    $("#ul-nav-" + x__id + " .edit-updates").html('');
-
-    var modify_data = {
-        x__id: parseInt(x__id),
-        i__id: parseInt(current_id()),
-        x__message: $("#ul-nav-" + x__id + " textarea").val(),
-    };
-
-    //Update message:
-    $.post("/i/i_note_update_text", modify_data, function (data) {
-
-        if (data.status) {
-
-            //Update text message:
-            $("#ul-nav-" + x__id + " .text_message").html(data.message);
-
-            lazy_load();
-
-        } else {
-
-            //ERROR
-            $("#ul-nav-" + x__id + " .edit-updates").html('<b class="zq6255 css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>');
-
-        }
-
-        //Tooltips:
-        $('[data-toggle="tooltip"]').tooltip();
-
-    });
-
-}
-
-
-function i_remove_note(x__id, x__type){
-
-    var r = confirm("Remove this note?");
-    if (r == true) {
-        //REMOVE NOTE
-        $.post("/i/i_remove_note", { x__id: parseInt(x__id) }, function (data) {
-            if (data.status) {
-
-                i_note_counter(x__type, -1);
-
-                $("#ul-nav-" + x__id).fadeOut();
-
-                setTimeout(function () {
-                    $("#ul-nav-" + x__id).remove();
-                }, 610);
-
-            } else {
-
-                alert(data.message);
-
-            }
-        });
-    }
-}
-
-
-function i_note_add_file(droppedFiles, uploadType, x__type) {
-
-    //TODO DEPRECATED as its duplicate with x_upload()
-
-    //Prevent multiple concurrent uploads:
-    if ($('.box' + x__type).hasClass('dynamic_saving') || !isAdvancedUpload) {
-        return false;
-    }
-
-    var ajaxData = new FormData($('.box' + x__type).get(0));
-    if (droppedFiles) {
-        $.each(droppedFiles, function (i, file) {
-            var thename = $('.box' + x__type).find('input[type="file"]').attr('name');
-            if (typeof thename == typeof undefined || thename == false) {
-                var thename = 'drop';
-            }
-            ajaxData.append(uploadType, file);
-        });
-    }
-
-    ajaxData.append('upload_type', uploadType);
-    ajaxData.append('i__id', current_id());
-    ajaxData.append('x__type', x__type);
-
-    $.ajax({
-        url: '/i/i_note_add_file',
-        type: $('.box' + x__type).attr('method'),
-        data: ajaxData,
-        dataType: 'json',
-        cache: false,
-        contentType: false,
-        processData: false,
-        complete: function () {
-            $('.box' + x__type).removeClass('dynamic_saving');
-        },
-        success: function (data) {
-
-            if(!data.status){
-
-                alert('ERROR: '+data.message);
-
-            } else {
-
-                if(js_n___14311.includes(x__type)){
-                    //Power Editor:
-                    var current_value = $('.input_note_' + x__type).val();
-                    $('.input_note_' + x__type).val(( current_value.length ? current_value+"\n\n" : '' ) + data.new_source);
-                } else {
-                    //Regular Editor:
-                    i_note_counter(x__type, +1);
-                }
-
-                //Adjust icon again:
-                $('.file_label_' + x__type).html('<span class="icon-block">'+js_e___11035[13572]['m__cover']+'</span>');
-            }
-
-            if(js_n___14311.includes(x__type)){
-                save_message_27963();
-            } else {
-                i_note_end_adding(data, x__type);
-            }
-
-        },
-        error: function (data) {
-            var result = [];
-            result.status = 0;
-            result.message = data.responseText;
-            i_note_end_adding(result, x__type);
-        }
-    });
-
-}
-
-
-var currentlu_adding = false;
-function i_note_add_text(x__type) {
-
-    if(currentlu_adding){
-        return false;
-    }
-    currentlu_adding = true;
-
-    //Update backend:
-    $.post("/i/i_note_add_text", {
-
-        i__id: current_id(), //Synonymous
-        x__message: $('.input_note_' + x__type).val(),
-        x__type: x__type,
-
-    }, function (data) {
-
-        //Raw Inputs Fields if success:
-        if (data.status) {
-
-            //Reset input field:
-            $('.input_note_' + x__type).val("");
-            set_autosize($('.input_note_' + x__type));
-
-            i_note_count_new(x__type);
-            i_note_counter(x__type, +1);
-
-        }
-
-        //Unlock field:
-        i_note_end_adding(data, x__type);
-
-        //Done adding:
-        currentlu_adding = false;
-
-    });
-
-}
 
 function append_value(theobject, thevalue){
     var current_value = theobject.val();

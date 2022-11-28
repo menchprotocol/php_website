@@ -813,8 +813,6 @@ class X extends CI_Controller
     function x_upload()
     {
 
-        //TODO: MERGE WITH FUNCTION i_note_add_file()
-
         //Authenticate Member:
         $member_e = superpower_unlocked();
         if (!$member_e) {

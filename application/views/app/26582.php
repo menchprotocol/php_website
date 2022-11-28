@@ -142,7 +142,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '<p>'.get_domain('m__title', $member_e['e__id']).'</p>';
     echo '</div>';
 
-    echo '<div id="charNum"></div>';
+    echo '<div id="msgNum"></div>';
 
 
     echo '<input type="datetime-local" id="message_time" value="'.date('Y-m-d\TH:i', (time()+3600)).'" style="border:1px solid #000000; padding:8px; border-radius: 0; margin-top:21px;">';
@@ -219,7 +219,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         });
 
         function countChar() {
-            $('#charNum').html(( $('#message_subject').val().length + $('#message_text').val().length + 2 /* For the [: ] that connects the subject to body in SMS */ )+'/<?= view_memory(6404,27891) ?> Characters (Subject + Body)');
+            $('#msgNum').html(( $('#message_subject').val().length + $('#message_text').val().length + 2 /* For the [: ] that connects the subject to body in SMS */ )+'/<?= view_memory(6404,27891) ?> Characters (Subject + Body)');
         }
 
         var is_processing = false;

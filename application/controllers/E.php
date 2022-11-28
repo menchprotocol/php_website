@@ -14,7 +14,7 @@ class E extends CI_Controller
 
     }
 
-    function e_view_body_e(){
+    function view_body_e(){
         //Authenticate Member:
         if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !isset($_POST['counter']) || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
@@ -69,16 +69,16 @@ class E extends CI_Controller
             } elseif($x__type==12896){
 
                 //SAVED DISCOVERIES
-                $i_notes_query = $this->X_model->fetch(array(
+                $list_is = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
                     'x__type' => 12896,
                     'x__up' => $member_e['e__id'],
                 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'x__id' => 'DESC'));
-                $counter = count($i_notes_query);
+                $counter = count($list_is);
                 if($counter > 0){
                     $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$counter.' '.$m['m__title'].'</div>';
-                    foreach($i_notes_query as $item) {
+                    foreach($list_is as $item) {
                         $sidebar_ui .= '<a href="/'.$item['i__id'].'" class="css__title">'.first_line($item['i__title']).'</a>';
                     }
                     $sidebar_ui .= '<hr />';

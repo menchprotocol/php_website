@@ -86,6 +86,25 @@ foreach($this->config->item('e___20424') as $x__type => $m) {
 }
 
 
+
+
+//Always Load Followings at top
+$e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$following_count = view_coins_i(11019, $i_focus['i__id'], 0, false);
+echo view_headline(11019,  $following_count, $e___11035[11019], view_body_i(11019, $following_count, $i_focus['i__id']), false);
+if($e_of_i){
+    echo '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick add-input algolia_search dotransparent"
+                               maxlength="' . view_memory(6404,4736) . '"
+                               placeholder="'.$e___11035[14016]['m__title'].'">
+                    </div><div class="algolia_pad_search row justify-content"></div></div>';
+}
+
+
+
 //Focus Notes
 echo '<div class="row justify-content" id="thisNode" style="padding-bottom:5px;">';
 echo view_i(4250, 0, null, $i_focus);
