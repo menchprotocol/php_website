@@ -968,7 +968,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         } else {
             $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
-            $count_query = $query[0]['totals'];
+            $count_query = $query[0]['totals'] + ( $x__type==11029 ? view_coins_e(11030, $e__id, 0, false) : 0 );
             $visual_counter = view_number($count_query);
             $title_desc = number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'];
 
