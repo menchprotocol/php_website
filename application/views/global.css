@@ -3798,3 +3798,12 @@ main {
     color:#000000;
     border-color: #999999 #999999 #fff;
 }
+.nav-tabs > li {
+    float:none;
+    display:inline-block;
+    zoom:1;
+}
+
+.nav-tabs {
+    text-align:center;
+}
