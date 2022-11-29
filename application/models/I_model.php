@@ -639,6 +639,7 @@ class I_model extends CI_Model
         if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i__id){
             return array();
         }
+        return array();
 
         $recursive_i_ids = array();
 
@@ -653,6 +654,7 @@ class I_model extends CI_Model
 
             //AND Idea? Follow through...
             if(in_array($next_i['i__type'], $this->config->item('n___6192'))){
+
                 $recursive_is = $this->I_model->recursive_child_ids($next_i['i__id'], false, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i__id ));
 
                 //Add to current array if we found anything:
