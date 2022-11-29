@@ -1002,7 +1002,7 @@ echo '</div>';
                     //Render new file:
                     $('.file_saving_result').html(data.message);
                     $('.go_next_upload').removeClass('hidden');
-                    lazy_load();
+
                 },
                 error: function (data) {
                     //Show Error:

@@ -26,7 +26,7 @@ echo '</div>';
 
 
 //Source Menu:
-echo '<ul class="nav nav-pills nav12274"></ul>';
+echo '<ul class="nav nav-tabs nav12274"></ul>';
 
 $item_counts = array();
 $e___11089 = $this->config->item('e___11089');
@@ -87,12 +87,24 @@ foreach($item_counts as $x__type => $counter) {
 
     $(document).ready(function () {
 
-        $('html, body').animate({
-            scrollTop: $('.main_item').offset().top
-        }, 'fast');
+        //Load Top:
+        var load_x__type = 11030;
+        $.post("/e/load_top", {
+            x__type: load_x__type,
+            page: 1,
+            focus__id: current_id(),
+        }, function (data) {
+
+
+            $('html, body').animate({
+                scrollTop: $('.main_item').offset().top
+            }, 'fast');
+
+            load_tab(load_x__type);
+
+        });
 
         //Source Loader:
-        load_tab(11030);
         load_tab(<?= $focus_tab ?>);
 
         set_autosize($('.texttype__lg.text__6197_'+current_id()));

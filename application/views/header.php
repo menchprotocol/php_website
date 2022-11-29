@@ -112,7 +112,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
     <script src="https://cdn.jsdelivr.net/npm/typeit@6.1.1/dist/typeit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@15.1.1/dist/lazyload.min.js"></script>
     <script type="module">
 
         import { EmojiButton } from 'https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@latest/dist/index.min.js';
@@ -291,7 +290,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo 'background: transparent !important; ';
             echo '}';
 
-            echo ' .halfbg, .msg>span, .fixed-top { background: rgba(0, 0, 0, 0.69) !important; } ';
+            echo ' .halfbg, .msg>span, .fixed-top { background: rgba(0, 0, 0, 0.69) !important; border-radius:22px; } ';
             echo ' .top-header-position.fixed-top { background: none !important; } ';
 
             echo ' .msg>span { display: block; padding: 3px 0; } ';

@@ -542,8 +542,6 @@ function view_load_page_i(x__type, page, load_new_filter) {
             $('#list-in-'+x__type).append(data);
         }
 
-        lazy_load();
-
         x_set_start_text();
 
         //Tooltips:
@@ -588,7 +586,7 @@ function view_load_page_e(x__type, page, load_new_filter) {
             $('#list-in-'+x__type).append(data);
         }
 
-        lazy_load();
+
 
         x_set_start_text();
 
@@ -624,15 +622,6 @@ function loadtab(x__type, tab_data_id){
     $('.tab-nav-'+x__type+'.tab-head-'+tab_data_id).addClass('active');
 
 }
-
-function lazy_load(){
-    //Lazyload photos:
-    var lazyLoadInstance = new LazyLoad({
-        elements_selector: "img.lazyimage"
-    });
-}
-
-
 
 
 
@@ -959,7 +948,7 @@ $(document).ready(function () {
     });
 
     init_remove();
-    lazy_load();
+
     set_autosize($('#sugg_note'));
     set_autosize($('.texttype__lg'));
 
@@ -1495,7 +1484,7 @@ function load_tab(x__type){
     x_type_preview_load();
     init_remove();
     x_set_start_text();
-    lazy_load();
+
 
     e_load_search(x__type);
     i_load_search(x__type);
@@ -1818,7 +1807,7 @@ function x_type_preview() {
             $('#x__message_preview').html(data.x__message_preview);
             $('#x__history_preview').html(data.x__history_preview);
 
-            lazy_load();
+
             $('[data-toggle="tooltip"]').tooltip();
 
         } else {
@@ -1931,7 +1920,7 @@ function add_to_list(sort_list_id, sort_handler, html_content) {
         $("#" + sort_list_id).prepend(html_content);
     }
 
-    lazy_load();
+
     init_remove();
 
     //Tooltips:
@@ -2591,7 +2580,7 @@ function save_message_27963(){
             $('[data-toggle="tooltip"]').tooltip();
 
             //Load Images:
-            lazy_load();
+
 
             message_saving = false;
 

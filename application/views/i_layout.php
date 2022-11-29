@@ -112,7 +112,7 @@ echo '</div>';
 
 
 //Source Menu:
-echo '<ul class="nav nav-pills nav12273"></ul>';
+echo '<ul class="nav nav-tabs nav12273"></ul>';
 
 //Print results:
 foreach($item_counts as $x__type => $counter) {

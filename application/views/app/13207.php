@@ -37,7 +37,7 @@ foreach($this->E_model->scissor_e(website_setting(0), 13207) as $e_item) {
 if(strlen($community_pills)){
 
     //Community
-    echo '<ul class="nav nav-pills nav12274"></ul>';
+    echo '<ul class="nav nav-tabs nav12274"></ul>';
     echo $community_pills;
 
 } else {

@@ -78,7 +78,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     } elseif ($x__type == 4260 /* Image URL */) {
 
-        return '<img '.( $has_discovery_mode ? ' src="' . $x__message . '" class="content-image" ' : ' data-src="' . $x__message . '" src="https://s3foundation.s3-us-west-2.amazonaws.com/f9ad9c2e7c18abd949a0119d621bf00f.gif" class="content-image lazyimage" ' ).' alt="IMAGE" />';
+        return '<img '.( $has_discovery_mode ? ' src="' . $x__message . '" class="content-image" ' : ' data-src="' . $x__message . '" src="https://s3foundation.s3-us-west-2.amazonaws.com/f9ad9c2e7c18abd949a0119d621bf00f.gif" class="content-image" ' ).' alt="IMAGE" />';
 
     } elseif ($x__type == 4259 /* Audio URL */) {
 
@@ -589,7 +589,6 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '</div>';
 
-
         //TODO Enable sorting for Watching Ideas? $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load('.$x__type.')}); </script>' : '<style> #list-in-'.$x__type.' .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
         if($superpower_10939){
@@ -605,9 +604,9 @@ function view_body_e($x__type, $counter, $e__id){
             $ui .= '<script> $(document).ready(function () { i_load_search('.$x__type.'); }); </script>';
         }
 
-    } elseif($x__type==12274 || $x__type==11029 || $x__type==11030){
+    } elseif($x__type==12274){
 
-        $x__type = 11029; //Sources Imply Followers
+
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
 
         foreach($list_results as $e) {
@@ -632,6 +631,8 @@ function view_body_e($x__type, $counter, $e__id){
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
+
+            $ui .= '<script> $(document).ready(function () { load_tab('.$x__type.'); }); </script>';
 
         } else {
 
@@ -818,10 +819,9 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if($x__type==11029 || $x__type==12274){
+    if($x__type==12274){
 
         //DOWN
-        $x__type = 11029;
         $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
         $join_objects = array('x__down');
         $query_filters = array(
@@ -967,8 +967,9 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             $title_desc = number_format($coins1, 0).' '.$e___11035[11019]['m__title'].' & '.number_format($coins2, 0).' '.$e___11035[13542]['m__title'];
 
         } else {
+
             $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
-            $count_query = $query[0]['totals'] + ( $x__type==11029 ? view_coins_e(11030, $e__id, 0, false) : 0 );
+            $count_query = $query[0]['totals'];
             $visual_counter = view_number($count_query);
             $title_desc = number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'];
 
@@ -1888,7 +1889,7 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
 
 function view_pill($x__type, $counter, $m, $ui = null, $is_open = true){
 
-    return '<script> '.( $is_open ? ' $(document).ready(function () { load_tab('.$x__type.'); }); ' : '' ).' $(\'.nav-pills\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>' .
+    return '<script> '.( $is_open ? ' $(document).ready(function () { load_tab('.$x__type.'); }); ' : '' ).' $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>' .
         '<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'" item-counter="'.$counter.'">'.$ui.'</div>';
 
 }
