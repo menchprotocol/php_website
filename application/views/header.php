@@ -164,19 +164,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script src="/application/views/global.js?v=dir3<?= view_memory(6404,11060) ?>" type="text/javascript"></script>
 
 
-    <script type="text/javascript">
-        $(window).scroll(function() {
-            var height = $(window).scrollTop();
-            console.log(height);
-            if(height  > 110) {
-                $('.fixed-top').removeClass('top-header-position');
-            } else {
-                $('.fixed-top').addClass('top-header-position');
-            }
-        });
-    </script>
-
-
     <!-- Load Fonts Dynamically -->
     <?php
 

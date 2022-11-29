@@ -205,3 +205,13 @@ echo '</div>';
 echo '<div class="bottom_spacer">&nbsp;</div>';
 
 ?>
+
+<script type="text/javascript">
+    $(window).scroll(function() {
+        if($(window).scrollTop()  > 110) {
+            $('.fixed-top').removeClass('top-header-position');
+        } else {
+            $('.fixed-top').addClass('top-header-position');
+        }
+    });
+</script>
