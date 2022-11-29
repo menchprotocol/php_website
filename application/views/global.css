@@ -3799,11 +3799,14 @@ main {
     border-color: #999999 #999999 #fff;
 }
 .nav-tabs > li {
-    float:none;
-    display:inline-block;
-    zoom:1;
+    float:none !important;
+    display:inline-block !important;
+    zoom:1 !important;
 }
 
 .nav-tabs {
-    text-align:center;
+    text-align:center !important;
+    display: flex !important;
+    justify-content: center !important;
+    flex-direction: row !important;
 }
