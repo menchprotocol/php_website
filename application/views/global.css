@@ -3813,5 +3813,5 @@ main {
     margin-bottom: 0px;
 }
 .nav-tabs .nav-link {
-    border-radius: 3px !important;
+    border-radius: 0 !important;
 }
