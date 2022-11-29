@@ -3811,7 +3811,10 @@ main {
 }
 .nav-tabs .nav-item {
     margin-bottom: 0px;
+    margin-left: 3px;
 }
 .nav-tabs .nav-link {
     border-radius: 0 !important;
+    border:0 !important;
+    border-bottom:3px solid transparent !important;
 }
