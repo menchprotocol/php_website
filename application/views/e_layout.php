@@ -12,8 +12,7 @@ $this->X_model->create(array(
 
 
 //Always Load Followings at top
-echo '<div class="e_top_load"></div>';
-
+echo '<div class="headline_body_11030"></div>';
 
 
 //Focus Source:
@@ -84,20 +83,7 @@ foreach($item_counts as $x__type => $counter) {
 
     $(document).ready(function () {
 
-        //Load Top:
-        $('.e_top_load').html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
-
-        $.post("/e/e_top_load", {
-            x__type: 11030,
-            e__id: current_id(),
-        }, function (data) {
-
-            $('.e_top_load').html(data.top_view);
-            x_type_counter(12274, data.top_count);
-            load_tab(11030);
-
-
-        });
+        toggle_pills(11030);
 
         //Source Loader:
         load_tab(<?= $focus_tab ?>);

@@ -16,9 +16,12 @@ class E extends CI_Controller
 
     function view_body_e(){
         //Authenticate Member:
-        if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !isset($_POST['counter']) || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
+        if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
             return '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
         } else {
+            if(!isset($_POST['counter']) ){
+                $_POST['counter'] = view_coins_e($_POST['x__type'], $_POST['e__id'], 0, false);
+            }
             return view_body_e($_POST['x__type'], $_POST['counter'], $_POST['e__id']);
         }
     }
