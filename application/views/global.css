@@ -3808,6 +3808,7 @@ main {
 }
 .nav-tabs .nav-item {
     margin-bottom: 0px;
+}
+.nav-tabs .nav-link {
     border-radius: 3px !important;
-
 }
