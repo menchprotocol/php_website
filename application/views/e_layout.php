@@ -28,6 +28,8 @@ $item_counts = array();
 $e___11089 = $this->config->item('e___11089');
 foreach($e___11089 as $x__type => $m) {
 
+    $x__type = ( $x__type==12274 ? 11029 : $x__type );
+
     break;
     //Have Needed Superpowers?
     $require = 0;
@@ -64,6 +66,7 @@ foreach($this->config->item('e___26005') as $x__type => $m) {
 
 //Print results:
 foreach($item_counts as $x__type => $counter) {
+    $x__type = ( $x__type==12274 ? 11029 : $x__type );
     echo view_pill($x__type, $counter, $e___11089[$x__type], ($x__type==$focus_tab ? view_body_e($x__type, $counter, $e['e__id']) : null ), ($x__type==$focus_tab));
 }
 

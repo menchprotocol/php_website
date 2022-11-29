@@ -36,7 +36,6 @@ function tenor_search_cover(responsetext) {
 }
 function unsplash_search_cover(responsetext) {
     var response_objects = JSON.parse(responsetext);
-    console.log(response_objects);
     response_objects["results"].forEach(function(item) {
         if(!($('#img_results_unsplash').html().indexOf(item["urls"]["thumb"]) > -1)){
             var title = item["description"] + ' ' + item["alt_description"];
@@ -416,7 +415,6 @@ function toggle_pills(x__type){
     var x__right = 0;
     var current_type = ( $('#focus__type').length ? parseInt($('#focus__type').val()) : 0 );
 
-
     if(current_type==12273){
         x__right = current_id();
     } else if (current_type==12274){
@@ -442,6 +440,16 @@ function toggle_pills(x__type){
         $('.thepill' + x__type+ ' .nav-link').addClass('active');
         $('.headline_body_' + x__type).removeClass('hidden');
         //window.location.hash = '#'+x__type;
+
+        //Disable Scrolling:
+        if(current_type==11030){
+            console.log('Scroll Disabled');
+            var scrollY = window.scrollY;
+            window.onscroll = function(){
+                window.scrollTo(0, scrollY);
+                window.onscroll = null;
+            };
+        }
 
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
