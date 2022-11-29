@@ -17,9 +17,9 @@ class E extends CI_Controller
     function view_body_e(){
         //Authenticate Member:
         if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !isset($_POST['counter']) || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
+            return '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
         } else {
-            echo view_body_e($_POST['x__type'], $_POST['counter'], $_POST['e__id']);
+            return view_body_e($_POST['x__type'], $_POST['counter'], $_POST['e__id']);
         }
     }
 
