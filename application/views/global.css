@@ -3808,4 +3808,6 @@ main {
 }
 .nav-tabs .nav-item {
     margin-bottom: 0px;
+    border-radius: 3px !important;
+
 }
