@@ -805,7 +805,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if($x__type==12274){
+    if($x__type==12274 || $x__type==11029){
 
         //DOWN
         $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
@@ -943,7 +943,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         $e___11035 = $CI->config->item('e___11035'); //COINS
 
-        if(0 && $x__type==12274){
+        if(0 && ($x__type==12274 || $x__type==11029)){
 
             //TODO Deprecate soon
             $coins1 = view_coins_e(11029, $e__id, 0, false);
@@ -954,9 +954,10 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         } else {
 
+            $coins2 = ( $x__type==12274 || $x__type==11029 ? view_coins_e(12274, $e__id, 0, false) : 0 );
             $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
-            $count_query = $query[0]['totals'];
-            $visual_counter = view_number($count_query);
+            $count_query = $query[0]['totals']+$coins2;
+            $visual_counter = view_number($count_query+$coins2);
             $title_desc = number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'];
 
         }
