@@ -332,7 +332,24 @@ class E extends CI_Controller
     }
 
 
+    function e_top_load(){
 
+        if (!isset($_POST['e__id']) || !isset($_POST['x__type'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Transaction ID',
+            ));
+        }
+
+        //Count total:
+        $following_count = view_coins_e($_POST['x__type'], $_POST['e__id'], 0, false);
+
+        return view_json(array(
+            'status' => 1,
+            'top_view' => view_body_e($_POST['x__type'], $following_count, $_POST['e__id']),
+            'top_count' => $following_count,
+        ));
+    }
 
     function view_load_page_e()
     {

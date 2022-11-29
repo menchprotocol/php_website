@@ -1545,7 +1545,7 @@ function i__add(x__type, link_i__id) {
 
             if(x__type==13542){
                 //Next Ideas map to ideas so increment counter:
-                x_type_counter(12273, +1);
+                x_type_counter(12273, 1);
             }
 
             x_sort_load(x__type);
@@ -1685,7 +1685,7 @@ function e_add_only_13550(x__type, e_existing_id) {
 
         if (data.status) {
 
-            x_type_counter(x__type, +1);
+            x_type_counter(x__type, 1);
 
             //Raw input to make it ready for next URL:
             input.focus();

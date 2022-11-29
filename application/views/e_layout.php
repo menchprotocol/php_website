@@ -12,14 +12,8 @@ $this->X_model->create(array(
 
 
 //Always Load Followings at top
-$e___11035 = $this->config->item('e___11035'); //NAVIGATION
+echo '<div class="e_top_load"></div>';
 
-/*
-$following_count = view_coins_e(11030, $e['e__id'], 0, false);
-echo '<div class="top_headline">';
-echo view_body_e(11030, $following_count, $e['e__id']);
-echo '</div>';
-*/
 
 
 //Focus Source:
@@ -91,19 +85,19 @@ foreach($item_counts as $x__type => $counter) {
     $(document).ready(function () {
 
         //Load Top:
-        var load_x__type = 11030;
-        $.post("/e/load_top", {
-            x__type: load_x__type,
-            page: 1,
-            focus__id: current_id(),
+        $('.e_top_load').html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
+
+        $.post("/e/e_top_load", {
+            x__type: 11030,
+            e__id: current_id(),
         }, function (data) {
 
-
+            $('.e_top_load').html(data.top_view);
+            x_type_counter(12274, data.top_count);
+            load_tab(load_x__type);
             $('html, body').animate({
                 scrollTop: $('.main_item').offset().top
             }, 'fast');
-
-            load_tab(load_x__type);
 
         });
 
