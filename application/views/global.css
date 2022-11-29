@@ -505,7 +505,7 @@ img.no-frame {
 }
 .nav-link {
     display: block;
-    padding:5px 3px 3px 3px;
+    padding:5px;
 }
 
 .modal-footer{
@@ -3811,7 +3811,6 @@ main {
 }
 .nav-tabs .nav-item {
     margin-bottom: 0px;
-    margin-left: 3px;
 }
 .nav-tabs .nav-link {
     border-radius: 0 !important;
