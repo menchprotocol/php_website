@@ -28,6 +28,7 @@ $item_counts = array();
 $e___11089 = $this->config->item('e___11089');
 foreach($e___11089 as $x__type => $m) {
 
+    break;
     //Have Needed Superpowers?
     $require = 0;
     $missing = 0;
