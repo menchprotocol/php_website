@@ -97,7 +97,7 @@ foreach($item_counts as $x__type => $counter) {
             load_tab(11030);
             $('html, body').animate({
                 scrollTop: $('.main_item').offset().top
-            }, 'fast');
+            });
 
         });
 
