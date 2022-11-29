@@ -94,7 +94,7 @@ foreach($item_counts as $x__type => $counter) {
 
             $('.e_top_load').html(data.top_view);
             x_type_counter(12274, data.top_count);
-            load_tab(load_x__type);
+            load_tab(11030);
             $('html, body').animate({
                 scrollTop: $('.main_item').offset().top
             }, 'fast');
