@@ -88,7 +88,7 @@ foreach($item_counts as $x__type => $counter) {
         $('.e_top_load').html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
 
         $.post("/e/e_top_load", {
-            x__type: 11030,
+            x__type: 12274,
             e__id: current_id(),
         }, function (data) {
 
