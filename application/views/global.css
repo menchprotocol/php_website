@@ -847,9 +847,7 @@ h4 .halfbg {
 }
 
 
-.nav-tabs {
-    border-bottom: 3px solid transparent;
-}
+
 .dropdown-menu {
     border: 1px solid transparent;
     border-radius: 0;
@@ -3017,10 +3015,6 @@ h4.css__title{
     background-color:#FFFFFF !important;
     color: #000000 !important;
 }
-.custom_ui_13884_13885 .nav-link.active .css__title,
-.custom_ui_13884_13885 .nav12273 .nav-link.active .zq12273 {
-    color: #FFFFFF !important;
-}
 .custom_ui_13884_13885 .nav-pills .nav-link.active {
     background-color:#000000 !important;
     color: #FFFFFF !important;
@@ -3795,4 +3789,8 @@ main {
 .halfbg .glossy-bg .list-group-item-action:hover .css__title{
     background: #FFFFFF !important;
     color: #000000 !important;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #999999 !important;
 }
