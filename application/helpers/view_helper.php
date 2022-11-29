@@ -648,20 +648,6 @@ function view_body_e($x__type, $counter, $e__id){
         }
         $ui .= '</div>';
 
-    } elseif(in_array($x__type, $CI->config->item('n___14690'))) {
-
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
-        foreach ($list_results as $i) {
-            $ui .= view_i($x__type, $i['i__id'], null, $i, $focus_e);
-        }
-        $ui .= '</div>';
-
-        if ($e__id == $member_e['e__id'] && in_array($x__type, $CI->config->item('n___4603'))) {
-            $ui .= '<script> $(document).ready(function () { x_sort_load(' . $x__type . ') }); </script>';
-        } else {
-            $ui .= '<style> #list-in-' . $x__type . ' .x_sort {display:none !important;} </style>';
-        }
-
     }
 
     return $ui;
