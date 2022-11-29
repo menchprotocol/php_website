@@ -180,7 +180,7 @@ li a {
     background-color: #999999 !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
-    border-radius: 0 !important;
+    border-radius: 22px !important;
 }
 
 .avatar-item .avatar-icon i {
@@ -494,7 +494,7 @@ img.no-frame {
 }
 
 .nav-tabs {
-    margin:0 0 8px 0;
+    margin: 0;
     padding: 0;
 }
 
@@ -2552,7 +2552,7 @@ h4.css__title{
 
 @media (max-width:599px) { /* Used to be 767px */
 
-    .halfbg, .msg>span, .fixed-top, .list-group-item-action im, .list-group-item, .x__message img, .i_content img, .content-image, .media-content, .x__message video, .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image, .list-radio-select .list-group-item.active {
+    .halfbg, .msg>span, .fixed-top, .list-group-item-action im, .list-group-item, .x__message img, .i_content img, .content-image, .media-content, .x__message video, .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image, .list-radio-select .list-group-item.active, .avatar-item.active, .btn-group a.active, .itemsetting.active {
         border-radius: 0 !important;
     }
 
@@ -3787,7 +3787,7 @@ main {
 }
 
 .container ul.nav-tabs {
-    border-bottom: 1px solid #999999 !important;
+    border-bottom: 0px solid #999999 !important;
 }
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
     color:#000000;
