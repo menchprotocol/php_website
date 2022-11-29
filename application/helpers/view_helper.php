@@ -726,7 +726,7 @@ function view_body_i($x__type, $counter, $i__id){
     } elseif($x__type==12273 || $x__type==13542){
 
         //IDEAS
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-13542">';
         foreach($list_results as $next_i) {
             $ui .= view_i(13542, 0, $is[0], $next_i);
         }
@@ -1034,7 +1034,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         }
         $order_columns['e__title'] = 'ASC';
 
-    } elseif($x__type==13542){
+    } elseif($x__type==12273 || $x__type==13542){
 
         //IDEAS
         $order_columns = array('x__spectrum' => 'ASC');
@@ -1082,10 +1082,6 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             'x__right' => $i__id,
         );
 
-    } elseif($x__type==12273) {
-
-        //Will merge down below
-
     } else {
 
         return null;
@@ -1096,7 +1092,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
     //Return Results:
     if($page_num > 0){
 
-        if($x__type==12273){
+        if(0 && $x__type==12273){
 
             $e___31003 = $CI->config->item('e___31003'); //Expanded Coins
             $view_coins_i_11019 = view_coins_i(11019, $i__id, $page_num, $append_coin_icon);
@@ -1119,7 +1115,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
 
         $e___11035 = $CI->config->item('e___11035'); //COINS
 
-        if($x__type==12273){
+        if(0 && $x__type==12273){
 
             $coins1 = view_coins_i(11019, $i__id, 0, false);
             $coins2 = view_coins_i(13542, $i__id, 0, false);
