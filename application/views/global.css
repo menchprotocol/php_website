@@ -546,9 +546,6 @@ img.no-frame {
 .nav12274{
     margin-top: 8px;
 }
-.nav12274 .nav-link.active{
-    border-radius: 8px;
-}
 
 button {
     color: #000000;
@@ -577,7 +574,7 @@ label:focus,
 }
 
 .right-adj {
-    margin-top:-22px;
+    margin-top:-21px;
     margin-right:40px !important;
 }
 
@@ -652,6 +649,34 @@ label:focus,
 }
 
 
+
+
+
+
+.list-group-item-action img {
+    max-height: 610px;
+    border-radius: 22px !important;
+}
+
+.menu_header {
+    font-size: 1em !important;
+    font-weight:bold;
+    padding: 13px 0 0;
+    border-top: 1px solid #000000;
+}
+
+.menu_header:first-of-type {
+    border-top: none;
+}
+
+p.menu_header {
+    padding: 0 0 0 25px;
+}
+
+
+.menu_header, .menu_header .icon-block-xxs i {
+    color:#999999 !important;
+}
 
 
 
@@ -2526,7 +2551,11 @@ h4.css__title{
 }
 
 
-@media (max-width:767px) {
+@media (max-width:599px) { /* Used to be 767px */
+
+    .halfbg, .msg>span, .fixed-top, .list-group-item-action im, .list-group-item, .x__message img, .i_content img, .content-image, .media-content, .x__message video, .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
+        border-radius: 0;
+    }
 
     .info_box_title{
         font-size: 1.15em;
@@ -3061,8 +3090,7 @@ h4.css__title{
     background: rgba(0,122,253,0.82);
 }
 .custom_ui_28979_28980 .bg12274,
-.custom_ui_28979_28980 .btn-12274,
-.custom_ui_28979_28980 .nav12274 .nav-link.active {
+.custom_ui_28979_28980 .btn-12274 {
     background-color: #007AFD !important;
 }
 
@@ -3116,8 +3144,7 @@ h4.css__title{
     background: rgba(255,197,0,0.82);
 }
 .custom_ui_28979_28980 .bg12273,
-.custom_ui_28979_28980 .btn-12273,
-.custom_ui_28979_28980 .nav12273 .nav-link.active {
+.custom_ui_28979_28980 .btn-12273 {
     background-color: #FFC500 !important;
 }
 
@@ -3180,8 +3207,7 @@ h4.css__title{
     color:#FC1B44 !important;
 }
 .custom_ui_28979_28980 .bg6255,
-.custom_ui_28979_28980 .btn-6255,
-.custom_ui_28979_28980 .nav6255 .nav-link.active {
+.custom_ui_28979_28980 .btn-6255 {
     background-color: #FC1B44 !important;
 }
 
@@ -3769,29 +3795,4 @@ main {
 .halfbg .glossy-bg .list-group-item-action:hover .css__title{
     background: #FFFFFF !important;
     color: #000000 !important;
-}
-
-.list-group-item-action img {
-    max-height: 610px;
-    border-radius: 22px !important;
-}
-
-.menu_header {
-    font-size: 1em !important;
-    font-weight:bold;
-    padding: 13px 0 0;
-    border-top: 1px solid #000000;
-}
-
-.menu_header:first-of-type {
-    border-top: none;
-}
-
-p.menu_header {
-    padding: 0 0 0 25px;
-}
-
-
-.menu_header, .menu_header .icon-block-xxs i {
-    color:#999999 !important;
 }
