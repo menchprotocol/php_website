@@ -1494,7 +1494,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     if(!in_array($x__type, $CI->config->item('n___13369'))){
-        return 'Invalid x__type '.$x__type;
+        return 'Invalid x__type i '.$x__type;
     }
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
@@ -1923,7 +1923,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $CI =& get_instance();
     if(!in_array($x__type, $CI->config->item('n___14690'))){
         //Not a valid Source List
-        return 'Invalid x__type '.$x__type;
+        return 'Invalid x__type e '.$x__type;
     }
     if(!isset($e['e__id']) || !isset($e['e__title'])){
         $CI->X_model->create(array(
