@@ -20,7 +20,7 @@ class E extends CI_Controller
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
         } else {
             if(!isset($_POST['counter']) ){
-                $_POST['counter'] = view_coins_e($_POST['x__type'], $_POST['e__id'], 0, false);
+                //$_POST['counter'] = view_coins_e($_POST['x__type'], $_POST['e__id'], 0, false);
             }
             echo view_body_e($_POST['x__type'], $_POST['counter'], $_POST['e__id']);
         }
