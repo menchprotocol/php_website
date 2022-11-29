@@ -1065,7 +1065,7 @@ class X extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $_POST['i__id'],
-            'x__up' => 26611, //Preg Match
+            'x__up' => 266111, //Preg Match
         )) as $preg_match){
             if(!preg_match($preg_match['x__message'], $_POST['x_reply'])) {
 
