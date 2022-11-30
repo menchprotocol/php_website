@@ -48,7 +48,7 @@ $focus_tab = 0; //TODO Remove later
 //Print results:
 foreach($item_counts as $x__type => $counter) {
     $x__type = ( $x__type==12274 ? 11029 : $x__type );
-    echo view_pill($x__type, $counter, $e___14874[$x__type], ($x__type==$focus_tab ? view_body_e($x__type, $counter, $e['e__id']) : null ), ($x__type==$focus_tab));
+    //echo view_pill($x__type, $counter, $e___14874[$x__type], ($x__type==$focus_tab ? view_body_e($x__type, $counter, $e['e__id']) : null ), ($x__type==$focus_tab));
 }
 
 ?>
