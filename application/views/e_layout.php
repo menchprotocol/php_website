@@ -52,13 +52,13 @@ echo $body_content;
 
 //Print results:
 foreach($coins_count as $x__type => $counter) {
-    //echo view_pill($x__type, $counter, $e___14874[$x__type], ($x__type==$focus_tab ? view_body_e($x__type, $counter, $e['e__id']) : null ), ($x__type==$focus_tab));
+    //echo view_pill(12274, $x__type, $counter, $e___14874[$x__type], ($x__type==$focus_tab ? view_body_e($x__type, $counter, $e['e__id']) : null ), ($x__type==$focus_tab));
 }
 
 ?>
 
 
-<input type="hidden" id="focus__type" value="12274" />
+<input type="hidden" id="coin_type" value="12274" />
 <input type="hidden" id="focus__id" value="<?= $e['e__id'] ?>" />
 <script type="text/javascript">
 
@@ -82,7 +82,7 @@ foreach($coins_count as $x__type => $counter) {
             }, function (data) {
                 $('.top_body_' + x__type_top).html(data);
                 $('html, body').scrollTop($('.main_item').offset().top - 54)
-                load_tab(x__type_top);
+                load_tab(12274, x__type_top);
             });
         }, 987);
 

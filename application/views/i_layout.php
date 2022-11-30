@@ -97,8 +97,8 @@ echo '<ul class="nav nav-tabs nav12273"></ul>';
 
 //Print results:
 foreach($coins_count as $x__type => $counter) {
-    echo view_pill($x__type, $counter, $e___14874[$x__type], ($x__type==$focus_tab ? view_body_i($x__type, $counter, $i_focus['i__id']) : null ), ($x__type==$focus_tab));
-    //echo view_pill($x__type, $counter, $e___14874[$x__type], view_body_i($x__type, $counter, $i_focus['i__id']), true);
+    echo view_pill(12273, $x__type, $counter, $e___14874[$x__type], ($x__type==$focus_tab ? view_body_i($x__type, $counter, $i_focus['i__id']) : null ), ($x__type==$focus_tab));
+    //echo view_pill(12273, $x__type, $counter, $e___14874[$x__type], view_body_i($x__type, $counter, $i_focus['i__id']), true);
 }
 
 
@@ -108,7 +108,7 @@ foreach($coins_count as $x__type => $counter) {
 <style>
     <?= ( !$e_of_i ? '.note-editor {display:none;}' : '' ) ?>
 </style>
-<input type="hidden" id="focus__type" value="12273" />
+<input type="hidden" id="coin_type" value="12273" />
 <input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
 <script type="text/javascript">
 
@@ -118,7 +118,7 @@ foreach($coins_count as $x__type => $counter) {
             scrollTop: $("#thisNode").offset().top
         }, 89);
 
-        load_tab(<?= $focus_tab ?>);
+        load_tab(12273,<?= $focus_tab ?>);
 
         //Look for power editor updates:
         $('.x_set_class_text').keypress(function(e) {

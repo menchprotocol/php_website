@@ -625,7 +625,7 @@ function view_body_e($x__type, $counter, $e__id){
                                placeholder="'.$e___11035[14055]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
 
-            $ui .= '<script> $(document).ready(function () { load_tab('.$x__type.'); }); </script>';
+            $ui .= '<script> $(document).ready(function () { load_tab(12274, '.$x__type.'); }); </script>';
 
         } else {
 
@@ -673,6 +673,7 @@ function view_body_i($x__type, $counter, $i__id){
 
     if(in_array($x__type, $CI->config->item('n___13550'))){
 
+        $ui .= 'LIST';
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i_this) {
             $ui .= view_e($x__type, $i_this,  null);
@@ -1810,9 +1811,9 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
 }
 
 
-function view_pill($x__type, $counter, $m, $ui = null, $is_open = true){
+function view_pill($coin_type, $x__type, $counter, $m, $ui = null, $is_open = true){
 
-    return '<script> '.( $is_open ? ' $(document).ready(function () { load_tab('.$x__type.'); }); ' : '' ).' $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>' .
+    return '<script> '.( $is_open ? ' $(document).ready(function () { load_tab('.$coin_type.', '.$x__type.'); }); ' : '' ).' $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>' .
         '<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'" read-counter="'.$counter.'">'.$ui.'</div>';
 
 }
