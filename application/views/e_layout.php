@@ -36,10 +36,13 @@ $coins_count = array();
 $e___14874 = $this->config->item('e___14874'); //Coins
 foreach($e___14874 as $x__type => $m) {
     $counter = view_coins_e($x__type, $e['e__id'], 0, false);
+    if($x__type==12274){
+        $counter += $counter_top;
+    }
     if($counter > 0 || ( in_array($x__type , $this->config->item('n___28956')) && superpower_active(10939, true) )){
         $coins_count[$x__type] = $counter;
     }
-    $nav_content .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span>'.( $x__type==12274 && $counter_top>0 ? '<span class="css__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($counter_top) . '</span>'.( $counter>0 ? '+' : ''): '' ).'<span class="css__title hideIfEmpty xtypecounter'.$x__type_top.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>';
+    $nav_content .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type_top.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>';
     $body_content .= '<div class="headlinebody headline_body_'.$x__type.' hidden" item-counter="'.$counter.'"></div>';
 }
 
