@@ -23,7 +23,7 @@ if(!isset($_GET['hide'])){
 
 //Focus Source:
 echo '<div class="main_item row justify-content">';
-echo view_e(4251, $e, null, source_of_e($e['e__id']));
+echo view_e(4251, $e, null);
 echo '</div>';
 
 

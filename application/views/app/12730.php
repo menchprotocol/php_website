@@ -85,7 +85,7 @@ if($search_for_set){
                 }
             }
 
-            echo view_e(12730, $en, null,  true);
+            echo view_e(12730, $en, null);
         }
         echo '</div>';
 

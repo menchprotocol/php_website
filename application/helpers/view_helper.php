@@ -554,7 +554,6 @@ function view_body_e($x__type, $counter, $e__id){
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $superpower_10939 = superpower_active(10939, true);
-    $source_of_e = source_of_e($e__id);
     $list_results = view_coins_e($x__type, $e__id, 1);
     $focus_e = ($e__id == $member_e['e__id'] ? $member_e : false);
     $ui = '';
@@ -594,7 +593,7 @@ function view_body_e($x__type, $counter, $e__id){
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
 
         foreach($list_results as $e) {
-            $ui .= view_e($x__type, $e, null,  $source_of_e);
+            $ui .= view_e($x__type, $e, null);
         }
 
         if ($counter > count($list_results)) {
@@ -666,7 +665,7 @@ function view_body_i($x__type, $counter, $i__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $this_i) {
-            $ui .= view_e($x__type, $this_i,  null, $e_of_i);
+            $ui .= view_e($x__type, $this_i,  null);
         }
         $ui .= '</div>';
 
@@ -734,7 +733,7 @@ function view_body_i($x__type, $counter, $i__id){
         //SOURCES
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">'; //list-in-4983
         foreach($list_results as $e_ref){
-            $ui .= view_e($e_ref['x__type'], $e_ref, null, $e_of_i);
+            $ui .= view_e($e_ref['x__type'], $e_ref, null);
         }
         $ui .= '</div>';
         $ui .= '<div class="new-list-'.$x__type.' list-adder '.superpower_active(10939).'">
@@ -1831,7 +1830,7 @@ function view_e_line($e)
 
 
 
-function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
+function view_e($x__type, $e, $extra_class = null)
 {
 
     $CI =& get_instance();
@@ -1851,6 +1850,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
         return 'Missing core variables';
     }
 
+    $source_of_e = source_of_e($e['e__id']);
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $superpower_10939 = superpower_active(10939, true);
@@ -1864,7 +1864,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $is_cache = in_array($x__type, $CI->config->item('n___14599'));
 
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
-    $source_of_e = $superpower_13422 || $source_of_e;
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___13550')));
 
 
@@ -1895,7 +1894,6 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //LOCKED
-    $edit_button = null;
     $dropdown_ui = false;
     if($source_of_e && !$cache_app) {
 
@@ -1914,9 +1912,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
             if($e__id==14937 && $source_of_e){
 
-                //COIN COVER
-                $edit_button = '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="icon-block">'.$m['m__cover'].'</a>';
-                //continue;
+                //EDIT
                 $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
             } elseif($e__id==4997 && superpower_active(12703, true)){
@@ -1999,7 +1995,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     if(!$cache_app){
         $ui .= '<table class="coin_coins"><tr>';
         $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
-        $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</div></td>'; //<div class="show-on-hover">'.$edit_button.'</div>
+        $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</div></td>';
         $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
         $ui .= '<td width="20%"><div class="show-on-hover">'.( $can_click && $show_text_editor ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
         $ui .= '<td width="20%"><div class="show-on-hover" title="' . ( isset($e['x__time']) ? view_time_difference(strtotime($e['x__time'])) . ' Ago: '.$e['x__time'] : '' ).'">'.$dropdown_ui.'</div></td>';

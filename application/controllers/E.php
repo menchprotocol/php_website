@@ -338,7 +338,6 @@ class E extends CI_Controller
 
         $items_per_page = view_memory(6404,11064);
         $focus__id = intval($_POST['focus__id']);
-        $source_of_e = source_of_e($focus__id);
         $page = intval($_POST['page']);
         $query_filters = array(
             'x__up' => $focus__id,
@@ -354,7 +353,7 @@ class E extends CI_Controller
         ));
 
         foreach($extra_items as $e) {
-            echo view_e($_POST['x__type'], $e, null, $source_of_e);
+            echo view_e($_POST['x__type'], $e, null);
         }
 
         //Count total children:
@@ -503,7 +502,7 @@ class E extends CI_Controller
         //Return source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e($_POST['x__type'], array_merge($focus_e, $new_note),  null,  true),
+            'e_new_echo' => view_e($_POST['x__type'], array_merge($focus_e, $new_note),  null),
         ));
 
     }
@@ -855,7 +854,7 @@ class E extends CI_Controller
         //Return source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e($_POST['x__type'], array_merge($focus_e, $ur2), null,  true),
+            'e_new_echo' => view_e($_POST['x__type'], array_merge($focus_e, $ur2), null),
             'e_already_linked' => $e_already_linked,
         ));
 
