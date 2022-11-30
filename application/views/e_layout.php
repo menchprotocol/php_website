@@ -15,7 +15,7 @@ $this->X_model->create(array(
 //Always Load Followings at top
 $x__type_top = 11030;
 $counter_top = view_coins_e($x__type_top, $e['e__id'], 0, false);
-echo '<div class="headlinebody headline_body_'.$x__type_top.'" item-counter="'.$counter_top.'"></div>';
+echo '<div class="top_body_'.$x__type_top.'" item-counter="'.$counter_top.'"></div>';
 
 
 
@@ -84,10 +84,10 @@ foreach($coins_count as $x__type => $counter) {
         var x__type_top = 11030;
         $.post("/e/view_body_e", {
             x__type:x__type_top,
-            counter:$('.headline_body_' + x__type_top).attr('item-counter'),
+            counter:$('.top_body_' + x__type_top).attr('item-counter'),
             e__id:current_id()
         }, function (data) {
-            $('.headline_body_' + x__type_top).html(data);
+            $('.top_body_' + x__type_top).html(data);
             load_tab(x__type_top);
         });
 
