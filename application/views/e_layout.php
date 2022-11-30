@@ -27,7 +27,8 @@ echo '<ul class="nav nav-tabs nav12274"></ul>';
 $item_counts = array();
 $e___14874 = $this->config->item('e___14874'); //Coins
 foreach($e___14874 as $x__type => $m) {
-    $coin_count = view_coins_e($x__type, $e['e__id'], 0, false);
+    $coin_count = 24;
+    //$coin_count = view_coins_e($x__type, $e['e__id'], 0, false);
     if($coin_count > 0 || ( in_array($x__type , $this->config->item('n___28956')) && superpower_active(10939, true) )){
         $item_counts[$x__type] = $coin_count;
     }
