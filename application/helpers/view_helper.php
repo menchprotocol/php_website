@@ -875,7 +875,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     //Return Results:
     if($page_num > 0){
 
-        if($x__type==12274){
+        if($x__type==12274 && 0){
 
             $e___31003 = $CI->config->item('e___31003'); //Expanded Coins
             $view_coins_e_11030 = view_coins_e(11030, $e__id, $page_num, $append_coin_icon);
@@ -897,7 +897,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         $e___11035 = $CI->config->item('e___11035'); //COINS
 
-        if($x__type==12274){
+        if($x__type==12274 && 0){
 
             $coins1 = view_coins_e(12274, $e__id, 0, false);
             $coins2 = view_coins_e(11030, $e__id, 0, false);

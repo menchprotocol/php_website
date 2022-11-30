@@ -32,8 +32,7 @@ $body_content = '';
 $item_counts = array();
 $e___14874 = $this->config->item('e___14874'); //Coins
 foreach($e___14874 as $x__type => $m) {
-    //$counter = view_coins_e($x__type, $e['e__id'], 0, false);
-    $counter = 12;
+    $counter = view_coins_e($x__type, $e['e__id'], 0, false);
     if($counter > 0 || ( in_array($x__type , $this->config->item('n___28956')) && superpower_active(10939, true) )){
         $item_counts[$x__type] = $counter;
     }
