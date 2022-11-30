@@ -509,7 +509,7 @@ if($top_i__id) {
 
             echo '<tr>';
             echo '<td class="table-btn first_btn" style="text-align: right;">Delivery:&nbsp;&nbsp;</td>';
-            echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Your tickets will be waiting for you at the venus pick-up location on the day of the event. Please bring photo ID and the card used for purchase. We *do not* email PDF Tickets or bar codes." style="border-bottom: 1px dotted #999;">Will Call (Free) <i class="fas fa-info-circle" style="font-size: 0.8em !important;"></i></span></td>';
+            echo '<td class="table-btn first_btn"><span data-toggle="tooltip" data-placement="top" title="Your tickets will be waiting for you at the venu on the day of the event. Make sure to bring photo ID." style="border-bottom: 1px dotted #999;">Will Call (Free) <i class="fas fa-info-circle" style="font-size: 0.8em !important;"></i></span></td>';
             echo '</tr>';
 
             echo '</table>';

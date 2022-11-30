@@ -70,7 +70,6 @@ foreach($this->config->item('e___20424') as $x__type => $m) {
 
 
 //Always Load Followings at top
-/*
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $following_count = view_coins_i(11019, $i_focus['i__id'], 0, false);
 echo view_headline(11019,  $following_count, $e___11035[11019], view_body_i(11019, $following_count, $i_focus['i__id']), false);
@@ -84,7 +83,7 @@ if($e_of_i){
                                placeholder="'.$e___11035[14016]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
 }
-*/
+
 
 
 //Focus Notes
