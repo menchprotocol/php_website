@@ -15,7 +15,7 @@ $this->X_model->create(array(
 //Always Load Followings at top
 $x__type_top = 11030;
 $counter_top = view_coins_e($x__type_top, $e['e__id'], 0, false);
-echo '<div class="top_body_'.$x__type_top.'" item-counter="'.$counter_top.'"></div>';
+echo '<div class="hideIfEmpty top_body_'.$x__type_top.'" item-counter="'.$counter_top.'"></div>';
 
 
 
