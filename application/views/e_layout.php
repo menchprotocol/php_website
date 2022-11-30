@@ -69,8 +69,7 @@ foreach($coins_count as $x__type => $counter) {
 
     $(document).ready(function () {
 
-        //toggle_pills(11030);
-
+        toggle_pills(11030);
 
         <?php
         foreach($this->config->item('e___26005') as $x__type => $m) {
