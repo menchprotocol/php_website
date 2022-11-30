@@ -591,6 +591,29 @@ function view_body_e($x__type, $counter, $e__id){
     } elseif($x__type==12274 || $x__type==11030){
 
 
+        //Input to add new child:
+        if(superpower_active(13422, true)){
+
+            $js_extension = '<div current-count="'.$counter.'" class="new-list-'.$x__type.' list-adder">
+                    <div class="input-group border">
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="'.$e___11035[14055]['m__title'].'">
+                    </div><div class="algolia_pad_search row justify-content"></div></div>
+                    <script> $(document).ready(function () { load_tab('.$x__type.'); }); </script>';
+
+        } else {
+
+            $js_extension = '<div class="hideIfEmpty new-list-'.$x__type.'"></div>';
+
+        }
+
+        if($x__type==11030){
+            echo $js_extension;
+        }
+
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
 
         foreach($list_results as $e) {
@@ -604,24 +627,8 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '</div>';
 
-        //Input to add new child:
-        if(superpower_active(13422, true)){
-
-            $ui .= '<div current-count="'.$counter.'" class="new-list-'.$x__type.' list-adder">
-                    <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[14055]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content"></div></div>';
-
-            $ui .= '<script> $(document).ready(function () { load_tab('.$x__type.'); }); </script>';
-
-        } else {
-
-            $ui .= '<div class="hideIfEmpty new-list-'.$x__type.'"></div>';
-
+        if($x__type==12274){
+            echo $js_extension;
         }
 
     } elseif($x__type==6255){
