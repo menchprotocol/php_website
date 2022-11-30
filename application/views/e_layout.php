@@ -71,16 +71,6 @@ foreach($coins_count as $x__type => $counter) {
     $(document).ready(function () {
 
 
-        //Disable Scrolling:
-        if(0){
-            console.log('Scroll Disabled');
-            var scrollY = window.scrollY;
-            window.onscroll = function(){
-                window.scrollTo(0, scrollY);
-                window.onscroll = null;
-            };
-        }
-
         var x__type_top = 11030;
         $.post("/e/view_body_e", {
             x__type:x__type_top,
@@ -88,6 +78,14 @@ foreach($coins_count as $x__type => $counter) {
             e__id:current_id()
         }, function (data) {
             $('.top_body_' + x__type_top).html(data);
+
+            console.log('Scroll Disabled');
+            var scrollY = window.scrollY;
+            window.onscroll = function(){
+                window.scrollTo(0, scrollY);
+                window.onscroll = null;
+            };
+
             load_tab(x__type_top);
         });
 
