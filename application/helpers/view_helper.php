@@ -2042,7 +2042,7 @@ function view_e($x__type, $e, $extra_class = null)
     */
 
     //Message
-    if ($x__id > 0) {
+    if ($x__id > 0 && $source_of_e) {
         if(!$has_any_lock){
 
             $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
