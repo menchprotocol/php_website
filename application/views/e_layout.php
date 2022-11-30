@@ -40,7 +40,7 @@ foreach($e___14874 as $x__type => $m) {
         $coins_count[$x__type] = $counter;
     }
     $nav_content .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type_top.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>';
-    $body_content .= '<div class="headlinebody headline_body_'.$x__type.' hidden" read-counter="'.$counter - ($x__type==12274 ? $counter_top : 0 ).'"></div>';
+    $body_content .= '<div class="headlinebody headline_body_'.$x__type.' hidden" read-counter="'.($counter - ($x__type==12274 ? $counter_top : 0 )).'"></div>';
 }
 
 
