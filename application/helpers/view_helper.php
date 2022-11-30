@@ -876,45 +876,16 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     //Return Results:
     if($page_num > 0){
 
-        if($x__type==12274 && 0){
-
-            $e___31003 = $CI->config->item('e___31003'); //Expanded Coins
-            $view_coins_e_11030 = view_coins_e(11030, $e__id, $page_num, $append_coin_icon);
-            $view_coins_e_12274 = view_coins_e(12274, $e__id, $page_num, $append_coin_icon);
-
-            return array_merge(
-                array(array('raw_html' => '<h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[11030]['m__cover'].'</span>'.$e___31003[11030]['m__title'].':</h3>')),
-                ( count($view_coins_e_11030) ? $view_coins_e_11030 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) ),
-                array(array('raw_html' => '<br /><h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[12274]['m__cover'].'</span>'.$e___31003[12274]['m__title'].':</h3>')),
-                ( count($view_coins_e_12274) ? $view_coins_e_12274 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) )
-            );
-
-        } else {
-            $limit = view_memory(6404,11064);
-            return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
-        }
+        $limit = view_memory(6404,11064);
+        return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
 
     } else {
 
         $e___11035 = $CI->config->item('e___11035'); //COINS
-
-        if($x__type==12274 && 0){
-
-            $coins1 = view_coins_e(12274, $e__id, 0, false);
-            $coins2 = view_coins_e(11030, $e__id, 0, false);
-            $count_query = $coins1 + $coins2;
-            $visual_counter = view_number($coins1+$coins2);
-            $title_desc = number_format($coins1, 0).' '.$e___11035[11019]['m__title'].' & '.number_format($coins2, 0).' '.$e___11035[12273]['m__title'];
-
-        } else {
-
-            $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
-            $count_query = $query[0]['totals'] + ( $x__type==12274 ? view_coins_e(11030, $e__id, 0, false) : 0 );
-            $visual_counter = view_number($count_query);
-            $title_desc = number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'];
-
-        }
-
+        $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
+        $count_query = $query[0]['totals'];
+        $visual_counter = view_number($count_query);
+        $title_desc = number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'];
 
         if($append_coin_icon){
 
@@ -1021,23 +992,8 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
     //Return Results:
     if($page_num > 0){
 
-        if(0 && $x__type==12273){
-
-            $e___31003 = $CI->config->item('e___31003'); //Expanded Coins
-            $view_coins_i_11019 = view_coins_i(11019, $i__id, $page_num, $append_coin_icon);
-            $view_coins_i_12273 = view_coins_i(12273, $i__id, $page_num, $append_coin_icon);
-
-            return array_merge(
-                array(array('raw_html' => '<h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[11019]['m__cover'].'</span>'.$e___31003[11019]['m__title'].':</h3>')),
-                ( count($view_coins_i_11019) ? $view_coins_i_11019 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) ),
-                array(array('raw_html' => '<br /><h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[12273]['m__cover'].'</span>'.$e___31003[12273]['m__title'].':</h3>')),
-                ( count($view_coins_i_12273) ? $view_coins_i_12273 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) )
-            );
-
-        } else {
-            $limit = view_memory(6404,11064);
-            return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
-        }
+        $limit = view_memory(6404,11064);
+        return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
 
     } else {
 

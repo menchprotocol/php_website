@@ -229,9 +229,7 @@ class E extends CI_Controller
 
 
                 foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false, view_memory(6404,13206)) as $source_e) {
-                    if(isset($source_e['raw_html'])){
-                        $ui .= $source_e['raw_html'];
-                    } elseif(isset($source_e['e__id'])){
+                    if(isset($source_e['e__id'])){
                         $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, null, $e___6177[$source_e['e__type']]['m__cover'], view_cover(12274,$source_e['e__cover'], true), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                         $listed_items++;
                     }
@@ -244,9 +242,7 @@ class E extends CI_Controller
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false, view_memory(6404,13206)) as $next_i) {
-                    if(isset($next_i['raw_html'])){
-                        $ui .= $next_i['raw_html'];
-                    } elseif(isset($next_i['i__id'])){
+                    if(isset($next_i['i__id'])){
                         $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], ( $_POST['x__type']==6255 ? null : $e___4737[$next_i['i__type']]['m__cover'] ), null, view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
                         $listed_items++;
                     }
