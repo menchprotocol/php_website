@@ -413,7 +413,6 @@ function toggle_pills(x__type){
 
     console.log(x__type+' PILL TOGGLED');
 
-
     var x__down = 0;
     var x__right = 0;
     var current_type = ( $('#focus__type').length ? parseInt($('#focus__type').val()) : 0 );
@@ -444,16 +443,6 @@ function toggle_pills(x__type){
         $('.headline_body_' + x__type).removeClass('hidden');
         //window.location.hash = '#'+x__type;
 
-        //Disable Scrolling:
-        if(current_type==11030 && 0){
-            console.log('Scroll Disabled');
-            var scrollY = window.scrollY;
-            window.onscroll = function(){
-                window.scrollTo(0, scrollY);
-                window.onscroll = null;
-            };
-        }
-
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
 
@@ -469,7 +458,7 @@ function toggle_pills(x__type){
                     $('.headline_body_' + x__type).html(data);
                     load_tab(x__type);
                 });
-            } else if (current_type==12274 || current_type==11030){
+            } else if (current_type==12274){
                 $.post("/e/view_body_e", {
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('item-counter'),
