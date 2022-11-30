@@ -81,7 +81,7 @@ foreach($coins_count as $x__type => $counter) {
                 e__id:current_id()
             }, function (data) {
                 $('.top_body_' + x__type_top).html(data);
-                $('html, body').scrollTop($('.main_item').offset().top - 55)
+                $('html, body').scrollTop($('.main_item').offset().top - 54)
                 load_tab(x__type_top);
             });
         }, 987);
