@@ -411,6 +411,9 @@ function e_sort_load(x__type) {
 
 function toggle_pills(x__type){
 
+    console.log(x__type+' PILL TOGGLED');
+
+
     var x__down = 0;
     var x__right = 0;
     var current_type = ( $('#focus__type').length ? parseInt($('#focus__type').val()) : 0 );
