@@ -84,7 +84,7 @@ foreach($coins_count as $x__type => $counter) {
                 $('html, body').scrollTop($('.main_item').offset().top - 50)
                 load_tab(x__type_top);
             });
-        }, 610);
+        }, 1597);
 
 
 
