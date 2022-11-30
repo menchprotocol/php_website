@@ -442,7 +442,7 @@ function toggle_pills(x__type){
         //window.location.hash = '#'+x__type;
 
         //Disable Scrolling:
-        if(current_type==11030){
+        if(current_type==11030 && 0){
             console.log('Scroll Disabled');
             var scrollY = window.scrollY;
             window.onscroll = function(){
