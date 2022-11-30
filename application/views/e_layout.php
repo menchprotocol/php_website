@@ -87,10 +87,10 @@ foreach($item_counts as $x__type => $counter) {
 
     $(document).ready(function () {
 
-        toggle_pills(11030);
+        //toggle_pills(11030);
 
         //Source Loader:
-        load_tab(<?= $focus_tab ?>);
+        //load_tab(<?= $focus_tab ?>);
 
         set_autosize($('.texttype__lg.text__6197_'+current_id()));
 
