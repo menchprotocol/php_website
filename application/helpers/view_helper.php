@@ -588,7 +588,7 @@ function view_body_e($x__type, $counter, $e__id){
             $ui .= '<script> $(document).ready(function () { i_load_search('.$x__type.'); }); </script>';
         }
 
-    } elseif($x__type==12274){
+    } elseif($x__type==12274 || $x__type==11030){
 
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
