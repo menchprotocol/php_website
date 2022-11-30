@@ -71,14 +71,18 @@ foreach($coins_count as $x__type => $counter) {
 
         //toggle_pills(11030);
 
-        <?php
-        foreach($this->config->item('e___26005') as $x__type => $m) {
-            if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
-                echo 'load_tab('.$x__type.');';
-                break;
+
+        setTimeout(function () {
+            <?php
+            foreach($this->config->item('e___26005') as $x__type => $m) {
+                if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
+                    echo 'load_tab('.$x__type.');';
+                    break;
+                }
             }
-        }
-        ?>
+            ?>
+        }, 987);
+
 
         set_autosize($('.texttype__lg.text__6197_'+current_id()));
 
