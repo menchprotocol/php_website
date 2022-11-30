@@ -77,15 +77,8 @@ foreach($coins_count as $x__type => $counter) {
             counter:$('.top_body_' + x__type_top).attr('item-counter'),
             e__id:current_id()
         }, function (data) {
-
-            console.log('Scroll Disabled');
-            var scrollY = window.scrollY;
-            window.onscroll = function(){
-                window.scrollTo(0, scrollY);
-                window.onscroll = null;
-            };
-
             $('.top_body_' + x__type_top).html(data);
+            $('html, body').scrollTop($('.main_item').offset().top)
             load_tab(x__type_top);
         });
 
