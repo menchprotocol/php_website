@@ -559,23 +559,7 @@ function view_body_e($x__type, $counter, $e__id){
     $focus_e = ($e__id == $member_e['e__id'] ? $member_e : false);
     $ui = '';
 
-    if($x__type==4250){
-
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
-        foreach($list_results as $i) {
-            $ui .= view_i(4250, 0, null, $i, $focus_e);
-        }
-        $ui .= '</div>';
-
-    } elseif($x__type==4251) {
-
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
-        foreach ($list_results as $e) {
-            $ui .= view_e(4251, $e, source_of_e($e__id));
-        }
-        $ui .= '</div>';
-
-    } elseif($x__type==12273){
+    if($x__type==12273){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
@@ -640,13 +624,20 @@ function view_body_e($x__type, $counter, $e__id){
 
         }
 
-    } elseif(in_array($x__type, $CI->config->item('n___13550'))){
+    } elseif($x__type==6255){
 
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
-        foreach($list_results as $i) {
-            $ui .= view_i(13550, 0, null, $i, $focus_e);
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
+        foreach ($list_results as $i) {
+            $ui .= view_i($x__type, $i['i__id'], null, $i, $focus_e);
         }
         $ui .= '</div>';
+
+        //No sorting for now...
+        if ($e__id == $member_e['e__id'] && in_array($x__type, $CI->config->item('n___4603'))) {
+            //$ui .= '<script> $(document).ready(function () { x_sort_load(' . $x__type . ') }); </script>';
+        } else {
+            //$ui .= '<style> #list-in-' . $x__type . ' .x_sort {display:none !important;} </style>';
+        }
 
     }
 

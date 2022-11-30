@@ -47,12 +47,12 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 }
 
 
-$item_counts = array();
+$coins_count = array();
 $e___14874 = $this->config->item('e___14874');
 foreach($e___14874 as $x__type => $m) {
     $coin_count = view_coins_i($x__type, $i_focus['i__id'], 0, false);
     if($coin_count>0 || in_array($x__type , $this->config->item('n___30808'))){
-        $item_counts[$x__type] = $coin_count;
+        $coins_count[$x__type] = $coin_count;
     }
 }
 
@@ -60,7 +60,7 @@ foreach($e___14874 as $x__type => $m) {
 //Determine focus/auto-load tab:
 $focus_tab = 0;
 foreach($this->config->item('e___20424') as $x__type => $m) {
-    if(isset($item_counts[$x__type]) && $item_counts[$x__type] > 0){
+    if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
         $focus_tab = $x__type;
         break;
     }
@@ -97,7 +97,7 @@ echo '</div>';
 echo '<ul class="nav nav-tabs nav12273"></ul>';
 
 //Print results:
-foreach($item_counts as $x__type => $counter) {
+foreach($coins_count as $x__type => $counter) {
     echo view_pill($x__type, $counter, $e___14874[$x__type], ($x__type==$focus_tab ? view_body_i($x__type, $counter, $i_focus['i__id']) : null ), ($x__type==$focus_tab));
     //echo view_pill($x__type, $counter, $e___14874[$x__type], view_body_i($x__type, $counter, $i_focus['i__id']), true);
 }
