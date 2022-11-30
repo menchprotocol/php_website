@@ -1614,10 +1614,6 @@ function source_of_e($e__id, $member_e = array()){
         //Member is the source
         $e__id==$member_e['e__id']
 
-        //Member has Advance source editing superpower
-        || superpower_active(10939, true)
-        || superpower_active(13422, true)
-
         //Member created the source
         || count($CI->X_model->fetch(array(
             'x__source' => $member_e['e__id'],
@@ -1625,13 +1621,16 @@ function source_of_e($e__id, $member_e = array()){
             'x__type' => 4251, //New Source Created
         )))
 
-        //Member has source in their portfolio
+        //If Source Follows this Member
         || count($CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__up' => $member_e['e__id'],
             'x__down' => $e__id,
         )))
+
+        //Member has Advance source editing superpower
+        || superpower_active(13422, true)
     );
 
 }

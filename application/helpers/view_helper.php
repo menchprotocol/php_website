@@ -594,7 +594,7 @@ function view_body_e($x__type, $counter, $e__id){
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
 
         foreach($list_results as $e) {
-            $ui .= view_e($x__type, $e, null,  ($source_of_e || ($member_e && ($member_e['e__id']==$e['x__source']))));
+            $ui .= view_e($x__type, $e, null,  $source_of_e);
         }
 
         if ($counter > count($list_results)) {
@@ -1864,7 +1864,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
     $is_cache = in_array($x__type, $CI->config->item('n___14599'));
 
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
-    $source_of_e = ($superpower_13422) || ($source_of_e && $member_e) || ($x__id && ($e['x__up']==$member_e['e__id'] || $e['x__down']==$member_e['e__id']));
+    $source_of_e = $superpower_13422 || $source_of_e;
     $has_note = ( $x__id > 0 && in_array($e['x__type'], $CI->config->item('n___13550')));
 
 
@@ -1911,6 +1911,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
             }
             $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
 
+
             if($e__id==14937 && $source_of_e){
 
                 //COIN COVER
@@ -1927,7 +1928,7 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
                 //Edit Message
                 $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>';
 
-            } elseif($e__id==6287 && in_array($e['e__id'], $CI->config->item('n___6287')) && superpower_active(12699, true)){
+            } elseif($e__id==6287 && in_array($e['e__id'], $CI->config->item('n___6287'))){
 
                 //App Store
                 $action_buttons .= '<a href="/-'.$e['e__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
@@ -1995,13 +1996,16 @@ function view_e($x__type, $e, $extra_class = null, $source_of_e = false)
 
 
     //Top action menu:
-    $ui .= '<table class="coin_coins"><tr>';
-    $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && !$cache_app ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
-    $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && !$cache_app && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</div></td>'; //<div class="show-on-hover">'.$edit_button.'</div>
-    $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
-    $ui .= '<td width="20%"><div class="show-on-hover">'.( $can_click && $show_text_editor ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
-    $ui .= '<td width="20%"><div class="show-on-hover" title="' . ( isset($e['x__time']) ? view_time_difference(strtotime($e['x__time'])) . ' Ago: '.$e['x__time'] : '' ).'">'.$dropdown_ui.'</div></td>';
-    $ui .= '</tr></table>';
+    if(!$cache_app){
+        $ui .= '<table class="coin_coins"><tr>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</div></td>'; //<div class="show-on-hover">'.$edit_button.'</div>
+        $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.( $can_click && $show_text_editor ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover" title="' . ( isset($e['x__time']) ? view_time_difference(strtotime($e['x__time'])) . ' Ago: '.$e['x__time'] : '' ).'">'.$dropdown_ui.'</div></td>';
+        $ui .= '</tr></table>';
+    }
+
 
 
 
