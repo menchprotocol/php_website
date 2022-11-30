@@ -554,9 +554,19 @@ function view_body_e($x__type, $counter, $e__id){
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $superpower_10939 = superpower_active(10939, true);
+    $source_of_e = source_of_e($e__id);
     $list_results = view_coins_e($x__type, $e__id, 1);
     $focus_e = ($e__id == $member_e['e__id'] ? $member_e : false);
+    $es = $CI->E_model->fetch(array(
+        'e__id' => $e__id,
+    ));
+    if(!count($es)){
+        return false;
+    }
     $ui = '';
+
+    //Check Permissions to make sure:
+
 
     if($x__type==12273){
 
@@ -664,8 +674,8 @@ function view_body_i($x__type, $counter, $i__id){
     if(in_array($x__type, $CI->config->item('n___13550'))){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
-        foreach($list_results as $this_i) {
-            $ui .= view_e($x__type, $this_i,  null);
+        foreach($list_results as $i_this) {
+            $ui .= view_e($x__type, $i_this,  null);
         }
         $ui .= '</div>';
 
@@ -1939,7 +1949,7 @@ function view_e($x__type, $e, $extra_class = null)
                 //Clone:
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].', 0)" class="dropdown-item css__title">'.$anchor.'</a>';
 
-            } elseif($e__id==10673 && $source_of_e && $x__id > 0){
+            } elseif($e__id==10673 && $x__id > 0 && $superpower_13422){
 
                 //UNLINK
                 $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</span></a>';

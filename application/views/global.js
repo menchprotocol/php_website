@@ -1763,7 +1763,7 @@ function click_has_class(target_el, target_class){
 
 function e_remove(x__id, x__type) {
 
-    var r = confirm("Remove this source?");
+    var r = confirm("Unlink this source?");
     if (r == true) {
         $.post("/e/e_remove", {
 
