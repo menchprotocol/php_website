@@ -1601,6 +1601,7 @@ function e__add(x__type, e_existing_id) {
     //Add via Ajax:
     $.post("/e/e__add", {
 
+        x__type_from: $('#focus__type').val(),
         x__type: x__type,
         focus__id: current_id(),
         e_existing_id: e_existing_id,

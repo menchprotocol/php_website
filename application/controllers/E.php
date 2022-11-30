@@ -650,7 +650,7 @@ class E extends CI_Controller
             ));
         }
 
-        $adding_to_idea = ($_POST['x__type']==12274);
+        $adding_to_idea = ($_POST['x__type_from']==12273);
 
         if($adding_to_idea){
 
@@ -787,14 +787,14 @@ class E extends CI_Controller
             //Add transactions only if not previously added by the URL function:
             if (in_array($_POST['x__type'], $this->config->item('n___14686'))) {
 
-                //Profile
+                //Following
                 $x__down = $fetch_o[0]['e__id'];
                 $x__up = $focus_e['e__id'];
                 $x__spectrum = 0; //Never sort profiles, only sort portfolios
 
             } else {
 
-                //Portfolio
+                //Followers
                 $x__up = $fetch_o[0]['e__id'];
                 $x__down = $focus_e['e__id'];
 
