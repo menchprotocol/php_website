@@ -466,7 +466,7 @@ function toggle_pills(x__type){
                     $('.headline_body_' + x__type).html(data);
                     load_tab(x__type);
                 });
-            } else if (current_type==12274 || current_type==11030 || current_type==11029){
+            } else if (current_type==12274 || current_type==11030){
                 $.post("/e/view_body_e", {
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('item-counter'),
@@ -1551,10 +1551,7 @@ function i__add(x__type, link_i__id) {
 
         if (data.status) {
 
-            if(x__type==13542){
-                //Next Ideas map to ideas so increment counter:
-                x_type_counter(12273, 1);
-            }
+            x_type_counter(x__type, 1);
 
             x_sort_load(x__type);
 

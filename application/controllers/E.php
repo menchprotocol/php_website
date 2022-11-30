@@ -57,7 +57,7 @@ class E extends CI_Controller
             if($x__type==6255){
 
                 //RECENT DISCOVERIES
-                $counter = view_coins_e($x__type, $member_e['e__id'], 0, false);
+                $counter = view_coins_e(6255, $member_e['e__id'], 0, false);
                 if($counter){
                     $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$counter.' '.$m['m__title'].'</div>';
                     foreach(view_coins_e(6255, $member_e['e__id'], 1, false, 10) as $item){
@@ -221,7 +221,7 @@ class E extends CI_Controller
             $ui = '';
             $listed_items = 0;
 
-            if($_POST['x__type']==11029 || $_POST['x__type']==11030 || $_POST['x__type']==12274){
+            if($_POST['x__type']==11030 || $_POST['x__type']==12274){
                 //SOURCES
                 $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
                 $e___6177 = $this->config->item('e___6177'); //Source Types

@@ -236,16 +236,16 @@ class X extends CI_Controller
             if($_POST['apply_id']==4997){
 
                 //Source list:
-                $counter = view_coins_e(11029, $_POST['coin__id'], 0, false, 500);
+                $counter = view_coins_e(12274, $_POST['coin__id'], 0, false, 500);
                 if(!$counter){
                     echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Sources yet...</div>';
                 } else {
                     echo '<div class="msg alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' source'.view__s($counter).':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
-                    foreach(view_coins_e(11029, $_POST['coin__id'], 1, true, 500) as $e) {
+                    foreach(view_coins_e(12274, $_POST['coin__id'], 1, true, 500) as $e) {
                         array_push($ids, $e['e__id']);
-                        echo view_e(11029, $e);
+                        echo view_e(12274, $e);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent" title="Total of '.count($ids).'">'.join(', ',$ids).'</div>';
@@ -270,7 +270,7 @@ class X extends CI_Controller
                     $ids = array();
                     foreach($is_next as $i) {
                         array_push($ids, $i['i__id']);
-                        echo view_i(13542, 0, null, $i);
+                        echo view_i(12273, 0, null, $i);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent">'.join(',',$ids).'</div>';

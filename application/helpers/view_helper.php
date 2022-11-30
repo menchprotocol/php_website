@@ -563,7 +563,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i) {
-            $ui .= view_i($x__type, 0, null, $i, $focus_e);
+            $ui .= view_i(4250, 0, null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -571,7 +571,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach ($list_results as $e) {
-            $ui .= view_e($x__type, $e, source_of_e($e__id));
+            $ui .= view_e(4251, $e, source_of_e($e__id));
         }
         $ui .= '</div>';
 
@@ -579,12 +579,12 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
-            $ui .= view_i($x__type, 0, null, $i, $focus_e, null);
+            $ui .= view_i(12273, 0, null, $i, $focus_e, null);
         }
 
         if ($counter > count($list_results)) {
             //We have even more:
-            $ui .= view_load_page_i($x__type, 1, $limit, $counter);
+            $ui .= view_load_page_i(12273, 1, $limit, $counter);
         }
 
         $ui .= '</div>';
@@ -604,7 +604,7 @@ function view_body_e($x__type, $counter, $e__id){
             $ui .= '<script> $(document).ready(function () { i_load_search('.$x__type.'); }); </script>';
         }
 
-    } elseif($x__type==12274 || $x__type==11029 || $x__type==11030){
+    } elseif($x__type==12274){
 
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
@@ -709,19 +709,19 @@ function view_body_i($x__type, $counter, $i__id){
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
         }
 
-    } elseif($x__type==12273 || $x__type==13542){
+    } elseif($x__type==12273){
 
         //IDEAS
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-13542">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
         foreach($list_results as $next_i) {
-            $ui .= view_i(13542, 0, $is[0], $next_i);
+            $ui .= view_i(12273, 0, $is[0], $next_i);
         }
         $ui .= '</div>';
 
         if($e_of_i){
-            $ui .= '<div class="new-list-13542 list-adder '.superpower_active(10939).'">
+            $ui .= '<div class="new-list-12273 list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-13542 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-12273 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
@@ -805,7 +805,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if($x__type==12274 || $x__type==11029){
+    if($x__type==12274){
 
         //DOWN
         $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
@@ -828,17 +828,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
-
-    } elseif($x__type==10573){
-
-        $order_columns = array('x__spectrum' => 'ASC');
-        $join_objects = array('x__right');
-        $query_filters = array(
-            'x__up' => $e__id,
-            'x__type' => 10573, //WATCHERS
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-        );
         
     } elseif($x__type==12273){
 
@@ -856,17 +845,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $e__id,
-        );
-
-    } elseif($x__type==12896){
-
-        $join_objects = array('x__right');
-        $order_columns = array('x__spectrum' => 'ASC', 'x__id' => 'DESC');
-        $query_filters = array(
-            'x__up' => $e__id,
-            'x__type' => 12896,
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
         );
 
     } elseif($x__type==6255){
@@ -887,29 +865,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
             'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
         );
 
-    } elseif(in_array($x__type, $CI->config->item('n___13550'))){
-
-        //IDEA NOTES
-        $join_objects = array('x__right');
-        $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
-        $query_filters = array(
-            'x__up' => $e__id,
-            'x__type' => $x__type,
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-        );
-
-    } elseif(in_array($x__type, $CI->config->item('n___12149'))){
-
-        //Ideas/Sources Owned
-        $join_objects = array();
-        $order_columns = array('x__id' => 'DESC'); //LATEST DISCOVERIES
-        $query_filters = array(
-            'x__source' => $e__id,
-            'x__type' => $x__type,
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        );
-
     } else {
 
         return null;
@@ -924,13 +879,13 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
             $e___31003 = $CI->config->item('e___31003'); //Expanded Coins
             $view_coins_e_11030 = view_coins_e(11030, $e__id, $page_num, $append_coin_icon);
-            $view_coins_e_11029 = view_coins_e(11029, $e__id, $page_num, $append_coin_icon);
+            $view_coins_e_12274 = view_coins_e(12274, $e__id, $page_num, $append_coin_icon);
 
             return array_merge(
                 array(array('raw_html' => '<h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[11030]['m__cover'].'</span>'.$e___31003[11030]['m__title'].':</h3>')),
                 ( count($view_coins_e_11030) ? $view_coins_e_11030 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) ),
-                array(array('raw_html' => '<br /><h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[11029]['m__cover'].'</span>'.$e___31003[11029]['m__title'].':</h3>')),
-                ( count($view_coins_e_11029) ? $view_coins_e_11029 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) )
+                array(array('raw_html' => '<br /><h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[12274]['m__cover'].'</span>'.$e___31003[12274]['m__title'].':</h3>')),
+                ( count($view_coins_e_12274) ? $view_coins_e_12274 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) )
             );
 
         } else {
@@ -944,18 +899,17 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 
         if($x__type==12274){
 
-            $coins1 = view_coins_e(11029, $e__id, 0, false);
+            $coins1 = view_coins_e(12274, $e__id, 0, false);
             $coins2 = view_coins_e(11030, $e__id, 0, false);
             $count_query = $coins1 + $coins2;
             $visual_counter = view_number($coins1+$coins2);
-            $title_desc = number_format($coins1, 0).' '.$e___11035[11019]['m__title'].' & '.number_format($coins2, 0).' '.$e___11035[13542]['m__title'];
+            $title_desc = number_format($coins1, 0).' '.$e___11035[11019]['m__title'].' & '.number_format($coins2, 0).' '.$e___11035[12273]['m__title'];
 
         } else {
 
-            $coins2 = ( $x__type==12274 || $x__type==11029 ? view_coins_e(12274, $e__id, 0, false) : 0 );
             $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
-            $count_query = $query[0]['totals']+$coins2;
-            $visual_counter = view_number($count_query+$coins2);
+            $count_query = $query[0]['totals'];
+            $visual_counter = view_number($count_query);
             $title_desc = number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'];
 
         }
@@ -1009,7 +963,6 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
 
-        //Determine Sort:
         $order_columns = array();
         foreach($CI->config->item('e___13550') as $x__sort_id => $sort) {
             $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
@@ -1019,9 +972,21 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         }
         $order_columns['e__title'] = 'ASC';
 
-    } elseif($x__type==12273 || $x__type==13542){
+    } elseif($x__type==11019) {
 
-        //IDEAS
+        //IDEAS PREVIOUS
+        $order_columns = array('i__title' => 'ASC');
+        $join_objects = array('x__left');
+        $query_filters = array(
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__right' => $i__id,
+        );
+
+    } elseif($x__type==12273){
+
+        //IDEAS NEXT
         $order_columns = array('x__spectrum' => 'ASC');
         $join_objects = array('x__right');
         $query_filters = array(
@@ -1045,28 +1010,6 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
             $query_filters['x__source'] = intval($_GET['load__e']);
         }
 
-    } elseif($x__type==11019) {
-
-        $order_columns = array('i__title' => 'ASC');
-        $join_objects = array('x__left');
-        $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__right' => $i__id,
-        );
-
-    } elseif(in_array($x__type, $CI->config->item('n___13550'))){
-
-        //1x Source Ref
-        $order_columns = array('x__spectrum' => 'ASC');
-        $join_objects = array('x__up');
-        $query_filters = array(
-            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => $x__type,
-            'x__right' => $i__id,
-        );
-
     } else {
 
         return null;
@@ -1081,14 +1024,13 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
 
             $e___31003 = $CI->config->item('e___31003'); //Expanded Coins
             $view_coins_i_11019 = view_coins_i(11019, $i__id, $page_num, $append_coin_icon);
-            $view_coins_i_13542 = view_coins_i(13542, $i__id, $page_num, $append_coin_icon);
+            $view_coins_i_12273 = view_coins_i(12273, $i__id, $page_num, $append_coin_icon);
 
             return array_merge(
-
                 array(array('raw_html' => '<h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[11019]['m__cover'].'</span>'.$e___31003[11019]['m__title'].':</h3>')),
                 ( count($view_coins_i_11019) ? $view_coins_i_11019 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) ),
-                array(array('raw_html' => '<br /><h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[13542]['m__cover'].'</span>'.$e___31003[13542]['m__title'].':</h3>')),
-                ( count($view_coins_i_13542) ? $view_coins_i_13542 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) )
+                array(array('raw_html' => '<br /><h3 class="menu_header css__title"><span class="icon-block-xxs">'.$e___31003[12273]['m__cover'].'</span>'.$e___31003[12273]['m__title'].':</h3>')),
+                ( count($view_coins_i_12273) ? $view_coins_i_12273 : array(array('raw_html' => '<p class="menu_header">Nothing yet...</p>')) )
             );
 
         } else {
@@ -1103,10 +1045,10 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
         if(0 && $x__type==12273){
 
             $coins1 = view_coins_i(11019, $i__id, 0, false);
-            $coins2 = view_coins_i(13542, $i__id, 0, false);
+            $coins2 = view_coins_i(12273, $i__id, 0, false);
             $count_query = $coins1 + $coins2;
             $visual_counter = view_number($count_query);
-            $title_desc = number_format($coins1, 0).' '.$e___11035[11019]['m__title'].' & '.number_format($coins2, 0).' '.$e___11035[13542]['m__title'];
+            $title_desc = number_format($coins1, 0).' '.$e___11035[11019]['m__title'].' & '.number_format($coins2, 0).' '.$e___11035[12273]['m__title'];
 
         } else {
 

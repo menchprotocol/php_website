@@ -305,7 +305,7 @@ class I extends CI_Controller {
                     }
                 }
 
-            } elseif($_POST['x__type']==13542 || $_POST['x__type']==11019 || $_POST['x__type']==12273){
+            } elseif($_POST['x__type']==11019 || $_POST['x__type']==12273){
 
                 //IDEAS
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
@@ -392,25 +392,6 @@ class I extends CI_Controller {
         $es = $this->E_model->fetch(array(
             'e__id' => $focus__id,
         ));
-
-        /*
-        $query_filters = array(
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__up' => $focus__id,
-        );
-
-        //Fetch & display next batch of children:
-        $extra_items = $this->X_model->fetch($query_filters, array('x__right'), $items_per_page, ($page * $items_per_page), array('i__spectrum' => 'DESC'));
-
-        foreach($extra_items as $item) {
-            echo view_i(13550, 0, null, $item);
-        }
-        //Count total children:
-        $child_count = $this->X_model->fetch($query_filters, array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
-        */
-
 
         foreach($list_results as $i) {
             echo view_i($x__type, 0, null, $i, $es[0]);

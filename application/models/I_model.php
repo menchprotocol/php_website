@@ -465,7 +465,7 @@ class I_model extends CI_Model
                 }
 
                 //Tree Check if Next
-                if($x__type==13542 && count($this->X_model->find_previous(0, $link_i[0]['i__id'], $focus_i[0]['i__id']))){
+                if($x__type==12273 && count($this->X_model->find_previous(0, $link_i[0]['i__id'], $focus_i[0]['i__id']))){
                     return array(
                         'status' => 0,
                         'message' => 'Idea already added as previous so it cannot be added as next',
