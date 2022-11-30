@@ -69,7 +69,7 @@ foreach($coins_count as $x__type => $counter) {
         };
 
     $(document).ready(function () {
-
+        //$('html, body').scrollTop($('.here').offset().top).
 
         var x__type_top = 11030;
         $.post("/e/view_body_e", {
@@ -77,7 +77,6 @@ foreach($coins_count as $x__type => $counter) {
             counter:$('.top_body_' + x__type_top).attr('item-counter'),
             e__id:current_id()
         }, function (data) {
-            $('.top_body_' + x__type_top).html(data);
 
             console.log('Scroll Disabled');
             var scrollY = window.scrollY;
@@ -86,6 +85,7 @@ foreach($coins_count as $x__type => $counter) {
                 window.onscroll = null;
             };
 
+            $('.top_body_' + x__type_top).html(data);
             load_tab(x__type_top);
         });
 
