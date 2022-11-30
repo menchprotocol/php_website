@@ -2053,8 +2053,9 @@ function view_e($x__type, $e, $extra_class = null)
     */
 
     //Message
-    if ($x__id > 0 && $source_of_e || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']))) {
-        if(!$has_any_lock){
+    $grant_access = $source_of_e || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
+    if ($x__id > 0 && $grant_access) {
+        if(!$has_any_lock || $grant_access){
 
             $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
 
