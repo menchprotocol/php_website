@@ -649,7 +649,7 @@ class E extends CI_Controller
             ));
         }
 
-        $adding_to_idea = ($_POST['coin_type']==12273);
+        $adding_to_idea = ($_POST['base_coin']==12273);
 
         if($adding_to_idea){
 

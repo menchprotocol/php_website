@@ -819,7 +819,7 @@ echo '</div>';
     var can_skip = <?= intval($can_skip) ?>;
 </script>
 
-<input type="hidden" id="coin_type" value="12273" />
+<input type="hidden" id="base_coin" value="12273" />
 <input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
 <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />

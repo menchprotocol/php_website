@@ -347,10 +347,10 @@ function toggle_headline(x__type){
 
     var x__down = 0;
     var x__right = 0;
-    var coin_type = ( $('#coin_type').length ? parseInt($('#coin_type').val()) : 0 );
-    if(coin_type==12273){
+    var base_coin = ( $('#base_coin').length ? parseInt($('#base_coin').val()) : 0 );
+    if(base_coin==12273){
         x__right = current_id();
-    } else if (coin_type==12274){
+    } else if (base_coin==12274){
         x__down = current_id();
     }
 
@@ -415,11 +415,11 @@ function toggle_pills(x__type){
 
     var x__down = 0;
     var x__right = 0;
-    var coin_type = ( $('#coin_type').length ? parseInt($('#coin_type').val()) : 0 );
+    var base_coin = ( $('#base_coin').length ? parseInt($('#base_coin').val()) : 0 );
 
-    if(coin_type==12273){
+    if(base_coin==12273){
         x__right = current_id();
-    } else if (coin_type==12274){
+    } else if (base_coin==12274){
         x__down = current_id();
     }
 
@@ -449,7 +449,7 @@ function toggle_pills(x__type){
             $('.headline_body_' + x__type).html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
 
             //Nothing loaded, we need to load:
-            if (coin_type==12273){
+            if (base_coin==12273){
                 $.post("/i/view_body_i", {
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('read-counter'),
@@ -458,7 +458,7 @@ function toggle_pills(x__type){
                     $('.headline_body_' + x__type).html(data);
                     load_tab(12273,x__type);
                 });
-            } else if (coin_type==12274){
+            } else if (base_coin==12274){
                 $.post("/e/view_body_e", {
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('read-counter'),
@@ -1473,7 +1473,7 @@ function coin__save(){
 
 }
 
-function load_tab(coin_type, x__type){
+function load_tab(base_coin, x__type){
 
     console.log('Tab loaded for @'+x__type);
 
@@ -1486,15 +1486,13 @@ function load_tab(coin_type, x__type){
     x_set_start_text();
     x_sort_load(x__type);
 
-    if(coin_type==12273){
+    if(x__type==12273 || (base_coin==12274 && x__type==6255)){
         e_load_search(x__type);
         e_sort_load(x__type);
-    } else if(coin_type==12274) {
+    } else if(base_coin==12274 || (base_coin==12273 && x__type==6255)) {
         i_load_search(x__type);
     }
-
-
-
+    
 }
 
 
@@ -1606,7 +1604,7 @@ function e__add(x__type, e_existing_id) {
     //Add via Ajax:
     $.post("/e/e__add", {
 
-        coin_type: $('#coin_type').val(),
+        base_coin: $('#base_coin').val(),
         x__type: x__type,
         focus__id: current_id(),
         e_existing_id: e_existing_id,

@@ -108,7 +108,7 @@ foreach($coins_count as $x__type => $counter) {
 <style>
     <?= ( !$e_of_i ? '.note-editor {display:none;}' : '' ) ?>
 </style>
-<input type="hidden" id="coin_type" value="12273" />
+<input type="hidden" id="base_coin" value="12273" />
 <input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
 <script type="text/javascript">
 

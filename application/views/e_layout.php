@@ -58,7 +58,7 @@ foreach($coins_count as $x__type => $counter) {
 ?>
 
 
-<input type="hidden" id="coin_type" value="12274" />
+<input type="hidden" id="base_coin" value="12274" />
 <input type="hidden" id="focus__id" value="<?= $e['e__id'] ?>" />
 <script type="text/javascript">
 
