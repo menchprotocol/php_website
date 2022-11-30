@@ -48,26 +48,8 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 
 
 $item_counts = array();
-$e___11018 = $this->config->item('e___11018');
-foreach($e___11018 as $x__type => $m) {
-
-    //Have Needed Superpowers?
-    $require = 0;
-    $missing = 0;
-    $meeting = 0;
-    foreach(array_intersect($this->config->item('n___10957'), $m['m__following']) as $superpower_required){
-        $require++;
-        if(superpower_active($superpower_required, true)){
-            $meeting++;
-        } else {
-            $missing++;
-        }
-    }
-    if($require && $missing){
-        //STRICT: Anything missing and it would be skipped!
-        continue;
-    }
-
+$e___14874 = $this->config->item('e___14874');
+foreach($e___14874 as $x__type => $m) {
     $coin_count = view_coins_i($x__type, $i_focus['i__id'], 0, false);
     if($coin_count>0 || in_array($x__type , $this->config->item('n___30808'))){
         $item_counts[$x__type] = $coin_count;
@@ -116,8 +98,8 @@ echo '<ul class="nav nav-tabs nav12273"></ul>';
 
 //Print results:
 foreach($item_counts as $x__type => $counter) {
-    echo view_pill($x__type, $counter, $e___11018[$x__type], ($x__type==$focus_tab ? view_body_i($x__type, $counter, $i_focus['i__id']) : null ), ($x__type==$focus_tab));
-    //echo view_pill($x__type, $counter, $e___11018[$x__type], view_body_i($x__type, $counter, $i_focus['i__id']), true);
+    echo view_pill($x__type, $counter, $e___14874[$x__type], ($x__type==$focus_tab ? view_body_i($x__type, $counter, $i_focus['i__id']) : null ), ($x__type==$focus_tab));
+    //echo view_pill($x__type, $counter, $e___14874[$x__type], view_body_i($x__type, $counter, $i_focus['i__id']), true);
 }
 
 

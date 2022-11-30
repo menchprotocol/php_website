@@ -25,36 +25,15 @@ echo '</div>';
 echo '<ul class="nav nav-tabs nav12274"></ul>';
 
 $item_counts = array();
-$e___11089 = $this->config->item('e___11089');
-foreach($e___11089 as $x__type => $m) {
-
-    $x__type = ( $x__type==12274 ? 11029 : $x__type );
-
-    break;
-    //Have Needed Superpowers?
-    $require = 0;
-    $missing = 0;
-    $meeting = 0;
-    foreach(array_intersect($this->config->item('n___10957'), $m['m__following']) as $superpower_required){
-        $require++;
-        if(superpower_active($superpower_required, true)){
-            $meeting++;
-        } else {
-            $missing++;
-        }
-    }
-    if($require && !$meeting){
-        //RELAX: Meet any requirement and it would be shown
-        continue;
-    }
-
+$e___14874 = $this->config->item('e___14874'); //Coins
+foreach($e___14874 as $x__type => $m) {
     $coin_count = view_coins_e($x__type, $e['e__id'], 0, false);
     if($coin_count > 0 || ( in_array($x__type , $this->config->item('n___28956')) && superpower_active(10939, true) )){
         $item_counts[$x__type] = $coin_count;
     }
 }
 
-//Determine focus/auto-load tab:
+//Determine focus/auto-load tab, if any:
 $focus_tab = 0;
 foreach($this->config->item('e___26005') as $x__type => $m) {
     if(isset($item_counts[$x__type]) && $item_counts[$x__type] > 0){
@@ -63,11 +42,13 @@ foreach($this->config->item('e___26005') as $x__type => $m) {
     }
 }
 
+$focus_tab = 0; //TODO Remove later
+
 
 //Print results:
 foreach($item_counts as $x__type => $counter) {
     $x__type = ( $x__type==12274 ? 11029 : $x__type );
-    echo view_pill($x__type, $counter, $e___11089[$x__type], ($x__type==$focus_tab ? view_body_e($x__type, $counter, $e['e__id']) : null ), ($x__type==$focus_tab));
+    echo view_pill($x__type, $counter, $e___14874[$x__type], ($x__type==$focus_tab ? view_body_e($x__type, $counter, $e['e__id']) : null ), ($x__type==$focus_tab));
 }
 
 ?>
