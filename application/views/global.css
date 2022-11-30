@@ -1165,7 +1165,7 @@ a.headline {
     margin-bottom: 5px;
 }
 .platform-navigation .block-x, .platform-navigation .block-menu {
-    width:40px;
+    width:25px;
     margin: 0;
     padding: 0;
     line-height: 100% !important;
@@ -3784,6 +3784,7 @@ main {
 
 .home_black_font .top-header-position .platform-logo i,
 .home_black_font .top-header-position .menu-icon i,
+.home_black_font .top-header-position .block-x i,
 .home_black_font .top-header-position .text-logo {
     color:#000000 !important;
 }
