@@ -16,7 +16,7 @@ $this->X_model->create(array(
 $x__type_top = 11030;
 $counter_top = view_coins_e($x__type_top, $e['e__id'], 0, false);
 if(!isset($_GET['hide'])){
-    echo '<div class="hideIfEmpty top_body_'.$x__type_top.'" item-counter="'.$counter_top.'"></div>';
+    echo '<div class="hideIfEmpty top_body_'.$x__type_top.'" read-counter="'.$counter_top.'"></div>';
 }
 
 
@@ -36,14 +36,11 @@ $coins_count = array();
 $e___14874 = $this->config->item('e___14874'); //Coins
 foreach($e___14874 as $x__type => $m) {
     $counter = view_coins_e($x__type, $e['e__id'], 0, false);
-    if($x__type==12274){
-        $counter += $counter_top;
-    }
     if($counter > 0 || ( in_array($x__type , $this->config->item('n___28956')) && superpower_active(10939, true) )){
         $coins_count[$x__type] = $counter;
     }
     $nav_content .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type_top.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>';
-    $body_content .= '<div class="headlinebody headline_body_'.$x__type.' hidden" item-counter="'.$counter.'"></div>';
+    $body_content .= '<div class="headlinebody headline_body_'.$x__type.' hidden" read-counter="'.$counter - ($x__type==12274 ? $counter_top : 0 ).'"></div>';
 }
 
 
@@ -80,7 +77,7 @@ foreach($coins_count as $x__type => $counter) {
             var x__type_top = 11030;
             $.post("/e/view_body_e", {
                 x__type:x__type_top,
-                counter:$('.top_body_' + x__type_top).attr('item-counter'),
+                counter:$('.top_body_' + x__type_top).attr('read-counter'),
                 e__id:current_id()
             }, function (data) {
                 $('.top_body_' + x__type_top).html(data);

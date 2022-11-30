@@ -899,7 +899,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
         } else {
 
             $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
-            $count_query = $query[0]['totals'];
+            $count_query = $query[0]['totals'] + ( $x__type==12274 ? view_coins_e(11030, $e__id, 0, false) : 0 );
             $visual_counter = view_number($count_query);
             $title_desc = number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'];
 
@@ -1804,7 +1804,7 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
 function view_pill($x__type, $counter, $m, $ui = null, $is_open = true){
 
     return '<script> '.( $is_open ? ' $(document).ready(function () { load_tab('.$x__type.'); }); ' : '' ).' $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>' .
-        '<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'" item-counter="'.$counter.'">'.$ui.'</div>';
+        '<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'" read-counter="'.$counter.'">'.$ui.'</div>';
 
 }
 

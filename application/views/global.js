@@ -452,7 +452,7 @@ function toggle_pills(x__type){
             if (current_type==12273){
                 $.post("/i/view_body_i", {
                     x__type:x__type,
-                    counter:$('.headline_body_' + x__type).attr('item-counter'),
+                    counter:$('.headline_body_' + x__type).attr('read-counter'),
                     i__id:current_id()
                 }, function (data) {
                     $('.headline_body_' + x__type).html(data);
@@ -461,7 +461,7 @@ function toggle_pills(x__type){
             } else if (current_type==12274){
                 $.post("/e/view_body_e", {
                     x__type:x__type,
-                    counter:$('.headline_body_' + x__type).attr('item-counter'),
+                    counter:$('.headline_body_' + x__type).attr('read-counter'),
                     e__id:current_id()
                 }, function (data) {
                     $('.headline_body_' + x__type).html(data);
