@@ -1486,10 +1486,10 @@ function load_tab(base_coin, x__type){
     x_set_start_text();
     x_sort_load(x__type);
 
-    if(x__type==12273 || (base_coin==12274 && x__type==6255)){
+    if((x__type==12273 || x__type==11019) || (base_coin==12274 && x__type==6255)){
         e_load_search(x__type);
         e_sort_load(x__type);
-    } else if(base_coin==12274 || (base_coin==12273 && x__type==6255)) {
+    } else if((x__type==12274 || x__type==11030) || (base_coin==12273 && x__type==6255)) {
         i_load_search(x__type);
     }
     
