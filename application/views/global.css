@@ -25,7 +25,7 @@ body {
     width: 100%;
 }
 .container {
-    max-width:600px !important;
+    max-width:768px !important;
     padding:0;
 }
 .padded {
@@ -1608,7 +1608,7 @@ i, .btn .show-max {
     width: 100% !important;
     height: auto !important;
     max-width: 880px;
-    max-height: 600px;
+    max-height: 768px;
     border-radius: 0 !important;
 }
 .icon-block-xs img{
@@ -2229,7 +2229,7 @@ i, .btn .show-max {
 }
 
 .modal-dialog{
-    max-width:600px;
+    max-width:768px;
 }
 .modal-content{
     border:1px solid transparent;
@@ -3211,7 +3211,7 @@ h4.css__title{
 }
 
 .container-center{
-    max-width: 600px;
+    max-width: 768px;
     margin: 0 auto;
 }
 
