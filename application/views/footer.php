@@ -332,7 +332,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-body block_search_results">
 
                     <div class="row">
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-md-6">
 
                             <!-- IMAGE DROP STARTS -->
                             <div class="coverUploader">
@@ -383,7 +383,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-md-6">
 
                             <div id="upload_results" class="center"></div>
                             <div id="img_results_emojis" class="icons_small"></div>

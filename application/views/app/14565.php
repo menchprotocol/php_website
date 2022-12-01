@@ -121,7 +121,7 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_element) {
-        $info_item .= '<div class="col-12 col-sm-6 col-md-4">';
+        $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
         if(filter_var($info_element['e__cover'], FILTER_VALIDATE_URL)){
             $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['e__cover'].'\');"></div>'.'</div>';

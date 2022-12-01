@@ -528,7 +528,7 @@ function view_coins(){
     $count = 0;
     foreach($CI->config->item('e___14874') as $e__id => $m) {
         $count++;
-        $ui .= '<div class="coin_cover no-padding col-12 col-sm-6 col-md-4">';
+        $ui .= '<div class="coin_cover no-padding col-12 col-md-4">';
         $ui .= '<div class="large_cover">'.$m['m__cover'].'</div>';
         $ui .= '<div class="css__title large_title zq'.$e__id.' "><b class="coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b></div>';
         $ui .= '<div class="css__title large_title zq'.$e__id.'">'.$m['m__title'].'</div>';
@@ -1447,7 +1447,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         ), array('x__source'), 0);
 
 
-        $ui = '<div class="col-sm-6 col-lg-4 mb-4">
+        $ui = '<div class="col-lg-4 mb-4">
       <div class="card">
 
         <div class="card-body">
