@@ -1649,62 +1649,6 @@ function e__add(x__type, e_existing_id) {
 
 
 
-function e_add_only_13550(x__type, e_existing_id) {
-
-
-    //if e_existing_id>0 it means we're adding an existing source, in which case e_new_string should be null
-    //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
-
-    var e_new_string = null;
-    var input = $('.e-i-'+x__type+' .add-input');
-
-    if (e_existing_id == 0) {
-
-        e_new_string = input.val();
-        if (e_new_string.length < 1) {
-            alert('Missing source name or URL, try again');
-            input.focus();
-            return false;
-        }
-    }
-
-    $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
-
-    //Add via Ajax:
-    $.post("/e/e_add_only_13550", {
-
-        i__id: current_id(),
-        x__type: x__type,
-        e_existing_id: e_existing_id,
-        e_new_string: e_new_string,
-
-    }, function (data) {
-
-        if (data.status) {
-
-            x_type_counter(x__type, 1);
-
-            //Raw input to make it ready for next URL:
-            input.focus();
-
-            //Add new object to list:
-            add_to_list('list-in-'+x__type, '.coinface-12274', data.e_new_echo);
-
-            //Hide Coin:
-            $('.mini-coin.coin-12274.coin-id-'+e_existing_id).fadeOut();
-
-        } else {
-            //We had an error:
-            alert(data.message);
-        }
-
-    });
-
-    return true;
-
-}
-
-
 
 function x_message_save(new_x__message = null) {
 

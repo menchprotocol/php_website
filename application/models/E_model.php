@@ -156,6 +156,32 @@ class E_model extends CI_Model
         //SESSION
         $this->session->set_userdata($session_data);
 
+
+        //Resubscribe IF they are Permanently Unsubscribed:
+        $unsubscribed_time = null;
+        foreach($this->X_model->fetch(array(
+            'x__up IN (' . join(',', $this->config->item('n___31057')) . ')' => null, //Permanently Unsubscribed
+            'x__down' => $e['e__id'], //This child source
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 0) as $unsubscribed){
+            $unsubscribed_time = $unsubscribed['x__time'];
+            $this->X_model->update($unsubscribed['x__id'], array(
+                'x__status' => 6173,
+            ), $e['e__id'], 31064); //Login Resubscribe
+        }
+        if($unsubscribed_time){
+            //Add to subscribed again:
+            $this->X_model->create(array(
+                'x__type' => e_x__type(),
+                'x__up' => 4430, //Active Member
+                'x__source' => $e['e__id'],
+                'x__down' => $e['e__id'],
+            ));
+            $this->session->set_flashdata('flash_message', '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-user-check"></i></span>Welcome Back! You Have Been Re-Subscribed :)</div>');
+        }
+
+
         return $e;
 
     }

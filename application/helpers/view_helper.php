@@ -671,27 +671,7 @@ function view_body_i($x__type, $counter, $i__id){
     }
 
 
-    if(in_array($x__type, $CI->config->item('n___13550'))){
-
-        $ui .= 'LIST';
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
-        foreach($list_results as $i_this) {
-            $ui .= view_e($x__type, $i_this,  null);
-        }
-        $ui .= '</div>';
-
-        if($e_of_i && !in_array($x__type, $CI->config->item('n___12677'))) {
-            $ui .= '<div class="list-adder e-only-13550 e-i-' . $x__type . '" x__type="' . $x__type . '">
-                <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.e-i-' . $x__type . ' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
-                    <input type="text"
-                           class="form-control form-control-thick algolia_search input_note_'.$x__type.' dotransparent add-input"
-                           maxlength="' . view_memory(6404,6197) . '"                          
-                           placeholder="' . $e___11035[14055]['m__title'] . '">
-                </div><div class="algolia_pad_search row justify-content"></div></div>';
-        }
-
-    } elseif($x__type==11019){
+    if($x__type==11019){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $previous_i) {

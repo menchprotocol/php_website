@@ -390,119 +390,6 @@ class E extends CI_Controller
 
     }
 
-    function e_add_only_13550()
-    {
-
-        //Auth member and check required variables:
-        $member_e = superpower_unlocked(10939);
-
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(10939),
-            ));
-        } elseif (intval($_POST['i__id']) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Idea ID',
-            ));
-        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___13550'))) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Idea Note Type ID',
-            ));
-        } elseif (!isset($_POST['e_existing_id']) || !isset($_POST['e_new_string']) || (intval($_POST['e_existing_id']) < 1 && strlen($_POST['e_new_string']) < 1)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Either New Source ID or Source Name',
-            ));
-        }
-
-
-        //Validate Idea
-        $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-        ));
-        if (count($is) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Idea',
-            ));
-        }
-
-
-        //Set some variables:
-        $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
-
-        //Are we adding an existing source?
-        if ($_POST['e_existing_id'] > 0) {
-
-            //Validate this existing source:
-            $es = $this->E_model->fetch(array(
-                'e__id' => $_POST['e_existing_id'],
-                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ));
-            if (count($es) < 1) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Invalid active source',
-                ));
-            }
-
-            //Make sure not already there:
-            if(count($this->X_model->fetch(array(
-                'x__right' => $is[0]['i__id'],
-                'x__up' => $_POST['e_existing_id'],
-                'x__type' => $_POST['x__type'],
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))){
-                $e___13550 = $this->config->item('e___13550');
-                return view_json(array(
-                    'status' => 0,
-                    'message' => $es[0]['e__title'].' is already added as idea '.$e___13550[$_POST['x__type']]['m__title'],
-                ));
-            }
-
-            //All good, assign:
-            $focus_e = $es[0];
-
-        } else {
-
-            //Create:
-            $added_e = $this->E_model->verify_create($_POST['e_new_string'], $member_e['e__id']);
-            if(!$added_e['status']){
-                //We had an error, return it:
-                return view_json($added_e);
-            }
-
-            //Assign new source:
-            $focus_e = $added_e['new_e'];
-
-            //Assign to Member:
-            $this->E_model->add_source($focus_e['e__id']);
-
-            //Update Algolia:
-            update_algolia($_POST['x__type'], $focus_e['e__id']);
-
-        }
-
-        //Create Note:
-        $new_note = $this->X_model->create(array(
-            'x__source' => $member_e['e__id'],
-            'x__type' => $_POST['x__type'],
-            'x__right' => $is[0]['i__id'],
-            'x__up' => $focus_e['e__id'],
-        ));
-
-        //Return source:
-        return view_json(array(
-            'status' => 1,
-            'e_new_echo' => view_e($_POST['x__type'], array_merge($focus_e, $new_note),  null),
-        ));
-
-    }
-
 
     function e_copy(){
 
@@ -1060,7 +947,25 @@ class E extends CI_Controller
             ));
         }
 
+        if($_POST['focus__id']==28904){
 
+            //Add special transaction to monitor unsubscribes:
+            if(in_array($_POST['selected_e__id'], $this->config->item('n___29648'))){
+                $this->X_model->create(array(
+                    'x__source' => $member_e['e__id'],
+                    'x__type' => 29648, //Communication Downgraded
+                    'x__up' => $_POST['focus__id'],
+                    'x__down' => $_POST['selected_e__id'],
+                ));
+            }
+
+            //Inform user if they Permanently Unsubscribed:
+            if(in_array($_POST['selected_e__id'], $this->config->item('n___31057'))){
+                $e___31065 = $this->config->item('e___31065'); //NAVIGATION
+                $this->X_model->send_dm($member_e['e__id'], $e___31065[31066]['m__title'], $e___31065[31066]['m__message']);
+            }
+
+        }
 
         if(!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected']){
             //Since this is not a multi-select we want to delete all existing options...
@@ -1120,16 +1025,6 @@ class E extends CI_Controller
             'x__up' => $_POST['focus__id'],
             'x__down' => $_POST['selected_e__id'],
         ));
-
-        //Add special transaction to monitor unsubscribes:
-        if($_POST['focus__id']==28904 && in_array($_POST['selected_e__id'], $this->config->item('n___29648'))){
-            $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
-                'x__type' => 29648, //Communication Downgraded
-                'x__up' => $_POST['focus__id'],
-                'x__down' => $_POST['selected_e__id'],
-            ));
-        }
 
 
         //Update Session:
