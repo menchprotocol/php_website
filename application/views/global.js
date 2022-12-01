@@ -328,9 +328,6 @@ function view_s_js_coin(x__type, suggestion, action_id){
     } else if(x__type==26013){
         //Link Source
         return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26013]['m__cover']+'</div><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
-    } else if(x__type==13550){
-        //1x Source
-        return '<div class="coin_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-sm-3 col-4 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[13550]['m__cover']+'</div><a href="javascript:void(0);" onclick="e_add_only_13550('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
     }
 
 }
@@ -1479,7 +1476,6 @@ function load_tab(base_coin, x__type){
 
     initiate_algolia();
     load_coins();
-    e_e_only_search_13550();
     load_editor();
     x_type_preview_load();
     init_remove();
@@ -2689,67 +2685,4 @@ function e_sort_reset(){
 }
 
 
-
-function e_e_only_search_13550() {
-
-    if(!js_pl_id){
-        return false;
-    }
-
-    $(".e-only-13550").each(function () {
-        var element_focus = ".e-i-"+$(this).attr('x__type');
-
-        var base_creator_url = '/e/create/'+current_id()+'/?content_title=';
-
-        $(element_focus + ' .add-input').keypress(function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if ((code == 13) || (e.ctrlKey && code == 13)) {
-                return e_add_only_13550($(this).attr('x__type'), 0);
-            }
-        });
-
-
-        if(parseInt(js_e___6404[12678]['m__message'])){
-
-            $(element_focus + ' .add-input').keyup(function () {
-
-                //Clear if no input:
-                if(!$(this).val().length){
-                    $('.e-i-'+$(this).attr('x__type')+' .algolia_pad_search').html('');
-                }
-
-            }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
-
-                source: function (q, cb) {
-
-                    $('.e-i-'+$(this).attr('x__type')+' .algolia_pad_search').html('');
-
-                    algolia_index.search(q, {
-                        filters: 's__type=12274',
-                        hitsPerPage: 300,
-                    }, function (error, content) {
-                        if (error) {
-                            cb([]);
-                            return;
-                        }
-                        cb(content.hits, content);
-                    });
-                },
-                templates: {
-                    suggestion: function (suggestion) {
-                        //If clicked, would trigger the autocomplete:selected above which will trigger the e__add() function
-                        $('.e-i-'+$(this).attr('x__type')+' .algolia_pad_search').append(view_s_js_coin(13550, suggestion, $(this).attr('x__type')));
-                        return false;
-                    },
-                    header: function (data) {
-                        return false;
-                    },
-                    empty: function (data) {
-                        return false;
-                    },
-                }
-            }]);
-        }
-    });
-}
 
