@@ -1501,7 +1501,7 @@ function load_tab(focus_coin, x__type, top_loader = false){
 
     setTimeout(function () {
         x_sort_load(x__type);
-    }, 3377);
+    }, 233);
     
 }
 
