@@ -1496,12 +1496,14 @@ function load_tab(focus_coin, x__type, top_loader = false){
     } else if((x__type==12274 || x__type==11030) || (focus_coin==12273 && x__type==6255)) {
         console.log('IS SOURCE');
         e_load_search(x__type);
-        e_sort_load(x__type);
+        setTimeout(function () {
+            e_sort_load(x__type);
+        }, 377);
     }
 
     setTimeout(function () {
         x_sort_load(x__type);
-    }, 233);
+    }, 377);
     
 }
 
