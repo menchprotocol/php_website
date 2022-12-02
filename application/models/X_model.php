@@ -507,10 +507,10 @@ class X_model extends CI_Model
             );
         }
 
-        if(in_array($notification_levels[0]['x__up'], $this->config->item('n___28914'))){
+        if(!in_array($notification_levels[0]['x__up'], $this->config->item('n___30820'))){
             return array(
                 'status' => 0,
-                'message' => 'User is currently unsubscribed',
+                'message' => 'User is currently NOT subscribed',
             );
         }
 

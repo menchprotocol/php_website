@@ -71,22 +71,18 @@ foreach($coins_count as $x__type => $counter) {
         };
 
     $(document).ready(function () {
-        //$('html, body').scrollTop($('.here').offset().top).
 
         setTimeout(function () {
-            var x__type_top = 11030;
             $.post("/e/view_body_e", {
-                x__type:x__type_top,
-                counter:$('.top_body_' + x__type_top).attr('read-counter'),
+                x__type:11030,
+                counter:$('.top_body_11030').attr('read-counter'),
                 e__id:current_id()
             }, function (data) {
-                $('.top_body_' + x__type_top).html(data);
+                $('.top_body_11030').html(data);
                 $('html, body').scrollTop($('.main_item').offset().top - 54)
-                load_tab(12274, x__type_top);
+                load_tab(12274, 11030);
             });
         }, 987);
-
-
 
         <?php
         foreach($this->config->item('e___26005') as $x__type => $m) {

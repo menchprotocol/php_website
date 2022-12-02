@@ -1505,7 +1505,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
             continue;
         }
         if (count($CI->X_model->fetch(array(
-            'x__up IN (' . join(',', $CI->config->item('n___28914')) . ')' => null, //Currently Unsubscribed
+            'x__up NOT IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Subscriber
             'x__down' => $subscriber['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC

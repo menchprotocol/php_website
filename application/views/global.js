@@ -1470,7 +1470,7 @@ function coin__save(){
 
 function load_tab(focus_coin, x__type){
 
-    console.log('Tab loaded for @'+x__type);
+    console.log('Tab loaded from @'+focus_coin+' for @'+x__type);
 
     initiate_algolia();
     load_coins();
