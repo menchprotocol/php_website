@@ -13,10 +13,9 @@ $this->X_model->create(array(
 
 
 //Always Load Followings at top
-$x__type_top = 11030;
-$counter_top = view_coins_e($x__type_top, $e['e__id'], 0, false);
+$counter_top = view_coins_e(11030, $e['e__id'], 0, false);
 if(!isset($_GET['hide'])){
-    echo '<div class="hideIfEmpty top_body_'.$x__type_top.'" read-counter="'.$counter_top.'"></div>';
+    echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.'"></div>';
 }
 
 
@@ -39,7 +38,7 @@ foreach($e___14874 as $x__type => $m) {
     if($counter > 0 || ( in_array($x__type , $this->config->item('n___28956')) && superpower_active(10939, true) )){
         $coins_count[$x__type] = $counter;
     }
-    $nav_content .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type_top.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>';
+    $nav_content .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter11030" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>';
     $body_content .= '<div class="headlinebody headline_body_'.$x__type.' hidden" read-counter="'.($counter - ($x__type==12274 ? $counter_top : 0 )).'"></div>';
 }
 
@@ -75,10 +74,10 @@ foreach($coins_count as $x__type => $counter) {
         setTimeout(function () {
             $.post("/e/view_body_e", {
                 x__type:11030,
-                counter:$('.top_body_11030').attr('read-counter'),
+                counter:$('.headline_body_11030').attr('read-counter'),
                 e__id:current_id()
             }, function (data) {
-                $('.top_body_11030').html(data);
+                $('.headline_body_11030').html(data);
                 $('html, body').scrollTop($('.main_item').offset().top - 54)
                 load_tab(12274, 11030);
             });

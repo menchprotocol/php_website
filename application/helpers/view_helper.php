@@ -616,7 +616,7 @@ function view_body_e($x__type, $counter, $e__id){
         //Input to add new child:
         if(superpower_active(13422, true)){
 
-            $ui .= '<div current-count="'.$counter.'" class="new-list-'.$x__type.' list-adder">
+            $ui .= '<div class="new-list-'.$x__type.' list-adder">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                         <input type="text"

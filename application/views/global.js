@@ -378,7 +378,7 @@ function toggle_headline(x__type){
 
 function e_sort_load(x__type) {
 
-    var sort_item_count = parseInt($('.new-list-'+x__type).attr('current-count'));
+    var sort_item_count = parseInt($('.headline_body_' + x__type).attr('read-counter'));
     console.log('Started Source Sorting for @'+x__type+' Counting: '+sort_item_count)
 
     if(!js_n___13911.includes(x__type)){
