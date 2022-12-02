@@ -1490,7 +1490,9 @@ function load_tab(focus_coin, x__type){
         i_load_search(x__type);
     } else if((x__type==12274 || x__type==11030) || (focus_coin==12273 && x__type==6255)) {
         e_load_search(x__type);
-        e_sort_load(x__type);
+        setTimeout(function () {
+            e_sort_load(x__type);
+        }, 610);
     }
     
 }
