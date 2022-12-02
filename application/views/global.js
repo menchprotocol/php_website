@@ -378,19 +378,22 @@ function toggle_headline(x__type){
 
 function e_sort_load(x__type) {
 
-    console.log('Started Source Sorting for @'+x__type)
-
     var sort_item_count = parseInt($('.new-list-'+x__type).attr('current-count'));
+    console.log('Started Source Sorting for @'+x__type+' Counting: '+sort_item_count)
+
     if(!js_n___13911.includes(x__type)){
         //Does not support sorting:
+        console.log('Not sortable')
         return false;
     } else if(sort_item_count<1 || sort_item_count>=parseInt(js_e___6404[13005]['m__message'])){
+        console.log('Not countable')
         return false;
     }
 
     var theobject = document.getElementById("list-in-"+x__type);
     if (!theobject) {
         //due to duplicate ideas belonging in this idea:
+        console.log('No object')
         return false;
     }
 
