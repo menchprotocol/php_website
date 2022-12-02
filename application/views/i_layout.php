@@ -47,7 +47,7 @@ echo '</div>';
 
 $coins_count = array();
 $body_content = '';
-echo '<ul class="nav nav-tabs nav12274">';
+echo '<ul class="nav nav-tabs nav12273">';
 foreach($this->config->item('e___14874') as $x__type => $m) {
     $coins_count[$x__type] = view_coins_i($x__type, $i['i__id'], 0, false);
     $body_content .= '<div class="headlinebody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'"></div>';
