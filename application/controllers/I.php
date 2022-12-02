@@ -113,10 +113,10 @@ class I extends CI_Controller {
         //Load views:
         $this->load->view('header', array(
             'title' => first_line($is[0]['i__title']),
-            'i_focus' => $is[0],
+            'i' => $is[0],
         ));
         $this->load->view('i_layout', array(
-            'i_focus' => $is[0],
+            'i' => $is[0],
             'member_e' => $member_e,
         ));
         $this->load->view('footer');

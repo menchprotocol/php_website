@@ -2,13 +2,13 @@
 
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___4737 = $this->config->item('e___4737'); //Idea Types
-$is_or_idea = in_array($i_focus['i__type'], $this->config->item('n___7712'));
+$is_or_idea = in_array($i['i__type'], $this->config->item('n___7712'));
 
 //Any Hard Redirects?
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-    'x__right' => $i_focus['i__id'],
+    'x__right' => $i['i__id'],
     'x__up' => 30811, //Hard Redirect
 )) as $redirect){
     if(filter_var($redirect['x__message'], FILTER_VALIDATE_URL)){
@@ -22,7 +22,7 @@ $is_next = $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-    'x__left' => $i_focus['i__id'],
+    'x__left' => $i['i__id'],
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
 //Filter Next Ideas:
@@ -40,7 +40,7 @@ foreach($is_next as $in_key => $in_value){
 
 
 
-$i_focus['i__title'] = str_replace('"','',$i_focus['i__title']);
+$i['i__title'] = str_replace('"','',$i['i__title']);
 $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->started_ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
 $one_child_hack = (count($first_child) && count($is_next)==1 && !$top_i__id);
@@ -48,18 +48,18 @@ $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
     'x__source' => $x__source,
-    'x__left' => $i_focus['i__id'],
+    'x__left' => $i['i__id'],
 )) : array() );
-$in_my_discoveries = ( $top_i__id && $top_i__id==$i_focus['i__id'] );
+$in_my_discoveries = ( $top_i__id && $top_i__id==$i['i__id'] );
 $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $can_skip = count($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-    'x__right' => $i_focus['i__id'],
+    'x__right' => $i['i__id'],
     'x__up' => 28239, //Can Skip
 )));
 
-$is_payment = in_array($i_focus['i__type'] , $this->config->item('n___30469'));
+$is_payment = in_array($i['i__type'] , $this->config->item('n___30469'));
 $min_allowed = 1;
 $detected_x_type = 0;
 
@@ -72,7 +72,7 @@ $relevant_sources = '';
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-    'x__right' => $i_focus['i__id'],
+    'x__right' => $i['i__id'],
     'x__up > 0' => null,
     'x__up !=' => website_setting(0),
 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
@@ -122,7 +122,7 @@ if($is_payment){
     $total_dues = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__right' => $i_focus['i__id'],
+        'x__right' => $i['i__id'],
         'x__up' => 26562, //Total Due
     ));
 
@@ -133,19 +133,19 @@ if($is_payment){
             $digest_fees = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i_focus['i__id'],
+                'x__right' => $i['i__id'],
                 'x__up' => 30589, //Digest Fees
             ));
             $cart_max = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i_focus['i__id'],
+                'x__right' => $i['i__id'],
                 'x__up' => 29651, //Cart Max Quantity
             ));
             $cart_min = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i_focus['i__id'],
+                'x__right' => $i['i__id'],
                 'x__up' => 31008, //Cart Min Quantity
             ));
 
@@ -157,7 +157,7 @@ if($is_payment){
             $unit_price = number_format($currency_parts[1], 2);
             $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__source)) + doubleval(website_setting(27017, $x__source)) + doubleval(website_setting(30612, $x__source)))/100 ), 2);
             $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view_memory(6404,29651) );
-            $spots_remaining = i_spots_remaining($i_focus['i__id']);
+            $spots_remaining = i_spots_remaining($i['i__id']);
             $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
             $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
             $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message']) : $min_allowed );
@@ -177,13 +177,13 @@ if($is_or_idea || count($x_completes)){
 }
 
 //Check for time limits?
-if($top_i__id && $x__source && $top_i__id!=$i_focus['i__id']){
+if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
 
-    $find_previous = $this->X_model->find_previous($x__source, $top_i__id, $i_focus['i__id']);
+    $find_previous = $this->X_model->find_previous($x__source, $top_i__id, $i['i__id']);
     if(count($find_previous)){
 
         $nav_list = array();
-        $main_branch = array(intval($i_focus['i__id']));
+        $main_branch = array(intval($i['i__id']));
         foreach($find_previous as $parent_i){
             //First add-up the main branch:
             array_push($main_branch, intval($parent_i['i__id']));
@@ -245,11 +245,11 @@ if($top_i__id){
     ));
     $tree_progress = $this->X_model->tree_progress($x__source, $is_this[0]);
     $top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
-    $go_next_url = ( $top_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i_focus['i__id'];
+    $go_next_url = ( $top_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i['i__id'];
 
 } else {
 
-    $go_next_url = '/x/x_start/'.$i_focus['i__id'];
+    $go_next_url = '/x/x_start/'.$i['i__id'];
 
 }
 
@@ -270,7 +270,7 @@ $messages_string = false;
 foreach($this->X_model->fetch(array(
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
-    'x__right' => $i_focus['i__id'],
+    'x__right' => $i['i__id'],
 ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
     $messages_string .= $this->X_model->message_view(
         $message_x['x__message'],
@@ -288,7 +288,7 @@ foreach($this->X_model->fetch(array(
 
 //$one_child_hack Get the message for the single child, if any:
 if($one_child_hack){
-    echo '<h3 class="msg-frame" style="text-align: left; padding: 10px 0 0 !important;">'.$i_focus['i__title'].'</h3>';
+    echo '<h3 class="msg-frame" style="text-align: left; padding: 10px 0 0 !important;">'.$i['i__title'].'</h3>';
     $messages_string .= '<h1 class="msg-frame" style="text-align: left; padding: 0 0 10px !important; font-size:2.5em;">'.$first_child['i__title'].'</h1>';
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -302,13 +302,13 @@ if($one_child_hack){
         );
     }
 } else {
-    echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$i_focus['i__title'].'</h1>';
+    echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$i['i__title'].'</h1>';
 }
 
 
 if($messages_string){
     echo $messages_string;
-} elseif(!count($x_completes) && in_array($i_focus['i__type'], $this->config->item('n___12330'))) {
+} elseif(!count($x_completes) && in_array($i['i__type'], $this->config->item('n___12330'))) {
     //Auto complete:
     echo '<script> $(document).ready(function () { go_next() }); </script>';
 }
@@ -333,10 +333,10 @@ if($top_i__id) {
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__source' => $x__source,
-                'x__left' => $i_focus['i__id'],
+                'x__left' => $i['i__id'],
             )))) {
 
-                array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i_focus, array(
+                array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i, array(
                     'x__type' => 4559, //READ STATEMENT
                     'x__source' => $x__source,
                 )));
@@ -351,13 +351,13 @@ if($top_i__id) {
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                'x__left' => $i_focus['i__id'],
+                'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
                 //See if this answer was seleted:
                 if (count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY IDEA LINK
-                    'x__left' => $i_focus['i__id'],
+                    'x__left' => $i['i__id'],
                     'x__right' => $x['i__id'],
                     'x__source' => $x__source,
                 )))) {
@@ -372,7 +372,7 @@ if($top_i__id) {
                 //Edit response:
                 echo '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');$(\'.go-next-group\').removeClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
 
-                echo view_i_list(13980, $top_i__id, $i_focus, $x_selects, $member_e);
+                echo view_i_list(13980, $top_i__id, $i, $x_selects, $member_e);
                 echo '</div>';
 
             }
@@ -380,7 +380,7 @@ if($top_i__id) {
 
 
             //Open for list to be printed:
-            $select_answer = '<div class="row list-answers" i__type="' . $i_focus['i__type'] . '">';
+            $select_answer = '<div class="row list-answers" i__type="' . $i['i__type'] . '">';
 
             //List children to choose from:
             foreach ($is_next as $key => $next_i) {
@@ -397,7 +397,7 @@ if($top_i__id) {
                 $previously_selected = count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
-                    'x__left' => $i_focus['i__id'],
+                    'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
                     'x__source' => $x__source,
                 )));
@@ -413,13 +413,13 @@ if($top_i__id) {
             if (count($x_selects) > 0) {
 
                 //Save Answers:
-                $select_answer .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a>&nbsp;&nbsp;<a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i_focus['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
+                $select_answer .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a>&nbsp;&nbsp;<a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
 
             }
 
             //HTML:
             echo '<div class="edit_toggle_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
-            echo view_headline($i_focus['i__type'], null, $e___4737[$i_focus['i__type']], $select_answer, true);
+            echo view_headline($i['i__type'], null, $e___4737[$i['i__type']], $select_answer, true);
             echo '</div>';
 
         }
@@ -435,7 +435,7 @@ if($top_i__id) {
             echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
 
             //Referesh soon so we can check if completed or not
-            js_redirect('/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1', 2584);
+            js_redirect('/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1', 2584);
 
         } elseif(count($x_completes)){
 
@@ -519,7 +519,7 @@ if($top_i__id) {
             if(!count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i_focus['i__id'],
+                'x__right' => $i['i__id'],
                 'x__up' => 30615, //Is Refundable
             )))){
                 echo '<div class="sub_note">* Final Sale: No Refunds or Transfers</div>';
@@ -577,7 +577,7 @@ if($top_i__id) {
 
         }
 
-    } elseif ($i_focus['i__type'] == 6683) {
+    } elseif ($i['i__type'] == 6683) {
 
         //Do we have a response?
         $previous_response = (count($x_completes) ? trim($x_completes[0]['x__message']) : false );
@@ -586,7 +586,7 @@ if($top_i__id) {
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 7545, //Profile Add
-                'x__right' => $i_focus['i__id'],
+                'x__right' => $i['i__id'],
             )) as $append_source){
                 //Does the user have this source with any values?
                 foreach($this->X_model->fetch(array(
@@ -613,20 +613,20 @@ if($top_i__id) {
 
         if (count($x_completes)) {
             //Next Ideas:
-            $message_ui .= view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
+            $message_ui .= view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
         }
 
         $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); $(window).scrollTop(0); }); </script>';
 
         echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
 
-    } elseif ($i_focus['i__type'] == 7637) {
+    } elseif ($i['i__type'] == 7637) {
 
         //FILE UPLOAD
         echo '<div class="userUploader">';
         echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
 
-        echo '<input class="inputfile" type="file" name="file" id="fileType' . $i_focus['i__type'] . '" />';
+        echo '<input class="inputfile" type="file" name="file" id="fileType' . $i['i__type'] . '" />';
 
         if (count($x_completes)) {
 
@@ -635,7 +635,7 @@ if($top_i__id) {
             echo '</div>';
 
             //Any child ideas?
-            echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
+            echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
 
         } else {
 
@@ -645,18 +645,18 @@ if($top_i__id) {
         }
 
         //UPLOAD BUTTON:
-        echo '<div class="select-btns"><label class="btn btn-6255 inline-block" for="fileType' . $i_focus['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
+        echo '<div class="select-btns"><label class="btn btn-6255 inline-block" for="fileType' . $i['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
 
 
         echo '<div class="doclear">&nbsp;</div>';
         echo '</form>';
         echo '</div>';
 
-    } elseif ($i_focus['i__type']==30350) {
+    } elseif ($i['i__type']==30350) {
 
         //Set Date
 
-    } elseif ($i_focus['i__type']==30874) {
+    } elseif ($i['i__type']==30874) {
 
         //Event
 
@@ -698,12 +698,12 @@ if(!$top_i__id){
             //Is Saved already by this member?
             $is_saves = $this->X_model->fetch(array(
                 'x__up' => $x__source,
-                'x__right' => $i_focus['i__id'],
+                'x__right' => $i['i__id'],
                 'x__type' => 12896, //SAVED
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ));
 
-            $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i_focus['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__cover'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+            $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__cover'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
         } elseif($e__id==12211){
 
@@ -719,22 +719,22 @@ if(!$top_i__id){
 
                 $control_btn .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
                 $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable
-                $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i_focus['i__title'].'">';
-                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i_focus['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
+                $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i['i__title'].'">';
+                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
 
                 $control_btn .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
                 $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
                 $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
-                $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?cancel_pay=1">';
-                $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i_focus['i__id'].'?process_pay=1">';
+                $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?cancel_pay=1">';
+                $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1">';
                 $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
                 $control_btn .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
 
                 $control_btn .= '<input type="submit" class="round-btn adj-btn go-next-group" name="pay_now" id="pay_now" value=">" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');">';
                 $control_btn .= '<span class="nav-title css__title process-btn">Pay Now</span>';
 
-                //$control_btn .= '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="document.getElementById(\'paypal_form\').submit();">'.$e___4737[$i_focus['i__type']]['m__cover'].'</a><span class="nav-title css__title">'.$e___4737[$i_focus['i__type']]['m__title'].'</span>';
+                //$control_btn .= '<a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="document.getElementById(\'paypal_form\').submit();">'.$e___4737[$i['i__type']]['m__cover'].'</a><span class="nav-title css__title">'.$e___4737[$i['i__type']]['m__title'].'</span>';
 
                 $control_btn .= '</form>';
 
@@ -789,15 +789,15 @@ if($top_i__id) {
      *
      * */
 
-    if (in_array($i_focus['i__type'], $this->config->item('n___30646'))) {
+    if (in_array($i['i__type'], $this->config->item('n___30646'))) {
         //DISCOVERY ONLY
-        echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
+        echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
     }
 
 } elseif(!$one_child_hack) {
 
     //NEXT IDEAS
-    echo view_i_list(12211, $top_i__id, $i_focus, $is_next, $member_e);
+    echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
 
 }
 
@@ -815,12 +815,12 @@ echo '</div>';
 ?>
 
 <script>
-    var focus_i__type = <?= $i_focus['i__type'] ?>;
+    var focus_i__type = <?= $i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
 </script>
 
 <input type="hidden" id="focus_coin" value="12273" />
-<input type="hidden" id="focus_id" value="<?= $i_focus['i__id'] ?>" />
+<input type="hidden" id="focus_id" value="<?= $i['i__id'] ?>" />
 <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 

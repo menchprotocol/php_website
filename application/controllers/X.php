@@ -732,12 +732,12 @@ class X extends CI_Controller
 
         $this->load->view('header', array(
             'title' => $is[0]['i__title'].( $top_i__id > 0 ? ' | '.$top_is[0]['i__title'] : '' ),
-            'i_focus' => $is[0],
+            'i' => $is[0],
             'flash_message' => $flash_message,
         ));
         $this->load->view('x_layout', array(
             'i_top' => ( $top_i__id > 0 ? $top_is[0] : false ),
-            'i_focus' => $is[0],
+            'i' => $is[0],
             'member_e' => $member_e,
         ));
         $this->load->view('footer');

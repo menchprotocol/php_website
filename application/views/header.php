@@ -3,7 +3,7 @@
 $member_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
 $second_segment = $this->uri->segment(2);
-$i__id = ( isset($i_focus['i__id']) ? $i_focus['i__id'] : 0 );
+$i__id = ( isset($i['i__id']) ? $i['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13479 = $this->config->item('e___13479');
 $e___4527 = $this->config->item('e___4527');
