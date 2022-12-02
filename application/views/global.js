@@ -1470,7 +1470,7 @@ function load_tab(focus_coin, x__type, top_loader = false){
         //Load the tab:
         $.post("/e/view_body_e", {
             x__type:x__type,
-            counter:$('.headline_body_11030').attr('read-counter'),
+            counter:$('.headline_body_'+x__type).attr('read-counter'),
             e__id:current_id()
         }, function (data) {
             $('.headline_body_'+x__type).html(data);
@@ -1492,8 +1492,10 @@ function load_tab(focus_coin, x__type, top_loader = false){
     x_sort_load(x__type);
 
     if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
+        console.log('IS IDEA');
         i_load_search(x__type);
     } else if((x__type==12274 || x__type==11030) || (focus_coin==12273 && x__type==6255)) {
+        console.log('IS SOURCE');
         e_load_search(x__type);
         e_sort_load(x__type);
     }
