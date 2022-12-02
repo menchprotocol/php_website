@@ -353,11 +353,11 @@ class I_model extends CI_Model
 
         }
 
-        return $this->I_model->create_or_link(11019, '', $x__source, $i_new['i__id'], $copy_to__id);
+        return $this->I_model->create_or_link(12273, 11019, '', $x__source, $i_new['i__id'], $copy_to__id);
 
     }
 
-    function create_or_link($x__type, $i__title, $x__source, $focus__id, $link_i__id = 0)
+    function create_or_link($focus_coin, $x__type, $i__title, $x__source, $focus_id, $link_i__id = 0)
     {
 
         /*
@@ -365,45 +365,51 @@ class I_model extends CI_Model
          * The main idea creation function that would create
          * appropriate transactions and return the idea view.
          *
-         * Either creates an IDEA transaction between $focus__id & $link_i__id
+         * Either creates an IDEA transaction between $focus_id & $link_i__id
          * (IF $link_i__id>0) OR will create a new idea with outcome $i__title
-         * and transaction it to $focus__id (In this case $link_i__id will be 0)
+         * and transaction it to $focus_id (In this case $link_i__id will be 0)
          *
          * p.s. Inputs have previously been validated via ideas/i__add() function
          *
          * */
 
         //Valid Idea Addition?
-        if(!in_array($x__type, $this->config->item('n___14685'))){
+        if(!in_array($focus_coin, $this->config->item('n___12761')) || !in_array($x__type, $this->config->item('n___11020')) || $focus_id < 1){
+            $this->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__message' => 'create_or_link(): Invalid Data',
+                'x__metadata' => array(
+                    '$focus_coin' => $focus_coin,
+                    '$x__type' => $x__type,
+                    '$i__title' => $i__title,
+                    '$x__source' => $x__source,
+                    '$focus_id' => $focus_id,
+                    '$link_i__id' => $link_i__id,
+                ),
+            ));
             return array(
                 'status' => 0,
-                'message' => 'Invalid Idea Creation Method',
-            );
-        } elseif($focus__id < 1){
-            return array(
-                'status' => 0,
-                'message' => 'Missing Focus ID',
+                'message' => 'Invalid Data',
             );
         }
 
         $is_upwards = in_array($x__type, $this->config->item('n___14686'));
-
+        $focus_is_idea = $focus_coin==12273;
+        $adding_an_idea = in_array($x__type, $this->config->item('n___11020'));
         //Validate Original idea
-        if(in_array($x__type, $this->config->item('n___11020'))){
+        if($focus_is_idea){
 
-            if ($focus__id > 0 && $link_i__id==$focus__id) {
+            if ($focus_id > 0 && $link_i__id==$focus_id) {
                 //Make sure none of the parents are the same:
                 return array(
                     'status' => 0,
                     'message' => 'You cannot add idea to itself.',
                 );
             }
-
             $focus_i = $this->I_model->fetch(array(
-                'i__id' => intval($focus__id),
+                'i__id' => intval($focus_id),
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
-
             if (count($focus_i) < 1) {
                 return array(
                     'status' => 0,
@@ -413,9 +419,9 @@ class I_model extends CI_Model
 
         } else {
 
-            //Must be a Source:
+            //Were at a Source trying to add an Idea:
             $focus_e = $this->E_model->fetch(array(
-                'e__id' => intval($focus__id),
+                'e__id' => intval($focus_id),
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
@@ -447,9 +453,9 @@ class I_model extends CI_Model
             }
 
             //Determine which is parent Idea, and which is child
-            if(in_array($x__type, $this->config->item('n___11020'))){
+            if($focus_is_idea){
 
-                //PREVIOUS or NEXT
+                //Must be adding PREVIOUS or NEXT
 
                 //Duplicate Check:
                 if (count($this->X_model->fetch(array(
@@ -477,9 +483,9 @@ class I_model extends CI_Model
                     );
                 }
 
-            } elseif($x__type==13550 || $x__type==12273){
+            } else {
 
-                //References
+                //Must be adding Idea to Source as References
 
                 //Duplicate Check:
                 if(count($this->X_model->fetch(array(
@@ -491,31 +497,6 @@ class I_model extends CI_Model
                     return array(
                         'status' => 0,
                         'message' => 'Idea already referenced to this source',
-                    );
-                }
-
-            } elseif($x__type==10573){
-
-                //Watch
-
-                //Duplicate Check:
-                if(count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 10573, //Watch
-                    'x__up' => $focus_e[0]['e__id'],
-                    'x__right' => $link_i[0]['i__id'],
-                )))){
-                    return array(
-                        'status' => 0,
-                        'message' => 'Idea already in My Ideas',
-                    );
-                }
-
-                //Only themselves:
-                if ($x__source!=$focus_e[0]['e__id']) {
-                    return array(
-                        'status' => 0,
-                        'message' => 'You can only add My Ideas for yourself, not other members.',
                     );
                 }
 
@@ -549,24 +530,24 @@ class I_model extends CI_Model
         $new_i_html = null;
 
 
-        if(in_array($x__type, $this->config->item('n___11020'))){
+        if($focus_is_idea){
 
-            //PREVIOUS or NEXT
+            //Adding PREVIOUS or NEXT Idea from Idea
             $relation = $this->X_model->create(array(
                 'x__source' => $x__source,
                 'x__type' => 4228, //Idea Transaction Regular read
-                ( $is_upwards ? 'x__right' : 'x__left' ) => $focus__id,
+                ( $is_upwards ? 'x__right' : 'x__left' ) => $focus_id,
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                        'x__left' => ( $is_upwards ? $i_new['i__id'] : $focus__id ),
+                        'x__left' => ( $is_upwards ? $i_new['i__id'] : $focus_id ),
                     )),
             ), true);
 
             //Fetch and return full data to be properly shown on the UI
             $new_i = $this->X_model->fetch(array(
-                ( $is_upwards ? 'x__right' : 'x__left' ) => $focus__id,
+                ( $is_upwards ? 'x__right' : 'x__left' ) => $focus_id,
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -575,9 +556,9 @@ class I_model extends CI_Model
 
             $new_i_html = view_i($x__type, 0, ( $is_upwards ? null : $focus_i[0] ), $new_i[0]);
 
-        } elseif($x__type == 13550 || $x__type==12273){
+        } else {
 
-            //Add References
+            //Adding an Idea from a Source...
             $this->X_model->create(array(
                 'x__type' => 4983, //IDEA SOURCES
                 'x__source' => $x__source,
@@ -589,33 +570,6 @@ class I_model extends CI_Model
             $new_i = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 4983, //IDEA SOURCES
-                'x__up' => $focus_e[0]['e__id'],
-                'x__right' => $i_new['i__id'],
-            ), array('x__right'));
-
-            $new_i_html = view_i($x__type, 0, null, $new_i[0], $focus_e[0]);
-
-        } elseif($x__type == 10573){
-
-            //Watch
-
-            //Add to top of my ideas:
-            $this->X_model->create(array(
-                'x__type' => 10573, //Watch
-                'x__source' => $x__source,
-                'x__up' => $focus_e[0]['e__id'],
-                'x__right' => $i_new['i__id'],
-                'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type' => 10573, //Watch
-                        'x__up' => $focus_e[0]['e__id'],
-                    )),
-            ), true);
-
-            $new_i = $this->X_model->fetch(array(
-                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 10573, //Watch
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
             ), array('x__right'));
@@ -961,12 +915,12 @@ c                ));
             } elseif(in_array($action_e__id , array(12611,12612,27240,28801))){
 
                 //Check if it hs this item:
-                $focus__id = intval(one_two_explode('#',' ',$action_command1));
+                $focus_id = intval(one_two_explode('#',' ',$action_command1));
 
                 if($action_e__id==27240){
 
                     //Copy
-                    $status = $this->I_model->duplicate($next_i, $focus__id, $x__source);
+                    $status = $this->I_model->duplicate($next_i, $focus_id, $x__source);
 
                     if($status['status']){
                         //Add Source since not there:
@@ -978,7 +932,7 @@ c                ));
                     $is_previous = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                        'x__left' => $focus__id,
+                        'x__left' => $focus_id,
                         'x__right' => $next_i['i__id'],
                     ), array(), 0);
 
@@ -987,7 +941,7 @@ c                ));
                     if(in_array($action_e__id, array(12611, 28801)) && !count($is_previous)){
 
                         //Link
-                        $status = $this->I_model->create_or_link(11019, '', $x__source, $next_i['i__id'], $focus__id);
+                        $status = $this->I_model->create_or_link(12273, 11019, '', $x__source, $next_i['i__id'], $focus_id);
 
                         if($status['status']){
 

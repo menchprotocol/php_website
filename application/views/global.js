@@ -337,17 +337,17 @@ function view_s_mini_js(s__type,s__cover,s__title){
 
 
 function current_id(){
-    return ( $('#focus__id').length ? parseInt($('#focus__id').val()) : 0 );
+    return ( $('#focus_id').length ? parseInt($('#focus_id').val()) : 0 );
 }
 
 function toggle_headline(x__type){
 
     var x__down = 0;
     var x__right = 0;
-    var base_coin = ( $('#base_coin').length ? parseInt($('#base_coin').val()) : 0 );
-    if(base_coin==12273){
+    var focus_coin = ( $('#focus_coin').length ? parseInt($('#focus_coin').val()) : 0 );
+    if(focus_coin==12273){
         x__right = current_id();
-    } else if (base_coin==12274){
+    } else if (focus_coin==12274){
         x__down = current_id();
     }
 
@@ -412,11 +412,11 @@ function toggle_pills(x__type){
 
     var x__down = 0;
     var x__right = 0;
-    var base_coin = ( $('#base_coin').length ? parseInt($('#base_coin').val()) : 0 );
+    var focus_coin = ( $('#focus_coin').length ? parseInt($('#focus_coin').val()) : 0 );
 
-    if(base_coin==12273){
+    if(focus_coin==12273){
         x__right = current_id();
-    } else if (base_coin==12274){
+    } else if (focus_coin==12274){
         x__down = current_id();
     }
 
@@ -446,7 +446,7 @@ function toggle_pills(x__type){
             $('.headline_body_' + x__type).html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
 
             //Nothing loaded, we need to load:
-            if (base_coin==12273){
+            if (focus_coin==12273){
                 $.post("/i/view_body_i", {
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('read-counter'),
@@ -455,7 +455,7 @@ function toggle_pills(x__type){
                     $('.headline_body_' + x__type).html(data);
                     load_tab(12273,x__type);
                 });
-            } else if (base_coin==12274){
+            } else if (focus_coin==12274){
                 $.post("/e/view_body_e", {
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('read-counter'),
@@ -522,7 +522,7 @@ function view_load_page_i(x__type, page, load_new_filter) {
     $.post("/i/view_load_page_i", {
         x__type: x__type,
         page: page,
-        focus__id: current_id(),
+        focus_id: current_id(),
     }, function (data) {
 
         //Appending to existing content:
@@ -566,7 +566,7 @@ function view_load_page_e(x__type, page, load_new_filter) {
     $.post("/e/view_load_page_e", {
         x__type: x__type,
         page: page,
-        focus__id: current_id(),
+        focus_id: current_id(),
     }, function (data) {
 
         //Appending to existing content:
@@ -1311,8 +1311,6 @@ function i_load_search(x__type) {
     if(!parseInt(js_e___6404[12678]['m__message'])){
         alert('Search is currently disabled');
         return false;
-    } else if(!js_n___14685.includes(x__type)){
-        return false;
     }
 
 
@@ -1470,7 +1468,7 @@ function coin__save(){
 
 }
 
-function load_tab(base_coin, x__type){
+function load_tab(focus_coin, x__type){
 
     console.log('Tab loaded for @'+x__type);
 
@@ -1482,9 +1480,9 @@ function load_tab(base_coin, x__type){
     x_set_start_text();
     x_sort_load(x__type);
 
-    if((x__type==12273 || x__type==11019) || (base_coin==12274 && x__type==6255)){
+    if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
         i_load_search(x__type);
-    } else if((x__type==12274 || x__type==11030) || (base_coin==12273 && x__type==6255)) {
+    } else if((x__type==12274 || x__type==11030) || (focus_coin==12273 && x__type==6255)) {
         e_load_search(x__type);
         e_sort_load(x__type);
     }
@@ -1497,7 +1495,7 @@ function i__add(x__type, link_i__id) {
 
     /*
      *
-     * Either creates an IDEA transaction between focus__id & link_i__id
+     * Either creates an IDEA transaction between focus_id & link_i__id
      * OR will create a new idea based on input text and then transaction it
      * to current_id() (In this case link_i__id=0)
      *
@@ -1525,12 +1523,12 @@ function i__add(x__type, link_i__id) {
     //Set processing status:
     input_field.addClass('dynamic_saving');
     add_to_list("list-in-" + x__type, sort_handler, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
-
-
+    
     //Update backend:
     $.post("/i/i__add", {
         x__type: x__type,
-        focus__id: current_id(),
+        focus_coin: ( $('#focus_coin').length ? parseInt($('#focus_coin').val()) : 0 ),
+        focus_id: current_id(),
         i__title: i__title,
         link_i__id: link_i__id
     }, function (data) {
@@ -1600,9 +1598,9 @@ function e__add(x__type, e_existing_id) {
     //Add via Ajax:
     $.post("/e/e__add", {
 
-        base_coin: $('#base_coin').val(),
+        focus_coin: $('#focus_coin').val(),
         x__type: x__type,
-        focus__id: current_id(),
+        focus_id: current_id(),
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
 
@@ -2183,9 +2181,9 @@ function remove_ui_class(item, index) {
     $('body').removeClass(the_class);
 }
 
-function e_radio(focus__id, selected_e__id, enable_mulitiselect){
+function e_radio(focus_id, selected_e__id, enable_mulitiselect){
 
-    var was_previously_selected = ( $('.radio-'+focus__id+' .item-'+selected_e__id).hasClass('active') ? 1 : 0 );
+    var was_previously_selected = ( $('.radio-'+focus_id+' .item-'+selected_e__id).hasClass('active') ? 1 : 0 );
 
     //Save the rest of the content:
     if(!enable_mulitiselect && was_previously_selected){
@@ -2194,33 +2192,33 @@ function e_radio(focus__id, selected_e__id, enable_mulitiselect){
     }
 
     //Updating Customizable Theme?
-    if(js_n___13890.includes(focus__id)){
-        current_focus = focus__id;
-        $('body').removeClass('custom_ui_'+focus__id+'_');
-        window['js_n___'+focus__id].forEach(remove_ui_class); //Removes all Classes
-        $('body').addClass('custom_ui_'+focus__id+'_'+selected_e__id);
+    if(js_n___13890.includes(focus_id)){
+        current_focus = focus_id;
+        $('body').removeClass('custom_ui_'+focus_id+'_');
+        window['js_n___'+focus_id].forEach(remove_ui_class); //Removes all Classes
+        $('body').addClass('custom_ui_'+focus_id+'_'+selected_e__id);
     }
 
     //Show spinner on the notification element:
-    var notify_el = '.radio-'+focus__id+' .item-'+selected_e__id+' .change-results';
+    var notify_el = '.radio-'+focus_id+' .item-'+selected_e__id+' .change-results';
     var initial_icon = $(notify_el).html();
     $(notify_el).html('<i class="far fa-yin-yang fa-spin"></i>');
 
 
     if(!enable_mulitiselect){
         //Clear all selections:
-        $('.radio-'+focus__id+' .list-group-item').removeClass('active');
+        $('.radio-'+focus_id+' .list-group-item').removeClass('active');
     }
 
     //Enable currently selected:
     if(enable_mulitiselect && was_previously_selected){
-        $('.radio-'+focus__id+' .item-'+selected_e__id).removeClass('active');
+        $('.radio-'+focus_id+' .item-'+selected_e__id).removeClass('active');
     } else {
-        $('.radio-'+focus__id+' .item-'+selected_e__id).addClass('active');
+        $('.radio-'+focus_id+' .item-'+selected_e__id).addClass('active');
     }
 
     $.post("/e/e_radio", {
-        focus__id: focus__id,
+        focus_id: focus_id,
         selected_e__id: selected_e__id,
         enable_mulitiselect: enable_mulitiselect,
         was_previously_selected: was_previously_selected,
@@ -2427,7 +2425,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
     $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
     $.post("/x/update_dropdown", {
-        focus__id:current_id(),
+        focus_id:current_id(),
         o__id: o__id,
         element_id: element_id,
         new_e__id: new_e__id,

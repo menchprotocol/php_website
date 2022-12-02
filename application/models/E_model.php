@@ -158,6 +158,7 @@ class E_model extends CI_Model
 
 
         //Resubscribe IF they are Permanently Unsubscribed:
+        /*
         $unsubscribed_time = null;
         foreach($this->X_model->fetch(array(
             'x__up IN (' . join(',', $this->config->item('n___31057')) . ')' => null, //Permanently Unsubscribed
@@ -180,7 +181,7 @@ class E_model extends CI_Model
             ));
             $this->session->set_flashdata('flash_message', '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-user-check"></i></span>Welcome Back! You Have Been Re-Subscribed :)</div>');
         }
-
+        */
 
         return $e;
 
@@ -1163,11 +1164,11 @@ class E_model extends CI_Model
 
                 //Go through all parents of this source:
                 //Add Child Sources:
-                $focus__id = intval(one_two_explode('@',' ',$action_command1));
+                $focus_id = intval(one_two_explode('@',' ',$action_command1));
 
                 //Go through all parents and add the ones missing:
                 foreach($this->X_model->fetch(array(
-                    'x__up' => $focus__id,
+                    'x__up' => $focus_id,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -1198,13 +1199,13 @@ class E_model extends CI_Model
             } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
 
                 //What member searched for:
-                $focus__id = intval(one_two_explode('@',' ',$action_command1));
+                $focus_id = intval(one_two_explode('@',' ',$action_command1));
 
                 //See if child source has searched parent source:
                 $child_parent_e = $this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $x['e__id'], //This child source
-                    'x__up' => $focus__id,
+                    'x__up' => $focus_id,
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ));
 
@@ -1214,7 +1215,7 @@ class E_model extends CI_Model
                         'x__source' => $x__source,
                         'x__type' => e_x__type(),
                         'x__down' => $x['e__id'], //This child source
-                        'x__up' => $focus__id,
+                        'x__up' => $focus_id,
                     );
 
                     if($action_e__id==13441){

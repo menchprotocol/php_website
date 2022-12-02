@@ -333,10 +333,10 @@ class E extends CI_Controller
     {
 
         $items_per_page = view_memory(6404,11064);
-        $focus__id = intval($_POST['focus__id']);
+        $focus_id = intval($_POST['focus_id']);
         $page = intval($_POST['page']);
         $query_filters = array(
-            'x__up' => $focus__id,
+            'x__up' => $focus_id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null,
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -515,7 +515,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (intval($_POST['focus__id']) < 1) {
+        } elseif (intval($_POST['focus_id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Parent Source',
@@ -532,13 +532,13 @@ class E extends CI_Controller
             ));
         }
 
-        $adding_to_idea = ($_POST['base_coin']==12273);
+        $adding_to_idea = ($_POST['focus_coin']==12273);
 
         if($adding_to_idea){
 
             //Validate Idea:
             $fetch_o = $this->I_model->fetch(array(
-                'i__id' => $_POST['focus__id'],
+                'i__id' => $_POST['focus_id'],
             ));
             if (count($fetch_o) < 1) {
                 return view_json(array(
@@ -551,7 +551,7 @@ class E extends CI_Controller
 
             //Validate Source:
             $fetch_o = $this->E_model->fetch(array(
-                'e__id' => $_POST['focus__id'],
+                'e__id' => $_POST['focus_id'],
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
             if (count($fetch_o) < 1) {
@@ -930,7 +930,7 @@ class E extends CI_Controller
             }
         }
 
-        if (!isset($_POST['focus__id']) || intval($_POST['focus__id']) < 1) {
+        if (!isset($_POST['focus_id']) || intval($_POST['focus_id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing parent source',
@@ -947,14 +947,14 @@ class E extends CI_Controller
             ));
         }
 
-        if($_POST['focus__id']==28904){
+        if($_POST['focus_id']==28904){
 
             //Add special transaction to monitor unsubscribes:
             if(in_array($_POST['selected_e__id'], $this->config->item('n___29648'))){
                 $this->X_model->create(array(
                     'x__source' => $member_e['e__id'],
                     'x__type' => 29648, //Communication Downgraded
-                    'x__up' => $_POST['focus__id'],
+                    'x__up' => $_POST['focus_id'],
                     'x__down' => $_POST['selected_e__id'],
                 ));
             }
@@ -972,7 +972,7 @@ class E extends CI_Controller
 
             //Fetch all possible answers based on parent source:
             $query_filters = array(
-                'x__up' => $_POST['focus__id'],
+                'x__up' => $_POST['focus_id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
@@ -1022,7 +1022,7 @@ class E extends CI_Controller
             'x__type' => 6224, //My Account updated
             'x__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
             'x__metadata' => $_POST,
-            'x__up' => $_POST['focus__id'],
+            'x__up' => $_POST['focus_id'],
             'x__down' => $_POST['selected_e__id'],
         ));
 

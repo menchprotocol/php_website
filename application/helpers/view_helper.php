@@ -1022,7 +1022,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
 
 }
 
-function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
+function view_radio_e($focus_id, $child___id, $enable_mulitiselect){
 
     /*
      * Print UI for
@@ -1031,15 +1031,15 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
     $CI =& get_instance();
     $count = 0;
 
-    $ui = '<div class="list-group list-radio-select radio-'.$focus__id.'">';
+    $ui = '<div class="list-group list-radio-select radio-'.$focus_id.'">';
 
-    if(!is_array($CI->config->item('n___'.$focus__id)) || !count($CI->config->item('n___'.$focus__id))){
+    if(!is_array($CI->config->item('n___'.$focus_id)) || !count($CI->config->item('n___'.$focus_id))){
         return false;
     }
 
     $already_selected = array();
     foreach($CI->X_model->fetch(array(
-        'x__up IN (' . join(',', $CI->config->item('n___'.$focus__id)) . ')' => null,
+        'x__up IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null,
         'x__down' => $child___id,
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1047,10 +1047,10 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
         array_push($already_selected, $sel['x__up']);
     }
 
-    if(!count($already_selected) && in_array($focus__id, $CI->config->item('n___6204')) && superpower_unlocked()){
+    if(!count($already_selected) && in_array($focus_id, $CI->config->item('n___6204')) && superpower_unlocked()){
         //FIND DEFAULT if set in session of this user:
-        foreach($CI->config->item('e___'.$focus__id) as $e__id2 => $m2){
-            $var_id = @$CI->session->userdata('session_custom_ui_'.$focus__id);
+        foreach($CI->config->item('e___'.$focus_id) as $e__id2 => $m2){
+            $var_id = @$CI->session->userdata('session_custom_ui_'.$focus_id);
             if($var_id==$e__id2){
                 $already_selected = array($e__id2);
                 break;
@@ -1058,8 +1058,8 @@ function view_radio_e($focus__id, $child___id, $enable_mulitiselect){
         }
     }
 
-    foreach($CI->config->item('e___'.$focus__id) as $e__id => $m) {
-        $ui .= '<span class=""><a href="javascript:void(0);" onclick="e_radio('.$focus__id.','.$e__id.','.$enable_mulitiselect.')" class="list-group-item css__title custom_ui_'.$focus__id.'_'.$e__id.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '">'.( strlen($m['m__cover']) ? '<span class="icon-block change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].'</a></span>';
+    foreach($CI->config->item('e___'.$focus_id) as $e__id => $m) {
+        $ui .= '<span class=""><a href="javascript:void(0);" onclick="e_radio('.$focus_id.','.$e__id.','.$enable_mulitiselect.')" class="list-group-item css__title custom_ui_'.$focus_id.'_'.$e__id.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '">'.( strlen($m['m__cover']) ? '<span class="icon-block change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].'</a></span>';
         $count++;
     }
 
@@ -1750,9 +1750,9 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
 }
 
 
-function view_pill($base_coin, $x__type, $counter, $m, $ui = null, $is_open = true){
+function view_pill($focus_coin, $x__type, $counter, $m, $ui = null, $is_open = true){
 
-    return '<script> '.( $is_open ? ' $(document).ready(function () { load_tab('.$base_coin.', '.$x__type.'); }); ' : '' ).' $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>' .
+    return '<script> '.( $is_open ? ' $(document).ready(function () { load_tab('.$focus_coin.', '.$x__type.'); }); ' : '' ).' $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>' .
         '<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'" read-counter="'.$counter.'">'.$ui.'</div>';
 
 }
@@ -1820,12 +1820,12 @@ function view_e($x__type, $e, $extra_class = null)
     $is_app = $x__type==6287;
 
     $href = ( $is_app ? '/-'.$e['e__id'] : '/@'.$e['e__id'] );
-    $focus__id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
+    $focus_id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $has_x_progress = ( $x__id > 0 && (in_array($e['x__type'], $CI->config->item('n___6255')) || $source_of_e));
     $is_public =  in_array($e['e__type'], $CI->config->item('n___7357')); //PUBLIC
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
-    $source_is_e = $focus__id>0 && $e['e__id']==$focus__id;
+    $source_is_e = $focus_id>0 && $e['e__id']==$focus_id;
 
 
     //Is Lock/Private?

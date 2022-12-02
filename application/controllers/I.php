@@ -214,9 +214,9 @@ class I extends CI_Controller {
 
         /*
          *
-         * Either creates a IDEA transaction between focus__id & link_i__id
+         * Either creates a IDEA transaction between focus_id & link_i__id
          * OR will create a new idea with outcome i__title and then transaction it
-         * to focus__id (In this case link_i__id=0)
+         * to focus_id (In this case link_i__id=0)
          *
          * */
 
@@ -227,15 +227,10 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14685'))) {
+        } elseif (!isset($_POST['x__type']) || !isset($_POST['focus_id']) || !isset($_POST['focus_coin'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invaid Idea Add Type',
-            ));
-        } elseif (!isset($_POST['focus__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Parent Idea ID',
+                'message' => 'Missing Core Variables',
             ));
         } elseif (!isset($_POST['i__title']) || !isset($_POST['link_i__id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['link_i__id']) < 1)) {
             return view_json(array(
@@ -268,7 +263,7 @@ class I extends CI_Controller {
         }
 
         //All seems good, go ahead and try to create/link the Idea:
-        return view_json($this->I_model->create_or_link($_POST['x__type'], trim($_POST['i__title']), $member_e['e__id'], $_POST['focus__id'], $_POST['link_i__id']));
+        return view_json($this->I_model->create_or_link($_POST['focus_coin'], $_POST['x__type'], trim($_POST['i__title']), $member_e['e__id'], $_POST['focus_id'], $_POST['link_i__id']));
 
     }
 
@@ -380,13 +375,13 @@ class I extends CI_Controller {
         $superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEAGING
         $items_per_page = view_memory(6404,11064);
         $x__type = intval($_POST['x__type']);
-        $focus__id = intval($_POST['focus__id']);
+        $focus_id = intval($_POST['focus_id']);
         $page = intval($_POST['page'])+1;
 
-        $list_results = view_coins_e($x__type, $focus__id, $page);
-        $child_count = view_coins_e($x__type, $focus__id,0, false);
+        $list_results = view_coins_e($x__type, $focus_id, $page);
+        $child_count = view_coins_e($x__type, $focus_id,0, false);
         $es = $this->E_model->fetch(array(
-            'e__id' => $focus__id,
+            'e__id' => $focus_id,
         ));
 
         foreach($list_results as $i) {

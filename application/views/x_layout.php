@@ -819,8 +819,8 @@ echo '</div>';
     var can_skip = <?= intval($can_skip) ?>;
 </script>
 
-<input type="hidden" id="base_coin" value="12273" />
-<input type="hidden" id="focus__id" value="<?= $i_focus['i__id'] ?>" />
+<input type="hidden" id="focus_coin" value="12273" />
+<input type="hidden" id="focus_id" value="<?= $i_focus['i__id'] ?>" />
 <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 
@@ -1052,7 +1052,7 @@ echo '</div>';
         //Show Loading:
         $.post("/x/x_select", {
             focus_i__type:focus_i__type,
-            focus__id:current_id(),
+            focus_id:current_id(),
             top_i__id:$('#top_i__id').val(),
             selection_i__id:selection_i__id,
         }, function (data) {
