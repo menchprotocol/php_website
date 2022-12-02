@@ -124,48 +124,6 @@ class I extends CI_Controller {
     }
 
 
-    function i_e_add($i__id){
-
-        //Make sure it's a logged in member:
-        $member_e = superpower_unlocked(10939, true);
-        $success_message = null;
-
-        if(superpower_unlocked(12700)){
-
-            //They can instantly join:
-            $this->X_model->create(array(
-                'x__type' => 4983, //IDEA SOURCES
-                'x__source' => $member_e['e__id'],
-                'x__up' => $member_e['e__id'],
-                'x__right' => $i__id,
-            ));
-
-            $this->X_model->create(array(
-                'x__type' => 13933, //JOIN AS SOURCE INSTANTLY
-                'x__source' => $member_e['e__id'],
-                'x__right' => $i__id,
-            ));
-
-            $success_message = '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fad fa-check-circle"></i></span>SUCCESSFULLY Joined & Notified relevant members of your intention to contribute.</div>';
-
-        } else {
-
-            //Pending Request
-            $this->X_model->create(array(
-                'x__type' => 14577, //JOIN AS SOURCE PENDING
-                'x__source' => $member_e['e__id'],
-                'x__right' => $i__id,
-            ));
-
-        }
-
-        //Go back to idea:
-        return redirect_message('/~'.$i__id, $success_message);
-
-    }
-
-
-
 
     function i_navigate($previous_i__id, $current_i__id, $action){
 

@@ -448,29 +448,8 @@ function toggle_pills(x__type){
 
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
-
             $('.headline_body_' + x__type).html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
-
-            //Nothing loaded, we need to load:
-            if (focus_coin==12273){
-                $.post("/i/view_body_i", {
-                    x__type:x__type,
-                    counter:$('.headline_body_' + x__type).attr('read-counter'),
-                    i__id:current_id()
-                }, function (data) {
-                    $('.headline_body_' + x__type).html(data);
-                    load_tab(12273,x__type);
-                });
-            } else if (focus_coin==12274){
-                $.post("/e/view_body_e", {
-                    x__type:x__type,
-                    counter:$('.headline_body_' + x__type).attr('read-counter'),
-                    e__id:current_id()
-                }, function (data) {
-                    $('.headline_body_' + x__type).html(data);
-                    load_tab(12274,x__type);
-                });
-            }
+            load_tab(focus_coin,x__type);
         }
     }
 
@@ -1474,7 +1453,33 @@ function coin__save(){
 
 }
 
-function load_tab(focus_coin, x__type){
+function load_tab(focus_coin, x__type, top_loader = false){
+
+    if(focus_coin==12273){
+        $.post("/i/view_body_i", {
+            x__type:x__type,
+            counter:$('.headline_body_' + x__type).attr('read-counter'),
+            i__id:current_id()
+        }, function (data) {
+            $('.headline_body_' + x__type).html(data);
+            if(top_loader){
+                $('html, body').scrollTop($('.main_item').offset().top - 54)
+            }
+        });
+    } else if(focus_coin==12274){
+        //Load the tab:
+        $.post("/e/view_body_e", {
+            x__type:x__type,
+            counter:$('.headline_body_11030').attr('read-counter'),
+            e__id:current_id()
+        }, function (data) {
+            $('.headline_body_'+x__type).html(data);
+            if(top_loader){
+                $('html, body').scrollTop($('.main_item').offset().top - 54)
+            }
+        });
+    }
+
 
     console.log('Tab loaded from @'+focus_coin+' for @'+x__type);
 
@@ -2009,8 +2014,7 @@ function x_set_text(this_handler){
 
 
 function x_type_counter(x__type, adjustment_count){
-    var current_count = parseInt( $('.xtypecounter'+x__type).text().length ? $('.xtypecounter'+x__type).text() : 0 );
-    var new_count = current_count + adjustment_count;
+    var new_count = parseInt($('.headline_body_' + x__type).attr('read-counter')) + adjustment_count;
     $('.xtypecounter'+x__type).text(new_count);
 }
 

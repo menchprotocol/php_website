@@ -6,35 +6,15 @@ $this->session->set_userdata('session_page_count', $new_order);
 $this->X_model->create(array(
     'x__source' => $member_e['e__id'],
     'x__type' => 4993, //Member Opened Idea
-    'x__right' => $i_focus['i__id'],
+    'x__right' => $i['i__id'],
     'x__spectrum' => $new_order,
 ));
 
 
-$e_of_i = e_of_i($i_focus['i__id']);
-
-if(!$e_of_i){
-
-    //DO they already have a request?
-    $request_history = $this->X_model->fetch(array(
-        'x__source' => $member_e['e__id'],
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type' => 14577,
-        'x__right' => $i_focus['i__id'],
-    ), array(), 1, 0, array('x__id' => 'DESC'));
-
-    if(count($request_history)){
-
-        echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle zq12274"></i></span>You submitted your request to join ' . view_time_difference(strtotime($request_history[0]['x__time'])) . ' ago. You will be notified soon.</span></div>';
-
-    } else {
-
-        echo '<div class="msg alert alert-warning no-margin"><span class="icon-block"><i class="fas fa-exclamation-circle zq12274"></i></span>You are not a source for this idea, yet. <span class="inline-block '.superpower_active(10939).'"><a href="/i/i_e_add/'.$i_focus['i__id'].'" class="inline-block css__title">REQUEST TO JOIN</a></span></div>';
-
-    }
-}
+$e_of_i = e_of_i($i['i__id']);
 
 
+//Focusing on a certain source?
 if(isset($_GET['load__e']) && superpower_active(14005, true)){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
@@ -47,21 +27,37 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 }
 
 
+
+
+
+
+//Load Top:
+$counter_top = view_coins_i(11019, $i['i__id'], 0, false);
+echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"></div>';
+echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(12273, 11019); }, 987); </script>';
+
+
+
+//Focus Source:
+echo '<div class="main_item row justify-content">';
+echo view_i(4250, 0, null, $i);
+echo '</div>';
+
+
+
 $coins_count = array();
-$e___14874 = $this->config->item('e___14874');
-foreach($e___14874 as $x__type => $m) {
-    $coin_count = view_coins_i($x__type, $i_focus['i__id'], 0, false);
-    if($coin_count>0 || in_array($x__type , $this->config->item('n___30808'))){
-        $coins_count[$x__type] = $coin_count;
-    }
+$body_content = '';
+echo '<ul class="nav nav-tabs nav12274">';
+foreach($this->config->item('e___14874') as $x__type => $m) {
+    $coins_count[$x__type] = view_coins_i($x__type, $i['i__id'], 0, false);
+    $body_content .= '<div class="headlinebody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'"></div>';
+    echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($coins_count[$x__type]) . '</span></a></li>';
 }
-
-
-//Determine focus/auto-load tab:
-$focus_tab = 0;
-foreach($this->config->item('e___20424') as $x__type => $m) {
-    if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
-        $focus_tab = $x__type;
+echo '</ul>';
+echo $body_content;
+foreach($this->config->item('e___14874') as $x__type => $m) { //Load Focus Tab:
+    if($coins_count[$x__type] > 0){
+        echo ' $(document).ready(function () { toggle_pills('.$x__type.'); });';
         break;
     }
 }
@@ -69,10 +65,11 @@ foreach($this->config->item('e___20424') as $x__type => $m) {
 
 
 
+/*
 //Always Load Followings at top
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$following_count = view_coins_i(11019, $i_focus['i__id'], 0, false);
-echo view_headline(11019,  $following_count, $e___11035[11019], view_body_i(11019, $following_count, $i_focus['i__id']), false);
+$following_count = view_coins_i(11019, $i['i__id'], 0, false);
+echo view_headline(11019,  $following_count, $e___11035[11019], view_body_i(11019, $following_count, $i['i__id']), false);
 if($e_of_i){
     echo '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
@@ -83,23 +80,9 @@ if($e_of_i){
                                placeholder="'.$e___11035[14016]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
 }
+*/
 
 
-
-//Focus Notes
-echo '<div class="row justify-content" id="thisNode" style="padding-bottom:5px;">';
-echo view_i(4250, 0, null, $i_focus);
-echo '</div>';
-
-
-//Source Menu:
-echo '<ul class="nav nav-tabs nav12273"></ul>';
-
-//Print results:
-foreach($coins_count as $x__type => $counter) {
-    echo view_pill(12273, $x__type, $counter, $e___14874[$x__type], ($x__type==$focus_tab ? view_body_i($x__type, $counter, $i_focus['i__id']) : null ), ($x__type==$focus_tab));
-    //echo view_pill(12273, $x__type, $counter, $e___14874[$x__type], view_body_i($x__type, $counter, $i_focus['i__id']), true);
-}
 
 
 
@@ -109,17 +92,10 @@ foreach($coins_count as $x__type => $counter) {
     <?= ( !$e_of_i ? '.note-editor {display:none;}' : '' ) ?>
 </style>
 <input type="hidden" id="focus_coin" value="12273" />
-<input type="hidden" id="focus_id" value="<?= $i_focus['i__id'] ?>" />
+<input type="hidden" id="focus_id" value="<?= $i['i__id'] ?>" />
 <script type="text/javascript">
 
     $(document).ready(function () {
-
-        $([document.documentElement, document.body]).animate({
-            scrollTop: $("#thisNode").offset().top
-        }, 89);
-
-        load_tab(12273,<?= $focus_tab ?>);
-
         //Look for power editor updates:
         $('.x_set_class_text').keypress(function(e) {
             var code = (e.keyCode ? e.keyCode : e.which);
