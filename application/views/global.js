@@ -1492,7 +1492,7 @@ function load_tab(focus_coin, x__type){
         e_load_search(x__type);
         setTimeout(function () {
             e_sort_load(x__type);
-        }, 610);
+        }, 3610);
     }
     
 }
