@@ -3248,9 +3248,11 @@ h4.css__title{
 .cover-link {
     padding-top: 98%;
 }
-.cover-link,
-.round-btn {
+.cover-link {
     border-radius: 0;
+}
+.round-btn {
+    border-radius: 50%;
 }
 .icons_large .block-icon img,
 .note-btn > span > span,

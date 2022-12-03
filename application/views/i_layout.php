@@ -34,7 +34,7 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 //Load Top:
 $counter_top = view_coins_i(11019, $i['i__id'], 0, false);
 echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"></div>';
-echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(12273, 11019, true); }, 987); }); </script>';
+echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(12273, 11019, true); }, 233); }); </script>';
 
 
 
