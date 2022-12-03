@@ -1514,7 +1514,7 @@ function load_tab(focus_coin, x__type, top_loader = false){
             e_sort_load(x__type);
         }
 
-    }, 377);
+    }, 610);
 
 
     
