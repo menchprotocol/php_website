@@ -524,7 +524,7 @@ function view_coins(){
     $query = $CI->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
     $ui = '';
 
-    $ui .= '<div class="row justify-content list-coins" style="font-size: 1.8em; padding-bottom: 55px;"><span style="min-width:169px; min-height: 20px; text-align: right; display: inline-block;"><b class="css__title coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;<a href="/18032" data-toggle="tooltip" data-placement="top" title="Learn more about the single Ledger that holds all data">Transactions</a></div>';
+    $ui .= '<div class="row justify-content list-coins css__title" style="font-size: 1.8em; padding-bottom: 55px;"><span style="min-width:169px; min-height: 20px; text-align: right; display: inline-block;"><b class="coin_count_x">'.number_format($query[0]['totals'], 0).'</b></span>&nbsp;<a href="/18032" data-toggle="tooltip" data-placement="top" title="Learn more about the single Ledger that holds all data">Transactions</a></div>';
 
     $ui .= '<div class="row justify-content list-coins">';
     $count = 0;
