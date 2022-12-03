@@ -1481,14 +1481,17 @@ function load_tab(focus_coin, x__type, top_loader = false){
     }
 
 
-    console.log('Tab loaded from @'+focus_coin+' for @'+x__type);
+    console.log('Tab loading... from @'+focus_coin+' for @'+x__type);
 
-    initiate_algolia();
-    load_coins();
-    load_editor();
-    x_type_preview_load();
-    init_remove();
-    x_set_start_text();
+    setTimeout(function () {
+        initiate_algolia();
+        load_coins();
+        load_editor();
+        x_type_preview_load();
+        init_remove();
+        x_set_start_text();
+        x_sort_load(x__type);
+    }, 377);
 
     if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
         console.log('IS IDEA');
@@ -1500,10 +1503,6 @@ function load_tab(focus_coin, x__type, top_loader = false){
             e_sort_load(x__type);
         }, 377);
     }
-
-    setTimeout(function () {
-        x_sort_load(x__type);
-    }, 377);
     
 }
 

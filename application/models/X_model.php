@@ -495,12 +495,6 @@ class X_model extends CI_Model
         ));
 
         if (!count($notification_levels)) {
-            $this->X_model->create(array(
-                'x__message' => 'send_dm() user is not in any of @28904',
-                'x__type' => 4246, //Platform Bug Reports
-                'x__up' => 28904,
-                'x__down' => $e__id,
-            ));
             return array(
                 'status' => 0,
                 'message' => 'Unknown user status',
