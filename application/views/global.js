@@ -1497,27 +1497,32 @@ function load_tab(focus_coin, x__type, top_loader = false){
 
     }
 
-    initiate_algolia();
-    load_coins();
-    load_editor();
-    x_type_preview_load();
-    init_remove();
-    x_set_start_text();
-
+    //Give some extra loding time so the content loads on page:
     setTimeout(function () {
-        x_sort_load(x__type);
-    }, 987);
 
-    if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
-        console.log('IS IDEA');
-        i_load_search(x__type);
-    } else if((x__type==12274 || x__type==11030) || (focus_coin==12273 && x__type==6255)) {
-        console.log('IS SOURCE');
-        e_load_search(x__type);
+        initiate_algolia();
+        load_coins();
+        load_editor();
+        x_type_preview_load();
+        init_remove();
+        x_set_start_text();
+
         setTimeout(function () {
-            e_sort_load(x__type);
+            x_sort_load(x__type);
         }, 987);
-    }
+
+        if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
+            console.log('IS IDEA');
+            i_load_search(x__type);
+        } else if((x__type==12274 || x__type==11030) || (focus_coin==12273 && x__type==6255)) {
+            console.log('IS SOURCE');
+            e_load_search(x__type);
+            setTimeout(function () {
+                e_sort_load(x__type);
+            }, 987);
+        }
+
+    }, 987);
 
 
     
