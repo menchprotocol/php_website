@@ -1455,7 +1455,11 @@ function coin__save(){
 
 function load_tab(focus_coin, x__type, top_loader = false){
 
+    console.log('Tab loading... from @'+focus_coin+' for @'+x__type);
+
     if(focus_coin==12273){
+
+        console.log('Idea Tab');
         $.post("/i/view_body_i", {
             x__type:x__type,
             counter:$('.headline_body_' + x__type).attr('read-counter'),
@@ -1466,8 +1470,11 @@ function load_tab(focus_coin, x__type, top_loader = false){
                 $('html, body').scrollTop($('.main_item').offset().top - 54)
             }
         });
+
     } else if(focus_coin==12274){
+
         //Load the tab:
+        console.log('Source Tab');
         $.post("/e/view_body_e", {
             x__type:x__type,
             counter:$('.headline_body_'+x__type).attr('read-counter'),
@@ -1478,10 +1485,14 @@ function load_tab(focus_coin, x__type, top_loader = false){
                 $('html, body').scrollTop($('.main_item').offset().top - 54)
             }
         });
+
+    } else {
+
+        //Whaaaat is this?
+        console.log('ERROR: Unknown Tab!');
+        return false;
+
     }
-
-
-    console.log('Tab loading... from @'+focus_coin+' for @'+x__type);
 
     //Give some extra loding time so the content loads on page:
     setTimeout(function () {
@@ -1503,7 +1514,7 @@ function load_tab(focus_coin, x__type, top_loader = false){
             e_sort_load(x__type);
         }
 
-    }, 233);
+    }, 377);
 
 
     

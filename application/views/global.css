@@ -3806,6 +3806,7 @@ main {
 
 .container ul.nav-tabs {
     border-bottom: 0px solid #999999 !important;
+    margin-bottom: 5px;
 }
 
 .nav-tabs > li {
