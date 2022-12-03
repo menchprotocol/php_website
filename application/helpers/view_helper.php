@@ -1431,7 +1431,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     }
 
 
-    $toolbar = $editing_enabled && $superpower_12673;
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
@@ -1607,7 +1606,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '</div></td>';
 
         $ui .= '<td width="20%"><div class="'.$link_visibility.'">';
-        if(!$has_any_lock && $toolbar && isset($i['x__type'])){
+        if(!$has_any_lock && isset($i['x__type'])){
             $ui .= $link_dropdown;
         }
         $ui .= '</div></td>';
