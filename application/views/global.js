@@ -2103,50 +2103,52 @@ function x_sort_load(x__type){
         return false;
     }
 
-    var theobject = document.getElementById("list-in-" + x__type);
-    if (!theobject) {
-        //due to duplicate ideas belonging in this idea:
-        console.log(x__type+' failed to find sortable object');
-        return false;
-    }
+    setTimeout(function () {
+        var theobject = document.getElementById("list-in-" + x__type);
+        if (!theobject) {
+            //due to duplicate ideas belonging in this idea:
+            console.log(x__type+' failed to find sortable object');
+            return false;
+        }
 
-    if(sorting_loaded.indexOf(x__type) >= 0){
-        console.log(x__type+' already loaded');
-        return false;
-    }
+        if(sorting_loaded.indexOf(x__type) >= 0){
+            console.log(x__type+' already loaded');
+            return false;
+        }
 
-    console.log(x__type+' sorting load success');
-    sorting_loaded.push(x__type);
+        console.log(x__type+' sorting load success');
+        sorting_loaded.push(x__type);
 
-    //Load sorter:
-    var sort = Sortable.create(theobject, {
-        animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: "#list-in-"+x__type+" .cover_sort", // Specifies which items inside the element should be sortable
-        handle: "#list-in-"+x__type+" .x_sort", // Restricts sort start click/touch to the specified element
-        onUpdate: function (evt/**Event*/) {
+        //Load sorter:
+        var sort = Sortable.create(theobject, {
+            animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
+            draggable: "#list-in-"+x__type+" .cover_sort", // Specifies which items inside the element should be sortable
+            handle: "#list-in-"+x__type+" .x_sort", // Restricts sort start click/touch to the specified element
+            onUpdate: function (evt/**Event*/) {
 
-            var sort_rank = 0;
-            var new_x_order = [];
-            $("#list-in-"+x__type+" .cover_sort").each(function () {
-                var x__id = parseInt($(this).attr('x__id'));
-                if(x__id > 0){
-                    sort_rank++;
-                    new_x_order[sort_rank] = x__id;
-                }
-            });
-
-            //Update order:
-            if(sort_rank > 0){
-                $.post("/x/x_sort_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
-                    //Update UI to confirm with member:
-                    if (!data.status) {
-                        //There was some sort of an error returned!
-                        alert(data.message);
+                var sort_rank = 0;
+                var new_x_order = [];
+                $("#list-in-"+x__type+" .cover_sort").each(function () {
+                    var x__id = parseInt($(this).attr('x__id'));
+                    if(x__id > 0){
+                        sort_rank++;
+                        new_x_order[sort_rank] = x__id;
                     }
                 });
+
+                //Update order:
+                if(sort_rank > 0){
+                    $.post("/x/x_sort_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
+                        //Update UI to confirm with member:
+                        if (!data.status) {
+                            //There was some sort of an error returned!
+                            alert(data.message);
+                        }
+                    });
+                }
             }
-        }
-    });
+        });
+    }, 987);
 
 }
 
