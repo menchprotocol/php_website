@@ -1359,12 +1359,16 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $e_of_i = e_of_i($i['i__id']);
     $user_input = $focus_e;
     $member_e = superpower_unlocked();
+    $superpower_10939 = superpower_active(10939, true);
+    $superpower_12700 = superpower_active(12700, true);
+    $superpower_12673 = superpower_active(12673, true);
+
     $is_first_incomplete = ( $top_i__id>0 && $member_e ? $is_first_incomplete : false );
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = $top_i__id>0 || in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
-    $editing_enabled = !$cache_app && in_array($x__type, $CI->config->item('n___14502')) && $e_of_i; //IDEA EDITING
+    $editing_enabled = !$cache_app && in_array($x__type, $CI->config->item('n___14502')) && ($e_of_i || $superpower_12700); //IDEA EDITING
     $focus_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $has_self = $member_e && $focus_e && $member_e['e__id']==$focus_e['e__id'];
 
@@ -1385,9 +1389,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
 
-    $superpower_10939 = superpower_active(10939, true);
-    $superpower_12700 = superpower_active(12700, true);
-    $superpower_12673 = superpower_active(12673, true);
+
     $is_completed = ($tree_progress['fixed_completed_percentage']>=100);
     $is_started = ($tree_progress['fixed_completed_percentage']>0);
     $parent_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
@@ -1595,16 +1597,16 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
 
         $ui .= '<td width="20%"><div class="'.$type_visibility.'">';
-        if(!$discovery_mode && $editing_enabled){
+        if(!$discovery_mode){
             $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
-        } elseif($discovery_mode && isset($i['x__type']) && $i['x__type']>0){
+        } elseif(isset($i['x__type']) && $i['x__type']>0){
             $e___4593 = $CI->config->item('e___4593'); //Transaction Types
-            //$ui .= '<div title="'.$e___4593[$i['x__type']]['m__title'].'">'.$e___4593[$i['x__type']]['m__cover'].'</div>';
+            $ui .= '<div title="'.$e___4593[$i['x__type']]['m__title'].'">'.$e___4593[$i['x__type']]['m__cover'].'</div>';
         }
         $ui .= '</div></td>';
 
         $ui .= '<td width="20%"><div class="'.$link_visibility.'">';
-        if(!$has_any_lock && $toolbar && $superpower_12700 && isset($i['x__type'])){
+        if(!$has_any_lock && $toolbar && isset($i['x__type'])){
             $ui .= $link_dropdown;
         }
         $ui .= '</div></td>';
