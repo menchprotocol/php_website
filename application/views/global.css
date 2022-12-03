@@ -3092,7 +3092,7 @@ h4.css__title{
 .custom_ui_28979_28980 .btn-12274 {
     background-color: #007AFD !important;
 }
-.custom_ui_28979_28980 .thepill12274 a.nav-link  {
+.custom_ui_28979_28980 .thepill12274 .nav-link.active  {
     border-color: #007AFD !important;
 }
 
@@ -3148,7 +3148,7 @@ h4.css__title{
 .custom_ui_28979_28980 .btn-12273 {
     background-color: #FFC500 !important;
 }
-.custom_ui_28979_28980 .thepill12273 a.nav-link  {
+.custom_ui_28979_28980 .thepill12273 .nav-link.active  {
     border-color: #FFC500 !important;
 }
 
@@ -3213,7 +3213,7 @@ h4.css__title{
 .custom_ui_28979_28980 .btn-6255 {
     background-color: #FC1B44 !important;
 }
-.custom_ui_28979_28980 .thepill6255 a.nav-link  {
+.custom_ui_28979_28980 .thepill6255 .nav-link.active  {
     border-color: #FC1B44 !important;
 }
 
