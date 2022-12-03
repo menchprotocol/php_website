@@ -1506,7 +1506,7 @@ function load_tab(focus_coin, x__type, top_loader = false){
 
         setTimeout(function () {
             x_sort_load(x__type);
-        }, 233);
+        }, 987);
 
         if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
             console.log('IS IDEA');
@@ -1516,7 +1516,7 @@ function load_tab(focus_coin, x__type, top_loader = false){
             e_load_search(x__type);
             setTimeout(function () {
                 e_sort_load(x__type);
-            }, 233);
+            }, 987);
         }
 
     }, 987);
