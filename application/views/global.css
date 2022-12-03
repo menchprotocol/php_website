@@ -591,6 +591,7 @@ label:focus,
 .nav-title{
     padding: 5px 0 0 !important;
     display: block;
+    text-align: center;
 }
 
 
