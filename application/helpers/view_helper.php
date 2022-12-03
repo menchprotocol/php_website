@@ -1657,13 +1657,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         }
 
 
-        //Fetch minting details:
-        $minter = ( $focus_coin && !$discovery_mode ? $CI->X_model->fetch(array(
-            'x__type' => 4250, //New Idea Created
-            'x__right' => $i['i__id'],
-        ), array('x__source')) : array());
-
-
 
         //IDEAs & Time & Message
         $message_tooltip = '';
@@ -1703,9 +1696,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             $ui .= '<div class="">' . $message_tooltip . '</div>'; //grey
         }
 
-        if(count($minter)){
-            //$ui .= '<div class="grey mini-font">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div>';
-        }
         $ui .= '</div>';
 
         $ui .= '</div></div>';
@@ -1982,16 +1972,6 @@ function view_e($x__type, $e, $extra_class = null)
         //Static:
         $ui .= '<div class="css__title">'.( $is_cache ? '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
     }
-
-
-    //Fetch minting details:
-    /*
-    $minter = ( $focus_coin ? $CI->X_model->fetch(array(
-        'x__type' => 4251, //New Source Minted
-        'x__down' => $e['e__id'],
-    ), array('x__source')) : array());
-    $ui .= ( count($minter) ? '<div class="cover-text"><div class="grey mini-font" style="padding-top:5px;">Minted <span title="'.$minter[0]['x__time'].' PST">'.view_time_difference(strtotime($minter[0]['x__time'])).' ago</span> by <a href="/@'.$minter[0]['e__id'].'"><u>'.$minter[0]['e__title'].'</u></a></div></div>' : '' );
-    */
 
     //Message
     $grant_access = $source_of_e || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
