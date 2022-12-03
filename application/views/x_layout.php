@@ -190,7 +190,10 @@ if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
         }
 
         echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">';
+        $level = 0;
         foreach($find_previous as $parent_i){
+
+            $level++;
 
             //Does this have a child list?
             $query_subset = $this->X_model->fetch(array(
@@ -209,6 +212,17 @@ if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
                     )))){
                     unset($query_subset[$key]);
                 }
+            }
+
+            $messages = count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 4231, //IDEA NOTES Messages
+                'x__right' => $parent_i['i__id'],
+            )));
+
+            if(!$messages && count($query_subset)==1 && $level==1){
+                //Top referral, hide:
+                continue;
             }
 
             echo '<li class="breadcrumb-item">';
@@ -230,6 +244,7 @@ if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
             }
 
             echo '</li>';
+
         }
         echo '</ol></nav>';
 
