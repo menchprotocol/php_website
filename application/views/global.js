@@ -390,25 +390,28 @@ function e_sort_load(x__type) {
         return false;
     }
 
-    var theobject = document.getElementById("list-in-"+x__type);
-    if (!theobject) {
-        //due to duplicate ideas belonging in this idea:
-        console.log('No object')
-        return false;
-    }
-
-    //Show sort icon:
-    console.log('Completed Source Sorting for @'+x__type)
-    $('.sort_e, .sort_reset').removeClass('hidden');
-
-    var sort = Sortable.create(theobject, {
-        animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-        draggable: ".coinface-12274", // Specifies which items inside the element should be sortable
-        handle: ".sort_e", // Restricts sort start click/touch to the specified element
-        onUpdate: function (evt/**Event*/) {
-            e_sort_save(x__type);
+    setTimeout(function () {
+        var theobject = document.getElementById("list-in-"+x__type);
+        if (!theobject) {
+            //due to duplicate ideas belonging in this idea:
+            console.log('No object')
+            return false;
         }
-    });
+
+        //Show sort icon:
+        console.log('Completed Source Sorting for @'+x__type)
+        $('.sort_e, .sort_reset').removeClass('hidden');
+
+        var sort = Sortable.create(theobject, {
+            animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
+            draggable: ".coinface-12274", // Specifies which items inside the element should be sortable
+            handle: ".sort_e", // Restricts sort start click/touch to the specified element
+            onUpdate: function (evt/**Event*/) {
+                e_sort_save(x__type);
+            }
+        });
+    }, 987);
+
 }
 
 
