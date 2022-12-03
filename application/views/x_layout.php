@@ -821,7 +821,7 @@ if($top_i__id) {
 }
 
 
-if($top_i__id > 0 && !$top_completed){
+if($top_i__id > 0 && !$top_completed && isset($tree_progress['fixed_completed_percentage']) && $tree_progress['fixed_completed_percentage']>0){
     echo '<p style="padding:10px;">'.$tree_progress['fixed_completed_percentage'].'% Completed</p>';
 }
 
