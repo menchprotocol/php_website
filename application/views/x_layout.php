@@ -189,7 +189,7 @@ if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
             array_push($main_branch, intval($parent_i['i__id']));
         }
 
-        echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">';
+        $breadcrum_content = null;
         $level = 0;
         foreach($find_previous as $parent_i){
 
@@ -225,28 +225,33 @@ if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
                 continue;
             }
 
-            echo '<li class="breadcrumb-item">';
-            echo '<a href="/'.$top_i__id.'/'.$parent_i['i__id'].'"><u>'.$parent_i['i__title'].'</u></a>';
+            $breadcrum_content .= '<li class="breadcrumb-item">';
+            $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$parent_i['i__id'].'"><u>'.$parent_i['i__title'].'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if(count($query_subset) >= 2){
                 //Show other branches:
-                echo '<div class="dropdown inline-block">';
-                echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$parent_i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                echo '<span class="icon-block source_cover source_cover_mini"><i class="far fa-chevron-square-down"></i></span>';
-                echo '</button>';
-                echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$parent_i['i__id'].'">';
+                $breadcrum_content .= '<div class="dropdown inline-block">';
+                $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$parent_i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                $breadcrum_content .= '<span class="icon-block source_cover source_cover_mini"><i class="far fa-chevron-square-down"></i></span>';
+                $breadcrum_content .= '</button>';
+                $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$parent_i['i__id'].'">';
                 foreach ($query_subset as $i_subset) {
-                    echo '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item css__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.$i_subset['i__title'].'</a>';
+                    $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item css__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.$i_subset['i__title'].'</a>';
                 }
-                echo '</div>';
-                echo '</div>';
+                $breadcrum_content .= '</div>';
+                $breadcrum_content .= '</div>';
             }
 
-            echo '</li>';
+            $breadcrum_content .= '</li>';
 
         }
-        echo '</ol></nav>';
+
+        if($breadcrum_content){
+            echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">';
+            echo $breadcrum_content;
+            echo '</ol></nav>';
+        }
 
     }
 
