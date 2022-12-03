@@ -306,8 +306,9 @@ class App extends CI_Controller
         }
 
 
+        //Show Featured Apps
         $ui = '<div class="row">';
-        foreach (view_coins_e(12274, 6287, 1) as $app) {
+        foreach (view_coins_e(12274, 30841, 1) as $app) {
             $ui .= view_e(6287, $app);
         }
         $ui .= '</div>';
