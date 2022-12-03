@@ -714,7 +714,7 @@ if(!$top_i__id){
 
         $control_btn = '';
 
-        if($e__id==13877 && $top_i__id && !$in_my_discoveries && !$is_payment){
+        if($e__id==13877 && $top_i__id){
 
             //Is Saved already by this member?
             $is_saves = $this->X_model->fetch(array(
