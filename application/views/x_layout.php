@@ -600,7 +600,7 @@ if($top_i__id) {
     } elseif ($i['i__type'] == 6683) {
 
         //Do we have a response?
-        $previous_response = null;
+        $previous_response = '';
         if($x__source){
             //Does this have any append sources?
             foreach($this->X_model->fetch(array(
@@ -628,7 +628,7 @@ if($top_i__id) {
             }
         }
 
-        $previous_response = ( !$previous_response && count($x_completes) ? trim($x_completes[0]['x__message']) : false );
+        $previous_response = ( !strlen($previous_response) && count($x_completes) ? trim($x_completes[0]['x__message']) : false );
 
         $message_ui = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
 
