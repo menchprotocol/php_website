@@ -1672,7 +1672,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             if(superpower_active(12701, true)){
                 $message_tooltip = '<a href="javascript:void(0);" onclick="x_message_load(' . $i['x__id'] . ')" class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</a>';
             } elseif($e_of_i) {
-                $message_tooltip = '<p class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</p>';
+                $message_tooltip = '<p class="mini-font" title="'.$i['x__message'].'">'.$CI->X_model->message_view( $i['x__message'], true).'</p>';
             }
 
         } else {
