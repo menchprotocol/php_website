@@ -617,8 +617,6 @@ if($top_i__id) {
                 ), array(), 0, 0) as $profile_appended) {
                     if(strlen($profile_appended['x__message'])){
                         $previous_response = $profile_appended['x__message'];
-                    }
-                    if(strlen($previous_response)){
                         break;
                     }
                 }
@@ -628,7 +626,7 @@ if($top_i__id) {
             }
         }
 
-        $previous_response = ( !strlen($previous_response) && count($x_completes) ? trim($x_completes[0]['x__message']) : false );
+        $previous_response = ( !strlen($previous_response) && count($x_completes) ? trim($x_completes[0]['x__message']) : $previous_response );
 
         $message_ui = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
 
