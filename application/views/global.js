@@ -1483,7 +1483,9 @@ function load_tab(focus_coin, x__type, top_loader = false){
 
     console.log('Tab loading... from @'+focus_coin+' for @'+x__type);
 
+    //Give some extra loding time so the content loads on page:
     setTimeout(function () {
+
         initiate_algolia();
         load_coins();
         load_editor();
@@ -1491,18 +1493,19 @@ function load_tab(focus_coin, x__type, top_loader = false){
         init_remove();
         x_set_start_text();
         x_sort_load(x__type);
+
+        if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
+            console.log('IS IDEA');
+            i_load_search(x__type);
+        } else if((x__type==12274 || x__type==11030) || (focus_coin==12273 && x__type==6255)) {
+            console.log('IS SOURCE');
+            e_load_search(x__type);
+            e_sort_load(x__type);
+        }
+
     }, 377);
 
-    if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
-        console.log('IS IDEA');
-        i_load_search(x__type);
-    } else if((x__type==12274 || x__type==11030) || (focus_coin==12273 && x__type==6255)) {
-        console.log('IS SOURCE');
-        e_load_search(x__type);
-        setTimeout(function () {
-            e_sort_load(x__type);
-        }, 377);
-    }
+
     
 }
 
