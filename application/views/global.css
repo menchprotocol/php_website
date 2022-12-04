@@ -1320,6 +1320,9 @@ a.headline {
 .coin_cover:hover .show-on-hover{
     display:block !important;
 }
+.coin_cover.focus-coin {
+    padding-bottom: 13px;
+}
 
 .score-range{
     width: 89px;
@@ -3812,7 +3815,7 @@ main {
 
 .container ul.nav-tabs {
     border-bottom: 0px solid #999999 !important;
-    margin-bottom: 5px;
+    margin-bottom: 13px;
 }
 
 .nav-tabs > li {
