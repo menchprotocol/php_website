@@ -1589,7 +1589,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             $type_visibility = 'show-on-hover';//No need to be visible by default
         }
 
-        if(!in_array($i['i__type'], $CI->config->item('n___7355'))){
+        if(in_array($i['i__type'], $CI->config->item('n___31109'))){
             $type_visibility = ''; //visible by default
         }
 
@@ -1940,7 +1940,7 @@ function view_e($x__type, $e, $extra_class = null)
     //Top action menu:
     if(!$cache_app){
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="20%"><div class="'.( in_array($e['e__type'], $CI->config->item('n___7357')) ? 'show-on-hover' : '' ).'">'.($source_of_e && $superpower_13422 ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
+        $ui .= '<td width="20%"><div class="'.( in_array($e['e__type'], $CI->config->item('n___31109')) ? '' : 'show-on-hover' ).'">'.($source_of_e && $superpower_13422 ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
         $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')" class="icon-block">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</div></td>';
         $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
         $ui .= '<td width="20%"><div class="show-on-hover">'.( $can_click && $show_text_editor ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
