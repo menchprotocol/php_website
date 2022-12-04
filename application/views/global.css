@@ -2131,7 +2131,7 @@ i, .btn .show-max {
     padding: 0;
 }
 .mini-coin{
-    margin: -8px 0 !important;
+    margin: 0 !important;
 }
 .focus-coin{
     margin:13px 0 0 !important;
@@ -2184,7 +2184,6 @@ i, .btn .show-max {
 
 #container_search .cover-link {
     margin-top:0;
-    margin-bottom: 28px;
 }
 
 .cover-content .inner-content .css__title {
