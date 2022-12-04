@@ -524,7 +524,7 @@ if($top_i__id) {
 
             echo '<tr>';
             echo '<td class="table-btn first_btn" style="text-align: right;  width:34% !important;">Total:&nbsp;&nbsp;</td>';
-            echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].'</td>';
+            echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].' <b style="color: #FF0000;">*</b></td>';
             echo '</tr>';
 
             echo '<tr>';
@@ -535,20 +535,19 @@ if($top_i__id) {
             echo '</table>';
 
 
-            echo '<div class="sub_note css__title">Note:</div>';
+            echo '<div class="sub_note"><b style="color: #FF0000;">*</b> ';
             if(!count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__right' => $i['i__id'],
                 'x__up' => 30615, //Is Refundable
             )))){
-                echo '<div class="sub_note">* Final Sale: No Refunds or Transfers</div>';
+                echo 'Final Sale: No Refunds or Transfers. ';
             }
 
-            echo '<div class="sub_note">* By purchasing a ticket you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a></div>';
-            echo '<div class="sub_note">* No need to create a Paypal account: You can checkout as a guest</div>';
-            echo '<div class="sub_note">* Once you paid, click on "Return to Merchant" to continue back here</div>';
+            echo 'By purchasing a ticket you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>. You don\'t need to create a Paypal account as you can checkout as guest by just entering your credit card details. Once paid, click on "Return to Merchant" to continue back here.';
 
+            echo '</div>';
             echo '</div>';
 
             ?>
