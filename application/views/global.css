@@ -1997,6 +1997,10 @@ i, .btn .show-max {
     max-height: 64%;
     top:46px;
 }
+
+.coin-12273 .cover-content{
+    top:59px;
+}
 .hide-subline .subtle-line {
     display: none;
 }
