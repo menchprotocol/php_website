@@ -1321,7 +1321,7 @@ a.headline {
     display:block !important;
 }
 .coin_cover.focus-coin {
-    padding-bottom: 13px;
+    padding-bottom: 13px !important;
 }
 
 .score-range{
