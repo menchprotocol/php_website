@@ -2552,6 +2552,10 @@ h4.css__title{
     border-bottom: 1px solid #6c757d;
 }
 
+.nav-tabs .nav-link.active{
+    background-color: transparent;
+    color: #000000;
+}
 
 @media (max-width:599px) { /* Used to be 767px */
 
