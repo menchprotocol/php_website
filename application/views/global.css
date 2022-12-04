@@ -2104,6 +2104,7 @@ i, .btn .show-max {
     position: relative;
     margin:0 auto 10px auto !important;
     padding: 0 !important;
+    border-radius: 22px;
 }
 
 .coin_cover.coinface-12274{
@@ -2916,7 +2917,7 @@ h4.css__title{
 }
 
 .custom_ui_13884_13885 .coin_cover:hover {
-    background: rgba(225,225,225,0.80) !important;
+    background: rgba(0,0,0,0.50) !important;
 }
 
 .custom_ui_13884_13885,
