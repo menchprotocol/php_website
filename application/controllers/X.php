@@ -512,29 +512,40 @@ class X extends CI_Controller
 
     function view_load_page()
     {
-        if($_POST['x__type']==12274 || $_POST['x__type']==11030 || ($_POST['x__type']==6255 && $_POST['focus_coin']==12273)){
-            //Is Source:
-            foreach(view_coins_e($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $e) {
-                echo view_e($_POST['x__type'], $e);
-            }
-        } else {
-            //Must be Idea:
-            foreach(view_coins_i($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $i) {
-                //function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $tree_progress = null, $extra_class = null, $is_first_incomplete = false){
-                $previous_i = array();
-                $focus_e = array();
-                if($_POST['focus_coin']==12273 && $_POST['x__type']==12273){
-                    $previous_is = $this->I_model->fetch(array(
-                        'i__id' => $_POST['focus_id'],
-                    ));
-                    $previous_i = $previous_is[0];
-                } elseif($_POST['focus_coin']==12274){
-                    $focus_es = $this->E_model->fetch(array(
-                        'e__id' => $_POST['focus_id'],
-                    ));
-                    $focus_e = $focus_es[0];
+
+        $focus_e = array();
+        $previous_i = array();
+
+        if($_POST['focus_coin']==12274){
+
+            //SOURCE
+            $focus_es = $this->E_model->fetch(array(
+                'e__id' => $_POST['focus_id'],
+            ));
+            $focus_e = $focus_es[0];
+
+            foreach(view_coins_e($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
+                if ($_POST['x__type'] == 12274 || $_POST['x__type'] == 11030) {
+                    echo view_e($_POST['x__type'], $s);
+                } else if ($_POST['x__type'] == 6255 || $_POST['x__type'] == 12273) {
+                    echo view_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
                 }
-                echo view_i($_POST['x__type'], 0, $previous_i, $i, $focus_e);
+            }
+
+        } elseif($_POST['focus_coin']==12273) {
+
+            //IDEA
+            $previous_is = $this->I_model->fetch(array(
+                'i__id' => $_POST['focus_id'],
+            ));
+            $previous_i = $previous_is[0];
+
+            foreach(view_coins_i($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
+                if ($_POST['x__type'] == 12273 || $_POST['x__type'] == 11019) {
+                    echo view_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
+                } else if ($_POST['x__type'] == 6255 || $_POST['x__type'] == 12274) {
+                    echo view_e($_POST['x__type'], $s);
+                }
             }
         }
 

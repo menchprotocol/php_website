@@ -541,11 +541,7 @@ function view_load_page(x__type) {
         current_page: current_page[x__type],
     }, function (data) {
         $('.load-more').remove();
-        if(!data.length){
-            //Everything is loaded:
-            console.log('NO FUTURE LOADS FOR '+x__type);
-            nothing_more_to_load = true;
-        } else {
+        if(data.length){
             if(js_n___14686.includes(x__type)){
                 //Upwards link:
                 $(e_list).prepend(data);
