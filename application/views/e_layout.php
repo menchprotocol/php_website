@@ -57,7 +57,7 @@ foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
         var $win = $(window);
         $win.scroll(function () {
             console.log('To top is:'+($win.scrollTop()));
-            console.log('To bottom is:'+($win.height() + $win.scrollTop() - $(document).height()));
+            console.log('To bottom is:'+($(document).height() - ($win.height() + $win.scrollTop())));
             if ($win.scrollTop() == 0){
                 //Load Top More, if any:
                 view_load_page_e(11030, <?= ( $counter_top==$limit ? '1' : '0' ) ?>);
