@@ -535,7 +535,7 @@ function view_load_page(x__type) {
         focus_coin: fetch_val('#focus_coin'),
         focus_id: fetch_val('#focus_id'),
         x__type: x__type,
-        current_page: current_page,
+        current_page: current_page[x__type],
     }, function (data) {
         $('.load-more').remove();
         if(!data.length){
