@@ -558,19 +558,6 @@ function view_body_e($x__type, $counter, $e__id){
 
     if($x__type==12273){
 
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
-        foreach($list_results as $i){
-            $ui .= view_i(12273, 0, null, $i, $focus_e, null);
-        }
-
-        if ($counter > count($list_results)) {
-            //We have even more:
-            $ui .= view_load_page_i(12273, 1, $limit, $counter);
-        }
-
-        $ui .= '</div>';
-
-        //TODO Enable sorting for Watching Ideas? $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load('.$x__type.')}); </script>' : '<style> #list-in-'.$x__type.' .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
         if($superpower_10939){
             $ui .= '<div class="new-list-'.$x__type.' list-group"><div class="list-group-item list-adder">
@@ -585,19 +572,25 @@ function view_body_e($x__type, $counter, $e__id){
             $ui .= '<script> $(document).ready(function () { i_load_search('.$x__type.'); }); </script>';
         }
 
-    } elseif($x__type==12274 || $x__type==11030){
 
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
-        foreach($list_results as $e) {
-            $ui .= view_e($x__type, $e, null);
+        foreach($list_results as $i){
+            $ui .= view_i(12273, 0, null, $i, $focus_e, null);
         }
+
+        if ($counter > count($list_results)) {
+            //We have even more:
+            $ui .= view_load_page_i(12273, 1, $limit, $counter);
+        }
+
         $ui .= '</div>';
 
-        //Input to add new child:
-        if(superpower_active(13422, true)){
+        //TODO Enable sorting for Watching Ideas? $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load('.$x__type.')}); </script>' : '<style> #list-in-'.$x__type.' .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
 
-            $ui .= '<div class="new-list-'.$x__type.' list-adder">
+    } elseif($x__type==12274 || $x__type==11030){
+
+        $add_button = '<div class="new-list-'.$x__type.' list-adder">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
                         <input type="text"
@@ -606,10 +599,17 @@ function view_body_e($x__type, $counter, $e__id){
                                placeholder="'.$e___11035[14055]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
 
-        } else {
 
-            $ui .= '<div class="hideIfEmpty new-list-'.$x__type.'"></div>';
-
+        if($x__type==12274 && superpower_active(13422, true)){
+            $ui .= $add_button;
+        }
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
+        foreach($list_results as $e) {
+            $ui .= view_e($x__type, $e, null);
+        }
+        $ui .= '</div>';
+        if($x__type==11030 && superpower_active(13422, true)){
+            $ui .= $add_button;
         }
 
     } elseif($x__type==6255){
