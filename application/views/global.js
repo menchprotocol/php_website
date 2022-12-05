@@ -344,7 +344,7 @@ function toggle_headline(x__type){
 
     var x__down = 0;
     var x__right = 0;
-    var focus_coin = ( $('#focus_coin').length ? parseInt($('#focus_coin').val()) : 0 );
+    var focus_coin = fetch_val('#focus_coin');
     if(focus_coin==12273){
         x__right = fetch_val('#focus_id');
     } else if (focus_coin==12274){
@@ -422,7 +422,7 @@ function toggle_pills(x__type){
     focus_coin = x__type;
     var x__down = 0;
     var x__right = 0;
-    var focus_coin = ( $('#focus_coin').length ? parseInt($('#focus_coin').val()) : 0 );
+    var focus_coin = fetch_val('#focus_coin');
 
     if(focus_coin==12273){
         x__right = fetch_val('#focus_id');
@@ -453,7 +453,7 @@ function toggle_pills(x__type){
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
             $('.headline_body_' + x__type).html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
-            load_tab(focus_coin,x__type);
+            load_tab(x__type);
         }
     }
 
@@ -1429,20 +1429,22 @@ function coin__save(){
 
 }
 
-function load_tab(focus_coin, x__type, top_loader = false){
+function load_tab(x__type){
 
     console.log('Tab loading... from @'+focus_coin+' for @'+x__type);
+    var focus_coin = fetch_val('#focus_coin');
 
     if(focus_coin==12273){
 
         console.log('Idea Tab');
         $.post("/i/view_body_i", {
+            focus_coin:focus_coin,
             x__type:x__type,
             counter:$('.headline_body_' + x__type).attr('read-counter'),
             i__id:fetch_val('#focus_id')
         }, function (data) {
             $('.headline_body_' + x__type).html(data);
-            if(top_loader){
+            if(js_n___14686.includes(x__type)){
                 $('html, body').scrollTop($('.main_item').offset().top - 54)
             }
         });
@@ -1452,12 +1454,13 @@ function load_tab(focus_coin, x__type, top_loader = false){
         //Load the tab:
         console.log('Source Tab');
         $.post("/e/view_body_e", {
+            focus_coin:focus_coin,
             x__type:x__type,
             counter:$('.headline_body_'+x__type).attr('read-counter'),
             e__id:fetch_val('#focus_id')
         }, function (data) {
             $('.headline_body_'+x__type).html(data);
-            if(top_loader){
+            if(js_n___14686.includes(x__type)){
                 $('html, body').scrollTop($('.main_item').offset().top - 54)
             }
         });
@@ -1469,6 +1472,7 @@ function load_tab(focus_coin, x__type, top_loader = false){
         return false;
 
     }
+
 
     //Give some extra loding time so the content loads on page:
     setTimeout(function () {
@@ -1483,6 +1487,25 @@ function load_tab(focus_coin, x__type, top_loader = false){
         setTimeout(function () {
             x_sort_load(x__type);
         }, 987);
+
+        $(function () {
+            var $win = $(window);
+            $win.scroll(function () {
+
+                if(js_n___14686.includes(x__type)) {
+                    //Upwards loading from top:
+                    if(parseInt($win.scrollTop()) <= 377){
+                        view_load_page(x__type, 1);
+                    }
+                } else {
+                    //Download loading from bottom:
+                    if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) <= 377) {
+                        view_load_page(x__type, 1);
+                    }
+                }
+
+            });
+        });
 
         if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
             console.log('IS IDEA');

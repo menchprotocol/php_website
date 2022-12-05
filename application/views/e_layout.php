@@ -16,7 +16,7 @@ $this->X_model->create(array(
 //Load Top:
 $counter_top = view_coins_e(11030, $e['e__id'], 0, false);
 echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.'"></div>';
-echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(12274, 11030, true); }, 233); }); </script>';
+echo '<script type="text/javascript"> $(document).ready(function () { load_tab(11030); }); </script>';
 
 
 
@@ -52,21 +52,6 @@ foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
 <input type="hidden" id="focus_coin" value="12274" />
 <input type="hidden" id="focus_id" value="<?= $e['e__id'] ?>" />
 <script type="text/javascript">
-
-    setTimeout(function () {
-        $(function () {
-            var $win = $(window);
-            $win.scroll(function () {
-                if (parseInt($win.scrollTop()) <= 377){
-                    //Load Top More, if any:
-                    view_load_page(11030, <?= ( $counter_top==$limit ? '0' : '1' ) ?>);
-                } else if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) <= 377) {
-                    view_load_page(<?= $focus_tab ?>, <?= ( $coins_count[$focus_tab]==$limit ? '0' : '1' ) ?>);
-                }
-            });
-        });
-    }, 987);
-
 
     $(document).ready(function () {
         set_autosize($('.texttype__lg.text__6197_'+fetch_val('#focus_id')));

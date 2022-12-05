@@ -35,7 +35,7 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 //Load Top:
 $counter_top = view_coins_i(11019, $i['i__id'], 0, false);
 echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"></div>';
-echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(12273, 11019, true); }, 233); }); </script>';
+echo '<script type="text/javascript"> $(document).ready(function () { load_tab(11019); }); </script>';
 
 
 
@@ -67,28 +67,12 @@ foreach($this->config->item('e___14874') as $x__type => $m) { //Load Focus Tab:
 
 
 
-
 ?>
 
 
 <input type="hidden" id="focus_coin" value="12273" />
 <input type="hidden" id="focus_id" value="<?= $i['i__id'] ?>" />
 <script type="text/javascript">
-
-    setTimeout(function () {
-        $(function () {
-            var $win = $(window);
-            $win.scroll(function () {
-                if (parseInt($win.scrollTop()) <= 377){
-                    //Load Top More, if any:
-                    view_load_page(11019, <?= ( $counter_top==$limit ? '0' : '1' ) ?>);
-                } else if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) <= 377) {
-                    view_load_page(<?= $focus_tab ?>, <?= ( $coins_count[$focus_tab]==$limit ? '0' : '1' ) ?>);
-                }
-            });
-        });
-    }, 987);
-
 
     $(document).ready(function () {
         //Look for power editor updates:
