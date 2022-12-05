@@ -554,8 +554,6 @@ function view_body_e($x__type, $counter, $e__id){
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
                 </div><div class="algolia_pad_search row justify-content"></div></div></div>';
-
-            $ui .= '<script> $(document).ready(function () { i_load_search('.$x__type.'); }); </script>';
         }
 
 
