@@ -498,29 +498,34 @@ function e_copy(e__id){
 
 
 
-var busy_loading = false;
-var nothing_more_to_load = false;
-var current_page = 1;
-function view_load_page(x__type, may_have_more) {
+var busy_loading = 0;
+var current_page = [];
+function view_load_page(x__type) {
 
-    if(busy_loading || !may_have_more){
+    if(busy_loading>0 && busy_loading==x__type){
         return false;
     }
 
-    busy_loading = true;
-    console.log('NEW CONTENT LOADING FOR '+x__type)
-    if(nothing_more_to_load){
-        console.log('NOTHING MORE TO LOAD FOR '+x__type);
-        return false;
-    }
+    busy_loading = x__type;
+    console.log('NEW CONTENT LOADING FOR '+x__type);
 
-    current_page++;
+    if(!current_page[x__type].length){
+        current_page[x__type].length = 1;
+    }
+    var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')); //Total of that item
+    var has_more_to_load = ( current_total_count > parseInt(fetch_val('#page_limit')) * current_page[x__type] );
+    current_page[x__type]++; //Now we can increment current page
     var e_list = '#list-in-'+x__type;
     var current_top_x__id = $( e_list + ' .coin_cover ' ).first().attr('x__id');
     var top_element = $('.cover_x_'+current_top_x__id);
     var e_loader = '<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading More...</div>';
+    console.log(x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
 
-    console.log('PAGE #'+current_page+' TOP X__ID ID '+current_top_x__id);
+    if(!has_more_to_load){
+        console.log('NOTHING MORE TO LOAD FOR '+x__type);
+        return false;
+    }
+
     if(x__type==11030){
         $(e_list).prepend(e_loader);
     } else {
@@ -1431,8 +1436,8 @@ function coin__save(){
 
 function load_tab(x__type){
 
-    console.log('Tab loading... from @'+focus_coin+' for @'+x__type);
     var focus_coin = fetch_val('#focus_coin');
+    console.log('Tab loading... from @'+focus_coin+' for @'+x__type);
 
     if(focus_coin==12273){
 
@@ -1495,12 +1500,12 @@ function load_tab(x__type){
                 if(js_n___14686.includes(x__type)) {
                     //Upwards loading from top:
                     if(parseInt($win.scrollTop()) <= 377){
-                        view_load_page(x__type, 1);
+                        view_load_page(x__type);
                     }
                 } else {
                     //Download loading from bottom:
                     if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) <= 377) {
-                        view_load_page(x__type, 1);
+                        view_load_page(x__type);
                     }
                 }
 
@@ -2039,8 +2044,8 @@ function x_set_text(this_handler){
 
 
 function x_type_counter(x__type, adjustment_count){
-    var new_count = parseInt($('.headline_body_' + x__type).attr('read-counter')) + adjustment_count;
-    $('.xtypecounter'+x__type).text(new_count);
+    var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')) + adjustment_count;
+    $('.xtypecounter'+x__type).text(current_total_count);
 }
 
 

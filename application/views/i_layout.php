@@ -70,6 +70,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) { //Load Focus Tab:
 ?>
 
 
+<input type="hidden" id="page_limit" value="<?= $limit ?>" />
 <input type="hidden" id="focus_coin" value="12273" />
 <input type="hidden" id="focus_id" value="<?= $i['i__id'] ?>" />
 <script type="text/javascript">
