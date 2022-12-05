@@ -1,6 +1,7 @@
 <?php
 
 //Log source view:
+$limit = view_memory(6404,11064);
 $new_order = ( $this->session->userdata('session_page_count') + 1 );
 $this->session->set_userdata('session_page_count', $new_order);
 $this->X_model->create(array(
@@ -36,10 +37,10 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 }
 echo '</ul>';
 echo $body_content;
-$focus_coin = 0;
+$focus_tab = 0;
 foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
     if($coins_count[$x__type] > 0){
-        $focus_coin = $x__type;
+        $focus_tab = $x__type;
         echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$x__type.'); }); </script>';
         break;
     }
@@ -52,16 +53,14 @@ foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
 <input type="hidden" id="focus_id" value="<?= $e['e__id'] ?>" />
 <script type="text/javascript">
 
-    var focus_coin = <?= $focus_coin ?>;
-
     $(function () {
         var $win = $(window);
         $win.scroll(function () {
             if ($win.scrollTop() == 0){
                 //Load Top More, if any:
-                view_load_page_e(11030);
+                view_load_page_e(11030, <?= ( $counter_top==$limit ? '1' : '0' ) ?>);
             } else if ($win.height() + $win.scrollTop() == $(document).height()) {
-                view_load_page_e(focus_coin);
+                view_load_page_e(<?= $focus_tab ?>, <?= ( $coins_count[$focus_tab]==$limit ? '1' : '0' ) ?>);
             }
         });
     });

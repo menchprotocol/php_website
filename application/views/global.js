@@ -542,9 +542,9 @@ function view_load_page_i(x__type, page, load_new_filter) {
 var busy_loading = false;
 var nothing_more_to_load = false;
 var current_page = 1;
-function view_load_page_e(x__type) {
+function view_load_page_e(x__type, may_have_more) {
 
-    if(busy_loading){
+    if(busy_loading || !may_have_more){
         return false;
     }
 
