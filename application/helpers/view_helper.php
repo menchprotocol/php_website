@@ -754,7 +754,7 @@ function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m
 
 }
 
-function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true, $load_items = 0){
+function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true){
 
     /*
      *
@@ -836,7 +836,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
     if($page_num > 0){
 
         $limit = view_memory(6404,11064);
-        return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
+        return $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
 
     } else {
 
@@ -872,7 +872,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true,
 }
 
 
-function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true, $load_items = 0){
+function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true){
 
     /*
      *
@@ -952,7 +952,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true,
     if($page_num > 0){
 
         $limit = view_memory(6404,11064);
-        return $CI->X_model->fetch($query_filters, $join_objects, ( $load_items > 0 ? $load_items : $limit ), ($page_num-1)*$limit, $order_columns);
+        return $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
 
     } else {
 
