@@ -1371,7 +1371,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             'x__right' => $previous_i['i__id'],
             'x__up' => 14488, //Force Order
         ), array(), 1)));
-    $has_soft_lock = (!isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($force_order && $discovery_mode)) && !$is_completed && (!$is_first_incomplete && ($force_order || !$is_started));
+    $has_soft_lock = $discovery_mode && !$is_completed && !$is_first_incomplete && ($force_order || !$is_started);
     $has_sortable = !$focus_coin && !$has_soft_lock && $editing_enabled && in_array($x__type, $CI->config->item('n___4603'));
     $i_title = view_i_title($i);
 
