@@ -2124,6 +2124,8 @@ function x_sort_load(x__type){
         if($("#list-in-"+x__type+" .cover_sort").length>=parseInt(fetch_val('#page_limit'))){
             console.log(x__type+' too many to sort');
             return false;
+        } else {
+            console.log($("#list-in-"+x__type+" .cover_sort").length+' / '+parseInt(fetch_val('#page_limit')));
         }
 
         console.log(x__type+' sorting load success');
