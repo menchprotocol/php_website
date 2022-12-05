@@ -520,7 +520,21 @@ class X extends CI_Controller
         } else {
             //Must be Idea:
             foreach(view_coins_i($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $i) {
-                echo view_i($_POST['x__type'], $i);
+                //function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $tree_progress = null, $extra_class = null, $is_first_incomplete = false){
+                $previous_i = array();
+                $focus_e = array();
+                if($_POST['focus_coin']==12273 && $_POST['x__type']==12273){
+                    $previous_is = $this->I_model->fetch(array(
+                        'i__id' => $_POST['focus_id'],
+                    ));
+                    $previous_i = $previous_is[0];
+                } elseif($_POST['focus_coin']==12274){
+                    $focus_es = $this->E_model->fetch(array(
+                        'e__id' => $_POST['focus_id'],
+                    ));
+                    $focus_e = $focus_es[0];
+                }
+                echo view_i($_POST['x__type'], 0, $previous_i, $i, $focus_e);
             }
         }
 
