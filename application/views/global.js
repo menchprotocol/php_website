@@ -555,7 +555,6 @@ function view_load_page_e(x__type, may_have_more) {
         return false;
     }
 
-    current_page++;
     var e_list = '#list-in-'+x__type;
     var current_top_x__id = $( e_list + ' .coin_cover ' ).first().attr('x__id');
     var top_element = $('.cover_x_'+current_top_x__id);
@@ -586,13 +585,12 @@ function view_load_page_e(x__type, may_have_more) {
             }
             x_set_start_text();
             $('[data-toggle="tooltip"]').tooltip();
+            current_page++;
         }
         busy_loading = false;
     });
 
-
 }
-
 
 
 
