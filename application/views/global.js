@@ -574,8 +574,8 @@ function view_load_page_e(x__type) {
                 nothing_more_to_load = true;
             } else {
                 if(x__type==11030){
-                    $('html, body').scrollTop(top_element.offset().top - 54);
                     $(e_list).prepend(data);
+                    $('html, body').scrollTop(top_element.offset().top - 54);
                 } else {
                     $(e_list).append(data);
                 }
