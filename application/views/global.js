@@ -1573,7 +1573,7 @@ function i__add(x__type, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list("list-in-" + x__type, sort_handler, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
+    add_to_list(x__type, sort_handler, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
     
     //Update backend:
     $.post("/i/i__add", {
@@ -1596,7 +1596,7 @@ function i__add(x__type, link_i__id) {
             x_sort_load(x__type);
 
             //Add new
-            add_to_list("list-in-" + x__type, sort_handler, data.new_i_html);
+            add_to_list(x__type, sort_handler, data.new_i_html);
 
             //Lookout for textinput updates
             x_set_start_text();
@@ -1676,7 +1676,7 @@ function e__add(x__type, e_existing_id) {
                 //input.focus();
 
                 //Add new object to list:
-                add_to_list('list-in-'+x__type, '.coinface-12274', data.e_new_echo);
+                add_to_list(x__type, '.coinface-12274', data.e_new_echo);
 
                 //Allow inline editing if enabled:
                 x_set_start_text();
@@ -1895,19 +1895,19 @@ function validURL(str) {
 }
 
 
-function add_to_list(sort_list_id, sort_handler, html_content) {
+function add_to_list(x__type, sort_handler, html_content) {
 
     //See if we previously have a list in place?
-    if ($("#" + sort_list_id + " " + sort_handler).length > 0) {
-        if(0){
+    if ($("#list-in-" + x__type + " " + sort_handler).length > 0) {
+        if(x__type==12274){
             //Add to start (disabled)
-            $("#" + sort_list_id + " " + sort_handler + ":first").before(html_content);
+            $("#list-in-" + x__type + " " + sort_handler + ":first").before(html_content);
         } else {
-            $("#" + sort_list_id + " " + sort_handler + ":last").after(html_content);
+            $("#list-in-" + x__type + " " + sort_handler + ":last").after(html_content);
         }
     } else {
         //Raw list, add before input filed:
-        $("#" + sort_list_id).prepend(html_content);
+        $("#list-in-" + x__type).prepend(html_content);
     }
 
 
