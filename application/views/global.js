@@ -549,9 +549,13 @@ function view_load_page_e(x__type) {
         return false;
     }
 
-    var e_list = '#list-in-'+x__type;
-    var e_loader = '<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>';
     current_page++;
+    var e_list = '#list-in-'+x__type;
+    var current_top_x__id = $( e_list + ' .coin_cover ' ).first().attr('x__id');
+    var top_element = $('.cover_x_'+current_top_x__id);
+    var e_loader = '<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>';
+
+    console.log('PAGE #'+current_page+' TOP X__ID ID '+current_top_x__id);
     if(x__type==11030){
         $(e_list).prepend(e_loader).hide().fadeIn();
     } else {
@@ -569,7 +573,7 @@ function view_load_page_e(x__type) {
             nothing_more_to_load = true;
         } else {
             if(x__type==11030){
-                $('html, body').scrollTop($('.main_item').offset().top - 54);
+                $('html, body').scrollTop(top_element.offset().top - 54);
                 $(e_list).prepend(data);
             } else {
                 $(e_list).append(data);
