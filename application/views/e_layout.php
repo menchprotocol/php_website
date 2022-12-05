@@ -50,6 +50,17 @@ foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
 <input type="hidden" id="focus_id" value="<?= $e['e__id'] ?>" />
 <script type="text/javascript">
 
+    $(function () {
+        var $win = $(window);
+        $win.scroll(function () {
+            if ($win.scrollTop() == 0){
+                console.log('TOP SCROLL');
+            } else if ($win.height() + $win.scrollTop() == $(document).height()) {
+                console.log('BOTTOM SCROLL');
+            }
+        });
+    });
+
     //Define file upload variables:
     var upload_control = $(".inputfile");
     var $input = $('.drag-box').find('input[type="file"]'),
