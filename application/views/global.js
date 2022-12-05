@@ -410,7 +410,7 @@ function e_sort_load(x__type) {
                 e_sort_save(x__type);
             }
         });
-    }, 987);
+    }, 377);
 
 }
 
@@ -2163,7 +2163,7 @@ function x_sort_load(x__type){
                 }
             }
         });
-    }, 987);
+    }, 377);
 
 }
 
