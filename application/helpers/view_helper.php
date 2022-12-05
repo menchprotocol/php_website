@@ -1639,7 +1639,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
             if(superpower_active(12701, true)){
                 $message_tooltip = '<a href="javascript:void(0);" onclick="x_message_load(' . $i['x__id'] . ')" class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</a>';
-            } elseif($e_of_i) {
+            } elseif($e_of_i || !$discovery_mode) {
                 $message_tooltip = '<p class="mini-font" title="'.$i['x__message'].'">'.$CI->X_model->message_view( $i['x__message'], true).'</p>';
             }
 
@@ -1719,7 +1719,7 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
 
 function view_pill($focus_coin, $x__type, $counter, $m, $ui = null, $is_open = true){
 
-    return '<script> '.( $is_open ? ' $(document).ready(function () { toggle_pills('.$x__type.'); }); ' : '' ).' $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')"><span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>' .
+    return '<script> '.( $is_open ? ' $(document).ready(function () { toggle_pills('.$x__type.'); }); ' : '' ).' $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>' .
         '<div class="headlinebody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'" read-counter="'.$counter.'">'.$ui.'</div>';
 
 }
