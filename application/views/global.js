@@ -559,7 +559,7 @@ function view_load_page_e(x__type) {
     if(x__type==11030){
         $(e_list).prepend(e_loader);
     } else {
-        $(e_list).append(e_loader)``;
+        $(e_list).append(e_loader);
     }
     $.post("/e/view_load_page_e", {
         x__type: x__type,
