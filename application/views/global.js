@@ -2122,10 +2122,8 @@ function x_sort_load(x__type){
 
         //Make sure beow minimum sorting requirement:
         if($("#list-in-"+x__type+" .cover_sort").length>=parseInt(fetch_val('#page_limit'))){
-            console.log('WOW: '+x__type+' too many to sort');
+            $('.x_sort').addClass('hidden');
             return false;
-        } else {
-            console.log('WOW: '+$("#list-in-"+x__type+" .cover_sort").length+' / '+parseInt(fetch_val('#page_limit')));
         }
 
         console.log(x__type+' sorting load success');
