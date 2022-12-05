@@ -336,8 +336,8 @@ function view_s_mini_js(s__type,s__cover,s__title){
 }
 
 
-function current_id(){
-    return ( $('#focus_id').length ? parseInt($('#focus_id').val()) : 0 );
+function fetch_val(object_name){
+    return ( $(object_name).length ? parseInt($(object_name).val()) : 0 );
 }
 
 function toggle_headline(x__type){
@@ -346,9 +346,9 @@ function toggle_headline(x__type){
     var x__right = 0;
     var focus_coin = ( $('#focus_coin').length ? parseInt($('#focus_coin').val()) : 0 );
     if(focus_coin==12273){
-        x__right = current_id();
+        x__right = fetch_val('#focus_id');
     } else if (focus_coin==12274){
-        x__down = current_id();
+        x__down = fetch_val('#focus_id');
     }
 
     if($('.headline_title_' + x__type+' .icon_26008').hasClass('hidden')){
@@ -425,9 +425,9 @@ function toggle_pills(x__type){
     var focus_coin = ( $('#focus_coin').length ? parseInt($('#focus_coin').val()) : 0 );
 
     if(focus_coin==12273){
-        x__right = current_id();
+        x__right = fetch_val('#focus_id');
     } else if (focus_coin==12274){
-        x__down = current_id();
+        x__down = fetch_val('#focus_id');
     }
 
     if($('.thepill' + x__type+' .nav-link').hasClass('active')){
@@ -496,53 +496,12 @@ function e_copy(e__id){
     });
 }
 
-function view_load_page_i(x__type, page, load_new_filter) {
-
-    if (load_new_filter) {
-        //Replace load more with spinner:
-        var append_div = $('.new-list-'+x__type).html();
-        //The padding-bottom would delete the scrolling effect on the left side!
-        $('#list-in-'+x__type).html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
-    } else {
-        //Replace load more with spinner:
-        $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
-    }
-
-    $.post("/i/view_load_page_i", {
-        x__type: x__type,
-        page: page,
-        focus_id: current_id(),
-    }, function (data) {
-
-        //Appending to existing content:
-        $('.load-more').remove();
-
-        if (load_new_filter) {
-
-            $('#list-in-'+x__type).html(data + '<div class="new-list-'+x__type+' list-group-item no-side-padding grey-input">' + append_div + '</div>').hide().fadeIn();
-            //Reset search engine:
-            e_load_search(x__type);
-
-        } else {
-            //Update UI to confirm with member:
-            $('#list-in-'+x__type).append(data);
-        }
-
-        x_set_start_text();
-
-        //Tooltips:
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-
-}
-
-
 
 
 var busy_loading = false;
 var nothing_more_to_load = false;
 var current_page = 1;
-function view_load_page_e(x__type, may_have_more) {
+function view_load_page(x__type, may_have_more) {
 
     if(busy_loading || !may_have_more){
         return false;
@@ -567,10 +526,11 @@ function view_load_page_e(x__type, may_have_more) {
     } else {
         $(e_list).append(e_loader);
     }
-    $.post("/e/view_load_page_e", {
+    $.post("/x/view_load_page", {
+        focus_coin: fetch_val('#focus_coin'),
+        focus_id: fetch_val('#focus_id'),
         x__type: x__type,
         current_page: current_page,
-        e__id: current_id(),
     }, function (data) {
         $('.load-more').remove();
         if(!data.length){
@@ -578,7 +538,8 @@ function view_load_page_e(x__type, may_have_more) {
             console.log('NO FUTURE LOADS FOR '+x__type);
             nothing_more_to_load = true;
         } else {
-            if(x__type==11030){
+            if(js_n___14686.includes(x__type)){
+                //Upwards link:
                 $(e_list).prepend(data);
                 $('html, body').scrollTop(top_element.offset().top - 55);
             } else {
@@ -1478,7 +1439,7 @@ function load_tab(focus_coin, x__type, top_loader = false){
         $.post("/i/view_body_i", {
             x__type:x__type,
             counter:$('.headline_body_' + x__type).attr('read-counter'),
-            i__id:current_id()
+            i__id:fetch_val('#focus_id')
         }, function (data) {
             $('.headline_body_' + x__type).html(data);
             if(top_loader){
@@ -1493,7 +1454,7 @@ function load_tab(focus_coin, x__type, top_loader = false){
         $.post("/e/view_body_e", {
             x__type:x__type,
             counter:$('.headline_body_'+x__type).attr('read-counter'),
-            e__id:current_id()
+            e__id:fetch_val('#focus_id')
         }, function (data) {
             $('.headline_body_'+x__type).html(data);
             if(top_loader){
@@ -1548,7 +1509,7 @@ function i__add(x__type, link_i__id) {
      *
      * Either creates an IDEA transaction between focus_id & link_i__id
      * OR will create a new idea based on input text and then transaction it
-     * to current_id() (In this case link_i__id=0)
+     * to fetch_val('#focus_id') (In this case link_i__id=0)
      *
      * */
 
@@ -1578,8 +1539,8 @@ function i__add(x__type, link_i__id) {
     //Update backend:
     $.post("/i/i__add", {
         x__type: x__type,
-        focus_coin: ( $('#focus_coin').length ? parseInt($('#focus_coin').val()) : 0 ),
-        focus_id: current_id(),
+        focus_coin: fetch_val('#focus_coin'),
+        focus_id: fetch_val('#focus_id'),
         i__title: i__title,
         link_i__id: link_i__id
     }, function (data) {
@@ -1649,9 +1610,9 @@ function e__add(x__type, e_existing_id) {
     //Add via Ajax:
     $.post("/e/e__add", {
 
-        focus_coin: $('#focus_coin').val(),
+        focus_coin: fetch_val('#focus_coin'),
         x__type: x__type,
-        focus_id: current_id(),
+        focus_id: fetch_val('#focus_id'),
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
 
@@ -1899,10 +1860,11 @@ function add_to_list(x__type, sort_handler, html_content) {
 
     //See if we previously have a list in place?
     if ($("#list-in-" + x__type + " " + sort_handler).length > 0) {
-        if(x__type==12274){
-            //Add to start (disabled)
+        if(!js_n___14686.includes(x__type)){
+            //Downwards add to start"
             $("#list-in-" + x__type + " " + sort_handler + ":first").before(html_content);
         } else {
+            //Upwards adds to end:
             $("#list-in-" + x__type + " " + sort_handler + ":last").after(html_content);
         }
     } else {
@@ -1953,7 +1915,7 @@ function images_modal(x__type){
         x__source: js_pl_id,
         x__type: 14576, //MODAL VIEWED
         x__up: 14073,
-        x__right: current_id(),
+        x__right: fetch_val('#focus_id'),
     });
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
@@ -2477,7 +2439,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
     $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
     $.post("/x/update_dropdown", {
-        focus_id:current_id(),
+        focus_id:fetch_val('#focus_id'),
         o__id: o__id,
         element_id: element_id,
         new_e__id: new_e__id,
@@ -2643,7 +2605,7 @@ function e_sort_save(x__type) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/e/e_sort_save", {e__id: current_id(), x__type:x__type, new_x__spectrums: new_x__spectrums}, function (data) {
+        $.post("/e/e_sort_save", {e__id: fetch_val('#focus_id'), x__type:x__type, new_x__spectrums: new_x__spectrums}, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -2660,7 +2622,7 @@ function e_sort_reset(){
 
         //Update via call:
         $.post("/e/e_sort_reset", {
-            e__id: current_id()
+            e__id: fetch_val('#focus_id')
         }, function (data) {
 
             if (!data.status) {
@@ -2671,7 +2633,7 @@ function e_sort_reset(){
             } else {
 
                 //Refresh page:
-                window.location = '/@' + current_id();
+                window.location = '/@' + fetch_val('#focus_id');
 
             }
         });

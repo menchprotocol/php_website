@@ -1,6 +1,7 @@
 <?php
 
 //Just Viewing:
+$limit = view_memory(6404,11064);
 $new_order = ( $this->session->userdata('session_page_count') + 1 );
 $this->session->set_userdata('session_page_count', $new_order);
 $this->X_model->create(array(
@@ -55,9 +56,11 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 }
 echo '</ul>';
 echo $body_content;
+$focus_tab = 0;
 foreach($this->config->item('e___14874') as $x__type => $m) { //Load Focus Tab:
     if($coins_count[$x__type] > 0){
-        echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$x__type.'); }); </script>';
+        $focus_tab = $x__type;
+        echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
         break;
     }
 }
@@ -65,35 +68,27 @@ foreach($this->config->item('e___14874') as $x__type => $m) { //Load Focus Tab:
 
 
 
-/*
-//Always Load Followings at top
-$e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$following_count = view_coins_i(11019, $i['i__id'], 0, false);
-echo view_headline(11019,  $following_count, $e___11035[11019], view_body_i(11019, $following_count, $i['i__id']), false);
-if($e_of_i){
-    echo '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
-                    <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
-                        <input type="text"
-                               class="form-control form-control-thick add-input algolia_search dotransparent"
-                               maxlength="' . view_memory(6404,4736) . '"
-                               placeholder="'.$e___11035[14016]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content"></div></div>';
-}
-*/
-
-
-
-
-
 ?>
 
-<style>
-    <?= ( !$e_of_i ? '.note-editor {display:none;}' : '' ) ?>
-</style>
+
 <input type="hidden" id="focus_coin" value="12273" />
 <input type="hidden" id="focus_id" value="<?= $i['i__id'] ?>" />
 <script type="text/javascript">
+
+    setTimeout(function () {
+        $(function () {
+            var $win = $(window);
+            $win.scroll(function () {
+                if (parseInt($win.scrollTop()) <= 377){
+                    //Load Top More, if any:
+                    view_load_page(11019, <?= ( $counter_top==$limit ? '0' : '1' ) ?>);
+                } else if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) <= 377) {
+                    view_load_page(<?= $focus_tab ?>, <?= ( $coins_count[$focus_tab]==$limit ? '0' : '1' ) ?>);
+                }
+            });
+        });
+    }, 987);
+
 
     $(document).ready(function () {
         //Look for power editor updates:

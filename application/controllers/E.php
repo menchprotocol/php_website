@@ -329,12 +329,7 @@ class E extends CI_Controller
 
 
 
-    function view_load_page_e()
-    {
-        foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], $_POST['current_page']) as $e) {
-            echo view_e($_POST['x__type'], $e);
-        }
-    }
+
 
     function e_remove(){
 

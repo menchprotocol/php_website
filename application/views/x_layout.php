@@ -1002,7 +1002,7 @@ echo '</div>';
             }
 
             ajaxData.append('upload_type', uploadType);
-            ajaxData.append('i__id', current_id());
+            ajaxData.append('i__id', fetch_val('#focus_id'));
             ajaxData.append('top_i__id', $('#top_i__id').val());
 
             $.ajax({
@@ -1037,7 +1037,7 @@ echo '</div>';
     function x_reply_save(go_next_url){
         $.post("/x/x_reply", {
             top_i__id:$('#top_i__id').val(),
-            i__id:current_id(),
+            i__id:fetch_val('#focus_id'),
             x_reply:$('#x_reply').val(),
         }, function (data) {
             if (data.status) {
@@ -1070,7 +1070,7 @@ echo '</div>';
         //Show Loading:
         $.post("/x/x_select", {
             focus_i__type:focus_i__type,
-            focus_id:current_id(),
+            focus_id:fetch_val('#focus_id'),
             top_i__id:$('#top_i__id').val(),
             selection_i__id:selection_i__id,
         }, function (data) {

@@ -510,6 +510,21 @@ class X extends CI_Controller
         }
     }
 
+    function view_load_page()
+    {
+        if($_POST['x__type']==12273 || $_POST['x__type']==11030 || ($_POST['x__type']==6255 && $_POST['focus_coin']==12273)){
+            //Is Source:
+            foreach(view_coins_e($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $e) {
+                echo view_e($_POST['x__type'], $e);
+            }
+        } else {
+            //Must be Idea:
+            foreach(view_coins_i($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $i) {
+                echo view_i($_POST['x__type'], $i);
+            }
+        }
+
+    }
 
     function x_completed_next($top_i__id, $i__id = 0){
 

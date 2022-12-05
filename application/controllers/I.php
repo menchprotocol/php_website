@@ -327,34 +327,6 @@ class I extends CI_Controller {
 
 
 
-    function view_load_page_i()
-    {
-
-        $superpower_10939 = superpower_active(10939, true); //SUPERPOWER OF IDEAGING
-        $items_per_page = view_memory(6404,11064);
-        $x__type = intval($_POST['x__type']);
-        $focus_id = intval($_POST['focus_id']);
-        $page = intval($_POST['page'])+1;
-
-        $list_results = view_coins_e($x__type, $focus_id, $page);
-        $child_count = view_coins_e($x__type, $focus_id,0, false);
-        $es = $this->E_model->fetch(array(
-            'e__id' => $focus_id,
-        ));
-
-        foreach($list_results as $i) {
-            echo view_i($x__type, 0, null, $i, $es[0]);
-        }
-
-
-        //Do we need another load more button?
-        if ($child_count > (($page * $items_per_page) + count($list_results))) {
-            echo view_load_page_i($x__type, ($page + 1), $items_per_page, $child_count);
-        }
-
-    }
-
-
     function save_message_27963(){
 
         //Authenticate Member:

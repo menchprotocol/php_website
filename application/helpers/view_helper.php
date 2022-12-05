@@ -10,20 +10,6 @@ function view_show_more($see_more_type, $class, $href_link = null){
 }
 
 
-function view_load_page_i($x__type, $page, $limit, $list_count, $extra_class = null)
-{
-    /*
-     * Gives an option to "Load More" sources when we have too many to show in one go
-     * */
-
-    $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035');
-    $href = 'href="javascript:void(0);" onclick="view_load_page_i('.$x__type.',' . $page . ', 0)"';
-    return '<div class="coin_cover coin_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding load-more '.$extra_class.'">
-                                <div class="cover-wrapper"><a '.$href.' class="black-background-obs cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
-                            </div>';
-}
-
 function view_db_field($field_name){
 
     //Takes a database field name and returns a human-friendly version
@@ -578,12 +564,6 @@ function view_body_e($x__type, $counter, $e__id){
         foreach($list_results as $i){
             $ui .= view_i(12273, 0, null, $i, $focus_e, null);
         }
-
-        if ($counter > count($list_results)) {
-            //We have even more:
-            $ui .= view_load_page_i(12273, 1, $limit, $counter);
-        }
-
         $ui .= '</div>';
 
         //TODO Enable sorting for Watching Ideas? $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load('.$x__type.')}); </script>' : '<style> #list-in-'.$x__type.' .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort

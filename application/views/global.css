@@ -336,6 +336,10 @@ img.no-frame {
     border:0;
 }
 
+.load-more{
+    padding: 34px 0;
+}
+
 .algolia_pad_search{
     text-align: center;
     margin-bottom: 13px;
@@ -1267,24 +1271,6 @@ a.headline {
 
 .no-padding{
     padding: 0 !important;
-}
-
-
-
-.note-editor{
-    line-height: 100%;
-    width: 36px;
-    text-align: right;
-    position: absolute;
-    overflow: hidden;
-    z-index: 900 !important;
-    top: 0;
-    right: 8px;
-}
-.note-editor>span{
-    display: block;
-    text-align: center;
-    padding:3px 0 0;
 }
 
 

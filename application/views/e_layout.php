@@ -41,7 +41,7 @@ $focus_tab = 0;
 foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
     if($coins_count[$x__type] > 0){
         $focus_tab = $x__type;
-        echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$x__type.'); }); </script>';
+        echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
         break;
     }
 }
@@ -53,24 +53,24 @@ foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
 <input type="hidden" id="focus_id" value="<?= $e['e__id'] ?>" />
 <script type="text/javascript">
 
-
     setTimeout(function () {
-        console.log('INITIATED INFINITE LOADER');
         $(function () {
             var $win = $(window);
             $win.scroll(function () {
-                var px_tp_top = parseInt($win.scrollTop());
-                var px_tp_bottom = parseInt($(document).height() - ($win.height() + $win.scrollTop()));
-                console.log('Pixels to TOP '+px_tp_top+' and BOTTOM '+px_tp_bottom);
-                if (px_tp_top <= 377){
+                if (parseInt($win.scrollTop()) <= 377){
                     //Load Top More, if any:
-                    view_load_page_e(11030, <?= ( $counter_top==$limit ? '0' : '1' ) ?>);
-                } else if (px_tp_bottom <= 377) {
-                    view_load_page_e(<?= $focus_tab ?>, <?= ( $coins_count[$focus_tab]==$limit ? '0' : '1' ) ?>);
+                    view_load_page(11030, <?= ( $counter_top==$limit ? '0' : '1' ) ?>);
+                } else if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) <= 377) {
+                    view_load_page(<?= $focus_tab ?>, <?= ( $coins_count[$focus_tab]==$limit ? '0' : '1' ) ?>);
                 }
             });
         });
     }, 987);
+
+
+    $(document).ready(function () {
+        set_autosize($('.texttype__lg.text__6197_'+fetch_val('#focus_id')));
+    });
 
     //Define file upload variables:
     var upload_control = $(".inputfile");
@@ -79,9 +79,5 @@ foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
         showFiles = function (files) {
             $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
         };
-
-    $(document).ready(function () {
-        set_autosize($('.texttype__lg.text__6197_'+current_id()));
-    });
 
 </script>
