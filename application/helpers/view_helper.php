@@ -1822,6 +1822,7 @@ function view_e($x__type, $e, $extra_class = null)
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
     $source_is_e = $focus_id>0 && $e['e__id']==$focus_id;
+    $is_featured = in_array($e['e__type'], $CI->config->item('n___30977'));
 
 
     //Is Lock/Private?
@@ -1984,7 +1985,7 @@ function view_e($x__type, $e, $extra_class = null)
 
             $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
 
-        } elseif($has_x_progress && strlen($e['x__message'])){
+        } elseif(($is_featured || $has_x_progress) && strlen($e['x__message'])){
 
             //DISCOVERY PROGRESS
             $ui .= '<span class="mini-font">'.$CI->X_model->message_view($e['x__message'], false).'</span>';
