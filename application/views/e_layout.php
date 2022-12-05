@@ -62,10 +62,10 @@ foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
                 var px_tp_top = parseInt($win.scrollTop());
                 var px_tp_bottom = parseInt($(document).height() - ($win.height() + $win.scrollTop()));
                 console.log('Pixels to TOP '+px_tp_top+' and BOTTOM '+px_tp_bottom);
-                if (px_tp_top <= 610){
+                if (px_tp_top <= 377){
                     //Load Top More, if any:
                     view_load_page_e(11030, <?= ( $counter_top==$limit ? '0' : '1' ) ?>);
-                } else if (px_tp_bottom <= 610) {
+                } else if (px_tp_bottom <= 377) {
                     view_load_page_e(<?= $focus_tab ?>, <?= ( $coins_count[$focus_tab]==$limit ? '0' : '1' ) ?>);
                 }
             });

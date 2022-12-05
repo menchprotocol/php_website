@@ -580,7 +580,7 @@ function view_load_page_e(x__type, may_have_more) {
         } else {
             if(x__type==11030){
                 $(e_list).prepend(data);
-                //$('html, body').scrollTop(top_element.offset().top - 0);
+                $('html, body').scrollTop(top_element.offset().top - 55);
             } else {
                 $(e_list).append(data);
             }
