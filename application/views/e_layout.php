@@ -56,10 +56,10 @@ foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
     $(function () {
         var $win = $(window);
         $win.scroll(function () {
-            if ($win.scrollTop() < 377){
+            if ($win.scrollTop() <= 0){
                 //Load Top More, if any:
                 view_load_page_e(11030, <?= ( $counter_top==$limit ? '1' : '0' ) ?>);
-            } else if (($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
+            } else if (($(document).height() - ($win.height() + $win.scrollTop())) <= 0) {
                 view_load_page_e(<?= $focus_tab ?>, <?= ( $coins_count[$focus_tab]==$limit ? '1' : '0' ) ?>);
             }
         });
