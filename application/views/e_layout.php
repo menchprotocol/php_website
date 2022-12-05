@@ -70,7 +70,7 @@ foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
                 }
             });
         });
-    }, 987);
+    }, 1597);
 
     //Define file upload variables:
     var upload_control = $(".inputfile");
