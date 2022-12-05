@@ -234,7 +234,7 @@ function load_editor(){
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: 's__type=12274',
-                    hitsPerPage: 8,
+                    hitsPerPage: js_e___6404[31112]['m__message'],
                 }, function (error, content) {
                     if (error) {
                         cb([]);
@@ -265,7 +265,7 @@ function load_editor(){
             source: function (q, cb) {
                 algolia_index.search(q, {
                     filters: 's__type=12273',
-                    hitsPerPage: 8,
+                    hitsPerPage: js_e___6404[31112]['m__message'],
                 }, function (error, content) {
                     if (error) {
                         cb([]);
@@ -1040,7 +1040,7 @@ $(document).ready(function () {
                 icons_listed = [];
                 algolia_index.search(q, {
                     filters: ' _tags:alg_e_14988 OR _tags:alg_e_14038 OR _tags:alg_e_14986 OR _tags:alg_e_20425 OR _tags:alg_e_20426 OR _tags:alg_e_20427 OR _tags:has_image ',
-                    hitsPerPage: 300,
+                    hitsPerPage: js_e___6404[31113]['m__message'],
                 }, function (error, content) {
                     if (error) {
                         cb([]);
@@ -1120,7 +1120,7 @@ $(document).ready(function () {
 
                         //Append filters:
                         algolia_index.search(q, {
-                            hitsPerPage: 300,
+                            hitsPerPage: js_e___6404[31113]['m__message'],
                             filters:search_filters,
                         }, function (error, content) {
                             if (error) {
@@ -1337,7 +1337,7 @@ function i_load_search(x__type) {
             algolia_index.search(q, {
 
                 filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
-                hitsPerPage: 300,
+                hitsPerPage: js_e___6404[31112]['m__message'],
 
             }, function (error, content) {
                 if (error) {
@@ -1402,7 +1402,7 @@ function e_load_search(x__type) {
 
             algolia_index.search(q, {
                 filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
-                hitsPerPage: 300,
+                hitsPerPage: js_e___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
                     cb([]);
@@ -2068,7 +2068,7 @@ function text_search(obj) {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     algolia_index.search(q, {
-                        hitsPerPage: 8,
+                        hitsPerPage: js_e___6404[31112]['m__message'],
                         filters: 's__type=12274',
                     })
                         .then(function searchSuccess(content) {
