@@ -23,19 +23,6 @@ function view_load_page_i($x__type, $page, $limit, $list_count, $extra_class = n
                                 <div class="cover-wrapper"><a '.$href.' class="black-background-obs cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
                             </div>';
 }
-function view_load_page_e($x__type, $page, $limit, $list_count, $extra_class = null)
-{
-    /*
-     * Gives an option to "Load More" sources when we have too many to show in one go
-     * */
-
-    $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035');
-    $href = 'href="javascript:void(0);" onclick="view_load_page_e('.$x__type.',' . $page . ', 0)"';
-    return '<div class="coin_cover coin_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding load-more '.$extra_class.'">
-                                <div class="cover-wrapper"><a '.$href.' class="black-background-obs cover-link"><div class="cover-btn">'.$e___11035[14538]['m__cover'].'</div></a></div>
-                            </div>';
-}
 
 function view_db_field($field_name){
 
@@ -602,16 +589,9 @@ function view_body_e($x__type, $counter, $e__id){
 
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
-
         foreach($list_results as $e) {
             $ui .= view_e($x__type, $e, null);
         }
-
-        if ($counter > count($list_results)) {
-            //Load even more if there...
-            $ui .= view_load_page_e($x__type, 1, $limit, $counter);
-        }
-
         $ui .= '</div>';
 
         //Input to add new child:

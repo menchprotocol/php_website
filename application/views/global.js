@@ -419,6 +419,7 @@ function toggle_pills(x__type){
 
     console.log(x__type+' PILL TOGGLED');
 
+    focus_coin = x__type;
     var x__down = 0;
     var x__right = 0;
     var focus_coin = ( $('#focus_coin').length ? parseInt($('#focus_coin').val()) : 0 );
@@ -538,45 +539,41 @@ function view_load_page_i(x__type, page, load_new_filter) {
 
 
 
+var nothing_more_to_load = false;
+var current_page = 1;
+function view_load_page_e(x__type) {
 
-function view_load_page_e(x__type, page, load_new_filter) {
-
-    if (load_new_filter) {
-        //Replace load more with spinner:
-        var append_div = $('.new-list-'+x__type).html();
-        //The padding-bottom would delete the scrolling effect on the left side!
-        $('#list-in-'+x__type).html('<span class="load-more" style="padding-bottom:500px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
-    } else {
-        //Replace load more with spinner:
-        $('.load-more').html('<span class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></span>').hide().fadeIn();
+    if(!nothing_more_to_load){
+        return false;
     }
 
+    var e_list = '#list-in-'+x__type;
+    var e_loader = '<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>';
+    current_page++;
+    if(x__type==11030){
+        $(e_list).prepend(e_loader).hide().fadeIn();
+    } else {
+        $(e_list).append(e_loader).hide().fadeIn();
+    }
     $.post("/e/view_load_page_e", {
         x__type: x__type,
-        page: page,
+        page: current_page,
         focus_id: current_id(),
     }, function (data) {
-
-        //Appending to existing content:
         $('.load-more').remove();
-
-        if (load_new_filter) {
-
-            $('#list-in-'+x__type).html(data + '<div class="new-list-'+x__type+' list-group-item no-side-padding grey-input">' + append_div + '</div>').hide().fadeIn();
-            //Reset search engine:
-            e_load_search(x__type);
-
+        if(!data.length){
+            //Everything is loaded:
+            console.log('NOTHING MORE TO LOAD FOR '+x__type);
+            nothing_more_to_load = true;
         } else {
-            //Update UI to confirm with member:
-            $('#list-in-'+x__type).append(data);
+            if(x__type==11030){
+                $(e_list).prepend(data);
+            } else {
+                $(e_list).append(data);
+            }
+            x_set_start_text();
+            $('[data-toggle="tooltip"]').tooltip();
         }
-
-
-
-        x_set_start_text();
-
-        //Tooltips:
-        $('[data-toggle="tooltip"]').tooltip();
     });
 
 }

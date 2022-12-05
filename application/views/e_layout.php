@@ -36,8 +36,10 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 }
 echo '</ul>';
 echo $body_content;
+$focus_coin = 0;
 foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
     if($coins_count[$x__type] > 0){
+        $focus_coin = $x__type;
         echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$x__type.'); }); </script>';
         break;
     }
@@ -50,13 +52,16 @@ foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
 <input type="hidden" id="focus_id" value="<?= $e['e__id'] ?>" />
 <script type="text/javascript">
 
+    var focus_coin = <?= $focus_coin ?>;
+
     $(function () {
         var $win = $(window);
         $win.scroll(function () {
             if ($win.scrollTop() == 0){
-                console.log('TOP SCROLL');
+                //Load Top More, if any:
+                view_load_page_e(11030);
             } else if ($win.height() + $win.scrollTop() == $(document).height()) {
-                console.log('BOTTOM SCROLL');
+                view_load_page_e(focus_coin);
             }
         });
     });

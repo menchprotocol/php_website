@@ -352,14 +352,6 @@ class E extends CI_Controller
             echo view_e($_POST['x__type'], $e, null);
         }
 
-        //Count total children:
-        $child_count = $this->X_model->fetch($query_filters, array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
-
-        //Do we need another load more button?
-        if ($child_count[0]['totals'] > (($page * $items_per_page) + count($extra_items))) {
-            echo view_load_page_e($_POST['x__type'], ($page + 1), $items_per_page, $child_count[0]['totals']);
-        }
-
     }
 
     function e_remove(){
