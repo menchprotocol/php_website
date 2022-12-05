@@ -715,11 +715,6 @@ class X_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing Message',
             );
-        } elseif ($strict_validation && strlen($message_input) > view_memory(6404,4485)) {
-            return array(
-                'status' => 0,
-                'message' => 'Message is '.strlen($message_input).' characters long which is more than the allowed ' . view_memory(6404,4485) . ' characters',
-            );
         } elseif (!preg_match('//u', $message_input)) {
             return array(
                 'status' => 0,

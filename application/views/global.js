@@ -385,7 +385,7 @@ function e_sort_load(x__type) {
         //Does not support sorting:
         console.log('Not sortable')
         return false;
-    } else if(sort_item_count<1 || sort_item_count>=parseInt(js_e___6404[13005]['m__message'])){
+    } else if(sort_item_count<1 || sort_item_count>=parseInt(js_e___6404[11064]['m__message'])){
         console.log('Not countable')
         return false;
     }

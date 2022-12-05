@@ -390,32 +390,6 @@ function string_is_icon($icon_code){
     return substr_count($icon_code,'fa-');
 }
 
-function i_description($i__id){
-
-
-    $CI =& get_instance();
-    foreach($CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 4231, //IDEA NOTES Messages
-        'x__right' => $i__id,
-    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $fetched_e){
-        if(substr_count($fetched_e['x__message'], ' ')>=2){ //Require 3+ words
-            //This is it, return:
-            return $CI->X_model->message_view(
-                join(' ', array_slice(explode(' ', trim(preg_replace('/\s\s+/', ' ', $fetched_e['x__message']))), 0, view_memory(6404,13556))).( substr_count($fetched_e['x__message'], ' ') >= (view_memory(6404,13556) - 1) ? '...' : '' ), //Limit Length
-                true,
-                superpower_unlocked(),
-                0,
-                true
-            );
-        }
-    }
-
-    //Return something:
-    return null;
-
-}
-
 
 function i__spectrum_calculator($i){
 

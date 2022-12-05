@@ -302,11 +302,11 @@ class E extends CI_Controller
                     'message' => 'Invalid e__id',
                 ));
 
-            } elseif($list_e_count[0]['totals'] > view_memory(6404,13005)){
+            } elseif($list_e_count[0]['totals'] > view_memory(6404,11064)){
 
                 view_json(array(
                     'status' => 0,
-                    'message' => 'Cannot sort sources if greater than '.view_memory(6404,13005),
+                    'message' => 'Cannot sort sources if greater than '.view_memory(6404,11064),
                 ));
 
             } else {
