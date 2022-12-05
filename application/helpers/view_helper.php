@@ -1406,7 +1406,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
     $show_coins = !$has_any_lock && !$discovery_mode;
-    $can_click = !$has_any_lock && !$focus_coin && ($discovery_mode || !$editing_enabled);
+    $can_click = !$has_any_lock && !$focus_coin;
 
 
     if(is_new()){
