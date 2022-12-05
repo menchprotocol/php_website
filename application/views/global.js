@@ -498,18 +498,14 @@ function e_copy(e__id){
 
 
 
-var busy_loading = 0;
+var busy_loading = [];
 var current_page = [];
 function view_load_page(x__type) {
 
-    if(busy_loading>0 && busy_loading==x__type){
+    if(busy_loading[x__type] && parseInt(busy_loading[x__type])>0){
         return false;
     }
-    busy_loading = x__type;
-    if(!current_page[x__type]){
-        current_page[x__type] = 1;
-    }
-
+    busy_loading[x__type] = 1;
 
 
     var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')); //Total of that item
@@ -557,7 +553,7 @@ function view_load_page(x__type) {
             x_set_start_text();
             $('[data-toggle="tooltip"]').tooltip();
         }
-        busy_loading = false;
+        busy_loading[x__type] = 0;
     });
 
 
