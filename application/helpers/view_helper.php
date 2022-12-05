@@ -1497,11 +1497,14 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
                 if($e__id==14937 && $editing_enabled){
                     $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
                 } elseif($e__id==12589){
+                    //Mass Apply
                     $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
                 } elseif($e__id==30795 && !$discovery_mode){
+                    //Discovery Mode
                     $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
-                } elseif($e__id==6155 && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155')) && ($x__type!=6255 || $superpower_10939)){
-                    $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'">'.$anchor.'</a>'; //UNLINK
+                } elseif($e__id==6155 && isset($i['x__id']) && in_array($x__type, $CI->config->item('n___6155')) && ($e_of_i || $superpower_10939)){
+                    //Remove/Unlink
+                    $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$i['x__id'].'">'.$anchor.'</a>';
                 } elseif($e__id==30873){
                     //Template:
                     $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 1)" class="dropdown-item css__title">'.$anchor.'</a>';
