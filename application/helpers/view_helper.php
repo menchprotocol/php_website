@@ -1371,12 +1371,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             'x__right' => $previous_i['i__id'],
             'x__up' => 14488, //Force Order
         ), array(), 1)));
-    $locking_enabled = !isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($force_order && $discovery_mode);
-    $has_hard_lock = in_array($x__type, $CI->config->item('n___14453'));
-    $has_soft_lock = $locking_enabled && !$is_completed && ($has_hard_lock || (!$is_first_incomplete && ($force_order || !$is_started)));
+    $has_soft_lock = (!isset($focus_e['e__id']) || $focus_e['e__id']<1 || ($force_order && $discovery_mode)) && !$is_completed && (!$is_first_incomplete && ($force_order || !$is_started));
     $has_sortable = !$focus_coin && !$has_soft_lock && $editing_enabled && in_array($x__type, $CI->config->item('n___4603'));
     $i_title = view_i_title($i);
-    $has_any_lock = $has_soft_lock || $has_hard_lock;
 
     if(in_array($i['i__type'], $CI->config->item('n___14454')) && !$is_completed) {
         if($top_i__id){
@@ -1405,8 +1402,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-    $show_coins = !$has_any_lock && !$discovery_mode;
-    $can_click = !$has_any_lock && !$focus_coin;
+    $show_coins = !$has_soft_lock && !$discovery_mode;
+    $can_click = !$has_soft_lock && !$focus_coin && !$editing_enabled;
 
 
     if(is_new()){
@@ -1480,7 +1477,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $o_menu = '';
         $action_buttons = null;
 
-        if($has_any_lock && !$focus_coin){
+        if($has_soft_lock && !$focus_coin){
 
             //show lock?
 
@@ -1581,7 +1578,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '</div></td>';
 
         $ui .= '<td width="20%"><div class="'.$link_visibility.'">';
-        if(!$has_any_lock && isset($i['x__type'])){
+        if(!$has_soft_lock && isset($i['x__type'])){
             $ui .= $link_dropdown;
         }
         $ui .= '</div></td>';
