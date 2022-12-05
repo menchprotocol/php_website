@@ -241,7 +241,7 @@ function view_number($number)
 {
 
     if(intval($number) < 1){
-        return false;
+        return '&nbsp;';
     }
 
     //Round & format numbers
