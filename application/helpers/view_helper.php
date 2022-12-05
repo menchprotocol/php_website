@@ -564,8 +564,6 @@ function view_body_e($x__type, $counter, $e__id){
         }
         $ui .= '</div>';
 
-        //TODO Enable sorting for Watching Ideas? $ui .= ( $counter >= 2 ? '<script> $(document).ready(function () {x_sort_load('.$x__type.')}); </script>' : '<style> #list-in-'.$x__type.' .x_sort {display:none !important;} </style>' ); //Need 2 or more to sort
-
     } elseif($x__type==12274 || $x__type==11030){
 
         $add_button = '<div class="new-list-'.$x__type.' list-adder">
@@ -597,13 +595,6 @@ function view_body_e($x__type, $counter, $e__id){
             $ui .= view_i($x__type, $i['i__id'], null, $i, $focus_e);
         }
         $ui .= '</div>';
-
-        //No sorting for now...
-        if ($e__id == $member_e['e__id'] && in_array($x__type, $CI->config->item('n___4603'))) {
-            //$ui .= '<script> $(document).ready(function () { x_sort_load(' . $x__type . ') }); </script>';
-        } else {
-            //$ui .= '<style> #list-in-' . $x__type . ' .x_sort {display:none !important;} </style>';
-        }
 
     }
 
@@ -1568,7 +1559,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         }
         $ui .= '</div></td>';
 
-        $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="x_sort" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="x_sort hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
         $ui .= '<td width="20%"><div class="show-on-hover">'.( !$can_click && $member_e && !$focus_coin ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
         $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
         $ui .= '</tr></table>';

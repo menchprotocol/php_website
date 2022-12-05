@@ -2122,10 +2122,10 @@ function x_sort_load(x__type){
 
         //Make sure beow minimum sorting requirement:
         if($("#list-in-"+x__type+" .cover_sort").length>=parseInt(fetch_val('#page_limit'))){
-            $('.x_sort').addClass('hidden');
             return false;
         }
 
+        $('.x_sort').removeClass('hidden');
         console.log(x__type+' sorting load success');
         sorting_loaded.push(x__type);
 
