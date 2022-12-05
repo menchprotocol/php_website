@@ -507,6 +507,9 @@ function view_load_page(x__type) {
     }
     busy_loading[x__type] = 1;
 
+    if(!current_page[x__type]){
+        current_page[x__type] = 1;
+    }
 
     var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')); //Total of that item
     var has_more_to_load = ( current_total_count > parseInt(fetch_val('#page_limit')) * current_page[x__type] );
