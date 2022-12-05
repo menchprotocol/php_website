@@ -514,7 +514,6 @@ function view_load_page(x__type) {
     }
     var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')); //Total of that item
     var has_more_to_load = ( current_total_count > parseInt(fetch_val('#page_limit')) * current_page[x__type] );
-    current_page[x__type]++; //Now we can increment current page
     var e_list = '#list-in-'+x__type;
     var current_top_x__id = $( e_list + ' .coin_cover ' ).first().attr('x__id');
     var top_element = $('.cover_x_'+current_top_x__id);
@@ -525,6 +524,8 @@ function view_load_page(x__type) {
         console.log('NOTHING MORE TO LOAD FOR '+x__type);
         return false;
     }
+
+    current_page[x__type]++; //Now we can increment current page
 
     if(x__type==11030){
         $(e_list).prepend(e_loader);
