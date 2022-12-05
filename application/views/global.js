@@ -539,10 +539,16 @@ function view_load_page_i(x__type, page, load_new_filter) {
 
 
 
+var busy_loading = false;
 var nothing_more_to_load = false;
 var current_page = 1;
 function view_load_page_e(x__type) {
 
+    if(busy_loading){
+        return false;
+    }
+
+    busy_loading = true;
     console.log('NEW CONTENT LOADING FOR '+x__type)
     if(nothing_more_to_load){
         console.log('NOTHING MORE TO LOAD FOR '+x__type);
@@ -581,6 +587,7 @@ function view_load_page_e(x__type) {
             x_set_start_text();
             $('[data-toggle="tooltip"]').tooltip();
         }
+        busy_loading = false;
     });
 
 
