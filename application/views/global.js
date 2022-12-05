@@ -505,13 +505,13 @@ function view_load_page(x__type) {
     if(busy_loading>0 && busy_loading==x__type){
         return false;
     }
-
     busy_loading = x__type;
-    console.log('NEW CONTENT LOADING FOR '+x__type);
-
     if(!current_page[x__type]){
         current_page[x__type] = 1;
     }
+
+
+
     var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')); //Total of that item
     var has_more_to_load = ( current_total_count > parseInt(fetch_val('#page_limit')) * current_page[x__type] );
     var e_list = '#list-in-'+x__type;
@@ -521,13 +521,16 @@ function view_load_page(x__type) {
     console.log(x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
 
     if(!has_more_to_load){
-        console.log('NOTHING MORE TO LOAD FOR '+x__type);
+        console.log('DONE LOADING: '+x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
         return false;
+    } else {
+        console.log(x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
     }
+
 
     current_page[x__type]++; //Now we can increment current page
 
-    if(x__type==11030){
+    if(js_n___14686.includes(x__type)){
         $(e_list).prepend(e_loader);
     } else {
         $(e_list).append(e_loader);
