@@ -555,35 +555,33 @@ function view_load_page_e(x__type) {
     var top_element = $('.cover_x_'+current_top_x__id);
     var e_loader = '<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>';
 
-    setTimeout(function () {
-        console.log('PAGE #'+current_page+' TOP X__ID ID '+current_top_x__id);
-        if(x__type==11030){
-            $(e_list).prepend(e_loader);
+    console.log('PAGE #'+current_page+' TOP X__ID ID '+current_top_x__id);
+    if(x__type==11030){
+        $(e_list).prepend(e_loader);
+    } else {
+        $(e_list).append(e_loader)``;
+    }
+    $.post("/e/view_load_page_e", {
+        x__type: x__type,
+        current_page: current_page,
+        e__id: current_id(),
+    }, function (data) {
+        $('.load-more').remove();
+        if(!data.length){
+            //Everything is loaded:
+            console.log('NO FUTURE LOADS FOR '+x__type);
+            nothing_more_to_load = true;
         } else {
-            $(e_list).append(e_loader)``;
-        }
-        $.post("/e/view_load_page_e", {
-            x__type: x__type,
-            current_page: current_page,
-            e__id: current_id(),
-        }, function (data) {
-            $('.load-more').remove();
-            if(!data.length){
-                //Everything is loaded:
-                console.log('NO FUTURE LOADS FOR '+x__type);
-                nothing_more_to_load = true;
+            if(x__type==11030){
+                $(e_list).prepend(data);
+                $('html, body').scrollTop(top_element.offset().top - 0);
             } else {
-                if(x__type==11030){
-                    $(e_list).prepend(data);
-                    $('html, body').scrollTop(top_element.offset().top - 54);
-                } else {
-                    $(e_list).append(data);
-                }
-                x_set_start_text();
-                $('[data-toggle="tooltip"]').tooltip();
+                $(e_list).append(data);
             }
-        });
-    }, 5144);
+            x_set_start_text();
+            $('[data-toggle="tooltip"]').tooltip();
+        }
+    });
 
 
 }
