@@ -543,7 +543,9 @@ var nothing_more_to_load = false;
 var current_page = 1;
 function view_load_page_e(x__type) {
 
+    console.log('NEW CONTENT LOADING FOR '+x__type)
     if(!nothing_more_to_load){
+        console.log('NOTHING MORE TO LOAD FOR '+x__type);
         return false;
     }
 
@@ -557,13 +559,13 @@ function view_load_page_e(x__type) {
     }
     $.post("/e/view_load_page_e", {
         x__type: x__type,
-        page: current_page,
-        focus_id: current_id(),
+        current_page: current_page,
+        e__id: current_id(),
     }, function (data) {
         $('.load-more').remove();
         if(!data.length){
             //Everything is loaded:
-            console.log('NOTHING MORE TO LOAD FOR '+x__type);
+            console.log('NO FUTURE LOADS FOR '+x__type);
             nothing_more_to_load = true;
         } else {
             if(x__type==11030){

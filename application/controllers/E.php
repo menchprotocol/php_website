@@ -331,27 +331,9 @@ class E extends CI_Controller
 
     function view_load_page_e()
     {
-
-        $items_per_page = view_memory(6404,11064);
-        $focus_id = intval($_POST['focus_id']);
-        $page = intval($_POST['page']);
-        $query_filters = array(
-            'x__up' => $focus_id,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null,
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        );
-
-        //Fetch & display next batch of children:
-        $extra_items = $this->X_model->fetch($query_filters, array('x__down'), $items_per_page, ($page * $items_per_page), array(
-            'x__spectrum' => 'ASC',
-            'e__title' => 'ASC'
-        ));
-
-        foreach($extra_items as $e) {
-            echo view_e($_POST['x__type'], $e, null);
+        foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], $_POST['current_page']) as $e) {
+            echo view_e($_POST['x__type'], $e);
         }
-
     }
 
     function e_remove(){
