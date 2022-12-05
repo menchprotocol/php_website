@@ -557,9 +557,9 @@ function view_load_page_e(x__type) {
 
     console.log('PAGE #'+current_page+' TOP X__ID ID '+current_top_x__id);
     if(x__type==11030){
-        $(e_list).prepend(e_loader).hide().fadeIn();
+        $(e_list).prepend(e_loader);
     } else {
-        $(e_list).append(e_loader).hide().fadeIn();
+        $(e_list).append(e_loader)``;
     }
     $.post("/e/view_load_page_e", {
         x__type: x__type,

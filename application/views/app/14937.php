@@ -53,7 +53,7 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        ), array('x__up'), 0, 0, array('LENGTH(x__message)' => 'DESC', 'e__spectrum' => 'DESC')) as $linked_e){
+        ), array('x__up'), 0, 0, array('e__spectrum' => 'ASC', 'e__title' => 'DESC')) as $linked_e){
             if(strlen($linked_e['e__cover'])){
                 if(filter_var($linked_e['e__cover'], FILTER_VALIDATE_URL)){
                     $found_image = $linked_e['e__cover'];

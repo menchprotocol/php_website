@@ -12,7 +12,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         'x__down' => $_GET['e__id'],
-    ), array('x__up'), 0, 0, array('e__spectrum' => 'DESC'));
+    ), array('x__up'), 0, 0, array('e__spectrum' => 'ASC', 'e__title' => 'DESC'));
 
 
     echo '<div class="center-info">';
