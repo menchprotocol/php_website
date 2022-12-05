@@ -538,11 +538,7 @@ class I_model extends CI_Model
                 'x__type' => 4228, //Idea Transaction Regular read
                 ( $is_upwards ? 'x__right' : 'x__left' ) => $focus_id,
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
-                'x__spectrum' => 1 + $this->X_model->max_spectrum(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                        'x__left' => ( $is_upwards ? $i_new['i__id'] : $focus_id ),
-                    )),
+                'x__spectrum' => 0,
             ), true);
 
             //Fetch and return full data to be properly shown on the UI

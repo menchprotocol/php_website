@@ -652,11 +652,6 @@ function view_body_i($x__type, $counter, $i__id){
     } elseif($x__type==12273){
 
         //IDEAS
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
-        foreach($list_results as $next_i) {
-            $ui .= view_i(12273, 0, $is[0], $next_i);
-        }
-        $ui .= '</div>';
 
         if($e_of_i){
             $ui .= '<div class="new-list-12273 list-adder '.superpower_active(10939).'">
@@ -668,6 +663,12 @@ function view_body_i($x__type, $counter, $i__id){
                            placeholder="'.$e___11035[14016]['m__title'].'">
                 </div><div class="algolia_pad_search row justify-content"></div></div>';
         }
+
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
+        foreach($list_results as $next_i) {
+            $ui .= view_i(12273, 0, $is[0], $next_i);
+        }
+        $ui .= '</div>';
 
     } elseif($x__type==6255) {
 
@@ -681,11 +682,7 @@ function view_body_i($x__type, $counter, $i__id){
     } elseif($x__type==12274){
 
         //SOURCES
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">'; //list-in-4983
-        foreach($list_results as $e_ref){
-            $ui .= view_e($e_ref['x__type'], $e_ref, null);
-        }
-        $ui .= '</div>';
+
         $ui .= '<div class="new-list-'.$x__type.' list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
@@ -694,6 +691,13 @@ function view_body_i($x__type, $counter, $i__id){
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
+
+
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">'; //list-in-4983
+        foreach($list_results as $e_ref){
+            $ui .= view_e($e_ref['x__type'], $e_ref, null);
+        }
+        $ui .= '</div>';
 
     }
 

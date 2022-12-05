@@ -536,6 +536,7 @@ class E extends CI_Controller
 
         //Set some variables:
         $_POST['x__type'] = intval($_POST['x__type']);
+        $is_upwards = in_array($_POST['x__type'], $this->config->item('n___14686'));
         $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
         $url_previously_existed = false;
         $url_e = false;
@@ -636,7 +637,7 @@ class E extends CI_Controller
             //Add Up/Down Source:
 
             //Add transactions only if not previously added by the URL function:
-            if (in_array($_POST['x__type'], $this->config->item('n___14686'))) {
+            if ($is_upwards) {
 
                 //Following
                 $x__down = $fetch_o[0]['e__id'];
@@ -648,21 +649,7 @@ class E extends CI_Controller
                 //Followers
                 $x__up = $fetch_o[0]['e__id'];
                 $x__down = $focus_e['e__id'];
-
-                if(sources_currently_sorted($x__up)){
-
-                    $x__spectrum = 1 + $this->X_model->max_spectrum(array(
-                            'x__up' => $x__up,
-                            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        ));
-
-                } else {
-
-                    //Don't sort since currently not sorted:
-                    $x__spectrum = 0;
-
-                }
+                $x__spectrum = 0;
 
             }
 

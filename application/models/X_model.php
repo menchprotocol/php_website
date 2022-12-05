@@ -470,6 +470,14 @@ class X_model extends CI_Model
     function max_spectrum($query_filters)
     {
 
+        /*
+         *
+         *    $x__spectrum = 1 + $this->X_model->(array(
+                            'x__up' => $x__up,
+                            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        ));
+         * */
         //Fetches the maximum order value
         $this->db->select('MAX(x__spectrum) as largest_order');
         $this->db->from('table__x');
