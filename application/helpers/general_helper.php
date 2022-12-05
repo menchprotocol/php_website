@@ -1904,7 +1904,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     'x__down' => $s['e__id'], //This child source
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-                ), array('x__up'), 0, 0, array('e__spectrum' => 'ASC', 'e__title' => 'DESC')) as $x) {
+                ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x) {
 
                     //Always add to tags:
                     array_push($export_row['_tags'], 'alg_e_' . $x['e__id']);

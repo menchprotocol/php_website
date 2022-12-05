@@ -1460,7 +1460,7 @@ class X extends CI_Controller
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                         'x__down' => $_POST['o__id'],
-                    ), array('x__up'), 1, 0, array('e__spectrum' => 'ASC', 'e__title' => 'DESC')) as $profile_e) {
+                    ), array('x__up'), 1, 0, array('e__title' => 'DESC')) as $profile_e) {
                         $deletion_redirect = '/@'.$profile_e['e__id'];
                     }
 

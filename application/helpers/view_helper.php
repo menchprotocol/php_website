@@ -780,7 +780,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
     } elseif($x__type==11030){
 
         //UP
-        $order_columns = array('e__spectrum' => 'ASC', 'e__title' => 'DESC');
+        $order_columns = array('e__title' => 'DESC');
         $join_objects = array('x__up');
         $query_filters = array(
             'x__down' => $e__id,
@@ -836,7 +836,11 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
     if($page_num > 0){
 
         $limit = view_memory(6404,11064);
-        return $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
+        $query = $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
+        if($x__type==11030){
+            $query = array_reverse($query);
+        }
+        return $query;
 
     } else {
 
