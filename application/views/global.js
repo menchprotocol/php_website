@@ -544,7 +544,7 @@ var current_page = 1;
 function view_load_page_e(x__type) {
 
     console.log('NEW CONTENT LOADING FOR '+x__type)
-    if(!nothing_more_to_load){
+    if(nothing_more_to_load){
         console.log('NOTHING MORE TO LOAD FOR '+x__type);
         return false;
     }
