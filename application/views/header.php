@@ -346,8 +346,6 @@ if(strlen($live_chat_page_id)>10){
 
 if(!$basic_header_footer){
 
-    echo '<div class="sidebar hidden menu_click"><div style="padding:5px;"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div></div>';
-
     //Do not show for /sign view
     ?>
     <div class="container fixed-top top-header-position" style="padding-bottom: 0 !important; min-height: 38px;">

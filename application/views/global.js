@@ -808,27 +808,6 @@ function load_coins(){
 
 
 
-var nav_ever_loaded = false;
-var nav_toggeled = false;
-function toggle_left_menu() {
-
-    if(!nav_ever_loaded){
-        nav_ever_loaded = true;
-        $.post("/e/toggle_left_menu", {}, function (data) {
-            $('.sidebar').html(data);
-        });
-    }
-
-    if(nav_toggeled){
-        nav_toggeled = false;
-        $('.sidebar').addClass('hidden');
-    } else {
-        nav_toggeled = true;
-        $('.sidebar').removeClass('hidden');
-    }
-
-}
-
 
 var algolia_index = false;
 $(document).ready(function () {
@@ -838,18 +817,6 @@ $(document).ready(function () {
     });
     $('.coin_e_click').click(function(e) {
         window.location = '/@'+$(this).attr('e__id');
-    });
-
-    $(window).click(function() {
-        //Hide the menus if visible
-        if (nav_toggeled){
-            toggle_left_menu();
-        }
-    });
-    $('.menu_click').click(function(event){
-        if (nav_toggeled){
-            event.stopPropagation();
-        }
     });
 
     //Watchout for file uplods:

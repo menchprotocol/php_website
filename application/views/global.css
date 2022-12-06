@@ -2801,7 +2801,6 @@ h4.css__title{
 
 .custom_ui_13884_13886 .btn-default i,
 .custom_ui_13884_13886 .dropdown-menu,
-.custom_ui_13884_13886 .sidebar,
 .custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu{
     background-color:#000000 !important;
@@ -2931,7 +2930,6 @@ h4.css__title{
 .custom_ui_13884_13885 .accordion .card,
 .custom_ui_13884_13885 .btn-block,
 .custom_ui_13884_13885 .dropdown-menu,
-.custom_ui_13884_13885 .sidebar,
 .custom_ui_13884_13885 .algolia-autocomplete .aa-dropdown-menu,
 .custom_ui_13884_13885 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13885 textarea:not(.editing-mode),
@@ -3537,17 +3535,7 @@ h4.css__title{
     margin: 2px 8px;
 }
 
-.sidebar {
-    height: 100%;
-    width: 280px;
-    position: fixed;
-    z-index: 1;
-    top: 43px;
-    left: 0;
-    overflow-x: hidden;
-    padding-bottom: 77px;
-    border-right:1px solid #999;
-}
+
 
 .large-frame{
     width: 100%;
@@ -3566,20 +3554,6 @@ h4.css__title{
 
 .large-frame.with-background{
     margin-bottom: 144% !important;
-}
-
-.sidebar a.css__title {
-    padding:5px 5px 5px 0;
-    text-decoration: none;
-    display: block;
-    width: 280px;
-    white-space: nowrap;
-    overflow: hidden !important;
-    text-overflow: ellipsis;
-}
-
-.sidebar a:hover {
-    background-color: #999999;
 }
 
 .filter_table {
