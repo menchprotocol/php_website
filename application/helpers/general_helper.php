@@ -1470,7 +1470,6 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         ), array('x__down'), 0, 0, array('x__id' => 'DESC')));
     }
 
-    return count($query);
 
     $already_added = array(); //Prevent duplicates
     foreach($query as $subscriber){
@@ -1536,7 +1535,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
         if(!$e_email){
             //No way to reach them:
-            continue;
+            //continue;
         }
 
         $message_list['unique_users_count']++;
