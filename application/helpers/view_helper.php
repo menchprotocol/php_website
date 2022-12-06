@@ -1551,7 +1551,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             'x__right' => $i['i__id'],
             'x__type' => 4250, //New Idea Created
         ), array('x__source')) as $creator){
-            $ui .= '<a href="/@'.$creator['e__id'].'" title="Created on '.$creator['x__time'].'"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
+            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' Created on '.$creator['x__time'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
         }
         $ui .= '</div></td>';
 
@@ -1898,7 +1898,7 @@ function view_e($x__type, $e, $extra_class = null)
             ), array('x__source')) as $creator){
                 //Show creator if different than the source:
                 if($creator['e__id']!=$e['e__id']){
-                    $ui .= '<a href="/@'.$creator['e__id'].'" title="Created on '.$creator['x__time'].'"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
+                    $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' Created on '.$creator['x__time'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
                 }
             }
         $ui .= '</div></td>';
