@@ -83,6 +83,8 @@ if(!$is_u_request || isset($_GET['cron'])){
     }
 
     $message_list = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e']);
+    print_r($message_list);
+    die('sssss');
     $e___6287 = $this->config->item('e___6287'); //APP
     $e___6186 = $this->config->item('e___6186'); //Transaction Status
 

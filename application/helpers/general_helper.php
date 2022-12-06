@@ -1560,9 +1560,6 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
     }
 
-    print_r($message_list);
-    die('WOWW');
-
     return $message_list;
 
 }
