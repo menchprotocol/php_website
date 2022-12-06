@@ -1470,8 +1470,6 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         ), array('x__down'), 0, 0, array('x__id' => 'DESC')));
     }
 
-    die('WOWW'.count($query));
-
     $already_added = array(); //Prevent duplicates
     foreach($query as $subscriber){
 
@@ -1561,6 +1559,9 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         $message_list['full_list'] .= ( count($u_names) ? $u_names[0]['x__message'] : $subscriber['e__title'] )."\t".$e_email."\t".$e_phone."\n";
 
     }
+
+    print_r($message_list);
+    die('WOWW');
 
     return $message_list;
 
