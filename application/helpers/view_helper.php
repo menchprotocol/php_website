@@ -1533,10 +1533,27 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
         //Top action menu:
-        $ui = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $force_order ? ' soft_lock ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $force_order ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $force_order ? ' title="Locked" data-toggle="tooltip" data-placement="top" ' : '' ).'>';
+        $ui = '<div i__id="'.$i['i__id'].'" '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin coin_i_click col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $force_order ? ' soft_lock ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $force_order ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $force_order ? ' title="Locked" data-toggle="tooltip" data-placement="top" ' : '' ).'>';
 
 
         $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
+
+        $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="x_sort hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
+
+        $ui .= '<td width="20%"><div class="'.$link_visibility.'">';
+        if(!$force_order && isset($i['x__type'])){
+            $ui .= $link_dropdown;
+        }
+        $ui .= '</div></td>';
+
+        $ui .= '<td width="20%"><div>';
+        foreach($CI->X_model->fetch(array(
+            'x__right' => $i['i__id'],
+            'x__type' => 4250, //New Idea Created
+        ), array('x__source')) as $creator){
+            $ui .= '<a href="/@'.$creator['e__id'].'" title="Created on '.$creator['x__time'].'">'.view_cover(12274,$creator['e__cover'], true).'</a>';
+        }
+        $ui .= '</div></td>';
 
         $ui .= '<td width="20%"><div class="'.$type_visibility.'">';
         if(!$discovery_mode){
@@ -1547,22 +1564,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         }
         $ui .= '</div></td>';
 
-        $ui .= '<td width="20%"><div class="'.$link_visibility.'">';
-        if(!$force_order && isset($i['x__type'])){
-            $ui .= $link_dropdown;
-        }
-        $ui .= '</div></td>';
+        //$ui .= '<td width="20%"><div class="show-on-hover">'.( !$can_click && $member_e && !$focus_coin ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
 
-        $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="x_sort hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
-        $ui .= '<td width="20%"><div class="show-on-hover">'.( !$can_click && $member_e && !$focus_coin ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
         $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
         $ui .= '</tr></table>';
 
-
-
         $ui .= '<div class="cover-wrapper">';
-
-
 
 
 
@@ -1769,10 +1776,9 @@ function view_e($x__type, $e, $extra_class = null)
     $has_any_lock = $is_cache || (!$superpower_12701 && ($has_soft_lock || $has_hard_lock));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $superpower_13422 && $x__id > 0;
     $show_text_editor = $source_of_e && !$has_any_lock && !$is_cache;
-    $can_click = !$focus_coin; //Allow clicking for all
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin coin_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
     $ui .= '<div class="cover-wrapper">';
 
@@ -1878,11 +1884,27 @@ function view_e($x__type, $e, $extra_class = null)
 
     //Top action menu:
     if(!$cache_app){
+
         $ui .= '<table class="coin_coins"><tr>';
-        $ui .= '<td width="20%"><div class="'.( in_array($e['e__type'], $CI->config->item('n___31109')) ? '' : 'show-on-hover' ).'">'.($source_of_e && $superpower_13422 ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
-        $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</div></td>';
+
         $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</span>' : '').'</div></td>';
-        $ui .= '<td width="20%"><div class="show-on-hover">'.( $can_click && $show_text_editor ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
+
+        $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</div></td>';
+
+        $ui .= '<td width="20%"><div>';
+            foreach($CI->X_model->fetch(array(
+                'x__down' => $e['e__id'],
+                'x__type' => 4251, //New Source Created
+            ), array('x__source')) as $creator){
+                //Show creator if different than the source:
+                if($creator['e__id']!=$e['e__id']){
+                    $ui .= '<a href="/@'.$creator['e__id'].'" title="Created on '.$creator['x__time'].'">'.view_cover(12274,$creator['e__cover'], true).'</a>';
+                }
+            }
+        $ui .= '</div></td>';
+
+        $ui .= '<td width="20%"><div class="'.( in_array($e['e__type'], $CI->config->item('n___31109')) ? '' : 'show-on-hover' ).'">'.($source_of_e && $superpower_13422 ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '').'</div></td>';
+
         $ui .= '<td width="20%"><div class="show-on-hover" title="' . ( isset($e['x__time']) ? view_time_difference(strtotime($e['x__time'])) . ' Ago: '.$e['x__time'] : '' ).'">'.$dropdown_ui.'</div></td>';
         $ui .= '</tr></table>';
     }
@@ -1892,12 +1914,12 @@ function view_e($x__type, $e, $extra_class = null)
 
 
     //Coin Cover
-    $ui .= ( $can_click && !$show_text_editor ? '<a href="'.$href.'"' : '<div' ).' class="'.$cointype.( !$source_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$focus_coin && !$show_text_editor ? '<a href="'.$href.'"' : '<div' ).' class="'.$cointype.( !$source_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
 
     //ICON?
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover'], true) : '' ).'</div>';
 
-    $ui .= ( $can_click && !$show_text_editor ? '</a>' : '</div>' );
+    $ui .= ( !$focus_coin && !$show_text_editor ? '</a>' : '</div>' );
     $ui .= '</div>';
 
 

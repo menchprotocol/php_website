@@ -833,6 +833,14 @@ function toggle_left_menu() {
 var algolia_index = false;
 $(document).ready(function () {
 
+
+    $('.coin_i_click').click(function (e) {
+        window.location = '/~'+$(this).attr('i__id');
+    });
+    $('.coin_e_click').click(function (e) {
+        window.location = '/@'+$(this).attr('e__id');
+    });
+
     $(window).click(function() {
         //Hide the menus if visible
         if (nav_toggeled){
