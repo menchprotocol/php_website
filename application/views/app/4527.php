@@ -74,24 +74,10 @@ foreach($this->X_model->fetch(array(
     }
     $memory_text .= ');'."\n";
 
-
-    $memory_text .= '$config[\'x___'.$en['x__down'].'\'] = array('."\n";
-    if($memory_detected){
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__up' => $en['x__down'],
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $link_i){
-            $memory_text .= '     '.$link_i['i__id'].' => array('."\n";
-            $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',$link_i['i__title'])).'\','."\n";
-            $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$link_i['x__message'])).'\','."\n";
-            $memory_text .= '        \'m__cover\' => \'\','."\n";
-            $memory_text .= '     ),'."\n";
-        }
-    }
-    $memory_text .= ');'."\n";
-
 }
+
+//Also save a hash of the memory file for cache busting purposes:
+$memory_text .= '$config[\'cache_buster\'] = \''.md5($memory_text).'\';'."\n";
 
 //Now Save File:
 $file_location = "application/config/mench_memory.php";

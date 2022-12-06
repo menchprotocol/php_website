@@ -84,42 +84,6 @@ class E extends CI_Controller
                     $sidebar_ui .= '<hr />';
                 }
 
-            } elseif($x__type==28646){
-
-                //ADMIN MENU
-                $domain_list = intval(substr(website_setting(28646), 1));
-                if($domain_list){
-
-                    if(is_array($this->config->item('x___'.$domain_list)) && count($this->config->item('x___'.$domain_list))){
-                        $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].' Ideas</div>';
-                        foreach($this->config->item('x___'.$domain_list) as $i__id => $m2){
-
-                            //Count discoveries:
-                            $x_coins = $this->X_model->fetch(array(
-                                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                                'x__left' => $i__id,
-                            ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
-                            $sidebar_ui .= '<a href="/~'.$i__id.'" class="css__title" title="'.$m2['m__title'].'"><span class="icon-block-xs">'.$m2['m__cover'].'</span>'.( $x_coins[0]['totals']>0 ? number_format($x_coins[0]['totals'], 0).' ' : '' ).$m2['m__title'].'</a>';
-
-                        }
-                    }
-
-                    if(is_array($this->config->item('e___'.$domain_list))){
-                        $sidebar_ui .= '<div class="low-title grey"><span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].' Sources</div>';
-                        foreach($this->config->item('e___'.$domain_list) as $e__id => $m2){
-
-                            //Count sources:
-                            $list_e_count = $this->X_model->fetch(array(
-                                'x__up' => $e__id,
-                                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-                            $sidebar_ui .= '<a href="/@'.$e__id.'" class="css__title" title="'.$m2['m__title'].'"><span class="icon-block-xs">'.$m2['m__cover'].'</span>'.( $list_e_count[0]['totals']>0 ? number_format($list_e_count[0]['totals'], 0).' ' : '' ).$m2['m__title'].'</a>';
-
-                        }
-                    }
-                }
             }
         }
 
