@@ -77,6 +77,7 @@ foreach($this->X_model->fetch(array(
 }
 
 //Also save a hash of the memory file for cache busting purposes:
+$memory_text .= '$config[\'cache_time\'] = \''.time().'\';'."\n";
 $memory_text .= '$config[\'cache_buster\'] = \''.md5($memory_text).'\';'."\n";
 
 //Now Save File:
