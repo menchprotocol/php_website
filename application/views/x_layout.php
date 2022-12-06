@@ -234,7 +234,7 @@ if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
                 //Show other branches:
                 $breadcrum_content .= '<div class="dropdown inline-block">';
                 $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$parent_i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                $breadcrum_content .= '<span class="icon-block source_cover source_cover_mini"><i class="far fa-chevron-square-down"></i></span>';
+                $breadcrum_content .= '<span class="source_cover source_cover_mini"><i class="far fa-chevron-square-down"></i></span>';
                 $breadcrum_content .= '</button>';
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$parent_i['i__id'].'">';
                 foreach ($query_subset as $i_subset) {
