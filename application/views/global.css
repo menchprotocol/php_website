@@ -1124,7 +1124,7 @@ a.headline {
     display:inline-block;
     overflow: hidden;
     width: 100%;
-    padding: 5px;
+    padding: 2px;
 }
 
 
@@ -2150,7 +2150,7 @@ i, .btn .show-max {
 
 /* Cover Circle Override: */
 .cover-content .inner-content {
-    padding:5px 0;
+    padding:5px 0 0;
 }
 .cover-link {
     border:0;
@@ -2777,7 +2777,7 @@ h4.css__title{
 
 .custom_ui_13884_13886 .coin_cover:hover,
 .custom_ui_13884_13886 .coin-12274.coin_cover:hover .cover-content{
-    background: #555555 !important;
+    background: #333333 !important;
 }
 
 
