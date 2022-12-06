@@ -812,19 +812,16 @@ function load_coins(){
 var algolia_index = false;
 $(document).ready(function () {
 
-    $('body').click(function(e) {
-        console.log('body_click');
-    });
-    $('.coin_i_click').click(function(e) {
+    $('.coin_i_click').click(function() {
         window.location = '/~'+$(this).attr('i__id');
         return false;
     });
-    $('.coin_e_click').click(function(e) {
+    $('.coin_e_click').click(function() {
         console.log('coin_e_click');
         window.location = '/@'+$(this).attr('e__id');
         return false;
     });
-    $('.cover-wrapper').click(function(e) {
+    $('.cover-wrapper').click(function() {
         console.log('body_click');
     });
 
