@@ -1076,7 +1076,7 @@ textarea.note-textarea{
     cursor: pointer !important;
 }
 .coin_e_click, .coin_i_click {
-    z-index: 9999 !important;
+    z-index: 888 !important;
 }
 
 a.headline {
