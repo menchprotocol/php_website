@@ -1546,7 +1546,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         }
         $ui .= '</div></td>';
 
-        $ui .= '<td width="20%"><div class="icon-block-xxs">';
+        $ui .= '<td width="20%"><div class="show-on-hover icon-block-xxs">';
         foreach($CI->X_model->fetch(array(
             'x__right' => $i['i__id'],
             'x__type' => 4250, //New Idea Created
@@ -1891,7 +1891,7 @@ function view_e($x__type, $e, $extra_class = null)
 
         $ui .= '<td width="20%"><div class="show-on-hover">'.($source_of_e && $superpower_13422 && $x__id ? ( in_array($e['x__type'], $CI->config->item('n___13550')) ? view_input_dropdown(13550, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '<a href="javascript:void(0);" onclick="x_message_load(' . $e['x__id'] . ')">'.view_cache(4593, $e['x__type']).'</a>' ) : '').'</div></td>';
 
-        $ui .= '<td width="20%"><div class="icon-block-xxs">';
+        $ui .= '<td width="20%"><div class="show-on-hover icon-block-xxs">';
             foreach($CI->X_model->fetch(array(
                 'x__down' => $e['e__id'],
                 'x__type' => 4251, //New Source Created
