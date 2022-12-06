@@ -1985,7 +1985,7 @@ i, .btn .show-max {
     display: block;
     margin: 0 5px;
     max-height: 64%;
-    top:34px;
+    top:47px;
 }
 
 .coin-12273 .cover-content{
@@ -2008,7 +2008,7 @@ i, .btn .show-max {
 }
 
 #container_search .mini-coin .cover-content {
-    top: 18px;
+    top: 13px;
     padding-top: 1px;
     padding-bottom: 1px;
 }
@@ -2149,9 +2149,6 @@ i, .btn .show-max {
 }
 
 /* Cover Circle Override: */
-.cover-content .inner-content {
-    padding:5px 0 0;
-}
 .cover-link {
     border:0;
     width: 100%;
@@ -3455,7 +3452,7 @@ h4.css__title{
     margin: 0px 5px;
 }
 .editing-mode{
-    padding-top: 5px !important;
+    padding-top: 0 !important;
     border-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
