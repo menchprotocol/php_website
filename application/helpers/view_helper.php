@@ -1292,7 +1292,7 @@ function view_i_select($i, $x__source, $previously_selected){
 }
 
 
-function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $tree_progress = null, $extra_class = null, $is_first_incomplete = false){
+function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $tree_progress = null, $extra_class = null){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1308,7 +1308,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $superpower_12700 = superpower_active(12700, true);
     $superpower_12673 = superpower_active(12673, true);
 
-    $is_first_incomplete = ( $top_i__id>0 && $member_e ? $is_first_incomplete : false );
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = $top_i__id>0 || in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
@@ -1344,7 +1343,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             'x__right' => $previous_i['i__id'],
             'x__up' => 14488, //Force Order
         ), array(), 1)));
-    $has_soft_lock = $discovery_mode && !$is_completed && !$is_first_incomplete && ($force_order || !$is_started);
+    $has_soft_lock = ($force_order || !$is_started);
     $has_sortable = !$focus_coin && !$has_soft_lock && $editing_enabled && in_array($x__type, $CI->config->item('n___4603'));
     $i_title = view_i_title($i);
 
