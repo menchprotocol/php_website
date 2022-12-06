@@ -1978,14 +1978,14 @@ i, .btn .show-max {
 }
 .cover-content{
     padding: 0;
-    width: calc(100% - 16px) !important;
+    width: calc(100% - 10px) !important;
     position: absolute;
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    margin: 0 6px;
+    margin: 0 5px;
     max-height: 64%;
-    top:36px;
+    top:32px;
 }
 
 .coin-12273 .cover-content{
@@ -2072,10 +2072,10 @@ i, .btn .show-max {
 }
 
 .coin_coins{
-    width: calc(100% - 10px);
-    height: 45px;
+    width: 100%;
+    height: 37px;
     text-align: center;
-    margin: 0 5px;
+    margin:0;
 }
 .coin_coins>span{
     padding: 0 3px;
