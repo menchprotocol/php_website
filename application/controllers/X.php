@@ -1256,6 +1256,7 @@ class X extends CI_Controller
                 ), $member_e['e__id'], 26191 /* SOURCE CONTENT UPDATE */);
 
             } else {
+
                 //it is a source link! We should update this:
                 //Transaction content has changed:
                 $detected_x_type = x_detect_type($_POST['x__message']);

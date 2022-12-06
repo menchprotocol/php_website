@@ -204,7 +204,6 @@ if(strlen($_GET['i__id'])){
                 if(!isset($count_totals['i'][$i['i__id']])){
                     $count_totals['i'][$i['i__id']] = 0;
                 }
-                //$count_totals['i'][$i['i__id']] += ( strlen($discoveries[0]['x__message'])>0 && in_array(e_x__type($discoveries[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $discoveries[0]['x__message']) : 1 );
                 $count_totals['i'][$i['i__id']]++;
             }
 
@@ -244,7 +243,6 @@ if(strlen($_GET['i__id'])){
                 if(!isset($count_totals['e'][$e['e__id']])){
                     $count_totals['e'][$e['e__id']] = 0;
                 }
-                //$count_totals['e'][$e['e__id']] += ( in_array(e_x__type($fetch_data[0]['x__message']), $this->config->item('n___26111')) ? preg_replace("/[^0-9.]/", '', $fetch_data[0]['x__message']) : 1 );
                 $count_totals['e'][$e['e__id']]++;
             }
         }

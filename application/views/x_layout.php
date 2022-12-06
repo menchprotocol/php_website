@@ -627,14 +627,7 @@ if($top_i__id) {
         }
 
         $previous_response = ( !strlen($previous_response) && count($x_completes) ? trim($x_completes[0]['x__message']) : $previous_response );
-
         $message_ui = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
-
-        if (count($x_completes)) {
-            //Next Ideas:
-            $message_ui .= view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
-        }
-
         $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); $(window).scrollTop(0); }); </script>';
 
         echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
@@ -652,9 +645,6 @@ if($top_i__id) {
             echo '<div class="file_saving_result">';
             echo view_headline(13977, null, $e___11035[13977], $this->X_model->message_view($x_completes[0]['x__message'], true), true);
             echo '</div>';
-
-            //Any child ideas?
-            echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
 
         } else {
 
@@ -730,6 +720,11 @@ if(!$top_i__id){
 
                 break;// Ignore if more than one...
             }
+
+        } elseif($x__type==31121){
+
+            //Discuss to show next level ideas and allow for comments:
+
 
         } elseif($x__type==12211){
 
