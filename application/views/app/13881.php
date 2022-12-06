@@ -6,6 +6,6 @@ if(isset($_POST['import_sources'])){
 }
 
 echo '<form method="POST" action="">';
-echo '<textarea class="border padded" placeholder="" id="import_sources"></textarea>';
+echo '<textarea class="border padded" placeholder="Paste List Here" name="import_sources"></textarea>';
 echo '<button type="submit" class="btn btn-lrg top-margin">UPDATE</button>';
 echo '</form>';
