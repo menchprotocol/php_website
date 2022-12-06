@@ -1985,7 +1985,7 @@ i, .btn .show-max {
     display: block;
     margin: 0 5px;
     max-height: 64%;
-    top:32px;
+    top:34px;
 }
 
 .coin-12273 .cover-content{
@@ -2166,7 +2166,7 @@ i, .btn .show-max {
 }
 
 .coinType12274.cover-link.ready-only, .coinType12274.cover-link {
-    margin-top:37px;
+    margin-top:47px;
 }
 .focus-coin .coinType12274.cover-link, .focus-coin .coinType12274.cover-link.ready-only {
     margin-top:55px;
