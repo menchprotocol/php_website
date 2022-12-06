@@ -706,20 +706,23 @@ if(!$top_i__id){
 
             //Action Buttons: Reshare, Save & Watch
             //Find Pending Action Source:
-            foreach(array_intersect($this->config->item('n___'.$x__type), $this->config->item('n___31127')) as $pending_action_id) {
+            if(is_array($this->config->item('n___'.$x__type))){
+                foreach(array_intersect($this->config->item('n___'.$x__type), $this->config->item('n___31127')) as $pending_action_id) {
 
-                //Is this action already taken?
-                $action_xs = $this->X_model->fetch(array(
-                    'x__up' => $x__source,
-                    'x__right' => $i['i__id'],
-                    'x__type' => $x__type,
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ));
+                    //Is this action already taken?
+                    $action_xs = $this->X_model->fetch(array(
+                        'x__up' => $x__source,
+                        'x__right' => $i['i__id'],
+                        'x__type' => $x__type,
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    ));
 
-                $control_btn = '<a class="round-btn btn_control_'.$x__type.'" href="javascript:void(0);" onclick="x_link_toggle('.$x__type.', '.$i['i__id'].')" current_x_id="'.( count($action_xs) ? $action_xs[0]['x__id'] : '0' ).'"><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? '' : 'hidden' ).'">'.$m2['m__cover'].'</span><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? 'hidden' : '' ).'">'.$e___31127[$pending_action_id]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+                    $control_btn = '<a class="round-btn btn_control_'.$x__type.'" href="javascript:void(0);" onclick="x_link_toggle('.$x__type.', '.$i['i__id'].')" current_x_id="'.( count($action_xs) ? $action_xs[0]['x__id'] : '0' ).'"><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? '' : 'hidden' ).'">'.$m2['m__cover'].'</span><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? 'hidden' : '' ).'">'.$e___31127[$pending_action_id]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
-                break;// Ignore if more than one...
+                    break;// Ignore if more than one...
+                }
             }
+
 
         } elseif($x__type==31121){
 
