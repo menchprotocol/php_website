@@ -834,13 +834,11 @@ var algolia_index = false;
 $(document).ready(function () {
 
 
-    $('.coin_i_click').click(function (e) {
+    $('.coin_i_click').live('click', function(e) {
         window.location = '/~'+$(this).attr('i__id');
     });
-    $('.coin_e_click').click(function (e) {
-        console.log('e_click');
+    $('.coin_e_click').live('click', function(e) {
         window.location = '/@'+$(this).attr('e__id');
-        return true;
     });
 
     $(window).click(function() {
