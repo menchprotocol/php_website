@@ -1,6 +1,7 @@
 <?php
 
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$e___31127 = $this->config->item('e___31127'); //Action Buttons Pending
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 $is_or_idea = in_array($i['i__type'], $this->config->item('n___7712'));
 
@@ -702,7 +703,7 @@ if(!$top_i__id){
     $buttons_found = 0;
     $buttons_ui = '';
 
-    foreach($this->config->item('e___13289') as $e__id => $m2) {
+    foreach($this->config->item('e___13289') as $x__type => $m2) {
 
         $superpower_actives = array_intersect($this->config->item('n___10957'), $m2['m__following']);
         if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
@@ -711,31 +712,24 @@ if(!$top_i__id){
 
         $control_btn = '';
 
-        if($e__id==12896 && $x__source){
+        if($x__source && in_array($x__type, $this->config->item('n___31125'))){
 
-            //Is Saved already by this member?
-            $is_saved = $this->X_model->fetch(array(
-                'x__up' => $x__source,
-                'x__right' => $i['i__id'],
-                'x__type' => 12896, //SAVED
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ));
+            //Action Buttons: Reshare, Save & Watch
+            //Find Pending Action Source:
+            foreach(array_intersect($this->config->item('n___'.$x__type), $this->config->item('n___31127')) as $pending_action_id) {
 
-            $control_btn = '<a class="round-btn btn_control_12896" href="javascript:void(0);" onclick="x_link_toggle(12896, '.$i['i__id'].')" current_x_id="'.( count($is_saved) ? $is_saved[0]['x__id'] : '0' ).'"><span class="controller-nav btn_toggle_12896 '.( count($is_saved) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__cover'].'</span><span class="controller-nav btn_toggle_12896 '.( count($is_saved) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+                //Is this action already taken?
+                $action_xs = $this->X_model->fetch(array(
+                    'x__up' => $x__source,
+                    'x__right' => $i['i__id'],
+                    'x__type' => $x__type,
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                ));
 
-        } elseif($e__id==4983 && $x__source){
+                $control_btn = '<a class="round-btn btn_control_'.$x__type.'" href="javascript:void(0);" onclick="x_link_toggle('.$x__source.', '.$i['i__id'].')" current_x_id="'.( count($action_xs) ? $action_xs[0]['x__id'] : '0' ).'"><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? '' : 'hidden' ).'">'.$m2['m__cover'].'</span><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? 'hidden' : '' ).'">'.$e___31127[$pending_action_id]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+            }
 
-            //Is Saved already by this member?
-            $is_saved = $this->X_model->fetch(array(
-                'x__up' => $x__source,
-                'x__right' => $i['i__id'],
-                'x__type' => 4983, //Reshare
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ));
-
-            $control_btn = '<a class="round-btn btn_control_4983" href="javascript:void(0);" onclick="x_link_toggle(4983, '.$i['i__id'].')" current_x_id="'.( count($is_saved) ? $is_saved[0]['x__id'] : '0' ).'"><span class="controller-nav btn_toggle_4983 '.( count($is_saved) ? '' : 'hidden' ).'">'.$e___11035[4983]['m__cover'].'</span><span class="controller-nav btn_toggle_4983 '.( count($is_saved) ? 'hidden' : '' ).'">'.$e___11035[31122]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
-
-        } elseif($e__id==12211){
+        } elseif($x__type==12211){
 
             $control_btn = null;
 
