@@ -814,9 +814,11 @@ $(document).ready(function () {
 
     $('.coin_i_click').click(function(e) {
         window.location = '/~'+$(this).attr('i__id');
+        return false;
     });
     $('.coin_e_click').click(function(e) {
         window.location = '/@'+$(this).attr('e__id');
+        return false;
     });
 
     //Watchout for file uplods:
@@ -906,20 +908,6 @@ $(document).ready(function () {
     });
 
 
-    $('#topnav li a').click(function (e) {
-
-        e.preventDefault();
-        var hash = $(this).attr('href').replace('#', '');
-
-        if (hash.length > 0 && $('#tab' + hash).length && !($('#tab' + hash).hasClass("hidden"))) {
-            //Adjust Header:
-            $('#topnav>li').removeClass('active');
-            $('#nav_' + hash).addClass('active');
-            //Adjust Tab:
-            $('.tab-pane').removeClass('active');
-            $('#tab' + hash).addClass('active');
-        }
-    });
 
 
     //Load Algolia on Focus:
