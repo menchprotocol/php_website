@@ -160,8 +160,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
     <link rel="stylesheet" href="<?= view_memory(6404,13577) ?>" crossorigin="anonymous">
 
-    <link href="/application/views/global.css?v=dir3<?= $this->config->item('cache_buster') ?>" rel="stylesheet"/>
-    <script src="/application/views/global.js?v=dir3<?= $this->config->item('cache_buster') ?>" type="text/javascript"></script>
+    <link href="/application/views/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet"/>
+    <script src="/application/views/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>" type="text/javascript"></script>
 
 
     <!-- Load Fonts Dynamically -->
