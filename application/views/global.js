@@ -817,8 +817,12 @@ $(document).ready(function () {
         return false;
     });
     $('.coin_e_click').click(function(e) {
+        console.log('coin_e_click');
         window.location = '/@'+$(this).attr('e__id');
         return false;
+    });
+    $('body').click(function(e) {
+        console.log('body_click');
     });
 
     //Watchout for file uplods:
