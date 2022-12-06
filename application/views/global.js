@@ -812,6 +812,9 @@ function load_coins(){
 var algolia_index = false;
 $(document).ready(function () {
 
+    $('body').click(function(e) {
+        console.log('body_click');
+    });
     $('.coin_i_click').click(function(e) {
         window.location = '/~'+$(this).attr('i__id');
         return false;
@@ -821,9 +824,10 @@ $(document).ready(function () {
         window.location = '/@'+$(this).attr('e__id');
         return false;
     });
-    $('body').click(function(e) {
+    $('.cover-wrapper').click(function(e) {
         console.log('body_click');
     });
+
 
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
