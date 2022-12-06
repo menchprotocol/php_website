@@ -1343,8 +1343,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             'x__right' => $previous_i['i__id'],
             'x__up' => 14488, //Force Order
         ), array(), 1)));
-    $has_soft_lock = ($force_order || !$is_started);
-    $has_sortable = !$focus_coin && !$has_soft_lock && $editing_enabled && in_array($x__type, $CI->config->item('n___4603'));
+    $has_sortable = !$focus_coin && !$force_order && $editing_enabled && in_array($x__type, $CI->config->item('n___4603'));
     $i_title = view_i_title($i);
 
     if(in_array($i['i__type'], $CI->config->item('n___14454')) && !$is_completed) {
@@ -1374,8 +1373,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-    $show_coins = !$has_soft_lock && !$discovery_mode;
-    $can_click = !$has_soft_lock && !$focus_coin && !$editing_enabled;
+    $show_coins = !$force_order && !$discovery_mode;
+    $can_click = !$force_order && !$focus_coin && !$editing_enabled;
 
 
     if(is_new()){
@@ -1449,7 +1448,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $o_menu = '';
         $action_buttons = null;
 
-        if($has_soft_lock && !$focus_coin){
+        if($force_order && !$focus_coin){
 
             //show lock?
 
@@ -1534,7 +1533,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
         //Top action menu:
-        $ui = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin col-md-4 col-9 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $has_soft_lock ? ' soft_lock ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $has_soft_lock ? ' title="Locked" data-toggle="tooltip" data-placement="top" ' : '' ).'>';
+        $ui = '<div '.( isset($i['x__id']) ? ' x__id="'.$i['x__id'].'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin col-md-4 col-9 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $force_order ? ' soft_lock ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( isset($i['x__id']) ? ' cover_x_'.$i['x__id'].' ' : '' ).( $force_order ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $force_order ? ' title="Locked" data-toggle="tooltip" data-placement="top" ' : '' ).'>';
 
 
         $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
@@ -1549,7 +1548,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '</div></td>';
 
         $ui .= '<td width="20%"><div class="'.$link_visibility.'">';
-        if(!$has_soft_lock && isset($i['x__type'])){
+        if(!$force_order && isset($i['x__type'])){
             $ui .= $link_dropdown;
         }
         $ui .= '</div></td>';
