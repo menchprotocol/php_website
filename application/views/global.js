@@ -809,10 +809,7 @@ function load_coins(){
 
 function load_coin_clickers(){
 
-    $('.coin_i_click a').click(function(e) {
-        e.stopPropagation();
-    });
-    $('.coin_e_click a').click(function(e) {
+    $('.coin_i_click a,.coin_i_click button, .coin_e_click a,.coin_e_click button').click(function(e) {
         e.stopPropagation();
     });
     $('.coin_i_click').click(function(e) {
