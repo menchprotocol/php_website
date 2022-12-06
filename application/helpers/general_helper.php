@@ -1441,17 +1441,15 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
     $CI =& get_instance();
     $message_list = array(
-        'unique_users_id' => array(1),
+        'unique_users_id' => array(),
         'unique_users_count' => 0,
         'full_list' => '',
         'email_list' => '',
         'email_count' => 0,
         'phone_count' => 0,
-        'phone_array' => array('7788826962'),
+        'phone_array' => array(),
         'email_array' => array(),
     );
-
-    return $message_list;
 
     $query = array();
     if(strlen($i__id)){
@@ -1472,6 +1470,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         ), array('x__down'), 0, 0, array('x__id' => 'DESC')));
     }
 
+    return count($query);
 
     $already_added = array(); //Prevent duplicates
     foreach($query as $subscriber){
