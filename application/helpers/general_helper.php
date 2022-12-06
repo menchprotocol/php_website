@@ -1441,15 +1441,17 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
     $CI =& get_instance();
     $message_list = array(
-        'unique_users_id' => array(),
+        'unique_users_id' => array(1),
         'unique_users_count' => 0,
         'full_list' => '',
         'email_list' => '',
         'email_count' => 0,
         'phone_count' => 0,
-        'phone_array' => array(),
+        'phone_array' => array('7788826962'),
         'email_array' => array(),
     );
+
+    return $message_list;
 
     $query = array();
     if(strlen($i__id)){
@@ -1474,12 +1476,13 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
     $already_added = array(); //Prevent duplicates
     foreach($query as $subscriber){
 
+        /*
         //Make sure not already added AND not unsubscribed:
         if(in_array($subscriber['e__id'], $already_added)){
             continue;
         }
-        if (count($CI->X_model->fetch(array(
-            'x__up NOT IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Subscriber
+        if (!count($CI->X_model->fetch(array(
+            'x__up IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Subscriber
             'x__down' => $subscriber['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1506,7 +1509,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
             continue;
         }
 
-
+        */
 
 
         //Fetch email & phone:
@@ -1516,13 +1519,14 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
-        $e_email = ( count($e_emails) && filter_var($e_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $e_emails[0]['x__message'] : false );
         $e_phones = $CI->X_model->fetch(array(
             'x__up' => 4783, //Phone
             'x__down' => $subscriber['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
+
+        $e_email = ( count($e_emails) && filter_var($e_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $e_emails[0]['x__message'] : false );
         $e_phone = ( count($e_phones) && strlen($e_phones[0]['x__message'])>=10 ? $e_phones[0]['x__message'] : false );
 
         $contacrt_forms = ( $e_email ? 1 : 0 ) + ( $e_phone ? 1 : 0 );

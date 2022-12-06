@@ -809,12 +809,12 @@ function load_coins(){
 
 function load_coin_clickers(){
 
-    $('.load_e_coins').on('click', ':not(button)', function() {
+    $('.load_e_coins').on('click', '.load_e_coins:not(button)', function() {
         window.location = '/@'+$(this).attr('e__id');
         return false;
     });
 
-    $('.coin_i_click').on('click', ':not(button)', function() {
+    $('.coin_i_click').on('click', '.coin_i_click:not(button)', function() {
         window.location = '/~'+$(this).attr('i__id');
         return false;
     });
