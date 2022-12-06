@@ -808,15 +808,13 @@ function load_coins(){
 
 
 function load_coin_clickers(){
-    $(document).ready(function () {
-        $('.coin_i_click').click(function() {
-            window.location = '/~'+$(this).attr('i__id');
-            return false;
-        });
-        $('.coin_e_click').click(function() {
-            window.location = '/@'+$(this).attr('e__id');
-            return false;
-        });
+    $('.coin_i_click').click(function(e) {
+        window.location = '/~'+$(this).attr('i__id');
+        return false;
+    });
+    $('.coin_e_click').click(function(e) {
+        window.location = '/@'+$(this).attr('e__id');
+        return false;
     });
 }
 
@@ -1446,6 +1444,7 @@ function load_tab(x__type){
     //Give some extra loding time so the content loads on page:
     setTimeout(function () {
 
+        load_coin_clickers();
         initiate_algolia();
         load_coins();
         load_editor();
