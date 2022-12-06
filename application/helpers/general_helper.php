@@ -1470,6 +1470,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         ), array('x__down'), 0, 0, array('x__id' => 'DESC')));
     }
 
+    die('WOWW'.count($query));
 
     $already_added = array(); //Prevent duplicates
     foreach($query as $subscriber){
