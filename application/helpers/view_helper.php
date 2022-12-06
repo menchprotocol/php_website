@@ -1524,17 +1524,13 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             $type_visibility = 'show-on-hover';//No need to be visible by default
         } elseif(isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___6255'))){
             //Discoveries
-            $link_visibility = 'show-on-hover';//No need to be visible by default
+            $link_visibility = '';//No need to be visible by default
             $type_visibility = 'show-on-hover';//No need to be visible by default
         } elseif(isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___13550'))){
             //Idea Source Reference
             $link_dropdown .= view_input_dropdown(13550, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $i['x__id']);
-            $link_visibility = 'show-on-hover';//No need to be visible by default
-            $type_visibility = 'show-on-hover';//No need to be visible by default
-        }
-
-        if(1 || in_array($i['i__type'], $CI->config->item('n___31109'))){
-            $type_visibility = ''; //visible by default
+            $link_visibility = '';//No need to be visible by default
+            $type_visibility = '';//No need to be visible by default
         }
 
 
