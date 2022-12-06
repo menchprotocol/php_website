@@ -808,6 +808,13 @@ function load_coins(){
 
 
 function load_coin_clickers(){
+
+    $('.coin_i_click a').click(function(e) {
+        e.stopPropagation();
+    });
+    $('.coin_e_click a').click(function(e) {
+        e.stopPropagation();
+    });
     $('.coin_i_click').click(function(e) {
         window.location = '/~'+$(this).attr('i__id');
         return false;
