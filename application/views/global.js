@@ -838,7 +838,9 @@ $(document).ready(function () {
         window.location = '/~'+$(this).attr('i__id');
     });
     $('.coin_e_click').click(function (e) {
+        console.log('e_click');
         window.location = '/@'+$(this).attr('e__id');
+        return true;
     });
 
     $(window).click(function() {
