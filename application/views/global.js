@@ -530,9 +530,9 @@ function view_load_page(x__type) {
     current_page[x__type]++; //Now we can increment current page
 
     if(js_n___14686.includes(x__type)){
-        $(e_list).prepend(e_loader);
+        $(e_loader).insertBefore(e_list);
     } else {
-        $(e_list).append(e_loader);
+        $(e_loader).insertAfter(e_list);
     }
     $.post("/x/view_load_page", {
         focus_coin: fetch_val('#focus_coin'),
