@@ -711,17 +711,29 @@ if(!$top_i__id){
 
         $control_btn = '';
 
-        if($e__id==13877 && $top_i__id){
+        if($e__id==12896 && $x__source){
 
             //Is Saved already by this member?
-            $is_saves = $this->X_model->fetch(array(
+            $is_saved = $this->X_model->fetch(array(
                 'x__up' => $x__source,
                 'x__right' => $i['i__id'],
                 'x__type' => 12896, //SAVED
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ));
 
-            $control_btn = '<a class="round-btn save_controller" href="javascript:void(0);" onclick="x_save('.$i['i__id'].')" current_x_id="'.( count($is_saves) ? $is_saves[0]['x__id'] : '0' ).'"><span class="controller-nav toggle_saved '.( count($is_saves) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__cover'].'</span><span class="controller-nav toggle_saved '.( count($is_saves) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+            $control_btn = '<a class="round-btn btn_control_12896" href="javascript:void(0);" onclick="x_link_toggle(12896, '.$i['i__id'].')" current_x_id="'.( count($is_saved) ? $is_saved[0]['x__id'] : '0' ).'"><span class="controller-nav btn_toggle_12896 '.( count($is_saved) ? '' : 'hidden' ).'">'.$e___11035[12896]['m__cover'].'</span><span class="controller-nav btn_toggle_12896 '.( count($is_saved) ? 'hidden' : '' ).'">'.$e___11035[13877]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
+
+        } elseif($e__id==4983 && $x__source){
+
+            //Is Saved already by this member?
+            $is_saved = $this->X_model->fetch(array(
+                'x__up' => $x__source,
+                'x__right' => $i['i__id'],
+                'x__type' => 4983, //Reshare
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ));
+
+            $control_btn = '<a class="round-btn btn_control_4983" href="javascript:void(0);" onclick="x_link_toggle(4983, '.$i['i__id'].')" current_x_id="'.( count($is_saved) ? $is_saved[0]['x__id'] : '0' ).'"><span class="controller-nav btn_toggle_4983 '.( count($is_saved) ? '' : 'hidden' ).'">'.$e___11035[4983]['m__cover'].'</span><span class="controller-nav btn_toggle_4983 '.( count($is_saved) ? 'hidden' : '' ).'">'.$e___11035[31122]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
         } elseif($e__id==12211){
 
@@ -763,11 +775,6 @@ if(!$top_i__id){
                 $control_btn .= '<span class="go-next-group nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'<div class="extra_progress hideIfEmpty"></div></span>';
 
             }
-
-        } elseif($e__id==26280){
-
-            //PREVIOUS
-            $control_btn = '<a class="controller-nav round-btn go-next-group" href="javascript:void(0);" onclick="history.back()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
         }
 

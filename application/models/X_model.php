@@ -1796,7 +1796,7 @@ class X_model extends CI_Model
 
 
 
-    function x_save_select($e__id, $top_i__id, $question_i__id, $answer_i__ids){
+    function x_link_toggle_select($e__id, $top_i__id, $question_i__id, $answer_i__ids){
 
         $is = $this->I_model->fetch(array(
             'i__id' => $question_i__id,

@@ -1839,23 +1839,24 @@ function toggle_search(){
 }
 
 
-function x_save(i__id){
+function x_link_toggle(x__type, i__id){
 
-    $('.toggle_saved').toggleClass('hidden');
-    var x__id = parseInt($('.save_controller').attr('current_x_id'));
+    $('.btn_toggle_'+x__type).toggleClass('hidden');
+    var x__id = parseInt($('.btn_control_'+x__type).attr('current_x_id'));
 
     if(!x__id){
         //Add:
-        $.post("/x/x_save", {
+        $.post("/x/x_link_toggle", {
+            x__type:x__type,
             i__id:i__id,
             top_i__id:$('#top_i__id').val(),
         }, function (data) {
             if (!data.status) {
                 alert(data.message);
-                $('.toggle_saved').toggleClass('hidden');
+                $('.btn_toggle_'+x__type).toggleClass('hidden');
             } else {
                 //Update new link ID:
-                $('.save_controller').attr('current_x_id', data.x__id);
+                $('.btn_control_'+x__type).attr('current_x_id', data.x__id);
             }
         });
     } else {
@@ -1867,10 +1868,10 @@ function x_save(i__id){
             if (!data.status) {
                 //There was some sort of an error returned!
                 alert(data.message);
-                $('.toggle_saved').toggleClass('hidden');
+                $('.btn_toggle_'+x__type).toggleClass('hidden');
             } else {
                 //Update new link ID:
-                $('.save_controller').attr('current_x_id', 0);
+                $('.btn_control_'+x__type).attr('current_x_id', 0);
             }
         });
     }

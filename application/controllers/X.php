@@ -1684,7 +1684,7 @@ class X extends CI_Controller
 
 
         //We have something to save:
-        return view_json($this->X_model->x_save_select($member_e['e__id'], $_POST['top_i__id'], $_POST['focus_id'], ( $nothing_seected ? array() : $_POST['selection_i__id'] )));
+        return view_json($this->X_model->x_link_toggle_select($member_e['e__id'], $_POST['top_i__id'], $_POST['focus_id'], ( $nothing_seected ? array() : $_POST['selection_i__id'] )));
 
     }
 
@@ -1736,7 +1736,7 @@ class X extends CI_Controller
     }
 
 
-    function x_save(){
+    function x_link_toggle(){
 
         //Authenticate Member:
         $member_e = superpower_unlocked();
@@ -1754,18 +1754,18 @@ class X extends CI_Controller
                 'message' => 'Missing Idea ID',
             ));
 
+        } elseif (!isset($_POST['x__type'])) {
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Type',
+            ));
+
         } elseif (!isset($_POST['top_i__id'])) {
 
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Top Idea ID',
-            ));
-
-        } elseif(!$this->X_model->started_ids($member_e['e__id'], $_POST['top_i__id'])){
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Top Idea not in your discoveries',
             ));
 
         }
@@ -1787,7 +1787,7 @@ class X extends CI_Controller
             'x__up' => $member_e['e__id'],
             'x__left' => $_POST['top_i__id'],
             'x__right' => $_POST['i__id'],
-            'x__type' => 12896, //SAVED
+            'x__type' => $_POST['x__type'],
         ));
 
         //All Good:
