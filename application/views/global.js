@@ -550,6 +550,7 @@ function view_load_page(x__type) {
                 $(e_list).append(data);
             }
             x_set_start_text();
+            load_coin_clickers();
             $('[data-toggle="tooltip"]').tooltip();
         }
         busy_loading[x__type] = 0;
@@ -806,25 +807,22 @@ function load_coins(){
 }
 
 
-
+function load_coin_clickers(){
+    $(document).ready(function () {
+        $('.coin_i_click').click(function() {
+            window.location = '/~'+$(this).attr('i__id');
+            return false;
+        });
+        $('.coin_e_click').click(function() {
+            window.location = '/@'+$(this).attr('e__id');
+            return false;
+        });
+    });
+}
 
 
 var algolia_index = false;
 $(document).ready(function () {
-
-    $('.coin_i_click').click(function() {
-        window.location = '/~'+$(this).attr('i__id');
-        return false;
-    });
-    $('.coin_e_click').click(function() {
-        console.log('coin_e_click');
-        window.location = '/@'+$(this).attr('e__id');
-        return false;
-    });
-    $('.cover-wrapper').click(function() {
-        console.log('body_click');
-    });
-
 
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
