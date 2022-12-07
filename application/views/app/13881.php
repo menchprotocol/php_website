@@ -42,6 +42,8 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         $duplicate_check[$md5_email] = 1;
 
 
+        $stats['unique_lines']++;continue;
+
         //New line to insert:
         $member_result = $this->E_model->add_member($full_name, $email_address, $phone_number, null, 0, true);
         if(!$member_result['status']) {

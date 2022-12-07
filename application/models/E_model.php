@@ -242,7 +242,7 @@ class E_model extends CI_Model
 
 
 
-    function add_member($full_name, $email, $phone_number = null, $image_url = null, $x__website = 0, $is_legal_name = false){
+    function add_member($full_name, $email, $phone_number = null, $image_url = null, $x__website = 0, $importing_full_names = false){
 
         //Set website if not set:
         if(!$x__website){
@@ -308,7 +308,7 @@ class E_model extends CI_Model
             }
         }
 
-        if($is_legal_name){
+        if($importing_full_names){
 
             //Also create legal name link:
             $this->X_model->create(array(
@@ -330,11 +330,10 @@ class E_model extends CI_Model
             //Update Algolia:
             update_algolia(12274,  $added_e['new_e']['e__id']);
 
+            //Assign session & log login transaction:
+            $this->E_model->activate_session($added_e['new_e']);
+
         }
-
-
-        //Assign session & log login transaction:
-        $this->E_model->activate_session($added_e['new_e']);
 
         //Return Member:
         return array(
