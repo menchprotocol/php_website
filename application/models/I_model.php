@@ -312,6 +312,7 @@ class I_model extends CI_Model
                     'x__right' => $i['i__id'],
                 ));
                 if(count($x_dup)){
+                    $this->X_model->delete($x_dup[0]['x__id']);
                     $stats['duplicate_creation_fix']++;
                 }
             }
