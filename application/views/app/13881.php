@@ -2,7 +2,7 @@
 
 $guide = 'First Column Full Name, 2nd Column Email, 3rd Column Phone Number (If any)... Also no headline row, start with data! ';
 
-if(isset($_POST['import_sources'])){
+if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
     echo 'Begind Processing Import Data:<hr />';
 
@@ -13,7 +13,7 @@ if(isset($_POST['import_sources'])){
         'dup_index' => array(),
     );
 
-    foreach(explode(PHP_EOL, $_POST['skuList']) as $count => $new_line){
+    foreach(explode(PHP_EOL, $_POST['import_sources']) as $count => $new_line){
 
         $e__id = 0; //We must first identify this at the first volumn using e__title to them import the rest
 
