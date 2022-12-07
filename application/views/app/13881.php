@@ -1,12 +1,14 @@
 <?php
 
 $guide = 'First Column Full Name, 2nd Column Email, 3rd Column Phone Number (If any)... Also no headline row, start with data! ';
+$default_val = '';
 
 if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
     echo 'Begind Processing Import Data:<hr />';
 
     //Guide:
+    $default_val = $_POST['import_sources'];
     $stats = array(
         'new_lines' => 0,
         'unique_lines' => 0,
@@ -25,6 +27,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
         $follow_e = intval(substr($stats['commands'][$count], 1));
 
+        $stats['unique_lines']++;
 
 
         $md5 = md5($tabs[1]);
@@ -58,6 +61,6 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
 echo $guide;
 echo '<form method="POST" action="">';
-echo '<textarea class="border padded" placeholder="Paste List Here" name="import_sources" style="width: 100%; height: 200px;"></textarea>';
+echo '<textarea class="border padded" placeholder="Paste List Here" name="import_sources" style="width: 100%; height: 200px; border:1px solid #999; border-radius: 22px;">'.$default_val.'</textarea>';
 echo '<button type="submit" class="btn btn-lrg top-margin"><i class="fas fa-plus-circle zq12274"></i> IMPORT</button>';
 echo '</form>';
