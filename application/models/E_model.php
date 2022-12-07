@@ -828,6 +828,7 @@ class E_model extends CI_Model
             'x__type' => 4251, //Play Created
             'scanned' => 0,
             'missing_creation_fix' => 0,
+            'duplicate_creation_fix' => 0,
             'status_sync' => 0,
         );
 
@@ -863,6 +864,18 @@ class E_model extends CI_Model
                     'x__status' => $status_converter[$e['e__type']],
                 ));
 
+            }
+
+            if($x){
+                //Any Duplicates?
+                $x_dup = $this->X_model->fetch(array(
+                    'x__id !=' => $x['x__id'],
+                    'x__type' => $stats['x__type'],
+                    'x__down' => $e['e__id'],
+                ));
+                if(count($x_dup)){
+                    $stats['duplicate_creation_fix']++;
+                }
             }
 
         }

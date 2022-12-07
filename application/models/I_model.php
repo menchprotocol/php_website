@@ -268,6 +268,7 @@ class I_model extends CI_Model
             'x__type' => 4250, //Idea Created
             'scanned' => 0,
             'missing_creation_fix' => 0,
+            'duplicate_creation_fix' => 0,
             'status_sync' => 0,
         );
         $status_converter = status_converter(4737);
@@ -301,6 +302,18 @@ class I_model extends CI_Model
                     'x__status' => $status_converter[$i['i__type']],
                 ));
 
+            }
+
+            if($x){
+                //Any Duplicates?
+                $x_dup = $this->X_model->fetch(array(
+                    'x__id !=' => $x['x__id'],
+                    'x__type' => $stats['x__type'],
+                    'x__right' => $i['i__id'],
+                ));
+                if(count($x_dup)){
+                    $stats['duplicate_creation_fix']++;
+                }
             }
 
         }
