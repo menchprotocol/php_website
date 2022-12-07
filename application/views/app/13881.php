@@ -23,6 +23,9 @@ if(isset($_POST['import_sources'])){
         print_r($tabs);
         break;
 
+        $follow_e = intval(substr($stats['commands'][$count], 1));
+
+
 
         $md5 = md5($tabs[1]);
         if(!isset($stats['dup_index'][$md5])){
@@ -45,34 +48,6 @@ if(isset($_POST['import_sources'])){
 
         }
 
-
-
-        foreach( as $count=>$column_data){
-
-            if(!isset($stats['commands'][$count])){
-                //First line is the command line:
-                echo 'COmmand Column '.$count.' is: '.$column_data.'<hr />';
-                $stats['commands'][$count] = $column_data;
-                continue;
-            }
-
-            //Ready to apply command:
-            $stats['new_lines']++;
-
-            if($stats['commands'][$count]=='e__title'){
-
-
-
-            } elseif(substr($stats['commands'][$count], 0, 1)=='@' && is_numeric(substr($stats['commands'][$count], 1))){
-
-                $follow_e = intval(substr($stats['commands'][$count], 1));
-                //Add as follower to this source based on the content:
-
-
-            }
-
-
-        }
     }
 
     print_r($stats);
