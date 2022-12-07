@@ -8,7 +8,6 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
     echo 'Begind Processing Import Data:<hr />';
 
     //Guide:
-    $clean_list = '';
     $default_val = $_POST['import_sources'];
     $duplicate_check = array();
     $duplicate_email = array();
@@ -29,7 +28,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         $md5_name = md5($full_name);
         $md5_email = md5($email_address);
 
-        if(!strlen($full_name) || isset($duplicate_check[$md5_name]) || isset($duplicate_check[$md5_email])){
+        if(!strlen($full_name) || !strlen($md5_email) || isset($duplicate_check[$md5_name]) || isset($duplicate_check[$md5_email])){
             //This is a duplicate line:
             continue;
         }
@@ -37,8 +36,6 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         $duplicate_check[$md5_name] = 1;
         $duplicate_check[$md5_email] = 1;
 
-        $clean_list .= $new_line.'<br />';
-        $stats['unique_lines']++; continue;
 
         //New line to insert:
         $member_result = $this->E_model->add_member($full_name, $email_address, $phone_number, null, 0, true);
@@ -54,10 +51,8 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
 
     print_r($stats);
+    print_r($member_result);
 
-    echo '<hr />';
-
-    echo $clean_list;
 
     echo '<hr />';
 
