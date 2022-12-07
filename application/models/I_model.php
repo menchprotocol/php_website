@@ -270,14 +270,12 @@ class I_model extends CI_Model
             'missing_creation_fix' => 0,
             'duplicate_creation_fix' => 0,
             'status_sync' => 0,
-            'valid_ids' => array(),
         );
         $status_converter = status_converter(4737);
 
         foreach($this->I_model->fetch($query) as $i){
 
             $stats['scanned']++;
-            array_push($stats['valid_ids'], intval($i['i__id']));
 
             //Find creation transaction:
             $x = $this->X_model->fetch(array(
@@ -308,21 +306,12 @@ class I_model extends CI_Model
 
             //Remove Duplicates, If any:
             foreach($x as $counter=> $remove_dup){
-                if($counter > 0){
-                    //$this->X_model->delete($remove_dup['x__id']);
+                if($counter > 1){
+                    //$this->X_model->delete($x_dup[0]['x__id']);
                     $stats['duplicate_creation_fix']++;
                 }
             }
 
-        }
-
-        //Now check duplicates again:
-        foreach($this->X_model->fetch(array(
-            'x__type' => $stats['x__type'],
-            'x__right NOT IN (' . join(',', $stats['valid_ids']) . ')' => null, //PUBLIC
-        ), array(), 0, 0) as $remove_dup){
-            //$this->X_model->delete($remove_dup['x__id']);
-            $stats['duplicate_creation_fix']++;
         }
 
         return $stats;
