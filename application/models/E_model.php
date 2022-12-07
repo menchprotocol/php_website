@@ -869,7 +869,7 @@ class E_model extends CI_Model
             //Remove Duplicates, If any:
             foreach($x as $counter=>$remove_dup){
                 if($counter > 0){
-                    $this->X_model->delete($remove_dup['x__id']);
+                    $this->db->query("DELETE FROM table__x WHERE x__id=".$remove_dup['x__id'].";");
                     $stats['duplicate_creation_fix']++;
                 }
             }

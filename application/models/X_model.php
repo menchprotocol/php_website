@@ -1146,27 +1146,6 @@ class X_model extends CI_Model
     }
 
 
-    function delete($x__id){
-
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
-            return array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            );
-        }
-
-        $this->X_model->update($x__id, array(
-            'x__status' => 6173, //DELETED
-        ), $member_e['e__id'], 6155);
-
-        return array(
-            'status' => 1,
-            'message' => 'Success',
-        );
-
-    }
-
     function start($e__id, $i__id, $recommender_i__id = 0){
 
         //Validate Idea ID:

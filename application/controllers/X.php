@@ -1825,18 +1825,14 @@ class X extends CI_Controller
             ));
         }
 
-
         //Remove Idea
-        $delete_result = $this->X_model->delete($_POST['x__id']);
+        $this->X_model->update($_POST['x__id'], array(
+            'x__status' => 6173, //DELETED
+        ), $member_e['e__id'], 6155);
 
-
-        if(!$delete_result['status']){
-            return view_json($delete_result);
-        } else {
-            return view_json(array(
-                'status' => 1,
-            ));
-        }
+        return view_json(array(
+            'status' => 1,
+        ));
     }
 
 
