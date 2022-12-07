@@ -8,6 +8,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
     echo 'Begind Processing Import Data:<hr />';
 
     //Guide:
+    $clean_list = '';
     $default_val = $_POST['import_sources'];
     $duplicate_name = array();
     $stats = array(
