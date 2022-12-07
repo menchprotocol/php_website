@@ -8,7 +8,6 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
     echo 'Begind Processing Import Data:<hr />';
 
     //Guide:
-    $error_lines = '';
     $default_val = $_POST['import_sources'];
     $duplicate_check = array();
     $duplicate_email = array();
@@ -65,21 +64,9 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
             $stats['unique_lines']++;
         }
 
-        break;
-
     }
-
 
     print_r($stats);
-    if(isset($member_result)){
-        print_r($member_result);
-    }
-
-
-    echo '<hr />ERRORS:';
-    echo '<hr />';
-    echo $error_lines;
-    echo '<hr />';
 
 }
 
