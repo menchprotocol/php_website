@@ -331,7 +331,7 @@ class E_model extends CI_Model
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('e__type', 'e__title'), $x__source)) {
+        if (detect_missing_columns($add_fields, array('e__title'), $x__source)) {
             return false;
         }
 

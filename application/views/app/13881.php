@@ -29,7 +29,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         $stats['new_lines']++;
         $md5 = md5($full_name);
 
-        if(isset($stats['dup_index'][$md5])){
+        if(!strlen($full_name) || isset($stats['dup_index'][$md5])){
             //This is a duplicate line:
             continue;
         }
