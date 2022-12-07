@@ -881,6 +881,7 @@ class E_model extends CI_Model
             'x__type' => $stats['x__type'],
         ), array(), 0, 0, array('x__id' => 'ASC')) as $creation_x){
             if(!count($this->E_model->fetch(array('e__id' => $creation_x['x__down'])))){
+                $this->db->query("DELETE FROM table__x WHERE x__id=".$creation_x['x__id'].";");
                 $stats['duplicate_creation_fix']++;
             }
         }
