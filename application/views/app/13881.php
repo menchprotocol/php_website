@@ -20,7 +20,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         $e__id = 0; //We must first identify this at the first volumn using e__title to them import the rest
 
         //Go through each column of this new line:
-        $tabs = preg_split('/\s+/', $new_line);
+        $tabs = preg_split('/[\t,]/', $new_line);
 
         print_r($tabs);
         if($count > 10){
