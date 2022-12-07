@@ -843,7 +843,7 @@ class E_model extends CI_Model
             $x = $this->X_model->fetch(array(
                 'x__type' => $stats['x__type'],
                 'x__down' => $e['e__id'],
-            ));
+            ), array(), 0, 0, array('x__id' => 'ASC'));
 
             if(!count($x)){
 
@@ -866,15 +866,10 @@ class E_model extends CI_Model
 
             }
 
-            if($x){
-                //Any Duplicates?
-                $x_dup = $this->X_model->fetch(array(
-                    'x__id !=' => $x[0]['x__id'],
-                    'x__type' => $stats['x__type'],
-                    'x__down' => $e['e__id'],
-                ));
-                if(count($x_dup)){
-                    //$this->X_model->delete($x_dup[0]['x__id']);
+            //Remove Duplicates, If any:
+            foreach($x as $counter=>$remove_dup){
+                if($counter > 0){
+                    //$this->X_model->delete($remove_dup['x__id']);
                     $stats['duplicate_creation_fix']++;
                 }
             }
