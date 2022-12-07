@@ -19,6 +19,8 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
     foreach(explode(PHP_EOL, $_POST['import_sources']) as $count => $new_line){
 
+        break;
+
         $e__id = 0; //We must first identify this at the first volumn using e__title to them import the rest
 
         //Go through each column of this new line:
