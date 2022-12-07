@@ -33,6 +33,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
         $duplicate_name[$md5] = 1;
 
+        $clean_list .= $new_line;
         $stats['unique_lines']++; continue;
 
         //New line to insert:
@@ -49,7 +50,10 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
 
     print_r($stats);
-    print_r($member_result);
+
+    echo '<hr />';
+
+    echo $clean_list;
 
     echo '<hr />';
 
