@@ -307,12 +307,12 @@ class I_model extends CI_Model
             if($x){
                 //Any Duplicates?
                 $x_dup = $this->X_model->fetch(array(
-                    'x__id !=' => $x['x__id'],
+                    'x__id !=' => $x[0]['x__id'],
                     'x__type' => $stats['x__type'],
                     'x__right' => $i['i__id'],
                 ));
                 if(count($x_dup)){
-                    $this->X_model->delete($x_dup[0]['x__id']);
+                    //$this->X_model->delete($x_dup[0]['x__id']);
                     $stats['duplicate_creation_fix']++;
                 }
             }
