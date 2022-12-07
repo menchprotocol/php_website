@@ -314,6 +314,15 @@ class I_model extends CI_Model
 
         }
 
+        //Now remove Creation Transactions without object:
+        foreach($this->X_model->fetch(array(
+            'x__type' => $stats['x__type'],
+        ), array(), 0, 0, array('x__id' => 'ASC')) as $creation_x){
+            if(!count($this->I_model->fetch(array('i__id' => $creation_x['x__right'])))){
+                $stats['duplicate_creation_fix']++;
+            }
+        }
+
         return $stats;
     }
 
