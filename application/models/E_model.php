@@ -242,7 +242,12 @@ class E_model extends CI_Model
 
 
 
-    function add_member($full_name, $email, $image_url = null, $x__website = 0, $is_legal_name = false){
+    function add_member($full_name, $email, $phone_number = null, $image_url = null, $x__website = 0, $is_legal_name = false){
+
+        //Set website if not set:
+        if(!$x__website){
+            $x__website = website_setting(0);
+        }
 
         //All good, create new source:
         $added_e = $this->E_model->verify_create($full_name, 0, ( filter_var($image_url, FILTER_VALIDATE_URL) ? $image_url : random_cover(12279) ));
@@ -254,18 +259,6 @@ class E_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid Email',
             );
-        }
-
-        if($is_legal_name){
-            //Also create legal name link:
-            $this->X_model->create(array(
-                'x__up' => 30198, //Full Name
-                'x__type' => e_x__type($full_name),
-                'x__message' => $full_name,
-                'x__source' => $added_e['new_e']['e__id'],
-                'x__down' => $added_e['new_e']['e__id'],
-                'x__website' => $x__website,
-            ));
         }
 
         //Add Member:
@@ -285,6 +278,18 @@ class E_model extends CI_Model
             'x__website' => $x__website,
         ));
 
+        if(strlen($phone_number)){
+            $this->X_model->create(array(
+                'x__up' => 4783, //Active Member
+                'x__type' => e_x__type($phone_number),
+                'x__message' => $phone_number,
+                'x__source' => $added_e['new_e']['e__id'],
+                'x__down' => $added_e['new_e']['e__id'],
+                'x__website' => $x__website,
+            ));
+        }
+
+
         //Add member to Domain Member Groups if nto already there:
         foreach($this->E_model->scissor_e($x__website, 30095) as $e_item) {
             //Add if link not already there:
@@ -303,16 +308,27 @@ class E_model extends CI_Model
             }
         }
 
+        if($is_legal_name){
+            //Also create legal name link:
+            $this->X_model->create(array(
+                'x__up' => 30198, //Full Name
+                'x__type' => e_x__type($full_name),
+                'x__message' => $full_name,
+                'x__source' => $added_e['new_e']['e__id'],
+                'x__down' => $added_e['new_e']['e__id'],
+                'x__website' => $x__website,
+            ));
+        } else {
+
+            //Send Welcome Email if any:
+            foreach($this->E_model->scissor_e($x__website, 14929) as $e_item) {
+                $this->X_model->send_dm($added_e['new_e']['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
+            }
+
+        }
 
         //Now update Algolia:
         update_algolia(12274,  $added_e['new_e']['e__id']);
-
-
-        //Send Welcome Email if any:
-        foreach($this->E_model->scissor_e(website_setting(0), 14929) as $e_item) {
-            $this->X_model->send_dm($added_e['new_e']['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
-        }
-
 
 
         //Assign session & log login transaction:
