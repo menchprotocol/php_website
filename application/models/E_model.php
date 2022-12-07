@@ -187,7 +187,26 @@ class E_model extends CI_Model
 
     }
 
-
+    function scissor_add_e($main_id, $sub_id, $e__id, $x__message = null) {
+        foreach($this->E_model->scissor_e($main_id, $sub_id) as $e_item) {
+            //Add if link not already there:
+            if(!count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
+                'x__up' => $e_item['e__id'],
+                'x__down' => $e__id,
+                'x__message' => $x__message,
+            )))){
+                $this->X_model->create(array(
+                    'x__source' => $e__id, //Belongs to this Member
+                    'x__type' => e_x__type($x__message),
+                    'x__message' => $x__message,
+                    'x__up' => $e_item['e__id'],
+                    'x__down' => $e__id,
+                ));
+            }
+        }
+    }
     function scissor_e($main_id, $sub_id){
 
         $all_results = $this->X_model->fetch(array(
@@ -290,23 +309,9 @@ class E_model extends CI_Model
         }
 
 
-        //Add member to Domain Member Groups if nto already there:
-        foreach($this->E_model->scissor_e($x__website, 30095) as $e_item) {
-            //Add if link not already there:
-            if(!count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
-                'x__up' => $e_item['e__id'],
-                'x__down' => $added_e['new_e']['e__id'],
-            )))){
-                $this->X_model->create(array(
-                    'x__source' => $added_e['new_e']['e__id'], //Belongs to this Member
-                    'x__type' => e_x__type(),
-                    'x__up' => $e_item['e__id'],
-                    'x__down' => $added_e['new_e']['e__id'],
-                ));
-            }
-        }
+        //Add member to Domain Member Groups if not already there:
+        $this->E_model->scissor_add_e($x__website, 30095, $added_e['new_e']['e__id'], null);
+
 
         if($importing_full_names){
 

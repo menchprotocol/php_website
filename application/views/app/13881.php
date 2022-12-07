@@ -14,6 +14,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
     $duplicate_email = array();
     $stats = array(
         'new_lines' => 0,
+        'already_there' => 0,
         'unique_lines' => 0,
         'errors' => 0,
     );
@@ -37,21 +38,23 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         $duplicate_check[$md5_name] = 1;
         $duplicate_check[$md5_email] = 1;
 
-        //Now check email:
-        $email_found = false;
+        //Now check email to make sure not a duplicate member:
+        $email_e__id = 0;
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__message' => $email_address,
             'x__up' => 3288, //Email
         ), array('x__down')) as $email_found){
-            $email_found = $new_line.' / @'.$email_found['e__id'].'<br />';
+            $email_e__id = $email_found['e__id'];
             break;
         }
 
-        if($email_found){
-            $error_lines .= $email_found;
-            continue;
+        if($email_e__id){
+            //Add member to Domain Member Groups if not already there:
+            $this->E_model->scissor_add_e(website_setting(0), 30095, $email_e__id, null);
+            $stats['already_there']++;
+            break;
         }
 
 
