@@ -1081,6 +1081,14 @@ a.headline {
     display: block;
 }
 
+.full-text{
+    width: 100%;
+    height: 200px;
+    border: 1px solid #999 !important;
+    border-radius: 22px;
+    margin: 0;
+}
+
 
 
 .x_sort, .sort_e, .fa-sort, .fa-arrows{
