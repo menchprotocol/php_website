@@ -29,10 +29,13 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         $md5_name = md5($full_name);
         $md5_email = md5($email_address);
 
-        if(!strlen($full_name) || !strlen($md5_email) || isset($duplicate_check[$md5_name]) || isset($duplicate_check[$md5_email])){
+        if(!strlen($full_name) || !strlen($email_address) || isset($duplicate_check[$md5_name]) || isset($duplicate_check[$md5_email])){
             //This is a duplicate line:
             continue;
         }
+
+        $duplicate_check[$md5_name] = 1;
+        $duplicate_check[$md5_email] = 1;
 
         //Now check email:
         $email_found = false;
@@ -50,9 +53,6 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
             $error_lines .= $email_found;
             continue;
         }
-
-        $duplicate_check[$md5_name] = 1;
-        $duplicate_check[$md5_email] = 1;
 
 
         $stats['unique_lines']++;continue;
