@@ -22,13 +22,18 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         //Go through each column of this new line:
         $tabs = preg_split('/[\t,]/', $new_line);
         $full_name = $tabs[0];
-        $email_address = $tabs[1];
-        $phone_number = $tabs[2];
+        $email_address = strtolower($tabs[1]);
+        $phone_number = trim($tabs[2]);
         $stats['new_lines']++;
         $md5_name = md5($full_name);
         $md5_email = md5($email_address);
 
-        if(!strlen($full_name) || !strlen($md5_email) || isset($duplicate_check[$md5_name]) || isset($duplicate_check[$md5_email])){
+        if(!strlen($full_name) || !strlen($md5_email) || isset($duplicate_check[$md5_name]) || isset($duplicate_check[$md5_email]) || count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__message' => $email_address,
+                'x__up' => 3288, //Email
+            )))){
             //This is a duplicate line:
             continue;
         }
