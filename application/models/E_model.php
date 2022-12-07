@@ -278,9 +278,9 @@ class E_model extends CI_Model
             'x__website' => $x__website,
         ));
 
-        if(strlen($phone_number)){
+        if(strlen($phone_number)>8){
             $this->X_model->create(array(
-                'x__up' => 4783, //Active Member
+                'x__up' => 4783, //Phone
                 'x__type' => e_x__type($phone_number),
                 'x__message' => $phone_number,
                 'x__source' => $added_e['new_e']['e__id'],
@@ -309,6 +309,7 @@ class E_model extends CI_Model
         }
 
         if($is_legal_name){
+
             //Also create legal name link:
             $this->X_model->create(array(
                 'x__up' => 30198, //Full Name
@@ -318,6 +319,7 @@ class E_model extends CI_Model
                 'x__down' => $added_e['new_e']['e__id'],
                 'x__website' => $x__website,
             ));
+
         } else {
 
             //Send Welcome Email if any:
@@ -325,10 +327,10 @@ class E_model extends CI_Model
                 $this->X_model->send_dm($added_e['new_e']['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
             }
 
-        }
+            //Update Algolia:
+            update_algolia(12274,  $added_e['new_e']['e__id']);
 
-        //Now update Algolia:
-        update_algolia(12274,  $added_e['new_e']['e__id']);
+        }
 
 
         //Assign session & log login transaction:
