@@ -50,7 +50,7 @@ class X_model extends CI_Model
         }
 
         //Set some defaults:
-        if (!isset($add_fields['x__website'])) {
+        if (!isset($add_fields['x__website']) || $add_fields['x__website']<1) {
             $add_fields['x__website'] = website_setting(0, $add_fields['x__source']);
         }
 

@@ -12,6 +12,8 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
     $stats = array(
         'new_lines' => 0,
         'unique_lines' => 0,
+        'phone_lines' => 0,
+        'errors' => 0,
         'dup_index' => array(),
     );
 
@@ -21,43 +23,45 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
         //Go through each column of this new line:
         $tabs = preg_split('/[\t,]/', $new_line);
+        $full_name = $tabs[0];
+        $email_address = $tabs[1];
+        $phone_number = $tabs[2];
+        $stats['new_lines']++;
+        $md5 = md5($full_name);
 
-        print_r($tabs);
-        if($count > 10){
-            break;
-        } else {
+        if(isset($stats['dup_index'][$md5])){
+            //This is a duplicate line:
             continue;
         }
 
-        $follow_e = intval(substr($stats['commands'][$count], 1));
+        $stats['dup_index'][$md5] = 1;
+
+
+        //New line to insert:
+        $member_result = $this->E_model->add_member($full_name, $email_address, null, 0, true);
+        if(!$member_result['status']) {
+            $stats['errors']++;
+            continue;
+        }
+
+        if(strlen($phone_number)){
+            $stats['phone_lines']++;
+            $this->X_model->create(array(
+                'x__up' => 4783, //Active Member
+                'x__type' => e_x__type($phone_number),
+                'x__message' => $phone_number,
+                'x__source' => $member_result['e']['e__id'],
+                'x__down' => $member_result['e']['e__id'],
+            ));
+        }
 
         $stats['unique_lines']++;
 
-
-        $md5 = md5($tabs[1]);
-        if(!isset($stats['dup_index'][$md5])){
-
-            //This is new:
-            $stats['unique_lines']++;
-
-            //Import into DB & map ID for next columns:
-            $stats['dup_index'][$md5] = 1;
-
-            /*
-
-            $focus_e = $this->E_model->create(array(
-                'e__title' => $e__title_validate['e__title_clean'],
-                'e__cover' => $e__cover,
-                'e__type' => 6181, //Private
-            ), true, $x__source);
-
-             * */
-
-        }
-
     }
 
+
     print_r($stats);
+    print_r($member_result);
 
     echo '<hr />';
 

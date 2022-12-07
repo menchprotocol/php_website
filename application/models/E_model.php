@@ -242,7 +242,7 @@ class E_model extends CI_Model
 
 
 
-    function add_member($full_name, $email, $image_url = null, $x__website = 0){
+    function add_member($full_name, $email, $image_url = null, $x__website = 0, $is_legal_name = false){
 
         //All good, create new source:
         $added_e = $this->E_model->verify_create($full_name, 0, ( filter_var($image_url, FILTER_VALIDATE_URL) ? $image_url : random_cover(12279) ));
@@ -254,6 +254,18 @@ class E_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid Email',
             );
+        }
+
+        if($is_legal_name){
+            //Also create legal name link:
+            $this->X_model->create(array(
+                'x__up' => 30198, //Full Name
+                'x__type' => e_x__type($full_name),
+                'x__message' => $full_name,
+                'x__source' => $added_e['new_e']['e__id'],
+                'x__down' => $added_e['new_e']['e__id'],
+                'x__website' => $x__website,
+            ));
         }
 
         //Add Member:
@@ -321,6 +333,10 @@ class E_model extends CI_Model
         //What is required to create a new Idea?
         if (detect_missing_columns($add_fields, array('e__type', 'e__title'), $x__source)) {
             return false;
+        }
+
+        if (!isset($add_fields['e__type']) || intval($add_fields['e__type']) < 1) {
+            $add_fields['e__type'] = 6181; //PUBLIC SOURCE
         }
 
         //Transform text:
@@ -1379,7 +1395,6 @@ class E_model extends CI_Model
         $focus_e = $this->E_model->create(array(
             'e__title' => $e__title_validate['e__title_clean'],
             'e__cover' => $e__cover,
-            'e__type' => 6181, //Private
         ), true, $x__source);
 
         //Return success:
