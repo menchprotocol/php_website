@@ -10,7 +10,8 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
     //Guide:
     $clean_list = '';
     $default_val = $_POST['import_sources'];
-    $duplicate_name = array();
+    $duplicate_check = array();
+    $duplicate_email = array();
     $stats = array(
         'new_lines' => 0,
         'unique_lines' => 0,
@@ -25,14 +26,16 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         $email_address = $tabs[1];
         $phone_number = $tabs[2];
         $stats['new_lines']++;
-        $md5 = md5($full_name);
+        $md5_name = md5($full_name);
+        $md5_email = md5($email_address);
 
-        if(!strlen($full_name) || isset($duplicate_name[$md5])){
+        if(!strlen($full_name) || isset($duplicate_check[$md5_name]) || isset($duplicate_check[$md5_email])){
             //This is a duplicate line:
             continue;
         }
 
-        $duplicate_name[$md5] = 1;
+        $duplicate_check[$md5_name] = 1;
+        $duplicate_check[$md5_email] = 1;
 
         $clean_list .= $new_line.'<br />';
         $stats['unique_lines']++; continue;
