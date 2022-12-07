@@ -52,6 +52,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
         if($email_e__id){
             //Add member to Domain Member Groups if not already there:
+            $error_lines .= $new_line.'<hr />';
             $this->E_model->scissor_add_e(website_setting(0), 30095, $email_e__id, null);
             $stats['already_there']++;
             break;
