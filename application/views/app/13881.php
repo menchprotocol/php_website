@@ -8,6 +8,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
     echo 'Begind Processing Import Data:<hr />';
 
     //Guide:
+    $error_lines = '';
     $default_val = $_POST['import_sources'];
     $duplicate_check = array();
     $duplicate_email = array();
@@ -28,13 +29,25 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         $md5_name = md5($full_name);
         $md5_email = md5($email_address);
 
-        if(!strlen($full_name) || !strlen($md5_email) || isset($duplicate_check[$md5_name]) || isset($duplicate_check[$md5_email]) || count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__message' => $email_address,
-                'x__up' => 3288, //Email
-            )))){
+        if(!strlen($full_name) || !strlen($md5_email) || isset($duplicate_check[$md5_name]) || isset($duplicate_check[$md5_email])){
             //This is a duplicate line:
+            continue;
+        }
+
+        //Now check email:
+        $email_found = false;
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__message' => $email_address,
+            'x__up' => 3288, //Email
+        ), array('x__down')) as $email_found){
+            $email_found = $new_line.' / @'.$email_found['e__id'].'<br />';
+            break;
+        }
+
+        if($email_found){
+            $error_lines .= $email_found;
             continue;
         }
 
@@ -58,9 +71,14 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
 
     print_r($stats);
-    print_r($member_result);
+    if(isset($member_result)){
+        print_r($member_result);
+    }
 
 
+    echo '<hr />ERRORS:';
+    echo '<hr />';
+    echo $error_lines;
     echo '<hr />';
 
 }
