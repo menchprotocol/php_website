@@ -809,7 +809,7 @@ function load_coins(){
 
 function load_coin_clickers(){
 
-    $('.load_e_coins').on('click', '.load_e_coins:not(.)', function() {
+    $('.load_e_coins').on('click', '.load_e_coins:not(.btn)', function() {
         console.log($(this));
         if(!$(this).hasClass('.btn')) {
             window.location = '/@'+$(this).attr('e__id');
@@ -818,7 +818,10 @@ function load_coin_clickers(){
     });
 
     $('.coin_i_click').on('click', '.coin_i_click:not(.btn)', function() {
-        window.location = '/~'+$(this).attr('i__id');
+        console.log($(this));
+        if(!$(this).hasClass('.btn')) {
+            window.location = '/~'+$(this).attr('i__id');
+        }
         return false;
     });
 
