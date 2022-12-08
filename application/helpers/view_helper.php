@@ -1920,7 +1920,7 @@ function view_e($x__type, $e, $extra_class = null)
     //ICON?
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover'], true) : '' ).'</div>';
 
-    $ui .= ( !$focus_coin && !$show_text_editor ? '</a>' : '</div>' );
+    $ui .= ( !$focus_coin ? '</a>' : '</div>' );
     $ui .= '</div>';
 
 
