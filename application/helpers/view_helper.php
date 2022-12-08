@@ -1465,9 +1465,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
                 $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
 
-                if($e__id==14937 && $editing_enabled){
-                    $action_buttons .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>'; //COIN COVER
-                } elseif($e__id==12589){
+                if($e__id==12589){
                     //Mass Apply
                     $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
                 } elseif($e__id==30795 && !$discovery_mode && $superpower_10939){
@@ -1564,7 +1562,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
         //Sort:
-        $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="x_sort hidden" title="'.$e___11035[4603]['m__title'].'"><span class="icon-block">'.$e___11035[4603]['m__cover'].'</span></span>' : '').'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.($editing_enabled ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
 
 
 
@@ -1904,7 +1902,7 @@ function view_e($x__type, $e, $extra_class = null)
 
         $ui .= '<td width="20%"><div class="show-on-hover">'.( $x__id ? view_input_dropdown(4593, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '').'</div></td>';
 
-        $ui .= '<td width="20%"><div class="show-on-hover">'.($has_sortable ? '<span class="sort_e hidden" title="'.$e___11035[4603]['m__title'].'">'.$e___11035[4603]['m__cover'].'</span>' : '').'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
 
         $ui .= '<td width="20%"><div class="show-on-hover '.( $has_sortable ? ' sort_e ' : '' ).'" title="' . ( isset($e['x__time']) ? view_time_difference(strtotime($e['x__time'])) . ' Ago: '.$e['x__time'] : '' ).'">'.$dropdown_ui.'</div></td>';
         $ui .= '</tr></table>';
