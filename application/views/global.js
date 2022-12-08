@@ -825,7 +825,10 @@ function load_coin_clickers(){
     });
 
     $('.coin_i_click').click(function(e) {
-        if(!$(e.target).hasClass('btn') )
+
+        console.log(e.target);
+
+        if($(e.target).hasClass('btn'))
         {
             console.log('MATCH');
         } else {
