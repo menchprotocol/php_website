@@ -1571,7 +1571,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
         $ui .= '</tr></table>';
 
-        $ui .= '<div class="cover-wrapper">';
+        $ui .= '<div class="cover-wrapper cover_wrapper12273">';
 
 
 
