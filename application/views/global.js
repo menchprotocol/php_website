@@ -812,7 +812,7 @@ function load_coin_clickers(){
     $('.load_e_coins').on('click', function() {
         console.log($(this));
         if(!$(this).hasClass('.btn')) {
-            window.location = '/@'+$(this).attr('e__id');
+           // window.location = '/@'+$(this).attr('e__id');
         }
         return false;
     });
@@ -820,7 +820,7 @@ function load_coin_clickers(){
     $('.coin_i_click').on('click', function() {
         console.log($(this));
         if(!$(this).hasClass('.btn')) {
-            window.location = '/~'+$(this).attr('i__id');
+            //window.location = '/~'+$(this).attr('i__id');
         }
         return false;
     });
