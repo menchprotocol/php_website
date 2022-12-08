@@ -407,7 +407,7 @@ if(!$basic_header_footer){
                         } elseif($x__type==14937 && intval($first_segment)==$first_segment) {
 
                             //Edit Idea:
-                            $href = 'href="/~'.$first_segment.'" ';
+                            $href = 'href="/~'.( intval($second_segment)==$second_segment ? $second_segment : $first_segment ).'" ';
 
                         } elseif(in_array($x__type, $this->config->item('n___13566'))) {
 
