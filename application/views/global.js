@@ -812,14 +812,14 @@ function load_coin_clickers(){
     $(".coin_e_click, .coin_i_click").unbind();
 
     $( ".coin_e_click" ).click(function(e) {
-        if($(e.target).closest('a, i, .btn, .cover-link').length < 1){
+        if($(e.target).closest('a, i, .btn, .coinType12273').length < 1){
             window.location = '/@'+$(this).attr('e__id');
             return false;
         }
     });
 
     $('.coin_i_click').click(function(e) {
-        if($(e.target).closest('a, i, .btn, .cover-link').length < 1){
+        if($(e.target).closest('a, i, .btn, .coinType12273').length < 1){
             window.location = '/~'+$(this).attr('i__id');
             return false;
         }
