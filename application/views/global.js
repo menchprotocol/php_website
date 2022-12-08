@@ -811,39 +811,18 @@ function load_coin_clickers(){
 
     $(".coin_e_click, .coin_i_click").unbind();
 
-    $( ".coin_e_click" ).click(function() {
-        console.log($(this).attr('class'));
-        if($(this).hasClass('.btn')) {
-            console.log('MATCH');
-        } else {
-            console.log('NO MATCH');
+    $( ".coin_e_click" ).click(function(e) {
+        if(!$(e.target).closest('a, i, .btn, .cover-link').length){
+            window.location = '/@'+$(this).attr('e__id');
+            return false;
         }
-
-        // window.location = '/@'+$(this).attr('e__id');
-
-        return false;
     });
 
     $('.coin_i_click').click(function(e) {
-
-        //console.log(e.target);
-        //console.log($(e.target).parents());
-        console.log($(e.target).closest('a, i, .btn, .cover-link').length);
-        console.log($(e.target).closest('a').length);
-        console.log($(e.target).closest('i').length);
-        console.log($(e.target).closest('.btn').length);
-        console.log($(e.target).closest('.cover-link').length);
-        if($(e.target).hasClass('btn'))
-        {
-            console.log('MATCH');
-        } else {
-            console.log('NO MATCH');
-
+        if(!$(e.target).closest('a, i, .btn, .cover-link').length){
+            window.location = '/~'+$(this).attr('i__id');
+            return false;
         }
-
-        //window.location = '/~'+$(this).attr('i__id');
-        return false;
-
     });
 
 }
