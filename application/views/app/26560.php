@@ -1,6 +1,5 @@
 <?php
-$member_e = superpower_unlocked();
-$superpower_31000 = $member_e && superpower_active(31000, true);
+$superpower_31000 = superpower_active(31000, true);
 
 if($superpower_31000 || (isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__time']) && strlen($_GET['x__time']) > 0)){
 

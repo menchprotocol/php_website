@@ -1,6 +1,5 @@
 <?php
 
-$member_e = superpower_unlocked();
 $deleted_ideas = 0;
 $deleted_links = 0;
 

@@ -50,7 +50,6 @@ if($is_u_request && !isset($_GET['email_trigger'])){
 
     //Should we limit the scope?
     if($is_u_request){
-        $member_e = superpower_unlocked();
         $subscriber_filters['x__down'] = $member_e['e__id'];
     }
 

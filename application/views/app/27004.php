@@ -2,6 +2,8 @@
 
 $commission_rate = doubleval(view_memory(6404,27017))/100;
 
+
+$superpower_28727 = superpower_active(28727, true);
 $e___6287 = $this->config->item('e___6287'); //APP
 $gross_transactions = 0;
 $gross_sales = 0;
@@ -15,9 +17,16 @@ $daily_sales = array();
 $origin_sales = array();
 $all_sources = array();
 
+
+if($member_e){
+    foreach($this->E_model->scissor_e(27004, $member_e['e__id']) as $e_item) {
+
+    }
+}
+
 //Generate list of payments:
 $payment_es = $this->X_model->fetch(array(
-    'x__up' => 27004,
+    'x__up' => $member_e['e__id'],
     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
     'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC

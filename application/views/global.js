@@ -809,13 +809,16 @@ function load_coins(){
 
 function load_coin_clickers(){
 
-    $('.load_e_coins').on('click', '.load_e_coins:not(button)', function() {
-        //window.location = '/@'+$(this).attr('e__id');
+    $('.load_e_coins').on('click', '.load_e_coins:not(.)', function() {
+        console.log($(this));
+        if(!$(this).hasClass('.btn')) {
+            window.location = '/@'+$(this).attr('e__id');
+        }
         return false;
     });
 
-    $('.coin_i_click').on('click', '.coin_i_click:not(button)', function() {
-        //window.location = '/~'+$(this).attr('i__id');
+    $('.coin_i_click').on('click', '.coin_i_click:not(.btn)', function() {
+        window.location = '/~'+$(this).attr('i__id');
         return false;
     });
 

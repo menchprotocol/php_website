@@ -1,7 +1,6 @@
 <?php
 
 //SOURCE/IDEA SYNC STATUSES (Hope to get zero)
-$member_e = superpower_unlocked(null, true);
 $i_query = ( isset($_GET['i__id']) && intval($_GET['i__id']) ? array('i__id' => $_GET['i__id']) : array() );
 $e_query = ( isset($_GET['e__id']) && intval($_GET['e__id']) ? array('e__id' => $_GET['e__id']) : array() );
 
