@@ -1453,6 +1453,7 @@ function load_tab(x__type){
     //Give some extra loding time so the content loads on page:
     setTimeout(function () {
 
+        $('[data-toggle="tooltip"]').tooltip();
         load_coin_clickers();
         initiate_algolia();
         load_coins();
@@ -1463,6 +1464,7 @@ function load_tab(x__type){
 
         setTimeout(function () {
             x_sort_load(x__type);
+            $('[data-toggle="tooltip"]').tooltip();
         }, 987);
 
         $(function () {
