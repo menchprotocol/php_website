@@ -824,8 +824,11 @@ function load_coin_clickers(){
         return false;
     });
 
-    $( ".coin_i_click" ).click(function() {
-        console.log($(this).attr('class'));
+    //$( ".coin_i_click" ).click(function() {
+        $(".coin_i_click").on("click", ".btn", function(e) {
+
+            console.log($(this).attr('class'));
+
         if($(this).hasClass('.btn')) {
             console.log('MATCH');
         } else {
