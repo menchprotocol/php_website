@@ -404,10 +404,10 @@ if(!$basic_header_footer){
                             //Search
                             $href = 'href="/@'.$member_e['e__id'].'" ';
 
-                        } elseif($x__type==7256) {
+                        } elseif($x__type==14937 && intval($first_segment)==$first_segment) {
 
-                            //Search
-                            $href = 'href="javascript:void(0);" onclick="toggle_search()" ';
+                            //Edit Idea:
+                            $href = 'href="/~'.$first_segment.'" ';
 
                         } elseif(in_array($x__type, $this->config->item('n___13566'))) {
 
