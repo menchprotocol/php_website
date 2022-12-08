@@ -407,7 +407,12 @@ if(!$basic_header_footer){
                         } elseif($x__type==14937 && intval($first_segment)==$first_segment) {
 
                             //Edit Idea:
-                            $href = 'href="/~'.( intval($second_segment)==$second_segment ? $second_segment : $first_segment ).'" ';
+                            $edit_i__id = ( intval($second_segment)==$second_segment ? $second_segment : $first_segment );
+                            if(!e_of_i($edit_i__id)){
+                                continue;
+                            }
+                            //They can edit:
+                            $href = 'href="/~'.$edit_i__id.'" ';
 
                         } elseif(in_array($x__type, $this->config->item('n___13566'))) {
 
