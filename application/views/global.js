@@ -810,6 +810,7 @@ function load_coins(){
 function load_coin_clickers(){
 
     $('.load_e_coins').on('click', function() {
+        console.log($(this).attr('class'));
         if($(this).hasClass('.btn')) {
             console.log('MATCH');
         } else {
@@ -822,6 +823,7 @@ function load_coin_clickers(){
     });
 
     $('.coin_i_click').on('click', function() {
+        console.log($(this).attr('class'));
         if($(this).hasClass('.btn')) {
             console.log('MATCH');
         } else {
