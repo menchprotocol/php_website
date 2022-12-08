@@ -827,8 +827,8 @@ function load_coin_clickers(){
     $('.coin_i_click').click(function(e) {
 
         console.log(e.target);
-        console.log(e.delegateTarget);
-        console.log(e.currentTarget);
+        console.log($(e.target).parent());
+        console.log(e.target.parent());
 
         if($(e.target).hasClass('btn'))
         {
