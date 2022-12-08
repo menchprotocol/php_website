@@ -810,18 +810,27 @@ function load_coins(){
 function load_coin_clickers(){
 
     $('.load_e_coins').on('click', function() {
-        console.log($(this));
-        if(!$(this).hasClass('.btn')) {
-           // window.location = '/@'+$(this).attr('e__id');
+        if($(this).hasClass('.btn')) {
+            console.log('MATCH');
+        } else {
+            console.log('NO MATCH');
         }
+
+        // window.location = '/@'+$(this).attr('e__id');
+
         return false;
     });
 
     $('.coin_i_click').on('click', function() {
-        console.log($(this));
-        if(!$(this).hasClass('.btn')) {
-            //window.location = '/~'+$(this).attr('i__id');
+        if($(this).hasClass('.btn')) {
+            console.log('MATCH');
+        } else {
+            console.log('NO MATCH');
         }
+
+
+        //window.location = '/~'+$(this).attr('i__id');
+
         return false;
     });
 
