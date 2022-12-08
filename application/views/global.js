@@ -828,6 +828,7 @@ function load_coin_clickers(){
 
         //console.log(e.target);
         //console.log($(e.target).parents());
+        console.log($(e.target).closest('a, i, .btn, .cover-link').length);
         console.log($(e.target).closest('a').length);
         console.log($(e.target).closest('i').length);
         console.log($(e.target).closest('.btn').length);
