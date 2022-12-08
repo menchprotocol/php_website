@@ -1539,13 +1539,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
 
         $ui .= '<td width="20%"><div class="show-on-hover">';
-        if($source_of_e){
-            foreach($CI->X_model->fetch(array(
-                'x__right' => $i['i__id'],
-                'x__type' => 4250, //New Idea Created
-            ), array('x__source')) as $creator){
-                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' Created on '.$creator['x__time'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
-            }
+        foreach($CI->X_model->fetch(array(
+            'x__right' => $i['i__id'],
+            'x__type' => 4250, //New Idea Created
+        ), array('x__source')) as $creator){
+            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' Created on '.$creator['x__time'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
         }
         $ui .= '</div></td>';
 
