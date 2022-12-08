@@ -826,9 +826,9 @@ function load_coin_clickers(){
 
     $('.coin_i_click').click(function(e) {
 
-        console.log(e.target);
-        console.log($(e.target).parents());
-        console.log($(e.target).closest('.btn'));
+        //console.log(e.target);
+        //console.log($(e.target).parents());
+        console.log($(e.target).closest('.btn').length);
         if($(e.target).hasClass('btn'))
         {
             console.log('MATCH');
