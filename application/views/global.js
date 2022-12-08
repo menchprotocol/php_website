@@ -809,7 +809,7 @@ function load_coins(){
 
 function load_coin_clickers(){
 
-    $('.load_e_coins').on('click', function() {
+    $('.coin_e_click').on('click', function() {
         console.log($(this).attr('class'));
         if($(this).hasClass('.btn')) {
             console.log('MATCH');
