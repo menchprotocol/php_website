@@ -809,6 +809,8 @@ function load_coins(){
 
 function load_coin_clickers(){
 
+    $(".coin_e_click, .coin_i_click").unbind();
+
     $( ".coin_e_click" ).click(function() {
         console.log($(this).attr('class'));
         if($(this).hasClass('.btn')) {
