@@ -824,21 +824,18 @@ function load_coin_clickers(){
         return false;
     });
 
-    //$( ".coin_i_click" ).click(function() {
-        $(".coin_i_click").on("click", ".btn", function(e) {
-
-            console.log($(this).attr('class'));
-
-        if($(this).hasClass('.btn')) {
+    $('.coin_i_click').click(function(e) {
+        if(!$(e.target).hasClass('btn') )
+        {
             console.log('MATCH');
         } else {
             console.log('NO MATCH');
+
         }
 
-
         //window.location = '/~'+$(this).attr('i__id');
-
         return false;
+
     });
 
 }
