@@ -1561,14 +1561,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '</div></td>';
 
 
-        //Sort:
+        //Edit:
         $ui .= '<td width="20%"><div class="show-on-hover">'.($editing_enabled ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
 
-
-
-        //$ui .= '<td width="20%"><div class="show-on-hover">'.( !$can_click && $member_e && !$focus_coin ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' ).'</div></td>';
-
-        $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
+        //Menu:
+        $ui .= '<td width="20%"><div class="show-on-hover '.( $has_sortable ? ' x_sort ' : '' ).'">'.$o_menu.'</div></td>';
         $ui .= '</tr></table>';
 
         $ui .= '<div class="cover-wrapper cover_wrapper12273">';
@@ -1660,6 +1657,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_i(12273,  $i['i__id']).'</span>';
             $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_i(12274,  $i['i__id']).'</span>';
             $ui .= '<span class="hideIfEmpty">'.view_coins_i(6255,  $i['i__id']).'</span>';
+            $ui .= ( !$can_click && $member_e && !$focus_coin && !$discovery_mode ? '&nbsp;<span class="show-on-hover"><a href="'.$href.'"><i class="fas fa-arrow-right"></i></a></span>' : '' );
             $ui .= '</div></div>';
 
         }
