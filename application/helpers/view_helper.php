@@ -1577,7 +1577,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
         //TITLE
-        if($e_of_i){
+        if($e_of_i && !$discovery_mode){
             //Editable title:
             $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
         } elseif($can_click){
