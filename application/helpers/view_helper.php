@@ -566,13 +566,15 @@ function view_body_e($x__type, $counter, $e__id){
 
     } elseif($x__type==12274 || $x__type==11030){
 
+        $idea_adder = ( 12274 ? 31775 : 31774 );
+
         $add_button = '<div class="new-list-'.$x__type.' list-adder">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[14055]['m__cover'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-'.$x__type.' .add-input\').focus();"><span class="icon-block">'.$e___11035[$idea_adder]['m__cover'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[14055]['m__title'].'">
+                               placeholder="'.$e___11035[$idea_adder]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
 
 
@@ -630,11 +632,11 @@ function view_body_i($x__type, $counter, $i__id){
         if($e_of_i){
             $ui .= '<div class="new-list-11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
-                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                        <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-11019 .add-input\').focus();"><span class="icon-block">'.$e___11035[31773]['m__cover'].'</span></a>
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
-                               placeholder="'.$e___11035[14016]['m__title'].'">
+                               placeholder="'.$e___11035[31773]['m__title'].'">
                     </div><div class="algolia_pad_search row justify-content"></div></div>';
         }
 
@@ -645,11 +647,11 @@ function view_body_i($x__type, $counter, $i__id){
         if($e_of_i){
             $ui .= '<div class="new-list-12273 list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
-                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-12273 .add-input\').focus();"><span class="icon-block">'.$e___11035[14016]['m__cover'].'</span></a>
+                    <a class="input-group-addon addon-lean icon-adder" href="javascript:void(0);" onclick="$(\'.new-list-12273 .add-input\').focus();"><span class="icon-block">'.$e___11035[31772]['m__cover'].'</span></a>
                     <input type="text"
                            class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
-                           placeholder="'.$e___11035[14016]['m__title'].'">
+                           placeholder="'.$e___11035[31772]['m__title'].'">
                 </div><div class="algolia_pad_search row justify-content"></div></div>';
         }
 
