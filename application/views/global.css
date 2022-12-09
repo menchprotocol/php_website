@@ -3545,8 +3545,9 @@ h4.css__title{
     color:#000000 !important;
 }
 
+.alert *,
 .form-control:focus {
-    color: #000000;
+    color: #000000 !important;
 }
 
 .title-left{
