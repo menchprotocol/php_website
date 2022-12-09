@@ -1021,7 +1021,7 @@ echo '</div>';
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="fas fa-check-circle"></i>');
+                $('.go-next').html('<i class="fas fa-play"></i>');
                 window.location = go_next_url;
             } else {
                 //Show error:
@@ -1055,7 +1055,7 @@ echo '</div>';
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="fas fa-check-circle"></i>');
+                $('.go-next').html('<i class="fas fa-play"></i>');
                 window.location = go_next_url;
             } else {
                 //Show error:
