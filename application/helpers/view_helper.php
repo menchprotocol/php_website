@@ -1510,26 +1510,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
 
-        $link_dropdown = '';
-        $type_visibility = ''; //visible by default
-        $link_visibility = ''; //visible by default
-        if((isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___4486'))) || (in_array($x__type, $CI->config->item('n___4486')))){
-            //Idea Links
-            $link_dropdown .= view_input_dropdown(4486, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $x__id);
-            $link_visibility = 'show-on-hover';//No need to be visible by default
-            $type_visibility = 'show-on-hover';//No need to be visible by default
-        } elseif(isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___6255'))){
-            //Discoveries
-            $link_visibility = '';//No need to be visible by default
-            $type_visibility = 'show-on-hover';//No need to be visible by default
-        } elseif(isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___13550'))){
-            //Idea Source Reference
-            $link_dropdown .= view_input_dropdown(13550, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $x__id);
-            $link_visibility = ( $e_of_i ? '' : 'show-on-hover' );//No need to be visible by default
-            $type_visibility = ( $e_of_i ? '' : 'show-on-hover' );//No need to be visible by default
-        }
-
-
         //Top action menu:
         $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin coin_i_click col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $force_order ? ' soft_lock ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).( $force_order ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $force_order ? ' title="Locked" data-toggle="tooltip" data-placement="top" ' : '' ).'>';
 
@@ -1549,16 +1529,21 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $ui .= '</div></td>';
 
         //Idea Type
-        $ui .= '<td width="20%"><div class="'.$type_visibility.'">';
+        $ui .= '<td width="20%"><div class="show-on-hover">';
         if(!$discovery_mode){
             $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
         }
         $ui .= '</div></td>';
 
         //Idea Link:
-        $ui .= '<td width="20%"><div class="'.$link_visibility.'">';
-        if(!$force_order && isset($i['x__type']) && $i['x__type']>0){
-            $ui .= $link_dropdown;
+        $ui .= '<td width="20%"><div class="show-on-hover">';
+        if($x__id){
+            foreach($CI->config->item('e___31770') as $x__type1 => $m1){
+                if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
+                    $ui .= view_input_dropdown($x__type1, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $x__id);
+                    break;
+                }
+            }
         }
         $ui .= '</div></td>';
 
@@ -1900,7 +1885,16 @@ function view_e($x__type, $e, $extra_class = null)
         $ui .= '<td width="20%"><div class="'.( in_array($e['e__type'], $CI->config->item('n___31109')) ? '' : 'show-on-hover' ).'">'.view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']).'</div></td>';
 
 
-        $ui .= '<td width="20%"><div class="show-on-hover">'.( $x__id ? view_input_dropdown(4593, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id) : '').'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">';
+        if($x__id){
+            foreach($CI->config->item('e___31770') as $x__type1 => $m1){
+                if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
+                    $ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
+                    break;
+                }
+            }
+        }
+        $ui .= '</div></td>';
 
         $ui .= '<td width="20%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
 

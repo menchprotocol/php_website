@@ -764,7 +764,7 @@ if(!$top_i__id){
 
                 //NEXT
                 $control_btn = '<a class="go-next-group controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a>';
-                $control_btn .= '<span class="go-next-group nav-title css__title">'.( count($x_completes) ? 'Go Next' : $m2['m__title'] ).'<div class="extra_progress hideIfEmpty"></div></span>';
+                $control_btn .= '<span class="go-next-group nav-title css__title">'.$m2['m__title'].'<div class="extra_progress hideIfEmpty"></div></span>';
 
             }
 
