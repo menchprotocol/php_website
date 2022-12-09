@@ -358,12 +358,16 @@ function toggle_headline(x__type){
         $('.headline_title_' + x__type+ ' .icon_26007').addClass('hidden');
         $('.headline_body_' + x__type).addClass('hidden');
     } else {
-        //Currently closed, must now be opened:
 
+        //Close all other opens:
+        $('.headlinebody').addClass('hidden');
+        $('.headline_titles .icon_26007').addClass('hidden');
+        $('.headline_titles .icon_26008').removeClass('hidden');
+
+        //Currently closed, must now be opened...
         var action_id = 26007; //Open
         $('.headline_title_' + x__type+ ' .icon_26007').removeClass('hidden');
         $('.headline_title_' + x__type+ ' .icon_26008').addClass('hidden');
-        $('.headline_titles').addClass('hidden');
         $('.headline_body_' + x__type).removeClass('hidden');
     }
 
