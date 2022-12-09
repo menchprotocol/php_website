@@ -65,7 +65,9 @@ $min_allowed = 1;
 $detected_x_type = 0;
 
 
-
+if($is_or_idea || count($x_completes)){
+    $_GET['open'] = true;
+}
 
 
 //Featured Sources:
@@ -808,7 +810,7 @@ echo '</div>';
 
 ?>
 
-<style> .headline_12211 { display: none !important; } </style>
+<style> .headline_12211, .headline_13980 { display: none !important; } </style>
 <script>
     var focus_i__type = <?= $i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;

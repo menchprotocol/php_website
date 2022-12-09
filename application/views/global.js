@@ -352,11 +352,13 @@ function toggle_headline(x__type){
     }
 
     if($('.headline_title_' + x__type+' .icon_26008').hasClass('hidden')){
+
         //Currently open, must now be closed:
         var action_id = 26008; //Close
         $('.headline_title_' + x__type+ ' .icon_26008').removeClass('hidden');
         $('.headline_title_' + x__type+ ' .icon_26007').addClass('hidden');
         $('.headline_body_' + x__type).addClass('hidden');
+
     } else {
 
         //Close all other opens:
@@ -369,6 +371,10 @@ function toggle_headline(x__type){
         $('.headline_title_' + x__type+ ' .icon_26007').removeClass('hidden');
         $('.headline_title_' + x__type+ ' .icon_26008').addClass('hidden');
         $('.headline_body_' + x__type).removeClass('hidden');
+
+        //Scroll To:
+        $.scrollTo($('.headline_body_' + x__type), 0);
+
     }
 
     //Log Transaction:
