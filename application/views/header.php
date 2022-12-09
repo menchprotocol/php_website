@@ -1,7 +1,7 @@
 <?php
 $member_e = superpower_unlocked();
-$first_segment = rtrim($this->uri->segment(1), '\/');
-$second_segment = rtrim($this->uri->segment(2), '\/');
+$first_segment = str_replace('/','',$this->uri->segment(1));
+$second_segment = str_replace('/','',$this->uri->segment(2));
 $i__id = ( isset($i['i__id']) ? $i['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13479 = $this->config->item('e___13479');
