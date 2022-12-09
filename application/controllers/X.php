@@ -726,17 +726,19 @@ class X extends CI_Controller
 
             return redirect_message( ( $top_i__id > 0 ? '/'.$top_is[0]['i__id'] : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea ID ' . $i__id . ' not found</div>');
 
-        } elseif($top_i__id > 0 && !in_array($top_is[0]['i__type'], $this->config->item('n___7355') /* PRIVATE */)){
-
-            return redirect_message((superpower_unlocked(10939) ? '/~' . $top_i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Idea #'.$top_i__id.' is not published yet.</div>');
-
         } elseif(!in_array($is[0]['i__type'], $this->config->item('n___7355') /* PRIVATE */)){
 
             return redirect_message((superpower_unlocked(10939) ? '/~' . $i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Idea #'.$is[0]['i__id'].' is not published yet.</div>');
 
         }
 
-        //Determine Member:
+    if($top_i__id > 0 && !in_array($top_is[0]['i__type'], $this->config->item('n___7355') /* PRIVATE */)) {
+        return redirect_message('/'.$is[0]['i__type']);
+    }
+
+
+
+    //Determine Member:
         /*
         $member_e = false;
         if(isset($_GET['load__e']) && superpower_active(14005, true)){
