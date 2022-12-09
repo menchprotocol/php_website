@@ -1918,7 +1918,7 @@ function view_e($x__type, $e, $extra_class = null)
 
 
     //TITLE
-    if($show_text_editor){
+    if($show_text_editor && !$is_cache && !$is_app){
         //Editable:
         $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, ( isset($e['x__spectrum']) ? ($e['x__spectrum']*100)+1 : 0  ), true);
     } else {
