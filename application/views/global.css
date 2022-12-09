@@ -448,11 +448,10 @@ img.no-frame {
     margin-top: -8px;
 }
 .icons_small .block-icon img {
-    width:55px !important;
-    height:55px !important;
-    margin-top: -13px;
+    width: 45px !important;
+    height: 45px !important;
+    margin-top: -6px;
     border-radius: 50%;
-    border:1px solid #999;
 }
 .icons_large .block-icon img{
     line-height: 100%;
@@ -2441,6 +2440,7 @@ i, .btn .show-max {
     top: 25px;
     position: absolute;
     text-align: center;
+    color: #000 !important;
 }
 
 .mono-space, .fa-gif-wrap{
