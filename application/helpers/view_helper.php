@@ -1873,7 +1873,8 @@ function view_e($x__type, $e, $extra_class = null)
         $ui .= '</div></td>';
 
 
-        $ui .= '<td width="20%"><div class="'.( in_array($e['e__type'], $CI->config->item('n___31109')) ? '' : 'show-on-hover' ).'">'.view_input_dropdown(6177, $e['e__type'], null, $source_of_e, false, $e['e__id']).'</div></td>';
+        $special_type = in_array($e['e__type'], $CI->config->item('n___31109'));
+        $ui .= '<td width="20%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e, false, $e['e__id']) : '' ).'</div></td>';
 
 
         $ui .= '<td width="20%"><div class="show-on-hover">';
