@@ -2047,7 +2047,7 @@ i, .btn .show-max {
 .btn-group.pull-right { margin: -50px 28px 7px 0 !important; }
 
 .modal-body .headlinebody {
-    margin: 0 0 21px 21px;
+    margin: 0 0 34px 0;
 }
 
 .headlinebody {
@@ -2055,7 +2055,7 @@ i, .btn .show-max {
 }
 
 .headlinebody.leftPad {
-    padding:5px 8px;
+    padding:5px 0;
 }
 
 
