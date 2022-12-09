@@ -868,7 +868,7 @@ class E extends CI_Controller
         $this->X_model->create(array(
             'x__source' => $member_e['e__id'],
             'x__type' => 6224, //My Account updated
-            'x__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Added' ),
+            'x__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Created' ),
             'x__metadata' => $_POST,
             'x__up' => $_POST['focus_id'],
             'x__down' => $_POST['selected_e__id'],
