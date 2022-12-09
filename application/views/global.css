@@ -447,10 +447,14 @@ img.no-frame {
     font-size: 0.78em !important;
     margin-top: -8px;
 }
+.icons_small .block-icon img {
+    width:55px !important;
+    height:55px !important;
+}
 .icons_large .block-icon img{
     line-height: 100%;
-    width:34px;
-    height:34px;
+    width:100%;
+    height:100%;
     border: 1px solid #ccc;
 }
 
