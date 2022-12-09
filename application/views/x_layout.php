@@ -282,7 +282,6 @@ echo '<div class="light-bg large-frame">';
 
 //Show Progress:
 if($top_completed){
-    //echo '<script> $(document).ready(function () { $(".go-next-group").addClass(\'hidden\'); }); </script>';
     echo '<div class="msg alert alert-success" role="alert"><span class="icon-block">✅</span>100% Completed: You Are Now Reviewing Your Responses</div>';
 }
 
@@ -391,7 +390,7 @@ if($top_i__id) {
                 echo '<div class="edit_toggle_answer">';
 
                 //Edit response:
-                echo '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');$(\'.go-next-group\').removeClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
+                echo '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
 
                 echo view_i_list(13980, $top_i__id, $i, $x_selects, $member_e);
                 echo '</div>';
@@ -727,7 +726,8 @@ if(!$top_i__id){
         } elseif($x__type==30901 && !$is_or_idea){
 
             //Reply:
-            $control_btn = '<a class="go-next-group controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'</a>';
+            $control_btn = '<a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'</a>';
+            $control_btn .= '<span class="nav-title css__title">'.$m2['m__title'].'</span>';
 
         } elseif($x__type==12211){
 
@@ -755,7 +755,7 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
                 $control_btn .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
 
-                $control_btn .= '<input type="submit" class="round-btn adj-btn go-next-group" name="pay_now" id="pay_now" value="$" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');">';
+                $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="$" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');">';
                 $control_btn .= '<span class="nav-title css__title process-btn">Pay Now</span>';
 
                 $control_btn .= '</form>';
@@ -763,8 +763,8 @@ if(!$top_i__id){
             } else {
 
                 //NEXT
-                $control_btn = '<a class="go-next-group controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a>';
-                $control_btn .= '<span class="go-next-group nav-title css__title">'.$m2['m__title'].'<div class="extra_progress hideIfEmpty"></div></span>';
+                $control_btn = '<a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a>';
+                $control_btn .= '<span class="nav-title css__title">'.$m2['m__title'].'<div class="extra_progress hideIfEmpty"></div></span>';
 
             }
 
