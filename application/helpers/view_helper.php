@@ -1609,7 +1609,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
                 $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
             }
 
-            if($e_of_i) {
+            if($e_of_i && !$discovery_mode) {
                 //Can edit:
                 $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963(' . $i['i__id'] . ')" class="mini-font messages_4231_' . $i['i__id'] . '">' . (strlen($messages) ? $messages : '<i class="no-message">Write Message...</i>') . '</a>';
             } elseif($can_click){
