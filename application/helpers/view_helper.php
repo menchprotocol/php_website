@@ -566,7 +566,7 @@ function view_body_e($x__type, $counter, $e__id){
 
     } elseif($x__type==12274 || $x__type==11030){
 
-        $idea_adder = ( 12274 ? 31775 : 31774 );
+        $idea_adder = ( $x__type==12274 ? 31775 : 31774 );
 
         $add_button = '<div class="new-list-'.$x__type.' list-adder">
                     <div class="input-group border">
