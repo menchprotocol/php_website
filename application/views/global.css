@@ -442,6 +442,7 @@ img.no-frame {
     font-size: 3.7em !important;
     margin:13px 0 0 0 !important;
     padding: 0 !important;
+    overflow: hidden;
 }
 .icons_small .block-icon i {
     font-size: 0.78em !important;
