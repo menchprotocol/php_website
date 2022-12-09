@@ -1456,13 +1456,13 @@ function load_tab(x__type){
         $('[data-toggle="tooltip"]').tooltip();
         load_coin_clickers();
         initiate_algolia();
-        load_coins();
         load_editor();
         x_type_preview_load();
         init_remove();
         x_set_start_text();
 
         setTimeout(function () {
+            load_coins();
             x_sort_load(x__type);
             $('[data-toggle="tooltip"]').tooltip();
         }, 987);
