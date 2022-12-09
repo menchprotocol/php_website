@@ -2051,6 +2051,8 @@ i, .btn .show-max {
 
 .headlinebody {
     min-height: 34px;
+    border:1px solid #999;
+    border-radius: 22px;
 }
 
 .headlinebody.leftPad {

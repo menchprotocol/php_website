@@ -173,10 +173,6 @@ if($is_payment){
     }
 }
 
-if($is_or_idea || count($x_completes)){
-    $_GET['open'] = true;
-}
-
 //Check for time limits?
 if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
 
@@ -723,7 +719,7 @@ if(!$top_i__id){
             }
 
 
-        } elseif($x__type==30901 && !$is_or_idea){
+        } elseif($x__type==12273 && !$is_or_idea){
 
             //Reply:
             $control_btn = '<a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'<span class="nav-counter css__title">'.count($is_next).'</span></a>';
