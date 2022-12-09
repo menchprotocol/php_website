@@ -432,7 +432,7 @@ function view_time_difference($t, $second_time = null)
 
     foreach($time_units as $unit => $period) {
         if ($time < $unit && $unit > 1) continue;
-        if ($unit >= 2592000 && fmod(($time / $unit), 1) >= 0.33 && fmod(($time / $unit), 1) <= .67) {
+        if (0 && $unit >= 2592000 && fmod(($time / $unit), 1) >= 0.33 && fmod(($time / $unit), 1) <= .67) {
             $numberOfUnits = number_format(($time / $unit), 1);
         } else {
             $numberOfUnits = number_format(($time / $unit), 0);
