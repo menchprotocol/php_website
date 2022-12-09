@@ -451,6 +451,9 @@ img.no-frame {
 .icons_small .block-icon img {
     width:55px !important;
     height:55px !important;
+    margin-top: -13px;
+    border-radius: 50%;
+    border:1px solid #999;
 }
 .icons_large .block-icon img{
     line-height: 100%;
