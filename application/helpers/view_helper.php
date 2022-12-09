@@ -1543,7 +1543,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
         //Edit:
-        $ui .= '<td width="20%"><div class="show-on-hover">'.($e_of_i ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.( $e_of_i && !$discovery_mode ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
 
         //Menu:
         $ui .= '<td width="20%"><div class="show-on-hover '.( $has_sortable ? ' x_sort ' : '' ).'">'.$o_menu.'</div></td>';
