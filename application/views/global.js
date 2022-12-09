@@ -798,6 +798,8 @@ function load_message_27963(i__id){
 }
 
 function load_coins(){
+    $(".load_e_coins, .load_i_coins").unbind();
+
     $(".load_e_coins").click(function(event) {
         e_load_coin($(this).attr('load_x__type'),$(this).attr('load_e__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
@@ -1461,7 +1463,9 @@ function load_tab(x__type){
         init_remove();
         x_set_start_text();
 
+
         setTimeout(function () {
+            load_coins();
             x_sort_load(x__type);
             $('[data-toggle="tooltip"]').tooltip();
         }, 987);
@@ -1488,12 +1492,10 @@ function load_tab(x__type){
         if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
             console.log('IS IDEA');
             i_load_search(x__type);
-            load_coins();
         } else if((x__type==12274 || x__type==11030) || (focus_coin==12273 && x__type==6255)) {
             console.log('IS SOURCE');
             e_load_search(x__type);
             setTimeout(function () {
-                load_coins();
                 e_sort_load(x__type);
             }, 987);
         }
