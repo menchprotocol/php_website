@@ -1530,9 +1530,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
         //Idea Type
         $ui .= '<td width="20%"><div class="show-on-hover">';
-        if(!$discovery_mode){
-            $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled, false, $i['i__id']);
-        }
+        $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled && !$discovery_mode, false, $i['i__id']);
         $ui .= '</div></td>';
 
         //Idea Link:
