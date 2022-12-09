@@ -1544,7 +1544,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             'x__right' => $i['i__id'],
             'x__type' => 4250, //New Idea Created
         ) ), array('x__source')) as $creator){
-            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.( $x__id ? 'Linked' : 'Added' ).' by '.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).': '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
+            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.( $x__id ? 'Linked' : 'Added' ).' by '.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
         }
         $ui .= '</div></td>';
 
@@ -1892,7 +1892,7 @@ function view_e($x__type, $e, $extra_class = null)
             'x__down' => $e['e__id'],
             'x__type' => 4251, //New Source Created
         ) ), array('x__source')) as $creator){
-            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.( $x__id ? 'Linked' : 'Added' ).' by '.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).': '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
+            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.( $x__id ? 'Linked' : 'Added' ).' by '.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
         }
         $ui .= '</div></td>';
 
