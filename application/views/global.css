@@ -1081,8 +1081,11 @@ a.headline {
     display: block;
 }
 
-.icon-block.change-results .fa-sun {
+.custom_ui_13884_13885 .icon-block.change-results i {
     color: #000 !important;
+}
+.custom_ui_28979_28980 .icon-block.change-results i {
+    color: #FFC500 !important;
 }
 
 .full-text{
