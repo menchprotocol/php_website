@@ -1081,6 +1081,10 @@ a.headline {
     display: block;
 }
 
+.icon-block.change-results .fa-sun {
+    color: #000 !important;
+}
+
 .full-text{
     width: 100%;
     height: 200px;
