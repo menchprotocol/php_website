@@ -2007,11 +2007,13 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
-    $e___12079 = $CI->config->item('e___12079');
 
-    if(!$selected_e__id || !isset($e___this[$selected_e__id]) || !isset($e___12079[$cache_e__id])){
+    if(!$selected_e__id || !isset($e___this[$selected_e__id])){
         return false;
     }
+
+    $e___12079 = $CI->config->item('e___12079');
+    $e_of_i = ( isset($e___12079[$cache_e__id]) ? $e_of_i : false );
 
     $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'" title="'.$e___12079[$cache_e__id]['m__title'].'">';
 
