@@ -1464,7 +1464,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
                 } elseif($e__id==30795 && !$discovery_mode && $superpower_10939){
                     //Discovery Mode
                     $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
-                } elseif($e__id==6155 && $x__id && in_array($x__type, $CI->config->item('n___6155')) && ($e_of_i || $superpower_10939)){
+                } elseif($e__id==6155 && $x__id && ($e_of_i || $superpower_10939)){ //in_array($x__type, $CI->config->item('n___6155')) &&
                     //Remove/Unlink
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$x__id.'">'.$anchor.'</a>';
                 } elseif($e__id==30873){
