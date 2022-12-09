@@ -697,7 +697,8 @@ class X extends CI_Controller
                 'x__source' => $member_e['e__id'],
                 'x__left' => $i__id,
                 'x__right > 0' => null,
-            )) as $x){
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            ), array('x__right')) as $x){
                 return redirect_message('/'.$x['x__right'].'/'.$i__id);
             }
 
@@ -710,7 +711,8 @@ class X extends CI_Controller
                     'x__source' => $member_e['e__id'],
                     'x__left IN (' . join(',', $recursive_is) . ')' => null,
                     'x__right > 0' => null,
-                )) as $x){
+                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                ), array('x__right')) as $x){
                     return redirect_message('/'.$x['x__right'].'/'.$i__id);
                 }
             }
