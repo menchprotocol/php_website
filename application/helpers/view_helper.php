@@ -1768,7 +1768,7 @@ function view_e($x__type, $e, $extra_class = null)
 
     //LOCKED
     $dropdown_ui = false;
-    if($source_of_e && !$cache_app) {
+    if($source_of_e && !$cache_app && !$is_app) {
 
         $action_buttons = null;
 
@@ -1860,7 +1860,7 @@ function view_e($x__type, $e, $extra_class = null)
 
 
     //Top action menu:
-    if(!$cache_app){
+    if(!$cache_app && !$is_app){
 
         $ui .= '<table class="coin_coins"><tr>';
 
