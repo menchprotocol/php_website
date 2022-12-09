@@ -1882,14 +1882,14 @@ function view_e($x__type, $e, $extra_class = null)
         $ui .= '</div></td>';
 
 
-        $ui .= '<td width="20%"><div class="'.( in_array($e['e__type'], $CI->config->item('n___31109')) ? '' : 'show-on-hover' ).'">'.view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']).'</div></td>';
+        $ui .= '<td width="20%"><div class="'.( in_array($e['e__type'], $CI->config->item('n___31109')) ? '' : 'show-on-hover' ).'">'.view_input_dropdown(6177, $e['e__type'], null, $source_of_e, false, $e['e__id']).'</div></td>';
 
 
         $ui .= '<td width="20%"><div class="show-on-hover">';
         if($x__id){
             foreach($CI->config->item('e___31770') as $x__type1 => $m1){
                 if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
-                    $ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
+                    $ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e, false, $e['e__id'], $x__id);
                     break;
                 }
             }
