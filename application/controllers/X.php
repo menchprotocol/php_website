@@ -724,7 +724,7 @@ class X extends CI_Controller
 
         } elseif ( !count($is) ) {
 
-            return redirect_message( ( $top_i__id > 0 ? '/'.$top_is[0]['i__id'] : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea ID ' . $i__id . ' not found</div>');
+            return redirect_message( ( $top_i__id > 0 ? '/'.$top_i__id : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea ID ' . $i__id . ' not found</div>');
 
         } elseif(!in_array($is[0]['i__type'], $this->config->item('n___7355') /* PRIVATE */)){
 
@@ -732,9 +732,10 @@ class X extends CI_Controller
 
         }
 
-    if($top_i__id > 0 && !in_array($top_is[0]['i__type'], $this->config->item('n___7355') /* PRIVATE */)) {
-        return redirect_message('/'.$is[0]['i__type']);
-    }
+
+        if($top_i__id > 0 && !in_array($top_is[0]['i__type'], $this->config->item('n___7355') /* PRIVATE */)) {
+            return redirect_message('/'.$i__id);
+        }
 
 
 
