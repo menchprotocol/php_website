@@ -972,7 +972,7 @@ echo '</div>';
         } else if(go_next_url && go_next_url.length > 0){
 
             //Go Next:
-            $('.go-next').html(( is_logged_in ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
+            $('.go-next').html(( is_logged_in ? '<i class="fas fa-play"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
             window.location = go_next_url;
 
         }
