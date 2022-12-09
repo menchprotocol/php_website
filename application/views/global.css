@@ -449,8 +449,8 @@ img.no-frame {
 }
 .icons_large .block-icon img{
     line-height: 100%;
-    width:100%;
-    height:100%;
+    width:34px;
+    height:34px;
     border: 1px solid #ccc;
 }
 
