@@ -373,7 +373,9 @@ function toggle_headline(x__type){
         $('.headline_body_' + x__type).removeClass('hidden');
 
         //Scroll To:
-        $.scrollTo($('.headline_body_' + x__type), 0);
+        $('html, body').animate({
+            scrollTop: $('.headline_body_' + x__type).offset().top
+        }, 13);
 
     }
 
