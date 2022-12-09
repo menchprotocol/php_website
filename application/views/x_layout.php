@@ -719,7 +719,7 @@ if(!$top_i__id){
             }
 
 
-        } elseif($x__type==30901 && !$is_or_idea){
+        } elseif($x__type==30901 && !$is_or_idea && count($is_next)){
 
             //Reply:
             $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'<span class="nav-counter css__title">'.count($is_next).'</span></a>';
