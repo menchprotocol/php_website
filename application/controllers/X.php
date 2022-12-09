@@ -728,7 +728,7 @@ class X extends CI_Controller
 
         } elseif($top_i__id > 0 && !in_array($top_is[0]['i__type'], $this->config->item('n___7355') /* PRIVATE */)){
 
-            return redirect_message((superpower_unlocked(10939) ? '/~' . $top_i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This top idea is not published yet.</div>');
+            return redirect_message((superpower_unlocked(10939) ? '/~' . $top_i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not published yet.</div>');
 
         } elseif(!in_array($is[0]['i__type'], $this->config->item('n___7355') /* PRIVATE */)){
 

@@ -2278,6 +2278,9 @@ i, .btn .show-max {
     width: 100%;
     text-align: center;
 }
+.coinType12274 .cover-btn{
+    color:#000000 !important;
+}
 .mini-coin .cover-btn{
     font-size: 5em;
 }
