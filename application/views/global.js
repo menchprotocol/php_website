@@ -1500,6 +1500,8 @@ function load_tab(x__type){
             }, 987);
         }
 
+        load_coins();
+
     }, 987);
 
 
