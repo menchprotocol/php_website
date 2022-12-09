@@ -1403,7 +1403,8 @@ label {
 }
 
 .platform-navigation .btn{
-    padding: 3px 0 1px !important;
+    padding: 0px 0 3px !important; /*3px 0 1px !important; */
+
 }
 
 .coin-cover .btn{
