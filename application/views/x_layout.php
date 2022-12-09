@@ -724,10 +724,10 @@ if(!$top_i__id){
             }
 
 
-        } elseif($x__type==30901){
+        } elseif($x__type==30901 && !$is_or_idea){
 
             //Reply:
-
+            $control_btn = '<a class="go-next-group controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'</a>';
 
         } elseif($x__type==12211){
 
@@ -793,30 +793,11 @@ if(!$top_i__id){
 
 
 
-//IDAS
-if($top_i__id) {
-
-    /*
-     *
-     * IDEA TYPE INPUT CONTROLLER
-     * Now let's show the appropriate
-     * inputs that correspond to the
-     * idea type that enable the member
-     * to move forward.
-     *
-     * */
-
-    if (in_array($i['i__type'], $this->config->item('n___30646'))) {
-        //DISCOVERY ONLY
-        echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
-    }
-
-} elseif(!$one_child_hack) {
-
-    //NEXT IDEAS
+//NEXT IDEAS:
+if(!$is_or_idea){
     echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
-
 }
+
 
 
 if($top_i__id > 0 && !$top_completed && isset($tree_progress['fixed_completed_percentage']) && $tree_progress['fixed_completed_percentage']>0){
@@ -831,6 +812,7 @@ echo '</div>';
 
 ?>
 
+<style> .headline_12211 { display: none; } </style>
 <script>
     var focus_i__type = <?= $i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
