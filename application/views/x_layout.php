@@ -812,7 +812,7 @@ echo '</div>';
 
 ?>
 
-<style> .headline_12211 { display: none; } </style>
+<style> .headline_12211 { display: none !important; } </style>
 <script>
     var focus_i__type = <?= $i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
