@@ -1371,7 +1371,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
     $show_coins = !$force_order && !$discovery_mode;
-    $can_click = !$force_order && !$focus_coin && !$e_of_i;
+    $can_click = !$force_order && !$focus_coin && (!$e_of_i || $discovery_mode);
 
 
     if(is_new()){
