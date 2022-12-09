@@ -2336,9 +2336,9 @@ i, .btn .show-max {
 }
 .round-btn{
     display: inline-block;
-    width: 60px;
-    height: 60px;
-    padding:9px 0 0 0;
+    width: 65px;
+    height: 65px;
+    padding: 12px 0 0 1px;
     text-align: center;
 }
 
