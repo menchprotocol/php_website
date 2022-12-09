@@ -1,7 +1,7 @@
 <?php
 $member_e = superpower_unlocked();
-$first_segment = str_replace('/','',$this->uri->segment(1));
-$second_segment = str_replace('/','',$this->uri->segment(2));
+$first_segment = $this->uri->segment(1);
+$second_segment = $this->uri->segment(2);
 $i__id = ( isset($i['i__id']) ? $i['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___13479 = $this->config->item('e___13479');
@@ -403,15 +403,14 @@ if(!$basic_header_footer){
                             //Search
                             $href = 'href="/@'.$member_e['e__id'].'" ';
 
-                        } elseif($x__type==14937) {
-// && intval($first_segment)==$first_segment
+                        } elseif($x__type==14937 && intval($first_segment)==$first_segment) {
                             //Edit Idea:
-                            $edit_i__id = ( intval($second_segment)==$second_segment ? $second_segment : $first_segment );
+                            $edit_i__id = ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment );
                             if(!e_of_i($edit_i__id)){
-                                //continue;
+                                continue;
                             }
                             //They can edit:
-                            $href = 'href="/~'.$edit_i__id.'" title="'.$first_segment.'/'.$second_segment.'" ';
+                            $href = 'href="/~'.$edit_i__id.'" ';
 
                         } elseif(in_array($x__type, $this->config->item('n___13566'))) {
 
