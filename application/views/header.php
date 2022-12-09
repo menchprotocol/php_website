@@ -403,14 +403,19 @@ if(!$basic_header_footer){
                             //Search
                             $href = 'href="/@'.$member_e['e__id'].'" ';
 
-                        } elseif($x__type==14937 && intval($first_segment)==$first_segment) {
-                            //Edit Idea:
-                            $edit_i__id = ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment );
-                            if(!e_of_i($edit_i__id)){
-                                continue;
+                        } elseif($x__type==14937 && (intval($first_segment)==$first_segment || substr($first_segment, 0, 1)=='-')) {
+
+                            if(substr($first_segment, 0, 1)=='-'){
+                                $href = 'href="/@'.substr($first_segment, 1).'" ';
+                            } else {
+                                //Edit Idea:
+                                $edit_i__id = ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment );
+                                if(!e_of_i($edit_i__id)){
+                                    continue;
+                                }
+                                //They can edit:
+                                $href = 'href="/~'.$edit_i__id.'" ';
                             }
-                            //They can edit:
-                            $href = 'href="/~'.$edit_i__id.'" ';
 
                         } elseif(in_array($x__type, $this->config->item('n___13566'))) {
 
