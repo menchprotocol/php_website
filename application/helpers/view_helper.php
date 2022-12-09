@@ -1659,7 +1659,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_i(12273,  $i['i__id']).'</span>';
             $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_i(12274,  $i['i__id']).'</span>';
             $ui .= '<span class="hideIfEmpty">'.view_coins_i(6255,  $i['i__id']).'</span>';
-            $ui .= ( !$can_click && $member_e && !$focus_coin && !$discovery_mode ? '&nbsp;<span class="show-on-hover"><a href="'.$href.'"><i class="fas fa-arrow-right"></i></a></span>' : '' );
+            $ui .= ( !$can_click && $member_e && !$focus_coin && !$discovery_mode ? '<a href="'.$href.'"><i class="fas fa-arrow-right"></i></a>' : '' );
             $ui .= '</div></div>';
 
         }
