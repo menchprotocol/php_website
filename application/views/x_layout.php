@@ -724,9 +724,9 @@ if(!$top_i__id){
             }
 
 
-        } elseif($x__type==31121){
+        } elseif($x__type==30901){
 
-            //Discuss to show next level ideas and allow for comments:
+            //Reply:
 
 
         } elseif($x__type==12211){
