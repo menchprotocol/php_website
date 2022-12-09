@@ -1557,7 +1557,7 @@ class X_model extends CI_Model
                     } else {
 
                         //See if we need to delete single selectable transactions:
-                        foreach($this->config->item('n___6204') as $single_select_e__id){
+                        foreach($this->config->item('n___6684') as $single_select_e__id){
                             $single_selectable = $this->config->item('n___'.$single_select_e__id);
                             if(is_array($single_selectable) && count($single_selectable) && in_array($x_tag['x__up'], $single_selectable)){
                                 //Delete other siblings, if any:

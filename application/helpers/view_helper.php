@@ -987,7 +987,7 @@ function view_radio_e($focus_id, $child___id, $enable_mulitiselect){
         array_push($already_selected, $sel['x__up']);
     }
 
-    if(!count($already_selected) && in_array($focus_id, $CI->config->item('n___6204')) && superpower_unlocked()){
+    if(!count($already_selected) && in_array($focus_id, $CI->config->item('n___6684')) && superpower_unlocked()){
         //FIND DEFAULT if set in session of this user:
         foreach($CI->config->item('e___'.$focus_id) as $e__id2 => $m2){
             $var_id = @$CI->session->userdata('session_custom_ui_'.$focus_id);
@@ -1069,8 +1069,8 @@ function view_e_settings($list_id, $is_open){
 
         //Print account fields that are either Single Selectable or Multi Selectable:
         $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__following']);
-        $has_multi_selectable = in_array(6122, $acc_detail['m__following']);
-        $has_single_selectable = in_array(6204, $acc_detail['m__following']);
+        $has_multi_selectable = in_array(7231, $acc_detail['m__following']);
+        $has_single_selectable = in_array(6684, $acc_detail['m__following']);
         $tab_ui = null;
 
         //Switch if part of domain settings:
@@ -1752,7 +1752,7 @@ function view_e($x__type, $e, $extra_class = null)
     $show_text_editor = $source_of_e && !$has_any_lock && !$is_cache;
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin coin_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin coin_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
     $ui .= '<div class="cover-wrapper">';
 
