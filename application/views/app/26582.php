@@ -95,7 +95,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '<table class="table table-sm maxout filter_table"><tr>';
 
     //ANY IDEA
-    echo '<td><div style="padding-right:5px;">';
+    echo '<td><div>';
     echo '<span class="mini-header">Discovered Idea(s):</span>';
     echo '<input type="text" name="i__id" placeholder="id1,id2" value="' . $_GET['i__id'] . '" class="form-control border">';
     echo '</div></td>';
@@ -104,12 +104,12 @@ if(!$is_u_request || isset($_GET['cron'])){
 
     echo '</tr><tr>';
 
-    echo '<td><div style="padding-right:5px;">';
+    echo '<td><div>';
     echo '<span class="mini-header">Includes Profile Source:</span>';
     echo '<input type="text" name="include_e" placeholder="id1,id2" value="' . $_GET['include_e'] . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><div style="padding-right:5px;">';
+    echo '<td><div>';
     echo '</div></td>';
 
     echo '<td><span class="mini-header">Excludes Profile Source:</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';

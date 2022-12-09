@@ -277,7 +277,7 @@ echo '<form action="" method="GET">';
 echo '<table class="table table-sm maxout"><tr>';
 
 //ANY IDEA
-echo '<td><div style="padding-right:5px;">';
+echo '<td><div>';
 echo '<span class="mini-header">ANY IDEA:</span>';
 echo '<input type="text" name="any_i__id" value="' . ((isset($_GET['any_i__id'])) ? $_GET['any_i__id'] : '') . '" class="form-control border">';
 echo '</div></td>';
@@ -297,7 +297,7 @@ echo '</tr></table>';
 echo '<table class="table table-sm maxout"><tr>';
 
 //ANY SOURCE
-echo '<td><div style="padding-right:5px;">';
+echo '<td><div>';
 echo '<span class="mini-header">ANY SOURCE:</span>';
 echo '<input type="text" name="any_e__id" value="' . ((isset($_GET['any_e__id'])) ? $_GET['any_e__id'] : '') . '" class="form-control border">';
 echo '</div></td>';
@@ -317,7 +317,7 @@ echo '</tr></table>';
 echo '<table class="table table-sm maxout"><tr>';
 
 //ANY DISCOVERY
-echo '<td><div style="padding-right:5px;">';
+echo '<td><div>';
 echo '<span class="mini-header">ANY TRANSACTION:</span>';
 echo '<input type="text" name="any_x__id" value="' . ((isset($_GET['any_x__id'])) ? $_GET['any_x__id'] : '') . '" class="form-control border">';
 echo '</div></td>';
@@ -339,14 +339,14 @@ echo '<table class="table table-sm maxout"><tr>';
 
 
 //Search
-echo '<td><div style="padding-right:5px;">';
+echo '<td><div>';
 echo '<span class="mini-header">TRANSACTION MESSAGE SEARCH:</span>';
 echo '<input type="text" name="x__message_search" value="' . ((isset($_GET['x__message_search'])) ? $_GET['x__message_search'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
 if(isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0){
     //Give Option to Replace:
-    echo '<td class="' . superpower_active(14005) . '"><div style="padding-right:5px;">';
+    echo '<td class="' . superpower_active(14005) . '"><div>';
     echo '<span class="mini-header">TRANSACTION MESSAGE REPLACE:</span>';
     echo '<input type="text" name="x__message_replace" value="' . ((isset($_GET['x__message_replace'])) ? $_GET['x__message_replace'] : '') . '" class="form-control border">';
     echo '</div></td>';
@@ -363,12 +363,12 @@ echo '<td></td>';
 //Filters UI:
 echo '<table class="table table-sm maxout"><tr>';
 
-echo '<td valign="top" style="vertical-align: top;"><div style="padding-right:5px;">';
+echo '<td valign="top" style="vertical-align: top;"><div>';
 echo '<span class="mini-header">START DATE:</span>';
 echo '<input type="date" class="form-control border" name="start_range" value="'.( isset($_GET['start_range']) ? $_GET['start_range'] : '' ).'">';
 echo '</div></td>';
 
-echo '<td valign="top" style="vertical-align: top;"><div style="padding-right:5px;">';
+echo '<td valign="top" style="vertical-align: top;"><div>';
 echo '<span class="mini-header">END DATE:</span>';
 echo '<input type="date" class="form-control border" name="end_range" value="'.( isset($_GET['end_range']) ? $_GET['end_range'] : '' ).'">';
 echo '</div></td>';

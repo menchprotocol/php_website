@@ -1632,9 +1632,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         if(!$force_order && $superpower_10939 && !$focus_coin){
 
             $ui .= '<div class="coin_coins"><div class="show-on-hover">';
-            $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_i(11019,  $i['i__id']).'</span>';
-            $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_i(12273,  $i['i__id']).'</span>';
-            $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_i(12274,  $i['i__id']).'</span>';
+            $ui .= '<span class="hideIfEmpty">'.view_coins_i(11019,  $i['i__id']).'</span>';
+            $ui .= '<span class="hideIfEmpty">'.view_coins_i(12273,  $i['i__id']).'</span>';
+            $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i['i__id']).'</span>';
             $ui .= '<span class="hideIfEmpty">'.view_coins_i(6255,  $i['i__id']).'</span>';
             $ui .= ( !$can_click && $member_e && !$focus_coin && !$discovery_mode ? '<a href="'.$href.'" class="right-btn"><i class="fas fa-arrow-right"></i></a>' : '' );
             $ui .= '</div></div>';
@@ -1952,11 +1952,11 @@ function view_e($x__type, $e, $extra_class = null)
     //Coin Block
     if($superpower_10939 && !$is_cache && !$is_app && !$focus_coin){
         $ui .= '<div class="coin_coins"><div class="show-on-hover">';
-        $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_e(12273,  $e['e__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_e(12273,  $e['e__id']).'</span>';
         if($superpower_13422){
-            $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_e(11030,  $e['e__id']).'</span>';
+            $ui .= '<span class="hideIfEmpty">'.view_coins_e(11030,  $e['e__id']).'</span>';
         }
-        $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_e(12274,  $e['e__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_e(12274,  $e['e__id']).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(6255,  $e['e__id']).'</span>';
         $ui .= '</div></div>';
     }

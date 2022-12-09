@@ -25,7 +25,7 @@ if(strlen($_GET['i__id'])){
     echo '<table class="table table-sm maxout filter_table"><tr>';
 
     //ANY IDEA
-    echo '<td><div style="padding-right:5px;">';
+    echo '<td><div>';
     echo '<span class="mini-header">Discovered Idea(s):</span>';
     echo '<input type="text" name="i__id" placeholder="id1,id2" value="' . $_GET['i__id'] . '" class="form-control border">';
     echo '</div></td>';
@@ -34,7 +34,7 @@ if(strlen($_GET['i__id'])){
 
     echo '</tr><tr>';
 
-    echo '<td><div style="padding-right:5px;">';
+    echo '<td><div>';
     echo '<span class="mini-header">Includes Profile Source(s):</span>';
     echo '<input type="text" name="include_e" placeholder="id1,id2" value="' . $_GET['include_e'] . '" class="form-control border">';
     echo '</div></td>';
@@ -43,7 +43,7 @@ if(strlen($_GET['i__id'])){
 
     echo '</tr><tr>';
 
-    echo '<td><div style="padding-right:5px;">';
+    echo '<td><div>';
     echo '<span class="mini-header">List X-Axis Source(s):</span>';
     echo '<input type="text" name="xaxis_e" placeholder="id1,id2" value="' . $_GET['xaxis_e'] . '" class="form-control border">';
     echo '</div></td>';

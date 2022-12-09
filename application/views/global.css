@@ -2004,7 +2004,7 @@ i, .btn .show-max {
     overflow-y: auto;
     display: block;
     margin: 0 5px;
-    max-height: 64%;
+    max-height: 52%;
     top:51px;
 }
 
@@ -2017,7 +2017,7 @@ i, .btn .show-max {
 }
 
 .coin-12273 .cover-content{
-    top:59px;
+    top:54px;
 }
 .hide-subline .subtle-line {
     display: none;
