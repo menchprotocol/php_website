@@ -1301,18 +1301,15 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     }
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
-    $e_of_i = e_of_i($i['i__id']);
+    $cache_app = in_array($x__type, $CI->config->item('n___14599'));
+    $e_of_i = ( $cache_app ? false : e_of_i($i['i__id']) );
     $user_input = $focus_e;
     $member_e = superpower_unlocked();
     $superpower_10939 = superpower_active(10939, true);
-    $superpower_12700 = superpower_active(12700, true);
-    $superpower_12673 = superpower_active(12673, true);
 
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = $top_i__id>0 || in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
-    $cache_app = in_array($x__type, $CI->config->item('n___14599'));
-    $editing_enabled = !$cache_app && in_array($x__type, $CI->config->item('n___14502')) && ($e_of_i || $superpower_12700); //IDEA EDITING
     $focus_coin = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $has_self = $member_e && $focus_e && $member_e['e__id']==$focus_e['e__id'];
 
@@ -1343,7 +1340,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             'x__right' => $previous_i['i__id'],
             'x__up' => 14488, //Force Order
         ), array(), 1)));
-    $has_sortable = !$focus_coin && !$force_order && $editing_enabled && in_array($x__type, $CI->config->item('n___4603'));
+    $has_sortable = !$focus_coin && !$force_order && $e_of_i && in_array($x__type, $CI->config->item('n___4603'));
     $i_title = view_i_title($i);
 
     if(in_array($i['i__type'], $CI->config->item('n___14454')) && !$is_completed) {
@@ -1374,7 +1371,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
     $show_coins = !$force_order && !$discovery_mode;
-    $can_click = !$force_order && !$focus_coin && !$editing_enabled;
+    $can_click = !$force_order && !$focus_coin && !$e_of_i;
 
 
     if(is_new()){
@@ -1480,7 +1477,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
                 } elseif($e__id==29771){
                     //Clone:
                     $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item css__title">'.$anchor.'</a>';
-                } elseif($e__id==28636 && $superpower_12700 && $x__id){
+                } elseif($e__id==28636 && $e_of_i && $x__id){
                     //Transaction Details
                     $action_buttons .= '<a href="/-4341?x__id='.$x__id.'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
                 } elseif($e__id==28637 && isset($i['x__type'])){
@@ -1530,7 +1527,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
         //Idea Type
         $ui .= '<td width="20%"><div class="show-on-hover">';
-        $ui .= view_input_dropdown(4737, $i['i__type'], null, $editing_enabled && !$discovery_mode, false, $i['i__id']);
+        $ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
         $ui .= '</div></td>';
 
         //Idea Link:
@@ -1538,7 +1535,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         if($x__id){
             foreach($CI->config->item('e___31770') as $x__type1 => $m1){
                 if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
-                    $ui .= view_input_dropdown($x__type1, $i['x__type'], null, $editing_enabled, false, $i['i__id'], $x__id);
+                    $ui .= view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i, false, $i['i__id'], $x__id);
                     break;
                 }
             }
@@ -1547,7 +1544,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
         //Edit:
-        $ui .= '<td width="20%"><div class="show-on-hover">'.($editing_enabled ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.($e_of_i ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
 
         //Menu:
         $ui .= '<td width="20%"><div class="show-on-hover '.( $has_sortable ? ' x_sort ' : '' ).'">'.$o_menu.'</div></td>';
@@ -1580,9 +1577,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
         //TITLE
-        if($e_of_i && $editing_enabled){
+        if($e_of_i){
             //Editable title:
-            $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $editing_enabled, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
+            $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
         } elseif($can_click){
             $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
         } else {
@@ -1612,7 +1609,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
                 $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
             }
 
-            if($e_of_i && $editing_enabled) {
+            if($e_of_i) {
                 //Can edit:
                 $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963(' . $i['i__id'] . ')" class="mini-font messages_4231_' . $i['i__id'] . '">' . (strlen($messages) ? $messages : '<i class="no-message">Write Message...</i>') . '</a>';
             } elseif($can_click){
