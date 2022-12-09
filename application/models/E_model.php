@@ -28,11 +28,6 @@ class E_model extends CI_Model
             'session_superpowers_activated' => array(),
         );
 
-        if($is_cookie){
-            //Make sure they also belong to this website's members:
-            $this->E_model->scissor_add_e(website_setting(0), 30095, $e['e__id'], null);
-        }
-
         if(!$update_session){
 
             if(!$is_cookie){
@@ -41,6 +36,9 @@ class E_model extends CI_Model
                 $cookie_time = time();
                 $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.md5($e['e__id'].$cookie_time.view_memory(6404,30863));
                 setcookie('auth_cookie', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
+
+                //Make sure they also belong to this website's members:
+                $this->E_model->scissor_add_e(website_setting(0), 30095, $e['e__id'], null);
 
             }
 
