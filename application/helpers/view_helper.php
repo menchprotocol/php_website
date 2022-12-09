@@ -1372,7 +1372,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-    $show_coins = !$force_order && !$discovery_mode;
     $can_click = !$force_order && !$focus_coin && (!$e_of_i || $discovery_mode);
 
 
@@ -1632,12 +1631,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
         $ui .= '</div></div>';
 
-        if($superpower_10939 && !$focus_coin && $show_coins){
+        if(!$force_order && $superpower_10939 && !$focus_coin){
 
             $ui .= '<div class="coin_coins"><div class="show-on-hover">';
-            if($superpower_10939){
-                $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_i(11019,  $i['i__id']).'</span>';
-            }
+            $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_i(11019,  $i['i__id']).'</span>';
             $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_i(12273,  $i['i__id']).'</span>';
             $ui .= '<span class="hideIfEmpty" style="padding-right:5px;">'.view_coins_i(12274,  $i['i__id']).'</span>';
             $ui .= '<span class="hideIfEmpty">'.view_coins_i(6255,  $i['i__id']).'</span>';
