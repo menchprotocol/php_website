@@ -45,25 +45,22 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
             'x__message' => $email_address,
             'x__up' => 3288, //Email
         ), array('x__down')) as $email_found){
+            //Existing Member, Add to This Website:
             $email_e__id = $email_found['e__id'];
+            $this->E_model->scissor_add_e(website_setting(0), 30095, $email_e__id, null);
+            $stats['already_there']++;
             break;
         }
 
-        if($email_e__id){
-            //Add member to Domain Member Groups if not already there:
-            $this->E_model->scissor_add_e(website_setting(0), 30095, $email_e__id, null);
-            $stats['already_there']++;
+        if(!$email_e__id){
+            //New line to insert:
+            $member_result = $this->E_model->add_member($full_name, $email_address, $phone_number, null, 0, true);
+            if(!$member_result['status']) {
+                $stats['errors']++;
+            } else {
+                $stats['unique_lines']++;
+            }
         }
-
-
-        //New line to insert:
-        $member_result = $this->E_model->add_member($full_name, $email_address, $phone_number, null, 0, true);
-        if(!$member_result['status']) {
-            $stats['errors']++;
-        } else {
-            $stats['unique_lines']++;
-        }
-
     }
 
     print_r($stats);

@@ -319,21 +319,5 @@ class App extends CI_Controller
 
     }
 
-    function auth0_create($sign_i__id, $x__website = 0){
-
-        //New account to be created:
-        $member_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']), null, null, $x__website); //, urldecode($_GET['image_url'])
-        if(!$member_result['status']) {
-            $this->X_model->create(array(
-                'x__type' => 4246, //Platform Bug Reports
-                'x__message' => 'auth0_callback() Failed to create new member: '.$member_result['message'],
-            ));
-            die('Error creating a new account: '.$member_result['message']);
-        }
-
-        header('Location: '.new_member_redirect($member_result['e']['e__id'], $sign_i__id));
-
-    }
-
 
 }

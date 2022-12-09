@@ -1,4 +1,4 @@
 <?php
 
 //Go to URL:
-header('Location: '.urldecode($_GET['go_to']));
+js_redirect(urldecode($_GET['go_to']), 13);

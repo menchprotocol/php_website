@@ -26,14 +26,12 @@ if($client_id && $client_secret && $server_name){
     $auth0->logout();
     session_delete();
 
-
     echo '<div class="center-info">';
     echo '<div class="text-center platform-large">'.get_domain('m__cover').'</div>';
     echo '<p style="margin-top:13px; text-align: center;">'.view_shuffle_message(12694).'</p>';
     echo '</div>';
 
-
-    header('Location: ' . sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', $client_id, 'https://'.$server_name));
+    js_redirect(sprintf('http://%s/v2/logout?client_id=%s&returnTo=%s', 'mench.auth0.com', $client_id, 'https://'.$server_name), 13);
 
 
 } else {

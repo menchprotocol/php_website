@@ -467,7 +467,7 @@ function new_member_redirect($e__id, $sign_i__id){
     } elseif(isset($_GET['url'])) {
         return $_GET['url'];
     } else {
-        return '/@'.$e__id;
+        return '/';
     }
 }
 

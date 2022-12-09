@@ -28,6 +28,11 @@ class E_model extends CI_Model
             'session_superpowers_activated' => array(),
         );
 
+        if($is_cookie){
+            //Make sure they also belong to this website's members:
+            $this->E_model->scissor_add_e(website_setting(0), 30095, $e['e__id'], null);
+        }
+
         if(!$update_session){
 
             if(!$is_cookie){
