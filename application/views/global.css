@@ -176,7 +176,7 @@ li a {
     padding:10px 0 !important;
     text-align: center;
 }
-.avatar-item.active, .btn-group a.active , .itemsetting.active{
+.avatar-item.active, .btn-group a.active , .itemsetting.active, .itemsetting:hover{
     background-color: #999999 !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
@@ -1901,7 +1901,7 @@ i, .btn .show-max {
     color:#999999 !important;
 }
 
-.list-radio-select .list-group-item.active {
+.list-radio-select .list-group-item.active, .list-radio-select .list-group-item:hover {
     color:#000000 !important;
     border-radius: 22px !important;
     padding: 8px 5px !important;
