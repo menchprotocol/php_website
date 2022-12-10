@@ -543,7 +543,7 @@ if($top_i__id) {
                 echo 'Final sale: no refunds. ';
             }
 
-            echo 'You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<i>Return to Merchant</i>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
+            echo 'You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<span class="zq6255">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
 
             echo '</div>';
             echo '</div>';
