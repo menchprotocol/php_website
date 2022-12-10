@@ -682,9 +682,10 @@ class E_model extends CI_Model
 
     }
 
-    function recursive_followers($e__id, $include_e = array(), $exclude_e= array()){
+    function recursive_followers($e__id, $include_e = array(), $exclude_e= array(), $max_levels = 3, $current_level = 0){
 
         $flat_es = array();
+        $current_level++;
 
         foreach($this->X_model->fetch(array(
             'x__up' => $e__id,
@@ -711,17 +712,20 @@ class E_model extends CI_Model
                 continue;
             }
 
+            //Is this a new matching source?
             if(!isset($flat_es[$e_follower['e__id']])){
                 $flat_es[$e_follower['e__id']] = $e_follower;
             }
 
-            //Do we have more children?
-           foreach($this->E_model->recursive_followers($e_follower['e__id'], $include_e, $exclude_e) as $e_recursive_follower){
-               if(!isset($flat_es[$e_recursive_follower['e__id']])){
-                   $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
-               }
-           }
 
+            //Do we have more children?
+            if($current_level<$max_levels){
+                foreach($this->E_model->recursive_followers($e_follower['e__id'], $include_e, $exclude_e, $max_levels, $current_level) as $e_recursive_follower){
+                    if(!isset($flat_es[$e_recursive_follower['e__id']])){
+                        $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
+                    }
+                }
+            }
         }
 
         return $flat_es;
