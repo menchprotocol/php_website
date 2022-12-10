@@ -516,6 +516,10 @@ class X extends CI_Controller
         $focus_e = array();
         $previous_i = array();
 
+        if(!isset($_POST['focus_coin'])){
+            die('Missing input. Refresh and try again.');
+        }
+
         if($_POST['focus_coin']==12274){
 
             //SOURCE
