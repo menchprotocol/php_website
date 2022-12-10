@@ -795,6 +795,12 @@ class E extends CI_Controller
             ));
         }
 
+
+        //Dispatch Any Emails Necessary:
+        foreach($this->E_model->scissor_e(31065, $_POST['selected_e__id']) as $e_item) {
+            $this->X_model->send_dm($member_e['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
+        }
+
         if($_POST['focus_id']==28904){
 
             //Add special transaction to monitor unsubscribes:
@@ -809,8 +815,8 @@ class E extends CI_Controller
 
             //Inform user if they Permanently Unsubscribed:
             if(in_array($_POST['selected_e__id'], $this->config->item('n___31057'))){
-                $e___31065 = $this->config->item('e___31065'); //NAVIGATION
-                $this->X_model->send_dm($member_e['e__id'], $e___31065[31066]['m__title'], $e___31065[31066]['m__message'], array(), 31066);
+                //$e___31065 = $this->config->item('e___31065'); //NAVIGATION
+                //$this->X_model->send_dm($member_e['e__id'], $e___31065[31066]['m__title'], $e___31065[31066]['m__message'], array(), 31066);
             }
 
         }

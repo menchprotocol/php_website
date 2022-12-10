@@ -495,25 +495,21 @@ class X_model extends CI_Model
     function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_id = 0, $x__website = 0)
     {
 
-        $notification_levels = $this->X_model->fetch(array(
-            'x__up IN (' . join(',', $this->config->item('n___28904')) . ')' => null, //Manage Notifications
-            'x__down' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ));
+        $bypass_notifications = in_array($template_id, $this->config->item('n___31779'));
 
-        if (!count($notification_levels)) {
-            return array(
-                'status' => 0,
-                'message' => 'Unknown user status',
-            );
-        }
-
-        if(!in_array($notification_levels[0]['x__up'], $this->config->item('n___30820'))){
-            return array(
-                'status' => 0,
-                'message' => 'User is currently NOT subscribed',
-            );
+        if(!$bypass_notifications){
+            $notification_levels = $this->X_model->fetch(array(
+                'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Subscriber
+                'x__down' => $e__id,
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ));
+            if (!count($notification_levels)) {
+                return array(
+                    'status' => 0,
+                    'message' => 'User is not an active subscriber',
+                );
+            }
         }
 
         $stats = array(
