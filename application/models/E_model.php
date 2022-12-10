@@ -709,7 +709,7 @@ class E_model extends CI_Model
                         'x__status' => $x['x__status'],
                         'x__type' => $x['x__type'],
                         'x__reference' => $x['x__reference'],
-                        'LOWER(x__message)' => strtolower($x['x__message']),
+                        //'LOWER(x__message)' => strtolower($x['x__message']),
 
                         'x__right' => $x['x__right'],
                         'x__left' => $x['x__left'],
