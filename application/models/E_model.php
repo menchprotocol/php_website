@@ -711,7 +711,7 @@ class E_model extends CI_Model
                         'x__right' => $x['x__right'],
                         'x__down' => $x['x__down'],
                         'x__reference' => $x['x__reference'],
-                        'x__message' => $x['x__message'],
+                        'LOWER(x__message)' => strtolower($x['x__message']),
                     );
                     if($x['x__up']==$e__id){
                         $filters['x__up'] = $migrate_s__id;
