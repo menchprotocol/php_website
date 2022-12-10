@@ -498,6 +498,7 @@ class X_model extends CI_Model
         $bypass_notifications = in_array($template_id, $this->config->item('n___31779'));
 
         if(!$bypass_notifications){
+            $sms_subscriber = in_array($notification_levels[0]['x__up'], $this->config->item('n___28915'));
             $notification_levels = $this->X_model->fetch(array(
                 'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Subscriber
                 'x__down' => $e__id,
@@ -510,6 +511,8 @@ class X_model extends CI_Model
                     'message' => 'User is not an active subscriber',
                 );
             }
+        } else {
+            $sms_subscriber = false;
         }
 
         $stats = array(
@@ -548,7 +551,7 @@ class X_model extends CI_Model
         $twilio_account_sid = website_setting(30859);
         $twilio_auth_token = website_setting(30860);
         $twilio_from_number = website_setting(27673);
-        if(in_array($notification_levels[0]['x__up'], $this->config->item('n___28915')) && $twilio_account_sid && $twilio_auth_token && $twilio_from_number){
+        if($sms_subscriber && $twilio_account_sid && $twilio_auth_token && $twilio_from_number){
 
             //Yes, generate message
             $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
