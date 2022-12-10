@@ -1235,6 +1235,7 @@ a.headline {
     overflow: hidden;
     line-height: 151%;
     margin-bottom: -11px;
+    padding-top: 4px;
 }
 
 .platform-logo div.img {
@@ -2583,12 +2584,6 @@ h4.css__title{
     background-color: transparent;
 }
 
-
-@media (min-width:600px) {
-    .text-logo {
-        padding-top: 4px;
-    }
-}
 
 
 @media (max-width:599px) { /* Used to be 767px */
