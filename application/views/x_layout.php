@@ -540,10 +540,10 @@ if($top_i__id) {
                 'x__right' => $i['i__id'],
                 'x__up' => 30615, //Is Refundable
             )))){
-                echo 'Final Sale: No Refunds or Transfers. ';
+                echo 'Final sale: no refunds. ';
             }
 
-            echo 'By purchasing a ticket you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>. You don\'t need to create a Paypal account as you can checkout as guest by just entering your credit card details. Once paid, click on "Return to Merchant" to continue back here.';
+            echo 'You don\'t need to create a Paypal account as you can checkout as guest by just entering your credit card details. Once paid, click on "Return to Merchant" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
 
             echo '</div>';
             echo '</div>';
