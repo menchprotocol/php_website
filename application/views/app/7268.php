@@ -27,7 +27,7 @@ if(isset($_GET['e__id'])){
 
     }
 
-    echo 'Here are the duplicates found:<hr />';
+    echo 'Here are the '.count($duplicates_found).' duplicates found:<hr />';
     print_r($duplicates_found);
 
 } elseif(!isset($_GET['search_by_name'])){
