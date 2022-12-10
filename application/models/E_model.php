@@ -730,6 +730,7 @@ class E_model extends CI_Model
             if($s__level<$max_levels && $s__count<$hard_limit){
                 foreach($this->E_model->recursive_followers($e_follower['e__id'], $include_e, $exclude_e, $max_levels, $s__level, $s__count) as $e_recursive_follower){
                     if(!isset($flat_es[$e_recursive_follower['e__id']])){
+                        $s__count++;
                         $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
                     }
                 }
