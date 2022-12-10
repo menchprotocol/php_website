@@ -2,24 +2,62 @@
 
 //SOURCE LIST DUPLICATES
 
-$q = $this->db->query('select en1.* from table__e en1 where (select count(*) from table__e en2 where en2.e__title = en1.e__title AND en2.e__type IN (' . join(',', $this->config->item('n___7358')) . ')) > 1 AND en1.e__type IN (' . join(',', $this->config->item('n___7358')) . ') ORDER BY en1.e__title ASC');
-$duplicates = $q->result_array();
+if(isset($_GET['e__id'])){
 
-if(count($duplicates) > 0){
-
-    $prev_title = null;
-    $e___6177 = $this->config->item('e___6177'); //Source Status
-
-    foreach($duplicates as $en) {
-
-        if ($prev_title != $en['e__title']) {
-            echo '<hr />';
-            $prev_title = $en['e__title'];
+    //Find Link Content DUplicates for this Source:
+    $main_index = array();
+    $duplicates_found = array();
+    foreach($this->X_model->fetch(array(
+        'x__up' => $_GET['e__id'],
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    ), array(), 0) as $x) {
+        $x__message_md5 = md5($x['x__message']);
+        if(!isset($main_index[$x__message_md5])){
+            $main_index[$x__message_md5] = array();
+        } else {
+            //Found Duplicate!
+            if(!isset($duplicates_found[$x__message_md5])){
+                $duplicates_found[$x__message_md5] = $main_index[$x__message_md5];
+            }
+            array_push($duplicates_found[$x__message_md5], $x__message_md5);
         }
 
-        echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__type']]['m__title'].': '.$e___6177[$en['e__type']]['m__message'].'">' . $e___6177[$en['e__type']]['m__cover'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
+        array_push($main_index[$x__message_md5], $x__message_md5);
+
     }
 
+    echo 'Here are the duplicates found:<hr />';
+    print_r($duplicates_found);
+
+} elseif(!isset($_GET['search_by_name'])){
+
+    echo '<p>Either enter ?e__id= in URL to search specific source Follower Message Duplicates (Finding duplicate emails for example) or <a href="/-7268?search_by_name=1"><b>Find Duplicate Sources by Name</b></a></p>.';
+
 } else {
-    echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>No duplicates found!';
+
+    //Find by name:
+    $q = $this->db->query('select en1.* from table__e en1 where (select count(*) from table__e en2 where en2.e__title = en1.e__title AND en2.e__type IN (' . join(',', $this->config->item('n___7358')) . ')) > 1 AND en1.e__type IN (' . join(',', $this->config->item('n___7358')) . ') ORDER BY en1.e__title ASC');
+    $duplicates = $q->result_array();
+
+    if(count($duplicates) > 0){
+
+        $prev_title = null;
+        $e___6177 = $this->config->item('e___6177'); //Source Status
+
+        foreach($duplicates as $en) {
+
+            if ($prev_title != $en['e__title']) {
+                echo '<hr />';
+                $prev_title = $en['e__title'];
+            }
+
+            echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__type']]['m__title'].': '.$e___6177[$en['e__type']]['m__message'].'">' . $e___6177[$en['e__type']]['m__cover'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
+        }
+
+    } else {
+        echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>No duplicates found!';
+    }
+
 }
+
