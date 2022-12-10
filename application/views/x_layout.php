@@ -525,11 +525,6 @@ if($top_i__id) {
             echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].' <b class="css__title">*</b></td>';
             echo '</tr>';
 
-            echo '<tr>';
-            echo '<td class="table-btn first_btn" style="text-align: right;">Delivery:&nbsp;&nbsp;</td>';
-            echo '<td class="table-btn first_btn">Will Call (Free): Your tickets will be waiting for you at the venu on the day of the event. Make sure to bring photo ID.</td>';
-            echo '</tr>';
-
             echo '</table>';
 
 
@@ -543,7 +538,7 @@ if($top_i__id) {
                 echo 'Final sale: no refunds. ';
             }
 
-            echo 'You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<span style="color:#FC1B44 !important;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
+            echo 'Ticket Delivery is Will Call (Free): Your tickets will be waiting for you at the venu on the day of the event (No Email Tickets). Make sure to bring photo ID. You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<span style="color:#FC1B44 !important;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
 
             echo '</div>';
             echo '</div>';
