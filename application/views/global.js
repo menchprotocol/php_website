@@ -2227,7 +2227,7 @@ function e_radio(focus_id, selected_e__id, enable_mulitiselect){
 
     //Any warning needed?
     if(!js_n___31780.includes(selected_e__id)){
-        var r = confirm(js_e___31780[selected_e__id]['m__message']);
+        var r = confirm(js_e___31780[selected_e__id+'']['m__message']);
         if (r == false) {
             return false;
         }
