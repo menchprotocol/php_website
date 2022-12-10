@@ -702,6 +702,47 @@ class E_model extends CI_Model
                     '(x__up = '.$e__id.' OR x__down = '.$e__id.' OR x__source = '.$e__id.')' => null,
                 ), array(), 0) as $x){
 
+                    //Make sure not duplicate, if so, delete:
+                    $update_filter = array();
+                    $filters = array(
+                        'x__id !=' => $x['x__id'],
+                        'x__status' => $x['x__status'],
+                        'x__type' => $x['x__type'],
+                        'x__right' => $x['x__right'],
+                        'x__down' => $x['x__down'],
+                        'x__reference' => $x['x__reference'],
+                        'x__message' => $x['x__message'],
+                    );
+                    if($x['x__up']==$e__id){
+                        $filters['x__up'] = $migrate_s__id;
+                        $update_filter['x__up'] = $migrate_s__id;
+                    }
+                    if($x['x__down']==$e__id){
+                        $filters['x__down'] = $migrate_s__id;
+                        $update_filter['x__down'] = $migrate_s__id;
+                    }
+                    if($x['x__source']==$e__id){
+                        $filters['x__source'] = $migrate_s__id;
+                        $update_filter['x__source'] = $migrate_s__id;
+                    }
+
+                    if(count($this->X_model->fetch($filters))){
+
+                        //There is a duplicate of this, no point to migrate! Just Remove:
+                        $this->X_model->update($x['x__id'], array(
+                            'x__status' => 6173,
+                        ), $x__source, 31784 /* Source Link Migrated */);
+
+                    } else {
+
+                        $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__source, 31784 /* Source Link Migrated */);
+
+                    }
+
+
+
+
+
                     //Migrate this transaction:
                     if($x['x__up']==$e__id){
                         $x_adjusted += $this->X_model->update($x['x__id'], array(

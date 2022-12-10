@@ -236,8 +236,8 @@ class I_model extends CI_Model
                         $update_filter['x__right'] = $migrate_s__id;
                     }
                     if($x['x__left']==$i__id){
-                        $filters['x__right'] = $migrate_s__id;
-                        $update_filter['x__right'] = $migrate_s__id;
+                        $filters['x__left'] = $migrate_s__id;
+                        $update_filter['x__left'] = $migrate_s__id;
                     }
                     if(count($this->X_model->fetch($filters))){
 
