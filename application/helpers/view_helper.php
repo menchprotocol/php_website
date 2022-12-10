@@ -1878,7 +1878,7 @@ function view_e($x__type, $e, $extra_class = null)
 
 
         $ui .= '<td width="20%"><div class="show-on-hover">';
-        if($x__id){
+        if($x__id && $superpower_13422){
             foreach($CI->config->item('e___31770') as $x__type1 => $m1){
                 if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
                     foreach($CI->X_model->fetch(array(
