@@ -498,7 +498,6 @@ class X_model extends CI_Model
         $bypass_notifications = in_array($template_id, $this->config->item('n___31779'));
 
         if(!$bypass_notifications){
-            $sms_subscriber = in_array($notification_levels[0]['x__up'], $this->config->item('n___28915'));
             $notification_levels = $this->X_model->fetch(array(
                 'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Subscriber
                 'x__down' => $e__id,
@@ -511,6 +510,7 @@ class X_model extends CI_Model
                     'message' => 'User is not an active subscriber',
                 );
             }
+            $sms_subscriber = in_array($notification_levels[0]['x__up'], $this->config->item('n___28915'));
         } else {
             $sms_subscriber = false;
         }
