@@ -3135,6 +3135,31 @@ h4.css__title{
     border-color: #007AFD !important;
 }
 
+.zq12273_12274 {
+    --fa-primary-color: #FFC500;
+    --fa-secondary-color: #007AFD;
+}
+.zq12274_12273 {
+    --fa-primary-color: #007AFD;
+    --fa-secondary-color: #FFC500;
+}
+.zq12273_6255 {
+    --fa-primary-color: #FFC500;
+    --fa-secondary-color: #FC1B44;
+}
+.zq6255_12273 {
+    --fa-primary-color: #FC1B44;
+    --fa-secondary-color: #FFC500;
+}
+.zq12274_6255 {
+    --fa-primary-color: #007AFD;
+    --fa-secondary-color: #FC1B44;
+}
+.zq6255_12274 {
+    --fa-primary-color: #FC1B44;
+    --fa-secondary-color: #007AFD;
+}
+
 .custom_ui_28979_28980 .btn.btn-12273,
 .custom_ui_28979_28980 .btn.btn-12273:active,
 .custom_ui_28979_28980 .btn.btn-12273.active,
