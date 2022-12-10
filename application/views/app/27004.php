@@ -26,9 +26,7 @@ if (!isset($_GET['e__id']) && $member_e) {
 
 if (isset($_GET['e__id'])) {
 
-    print_r($this->E_model->recursive_followers($_GET['e__id'], array(@$_GET['include_e']), array(@$_GET['exclude_e'])));
-
-    die();
+    print_r($this->E_model->recursive_followers($_GET['e__id'], ( isset($_GET['include_e']) ? array($_GET['include_e']) : array() ), ( isset($_GET['exclude_e']) ? array($_GET['exclude_e']) : array() )));
 
     //Generate list of payments:
     $payment_es = $this->X_model->fetch(array(
