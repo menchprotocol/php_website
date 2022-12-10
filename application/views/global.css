@@ -3159,6 +3159,42 @@ h4.css__title{
     --fa-primary-color: #FC1B44;
     --fa-secondary-color: #007AFD;
 }
+.primaryopacity0{
+    --fa-primary-opacity: 0;
+}
+.primaryopacity20{
+    --fa-primary-opacity: 0.20;
+}
+.primaryopacity40{
+    --fa-primary-opacity: 0.40;
+}
+.primaryopacity60{
+    --fa-primary-opacity: 0.60;
+}
+.primaryopacity80{
+    --fa-primary-opacity: 0.80;
+}
+.primaryopacity100{
+    --fa-primary-opacity: 1.00;
+}
+.secondaryopacity0{
+    --fa-secondary-opacity: 0;
+}
+.secondaryopacity20{
+    --fa-secondary-opacity: 0.20;
+}
+.secondaryopacity40{
+    --fa-secondary-opacity: 0.40;
+}
+.secondaryopacity60{
+    --fa-secondary-opacity: 0.60;
+}
+.secondaryopacity80{
+    --fa-secondary-opacity: 0.80;
+}
+.secondaryopacity100{
+    --fa-secondary-opacity: 1.00;
+}
 
 .custom_ui_28979_28980 .btn.btn-12273,
 .custom_ui_28979_28980 .btn.btn-12273:active,
