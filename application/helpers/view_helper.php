@@ -1866,6 +1866,7 @@ function view_e($x__type, $e, $extra_class = null)
         foreach($CI->X_model->fetch(array(
             'x__down' => $e['e__id'],
             'x__type' => 4251, //New Source Created
+            'x__source !=' => $e['e__ide'],
         ), array('x__source')) as $creator){
             $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
         }
