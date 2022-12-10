@@ -716,7 +716,7 @@ class E_model extends CI_Model
             }
 
             //Do we have more children?
-           foreach(recursive_followers($e_follower['e__id'], $include_e, $exclude_e) as $e_recursive_follower){
+           foreach($this->E_model->recursive_followers($e_follower['e__id'], $include_e, $exclude_e) as $e_recursive_follower){
                if(!isset($flat_es[$e_recursive_follower['e__id']])){
                    $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
                }
