@@ -1235,7 +1235,7 @@ a.headline {
     overflow: hidden;
     line-height: 151%;
     margin-bottom: -11px;
-    padding-top: 4px;
+    padding-top: 4px !important;
 }
 
 .platform-logo div.img {
