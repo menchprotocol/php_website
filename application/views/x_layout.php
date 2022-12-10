@@ -538,7 +538,7 @@ if($top_i__id) {
                 echo 'Final sale: no refunds. ';
             }
 
-            echo 'Ticket Delivery is Will Call (Free): Your tickets will be waiting for you at the venu on the day of the event (No Email Tickets). Make sure to bring photo ID. You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<span style="color:#FC1B44 !important;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
+            echo 'Ticket Delivery is Will Call (Free): Your ticket(s) will be waiting for you at the venue on the day of the event, which means you will not receive any email tickets. Make sure to bring photo ID. You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<span style="color:#FC1B44 !important;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
 
             echo '</div>';
             echo '</div>';
