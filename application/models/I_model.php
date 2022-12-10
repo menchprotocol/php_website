@@ -229,7 +229,7 @@ class I_model extends CI_Model
                         'x__up' => $x['x__up'],
                         'x__down' => $x['x__down'],
                         'x__reference' => $x['x__reference'],
-                        'x__message' => $x['x__message'],
+                        'LOWER(x__message)' => strtolower($x['x__message']),
                     );
                     if($x['x__right']==$i__id){
                         $filters['x__right'] = $migrate_s__id;
