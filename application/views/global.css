@@ -2774,7 +2774,10 @@ h4.css__title{
 .custom_ui_13884_13886 .mid-text-line span{
     background-color:#000000;
     color: #FFFFFF;
+}
 
+.custom_ui_13884_13886.home_black_font{
+    background-color:#FFFFFF;
 }
 
 .custom_ui_13884_13886 .btn-default i,
