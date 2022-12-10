@@ -35,7 +35,7 @@ if(isset($_GET['e__id'])){
                     $lowest_e_id = $e__id;
                 }
             }
-            array_push($main_index[$x__message_md5], 'LL'.$lowest_e_id);
+            array_push($main_index[$x__message_md5], (count($e__ids)-1).' Merged Into @'.$lowest_e_id);
         }
     }
 
