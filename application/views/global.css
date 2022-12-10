@@ -1223,6 +1223,8 @@ a.headline {
     padding: 10px;
 }
 
+
+
 .text-logo {
     font-size: 1.25em;
     display: inline-block;
@@ -2580,6 +2582,14 @@ h4.css__title{
 .nav-tabs .nav-link.active{
     background-color: transparent;
 }
+
+
+@media (min-width:600px) {
+    .text-logo {
+        padding-top: 4px;
+    }
+}
+
 
 @media (max-width:599px) { /* Used to be 767px */
 
