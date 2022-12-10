@@ -696,14 +696,15 @@ class E_model extends CI_Model
         ), array('x__down'), 0) as $e_follower) {
 
             //Filter Sources, if needed:
+            $qualified_source = true;
             if(count($include_e) && count($include_e)!=count($this->X_model->fetch(array(
                     'x__up IN (' . join(',', $include_e) . ')' => null,
                     'x__down' => $e_follower['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 //Must include all sources, skip:
-                continue;
+                $qualified_source = false;
             } elseif(count($exclude_e) && count($this->X_model->fetch(array(
                     'x__up IN (' . join(',', $exclude_e) . ')' => null,
                     'x__down' => $e_follower['e__id'],
@@ -711,12 +712,12 @@ class E_model extends CI_Model
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                 //Must exclude all sources, skip:
-                continue;
+                $qualified_source = false;
             }
 
 
             //Is this a new matching source?
-            if(!isset($flat_es[$e_follower['e__id']])){
+            if($qualified_source && !isset($flat_es[$e_follower['e__id']])){
                 $s__count++;
                 $e_follower2['x__id'] = $e_follower['x__id'];
                 $e_follower2['e__id'] = $e_follower['e__id'];
