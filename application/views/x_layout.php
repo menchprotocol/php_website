@@ -522,13 +522,13 @@ if($top_i__id) {
 
             echo '<tr>';
             echo '<td class="table-btn first_btn" style="text-align: right;  width:34% !important;">Total:&nbsp;&nbsp;</td>';
-            echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].'<b class="css__title">*</b></td>';
+            echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].'<b>*</b></td>';
             echo '</tr>';
 
             echo '</table>';
 
 
-            echo '<div class="sub_note"><b class="css__title">* NOTES:</b> ';
+            echo '<div class="sub_note"><b>*</b>';
             if(!count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
