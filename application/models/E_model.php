@@ -682,11 +682,11 @@ class E_model extends CI_Model
 
     }
 
-    function recursive_followers($e__id, $include_e = array(), $exclude_e= array(), $max_levels = 3, $current_level = 0){
+    function recursive_followers($e__id, $include_e = array(), $exclude_e= array(), $max_levels = 3, $s__level = 0, $s__count = 0){
 
         $hard_limit = 1000; //Break at this point in case growing too large
         $flat_es = array();
-        $current_level++;
+        $s__level++;
 
         foreach($this->X_model->fetch(array(
             'x__up' => $e__id,
@@ -713,26 +713,24 @@ class E_model extends CI_Model
                 continue;
             }
 
+
             //Is this a new matching source?
             if(!isset($flat_es[$e_follower['e__id']])){
+                $s__count++;
                 $e_follower2['x__id'] = $e_follower['x__id'];
                 $e_follower2['e__id'] = $e_follower['e__id'];
                 $e_follower2['e__title'] = $e_follower['e__title'];
                 $e_follower2['x__message'] = $e_follower['x__message'];
-                $e_follower2['s__level'] = $current_level;
-                $e_follower2['s__count'] = count($flat_es)+1;
+                $e_follower2['s__level'] = $s__level;
+                $e_follower2['s__count'] = $s__count;
                 $flat_es[$e_follower['e__id']] = $e_follower2;
             }
 
-            if(count($flat_es)>$hard_limit){
-                break;
-            } else {
-                //Do we have more children?
-                if($current_level<$max_levels){
-                    foreach($this->E_model->recursive_followers($e_follower['e__id'], $include_e, $exclude_e, $max_levels, $current_level) as $e_recursive_follower){
-                        if(!isset($flat_es[$e_recursive_follower['e__id']])){
-                            $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
-                        }
+            //Do we have more children?
+            if($s__level<$max_levels && $s__count<$hard_limit){
+                foreach($this->E_model->recursive_followers($e_follower['e__id'], $include_e, $exclude_e, $max_levels, $s__level, $s__count) as $e_recursive_follower){
+                    if(!isset($flat_es[$e_recursive_follower['e__id']])){
+                        $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
                     }
                 }
             }
