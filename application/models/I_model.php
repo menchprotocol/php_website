@@ -223,13 +223,14 @@ class I_model extends CI_Model
                     $update_filter = array();
                     $filters = array(
                         'x__id !=' => $x['x__id'],
-                        'x__source' => $x['x__source'],
                         'x__status' => $x['x__status'],
                         'x__type' => $x['x__type'],
-                        'x__up' => $x['x__up'],
-                        'x__down' => $x['x__down'],
                         'x__reference' => $x['x__reference'],
                         'LOWER(x__message)' => strtolower($x['x__message']),
+
+                        'x__source' => $x['x__source'],
+                        'x__up' => $x['x__up'],
+                        'x__down' => $x['x__down'],
                     );
                     if($x['x__right']==$i__id){
                         $filters['x__right'] = $migrate_s__id;

@@ -708,10 +708,11 @@ class E_model extends CI_Model
                         'x__id !=' => $x['x__id'],
                         'x__status' => $x['x__status'],
                         'x__type' => $x['x__type'],
-                        'x__right' => $x['x__right'],
-                        'x__down' => $x['x__down'],
                         'x__reference' => $x['x__reference'],
                         'LOWER(x__message)' => strtolower($x['x__message']),
+
+                        'x__right' => $x['x__right'],
+                        'x__left' => $x['x__left'],
                     );
                     if($x['x__up']==$e__id){
                         $filters['x__up'] = $migrate_s__id;
