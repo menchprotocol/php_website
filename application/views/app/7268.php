@@ -12,8 +12,7 @@ if(isset($_GET['e__id'])){
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0) as $x) {
-        $x__message_md5 = md5($x['x__message']);
-        $x__message_md5 = $x['x__message'];
+        $x__message_md5 = substr(md5($x['x__message']), 0, 8);
         if(!isset($main_index[$x__message_md5])){
             $main_index[$x__message_md5] = array();
         } else {
