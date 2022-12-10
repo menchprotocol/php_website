@@ -14,7 +14,7 @@ if(isset($_GET['e__id'])){
     ), array(), 0) as $x) {
         $x__message_md5 = substr(md5($x['x__message']), 0, 8);
         if(!isset($main_index[$x__message_md5])){
-            $main_index[$x__message_md5] = array($x['x__message']);
+            $main_index[$x__message_md5] = array();
         } else {
             //Found Duplicate!
             if(!isset($duplicates_found[$x__message_md5])){
@@ -26,6 +26,19 @@ if(isset($_GET['e__id'])){
         array_push($main_index[$x__message_md5], $x['x__down']);
 
     }
+
+    if(isset($_GET['auto_merge'])){
+        foreach($duplicates_found as $x__message_md5 => $e__ids){
+            $lowest_e_id = 9999999999;
+            foreach($e__ids as $e__id){
+                if($e__id < $lowest_e_id){
+                    $lowest_e_id = $e__id;
+                }
+            }
+            array_push($main_index[$x__message_md5], 'LL'.$lowest_e_id);
+        }
+    }
+
 
     echo 'Here are the '.count($duplicates_found).' duplicates found:<hr />';
     print_r($duplicates_found);
