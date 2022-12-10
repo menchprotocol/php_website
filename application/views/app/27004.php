@@ -26,7 +26,10 @@ if (!isset($_GET['e__id']) && $member_e) {
 
 if (isset($_GET['e__id'])) {
 
-    print_r($this->E_model->recursive_followers($_GET['e__id'], ( isset($_GET['include_e']) ? explode(',', $_GET['include_e']) : array() ), ( isset($_GET['exclude_e']) ? explode(',', $_GET['exclude_e']) : array() )));
+    $fetch_rec = $this->E_model->recursive_followers($_GET['e__id'], ( isset($_GET['include_e']) ? explode(',', $_GET['include_e']) : array() ), ( isset($_GET['exclude_e']) ? explode(',', $_GET['exclude_e']) : array() ));
+
+    echo count($fetch_rec).' Total Found:<br />';
+    print_r($fetch_rec);
 
     //Generate list of payments:
     $payment_es = $this->X_model->fetch(array(
