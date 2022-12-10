@@ -810,7 +810,7 @@ class E extends CI_Controller
             //Inform user if they Permanently Unsubscribed:
             if(in_array($_POST['selected_e__id'], $this->config->item('n___31057'))){
                 $e___31065 = $this->config->item('e___31065'); //NAVIGATION
-                $this->X_model->send_dm($member_e['e__id'], $e___31065[31066]['m__title'], $e___31065[31066]['m__message']);
+                $this->X_model->send_dm($member_e['e__id'], $e___31065[31066]['m__title'], $e___31065[31066]['m__message'], array(), 31066);
             }
 
         }
