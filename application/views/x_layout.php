@@ -522,7 +522,7 @@ if($top_i__id) {
 
             echo '<tr>';
             echo '<td class="table-btn first_btn" style="text-align: right;  width:34% !important;">Total:&nbsp;&nbsp;</td>';
-            echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].' <b class="css__title">*</b></td>';
+            echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].'<b class="css__title">*</b></td>';
             echo '</tr>';
 
             echo '</table>';
