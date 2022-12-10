@@ -714,6 +714,7 @@ class E_model extends CI_Model
 
             //Is this a new matching source?
             if(!isset($flat_es[$e_follower['e__id']])){
+                $e_follower['s__level'] = $current_level;
                 $flat_es[$e_follower['e__id']] = $e_follower;
             }
 
