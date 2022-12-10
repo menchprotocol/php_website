@@ -28,36 +28,37 @@ class E_model extends CI_Model
             'session_superpowers_activated' => array(),
         );
 
-        if(!$update_session){
+
+        //Make sure they also belong to this website's members:
+        $this->E_model->scissor_add_e(website_setting(0), 30095, $e['e__id'], null);
 
 
-            //Make sure they also belong to this website's members:
-            $this->E_model->scissor_add_e(website_setting(0), 30095, $e['e__id'], null);
-
-
-            //Check & Adjust their subscription, IF needed:
-            //Remove their ubscribe:
-            $resubscribed = 0;
-            foreach($this->X_model->fetch(array(
-                'x__up IN (' . join(',', $this->config->item('n___29648')) . ')' => null, //Unsubscribers
+        //Check & Adjust their subscription, IF needed:
+        //Remove their ubscribe:
+        $resubscribed = 0;
+        foreach($this->X_model->fetch(array(
+            'x__up IN (' . join(',', $this->config->item('n___29648')) . ')' => null, //Unsubscribers
+            'x__down' => $e['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        )) as $unsubscribe){
+            $resubscribed += $this->X_model->update($unsubscribe['x__id'], array(
+                'x__status' => 6173, //Transaction Removed
+            ), $e['e__id'], 31064 /* Login Resubscribe */);
+        }
+        if($resubscribed > 0){
+            //Add Back to Subscirbers:
+            $this->X_model->create(array(
+                'x__type' => e_x__type(),
+                'x__up' => 4430, //Active Member
+                'x__source' => $e['e__id'],
                 'x__down' => $e['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )) as $unsubscribe){
-                $resubscribed += $this->X_model->update($unsubscribe['x__id'], array(
-                    'x__status' => 6173, //Transaction Removed
-                ), $e['e__id'], 31064 /* Login Resubscribe */);
-            }
-            if($resubscribed > 0){
-                //Add Back to Subscirbers:
-                $this->X_model->create(array(
-                    'x__type' => e_x__type(),
-                    'x__up' => 4430, //Active Member
-                    'x__source' => $e['e__id'],
-                    'x__down' => $e['e__id'],
-                ));
-            }
+            ));
+        }
 
+
+
+        if(!$update_session){
 
             if(!$is_cookie){
 
