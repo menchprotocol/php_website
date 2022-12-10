@@ -1873,7 +1873,7 @@ function view_e($x__type, $e, $extra_class = null)
 
 
         $special_type = in_array($e['e__type'], $CI->config->item('n___31109'));
-        $ui .= '<td width="20%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e, false, $e['e__id']) : '' ).'</div></td>';
+        $ui .= '<td width="20%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '' ).'</div></td>';
 
 
         $ui .= '<td width="20%"><div class="show-on-hover">';
@@ -1883,7 +1883,7 @@ function view_e($x__type, $e, $extra_class = null)
                     foreach($CI->X_model->fetch(array(
                         'x__id' => $x__id,
                     ), array('x__source')) as $linker){
-                        $ui .= '<span title="'.$linker['e__title'].' '.view_time_difference(strtotime($linker['x__time'])).' Ago: '.substr($linker['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top">'.view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e, false, $e['e__id'], $x__id).'</span>';
+                        $ui .= '<span title="'.$linker['e__title'].' '.view_time_difference(strtotime($linker['x__time'])).' Ago: '.substr($linker['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top">'.view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id).'</span>';
                     }
                     break;
                 }
