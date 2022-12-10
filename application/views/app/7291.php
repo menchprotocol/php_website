@@ -36,7 +36,7 @@ if($client_id && $client_secret && $server_name){
 
 } else {
 
-    js_redirect('/', 13);
+    js_redirect('/', 1597);
 
 }
 
