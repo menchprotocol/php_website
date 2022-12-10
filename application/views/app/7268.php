@@ -13,6 +13,7 @@ if(isset($_GET['e__id'])){
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0) as $x) {
         $x__message_md5 = md5($x['x__message']);
+        $x__message_md5 = $x['x__message'];
         if(!isset($main_index[$x__message_md5])){
             $main_index[$x__message_md5] = array();
         } else {
@@ -20,10 +21,10 @@ if(isset($_GET['e__id'])){
             if(!isset($duplicates_found[$x__message_md5])){
                 $duplicates_found[$x__message_md5] = $main_index[$x__message_md5];
             }
-            array_push($duplicates_found[$x__message_md5], $x__message_md5);
+            array_push($duplicates_found[$x__message_md5], $x['x__down']);
         }
 
-        array_push($main_index[$x__message_md5], $x__message_md5);
+        array_push($main_index[$x__message_md5], $x['x__down']);
 
     }
 
