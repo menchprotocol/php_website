@@ -18,22 +18,27 @@ $origin_sales = array();
 $all_sources = array();
 
 
-if($member_e){
-    foreach($this->E_model->scissor_e(27004, $member_e['e__id']) as $e_item) {
-
-    }
+if (!isset($_GET['e__id']) && $member_e) {
+    //Search for all their sources recursively (NEW):
+    $_GET['e__id'] = $member_e['e__id'];
 }
-
-//Generate list of payments:
-$payment_es = $this->X_model->fetch(array(
-    'x__up' => $member_e['e__id'],
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
 
 if (isset($_GET['e__id'])) {
+
+    print_r($this->E_model->recursive_followers($_GET['e__id'], array(@$_GET['include_e']), array(@$_GET['exclude_e'])));
+
+    die();
+
+    //Generate list of payments:
+    $payment_es = $this->X_model->fetch(array(
+        'x__up' => $member_e['e__id'],
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
+
+
 
     //Show header:
     echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="/-27004"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
@@ -53,7 +58,7 @@ if (isset($_GET['e__id'])) {
         }
     }
 
-} else {
+} elseif($superpower_28727) {
 
     //Fetch all assigned ideas:
     $assigned_i_ids = array();

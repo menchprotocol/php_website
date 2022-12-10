@@ -682,6 +682,51 @@ class E_model extends CI_Model
 
     }
 
+    function recursive_followers($e__id, $include_e = array(), $exclude_e= array()){
+
+        $flat_es = array();
+
+        foreach($this->X_model->fetch(array(
+            'x__up' => $e__id,
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ), array('x__down'), 0) as $e_follower) {
+
+            //Filter Sources, if needed:
+            if(count($include_e) && count($include_e)!=count($this->X_model->fetch(array(
+                    'x__up IN (' . join(',', $include_e) . ')' => null,
+                    'x__down' => $e_follower['e__id'],
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                )))){
+                //Must include all sources, skip:
+                continue;
+            } elseif(count($exclude_e) && count($this->X_model->fetch(array(
+                    'x__up IN (' . join(',', $exclude_e) . ')' => null,
+                    'x__down' => $e_follower['e__id'],
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                )))){
+                //Must exclude all sources, skip:
+                continue;
+            }
+
+            if(!isset($flat_es[$e_follower['e__id']])){
+                $flat_es[$e_follower['e__id']] = $e_follower;
+            }
+
+            //Do we have more children?
+           foreach(recursive_followers($e_follower['e__id'], $include_e, $exclude_e) as $e_recursive_follower){
+               if(!isset($flat_es[$e_recursive_follower['e__id']])){
+                   $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
+               }
+           }
+
+        }
+
+        return $flat_es;
+    }
+
     function remove($e__id, $x__source = 0, $migrate_s__id = 0){
 
         //Fetch all SOURCE LINKS:
