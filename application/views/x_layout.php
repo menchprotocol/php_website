@@ -510,7 +510,7 @@ if($top_i__id) {
             if($max_allowed > 1 || $min_allowed > 1){
 
                 echo '<tr>';
-                echo '<td class="table-btn first_btn" style="text-align: right;">Quantity:&nbsp;&nbsp;</td>';
+                echo '<td class="table-btn first_btn" style="text-align: right;">Tickets:&nbsp;&nbsp;</td>';
                 echo '<td class="table-btn first_btn sale_price_ui">';
                 echo '<a href="javascript:void(0);" onclick="sale_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
                 echo '<span id="current_sales" class="css__title" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
