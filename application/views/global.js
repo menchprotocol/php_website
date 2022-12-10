@@ -2225,6 +2225,14 @@ function remove_ui_class(item, index) {
 
 function e_radio(focus_id, selected_e__id, enable_mulitiselect){
 
+    //Any warning needed?
+    if(!js_n___31780.includes(selected_e__id)){
+        var r = confirm(js_e___31780[selected_e__id]['m__message']);
+        if (r == false) {
+            return false;
+        }
+    }
+
     var was_previously_selected = ( $('.radio-'+focus_id+' .item-'+selected_e__id).hasClass('active') ? 1 : 0 );
 
     //Save the rest of the content:
