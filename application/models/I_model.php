@@ -200,14 +200,14 @@ class I_model extends CI_Model
         return $affected_rows;
     }
 
-    function remove($i__id, $x__source = 0, $migrate_i__id = 0){
+    function remove($i__id, $x__source = 0, $migrate_s__id = 0){
 
         $x_adjusted = 0;
-        if($migrate_i__id > 0){
+        if($migrate_s__id > 0){
 
             //Validate this migration ID:
             $is = $this->I_model->fetch(array(
-                'i__id' => $migrate_i__id,
+                'i__id' => $migrate_s__id,
                 'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
             ));
 
@@ -219,17 +219,37 @@ class I_model extends CI_Model
                     '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
                 ), array(), 0) as $x){
 
-                    //Migrate this transaction:
+                    //Make sure not duplicate, if so, delete:
+                    $update_filter = array();
+                    $filters = array(
+                        'x__id !=' => $x['x__id'],
+                        'x__source' => $x['x__source'],
+                        'x__status' => $x['x__status'],
+                        'x__type' => $x['x__type'],
+                        'x__up' => $x['x__up'],
+                        'x__down' => $x['x__down'],
+                        'x__reference' => $x['x__reference'],
+                        'x__message' => $x['x__message'],
+                    );
                     if($x['x__right']==$i__id){
-                        $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__right' => $migrate_i__id,
-                        ), $x__source, 26785 /* Idea Link Migrated */);
+                        $filters['x__right'] = $migrate_s__id;
+                        $update_filter['x__right'] = $migrate_s__id;
                     }
-
                     if($x['x__left']==$i__id){
-                        $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__left' => $migrate_i__id,
+                        $filters['x__right'] = $migrate_s__id;
+                        $update_filter['x__right'] = $migrate_s__id;
+                    }
+                    if(count($this->X_model->fetch($filters))){
+
+                        //There is a duplicate of this, no point to migrate! Just Remove:
+                        $this->X_model->update($x['x__id'], array(
+                            'x__status' => 6173,
                         ), $x__source, 26785 /* Idea Link Migrated */);
+
+                    } else {
+
+                        $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__source, 26785 /* Idea Link Migrated */);
+
                     }
 
                 }

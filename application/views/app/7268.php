@@ -12,7 +12,7 @@ if(isset($_GET['e__id'])){
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0) as $x) {
-        $x__message_md5 = substr(md5($x['x__message']), 0, 8);
+        $x__message_md5 = substr(md5($x['x__message']), 0, 16);
         if(!isset($main_index[$x__message_md5])){
             $main_index[$x__message_md5] = array();
         } else {
@@ -27,7 +27,7 @@ if(isset($_GET['e__id'])){
 
     }
 
-    if(isset($_GET['auto_merge'])){
+    if(isset($_GET['auto_merge']) && $_GET['e__id']==3288){//THis is for email only for now...
         foreach($duplicates_found as $x__message_md5 => $e__ids){
             $lowest_e_id = 9999999999;
             foreach($e__ids as $e__id){

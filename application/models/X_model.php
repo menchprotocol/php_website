@@ -491,7 +491,177 @@ class X_model extends CI_Model
     }
 
 
+    function update_dropdown($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__id, $x__id) {
 
+
+        //Maintain a manual index as a hack for the Idea/Source tables for now:
+        $e___12079 = $this->config->item('e___12079');
+
+        //Authenticate Member:
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
+            return array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            );
+        } elseif (intval($o__id) < 1) {
+            return array(
+                'status' => 0,
+                'message' => 'Missing Target ID',
+            );
+        } elseif (intval($element_id) < 1 || !count($this->config->item('n___'.$element_id)) || !isset($e___12079[$element_id])) {
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Variable ID ['.$element_id.']',
+            );
+        } elseif (intval($new_e__id) < 1 || !in_array($new_e__id, $this->config->item('n___'.$element_id))) {
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Value ID',
+            );
+        }
+
+
+        //See if anything is being deleted:
+        $deletion_redirect = null;
+        $delete_element = null;
+        $links_removed = -1;
+        $status = 0;
+
+        if($element_id==4486 && $x__id > 0){
+
+            //IDEA LINK TYPE
+            $status = $this->X_model->update($x__id, array(
+                'x__type' => $new_e__id,
+            ), $member_e['e__id'], 13962);
+
+        } elseif($element_id==13550 && $x__id > 0){
+
+            //SOURCE LINK TYPE
+            $status = $this->X_model->update($x__id, array(
+                'x__type' => $new_e__id,
+            ), $member_e['e__id'], 28799);
+
+        } elseif($element_id==6177){
+
+            //SOURCE TYPE
+
+            //Delete?
+            if(!in_array($new_e__id, $this->config->item('n___7358'))){
+
+                //Determine what to do after deleted:
+                if($o__id == $focus_id){
+
+                    //Find Published Parents:
+                    foreach($this->X_model->fetch(array(
+                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                        'x__down' => $o__id,
+                    ), array('x__up'), 1, 0, array('e__title' => 'DESC')) as $profile_e) {
+                        $deletion_redirect = '/@'.$profile_e['e__id'];
+                    }
+
+                    //If still not found, go to main page if no parent found:
+                    if(!$deletion_redirect){
+                        $deletion_redirect = '/@'.$o__id;
+                    }
+
+                } else {
+
+                    //Just delete from UI using JS:
+                    $delete_element = '.coin___12274_' . $o__id;
+
+                }
+
+                //Delete all transactions:
+                $links_removed = $this->E_model->remove($o__id, $member_e['e__id'], $migrate_s__id);
+
+            }
+
+            //Update:
+            if(!intval($migrate_s__id) || count($this->E_model->fetch(array(
+                    'e__id' => $migrate_s__id,
+                    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                )))){
+                $status = $this->E_model->update($o__id, array(
+                    'e__type' => $new_e__id,
+                ), true, $member_e['e__id']);
+            }
+
+
+        } elseif($element_id==4737){
+
+            //IDEA TYPE
+
+            //Delete?
+            if(!in_array($new_e__id, $this->config->item('n___7356'))){
+
+                //Determine what to do after deleted:
+                if($o__id == $focus_id){
+
+                    //Find Published Parents:
+                    foreach($this->X_model->fetch(array(
+                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                        'x__right' => $o__id,
+                    ), array('x__left'), 1) as $previous_i) {
+                        $deletion_redirect = '/~'.$previous_i['i__id'];
+                    }
+
+                    //If not found, find active parents:
+                    if(!$deletion_redirect){
+                        foreach($this->X_model->fetch(array(
+                            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                            'x__right' => $o__id,
+                        ), array('x__left'), 1) as $previous_i) {
+                            $deletion_redirect = '/~'.$previous_i['i__id'];
+                        }
+                    }
+
+                    //If still not found, go to main page if no parent found:
+                    if(!$deletion_redirect){
+                        $deletion_redirect = '/~'.$o__id;
+                    }
+
+                } else {
+
+                    //Just delete from UI using JS:
+                    $delete_element = '.coin___12273_' . $o__id;
+
+                }
+
+                //Delete all transactions:
+                $links_removed = $this->I_model->remove($o__id , $member_e['e__id'], $migrate_s__id);
+
+            }
+
+
+            //Delete only if Migration request is successful:
+            if(!intval($migrate_s__id) || count($this->I_model->fetch(array(
+                    'i__id' => $migrate_s__id,
+                    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                )))){
+                //Update Idea:
+                $status = $this->I_model->update($o__id, array(
+                    'i__type' => $new_e__id,
+                ), true, $member_e['e__id']);
+            }
+
+
+        }
+
+        return array(
+            'status' => intval($status) && ($links_removed<0 || $links_removed>0),
+            'message' => 'Delete status ['.$status.'] with '.$links_removed.' Links removed',
+            'deletion_redirect' => $deletion_redirect,
+            'delete_element' => $delete_element,
+        );
+
+    }
     function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_id = 0, $x__website = 0)
     {
 

@@ -2439,7 +2439,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
 
     //Deleting Anything?
-    var migrate_i__id = 0;
+    var migrate_s__id = 0;
     if(element_id==4737 && !(new_e__id in js_e___7356)){
 
         //Deleting Idea:
@@ -2447,7 +2447,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
         if (!isNormalInteger(confirm_removal)) {
             return false;
         }
-        migrate_i__id = confirm_removal;
+        migrate_s__id = confirm_removal;
 
     } else if(element_id==6177 && !(new_e__id in js_e___7358)){
 
@@ -2456,7 +2456,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
         if (!isNormalInteger(confirm_removal)) {
             return false;
         }
-        migrate_i__id = confirm_removal;
+        migrate_s__id = confirm_removal;
 
     }
 
@@ -2476,7 +2476,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
         o__id: o__id,
         element_id: element_id,
         new_e__id: new_e__id,
-        migrate_i__id: migrate_i__id,
+        migrate_s__id: migrate_s__id,
         x__id: x__id
     }, function (data) {
         if (data.status) {

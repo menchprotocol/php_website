@@ -682,16 +682,16 @@ class E_model extends CI_Model
 
     }
 
-    function remove($e__id, $x__source = 0, $migrate_i__id = 0){
+    function remove($e__id, $x__source = 0, $migrate_s__id = 0){
 
         //Fetch all SOURCE LINKS:
         $x_adjusted = 0;
 
-        if($migrate_i__id > 0){
+        if($migrate_s__id > 0){
 
             //Validate this migration ID:
             $es = $this->E_model->fetch(array(
-                'e__id' => $migrate_i__id,
+                'e__id' => $migrate_s__id,
                 'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
@@ -705,26 +705,26 @@ class E_model extends CI_Model
                     //Migrate this transaction:
                     if($x['x__up']==$e__id){
                         $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__up' => $migrate_i__id,
+                            'x__up' => $migrate_s__id,
                         ));
                     }
 
                     if($x['x__down']==$e__id){
                         $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__down' => $migrate_i__id,
+                            'x__down' => $migrate_s__id,
                         ));
                     }
 
                     if($x['x__source']==$e__id){
                         $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__source' => $migrate_i__id,
+                            'x__source' => $migrate_s__id,
                         ));
                     }
 
                 }
 
                 //Clean Duplicates:
-                $this->E_model->remove_duplicate_links($migrate_i__id);
+                $this->E_model->remove_duplicate_links($migrate_s__id);
 
             }
 
