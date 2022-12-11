@@ -71,7 +71,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__up' => $e['e__id'],
-            )) as $pi){
+            ), array(), 0) as $pi){
                 array_push($payment_is, $pi['x__right']);
             }
 
