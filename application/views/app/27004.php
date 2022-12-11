@@ -56,7 +56,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         echo '<div class="list-group" style="max-width: 880px; margin: 0 auto; display: block;">';
 
         //$member_e
-        foreach($this->E_model->recursive_es($member_e['e__id'], ( isset($_GET['include_e']) ? explode(',', $_GET['include_e']) : array() ), ( isset($_GET['exclude_e']) ? explode(',', $_GET['exclude_e']) : array() ), array('x__id' => 'DESC')) as $e){
+        foreach($this->E_model->recursive_es($member_e['e__id'], array(27004), array(), array('x__id' => 'DESC')) as $e){
 
             //See if this Source has any paymen ideas:
             $payment_is = $this->X_model->fetch(array(
