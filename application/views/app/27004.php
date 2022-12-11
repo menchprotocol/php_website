@@ -53,18 +53,21 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
     if($member_e){
 
         echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
-        echo '<div class="row">';
+        echo '<div class="list-group" style="max-width: 880px; margin: 0 auto; display: block;">';
 
         //$member_e
-        foreach($this->E_model->recursive_es($member_e['e__id'], ( isset($_GET['include_e']) ? explode(',', $_GET['include_e']) : array() ), ( isset($_GET['exclude_e']) ? explode(',', $_GET['exclude_e']) : array() )) as $e){
+        foreach($this->E_model->recursive_es($member_e['e__id'], ( isset($_GET['include_e']) ? explode(',', $_GET['include_e']) : array() ), ( isset($_GET['exclude_e']) ? explode(',', $_GET['exclude_e']) : array() ), array('e__title' => 'DESC')) as $e){
 
             //See if this Source has any paymen ideas:
-            if(count($this->X_model->fetch(array(
+            $payment_is = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
                 'x__up' => $e['e__id'],
-            )))){
-                echo view_e(7269, $e, null);
+            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
+            if(count($payment_is)){
+                //See if this payment idea has any payments?
+                echo '<a class="list-group-item" href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].': '.count($payment_is).' Payments &nbsp;<i class="far fa-chevron-right"></i></a>';
             }
         }
         echo '</div>';

@@ -682,7 +682,7 @@ class E_model extends CI_Model
 
     }
 
-    function recursive_es($e__id, $include_e = array(), $exclude_e= array(), $hard_level = 3, $hard_limit = 100, $s__level = 0){
+    function recursive_es($e__id, $include_e = array(), $exclude_e= array(), $order = array('e__spectrum' => 'ASC', 'x__id' => 'DESC'), $hard_level = 3, $hard_limit = 100, $s__level = 0){
 
         $flat_es = array();
         $s__level++;
@@ -691,7 +691,7 @@ class E_model extends CI_Model
             'x__up' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'x__id' => 'DESC')) as $e_follower) {
+        ), array('x__down'), 0, 0, $order) as $e_follower) {
 
             //Filter Sources, if needed:
             $qualified_source = true;
@@ -726,7 +726,7 @@ class E_model extends CI_Model
                 break;
             }
 
-            foreach($this->E_model->recursive_es($e_follower['e__id'], $include_e, $exclude_e, $hard_level, $hard_limit, $s__level) as $e_recursive_follower){
+            foreach($this->E_model->recursive_es($e_follower['e__id'], $include_e, $exclude_e, $order, $hard_level, $hard_limit, $s__level) as $e_recursive_follower){
                 if(!isset($flat_es[$e_recursive_follower['e__id']])){
                     $e_recursive_follower['s__count'] = count($flat_es)+1;
                     $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
