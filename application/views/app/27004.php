@@ -47,7 +47,7 @@ if($superpower_28727 && 0) {
 }
 
 
-
+echo 'hi';
 
 if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
