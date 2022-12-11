@@ -682,10 +682,8 @@ class E_model extends CI_Model
 
     }
 
-    function recursive_followers($e__id, $include_e = array(), $exclude_e= array(), $s__level = 0){
+    function recursive_es($e__id, $include_e = array(), $exclude_e= array(), $hard_level = 3, $hard_limit = 100, $s__level = 0){
 
-        $hard_level = 3; //Break at this point in case growing too large
-        $hard_limit = 100; //Break at this point in case growing too large
         $flat_es = array();
         $s__level++;
 
@@ -728,11 +726,11 @@ class E_model extends CI_Model
             }
 
             //Do we have more children?
-            if($s__level>=$hard_level && count($flat_es)>=$hard_limit){
+            if($s__level>=$hard_level || count($flat_es)>=$hard_limit){
                 break;
             }
 
-            foreach($this->E_model->recursive_followers($e_follower['e__id'], $include_e, $exclude_e, $s__level) as $e_recursive_follower){
+            foreach($this->E_model->recursive_es($e_follower['e__id'], $include_e, $exclude_e, $hard_level, $hard_limit, $s__level) as $e_recursive_follower){
                 if(!isset($flat_es[$e_recursive_follower['e__id']])){
                     $e_recursive_follower['s__count'] = count($flat_es)+1;
                     $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
