@@ -66,7 +66,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 'x__up' => $e['e__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
             if(!count($payment_is)){
-                break;
+                //break;
             }
 
             //See if this payment idea has any payments?
