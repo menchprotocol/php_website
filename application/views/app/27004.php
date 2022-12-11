@@ -84,7 +84,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SOURCE IDEAS
                     'x__left IN (' . join(',', $payment_is) . ')' => null,
-                )) as $pay){
+                ), array(), 0) as $pay){
                     $x__metadata = unserialize($pay['x__metadata']);
                     $total_transactions += ($x__metadata['quantity']>1 ? $x__metadata['quantity'] : 1 );
                     $total_revenue += doubleval($x__metadata['mc_gross']);
