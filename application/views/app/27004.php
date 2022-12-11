@@ -67,7 +67,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
             if(count($payment_is)){
                 //See if this payment idea has any payments?
-                echo '<a class="list-group-item" href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].': '.count($payment_is).' Payments &nbsp;<i class="far fa-chevron-right"></i></a>';
+                echo '<a class="list-group-item" href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].' ['.count($payment_is).'] &nbsp;<i class="far fa-chevron-right"></i></a>';
             }
         }
         echo '</div>';
@@ -80,38 +80,20 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 } else {
 
 
-
-    //Generate list of payments:
-    $payment_es = $this->X_model->fetch(array(
-        'x__up' => $_GET['e__id'],
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
-
-
-
     //Show header:
     echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="/-27004"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
 
-    foreach($payment_es as $e){
-        if($e['e__id']==$_GET['e__id']){
+    $es = $this->E_model->fetch(array(
+        'e__id' => $_GET['e__id'],
+    ));
+    echo '<h2>'.$es[0]['e__title'].'</h2>';
 
-            echo '<h2>'.$e['e__title'].'</h2>';
-
-            $i_query = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
-                'x__up' => $e['e__id'],
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
-            break;
-        }
-    }
-
-
-
-
+    $i_query = $this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
+        'x__up' => $_GET['e__id'],
+    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
 
 
     //List all payment Ideas and their total earnings
