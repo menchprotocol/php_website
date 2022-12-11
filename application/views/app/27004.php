@@ -57,9 +57,9 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         echo '<table class="table table-sm table-striped image-mini" style="margin: 0 5px; width:calc(100% - 10px) !important;">';
         echo '<tr style="vertical-align: baseline;" class="css__title">';
         echo '<th id="th_primary">&nbsp;</th>';
-        echo '<th style="text-align: right;" id="th_paid">Tickets</th>';
-        echo '<th style="text-align: right;" id="th_paid">Quantity</th>';
-        echo '<th style="text-align: right;" id="th_payout">Payout</th>';
+        echo '<th style="text-align: right;" id="th_paid">Ticket<br />Types</th>';
+        echo '<th style="text-align: right;" id="th_paid">Tickets<br />Sold</th>';
+        echo '<th style="text-align: right;" id="th_payout">NET<br />Payout</th>';
         echo '</tr>';
 
 
