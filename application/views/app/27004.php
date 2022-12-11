@@ -51,6 +51,8 @@ echo 'hi';
 
 if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
+    echo 'Select';
+
     if($member_e){
 
         //$member_e
@@ -80,14 +82,10 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 } else {
 
 
-    $fetch_rec = $this->E_model->recursive_es($_GET['e__id'], ( isset($_GET['include_e']) ? explode(',', $_GET['include_e']) : array() ), ( isset($_GET['exclude_e']) ? explode(',', $_GET['exclude_e']) : array() ));
-
-    echo count($fetch_rec).' Total Found:<br />';
-    print_r($fetch_rec);
 
     //Generate list of payments:
     $payment_es = $this->X_model->fetch(array(
-        'x__up' => $member_e['e__id'],
+        'x__up' => $_GET['e__id'],
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
