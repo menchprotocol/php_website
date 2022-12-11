@@ -1209,7 +1209,7 @@ class X_model extends CI_Model
             $is_fixed_x = in_array($i_previous['x__type'], $this->config->item('n___12840'));
             if($e__id>0 && ($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
+                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i_previous['i__id'],
                     'x__right' => $i__id,
                     'x__source' => $e__id,
@@ -1266,7 +1266,7 @@ class X_model extends CI_Model
             $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___12840'));
             if(($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
+                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
                     'x__source' => $e__id,
@@ -1855,7 +1855,7 @@ class X_model extends CI_Model
 
         //Now let's check possible expansions:
         foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
+            'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
             'x__source' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_child_ids ) . ')' => null,
             'x__right > 0' => null,

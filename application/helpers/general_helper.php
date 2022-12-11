@@ -577,7 +577,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
         //Delete Current Selection:
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___12326')) . ')' => null, //Discovery Expansions
+            'x__type IN (' . join(',', $CI->config->item('n___7704')) . ')' => null, //Discovery Expansions
             'x__right' => $i__id, //This was select as an answer to x__left
             'x__left > 0' => null,
         ), array('x__left'), 0) as $x_progress) {
@@ -593,7 +593,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
                 //Delete all Selections:
                 foreach($CI->X_model->fetch(array(
                     'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___12326')) . ')' => null, //Discovery Expansions
+                    'x__type IN (' . join(',', $CI->config->item('n___7704')) . ')' => null, //Discovery Expansions
                     'x__left' => $x_progress['x__left'],
                 ), array('x__right'), 0) as $x2){
                     $CI->X_model->update($x2['x__id'], array(

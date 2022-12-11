@@ -374,7 +374,7 @@ if($top_i__id) {
                 //See if this answer was seleted:
                 if (count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY IDEA LINK
+                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY IDEA LINK
                     'x__left' => $i['i__id'],
                     'x__right' => $x['i__id'],
                     'x__source' => $x__source,
@@ -414,7 +414,7 @@ if($top_i__id) {
                 //Has this been previously selected?
                 $previously_selected = count($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //DISCOVERY EXPANSIONS
+                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
                     'x__source' => $x__source,
@@ -677,7 +677,7 @@ if($top_i__id) {
 if(!$top_i__id){
 
     //Get Started
-    echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__cover'].'</a></div>';
+    echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[31793]['m__title'].' '.$e___11035[31793]['m__cover'].'</a></div>';
     echo '<div class="doclear">&nbsp;</div>';
 
 } else {
