@@ -47,13 +47,13 @@ if($superpower_28727 && 0) {
 }
 
 
-echo 'hi';
-
 if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
-    echo 'Select';
 
     if($member_e){
+
+        echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
+        echo '<div class="list-group" style="max-width: 880px; margin: 0 auto; display: block;">';
 
         //$member_e
         foreach($this->E_model->recursive_es($member_e['e__id'], ( isset($_GET['include_e']) ? explode(',', $_GET['include_e']) : array() ), ( isset($_GET['exclude_e']) ? explode(',', $_GET['exclude_e']) : array() )) as $e){
@@ -65,14 +65,12 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
                 'x__up' => $e['e__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
-            if(!count($payment_is)){
-                //break;
+            if(count($payment_is)){
+                //See if this payment idea has any payments?
+                echo '<a class="list-group-item" href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].': '.count($payment_is).' Payments &nbsp;<i class="far fa-chevron-right"></i></a>';
             }
-
-            //See if this payment idea has any payments?
-            echo '<a class="list-group-item" href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].' ['.count($payment_is).' Payments]</a>';
-
         }
+        echo '</div>';
 
     } else {
         echo 'You must login to see your payments';
