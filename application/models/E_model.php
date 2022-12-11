@@ -684,8 +684,8 @@ class E_model extends CI_Model
 
     function recursive_followers($e__id, $include_e = array(), $exclude_e= array(), $s__level = 0){
 
-        $hard_level = 7; //Break at this point in case growing too large
-        $hard_limit = 1000; //Break at this point in case growing too large
+        $hard_level = 3; //Break at this point in case growing too large
+        $hard_limit = 100; //Break at this point in case growing too large
         $flat_es = array();
         $s__level++;
 
