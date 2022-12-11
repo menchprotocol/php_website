@@ -49,8 +49,6 @@ if($superpower_28727 && 0) {
 
 
 
-echo 'Hi';
-
 if(!isset($_GET['e__id'])){
 
     if($member_e){
@@ -66,7 +64,7 @@ if(!isset($_GET['e__id'])){
                 'x__up' => $e['e__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
             if(!count($payment_is)){
-                //break;
+                break;
             }
 
             //See if this payment idea has any payments?
