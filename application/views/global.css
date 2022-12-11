@@ -2090,6 +2090,7 @@ i, .btn .show-max {
     margin: 21px 0 0;
     display: block;
     min-height: 25px;
+    line-height: 75%;
 }
 .coin_cover div.css__title{
     padding: 0;
@@ -2414,7 +2415,7 @@ i, .btn .show-max {
 }
 .list-coins .coin_cover {
     text-align: center;
-    padding: 0 8px 34px !important;
+    padding:34px 8px !important;
 }
 .the_counter{
     margin-top: -52px;
