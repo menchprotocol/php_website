@@ -30,7 +30,7 @@ if($superpower_28727 && 0) {
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Expanded Payment Idea
+            'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
             'x__up' => $e['e__id'],
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $i_assigned){
             array_push($assigned_i_ids, $i_assigned['x__right']);
@@ -62,10 +62,10 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             $payment_is = $this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
+                'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
                 'x__up' => $e['e__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
-            if(count($payment_is)){
+            if(count($payment_is) > 0 && count($payment_is)<100){
                 //See if this payment idea has any payments?
                 echo '<a class="list-group-item" href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].' ['.count($payment_is).'] &nbsp;<i class="far fa-chevron-right"></i></a>';
             }
@@ -91,7 +91,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
     $i_query = $this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
+        'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
         'x__up' => $_GET['e__id'],
     ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
 
