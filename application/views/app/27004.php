@@ -62,6 +62,11 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         echo '<th style="text-align: right;" id="th_payout">Payout</th>';
         echo '</tr>';
 
+
+        $total_tickets = 0;
+        $total_revenue = 0;
+        $total_quantity = 0;
+
         //$member_e
         foreach($this->E_model->recursive_es($member_e['e__id'], array(27004), array(), array('x__id' => 'DESC')) as $e){
 
@@ -78,28 +83,43 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             if(count($payment_is)){
 
                 //Sum Payments?
-                $total_revenue = 0;
-                $total_transactions = 0;
+                $this_tickets = count($payment_is);
+                $this_revenue = 0;
+                $this_quantity = 0;
                 foreach($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SOURCE IDEAS
                     'x__left IN (' . join(',', $payment_is) . ')' => null,
                 ), array(), 0) as $pay){
                     $x__metadata = unserialize($pay['x__metadata']);
-                    $total_transactions += ($x__metadata['quantity']>1 ? $x__metadata['quantity'] : 1 );
-                    $total_revenue += $x__metadata['mc_gross']-$x__metadata['mc_fee']-($x__metadata['mc_gross']*$commission_rate);
+                    $this_quantity += ($x__metadata['quantity']>1 ? $x__metadata['quantity'] : 1 );
+                    $this_revenue += $x__metadata['mc_gross']-$x__metadata['mc_fee']-($x__metadata['mc_gross']*$commission_rate);
                 }
 
                 //See if this payment idea has any payments?
                 echo '<tr>';
-                echo '<td><a href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].'<i class="far fa-chevron-right"></i></a></td>';
-                echo '<td style="text-align: right;">'.count($payment_is).'</td>';
-                echo '<td style="text-align: right;">'.$total_transactions.'</td>';
-                echo '<td style="text-align: right;">$'.number_format($total_revenue, 0).'</td>';
+                echo '<td><a href="/-27004?e__id='.$e['e__id'].'" class="css__title">'.$e['e__title'].'</a></td>';
+                echo '<td style="text-align: right;">'.$this_tickets.'</td>';
+                echo '<td style="text-align: right;">'.$this_quantity.'</td>';
+                echo '<td style="text-align: right;">$'.number_format($this_revenue, 0).'</td>';
                 echo '</tr>';
+
+                $total_tickets += $this_tickets;
+                $total_revenue += $this_revenue;
+                $total_quantity += $this_quantity;
 
             }
         }
+
+        //Totals
+        echo '<tr>';
+        echo '<td><a href="/-27004?e__id='.$e['e__id'].'" class="css__title">'.$e['e__title'].'</a></td>';
+        echo '<td style="text-align: right;">'.$total_tickets.'</td>';
+        echo '<td style="text-align: right;">'.$total_quantity.'</td>';
+        echo '<td style="text-align: right;">$'.number_format($total_revenue, 0).'</td>';
+        echo '</tr>';
+
+
         echo '</table>';
 
 
