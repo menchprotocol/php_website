@@ -17,14 +17,70 @@ $daily_sales = array();
 $origin_sales = array();
 $all_sources = array();
 
+if($superpower_28727 && 0) {
 
-if (!isset($_GET['e__id']) && $member_e) {
-    //Search for all their sources recursively (NEW):
-    $_GET['e__id'] = $member_e['e__id'];
+    //Fetch all assigned ideas:
+    $assigned_i_ids = array();
+    echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
+    echo '<div class="list-group" style="max-width: 880px; margin: 0 auto; display: block;">';
+    foreach($payment_es as $e){
+
+        echo '<a href="/-27004?e__id='.$e['e__id'].'" class="list-group-item list-group-item-action" style="border: 1px solid #999;">'.$e['e__title'].' &nbsp;<i class="far fa-chevron-right"></i></a>';
+
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Expanded Payment Idea
+            'x__up' => $e['e__id'],
+        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $i_assigned){
+            array_push($assigned_i_ids, $i_assigned['x__right']);
+        }
+    }
+    echo '</div>';
+
+    //Show all non-assigned payment ideas:
+    $i_query = $this->I_model->fetch(array(
+        'i__id NOT IN (' . join(',', $assigned_i_ids) . ')' => null,
+        'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Strict Payment Idea
+    ), 0, 0, array('i__title' => 'ASC'));
+
 }
 
 
-if (isset($_GET['e__id'])) {
+
+
+
+
+if(!isset($_GET['e__id'])){
+
+    if($member_e){
+
+        //$member_e
+        foreach($this->E_model->recursive_es($member_e['e__id'], ( isset($_GET['include_e']) ? explode(',', $_GET['include_e']) : array() ), ( isset($_GET['exclude_e']) ? explode(',', $_GET['exclude_e']) : array() )) as $e){
+
+            //See if this Source has any paymen ideas:
+            $payment_is = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Payment Idea
+                'x__up' => $e['e__id'],
+            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
+            if(!count($payment_is)){
+                break;
+            }
+
+            //See if this payment idea has any payments?
+            echo '<a class="list-group-item" href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].' ['.count($payment_is).' Payments]</a>';
+
+        }
+
+    } else {
+        echo 'You must login to see your payments';
+    }
+
+
+} else {
+
 
     $fetch_rec = $this->E_model->recursive_es($_GET['e__id'], ( isset($_GET['include_e']) ? explode(',', $_GET['include_e']) : array() ), ( isset($_GET['exclude_e']) ? explode(',', $_GET['exclude_e']) : array() ));
 
@@ -59,203 +115,168 @@ if (isset($_GET['e__id'])) {
         }
     }
 
-} elseif($superpower_28727) {
 
-    //Fetch all assigned ideas:
-    $assigned_i_ids = array();
-    echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
-    echo '<div class="list-group" style="max-width: 880px; margin: 0 auto; display: block;">';
-    foreach($payment_es as $e){
 
-        echo '<a href="/-27004?e__id='.$e['e__id'].'" class="list-group-item list-group-item-action" style="border: 1px solid #999;">'.$e['e__title'].' &nbsp;<i class="far fa-chevron-right"></i></a>';
+
+
+
+    //List all payment Ideas and their total earnings
+    $x_updated = 0;
+    $sale_type_content = '';
+    foreach($i_query as $i){
+
+        //Total earnings:
+        $transaction_content = '';
+        $total_transactions = 0;
+        $total_sales = 0;
+        $total_revenue = 0;
+        $total_paypal_fee = 0;
+        $currencies = array();
 
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'i__type IN (' . join(',', $this->config->item('n___27005')) . ')' => null, //Expanded Payment Idea
-            'x__up' => $e['e__id'],
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $i_assigned){
-            array_push($assigned_i_ids, $i_assigned['x__right']);
-        }
-    }
-    echo '</div>';
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__left' => $i['i__id'],
+        ), array(), 0) as $x){
 
-    //Show all non-assigned payment ideas:
-    $i_query = $this->I_model->fetch(array(
-        'i__id NOT IN (' . join(',', $assigned_i_ids) . ')' => null,
-        'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Strict Payment Idea
-    ), 0, 0, array('i__title' => 'ASC'));
+            if(isset($_GET['include_e']) && strlen($_GET['include_e']) && !count($this->X_model->fetch(array(
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__up IN (' . $_GET['include_e'] . ')' => null,
+                    'x__down' => $x['x__source'],
+                )))){
+                continue;
+            }
+            if(isset($_GET['exclude_e']) && intval($_GET['exclude_e']) && count($this->X_model->fetch(array(
+                    'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
+                    'x__down' => $x['x__source'],
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                )))){
+                continue;
+            }
 
-}
+            $x__metadata = unserialize($x['x__metadata']);
+            $total_transactions++;
+            $this_quantity = ( $x__metadata['quantity']>1 ? $x__metadata['quantity'] : 1 );
 
 
-//List all payment Ideas and their total earnings
-$x_updated = 0;
-$sale_type_content = '';
-foreach($i_query as $i){
+            $total_sales += $this_quantity;
+            $total_paypal_fee += doubleval($x__metadata['mc_fee']);
+            $total_revenue += doubleval($x__metadata['mc_gross']);
+            if(!in_array($x__metadata['mc_currency'], $currencies) && strlen($x__metadata['mc_currency'])>0){
+                array_push($currencies, $x__metadata['mc_currency']);
+            }
+            if(!in_array($x__metadata['mc_currency'], $gross_currencies) && strlen($x__metadata['mc_currency'])>0){
+                array_push($gross_currencies, $x__metadata['mc_currency']);
+            }
 
-    //Total earnings:
-    $transaction_content = '';
-    $total_transactions = 0;
-    $total_sales = 0;
-    $total_revenue = 0;
-    $total_paypal_fee = 0;
-    $currencies = array();
 
-    foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-        'x__left' => $i['i__id'],
-    ), array(), 0) as $x){
+            //Half only if not halfed before
+            if(isset($_GET['half']) && !isset($x__metadata['mc_gross_old'])){
+                $this->X_model->update($x['x__id'], array(
+                    'x__message' => number_format(($x__metadata['mc_gross']/2),2),
+                ));
+                x__metadata_update($x['x__id'], array(
+                    'mc_fee' => number_format(($x__metadata['mc_fee']/2),2),
+                    'mc_gross' => number_format(($x__metadata['mc_gross']/2),2),
+                    'mc_gross_old' => $x__metadata['mc_gross'],
+                    'mc_fee_old' => $x__metadata['mc_fee'],
+                ));
+                $x_updated++;
+            }
 
-        if(isset($_GET['include_e']) && strlen($_GET['include_e']) && !count($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__up IN (' . $_GET['include_e'] . ')' => null,
-                'x__down' => $x['x__source'],
-            )))){
-            continue;
-        }
-        if(isset($_GET['exclude_e']) && intval($_GET['exclude_e']) && count($this->X_model->fetch(array(
-                'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
-                'x__down' => $x['x__source'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))){
-            continue;
-        }
 
-        $x__metadata = unserialize($x['x__metadata']);
-        $total_transactions++;
 
-        $this_quantity = 1;//Default assumption:
-        if($x__metadata['quantity']>1){
-            $this_quantity = $x__metadata['quantity'];
-        } else {
-            for($t=20;$t>=2;$t--){
-                if(substr_count(strtolower($i['i__title']),$t.'x')==1){
-                    $this_quantity = $t;
-                    break;
+            $item_parts = explode('-',$x__metadata['item_number']);
+            $this_sourced = intval(isset($item_parts[3]) ? $item_parts[3] : $x['x__source'] );
+
+            array_push($all_sources, $this_sourced);
+
+            $es = $this->E_model->fetch(array(
+                'e__id' => $this_sourced,
+            ));
+            $this_commission = $x__metadata['mc_gross']*$commission_rate;
+            $this_payout = $x__metadata['mc_gross']-$x__metadata['mc_fee']-$this_commission;
+
+            $transaction_content .= '<tr class="transaction_columns transactions_'.$i['i__id'].' hidden">';
+            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block source_cover_micro">'.view_cover(12274,$es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</td>';
+            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">1</td>';
+            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $transaction_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
+            $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
+            $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($this_commission, 2).'</td>';
+            $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $x__metadata['mc_gross'] > 0 ? ($x__metadata['mc_fee']/$x__metadata['mc_gross']*100) : 0 ).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
+            $transaction_content .= '<td style="text-align: left;"><b>&nbsp;'.( $this_quantity>1 ? '$'.number_format(($this_payout/$this_quantity), 2) : '' ).'</b></td>';
+            $transaction_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
+            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$x__metadata['mc_currency'].'</td>';
+            $transaction_content .= '<td style="text-align: right;" id="refund_'.$x['x__id'].'">'.( $x__metadata['mc_gross']>0 && strlen($x__metadata['txn_id'])>0 ? '<a href="#" onclick="paypal_refund('.$x['x__id'].', '.number_format($x__metadata['mc_gross'], 2).')" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Process Full Refund"><u><i class="fal fa-hands-usd" style="font-size:1em !important;"></i></u></a> <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="/-4341?x__id='.$x['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
+
+            $transaction_content .= '</tr>';
+
+            if($this_payout > 0){
+                $date = date("md", strtotime($x['x__time']));
+                if(isset($daily_sales[$date])){
+                    $daily_sales[$date] += $this_payout;
+                } else {
+                    $daily_sales[$date] = $this_payout;
                 }
-            }
-        }
 
-        $total_sales += $this_quantity;
-        $total_paypal_fee += doubleval($x__metadata['mc_fee']);
-        $total_revenue += doubleval($x__metadata['mc_gross']);
-        if(!in_array($x__metadata['mc_currency'], $currencies) && strlen($x__metadata['mc_currency'])>0){
-            array_push($currencies, $x__metadata['mc_currency']);
-        }
-        if(!in_array($x__metadata['mc_currency'], $gross_currencies) && strlen($x__metadata['mc_currency'])>0){
-            array_push($gross_currencies, $x__metadata['mc_currency']);
-        }
+                $origin_source = $x['x__right'];
+                if(isset($origin_sales[$origin_source])){
+                    $origin_sales[$origin_source] += number_format($this_payout, 0, '','');
+                } else {
+                    $origin_sales[$origin_source] = number_format($this_payout, 0, '','');
+                }
 
-
-        //Half only if not halfed before
-        if(isset($_GET['half']) && !isset($x__metadata['mc_gross_old'])){
-            $this->X_model->update($x['x__id'], array(
-                'x__message' => number_format(($x__metadata['mc_gross']/2),2),
-            ));
-            x__metadata_update($x['x__id'], array(
-                'mc_fee' => number_format(($x__metadata['mc_fee']/2),2),
-                'mc_gross' => number_format(($x__metadata['mc_gross']/2),2),
-                'mc_gross_old' => $x__metadata['mc_gross'],
-                'mc_fee_old' => $x__metadata['mc_fee'],
-            ));
-            $x_updated++;
-        }
-
-
-
-        $item_parts = explode('-',$x__metadata['item_number']);
-        $this_sourced = intval(isset($item_parts[3]) ? $item_parts[3] : $x['x__source'] );
-
-        array_push($all_sources, $this_sourced);
-
-        $es = $this->E_model->fetch(array(
-            'e__id' => $this_sourced,
-        ));
-        $this_commission = $x__metadata['mc_gross']*$commission_rate;
-        $this_payout = $x__metadata['mc_gross']-$x__metadata['mc_fee']-$this_commission;
-
-        $transaction_content .= '<tr class="transaction_columns transactions_'.$i['i__id'].' hidden">';
-        $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block source_cover_micro">'.view_cover(12274,$es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</td>';
-        $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">1</td>';
-        $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-        $transaction_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
-        $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
-        $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">-$'.number_format($this_commission, 2).'</td>';
-        $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $x__metadata['mc_gross'] > 0 ? ($x__metadata['mc_fee']/$x__metadata['mc_gross']*100) : 0 ).'%">-$'.number_format($x__metadata['mc_fee'], 2).'</td>';
-        $transaction_content .= '<td style="text-align: left;"><b>&nbsp;'.( $this_quantity>1 ? '$'.number_format(($this_payout/$this_quantity), 2) : '' ).'</b></td>';
-        $transaction_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
-        $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$x__metadata['mc_currency'].'</td>';
-        $transaction_content .= '<td style="text-align: right;" id="refund_'.$x['x__id'].'">'.( $x__metadata['mc_gross']>0 && strlen($x__metadata['txn_id'])>0 ? '<a href="#" onclick="paypal_refund('.$x['x__id'].', '.number_format($x__metadata['mc_gross'], 2).')" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Process Full Refund"><u><i class="fal fa-hands-usd" style="font-size:1em !important;"></i></u></a> <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="/-4341?x__id='.$x['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
-
-        $transaction_content .= '</tr>';
-
-        if($this_payout > 0){
-            $date = date("md", strtotime($x['x__time']));
-            if(isset($daily_sales[$date])){
-                $daily_sales[$date] += $this_payout;
-            } else {
-                $daily_sales[$date] = $this_payout;
-            }
-
-            $origin_source = $x['x__right'];
-            if(isset($origin_sales[$origin_source])){
-                $origin_sales[$origin_source] += number_format($this_payout, 0, '','');
-            } else {
-                $origin_sales[$origin_source] = number_format($this_payout, 0, '','');
             }
 
         }
+        $total_commission = ( $commission_rate * $total_revenue );
+        $payout = $total_revenue-$total_commission-$total_paypal_fee;
+
+
+        if($i['i__type']==6183 && !$total_transactions){
+            continue;
+        }
+
+        $gross_sales += $total_sales;
+        $gross_transactions += $total_transactions;
+        $gross_revenue += $total_revenue;
+        $gross_paypal_fee += $total_paypal_fee;
+        $gross_commission += $total_commission;
+        $gross_payout += $payout;
+
+        $has_limits = $this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $i['i__id'],
+            'x__up' => 26189,
+        ), array(), 1);
+        $available_transactions = (count($has_limits) && is_numeric($has_limits[0]['x__message']) ? intval($has_limits[0]['x__message']) : '∞');
+
+        if(fmod($total_transactions, 2)==1){
+            $transaction_content .= '<tr class="transaction_columns hidden"></tr>';
+        }
+
+        $sale_type_content .= '<tr class="css__title">';
+        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a>' : $i['i__title'] ).'</td>';
+        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_transactions.'</td>';
+        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_transactions.'</td>';
+        $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';
+        $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
+        $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales>0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
+        $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales>0 ? '-$'.number_format($total_paypal_fee, 2) : '&nbsp;').'</td>';
+        $sale_type_content .= '<td style="text-align: left;">&nbsp;'.( $total_sales>0 ? '$'.number_format(($payout/$total_sales), 2) : '&nbsp;' ).'</td>';
+        $sale_type_content .= '<td style="text-align: right;"><b>'.( $total_sales>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
+        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.join(', ',$currencies).'</td>';
+        $sale_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
+        $sale_type_content .= '</tr>';
+        $sale_type_content .= $transaction_content;
 
     }
-    $total_commission = ( $commission_rate * $total_revenue );
-    $payout = $total_revenue-$total_commission-$total_paypal_fee;
 
-
-    if($i['i__type']==6183 && !$total_transactions){
-        continue;
-    }
-
-    $gross_sales += $total_sales;
-    $gross_transactions += $total_transactions;
-    $gross_revenue += $total_revenue;
-    $gross_paypal_fee += $total_paypal_fee;
-    $gross_commission += $total_commission;
-    $gross_payout += $payout;
-
-    $has_limits = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__right' => $i['i__id'],
-        'x__up' => 26189,
-    ), array(), 1);
-    $available_transactions = (count($has_limits) && is_numeric($has_limits[0]['x__message']) ? intval($has_limits[0]['x__message']) : '∞');
-
-    if(fmod($total_transactions, 2)==1){
-        $transaction_content .= '<tr class="transaction_columns hidden"></tr>';
-    }
-
-    $sale_type_content .= '<tr class="css__title">';
-    $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a>' : $i['i__title'] ).'</td>';
-    $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_transactions.'</td>';
-    $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_transactions.'</td>';
-    $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';
-    $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales>0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
-    $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales>0 ? '-$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';
-    $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales>0 ? '-$'.number_format($total_paypal_fee, 2) : '&nbsp;').'</td>';
-    $sale_type_content .= '<td style="text-align: left;">&nbsp;'.( $total_sales>0 ? '$'.number_format(($payout/$total_sales), 2) : '&nbsp;' ).'</td>';
-    $sale_type_content .= '<td style="text-align: right;"><b>'.( $total_sales>0 ? '$'.number_format($payout, 2) : '' ).'</b></td>';
-    $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.join(', ',$currencies).'</td>';
-    $sale_type_content .= '<td style="text-align: right;"><a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
-    $sale_type_content .= '</tr>';
-    $sale_type_content .= $transaction_content;
-
-}
-
-$other_source_content = '';
+    $other_source_content = '';
 
 
 
@@ -264,7 +285,9 @@ $other_source_content = '';
 
 
 
-if(isset($_GET['e__id'])){
+
+
+
 
     $filters = array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
