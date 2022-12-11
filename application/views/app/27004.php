@@ -134,7 +134,17 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
             $x__metadata = unserialize($x['x__metadata']);
             $total_transactions++;
-            $this_quantity = ( $x__metadata['quantity']>1 ? $x__metadata['quantity'] : 1 );
+            $this_quantity = 1;//Default assumption:
+            if($x__metadata['quantity']>1){
+                $this_quantity = $x__metadata['quantity'];
+            } else {
+                for($t=20;$t>=2;$t--){
+                    if(substr_count(strtolower($i['i__title']),$t.'x')==1){
+                        $this_quantity = $t;
+                        break;
+                    }
+                }
+            }
 
 
             $total_sales += $this_quantity;
@@ -439,9 +449,6 @@ if(count($i_query)){
     /* CSS Adjustments for Printing View */
     .fixed-top{
         background-color: transparent !important;
-    }
-    .top_nav{
-        display:none !important;
     }
     .table-striped tr:nth-of-type(odd) td {
         background-color: #FFFFFF !important;
