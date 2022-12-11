@@ -112,7 +112,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         }
 
         //Totals
-        echo '<tr class="css__title">';
+        echo '<tr class="css__title" style="font-weight: 1.3em;">';
         echo '<td>Totals</td>';
         echo '<td style="text-align: right;">'.$total_tickets.'</td>';
         echo '<td style="text-align: right;">'.number_format($total_quantity, 0).'</td>';
