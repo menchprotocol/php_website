@@ -87,7 +87,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 ), array(), 0) as $pay){
                     $x__metadata = unserialize($pay['x__metadata']);
                     $total_transactions += ($x__metadata['quantity']>1 ? $x__metadata['quantity'] : 1 );
-                    $total_revenue += doubleval($x__metadata['mc_gross']);
+                    $total_revenue += $x__metadata['mc_gross']-$x__metadata['mc_fee']-($x__metadata['mc_gross']*$commission_rate);
                 }
 
                 //See if this payment idea has any payments?
