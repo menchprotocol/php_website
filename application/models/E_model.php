@@ -682,7 +682,7 @@ class E_model extends CI_Model
 
     }
 
-    function recursive_followers($e__id, $include_e = array(), $exclude_e= array(), $s__level = 0, $s__count = 0){
+    function recursive_followers($e__id, $include_e = array(), $exclude_e= array(), $s__level = 0){
 
         $hard_level = 7; //Break at this point in case growing too large
         $hard_limit = 1000; //Break at this point in case growing too large
@@ -718,21 +718,19 @@ class E_model extends CI_Model
 
             //Is this a new matching source?
             if($qualified_source && !isset($flat_es[$e_follower['e__id']])){
-                $s__count++;
                 $e_follower2['x__id'] = $e_follower['x__id'];
                 $e_follower2['e__id'] = $e_follower['e__id'];
                 $e_follower2['e__title'] = $e_follower['e__title'];
                 $e_follower2['x__message'] = $e_follower['x__message'];
                 $e_follower2['s__level'] = $s__level;
-                $e_follower2['s__count'] = $s__count;
+                $e_follower2['s__count'] = count($flat_es)+1;
                 $flat_es[$e_follower['e__id']] = $e_follower2;
             }
 
             //Do we have more children?
-            if($s__level<$hard_level && $s__count<$hard_limit){
-                foreach($this->E_model->recursive_followers($e_follower['e__id'], $include_e, $exclude_e, $s__level, $s__count) as $e_recursive_follower){
+            if($s__level<$hard_level && count($flat_es)<$hard_limit){
+                foreach($this->E_model->recursive_followers($e_follower['e__id'], $include_e, $exclude_e, $s__level) as $e_recursive_follower){
                     if(!isset($flat_es[$e_recursive_follower['e__id']])){
-                        $s__count++;
                         $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
                     }
                 }
