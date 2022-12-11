@@ -1902,7 +1902,7 @@ function view_e($x__type, $e, $extra_class = null)
                 'x__type' => 4251, //New Source Created
                 'x__source !=' => $e['e__id'],
             ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span>'.$creator['e__title'].'</span><span class="grey" style="padding-left: 5px; margin-left: 5px; font-size: 0.89em; font-weight: bold;">· '.view_time_difference(strtotime($creator['x__time'])).'</span></a>';
+                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">'.$creator['e__title'].'</span><span class="grey" style="font-size: 0.89em; font-weight: bold;">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time'])).'</span></a>';
             }
             $ui .= '</div></td>';
 
