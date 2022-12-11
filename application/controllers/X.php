@@ -1438,86 +1438,8 @@ class X extends CI_Controller
 
 
     function x_select(){
-
-        $member_e = superpower_unlocked();
-        $nothing_seected = !isset($_POST['selection_i__id']) || !count($_POST['selection_i__id']);
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['focus_id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing idea id.',
-            ));
-        } elseif (!isset($_POST['focus_i__type'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing idea type.',
-            ));
-        } elseif (!isset($_POST['top_i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Top idea id.',
-            ));
-        } elseif (!in_array($_POST['focus_i__type'], $this->config->item('n___7712'))) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid selection type',
-            ));
-        }
-
-        //Can they skip without selecting anything?
-        $can_skip = count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $_POST['focus_id'],
-            'x__up' => 28239, //Can Skip
-        )));
-        if(!$can_skip && $nothing_seected){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'You must select an item before going next.',
-            ));
-        }
-
-        //How about the min selection?
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $_POST['focus_id'],
-            'x__up' => 26613, //Min Selection
-        ), array(), 1) as $limit){
-            if(intval($limit['x__message']) > 0 && count($_POST['selection_i__id']) < intval($limit['x__message'])){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'You must select at-least '.$limit['x__message'].' items.',
-                ));
-            }
-        }
-
-        //How about  max selection?
-        foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $_POST['focus_id'],
-            'x__up' => 26614, //Max Selection
-        ), array(), 1) as $limit){
-            if(intval($limit['x__message']) > 0 && count($_POST['selection_i__id']) > intval($limit['x__message'])){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'You cannot select more than '.$limit['x__message'].' items.',
-                ));
-            }
-        }
-
-
-        //We have something to save:
-        return view_json($this->X_model->x_link_toggle_select($member_e['e__id'], $_POST['top_i__id'], $_POST['focus_id'], ( $nothing_seected ? array() : $_POST['selection_i__id'] )));
-
+        return view_json($this->X_model->x_select($_POST['top_i__id'], $_POST['focus_id'], ( !isset($_POST['selection_i__id']) || !count($_POST['selection_i__id']) ? array() : $_POST['selection_i__id'] )));
     }
-
 
 
 

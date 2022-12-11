@@ -491,7 +491,7 @@ class X_model extends CI_Model
     }
 
 
-    function update_dropdown($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__id, $x__id) {
+    function update_dropdown($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__id, $x__id = 0) {
 
 
         //Maintain a manual index as a hack for the Idea/Source tables for now:
@@ -1944,14 +1944,22 @@ class X_model extends CI_Model
 
 
 
-    function x_link_toggle_select($e__id, $top_i__id, $question_i__id, $answer_i__ids){
+    function x_select($top_i__id, $focus_i__id, $answer_i__ids){
+
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
+            return array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            );
+        }
 
         $is = $this->I_model->fetch(array(
-            'i__id' => $question_i__id,
+            'i__id' => $focus_i__id,
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
         $es = $this->E_model->fetch(array(
-            'e__id' => $e__id,
+            'e__id' => $member_e['e__id'],
             'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ));
         if (!count($is)) {
@@ -1970,6 +1978,55 @@ class X_model extends CI_Model
                 'message' => 'Invalid Idea type [Must be Answer]',
             );
         }
+
+
+        //Can they skip without selecting anything?
+        $can_skip = count($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $focus_i__id,
+            'x__up' => 28239, //Can Skip
+        )));
+        if(!$can_skip && !count($answer_i__ids)){
+            return array(
+                'status' => 0,
+                'message' => 'You must select an item before going next.',
+            );
+        }
+
+        //How about the min selection?
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $focus_i__id,
+            'x__up' => 26613, //Min Selection
+        ), array(), 1) as $limit){
+            if(intval($limit['x__message']) > 0 && count($answer_i__ids) < intval($limit['x__message'])){
+                return array(
+                    'status' => 0,
+                    'message' => 'You must select at-least '.$limit['x__message'].' items.',
+                );
+            }
+        }
+
+        //How about  max selection?
+        foreach($this->X_model->fetch(array(
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $focus_i__id,
+            'x__up' => 26614, //Max Selection
+        ), array(), 1) as $limit){
+            if(intval($limit['x__message']) > 0 && count($answer_i__ids) > intval($limit['x__message'])){
+                return array(
+                    'status' => 0,
+                    'message' => 'You cannot select more than '.$limit['x__message'].' items.',
+                );
+            }
+        }
+
+
+
+
 
 
         //Define completion transactions for each answer:
@@ -1991,13 +2048,13 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY ANSWERED
-            'x__source' => $e__id,
+            'x__source' => $member_e['e__id'],
             'x__left' => $is[0]['i__id'],
         )) as $x_progress){
 
             $this->X_model->update($x_progress['x__id'], array(
                 'x__status' => 6173, //Transaction Deleted
-            ), $e__id, 12129 /* DISCOVERY ANSWER DELETED */);
+            ), $member_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
 
             //TODO Also remove the discovery of the selected if not a payment type:
 
@@ -2011,7 +2068,7 @@ class X_model extends CI_Model
                 $answers_newly_added++;
                 $this->X_model->create(array(
                     'x__type' => $i_x__type,
-                    'x__source' => $e__id,
+                    'x__source' => $member_e['e__id'],
                     'x__left' => $is[0]['i__id'],
                     'x__right' => $answer_i__id,
                 ));
@@ -2021,7 +2078,7 @@ class X_model extends CI_Model
         //Issue DISCOVERY/IDEA COIN:
         $this->X_model->mark_complete($top_i__id, $is[0], array(
             'x__type' => $x__type,
-            'x__source' => $e__id,
+            'x__source' => $member_e['e__id'],
         ));
 
         //All good, something happened:

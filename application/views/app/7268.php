@@ -35,7 +35,16 @@ if(isset($_GET['e__id'])){
                     $lowest_e_id = $e__id;
                 }
             }
-            array_push($duplicates_found[$x__message_md5], (count($e__ids)-1).' Merged Into @'.$lowest_e_id);
+
+            foreach($e__ids as $this_e__id){
+                if($this_e__id != $lowest_e_id){
+                    array_push($duplicates_found[$x__message_md5], '@'.$this_e__id.' Merges Into @'.$lowest_e_id);
+                    //array_push($duplicates_found[$x__message_md5], $this->X_model->update_dropdown($this_e__id,$this_e__id,6177,6178,$lowest_e_id)); break;
+                }
+            }
+
+
+
         }
     }
 

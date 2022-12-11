@@ -3877,7 +3877,9 @@ div.img {
     border-radius: 50%;
     margin: 0 auto;
 }
-
+.source_cover {
+    padding-left: 8px;
+}
 .source_cover_mini div.img {
     width: 34px;
     height: 34px;

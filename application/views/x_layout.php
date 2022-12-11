@@ -1043,7 +1043,6 @@ echo '</div>';
 
         //Show Loading:
         $.post("/x/x_select", {
-            focus_i__type:focus_i__type,
             focus_id:fetch_val('#focus_id'),
             top_i__id:$('#top_i__id').val(),
             selection_i__id:selection_i__id,
