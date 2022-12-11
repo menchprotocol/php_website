@@ -1510,12 +1510,12 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
         if($discovery_mode || !$e_of_i){
 
-            $ui .= '<td width="80%" style="text-align: left; padding-left: 13px;"><div class="show-on-hover">';
+            $ui .= '<td width="80%" class="wide_author"><div class="show-on-hover">';
             foreach($CI->X_model->fetch(array(
                 'x__right' => $i['i__id'],
                 'x__type' => 4250, //New Idea Created
             ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">'.$creator['e__title'].'</span><span class="grey" style="font-size: 0.89em; font-weight: bold;">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time'])).'</span></a>';
+                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">&nbsp;'.$creator['e__title'].'</span><span class="grey">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time'])).'</span></a>';
             }
             $ui .= '</div></td>';
 
@@ -1878,13 +1878,13 @@ function view_e($x__type, $e, $extra_class = null)
 
         if(!$superpower_13422){
 
-            $ui .= '<td width="80%" style="text-align: left; padding-left: 13px;"><div class="show-on-hover">';
+            $ui .= '<td width="80%" class="wide_author"><div class="show-on-hover">';
             foreach($CI->X_model->fetch(array(
                 'x__down' => $e['e__id'],
                 'x__type' => 4251, //New Source Created
                 'x__source !=' => $e['e__id'],
             ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">'.$creator['e__title'].'</span><span class="grey" style="font-size: 0.89em; font-weight: bold;">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time'])).'</span></a>';
+                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">&nbsp;'.$creator['e__title'].'</span><span class="grey">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time'])).'</span></a>';
             }
             $ui .= '</div></td>';
 

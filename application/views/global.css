@@ -2434,7 +2434,8 @@ i, .btn .show-max {
 textarea {
     resize: none;
 }
-
+.wide_author{ text-align: left; padding-left: 13px; }
+.wide_author .grey{ font-size: 0.89em; font-weight: bold; }
 
 
 .inner-content .texttype__lg {
