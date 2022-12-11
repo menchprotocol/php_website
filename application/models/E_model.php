@@ -716,13 +716,9 @@ class E_model extends CI_Model
 
             //Is this a new matching source?
             if($qualified_source && !isset($flat_es[$e_follower['e__id']])){
-                $e_follower2['x__id'] = $e_follower['x__id'];
-                $e_follower2['e__id'] = $e_follower['e__id'];
-                $e_follower2['e__title'] = $e_follower['e__title'];
-                $e_follower2['x__message'] = $e_follower['x__message'];
-                $e_follower2['s__level'] = $s__level;
-                $e_follower2['s__count'] = count($flat_es)+1;
-                $flat_es[$e_follower['e__id']] = $e_follower2;
+                $e_follower['s__level'] = $s__level;
+                $e_follower['s__count'] = count($flat_es)+1;
+                $flat_es[$e_follower['e__id']] = $e_follower;
             }
 
             //Do we have more children?
