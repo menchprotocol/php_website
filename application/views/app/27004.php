@@ -49,7 +49,7 @@ if($superpower_28727 && 0) {
 
 
 
-if(!isset($_GET['e__id'])){
+if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
     if($member_e){
 
