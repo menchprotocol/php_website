@@ -112,8 +112,8 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         }
 
         //Totals
-        echo '<tr>';
-        echo '<td><a href="/-27004?e__id='.$e['e__id'].'" class="css__title">'.$e['e__title'].'</a></td>';
+        echo '<tr style="font-weight: bold;">';
+        echo '<td>Totals</td>';
         echo '<td style="text-align: right;">'.$total_tickets.'</td>';
         echo '<td style="text-align: right;">'.$total_quantity.'</td>';
         echo '<td style="text-align: right;">$'.number_format($total_revenue, 0).'</td>';
