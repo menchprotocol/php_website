@@ -53,7 +53,14 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
     if($member_e){
 
         echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
-        echo '<div class="list-group" style="max-width: 880px; margin: 0 auto; display: block;">';
+
+        echo '<table class="table table-sm table-striped image-mini" style="margin: 0 5px; width:calc(100% - 10px) !important;">';
+        echo '<tr style="vertical-align: baseline;" class="css__title">';
+        echo '<th id="th_primary">&nbsp;</th>';
+        echo '<th style="text-align: right;" id="th_paid">Tickets</th>';
+        echo '<th style="text-align: right;" id="th_paid">Quantity</th>';
+        echo '<th style="text-align: right;" id="th_payout">Payout</th>';
+        echo '</tr>';
 
         //$member_e
         foreach($this->E_model->recursive_es($member_e['e__id'], array(27004), array(), array('x__id' => 'DESC')) as $e){
@@ -63,30 +70,38 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
                 'x__up' => $e['e__id'],
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $pi){
-                array_push($payment_is, $pi['i__id']);
+            )) as $pi){
+                array_push($payment_is, $pi['x__right']);
             }
 
             if(count($payment_is)){
 
                 //Sum Payments?
                 $total_revenue = 0;
+                $total_transactions = 0;
                 foreach($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SOURCE IDEAS
                     'x__left IN (' . join(',', $payment_is) . ')' => null,
                 )) as $pay){
                     $x__metadata = unserialize($pay['x__metadata']);
+                    $total_transactions += ($x__metadata['quantity']>1 ? $x__metadata['quantity'] : 1 );
                     $total_revenue += doubleval($x__metadata['mc_gross']);
                 }
 
                 //See if this payment idea has any payments?
-                echo '<a class="list-group-item" href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].' ['.count($payment_is).' Tickets $'.number_format($total_revenue, 0).' Sales] &nbsp;<i class="far fa-chevron-right"></i></a>';
+                echo '<tr>';
+                echo '<td><a href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].'<i class="far fa-chevron-right"></i></a></td>';
+                echo '<td style="text-align: right;">'.count($payment_is).'</td>';
+                echo '<td style="text-align: right;">'.$total_transactions.'</td>';
+                echo '<td style="text-align: right;">$'.number_format($total_revenue, 0).'</td>';
+                echo '</tr>';
+
             }
         }
-        echo '</div>';
+        echo '</table>';
+
 
     } else {
         echo 'You must login to see your payments';
