@@ -100,7 +100,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 echo '<tr>';
                 echo '<td><a href="/-27004?e__id='.$e['e__id'].'" class="css__title">'.$e['e__title'].'</a></td>';
                 echo '<td style="text-align: right;">'.$this_tickets.'</td>';
-                echo '<td style="text-align: right;">'.$this_quantity.'</td>';
+                echo '<td style="text-align: right;">'.number_format($this_quantity, 0).'</td>';
                 echo '<td style="text-align: right;">$'.number_format($this_revenue, 0).'</td>';
                 echo '</tr>';
 
@@ -112,10 +112,10 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         }
 
         //Totals
-        echo '<tr style="font-weight: bold;">';
+        echo '<tr class="css__title">';
         echo '<td>Totals</td>';
         echo '<td style="text-align: right;">'.$total_tickets.'</td>';
-        echo '<td style="text-align: right;">'.$total_quantity.'</td>';
+        echo '<td style="text-align: right;">'.number_format($total_quantity, 0).'</td>';
         echo '<td style="text-align: right;">$'.number_format($total_revenue, 0).'</td>';
         echo '</tr>';
 
