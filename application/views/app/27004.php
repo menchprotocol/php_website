@@ -65,7 +65,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
                 'x__up' => $e['e__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
-            if(count($payment_is) > 0 && count($payment_is)<100){
+            if(count($payment_is)){
                 //See if this payment idea has any payments?
                 echo '<a class="list-group-item" href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].' ['.count($payment_is).'] &nbsp;<i class="far fa-chevron-right"></i></a>';
             }
