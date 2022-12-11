@@ -59,15 +59,32 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         foreach($this->E_model->recursive_es($member_e['e__id'], array(27004), array(), array('x__id' => 'DESC')) as $e){
 
             //See if this Source has any paymen ideas:
-            $payment_is = $this->X_model->fetch(array(
+            $payment_is = array();
+            foreach($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
                 'x__up' => $e['e__id'],
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
+            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $pi){
+                array_push($payment_is, $pi['e__id']);
+            }
+
             if(count($payment_is)){
+
+                //Sum Payments?
+                $total_revenue = 0;
+                foreach($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__up IN (' . join(',', $payment_is) . ')' => null,
+                )) as $pay){
+                    $x__metadata = unserialize($pay['x__metadata']);
+                    $total_revenue += doubleval($x__metadata['mc_gross']);
+                }
+
+
                 //See if this payment idea has any payments?
-                echo '<a class="list-group-item" href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].' ['.count($payment_is).'] &nbsp;<i class="far fa-chevron-right"></i></a>';
+                echo '<a class="list-group-item" href="/-27004?e__id='.$e['e__id'].'">'.$e['e__title'].' ['.count($payment_is).' Tickets $'.number_format($total_revenue, 0).' Sales] &nbsp;<i class="far fa-chevron-right"></i></a>';
             }
         }
         echo '</div>';
