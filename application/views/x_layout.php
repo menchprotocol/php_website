@@ -495,7 +495,7 @@ if($top_i__id) {
             echo '<div class="source-info">'
                 . '<span class="icon-block">'. $e___11035[31837]['m__cover'] . '</span>'
                 . '<span>'.$e___11035[31837]['m__title'] . '</span>'
-                . '<div style="padding-top: 10px; padding-left: 40px; line-height:120%;">'
+                . '<div class="payment_box">'
                 . nl2br($e___11035[31837]['m__message']);
 
 

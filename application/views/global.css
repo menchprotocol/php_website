@@ -3994,6 +3994,13 @@ main {
     background-color: #d2f4ea;
 }
 
+.payment_box{
+    padding-top: 10px; padding-left: 40px; line-height:120%;
+}
+.payment_box a{
+    padding: 8px;
+}
+
 .scrollarea {
     overflow-y: auto;
 }
