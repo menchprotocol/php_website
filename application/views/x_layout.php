@@ -499,42 +499,16 @@ if($top_i__id) {
                 . nl2br($e___11035[31837]['m__message']);
 
 
-            echo '<table class="table table-condensed">';
-
-
-            if($unit_fee > 0){
-                echo '<tr>';
-                echo '<td class="table-btn first_btn" style="text-align: right;">Price:&nbsp;&nbsp;</td>';
-                echo '<td class="table-btn first_btn">'.$unit_price.' '.$currency_parts[0].'</td>';
-                echo '</tr>';
-
-                echo '<tr>';
-                echo '<td class="table-btn first_btn" style="text-align: right;">Fee:&nbsp;&nbsp;</td>';
-                echo '<td class="table-btn first_btn" title="'.(doubleval(website_setting(30590, $x__source)) .' / '. doubleval(website_setting(27017, $x__source)) .' / '. doubleval(website_setting(30612, $x__source))).'">'.$unit_fee.' '.$currency_parts[0].'</td>';
-                echo '</tr>';
-            }
-
 
             if($max_allowed > 1 || $min_allowed > 1){
-
-                echo '<tr>';
-                echo '<td class="table-btn first_btn" style="text-align: right;">Tickets:&nbsp;&nbsp;</td>';
-                echo '<td class="table-btn first_btn sale_price_ui">';
+                echo '<br />';
                 echo '<a href="javascript:void(0);" onclick="sale_increment(-1)"><i class="fas fa-minus-circle"></i></a>';
                 echo '<span id="current_sales" class="css__title" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
                 echo '<a href="javascript:void(0);" onclick="sale_increment(1)"><i class="fas fa-plus-circle"></i></a>';
-                echo '</td>';
-                echo '</tr>';
-
+                echo '<br />';
             }
 
-            echo '<tr>';
-            echo '<td class="table-btn first_btn" style="text-align: right;  width:34% !important;">Total:&nbsp;&nbsp;</td>';
-            echo '<td class="table-btn first_btn" style="width:66% !important;"><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].'<b class="css__title">*</b></td>';
-            echo '</tr>';
-
-            echo '</table>';
-
+            echo '<div '.( $unit_fee > 0 ? ' title="Base Price of '.$unit_price.' '.$currency_parts[0].' + '.$unit_fee.' '.$currency_parts[0].' in Fees & Taxes" data-toggle="tooltip" data-placement="top" ' : '' ).'><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].'<b class="css__title">*</b></div>';
 
             echo '<div class="sub_note"><b class="css__title">*Remember:</b> ';
             if(!count($this->X_model->fetch(array(
