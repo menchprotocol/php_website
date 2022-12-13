@@ -679,7 +679,7 @@ function i_is_available($i__id, $log_tnx){
         'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__up'), 0);
     if(count($fetch_27984)){
-        //Let's see if they meet all of these PREREQUISITES:
+        //There are some requirements, Let's see if they meet all of them:
         $missing_es = '';
         $meets_inc2_prereq = 0;
         if($x__source > 0){

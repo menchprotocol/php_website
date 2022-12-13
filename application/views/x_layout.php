@@ -60,13 +60,68 @@ $can_skip = count($this->X_model->fetch(array(
     'x__up' => 28239, //Can Skip
 )));
 
+if($is_or_idea || count($x_completes)){
+    $_GET['open'] = true;
+}
+
+
+
 $is_payment = in_array($i['i__type'] , $this->config->item('n___30469'));
 $min_allowed = 1;
 $detected_x_type = 0;
 
+if($is_payment){
 
-if($is_or_idea || count($x_completes)){
-    $_GET['open'] = true;
+    //Payments Must have Unit Price, otherwise they are NOT a payment until added...
+    $total_dues = $this->X_model->fetch(array(
+        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__right' => $i['i__id'],
+        'x__up' => 26562, //Total Due
+    ));
+
+    if($x__source>0 && count($total_dues)){
+        $detected_x_type = x_detect_type($total_dues[0]['x__message']);
+        if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
+
+            $digest_fees = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $i['i__id'],
+                'x__up' => 30589, //Digest Fees
+            ));
+            $cart_max = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $i['i__id'],
+                'x__up' => 29651, //Cart Max Quantity
+            ));
+            $cart_min = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $i['i__id'],
+                'x__up' => 31008, //Cart Min Quantity
+            ));
+
+
+            //Break down amount & currency
+            $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
+            $unit_price = number_format($currency_parts[1], 2);
+            $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__source)) + doubleval(website_setting(27017, $x__source)) + doubleval(website_setting(30612, $x__source)))/100 ), 2);
+            $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view_memory(6404,29651) );
+            $spots_remaining = i_spots_remaining($i['i__id']);
+            $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
+            $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
+            $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message']) : $min_allowed );
+            $min_allowed = ( $min_allowed < 1 ? 1 : $min_allowed );
+            $unit_total = number_format($unit_fee+$currency_parts[1], 2);
+
+        } else {
+            $is_payment = false;
+        }
+    } else {
+        $is_payment = false;
+    }
 }
 
 
@@ -119,61 +174,7 @@ foreach($this->X_model->fetch(array(
 }
 
 
-if($is_payment){
 
-    //Payment Settings:
-    $total_dues = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__right' => $i['i__id'],
-        'x__up' => 26562, //Total Due
-    ));
-
-    if($x__source>0 && count($total_dues)){
-        $detected_x_type = x_detect_type($total_dues[0]['x__message']);
-        if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
-
-            $digest_fees = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i['i__id'],
-                'x__up' => 30589, //Digest Fees
-            ));
-            $cart_max = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i['i__id'],
-                'x__up' => 29651, //Cart Max Quantity
-            ));
-            $cart_min = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i['i__id'],
-                'x__up' => 31008, //Cart Min Quantity
-            ));
-
-
-
-
-            //Break down amount & currency
-            $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
-            $unit_price = number_format($currency_parts[1], 2);
-            $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__source)) + doubleval(website_setting(27017, $x__source)) + doubleval(website_setting(30612, $x__source)))/100 ), 2);
-            $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view_memory(6404,29651) );
-            $spots_remaining = i_spots_remaining($i['i__id']);
-            $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
-            $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
-            $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message']) : $min_allowed );
-            $min_allowed = ( $min_allowed < 1 ? 1 : $min_allowed );
-            $unit_total = number_format($unit_fee+$currency_parts[1], 2);
-
-        } else {
-            $is_payment = false;
-        }
-    } else {
-        $is_payment = false;
-    }
-}
 
 //Check for time limits?
 if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
@@ -589,9 +590,9 @@ if($top_i__id) {
 
         }
 
-    } elseif ($i['i__type'] == 6683) {
+    } elseif (in_array($i['i__type'], $this->config->item('n___31796'))) {
 
-        //Do we have a response?
+        //Do we have a text response?
         $previous_response = '';
         if($x__source){
             //Does this have any append sources?
@@ -619,7 +620,69 @@ if($top_i__id) {
         }
 
         $previous_response = ( !strlen($previous_response) && count($x_completes) ? trim($x_completes[0]['x__message']) : $previous_response );
-        $message_ui = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
+        if (in_array($i['i__type'], $this->config->item('n___31812'))) {
+            //Open text response
+            $message_ui = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
+        } else {
+            //Determine type:
+            if($i['i__type']==31794){
+
+                //Number
+                $input_type = 'number';
+
+                //Steps
+                foreach($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__right' => $i['i__id'],
+                    'x__up' => 31813, //Steps
+                )) as $num_steps){
+                    if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
+                        $input_attributes .= ' step="'.$num_steps['x__message'].'" ';
+                    }
+                }
+
+                //Min Value
+                foreach($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__right' => $i['i__id'],
+                    'x__up' => 31800, //Min Value
+                )) as $num_steps){
+                    if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
+                        $input_attributes .= ' min="'.$num_steps['x__message'].'" ';
+                    }
+                }
+
+                //Max Value
+                foreach($this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__right' => $i['i__id'],
+                    'x__up' => 31801, //Max Value
+                )) as $num_steps){
+                    if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
+                        $input_attributes .= ' max="'.$num_steps['x__message'].'" ';
+                    }
+                }
+
+            } elseif($i['i__type']==31794){
+
+                //Date
+                $input_type = 'number';
+
+
+            } elseif($i['i__type']==31794){
+
+                //Date & Time
+                $input_type = 'number';
+
+            }
+
+
+            $message_ui = '<input type="'.$input_type.'" '.$input_attributes.' class="border i_content padded x_input" placeholder="" value="'.$previous_response.'" id="x_reply" />';
+
+        }
         $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); $(window).scrollTop(0); }); </script>';
 
         echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
@@ -897,7 +960,7 @@ echo '</div>';
         if($('.x_select_'+i__id).hasClass('isSelected')){
 
             //Previously Selected, delete selection:
-            if(i__type == 7231 || i__type == 14861){
+            if(i__type == 7231){
                 //Multi Selection
                 $('.x_select_'+i__id).removeClass('isSelected');
             }
@@ -929,7 +992,7 @@ echo '</div>';
         var is_logged_in = (js_pl_id > 0);
 
         //Attempts to go next if no submissions:
-        if(is_logged_in && focus_i__type==6683) {
+        if(is_logged_in && js_n___31796.includes(focus_i__type)) {
 
             //TEXT RESPONSE:
             return x_reply(go_next_url);
@@ -1008,7 +1071,7 @@ echo '</div>';
     }
 
 
-    function x_reply_save(go_next_url){
+    function x_reply(go_next_url){
         $.post("/x/x_reply", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_val('#focus_id'),
@@ -1023,10 +1086,6 @@ echo '</div>';
                 alert(data.message);
             }
         });
-    }
-
-    function x_reply(go_next_url){
-        x_reply_save(go_next_url);
     }
 
     function x_select(go_next_url){

@@ -466,6 +466,86 @@ class E_model extends CI_Model
         return $q->result_array();
     }
 
+    function fetch_recursive($direction, $e__id, $include_e = array(), $exclude_e= array(), $order = array('e__spectrum' => 'ASC', 'x__id' => 'DESC'), $hard_level = 3, $hard_limit = 100, $s__level = 0){
+
+
+        if(!in_array($direction, $this->config->item('n___11028'))){
+            //Invalid direction:
+            return false;
+        }
+
+        $flat_es = array();
+        $s__level++;
+
+        if($direction == 11029){
+            //Downwards:
+            $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
+            $join_objects = array('x__down');
+            $query_filters = array(
+                'x__up' => $e__id,
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            );
+        } elseif($direction == 11030){
+            //Upwards:
+            $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
+            $join_objects = array('x__up');
+            $query_filters = array(
+                'x__down' => $e__id,
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            );
+        }
+
+
+
+
+        foreach($this->X_model->fetch($query_filters, $join_objects, 0, 0, $order) as $e_follower) {
+
+            //Filter Sources, if needed:
+            $qualified_source = true;
+            if(count($include_e) && count($include_e)!=count($this->X_model->fetch(array(
+                    'x__up IN (' . join(',', $include_e) . ')' => null,
+                    'x__down' => $e_follower['e__id'],
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                )))){
+                //Must include all sources, skip:
+                $qualified_source = false;
+            } elseif(count($exclude_e) && count($this->X_model->fetch(array(
+                    'x__up IN (' . join(',', $exclude_e) . ')' => null,
+                    'x__down' => $e_follower['e__id'],
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                )))){
+                //Must exclude all sources, skip:
+                $qualified_source = false;
+            }
+
+
+            //Is this a new matching source?
+            if($qualified_source && !isset($flat_es[$e_follower['e__id']])){
+                $e_follower['s__level'] = $s__level;
+                $e_follower['s__count'] = count($flat_es)+1;
+                $flat_es[$e_follower['e__id']] = $e_follower;
+            }
+
+            //Do we have more children?
+            if($s__level>=$hard_level || count($flat_es)>=$hard_limit){
+                break;
+            }
+
+            foreach($this->E_model->fetch_recursive(11029, $e_follower['e__id'], $include_e, $exclude_e, $order, $hard_level, $hard_limit, $s__level) as $e_recursive_follower){
+                if(!isset($flat_es[$e_recursive_follower['e__id']])){
+                    $e_recursive_follower['s__count'] = count($flat_es)+1;
+                    $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
+                }
+            }
+        }
+
+        return $flat_es;
+    }
+
     function update($id, $update_columns, $external_sync = false, $x__source = 0, $x__type = 0)
     {
 
@@ -682,60 +762,6 @@ class E_model extends CI_Model
 
     }
 
-    function recursive_es($e__id, $include_e = array(), $exclude_e= array(), $order = array('e__spectrum' => 'ASC', 'x__id' => 'DESC'), $hard_level = 3, $hard_limit = 100, $s__level = 0){
-
-        $flat_es = array();
-        $s__level++;
-
-        foreach($this->X_model->fetch(array(
-            'x__up' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array('x__down'), 0, 0, $order) as $e_follower) {
-
-            //Filter Sources, if needed:
-            $qualified_source = true;
-            if(count($include_e) && count($include_e)!=count($this->X_model->fetch(array(
-                    'x__up IN (' . join(',', $include_e) . ')' => null,
-                    'x__down' => $e_follower['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))){
-                //Must include all sources, skip:
-                $qualified_source = false;
-            } elseif(count($exclude_e) && count($this->X_model->fetch(array(
-                    'x__up IN (' . join(',', $exclude_e) . ')' => null,
-                    'x__down' => $e_follower['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                )))){
-                //Must exclude all sources, skip:
-                $qualified_source = false;
-            }
-
-
-            //Is this a new matching source?
-            if($qualified_source && !isset($flat_es[$e_follower['e__id']])){
-                $e_follower['s__level'] = $s__level;
-                $e_follower['s__count'] = count($flat_es)+1;
-                $flat_es[$e_follower['e__id']] = $e_follower;
-            }
-
-            //Do we have more children?
-            if($s__level>=$hard_level || count($flat_es)>=$hard_limit){
-                break;
-            }
-
-            foreach($this->E_model->recursive_es($e_follower['e__id'], $include_e, $exclude_e, $order, $hard_level, $hard_limit, $s__level) as $e_recursive_follower){
-                if(!isset($flat_es[$e_recursive_follower['e__id']])){
-                    $e_recursive_follower['s__count'] = count($flat_es)+1;
-                    $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
-                }
-            }
-        }
-
-        return $flat_es;
-    }
 
     function remove($e__id, $x__source = 0, $migrate_s__id = 0){
 

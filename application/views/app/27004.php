@@ -68,7 +68,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         $total_quantity = 0;
 
         //$member_e
-        foreach($this->E_model->recursive_es($member_e['e__id'], array(27004), array(), array('e__title' => 'DESC')) as $e){
+        foreach($this->E_model->fetch_recursive(11029, $member_e['e__id'], array(27004), array(), array('e__title' => 'DESC')) as $e){
 
             //See if this Source has any paymen ideas:
             $payment_is = array();

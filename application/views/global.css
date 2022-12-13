@@ -1044,7 +1044,7 @@ a.headline {
 
 
 
-.x_sort, .sort_e, .fa-sort, .fa-arrows{
+.x_sort, .e_sort, .fa-sort, .fa-arrows{
     cursor: grab;
 }
 .space-left{
@@ -3879,7 +3879,7 @@ div.img {
     margin: 0 auto;
 }
 .source_cover {
-    padding-left: 8px;
+
 }
 .source_cover_mini div.img {
     width: 34px;

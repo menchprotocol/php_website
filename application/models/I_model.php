@@ -678,35 +678,6 @@ class I_model extends CI_Model
             );
         }
 
-        if($do_recursive && count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                'x__right' => $i__id,
-                'x__up' => 30856, //Force Template Reference
-            )))){
-
-            if($previous_i){
-                //We just link to here and end the clone:
-                $this->X_model->create(array(
-                    'x__source' => $x__source,
-                    'x__type' => 4228,
-                    'x__left' => $previous_i['i__id'],
-                    'x__right' => $i__id,
-c                ));
-                return array(
-                    'status' => 1,
-                    'new_i__id' => $i__id,
-                );
-            } else {
-                return array(
-                    'status' => 0,
-                    'message' => 'Idea Linked to @30856',
-                    'new_i__id' => 0,
-                );
-            }
-
-        }
-
 
         $i_new = $this->I_model->create(array(
             'i__title' => ( $clone_title ? $clone_title : $this_i[0]['i__title']." Copy" ),

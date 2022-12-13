@@ -1315,64 +1315,7 @@ class X_model extends CI_Model
     }
 
 
-    function start($e__id, $i__id, $recommender_i__id = 0){
 
-        //Validate Idea ID:
-        $is = $this->I_model->fetch(array(
-            'i__id' => $i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-        ));
-        if (count($is) != 1) {
-            return 0;
-        }
-
-        //Make sure not previously added to this Member's discoveries:
-        $xs = $this->X_model->fetch(array(
-            'x__source' => $e__id,
-            'x__left' => $i__id,
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ));
-        if(count($xs)){
-
-            //Already has a starting point:
-            $top_i__id =  $xs[0]['x__left'];
-
-        } else {
-
-            //This is the new top ID
-            $top_i__id =  $is[0]['i__id'];
-
-            //New Starting Point:
-            $this->X_model->mark_complete($top_i__id, $is[0], array(
-                'x__type' => 4235, //Get started Needs Answer?
-                'x__source' => $e__id,
-            ));
-
-            //$one_child_hack: Mark next level as done too? Only if Single show:
-            $is_next = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                'x__left' => $top_i__id,
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
-            if(count($is_next)==1){
-                foreach($is_next as $single_child){
-                    if(in_array($single_child['i__type'], $this->config->item('n___12330'))){
-                        $this->X_model->mark_complete($top_i__id, $single_child, array(
-                            'x__type' => 4559, //DISCOVERY MESSAGES
-                            'x__source' => $e__id,
-                        ));
-                    }
-                }
-            }
-
-        }
-
-        //Now return next idea:
-        return $this->X_model->find_next($e__id, $top_i__id, $is[0]);
-
-    }
 
 
 
@@ -1493,7 +1436,7 @@ class X_model extends CI_Model
                 'x__right >' => 0, //With an answer
             ), array('x__right'), 0);
 
-        } elseif(in_array($i['i__type'], $this->config->item('n___13022'))){
+        } elseif(in_array($i['i__type'], $this->config->item('n___6192'))){
 
             //IDEA TYPE ALL NEXT
             $is_next_autoscan = $this->X_model->fetch(array(
@@ -2025,23 +1968,10 @@ class X_model extends CI_Model
         }
 
 
-
-
-
-
         //Define completion transactions for each answer:
-        if($is[0]['i__type'] == 6684){
-
-            //ONE ANSWER
-            $x__type = ( count($answer_i__ids) ? 6157 : 31022 ); //Answer One or Skip
-            $i_x__type = 12336; //Save Answer, if any
-
-        } elseif($is[0]['i__type'] == 7231 || $is[0]['i__type'] == 14861){
-
-            //SOME ANSWERS
-            $x__type = ( count($answer_i__ids) ? 7489 : 31022 ); //Answer Some or Skip
-            $i_x__type = 12334; //Save Answer, if any
-
+        if(in_array($is[0]['i__type'], $this->config->item('n___7712'))){
+            $x__type = ( count($answer_i__ids) ? 6157 : 31022 ); //Choose & Next / Skip
+            $i_x__type = 12336; //Discovery Choose Link
         }
 
         //Delete ALL previous answers:

@@ -409,26 +409,36 @@ function view_url_clean($url)
 }
 
 
-function view_time_difference($t, $second_time = null)
+function view_time_difference($t, $micro = false)
 {
-    if (!$second_time) {
-        $second_time = time(); //Now
-    } else {
-        $second_time = strtotime(substr($second_time, 0, 19));
-    }
+
+    $second_time = time(); //Now
 
     $time = $second_time - (is_int($t) ? $t : strtotime(substr($t, 0, 19))); // to get the time since that moment
     $has_future = ($time < 0);
     $time = abs($time);
-    $time_units = array(
-        31536000 => 'Year',
-        2592000 => 'Month',
-        604800 => 'Week',
-        86400 => 'Day',
-        3600 => 'Hour',
-        60 => 'Minute',
-        1 => 'Second'
-    );
+    if($micro){
+        $time_units = array(
+            31536000 => 'y',
+            2592000 => 'm',
+            604800 => 'w',
+            86400 => 'd',
+            3600 => 'h',
+            60 => 'min',
+            1 => 'sec'
+        );
+    } else {
+        $time_units = array(
+            31536000 => 'Year',
+            2592000 => 'Month',
+            604800 => 'Week',
+            86400 => 'Day',
+            3600 => 'Hour',
+            60 => 'Minute',
+            1 => 'Second'
+        );
+    }
+
 
     foreach($time_units as $unit => $period) {
         if ($time < $unit && $unit > 1) continue;
@@ -437,7 +447,7 @@ function view_time_difference($t, $second_time = null)
             $numberOfUnits = 1; //Change "0 seconds" to "1 second"
         }
 
-        return $numberOfUnits . ' ' . $period . (($numberOfUnits > 1) ? 's' : '');
+        return $numberOfUnits . ( $micro ? '' : ' ' ) . $period . (($numberOfUnits > 1 && !$micro) ? 's' : '');
     }
 }
 
@@ -1330,19 +1340,13 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $is_completed = ($tree_progress['fixed_completed_percentage']>=100);
     $is_started = ($tree_progress['fixed_completed_percentage']>0);
     $parent_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
-    $force_order = ( $previous_i && $discovery_mode && count($CI->X_model->fetch(array(
-            'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $previous_i['i__id'],
-            'x__up' => 14488, //Force Order
-        ), array(), 1)));
-    $has_sortable = !$focus_coin && !$force_order && $e_of_i && in_array($x__type, $CI->config->item('n___4603'));
+    $has_sortable = !$focus_coin && $e_of_i && in_array($x__type, $CI->config->item('n___4603'));
     $i_title = view_i_title($i);
 
-    if(in_array($i['i__type'], $CI->config->item('n___14454')) && !$is_completed) {
+    if($discovery_mode && !$is_completed) {
         if($top_i__id){
             $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
-        } elseif($superpower_10939) {
+        } elseif($e_of_i) {
             $href = '/~'.$i['i__id'];
         } else {
             $href = '/'.$i['i__id'];
@@ -1366,7 +1370,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-    $can_click = !$force_order && !$focus_coin && (!$e_of_i || $discovery_mode);
+    $can_click = !$focus_coin && (!$e_of_i || $discovery_mode);
 
 
     if(is_new()){
@@ -1440,11 +1444,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         $o_menu = '';
         $action_buttons = null;
 
-        if($force_order && !$focus_coin){
-
-            //show lock?
-
-        } elseif(!$cache_app) {
+        if(!$cache_app) {
 
             foreach($CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' )) as $e__id => $m) {
 
@@ -1463,8 +1463,8 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
                 } elseif($e__id==30795 && !$discovery_mode && $superpower_10939){
                     //Discovery Mode
                     $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
-                } elseif($e__id==6155 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && ($e_of_i || $superpower_10939 || ( $member_e && $member_e['e__id']==$i['x__source'] ))){
-                    //Remove/Unlink
+                } elseif($e__id==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && ($e_of_i || $superpower_10939 || ( $member_e && $member_e['e__id']==$i['x__source'] ))){
+                    //Unlink
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$x__id.'">'.$anchor.'</a>';
                 } elseif($e__id==30873){
                     //Template:
@@ -1503,19 +1503,19 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
         //Top action menu:
-        $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin coin_i_click col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).( $force_order ? ' soft_lock ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).( $force_order ? ' not-allowed ' : '' ).' '.$extra_class.'" '.( $force_order ? ' title="Locked" data-toggle="tooltip" data-placement="top" ' : '' ).'>';
+        $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin coin_i_click col-md-4 col-sm-6 col-10 ' ).( $parent_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort x_sort ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
 
 
         $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
 
-        if($discovery_mode || !$e_of_i){
+        if(0 && ($discovery_mode || !$e_of_i)){
 
             $ui .= '<td width="80%" class="wide_author"><div class="show-on-hover">';
             foreach($CI->X_model->fetch(array(
                 'x__right' => $i['i__id'],
                 'x__type' => 4250, //New Idea Created
             ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">&nbsp;'.$creator['e__title'].'</span><span class="grey">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time'])).'</span></a>';
+                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">&nbsp;'.$creator['e__title'].'</span><span class="grey">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time']), true).'</span></a>';
             }
             $ui .= '</div></td>';
 
@@ -1560,7 +1560,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         }
 
         //Menu:
-        $ui .= '<td width="20%"><div class="show-on-hover '.( $has_sortable ? ' x_sort ' : '' ).'">'.$o_menu.'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
         $ui .= '</tr></table>';
 
         $ui .= '<div class="cover-wrapper cover_wrapper12273">';
@@ -1643,7 +1643,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
         $ui .= '</div></div>';
 
-        if(!$force_order && $superpower_10939 && !$focus_coin){
+        if($superpower_10939 && !$focus_coin){
 
             $ui .= '<div class="coin_coins"><div class="show-on-hover">';
             $ui .= '<span class="hideIfEmpty uptree '.superpower_active(14005).'">'.view_coins_i(11019,  $i['i__id']).'</span>';
@@ -1771,7 +1771,7 @@ function view_e($x__type, $e, $extra_class = null)
     $show_text_editor = $source_of_e && !$has_any_lock && !$is_cache;
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin coin_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( $has_sortable ? ' cover_sort ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' cover_sort e_sort ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin coin_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
     $ui .= '<div class="cover-wrapper">';
 
@@ -1876,7 +1876,7 @@ function view_e($x__type, $e, $extra_class = null)
 
         $ui .= '<table class="coin_coins"><tr>';
 
-        if(!$superpower_13422){
+        if(0 && !$superpower_13422){
 
             $ui .= '<td width="80%" class="wide_author"><div class="show-on-hover">';
             foreach($CI->X_model->fetch(array(
@@ -1884,7 +1884,7 @@ function view_e($x__type, $e, $extra_class = null)
                 'x__type' => 4251, //New Source Created
                 'x__source !=' => $e['e__id'],
             ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">&nbsp;'.$creator['e__title'].'</span><span class="grey">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time'])).'</span></a>';
+                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">&nbsp;'.$creator['e__title'].'</span><span class="grey">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time']), true).'</span></a>';
             }
             $ui .= '</div></td>';
 
@@ -1924,7 +1924,7 @@ function view_e($x__type, $e, $extra_class = null)
         }
 
 
-        $ui .= '<td width="20%"><div class="show-on-hover '.( $has_sortable ? ' sort_e ' : '' ).'">'.$dropdown_ui.'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.$dropdown_ui.'</div></td>';
         $ui .= '</tr></table>';
     }
 

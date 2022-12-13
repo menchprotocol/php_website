@@ -315,7 +315,7 @@ class X extends CI_Controller
         }
 
         //Mark this as complete since there is no child to choose from:
-        if($member_e && in_array($current_is[0]['i__type'], $this->config->item('n___30646')) && !count($this->X_model->fetch(array(
+        if($member_e && in_array($current_is[0]['i__type'], $this->config->item('n___12330')) && !count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__source' => $member_e['e__id'],
@@ -327,7 +327,7 @@ class X extends CI_Controller
             ));
         }
 
-        if($member_e && in_array($next_is[0]['i__type'], $this->config->item('n___30646')) && !count($this->X_model->fetch(array(
+        if($member_e && in_array($next_is[0]['i__type'], $this->config->item('n___12330')) && !count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__source' => $member_e['e__id'],
@@ -364,6 +364,7 @@ class X extends CI_Controller
             //Make sure they can start this:
             $is = $this->I_model->fetch(array(
                 'i__id' => $i__id,
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             ));
             if(!count($is)){
                 return redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid idea ID</div>', true);
@@ -375,8 +376,53 @@ class X extends CI_Controller
                 return redirect_message('/'.$i_is_available['return_i__id'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_available['message'].'</div>');
             }
 
-            //All good, add to start:
-            $next_i__id = $this->X_model->start($member_e['e__id'], $i__id);
+
+            //Make sure not previously added to this Member's discoveries:
+            $xs = $this->X_model->fetch(array(
+                'x__source' => $member_e['e__id'],
+                'x__left' => $i__id,
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ));
+            if(count($xs)){
+
+                //Already has a starting point:
+                $top_i__id =  $xs[0]['x__left'];
+
+            } else {
+
+                //This is the new top ID
+                $top_i__id =  $is[0]['i__id'];
+
+                //New Starting Point:
+                $this->X_model->mark_complete($top_i__id, $is[0], array(
+                    'x__type' => 4235, //Get started
+                    'x__source' => $member_e['e__id'],
+                ));
+
+                //$one_child_hack: Mark next level as done too? Only if Single show:
+                $is_next = $this->X_model->fetch(array(
+                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'x__left' => $top_i__id,
+                ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+                if(count($is_next)==1){
+                    foreach($is_next as $single_child){
+                        if(in_array($single_child['i__type'], $this->config->item('n___12330'))){
+                            $this->X_model->mark_complete($top_i__id, $single_child, array(
+                                'x__type' => 4559, //DISCOVERY MESSAGES
+                                'x__source' => $member_e['e__id'],
+                            ));
+                        }
+                    }
+                }
+
+            }
+
+            //Now return next idea:
+            $next_i__id = $this->X_model->find_next($member_e['e__id'], $top_i__id, $is[0]);
+
 
             if(!$next_i__id){
                 //Failed to add to read:
@@ -470,7 +516,7 @@ class X extends CI_Controller
             'x__left' => $is[0]['i__id'],
         )))){
             //Not yet completed, should we complete?
-            if(in_array($is[0]['i__type'], $this->config->item('n___30646'))){
+            if(in_array($is[0]['i__type'], $this->config->item('n___12330'))){
                 //Yes we can:
                 $this->X_model->mark_complete($top_i__id, $is[0], array(
                     'x__type' => 4559, //DISCOVERY MESSAGES
@@ -1095,19 +1141,136 @@ class X extends CI_Controller
 
         $_POST['x_reply'] = trim($_POST['x_reply']);
 
-        //Can Skip?
-        $can_skip = count($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $_POST['i__id'],
-            'x__up' => 28239, //Can Skip
-        )));
-        if(!$can_skip && !strlen($_POST['x_reply'])){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Write a response before going next.',
-            ));
+
+        //Trying to Skip?
+        if(!strlen($_POST['x_reply'])){
+            if(count($this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $_POST['i__id'],
+                'x__up' => 28239, //Can Skip
+            )))){
+                //Log Skip:
+                $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
+                    'x__type' => 31022, //Skipped
+                    'x__source' => $member_e['e__id'],
+                    'x__message' => $_POST['x_reply'],
+                ));
+                //All good:
+                return view_json(array(
+                    'status' => 1,
+                    'message' => 'Skipped & Next...',
+                ));
+            } else {
+                //Cannot Skip:
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Write a response before going next.',
+                ));
+            }
         }
+
+
+
+
+        //Type Specific Requirements?
+        if ($is[0]['i__type']==30350) {
+
+            $x__type = 31798; //Set Time
+
+            $min_time = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $_POST['i__id'],
+                'x__up' => 26556, //Time Starts
+            ), array(), 1);
+            $max_time = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $_POST['i__id'],
+                'x__up' => 26557, //Time Ends
+            ), array(), 1);
+
+            if(!strtotime($_POST['x_reply'])){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Error: Please enter a valid time.',
+                ));
+            } elseif(count($min_time) && strtotime($min_time[0]['x__message'])<strtotime($_POST['x_reply'])){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Error: Enter a date after '.$min_time[0]['x__message'],
+                ));
+            } elseif(count($max_time) && strtotime($max_time[0]['x__message'])>strtotime($_POST['x_reply'])){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Error: Enter a date before '.$max_time[0]['x__message'],
+                ));
+            }
+
+        } elseif ($is[0]['i__type']==31794) {
+
+            $x__type = 31797; //Entered Number
+
+            $min_value = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $_POST['i__id'],
+                'x__up' => 31800, //Min Value
+            ), array(), 1);
+            $max_value = $this->X_model->fetch(array(
+                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $_POST['i__id'],
+                'x__up' => 31801, //Max Value
+            ), array(), 1);
+
+            if(!is_numeric($_POST['x_reply'])){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Error: Please enter a valid number.',
+                ));
+            } elseif(count($min_value) && floatval($min_value[0]['x__message'])<floatval($_POST['x_reply'])){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Error: Enter a number bigger than '.$min_value[0]['x__message'],
+                ));
+            } elseif(count($max_value) && floatval($max_value[0]['x__message'])>floatval($_POST['x_reply'])){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Error: Enter a number smaller than '.$max_value[0]['x__message'],
+                ));
+            }
+
+        } elseif ($is[0]['i__type']==31795) {
+
+            $x__type = 31799; //Entered URL
+
+            if(!filter_var($_POST['x_reply'], FILTER_VALIDATE_URL)){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Error: Please enter a valid URL.',
+                ));
+            }
+
+        } elseif ($is[0]['i__type']==6683) {
+
+            $x__type = 6144; //Text Replied
+
+        } else {
+
+            //Unknown type!
+            $this->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__message' => 'x_reply() Unknown text reply',
+                'x__metadata' => array(
+                    'post' => $_POST,
+                ),
+            ));
+            return false;
+
+        }
+
 
         //Any Preg Match?
         foreach($this->X_model->fetch(array(
@@ -1146,6 +1309,8 @@ class X extends CI_Controller
             }
         }
 
+
+
         //Delete previous answer(s) if any:
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1160,7 +1325,7 @@ class X extends CI_Controller
 
         //Save new answer:
         $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
-            'x__type' => ( strlen($_POST['x_reply']) ? 6144 : 31022 ), //Responded or Skipped
+            'x__type' => $x__type,
             'x__source' => $member_e['e__id'],
             'x__message' => $_POST['x_reply'],
         ));
@@ -1579,7 +1744,7 @@ class X extends CI_Controller
         //Remove Idea
         $this->X_model->update($_POST['x__id'], array(
             'x__status' => 6173, //DELETED
-        ), $member_e['e__id'], 6155);
+        ), $member_e['e__id'], 10673);
 
         return view_json(array(
             'status' => 1,

@@ -414,12 +414,12 @@ function e_sort_load(x__type) {
 
         //Show sort icon:
         console.log('Completed Source Sorting for @'+x__type)
-        $('.sort_e, .sort_reset').removeClass('hidden');
+        $('.e_sort, .sort_reset').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
             draggable: ".coinface-12274", // Specifies which items inside the element should be sortable
-            handle: ".sort_e", // Restricts sort start click/touch to the specified element
+            handle: ".e_sort", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
                 e_sort_save(x__type);
             }

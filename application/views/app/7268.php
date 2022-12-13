@@ -27,6 +27,7 @@ if(isset($_GET['e__id'])){
 
     }
 
+    $merged = false;
     if(isset($_GET['auto_merge']) && $_GET['e__id']==3288){//THis is for email only for now...
         foreach($duplicates_found as $x__message_md5 => $e__ids){
             $lowest_e_id = 9999999999;
@@ -38,12 +39,15 @@ if(isset($_GET['e__id'])){
 
             foreach($e__ids as $this_e__id){
                 if($this_e__id != $lowest_e_id){
+                    $merged = true;
                     array_push($duplicates_found[$x__message_md5], '@'.$this_e__id.' Merges Into @'.$lowest_e_id);
-                    //array_push($duplicates_found[$x__message_md5], $this->X_model->update_dropdown($this_e__id,$this_e__id,6177,6178,$lowest_e_id)); break;
+                    array_push($duplicates_found[$x__message_md5], $this->X_model->update_dropdown($this_e__id,$this_e__id,6177,6178,$lowest_e_id)); break;
                 }
             }
 
-
+            if($merged){
+                break;
+            }
 
         }
     }
