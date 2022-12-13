@@ -1695,7 +1695,7 @@ function view_featured_source($x__source, $x){
     $messages = '';
     foreach($member_follows as $member_follow){
         if(strlen($member_follow['x__message'])){
-            $messages .= '<h2 style="padding:5px 0 0;">' . $member_follow['x__message'] . '</h2>';
+            $messages .= '<h2 style="padding:0;">' . $member_follow['x__message'] . '</h2>';
         }
     }
 
@@ -1704,7 +1704,7 @@ function view_featured_source($x__source, $x){
     }
 
     if(strlen($messages)){
-        $x['x__message'] = ( strlen($x['x__message']) ? $messages.'<div class="sub_note">'.nl2br($x['x__message']).'</div>' : $messages );
+        $x['x__message'] = ( strlen($x['x__message']) ? $messages.nl2br($x['x__message']) : $messages );
     }
     
     return '<div class="source-info">'
