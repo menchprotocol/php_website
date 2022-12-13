@@ -169,7 +169,7 @@ foreach($this->X_model->fetch(array(
 
 
 //Idea Setting Source Types:
-foreach($this->E_model->scissor_e($i['i__type'], 31826) as $e_item) {
+foreach($this->E_model->scissor_e(31826,$i['i__type']) as $e_item) {
     $relevant_sources .= view_featured_source($e_item);
 }
 
