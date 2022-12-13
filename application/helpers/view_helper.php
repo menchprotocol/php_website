@@ -1673,7 +1673,40 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 }
 
-function view_featured_source($x){
+function view_featured_source($x__source, $x){
+
+    //See if this member also follows this featured source?
+    $CI =& get_instance();
+    $member_follows = array();
+    if($x__source>0){
+        $member_follows = $CI->X_model->fetch(array(
+            'x__up' => $x['e__id'],
+            'x__down' => $x__source,
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        ));
+    }
+
+    $is_featured = in_array($x['e__type'], $CI->config->item('n___30977'));
+    if(!$is_featured && !count($member_follows)){
+        return false;
+    }
+
+    $messages = '';
+    foreach($member_follows as $member_follow){
+        if(strlen($member_follow['x__message'])){
+            $messages .= '<h2 title="Posted ' . $member_follow['x__time'] . '" style="padding:13px 0 0 40px;">' . $member_follow['x__message'] . '</h2>';
+        }
+    }
+
+    if(!$is_featured && !$messages){
+        return false;
+    }
+
+    if(strlen($messages)){
+        $x['x__message'] = $messages;
+    }
+    
     return '<div class="source-info">'
         . '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>'
         . '<span>'.$x['e__title'] . '</span>'

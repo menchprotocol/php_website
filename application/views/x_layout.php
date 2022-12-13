@@ -134,43 +134,13 @@ foreach($this->X_model->fetch(array(
     'x__up > 0' => null,
     'x__up !=' => website_setting(0),
 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
-
-    //See if this member also follows this featured source?
-    $member_follows = array();
-    if($x__source>0){
-        $member_follows = $this->X_model->fetch(array(
-            'x__up' => $x['e__id'],
-            'x__down' => $x__source,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ));
-    }
-
-    $is_featured = in_array($x['e__type'], $this->config->item('n___30977'));
-    if(!$is_featured && !count($member_follows)){
-        continue;
-    }
-
-    $messages = '';
-    foreach($member_follows as $member_follow){
-        if(strlen($member_follow['x__message'])){
-            $messages .= '<h2 title="Posted ' . $member_follow['x__time'] . '" style="padding:13px 0 0 40px;">' . $member_follow['x__message'] . '</h2>';
-        }
-    }
-
-    if(!$is_featured && !$messages){
-        continue;
-    }
-
-    $x['x__message'] = $messages;
-    $relevant_sources .= view_featured_source($x);
-
+    $relevant_sources .= view_featured_source($x__source, $x);
 }
 
 
 //Idea Setting Source Types:
 foreach($this->E_model->scissor_e(31826,$i['i__type']) as $e_item) {
-    $relevant_sources .= view_featured_source($e_item);
+    $relevant_sources .= view_featured_source($x__source, $e_item);
 }
 
 
