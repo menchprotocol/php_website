@@ -162,14 +162,12 @@ foreach($this->X_model->fetch(array(
         continue;
     }
 
+    $relevant_sources .= view_featured_source($x, $messages);
 
-    $relevant_sources .= '<div class="source-info">';
-    $relevant_sources .= '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>';
-    $relevant_sources .= '<span>'.$x['e__title'] . ( strlen($messages) ? ':' : '' ) . '</span>';
-    $relevant_sources .= $messages;
+}
 
-    $relevant_sources .= '<div style="padding-top: 10px; padding-left: 40px; font-size:1.2em; font-weight: bold; line-height:120%;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;">'.$x['x__message'].'</a>' : nl2br($x['x__message']) ) . '</div>';
-    $relevant_sources .= '</div>';
+//Idea Setting Source Types:
+foreach($this->E_model->scissor_e($i['i__type'], 31826) as $e_item) {
 
 }
 
@@ -233,7 +231,7 @@ if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
                 //Show other branches:
                 $breadcrum_content .= '<div class="dropdown inline-block">';
                 $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$parent_i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                $breadcrum_content .= '<span class="source_cover source_cover_mini"><i class="far fa-chevron-square-down"></i></span>';
+                $breadcrum_content .= '<span style="padding-left:5px;"><i class="far fa-chevron-square-down"></i></span>';
                 $breadcrum_content .= '</button>';
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$parent_i['i__id'].'">';
                 foreach ($query_subset as $i_subset) {

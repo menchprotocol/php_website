@@ -808,7 +808,7 @@ class E_model extends CI_Model
                         $update_filter['x__source'] = $migrate_s__id;
                     }
 
-                    if(count($this->X_model->fetch($filters))){
+                    if(0 && count($this->X_model->fetch($filters))){
 
                         //There is a duplicate of this, no point to migrate! Just Remove:
                         $this->X_model->update($x['x__id'], array(
@@ -817,6 +817,7 @@ class E_model extends CI_Model
 
                     } else {
 
+                        //Always Migrate for now...
                         $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__source, 31784 /* Source Link Migrated */);
 
                     }

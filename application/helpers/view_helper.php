@@ -777,6 +777,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
         $order_columns['x__spectrum'] = 'ASC';
+        $order_columns['i__title'] = 'ASC';
 
         //IDEAS
         $join_objects = array('x__right');
@@ -1550,6 +1551,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
                         break;
                     }
                 }
+            } else {
+                //You Are Here
+                $ui .= '<span title="'.$e___11035[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[31825]['m__cover'].'</span>';
             }
             $ui .= '</div></td>';
 
@@ -1669,7 +1673,14 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 }
 
-
+function view_featured_source($x, $messages){
+    return '<div class="source-info">'
+        . '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>'
+        . '<span>'.$x['e__title'] . ( strlen($messages) ? ':' : '' ) . '</span>'
+        . $messages
+        . '<div style="padding-top: 10px; padding-left: 40px; font-size:1.2em; font-weight: bold; line-height:120%;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;">'.$x['x__message'].'</a>' : nl2br($x['x__message']) ) . '</div>'
+        . '</div>';
+}
 
 function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad = false){
 
@@ -1916,6 +1927,9 @@ function view_e($x__type, $e, $extra_class = null)
                         break;
                     }
                 }
+            } else {
+                //You Are Here
+                $ui .= '<span title="'.$e___11035[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[31825]['m__cover'].'</span>';
             }
             $ui .= '</div></td>';
 
