@@ -1673,11 +1673,10 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 }
 
-function view_featured_source($x, $messages){
+function view_featured_source($x){
     return '<div class="source-info">'
         . '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>'
-        . '<span>'.$x['e__title'] . ( strlen($messages) ? ':' : '' ) . '</span>'
-        . $messages
+        . '<span>'.$x['e__title'] . '</span>'
         . '<div style="padding-top: 10px; padding-left: 40px; font-size:1.2em; font-weight: bold; line-height:120%;">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;">'.$x['x__message'].'</a>' : nl2br($x['x__message']) ) . '</div>'
         . '</div>';
 }

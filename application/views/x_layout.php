@@ -162,14 +162,15 @@ foreach($this->X_model->fetch(array(
         continue;
     }
 
-    $relevant_sources .= view_featured_source($x, $messages);
+    $x['x__message'] = $messages;
+    $relevant_sources .= view_featured_source($x);
 
 }
 
 
 //Idea Setting Source Types:
 foreach($this->E_model->scissor_e($i['i__type'], 31826) as $e_item) {
-    $relevant_sources .= view_featured_source($e_item, $e_item['x__message']);
+    $relevant_sources .= view_featured_source($e_item);
 }
 
 
