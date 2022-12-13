@@ -466,7 +466,7 @@ if($top_i__id) {
                 . '<span class="icon-block">'. $e___11035[31837]['m__cover'] . '</span>'
                 . '<span>'.$e___11035[31837]['m__title'] . '</span>'
                 . '<div class="payment_box">'
-                . '<div class="sub_note">'.nl2br($e___11035[31837]['m__message']).'</div>';
+                . ( strlen($e___11035[31837]['m__message']) ? '<div class="sub_note">'.nl2br($e___11035[31837]['m__message']).'</div>' : '' );
 
 
 
