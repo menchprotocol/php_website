@@ -3998,7 +3998,8 @@ main {
     padding-top: 10px; padding-left: 40px; line-height:120%;
 }
 .payment_box a{
-    padding: 8px;
+    padding:8px 2px;
+    display: inline-block;
 }
 
 .scrollarea {

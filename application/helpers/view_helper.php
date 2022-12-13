@@ -1677,7 +1677,7 @@ function view_featured_source($x){
     return '<div class="source-info">'
         . '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>'
         . '<span>'.$x['e__title'] . '</span>'
-        . '<div class="payment_box">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;">'.$x['x__message'].'</a>' : nl2br($x['x__message']) ) . '</div>'
+        . '<div class="payment_box">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;">'.$x['x__message'].'</a>' : '<div class="sub_note">'.nl2br($x['x__message']).'</div>' ) . '</div>'
         . '</div>';
 }
 
