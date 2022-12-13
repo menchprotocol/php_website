@@ -1695,7 +1695,7 @@ function view_featured_source($x__source, $x){
     $messages = '';
     foreach($member_follows as $member_follow){
         if(strlen($member_follow['x__message'])){
-            $messages .= '<h2 style="padding:0;">' . $member_follow['x__message'] . '</h2>';
+            $messages .= '<h2 style="padding:0 0 8px;">' . $member_follow['x__message'] . '</h2>';
         }
     }
 
