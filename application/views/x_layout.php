@@ -491,7 +491,14 @@ if($top_i__id) {
         } else {
 
             //Is multi selectable, allow show down for quantity:
-            echo '<div class="msg alert alert-warning table_checkout" role="alert">';
+
+            echo '<div class="source-info">'
+                . '<span class="icon-block">'. $e___11035[31837]['m__cover'] . '</span>'
+                . '<span>'.$e___11035[31837]['m__title'] . '</span>'
+                . '<div style="padding-top: 10px; padding-left: 40px; line-height:120%;">'.
+                . nl2br($e___11035[31837]['m__message']);
+
+
             echo '<table class="table table-condensed">';
 
 
@@ -539,7 +546,9 @@ if($top_i__id) {
                 echo 'Final sale: no refunds. ';
             }
 
-            echo 'Ticket Delivery is Will Call (Free): Your ticket(s) will be waiting for you at the venue on the day of the event, which means you will not receive any email tickets. Make sure to bring photo ID. You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<span style="color:#FC1B44 !important;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
+            echo 'By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
+
+            echo '</div>';
 
             echo '</div>';
             echo '</div>';
