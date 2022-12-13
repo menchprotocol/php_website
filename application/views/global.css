@@ -215,7 +215,7 @@ li a {
 
 .add-input{
     margin-bottom: 5px;
-    padding: 0 0 5px 34px !important;
+    padding:3px 0 5px 34px !important;
     width: 100%;
 }
 
@@ -1890,7 +1890,7 @@ i, .btn .show-max {
 
 .cover-wrapper {
     border:0;
-    margin:0 5px 13px;
+    margin:0 5px 5px;
 }
 .form-check{
     padding: 8px 0 8px 60px;
