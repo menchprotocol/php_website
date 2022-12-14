@@ -1551,7 +1551,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
                         break;
                     }
                 }
-            } else {
+            } elseif($focus_coin) {
                 //You Are Here
                 $ui .= '<span title="'.$e___11035[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[31825]['m__cover'].'</span>';
             }
@@ -1959,7 +1959,7 @@ function view_e($x__type, $e, $extra_class = null)
                         break;
                     }
                 }
-            } else {
+            } elseif($focus_coin) {
                 //You Are Here
                 $ui .= '<span title="'.$e___11035[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[31825]['m__cover'].'</span>';
             }
