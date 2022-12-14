@@ -1133,6 +1133,7 @@ a.headline {
     padding: 0;
     line-height: 100% !important;
     text-align: center;
+    padding-right: 5px;
 }
 .platform-navigation .block-sign-x{
     width:144px;
@@ -1615,9 +1616,9 @@ i, .btn .show-max {
 }
 .platform-logo{
     line-height: 130%;
-    width: 34px !important;
-    height: 34px !important;
-    margin:3px 2px 0  1px !important;
+    width: 30px !important;
+    height: 30px !important;
+    margin:0px 2px 5px 5px !important;
     border-radius: 0 !important;
     display: inline-block;
     font-size: 1.5em;
@@ -1648,7 +1649,7 @@ i, .btn .show-max {
     display: inline-block;
 }
 .center-icons a img{
-    width: 34px;
+    width:30px;
 }
 
 .icon-block-lg img {
@@ -3873,8 +3874,8 @@ div.img {
 
 }
 .source_cover_mini div.img {
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
 }
 
 .source_cover_micro div.img {
