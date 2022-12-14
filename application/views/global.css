@@ -76,14 +76,7 @@ body {
     border-radius: 22px !important;
     display: block;
 }
-.platform-12273 .media-content, .platform-12273 .x__message video {
-    max-width: 880px;
-}
-.platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
-    margin: 0;
-    max-width: 100%;
-    border-radius: 22px;
-}
+
 .ytframe{
     margin: 10px 0 0;
     position: relative;
@@ -2404,7 +2397,7 @@ i, .btn .show-max {
 
 
 .cover-btn i {
-    margin-top: -27%;
+    margin-top: -16%;
     font-size: 0.87em !important;
     color: #000;
 }
@@ -4063,3 +4056,14 @@ main {
 }
 
 
+.platform-12273 .media-content, .platform-12273 .x__message video {
+    max-width: 880px;
+}
+.platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
+    margin: 0;
+    max-width: 100%;
+    border-radius: 22px;
+}
+.platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
+    margin: 0 !important;
+}
