@@ -3978,9 +3978,9 @@ main {
 }
 
 .payment_box{
-    padding-top: 10px; padding-left: 40px; line-height:120%;
+    padding-top: 5px; padding-left: 40px; line-height:120%;
 }
-.payment_box a{
+.adjust_counter{
     padding:8px 2px;
     display: inline-block;
 }
