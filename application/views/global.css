@@ -1896,9 +1896,7 @@ i, .btn .show-max {
     padding: 8px 0 8px 60px;
 }
 .right-btn {
-    float: right;
-    padding: 6px 13px 0 0;
-    margin-left: -34px !important;
+    padding: 0 0 0 5px;
 }
 .chat-title{
     position: fixed;
