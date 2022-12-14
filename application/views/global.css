@@ -3331,11 +3331,11 @@ h4.css__title{
 }
 
 .rotate97 {
-    -webkit-transform: rotate(.97deg); /* Chrome and other webkit browsers */
-    -moz-transform: rotate(.97deg); /* FF */
-    -o-transform: rotate(.97deg); /* Opera */
-    -ms-transform: rotate(.97deg); /* IE9 */
-    transform: rotate(.97deg); /* W3C compliant browsers */
+    -webkit-transform: rotate(97deg); /* Chrome and other webkit browsers */
+    -moz-transform: rotate(97deg); /* FF */
+    -o-transform: rotate(97deg); /* Opera */
+    -ms-transform: rotate(97deg); /* IE9 */
+    transform: rotate(97deg); /* W3C compliant browsers */
 }
 
 .rotate105 {
