@@ -1608,8 +1608,8 @@ i, .btn .show-max {
 
 
 .sub_note{
-    padding:5px 0 0;
-    font-size: 0.8em !important;
+    padding:0;
+    font-size: 1.3em !important;
     font-weight: bold;
     line-height: 120%;
 }
