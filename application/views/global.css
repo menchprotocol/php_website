@@ -455,7 +455,9 @@ img.no-frame {
 
 
 
-.aa-dropdown-menu .aa-suggestion.aa-cursor, .suggestion:hover {
+.aa-dropdown-menu .aa-suggestion.aa-cursor,
+.suggestion:hover,
+.breadcrumb {
     background-color: #EFEFEF;
     text-decoration: none;
 }
