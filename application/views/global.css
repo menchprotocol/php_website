@@ -1326,6 +1326,9 @@ label {
     background-color: #EFEFEF;
     color: #000000 !important;
 }
+.dropdown-item:hover i {
+    color: #000000 !important;
+}
 .dropdown-item, .dropdown-item {
     text-decoration: none;
 }
