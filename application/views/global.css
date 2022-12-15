@@ -1971,7 +1971,7 @@ i, .btn .show-max {
     display: block;
     margin: 0 5px;
     max-height: 58%;
-    top:48px;
+    top:44px;
 }
 
 .coin-6287 .cover-content{
@@ -1985,7 +1985,10 @@ input.form-control,
 }
 
 .coin-12273 .cover-content{
-    top:55px;
+    top:49px;
+}
+.coin-12273.focus-coin .cover-content{
+    top:42px;
 }
 .hide-subline .subtle-line {
     display: none;
