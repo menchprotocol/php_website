@@ -857,12 +857,12 @@ h4 .halfbg {
 
 .dropdown-menu {
     border: 1px solid transparent;
-    border-radius: 21px;
+    border-radius: 20px;
     padding:0;
 }
 
 .dropdown-menu a {
-    border-radius: 22px;
+    border-radius: 21px;
 }
 
 
