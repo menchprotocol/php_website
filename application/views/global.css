@@ -170,7 +170,7 @@ li a {
     text-align: center;
 }
 .avatar-item.active, .btn-group a.active , .itemsetting.active, .itemsetting:hover{
-    background-color: #999999 !important;
+    background-color: #EFEFEF !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
     border-radius: 21px !important;
@@ -456,7 +456,7 @@ img.no-frame {
 
 
 .aa-dropdown-menu .aa-suggestion.aa-cursor, .suggestion:hover {
-    background-color: #999999;
+    background-color: #EFEFEF;
     text-decoration: none;
 }
 
@@ -856,9 +856,13 @@ h4 .halfbg {
 
 
 .dropdown-menu {
-    border: 1px solid transparent;
-    border-radius: 0;
+    border: 0px solid transparent;
+    border-radius: 21px;
     padding:0;
+}
+
+.dropdown-menu a {
+    border-radius: 21px;
 }
 
 
@@ -1314,14 +1318,14 @@ label {
 
 .dropdown-item:focus, .dropdown-item:hover {
     text-decoration: none;
-    background-color: #999999;
+    background-color: #EFEFEF;
 }
 .dropdown-item, .dropdown-item {
     text-decoration: none;
 }
 .dropdown-item.active, .dropdown-item:active {
     color: #fff !important;
-    background-color: #999999 !important;
+    background-color: #EFEFEF !important;
     cursor: default !important;
 }
 
@@ -3638,7 +3642,7 @@ h4.css__title{
     background-color: transparent !important;
 }
 .grey-background:hover {
-    background-color: #999999 !important;
+    background-color: #EFEFEF !important;
 }
 
 
@@ -3691,9 +3695,9 @@ h4.css__title{
     border-radius: 0 !important;
 }
 
-/* .form-control:disabled { background-color: #999999 !important; } */
+/* .form-control:disabled { background-color: #EFEFEF !important; } */
 .dynamic_saving {
-    background-color: #999999 !important;
+    background-color: #EFEFEF !important;
 }
 
 .table-striped tbody tr:nth-of-type(odd){
