@@ -1955,7 +1955,7 @@ i, .btn .show-max {
 }
 
 .coin-12273 .cover-content{
-    top:54px;
+    top:69px;
 }
 .hide-subline .subtle-line {
     display: none;
@@ -3119,6 +3119,7 @@ h4.css__title{
 .custom_ui_28979_28980 .coinType12273 {
     border:1px solid #FFC500 !important;
     background-color: #FFC500 !important;
+    border-radius:22px;
 }
 .custom_ui_28979_28980 .coin-12273 .cover-content {
     background: rgba(255,197,0,0.82);
