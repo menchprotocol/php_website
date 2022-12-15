@@ -1384,7 +1384,7 @@ label {
 }
 .btn.dropdown-toggle{
     border: 0 !important;
-    padding:15px 15px 15px 0 !important;
+    padding: 0 !important;
 }
 
 .table-striped .btn.dropdown-toggle{

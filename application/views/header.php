@@ -380,7 +380,7 @@ if(!$basic_header_footer){
                     echo '<td class="block-menu">';
 
                     echo '<div class="dropdown inline-block">';
-                    echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
+                    echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">';
                     echo '<span class="source_cover source_cover_mini menu-icon">' . ( $member_e ? view_cover(12274,$member_e['e__cover'], 1) : $e___13479[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
