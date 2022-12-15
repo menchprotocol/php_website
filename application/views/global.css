@@ -856,7 +856,7 @@ h4 .halfbg {
 
 
 .dropdown-menu {
-    border: 0px solid transparent;
+    border: 1px solid transparent;
     border-radius: 21px;
     padding:0;
 }
@@ -864,6 +864,9 @@ h4 .halfbg {
 .dropdown-menu a {
     border-radius: 21px;
 }
+
+
+
 
 
 .nav-tabs .nav-item.show .nav-x, .nav-tabs .nav-x.active, .nav-tabs .nav-x:focus, .nav-tabs .nav-x:hover{
@@ -3089,7 +3092,9 @@ h4.css__title{
 .custom_ui_28979_28980 .btn-12274 {
     background-color: #007AFD !important;
 }
-.custom_ui_28979_28980 .thepill12274 .nav-link.active  {
+.custom_ui_28979_28980 .thepill12274 .nav-link.active,
+.custom_ui_28979_28980 .dropdown_12274,
+.custom_ui_28979_28980 .dropdown_11030 {
     border-color: #007AFD !important;
 }
 
@@ -3148,7 +3153,9 @@ h4.css__title{
 .custom_ui_28979_28980 .btn-12273 {
     background-color: #FFC500 !important;
 }
-.custom_ui_28979_28980 .thepill12273 .nav-link.active  {
+.custom_ui_28979_28980 .thepill12273 .nav-link.active,
+.custom_ui_28979_28980 .dropdown_12273,
+.custom_ui_28979_28980 .dropdown_11019 {
     border-color: #FFC500 !important;
 }
 
@@ -3213,7 +3220,8 @@ h4.css__title{
 .custom_ui_28979_28980 .btn-6255 {
     background-color: #FC1B44 !important;
 }
-.custom_ui_28979_28980 .thepill6255 .nav-link.active  {
+.custom_ui_28979_28980 .thepill6255 .nav-link.active,
+.custom_ui_28979_28980 .dropdown_6255 {
     border-color: #FC1B44 !important;
 }
 
