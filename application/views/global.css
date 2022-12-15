@@ -76,6 +76,9 @@ body {
     border-radius: 21px !important;
     display: block;
 }
+.coin_cover .content-image {
+    max-height: 233px;
+}
 
 .ytframe{
     margin: 10px 0 0;
