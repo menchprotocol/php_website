@@ -2006,6 +2006,10 @@ i, .btn .show-max {
     padding-top: 1px;
     padding-bottom: 1px;
 }
+#container_search .mini-coin.coin-12274 .cover-content {
+    top: 0;
+    padding: 0;
+}
 
 .coin-cover{
     position: absolute;
