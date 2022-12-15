@@ -276,7 +276,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo 'background: transparent !important; ';
             echo '}';
 
-            echo ' .halfbg, .msg>span, .fixed-top { background: rgba(0, 0, 0, 0.69) !important; border-radius:22px; } ';
+            echo ' .halfbg, .msg>span, .fixed-top { background: rgba(0, 0, 0, 0.69) !important; border-radius: 21px; } ';
             echo ' .top-header-position.fixed-top { background: none !important; } ';
 
             echo ' .msg>span { display: block; padding: 0; } ';
