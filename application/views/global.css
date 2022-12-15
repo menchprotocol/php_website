@@ -170,7 +170,7 @@ li a {
     text-align: center;
 }
 .avatar-item.active, .btn-group a.active , .itemsetting.active, .itemsetting:hover{
-    background-color: #000000 !important;
+    background-color: #FFFFFF !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
     border-radius: 21px !important;
