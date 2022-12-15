@@ -1171,8 +1171,7 @@ a.headline {
     height: 32px;
     overflow: hidden;
     line-height: 151%;
-    margin-bottom: -2px;
-    padding-top: 4px !important;
+    margin-bottom: -5px;
 }
 
 .platform-logo div.img {
