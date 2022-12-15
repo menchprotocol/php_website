@@ -2806,7 +2806,7 @@ h4.css__title{
 .custom_ui_13884_13886,
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 .mid-text-line span{
-    background-color:#101010;
+    background-color:#101010 !important;
     color: #FFFFFF;
 }
 
@@ -2944,7 +2944,7 @@ h4.css__title{
 .custom_ui_13884_13885 .modal-content,
 .custom_ui_13884_13885 .mid-text-line span
 {
-    background-color: #EFEFEF;
+    background-color: #EFEFEF !important;
     color: #000000;
 }
 .custom_ui_13884_13885 .x-list,
