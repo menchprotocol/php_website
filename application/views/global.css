@@ -1168,10 +1168,10 @@ a.headline {
     padding-left: 0;
     font-weight: bold;
     max-width: calc(100% - 43px);
-    height: 32px;
+    height: 36px;
     overflow: hidden;
     line-height: 151%;
-    margin-bottom: -3px;
+    margin-bottom: -7px;
 }
 .search_nav{
     margin-top:7px;
@@ -4080,7 +4080,7 @@ main {
 
 @media (hover: hover) {
     .text-logo {
-        margin-bottom: -7px !important;
+        margin-bottom: -11px !important;
     }
     .platform-logo {
         margin-bottom: 5px !important;
