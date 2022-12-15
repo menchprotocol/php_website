@@ -3125,11 +3125,13 @@ h4.css__title{
 }
 .custom_ui_28979_28980 .coinType12273 {
     border:1px solid #FFC500 !important;
-    background-color: #FFC500 !important;
+    background-color: #FFFFFF !important;
+}
+.coinType12273 {
     border-radius: 21px;
 }
 .custom_ui_28979_28980 .coin-12273 .cover-content {
-    background: rgba(255,197,0,0.82);
+    /* background: rgba(255,197,0,0.82); */
 }
 .custom_ui_28979_28980 .bg12273,
 .custom_ui_28979_28980 .btn-12273 {
