@@ -1171,6 +1171,7 @@ a.headline {
     height: 32px;
     overflow: hidden;
     line-height: 151%;
+    margin-bottom: -5px;
 }
 
 
@@ -4073,9 +4074,6 @@ main {
 
 
 @media (hover: hover) {
-    .text-logo {
-        margin-bottom: -5px;
-    }
     .platform-logo {
         margin-bottom: 5px !important;
     }
