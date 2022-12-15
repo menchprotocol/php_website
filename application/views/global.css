@@ -1173,11 +1173,7 @@ a.headline {
     line-height: 151%;
 }
 
-@media (hover: hover) {
-    .text-logo {
-        margin-bottom: -5px;
-    }
-}
+
 
 .platform-logo div.img {
     margin-bottom: -5px;
@@ -1622,7 +1618,7 @@ i, .btn .show-max {
     line-height: 130%;
     width: 30px !important;
     height: 30px !important;
-    margin:5px 3px 5px 5px !important;
+    margin:5px 3px 0 5px !important;
     border-radius: 0 !important;
     display: inline-block;
     font-size: 1.5em;
@@ -4073,4 +4069,14 @@ main {
 }
 .platform-6255 .coin_cover {
     margin: 0 !important;
+}
+
+
+@media (hover: hover) {
+    .text-logo {
+        margin-bottom: -5px;
+    }
+    .platform-logo {
+        margin-bottom: 5px !important;
+    }
 }
