@@ -2791,12 +2791,12 @@ h4.css__title{
 .custom_ui_13884_13886 .edit-locked span,
 .custom_ui_13884_13886 .chat-title span,
 .custom_ui_13884_13886 div.dropdown-item,
-.custom_ui_13884_13886 .standard-bg,
-.custom_ui_13884_13886 .mid-text-line span{
+.custom_ui_13884_13886 .standard-bg{
     background-color:#000000;
     color: #FFFFFF;
 }
-.custom_ui_13884_13886 {
+.custom_ui_13884_13886,
+.custom_ui_13884_13886 .mid-text-line span{
     background-color:#101010;
     color: #FFFFFF;
 }
@@ -2927,13 +2927,13 @@ h4.css__title{
 .custom_ui_13884_13885 .standard-bg,
 .custom_ui_13884_13885 body,
 .custom_ui_13884_13885 .chat-title span,
-.custom_ui_13884_13885 div.dropdown-item,
-.custom_ui_13884_13885 .mid-text-line span
+.custom_ui_13884_13885 div.dropdown-item
 {
     background-color: #FFFFFF;
     color: #000000;
 }
-.custom_ui_13884_13885
+.custom_ui_13884_13885,
+.custom_ui_13884_13885 .mid-text-line span
 {
     background-color: #EFEFEF;
     color: #000000;
