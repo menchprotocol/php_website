@@ -1144,6 +1144,10 @@ a.headline {
     text-align: center;
     padding-right: 5px;
 }
+
+.block-menu .dropdown i {
+    padding-top: 2px;
+}
 .platform-navigation .block-sign-x{
     width:144px;
 }
