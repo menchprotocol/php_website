@@ -175,6 +175,9 @@ li a {
     border-top-width: 0 !important;
     border-radius: 21px !important;
 }
+.avatar-item.active i, .btn-group a.active i, .itemsetting.active i, .itemsetting:hover i{
+    color: #000 !important;
+}
 
 .avatar-item .avatar-icon i {
     display: block;
