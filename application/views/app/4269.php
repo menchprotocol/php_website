@@ -417,6 +417,19 @@ if(superpower_unlocked()) {
                     <!-- To be updated to >0 IF email was found -->
                     <input type="hidden" id="sign_e__id" value="0" />
 
+
+
+
+                    <?php
+                    echo '<div class="social-frame">';
+                    echo '<div class="full-width-btn center top-margin"><a href="javascript:void(0)" onclick="e_magic_email()" class="btn btn-large btn-default">';
+                    echo $e___11035[11068]['m__title'].' '.$e___11035[11068]['m__cover'];
+                    echo '</a></div>';
+                    echo '<div class="mid-text-line"><span>OR</span></div>';
+                    echo '</div>';
+                    ?>
+
+
                     <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m__cover'].'</span>'.$e___4269[3286]['m__title'] ?></span>
                     <div class="form-group"><input type="password" id="input_password" class="form-control border white-border"></div>
                     <div id="password_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
@@ -429,7 +442,6 @@ if(superpower_unlocked()) {
                     </div>
 
                     <div class="doclear">&nbsp;</div>
-                    <div style="padding-top:13px;">No password? Try <a href="javascript:void(0)" onclick="e_magic_email()" style="text-decoration:none;font-weight: bold;"><?= '<u>'.$e___11035[11068]['m__title'].'</u> '.$e___11035[11068]['m__cover'] ?></a></div>
 
                 </div>
 
