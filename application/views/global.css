@@ -4091,9 +4091,8 @@ main {
     margin-bottom: 0px;
 }
 .nav-tabs .nav-link {
-    border-radius: 21.1px !important;
     border:0 !important;
-    border-bottom:2px solid transparent !important;
+    border-bottom:1px solid transparent !important;
 }
 
 
