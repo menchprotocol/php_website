@@ -1444,59 +1444,51 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
     $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
 
-    if(0 && ($discovery_mode || !$e_of_i)){
 
-        $ui .= '<td width="80%" class="wide_author"><div class="show-on-hover">';
-        foreach($CI->X_model->fetch(array(
-            'x__right' => $i['i__id'],
-            'x__type' => 4250, //New Idea Created
-        ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">&nbsp;'.$creator['e__title'].'</span><span class="grey">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time']), true).'</span></a>';
-        }
-        $ui .= '</div></td>';
-
-    } else {
-
-        $ui .= '<td width="20%"><div class="show-on-hover">';
-        foreach($CI->X_model->fetch(array(
-            'x__right' => $i['i__id'],
-            'x__type' => 4250, //New Idea Created
-        ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
-        }
-        $ui .= '</div></td>';
-
-        //Idea Type
-        $ui .= '<td width="20%"><div class="show-on-hover">';
-        if(!$discovery_mode){
-            $ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
-        }
-        $ui .= '</div></td>';
-
-        //Link Type:
-        $ui .= '<td width="20%"><div class="show-on-hover">';
-        if($x__id && ($e_of_i || !$discovery_mode)){
-            foreach($CI->config->item('e___31770') as $x__type1 => $m1){
-                if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
-                    foreach($CI->X_model->fetch(array(
-                        'x__id' => $x__id,
-                    ), array('x__source')) as $linker){
-                        $ui .= '<span title="'.$linker['e__title'].' '.view_time_difference(strtotime($linker['x__time'])).' Ago: '.substr($linker['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top">'.view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i, false, $i['i__id'], $x__id).'</span>';
-                    }
-                    break;
+    //Link Type:
+    $ui .= '<td width="20%"><div class="show-on-hover">';
+    if($x__id && ($e_of_i || !$discovery_mode)){
+        foreach($CI->config->item('e___31770') as $x__type1 => $m1){
+            if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
+                foreach($CI->X_model->fetch(array(
+                    'x__id' => $x__id,
+                ), array('x__source')) as $linker){
+                    $ui .= '<span title="'.$linker['e__title'].' '.view_time_difference(strtotime($linker['x__time'])).' Ago: '.substr($linker['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top">'.view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i, false, $i['i__id'], $x__id).'</span>';
                 }
+                break;
             }
-        } elseif($focus_coin) {
-            //You Are Here
-            $ui .= '<span title="'.$e___11035[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[31825]['m__cover'].'</span>';
         }
-        $ui .= '</div></td>';
-
-
-        //Edit:
-        $ui .= '<td width="20%"><div class="show-on-hover">'.( $e_of_i && !$discovery_mode ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
-
+    } elseif($focus_coin) {
+        //You Are Here
+        $ui .= '<span title="'.$e___11035[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[31825]['m__cover'].'</span>';
     }
+    $ui .= '</div></td>';
+
+
+
+    //Idea Type
+    $ui .= '<td width="20%"><div class="show-on-hover">';
+    if(!$discovery_mode){
+        $ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
+    }
+    $ui .= '</div></td>';
+
+
+
+
+    $ui .= '<td width="20%"><div class="show-on-hover">';
+    foreach($CI->X_model->fetch(array(
+        'x__right' => $i['i__id'],
+        'x__type' => 4250, //New Idea Created
+    ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
+        $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
+    }
+    $ui .= '</div></td>';
+
+
+
+    //Edit:
+    $ui .= '<td width="20%"><div class="show-on-hover">'.( $e_of_i && !$discovery_mode ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
 
     //Menu:
     $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
@@ -1849,58 +1841,46 @@ function view_e($x__type, $e, $extra_class = null)
 
         $ui .= '<table class="coin_coins"><tr>';
 
-        if(0 && !$superpower_13422){
 
-            $ui .= '<td width="80%" class="wide_author"><div class="show-on-hover">';
-            foreach($CI->X_model->fetch(array(
-                'x__down' => $e['e__id'],
-                'x__type' => 4251, //New Source Created
-                'x__source !=' => $e['e__id'],
-            ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">&nbsp;'.$creator['e__title'].'</span><span class="grey">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time']), true).'</span></a>';
-            }
-            $ui .= '</div></td>';
-
-        } else {
-
-            //Editing Menu:
-            $ui .= '<td width="20%"><div class="show-on-hover">';
-            foreach($CI->X_model->fetch(array(
-                'x__down' => $e['e__id'],
-                'x__type' => 4251, //New Source Created
-                'x__source !=' => $e['e__id'],
-            ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
-            }
-            $ui .= '</div></td>';
-
-            $special_type = in_array($e['e__type'], $CI->config->item('n___31109'));
-            $ui .= '<td width="20%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '' ).'</div></td>';
-
-            $ui .= '<td width="20%"><div class="show-on-hover">';
-            if($x__id && $superpower_13422){
-                foreach($CI->config->item('e___31770') as $x__type1 => $m1){
-                    if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
-                        foreach($CI->X_model->fetch(array(
-                            'x__id' => $x__id,
-                        ), array('x__source')) as $linker){
-                            $ui .= '<span title="'.$linker['e__title'].' '.view_time_difference(strtotime($linker['x__time'])).' Ago: '.substr($linker['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top">'.view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id).'</span>';
-                        }
-                        break;
+        $ui .= '<td width="20%"><div class="show-on-hover">';
+        if($x__id && $superpower_13422){
+            foreach($CI->config->item('e___31770') as $x__type1 => $m1){
+                if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
+                    foreach($CI->X_model->fetch(array(
+                        'x__id' => $x__id,
+                    ), array('x__source')) as $linker){
+                        $ui .= '<span title="'.$linker['e__title'].' '.view_time_difference(strtotime($linker['x__time'])).' Ago: '.substr($linker['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top">'.view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id).'</span>';
                     }
+                    break;
                 }
-            } elseif($focus_coin) {
-                //You Are Here
-                $ui .= '<span title="'.$e___11035[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[31825]['m__cover'].'</span>';
             }
-            $ui .= '</div></td>';
-
-            $ui .= '<td width="20%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
-
+        } elseif($focus_coin) {
+            //You Are Here
+            $ui .= '<span title="'.$e___11035[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[31825]['m__cover'].'</span>';
         }
+        $ui .= '</div></td>';
+
+
+        $special_type = in_array($e['e__type'], $CI->config->item('n___31109'));
+        $ui .= '<td width="20%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '' ).'</div></td>';
+
+
+        $ui .= '<td width="20%"><div class="show-on-hover">';
+        foreach($CI->X_model->fetch(array(
+            'x__down' => $e['e__id'],
+            'x__type' => 4251, //New Source Created
+            'x__source !=' => $e['e__id'],
+        ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
+            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
+        }
+        $ui .= '</div></td>';
+
+
+        $ui .= '<td width="20%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
 
 
         $ui .= '<td width="20%"><div class="show-on-hover">'.$dropdown_ui.'</div></td>';
+
         $ui .= '</tr></table>';
     }
 
