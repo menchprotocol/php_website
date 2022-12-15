@@ -1168,10 +1168,10 @@ a.headline {
     padding-left: 0;
     font-weight: bold;
     max-width: calc(100% - 43px);
-    height: 34px;
+    height: 32px;
     overflow: hidden;
     line-height: 151%;
-    margin-bottom: -5px;
+    margin-bottom: -2px;
     padding-top: 4px !important;
 }
 
