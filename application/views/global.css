@@ -1334,8 +1334,9 @@ label {
 .dropdown-item, .dropdown-item {
     text-decoration: none;
 }
-.dropdown-item.active, .dropdown-item:active {
-    color: #fff !important;
+.dropdown-item.active,
+.dropdown-item:active {
+    color: #000000 !important;
     background-color: #EFEFEF !important;
     cursor: default !important;
 }
