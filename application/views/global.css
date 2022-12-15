@@ -3834,7 +3834,9 @@ h4.css__title{
 .large-frame>div{
     padding-bottom: 5px;
 }
-
+.dropdown-toggle::after {
+    display:none !important;
+}
 .large-frame>.alert{
     width: 100%;
     margin-left:0;
