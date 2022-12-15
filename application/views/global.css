@@ -2097,7 +2097,7 @@ i, .btn .show-max {
 .coin_cover{
     position: relative;
     margin:0 auto 5px auto !important;
-    padding: 13px 0 21px !important;
+    padding: 5px 0 !important;
     border-radius: 21px;
 }
 
