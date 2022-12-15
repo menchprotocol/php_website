@@ -1973,9 +1973,11 @@ i, .btn .show-max {
     overflow-y: auto;
     display: block;
     margin: 0 5px;
-    max-height: 58%;
+    max-height: 65%;
     top:44px;
 }
+
+
 
 .coin-6287 .cover-content{
     top:34px;
@@ -2093,9 +2095,6 @@ input.form-control,
     margin-right: 5px;
 }
 
-.focus-coin .cover-text {
-    padding: 8px;
-}
 .cover-text .mini-font {
     font-weight: bold !important;
 }
@@ -2563,6 +2562,10 @@ h4.css__title{
 
 
 @media (max-width:599px) { /* Used to be 767px */
+
+    .cover-content{
+        /* max-height: 44%; */
+    }
 
     /*
     .halfbg, .msg>span, .fixed-top, .list-group-item-action im, .list-group-item, .x__message img, .i_content img, .content-image, .media-content, .x__message video, .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image, .list-radio-select .list-group-item.active, .avatar-item.active, .btn-group a.active, .itemsetting.active {
