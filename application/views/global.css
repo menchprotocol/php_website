@@ -1173,7 +1173,9 @@ a.headline {
     line-height: 151%;
     margin-bottom: -3px;
 }
-
+.search_nav{
+    margin-top:7px;
+}
 
 
 .platform-logo div.img {
