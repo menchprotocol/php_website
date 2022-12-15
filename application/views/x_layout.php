@@ -432,7 +432,7 @@ if($top_i__id) {
             echo '<div class="msg alert alert-success" role="alert">Paypal receipt email sent for your payment of '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['quantity']>1 ? ' for '.$x__metadata['quantity'].' items' : '' ).' on '.$x__metadata['payment_date'].'. You are now ready to go next.</div>';
 
             //Invite Your Friends (If 2 or more items):
-            if($x__metadata['quantity']>1 && is_new()){
+            if($x__metadata['quantity']>1 && 0){
 
                 //TODO Complete
 

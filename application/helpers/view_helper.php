@@ -1374,298 +1374,228 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $can_click = !$focus_coin && (!$e_of_i || $discovery_mode);
 
 
-    if(is_new()){
 
-        //Fetch Creator:
-        $i_creators = $CI->X_model->fetch(array(
-            'x__type' => 4250, //New Idea Created
+
+    //LOCKED
+    $o_menu = '';
+    $action_buttons = null;
+
+    if(!$cache_app) {
+
+        foreach($CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' )) as $e__id => $m) {
+
+            //Skip if missing superpower:
+            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+            if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+                //Missing Superpower
+                continue;
+            }
+
+            $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
+
+            if($e__id==12589){
+                //Mass Apply
+                $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
+            } elseif($e__id==30795 && !$discovery_mode && $superpower_10939){
+                //Discovery Mode
+                $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+            } elseif($e__id==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && ($e_of_i || $superpower_10939 || ( $member_e && $member_e['e__id']==$i['x__source'] ))){
+                //Unlink
+                $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$x__id.'">'.$anchor.'</a>';
+            } elseif($e__id==30873){
+                //Template:
+                $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 1)" class="dropdown-item css__title">'.$anchor.'</a>';
+            } elseif($e__id==29771){
+                //Clone:
+                $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item css__title">'.$anchor.'</a>';
+            } elseif($e__id==28636 && $e_of_i && $x__id){
+                //Transaction Details
+                $action_buttons .= '<a href="/-4341?x__id='.$x__id.'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
+            } elseif($e__id==28637 && isset($i['x__type'])){
+                //Paypal Details
+                $x__metadata = unserialize($i['x__metadata']);
+                if(isset($x__metadata['txn_id'])){
+                    $action_buttons .= '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
+                }
+            } elseif(substr($m['m__message'], 0, 1)=='/'){
+                //Standard button
+                $action_buttons .= '<a href="'.$m['m__message'].$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+            }
+        }
+
+        //Any Buttons?
+        if($action_buttons){
+            //Right Action Menu
+            $o_menu .= '<div class="dropdown inline-block">';
+            $o_menu .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14955]['m__cover'].'</button>';
+            $o_menu .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
+            $o_menu .= $action_buttons;
+            $o_menu .= '</div>';
+            $o_menu .= '</div>';
+        }
+
+    }
+
+
+
+    //Top action menu:
+    $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin coin_i_click col-md-4 col-sm-6 col-12 ' ).( $parent_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort x_sort ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
+
+
+    $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
+
+    if(0 && ($discovery_mode || !$e_of_i)){
+
+        $ui .= '<td width="80%" class="wide_author"><div class="show-on-hover">';
+        foreach($CI->X_model->fetch(array(
             'x__right' => $i['i__id'],
-        ), array('x__source'), 0);
+            'x__type' => 4250, //New Idea Created
+        ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
+            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">&nbsp;'.$creator['e__title'].'</span><span class="grey">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time']), true).'</span></a>';
+        }
+        $ui .= '</div></td>';
+
+    } else {
+
+        $ui .= '<td width="20%"><div class="show-on-hover">';
+        foreach($CI->X_model->fetch(array(
+            'x__right' => $i['i__id'],
+            'x__type' => 4250, //New Idea Created
+        ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
+            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
+        }
+        $ui .= '</div></td>';
+
+        //Idea Type
+        $ui .= '<td width="20%"><div class="show-on-hover">';
+        if(!$discovery_mode){
+            $ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
+        }
+        $ui .= '</div></td>';
+
+        //Link Type:
+        $ui .= '<td width="20%"><div class="show-on-hover">';
+        if($x__id && ($e_of_i || !$discovery_mode)){
+            foreach($CI->config->item('e___31770') as $x__type1 => $m1){
+                if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
+                    foreach($CI->X_model->fetch(array(
+                        'x__id' => $x__id,
+                    ), array('x__source')) as $linker){
+                        $ui .= '<span title="'.$linker['e__title'].' '.view_time_difference(strtotime($linker['x__time'])).' Ago: '.substr($linker['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top">'.view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i, false, $i['i__id'], $x__id).'</span>';
+                    }
+                    break;
+                }
+            }
+        } elseif($focus_coin) {
+            //You Are Here
+            $ui .= '<span title="'.$e___11035[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[31825]['m__cover'].'</span>';
+        }
+        $ui .= '</div></td>';
 
 
-        $ui = '<div class="col-lg-4 mb-4">
-      <div class="card">
+        //Edit:
+        $ui .= '<td width="20%"><div class="show-on-hover">'.( $e_of_i && !$discovery_mode ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
 
-        <div class="card-body">
-          <h5 class="card-title">'.$i['i__title'].'</h5>
-          <p class="card-text">';
+    }
+
+    //Menu:
+    $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
+    $ui .= '</tr></table>';
+
+    $ui .= '<div class="cover-wrapper cover_wrapper12273">';
+
+
+
+
+
+
+    //Coin Cover
+    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background-obs cover-link">';
+
+
+    $ui .= ( !$can_click ? '</div>' : '</a>' );
+    $ui .= '</div>'; //cover-wrapper
+
+
+
+    //Title Cover
+    $ui .= '<div class="cover-content">';
+
+    if($load_completion && $is_started && !$is_completed){
+        $ui .= '<div class="cover-progress">'.view_x_progress($tree_progress, $i).'</div>';
+    }
+
+    $ui .= '<div class="inner-content">';
+
+
+    //TITLE
+    if($e_of_i && !$discovery_mode){
+        //Editable title:
+        $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
+    } elseif($can_click){
+        $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
+    } else {
+        $ui .= $i_title;
+    }
+
+
+
+    //IDEAs & Time & Message
+    $message_tooltip = '';
+    if(isset($i['x__message']) && strlen($i['x__message'])>0){
+
+        if(superpower_active(12701, true)){
+            $message_tooltip = '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</a>';
+        } elseif($e_of_i || !$discovery_mode) {
+            $message_tooltip = '<p class="mini-font" title="'.$i['x__message'].'">'.$CI->X_model->message_view( $i['x__message'], true).'</p>';
+        }
+
+    } else {
+
+        $messages = '';
         foreach($CI->X_model->fetch(array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4231,
             'x__right' => $i['i__id'],
         ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
-            $ui .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
-        }
-        echo '</p>
-          <p class="card-text">
-            <a href="/@'.$i_creators[0]['e__id'].'"><b>'.$i_creators[0]['e__title'].'</b></a>
-            <small class="text-muted"> · ' . view_time_difference(strtotime($i_creators[0]['x__time'])) . '</small>
-          </p>
-        </div>
-        
-         <svg class="bd-placeholder-img card-img-top" width="100%" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"/><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
-      
-      </div>
-    </div>';
-
-        $ui = '<div class="idea_cover">';
-
-            $ui .= '<table><tr>';
-
-            $ui .= '<td><a href="/@'.$i_creators[0]['e__id'].'" class="source_cover">'.view_cover(12273, $i_creators[0]['e__cover'], true).'</a></td>';
-
-            $ui .= '<td style="width: 100%;">';
-
-
-                $ui .= '<div class="message_bar">';
-                $ui .= $CI->X_model->message_view($i['i__title'], true, $member_e, 0, true);
-
-                $ui .= '</div>';
-
-
-                //Actions:
-                $ui .= '<div class="action_bar">';
-                    $ui .= '<a href="javascript:void(0);"><i class="fal fa-comment"></i> 2,786</a>';
-                    $ui .= '<a href="javascript:void(0);"><i class="fal fa-retweet"></i> 564</a>';
-                    $ui .= '<a href="javascript:void(0);"><i class="fal fa-heart"></i> 988</a>';
-                    $ui .= '<a href="javascript:void(0);"><i class="fal fa-share-square"></i></a>';
-                $ui .= '</div>';
-
-
-            $ui .= '</td>';
-            $ui .= '</tr></table>';
-
-        $ui .= '</div>';
-
-
-    } else {
-
-
-        //LOCKED
-        $o_menu = '';
-        $action_buttons = null;
-
-        if(!$cache_app) {
-
-            foreach($CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' )) as $e__id => $m) {
-
-                //Skip if missing superpower:
-                $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
-                if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-                    //Missing Superpower
-                    continue;
-                }
-
-                $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
-
-                if($e__id==12589){
-                    //Mass Apply
-                    $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
-                } elseif($e__id==30795 && !$discovery_mode && $superpower_10939){
-                    //Discovery Mode
-                    $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
-                } elseif($e__id==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && ($e_of_i || $superpower_10939 || ( $member_e && $member_e['e__id']==$i['x__source'] ))){
-                    //Unlink
-                    $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$x__id.'">'.$anchor.'</a>';
-                } elseif($e__id==30873){
-                    //Template:
-                    $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 1)" class="dropdown-item css__title">'.$anchor.'</a>';
-                } elseif($e__id==29771){
-                    //Clone:
-                    $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item css__title">'.$anchor.'</a>';
-                } elseif($e__id==28636 && $e_of_i && $x__id){
-                    //Transaction Details
-                    $action_buttons .= '<a href="/-4341?x__id='.$x__id.'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
-                } elseif($e__id==28637 && isset($i['x__type'])){
-                    //Paypal Details
-                    $x__metadata = unserialize($i['x__metadata']);
-                    if(isset($x__metadata['txn_id'])){
-                        $action_buttons .= '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
-                    }
-                } elseif(substr($m['m__message'], 0, 1)=='/'){
-                    //Standard button
-                    $action_buttons .= '<a href="'.$m['m__message'].$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
-                }
-            }
-
-            //Any Buttons?
-            if($action_buttons){
-                //Right Action Menu
-                $o_menu .= '<div class="dropdown inline-block">';
-                $o_menu .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14955]['m__cover'].'</button>';
-                $o_menu .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
-                $o_menu .= $action_buttons;
-                $o_menu .= '</div>';
-                $o_menu .= '</div>';
-            }
-
+            $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
         }
 
-
-
-        //Top action menu:
-        $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin col-md-8 col-12 ' : ' edge-coin coin_i_click col-md-4 col-sm-6 col-12 ' ).( $parent_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort x_sort ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
-
-
-        $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
-
-        if(0 && ($discovery_mode || !$e_of_i)){
-
-            $ui .= '<td width="80%" class="wide_author"><div class="show-on-hover">';
-            foreach($CI->X_model->fetch(array(
-                'x__right' => $i['i__id'],
-                'x__type' => 4250, //New Idea Created
-            ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.substr($creator['x__time'], 0, 19).' PST"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span><span class="css__title">&nbsp;'.$creator['e__title'].'</span><span class="grey">&nbsp;·&nbsp;'.view_time_difference(strtotime($creator['x__time']), true).'</span></a>';
-            }
-            $ui .= '</div></td>';
-
-        } else {
-
-            $ui .= '<td width="20%"><div class="show-on-hover">';
-            foreach($CI->X_model->fetch(array(
-                'x__right' => $i['i__id'],
-                'x__type' => 4250, //New Idea Created
-            ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-                $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
-            }
-            $ui .= '</div></td>';
-
-            //Idea Type
-            $ui .= '<td width="20%"><div class="show-on-hover">';
-            if(!$discovery_mode){
-                $ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
-            }
-            $ui .= '</div></td>';
-
-            //Link Type:
-            $ui .= '<td width="20%"><div class="show-on-hover">';
-            if($x__id && ($e_of_i || !$discovery_mode)){
-                foreach($CI->config->item('e___31770') as $x__type1 => $m1){
-                    if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
-                        foreach($CI->X_model->fetch(array(
-                            'x__id' => $x__id,
-                        ), array('x__source')) as $linker){
-                            $ui .= '<span title="'.$linker['e__title'].' '.view_time_difference(strtotime($linker['x__time'])).' Ago: '.substr($linker['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top">'.view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i, false, $i['i__id'], $x__id).'</span>';
-                        }
-                        break;
-                    }
-                }
-            } elseif($focus_coin) {
-                //You Are Here
-                $ui .= '<span title="'.$e___11035[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[31825]['m__cover'].'</span>';
-            }
-            $ui .= '</div></td>';
-
-
-            //Edit:
-            $ui .= '<td width="20%"><div class="show-on-hover">'.( $e_of_i && !$discovery_mode ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
-
-        }
-
-        //Menu:
-        $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
-        $ui .= '</tr></table>';
-
-        $ui .= '<div class="cover-wrapper cover_wrapper12273">';
-
-
-
-
-
-
-        //Coin Cover
-        $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background-obs cover-link">';
-
-
-        $ui .= ( !$can_click ? '</div>' : '</a>' );
-        $ui .= '</div>'; //cover-wrapper
-
-
-
-        //Title Cover
-        $ui .= '<div class="cover-content">';
-
-        if($load_completion && $is_started && !$is_completed){
-            $ui .= '<div class="cover-progress">'.view_x_progress($tree_progress, $i).'</div>';
-        }
-
-        $ui .= '<div class="inner-content">';
-
-
-        //TITLE
-        if($e_of_i && !$discovery_mode){
-            //Editable title:
-            $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
+        if($e_of_i && !$discovery_mode) {
+            //Can edit:
+            $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963(' . $i['i__id'] . ')" class="mini-font messages_4231_' . $i['i__id'] . '">' . (strlen($messages) ? $messages : '<i class="no-message">Write Message...</i>') . '</a>';
         } elseif($can_click){
-            $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
+            $message_tooltip = '<a href="'.$href.'">'.$messages.'</a>';
         } else {
-            $ui .= $i_title;
+            $message_tooltip = $messages;
         }
 
+    }
 
+    $ui .= '<div class="cover-text">';
 
-        //IDEAs & Time & Message
-        $message_tooltip = '';
-        if(isset($i['x__message']) && strlen($i['x__message'])>0){
+    if($message_tooltip){
+        $ui .= '<div class="">' . $message_tooltip . '</div>'; //grey
+    }
 
-            if(superpower_active(12701, true)){
-                $message_tooltip = '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</a>';
-            } elseif($e_of_i || !$discovery_mode) {
-                $message_tooltip = '<p class="mini-font" title="'.$i['x__message'].'">'.$CI->X_model->message_view( $i['x__message'], true).'</p>';
-            }
+    $ui .= '</div>';
 
-        } else {
+    $ui .= '</div></div>';
 
-            $messages = '';
-            foreach($CI->X_model->fetch(array(
-                'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type' => 4231,
-                'x__right' => $i['i__id'],
-            ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
-                $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
-            }
+    if($superpower_10939 && !$focus_coin){
 
-            if($e_of_i && !$discovery_mode) {
-                //Can edit:
-                $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963(' . $i['i__id'] . ')" class="mini-font messages_4231_' . $i['i__id'] . '">' . (strlen($messages) ? $messages : '<i class="no-message">Write Message...</i>') . '</a>';
-            } elseif($can_click){
-                $message_tooltip = '<a href="'.$href.'">'.$messages.'</a>';
-            } else {
-                $message_tooltip = $messages;
-            }
-
-        }
-
-        $ui .= '<div class="cover-text">';
-
-        if($message_tooltip){
-            $ui .= '<div class="">' . $message_tooltip . '</div>'; //grey
-        }
-
-        $ui .= '</div>';
-
+        $ui .= '<div class="coin_coins"><div class="show-on-hover">';
+        $ui .= '<span class="hideIfEmpty uptree '.superpower_active(14005).'">'.view_coins_i(11019,  $i['i__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_i(12273,  $i['i__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i['i__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty">'.view_coins_i(6255,  $i['i__id']).'</span>';
+        $ui .= ( !$can_click && $member_e && !$focus_coin && !$discovery_mode ? '<a href="'.$href.'" class="right-btn"><i class="fal fa-arrow-right zq12273"></i></a>' : '' );
         $ui .= '</div></div>';
-
-        if($superpower_10939 && !$focus_coin){
-
-            $ui .= '<div class="coin_coins"><div class="show-on-hover">';
-            $ui .= '<span class="hideIfEmpty uptree '.superpower_active(14005).'">'.view_coins_i(11019,  $i['i__id']).'</span>';
-            $ui .= '<span class="hideIfEmpty">'.view_coins_i(12273,  $i['i__id']).'</span>';
-            $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i['i__id']).'</span>';
-            $ui .= '<span class="hideIfEmpty">'.view_coins_i(6255,  $i['i__id']).'</span>';
-            $ui .= ( !$can_click && $member_e && !$focus_coin && !$discovery_mode ? '<a href="'.$href.'" class="right-btn"><i class="fal fa-arrow-right zq12273"></i></a>' : '' );
-            $ui .= '</div></div>';
-
-        }
-
-
-        $ui .= '</div>';
-
 
     }
 
 
+    $ui .= '</div>';
 
 
 
