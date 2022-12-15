@@ -2525,10 +2525,11 @@ h4.css__title{
 
 @media (max-width:599px) { /* Used to be 767px */
 
+    /*
     .halfbg, .msg>span, .fixed-top, .list-group-item-action im, .list-group-item, .x__message img, .i_content img, .content-image, .media-content, .x__message video, .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image, .list-radio-select .list-group-item.active, .avatar-item.active, .btn-group a.active, .itemsetting.active {
         border-radius: 0 !important;
     }
-
+*/
     .info_box_title{
         font-size: 1.15em;
     }
