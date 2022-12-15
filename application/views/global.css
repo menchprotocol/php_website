@@ -1324,9 +1324,11 @@ label {
 .dropdown-item:focus, .dropdown-item:hover {
     text-decoration: none;
     background-color: #EFEFEF;
-    color: #000000 !important;
 }
-.dropdown-item:hover i {
+.dropdown-item:focus,
+.dropdown-item:hover,
+.dropdown-item:hover i,
+.dropdown-item:hover .css__title{
     color: #000000 !important;
 }
 .dropdown-item, .dropdown-item {
