@@ -355,12 +355,9 @@ if(superpower_unlocked()) {
 
             <div class="login-content" style="margin-top:40px;">
 
-                <!-- Step 1: Enter Email -->
-                <div id="step2" class="signup-steps hidden">
 
+                <div>
                     <?php
-
-
                     //Back only if coming from an idea:
                     $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
                     if ($sign_i__id > 0) {
@@ -375,7 +372,13 @@ if(superpower_unlocked()) {
 
 
                     echo '<p style="margin-top:13px; text-align: center; padding-bottom: 34px;">'.$intro_message.'</p>';
+                    ?>
+                </div>
 
+                <!-- Step 1: Enter Email -->
+                <div id="step2" class="signup-steps hidden">
+
+                    <?php
 
                     //SOCIAL LOGIN:
                     echo '<div class="social-frame">';
