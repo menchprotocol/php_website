@@ -378,11 +378,10 @@ if(!$basic_header_footer){
                     //MENU
                     $menu_type = ( $member_e ? 12500 : 14372 );
                     echo '<td class="block-menu">';
+
                     echo '<div class="dropdown inline-block">';
-                    echo '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$menu_type.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    echo '<span class="source_cover source_cover_mini menu-icon">' . ( $member_e ? view_cover(12274,$member_e['e__cover'], 1) : $e___13479[$menu_type]['m__cover'] ) .'</span>';
-                    echo '</button>';
-                    echo '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
+                    echo '<a class="btn dropdown-toggle no-side-padding" id="dropdownMenuButton'.$menu_type.'" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="source_cover source_cover_mini menu-icon">' . ( $member_e ? view_cover(12274,$member_e['e__cover'], 1) : $e___13479[$menu_type]['m__cover'] ) .'</span></a>';
+                    echo '<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$menu_type.'">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
 
                         $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__following']);
@@ -456,11 +455,11 @@ if(!$basic_header_footer){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' x__type="'.$x__type.'" class="dropdown-item css__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<li><a '.$href.' x__type="'.$x__type.'" class="dropdown-item css__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a></li>';
 
                     }
 
-                    echo '</div>';
+                    echo '</ul>';
                     echo '</div>';
                     echo '</td>';
 
