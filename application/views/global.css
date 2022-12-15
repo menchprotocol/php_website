@@ -3833,7 +3833,6 @@ h4.css__title{
 }
 .large-frame>div{
     padding-bottom: 5px;
-    width: calc(100% - 16px);
 }
 
 .large-frame>.alert{
