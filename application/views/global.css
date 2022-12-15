@@ -2741,7 +2741,7 @@ h4.css__title{
 
 .custom_ui_13884_13886 .light-bg,
 .custom_ui_13884_13886 .fixed-top{
-    background: rgba(0,0,0,1.00);
+    background: rgba(16,16,16,1.00);
 }
 
 .custom_ui_13884_13886 .coin-12274 .cover-content,
@@ -2749,7 +2749,7 @@ h4.css__title{
 .custom_ui_13884_13886 .coin-12274.not-allowed .cover-content,
 .custom_ui_13884_13886 .coin-12274.ready-only .cover-content
 {
-    background: rgba(0,0,0,0.80) !important;
+    background: rgba(16,16,16,0.80) !important;
 }
 
 .custom_ui_13884_13886 .coin_cover:hover,
@@ -2890,12 +2890,12 @@ h4.css__title{
 
 .custom_ui_13884_13885 .light-bg,
 .custom_ui_13884_13885 .fixed-top{
-    background: rgba(255,255,255,1.00) !important;
+    background: rgba(239,239,239,1.00) !important;
 }
 
 .custom_ui_13884_13885 .coin-12274 .cover-content,
 .custom_ui_13884_13885 .coin-12274.not-allowed .cover-content{
-    background: rgba(255,255,255,0.80) !important;
+    background: rgba(239,239,239,0.80) !important;
 }
 
 .custom_ui_13884_13885 .coin_cover:hover,
