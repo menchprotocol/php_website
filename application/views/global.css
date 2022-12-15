@@ -2001,6 +2001,9 @@ i, .btn .show-max {
 .mini-coin .cover-content {
     top:24px;
 }
+.focus-coin .cover-content {
+    max-height: 85%;
+}
 
 #container_search .mini-coin .cover-content {
     top: 21px;
