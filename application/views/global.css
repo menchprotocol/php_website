@@ -76,8 +76,11 @@ body {
     border-radius: 21px !important;
     display: block;
 }
-.coin_cover .content-image {
+.focus-coin .content-image {
     max-height: 233px;
+}
+.edge-coin .content-image {
+    max-height: 144px;
 }
 
 .ytframe{
