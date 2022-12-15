@@ -1176,6 +1176,9 @@ a.headline {
 .search_nav{
     margin-top:7px;
 }
+.algolia_search{
+    top:-3px;
+}
 
 
 .platform-logo div.img {
