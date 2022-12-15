@@ -66,7 +66,7 @@ class I extends CI_Controller {
             'i__id' => $i__id,
         ));
         if ( count($is) < 1) {
-            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>IDEA #' . $i__id . ' Not Found</div>', true);
+            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>IDEA #' . $i__id . ' Not Found</div>');
         }
 
         $member_e = superpower_unlocked(10939); //Idea Pen?
