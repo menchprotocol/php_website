@@ -3547,7 +3547,7 @@ h4.css__title{
 .icon-block-xs img,
 .platform-large img,
 .image-mini img {
-    border-radius: 21.1px;
+    border-radius: 50%;
 }
 
 .cover-link.coinType12274 .cover-btn{
