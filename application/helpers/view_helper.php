@@ -283,16 +283,17 @@ function view_x($x, $has_x__reference = false)
         if(in_array(6160 , $m['m__following'])){
 
             //SOURCE
-            $es = $CI->E_model->fetch(array('e__id' => $x[$m['m__message']]));
-
-            $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$es[0]['e__cover'], true). '</span>'.$es[0]['e__title'].'</a></div>';
+            foreach($CI->E_model->fetch(array('e__id' => $x[$m['m__message']])) as $this_e){
+                $ui .= '<div class="simple-line"><a href="/@'.$this_e['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$this_e['e__cover'], true). '</span>'.$this_e['e__title'].'</a></div>';
+            }
 
         } elseif(in_array(6202 , $m['m__following'])){
 
             //IDEA
-            $is = $CI->I_model->fetch(array('i__id' => $x[$m['m__message']]));
+            foreach($CI->I_model->fetch(array('i__id' => $x[$m['m__message']])) as $this_i){
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$this_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Status */, $this_i['i__type'], true, 'right', $this_i['i__id']).'</span>'.view_i_title($this_i).'</a></div>';
+            }
 
-            $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Status */, $is[0]['i__type'], true, 'right', $is[0]['i__id']).'</span>'.view_i_title($is[0]).'</a></div>';
 
         } elseif(in_array(4367 , $m['m__following'])){
 
