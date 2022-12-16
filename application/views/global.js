@@ -1034,7 +1034,12 @@ $(document).ready(function () {
                     var search_only_e = $("#top_search").val().charAt(0) == '@';
                     var search_only_in = $("#top_search").val().charAt(0) == '#';
                     $("#container_search .row").html(''); //Reset results view
-                    $(this).focus();
+
+                    setTimeout(function () {
+                        $("#top_search").focus();
+                        console.log('sss');
+                    }, 55);
+
 
                     //Do not search if specific command ONLY:
                     if (( search_only_in || search_only_e ) && !isNaN($("#top_search").val().substr(1)) ) {
