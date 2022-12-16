@@ -2322,6 +2322,27 @@ input.form-control,
     height: 65px;
     padding: 12px 0 0 1px;
     text-align: center;
+    border-radius: 50%;=
+}
+.round-btn{
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    padding: 12px 0 0 1px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+ .round-btn{
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    padding: 12px 0 0 1px;
+    text-align: center;
+    border-radius: 50%;
+}
+.center-info  .round-btn{
+    margin-top: 21px;
 }
 
 .adj-btn{
@@ -3551,9 +3572,6 @@ h4.css__title{
 
 .cover-link {
     padding-top: 98%;
-}
-.round-btn {
-    border-radius: 50%;
 }
 .icons_large .block-icon img,
 .note-btn > span > span,
