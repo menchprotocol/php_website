@@ -1828,8 +1828,7 @@ function toggle_search(){
         setTimeout(function () {
             //One more time to make sure it also works in mobile:
             $('#top_search').focus();
-            console.log('sss');
-        }, 987);
+        }, 55);
 
 
     }
