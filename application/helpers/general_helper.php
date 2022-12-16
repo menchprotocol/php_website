@@ -886,20 +886,6 @@ function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null
 }
 
 
-function var_index(){
-    //Returns a simplified index of all variables @6212
-    $CI =& get_instance();
-    $var_index = array();
-    foreach($CI->config->item('e___6212') as $e__id => $m){
-        foreach($CI->config->item('e___'.$e__id) as $e__id2 => $m2){
-            if(strlen($m2['m__message']) > 0){
-                $var_index[$e__id2] = $m2['m__message'];
-            }
-        }
-    }
-    return $var_index;
-}
-
 
 
 function home_url(){

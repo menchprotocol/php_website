@@ -171,25 +171,19 @@ class X_model extends CI_Model
                 //Compose email body, start with transaction content:
                 $plain_message = ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '') . "\n";
 
-                $var_index = var_index();
-
                 //Append transaction object transactions:
-                foreach($this->config->item('e___11081') as $e__id => $m) {
-
-                    if(!array_key_exists($e__id, $var_index) || !intval($add_fields[$var_index[$e__id]])){
-                        continue;
-                    }
+                foreach($this->config->item('e___4341') as $e__id => $m) {
 
                     if (in_array(6202 , $m['m__following'])) {
 
                         //IDEA
-                        $is = $this->I_model->fetch(array( 'i__id' => $add_fields[$var_index[$e__id]] ));
+                        $is = $this->I_model->fetch(array( 'i__id' => $add_fields[$m['m__message']] ));
                         $plain_message .= $m['m__title'] . ': '.$is[0]['i__title'].':'."\n".$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id']."\n\n";
 
                     } elseif (in_array(6160 , $m['m__following'])) {
 
                         //SOURCE
-                        $es = $this->E_model->fetch(array( 'e__id' => $add_fields[$var_index[$e__id]] ));
+                        $es = $this->E_model->fetch(array( 'e__id' => $add_fields[$m['m__message']] ));
                         if(count($es)){
                             $plain_message .= $m['m__title'] . ': '.$es[0]['e__title']."\n".$this->config->item('base_url').'/@' . $es[0]['e__id'] . "\n\n";
                         }
@@ -197,7 +191,7 @@ class X_model extends CI_Model
                     } elseif (in_array(4367 , $m['m__following'])) {
 
                         //DISCOVERY
-                        $plain_message .= $m['m__title'] . ':'."\n".$this->config->item('base_url').'/-12722?x__id=' . $add_fields[$var_index[$e__id]]."\n\n";
+                        $plain_message .= $m['m__title'] . ':'."\n".$this->config->item('base_url').'/-12722?x__id=' . $add_fields[$m['m__message']]."\n\n";
 
                     }
 

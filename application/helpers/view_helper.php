@@ -277,124 +277,62 @@ function view_x($x, $has_x__reference = false)
 {
 
     $CI =& get_instance();
-    $e___4593 = $CI->config->item('e___4593'); //Transaction Type
-    $e___4341 = $CI->config->item('e___4341'); //Transaction Table
-    $e___6186 = $CI->config->item('e___6186'); //Transaction Status
-    $e___14870 = $CI->config->item('e___14870'); //Hosted Domains
-    $member_e = superpower_unlocked();
-    $superpower_css_12701 = superpower_active(12701); //SUPERPOWER OF DISCOVERY GLASSES
-    $add_e = $CI->E_model->fetch(array(
-        'e__id' => $x['x__source'],
-    ));
-
-
-
-
-    //Display the item
     $ui = '<div class="x-list">';
+    foreach($CI->config->item('e___4341') as $e__id => $m) {
 
+        if(in_array(6160 , $m['m__following'])){
 
-    //ID
-    $ui .= '<div class="simple-line"><a href="/-4341?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4367]['m__title'].'" class="mono-space"><span class="icon-block">'.$e___4341[4367]['m__cover']. '</span>'.$x['x__id'].'</a></div>';
+            //SOURCE
+            $es = $CI->E_model->fetch(array('e__id' => $x[$m['m__message']]));
 
+            $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$es[0]['e__cover'], true). '</span>'.$es[0]['e__title'].'</a></div>';
 
-    //SOURCE
-    $ui .= '<div class="simple-line"><a href="/@'.$add_e[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4364]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4364]['m__cover']. '</span><span class="icon-block">'.view_cover(12274,$add_e[0]['e__cover'], true) . '</span>' . $add_e[0]['e__title'] . '</a></div>';
+        } elseif(in_array(6202 , $m['m__following'])){
 
+            //IDEA
+            $is = $CI->I_model->fetch(array('i__id' => $x[$m['m__message']]));
 
-    //HIDE PRIVATE INFO?
-    if(isset($x['e__type']) && in_array($x['e__type'] , $CI->config->item('n___30956')) && (!$member_e || $x['x__source']!=$member_e['e__id']) && !superpower_active(12701, true) && $add_e[0]['e__id']!=14068){
+            $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Status */, $is[0]['i__type'], true, 'right', $is[0]['i__id']).'</span>'.view_i_title($is[0]).'</a></div>';
 
-        //Hide Information:
-        $ui .= '<div class="simple-line"><span data-toggle="tooltip" class="css__title" data-placement="top" title="Details are kept private"><span class="icon-block"><i class="fal fa-eye-slash"></i></span>PRIVATE INFORMATION</span></div>';
-        $ui .= '</div>'; //Premature close & return
-        return $ui;
+        } elseif(in_array(4367 , $m['m__following'])){
 
-    } elseif(!isset($e___4593[$x['x__type']])){
-
-        //We've probably have not yet updated php cache, set error:
-        $e___4593[$x['x__type']] = array(
-            'm__cover' => '<i class="fas fa-exclamation-circle"></i>',
-            'm__title' => 'Transaction Type Not Synced in PHP Cache',
-            'm__message' => '',
-            'm__following' => array(),
-        );
-
-    }
-
-
-    //TIME
-    $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $e___4341[4362]['m__title'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$e___4341[4362]['m__cover']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' Ago</span></div>';
-
-
-    //STATUS
-    $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/@'.$x['x__status'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[6186]['m__title'].( strlen($e___6186[$x['x__status']]['m__message']) ? ': '.$e___6186[$x['x__status']]['m__message'] : '' ).'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[6186]['m__cover']. '</span><span class="icon-block">'.$e___6186[$x['x__status']]['m__cover'].'</span>'.$e___6186[$x['x__status']]['m__title'].'</a></div>';
-
-
-    //TYPE
-    $ui .= '<div class="simple-line"><a href="/@'.$x['x__type'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4593]['m__title'].( strlen($e___4593[$x['x__type']]['m__message']) ? ': '.$e___4593[$x['x__type']]['m__message'] : '' ).'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[4593]['m__cover']. '</span><span class="icon-block">'. $e___4593[$x['x__type']]['m__cover'] . '</span>' . $e___4593[$x['x__type']]['m__title'] . '</a></div>';
-
-
-    //Order
-    if($x['x__spectrum'] > 0){
-        $ui .= '<div class="simple-line '.$superpower_css_12701.'"><span data-toggle="tooltip" data-placement="top" title="'.$e___4341[4370]['m__title']. '"><span class="icon-block">'.$e___4341[4370]['m__cover']. '</span>'.view_ordinal($x['x__spectrum']).'</span></div>';
-    }
-
-
-    //Metadata
-    if(strlen($x['x__metadata']) > 0){
-        $ui .= '<div class="simple-line '.$superpower_css_12701.'"><a href="/-12722?x__id=' . $x['x__id'] . '" target="_blank"><span class="icon-block">'.$e___4341[6103]['m__cover']. '</span><u>'.$e___4341[6103]['m__title']. '</u></a></div>';
-    }
-
-    //Message
-    if(strlen($x['x__message']) > 0 && $x['x__message']!='@'.$x['x__up']){
-        $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$e___4341[4372]['m__title'].'"><span class="icon-block">'.$e___4341[4372]['m__cover'].'</span><div class="title-block x-msg">'.( strip_tags($x['x__message'])==$x['x__message'] || strlen(strip_tags($x['x__message']))<view_memory(6404,6197) ? $x['x__message'] : '<span class="hidden html_msg_'.$x['x__id'].'">'.$x['x__message'].'</span><a class="html_msg_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.html_msg_'.$x['x__id'].'\').toggleClass(\'hidden\');"><u>View HTML Message</u></a>' ).'</div></div>';
-    }
-
-
-
-    //5x Relations:
-    if(!$has_x__reference){
-
-        $var_index = var_index();
-        foreach($CI->config->item('e___10692') as $e__id => $m) {
-
-            //Do we have this set?
-            if(!array_key_exists($e__id, $var_index) || !intval($x[$var_index[$e__id]])){
-                continue;
-            }
-
-            if(in_array(6160 , $m['m__following'])){
-
-                //SOURCE
-                $es = $CI->E_model->fetch(array('e__id' => $x[$var_index[$e__id]]));
-
-                $ui .= '<div class="simple-line"><a href="/@'.$es[0]['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$es[0]['e__cover'], true). '</span>'.$es[0]['e__title'].'</a></div>';
-
-            } elseif(in_array(6202 , $m['m__following'])){
-
-                //IDEA
-                $is = $CI->I_model->fetch(array('i__id' => $x[$var_index[$e__id]]));
-
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$is[0]['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'" class="css__title"><span class="icon-block '.$superpower_css_12701.'">'.$e___4341[$e__id]['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Status */, $is[0]['i__type'], true, 'right', $is[0]['i__id']).'</span>'.view_i_title($is[0]).'</a></div>';
-
-            } elseif(in_array(4367 , $m['m__following'])){
-
-                //PARENT DISCOVERY
-                $xs = $CI->X_model->fetch(array('x__id' => $x[$var_index[$e__id]]));
-
-                if(count($xs)){
-                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e___4341[$e__id]['m__title'].'">'.$e___4341[$e__id]['m__cover']. '</span><div class="x-ref hidden x_msg_'.$x['x__id'].'">'.view_x($xs[0], true).'</div><a class="x_msg_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.x_msg_'.$x['x__id'].'\').toggleClass(\'hidden\');"><u>View Referenced Transaction</u></a></div>';
+            //TRANSACTION
+            if(!$has_x__reference){
+                foreach($CI->X_model->fetch(array('x__id' => $x[$m['m__message']])) as $ref_x){
+                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover']. '</span><div class="x-ref hidden x_msg_'.$x['x__id'].'">'.view_x($ref_x, true).'</div><a class="x_msg_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.x_msg_'.$x['x__id'].'\').toggleClass(\'hidden\');"><u>View Referenced Transaction</u></a></div>';
                 }
-
+            } else {
+                //Simple Reference to avoid Loop:
+                $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$m['m__cover']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' Ago</span></div>';
             }
+
+        } elseif($e__id==4367){
+
+            //ID
+            $ui .= '<div class="simple-line"><a href="/-4341?x__id='.$x['x__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="mono-space"><span class="icon-block">'.$m['m__cover']. '</span>'.$x['x__id'].'</a></div>';
+
+        } elseif($e__id==4362){
+
+            //TIME
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$m['m__cover']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' Ago</span></div>';
+
+        } elseif($e__id==4370 && $x['x__spectrum'] > 0){
+
+            //Order
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. '"><span class="icon-block">'.$m['m__cover']. '</span>'.view_ordinal($x['x__spectrum']).'</span></div>';
+
+        } elseif($e__id==6103 && strlen($x['x__metadata']) > 0){
+
+            //Metadata
+            $ui .= '<div class="simple-line"><a href="/-12722?x__id=' . $x['x__id'] . '" target="_blank"><span class="icon-block">'.$m['m__cover']. '</span><u>'.$m['m__title']. '</u></a></div>';
+
+        } elseif($e__id==4372 && strlen($x['x__message']) > 0){
+
+            //Message
+            $ui .= '<div class="simple-line" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'"><span class="icon-block">'.$m['m__cover'].'</span><div class="title-block x-msg">'.( strip_tags($x['x__message'])==$x['x__message'] || strlen(strip_tags($x['x__message']))<view_memory(6404,6197) ? $x['x__message'] : '<span class="hidden html_msg_'.$x['x__id'].'">'.$x['x__message'].'</span><a class="html_msg_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.html_msg_'.$x['x__id'].'\').toggleClass(\'hidden\');"><u>View HTML Message</u></a>' ).'</div></div>';
+
         }
     }
-
-
-    //Website
-    $ui .= '<div class="simple-line">'.( isset($e___14870[$x['x__website']]) ? '<a href="https://'.$e___14870[$x['x__website']]['m__message'].'" target="_blank" class="css__title"><span class="icon-block">'.$e___4341[14870]['m__cover'].'</span><span class="icon-block">'.$e___14870[$x['x__website']]['m__cover']. '</span>' . $e___14870[$x['x__website']]['m__title'] . '</a>' : 'Unknown Domain' ).'</div>';
-
 
     $ui .= '</div>';
 
