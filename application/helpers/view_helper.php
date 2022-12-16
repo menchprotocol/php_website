@@ -280,14 +280,14 @@ function view_x($x, $has_x__reference = false)
     $ui = '<div class="x-list">';
     foreach($CI->config->item('e___4341') as $e__id => $m) {
 
-        if(in_array(6160 , $m['m__following'])){
+        if(in_array(6160 , $m['m__following']) && intval($x[$m['m__message']])>0){
 
             //SOURCE
             foreach($CI->E_model->fetch(array('e__id' => $x[$m['m__message']])) as $this_e){
                 $ui .= '<div class="simple-line"><a href="/@'.$this_e['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$this_e['e__cover'], true). '</span>'.$this_e['e__title'].'</a></div>';
             }
 
-        } elseif(in_array(6202 , $m['m__following'])){
+        } elseif(in_array(6202 , $m['m__following']) && intval($x[$m['m__message']])>0){
 
             //IDEA
             foreach($CI->I_model->fetch(array('i__id' => $x[$m['m__message']])) as $this_i){
@@ -295,7 +295,7 @@ function view_x($x, $has_x__reference = false)
             }
 
 
-        } elseif(in_array(4367 , $m['m__following'])){
+        } elseif(in_array(4367 , $m['m__following']) && intval($x[$m['m__message']])>0){
 
             //TRANSACTION
             if(!$has_x__reference){
