@@ -245,9 +245,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title css__title" id="modal6225Label"><?= $e___11035[6225]['m__cover'].' '.$e___11035[6225]['m__title'] ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <?= view_e_settings(6225, false) ?>
