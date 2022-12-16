@@ -466,7 +466,7 @@ if($top_i__id) {
                 . '<span class="icon-block">'. $e___11035[31837]['m__cover'] . '</span>'
                 . '<span>'.$e___11035[31837]['m__title'] . '</span>'
                 . '<div class="payment_box">'
-                . ( strlen($e___11035[31837]['m__message']) ? '<div class="sub_note">'.nl2br($e___11035[31837]['m__message']).'</div>' : '' );
+                . ( strlen($e___11035[31837]['m__message']) ? '<div class="sub_note css__title">'.nl2br($e___11035[31837]['m__message']).'</div>' : '' );
 
 
 
@@ -480,7 +480,7 @@ if($top_i__id) {
 
             echo '<div '.( $unit_fee > 0 ? ' title="Base Price of '.$unit_price.' '.$currency_parts[0].' + '.$unit_fee.' '.$currency_parts[0].' in Fees & Taxes" data-toggle="tooltip" data-placement="top" ' : '' ).'><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].'</div>';
 
-            echo '<div class="sub_note">';
+            echo '<div class="sub_note css__title">';
             if(!count($this->X_model->fetch(array(
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
