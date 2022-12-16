@@ -57,9 +57,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         echo '<table class="table table-sm table-striped image-mini" style="margin: 0 5px; width:calc(100% - 10px) !important;">';
         echo '<tr style="vertical-align: baseline;" class="css__title">';
         echo '<th id="th_primary">&nbsp;</th>';
-        echo '<th style="text-align: right;" id="th_paid">Ticket<br />Types</th>';
-        echo '<th style="text-align: right;" id="th_paid">Tickets<br />Sold</th>';
-        echo '<th style="text-align: right;" id="th_payout">NET<br />Payout</th>';
+        echo '<th style="text-align: right;" id="th_paid">Tickets<br />/Payout</th>';
         echo '</tr>';
 
 
@@ -99,9 +97,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 //See if this payment idea has any payments?
                 echo '<tr>';
                 echo '<td><a href="/-27004?e__id='.$e['e__id'].'" class="css__title">'.$e['e__title'].'</a></td>';
-                echo '<td style="text-align: right;">'.$this_tickets.'</td>';
-                echo '<td style="text-align: right;">'.number_format($this_quantity, 0).'</td>';
-                echo '<td style="text-align: right;">$'.number_format($this_revenue, 0).'</td>';
+                echo '<td style="text-align: right;">'.number_format($this_quantity, 0).'x $'.number_format($this_revenue, 0).'</td>';
                 echo '</tr>';
 
                 $total_tickets += $this_tickets;
@@ -115,8 +111,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         echo '<tr class="css__title" style="font-size: 1.3em;">';
         echo '<td>Totals</td>';
         echo '<td style="text-align: right;">'.$total_tickets.'</td>';
-        echo '<td style="text-align: right;">'.number_format($total_quantity, 0).'</td>';
-        echo '<td style="text-align: right;">$'.number_format($total_revenue, 0).'</td>';
+        echo '<td style="text-align: right;">'.number_format($total_quantity, 0).'x $'.number_format($total_revenue, 0).'</td>';
         echo '</tr>';
 
 
