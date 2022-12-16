@@ -335,10 +335,17 @@ if(!$basic_header_footer){
 
                     echo '<div class="left_nav top_nav" style="text-align: left;">';
 
+                    $padding_hack = 7; //For Emoji
+
                     //Domain Source
                     $domain_cover = get_domain('m__cover');
                     $domain_logo = one_two_explode('"','"', $domain_cover);
-                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$website_id.'" style="'.( filter_var($domain_logo, FILTER_VALIDATE_URL) ? 'padding-top:0px;' : 'padding-top:7px;' ).'">'.get_domain('m__title').'</b>'.'</a>';
+                    if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
+                        $padding_hack = 0; //For URL
+                    } elseif(string_is_icon($domain_logo)){
+                        $padding_hack = 3; //For Icon
+                    }
+                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a>';
 
                     echo '</div>';
 
