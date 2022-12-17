@@ -3250,8 +3250,7 @@ h4.css__title{
 }
 .custom_ui_28979_28980 .btn-6255,
 .custom_ui_28979_28980 .coinType6255{
-    border:1px solid #FC1B44 !important;
-    border: 0;
+    border: 0 !important;
     background-color: #FC1B44;
 }
 .custom_ui_28979_28980 .coin-6255 .cover-content{
