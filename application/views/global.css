@@ -1736,7 +1736,6 @@ i, .btn .show-max {
 .texttype__lg {
     background-color: transparent;
     font-weight: bold;
-    color:#000000;
     padding:0;
     margin-bottom: 5px;
     width: 100%;
@@ -2841,6 +2840,7 @@ h4.css__title{
     color: #FFFFFF !important;
 }
 
+.custom_ui_13884_13886 .texttype__lg,
 .custom_ui_13884_13886 .nav-tabs .nav-link.active,
 .custom_ui_13884_13886 .coinType12273 i.zq12273,
 .custom_ui_13884_13886 .coinType6255 i.zq6255,
@@ -2967,6 +2967,7 @@ h4.css__title{
 
 .alert a,
 .alert i,
+.custom_ui_13884_13885 .texttype__lg,
 .custom_ui_13884_13885 .btn-default i,
 .custom_ui_13884_13885 .coinType12273 i.zq12273,
 .custom_ui_13884_13885 .coinType6255 i.zq6255,
