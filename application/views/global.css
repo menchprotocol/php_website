@@ -3216,9 +3216,12 @@ h4.css__title{
     border:1px solid #FC1B44;
     color: #FC1B44;
 }
-.btn-6255,
-.coinType6255{
+.btn-6255{
     border: 0 !important;
+    background-color: #FC1B44;
+}
+.coinType6255{
+    border-color: #FC1B44;
     background-color: #FC1B44;
 }
 .coin-6255 .cover-content{
