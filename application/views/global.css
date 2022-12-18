@@ -2449,7 +2449,6 @@ input.form-control,
 .cover-btn i {
     margin-top: -27%;
     font-size: 0.87em !important;
-    color: #000;
 }
 .focus-coin .cover-btn i {
     margin-top: -33%;
@@ -2836,7 +2835,7 @@ h4.css__title{
     background-color:transparent !important;
     color: #FFFFFF !important;
 }
-
+.custom_ui_13884_13886 .cover-btn i,
 .custom_ui_13884_13886 .cover-content .css__title,
 .custom_ui_13884_13886 .cover-content a,
 .custom_ui_13884_13886 .cover-content,
@@ -2977,6 +2976,7 @@ h4.css__title{
 
 .alert a,
 .alert i,
+.custom_ui_13884_13885 .cover-btn i,
 .custom_ui_13884_13885 .cover-content .css__title,
 .custom_ui_13884_13885 .cover-content a,
 .custom_ui_13884_13885 .cover-content,
