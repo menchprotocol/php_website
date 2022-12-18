@@ -78,7 +78,7 @@ if(strlen($_GET['i__id'])){
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $_GET['xaxis_e'], //ACTIVE
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $link_i){
             array_push($column_ideas, $link_i);
         }

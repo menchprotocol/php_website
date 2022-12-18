@@ -3,7 +3,7 @@
 //IDEA LIST INVALID TITLES
 
 $active_i = $this->I_model->fetch(array(
-    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
 ));
 
 //Give an overview:

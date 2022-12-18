@@ -589,7 +589,7 @@ class X_model extends CI_Model
             //IDEA TYPE
 
             //Delete?
-            if(!in_array($new_e__id, $this->config->item('n___7356'))){
+            if(!in_array($new_e__id, $this->config->item('n___7355'))){
 
                 //Determine what to do after deleted:
                 if($o__id == $focus_id){
@@ -608,7 +608,7 @@ class X_model extends CI_Model
                     if(!$deletion_redirect){
                         foreach($this->X_model->fetch(array(
                             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                             'x__right' => $o__id,
                         ), array('x__left'), 1) as $previous_i) {
@@ -637,7 +637,7 @@ class X_model extends CI_Model
             //Delete only if Migration request is successful:
             if(!intval($migrate_s__id) || count($this->I_model->fetch(array(
                     'i__id' => $migrate_s__id,
-                    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 )))){
                 //Update Idea:
                 $status = $this->I_model->update($o__id, array(

@@ -17,7 +17,7 @@ $replace_with_confirmed = false;
 if($search_for_set){
 
     $matching_results = $this->I_model->fetch(array(
-        'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'LOWER(i__title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
 
@@ -85,7 +85,7 @@ if($search_for_set){
                 $e___4737 = $this->config->item('e___4737'); // Idea Status
                 foreach($this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                     'x__right' => $in['i__id'],
                 ), array('x__left')) as $i_previous) {

@@ -132,7 +132,7 @@ class I extends CI_Controller {
 
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $previous_i__id,
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i){
@@ -209,7 +209,7 @@ class I extends CI_Controller {
             //Fetch transaction idea to determine idea type:
             $x_i = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['link_i__id']),
-                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             ));
             if(count($x_i)==0){
                 //validate Idea:
@@ -358,7 +358,7 @@ class I extends CI_Controller {
 
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         ));
         if(!count($is)){
             return view_json(array(

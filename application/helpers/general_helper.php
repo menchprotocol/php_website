@@ -1781,7 +1781,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
             if($s__id){
                 $limits['x__right'] = $s__id;
             } else {
-                $limits['i__type IN (' . join(',', $CI->config->item('n___7356')) . ')'] = null; //ACTIVE
+                $limits['i__type IN (' . join(',', $CI->config->item('n___7355')) . ')'] = null; //ACTIVE
                 $limits['x__status IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
             }
 

@@ -721,7 +721,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         //IDEAS
         $join_objects = array('x__right');
         $query_filters = array(
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $e__id,
@@ -834,7 +834,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true)
         $join_objects = array('x__left');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
         );
@@ -846,7 +846,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true)
         $join_objects = array('x__right');
         $query_filters = array(
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $CI->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i__id,
         );
@@ -1387,6 +1387,17 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
 
 
+    $ui .= '<td width="20%"><div class="show-on-hover">';
+    foreach($CI->X_model->fetch(array(
+        'x__right' => $i['i__id'],
+        'x__type' => 4250, //New Idea Created
+    ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
+        $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
+    }
+    $ui .= '</div></td>';
+
+
+
     //Link Type:
     $ui .= '<td width="20%"><div class="show-on-hover">';
     if($x__id && ($e_of_i || !$discovery_mode)){
@@ -1415,17 +1426,6 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     }
     $ui .= '</div></td>';
 
-
-
-
-    $ui .= '<td width="20%"><div class="show-on-hover">';
-    foreach($CI->X_model->fetch(array(
-        'x__right' => $i['i__id'],
-        'x__type' => 4250, //New Idea Created
-    ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-        $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
-    }
-    $ui .= '</div></td>';
 
 
 
@@ -1783,6 +1783,15 @@ function view_e($x__type, $e, $extra_class = null)
 
         $ui .= '<table class="coin_coins"><tr>';
 
+        $ui .= '<td width="20%"><div class="show-on-hover">';
+        foreach($CI->X_model->fetch(array(
+            'x__down' => $e['e__id'],
+            'x__type' => 4251, //New Source Created
+            'x__source !=' => $e['e__id'],
+        ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
+            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
+        }
+        $ui .= '</div></td>';
 
         $ui .= '<td width="20%"><div class="show-on-hover">';
         if($x__id && $superpower_13422){
@@ -1805,17 +1814,6 @@ function view_e($x__type, $e, $extra_class = null)
 
         $special_type = in_array($e['e__type'], $CI->config->item('n___31109'));
         $ui .= '<td width="20%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '' ).'</div></td>';
-
-
-        $ui .= '<td width="20%"><div class="show-on-hover">';
-        foreach($CI->X_model->fetch(array(
-            'x__down' => $e['e__id'],
-            'x__type' => 4251, //New Source Created
-            'x__source !=' => $e['e__id'],
-        ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
-        }
-        $ui .= '</div></td>';
 
 
         $ui .= '<td width="20%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';

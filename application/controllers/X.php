@@ -147,7 +147,7 @@ class X extends CI_Controller
 
             $is = $this->I_model->fetch(array(
                 'i__id' => $_POST['s__id'],
-                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             ));
             if(!count($is)){
                 return view_json(array(
@@ -256,7 +256,7 @@ class X extends CI_Controller
                 //idea list:
                 $is_next = $this->X_model->fetch(array(
                     'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                     'x__left' => $_POST['coin__id'],
                 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));

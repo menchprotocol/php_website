@@ -208,7 +208,7 @@ class I_model extends CI_Model
             //Validate this migration ID:
             $is = $this->I_model->fetch(array(
                 'i__id' => $migrate_s__id,
-                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             ));
 
             if(count($is)){
@@ -449,7 +449,7 @@ class I_model extends CI_Model
             }
             $focus_i = $this->I_model->fetch(array(
                 'i__id' => intval($focus_id),
-                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             ));
             if (count($focus_i) < 1) {
                 return array(
@@ -484,7 +484,7 @@ class I_model extends CI_Model
             //Fetch more details on the child idea we're about to transaction:
             $link_i = $this->I_model->fetch(array(
                 'i__id' => $link_i__id,
-                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             ));
             if (count($link_i) < 1) {
                 return array(
@@ -588,7 +588,7 @@ class I_model extends CI_Model
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             ), array(($is_upwards ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
             $new_i_html = view_i($x__type, 0, ( $is_upwards ? null : $focus_i[0] ), $new_i[0]);
@@ -635,7 +635,7 @@ class I_model extends CI_Model
         $recursive_i_ids = array();
 
         foreach($this->X_model->fetch(array(
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i__id,
@@ -799,7 +799,7 @@ class I_model extends CI_Model
         $recursive_i_ids = array();
 
         foreach($this->X_model->fetch(array(
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
@@ -865,7 +865,7 @@ class I_model extends CI_Model
 
         $is_next = $this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $this->config->item('n___7356')) . ')' => null, //ACTIVE
+            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i__id,
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
