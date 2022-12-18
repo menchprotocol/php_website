@@ -177,15 +177,15 @@ class X_model extends CI_Model
                     if (in_array(6202 , $m['m__following'])) {
 
                         //IDEA
-                        $is = $this->I_model->fetch(array( 'i__id' => $add_fields[$m['m__message']] ));
-                        $plain_message .= $m['m__title'] . ': '.$is[0]['i__title'].':'."\n".$this->config->item('base_url').'/i/i_go/' . $is[0]['i__id']."\n\n";
+                        foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$m['m__message']] )) as $this_i){
+                            $plain_message .= $m['m__title'] . ': '.$this_i['i__title'].':'."\n".$this->config->item('base_url').'/i/i_go/' . $this_i['i__id']."\n\n";
+                        }
 
                     } elseif (in_array(6160 , $m['m__following'])) {
 
                         //SOURCE
-                        $es = $this->E_model->fetch(array( 'e__id' => $add_fields[$m['m__message']] ));
-                        if(count($es)){
-                            $plain_message .= $m['m__title'] . ': '.$es[0]['e__title']."\n".$this->config->item('base_url').'/@' . $es[0]['e__id'] . "\n\n";
+                       foreach($this->E_model->fetch(array( 'e__id' => $add_fields[$m['m__message']] )) as $this_e){
+                            $plain_message .= $m['m__title'] . ': '.$this_e['e__title']."\n".$this->config->item('base_url').'/@' . $this_e['e__id'] . "\n\n";
                         }
 
                     } elseif (in_array(4367 , $m['m__following'])) {
