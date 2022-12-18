@@ -1350,6 +1350,9 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
             } elseif($e__id==28636 && $e_of_i && $x__id){
                 //Transaction Details
                 $action_buttons .= '<a href="/-4341?x__id='.$x__id.'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
+            } elseif($e__id==6182 && $e_of_i){
+                //Transaction Details
+                $action_buttons .= '<a href="javascript:void();" new-en-id="6182" onclick="update_dropdown(4737, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_4737_'.$i['i__id'].'_'.$x__id.' css__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
             } elseif($e__id==28637 && isset($i['x__type'])){
                 //Paypal Details
                 $x__metadata = unserialize($i['x__metadata']);
