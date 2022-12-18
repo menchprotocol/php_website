@@ -122,7 +122,7 @@ if(superpower_unlocked()) {
 
 
 
-            var go_next_icon = '<?= $e___11035[12211]['m__cover'] ?>';
+            var go_next_icon = '<?= $e___11035[26104]['m__cover'] ?>';
             var sign_i__id = <?= $sign_i__id ?>;
             var referrer_url = '<?= @$_GET['url'] ?>';
             var logged_messenger = false;
@@ -393,7 +393,7 @@ if(superpower_unlocked()) {
                     <div class="form-group"><input type="email" placeholder="your@email.com" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
                     <div id="email_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                     <span id="step2buttons" class="<?= isset($_GET['input_email']) ? '' : ' hidden ' ?>" >
-                    <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
                 <div class="doclear">&nbsp;</div>
                 </span>
 
@@ -441,7 +441,7 @@ if(superpower_unlocked()) {
 
                     <div id="step3buttons">
                         <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
-                        <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__cover'] ?></a>
+                        <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
                     </div>
 
                     <div class="doclear">&nbsp;</div>
@@ -488,7 +488,7 @@ if(superpower_unlocked()) {
                     <div id="account_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                     <span>
                     <a href="javascript:void(0)" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
-                    <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[12211]['m__title'] ?>"><?= $e___11035[12211]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
                     <div class="doclear">&nbsp;</div>
                 </span>
 
