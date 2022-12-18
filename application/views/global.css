@@ -1456,9 +1456,7 @@ label {
 }
 
 
-.answer-item {
-    border:1px solid #000 !important;
-}
+
 
 
 
@@ -3150,6 +3148,10 @@ h4.css__title{
     /* border:1px solid #FFC500; */
 }
 .btn-12273 { border-color:#FFC500 !important; }
+
+.answer-item {
+    border:1px solid #FFC500 !important;
+}
 .btn.btn-12273 {
     border:1px solid #FFC500;
     color: #000000;
