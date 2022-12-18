@@ -584,7 +584,7 @@ class X_model extends CI_Model
             }
 
 
-        } elseif($element_id==4737){
+        } elseif($element_id==4737 || $element_id==7355){
 
             //IDEA TYPE
 
