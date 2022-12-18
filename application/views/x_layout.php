@@ -736,7 +736,7 @@ if(!$top_i__id){
 
             //Ideas
             $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'</a>'; //<span class="nav-counter css__title"></span>
-            $control_btn .= '<span class="nav-title css__title">'.view_number($is_next).' '.$m2['m__title'].'</span>';
+            $control_btn .= '<span class="nav-title css__title">'.count($is_next).' '.$m2['m__title'].'</span>';
 
         } elseif($x__type==12211){
 
