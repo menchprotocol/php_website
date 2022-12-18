@@ -1351,7 +1351,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
                 //Transaction Details
                 $action_buttons .= '<a href="/-4341?x__id='.$x__id.'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
             } elseif($e__id==6182 && $e_of_i){
-                //Transaction Details
+                //Delete
                 $action_buttons .= '<a href="javascript:void();" new-en-id="6182" onclick="update_dropdown(4737, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_4737_'.$i['i__id'].'_'.$x__id.' css__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
             } elseif($e__id==28637 && isset($i['x__type'])){
                 //Paypal Details
@@ -1411,7 +1411,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     //Idea Type
     $ui .= '<td width="20%"><div class="show-on-hover">';
     if(!$discovery_mode){
-        $ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
+        $ui .= view_input_dropdown(7355, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
     }
     $ui .= '</div></td>';
 
