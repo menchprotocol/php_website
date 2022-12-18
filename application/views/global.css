@@ -3154,7 +3154,7 @@ h4.css__title{
 .btn-12273 { border-color:#FFC500 !important; }
 
 .answer-item {
-    border:1px solid #FFC500 !important;
+    border:1px solid transparent !important;
 }
 .btn.btn-12273 {
     border:1px solid #FFC500;
