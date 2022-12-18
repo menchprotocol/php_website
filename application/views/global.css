@@ -2776,9 +2776,6 @@ h4.css__title{
 
 
 
-.custom_ui_13884_13886 .cover-link {
-    background-color: #FFFFFF !important;
-}
 
 .custom_ui_13884_13886 .light-bg,
 .custom_ui_13884_13886 .fixed-top{
@@ -2798,7 +2795,7 @@ h4.css__title{
     background: rgba(16,16,16,1.00) !important;
 }
 
-
+.custom_ui_13884_13886 .cover-link,
 .custom_ui_13884_13886 body,
 .custom_ui_13884_13886 .table-striped tbody tr,
 .custom_ui_13884_13886 .x-list,
@@ -2921,6 +2918,15 @@ h4.css__title{
     color:#FFFFFF;
 }
 
+
+
+
+
+
+
+
+/* LIGHT */
+
 .custom_ui_13884_13885 .light-bg,
 .custom_ui_13884_13885 .fixed-top{
     background: rgba(239,239,239,1.00) !important;
@@ -2951,6 +2957,7 @@ h4.css__title{
     background-color: #EFEFEF !important;
     color: #000000;
 }
+.custom_ui_13884_13885 .cover-link,
 .custom_ui_13884_13885 .x-list,
 .custom_ui_13884_13885 .accordion .card,
 .custom_ui_13884_13885 .btn-block,
