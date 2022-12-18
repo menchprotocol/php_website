@@ -467,7 +467,6 @@ img.no-frame {
 .aa-dropdown-menu .aa-suggestion.aa-cursor,
 .suggestion:hover,
 .breadcrumb {
-    background-color: #EFEFEF;
     text-decoration: none;
 }
 
@@ -1379,7 +1378,7 @@ label {
 .breadcrumb-item .btn{
     padding: 0 !important;
     font-size: 0.8em !important;
-    color: #6c757d !important;
+    color: #CCCCCC !important;
 }
 
 .platform-navigation .btn{
@@ -2544,25 +2543,16 @@ h4.css__title{
 
 .breadcrumb-item+.breadcrumb-item::before {
     display: inline-block;
-    color: #6c757d;
+    color: #CCCCCC;
     content: ">";
     padding-right: 8px;
 }
 .breadcrumb-item {
     margin: 3px 0;
-    color:#000;
-}
-
-.breadcrumb {
-    border-radius: 21px;
-}
-
-.breadcrumb-item a {
-    color:#000000 !important;
 }
 
 .breadcrumb-item .breadcrumb-item a {
-    border-bottom: 1px solid #6c757d;
+    border-bottom: 1px solid #CCCCCC;
 }
 
 .nav-tabs .nav-link.active{
