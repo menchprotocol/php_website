@@ -2840,6 +2840,8 @@ h4.css__title{
     color: #FFFFFF !important;
 }
 
+.custom_ui_13884_13886 .cover-content .css__title,
+.custom_ui_13884_13886 .cover-content a,
 .custom_ui_13884_13886 .cover-content,
 .custom_ui_13884_13886 .texttype__lg,
 .custom_ui_13884_13886 .nav-tabs .nav-link.active,
@@ -2968,6 +2970,8 @@ h4.css__title{
 
 .alert a,
 .alert i,
+.custom_ui_13884_13885 .cover-content .css__title,
+.custom_ui_13884_13885 .cover-content a,
 .custom_ui_13884_13885 .cover-content,
 .custom_ui_13884_13885 .texttype__lg,
 .custom_ui_13884_13885 .btn-default i,
@@ -3881,10 +3885,6 @@ h4.css__title{
 .custom_ui_13884_13886 .glossy-bg .list-group-item {
     background-color: rgba(0, 0, 0, 0.69) !important;
     color: #FFFFFF !important;
-}
-
-.cover-content .css__title, .cover-content a {
-    color: #000 !important;
 }
 
 hr {
