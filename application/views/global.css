@@ -2346,6 +2346,10 @@ input.form-control,
     margin-top: 21px;
 }
 
+.round-btn:hover{
+    background-color: #CCCCCC;
+}
+
 .adj-btn{
     border: 0;
     font-weight: 800 !important;
@@ -2436,7 +2440,7 @@ input.form-control,
     display: inline-block;
     width: 35px;
     margin-left: -38px !important;
-    top: 22px;
+    top: 23px;
     position: absolute;
     text-align: center;
 }
@@ -2865,7 +2869,6 @@ h4.css__title{
 .custom_ui_13884_13886 .coinType6255 i.zq6255,
 .custom_ui_13884_13886 .btn-12273 i.zq12273,
 .custom_ui_13884_13886 .nav-title i,
-.custom_ui_13884_13886 .controller-nav i,
 .custom_ui_13884_13886 .controller-nav,
 .custom_ui_13884_13886 .grey-background,
 .custom_ui_13884_13886 .grey-background i,
@@ -3002,7 +3005,6 @@ h4.css__title{
 .custom_ui_13884_13885 .coinType6255 i.zq6255,
 .custom_ui_13884_13885 .btn-12273 i.zq12273,
 .custom_ui_13884_13885 .new-note:not(.editing-mode),
-.custom_ui_13884_13885 .controller-nav i,
 .custom_ui_13884_13885 .controller-nav,
 .custom_ui_13884_13885 .nav-title i,
 .custom_ui_13884_13885 .grey-background,
@@ -3804,18 +3806,18 @@ h4.css__title{
     background-color: transparent;
 }
 .custom_ui_13884_13885 .round-btn {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
 }
 .custom_ui_13884_13885 .round-btn i {
     color:#FFFFFF !important;
 }
 
 .custom_ui_13884_13886 .round-btn {
-    background-color: #FFFFFF !important;
+    background-color: #000000 !important;
 }
 .custom_ui_13884_13886 .round-btn i {
-    color:#000000 !important;
+    color:#FFFFFF !important;
 }
 
 .alert * {
