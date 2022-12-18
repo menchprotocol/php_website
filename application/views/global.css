@@ -2334,21 +2334,7 @@ input.form-control,
     border-radius: 50%;
 }
 
- .round-btn{
-    display: inline-block;
-    width: 65px;
-    height: 65px;
-    padding: 12px 0 0 1px;
-    text-align: center;
-    border-radius: 50%;
-}
-.center-info  .round-btn{
-    margin-top: 21px;
-}
 
-.round-btn:hover{
-    background-color: #CCCCCC;
-}
 
 .adj-btn{
     border: 0;
@@ -4144,4 +4130,21 @@ main {
     .platform-logo {
         margin-bottom: 5px !important;
     }
+}
+
+
+.round-btn{
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    padding: 12px 0 0 1px;
+    text-align: center;
+    border-radius: 50%;
+}
+.center-info  .round-btn{
+    margin-top: 21px;
+}
+
+.round-btn:hover{
+    background-color: #CCCCCC !important;
 }
