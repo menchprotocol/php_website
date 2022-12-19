@@ -8,7 +8,7 @@ $is = $this->I_model->fetch(array(
 
 if(count($is)){
 
-    echo '<h2 style="text-align: center; padding-bottom: 21px; margin-top: -34px; font-size: 1.4em;"><a href="/~'.$is[0]['i__id'].'">' . $is[0]['i__title'] . '</a></h2>';
+    echo '<h2 style="text-align: center; padding-bottom:34px; margin-top: -55px; font-size: 1.4em;"><a href="/~'.$is[0]['i__id'].'">' . $is[0]['i__title'] . '</a></h2>';
 
     echo '<div class="list-group">';
     foreach(view_coins_i(11019, $_GET['i__id'], 1, false) as $referral_i){
