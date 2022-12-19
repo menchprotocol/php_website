@@ -19,17 +19,17 @@ if(count($is)){
     $income = 0;
 
     echo '<div class="list-group" style="margin-bottom: 21px; border-bottom: 1px solid #CCC; padding-bottom: 21px;">';
-    echo '<a href="/~'.$is[0]['i__id'].'" class="list-group-item list-group-item-action">
+    echo '<div class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">'.$is[0]['i__title'].'<span style="font-size: 0.75em; color: #999999; padding-left: 10px;">/'.$is[0]['i__id'].'</span></h5>
-      <small></small>
+      <h5 class="mb-1">'.$is[0]['i__title'].'</h5>
+      <small><a href="/~'.$is[0]['i__id'].'" style="color: #999999;">/'.$is[0]['i__id'].'</a></small>
     </div>
     <p class="mb-1">'.
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-eye"></i></span> '.$x_count[0]['total_count'].'</span>'.
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-play"></i></span> '.$plays.'</span>'.
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-dollar-sign"></i></span> '.$income.'</span>'.
         '</p>
-  </a>';
+  </div>';
 
     echo '</div>';
 
@@ -47,8 +47,8 @@ if(count($is)){
 
         echo '<a href="/~'.$referral_i['i__id'].'" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">'.$referral_i['i__title'].'<span style="font-size: 0.75em; color: #999999; padding-left: 10px;">/'.$referral_i['i__id'].'</span></h5>
-      <small>' . view_time_difference(strtotime($referral_i['x__time'])) . ' Ago <i class="fas fa-chevron-right"></i></small>
+      <h5 class="mb-1">'.$referral_i['i__title'].'</h5>
+      <small><span style="color: #999999;">/'.$referral_i['i__id'].'</span></small>
     </div>
     <p class="mb-1">'.
             '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-eye"></i></span> '.$x_count[0]['total_count'].'</span>'.
