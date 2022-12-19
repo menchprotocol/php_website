@@ -466,18 +466,17 @@ class E_model extends CI_Model
         return $q->result_array();
     }
 
-    function fetch_recursive($direction, $e__id, $include_e = array(), $exclude_e= array(), $order = array('e__spectrum' => 'ASC', 'x__id' => 'DESC'), $hard_level = 3, $hard_limit = 100, $s__level = 0){
-
+    function fetch_recursive($direction, $e__id, $include_e = array(), $exclude_e= array(), $hard_level = 3, $hard_limit = 100, $s__level = 0){
 
         if(!in_array($direction, $this->config->item('n___11028'))){
             //Invalid direction:
             return false;
         }
 
-        $flat_es = array();
+        $flat_items = array();
         $s__level++;
 
-        if($direction == 11029){
+        if($direction == 12274){
             //Downwards:
             $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
             $join_objects = array('x__down');
@@ -498,9 +497,7 @@ class E_model extends CI_Model
         }
 
 
-
-
-        foreach($this->X_model->fetch($query_filters, $join_objects, 0, 0, $order) as $e_follower) {
+        foreach($this->X_model->fetch($query_filters, $join_objects, 0, 0, $order_columns) as $e_follower) {
 
             //Filter Sources, if needed:
             $qualified_source = true;
@@ -524,26 +521,26 @@ class E_model extends CI_Model
 
 
             //Is this a new matching source?
-            if($qualified_source && !isset($flat_es[$e_follower['e__id']])){
+            if($qualified_source && !isset($flat_items[$e_follower['e__id']])){
                 $e_follower['s__level'] = $s__level;
-                $e_follower['s__count'] = count($flat_es)+1;
-                $flat_es[$e_follower['e__id']] = $e_follower;
+                $e_follower['s__count'] = count($flat_items)+1;
+                $flat_items[$e_follower['e__id']] = $e_follower;
             }
 
             //Do we have more children?
-            if($s__level>=$hard_level || count($flat_es)>=$hard_limit){
+            if($s__level>=$hard_level || count($flat_items)>=$hard_limit){
                 break;
             }
 
-            foreach($this->E_model->fetch_recursive(11029, $e_follower['e__id'], $include_e, $exclude_e, $order, $hard_level, $hard_limit, $s__level) as $e_recursive_follower){
-                if(!isset($flat_es[$e_recursive_follower['e__id']])){
-                    $e_recursive_follower['s__count'] = count($flat_es)+1;
-                    $flat_es[$e_recursive_follower['e__id']] = $e_recursive_follower;
+            foreach($this->E_model->fetch_recursive($direction, $e_follower['e__id'], $include_e, $exclude_e, $hard_level, $hard_limit, $s__level) as $e_recursive_follower){
+                if(!isset($flat_items[$e_recursive_follower['e__id']])){
+                    $e_recursive_follower['s__count'] = count($flat_items)+1;
+                    $flat_items[$e_recursive_follower['e__id']] = $e_recursive_follower;
                 }
             }
         }
 
-        return $flat_es;
+        return $flat_items;
     }
 
     function update($id, $update_columns, $external_sync = false, $x__source = 0, $x__type = 0)

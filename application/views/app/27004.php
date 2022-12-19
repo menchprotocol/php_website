@@ -22,7 +22,7 @@ if($superpower_28727 && 0) {
     //Fetch all assigned ideas:
     $assigned_i_ids = array();
     echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
-    echo '<div class="list-group" style="max-width: 880px; margin: 0 auto; display: block;">';
+    echo '<div class="list-group" style="max-width:600px; margin: 0 auto; display: block;">';
     foreach($payment_es as $e){
 
         echo '<a href="/-27004?e__id='.$e['e__id'].'" class="list-group-item list-group-item-action" style="border: 1px solid #999;">'.$e['e__title'].' &nbsp;<i class="far fa-chevron-right"></i></a>';
@@ -66,7 +66,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         $total_quantity = 0;
 
         //$member_e
-        foreach($this->E_model->fetch_recursive(11029, $member_e['e__id'], array(27004), array(), array('e__title' => 'DESC')) as $e){
+        foreach($this->E_model->fetch_recursive(12274, $member_e['e__id'], array(27004), array()) as $e){
 
             //See if this Source has any paymen ideas:
             $payment_is = array();

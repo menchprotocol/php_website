@@ -25,7 +25,7 @@ body {
     width: 100%;
 }
 .container {
-    max-width:768px !important;
+    max-width:600px !important;
     padding:0;
 }
 .padded {
@@ -59,15 +59,15 @@ body {
 }
 .media-content {
     border-radius: 21px !important;
-    max-width: 880px !important;
+    max-width:600px !important;
 }
 .maxwidth {
     border-radius: 21px !important;
-    max-width: 880px !important;
+    max-width:600px !important;
     margin: 0 auto !important;
 }
 .x__message video {
-    max-width: 880px;
+    max-width:600px;
     border-radius: 21px !important;
 }
 .x__message img, .i_content img, .content-image {
@@ -1588,7 +1588,7 @@ i, .btn .show-max {
     margin: 0 0 21px 0 !important;
     width: 100% !important;
     height: auto !important;
-    max-width: 880px;
+    max-width:600px;
     max-height: 768px;
     border-radius: 21px !important;
 }
@@ -1691,7 +1691,7 @@ i, .btn .show-max {
     padding: 13px 0 34px;
     display: block;
     margin: 0 auto;
-    max-width: 880px;
+    max-width:600px;
     width: calc(100% - 16px);
 }
 .social2-footer{
@@ -2230,7 +2230,7 @@ input.form-control,
 }
 
 .modal-dialog{
-    max-width:768px;
+    max-width:600px;
 }
 .modal-content{
     border:1px solid transparent;
@@ -4098,7 +4098,7 @@ main {
 
 
 .platform-12273 .media-content, .platform-12273 .x__message video {
-    max-width: 880px;
+    max-width:600px;
 }
 .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
     margin: 0;

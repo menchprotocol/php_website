@@ -100,6 +100,7 @@ class I_model extends CI_Model
         return $q->result_array();
     }
 
+
     function update($id, $update_columns, $external_sync = false, $x__source = 0, $x__type = 0)
     {
 
