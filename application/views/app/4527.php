@@ -28,7 +28,7 @@ foreach($this->X_model->fetch(array(
     'x__up' => 4527,
     'x__status IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-    'e__type IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
+    'e__status IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
 ), array('x__down'), 0) as $en){
 
     //Now fetch all its children:
@@ -36,7 +36,7 @@ foreach($this->X_model->fetch(array(
         'x__up' => $en['x__down'],
         'x__status IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-        'e__type IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
+        'e__status IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
 
@@ -59,7 +59,7 @@ foreach($this->X_model->fetch(array(
             'x__down' => $child['e__id'],
             'x__status IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-            'e__type IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $cp_en){
             array_push($child_parent_ids, intval($cp_en['e__id']));
         }

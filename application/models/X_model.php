@@ -550,7 +550,7 @@ class X_model extends CI_Model
                     foreach($this->X_model->fetch(array(
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                         'x__down' => $o__id,
                     ), array('x__up'), 1, 0, array('e__title' => 'DESC')) as $profile_e) {
                         $deletion_redirect = '/@'.$profile_e['e__id'];
@@ -576,10 +576,10 @@ class X_model extends CI_Model
             //Update:
             if(!intval($migrate_s__id) || count($this->E_model->fetch(array(
                     'e__id' => $migrate_s__id,
-                    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                    'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 )))){
                 $status = $this->E_model->update($o__id, array(
-                    'e__type' => $new_e__id,
+                    'e__status' => $new_e__id,
                 ), true, $member_e['e__id']);
             }
 
@@ -1032,7 +1032,7 @@ class X_model extends CI_Model
 
             //We have a reference within this message, let's fetch it to better understand it:
             $es = $this->E_model->fetch(array(
-                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'e__id' => $referenced_e,
             ));
             if (count($es) < 1) {
@@ -1059,7 +1059,7 @@ class X_model extends CI_Model
             if(!$is_current_e || $string_references['ref_time_found']){
 
                 foreach($this->X_model->fetch(array(
-                    'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                    'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                     'x__down' => $referenced_e,
@@ -1068,7 +1068,7 @@ class X_model extends CI_Model
                     'e__spectrum' => 'DESC',
                 )) as $e_profile) {
 
-                    if(in_array($e_profile['e__type'], $this->config->item('n___30956'))){
+                    if(in_array($e_profile['e__status'], $this->config->item('n___30956'))){
                         //ACTIVE Transactions Not Allowed:
                         continue;
                     }
@@ -1897,7 +1897,7 @@ class X_model extends CI_Model
         ));
         $es = $this->E_model->fetch(array(
             'e__id' => $member_e['e__id'],
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ));
         if (!count($is)) {
             return array(

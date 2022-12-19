@@ -66,7 +66,7 @@ foreach($is as $in){
 
 //Add sources:
 $es = $this->E_model->fetch(array(
-    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ));
 foreach($es as $en){
 
@@ -76,13 +76,13 @@ foreach($es as $en){
         'label' => $en['e__title'],
         'size' => $node_size[12274] ,
         'node_type' => 2, //Member
-        'node_status' => $en['e__type'],
+        'node_status' => $en['e__status'],
     ));
 
     //Fetch children:
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => $en['e__id'],
     ), array('x__down'), 0, 0) as $e_child){

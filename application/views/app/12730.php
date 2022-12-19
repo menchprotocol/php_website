@@ -49,7 +49,7 @@ $replace_with_confirmed = false;
 if($search_for_set){
 
     $matching_results = $this->E_model->fetch(array(
-        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'e__title LIKE \'%'.$_GET['search_for'].'%\'' => null,
     ));
 

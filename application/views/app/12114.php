@@ -45,7 +45,7 @@ if($is_u_request && !isset($_GET['email_trigger'])){
         'x__up' => 12114,
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     );
 
     //Should we limit the scope?

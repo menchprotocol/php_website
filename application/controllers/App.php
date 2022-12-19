@@ -153,7 +153,7 @@ class App extends CI_Controller
             if(isset($_GET['e__id']) && intval($_GET['e__id'])){
                 $es = $this->E_model->fetch(array(
                     'e__id IN (' . $_GET['e__id'] . ')' => null,
-                    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                    'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 ));
                 if(count($es)){
                     $log_data['x__down'] = $es[0]['e__id'];
@@ -311,7 +311,7 @@ class App extends CI_Controller
             'x__up' => 30841, //Featured Apps
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $app) {
             $ui .= view_e(6287, $app);
         }

@@ -111,7 +111,7 @@ class E_model extends CI_Model
             'x__down' => $e['e__id'], //This child source
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $e_profile){
 
             //Push to parent IDs:
@@ -243,7 +243,7 @@ class E_model extends CI_Model
             'x__up' => $main_id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
         //Remove if not in the secondary group:
@@ -387,8 +387,8 @@ class E_model extends CI_Model
             return false;
         }
 
-        if (!isset($add_fields['e__type']) || intval($add_fields['e__type']) < 1) {
-            $add_fields['e__type'] = 6181; //PUBLIC SOURCE
+        if (!isset($add_fields['e__status']) || intval($add_fields['e__status']) < 1) {
+            $add_fields['e__status'] = 6181; //PUBLIC SOURCE
         }
 
         //Transform text:
@@ -593,7 +593,7 @@ class E_model extends CI_Model
                     $x__type = 10646; //Member Updated Name
                     $x__message = update_description($before_data[0][$key], $value);
 
-                } elseif($key=='e__type') {
+                } elseif($key=='e__status') {
 
                     if(in_array($value, $this->config->item('n___7358') /* ACTIVE */)){
                         $x__type = 10654; //Source Updated Status
@@ -725,7 +725,7 @@ class E_model extends CI_Model
             'x__down' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__up'), 0, 0, array('x__up' => 'ASC', 'x__id' => 'ASC')) as $x) {
 
             //Does this match any in the list so far?
@@ -770,7 +770,7 @@ class E_model extends CI_Model
             //Validate this migration ID:
             $es = $this->E_model->fetch(array(
                 'e__id' => $migrate_s__id,
-                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
             if(count($es)){
@@ -931,7 +931,7 @@ class E_model extends CI_Model
 
         //Check to see if we have domain:
         $url_x = $this->X_model->fetch(array(
-            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
             'x__up' => 1326, //Domain Member
@@ -1005,14 +1005,14 @@ class E_model extends CI_Model
                     'x__down' => $e['e__id'],
                     'x__message' => $e['e__title'],
                     'x__type' => $stats['x__type'],
-                    'x__status' => $status_converter[$e['e__type']],
+                    'x__status' => $status_converter[$e['e__status']],
                 ));
 
-            } elseif($x[0]['x__status'] != $status_converter[$e['e__type']]){
+            } elseif($x[0]['x__status'] != $status_converter[$e['e__status']]){
 
                 $stats['status_sync']++;
                 $this->X_model->update($x[0]['x__id'], array(
-                    'x__status' => $status_converter[$e['e__type']],
+                    'x__status' => $status_converter[$e['e__status']],
                 ));
 
             }
@@ -1189,7 +1189,7 @@ class E_model extends CI_Model
 
             //Check to see if URL previously exists:
             $url_x = $this->X_model->fetch(array(
-                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
                 'x__message' => $url,
@@ -1341,7 +1341,7 @@ class E_model extends CI_Model
             'x__up' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0);
 
 
@@ -1379,7 +1379,7 @@ class E_model extends CI_Model
                     'x__up' => $focus_id,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                    'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__down'), 0, 0) as $e__up){
 
                     //Add if not added as the child:
@@ -1527,7 +1527,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5003 && ($action_command1=='*' || $x['e__type']==$action_command1) && in_array($action_command2, $this->config->item('n___6177'))) {
+            } elseif ($action_e__id == 5003 && ($action_command1=='*' || $x['e__status']==$action_command1) && in_array($action_command2, $this->config->item('n___6177'))) {
 
                 //Being deleted? Remove as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('n___7358'))){
@@ -1536,7 +1536,7 @@ class E_model extends CI_Model
 
                 //Update Matching Member Status:
                 $this->E_model->update($x['e__id'], array(
-                    'e__type' => $action_command2,
+                    'e__status' => $action_command2,
                 ), true, $x__source);
 
                 $applied_success++;

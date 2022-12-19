@@ -464,7 +464,7 @@ class I_model extends CI_Model
             //Were at a Source trying to add an Idea:
             $focus_e = $this->E_model->fetch(array(
                 'e__id' => intval($focus_id),
-                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
             if (count($focus_e) < 1) {

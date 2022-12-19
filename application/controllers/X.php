@@ -180,7 +180,7 @@ class X extends CI_Controller
 
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['s__id'],
-                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
             if(!count($es)){
                 return view_json(array(
@@ -799,7 +799,7 @@ class X extends CI_Controller
             //Fetch This Member
             $e_filters = $this->E_model->fetch(array(
                 'e__id' => $_GET['load__e'],
-                'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
             if(count($e_filters)){
                 echo view__load__e($member_e);

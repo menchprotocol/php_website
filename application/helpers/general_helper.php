@@ -648,7 +648,7 @@ function i_is_available($i__id, $log_tnx){
         'x__right' => $i__id,
         'x__type' => 13865, //Must Include Any
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+        'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__up'), 0);
     if(count($fetch_13865)){
         //Let's see if they meet any of these PREREQUISITES:
@@ -676,7 +676,7 @@ function i_is_available($i__id, $log_tnx){
         'x__right' => $i__id,
         'x__type' => 27984, //Must Include All
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+        'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__up'), 0);
     if(count($fetch_27984)){
         //There are some requirements, Let's see if they meet all of them:
@@ -708,7 +708,7 @@ function i_is_available($i__id, $log_tnx){
         'x__right' => $i__id,
         'x__type' => 26600, //Must Exclude All
         'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+        'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__up'), 0);
     if(count($fetch_26600)){
         //Let's see if they meet any of these PREREQUISITES:
@@ -1438,7 +1438,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         $query = array_merge($query, $CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
             'x__left IN (' . $i__id . ')' => null, //ACTIVE
         ), array('x__source'), 0, 0, array('x__id' => 'DESC')));
     }
@@ -1447,7 +1447,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         $query = array_merge($query, $CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
             'x__up IN (' . $e__id . ')' => null,
         ), array('x__down'), 0, 0, array('x__id' => 'DESC')));
     }
@@ -1712,7 +1712,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         $focus_field_status = 'i__type';
     } elseif($s__type==12274){
         $focus_field_id = 'e__id';
-        $focus_field_status = 'e__type';
+        $focus_field_status = 'e__status';
     }
 
 
@@ -1794,7 +1794,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
             if($s__id){
                 $limits['x__down'] = $s__id;
             } else {
-                $limits['e__type IN (' . join(',', $CI->config->item('n___7358')) . ')'] = null; //ACTIVE
+                $limits['e__status IN (' . join(',', $CI->config->item('n___7358')) . ')'] = null; //ACTIVE
                 $limits['x__status IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
             }
 
@@ -1857,7 +1857,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['e__id']);
                 $export_row['s__url'] = '/@' . $s['e__id'];
-                $export_row['s__status'] = intval($s['e__type']);
+                $export_row['s__status'] = intval($s['e__status']);
                 $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];
                 $export_row['s___weight'] = intval($s['e__spectrum']);
@@ -1876,7 +1876,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 }
 
                 //Is Featured Source?
-                if(in_array($s['e__type'], $CI->config->item('n___30977'))){
+                if(in_array($s['e__status'], $CI->config->item('n___30977'))){
                     array_push($export_row['_tags'], 'is_featured');
                 }
 
@@ -1886,7 +1886,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $s['e__id'], //This child source
                     'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+                    'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x) {
 
                     //Always add to tags:

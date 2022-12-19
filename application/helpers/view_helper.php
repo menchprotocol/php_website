@@ -693,7 +693,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             'x__up' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
 
     } elseif($x__type==11030){
@@ -705,7 +705,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             'x__down' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__type IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
         
     } elseif($x__type==12273){
@@ -823,7 +823,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true)
             $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
         foreach($CI->config->item('e___6177') as $x__sort_id => $sort) {
-            $order_columns['e__type = \''.$x__sort_id.'\' DESC'] = null;
+            $order_columns['e__status = \''.$x__sort_id.'\' DESC'] = null;
         }
         $order_columns['e__title'] = 'ASC';
 
@@ -1551,7 +1551,7 @@ function view_featured_source($x__source, $x){
         ));
     }
 
-    $is_featured = in_array($x['e__type'], $CI->config->item('n___30977'));
+    $is_featured = in_array($x['e__status'], $CI->config->item('n___30977'));
     if(!$is_featured && !count($member_follows)){
         return false;
     }
@@ -1663,15 +1663,15 @@ function view_e($x__type, $e, $extra_class = null)
     $href = ( $is_app ? '/-'.$e['e__id'] : '/@'.$e['e__id'] );
     $focus_id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $has_x_progress = ( $x__id > 0 && (in_array($e['x__type'], $CI->config->item('n___6255')) || $source_of_e));
-    $is_public =  in_array($e['e__type'], $CI->config->item('n___7357')); //PUBLIC
+    $is_public =  in_array($e['e__status'], $CI->config->item('n___7357')); //PUBLIC
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
     $source_is_e = $focus_id>0 && $e['e__id']==$focus_id;
-    $is_featured = in_array($e['e__type'], $CI->config->item('n___30977'));
+    $is_featured = in_array($e['e__status'], $CI->config->item('n___30977'));
 
 
     //Is Lock/Private?
-    $has_hard_lock = in_array($e['e__type'], $CI->config->item('n___30956')) && !$superpower_12701 && (!$member_e || !$source_is_e);
+    $has_hard_lock = in_array($e['e__status'], $CI->config->item('n___30956')) && !$superpower_12701 && (!$member_e || !$source_is_e);
     $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$is_public && !$source_of_e && !$superpower_13422));
     $has_any_lock = $is_cache || (!$superpower_12701 && ($has_soft_lock || $has_hard_lock));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $superpower_13422 && $x__id > 0;
@@ -1772,7 +1772,7 @@ function view_e($x__type, $e, $extra_class = null)
     if ($discovery_mode) { // || substr_count($e['e__cover'], 'fas fa-circle zq6255')
         $cointype = 'coinType12274 coinType6255';
     }
-    $cointype = $cointype . ' coinStatus'.$e['e__type'].' ';
+    $cointype = $cointype . ' coinStatus'.$e['e__status'].' ';
 
 
 
@@ -1811,8 +1811,8 @@ function view_e($x__type, $e, $extra_class = null)
         $ui .= '</div></td>';
 
 
-        $special_type = in_array($e['e__type'], $CI->config->item('n___31109'));
-        $ui .= '<td width="20%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__type'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '' ).'</div></td>';
+        $special_type = in_array($e['e__status'], $CI->config->item('n___31109'));
+        $ui .= '<td width="20%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__status'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '' ).'</div></td>';
 
 
         $ui .= '<td width="20%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';

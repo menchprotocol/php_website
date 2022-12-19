@@ -22,7 +22,7 @@ foreach($emojis as $count => $emoji_html){
 
     $emoji_exists = $this->X_model->fetch(array(
         'e__cover' => $emoji_icon,
-        'e__type IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => 14038,
@@ -34,7 +34,7 @@ foreach($emojis as $count => $emoji_html){
         $new_emoji = $this->E_model->create(array(
             'e__title' => $emoji_name,
             'e__cover' => $emoji_icon,
-            'e__type' => 28951,
+            'e__status' => 28951,
         ), true);
 
         if(count($new_emoji)){

@@ -20,7 +20,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
         //SOURCE
         $unique = $this->X_model->fetch(array(
-            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
         ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -64,7 +64,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
             //SOURCE
             $query = $this->X_model->fetch(array(
-                'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
                 'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
                 'x__time >=' => $time_start,
