@@ -21,10 +21,10 @@ function referral_line($i){
       <small><a href="/~'.$i['i__id'].'" style="color: #999999;">/'.$i['i__id'].'</a> <a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fal fa-cog"></i></a></small>
     </div>
     <p class="mb-1">'.
-        '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-eye"></i></span>'.$x_count[0]['total_count'].'</span>'.
-        '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-play"></i></span>'.$plays.'</span>'.
-        '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-ticket"></i></span>'.$tickets.'</span>'.
-        '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-dollar-sign"></i></span>'.$income.'</span>'.
+        '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-eye"></i></span>'.( $x_count[0]['total_count']>0 ? $x_count[0]['total_count'] : '' ).'</span>'.
+        '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-play"></i></span>'.( $plays>0 ? $plays : '' ).'</span>'.
+        '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-ticket"></i></span>'.( $tickets>0 ? $tickets : '' ).'</span>'.
+        '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-dollar-sign"></i></span>'.( $income>0 ? $income : '' ).'</span>'.
         '</p>
   </div>';
 }
