@@ -1,5 +1,9 @@
 <?php
 
+if(!isset($_GET['i__id'])){
+    $_GET['i__id'] = 19120; //Tech House 2023 New Years Celebration
+}
+
 function referral_line($i){
 
     $CI =& get_instance();
@@ -18,7 +22,7 @@ function referral_line($i){
     return '<div class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1 css__title" id="ref_id_'.$i['i__id'].'">'.$i['i__title'].'</h5>
-      <small><a href="/~'.$i['i__id'].'" style="color: #999999;">/'.$i['i__id'].'</a> <a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fal fa-cog"></i></a></small>
+      <small><a href="/~'.$i['i__id'].'" style="color: #999999;">/'.$i['i__id'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fal fa-cog"></i></a></small>
     </div>
     <p class="mb-1">'.
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-eye"></i></span>'.$x_count[0]['total_count'].'</span>'.
@@ -27,11 +31,6 @@ function referral_line($i){
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-dollar-sign"></i></span>'.$income.'</span>'.
         '</p>
   </div>';
-}
-
-
-if(!isset($_GET['i__id'])){
-    $_GET['i__id'] = 19120; //Tech House 2023 New Years Celebration
 }
 
 $is = $this->I_model->fetch(array(
@@ -75,56 +74,46 @@ if(count($is)){
 
     function edit_ref(i__id){
         var current_title = $('#ref_id_'+i__id).text();
-        var confirm_removal = prompt("Enter the new new referral link name to update:", current_title);
-        if (confirm_removal.length) {
-
-            var modify_data = {
-                s__id: i__id,
-                cache_e__id: parseInt($(this_handler).attr('cache_e__id')),
-                field_value: confirm_removal
-            };
-
+        var new_title = prompt("Enter the new new referral link name to update:", current_title);
+        if (new_title.length) {
             //See if anything changes:
-            if( $(this_handler).attr('old-value') == modify_data['field_value'] ){
+            if( current_title == new_title ){
                 //Nothing changed:
                 return false;
             }
-
-            //Grey background to indicate saving...
-            var handler = '.text__'+modify_data['cache_e__id']+'_'+modify_data['s__id'];
-            $(handler).addClass('dynamic_saving').prop("disabled", true);
-
-            $.post("/x/x_set_text", modify_data, function (data) {
-
+            $.post("/x/x_set_text", {
+                s__id: i__id,
+                cache_e__id: 4736, //Idea Title
+                field_value: new_title
+            }, function (data) {
                 if (!data.status) {
-
-                    //Reset to original value:
-                    $(handler).val(data.original_val);
-
                     //Show error:
                     alert(data.message);
-
                 } else {
-
-                    //If Updating Text, Updating Corresponding Fields:
-                    update_text_ui(modify_data['cache_e__id'], modify_data['s__id'], modify_data['field_value']);
-
+                    $('#ref_id_'+i__id).text(new_title);
                 }
-
-                setTimeout(function () {
-                    //Restore background:
-                    $(handler).removeClass('dynamic_saving').prop("disabled", false);
-                }, 233);
-
             });
-
         }
     }
 
     function add_ref(){
-        var confirm_removal = prompt("Enter the new referral link name to create:", "");
-        if (confirm_removal.length) {
-            alert('created');
+        var new_title = prompt("Enter the new referral link name to create:", "");
+        if (new_title.length) {
+            //Update backend:
+            $.post("/i/i__add", {
+                x__type: 11019,
+                focus_coin: 12273,
+                focus_id: <?= $_GET['i__id'] ?>,
+                i__title: new_title,
+                link_i__id: 0
+            }, function (data) {
+                if (data.status) {
+                    window.location = '/-31079?i__id=<?= $_GET['i__id'] ?>&new='+data.new_i__id;
+                } else {
+                    //Show errors:
+                    alert(data.message);
+                }
+            });
         }
     }
 

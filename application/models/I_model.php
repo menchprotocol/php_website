@@ -619,6 +619,7 @@ class I_model extends CI_Model
         //Return result:
         return array(
             'status' => 1,
+            'new_i__id' => $i_new['i__id'],
             'new_i_html' => $new_i_html,
         );
 
