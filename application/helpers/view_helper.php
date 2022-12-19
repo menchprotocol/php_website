@@ -1584,7 +1584,7 @@ function myMap() {
     });
 };
 
-</script>' : '<div class="sub_note css__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
+</script><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiwKqWXXTs14NsUhqd2B83nzGSDg1VOoU&callback=myMap"></script>' : '<div class="sub_note css__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
         . '</div>';
 }
 
