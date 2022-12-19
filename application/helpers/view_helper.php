@@ -1577,6 +1577,12 @@ function view_featured_source($x__source, $x){
         . '<span>'.$x['e__title'] . '</span>'
         . '<div class="payment_box">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note css__title">'.$x['x__message'].'</a><div id="load_map"></div><script type="text/javascript">
 
+$(document).ready(function () {
+    let map;
+    let service;
+    let infowindow;
+    
+    
 function initMap() {
 
   infowindow = new google.maps.InfoWindow();
@@ -1615,10 +1621,7 @@ function createMarker(place) {
 }
 
 
-$(document).ready(function () {
-    let map;
-    let service;
-    let infowindow;
+
     window.initMap = initMap;
 });
 
