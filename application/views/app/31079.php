@@ -77,7 +77,47 @@ if(count($is)){
         var current_title = $('#ref_id_'+i__id).text();
         var confirm_removal = prompt("Enter the new new referral link name to update:", current_title);
         if (confirm_removal.length) {
-            alert('updated');
+
+            var modify_data = {
+                s__id: i__id,
+                cache_e__id: parseInt($(this_handler).attr('cache_e__id')),
+                field_value: confirm_removal
+            };
+
+            //See if anything changes:
+            if( $(this_handler).attr('old-value') == modify_data['field_value'] ){
+                //Nothing changed:
+                return false;
+            }
+
+            //Grey background to indicate saving...
+            var handler = '.text__'+modify_data['cache_e__id']+'_'+modify_data['s__id'];
+            $(handler).addClass('dynamic_saving').prop("disabled", true);
+
+            $.post("/x/x_set_text", modify_data, function (data) {
+
+                if (!data.status) {
+
+                    //Reset to original value:
+                    $(handler).val(data.original_val);
+
+                    //Show error:
+                    alert(data.message);
+
+                } else {
+
+                    //If Updating Text, Updating Corresponding Fields:
+                    update_text_ui(modify_data['cache_e__id'], modify_data['s__id'], modify_data['field_value']);
+
+                }
+
+                setTimeout(function () {
+                    //Restore background:
+                    $(handler).removeClass('dynamic_saving').prop("disabled", false);
+                }, 233);
+
+            });
+
         }
     }
 
