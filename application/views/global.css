@@ -25,7 +25,7 @@ body {
     width: 100%;
 }
 .container {
-    max-width:600px !important;
+    max-width:768px !important;
     padding:0;
 }
 .padded {
@@ -59,15 +59,15 @@ body {
 }
 .media-content {
     border-radius: 21px !important;
-    max-width:600px !important;
+    max-width:768px !important;
 }
 .maxwidth {
     border-radius: 21px !important;
-    max-width:600px !important;
+    max-width:768px !important;
     margin: 0 auto !important;
 }
 .x__message video {
-    max-width:600px;
+    max-width:768px;
     border-radius: 21px !important;
 }
 .x__message img, .i_content img, .content-image {
@@ -1588,7 +1588,7 @@ i, .btn .show-max {
     margin: 0 0 21px 0 !important;
     width: 100% !important;
     height: auto !important;
-    max-width:600px;
+    max-width:768px;
     max-height: 768px;
     border-radius: 21px !important;
 }
@@ -1691,7 +1691,7 @@ i, .btn .show-max {
     padding: 13px 0 34px;
     display: block;
     margin: 0 auto;
-    max-width:600px;
+    max-width:768px;
     width: calc(100% - 16px);
 }
 .social2-footer{
@@ -2230,7 +2230,7 @@ input.form-control,
 }
 
 .modal-dialog{
-    max-width:600px;
+    max-width:768px;
 }
 .modal-content{
     border:1px solid transparent;
@@ -2828,6 +2828,7 @@ h4.css__title{
     background-color:transparent !important;
     color: #FFFFFF !important;
 }
+.custom_ui_13884_13886 .list-group-item,
 .custom_ui_13884_13886 .cover-content .css__title,
 .custom_ui_13884_13886 .cover-content a,
 .custom_ui_13884_13886 .cover-content,
@@ -2843,6 +2844,7 @@ h4.css__title{
 .custom_ui_13884_13886 .coin_reverse .black-background i{
     color: #FFFFFF !important;
 }
+.custom_ui_13884_13886 .btn-close,
 .custom_ui_13884_13886 .cover-btn i,
 .custom_ui_13884_13886 .icon-block i,
 .custom_ui_13884_13886 .platform-navigation a,
@@ -2966,6 +2968,7 @@ h4.css__title{
 
 .alert a,
 .alert i,
+.custom_ui_13884_13885 .list-group-item,
 .custom_ui_13884_13885 .cover-content .css__title,
 .custom_ui_13884_13885 .cover-content a,
 .custom_ui_13884_13885 .cover-content,
@@ -2982,6 +2985,7 @@ h4.css__title{
 .custom_ui_13884_13885 .coin_reverse .black-background i{
     color: #000000 !important;
 }
+.custom_ui_13884_13885 .btn-close,
 .custom_ui_13884_13885 .cover-btn i,
 .custom_ui_13884_13885 .black-background i,
 .custom_ui_13884_13885 .form-control:focus {
@@ -4098,7 +4102,7 @@ main {
 
 
 .platform-12273 .media-content, .platform-12273 .x__message video {
-    max-width:600px;
+    max-width:768px;
 }
 .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
     margin: 0;

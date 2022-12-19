@@ -261,7 +261,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             //echo ' .halfbg, .msg>span, .msg { line-height: 150% !important; } ';
             echo ' .msg>span u, .msg>span a { line-height: 100% !important; padding:0 !important; } ';
 
-            echo '.list-border, .msg { max-width:600px; margin: 0 auto !important; }';
+            echo '.list-border, .msg { max-width:768px; margin: 0 auto !important; }';
             echo ' @media (max-width:767px) { .list-border, .msg { max-width:100%; margin: 0 auto; } }';
 
             //Force Dark Mode:

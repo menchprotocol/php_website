@@ -441,7 +441,7 @@ class I extends CI_Controller {
         }
 
         if(!strlen($textarea_content)){
-            $textarea_content = '<i class="no-message">Write Message...</i>';
+            $textarea_content = '<i class="no-message"> </i>';
         }
 
         //Update Search Index:
