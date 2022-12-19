@@ -18,9 +18,9 @@ foreach(view_coins_i(11019, $_GET['i__id'], 1, false) as $referral_i){
       <small></small>
     </div>
     <p class="mb-1">'.
-        '<span class="data-block"><span class="icon-block"><i class="fas fa-eye"></i></span> '.$x_count[0]['total_count'].'</span>'.
-        '<span class="data-block"><span class="icon-block"><i class="fas fa-play"></i></span> '.$plays.'</span>'.
-        '<span class="data-block"><span class="icon-block"><i class="fas fa-dollar-sign"></i></span> '.$income.'</span>'.
+        '<span class="data-block"><span class="icon-block"><i class="fal fa-eye"></i></span> '.$x_count[0]['total_count'].'</span>'.
+        '<span class="data-block"><span class="icon-block"><i class="fal fa-play"></i></span> '.$plays.'</span>'.
+        '<span class="data-block"><span class="icon-block"><i class="fal fa-dollar-sign"></i></span> '.$income.'</span>'.
         '</p>
   </a>';
 }
