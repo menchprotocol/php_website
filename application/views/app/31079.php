@@ -8,7 +8,6 @@ $is = $this->I_model->fetch(array(
 
 if(count($is)){
 
-    echo '<div class="list-group">';
 
 
     $plays = view_coins_i(6255, $is[0]['i__id'], 0, false);
@@ -19,7 +18,8 @@ if(count($is)){
     ), array(), 0, 0, array(), 'COUNT(x__id) as total_count');
     $income = 0;
 
-    echo '<a href="/~'.$is[0]['i__id'].'" class="list-group-item list-group-item-action" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; padding-bottom: 21px;">
+    echo '<div class="list-group" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; padding-bottom: 21px;">';
+    echo '<a href="/~'.$is[0]['i__id'].'" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">'.$is[0]['i__title'].'<span style="font-size: 0.75em; color: #999999; padding-left: 10px;">/'.$is[0]['i__id'].'</span></h5>
       <small></small>
@@ -29,10 +29,12 @@ if(count($is)){
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-play"></i></span> '.$plays.'</span>'.
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-dollar-sign"></i></span> '.$income.'</span>'.
         '</p>
-  </a>
-  
-  <div class="list-group-item list-group-item-action" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; padding-bottom: 21px;">Referral Links:</div>';
+  </a>';
 
+    echo '</div>';
+
+    echo '<h2>Referral Links:</h2>';
+    echo '<div class="list-group">';
 
     foreach(view_coins_i(11019, $_GET['i__id'], 1, false) as $referral_i){
         $plays = view_coins_i(6255, $referral_i['i__id'], 0, false);
