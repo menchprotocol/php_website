@@ -46,6 +46,7 @@ if(count($is)){
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0, 0, array(), 'COUNT(x__id) as total_count');
         $income = 0;
+        $tickets = 0;
 
         echo '<div class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
@@ -53,9 +54,10 @@ if(count($is)){
       <small><a href="/~'.$is[0]['i__id'].'" style="color: #999999;">/'.$referral_i['i__id'].'</a></small>
     </div>
     <p class="mb-1">'.
-            '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-eye"></i></span> '.$x_count[0]['total_count'].'</span>'.
-            '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-play"></i></span> '.$plays.'</span>'.
-            '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-dollar-sign"></i></span> '.$income.'</span>'.
+            '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-eye"></i></span>'.$x_count[0]['total_count'].'</span>'.
+            '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-play"></i></span>'.$plays.'</span>'.
+            '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-ticket"></i></span>'.$tickets.'</span>'.
+            '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-dollar-sign"></i></span>'.$income.'</span>'.
             '</p>
   </div>';
     }
