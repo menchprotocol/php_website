@@ -45,15 +45,16 @@ if(count($is)){
     echo referral_line($is[0]);
     echo '</div>';
 
+    //Add New:
+    echo '<div style="padding: 21px 0;"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="add_ref()"><i class="fas fa-plus-circle"></i>  Referral Link</a></div>';
+
+
     //Referrals:
     echo '<div class="list-group">';
     foreach(view_coins_i(11019, $_GET['i__id'], 1, false) as $referral_i){
         echo referral_line($referral_i);
     }
     echo '</div>';
-
-    //Add New:
-    echo '<div><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="add_ref()"><i class="fas fa-plus-circle"></i></a> Referral Link</div>';
 
 }
 
