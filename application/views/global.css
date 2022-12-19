@@ -3176,7 +3176,10 @@ h4.css__title{
 .dropdown_11019 {
     border-color: #FFC500 !important;
 }
-
+.data-block{
+    display: inline-block;
+    min-width: 80px;
+}
 
 
 .btn.btn-6255,
