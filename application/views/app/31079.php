@@ -2,11 +2,14 @@
 
 function referral_line($i){
 
+    $CI =& get_instance();
+
+
     $plays = view_coins_i(6255, $i['i__id'], 0, false);
-    $x_count = $this->X_model->fetch(array(
-        'x__right' => $is[0]['i__id'],
+    $x_count = $CI->X_model->fetch(array(
+        'x__right' => $i['i__id'],
         'x__type' => 7610, //MEMBER VIEWED DISCOVERY
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array(), 0, 0, array(), 'COUNT(x__id) as total_count');
     $income = 0;
     $tickets = 0;
