@@ -9,7 +9,7 @@ foreach(view_coins_i(11019, $_GET['i__id'], 1, false) as $referral_i){
       <h5 class="mb-1">'.$referral_i['i__title'].'</h5>
       <small></small>
     </div>
-    <p class="mb-1"><span class="icon-block"><i class="fas fa-dollar"></i></span> 42.1 | <span class="icon-block"><i class="fas fa-eye"></i></span> '.view_coins_i(6255, $referral_i['i__id'], 1, false).'</p>
+    <p class="mb-1"><span class="icon-block"><i class="fas fa-dollar"></i></span> 42.1 | <span class="icon-block"><i class="fas fa-eye"></i></span> '.view_coins_i(6255, $referral_i['i__id'], 0, false).'</p>
   </a>';
 }
 
