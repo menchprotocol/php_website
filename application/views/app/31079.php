@@ -113,6 +113,7 @@ if(count($is)){
     function delete_ref(i__id, x__id){
         var r = confirm("Permanently delete ["+$('#ref_id_'+i__id).text()+"] ?");
         if (r == true) {
+            $('.ref_item_'+i__id).fadeOut();
             $.post("/x/update_dropdown", {
                 focus_id:<?= $_GET['i__id'] ?>,
                 o__id: i__id,
@@ -121,9 +122,7 @@ if(count($is)){
                 migrate_s__id: 0,
                 x__id: x__id
             }, function (data) {
-                if(data.status){
-                    $('.ref_item_'+i__id).fadeOut();
-                } else {
+                if(!data.status){
                     alert(data.message);
                 }
             });
