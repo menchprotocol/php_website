@@ -44,7 +44,7 @@ if(count($is)){
 
 
     //Main Idea:
-    echo '<div class="list-group mainref" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; border-radius: 0;">';
+    echo '<div class="list-group list-group-flush mainref" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; border-radius: 0;">';
     echo referral_line($is[0]);
     echo '</div>';
 
@@ -64,7 +64,7 @@ if(count($is)){
 
 
     //Referrals:
-    echo '<div class="list-group">';
+    echo '<div class="list-group list-group-flush">';
     foreach(view_coins_i(11019, $_GET['i__id'], 1, false) as $referral_i){
         echo referral_line($referral_i);
     }
