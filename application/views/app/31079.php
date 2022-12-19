@@ -39,15 +39,6 @@ $is = $this->I_model->fetch(array(
 
 if(count($is)){
 
-    //Find Tickets:
-    if(isset($_GET['new_id']) && $_GET['new_id']>0){
-        foreach($this->I_model->fetch(array(
-            'i__id' => $_GET['new_id'],
-        )) as $added_i){
-            echo '<div class="msg alert alert-success" role="alert">Successfully added "'.$added_i['i__title'].'"</div>';
-        }
-    }
-
 
     //Main Idea:
     echo '<div class="list-group mainref" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; border-radius: 0;">';
@@ -56,7 +47,17 @@ if(count($is)){
 
 
     //Add New:
-    echo '<div style="padding: 21px 0 34px;;"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="add_ref()"><i class="fas fa-plus-circle"></i> Add</a></div>';
+    echo '<div style="padding: 21px 0 34px;" class="add_frame"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="add_ref()"><i class="fas fa-plus-circle"></i> Add</a></div>';
+
+
+    //Find Tickets:
+    if(isset($_GET['new_id']) && $_GET['new_id']>0){
+        foreach($this->I_model->fetch(array(
+            'i__id' => $_GET['new_id'],
+        )) as $added_i){
+            echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully added "'.$added_i['i__title'].'"</div>';
+        }
+    }
 
 
     //Referrals:
@@ -105,7 +106,7 @@ if(count($is)){
 
     function add_ref(){
         var new_title = prompt("Enter the new referral link name to create:", "");
-        $('.go-next').html('Adding...');
+        $('.add_frame').html('Adding...');
         if (new_title.length) {
             //Update backend:
             $.post("/i/i__add", {
