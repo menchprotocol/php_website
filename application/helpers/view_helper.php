@@ -1585,14 +1585,16 @@ $(document).ready(function () {
     
 function initMap() {
 
+      const sydney = new google.maps.LatLng(-33.867, 151.195);
   infowindow = new google.maps.InfoWindow();
   map = new google.maps.Map(document.getElementById("load_map"), {
+          center: sydney,
     zoom: 15,
   });
 
   const request = {
     query: "'.$x['x__message'].'",
-    fields: ["name"],
+    fields: ["name", "geometry"],
   };
 
   service = new google.maps.places.PlacesService(map);
