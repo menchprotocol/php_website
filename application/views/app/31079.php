@@ -22,7 +22,7 @@ if(count($is)){
     echo '<div class="list-group" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; padding-bottom: 21px;">';
     echo '<div class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1 css__title" style="font-size: 1.3em;">'.$is[0]['i__title'].'</h5>
+      <h5 class="mb-1 css__title" style="font-size: 1.5em !important;">'.$is[0]['i__title'].'</h5>
       <small><a href="/~'.$is[0]['i__id'].'" style="color: #999999;">/'.$is[0]['i__id'].'</a></small>
     </div>
     <p class="mb-1">'.
