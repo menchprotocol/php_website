@@ -18,13 +18,16 @@ function referral_line($i){
     $income = 0;
     $tickets = 0;
 
+    $link = 'https://'.get_domain('m__message').'/'.$i['i__id'];
+
 
     return '<div class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1 css__title" id="ref_id_'.$i['i__id'].'">'.$i['i__title'].'</h5>
-      <small><a href="/~'.$i['i__id'].'" style="color: #999999;">/'.$i['i__id'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fal fa-cog"></i></a></small>
+      <small><a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fal fa-cog"></i></a></small>
     </div>
     <p class="mb-1">'.
+        '<small><a href='.$link.'" style="color: #999999;">'.$link.'</a></small>'.
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-eye"></i></span>'.$x_count[0]['total_count'].'</span>'.
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-play"></i></span>'.$plays.'</span>'.
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-ticket"></i></span>'.$tickets.'</span>'.
