@@ -22,7 +22,7 @@ if(count($is)){
 
         echo '<a href="/~'.$referral_i['i__id'].'" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">'.$referral_i['i__title'].'</h5>
+      <h5 class="mb-1">'.$referral_i['i__title'].' <span style="font-size: 0.6em; color: #CCC;">/'.$referral_i['i__id'].'</span></h5>
       <small>' . view_time_difference(strtotime($referral_i['x__time'])) . ' Ago <i class="fas fa-chevron-right"></i></small>
     </div>
     <p class="mb-1">'.
