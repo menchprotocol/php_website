@@ -1575,7 +1575,12 @@ function view_featured_source($x__source, $x){
     return '<div class="source-info">'
         . '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>'
         . '<span>'.$x['e__title'] . '</span>'
-        . '<div class="payment_box">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note css__title">'.$x['x__message'].'</a><div '.( $x__source==1 ? 'id="load_map" style="width:100%;height:200px;"' : '' ).'></div><script>
+        . '<div class="payment_box">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note css__title">'.$x['x__message'].'</a>' : '<div class="sub_note css__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
+        . '</div>';
+
+    /*
+     *
+     * <div '.( $x__source==1 ? 'id="load_map" style="width:100%;height:200px;"' : '' ).'></div><script>
 
         $(document).ready(function () {
             let map;
@@ -1625,8 +1630,8 @@ function createMarker(place) {
         });
 
 
-</script><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiwKqWXXTs14NsUhqd2B83nzGSDg1VOoU&libraries=places"></script>' : '<div class="sub_note css__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
-        . '</div>';
+</script><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiwKqWXXTs14NsUhqd2B83nzGSDg1VOoU&libraries=places"></script>
+     * */
 }
 
 function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad = false){
