@@ -2022,7 +2022,7 @@ function x_set_text(this_handler){
         } else {
 
             //If Updating Text, Updating Corresponding Fields:
-            update_text_ui(modify_data['cache_e__id'], modify_data['s__id'], modify_data['field_value']);
+            update_text_name(modify_data['cache_e__id'], modify_data['s__id'], modify_data['field_value']);
 
         }
 
