@@ -1435,57 +1435,7 @@ class X extends CI_Controller
                 //Transaction content has changed:
                 $detected_x_type = x_detect_type($_POST['x__message']);
                 if (!$detected_x_type['status']) {
-
                     return view_json($detected_x_type);
-
-                } elseif (in_array($detected_x_type['x__type'], $this->config->item('n___4537')) && isset($detected_x_type['url_root']) /* This prevents issues with SOURCE LINK URLS that start with / */) {
-
-                    //This is a URL, validate modification:
-
-                    if ($detected_x_type['url_root']) {
-
-                        if ($e_x[0]['x__up'] == 1326) {
-
-                            //Override with the clean domain for consistency:
-                            $_POST['x__message'] = $detected_x_type['url_clean_domain'];
-
-                        } else {
-
-                            //Domains can only be added to the domain source:
-                            return view_json(array(
-                                'status' => 0,
-                                'message' => 'Domain URLs requires <b>@1326 Domains</b> in profile',
-                            ));
-
-                        }
-
-                    } else {
-
-                        if ($e_x[0]['x__up'] == 1326) {
-
-                            return view_json(array(
-                                'status' => 0,
-                                'message' => 'Only domain URLs can be connected to Domain source.',
-                            ));
-
-                        } elseif ($detected_x_type['e_domain']) {
-                            //We do have the domain saved! Is this connected to the domain source as its parent?
-                            if ($detected_x_type['e_domain']['e__id'] != $e_x[0]['x__up']) {
-                                return view_json(array(
-                                    'status' => 0,
-                                    'message' => 'Must have <b>@' . $detected_x_type['e_domain']['e__id'] . ' ' . $detected_x_type['e_domain']['e__title'] . '</b> in profile',
-                                ));
-                            }
-                        } else {
-                            //We don't have the domain saved, this is for sure not allowed:
-                            return view_json(array(
-                                'status' => 0,
-                                'message' => 'Requires a new parent source for <b>' . $detected_x_type['url_tld'] . '</b>. Add by pasting URL into the [Add @Source] input field.',
-                            ));
-                        }
-
-                    }
-
                 }
 
                 //Update variables:
