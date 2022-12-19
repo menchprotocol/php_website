@@ -1,5 +1,7 @@
 <?php
 
+
+
 //TITLE
 $website_id = website_setting(0);
 $expanded_space = in_array($website_id , $this->config->item('n___31025'));
@@ -7,7 +9,23 @@ $double_contact = in_array($website_id , $this->config->item('n___31029'));
 if(in_array($website_id, $this->config->item('n___30984'))){
     echo ' <script> $(document).ready(function () { $(\'body\').addClass(\'home_black_font\'); }); </script> ';
 }
-//Fetch Primary Idea & Secondary Idea List:
+
+
+
+
+//Any redirects?
+foreach($this->X_model->fetch(array(
+    'x__up' => 30811, //Hard Redirect URL
+    'x__down' => $website_id,
+    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+), array(), 1) as $redirect_app) {
+    if(filter_var($redirect_app['x__message'], FILTER_VALIDATE_URL)){
+        js_redirect($redirect_app['x__message'], 13);
+    }
+}
+
+
 
 $primary_i = array();
 $secondary_i_list = array();
