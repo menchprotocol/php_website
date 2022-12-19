@@ -18,7 +18,7 @@ if(count($is)){
     ), array(), 0, 0, array(), 'COUNT(x__id) as total_count');
     $income = 0;
 
-    echo '<div class="list-group" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; padding-bottom: 21px;">';
+    echo '<div class="list-group" style="margin-bottom: 21px; border-bottom: 1px solid #CCC; padding-bottom: 21px;">';
     echo '<a href="/~'.$is[0]['i__id'].'" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">'.$is[0]['i__title'].'<span style="font-size: 0.75em; color: #999999; padding-left: 10px;">/'.$is[0]['i__id'].'</span></h5>
@@ -33,7 +33,7 @@ if(count($is)){
 
     echo '</div>';
 
-    echo '<h2>Referral Links:</h2>';
+    echo '<h2>Referrals:</h2><br /><br />';
     echo '<div class="list-group">';
 
     foreach(view_coins_i(11019, $_GET['i__id'], 1, false) as $referral_i){
