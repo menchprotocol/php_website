@@ -13,7 +13,7 @@ foreach($this->X_model->fetch(array(
     'x__up' => 30811, //Hard Redirect
 )) as $redirect){
     if(filter_var($redirect['x__message'], FILTER_VALIDATE_URL)){
-        js_redirect($redirect['x__message'], 55);
+        js_redirect($redirect['x__message'], 13);
         break;
     }
 }
