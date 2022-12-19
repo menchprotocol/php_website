@@ -49,7 +49,7 @@ if(count($is)){
         echo '<div class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1 css__title">'.$referral_i['i__title'].'</h5>
-      <small><a href="/~'.$is[0]['i__id'].'" style="color: #999999;">/'.$referral_i['i__id'].'</a></small>
+      <small><a href="/~'.$referral_i['i__id'].'" style="color: #999999;">/'.$referral_i['i__id'].'</a></small>
     </div>
     <p class="mb-1">'.
             '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-eye"></i></span>'.$x_count[0]['total_count'].'</span>'.
