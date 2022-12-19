@@ -19,7 +19,7 @@ function referral_line($i){
     $tickets = 0;
 
 
-    return '<div class="list-group-item list-group-item-action '.( isset($_GET['new_id']) && $_GET['new_id']==$i['i__id'] ? ' highlight-this ' : '' ).'">
+    return '<div class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1 css__title" id="ref_id_'.$i['i__id'].'">'.$i['i__title'].'</h5>
       <small><a href="/~'.$i['i__id'].'" style="color: #999999;">/'.$i['i__id'].'</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fal fa-cog"></i></a></small>
@@ -40,6 +40,13 @@ $is = $this->I_model->fetch(array(
 if(count($is)){
 
     //Find Tickets:
+    if(isset($_GET['new_id']) && $_GET['new_id']>0){
+        foreach($this->I_model->fetch(array(
+            'i__id' => $_GET['new_id'],
+        )) as $added_i){
+            echo '<div class="msg alert alert-success" role="alert">Successfully added "'.$added_i['i__title'].'"</div>';
+        }
+    }
 
 
     //Main Idea:
@@ -67,9 +74,6 @@ if(count($is)){
 <style>
     .mainref .css__title {
         font-size: 1.5em !important;
-    }
-    .highlight-this {
-        background-color: #faeea3;
     }
 </style>
 
