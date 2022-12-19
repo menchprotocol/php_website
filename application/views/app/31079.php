@@ -21,10 +21,10 @@ function referral_line($i){
     $link = 'https://'.get_domain('m__message').'/'.$i['i__id'];
 
 
-    return '<div class="list-group-item list-group-item-action">
+    return '<div class="list-group-item list-group-item-action ref_item_'.$i['i__id'].'">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1 css__title" id="ref_id_'.$i['i__id'].'">'.$i['i__title'].'</h5>
-      <small><a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fal fa-cog"></i></a></small>
+      <small>'.( !$x_count[0]['total_count'] ? ' <a href="javascript:void(0);" onclick="delete_ref('.$i['i__id'].','.( isset($i['x__id']) ? $i['x__id'] : 0 ).')"><i class="fal fa-trash-alt"></i></a> ' : '' ).'<a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fal fa-cog"></i></a></small>
     </div>
     <p class="mb-1"><small><a href="'.$link.'">'.$link.'</a></small></p>
     <p class="mb-1" style="padding: 8px 0;">'.
@@ -75,6 +75,8 @@ if(count($is)){
 
 ?>
 
+<input type="hidden" id="focus_id" value="<?= $_GET['i__id'] ?>" />
+
 <style>
     .mainref .css__title {
         font-size: 1.5em !important;
@@ -107,6 +109,27 @@ if(count($is)){
         }
     }
 
+
+    function delete_ref(i__id, x__id){
+        var r = confirm("Permanently delete ["+$('#ref_id_'+i__id).text()+"] ?");
+        if (r == true) {
+            $.post("/x/update_dropdown", {
+                focus_id:<?= $_GET['i__id'] ?>,
+                o__id: i__id,
+                element_id: 4737,
+                new_e__id: 6182,
+                migrate_s__id: 0,
+                x__id: x__id
+            }, function (data) {
+                if(data.status){
+                    $('.ref_item_'+i__id).fadeOut();
+                } else {
+                    alert(data.message);
+                }
+            });
+        }
+    }
+
     function add_ref(){
         var new_title = prompt("Enter the new referral link name to create:", "");
         $('.add_frame').html('Adding...');
@@ -128,6 +151,7 @@ if(count($is)){
             });
         }
     }
+
 
 
 </script>
