@@ -41,12 +41,12 @@ $is = $this->I_model->fetch(array(
 if(count($is)){
 
     //Main Idea:
-    echo '<div class="list-group mainref" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; padding-bottom: 21px; border-radius: 0;">';
+    echo '<div class="list-group mainref" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; border-radius: 0;">';
     echo referral_line($is[0]);
     echo '</div>';
 
     //Add New:
-    echo '<div style="padding: 21px 0;"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="add_ref()"><i class="fas fa-plus-circle"></i>  Referral Link</a></div>';
+    echo '<div style="padding: 21px 0 34px;;"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="add_ref()"><i class="fas fa-plus-circle"></i> New Link</a></div>';
 
 
     //Referrals:
