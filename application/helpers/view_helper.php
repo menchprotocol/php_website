@@ -1575,14 +1575,13 @@ function view_featured_source($x__source, $x){
     return '<div class="source-info">'
         . '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>'
         . '<span>'.$x['e__title'] . '</span>'
-        . '<div class="payment_box">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note css__title">'.$x['x__message'].'</a><div id="load_map" style="width:100%;height:200px;"></div><script type="text/javascript">
+        . '<div class="payment_box">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note css__title">'.$x['x__message'].'</a><div id="load_map" style="width:100%;height:200px;"></div><script>
 
 function myMap() {
-var mapProp= {
-  center:new google.maps.LatLng(51.508742,-0.120850),
-  zoom:5,
-};
-var map = new google.maps.Map(document.getElementById("load_map"),mapProp);
+    var map = new google.maps.Map(document.getElementById("load_map"), {
+      center:new google.maps.LatLng(51.508742,-0.120850),
+      zoom:5,
+    });
 };
 
 </script>' : '<div class="sub_note css__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
