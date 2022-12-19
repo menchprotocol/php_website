@@ -15,6 +15,20 @@ class App extends CI_Controller
     }
 
     function index(){
+
+        //Any redirects?
+        foreach($this->X_model->fetch(array(
+            'x__up' => 30811, //Hard Redirect URL
+            'x__down' => website_setting(0),
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 1) as $redirect_app) {
+            if(filter_var($redirect_app['x__message'], FILTER_VALIDATE_URL)){
+                header("Location: " . $redirect_app['x__message'] );
+            }
+        }
+
+
         //Default Home Page:
         $this->load(14565);
     }

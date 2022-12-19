@@ -13,21 +13,6 @@ if(in_array($website_id, $this->config->item('n___30984'))){
 
 
 
-//Any redirects?
-echo '.';
-foreach($this->X_model->fetch(array(
-    'x__up' => 30811, //Hard Redirect URL
-    'x__down' => $website_id,
-    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-), array(), 1) as $redirect_app) {
-    echo '['.$redirect_app['x__message'].']';
-    if(filter_var($redirect_app['x__message'], FILTER_VALIDATE_URL)){
-        js_redirect($redirect_app['x__message'], 13);
-    }
-}
-
-
 
 $primary_i = array();
 $secondary_i_list = array();
