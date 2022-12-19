@@ -307,7 +307,12 @@ class App extends CI_Controller
 
         //Show Featured Apps
         $ui = '<div class="row">';
-        foreach (view_coins_e(12274, 30841, 1) as $app) {
+        foreach($this->X_model->fetch(array(
+            'x__up' => 30841, //Featured Apps
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__type IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $app) {
             $ui .= view_e(6287, $app);
         }
         $ui .= '</div>';
