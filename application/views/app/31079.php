@@ -18,7 +18,7 @@ function referral_line($i){
     return '<div class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1 css__title" id="ref_id_'.$i['i__id'].'">'.$i['i__title'].'</h5>
-      <small><a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fal fa-dollar-sign"></i></a> <a href="/~'.$i['i__id'].'" style="color: #999999;">/'.$i['i__id'].'</a></small>
+      <small><a href="/~'.$i['i__id'].'" style="color: #999999;">/'.$i['i__id'].'</a> <a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fal fa-cog"></i></a></small>
     </div>
     <p class="mb-1">'.
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-eye"></i></span>'.$x_count[0]['total_count'].'</span>'.
@@ -53,7 +53,7 @@ if(count($is)){
     echo '</div>';
 
     //Add New:
-    echo '<div><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="add_ref()"><i class="fas fa-plus-circle"></i></a></div>';
+    echo '<div><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="add_ref()"><i class="fas fa-plus-circle"></i></a> Referral Link</div>';
 
 }
 
