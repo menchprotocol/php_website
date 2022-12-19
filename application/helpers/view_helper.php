@@ -1577,7 +1577,8 @@ function view_featured_source($x__source, $x){
         . '<span>'.$x['e__title'] . '</span>'
         . '<div class="payment_box">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note css__title">'.$x['x__message'].'</a><div '.( $x__source==1 ? 'id="load_map" style="width:100%;height:200px;"' : '' ).'></div><script>
 
-let map;
+        $(document).ready(function () {
+            let map;
 let service;
 let infowindow;
 
@@ -1620,8 +1621,9 @@ function createMarker(place) {
     infowindow.open(map);
   });
 }
+            window.initMap = initMap;
+        });
 
-window.initMap = initMap;
 
 </script><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiwKqWXXTs14NsUhqd2B83nzGSDg1VOoU&libraries=places"></script>' : '<div class="sub_note css__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
         . '</div>';
