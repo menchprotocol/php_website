@@ -8,8 +8,6 @@ $is = $this->I_model->fetch(array(
 
 if(count($is)){
 
-    echo '<h2 style="text-align: center; padding-bottom:34px; margin-top: -55px; font-size: 1.4em;"><a href="/~'.$is[0]['i__id'].'">' . $is[0]['i__title'] . '</a></h2>';
-
     echo '<div class="list-group">';
 
 
@@ -31,7 +29,9 @@ if(count($is)){
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-play"></i></span> '.$plays.'</span>'.
         '<span class="data-block"><span class="icon-block-xs"><i class="fal fa-dollar-sign"></i></span> '.$income.'</span>'.
         '</p>
-  </a>';
+  </a>
+  
+  <div class="list-group-item list-group-item-action" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; padding-bottom: 21px;">Referral Links:</div>';
 
 
     foreach(view_coins_i(11019, $_GET['i__id'], 1, false) as $referral_i){
