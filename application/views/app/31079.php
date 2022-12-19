@@ -30,8 +30,8 @@ function referral_line($i){
 
     return '<div class="list-group-item list-group-item-action ref_item_'.$i['i__id'].'">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1 css__title" id="ref_id_'.$i['i__id'].'">'.$i['i__title'].( !$is_locked ? ' <a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fas fa-edit"></i></a>' : '' ).'</h5>
-      '.( !$is_locked ? '<small>'.( !$plays ? ' <a href="javascript:void(0);" onclick="delete_ref('.$i['i__id'].','.( isset($i['x__id']) ? $i['x__id'] : 0 ).')"><i class="fal fa-trash-alt"></i></a>&nbsp;&nbsp;&nbsp;' : '' ).'<a href="/~'.$i['i__id'].'"><i class="fal fa-cog"></i></a></small>' : '' ).'
+      <h5 class="mb-1 css__title" id="ref_id_'.$i['i__id'].'">'.$i['i__title'].'</h5>
+      '.( !$is_locked ? '<small>'.( !$plays ? ' <a href="javascript:void(0);" onclick="delete_ref('.$i['i__id'].','.( isset($i['x__id']) ? $i['x__id'] : 0 ).')"><i class="fal fa-trash-alt"></i></a>&nbsp;&nbsp;&nbsp;' : '' ).'<a href="javascript:void(0);" onclick="edit_ref('.$i['i__id'].')"><i class="fal fa-edit"></i></a>&nbsp;&nbsp;&nbsp;<a href="/~'.$i['i__id'].'"><i class="fal fa-cog"></i></a></small>' : '' ).'
     </div>
     <p class="mb-1"><small><a href="'.$link.'">'.$link.'</a></small></p>
     <p class="mb-1" style="padding: 8px 0;">'.
