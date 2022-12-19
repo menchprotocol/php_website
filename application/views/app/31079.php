@@ -19,7 +19,7 @@ if(count($is)){
     $income = 0;
     $tickets = 0;
 
-    echo '<div class="list-group" style="margin-bottom: 21px; border-bottom: 1px solid #CCC; padding-bottom: 21px;">';
+    echo '<div class="list-group" style="margin-bottom: 34px; border-bottom: 1px solid #CCC; padding-bottom: 21px;">';
     echo '<div class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">'.$is[0]['i__title'].'</h5>
@@ -35,9 +35,7 @@ if(count($is)){
 
     echo '</div>';
 
-    echo '<h2>Referrals:</h2><br /><br />';
     echo '<div class="list-group">';
-
     foreach(view_coins_i(11019, $_GET['i__id'], 1, false) as $referral_i){
         $plays = view_coins_i(6255, $referral_i['i__id'], 0, false);
         $x_count = $this->X_model->fetch(array(
