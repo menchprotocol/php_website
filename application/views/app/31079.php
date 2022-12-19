@@ -49,7 +49,7 @@ if(count($is)){
 
 
     //Add New:
-    echo '<div style="padding: 21px 0 34px;;"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="add_ref()"><i class="fas fa-plus-circle"></i> New Link</a></div>';
+    echo '<div style="padding: 21px 0 34px;;"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="add_ref()"><i class="fas fa-plus-circle"></i> Add</a></div>';
 
 
     //Referrals:
@@ -101,6 +101,7 @@ if(count($is)){
 
     function add_ref(){
         var new_title = prompt("Enter the new referral link name to create:", "");
+        $('.go-next').html('Adding...');
         if (new_title.length) {
             //Update backend:
             $.post("/i/i__add", {
