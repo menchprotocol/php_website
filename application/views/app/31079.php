@@ -124,7 +124,7 @@ if(count($is)){
             $.post("/x/update_dropdown", {
                 focus_id:<?= $_GET['i__id'] ?>,
                 o__id: i__id,
-                element_id: 4737,
+                element_id: 7355,
                 new_e__id: 6182,
                 migrate_s__id: 0,
                 x__id: x__id
