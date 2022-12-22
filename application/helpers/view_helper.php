@@ -291,7 +291,7 @@ function view_x($x, $has_x__reference = false)
 
             //IDEA
             foreach($CI->I_model->fetch(array('i__id' => $x[$m['m__message']])) as $this_i){
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$this_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Status */, $this_i['i__type'], true, 'right', $this_i['i__id']).'</span>'.view_i_title($this_i).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$this_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $this_i['i__type'], true, 'right', $this_i['i__id']).'</span>'.view_i_title($this_i).'</a></div>';
             }
 
 
@@ -1422,7 +1422,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     //Idea Type
     $ui .= '<td width="20%"><div class="show-on-hover">';
     if(!$discovery_mode){
-        $ui .= view_input_dropdown(7355, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
+        $ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
     }
     $ui .= '</div></td>';
 
