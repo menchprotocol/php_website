@@ -1729,6 +1729,10 @@ i, .btn .show-max {
     border-radius: 21px !important;
 }
 
+
+.i-left, .x_input, .add_notes_form, .note-textarea.edit-on, .i-info, .cover-title, .width-icon-block, .block-one {
+    width:100% !important;
+}
 .cover-title {
     padding-top: 2px;
     margin-bottom: 0;
