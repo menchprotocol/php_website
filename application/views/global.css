@@ -3783,16 +3783,10 @@ h4.css__title{
     background-color: #000000 !important;
     color: #000000 !important;
 }
-.custom_ui_13884_13885 .round-btn:hover {
-    background-color: #FFFFFF !important;
-}
 
 .custom_ui_13884_13886 .round-btn {
     background-color: #FFFFFF !important;
     color: #FFFFFF !important;
-}
-.custom_ui_13884_13886 .round-btn:hover {
-    background-color: #000000 !important;
 }
 
 .alert * {
@@ -4134,8 +4128,4 @@ main {
 }
 .center-info  .round-btn{
     margin-top: 21px;
-}
-
-.round-btn:hover{
-    background-color: #CCCCCC !important;
 }
