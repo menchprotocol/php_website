@@ -471,7 +471,7 @@ if($top_i__id) {
 
 
             if($max_allowed > 1 || $min_allowed > 1){
-                echo '<div>';
+                echo '<div style="padding: 8px 0 21px;">';
                 echo '<a href="javascript:void(0);" onclick="sale_increment(-1)" class="adjust_counter"><i class="fas fa-minus-circle"></i></a>';
                 echo '<span id="current_sales" class="css__title" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
                 echo '<a href="javascript:void(0);" onclick="sale_increment(1)" class="adjust_counter"><i class="fas fa-plus-circle"></i></a>';
