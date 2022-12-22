@@ -1743,7 +1743,11 @@ i, .btn .show-max {
 }
 
 
-
+.ticket-notice {
+    background-color: #fffdb7;
+    padding: 10px 0 !important;
+    border-radius: 21px;
+}
 
 .title-icon{
     vertical-align: top;
