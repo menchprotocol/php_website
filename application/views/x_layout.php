@@ -471,14 +471,14 @@ if($top_i__id) {
 
 
             if($max_allowed > 1 || $min_allowed > 1){
-                echo '<div style="padding: 8px 0 21px;">';
+                echo '<div>';
                 echo '<a href="javascript:void(0);" onclick="sale_increment(-1)" class="adjust_counter"><i class="fas fa-minus-circle"></i></a>';
                 echo '<span id="current_sales" class="css__title" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
                 echo '<a href="javascript:void(0);" onclick="sale_increment(1)" class="adjust_counter"><i class="fas fa-plus-circle"></i></a>';
                 echo '</div>';
             }
 
-            echo '<div '.( $unit_fee > 0 ? ' title="Base Price of '.$unit_price.' '.$currency_parts[0].' + '.$unit_fee.' '.$currency_parts[0].' in Fees & Taxes" data-toggle="tooltip" data-placement="top" ' : '' ).'><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].'</div>';
+            echo '<div  style="padding: 8px 0 21px;" '.( $unit_fee > 0 ? ' title="Base Price of '.$unit_price.' '.$currency_parts[0].' + '.$unit_fee.' '.$currency_parts[0].' in Fees & Taxes" data-toggle="tooltip" data-placement="top" ' : '' ).'><span class="total_ui css__title">'.($unit_total*$min_allowed).'</span> '.$currency_parts[0].'</div>';
 
             echo '<div class="sub_note css__title">';
             if(!count($this->X_model->fetch(array(
