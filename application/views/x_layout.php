@@ -764,7 +764,7 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
                 $control_btn .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
 
-                $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="$" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');">';
+                $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="$" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');" style="padding-top: 0 !important;">';
                 $control_btn .= '<span class="nav-title css__title process-btn">Pay Now</span>';
 
                 $control_btn .= '</form>';
