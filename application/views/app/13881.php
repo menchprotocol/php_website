@@ -69,6 +69,6 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
 echo $guide;
 echo '<form method="POST" action="">';
-echo '<textarea class="border padded full-text" placeholder="Paste List Here" name="import_sources">'.$default_val.'</textarea>';
+echo '<textarea class="border  full-text" placeholder="Paste List Here" name="import_sources">'.$default_val.'</textarea>';
 echo '<button type="submit" class="btn btn-lrg top-margin"><i class="fas fa-plus-circle zq12274"></i> IMPORT</button>';
 echo '</form>';

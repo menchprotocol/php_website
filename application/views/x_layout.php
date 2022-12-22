@@ -453,7 +453,7 @@ if($top_i__id) {
                 }
 
                 echo '<h3>Custom Message</h3>';
-                echo '<textarea class="border i_content padded x_input" placeholder="" id="invite_message"></textarea>';
+                echo '<textarea class="border i_content  x_input" placeholder="" id="invite_message"></textarea>';
                 echo '<script> $(document).ready(function () { set_autosize($(\'#invite_message\')); }); </script>';
 
             }
@@ -575,7 +575,7 @@ if($top_i__id) {
         $previous_response = ( !strlen($previous_response) && count($x_completes) ? trim($x_completes[0]['x__message']) : $previous_response );
         if (in_array($i['i__type'], $this->config->item('n___31812'))) {
             //Open text response
-            $message_ui = '<textarea class="border i_content padded x_input" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
+            $message_ui = '<textarea class="border i_content  x_input" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
         } else {
             //Determine type:
             if($i['i__type']==31794){
@@ -633,7 +633,7 @@ if($top_i__id) {
             }
 
 
-            $message_ui = '<input type="'.$input_type.'" '.$input_attributes.' class="border i_content padded x_input" placeholder="" value="'.$previous_response.'" id="x_reply" />';
+            $message_ui = '<input type="'.$input_type.'" '.$input_attributes.' class="border i_content  x_input" placeholder="" value="'.$previous_response.'" id="x_reply" />';
 
         }
         $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); $(window).scrollTop(0); }); </script>';

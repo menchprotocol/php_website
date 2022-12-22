@@ -28,13 +28,7 @@ body {
     max-width:768px !important;
     padding:0;
 }
-.padded {
-    margin: 0 40px 25px;
-}
 
-.edit-off .padded, .edit-on .padded {
-    margin-bottom: 0;
-}
 .margin-top-down{
     margin:34px 0 55px;
 }
@@ -329,9 +323,6 @@ img.no-frame {
 }
 .accordion .card-body{
     padding: 13px 21px 21px 40px;
-}
-.card-body .padded, .card-body .list-group {
-    margin: 0 0 13px;
 }
 .accordion>.card {
     border-radius: 21px !important;
@@ -1101,9 +1092,6 @@ a.headline {
 }
 
 
-.tablepadded td{
-    padding:10px 0 !important;
-}
 .top-margin{
     margin-top: 21px;
 }
@@ -1233,10 +1221,6 @@ a.headline {
 .no-height{
     height: 0;
     padding: 0;
-}
-.x-msg .padded{
-    margin-left:0 !important;
-    margin-right:0 !important;
 }
 
 
@@ -1902,9 +1886,6 @@ i, .btn .show-max {
     text-align: center;
 }
 
-.feature-content .padded{
-    margin: 0 !important;
-}
 .feature-content>div{
     margin:0 0 8px 0 !important;
 }
@@ -2205,9 +2186,7 @@ input.form-control,
 .cover-content .icon-block-xs img {
     margin: 1px 0 0 3px !important;
 }
-.cover-content .padded{
-    margin: 0 !important;
-}
+
 .cover-content .msg{
     font-size: 0.8em !important;
 }
@@ -3675,12 +3654,6 @@ h4.css__title{
 }
 .grey-background:hover {
     background-color: #EFEFEF !important;
-}
-
-
-.editor_preview .msg, .padded .msg {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
 }
 
 .cover-content .msg {
