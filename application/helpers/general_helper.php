@@ -387,7 +387,7 @@ function e_count_6194($e__id, $specific_id = 0){
 
 
 function string_is_icon($icon_code){
-    return substr_count($icon_code,'fa-');
+    return !filter_var($icon_code, FILTER_VALIDATE_URL) && substr_count($icon_code,'fa');
 }
 
 
