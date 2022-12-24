@@ -2524,9 +2524,7 @@ h4.css__title{
     background-color: transparent;
 }
 
-
-
-@media (max-width:599px) { /* Used to be 767px */
+@media (max-width:768px) { /* Used to be 767px */
 
     .slim_flat{
         border-radius: 0 !important;
