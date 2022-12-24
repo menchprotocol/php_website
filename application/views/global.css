@@ -3055,6 +3055,7 @@ h4.css__title{
 .btn.btn-12274,
 .coinType12274 {
     border:1px solid #007AFD;
+    background-color: #007AFD !important;
 }
 .coin-12274 .cover-content {
     background: rgba(0,122,253,0.82);
@@ -3116,8 +3117,7 @@ h4.css__title{
 }
 .coinType12273 {
     border:1px solid #FFC500 !important;
-}
-.coinType12273 {
+    background-color: #FFC500 !important;
     border-radius: 0;
 }
 .coin-12273 .cover-content {
