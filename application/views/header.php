@@ -9,9 +9,10 @@ $e___4527 = $this->config->item('e___4527');
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 $current_coin_id = current_coin_id();
 $website_id = website_setting(0);
+$website_favicon = website_setting(31887);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
 $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
-$logo = ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : '/img/'.$current_coin_id.'.png' );
+$logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : '/img/'.$current_coin_id.'.png' ));
 $bgVideo = null;
 
 //Generate Body Class String:
