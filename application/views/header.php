@@ -343,6 +343,8 @@ if(!$basic_header_footer){
                     $domain_logo = one_two_explode('"','"', $domain_cover);
                     if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
                         $padding_hack = 0; //For URL
+                    } elseif(string_is_icon($domain_logo)){
+                        $padding_hack = 5; //For Icon
                     } else {
                         $padding_hack = 7; //For Emoji
                     }
