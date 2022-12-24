@@ -337,12 +337,11 @@ if(!$basic_header_footer){
 
                     echo '<div class="left_nav top_nav " style="text-align: left;">';
 
-
                     //Domain Source
                     $domain_cover = get_domain('m__cover');
                     $domain_logo = one_two_explode('"','"', $domain_cover);
                     if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
-                        $padding_hack = 0; //For URL
+                        $padding_hack = 2; //For URL
                     } elseif(string_is_icon($domain_logo)){
                         $padding_hack = 4; //For Icon
                     } else {
