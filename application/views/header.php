@@ -325,7 +325,7 @@ if(!$basic_header_footer){
 
     //Do not show for /sign view
     ?>
-    <div class="container fixed-top top-header-position" style="padding-bottom: 0 !important; min-height: 38px;">
+    <div class="container fixed-top top-header-position mobile_straight" style="padding-bottom: 0 !important; min-height: 38px;">
         <div class="row justify-content">
             <table class="platform-navigation">
                 <tr>
@@ -334,7 +334,7 @@ if(!$basic_header_footer){
                     echo '<td>';
                     echo '<div class="max_width">';
 
-                    echo '<div class="left_nav top_nav mobile_straight" style="text-align: left;">';
+                    echo '<div class="left_nav top_nav " style="text-align: left;">';
 
 
                     //Domain Source

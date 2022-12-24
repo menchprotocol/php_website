@@ -4064,6 +4064,11 @@ main {
 }
 
 
+
+.mobile_straight {
+    border-radius: 0 !important;
+}
+
 @media (hover: hover) {
     .text-logo {
         margin-bottom: -11px !important;
@@ -4072,7 +4077,7 @@ main {
         margin-bottom: 5px !important;
     }
     .mobile_straight {
-        border-radius: 0 !important;
+        border-radius: 21px !important;
     }
 }
 
