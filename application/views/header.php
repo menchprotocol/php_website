@@ -334,7 +334,7 @@ if(!$basic_header_footer){
                     echo '<td>';
                     echo '<div class="max_width">';
 
-                    echo '<div class="left_nav top_nav" style="text-align: left;">';
+                    echo '<div class="left_nav top_nav mobile_straight" style="text-align: left;">';
 
 
                     //Domain Source

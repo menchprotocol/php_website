@@ -4071,6 +4071,9 @@ main {
     .platform-logo {
         margin-bottom: 5px !important;
     }
+    .mobile_straight {
+        border-radius: 0 !important;
+    }
 }
 
 
