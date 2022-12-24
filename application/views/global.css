@@ -3055,7 +3055,7 @@ h4.css__title{
 .btn.btn-12274,
 .coinType12274 {
     border:1px solid #007AFD;
-    background-color: #007AFD !important;
+    border-radius:50% !important;
 }
 .coin-12274 .cover-content {
     background: rgba(0,122,253,0.82);
@@ -3117,7 +3117,6 @@ h4.css__title{
 }
 .coinType12273 {
     border:1px solid #FFC500 !important;
-    background-color: #FFC500 !important;
     border-radius: 0;
 }
 .coin-12273 .cover-content {
@@ -3178,7 +3177,6 @@ h4.css__title{
 }
 .coinType6255{
     border-color: #FC1B44;
-    background-color: #FC1B44;
 }
 .coin-6255 .cover-content{
     background: rgba(252,27,68,0.82);
@@ -3474,9 +3472,6 @@ h4.css__title{
     margin: 0 auto;
 }
 
-.coinType12274 {
-    border-radius:50% !important;
-}
 /*
 
 .coinType12274 i.zq12274 {
