@@ -20,6 +20,22 @@ if(isset($_POST)){
         ));
         echo 'Bad Paypal Post Data!';
 
+        /*
+         *
+         * //Log this refund:
+                                    $this->X_model->create(array(
+                                        'x__source' => $before_data[0]['x__source'],
+                                        'x__type' => 29432, //Paypal Full Refund
+                                        'x__right' => $before_data[0]['x__right'],
+                                        'x__left' => $before_data[0]['x__left'],
+                                        'x__up' => $before_data[0]['x__up'],
+                                        'x__down' => $before_data[0]['x__down'],
+                                        'x__reference' => $before_data[0]['x__id'],
+                                        'x__message' => $x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].' Refunded in Full',
+                                        'x__metadata' => $y,
+                                    ));
+         * */
+
     } else {
 
         $item_numbers = explode('-',$_POST['item_number']);

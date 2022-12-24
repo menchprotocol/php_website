@@ -345,44 +345,6 @@ class X_model extends CI_Model
                             $e___6186 = $this->config->item('e___6186'); //Transaction Status
                             $x__message .= view_db_field($key) . ' updated from [' . $e___6186[$before_data[0][$key]]['m__title'] . '] to [' . $e___6186[$value]['m__title'] . ']'."\n";
 
-                            //Is this a Paypal transaction being removed?
-                            if(count($before_data)){
-                                $x__metadata = @unserialize($before_data[0]['x__metadata']);
-                                $paypal_client_id = website_setting(30857);
-                                $paypal_secret_key = website_setting(30858);
-
-                                if($paypal_client_id && $paypal_secret_key && isset($x__metadata['txn_id']) && strlen($x__metadata['txn_id']) && $before_data[0]['x__type']==26595 && $before_data[0]['x__status']!=6173 && $value==6173){
-
-                                    $ch=curl_init();
-                                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                                        'Content-Type: application/json',
-                                        'Authorization: Basic '.base64_encode($paypal_client_id.":".$paypal_secret_key),
-                                    ));
-                                    curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/payments/sale/".$x__metadata['txn_id']."/refund");
-                                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                                    curl_setopt($ch, CURLOPT_HEADER, false);
-                                    //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                                    curl_setopt($ch, CURLOPT_POST, true);
-                                    curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
-                                    $result = curl_exec($ch);
-                                    $y=json_decode($result,true);
-
-                                    //Log this refund:
-                                    $this->X_model->create(array(
-                                        'x__source' => $before_data[0]['x__source'],
-                                        'x__type' => 29432, //Paypal Full Refund
-                                        'x__right' => $before_data[0]['x__right'],
-                                        'x__left' => $before_data[0]['x__left'],
-                                        'x__up' => $before_data[0]['x__up'],
-                                        'x__down' => $before_data[0]['x__down'],
-                                        'x__reference' => $before_data[0]['x__id'],
-                                        'x__message' => $x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].' Refunded in Full',
-                                        'x__metadata' => $y,
-                                    ));
-
-                                }
-                            }
-
                         } elseif($key=='x__type'){
 
                             $e___4593 = $this->config->item('e___4593'); //Transaction Types
