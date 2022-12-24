@@ -54,7 +54,7 @@ echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377p
 
 
 //Start darker background:
-echo '<div class="halfbg narrow-bar">';
+echo '<div class="halfbg narrow-bar slim_flat">';
 
 
 //MESSAGES
