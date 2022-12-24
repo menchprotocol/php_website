@@ -3719,20 +3719,15 @@ h4.css__title{
     color: #999999 !important;
 }
 
-.dotransparent {
-    background-color: transparent !important;
-}
-.dotransparent *, .btn-grey {
-    background-color: transparent;
-}
-.custom_ui_13884_13885 .round-btn {
+
+.custom_ui_13884_13885 .go-next {
     background-color: #000000 !important;
     color: #FFFFFF !important;
 }
 
-.custom_ui_13884_13886 .round-btn {
+.custom_ui_13884_13886 .go-next {
     background-color: #FFFFFF !important;
-    color: #FFFFFF !important;
+    color: #000000 !important;
 }
 
 .alert * {
@@ -4076,4 +4071,11 @@ main {
 }
 .center-info  .round-btn{
     margin-top: 21px;
+}
+
+.dotransparent {
+    background-color: transparent !important;
+}
+.dotransparent *, .btn-grey {
+    background-color: transparent;
 }
