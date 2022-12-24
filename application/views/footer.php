@@ -13,7 +13,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         ?>
         <div class="modal fade indifferent" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
+                <div class="modal-content slim_flat">
                     <div class="modal-header">
                         <h5 class="modal-title css__title" id="modal4997Label"><?= $e___11035[4997]['m__cover'].' '.$e___11035[4997]['m__title'] ?></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -156,7 +156,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         ?>
         <div class="modal fade indifferent" id="modal12589" tabindex="-1" role="dialog" aria-labelledby="modal12589Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
+                <div class="modal-content slim_flat">
                     <div class="modal-header">
                         <h5 class="modal-title css__title" id="modal12589Label"><?= $e___11035[12589]['m__cover'].' '.$e___11035[12589]['m__title'] ?></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -242,7 +242,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     <!-- ACCOUNT SETTINGS Modal -->
     <div class="modal fade indifferent" id="modal6225" tabindex="-1" role="dialog" aria-labelledby="modal6225Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content slim_flat">
                 <div class="modal-header">
                     <h5 class="modal-title css__title" id="modal6225Label"><?= $e___11035[6225]['m__cover'].' '.$e___11035[6225]['m__title'] ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -261,7 +261,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     <!-- APP Modal -->
     <div class="modal fade indifferent" id="modal6287" tabindex="-1" role="dialog" aria-labelledby="modal6287Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content slim_flat">
                 <div class="modal-header">
                     <h5 class="modal-title css__title" id="modal6287Label"><?= $e___11035[6287]['m__cover'].' '.$e___11035[6287]['m__title'] ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -280,7 +280,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     <!-- EDIT MESSAGE Modal -->
     <div class="modal fade" id="modal13571" tabindex="-1" role="dialog" aria-labelledby="modal13571Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content slim_flat">
                 <div class="modal-header">
                     <h5 class="modal-title css__title" id="modal13571Label"><?= $e___11035[13571]['m__cover'].' '.$e___11035[13571]['m__title'] ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -315,7 +315,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     <!-- SET COVER Modal -->
     <div class="modal fade" id="modal14937" tabindex="-1" role="dialog" aria-labelledby="modal14937Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content slim_flat">
                 <div class="modal-header">
                     <h5 class="modal-title css__title" id="modal14937Label"><?= $e___11035[14937]['m__cover'].' '.$e___11035[14937]['m__title'] ?></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -403,7 +403,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     <!-- GIF Modal -->
     <div class="modal fade" id="modal14073" tabindex="-1" role="dialog" aria-labelledby="modal14073Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content slim_flat">
                 <div class="modal-header">
                     <h5 class="modal-title css__title" id="modal14073Label"><?= $e___11035[14073]['m__cover'].' '.$e___11035[14073]['m__title'] ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
