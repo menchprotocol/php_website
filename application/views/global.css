@@ -70,6 +70,10 @@ body {
     border-radius: 21px !important;
     display: block;
 }
+.inner-content img {
+    border-radius: 0px !important;
+    display: inline-block;
+}
 .focus-coin .content-image {
     max-height: 233px;
 }
