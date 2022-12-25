@@ -1519,7 +1519,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     if($superpower_10939 && !$focus_coin){
 
-        $ui .= '<div class="coin_coins show-on-hover">';
+        $ui .= '<div class="coin_coins"><div class="show-on-hover">';
         foreach($CI->config->item('e___31890') as $menu_id => $m) {
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             $ui .= '<span class="hideIfEmpty '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
@@ -1530,7 +1530,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             }
             $ui .= '</span>';
         }
-        $ui .= '</div>';
+        $ui .= '</div></div>';
 
     }
 
