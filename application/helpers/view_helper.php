@@ -1245,7 +1245,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     if(!in_array($x__type, $CI->config->item('n___13369'))){
         return 'Invalid x__type i '.$x__type;
     }
-    $e___31888 = $CI->config->item('e___31888'); //Idea Card
+    $e___31904 = $CI->config->item('e___31904'); //Idea Card
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $e_of_i = ( $cache_app ? false : e_of_i($i['i__id']) );
@@ -1370,7 +1370,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         if($action_buttons){
             //Right Action Menu
             $o_menu .= '<div class="dropdown inline-block">';
-            $o_menu .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___31888[$focus_menu]['m__title'].'">'.$e___31888[$focus_menu]['m__cover'].'</button>';
+            $o_menu .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___31904[$focus_menu]['m__title'].'">'.$e___31904[$focus_menu]['m__cover'].'</button>';
             $o_menu .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
             $o_menu .= $action_buttons;
             $o_menu .= '</div>';
@@ -1414,7 +1414,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         }
     } elseif($focus_coin) {
         //You Are Here
-        $ui .= '<span title="'.$e___31888[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___31888[31825]['m__cover'].'</span>';
+        $ui .= '<span title="'.$e___31904[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___31904[31825]['m__cover'].'</span>';
     }
     $ui .= '</div></td>';
 
@@ -1431,7 +1431,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Edit:
-    $ui .= '<td width="20%"><div class="show-on-hover">'.( $e_of_i && !$discovery_mode ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___31888[14937]['m__cover'].'</a>' : '').'</div></td>';
+    $ui .= '<td width="20%"><div class="show-on-hover">'.( $e_of_i && !$discovery_mode ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___31904[14937]['m__cover'].'</a>' : '').'</div></td>';
 
     //Menu:
     $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
