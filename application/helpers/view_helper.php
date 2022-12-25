@@ -1524,7 +1524,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             $ui .= '<span class="hideIfEmpty '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
             if($menu_id==31892 && !$can_click && $member_e && !$focus_coin && !$discovery_mode){
-                $ui .= '<a href="'.$href.'" class="right-btn"><i class="fal fa-arrow-right zq12273"></i></a>';
+                $ui .= '<a href="'.$href.'" class="right-btn" title="'.$m['m__title'].'">'.$m['m__cover'].'</a>';
             } else {
                 $ui .= view_coins_i($menu_id,  $i['i__id']);
             }
