@@ -270,7 +270,7 @@ class X extends CI_Controller
                     $ids = array();
                     foreach($is_next as $i) {
                         array_push($ids, $i['i__id']);
-                        echo view_i(12273, 0, null, $i);
+                        echo view_i_card(12273, 0, null, $i);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent">'.join(',',$ids).'</div>';
@@ -578,7 +578,7 @@ class X extends CI_Controller
                 if ($_POST['x__type'] == 12274 || $_POST['x__type'] == 11030) {
                     echo view_e($_POST['x__type'], $s);
                 } else if ($_POST['x__type'] == 6255 || $_POST['x__type'] == 12273) {
-                    echo view_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
+                    echo view_i_card($_POST['x__type'], 0, $previous_i, $s, $focus_e);
                 }
             }
 
@@ -592,7 +592,7 @@ class X extends CI_Controller
 
             foreach(view_coins_i($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
                 if ($_POST['x__type'] == 12273 || $_POST['x__type'] == 11019) {
-                    echo view_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
+                    echo view_i_card($_POST['x__type'], 0, $previous_i, $s, $focus_e);
                 } else if ($_POST['x__type'] == 6255 || $_POST['x__type'] == 12274) {
                     echo view_e($_POST['x__type'], $s);
                 }

@@ -592,7 +592,7 @@ class I_model extends CI_Model
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             ), array(($is_upwards ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
-            $new_i_html = view_i($x__type, 0, ( $is_upwards ? null : $focus_i[0] ), $new_i[0]);
+            $new_i_html = view_i_card($x__type, 0, ( $is_upwards ? null : $focus_i[0] ), $new_i[0]);
 
         } else {
 
@@ -612,7 +612,7 @@ class I_model extends CI_Model
                 'x__right' => $i_new['i__id'],
             ), array('x__right'));
 
-            $new_i_html = view_i($x__type, 0, null, $new_i[0], $focus_e[0]);
+            $new_i_html = view_i_card($x__type, 0, null, $new_i[0], $focus_e[0]);
 
         }
 

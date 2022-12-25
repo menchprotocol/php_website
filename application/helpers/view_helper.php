@@ -504,7 +504,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
-            $ui .= view_i(12273, 0, null, $i, $focus_e, null);
+            $ui .= view_i_card(12273, 0, null, $i, $focus_e, null);
         }
         $ui .= '</div>';
 
@@ -538,7 +538,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
         foreach ($list_results as $i) {
-            $ui .= view_i($x__type, $i['i__id'], null, $i, $focus_e);
+            $ui .= view_i_card($x__type, $i['i__id'], null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -569,7 +569,7 @@ function view_body_i($x__type, $counter, $i__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $previous_i) {
-            $ui .= view_i(11019, 0, null, $previous_i);
+            $ui .= view_i_card(11019, 0, null, $previous_i);
         }
         $ui .= '</div>';
 
@@ -601,7 +601,7 @@ function view_body_i($x__type, $counter, $i__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
         foreach($list_results as $next_i) {
-            $ui .= view_i(12273, 0, $is[0], $next_i);
+            $ui .= view_i_card(12273, 0, $is[0], $next_i);
         }
         $ui .= '</div>';
 
@@ -974,7 +974,7 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     //Build Body UI:
     $body = '<div class="row">';
     foreach($next_is as $key => $next_i){
-        $body .= view_i($x__type, $top_i__id, $i, $next_i, $member_e, ( $member_e ? $CI->X_model->tree_progress($member_e['e__id'], $next_i) : null ), null);
+        $body .= view_i_card($x__type, $top_i__id, $i, $next_i, $member_e, ( $member_e ? $CI->X_model->tree_progress($member_e['e__id'], $next_i) : null ), null);
     }
     $body .= '</div>';
 
@@ -1238,14 +1238,14 @@ function view_i_select($i, $x__source, $previously_selected){
 }
 
 
-function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $tree_progress = null, $extra_class = null){
+function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $tree_progress = null, $extra_class = null){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     if(!in_array($x__type, $CI->config->item('n___13369'))){
         return 'Invalid x__type i '.$x__type;
     }
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    $e___31888 = $CI->config->item('e___31888'); //Idea Card
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $e_of_i = ( $cache_app ? false : e_of_i($i['i__id']) );
@@ -1318,10 +1318,11 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
     //LOCKED
     $o_menu = '';
     $action_buttons = null;
+    $focus_menu = ( $focus_coin ? 11047 : 14955 );
 
     if(!$cache_app) {
 
-        foreach($CI->config->item(( $focus_coin ? 'e___11047' : 'e___14955' )) as $e__id => $m) {
+        foreach($CI->config->item('e___'.$focus_menu) as $e__id => $m) {
 
             //Skip if missing superpower:
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
@@ -1369,7 +1370,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         if($action_buttons){
             //Right Action Menu
             $o_menu .= '<div class="dropdown inline-block">';
-            $o_menu .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14955]['m__cover'].'</button>';
+            $o_menu .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___31888[$focus_menu]['m__title'].'">'.$e___31888[$focus_menu]['m__cover'].'</button>';
             $o_menu .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
             $o_menu .= $action_buttons;
             $o_menu .= '</div>';
@@ -1413,7 +1414,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
         }
     } elseif($focus_coin) {
         //You Are Here
-        $ui .= '<span title="'.$e___11035[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[31825]['m__cover'].'</span>';
+        $ui .= '<span title="'.$e___31888[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___31888[31825]['m__cover'].'</span>';
     }
     $ui .= '</div></td>';
 
@@ -1430,7 +1431,7 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
 
     //Edit:
-    $ui .= '<td width="20%"><div class="show-on-hover">'.( $e_of_i && !$discovery_mode ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
+    $ui .= '<td width="20%"><div class="show-on-hover">'.( $e_of_i && !$discovery_mode ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___31888[14937]['m__cover'].'</a>' : '').'</div></td>';
 
     //Menu:
     $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
@@ -1518,13 +1519,18 @@ function view_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = fal
 
     if($superpower_10939 && !$focus_coin){
 
-        $ui .= '<div class="coin_coins"><div class="show-on-hover">';
-        $ui .= '<span class="hideIfEmpty uptree '.superpower_active(14005).'">'.view_coins_i(11019,  $i['i__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_i(12273,  $i['i__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_i(12274,  $i['i__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_i(6255,  $i['i__id']).'</span>';
-        $ui .= ( !$can_click && $member_e && !$focus_coin && !$discovery_mode ? '<a href="'.$href.'" class="right-btn"><i class="fal fa-arrow-right zq12273"></i></a>' : '' );
-        $ui .= '</div></div>';
+        $ui .= '<div class="coin_coins show-on-hover">';
+        foreach($CI->config->item('e___31890') as $menu_id => $m) {
+            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+            $ui .= '<span class="hideIfEmpty '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+            if($menu_id==31892 && !$can_click && $member_e && !$focus_coin && !$discovery_mode){
+                $ui .= '<a href="'.$href.'" class="right-btn"><i class="fal fa-arrow-right zq12273"></i></a>';
+            } else {
+                $ui .= view_coins_i($menu_id,  $i['i__id']);
+            }
+            $ui .= '</span>';
+        }
+        $ui .= '</div>';
 
     }
 
@@ -1934,7 +1940,7 @@ function view_e($x__type, $e, $extra_class = null)
     if($superpower_10939 && !$is_cache && !$is_app && !$focus_coin){
         $ui .= '<div class="coin_coins"><div class="show-on-hover">';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(12273,  $e['e__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty uptree '.superpower_active(14005).'">'.view_coins_e(11030,  $e['e__id']).'</span>';
+        $ui .= '<span class="hideIfEmpty '.superpower_active(14005).'">'.view_coins_e(11030,  $e['e__id']).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(12274,  $e['e__id']).'</span>';
         $ui .= '<span class="hideIfEmpty">'.view_coins_e(6255,  $e['e__id']).'</span>';
         $ui .= '</div></div>';

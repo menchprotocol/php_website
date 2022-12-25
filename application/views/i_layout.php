@@ -41,7 +41,7 @@ echo '<script type="text/javascript"> $(document).ready(function () { setTimeout
 
 //Focus Source:
 echo '<div class="main_item row justify-content">';
-echo view_i(4250, 0, null, $i);
+echo view_i_card(4250, 0, null, $i);
 echo '</div>';
 
 
