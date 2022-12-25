@@ -51,7 +51,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     } elseif ($x__type == 4260 /* Image URL */) {
 
-        return '<img '.( $has_discovery_mode ? ' src="' . $x__message . '" class="content-image" ' : ' data-src="' . $x__message . '" src="https://s3foundation.s3-us-west-2.amazonaws.com/f9ad9c2e7c18abd949a0119d621bf00f.gif" class="content-image" ' ).' alt="IMAGE" />';
+        return '<img src="' . $x__message . '" class="content-image" />';
 
     } elseif ($x__type == 4259 /* Audio URL */) {
 
