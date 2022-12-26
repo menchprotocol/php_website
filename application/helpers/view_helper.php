@@ -1360,7 +1360,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 if(isset($x__metadata['txn_id'])){
                     $action_buttons .= '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
                 }
-            } elseif(substr($m['m__message'], 0, 1)=='/'){
+            } elseif(substr($m['m__message'], 0, 1)=='/' && !$discovery_mode){
                 //Standard button
                 $action_buttons .= '<a href="'.$m['m__message'].$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
             }
