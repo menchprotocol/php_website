@@ -809,7 +809,7 @@ if(!$is_or_idea){
 
 
 
-if($top_i__id > 0 && !$top_completed && isset($tree_progress['fixed_completed_percentage']) && $tree_progress['fixed_completed_percentage']>0){
+if($top_i__id > 0 && ((isset($tree_progress['fixed_completed_percentage']) && $tree_progress['fixed_completed_percentage']>0) || $member_e['e__id']==1)){
     echo '<p style="padding:10px;">'.$tree_progress['fixed_completed_percentage'].'% Completed</p>';
 }
 
