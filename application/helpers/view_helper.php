@@ -1388,17 +1388,6 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
 
 
-    $ui .= '<td width="20%"><div class="show-on-hover">';
-    foreach($CI->X_model->fetch(array(
-        'x__right' => $i['i__id'],
-        'x__type' => 4250, //New Idea Created
-    ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-        $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
-    }
-    $ui .= '</div></td>';
-
-
-
     //Link Type:
     $ui .= '<td width="20%"><div class="show-on-hover">';
     if($x__id && !$discovery_mode && $e_of_i){
@@ -1415,6 +1404,15 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     } elseif($focus_coin) {
         //You Are Here
         $ui .= '<span title="'.$e___31904[31914]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___31904[31914]['m__cover'].'</span>';
+    }
+    $ui .= '</div></td>';
+
+
+
+    //Idea Status
+    $ui .= '<td width="20%"><div class="show-on-hover">';
+    if(!$discovery_mode){
+        $ui .= view_input_dropdown(31004, $i['i__status'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
     }
     $ui .= '</div></td>';
 
@@ -1517,8 +1515,8 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     $ui .= '</div></div>';
 
+    //Bottom Bar
     if($superpower_10939 && !$focus_coin && !$discovery_mode){
-
         $ui .= '<div class="coin_coins"><div class="show-on-hover">';
         foreach($CI->config->item('e___31890') as $menu_id => $m) {
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
@@ -1845,16 +1843,9 @@ function view_e_card($x__type, $e, $extra_class = null)
 
         $ui .= '<table class="coin_coins"><tr>';
 
-        $ui .= '<td width="20%"><div class="show-on-hover">';
-        foreach($CI->X_model->fetch(array(
-            'x__down' => $e['e__id'],
-            'x__type' => 4251, //New Source Created
-        ), array('x__source'), 1, 0, array('x__id' => 'DESC')) as $creator){
-            $ui .= '<a href="/@'.$creator['e__id'].'" title="'.$creator['e__title'].' '.view_time_difference(strtotime($creator['x__time'])).' Ago: '.substr($creator['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top"><span class="icon-block-xxs">'.view_cover(12274,$creator['e__cover'], true).'</span></a>';
-        }
-        $ui .= '</div></td>';
 
-        $ui .= '<td width="20%"><div class="show-on-hover">';
+        //Source Link
+        $ui .= '<td width="25%"><div class="show-on-hover">';
         if($x__id && $superpower_13422){
             foreach($CI->config->item('e___31770') as $x__type1 => $m1){
                 if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
@@ -1873,14 +1864,15 @@ function view_e_card($x__type, $e, $extra_class = null)
         $ui .= '</div></td>';
 
 
+        //Source Status
         $special_type = in_array($e['e__status'], $CI->config->item('n___31109'));
-        $ui .= '<td width="20%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__status'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '' ).'</div></td>';
+        $ui .= '<td width="25%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__status'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '' ).'</div></td>';
+
+        //Source Edit
+        $ui .= '<td width="25%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[31912]['m__cover'].'</a>' : '').'</div></td>';
 
 
-        $ui .= '<td width="20%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[31912]['m__cover'].'</a>' : '').'</div></td>';
-
-
-        $ui .= '<td width="20%"><div class="show-on-hover">'.$dropdown_ui.'</div></td>';
+        $ui .= '<td width="25%"><div class="show-on-hover">'.$dropdown_ui.'</div></td>';
 
         $ui .= '</tr></table>';
     }
@@ -1936,13 +1928,15 @@ function view_e_card($x__type, $e, $extra_class = null)
 
 
 
-    //Coin Block
+    //Bottom Bar
     if($superpower_10939 && !$is_cache && !$is_app && !$focus_coin){
         $ui .= '<div class="coin_coins"><div class="show-on-hover">';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_e(12273,  $e['e__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty '.superpower_active(14005).'">'.view_coins_e(11030,  $e['e__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_e(12274,  $e['e__id']).'</span>';
-        $ui .= '<span class="hideIfEmpty">'.view_coins_e(6255,  $e['e__id']).'</span>';
+        foreach($CI->config->item('e___31916') as $menu_id => $m) {
+            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+            $ui .= '<span class="hideIfEmpty '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+            $ui .= view_coins_e($menu_id,  $e['e__id']);
+            $ui .= '</span>';
+        }
         $ui .= '</div></div>';
     }
 
