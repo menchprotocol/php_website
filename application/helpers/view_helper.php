@@ -1333,7 +1333,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
             $anchor = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'];
 
-            if($e__id==12589){
+            if($e__id==12589 && !$discovery_mode){
                 //Mass Apply
                 $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
             } elseif($e__id==30795 && !$discovery_mode && $superpower_10939){
@@ -1342,16 +1342,16 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             } elseif($e__id==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && ($e_of_i || $superpower_10939 || ( $member_e && $member_e['e__id']==$i['x__source'] ))){
                 //Unlink
                 $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$x__id.'">'.$anchor.'</a>';
-            } elseif($e__id==30873){
+            } elseif($e__id==30873 && !$discovery_mode){
                 //Template:
                 $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 1)" class="dropdown-item css__title">'.$anchor.'</a>';
-            } elseif($e__id==29771){
+            } elseif($e__id==29771 && !$discovery_mode){
                 //Clone:
                 $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item css__title">'.$anchor.'</a>';
             } elseif($e__id==28636 && $e_of_i && $x__id){
                 //Transaction Details
                 $action_buttons .= '<a href="/-4341?x__id='.$x__id.'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
-            } elseif($e__id==6182 && $e_of_i){
+            } elseif($e__id==6182 && $e_of_i && !$discovery_mode){
                 //Delete
                 $action_buttons .= '<a href="javascript:void();" new-en-id="6182" onclick="update_dropdown(4737, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_4737_'.$i['i__id'].'_'.$x__id.' css__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
             } elseif($e__id==28637 && isset($i['x__type'])){
@@ -1517,7 +1517,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     $ui .= '</div></div>';
 
-    if($superpower_10939 && !$focus_coin){
+    if($superpower_10939 && !$focus_coin && !$discovery_mode){
 
         $ui .= '<div class="coin_coins"><div class="show-on-hover">';
         foreach($CI->config->item('e___31890') as $menu_id => $m) {
