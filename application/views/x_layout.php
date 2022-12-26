@@ -61,7 +61,7 @@ $can_skip = count($this->X_model->fetch(array(
 )));
 
 if($is_or_idea){ // || count($x_completes)
-    $_GET['open'] = true;
+    //$_GET['open'] = true;
 }
 
 
