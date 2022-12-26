@@ -1742,7 +1742,7 @@ function view_e_card($x__type, $e, $extra_class = null)
 
     $ui .= '<div class="cover-wrapper">';
 
-
+    $focus_menu = ( $focus_coin ? 12887 : 14956 );
 
     //LOCKED
     $dropdown_ui = false;
@@ -1751,7 +1751,7 @@ function view_e_card($x__type, $e, $extra_class = null)
         $action_buttons = null;
 
         //Generate Buttons:
-        foreach($CI->config->item(( $focus_coin ? 'e___12887' : 'e___14956' )) as $e__id => $m) {
+        foreach($CI->config->item('e___'.$focus_menu) as $e__id => $m) {
 
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
@@ -1817,7 +1817,7 @@ function view_e_card($x__type, $e, $extra_class = null)
         if($action_buttons){
             //Show menu:
             $dropdown_ui .= '<div class="dropdown inline-block">';
-            $dropdown_ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[14956]['m__cover'].'</button>';
+            $dropdown_ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[$focus_menu]['m__cover'].'</button>';
             $dropdown_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
             $dropdown_ui .= $action_buttons;
             $dropdown_ui .= '</div>';

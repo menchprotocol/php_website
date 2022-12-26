@@ -397,6 +397,7 @@ if(!$basic_header_footer){
                             if(!e_of_i($edit_i__id)){
                                 continue;
                             }
+
                             //They can edit:
                             $href = 'href="/~'.$edit_i__id.'" ';
 

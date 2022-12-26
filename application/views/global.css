@@ -2113,6 +2113,10 @@ input.form-control,
     display: block;
     vertical-align: middle;
 }
+
+.coinface-12274 .cover-content .inner-content {
+    padding: 2px 3px 0;
+}
 .mini-coin .cover-content .inner-content {
     margin: 0;
     padding: 0;
