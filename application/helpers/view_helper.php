@@ -1414,7 +1414,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         }
     } elseif($focus_coin) {
         //You Are Here
-        $ui .= '<span title="'.$e___31904[31825]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___31904[31825]['m__cover'].'</span>';
+        $ui .= '<span title="'.$e___31904[31914]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___31904[31914]['m__cover'].'</span>';
     }
     $ui .= '</div></td>';
 
