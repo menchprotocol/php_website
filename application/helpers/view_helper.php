@@ -1852,7 +1852,7 @@ function view_e_card($x__type, $e, $extra_class = null)
                     foreach($CI->X_model->fetch(array(
                         'x__id' => $x__id,
                     ), array('x__source')) as $linker){
-                        $ui .= '<span title="'.$linker['e__title'].' '.view_time_difference(strtotime($linker['x__time'])).' Ago: '.substr($linker['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top">'.view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id).'</span>';
+                        $ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
                     }
                     break;
                 }
