@@ -307,7 +307,7 @@ img.no-frame {
     color:#FC1B44 !important;
 }
 .progress-done{
-    height:3px;
+    height:1px;
     background-color: #FC1B44;
 }
 
@@ -643,7 +643,7 @@ label:focus,
 .progress-bg-list{
     margin: 0;
     position: relative !important;
-    height:3px;
+    height:1px;
     cursor: default;
     overflow: hidden;
     width: 100%;
