@@ -390,7 +390,7 @@ if($top_i__id) {
                     'x__source' => $x__source,
                 )));
 
-                $select_answer .= view_i_select($next_i, $x__source, $previously_selected);
+                $select_answer .= view_i_select_card($next_i, $x__source, $previously_selected);
 
             }
 

@@ -3185,7 +3185,7 @@ h4.css__title{
     background-color: #FC1B44;
 }
 .coinType6255{
-    border-color: #FC1B44;
+    border: 1px solid #FC1B44 !important;
 }
 
 .zq6255,

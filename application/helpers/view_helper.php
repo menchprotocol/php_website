@@ -527,7 +527,7 @@ function view_body_e($x__type, $counter, $e__id){
         }
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $e) {
-            $ui .= view_e($x__type, $e, null);
+            $ui .= view_e_card($x__type, $e, null);
         }
         $ui .= '</div>';
         if($x__type==11030 && superpower_active(13422, true)){
@@ -610,7 +610,7 @@ function view_body_i($x__type, $counter, $i__id){
         //DISCOVERIES
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $item){
-            $ui .= view_e(6255, $item);
+            $ui .= view_e_card(6255, $item);
         }
         $ui .= '</div>';
 
@@ -630,7 +630,7 @@ function view_body_i($x__type, $counter, $i__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">'; //list-in-4983
         foreach($list_results as $e_ref){
-            $ui .= view_e($e_ref['x__type'], $e_ref, null);
+            $ui .= view_e_card($e_ref['x__type'], $e_ref, null);
         }
         $ui .= '</div>';
 
@@ -1187,7 +1187,7 @@ function view__load__e($e){
 
 
 
-function view_i_select($i, $x__source, $previously_selected){
+function view_i_select_card($i, $x__source, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1683,7 +1683,7 @@ function view_e_line($e)
 
 
 
-function view_e($x__type, $e, $extra_class = null)
+function view_e_card($x__type, $e, $extra_class = null)
 {
 
     $CI =& get_instance();
@@ -1694,7 +1694,7 @@ function view_e($x__type, $e, $extra_class = null)
     if(!isset($e['e__id']) || !isset($e['e__title'])){
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'view_e() Missing core variables',
+            'x__message' => 'view_e_card() Missing core variables',
             'x__metadata' => array(
                 '$x__type' => $x__type,
                 '$e' => $e,

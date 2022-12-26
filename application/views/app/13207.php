@@ -18,7 +18,7 @@ foreach($this->E_model->scissor_e(website_setting(0), 13207) as $e_item) {
 
             $ui = '<div class="row justify-content">';
             foreach(view_coins_e(12274, $x['e__id'], 1, false) as $count=>$e) {
-                $ui .= view_e(13207, $e, null);
+                $ui .= view_e_card(13207, $e, null);
             }
             $ui .= '</div>';
 

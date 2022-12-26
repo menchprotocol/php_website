@@ -245,7 +245,7 @@ class X extends CI_Controller
                     $ids = array();
                     foreach(view_coins_e(12274, $_POST['coin__id'], 1, true) as $e) {
                         array_push($ids, $e['e__id']);
-                        echo view_e(12274, $e);
+                        echo view_e_card(12274, $e);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent" title="Total of '.count($ids).'">'.join(', ',$ids).'</div>';
@@ -576,7 +576,7 @@ class X extends CI_Controller
 
             foreach(view_coins_e($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
                 if ($_POST['x__type'] == 12274 || $_POST['x__type'] == 11030) {
-                    echo view_e($_POST['x__type'], $s);
+                    echo view_e_card($_POST['x__type'], $s);
                 } else if ($_POST['x__type'] == 6255 || $_POST['x__type'] == 12273) {
                     echo view_i_card($_POST['x__type'], 0, $previous_i, $s, $focus_e);
                 }
@@ -594,7 +594,7 @@ class X extends CI_Controller
                 if ($_POST['x__type'] == 12273 || $_POST['x__type'] == 11019) {
                     echo view_i_card($_POST['x__type'], 0, $previous_i, $s, $focus_e);
                 } else if ($_POST['x__type'] == 6255 || $_POST['x__type'] == 12274) {
-                    echo view_e($_POST['x__type'], $s);
+                    echo view_e_card($_POST['x__type'], $s);
                 }
             }
         }

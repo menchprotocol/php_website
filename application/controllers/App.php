@@ -313,7 +313,7 @@ class App extends CI_Controller
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $app) {
-            $ui .= view_e(6287, $app);
+            $ui .= view_e_card(6287, $app);
         }
         $ui .= '</div>';
 
