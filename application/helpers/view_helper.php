@@ -1431,7 +1431,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Edit:
-    $ui .= '<td width="20%"><div class="show-on-hover">'.( $e_of_i && !$discovery_mode ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___31904[14937]['m__cover'].'</a>' : '').'</div></td>';
+    $ui .= '<td width="20%"><div class="show-on-hover">'.( $e_of_i && !$discovery_mode ? '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$e___31904[31911]['m__cover'].'</a>' : '').'</div></td>';
 
     //Menu:
     $ui .= '<td width="20%"><div class="show-on-hover">'.$o_menu.'</div></td>';
@@ -1877,7 +1877,7 @@ function view_e_card($x__type, $e, $extra_class = null)
         $ui .= '<td width="20%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__status'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '' ).'</div></td>';
 
 
-        $ui .= '<td width="20%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[14937]['m__cover'].'</a>' : '').'</div></td>';
+        $ui .= '<td width="20%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[31912]['m__cover'].'</a>' : '').'</div></td>';
 
 
         $ui .= '<td width="20%"><div class="show-on-hover">'.$dropdown_ui.'</div></td>';

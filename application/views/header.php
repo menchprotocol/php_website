@@ -390,7 +390,7 @@ if(!$basic_header_footer){
                             //Search
                             $href = 'href="/@'.$member_e['e__id'].'" ';
 
-                        } elseif($x__type==14937 && (intval($first_segment)==$first_segment || substr($first_segment, 0, 1)=='-')) {
+                        } elseif($x__type==31911 && (intval($first_segment)==$first_segment || substr($first_segment, 0, 1)=='-')) {
 
                             if(substr($first_segment, 0, 1)=='-'){
                                 $href = 'href="/@'.substr($first_segment, 1).'" ';
