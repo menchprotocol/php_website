@@ -1382,7 +1382,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin slim_flat col-md-8 col-12 ' : ' edge-coin coin_i_click col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort x_sort ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
+    $ui = '<div title="%'.$tree_progress['fixed_completed_percentage'].'%" i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin slim_flat col-md-8 col-12 ' : ' edge-coin coin_i_click col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' cover_sort x_sort ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
 
 
     $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
@@ -1401,7 +1401,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Link Type:
     $ui .= '<td width="20%"><div class="show-on-hover">';
-    if($x__id && ($e_of_i || !$discovery_mode)){
+    if($x__id && !$discovery_mode && $e_of_i){
         foreach($CI->config->item('e___31770') as $x__type1 => $m1){
             if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
                 foreach($CI->X_model->fetch(array(
