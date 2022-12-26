@@ -1560,6 +1560,7 @@ i, .btn .show-max {
 .underline{ text-decoration: underline !important; }
 .icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 122% !important; }
 .icon-block-xxs{ width:24px !important; display: inline-block; text-align: center; overflow: visible; line-height: 122% !important; }
+.icon-block-xxs i{ font-size: 1em !important; }
 .icon-block-xs{ width:33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 122% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; }
 .icon-block-img img,
