@@ -632,7 +632,6 @@ class I_model extends CI_Model
         if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i__id){
             return array();
         }
-        return array();
 
         $recursive_i_ids = array();
 
