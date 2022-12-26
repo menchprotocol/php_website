@@ -240,7 +240,7 @@ if($top_i__id){
 
 }
 
-if($is_or_idea || $top_completed){
+if($top_completed){
     $_GET['open'] = true;
 }
 
