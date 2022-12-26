@@ -1390,13 +1390,13 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Link Type:
     $ui .= '<td width="20%"><div class="show-on-hover">';
-    if($x__id && !$discovery_mode && $e_of_i){
+    if($x__id && $e_of_i){
         foreach($CI->config->item('e___31770') as $x__type1 => $m1){
             if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
                 foreach($CI->X_model->fetch(array(
                     'x__id' => $x__id,
                 ), array('x__source')) as $linker){
-                    $ui .= view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i, false, $i['i__id'], $x__id);
+                    $ui .= view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id'], $x__id);
                 }
                 break;
             }
