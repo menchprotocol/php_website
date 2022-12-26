@@ -2700,8 +2700,8 @@ h4.css__title{
     }
 
     .icon-block-xxs {
-        width: 18px;
-        height: 18px;
+        width: 18px !important;
+        height: 18px !important;
     }
 
 }
