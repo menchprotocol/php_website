@@ -1396,7 +1396,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 foreach($CI->X_model->fetch(array(
                     'x__id' => $x__id,
                 ), array('x__source')) as $linker){
-                    $ui .= '<span title="'.$linker['e__title'].' '.view_time_difference(strtotime($linker['x__time'])).' Ago: '.substr($linker['x__time'], 0, 19).' PST" data-toggle="tooltip" data-placement="top">'.view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i, false, $i['i__id'], $x__id).'</span>';
+                    $ui .= view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i, false, $i['i__id'], $x__id);
                 }
                 break;
             }
