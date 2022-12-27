@@ -683,8 +683,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
      *
      * */
 
-    die($x__type.'/'.$e__id.'/'.$page_num.'/'.intval($append_coin_icon).'/');
-
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
