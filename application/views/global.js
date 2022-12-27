@@ -559,7 +559,7 @@ function view_load_page(x__type) {
             if(js_n___14686.includes(x__type)){
                 //Upwards link:
                 $(e_list).prepend(data);
-                //$('html, body').scrollTop(top_element.offset().top - 55);
+                $('html, body').scrollTop(top_element.offset().top - 55);
             } else {
                 $(e_list).append(data);
             }
@@ -1438,7 +1438,7 @@ function load_tab(x__type){
         }, function (data) {
             $('.headline_body_' + x__type).html(data);
             if(js_n___14686.includes(x__type)){
-                //$('html, body').scrollTop($('.main_item').offset().top - 54)
+                $('html, body').scrollTop($('.focus-coin').offset().top - 54);
             }
         });
 
@@ -1453,7 +1453,7 @@ function load_tab(x__type){
         }, function (data) {
             $('.headline_body_'+x__type).html(data);
             if(js_n___14686.includes(x__type)){
-                //$('html, body').scrollTop($('.main_item').offset().top - 54)
+                $('html, body').scrollTop($('.focus-coin').offset().top - 54);
             }
         });
 
