@@ -559,7 +559,7 @@ function view_load_page(x__type) {
             if(js_n___14686.includes(x__type)){
                 //Upwards link:
                 $(e_list).prepend(data);
-                $('html, body').scrollTop(top_element.offset().top - 55);
+                //$('html, body').scrollTop(top_element.offset().top - 55);
             } else {
                 $(e_list).append(data);
             }
@@ -1484,7 +1484,24 @@ function load_tab(x__type){
         }, 987);
 
 
+        $(function () {
+            var $win = $(window);
+            $win.scroll(function () {
 
+                if(js_n___14686.includes(x__type)) {
+                    //Upwards loading from top:
+                    if(parseInt($win.scrollTop()) <= 377){
+                        view_load_page(x__type);
+                    }
+                } else {
+                    //Download loading from bottom:
+                    if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) <= 377) {
+                        view_load_page(x__type);
+                    }
+                }
+
+            });
+        });
 
         if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
             i_load_search(x__type);
