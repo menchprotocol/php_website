@@ -71,7 +71,7 @@ function video_play(){
 
 
 //Full Story
-if(0 && js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user other than Shervin
+if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user other than Shervin
 
     /*
 
