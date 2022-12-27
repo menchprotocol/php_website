@@ -1039,6 +1039,8 @@ $(document).ready(function () {
             {
                 source: function (q, cb) {
 
+                    icons_listed = [];
+
                     //Members can filter search with first word:
                     var search_only_e = $("#top_search").val().charAt(0) == '@';
                     var search_only_in = $("#top_search").val().charAt(0) == '#';
