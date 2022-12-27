@@ -635,7 +635,7 @@ if($top_i__id) {
             $message_ui = '<input type="'.$input_type.'" '.$input_attributes.' class="border i_content  x_input" placeholder="" value="'.$previous_response.'" id="x_reply" />';
 
         }
-        $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); $(window).scrollTop(0); }); </script>';
+        $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
 
         echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
 
