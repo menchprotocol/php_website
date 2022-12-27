@@ -716,7 +716,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         //Determine Sort:
         $order_columns = array();
         foreach($CI->config->item('e___13550') as $x__sort_id => $sort) {
-            //$order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
+            $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
         $order_columns['x__spectrum'] = 'ASC';
         $order_columns['i__title'] = 'ASC';
@@ -735,7 +735,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         //Determine Sort:
         $order_columns = array();
         foreach($CI->config->item('e___6255') as $x__sort_id => $sort) {
-            //$order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
+            $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
         $order_columns['x__id'] = 'DESC';
 
