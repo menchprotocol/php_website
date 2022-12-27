@@ -413,7 +413,7 @@ function e_sort_load(x__type) {
         }
 
         //Show sort icon:
-        console.log('Completed Source Sorting for @'+x__type)
+        console.log('Completed Loading Sorting for @'+x__type)
         $('.e_sort, .sort_reset').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
@@ -1430,7 +1430,6 @@ function load_tab(x__type){
 
     if(focus_coin==12273){
 
-        console.log('Idea Tab');
         $.post("/i/view_body_i", {
             focus_coin:focus_coin,
             x__type:x__type,
@@ -1446,7 +1445,6 @@ function load_tab(x__type){
     } else if(focus_coin==12274){
 
         //Load the tab:
-        console.log('Source Tab');
         $.post("/e/view_body_e", {
             focus_coin:focus_coin,
             x__type:x__type,
@@ -1486,24 +1484,7 @@ function load_tab(x__type){
         }, 987);
 
 
-        $(function () {
-            var $win = $(window);
-            $win.scroll(function () {
 
-                if(js_n___14686.includes(x__type)) {
-                    //Upwards loading from top:
-                    if(parseInt($win.scrollTop()) <= 377){
-                        view_load_page(x__type);
-                    }
-                } else {
-                    //Download loading from bottom:
-                    if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) <= 377) {
-                        view_load_page(x__type);
-                    }
-                }
-
-            });
-        });
 
         if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
             i_load_search(x__type);
