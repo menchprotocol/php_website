@@ -556,10 +556,16 @@ function view_load_page(x__type) {
     }, function (data) {
         $('.load-more').remove();
         if(data.length){
+
+            window.scrollTo({
+                top: (top_element.offset().top - 55),
+                behavior: 'instant',
+            });
+
             if(js_n___14686.includes(x__type)){
                 //Upwards link:
                 $(e_list).prepend(data);
-                $('html, body').scrollTop(top_element.offset().top - 55);
+                //$('html, body').scrollTop(top_element.offset().top - 55);
             } else {
                 $(e_list).append(data);
             }
@@ -1437,8 +1443,14 @@ function load_tab(x__type){
             i__id:fetch_val('#focus_id')
         }, function (data) {
             $('.headline_body_' + x__type).html(data);
+
+            window.scrollTo({
+                top: ($('.main_item').offset().top - 54),
+                behavior: 'instant',
+            });
+
             if(js_n___14686.includes(x__type)){
-                $('html, body').scrollTop($('.main_item').offset().top - 54);
+                //$('html, body').scrollTop($('.main_item').offset().top - 54);
             }
         });
 
@@ -1458,13 +1470,7 @@ function load_tab(x__type){
                 behavior: 'instant',
             });
 
-
             if(js_n___14686.includes(x__type)){
-                console.log('Jump');
-
-
-
-
                 //$('html, body').scrollTop($('.main_item').offset().top - 54);
             }
         });
