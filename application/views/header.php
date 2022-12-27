@@ -484,7 +484,7 @@ if(strlen($flash_message) > 0) {
 
 <div class="top_message_box hidden">
 
-    <h5 class="css__title"><?= $e___11035[27963]['m__cover'].' '.$e___11035[27963]['m__title'] ?></h5>
+    <h5 class="css__title"><?= $e___11035[27963]['m__title'] ?></h5>
 
     <input type="hidden" id="modal_i__id" value="0" />
     <textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
