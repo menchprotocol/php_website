@@ -1454,7 +1454,7 @@ function load_tab(x__type){
             $('.headline_body_'+x__type).html(data);
             if(js_n___14686.includes(x__type)){
                 console.log('Jump');
-                $('body').scrollTop($('.main_item').offset().top - 54);
+                $('html, body').scrollTop($('.main_item').offset().top - 54);
             }
         });
 
