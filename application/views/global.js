@@ -647,6 +647,7 @@ function init_remove(){
 
 
 function x_create(add_fields){
+    return false;
     return $.post("/x/x_create", add_fields);
 }
 
