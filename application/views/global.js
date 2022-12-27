@@ -1099,8 +1099,9 @@ $(document).ready(function () {
                 },
                 templates: {
                     suggestion: function (suggestion) {
-                        if(!icons_listed.includes(suggestion.s__id)) {
-                            icons_listed.push(suggestion.s__id);
+                        var item_key = suggestion.s__id+'_'+suggestion.s__id;
+                        if(!icons_listed.includes(item_key)) {
+                            icons_listed.push(item_key);
                             $("#container_search .row").append(view_s_js_coin(26011, suggestion, 0));
                         }
                         return false;
