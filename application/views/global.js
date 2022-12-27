@@ -1452,13 +1452,17 @@ function load_tab(x__type){
             e__id:fetch_val('#focus_id')
         }, function (data) {
             $('.headline_body_'+x__type).html(data);
+
+            window.scrollTo({
+                top: ($('.main_item').offset().top - 54),
+                behavior: 'instant',
+            });
+
+
             if(js_n___14686.includes(x__type)){
                 console.log('Jump');
 
-                window.scrollTo({
-                    top: ($('.main_item').offset().top - 54),
-                    behavior: 'instant',
-                });
+
 
 
                 //$('html, body').scrollTop($('.main_item').offset().top - 54);
