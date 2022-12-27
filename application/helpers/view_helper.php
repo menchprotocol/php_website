@@ -1851,7 +1851,7 @@ function view_e_card($x__type, $e, $extra_class = null)
 
 
         //Source Link
-        $ui .= '<td width="20%"><div class="show-on-hover">';
+        $ui .= '<td width="25%"><div class="show-on-hover">';
         if($x__id && $superpower_13422){
             foreach($CI->config->item('e___31770') as $x__type1 => $m1){
                 if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
@@ -1869,19 +1869,15 @@ function view_e_card($x__type, $e, $extra_class = null)
         }
         $ui .= '</div></td>';
 
-
-        //Source Type (NOT)
-        $ui .= '<td width="20%">&nbsp;</td>';
-
         //Source Status
         $special_type = in_array($e['e__status'], $CI->config->item('n___31109'));
-        $ui .= '<td width="20%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__status'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '' ).'</div></td>';
+        $ui .= '<td width="25%"><div class="'.( $special_type ? '' : 'show-on-hover' ).'">'.( $source_of_e || $special_type ? view_input_dropdown(6177, $e['e__status'], null, $source_of_e && $superpower_13422, false, $e['e__id']) : '' ).'</div></td>';
 
         //Source Edit
-        $ui .= '<td width="20%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[31912]['m__cover'].'</a>' : '').'</div></td>';
+        $ui .= '<td width="25%"><div class="show-on-hover">'.( $source_of_e ? '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[31912]['m__cover'].'</a>' : '').'</div></td>';
 
 
-        $ui .= '<td width="20%"><div class="show-on-hover">'.$dropdown_ui.'</div></td>';
+        $ui .= '<td width="25%"><div class="show-on-hover">'.$dropdown_ui.'</div></td>';
 
         $ui .= '</tr></table>';
     }
