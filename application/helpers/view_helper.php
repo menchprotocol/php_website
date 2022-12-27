@@ -1251,9 +1251,11 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $e___31904 = $CI->config->item('e___31904'); //Idea Card
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
-    $e_of_i = ( $cache_app ? false : e_of_i($i['i__id']) );
-    $user_input = $focus_e;
+    $x__id = ( isset($i['x__id']) && $i['x__id']>0 ? $i['x__id'] : 0 );
+
     $member_e = superpower_unlocked();
+    $e_of_i = ( $cache_app ? false : e_of_i($i['i__id']) || ($x__id>0 && $i['x__source']==$member_e['e__id']) );
+    $user_input = $focus_e;
     $superpower_10939 = superpower_active(10939, true);
 
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
@@ -1282,7 +1284,6 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
 
-    $x__id = ( isset($i['x__id']) && $i['x__id']>0 ? $i['x__id'] : 0 );
     $is_completed = ($tree_progress['fixed_completed_percentage']>=100);
     $is_started = ($tree_progress['fixed_completed_percentage']>0);
     $parent_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
