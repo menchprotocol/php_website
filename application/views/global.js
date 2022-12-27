@@ -1411,7 +1411,7 @@ function coin__save(){
             } else if($('#coin__type').val()==12274){
                 var text_field = 6197;
             }
-            update_text_ui(text_field, $('#coin__id').val(), $('#coin__title').val());
+            update_text_name(text_field, $('#coin__id').val(), $('#coin__title').val());
 
             //Update Mini Icon:
             update_cover_mini($('#coin__type').val(), $('#coin__cover').val(), '.mini_'+text_field+'_'+$('#coin__id').val());
@@ -1991,10 +1991,7 @@ function x_set_start_text(){
     });
 }
 
-function update_text_ui(cache_e__id, e__id, e__title){
-    if(cache_e__id==6197){
-        e__title = e__title;
-    }
+function update_text_name(cache_e__id, e__id, e__title){
     $(".text__"+cache_e__id+"_" + e__id).text(e__title).attr('old-value', e__title); //.val(e__title)
 }
 
