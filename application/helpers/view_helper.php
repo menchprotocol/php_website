@@ -741,7 +741,6 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         //DISCOVERIES
         $join_objects = array('x__left');
         $query_filters = array(
-            'x__source' => 123123444,
             'x__source' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
