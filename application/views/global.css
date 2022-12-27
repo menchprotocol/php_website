@@ -10,7 +10,7 @@ body {
     font-size: 1em;
     margin:60px 0 144px 0 !important;
     font-weight: 400;
-    line-height: 122%;
+    line-height: 128%;
 }
 
 
@@ -803,7 +803,7 @@ p.menu_header {
 }
 
 textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    line-height: 122%;
+    line-height: 128%;
 }
 
 
@@ -1558,10 +1558,10 @@ i, .btn .show-max {
 .block{ display: block !important; width: 100%; }
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
-.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 122% !important; }
-.icon-block-xxs{ width:22px !important; display: inline-block; text-align: center; overflow: visible; line-height: 122% !important; }
+.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
+.icon-block-xxs{ width:22px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
 .icon-block-xxs i{ font-size: 1em !important; }
-.icon-block-xs{ width:33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 122% !important; }
+.icon-block-xs{ width:33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; }
 .icon-block-img img,
 .icon-block-lg img,
@@ -1917,7 +1917,7 @@ i, .btn .show-max {
 }
 .subtle-line{
     display: inline-block;
-    line-height: 122%;
+    line-height: 128%;
     padding: 5px 0;
 }
 .mini-font{
@@ -2119,7 +2119,7 @@ input.form-control {
 .mini-coin .cover-content .inner-content {
     margin: 0;
     padding: 0;
-    line-height: 122%;
+    line-height: 128%;
     font-size: 0.85em;
     display: block;
     border-radius: 21px;
@@ -2317,7 +2317,7 @@ input.form-control {
     padding:144px 21px 21px;
     font-size: 2.5em;
     text-align: center;
-    line-height: 122%;
+    line-height: 128%;
 }
 .info_box_cover{
     padding:21px 0;
@@ -2345,7 +2345,7 @@ input.form-control {
     text-align: center;
     font-size: 1.15em;
     padding: 0 21px;
-    line-height: 122%;
+    line-height: 128%;
 }
 .info_box_message{
     text-align: center;
@@ -2430,7 +2430,7 @@ input.form-control {
 }
 .the_counter{
     margin-top: -52px;
-    line-height: 122%;
+    line-height: 128%;
     font-size: 0.28em !important;
 }
 .the_counter .min-height{
@@ -2460,7 +2460,7 @@ textarea {
 }
 .focus-coin .inner-content .css__title {
     font-size: 1.15em;
-    line-height: 122%;
+    line-height: 128%;
     padding: 13px !important;
 }
 
@@ -2494,7 +2494,7 @@ textarea {
 .message2{
     padding:5px 0 0 25px;
     font-size:0.70em;
-    line-height: 122%;
+    line-height: 128%;
     white-space: normal;
 }
 
