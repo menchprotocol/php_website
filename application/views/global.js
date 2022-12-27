@@ -1097,7 +1097,10 @@ $(document).ready(function () {
                 },
                 templates: {
                     suggestion: function (suggestion) {
-                        $("#container_search .row").append(view_s_js_coin(26011, suggestion, 0));
+                        if(!icons_listed.includes(suggestion.s__id)) {
+                            icons_listed.push(suggestion.s__id);
+                            $("#container_search .row").append(view_s_js_coin(26011, suggestion, 0));
+                        }
                         return false;
                     },
                     empty: function (data) {
