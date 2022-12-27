@@ -557,10 +557,12 @@ function view_load_page(x__type) {
         $('.load-more').remove();
         if(data.length){
 
-            window.scrollTo({
-                top: (top_element.offset().top - 55),
-                behavior: 'instant',
-            });
+            if(current_page<=1){
+                window.scrollTo({
+                    top: (top_element.offset().top - 55),
+                    behavior: 'instant',
+                });
+            }
 
             if(js_n___14686.includes(x__type)){
                 //Upwards link:
