@@ -1523,7 +1523,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= '</div></div>';
 
     //Bottom Bar
-    if($superpower_10939 && !$focus_coin && !$discovery_mode){
+    if(!$focus_coin && !$discovery_mode){
         $ui .= '<div class="coin_coins"><div class="show-on-hover">';
         foreach($CI->config->item('e___31890') as $menu_id => $m) {
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
