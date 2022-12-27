@@ -467,7 +467,7 @@ function toggle_pills(x__type){
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
             $('.headline_body_' + x__type).html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
-            load_tab(x__type);
+            load_tab(x__type, false);
         }
     }
 
@@ -1429,7 +1429,7 @@ function coin__save(){
 
 }
 
-function load_tab(x__type){
+function load_tab(x__type, auto_load){
 
     var focus_coin = fetch_val('#focus_coin');
     console.log('Tab loading... from @'+focus_coin+' for @'+x__type);
@@ -1443,15 +1443,6 @@ function load_tab(x__type){
             i__id:fetch_val('#focus_id')
         }, function (data) {
             $('.headline_body_' + x__type).html(data);
-
-            window.scrollTo({
-                top: ($('.main_item').offset().top - 54),
-                behavior: 'instant',
-            });
-
-            if(js_n___14686.includes(x__type)){
-                //$('html, body').scrollTop($('.main_item').offset().top - 54);
-            }
         });
 
     } else if(focus_coin==12274){
@@ -1464,15 +1455,6 @@ function load_tab(x__type){
             e__id:fetch_val('#focus_id')
         }, function (data) {
             $('.headline_body_'+x__type).html(data);
-
-            window.scrollTo({
-                top: ($('.main_item').offset().top - 54),
-                behavior: 'instant',
-            });
-
-            if(js_n___14686.includes(x__type)){
-                //$('html, body').scrollTop($('.main_item').offset().top - 54);
-            }
         });
 
     } else {
@@ -1483,6 +1465,12 @@ function load_tab(x__type){
 
     }
 
+    if(auto_load){ // && js_n___14686.includes(x__type)
+        window.scrollTo({
+            top: ($('.main_item').offset().top - 54),
+            behavior: 'instant',
+        });
+    }
 
     //Give some extra loding time so the content loads on page:
     setTimeout(function () {
