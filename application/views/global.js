@@ -1451,7 +1451,7 @@ function load_tab(x__type){
             counter:$('.headline_body_'+x__type).attr('read-counter'),
             e__id:fetch_val('#focus_id')
         }, function (data) {
-            $('.headline_body_'+x__type).html(data).scrollTop($('.focus-coin').offset().top + 254);
+            $('.headline_body_'+x__type).html(data);
             if(js_n___14686.includes(x__type)){
                 //$('html, body').scrollTop($('.focus-coin').offset().top - 54);
             }
