@@ -1438,7 +1438,7 @@ function load_tab(x__type){
         }, function (data) {
             $('.headline_body_' + x__type).html(data);
             if(js_n___14686.includes(x__type)){
-                $('html, body').scrollTop($('.focus-coin').offset().top - 54);
+                $('html, body').scrollTop($('.main_item').offset().top - 54);
             }
         });
 
@@ -1453,7 +1453,7 @@ function load_tab(x__type){
         }, function (data) {
             $('.headline_body_'+x__type).html(data);
             if(js_n___14686.includes(x__type)){
-                $('body').scrollTop($('.focus-coin').offset().top - 54);
+                $('body').scrollTop($('.main_item').offset().top - 54);
             }
         });
 
