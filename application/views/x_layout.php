@@ -250,7 +250,7 @@ echo '<div class="light-bg large-frame">';
 
 //Show Progress:
 if($top_completed){
-    echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Completed: You Are Now Reviewing Your Responses</div>';
+    echo '<div class="msg alert alert-success" role="alert"><span class="icon-block">✅</span>100% Completed: You Are Now Reviewing Your Responses</div>';
 }
 
 //MESSAGES
