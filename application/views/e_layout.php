@@ -14,9 +14,9 @@ $this->X_model->create(array(
 
 
 //Load Top:
-$counter_top = view_coins_e(11030, $e['e__id'], 0, false);
-echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.'"></div>';
-echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11030); }, 377); }); </script>';
+//$counter_top = view_coins_e(11030, $e['e__id'], 0, false);
+//echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.'"></div>';
+//echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11030); }, 377); }); </script>';
 
 
 
