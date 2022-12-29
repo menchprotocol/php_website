@@ -180,7 +180,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             $x__metadata = unserialize($x['x__metadata']);
             $total_transactions++;
             $this_quantity = 1;//Default assumption:
-            if($x__metadata['quantity']>1){
+            if(isset($x__metadata['quantity']) && $x__metadata['quantity']>1){
                 $this_quantity = $x__metadata['quantity'];
             } else {
                 for($t=20;$t>=2;$t--){
