@@ -1326,11 +1326,10 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Top Bar
-    $width = (100 / count($CI->config->item('e___31770')));
     $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
     foreach($CI->config->item('e___31904') as $x__type_top_bar => $m_top_bar) {
 
-        $ui .= '<td width="'.$width.'%"><div class="show-on-hover">';
+        $ui .= '<td width="'.(100 / count($CI->config->item('e___31904'))).'%"><div class="show-on-hover">';
 
         if($x__type_top_bar==31770 && $x__id && ($e_of_i || $discovery_mode)){
 
