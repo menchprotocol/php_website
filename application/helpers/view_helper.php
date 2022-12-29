@@ -1327,7 +1327,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Top Bar
     $active_bars = 0;
-    $ui .= '<table class="coin_coins column_coins_'.$i['i__id'].'"><tr>';
+    $ui .= '<table class="coin_coins column_coins_i_'.$i['i__id'].'"><tr>';
     foreach($CI->config->item('e___31904') as $x__type_top_bar => $m_top_bar) {
 
         if($x__type_top_bar==31770 && $x__id && ($e_of_i || $discovery_mode)){
@@ -1440,7 +1440,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         }
     }
     $ui .= '</tr></table>';
-    $ui .= '<style> .column_coins_'.$i['i__id'].' td { width:'.(100/$active_bars).'% !important; }</style>';
+    $ui .= '<style> .column_coins_i_'.$i['i__id'].' td { width:'.(100/$active_bars).'% !important; }</style>';
 
 
 
@@ -1742,8 +1742,10 @@ function view_e_card($x__type, $e, $extra_class = null)
 
         //Top Bar
         $active_bars = 0;
-        $ui .= '<table class="coin_coins column_coins_'.$e['e__id'].'"><tr>';
+        $ui .= '<table class="coin_coins column_coins_e_'.$e['e__id'].'"><tr>';
         foreach($CI->config->item('e___31963') as $x__type_top_bar => $m_top_bar) {
+
+            $ui .= '['.$x__type_top_bar.']';
 
             if($x__type_top_bar==31770 && $x__id){
 
@@ -1874,7 +1876,7 @@ function view_e_card($x__type, $e, $extra_class = null)
             }
         }
         $ui .= '</tr></table>';
-        $ui .= '<style> .column_coins_'.$e['e__id'].' td { width:'.(100/$active_bars).'% !important; }</style>';
+        $ui .= '<style> .column_coins_e_'.$e['e__id'].' td { width:'.(100/$active_bars).'% !important; }</style>';
 
     }
 
