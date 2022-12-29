@@ -1736,9 +1736,11 @@ function view_e_card($x__type, $e, $extra_class = null)
     $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin slim_flat col-md-8 col-12 ' : ' edge-coin coin_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
 
+    $ui .= '<div class="cover-wrapper">';
 
 
     if(!$cache_app && !$is_app) {
+
         //Top Bar
         $active_bars = 0;
         $ui .= '<table class="coin_coins column_coins_'.$e['e__id'].'"><tr>';
@@ -1876,9 +1878,6 @@ function view_e_card($x__type, $e, $extra_class = null)
         $ui .= '<style> .column_coins_'.$e['e__id'].' td { width:'.(100/$active_bars).'% !important; }</style>';
 
     }
-
-
-    $ui .= '<div class="cover-wrapper">';
 
 
     //Coin Cover
