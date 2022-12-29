@@ -1915,7 +1915,7 @@ function view_e_card($x__type, $e, $extra_class = null)
 
 
     //Bottom Bar
-    if(!$is_cache && !$is_app && !$focus_coin){
+    if(!$is_cache && !$is_app && !$focus_coin && $superpower_10939){
         $ui .= '<div class="coin_coins"><div class="show-on-hover">';
         foreach($CI->config->item('e___31916') as $menu_id => $m) {
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
