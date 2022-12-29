@@ -90,7 +90,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                     'x__left IN (' . join(',', $payment_is) . ')' => null,
                 ), array(), 0) as $pay){
                     $x__metadata = unserialize($pay['x__metadata']);
-                    $this_quantity += ($x__metadata['quantity']>1 ? $x__metadata['quantity'] : 1 );
+                    $this_quantity += ( isset($x__metadata['quantity']) && $x__metadata['quantity']>1 ? $x__metadata['quantity'] : 1 );
                     $this_revenue += $x__metadata['mc_gross']-$x__metadata['mc_fee']-($x__metadata['mc_gross']*$commission_rate);
                 }
 
