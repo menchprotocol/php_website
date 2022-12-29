@@ -1248,7 +1248,6 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     if(!in_array($x__type, $CI->config->item('n___13369'))){
         return 'Invalid x__type i '.$x__type;
     }
-    $e___31904 = $CI->config->item('e___31904'); //Idea Card
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $x__id = ( isset($i['x__id']) && $i['x__id']>0 ? $i['x__id'] : 0 );
@@ -1412,8 +1411,9 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             //Any items found?
             if($action_buttons){
                 //Right Action Menu
+                $e___14980 = $CI->config->item('e___14980'); //Dropdowns
                 $ui .= '<div class="dropdown inline-block">';
-                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___31904[$focus_menu]['m__title'].'">'.$e___31904[$focus_menu]['m__cover'].'</button>';
+                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_menu]['m__title'].'">'.$e___14980[$focus_menu]['m__cover'].'</button>';
                 $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
                 $ui .= $action_buttons;
                 $ui .= '</div>';
