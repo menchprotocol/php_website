@@ -1304,12 +1304,14 @@ class X_model extends CI_Model
 
         //Log completion transaction if not duplicate:
         $check_duplicate = $this->X_model->fetch($search_fields);
-        if(isset($check_duplicate[0]['x__id']) && in_array($add_fields['x__type'], $this->config->item('n___30469'))){
+        if(0 && isset($check_duplicate[0]['x__id']) && in_array($add_fields['x__type'], $this->config->item('n___30469'))){
 
+            //Maybe renable later?
             $new_x = $check_duplicate[0];
 
         } else {
 
+            //We always add new transaction:
             $new_x = $this->X_model->create($add_fields);
 
         }
