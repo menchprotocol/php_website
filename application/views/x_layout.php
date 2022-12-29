@@ -773,8 +773,8 @@ if(!$top_i__id){
             } else {
 
                 //NEXT
-                $control_btn = '<a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a>';
-                $control_btn .= '<span class="nav-title css__title">'.$m2['m__title'].'<div class="extra_progress hideIfEmpty"></div></span>';
+                $control_btn = '<div style="padding-left: 8px;"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a>';
+                $control_btn .= '<span class="nav-title css__title">'.$m2['m__title'].'<div class="extra_progress hideIfEmpty"></div></span></div>';
 
             }
 
