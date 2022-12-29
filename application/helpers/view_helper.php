@@ -1870,7 +1870,7 @@ function view_e_card($x__type, $e, $extra_class = null)
     }
 
 
-    //$ui .= '<div class="cover-wrapper">';
+    $ui .= '<div class="cover-wrapper">';
 
 
     //Coin Cover
