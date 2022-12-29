@@ -1409,7 +1409,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 } elseif($e__id_dropdown==6182 && $e_of_i && !$discovery_mode){
                     //Delete
                     $action_buttons .= '<a href="javascript:void();" new-en-id="6182" onclick="update_dropdown(4737, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_4737_'.$i['i__id'].'_'.$x__id.' css__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
-                } elseif($e__id_dropdown==28637 && isset($i['x__type'])){
+                } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_active(28727, true)){
                     //Paypal Details
                     $x__metadata = unserialize($i['x__metadata']);
                     if(isset($x__metadata['txn_id'])){
