@@ -26,6 +26,8 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
 
             //Paid:
             $is_good = true;
+
+            //Log Payment:
             $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
                 'x__type' => 26595,
                 'x__source' => $x__source,
@@ -35,24 +37,27 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
 
         } elseif($pay_amount < 0 && $_POST['payment_status']=='Refunded'){
 
-            //Find original transaction first:
-            foreach($this->X_model->fetch(array(
+            //Refunded:
+            $is_good = true;
+
+            //Find original payment:
+            $original_payment = $this->X_model->fetch(array(
                 'x__type' => 26595,
                 'x__source' => $x__source,
                 'x__left' => $next_is[0]['i__id'],
                 'x__right' => $top_i__id,
                 'x__up' => $currency_type,
-            )) as $x_payment) {
-                //Refunded:
-                $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
-                    'x__type' => 31967,
-                    'x__source' => $x__source,
-                    'x__up' => $currency_type,
-                    'x__reference' => $x_payment['x__id'],
-                    'x__metadata' => $_POST,
-                ));
-                $is_good = true;
-            }
+            ));
+
+            //Log Refund:
+            $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
+                'x__type' => 31967,
+                'x__source' => $x__source,
+                'x__up' => $currency_type,
+                'x__reference' => ( isset($original_payment[0]['x__id']) ? $original_payment[0]['x__id'] : 0 ),
+                'x__metadata' => $_POST,
+            ));
+
         }
     }
 }
