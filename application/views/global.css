@@ -1050,7 +1050,7 @@ a.headline {
 
 
 
-.x_sort, .e_sort, .fa-sort, .fa-arrows{
+.sort_handle, .e_sort, .fa-sort, .fa-arrows{
     cursor: grab;
 }
 .space-left{

@@ -1705,7 +1705,7 @@ class X extends CI_Controller
 
 
 
-    function x_sort_load()
+    function sort_handle_load()
     {
 
         /*

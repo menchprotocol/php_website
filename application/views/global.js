@@ -1228,7 +1228,7 @@ function coin__load(coin__type, coin__id){
     x_create({
         x__source: js_pl_id,
         x__type: 14576, //MODAL VIEWED
-        x__up: 14937,
+        x__up: 14937, //Edit
         x__down: ( coin__type==12274 ? coin__id : 0 ),
         x__right: ( coin__type==12273 ? coin__id : 0 ),
     });
@@ -1493,7 +1493,7 @@ function load_tab(x__type, auto_load){
 
         setTimeout(function () {
             load_coins();
-            x_sort_load(x__type);
+            sort_handle_load(x__type);
             $('[data-toggle="tooltip"]').tooltip();
         }, 987);
 
@@ -1587,7 +1587,7 @@ function i__add(x__type, link_i__id) {
 
             x_type_counter(x__type, 1);
 
-            x_sort_load(x__type);
+            sort_handle_load(x__type);
 
             //Add new
             add_to_list(x__type, sort_handler, data.new_i_html);
@@ -2105,7 +2105,7 @@ function set_autosize(theobject){
 
 var sorting_loaded = []; // more efficient than new Array()
 
-function x_sort_load(x__type){
+function sort_handle_load(x__type){
 
     if(!js_n___4603.includes(x__type)){
         console.log(x__type+' is not sortable');
@@ -2126,24 +2126,24 @@ function x_sort_load(x__type){
         }
 
         //Make sure beow minimum sorting requirement:
-        if($("#list-in-"+x__type+" .cover_sort").length>=parseInt(fetch_val('#page_limit'))){
+        if($("#list-in-"+x__type+" .sort_draggable").length>=parseInt(fetch_val('#page_limit'))){
             return false;
         }
 
-        $('.x_sort').removeClass('hidden');
+        $('.sort_handle').removeClass('hidden');
         console.log(x__type+' sorting load success');
         sorting_loaded.push(x__type);
 
         //Load sorter:
         var sort = Sortable.create(theobject, {
             animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-            draggable: "#list-in-"+x__type+" .cover_sort", // Specifies which items inside the element should be sortable
-            handle: "#list-in-"+x__type+" .x_sort", // Restricts sort start click/touch to the specified element
+            draggable: "#list-in-"+x__type+" .sort_draggable", // Specifies which items inside the element should be sortable
+            handle: "#list-in-"+x__type+" .sort_handle", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
 
                 var sort_rank = 0;
                 var new_x_order = [];
-                $("#list-in-"+x__type+" .cover_sort").each(function () {
+                $("#list-in-"+x__type+" .sort_draggable").each(function () {
                     var x__id = parseInt($(this).attr('x__id'));
                     if(x__id > 0){
                         sort_rank++;
@@ -2153,7 +2153,7 @@ function x_sort_load(x__type){
 
                 //Update order:
                 if(sort_rank > 0){
-                    $.post("/x/x_sort_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
+                    $.post("/x/sort_handle_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
                         //Update UI to confirm with member:
                         if (!data.status) {
                             //There was some sort of an error returned!
