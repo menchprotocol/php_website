@@ -1736,7 +1736,6 @@ function view_e_card($x__type, $e, $extra_class = null)
     $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin slim_flat col-md-8 col-12 ' : ' edge-coin coin_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
 
-    $ui .= '<div class="cover-wrapper">';
 
 
     if(!$cache_app && !$is_app) {
@@ -1760,7 +1759,7 @@ function view_e_card($x__type, $e, $extra_class = null)
                     }
                 }
 
-            } elseif($x__type_top_bar==6177 && !$discovery_mode){
+            } elseif($x__type_top_bar==6177){
 
                 //Source Status
                 $active_bars++;
@@ -1776,15 +1775,15 @@ function view_e_card($x__type, $e, $extra_class = null)
                 $ui .= '<a href="/-'.$e['e__id'].'" class="dropdown-item css__title"><span class="icon-block">'.$m_top_bar['m__cover'].'</span>'.$m_top_bar['m__title'].'</a>';
                 $ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==13006 && $source_of_e){
+            } elseif($x__type_top_bar==31912 && $source_of_e){
 
-                //Sort Source
+                //Edit Source
                 $active_bars++;
                 $ui .= '<td><div class="show-on-hover">';
-                $ui .= '<a href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$e___11035[31912]['m__cover'].'</a>';
+                $ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==13909 && $has_sortable){
+            } elseif($x__type_top_bar==13006 && $has_sortable){
 
                 //Sort Source
                 $active_bars++;
@@ -1878,6 +1877,9 @@ function view_e_card($x__type, $e, $extra_class = null)
         $ui .= '<style> .column_coins_'.$e['e__id'].' td { width:'.(100/$active_bars).'% !important; }</style>';
 
     }
+
+
+    $ui .= '<div class="cover-wrapper">';
 
 
     //Coin Cover
