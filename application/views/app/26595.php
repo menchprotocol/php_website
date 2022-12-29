@@ -54,8 +54,9 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
                 'x__type' => 31967,
                 'x__source' => $x__source,
                 'x__up' => $currency_type,
-                'x__reference' => ( isset($original_payment[0]['x__id']) ? $original_payment[0]['x__id'] : 0 ),
                 'x__metadata' => $_POST,
+                'x__reference' => ( isset($original_payment[0]['x__id']) ? $original_payment[0]['x__id'] : 0 ),
+                'x__website' => ( isset($original_payment[0]['x__website']) && $original_payment[0]['x__website']>0 ? $original_payment[0]['x__website'] : 0 ),
             ));
 
         }
