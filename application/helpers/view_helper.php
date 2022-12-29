@@ -1328,8 +1328,8 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Top Bar
+    $top_bar_ui = '';
     $active_bars = 0;
-    $ui .= '<table class="coin_coins column_coins_i_'.$i['i__id'].'"><tr>';
     foreach($CI->config->item('e___31904') as $x__type_top_bar => $m_top_bar) {
 
         if($x__type_top_bar==31770 && $x__id){
@@ -1340,9 +1340,9 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                         'x__id' => $x__id,
                     ), array('x__source')) as $linker){
                         $active_bars++;
-                        $ui .= '<td><div class="show-on-hover">';
-                        $ui .= view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id'], $x__id);
-                        $ui .= '</div></td>';
+                        $top_bar_ui .= '<td><div class="show-on-hover">';
+                        $top_bar_ui .= view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id'], $x__id);
+                        $top_bar_ui .= '</div></td>';
                     }
                     break;
                 }
@@ -1351,30 +1351,30 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         } elseif($x__type_top_bar==4737 && !$discovery_mode){
 
             $active_bars++;
-            $ui .= '<td><div class="show-on-hover">';
-            $ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
-            $ui .= '</div></td>';
+            $top_bar_ui .= '<td><div class="show-on-hover">';
+            $top_bar_ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
+            $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==31004 && !$discovery_mode){
 
             $active_bars++;
-            $ui .= '<td><div class="show-on-hover">';
-            $ui .= view_input_dropdown(31004, $i['i__status'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
-            $ui .= '</div></td>';
+            $top_bar_ui .= '<td><div class="show-on-hover">';
+            $top_bar_ui .= view_input_dropdown(31004, $i['i__status'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
+            $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==31911 && $e_of_i && !$discovery_mode){
 
             $active_bars++;
-            $ui .= '<td><div class="show-on-hover">';
-            $ui .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
-            $ui .= '</div></td>';
+            $top_bar_ui .= '<td><div class="show-on-hover">';
+            $top_bar_ui .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
+            $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==13909 && $has_sortable){
 
             $active_bars++;
-            $ui .= '<td><div class="show-on-hover">';
-            $ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_handle">'.$m_top_bar['m__cover'].'</span>';
-            $ui .= '</div></td>';
+            $top_bar_ui .= '<td><div class="show-on-hover">';
+            $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_handle">'.$m_top_bar['m__cover'].'</span>';
+            $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==14980 && !$cache_app){
 
@@ -1428,21 +1428,26 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 //Right Action Menu
                 $e___14980 = $CI->config->item('e___14980'); //Dropdowns
                 $active_bars++;
-                $ui .= '<td><div class="show-on-hover">';
-                $ui .= '<div class="dropdown inline-block">';
-                $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_menu]['m__title'].'">'.$e___14980[$focus_menu]['m__cover'].'</button>';
-                $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
-                $ui .= $action_buttons;
-                $ui .= '</div>';
-                $ui .= '</div>';
-                $ui .= '</div></td>';
+                $top_bar_ui .= '<td><div class="show-on-hover">';
+                $top_bar_ui .= '<div class="dropdown inline-block">';
+                $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_menu]['m__title'].'">'.$e___14980[$focus_menu]['m__cover'].'</button>';
+                $top_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
+                $top_bar_ui .= $action_buttons;
+                $top_bar_ui .= '</div>';
+                $top_bar_ui .= '</div>';
+                $top_bar_ui .= '</div></td>';
 
             }
 
         }
     }
-    $ui .= '</tr></table>';
-    $ui .= '<style> .column_coins_i_'.$i['i__id'].' td { width:'.(100/$active_bars).'% !important; }</style>';
+
+    if($top_bar_ui){
+        $ui .= '<table class="coin_coins active_bars_'.$active_bars.'"><tr>';
+        $ui .= $top_bar_ui;
+        $ui .= '</tr></table>';
+    }
+
 
 
 
@@ -1740,8 +1745,8 @@ function view_e_card($x__type, $e, $extra_class = null)
     if(!$cache_app && !$is_app) {
 
         //Top Bar
+        $top_bar_ui = '';
         $active_bars = 0;
-        $ui .= '<table class="coin_coins column_coins_e_'.$e['e__id'].'"><tr>';
         foreach($CI->config->item('e___31963') as $x__type_top_bar => $m_top_bar) {
 
 
@@ -1754,9 +1759,9 @@ function view_e_card($x__type, $e, $extra_class = null)
                             'x__id' => $x__id,
                         ), array('x__source')) as $linker){
                             $active_bars++;
-                            $ui .= '<td><div class="show-on-hover">';
-                            $ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
-                            $ui .= '</div></td>';
+                            $top_bar_ui .= '<td><div class="show-on-hover">';
+                            $top_bar_ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
+                            $top_bar_ui .= '</div></td>';
                         }
                         break;
                     }
@@ -1766,25 +1771,25 @@ function view_e_card($x__type, $e, $extra_class = null)
 
                 //Source Status
                 $active_bars++;
-                $ui .= '<td><div class="'.( in_array($e['e__status'], $CI->config->item('n___31109')) ? '' : 'show-on-hover' ).'">';
-                $ui .= view_input_dropdown(6177, $e['e__status'], null, $source_of_e && $superpower_13422, false, $e['e__id']);
-                $ui .= '</div></td>';
+                $top_bar_ui .= '<td><div class="'.( in_array($e['e__status'], $CI->config->item('n___31109')) ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= view_input_dropdown(6177, $e['e__status'], null, $source_of_e && $superpower_13422, false, $e['e__id']);
+                $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31912 && $source_of_e){
 
                 //Edit Source
                 $active_bars++;
-                $ui .= '<td><div class="show-on-hover">';
-                $ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$m_top_bar['m__cover'].'</a>';
-                $ui .= '</div></td>';
+                $top_bar_ui .= '<td><div class="show-on-hover">';
+                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==13006 && $has_sortable){
 
                 //Sort Source
                 $active_bars++;
-                $ui .= '<td><div class="show-on-hover">';
-                $ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_handle">'.$m_top_bar['m__cover'].'</span>';
-                $ui .= '</div></td>';
+                $top_bar_ui .= '<td><div class="show-on-hover">';
+                $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_handle">'.$m_top_bar['m__cover'].'</span>';
+                $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==14980 && !$cache_app){
 
@@ -1857,19 +1862,24 @@ function view_e_card($x__type, $e, $extra_class = null)
                     //Right Action Menu
                     $e___14980 = $CI->config->item('e___14980'); //Dropdowns
                     $active_bars++;
-                    $ui .= '<td><div class="show-on-hover">';
-                    $ui .= '<div class="dropdown inline-block">';
-                    $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_menu]['m__title'].'">'.$e___14980[$focus_menu]['m__cover'].'</button>';
-                    $ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
-                    $ui .= $action_buttons;
-                    $ui .= '</div>';
-                    $ui .= '</div>';
-                    $ui .= '</div></td>';
+                    $top_bar_ui .= '<td><div class="show-on-hover">';
+                    $top_bar_ui .= '<div class="dropdown inline-block">';
+                    $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_menu]['m__title'].'">'.$e___14980[$focus_menu]['m__cover'].'</button>';
+                    $top_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
+                    $top_bar_ui .= $action_buttons;
+                    $top_bar_ui .= '</div>';
+                    $top_bar_ui .= '</div>';
+                    $top_bar_ui .= '</div></td>';
                 }
             }
         }
-        $ui .= '</tr></table>';
-        $ui .= '<style> .column_coins_e_'.$e['e__id'].' td { width:'.(100/$active_bars).'% !important; }</style>';
+
+        if($top_bar_ui){
+            $ui .= '<table class="coin_coins active_bars_'.$active_bars.'"><tr>';
+            $ui .= $top_bar_ui;
+            $ui .= '</tr></table>';
+        }
+
 
     }
 

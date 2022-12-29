@@ -4078,3 +4078,12 @@ main {
 .dotransparent *, .btn-grey {
     background-color: transparent;
 }
+
+.active_bars_1 td { width:100.0% !important; }
+.active_bars_2 td { width:50.00% !important; }
+.active_bars_3 td { width:33.34% !important; }
+.active_bars_4 td { width:25.00% !important; }
+.active_bars_5 td { width:20.00% !important; }
+.active_bars_6 td { width:16.67% !important; }
+.active_bars_7 td { width:14.29% !important; }
+.active_bars_8 td { width:12.50% !important; }
