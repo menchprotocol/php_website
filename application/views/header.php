@@ -4,7 +4,7 @@ $first_segment = $this->uri->segment(1);
 $second_segment = $this->uri->segment(2);
 $i__id = ( isset($i['i__id']) ? $i['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$e___13479 = $this->config->item('e___13479');
+$e___31966 = $this->config->item('e___31966');
 $e___4527 = $this->config->item('e___4527');
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 $current_coin_id = current_coin_id();
@@ -367,7 +367,7 @@ if(!$basic_header_footer){
 
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                    echo '<span class="source_cover source_cover_mini menu-icon">' . ( $member_e ? view_cover(12274,$member_e['e__cover'], 1) : 's' ) .'</span>';
+                    echo '<span class="source_cover source_cover_mini menu-icon">' . ( $member_e ? view_cover(12274,$member_e['e__cover'], 1) : $e___31966[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
