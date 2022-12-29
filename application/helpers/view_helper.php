@@ -1742,7 +1742,7 @@ function view_e_card($x__type, $e, $extra_class = null)
         //Top Bar
         $active_bars = 0;
         $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
-        foreach($CI->config->item('e___31904') as $x__type_top_bar => $m_top_bar) {
+        foreach($CI->config->item('e___31963') as $x__type_top_bar => $m_top_bar) {
 
             if($x__type_top_bar==31770 && $x__id){
 
