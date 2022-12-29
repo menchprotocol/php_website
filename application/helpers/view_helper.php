@@ -1366,9 +1366,6 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             $focus_menu = ( $focus_coin ? 11047 : 14955 );
             foreach($CI->config->item('e___'.$focus_menu) as $e__id_dropdown => $m_dropdown) {
 
-                $ui .= $e__id_dropdown.'//';
-
-
                 //Skip if missing superpower:
                 $superpower_actives = array_intersect($CI->config->item('n___10957'), $m_dropdown['m__following']);
                 if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
@@ -1420,6 +1417,8 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 $ui .= $action_buttons;
                 $ui .= '</div>';
                 $ui .= '</div>';
+            } else {
+                $ui .= 'NO';
             }
 
         }
