@@ -1454,7 +1454,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Coin Cover
     $ui .= '<div class="cover-wrapper cover_wrapper12273">';
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background-obs cover-link">';
+    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType12273 ' : ' coinType12273 ' ).' black-background-obs cover-link">';
     $ui .= ( !$can_click ? '</div>' : '</a>' );
     $ui .= '</div>';
 
