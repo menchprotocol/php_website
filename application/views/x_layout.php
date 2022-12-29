@@ -428,7 +428,7 @@ if($top_i__id) {
         } elseif(count($x_completes)){
 
             $x__metadata = unserialize($x_completes[0]['x__metadata']);
-            echo '<div class="msg alert alert-success" role="alert">Paypal receipt email sent for your payment of '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['quantity']>1 ? ' for '.$x__metadata['quantity'].' items' : '' ).' on '.$x__metadata['payment_date'].'. You are now ready to go next.</div>';
+            echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Received your payment of '.$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $x__metadata['quantity']>1 ? ' for '.$x__metadata['quantity'].' tickets' : '' ).'.</div>';
 
             //Invite Your Friends (If 2 or more items):
             if($x__metadata['quantity']>1 && 0){
