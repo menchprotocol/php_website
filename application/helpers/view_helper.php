@@ -1743,7 +1743,7 @@ function view_e_card($x__type, $e, $extra_class = null)
         foreach($CI->config->item('e___31963') as $x__type_top_bar => $m_top_bar) {
 
 
-            if($x__type_top_bar==31770 && $x__id){
+            if($x__type_top_bar==31770 && $x__id && $superpower_13422){
 
                 //Source Link Groups
                 foreach($CI->config->item('e___31770') as $x__type1 => $m1){
