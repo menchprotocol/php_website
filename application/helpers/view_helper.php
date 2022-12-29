@@ -1445,16 +1445,6 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
 
-
-
-    //Coin Cover
-    $ui .= '<div class="cover-wrapper cover_wrapper12273">';
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType6255 ' : ' coinType12273 ' ).' black-background-obs cover-link">';
-    $ui .= ( !$can_click ? '</div>' : '</a>' );
-    $ui .= '</div>';
-
-
-
     //Title Cover
     $ui .= '<div class="cover-content">';
     if($load_completion && $is_started && !$is_completed){
@@ -1745,7 +1735,6 @@ function view_e_card($x__type, $e, $extra_class = null)
         $ui .= '<table class="coin_coins column_coins_e_'.$e['e__id'].'"><tr>';
         foreach($CI->config->item('e___31963') as $x__type_top_bar => $m_top_bar) {
 
-            $ui .= '['.$x__type_top_bar.']';
 
             if($x__type_top_bar==31770 && $x__id){
 
@@ -1881,7 +1870,7 @@ function view_e_card($x__type, $e, $extra_class = null)
     }
 
 
-    $ui .= '<div class="cover-wrapper">';
+    //$ui .= '<div class="cover-wrapper">';
 
 
     //Coin Cover
