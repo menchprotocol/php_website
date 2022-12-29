@@ -1766,7 +1766,7 @@ function view_e_card($x__type, $e, $extra_class = null)
                 //App Store
                 $active_bars++;
                 $ui .= '<td><div class="show-on-hover">';
-                $ui .= '<a href="/-'.$e['e__id'].'" class="dropdown-item css__title"><span class="icon-block">'.$m_top_bar['m__cover'].'</span>'.$m_top_bar['m__cover'].'</a>';
+                $ui .= '<a title="'.$m_top_bar['m__title'].'" href="/-'.$e['e__id'].'" class="dropdown-item css__title">'.$m_top_bar['m__cover'].'</a>';
                 $ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31912 && $source_of_e){
