@@ -26,19 +26,7 @@ function detect_missing_columns($add_fields, $required_columns, $x__source)
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
         if (!isset($add_fields[$req_field]) || strlen($add_fields[$req_field]) == 0) {
-            //Ooops, we're missing this required field:
-            $CI =& get_instance();
-            $CI->X_model->create(array(
-                'x__message' => 'Missing required field [' . $req_field . '] for inserting new DB row',
-                'x__metadata' => array(
-                    'insert_columns' => $add_fields,
-                    'required_columns' => $required_columns,
-                ),
-                'x__type' => 4246, //Platform Bug Reports
-                'x__source' => $x__source,
-            ));
-
-            return true; //We have an issue
+            return true; //Ooops, we're missing this required field
         }
     }
 

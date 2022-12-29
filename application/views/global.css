@@ -1050,7 +1050,7 @@ a.headline {
 
 
 
-.sort_handle, .e_sort, .fa-sort, .fa-arrows{
+.sort_i_handle, .sort_e_handle, .fa-sort, .fa-arrows{
     cursor: grab;
 }
 .space-left{
@@ -1559,7 +1559,7 @@ i, .btn .show-max {
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
 .icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
-.icon-block-xxs{ width:22px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
+.icon-block-xxs{ width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
 .icon-block-xxs i{ font-size: 1em !important; }
 .icon-block-xs{ width:33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; }

@@ -390,7 +390,7 @@ function toggle_headline(x__type){
 }
 
 
-function e_sort_load(x__type) {
+function sort_e_handle_load(x__type) {
 
     var sort_item_count = parseInt($('.headline_body_' + x__type).attr('read-counter'));
     console.log('Started Source Sorting for @'+x__type+' Counting: '+sort_item_count)
@@ -414,14 +414,14 @@ function e_sort_load(x__type) {
 
         //Show sort icon:
         console.log('Completed Loading Sorting for @'+x__type)
-        $('.e_sort, .sort_reset').removeClass('hidden');
+        $('.sort_e_handle, .sort_reset').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
             draggable: ".coinface-12274", // Specifies which items inside the element should be sortable
-            handle: ".e_sort", // Restricts sort start click/touch to the specified element
+            handle: ".sort_e_handle", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
-                e_sort_save(x__type);
+                sort_e_handle_save(x__type);
             }
         });
     }, 377);
@@ -1493,7 +1493,7 @@ function load_tab(x__type, auto_load){
 
         setTimeout(function () {
             load_coins();
-            sort_handle_load(x__type);
+            sort_i_handle_load(x__type);
             $('[data-toggle="tooltip"]').tooltip();
         }, 987);
 
@@ -1522,7 +1522,7 @@ function load_tab(x__type, auto_load){
         } else if((x__type==12274 || x__type==11030) || (focus_coin==12273 && x__type==6255)) {
             e_load_search(x__type);
             setTimeout(function () {
-                e_sort_load(x__type);
+                sort_e_handle_load(x__type);
             }, 987);
         }
 
@@ -1553,7 +1553,7 @@ function i__add(x__type, link_i__id) {
     //Remove results:
     $('.mini-coin.coin-12273.coin-id-'+link_i__id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
     i_is_adding = true;
-    var sort_handler = ".coin_cover";
+    var sort_i_handler = ".coin_cover";
     var input_field = $('.new-list-'+x__type+' .add-input');
     var i__title = input_field.val();
 
@@ -1567,7 +1567,7 @@ function i__add(x__type, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(x__type, sort_handler, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
+    add_to_list(x__type, sort_i_handler, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
     
     //Update backend:
     $.post("/i/i__add", {
@@ -1587,10 +1587,10 @@ function i__add(x__type, link_i__id) {
 
             x_type_counter(x__type, 1);
 
-            sort_handle_load(x__type);
+            sort_i_handle_load(x__type);
 
             //Add new
-            add_to_list(x__type, sort_handler, data.new_i_html);
+            add_to_list(x__type, sort_i_handler, data.new_i_html);
 
             //Lookout for textinput updates
             x_set_start_text();
@@ -1675,7 +1675,7 @@ function e__add(x__type, e_existing_id) {
                 //Allow inline editing if enabled:
                 x_set_start_text();
 
-                e_sort_load(x__type);
+                sort_e_handle_load(x__type);
                 load_coins();
 
                 //Hide Coin:
@@ -1891,16 +1891,16 @@ function validURL(str) {
 }
 
 
-function add_to_list(x__type, sort_handler, html_content) {
+function add_to_list(x__type, sort_i_handler, html_content) {
 
     //See if we previously have a list in place?
-    if ($("#list-in-" + x__type + " " + sort_handler).length > 0) {
+    if ($("#list-in-" + x__type + " " + sort_i_handler).length > 0) {
         if(!js_n___14686.includes(x__type)){
             //Downwards add to start"
-            $("#list-in-" + x__type + " " + sort_handler + ":first").before(html_content);
+            $("#list-in-" + x__type + " " + sort_i_handler + ":first").before(html_content);
         } else {
             //Upwards adds to end:
-            $("#list-in-" + x__type + " " + sort_handler + ":last").after(html_content);
+            $("#list-in-" + x__type + " " + sort_i_handler + ":last").after(html_content);
         }
     } else {
         //Raw list, add before input filed:
@@ -2105,7 +2105,7 @@ function set_autosize(theobject){
 
 var sorting_loaded = []; // more efficient than new Array()
 
-function sort_handle_load(x__type){
+function sort_i_handle_load(x__type){
 
     if(!js_n___4603.includes(x__type)){
         console.log(x__type+' is not sortable');
@@ -2130,7 +2130,7 @@ function sort_handle_load(x__type){
             return false;
         }
 
-        $('.sort_handle').removeClass('hidden');
+        $('.sort_i_handle').removeClass('hidden');
         console.log(x__type+' sorting load success');
         sorting_loaded.push(x__type);
 
@@ -2138,7 +2138,7 @@ function sort_handle_load(x__type){
         var sort = Sortable.create(theobject, {
             animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
             draggable: "#list-in-"+x__type+" .sort_draggable", // Specifies which items inside the element should be sortable
-            handle: "#list-in-"+x__type+" .sort_handle", // Restricts sort start click/touch to the specified element
+            handle: "#list-in-"+x__type+" .sort_i_handle", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
 
                 var sort_rank = 0;
@@ -2153,7 +2153,7 @@ function sort_handle_load(x__type){
 
                 //Update order:
                 if(sort_rank > 0){
-                    $.post("/x/sort_handle_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
+                    $.post("/x/sort_i_handle_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
                         //Update UI to confirm with member:
                         if (!data.status) {
                             //There was some sort of an error returned!
@@ -2629,7 +2629,7 @@ function e_x_form_unlock(result){
 }
 
 
-function e_sort_save(x__type) {
+function sort_e_handle_save(x__type) {
 
     var new_x__spectrums = [];
     var sort_rank = 0;
@@ -2648,7 +2648,7 @@ function e_sort_save(x__type) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/e/e_sort_save", {e__id: fetch_val('#focus_id'), x__type:x__type, new_x__spectrums: new_x__spectrums}, function (data) {
+        $.post("/e/sort_e_handle_save", {e__id: fetch_val('#focus_id'), x__type:x__type, new_x__spectrums: new_x__spectrums}, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -2658,13 +2658,13 @@ function e_sort_save(x__type) {
     }
 }
 
-function e_sort_reset(){
+function sort_e_handle_reset(){
     var r = confirm("Reset all Portfolio Source orders & sort alphabetically?");
     if (r == true) {
         $('.sort_reset').html('<i class="far fa-yin-yang fa-spin"></i>');
 
         //Update via call:
-        $.post("/e/e_sort_reset", {
+        $.post("/e/sort_e_handle_reset", {
             e__id: fetch_val('#focus_id')
         }, function (data) {
 

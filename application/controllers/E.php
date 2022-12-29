@@ -57,7 +57,7 @@ class E extends CI_Controller
     }
 
 
-    function e_sort_reset()
+    function sort_e_handle_reset()
     {
 
         //Authenticate Member:
@@ -151,7 +151,7 @@ class E extends CI_Controller
         }
     }
 
-    function e_sort_save()
+    function sort_e_handle_save()
     {
 
         //Authenticate Member:
