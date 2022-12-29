@@ -1417,8 +1417,6 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 $ui .= $action_buttons;
                 $ui .= '</div>';
                 $ui .= '</div>';
-            } else {
-                $ui .= 'NO';
             }
 
         }
