@@ -1744,7 +1744,10 @@ function view_e_card($x__type, $e, $extra_class = null)
                         foreach($CI->X_model->fetch(array(
                             'x__id' => $x__id,
                         ), array('x__source')) as $linker){
+                            $active_bars++;
+                            $ui .= '<td><div class="show-on-hover">';
                             $ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
+                            $ui .= '</div></td>';
                         }
                         break;
                     }
