@@ -432,7 +432,6 @@ if($top_i__id) {
                 echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'Received your payment of ' : 'Refunded you a total of ' ).$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( isset($x__metadata['quantity']) && $x__metadata['quantity']>1 ? ' for '.$x__metadata['quantity'].' tickets' : '' ).'</div>';
             }
 
-
             //Invite Your Friends (If 2 or more items):
             if($x__metadata['quantity']>1 && 0){
 

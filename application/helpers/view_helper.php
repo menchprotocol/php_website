@@ -1305,6 +1305,8 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     } elseif($discovery_mode){
         if($top_i__id > 0 && $top_i__id!=$i['i__id']){
             $href = '/'.$top_i__id.'/'.$i['i__id'];
+        } elseif($x__id && $i['x__left']>0 && $i['x__right']>0) {
+            $href = '/'.$i['x__right'].'/'.$i['x__left'];
         } else {
             $href = '/'.$i['i__id'];
         }
