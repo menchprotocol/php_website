@@ -1304,7 +1304,7 @@ class X_model extends CI_Model
 
         //Log completion transaction if not duplicate:
         $check_duplicate = $this->X_model->fetch($search_fields);
-        if(in_array($add_fields['x__type'], $this->config->item('n___30469')) && isset($check_duplicate[0]['x__id'])){
+        if(isset($check_duplicate[0]['x__id']) && in_array($add_fields['x__type'], $this->config->item('n___30469'))){
 
             $new_x = $check_duplicate[0];
 

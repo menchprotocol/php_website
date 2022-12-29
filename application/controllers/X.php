@@ -435,53 +435,6 @@ class X extends CI_Controller
 
     }
 
-    function paypal_refund(){
-
-        $member_e = superpower_unlocked(28727);
-        if (!$member_e) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(28727),
-            ));
-
-        } elseif (!isset($_POST['x__id'])) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing X ID',
-            ));
-
-        } elseif (!isset($_POST['refund_total']) || doubleval($_POST['refund_total'])<=0) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Refund Amount ['.$_POST['refund_total'].']',
-            ));
-
-        }
-
-        $transactions = $this->X_model->fetch(array(
-            'x__id' => $_POST['x__id'],
-            'x__type' => 26595,
-        ));
-        if(!count($transactions)){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid X ID',
-            ));
-        }
-
-        $this->X_model->update($transactions[0]['x__id'], array(
-            'x__status' => 6173, //Transaction Deleted
-        ), $member_e['e__id'], 27794 /* Paypal Refund */);
-
-        return view_json(array(
-            'status' => 1,
-            'message' => $_POST['refund_total'].' Refunded',
-        ));
-
-    }
 
     function x_next($top_i__id, $i__id = 0){
 
@@ -717,8 +670,8 @@ class X extends CI_Controller
                     'x__source' => $x__source,
                     'x__up' => $tag__id,
                     'x__down' => $x__source,
-                    'x__left' => $top_i__id,
-                    'x__right' => $i__id,
+                    'x__left' => $i__id,
+                    'x__right' => $top_i__id,
                 ));
 
                 //Inform user of changes:

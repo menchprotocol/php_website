@@ -1761,14 +1761,6 @@ function view_e_card($x__type, $e, $extra_class = null)
                 $ui .= view_input_dropdown(6177, $e['e__status'], null, $source_of_e && $superpower_13422, false, $e['e__id']);
                 $ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==6287 && $is_app_store){
-
-                //App Store
-                $active_bars++;
-                $ui .= '<td><div class="show-on-hover">';
-                $ui .= '<a title="'.$m_top_bar['m__title'].'" href="/-'.$e['e__id'].'">'.$m_top_bar['m__cover'].'</a>';
-                $ui .= '</div></td>';
-
             } elseif($x__type_top_bar==31912 && $source_of_e){
 
                 //Edit Source

@@ -241,7 +241,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             $transaction_content .= '<td style="text-align: left;"><b>&nbsp;'.( $this_quantity>1 ? '$'.number_format(($this_payout/$this_quantity), 2) : '' ).'</b></td>';
             $transaction_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
             $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$x__metadata['mc_currency'].'</td>';
-            $transaction_content .= '<td style="text-align: right;" id="refund_'.$x['x__id'].'">'.( 0 && $x__metadata['mc_gross']>0 && strlen($x__metadata['txn_id'])>0 ? '<a href="#" onclick="paypal_refund('.$x['x__id'].', '.number_format($x__metadata['mc_gross'], 2).')" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Process Full Refund"><u><i class="fal fa-hands-usd" style="font-size:1em !important;"></i></u></a> <a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="/-4341?x__id='.$x['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
+            $transaction_content .= '<td style="text-align: right;" id="refund_'.$x['x__id'].'">'.( $x__metadata['mc_gross']>0 && strlen($x__metadata['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="/-4341?x__id='.$x['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
 
             $transaction_content .= '</tr>';
 
@@ -537,22 +537,3 @@ if(count($i_query)){
         width: 8px;
     }
 </style>
-<script>
-
-    function paypal_refund(x__id, transaction_total){
-        var confirm_refund = confirm("Process a full refund of "+transaction_total+"?");
-        if(confirm_refund){
-            $.post("/x/paypal_refund", {
-                x__id: x__id,
-                refund_total: transaction_total
-            }, function (data) {
-                if(data.status){
-                    $('#refund_'+x__id).html('✅ Refunded');
-                } else {
-                    alert(data.message);
-                }
-            });
-        }
-    }
-
-</script>
