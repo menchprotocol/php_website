@@ -1329,11 +1329,11 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     //Top Bar
     $width = (100 / count($CI->config->item('e___31770')));
     $ui .= '<table class="coin_coins '.( !$discovery_mode ? ' style="" ' : '' ).'"><tr>';
-    foreach($CI->config->item('e___31770') as $x__type_bar => $m_bar) {
+    foreach($CI->config->item('e___31904') as $x__type_top_bar => $m_top_bar) {
 
         $ui .= '<td width="'.$width.'%"><div class="show-on-hover">';
 
-        if($x__type_bar==31770 && $x__id && ($e_of_i || $discovery_mode)){
+        if($x__type_top_bar==31770 && $x__id && ($e_of_i || $discovery_mode)){
 
             foreach($CI->config->item('e___31770') as $x__type1 => $m1){
                 if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
@@ -1346,23 +1346,23 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 }
             }
 
-        } elseif($x__type_bar==4737 && !$discovery_mode){
+        } elseif($x__type_top_bar==4737 && !$discovery_mode){
 
             $ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
 
-        } elseif($x__type_bar==31004 && !$discovery_mode){
+        } elseif($x__type_top_bar==31004 && !$discovery_mode){
 
             $ui .= view_input_dropdown(31004, $i['i__status'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
 
-        } elseif($x__type_bar==31911 && $e_of_i && !$discovery_mode){
+        } elseif($x__type_top_bar==31911 && $e_of_i && !$discovery_mode){
 
-            $ui .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$m_bar['m__cover'].'</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
 
-        } elseif($x__type_bar==13909 && $has_sortable){
+        } elseif($x__type_top_bar==13909 && $has_sortable){
 
-            $ui .= '<span title="'.$m_bar['m__title'].'" class="sort_handle">'.$m_bar['m__cover'].'</span>';
+            $ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_handle">'.$m_top_bar['m__cover'].'</span>';
 
-        } elseif($x__type_bar==14980 && !$cache_app){
+        } elseif($x__type_top_bar==14980 && !$cache_app){
 
             $action_buttons = null;
             $focus_menu = ( $focus_coin ? 11047 : 14955 );
