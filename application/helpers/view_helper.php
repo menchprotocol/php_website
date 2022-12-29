@@ -1517,18 +1517,39 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Bottom Bar
     if(!$focus_coin && (!$discovery_mode || $superpower_10939)){
-        $ui .= '<div class="coin_coins"><div class="show-on-hover">';
+
+        $active_bars = 0;
+        $bottom_bar_ui = '';
         foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m_bottom_bar['m__following']);
-            $ui .= '<span class="hideIfEmpty '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-            if($e__id_bottom_bar==31892 && !$can_click && $member_e && !$focus_coin && !$discovery_mode){
-                $ui .= '<a href="'.$href.'" class="right-btn" title="'.$m_bottom_bar['m__title'].'">'.$m_bottom_bar['m__cover'].'</a>';
-            } else {
-                $ui .= view_coins_i($e__id_bottom_bar,  $i['i__id']);
+            if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+                continue; //Does not have permission
             }
-            $ui .= '</span>';
+            if($e__id_bottom_bar==31892 && !$can_click && $member_e && !$focus_coin && !$discovery_mode){
+                $active_bars++;
+                $bottom_bar_ui .= '<td><div class="show-on-hover">';
+                $bottom_bar_ui .= '<span class="hideIfEmpty">';
+                $bottom_bar_ui .= '<a href="'.$href.'" class="right-btn" title="'.$m_bottom_bar['m__title'].'">'.$m_bottom_bar['m__cover'].'</a>';
+                $bottom_bar_ui .= '</span>';
+                    $bottom_bar_ui .= '</div></td>';
+            } else {
+                $coins_ui = view_coins_i($e__id_bottom_bar,  $i['i__id']);
+                if(strlen($coins_ui)){
+                    $active_bars++;
+                    $bottom_bar_ui .= '<td><div class="show-on-hover">';
+                    $bottom_bar_ui .= '<span class="hideIfEmpty">';
+                    $bottom_bar_ui .= $coins_ui;
+                    $bottom_bar_ui .= '</span>';
+                    $bottom_bar_ui .= '</div></td>';
+                }
+            }
         }
-        $ui .= '</div></div>';
+
+        if($bottom_bar_ui){
+            $ui .= '<table class="coin_coins active_bars_'.$active_bars.'"><tr>';
+            $ui .= $bottom_bar_ui;
+            $ui .= '</tr></table>';
+        }
     }
 
 
