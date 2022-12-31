@@ -49,12 +49,17 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             $ticket_count += $this_count;
             $ticket_transactions++;
 
+            $ticket_checked_in = $this->X_model->fetch(array(
+                'x__reference' => $x['x__id'],
+                'x__type' => 32016,
+            ), array('x__up'));
+
             $ticket_holder_ui .= '<tr>';
             $ticket_holder_ui .= '<th>'.$ticket_transactions.'</th>';
             $ticket_holder_ui .= '<th><a href="/@'.$x['e__id'].'"><u>'.$x['e__title'].'</u></a></th>';
-            $ticket_holder_ui .= '<td>'.$this_count.'</td>';
-            $ticket_holder_ui .= '<td>Emailed</td>';
-            $ticket_holder_ui .= '<td>Checkin</td>';
+            $ticket_holder_ui .= '<td><a href="/-26560?x__id='.$x['x__id'].'&x__source='.$x['x__source'].'">'.$this_count.'</a></td>';
+            $ticket_holder_ui .= '<td></td>';
+            $ticket_holder_ui .= '<td>'.( count($ticket_checked_in) ? '<a href="/@'.$ticket_checked_in[0]['e__id'].'" title="Checked-In by '.$ticket_checked_in[0]['e__title'].' about ' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago at '.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">'.view_cover(12274, $ticket_checked_in[0]['e__cover'], true).'</a>' : '' ).'</td>';
             $ticket_holder_ui .= '</tr>';
 
         }
