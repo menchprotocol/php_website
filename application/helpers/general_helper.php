@@ -625,7 +625,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
 
 }
 
-function i_is_available($i__id, $log_tnx){
+function i_is_available($i__id, $log_tnx, $check_inventory = true){
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();
@@ -725,7 +725,7 @@ function i_is_available($i__id, $log_tnx){
 
 
     //Any Limits on Selection?
-    if(i_spots_remaining($i__id)==0){
+    if($check_inventory && !i_spots_remaining($i__id)){
         //Limit is reached, cannot complete this at this time:
         return access_blocked($log_tnx, "You cannot play this note because there are no spots remaining.", $x__source, $i__id, 26189, 0);
     }

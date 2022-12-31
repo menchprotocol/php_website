@@ -443,7 +443,7 @@ class X extends CI_Controller
         }
 
         $member_e = superpower_unlocked();
-        $i_is_available = i_is_available($i__id, true);
+        $i_is_available = i_is_available($i__id, true, false);
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
