@@ -19,30 +19,60 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
         'x__up' => $_GET['e__id'], //Time Starts
     ), array('x__right')) as $ticket_type){
 
+
+
+
         //Count Tickets:
         $ticket_count = 0;
         $ticket_transactions = 0;
         $ticket_holder_ui = '';
+
+        $ticket_holder_ui .= '<table class="table table-sm table-striped stats-table mini-stats-table" style="margin-bottom: 34px;">';
+        $ticket_holder_ui .= '<tr style="font-weight: bold;">';
+        $ticket_holder_ui .= '<th>#</th>';
+        $ticket_holder_ui .= '<th>Member</th>';
+        $ticket_holder_ui .= '<th style="width: 100px;">Tickets</th>';
+        $ticket_holder_ui .= '<th style="width: 100px;">Emailed</th>';
+        $ticket_holder_ui .= '<th style="width: 100px;">Checkin</th>';
+        $ticket_holder_ui .= '</tr>';
+
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Ticket Discoveries
             'x__left' => $ticket_type['i__id'],
         ), array('x__source'), 0) as $x){
+
             $x__metadata = unserialize($x['x__metadata']);
             $this_count = ( (isset($x__metadata['quantity']) && $x__metadata['quantity'] >= 2) ? $x__metadata['quantity'] : 1 );
             $ticket_count += $this_count;
             $ticket_transactions++;
-            $ticket_holder_ui .= '<div>'.$ticket_transactions.') <a href="/@'.$x['e__id'].'"><u>'.$x['e__title'].'</u></a> '.$this_count.' Ticket'.view__s($this_count).'</div>';
+
+            $ticket_holder_ui .= '<tr>';
+            $ticket_holder_ui .= '<th>'.$ticket_transactions.'</th>';
+            $ticket_holder_ui .= '<th><a href="/@'.$x['e__id'].'"><u>'.$x['e__title'].'</u></a></th>';
+            $ticket_holder_ui .= '<td>'.$this_count.'</td>';
+            $ticket_holder_ui .= '<td>Emailed</td>';
+            $ticket_holder_ui .= '<td>Checkin</td>';
+            $ticket_holder_ui .= '</tr>';
+
         }
+
+        $ticket_holder_ui .= '<tr style="font-weight: bold;">';
+        $ticket_holder_ui .= '<th></th>';
+        $ticket_holder_ui .= '<th>Totals</th>';
+        $ticket_holder_ui .= '<th>'.$ticket_count.'</th>';
+        $ticket_holder_ui .= '<th></th>';
+        $ticket_holder_ui .= '<th></th>';
+        $ticket_holder_ui .= '</tr>';
+
+        $ticket_holder_ui .= '</table>';
 
         $all_ticket_count += $ticket_count;
         $all_ticket_transactions += $ticket_transactions;
 
         if($ticket_transactions>0){
             array_push($ticket_type_ids, $ticket_type['i__id']);
-            echo '<h3>'.$ticket_type['i__title'].' ['.$ticket_count.' Tickets, '.$ticket_transactions.' Trs]</h3>';
             echo $ticket_holder_ui;
-            echo '<br /><br /><br />';
         }
 
     }
