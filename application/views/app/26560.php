@@ -31,7 +31,8 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
             'x__type' => 32016,
         ), array('x__source'));
 
-        $checkin_url = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x[0]['x__id'].'&x__source='.$x[0]['x__source'].'&checkin_32016=1';
+        $ticket_url = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x[0]['x__id'].'&x__source='.$x[0]['x__source'];
+        $checkin_url = $ticket_url.'&checkin_32016=1';
 
 
         //Display UI:
@@ -71,6 +72,8 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
                     ));
 
                     echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully checkin for '.$quantity.' Ticket'.view__s($quantity).'</div>';
+
+                    js_redirect($ticket_url, 13);
 
                 }
             } else {
