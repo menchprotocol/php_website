@@ -17,9 +17,8 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__time']
     } else {
 
         $url = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x[0]['x__id'].'&x__time='.$x[0]['x__time'];
-        echo $url;
-        echo '<hr />';
-        echo(generateQR($url));
+        echo '<div style="text-align: center; padding-bottom: 21px;">'.generateQR($url).'</div>';
+        echo '<div style="text-align: center; font-size: 10px;">'.$url.'</div>';
 
     }
 
