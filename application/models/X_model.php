@@ -1591,7 +1591,7 @@ class X_model extends CI_Model
                     $existing_x = $this->X_model->fetch(array(
                         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                        'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
+                        'x__up' => $x_tag['x__up'],
                         'x__down' => $add_fields['x__source'],
                     ));
 
@@ -1663,11 +1663,6 @@ class X_model extends CI_Model
                             'x__left' => $i['i__id'],
                             'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
                         ));
-
-                        //Notify the user of this new profile addition?
-                        if(in_array($x_tag['e__id'], $this->config->item('n___28702'))){
-                            $this->X_model->send_dm($add_fields['x__source'], get_domain('m__title', $add_fields['x__source']).' Profile Update', '['.$x_tag['e__title'].'] was added to your profile'.( strlen($add_fields['x__message'])>0 ? ' with value ['.$add_fields['x__message'].']' : '' ));
-                        }
 
                     }
 

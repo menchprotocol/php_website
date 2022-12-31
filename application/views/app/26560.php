@@ -1,9 +1,13 @@
 <?php
 $superpower_31000 = superpower_active(31000, true);
 
-if($superpower_31000 || (isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__time']) && strlen($_GET['x__time']) > 0)){
+if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__time']) && strlen($_GET['x__time']) > 0){
 
-    echo '<p style="text-align: center">Admin Ticketing UI Enabled!</p>';
+    if($superpower_31000){
+        echo '<p style="text-align: center">Admin ticket</p>';
+    }
+
+    echo '<p style="text-align: center">Loading Ticket #'.$_GET['x__id'].' Purchased on '.$_GET['x__time'].'</p>';
 
     if(isset($_GET['x__id'])){
         $x = $this->X_model->fetch(array(
