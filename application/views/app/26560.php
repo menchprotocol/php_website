@@ -76,7 +76,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
             } else {
 
                 //Give option for manual checkin:
-                echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="'.$checkin_url.'">'.$e___11035[32016]['m__title'].' '.$e___11035[32016]['m__cover'].'</a></div>';
+                echo '<div class="msg alert alert-danger" role="alert"><div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="'.$checkin_url.'">'.$e___11035[32016]['m__title'].' '.$e___11035[32016]['m__cover'].'</a></div></div>';
 
 
             }
