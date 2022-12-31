@@ -10,7 +10,6 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
 
     //Fetch All Tickets of Source:
     $paid_ticket_types = 0;
-    $ticket_ticket_x_ids = array();
     $ticket_type_ids = array();
     foreach($this->X_model->fetch(array(
         'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -19,28 +18,28 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
     ), array('x__right')) as $ticket_type){
 
         //Count Tickets:
-        $found_ticket = 0;
+        $ticket_count = 0;
+        $ticket_transactions = 0;
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Ticket Discoveries
             'x__left' => $ticket_type['i__id'],
         ), array(), 0) as $x){
-            $found_ticket++;
-            array_push($ticket_ticket_x_ids, $x['x__id']);
+            $x__metadata = unserialize($x['x__metadata']);
+            $ticket_count += ( (isset($x__metadata['quantity']) && $x__metadata['quantity'] >= 2) ? $x__metadata['quantity'] : 1 );
+            $ticket_transactions++;
         }
 
-        if($found_ticket>0){
+        if($ticket_transactions>0){
             array_push($ticket_type_ids, $ticket_type['i__id']);
-            echo '<h3>'.$ticket_type['i__title'].' ['.$found_ticket.']</h3>';
+            echo '<h3>'.$ticket_type['i__title'].' ['.$ticket_transactions.']</h3>';
         }
 
     }
 
     echo '<hr />';
 
-    echo count($ticket_ticket_x_ids).' Paid Tickets total';
-
-
+    echo $ticket_count.' Tickets sold in '.$ticket_transactions.' Transactions';
 
 
     /*
