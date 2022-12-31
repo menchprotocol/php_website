@@ -1863,6 +1863,11 @@ function view_e_card($x__type, $e, $extra_class = null)
                         //Reset Alphabetic order
                         $action_buttons .= '<a href="javascript:void(0);" onclick="sort_e_handle_reset()" class="dropdown-item css__title">'.$anchor.'</a>';
 
+                    } elseif($e__id_dropdown==26560 && isset($e['x__type']) && in_array($e['x__type'], $CI->config->item('n___32014'))){
+
+                        //Ticket Details
+                        $action_buttons .= '<a href="/-26560?x__id='.$e['x__id'].'&x__time='.$e['x__time'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+
                     } elseif($e__id_dropdown==6415){
 
                         //Reset my discoveries
