@@ -22,14 +22,17 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
         //Count Tickets:
         $ticket_count = 0;
         $ticket_transactions = 0;
+        $ticket_holder_ui = '';
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Ticket Discoveries
             'x__left' => $ticket_type['i__id'],
-        ), array(), 0) as $x){
+        ), array('x__source'), 0) as $x){
             $x__metadata = unserialize($x['x__metadata']);
-            $ticket_count += ( (isset($x__metadata['quantity']) && $x__metadata['quantity'] >= 2) ? $x__metadata['quantity'] : 1 );
+            $this_count = ( (isset($x__metadata['quantity']) && $x__metadata['quantity'] >= 2) ? $x__metadata['quantity'] : 1 );
+            $ticket_count += $this_count;
             $ticket_transactions++;
+            $ticket_holder_ui .= '<div><a href="/@'.$x['e__id'].'">'.$x['e__title'].'</a> '.$this_count.' Ticket'.view__s($this_count).'</div>';
         }
 
         $all_ticket_count += $ticket_count;
