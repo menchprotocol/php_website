@@ -25,24 +25,6 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
             'x__reference' => $x[0]['x__id'],
             'x__type' => 32016,
         ), array('x__source'));
-        if($superpower_31000 && isset($_GET['checkin_32016']) && !count($ticket_checked_in)){
-            //All good to check-in:
-            $this->X_model->create(array(
-                'x__source' => $member_e['e__id'], //Ticket Scanner
-                'x__type' => 32016,
-                'x__up' => $x[0]['e__id'],
-                'x__spectrum' => $quantity,
-                'x__right' => $x[0]['x__right'],
-                'x__left' => $x[0]['x__left'],
-                'x__reference' => $x[0]['x__id'],
-            ));
-
-            //Refetch Ticket Check:
-            $ticket_checked_in = $this->X_model->fetch(array(
-                'x__reference' => $x[0]['x__id'],
-                'x__type' => 32016,
-            ), array('x__source'));
-        }
 
 
         $is_top = $this->I_model->fetch(array(
@@ -82,6 +64,17 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
                     echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Ticket already checked-in!</div>';
 
                 } else {
+
+                    //All good to check-in:
+                    $this->X_model->create(array(
+                        'x__source' => $member_e['e__id'], //Ticket Scanner
+                        'x__type' => 32016,
+                        'x__up' => $x[0]['e__id'],
+                        'x__spectrum' => $quantity,
+                        'x__right' => $x[0]['x__right'],
+                        'x__left' => $x[0]['x__left'],
+                        'x__reference' => $x[0]['x__id'],
+                    ));
 
                     echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully checkin for '.$quantity.' Ticket'.view__s($quantity).'</div>';
 
