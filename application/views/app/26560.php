@@ -36,7 +36,6 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
 
         $checkin_url = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x[0]['x__id'].'&x__source='.$x[0]['x__source'].'&checkin_32016=1';
 
-
         //Display UI:
         echo '<h2 style="text-align: center;">'.$is_top[0]['i__title'].'</h2>';
         echo '<h3 style="text-align: center;">'.$is_discovery[0]['i__title'].'</h3>';
