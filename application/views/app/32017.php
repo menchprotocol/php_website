@@ -41,6 +41,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
         if($ticket_transactions>0){
             array_push($ticket_type_ids, $ticket_type['i__id']);
             echo '<h3>'.$ticket_type['i__title'].' ['.$ticket_count.' Tickets, '.$all_ticket_transactions.' Trs]</h3>';
+            echo $ticket_holder_ui;
         }
 
     }
