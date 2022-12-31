@@ -27,7 +27,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
         ));
         //Checkin-Status:
         $ticket_checked_in = $this->X_model->fetch(array(
-            'x__reference' => $x[0]['i__id'],
+            'x__reference' => $x[0]['x__id'],
             'x__type' => 32016,
         ), array('x__source'));
 
