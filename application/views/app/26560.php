@@ -8,7 +8,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__time']
         'x__id' => $_GET['x__id'],
         'x__time' => $_GET['x__time'],
         'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Ticket Type
-    ));
+    ), array('x__source'));
 
     if(!count($x)){
 

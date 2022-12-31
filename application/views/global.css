@@ -115,14 +115,14 @@ table td { border: none !important; }
 .texttype__lg { font-size:3.3em; }
 
 h1 {
-    padding:34px 8px 55px !important;
+    padding:21px 8px !important;
     margin:0;
     font-size:3.7em;
     text-align: center;
 }
 
 h2 {
-    padding:21px 10px;
+    padding:21px 8px;
     margin:0;
     font-size:1.15em;
     text-align: left;
@@ -130,6 +130,7 @@ h2 {
 h3{
     font-size:1.5em;
     font-weight: bold;
+    padding-bottom: 13px;
 }
 
 a {
