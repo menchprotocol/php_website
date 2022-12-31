@@ -32,7 +32,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             $this_count = ( (isset($x__metadata['quantity']) && $x__metadata['quantity'] >= 2) ? $x__metadata['quantity'] : 1 );
             $ticket_count += $this_count;
             $ticket_transactions++;
-            $ticket_holder_ui .= '<div><a href="/@'.$x['e__id'].'">'.$x['e__title'].'</a> '.$this_count.' Ticket'.view__s($this_count).'</div>';
+            $ticket_holder_ui .= '<div>'.$ticket_transactions.') <a href="/@'.$x['e__id'].'"><u>'.$x['e__title'].'</u></a> '.$this_count.' Ticket'.view__s($this_count).'</div>';
         }
 
         $all_ticket_count += $ticket_count;
@@ -42,6 +42,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             array_push($ticket_type_ids, $ticket_type['i__id']);
             echo '<h3>'.$ticket_type['i__title'].' ['.$ticket_count.' Tickets, '.$all_ticket_transactions.' Trs]</h3>';
             echo $ticket_holder_ui;
+            echo '<br /><br /><br />';
         }
 
     }
