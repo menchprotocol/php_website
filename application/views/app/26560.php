@@ -79,7 +79,8 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
                     echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successful checkin for '.$quantity.' Ticket'.view__s($quantity).'</div>';
 
                 }
-            } else {
+
+            } elseif(!count($ticket_checked_in)) {
 
                 //Give option for manual checkin:
                 echo '<div style="text-align: center;"><div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="'.$checkin_url.'">'.$e___11035[32016]['m__title'].' '.$e___11035[32016]['m__cover'].'</a></div></div>';
