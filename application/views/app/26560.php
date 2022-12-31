@@ -28,7 +28,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
 
         echo '<h2 style="text-align: center;">'.$is_top[0]['i__title'].'</h2>';
         echo '<h3 style="text-align: center;">'.$is_discovery[0]['i__title'].'</h3>';
-        echo '<h3 style="text-align: center;"><i class="fas fa-user"></i> <a href="/@'.$x[0]['e__id'].'"><u>'.$x[0]['e__title'].'</u></a> <i class="fas fa-ticket"></i> <b>'.$quantity.'</b></h3>';
+        echo '<h3 style="text-align: center;"><i class="fas fa-user"></i> <a href="/@'.$x[0]['e__id'].'"><u>'.$x[0]['e__title'].'</u></a>&nbsp;&nbsp;&nbsp;<i class="fas fa-ticket"></i> <b>'.$quantity.'</b></h3>';
 
         $url = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x[0]['x__id'].'&x__source='.$x[0]['x__source'];
         echo '<div style="text-align: center; padding-bottom: 21px;">'.generateQR($url).'</div>';
