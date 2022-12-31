@@ -1,12 +1,12 @@
 <?php
 $superpower_31000 = superpower_active(31000, true);
 
-if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__time']) && strlen($_GET['x__time']) > 0){
+if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source']) && strlen($_GET['x__source']) > 0){
 
     //Validate Ticket Input:
     $x = $this->X_model->fetch(array(
         'x__id' => $_GET['x__id'],
-        'x__source' => $_GET['x__time'],
+        'x__source' => $_GET['x__source'],
         'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Ticket Type
     ), array('x__source'));
 
