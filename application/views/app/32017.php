@@ -32,8 +32,8 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             $ticket_transactions++;
         }
 
-        $all_ticket_count = $ticket_count;
-        $all_ticket_transactions = $ticket_transactions;
+        $all_ticket_count += $ticket_count;
+        $all_ticket_transactions += $ticket_transactions;
 
         if($ticket_transactions>0){
             array_push($ticket_type_ids, $ticket_type['i__id']);
