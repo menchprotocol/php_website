@@ -45,7 +45,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
 
         if(count($ticket_checked_in)){
 
-            echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Ticket Already Checked-In by <a href="/@'.$ticket_checked_in[0]['e__id'].'">'.$ticket_checked_in[0]['e__title'].'</a> <span class="underdot" title="'.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago</span>.</div>';
+            echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Ticket Already Checked-In by <a href="/@'.$ticket_checked_in[0]['e__id'].'">'.$ticket_checked_in[0]['e__title'].'</a> about <span class="underdot" title="'.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago</span>.</div>';
 
         } else {
 
