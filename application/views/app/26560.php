@@ -39,12 +39,15 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
         echo '<h2 style="text-align: center;">'.$is_top[0]['i__title'].'</h2>';
         echo '<h3 style="text-align: center;">'.$is_discovery[0]['i__title'].'</h3>';
         echo '<h3 style="text-align: center;"><i class="fas fa-user"></i> <a href="/@'.$x[0]['e__id'].'"><u>'.$x[0]['e__title'].'</u></a>&nbsp;&nbsp;&nbsp;<i class="fas fa-ticket"></i> <b>'.$quantity.' Ticket'.view__s($quantity).'</b></h3>';
-        echo '<div style="text-align: center; padding-bottom: 21px;">'.generateQR($checkin_url).'</div>';
 
 
         if(count($ticket_checked_in)){
 
             echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Ticket Scanned by <a href="/@'.$ticket_checked_in[0]['e__id'].'">'.$ticket_checked_in[0]['e__title'].'</a> at '.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST (' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago)</div>';
+
+        } else {
+
+            echo '<div style="text-align: center; padding-bottom: 21px;">'.generateQR($checkin_url).'</div>';
 
         }
 
