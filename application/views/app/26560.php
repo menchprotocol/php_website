@@ -7,6 +7,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__time']
     $x = $this->X_model->fetch(array(
         'x__id' => $_GET['x__id'],
         'x__time' => $_GET['x__time'],
+        'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Ticket Type
     ));
 
     if(!count($x)){
@@ -26,15 +27,8 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__time']
         echo '<p style="text-align: center">Admin ticket</p>';
     }
 
-}
-
-
-
-if($member_e) {
-
-    //Search for my tickets and group based on Upcoming & Past:
-    echo '<p style="text-align: center">You have no upcoming tickets</p>';
-
 } else {
-    echo '<p style="text-align: center">Missing ticket ID & timestamp. Make sure to click on the link that was emailed to you to manage your ticket.</p>';
+
+    echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing Ticket ID</div>';
+
 }
