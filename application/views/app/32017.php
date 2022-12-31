@@ -19,19 +19,19 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
     ), array('x__right')) as $ticket_type){
 
         //Count Tickets:
-        $found_ticket = false;
+        $found_ticket = 0;
         foreach($this->X_model->fetch(array(
             'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Ticket Discoveries
             'x__left' => $ticket_type['i__id'],
         ), array(), 0) as $x){
-            $found_ticket = true;
+            $found_ticket++;
             array_push($ticket_ticket_x_ids, $x['x__id']);
         }
 
-        if($found_ticket){
+        if($found_ticket>0){
             array_push($ticket_type_ids, $ticket_type['i__id']);
-            echo '<h3>'.$ticket_type['i__title'].'</h3>';
+            echo '<h3>'.$ticket_type['i__title'].' ['.$found_ticket.']</h3>';
         }
 
     }
