@@ -24,7 +24,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
         $ticket_checked_in = $this->X_model->fetch(array(
             'x__reference' => $x[0]['x__id'],
             'x__type' => 32016,
-        ), array('x__source'));
+        ), array('x__up'));
 
 
         $is_top = $this->I_model->fetch(array(
@@ -67,10 +67,10 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
 
                     //All good to check-in:
                     $this->X_model->create(array(
-                        'x__source' => $member_e['e__id'], //Ticket Scanner
                         'x__type' => 32016,
-                        'x__up' => $x[0]['e__id'],
-                        'x__spectrum' => $quantity,
+                        'x__source' => $x[0]['e__id'], //Ticket Buyer
+                        'x__up' => $member_e['e__id'], //Ticket Scanner
+                        'x__spectrum' => $quantity, //Tickets Scanned
                         'x__right' => $x[0]['x__right'],
                         'x__left' => $x[0]['x__left'],
                         'x__reference' => $x[0]['x__id'],
