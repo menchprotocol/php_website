@@ -36,6 +36,12 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
                 'x__left' => $x[0]['x__left'],
                 'x__reference' => $x[0]['x__id'],
             ));
+
+            //Refetch Ticket Check:
+            $ticket_checked_in = $this->X_model->fetch(array(
+                'x__reference' => $x[0]['x__id'],
+                'x__type' => 32016,
+            ), array('x__source'));
         }
 
 
