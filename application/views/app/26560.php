@@ -43,7 +43,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
 
         if(count($ticket_checked_in)){
 
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Checked-in by <a href="/@'.$ticket_checked_in[0]['e__id'].'">'.$ticket_checked_in[0]['e__title'].'</a> at '.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST (' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago)</div>';
+            echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Ticket Scanned by <a href="/@'.$ticket_checked_in[0]['e__id'].'">'.$ticket_checked_in[0]['e__title'].'</a> at '.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST (' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago)</div>';
 
         }
 
@@ -67,7 +67,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
                         'x__spectrum' => $quantity,
                         'x__right' => $x[0]['x__right'],
                         'x__left' => $x[0]['x__left'],
-                        'x__reference' => $x[0]['i__id'],
+                        'x__reference' => $x[0]['x__id'],
                     ));
 
                     echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully checkin for '.$quantity.' Ticket'.view__s($quantity).'</div>';
