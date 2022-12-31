@@ -9,6 +9,8 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
 
 
     //Fetch All Tickets of Source:
+    $all_ticket_count = 0;
+    $all_ticket_transactions = 0;
     $paid_ticket_types = 0;
     $ticket_type_ids = array();
     foreach($this->X_model->fetch(array(
@@ -30,16 +32,19 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             $ticket_transactions++;
         }
 
+        $all_ticket_count = $ticket_count;
+        $all_ticket_transactions = $ticket_transactions;
+
         if($ticket_transactions>0){
             array_push($ticket_type_ids, $ticket_type['i__id']);
-            echo '<h3>'.$ticket_type['i__title'].' ['.$ticket_transactions.']</h3>';
+            echo '<h3>'.$ticket_type['i__title'].' ['.$ticket_count.' Tickets, '.$all_ticket_transactions.' Trs]</h3>';
         }
 
     }
 
     echo '<hr />';
 
-    echo $ticket_count.' Tickets sold in '.$ticket_transactions.' Transactions';
+    echo $all_ticket_count.' Tickets sold in '.$all_ticket_transactions.' Transactions';
 
 
     /*
