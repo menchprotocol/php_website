@@ -60,7 +60,6 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             $ticket_holder_ui .= '</tr>';
 
             $this->X_model->send_dm($x['e__id'], 'Your Atlas Camp NYE eTicket(s) QR Code',
-                //Message Body:
                 'To get your ticket(s) at the door simply open your QR code that will be scanned by our greeting team:'.
                 "\n\n".$qr_link."\n\n".
                 'Anyone with your QR code can check-in and receive your ticket(s).'."\n"
