@@ -59,14 +59,12 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             $ticket_holder_ui .= '<td>'.( count($ticket_checked_in) ? '<a href="/@'.$ticket_checked_in[0]['e__id'].'" title="Checked-In by '.$ticket_checked_in[0]['e__title'].' about ' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago at '.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">'.view_cover(12274, $ticket_checked_in[0]['e__cover'], true).'</a>' : '' ).'</td>';
             $ticket_holder_ui .= '</tr>';
 
-
-            $this->X_model->send_dm($x__source, 'Your Atlas Camp eTicket(s) are Ready '.one_two_explode('', ' ', $x['e__title']),
+            $this->X_model->send_dm($x['e__id'], 'Your Atlas Camp NYE eTicket(s) QR Code',
                 //Message Body:
-                'We cannot wait to celebrate new years with you! To get your '.$this_count.' ticket'.view__s($this_count).' at the door simply open your QR code that will be scanned by our greeting team:'.
+                'To get your ticket(s) at the door simply open your QR code that will be scanned by our greeting team:'.
                 "\n\n".$qr_link."\n\n".
-                'Anyone with your QR code can check-in and receive the ticket(s).'."\n\n"
+                'Anyone with your QR code can check-in and receive your ticket(s).'."\n"
             );
-            break;
 
         }
 
