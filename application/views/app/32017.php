@@ -60,7 +60,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             $ticket_holder_ui .= '</tr>';
 
 
-            $this->X_model->send_dm($x__source, 'Your Atlas Camp eTicket(s) for Tonight',
+            $this->X_model->send_dm($x__source, 'Your Atlas Camp eTicket(s) are Ready '.one_two_explode('', ' ', $x['e__title']),
                 //Message Body:
                 'We cannot wait to celebrate new years with you! To get your '.$this_count.' ticket'.view__s($this_count).' at the door simply open your QR code that will be scanned by our greeting team:'.
                 "\n\n".$qr_link."\n\n".
@@ -69,8 +69,6 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             break;
 
         }
-
-        break;
 
         $ticket_holder_ui .= '<tr style="font-weight: bold;">';
         $ticket_holder_ui .= '<th></th>';
