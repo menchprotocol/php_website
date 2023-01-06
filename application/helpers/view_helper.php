@@ -1326,27 +1326,35 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin slim_flat col-md-8 col-12 ' : ' edge-coin coin_i_click col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
 
 
+    //Determine Link Type
+    $link_type_id = 0;
+    $link_type_ui = '';
+    if($x__id){
+        foreach($CI->config->item('e___31770') as $x__type1 => $m1){
+            if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
+                foreach($CI->X_model->fetch(array(
+                    'x__id' => $x__id,
+                ), array('x__source')) as $linker){
+                    $link_type_ui .= '<td><div class="show-on-hover">';
+                    $link_type_ui .= view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id'], $x__id);
+                    $link_type_ui .= '</div></td>';
+                }
+                $link_type_id = $x__type1;
+                break;
+            }
+        }
+    }
+
 
     //Top Bar
     $top_bar_ui = '';
     $active_bars = 0;
     foreach($CI->config->item('e___31904') as $x__type_top_bar => $m_top_bar) {
 
-        if($x__type_top_bar==31770 && $x__id){
+        if($x__type_top_bar==31770 && $link_type_ui){
 
-            foreach($CI->config->item('e___31770') as $x__type1 => $m1){
-                if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
-                    foreach($CI->X_model->fetch(array(
-                        'x__id' => $x__id,
-                    ), array('x__source')) as $linker){
-                        $active_bars++;
-                        $top_bar_ui .= '<td><div class="show-on-hover">';
-                        $top_bar_ui .= view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id'], $x__id);
-                        $top_bar_ui .= '</div></td>';
-                    }
-                    break;
-                }
-            }
+            $active_bars++;
+            $top_bar_ui .= $link_type_ui;
 
         } elseif($x__type_top_bar==4737 && !$discovery_mode){
 
@@ -1379,8 +1387,8 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         } elseif($x__type_top_bar==14980 && !$cache_app){
 
             $action_buttons = null;
-            $focus_menu = ( $focus_coin ? 11047 : 14955 );
-            foreach($CI->config->item('e___'.$focus_menu) as $e__id_dropdown => $m_dropdown) {
+            $focus_dropdown = ( !$x__id ? 11047 /* Idea Dropdown */ : ( $link_type_id==4486 /* Idea/Idea Links */ ? 14955 /* Idea/Idea Dropdown */ : 28787 /* Idea/Source Dropdown (It must be) */ ) );
+            foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
 
                 //Skip if missing superpower:
                 $superpower_actives = array_intersect($CI->config->item('n___10957'), $m_dropdown['m__following']);
@@ -1396,6 +1404,9 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 } elseif($e__id_dropdown==30795 && !$discovery_mode && $superpower_10939){
                     //Discovery Mode
                     $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+                } elseif($e__id_dropdown==13571 && $x__id > 0 && $superpower_10939){
+                    //Edit Message
+                    $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>';
                 } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $e_of_i){
                     //Unlink
                     $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$x__id.'">'.$anchor.'</a>';
@@ -1433,7 +1444,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="show-on-hover">';
                 $top_bar_ui .= '<div class="dropdown inline-block">';
-                $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_menu]['m__title'].'">'.$e___14980[$focus_menu]['m__cover'].'</button>';
+                $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
                 $top_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
                 $top_bar_ui .= $action_buttons;
                 $top_bar_ui .= '</div>';
@@ -1818,8 +1829,9 @@ function view_e_card($x__type, $e, $extra_class = null)
             } elseif($x__type_top_bar==14980 && !$cache_app){
 
                 $action_buttons = null;
-                $focus_menu = ( $focus_coin ? 12887 : 14956 );
-                foreach($CI->config->item('e___'.$focus_menu) as $e__id_dropdown => $m_dropdown) {
+                $focus_dropdown = ( !$x__id ? 12887 /* Source Dropdown */ : ( $link_type_id==4486 /* Source/Source Links */ ? 14955 /* Source/Source Dropdown */ : 28787 /* Source/Idea Dropdown (It must be) */ ) );
+
+                foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
 
                     //Skip if missing superpower:
                     $superpower_actives = array_intersect($CI->config->item('n___10957'), $m_dropdown['m__following']);
@@ -1833,7 +1845,7 @@ function view_e_card($x__type, $e, $extra_class = null)
 
                         $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(4997,'.$e['e__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==13571 && $x__id > 0 && $superpower_13422){
+                    } elseif($e__id_dropdown==13571 && $x__id > 0 && $superpower_10939){
 
                         //Edit Message
                         $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>';
@@ -1893,7 +1905,7 @@ function view_e_card($x__type, $e, $extra_class = null)
                     $active_bars++;
                     $top_bar_ui .= '<td><div class="show-on-hover">';
                     $top_bar_ui .= '<div class="dropdown inline-block">';
-                    $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_menu]['m__title'].'">'.$e___14980[$focus_menu]['m__cover'].'</button>';
+                    $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
                     $top_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
                     $top_bar_ui .= $action_buttons;
                     $top_bar_ui .= '</div>';

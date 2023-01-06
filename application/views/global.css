@@ -342,6 +342,8 @@ img.no-frame {
 .algolia_pad_search{
     text-align: center;
     margin-bottom: 13px;
+}
+.list-adder {
     border: 1px solid #999;
     border-radius: 21px;
 }
