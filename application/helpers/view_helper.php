@@ -1829,7 +1829,7 @@ function view_e_card($x__type, $e, $extra_class = null)
             } elseif($x__type_top_bar==14980 && !$cache_app){
 
                 $action_buttons = null;
-                $focus_dropdown = ( !$x__id ? 12887 /* Source Dropdown */ : ( $link_type_id==4486 /* Source/Source Links */ ? 14955 /* Source/Source Dropdown */ : 28787 /* Source/Idea Dropdown (It must be) */ ) );
+                $focus_dropdown = ( !$x__id ? 12887 /* Source Dropdown */ : (1 /* Source/Source Links */ ? 14955 /* Source/Source Dropdown */ : 28787 /* Source/Idea Dropdown (It must be) */ ) );
 
                 foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
 
