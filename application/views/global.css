@@ -345,7 +345,6 @@ img.no-frame {
 }
 .list-adder {
     border: 1px solid transparent;
-    border-radius: 21px;
 }
 
 .algolia_pad_search:empty{
@@ -3076,6 +3075,7 @@ h4.css__title{
 .dropdown_12274,
 .dropdown_11030 {
     border-color: #007AFD !important;
+    border-radius: 21px;
 }
 
 .btn.btn-12273,
@@ -3138,6 +3138,7 @@ h4.css__title{
 .dropdown_12273,
 .dropdown_11019 {
     border-color: #FFC500 !important;
+
 }
 .data-block{
     display: inline-block;
