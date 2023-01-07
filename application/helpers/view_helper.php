@@ -492,7 +492,7 @@ function view_body_e($x__type, $counter, $e__id){
 
 
         if($superpower_10939){
-            $ui .= '<div class="col-md-8 col-12 container-center"><div class="new-list-'.$x__type.' list-group"><div class="list-group-item dropdown_12273 list-adder">
+            $ui .= '<div class="col-md-8 col-10 container-center"><div class="new-list-'.$x__type.' list-group"><div class="list-group-item dropdown_12273 list-adder">
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
@@ -513,7 +513,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $idea_adder = ( $x__type==12274 ? 31775 : 31774 );
 
-        $add_button = '<div class="col-md-8 col-12 container-center"><div class="new-list-'.$x__type.' dropdown_'.$x__type.' list-adder">
+        $add_button = '<div class="col-md-8 col-10 container-center"><div class="new-list-'.$x__type.' dropdown_'.$x__type.' list-adder">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
@@ -574,7 +574,7 @@ function view_body_i($x__type, $counter, $i__id){
         $ui .= '</div>';
 
         if($e_of_i){
-            $ui .= '<div class="col-md-8 col-12 container-center"><div class="new-list-11019 dropdown_11019 list-adder '.superpower_active(10939).'">
+            $ui .= '<div class="col-md-8 col-10 container-center"><div class="new-list-11019 dropdown_11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
@@ -588,7 +588,7 @@ function view_body_i($x__type, $counter, $i__id){
         //IDEAS
 
         if($e_of_i){
-            $ui .= '<div class="col-md-8 col-12 container-center"><div class="new-list-12273 dropdown_12273 list-adder '.superpower_active(10939).'">
+            $ui .= '<div class="col-md-8 col-10 container-center"><div class="new-list-12273 dropdown_12273 list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick add-input algolia_search dotransparent"
@@ -616,7 +616,7 @@ function view_body_i($x__type, $counter, $i__id){
 
         //SOURCES
 
-        $ui .= '<div class="col-md-8 col-12 container-center"><div class="new-list-'.$x__type.' dropdown_12274 list-adder '.superpower_active(10939).'">
+        $ui .= '<div class="col-md-8 col-10 container-center"><div class="new-list-'.$x__type.' dropdown_12274 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
@@ -1771,7 +1771,7 @@ function view_e_card($x__type, $e, $extra_class = null)
     $show_text_editor = $source_of_e && !$has_any_lock && !$is_cache;
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin slim_flat col-md-8 col-12 ' : ' edge-coin coin_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin slim_flat col-md-8 col-10 ' : ' edge-coin coin_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
 
 
