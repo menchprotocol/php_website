@@ -3079,6 +3079,9 @@ h4.css__title{
 .dropdown_12274,
 .dropdown_11030 {
     border-color: #007AFD !important;
+}
+.dropdown_12274,
+.dropdown_11030 {
     border-radius: 21px !important;
 }
 
@@ -3142,8 +3145,10 @@ h4.css__title{
 .dropdown_12273,
 .dropdown_11019 {
     border-color: #FFC500 !important;
+}
+.dropdown_12273,
+.dropdown_11019 {
     border-radius: 0px !important;
-
 }
 .data-block{
     display: inline-block;
