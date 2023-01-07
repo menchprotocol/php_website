@@ -2537,6 +2537,11 @@ h4.css__title{
         border-radius: 0 !important;
     }
 
+    .list-adder {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
     .cover-content{
         /* max-height: 44%; */
     }
