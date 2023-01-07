@@ -1549,13 +1549,6 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 $bottom_bar_ui .= '<a href="'.$href.'" class="right-btn" title="'.$m_bottom_bar['m__title'].'">'.$m_bottom_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</span>';
                 $bottom_bar_ui .= '</div></td>';
-            } elseif($e__id_bottom_bar==31892 && !$can_click && $member_e && !$focus_coin && !$discovery_mode){
-                $active_bars++;
-                $bottom_bar_ui .= '<td><div class="show-on-hover">';
-                $bottom_bar_ui .= '<span class="hideIfEmpty">';
-                $bottom_bar_ui .= '<a href="'.$href.'" class="right-btn" title="'.$m_bottom_bar['m__title'].'">'.$m_bottom_bar['m__cover'].'</a>';
-                $bottom_bar_ui .= '</span>';
-                $bottom_bar_ui .= '</div></td>';
             } else {
                 $coins_ui = view_coins_i($e__id_bottom_bar,  $i['i__id']);
                 if(strlen($coins_ui)){
