@@ -492,13 +492,13 @@ function view_body_e($x__type, $counter, $e__id){
 
 
         if($superpower_10939){
-            $ui .= '<div class="new-list-'.$x__type.' list-group"><div class="list-group-item dropdown_12273 list-adder">
+            $ui .= '<div class="col-md-8 col-12"><div class="new-list-'.$x__type.' list-group"><div class="list-group-item dropdown_12273 list-adder">
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content"></div></div></div>';
+                </div><div class="algolia_pad_search row justify-content"></div></div></div></div>';
         }
 
 
@@ -513,13 +513,13 @@ function view_body_e($x__type, $counter, $e__id){
 
         $idea_adder = ( $x__type==12274 ? 31775 : 31774 );
 
-        $add_button = '<div class="new-list-'.$x__type.' dropdown_'.$x__type.' list-adder">
+        $add_button = '<div class="col-md-8 col-12"><div class="new-list-'.$x__type.' dropdown_'.$x__type.' list-adder">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[$idea_adder]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content"></div></div>';
+                    </div><div class="algolia_pad_search row justify-content"></div></div></div>';
 
 
         if($x__type==12274 && superpower_active(13422, true)){
@@ -574,13 +574,13 @@ function view_body_i($x__type, $counter, $i__id){
         $ui .= '</div>';
 
         if($e_of_i){
-            $ui .= '<div class="new-list-11019 dropdown_11019 list-adder '.superpower_active(10939).'">
+            $ui .= '<div class="col-md-8 col-12"><div class="new-list-11019 dropdown_11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[31773]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content"></div></div>';
+                    </div><div class="algolia_pad_search row justify-content"></div></div></div>';
         }
 
     } elseif($x__type==12273){
@@ -588,13 +588,13 @@ function view_body_i($x__type, $counter, $i__id){
         //IDEAS
 
         if($e_of_i){
-            $ui .= '<div class="new-list-12273 dropdown_12273 list-adder '.superpower_active(10939).'">
+            $ui .= '<div class="col-md-8 col-12"><div class="new-list-12273 dropdown_12273 list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[31772]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content"></div></div>';
+                </div><div class="algolia_pad_search row justify-content"></div></div></div>';
         }
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
@@ -616,13 +616,13 @@ function view_body_i($x__type, $counter, $i__id){
 
         //SOURCES
 
-        $ui .= '<div class="new-list-'.$x__type.' dropdown_12274 list-adder '.superpower_active(10939).'">
+        $ui .= '<div class="col-md-8 col-12"><div class="new-list-'.$x__type.' dropdown_12274 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content"></div></div>';
+                    </div><div class="algolia_pad_search row justify-content"></div></div></div>';
 
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">'; //list-in-4983
@@ -1318,7 +1318,8 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin slim_flat col-md-8 col-12 ' : ' edge-coin coin_i_click col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
+    $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin slim_flat col-md-8 col-11
+     ' : ' edge-coin coin_i_click col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
 
 
     //Determine Link Type
