@@ -2272,7 +2272,7 @@ input.form-control {
 }
 .list-adder{
     padding: 8px 0 0 !important;
-    margin-bottom: 5px !important;
+    margin: 0 5px 5px 5px !important;
     border: 1px solid transparent;
 }
 
@@ -2535,11 +2535,6 @@ h4.css__title{
 
     .slim_flat{
         border-radius: 0 !important;
-    }
-
-    .list-adder{
-        margin-right: 5px !important;
-        margin-left: 5px !important;
     }
 
     .cover-content{
