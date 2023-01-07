@@ -492,7 +492,7 @@ function view_body_e($x__type, $counter, $e__id){
 
 
         if($superpower_10939){
-            $ui .= '<div class="new-list-'.$x__type.'"<div class="col-md-8 col-12 container-center"><div class="list-group"><div class="list-group-item dropdown_12273 list-adder">
+            $ui .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-12 container-center"><div class="list-group"><div class="list-group-item dropdown_12273 list-adder">
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
