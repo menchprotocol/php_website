@@ -4059,9 +4059,14 @@ main {
 }
 
 
-
+.if_hover_inline_block {
+    display: none;
+}
 
 @media (hover: hover) {
+    .if_hover_inline_block {
+        display: inline-block;
+    }
     .text-logo {
         margin-bottom: -11px !important;
     }
