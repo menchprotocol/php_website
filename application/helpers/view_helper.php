@@ -498,7 +498,7 @@ function view_body_e($x__type, $counter, $e__id){
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content"></div></div></div></div>';
+                </div></div></div></div><div class="algolia_pad_search row justify-content"></div>';
         }
 
 
@@ -519,7 +519,7 @@ function view_body_e($x__type, $counter, $e__id){
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[$idea_adder]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content"></div></div></div>';
+                    </div></div></div><div class="algolia_pad_search row justify-content"></div>';
 
 
         if($x__type==12274 && superpower_active(13422, true)){
@@ -580,7 +580,7 @@ function view_body_i($x__type, $counter, $i__id){
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[31773]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content"></div></div></div>';
+                    </div></div></div><div class="algolia_pad_search row justify-content"></div>';
         }
 
     } elseif($x__type==12273){
@@ -594,7 +594,7 @@ function view_body_i($x__type, $counter, $i__id){
                            class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[31772]['m__title'].'">
-                </div><div class="algolia_pad_search row justify-content"></div></div></div>';
+                </div></div></div><div class="algolia_pad_search row justify-content"></div>';
         }
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
@@ -622,7 +622,7 @@ function view_body_i($x__type, $counter, $i__id){
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
-                    </div><div class="algolia_pad_search row justify-content"></div></div></div>';
+                    </div></div></div><div class="algolia_pad_search row justify-content"></div>';
 
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">'; //list-in-4983
