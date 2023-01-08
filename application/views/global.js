@@ -1452,6 +1452,12 @@ function load_tab(x__type, auto_load){
             i__id:fetch_val('#focus_id')
         }, function (data) {
             $('.headline_body_' + x__type).html(data);
+            if(auto_load){ // && js_n___14686.includes(x__type)
+                window.scrollTo({
+                    top: ($('.main_item').offset().top - 54),
+                    behavior: 'instant',
+                });
+            }
         });
 
     } else if(focus_coin==12274){
@@ -1464,6 +1470,12 @@ function load_tab(x__type, auto_load){
             e__id:fetch_val('#focus_id')
         }, function (data) {
             $('.headline_body_'+x__type).html(data);
+            if(auto_load){ // && js_n___14686.includes(x__type)
+                window.scrollTo({
+                    top: ($('.main_item').offset().top - 54),
+                    behavior: 'instant',
+                });
+            }
         });
 
     } else {
@@ -1472,13 +1484,6 @@ function load_tab(x__type, auto_load){
         console.log('ERROR: Unknown Tab!');
         return false;
 
-    }
-
-    if(auto_load){ // && js_n___14686.includes(x__type)
-        window.scrollTo({
-            top: ($('.main_item').offset().top - 54),
-            behavior: 'instant',
-        });
     }
 
     //Give some extra loding time so the content loads on page:
