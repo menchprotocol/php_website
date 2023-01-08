@@ -2017,10 +2017,6 @@ input.form-control {
     top: 47px;
     left: 8px;
 }
-.coin-cover-2left{
-    top: 77px;
-    left: -8px;
-}
 .focus-coin .coin-cover-left {
     top: 45px;
     left: 45px;
@@ -2029,13 +2025,6 @@ input.form-control {
     top: 45px;
     right: 13px;
 }
-.coin-cover-2right{
-    top: 70px;
-    right: 10px;
-}
-.coin-cover-2right i{
-    font-size: 1.2em !important;
-}
 .focus-coin .coin-cover-right {
     top: 45px;
     right: 45px;
@@ -2043,10 +2032,6 @@ input.form-control {
 .mini-coin .coin-cover-right {
     top: 25px;
     right: 5px;
-}
-.mini-coin .coin-cover-2right {
-    top: 35px;
-    right: 0px;
 }
 
 .coin_coins{
@@ -2582,17 +2567,9 @@ h4.css__title{
         top: 39px;
         left: 1px;
     }
-    .coin-cover-2left{
-        top: 68px;
-        left: -5px;
-    }
     .coin-cover-right{
         top: 39px;
         right: 1px;
-    }
-    .coin-cover-2right{
-        top: 68px;
-        right: 5px;
     }
 
     .focus-coin .coin-cover-left{

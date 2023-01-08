@@ -460,8 +460,14 @@ function view_coins(){
     return $ui;
 }
 
-function view_coin_line($href, $is_current, $x__type, $o__type, $o__cover, $o__title, $x__message = null){
-    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item css__title '.( $is_current ? ' active ' : '' ).'">'.( $x__type ? '<span class="icon-block-xxs">'.$x__type.'</span>' : '' ).( $o__type ? '<span class="icon-block-xxs">'.$o__type.'</span>' : '' ).( strlen($o__cover) ? '<span class="icon-block-xxs">'.$o__cover.'</span>' : '&nbsp;' ).$o__title./*'<span class="pull-right inline-block">'..'</span>'.*/( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).'</a>';
+function view_coin_line($href, $is_current, $x__type, $o__status, $o__type, $o__title, $x__message = null){
+    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item css__title '.( $is_current ? ' active ' : '' ).'">'.
+        ( $x__type ? '<span class="icon-block-xxs">'.$x__type.'</span>' : '' ).
+        ( $o__status ? '<span class="icon-block-xxs">'.$o__status.'</span>' : '' ).
+        ( strlen($o__type) ? '<span class="icon-block-xxs">'.$o__type.'</span>' : '&nbsp;' ). //Type or Cover
+        $o__title.
+        ( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).
+        '</a>';
 }
 
 

@@ -116,7 +116,7 @@ class E extends CI_Controller
             if($_POST['x__type']==11030 || $_POST['x__type']==12274){
                 //SOURCES
                 $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
-                $e___6177 = $this->config->item('e___6177'); //Source Types
+                $e___6177 = $this->config->item('e___6177'); //Source Status
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
 
 
@@ -131,11 +131,12 @@ class E extends CI_Controller
 
                 //IDEAS
                 $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
+                $e___31004 = $this->config->item('e___31004'); //Idea Status
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
-                        $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], ( $_POST['x__type']==6255 ? null : $e___4737[$next_i['i__type']]['m__cover'] ), null, view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
+                        $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___31004[$next_i['i__status']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
                         $listed_items++;
                     }
                 }
