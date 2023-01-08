@@ -218,7 +218,7 @@ li a {
 
 .add-input{
     margin-bottom: 5px;
-    padding:0px 0 5px 13px !important;
+    padding:0px 0 5px 8px !important;
     width: 100%;
 
 }
@@ -2073,6 +2073,8 @@ input.form-control {
     position: relative;
     margin:0 auto 5px auto !important;
     padding: 5px 0 !important;
+}
+.coin_cover.coin_is_12273{
     border-radius: 21px;
 }
 
