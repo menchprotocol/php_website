@@ -557,16 +557,6 @@ function view_load_page(x__type) {
         $('.load-more').remove();
         if(data.length){
 
-            if(current_page<=1){
-                setTimeout(function () {
-                    console.log('Jump 2 Trigger');
-                    window.scrollTo({
-                        top: (top_element.offset().top - 55),
-                        behavior: 'instant',
-                    });
-                }, 588);
-            }
-
             if(js_n___14686.includes(x__type)){
                 //Upwards link:
                 $(e_list).prepend(data);
@@ -577,6 +567,14 @@ function view_load_page(x__type) {
             x_set_start_text();
             load_coin_clickers();
             $('[data-toggle="tooltip"]').tooltip();
+
+            if(current_page<=1){
+                window.scrollTo({
+                    top: (top_element.offset().top - 55),
+                    behavior: 'instant',
+                });
+            }
+
         }
         busy_loading[x__type] = 0;
     });
@@ -1477,13 +1475,10 @@ function load_tab(x__type, auto_load){
     }
 
     if(auto_load){ // && js_n___14686.includes(x__type)
-        setTimeout(function () {
-            console.log('Jump 1 Trigger');
-            window.scrollTo({
-                top: ($('.main_item').offset().top - 54),
-                behavior: 'instant',
-            });
-        }, 588);
+        window.scrollTo({
+            top: ($('.main_item').offset().top - 54),
+            behavior: 'instant',
+        });
     }
 
     //Give some extra loding time so the content loads on page:
