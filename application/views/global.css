@@ -341,9 +341,9 @@ img.no-frame {
 
 .algolia_pad_search{
     text-align: center;
-    margin-top: -6px;
-    margin-bottom: 34px;
+    margin: -6px 5px 34px;
     border:1px solid transparent;
+    border-top:0;
 }
 
 .algolia_pad_search:empty{
