@@ -1480,7 +1480,7 @@ function load_tab(x__type, auto_load){
                 top: ($('.main_item').offset().top - 54),
                 behavior: 'instant',
             });
-        }, 377);
+        }, 1444);
     }
 
     //Give some extra loding time so the content loads on page:
