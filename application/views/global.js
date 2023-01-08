@@ -466,7 +466,7 @@ function toggle_pills(x__type){
 
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
-            $('.headline_body_' + x__type).html('<div class="center"><i class="far fa-yin-yang fa-spin"></i></div>');
+            $('.headline_body_' + x__type).html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
             load_tab(x__type, false);
         }
     }
