@@ -366,6 +366,9 @@ img.no-frame {
 .pull-left{
     float:left;
 }
+.adjust-left{
+    margin-left: -8px;
+}
 
 
 

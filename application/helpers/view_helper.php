@@ -765,7 +765,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         $e___11035 = $CI->config->item('e___11035'); //COINS
         $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
-        $visual_counter = '<span class="mini-hidden">'.view_number($count_query).'<span>';
+        $visual_counter = '<span class="mini-hidden adjust-left">'.view_number($count_query).'<span>';
         $title_desc = number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'];
 
         if($append_coin_icon){
@@ -881,7 +881,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true)
         $e___11035 = $CI->config->item('e___11035'); //COINS
         $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
-        $visual_counter = '<span class="mini-hidden">'.view_number($count_query).'<span>';
+        $visual_counter = '<span class="mini-hidden adjust-left">'.view_number($count_query).'<span>';
         $title_desc = number_format($count_query, 0).( isset($e___11035[$x__type]['m__title']) ? ' '.$e___11035[$x__type]['m__title'] : '' );
 
         if($append_coin_icon){
