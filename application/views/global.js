@@ -1475,11 +1475,12 @@ function load_tab(x__type, auto_load){
 
     if(auto_load){ // && js_n___14686.includes(x__type)
         setTimeout(function () {
+            console.log('Jump Trigger');
             window.scrollTo({
                 top: ($('.main_item').offset().top - 54),
                 behavior: 'instant',
             });
-        }, 233);
+        }, 377);
     }
 
     //Give some extra loding time so the content loads on page:
