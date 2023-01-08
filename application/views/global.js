@@ -564,7 +564,7 @@ function view_load_page(x__type) {
                         top: (top_element.offset().top - 55),
                         behavior: 'instant',
                     });
-                }, 1444);
+                }, 188);
             }
 
             if(js_n___14686.includes(x__type)){
@@ -1483,7 +1483,7 @@ function load_tab(x__type, auto_load){
                 top: ($('.main_item').offset().top - 54),
                 behavior: 'instant',
             });
-        }, 1444);
+        }, 188);
     }
 
     //Give some extra loding time so the content loads on page:
