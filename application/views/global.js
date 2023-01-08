@@ -558,10 +558,13 @@ function view_load_page(x__type) {
         if(data.length){
 
             if(current_page<=1){
-                window.scrollTo({
-                    top: (top_element.offset().top - 55),
-                    behavior: 'instant',
-                });
+                setTimeout(function () {
+                    console.log('Jump 2 Trigger');
+                    window.scrollTo({
+                        top: (top_element.offset().top - 55),
+                        behavior: 'instant',
+                    });
+                }, 1444);
             }
 
             if(js_n___14686.includes(x__type)){
@@ -1475,7 +1478,7 @@ function load_tab(x__type, auto_load){
 
     if(auto_load){ // && js_n___14686.includes(x__type)
         setTimeout(function () {
-            console.log('Jump Trigger');
+            console.log('Jump 1 Trigger');
             window.scrollTo({
                 top: ($('.main_item').offset().top - 54),
                 behavior: 'instant',
