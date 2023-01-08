@@ -1,7 +1,6 @@
 <?php
 
 $commission_rate = intval(website_setting(27017))/100;
-echo $commission_rate.'/'.website_setting(27017);
 $superpower_28727 = superpower_active(28727, true);
 $e___6287 = $this->config->item('e___6287'); //APP
 $gross_transactions = 0;
