@@ -114,15 +114,14 @@ class E extends CI_Controller
             $listed_items = 0;
 
             if($_POST['x__type']==11030 || $_POST['x__type']==12274){
+
                 //SOURCES
                 $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
                 $e___6177 = $this->config->item('e___6177'); //Source Status
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
-
-
                 foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false) as $source_e) {
                     if(isset($source_e['e__id'])){
-                        $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, null, $e___6177[$source_e['e__status']]['m__cover'], view_cover(12274,$source_e['e__cover'], true), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
+                        $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__status']]['m__cover'], view_cover(12274,$source_e['e__cover'], true), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                         $listed_items++;
                     }
                 }
