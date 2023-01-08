@@ -2073,8 +2073,9 @@ input.form-control {
     position: relative;
     margin:0 auto 5px auto !important;
     padding: 5px 0 !important;
+    border-radius: 0;
 }
-.coin_cover.coin_is_12273{
+.coin_cover.coin-12273{
     border-radius: 21px;
 }
 
