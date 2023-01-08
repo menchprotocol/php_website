@@ -492,13 +492,13 @@ function view_body_e($x__type, $counter, $e__id){
 
 
         if($superpower_10939){
-            $ui .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-12 container-center"><div class="list-group"><div class="list-group-item dropdown_12273 list-adder">
+            $ui .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-12 container-center"><div class="list-group"><div class="list-group-item dropdown_'.$x__type.' list-adder">
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
-                </div></div></div></div><div class="algolia_pad_search row justify-content"></div></div>';
+                </div></div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
         }
 
 
@@ -519,7 +519,7 @@ function view_body_e($x__type, $counter, $e__id){
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[$idea_adder]['m__title'].'">
-                    </div></div></div><div class="algolia_pad_search row justify-content"></div></div>';
+                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
 
 
         if($x__type==12274 && superpower_active(13422, true)){
@@ -580,7 +580,7 @@ function view_body_i($x__type, $counter, $i__id){
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[31773]['m__title'].'">
-                    </div></div></div><div class="algolia_pad_search row justify-content"></div></div>';
+                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div>';
         }
 
     } elseif($x__type==12273){
@@ -588,13 +588,13 @@ function view_body_i($x__type, $counter, $i__id){
         //IDEAS
 
         if($e_of_i){
-            $ui .= '<div class="new-list-12273"><div class="col-md-8 col-12 container-center"><div class="new-list-12273 dropdown_12273 list-adder '.superpower_active(10939).'">
+            $ui .= '<div class="new-list-12273"><div class="col-md-8 col-12 container-center"><div class="dropdown_12273 list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[31772]['m__title'].'">
-                </div></div></div><div class="algolia_pad_search row justify-content"></div></div>';
+                </div></div></div><div class="algolia_pad_search dropdown_12273 row justify-content"></div></div>';
         }
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
@@ -616,13 +616,13 @@ function view_body_i($x__type, $counter, $i__id){
 
         //SOURCES
 
-        $ui .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-12 container-center"><div class="new-list-'.$x__type.' dropdown_12274 list-adder '.superpower_active(10939).'">
+        $ui .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
-                    </div></div></div><div class="algolia_pad_search row justify-content"></div></div>';
+                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
 
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">'; //list-in-4983
@@ -705,7 +705,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             'x__status IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__status IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
-        
+
     } elseif($x__type==12273){
 
         //Determine Sort:
@@ -897,7 +897,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true)
 
             //Menu To be loaded dynamically via AJAX:
             $ui .= '<div class="dropdown-menu dropdown_'.$x__type.' coins_i_'.$i__id.'_'.$x__type.'" aria-labelledby="coin_i_group_'.$x__type.'_'.$i__id.'"></div>';
-            
+
             $ui .= '</div>';
 
             return $ui;
