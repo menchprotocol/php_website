@@ -343,7 +343,7 @@ img.no-frame {
     text-align: center;
     margin: -6px 5px 34px;
     border:1px solid transparent;
-    border-top:0;
+    width: auto;
 }
 
 .algolia_pad_search:empty{
