@@ -2073,10 +2073,10 @@ input.form-control {
     position: relative;
     margin:0 auto 5px auto !important;
     padding: 5px 0 !important;
-    border-radius: 0;
+    border-radius: 0 !important;
 }
 .coin_cover.coin-12274{
-    border-radius: 21px;
+    border-radius: 21px !important;
 }
 
 .coin_cover.coinface-12274{
