@@ -1,7 +1,6 @@
 <?php
 
-$commission_rate = doubleval(view_memory(6404,27017))/100;
-
+$commission_rate = doubleval(website_setting(27017, ( $member_e ? $member_e['e__id'] : 0 )))/100;
 
 $superpower_28727 = superpower_active(28727, true);
 $e___6287 = $this->config->item('e___6287'); //APP
