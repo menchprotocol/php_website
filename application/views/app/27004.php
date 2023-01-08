@@ -2,6 +2,8 @@
 
 $commission_rate = doubleval(website_setting(27017, ( $member_e ? $member_e['e__id'] : 0 )))/100;
 
+echo '['.$commission_rate.']';
+
 $superpower_28727 = superpower_active(28727, true);
 $e___6287 = $this->config->item('e___6287'); //APP
 $gross_transactions = 0;
