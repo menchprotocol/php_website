@@ -389,7 +389,7 @@ if(superpower_unlocked()) {
                     echo '</div>';
                     ?>
 
-                    <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3288]['m__cover'].'</span>'.$e___4269[3288]['m__title'] ?></span>
+                    <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
                     <div class="form-group"><input type="email" placeholder="your@email.com" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
                     <div id="email_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                     <span id="step2buttons" class="<?= isset($_GET['input_email']) ? '' : ' hidden ' ?>" >
@@ -433,7 +433,7 @@ if(superpower_unlocked()) {
                     ?>
 
 
-                    <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[3286]['m__cover'].'</span>'.$e___4269[3286]['m__title'] ?></span>
+                    <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32078]['m__cover'].'</span>'.$e___4269[32078]['m__title'] ?></span>
                     <div class="form-group"><input type="password" id="input_password" class="form-control border white-border"></div>
                     <div id="password_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
 
