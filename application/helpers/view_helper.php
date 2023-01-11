@@ -1779,19 +1779,22 @@ function view_e_card($x__type, $e, $extra_class = null)
     //Source Link Groups
     $link_type_id = 0;
     $link_type_ui = '';
-    foreach($CI->config->item('e___31770') as $x__type1 => $m1){
-        if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
-            foreach($CI->X_model->fetch(array(
-                'x__id' => $x__id,
-            ), array('x__source')) as $linker){
-                $link_type_ui .= '<td><div class="show-on-hover">';
-                $link_type_ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
-                $link_type_ui .= '</div></td>';
+    if($x__id){
+        foreach($CI->config->item('e___31770') as $x__type1 => $m1){
+            if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
+                foreach($CI->X_model->fetch(array(
+                    'x__id' => $x__id,
+                ), array('x__source')) as $linker){
+                    $link_type_ui .= '<td><div class="show-on-hover">';
+                    $link_type_ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
+                    $link_type_ui .= '</div></td>';
+                }
+                $link_type_id = $x__type1;
+                break;
             }
-            $link_type_id = $x__type1;
-            break;
         }
     }
+
 
 
     if(!$cache_app && !$is_app) {
