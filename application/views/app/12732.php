@@ -5,9 +5,9 @@ $i_query = ( isset($_GET['i__id']) && intval($_GET['i__id']) ? array('i__id' => 
 $e_query = ( isset($_GET['e__id']) && intval($_GET['e__id']) ? array('e__id' => $_GET['e__id']) : array() );
 
 if(!count($e_query)){
-    echo 'IDEA: '.nl2br(print_r($this->I_model->match_x_status($member_e['e__id'], $i_query), true)).'<hr />';
+    echo 'IDEA: '.nl2br(print_r($this->I_model->match_x_privacy($member_e['e__id'], $i_query), true)).'<hr />';
 }
 
 if(!count($i_query)){
-    echo 'SOURCE: '.nl2br(print_r($this->E_model->match_x_status($member_e['e__id'], $e_query), true)).'<hr />';
+    echo 'SOURCE: '.nl2br(print_r($this->E_model->match_x_privacy($member_e['e__id'], $e_query), true)).'<hr />';
 }

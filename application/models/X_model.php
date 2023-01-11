@@ -125,7 +125,7 @@ class X_model extends CI_Model
             } elseif($add_fields['x__up'] > 0){
                 $e__id = $add_fields['x__up'];
             }
-            $this->E_model->match_x_status($add_fields['x__source'], array(
+            $this->E_model->match_x_privacy($add_fields['x__source'], array(
                 'e__id' => $e__id,
             ));
         }
@@ -137,7 +137,7 @@ class X_model extends CI_Model
             } elseif($add_fields['x__left'] > 0){
                 $i__id = $add_fields['x__left'];
             }
-            $this->I_model->match_x_status($add_fields['x__source'], array(
+            $this->I_model->match_x_privacy($add_fields['x__source'], array(
                 'i__id' => $i__id,
             ));
         }

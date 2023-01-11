@@ -284,7 +284,7 @@ class I_model extends CI_Model
 
 
 
-    function match_x_status($x__source, $query = array()){
+    function match_x_privacy($x__source, $query = array()){
 
         //STATS
         $stats = array(
@@ -292,9 +292,9 @@ class I_model extends CI_Model
             'scanned' => 0,
             'missing_creation_fix' => 0,
             'duplicate_creation_fix' => 0,
-            'status_sync' => 0,
+            'privacy_sync' => 0,
         );
-        $status_converter = status_converter(4737);
+        $privacy_converter = privacy_converter(4737);
 
         foreach($this->I_model->fetch($query) as $i){
 
@@ -315,14 +315,14 @@ class I_model extends CI_Model
                     'x__right' => $i['i__id'],
                     'x__message' => $i['i__title'],
                     'x__type' => $stats['x__type'],
-                    'x__privacy' => $status_converter[$i['i__type']],
+                    'x__privacy' => $privacy_converter[$i['i__type']],
                 ));
 
-            } elseif($x[0]['x__privacy'] != $status_converter[$i['i__type']]){
+            } elseif($x[0]['x__privacy'] != $privacy_converter[$i['i__type']]){
 
-                $stats['status_sync']++;
+                $stats['privacy_sync']++;
                 $this->X_model->update($x[0]['x__id'], array(
-                    'x__privacy' => $status_converter[$i['i__type']],
+                    'x__privacy' => $privacy_converter[$i['i__type']],
                 ));
 
             }

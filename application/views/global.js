@@ -2508,7 +2508,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
             if(element_id==6177){
                 //Update source status:
-                $('.coin___12274_'+o__id+' .cover-link').removeClass('coinStatus'+selected_e__id).addClass('coinStatus'+new_e__id);
+                $('.coin___12274_'+o__id+' .cover-link').removeClass('coin_privacy_'+selected_e__id).addClass('coin_privacy_'+new_e__id);
             }
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){

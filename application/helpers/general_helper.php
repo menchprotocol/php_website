@@ -1615,16 +1615,16 @@ function e_of_i($i__id, $member_e = array()){
 
 }
 
-function status_converter($status_id){
+function privacy_converter($privacy_id){
     //Create a map of statuses between transactions and ideas/sources:
-    $status_converter = array();
+    $privacy_converter = array();
     $CI =& get_instance();
     foreach($CI->config->item('n___6186') as $e__id) {
-        foreach(array_intersect($CI->config->item('n___'.$status_id), $CI->config->item('n___'.$e__id)) as $matching_status){
-            $status_converter[$matching_status] = $e__id;
+        foreach(array_intersect($CI->config->item('n___'.$privacy_id), $CI->config->item('n___'.$e__id)) as $matching_privacy){
+            $privacy_converter[$matching_privacy] = $e__id;
         }
     }
-    return $status_converter;
+    return $privacy_converter;
 }
 
 function boost_power()
@@ -1697,10 +1697,10 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
     if($s__type==12273){
         $focus_field_id = 'i__id';
-        $focus_field_status = 'i__type';
+        $focus_field_privacy = 'i__privacy';
     } elseif($s__type==12274){
         $focus_field_id = 'e__id';
-        $focus_field_status = 'e__privacy';
+        $focus_field_privacy = 'e__privacy';
     }
 
 
@@ -1976,7 +1976,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be deleted?
-        if (in_array($all_db_rows[0][$focus_field_status], array(6178 /* Member Deleted */, 6182 /* Idea Deleted */))) {
+        if (in_array($all_db_rows[0][$focus_field_privacy], array(6178 /* Member Deleted */, 6182 /* Idea Deleted */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 
