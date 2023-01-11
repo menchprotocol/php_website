@@ -84,7 +84,7 @@ if($search_for_set){
                 //Loop through parents:
                 $e___4737 = $this->config->item('e___4737'); // Idea Status
                 foreach($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                     'x__right' => $in['i__id'],

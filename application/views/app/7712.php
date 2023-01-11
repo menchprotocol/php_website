@@ -13,14 +13,14 @@ foreach($this->I_model->fetch(array(
     echo '<ul style="list-style: decimal;">';
     //Fetch all children for this OR:
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $child_or){
 
         $x_coins = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $child_or['i__id'],
         ), array(), 1, 0, array(), 'COUNT(x__id) as totals');

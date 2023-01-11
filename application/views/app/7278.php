@@ -45,7 +45,7 @@ foreach($is as $in){
 
     //Fetch children:
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
         'x__left' => $in['i__id'],
@@ -57,7 +57,7 @@ foreach($is as $in){
             'label' => $e___4593[$next_i['x__type']]['m__title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
             'edge_type' => $next_i['x__type'],
-            'edge_status' => $next_i['x__status'],
+            'edge_status' => $next_i['x__privacy'],
         ));
 
     }
@@ -66,7 +66,7 @@ foreach($is as $in){
 
 //Add sources:
 $es = $this->E_model->fetch(array(
-    'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ));
 foreach($es as $en){
 
@@ -76,13 +76,13 @@ foreach($es as $en){
         'label' => $en['e__title'],
         'size' => $node_size[12274] ,
         'node_type' => 2, //Member
-        'node_status' => $en['e__status'],
+        'node_status' => $en['e__privacy'],
     ));
 
     //Fetch children:
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => $en['e__id'],
     ), array('x__down'), 0, 0) as $e_child){
@@ -93,7 +93,7 @@ foreach($es as $en){
             'label' => $e___4593[$e_child['x__type']]['m__title'].': '.$e_child['x__message'],
             'weight' => 1,
             'edge_type' => $e_child['x__type'],
-            'edge_status' => $e_child['x__status'],
+            'edge_status' => $e_child['x__privacy'],
         ));
 
     }

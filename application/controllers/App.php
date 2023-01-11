@@ -86,7 +86,7 @@ class App extends CI_Controller
                     'x__type' => 14599, //Cache App
                     'x__up' => $app_e__id,
                     'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                     $ui = $latest_cache['x__message'];
                     $cache_x__id = $latest_cache['x__id'];
@@ -153,7 +153,7 @@ class App extends CI_Controller
             if(isset($_GET['e__id']) && intval($_GET['e__id'])){
                 $es = $this->E_model->fetch(array(
                     'e__id IN (' . $_GET['e__id'] . ')' => null,
-                    'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 ));
                 if(count($es)){
                     $log_data['x__down'] = $es[0]['e__id'];
@@ -310,8 +310,8 @@ class App extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__up' => 30841, //Featured Apps
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $app) {
             $ui .= view_e_card(6287, $app);
         }

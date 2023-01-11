@@ -13,7 +13,7 @@ function referral_line($i){
     $x_count = $CI->X_model->fetch(array(
         'x__right' => $i['i__id'],
         'x__type' => 7610, //MEMBER VIEWED DISCOVERY
-        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array(), 0, 0, array(), 'COUNT(x__id) as total_count');
     $income = 0;
     $tickets = 0;
@@ -21,7 +21,7 @@ function referral_line($i){
     $link = 'https://'.get_domain('m__message').'/'.$i['i__id'];
 
     $is_locked = count($CI->X_model->fetch(array(
-        'x__status IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__right' => $i['i__id'],
         'x__up > 0' => null,

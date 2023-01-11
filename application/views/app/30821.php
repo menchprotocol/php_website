@@ -4,14 +4,14 @@ $total = 0;
 $found = 0;
 $stats = array();
 foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
 ), array(), 0) as $x){
     $total++;
     $totalito = 0;
     //Does this have
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
         'x__left' => $x['x__left'],
         'x__source' => $x['x__source'],
@@ -21,7 +21,7 @@ foreach($this->X_model->fetch(array(
         if($other_type['x__type']==4559){
             //Delete this:
             $this->X_model->update($other_type['x__id'], array(
-                'x__status' => 6173, //Transaction Removed
+                'x__privacy' => 6173, //Transaction Removed
             ));
         } else {
             $totalito++;

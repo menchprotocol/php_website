@@ -34,18 +34,18 @@ echo $fixed.'/'.$scanned.' Transactions Fixed & '.$skipped.' Skipped.<hr />';
 
 //Now find deleted sources with active links:
 foreach($this->E_model->fetch(array(
-    'e__status' => 6178,
+    'e__privacy' => 6178,
 ), array(), 0) as $e){
 
     $profiles = count($this->X_model->fetch(array(
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__down' => $e['e__id'],
     ), array(), 0));
 
     $portfolios = count($this->X_model->fetch(array(
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__up' => $e['e__id'],
     ), array(), 0));
 

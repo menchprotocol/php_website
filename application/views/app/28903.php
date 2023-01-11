@@ -21,7 +21,7 @@ if(!isset($_GET['i__id'])){
 
         //MESSAGES
         foreach ($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $_GET['i__id'],
         ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
@@ -31,7 +31,7 @@ if(!isset($_GET['i__id'])){
 
         //1 Level of Next Ideas:
         foreach ($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $_GET['i__id'],
@@ -42,7 +42,7 @@ if(!isset($_GET['i__id'])){
             //MESSAGES
             echo '<div class="i_msg_'.$i['i__id'].' hidden" style="margin:10px; border-left:1px solid #999999;">';
             foreach ($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 4231, //IDEA NOTES Messages
                 'x__right' => $i['i__id'],
             ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {

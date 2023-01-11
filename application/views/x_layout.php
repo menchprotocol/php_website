@@ -7,7 +7,7 @@ $is_or_idea = in_array($i['i__type'], $this->config->item('n___7712'));
 
 //Any Hard Redirects?
 foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'x__right' => $i['i__id'],
     'x__up' => 30811, //Hard Redirect
@@ -20,7 +20,7 @@ foreach($this->X_model->fetch(array(
 
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
     'x__left' => $i['i__id'],
@@ -46,7 +46,7 @@ $x__source = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->started_ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
 $one_child_hack = (count($first_child) && count($is_next)==1 && !$top_i__id);
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
     'x__source' => $x__source,
     'x__left' => $i['i__id'],
@@ -54,7 +54,7 @@ $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
 $in_my_discoveries = ( $top_i__id && $top_i__id==$i['i__id'] );
 $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $can_skip = count($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'x__right' => $i['i__id'],
     'x__up' => 28239, //Can Skip
@@ -71,7 +71,7 @@ if($is_payment){
 
     //Payments Must have Unit Price, otherwise they are NOT a payment until added...
     $total_dues = $this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__right' => $i['i__id'],
         'x__up' => 26562, //Total Due
@@ -82,19 +82,19 @@ if($is_payment){
         if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
 
             $digest_fees = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__right' => $i['i__id'],
                 'x__up' => 30589, //Digest Fees
             ));
             $cart_max = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__right' => $i['i__id'],
                 'x__up' => 29651, //Cart Max Quantity
             ));
             $cart_min = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__right' => $i['i__id'],
                 'x__up' => 31008, //Cart Min Quantity
@@ -125,7 +125,7 @@ if($is_payment){
 //Featured Sources:
 $relevant_sources = '';
 foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'x__right' => $i['i__id'],
     'x__up > 0' => null,
@@ -164,7 +164,7 @@ if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
 
             //Does this have a child list?
             $query_subset = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $parent_i['i__id'],
@@ -172,7 +172,7 @@ if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
             foreach($query_subset as $key=>$value){
                 $i_is_available = i_is_available($value['i__id'], false);
                 if(!$i_is_available['status'] || !count($this->X_model->fetch(array(
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__source' => $x__source,
                         'x__left' => $value['i__id'],
@@ -182,7 +182,7 @@ if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
             }
 
             $messages = count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 4231, //IDEA NOTES Messages
                 'x__right' => $parent_i['i__id'],
             )));
@@ -256,7 +256,7 @@ if($top_completed){
 //MESSAGES
 $messages_string = false;
 foreach($this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $i['i__id'],
 ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
@@ -279,7 +279,7 @@ if($one_child_hack){
     echo '<h3 class="msg-frame" style="text-align: left; padding: 13px 0 0 !important;">'.$i['i__title'].'</h3>';
     $messages_string .= '<h1 class="msg-frame" style="text-align: left; padding: 13px 0 !important; font-size:2.5em;">'.$first_child['i__title'].'</h1>';
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $first_child['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
@@ -318,7 +318,7 @@ if($top_i__id) {
 
             //Mark this as complete since there is no child to choose from:
             if (!count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__source' => $x__source,
                 'x__left' => $i['i__id'],
@@ -336,14 +336,14 @@ if($top_i__id) {
             //First fetch answers based on correct order:
             $x_selects = array();
             foreach ($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
                 //See if this answer was seleted:
                 if (count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY IDEA LINK
                     'x__left' => $i['i__id'],
                     'x__right' => $x['i__id'],
@@ -383,7 +383,7 @@ if($top_i__id) {
 
                 //Has this been previously selected?
                 $previously_selected = count($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
@@ -483,7 +483,7 @@ if($top_i__id) {
 
             echo '<div class="sub_note css__title">';
             if(!count($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__right' => $i['i__id'],
                 'x__up' => 30615, //Is Refundable
@@ -551,7 +551,7 @@ if($top_i__id) {
         if($x__source){
             //Does this have any append sources?
             foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 7545, //Profile Add
                 'x__right' => $i['i__id'],
             )) as $append_source){
@@ -560,7 +560,7 @@ if($top_i__id) {
                     'x__up' => $append_source['x__up'],
                     'x__down' => $x__source,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ), array(), 0, 0) as $profile_appended) {
                     if(strlen($profile_appended['x__message'])){
                         $previous_response = $profile_appended['x__message'];
@@ -586,7 +586,7 @@ if($top_i__id) {
 
                 //Steps
                 foreach($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $i['i__id'],
                     'x__up' => 31813, //Steps
@@ -598,7 +598,7 @@ if($top_i__id) {
 
                 //Min Value
                 foreach($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $i['i__id'],
                     'x__up' => 31800, //Min Value
@@ -610,7 +610,7 @@ if($top_i__id) {
 
                 //Max Value
                 foreach($this->X_model->fetch(array(
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $i['i__id'],
                     'x__up' => 31801, //Max Value
@@ -723,7 +723,7 @@ if(!$top_i__id){
                         'x__up' => $x__source,
                         'x__right' => $i['i__id'],
                         'x__type' => $x__type,
-                        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     ));
 
                     $control_btn = '<a class="round-btn btn_control_'.$x__type.'" href="javascript:void(0);" onclick="x_link_toggle('.$x__type.', '.$i['i__id'].')" current_x_id="'.( count($action_xs) ? $action_xs[0]['x__id'] : '0' ).'"><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? '' : 'hidden' ).'">'.$m2['m__cover'].'</span><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? 'hidden' : '' ).'">'.$e___31127[$pending_action_id]['m__cover'].'</span></a><span class="nav-title css__title">'.$m2['m__title'].'</span>';

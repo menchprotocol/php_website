@@ -83,7 +83,7 @@ class I extends CI_Controller {
 
             $completed = 0;
             foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__left' => $i__id,
             ), array(), 0) as $x){
@@ -92,7 +92,7 @@ class I extends CI_Controller {
                     'x__down' => $x['x__source'],
                     'x__message' => $x['x__message'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                     //Add source link:
                     $completed++;
@@ -131,7 +131,7 @@ class I extends CI_Controller {
         $track_previous = 0;
 
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $previous_i__id,
@@ -251,7 +251,7 @@ class I extends CI_Controller {
 
                 foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], 1, false) as $source_e) {
                     if(isset($source_e['e__id'])){
-                        $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__status']]['m__cover'], view_cover(12274,$source_e['e__cover'], true), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
+                        $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__privacy']]['m__cover'], view_cover(12274,$source_e['e__cover'], true), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                         $listed_items++;
                     }
                 }
@@ -266,7 +266,7 @@ class I extends CI_Controller {
                 $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
                 foreach(view_coins_i($_POST['x__type'], $_POST['i__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
-                        $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___31004[$next_i['i__status']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
+                        $ui .= view_coin_line('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___31004[$next_i['i__privacy']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
                         $listed_items++;
                     }
                 }
@@ -306,7 +306,7 @@ class I extends CI_Controller {
 
         $message = '';
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $_POST['i__id'],
         ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
@@ -411,14 +411,14 @@ class I extends CI_Controller {
         //Validation complete! Let's update messages...
         //DELETE all current notes, if any:
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4231,
             'x__right' => $is[0]['i__id'],
         ), array(), 0) as $x) {
 
             //Remove Note:
             $this->X_model->update($x['x__id'], array(
-                'x__status' => 6173,
+                'x__privacy' => 6173,
             ), $member_e['e__id'], 13579);
 
         }

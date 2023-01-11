@@ -4,14 +4,14 @@ if(!$is_u_request || isset($_GET['cron'])){
 
     //Look for messages to process, if any:
     foreach($this->X_model->fetch(array(
-        'x__status' => 6175, //Pending
+        'x__privacy' => 6175, //Pending
         'x__type' => 26582, //Send Instant Message
         'x__time <=' => date('Y-m-d H:i:s'), //Time to send it
     )) as $send_message){
 
         //Mark as sending so other cron job does not pick this up:
         $this->X_model->update($send_message['x__id'], array(
-            'x__status' => 6176, //Published
+            'x__privacy' => 6176, //Published
         ));
 
         $x__metadata = unserialize($send_message['x__metadata']);
@@ -76,7 +76,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     if(strlen($_GET['e__id'])){
         foreach($this->E_model->fetch(array(
             'e__id IN (' . $_GET['e__id'] . ')' => null,
-            'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         )) as $e){
             echo '<h2><a href="/@'.$e['e__id'].'"><span class="icon-block-img">'.view_cover(12274,$e['e__cover'], true).'</span> '.$e['e__title'].'</a></h2>';
         }
@@ -162,7 +162,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '<table class="table table-condensed table-striped">';
     $displayed = false;
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //Active
+        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //Active
         'x__type' => 26582, //Instant Messages
         'x__website' => website_setting(0),
     ), array('x__source')) as $fetched_e){
@@ -171,17 +171,17 @@ if(!$is_u_request || isset($_GET['cron'])){
         //Count Emails & Messages from Ledger:
         $email_success = $this->X_model->fetch(array(
             'x__type' => 29399,
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__reference' => $fetched_e['x__id'],
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
         $sms_success = $this->X_model->fetch(array(
             'x__type' => 27676,
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__reference' => $fetched_e['x__id'],
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
         $sms_fail = $this->X_model->fetch(array(
             'x__type' => 27678,
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__reference' => $fetched_e['x__id'],
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -189,7 +189,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         $x__metadata = unserialize($fetched_e['x__metadata']);
         echo '<tr class="semail'.$fetched_e['x__id'].'">';
         echo '<td><a href="/-4341?x__id='.$fetched_e['x__id'].'">'.$fetched_e['x__id'].'</a> <a href="javascript:x_schedule_delete('.$fetched_e['x__id'].')">x</a></td>';
-        echo '<td>'.$e___6186[$fetched_e['x__status']]['m__cover'].'</td>';
+        echo '<td>'.$e___6186[$fetched_e['x__privacy']]['m__cover'].'</td>';
         echo '<td>'. substr($fetched_e['x__time'], 0, 19).'<br />Domain: <a href="/@'.$fetched_e['x__website'].'">@'.$fetched_e['x__website'].'</a></td>';
         echo '<td><a href="/@'.$fetched_e['x__source'].'">'. $fetched_e['e__title'].'</a></td>';
         echo '<td>'.@intval($x__metadata['stats']['target']).'<br />Targets</td>';

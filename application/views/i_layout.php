@@ -20,7 +20,7 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
         'e__id' => intval($_GET['load__e']),
-        'e__status IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($e_filters)){
         echo view__load__e($e_filters[0]);

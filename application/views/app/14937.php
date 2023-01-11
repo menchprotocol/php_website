@@ -27,7 +27,7 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
 
     //Source Profile Search:
     foreach($this->X_model->fetch(array( //SOURCE PROFILE
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //Inherit Cover Types
         'x__down' => $o['e__id'], //This child source
     ), array('x__up'), 0, 0, array()) as $fetched_e){
@@ -51,8 +51,8 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
         foreach($this->X_model->fetch(array(
             'x__down' => $o['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $linked_e){
             if(strlen($linked_e['e__cover'])){
                 if(filter_var($linked_e['e__cover'], FILTER_VALIDATE_URL)){

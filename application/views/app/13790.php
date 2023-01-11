@@ -70,12 +70,12 @@ if(strlen($_GET['i__id'])){
         $column_sources = $this->X_model->fetch(array(
             'x__up' => $_GET['xaxis_e'], //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__status IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $_GET['xaxis_e'], //ACTIVE
             'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
@@ -101,7 +101,7 @@ if(strlen($_GET['i__id'])){
     $count = 0;
 
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
         'x__left IN (' . join(',', array($_GET['i__id'])) . ')' => null, //IDEA LINKS
     ), array('x__source'), 0, 0, array('x__time' => 'DESC')) as $x){
@@ -114,7 +114,7 @@ if(strlen($_GET['i__id'])){
                 'x__up IN (' . $_GET['include_e'] . ')' => null, //All of these
                 'x__down' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ))) != count(explode(',',$_GET['include_e']))){
             continue;
         }
@@ -122,7 +122,7 @@ if(strlen($_GET['i__id'])){
                 'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
                 'x__down' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
             continue;
         }
@@ -131,7 +131,7 @@ if(strlen($_GET['i__id'])){
                 'x__left IN (' . $_GET['include_i'] . ')' => null, //All of these
                 'x__source' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ))) != count(explode(',',$_GET['include_i']))){
             continue;
         }
@@ -139,7 +139,7 @@ if(strlen($_GET['i__id'])){
                 'x__left IN (' . $_GET['exclude_i'] . ')' => null, //All of these
                 'x__source' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
             continue;
         }
@@ -170,7 +170,7 @@ if(strlen($_GET['i__id'])){
                 'x__left' => $i['i__id'],
                 'x__source' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
 
             if(count($discoveries)){
@@ -228,7 +228,7 @@ if(strlen($_GET['i__id'])){
         foreach($column_sources as $e){
 
             $fetch_data = $this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__down' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up' => $e['e__id'],
@@ -253,7 +253,7 @@ if(strlen($_GET['i__id'])){
 
 
         $e_emails = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
@@ -281,7 +281,7 @@ if(strlen($_GET['i__id'])){
     foreach($column_ideas as $i){
 
         $has_limits = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i['i__id'],
             'x__up' => 26189,

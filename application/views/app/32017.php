@@ -12,7 +12,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
     $all_ticket_transactions = 0;
     $paid_ticket_types = 0;
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__up' => $_GET['e__id'], //Time Starts
     ), array('x__right')) as $ticket_type){
@@ -34,7 +34,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
         $ticket_holder_ui .= '</tr>';
 
         foreach($this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Ticket Discoveries
             'x__left' => $ticket_type['i__id'],
         ), array('x__source'), 0) as $x){

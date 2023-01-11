@@ -12,7 +12,7 @@ if(!count($is)){
 echo '<h2>' . $is[0]['i__title'] . '</h2>';
 
 $preg_match = $this->X_model->fetch(array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'x__right' => $i__id,
     'x__up' => 266111,
@@ -26,7 +26,7 @@ if(count($preg_match)){
     echo '<p>Mismatches against ['.$preg_match[0]['x__message'].'] are:</p>';
 
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 6144, //Written Response
         'x__left' => $i__id,
     ), array(), 0) as $x) {
@@ -35,7 +35,7 @@ if(count($preg_match)){
             $failed++;
             if(isset($_GET['delete'])){
                 $this->X_model->update($x['x__id'], array(
-                    'x__status' => 6173,
+                    'x__privacy' => 6173,
                 ));
                 echo 'Deleted! ';
             } else {

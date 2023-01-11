@@ -26,17 +26,17 @@ if($memory_detected){
 //CONFIG VARS
 foreach($this->X_model->fetch(array(
     'x__up' => 4527,
-    'x__status IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+    'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-    'e__status IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
+    'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
 ), array('x__down'), 0) as $en){
 
     //Now fetch all its children:
     $child__e = $this->X_model->fetch(array(
         'x__up' => $en['x__down'],
-        'x__status IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-        'e__status IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
+        'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
 
 
@@ -57,9 +57,9 @@ foreach($this->X_model->fetch(array(
         $child_parent_ids = array(); //To be populated soon
         foreach($this->X_model->fetch(array(
             'x__down' => $child['e__id'],
-            'x__status IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-            'e__status IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $cp_en){
             array_push($child_parent_ids, intval($cp_en['e__id']));
         }
