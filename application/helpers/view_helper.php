@@ -1776,7 +1776,22 @@ function view_e_card($x__type, $e, $extra_class = null)
     //Source UI
     $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-coin coin_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
-
+    //Source Link Groups
+    $link_type_id = 0;
+    $link_type_ui = '';
+    foreach($CI->config->item('e___31770') as $x__type1 => $m1){
+        if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
+            foreach($CI->X_model->fetch(array(
+                'x__id' => $x__id,
+            ), array('x__source')) as $linker){
+                $link_type_ui .= '<td><div class="show-on-hover">';
+                $link_type_ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
+                $link_type_ui .= '</div></td>';
+            }
+            $link_type_id = $x__type1;
+            break;
+        }
+    }
 
 
     if(!$cache_app && !$is_app) {
@@ -1789,20 +1804,9 @@ function view_e_card($x__type, $e, $extra_class = null)
 
             if($x__type_top_bar==31770 && $x__id && $superpower_13422){
 
-                //Source Link Groups
-                foreach($CI->config->item('e___31770') as $x__type1 => $m1){
-                    if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
-                        foreach($CI->X_model->fetch(array(
-                            'x__id' => $x__id,
-                        ), array('x__source')) as $linker){
-                            $active_bars++;
-                            $top_bar_ui .= '<td><div class="show-on-hover">';
-                            $top_bar_ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
-                            $top_bar_ui .= '</div></td>';
-                        }
-                        break;
-                    }
-                }
+                $active_bars++;
+                $top_bar_ui .= $link_type_ui;
+
 
             } elseif($x__type_top_bar==6177){
 
@@ -1831,7 +1835,7 @@ function view_e_card($x__type, $e, $extra_class = null)
             } elseif($x__type_top_bar==14980 && !$cache_app){
 
                 $action_buttons = null;
-                $focus_dropdown = ( !$x__id ? 12887 /* Source Dropdown */ : (1 /* Source/Source Links */ ? 14955 /* Source/Source Dropdown */ : 28787 /* Source/Idea Dropdown (It must be) */ ) );
+                $focus_dropdown = ( !$x__id ? 12887 /* Source Dropdown */ : ( $link_type_id==4592 /* Source/Source Links */ ? 14956 /* Source/Source Dropdown */ : 28792 /* Source/Idea Dropdown */ ) );
 
                 foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
 
