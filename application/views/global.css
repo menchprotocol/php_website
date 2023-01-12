@@ -4073,7 +4073,7 @@ main {
 }
 
 .coin_frame{
-    border: 3px solid transparent;
+    border: 5px solid transparent;
     border-radius: 21px !important;
     margin: 0;
     padding: 55px 0;
