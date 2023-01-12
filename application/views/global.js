@@ -2456,7 +2456,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
     //Deleting Anything?
     var migrate_s__id = 0;
-    if((element_id==4737 || element_id==7355) && !(new_e__id in js_e___7355)){
+    if(element_id==31004 && !(new_e__id in js_e___31871)){
 
         //Deleting Idea:
         var confirm_removal = prompt("Are you sure you want to delete this idea?\nEnter 0 to unlink OR enter Idea ID to migrate links.", "0");

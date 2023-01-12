@@ -1815,7 +1815,7 @@ function view_e_card($x__type, $e, $extra_class = null)
 
                 //Source Status
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="'.( in_array($e['e__privacy'], $CI->config->item('n___31109')) ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= '<td><div class="'.( !in_array($e['e__privacy'], $CI->config->item('n___7357')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_input_dropdown(6177, $e['e__privacy'], null, $source_of_e && $superpower_13422, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
