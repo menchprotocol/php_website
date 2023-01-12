@@ -1501,7 +1501,7 @@ function load_tab(x__type, auto_load){
             load_coins();
             sort_i_handle_load(x__type);
             $('[data-toggle="tooltip"]').tooltip();
-        }, 987);
+        }, 1597);
 
 
         $(function () {
@@ -1529,12 +1529,12 @@ function load_tab(x__type, auto_load){
             e_load_search(x__type);
             setTimeout(function () {
                 sort_e_handle_load(x__type);
-            }, 987);
+            }, 1597);
         }
 
         load_coins();
 
-    }, 987);
+    }, 1597);
 
 
     
