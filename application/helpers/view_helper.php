@@ -277,29 +277,30 @@ function view_x($x, $has_x__reference = false)
 {
 
     $CI =& get_instance();
+    $e___32088 = $CI->config->item('e___32088'); //Platform Variables
     $ui = '<div class="x-list">';
     foreach($CI->config->item('e___4341') as $e__id => $m) {
 
-        if(in_array(6160 , $m['m__following']) && intval($x[$m['m__message']])>0){
+        if(in_array(6160 , $m['m__following']) && intval($x[$e___32088[$e__id]['m__message']])>0){
 
             //SOURCE
-            foreach($CI->E_model->fetch(array('e__id' => $x[$m['m__message']])) as $this_e){
+            foreach($CI->E_model->fetch(array('e__id' => $x[$e___32088[$e__id]['m__message']])) as $this_e){
                 $ui .= '<div class="simple-line"><a href="/@'.$this_e['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$this_e['e__cover'], true). '</span>'.$this_e['e__title'].'</a></div>';
             }
 
-        } elseif(in_array(6202 , $m['m__following']) && intval($x[$m['m__message']])>0){
+        } elseif(in_array(6202 , $m['m__following']) && intval($x[$e___32088[$e__id]['m__message']])>0){
 
             //IDEA
-            foreach($CI->I_model->fetch(array('i__id' => $x[$m['m__message']])) as $this_i){
+            foreach($CI->I_model->fetch(array('i__id' => $x[$e___32088[$e__id]['m__message']])) as $this_i){
                 $ui .= '<div class="simple-line"><a href="/i/i_go/'.$this_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $this_i['i__type'], true, 'right', $this_i['i__id']).'</span>'.view_i_title($this_i).'</a></div>';
             }
 
 
-        } elseif(in_array(4367 , $m['m__following']) && intval($x[$m['m__message']])>0){
+        } elseif(in_array(4367 , $m['m__following']) && intval($x[$e___32088[$e__id]['m__message']])>0){
 
             //TRANSACTION
             if(!$has_x__reference){
-                foreach($CI->X_model->fetch(array('x__id' => $x[$m['m__message']])) as $ref_x){
+                foreach($CI->X_model->fetch(array('x__id' => $x[$e___32088[$e__id]['m__message']])) as $ref_x){
                     $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover']. '</span><div class="x-ref hidden x_msg_'.$x['x__id'].'">'.view_x($ref_x, true).'</div><a class="x_msg_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.x_msg_'.$x['x__id'].'\').toggleClass(\'hidden\');"><u>View Referenced Transaction</u></a></div>';
                 }
             } else {

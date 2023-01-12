@@ -171,27 +171,29 @@ class X_model extends CI_Model
                 //Compose email body, start with transaction content:
                 $plain_message = ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '') . "\n";
 
+                $e___32088 = $this->config->item('e___32088'); //Platform Variables
+
                 //Append transaction object transactions:
                 foreach($this->config->item('e___4341') as $e__id => $m) {
 
                     if (in_array(6202 , $m['m__following'])) {
 
                         //IDEA
-                        foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$m['m__message']] )) as $this_i){
+                        foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_i){
                             $plain_message .= $m['m__title'] . ': '.$this_i['i__title'].':'."\n".$this->config->item('base_url').'/i/i_go/' . $this_i['i__id']."\n\n";
                         }
 
                     } elseif (in_array(6160 , $m['m__following'])) {
 
                         //SOURCE
-                       foreach($this->E_model->fetch(array( 'e__id' => $add_fields[$m['m__message']] )) as $this_e){
+                       foreach($this->E_model->fetch(array( 'e__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_e){
                             $plain_message .= $m['m__title'] . ': '.$this_e['e__title']."\n".$this->config->item('base_url').'/@' . $this_e['e__id'] . "\n\n";
                         }
 
                     } elseif (in_array(4367 , $m['m__following'])) {
 
                         //DISCOVERY
-                        $plain_message .= $m['m__title'] . ':'."\n".$this->config->item('base_url').'/-12722?x__id=' . $add_fields[$m['m__message']]."\n\n";
+                        $plain_message .= $m['m__title'] . ':'."\n".$this->config->item('base_url').'/-12722?x__id=' . $add_fields[$e___32088[$e__id]['m__message']]."\n\n";
 
                     }
 
