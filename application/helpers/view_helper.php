@@ -447,9 +447,11 @@ function view_coins(){
     foreach($CI->config->item('e___14874') as $e__id => $m) {
         $count++;
         $ui .= '<div class="coin_cover no-padding col-12 col-md-4">';
+        $ui .= '<div class="coin_frame dropdown_'.$e__id.'">';
         $ui .= '<div class="large_cover">'.$m['m__cover'].'</div>';
         $ui .= '<div class="css__title large_title zq'.$e__id.' "><b class="coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b></div>';
         $ui .= '<div class="css__title large_title zq'.$e__id.'">'.$m['m__title'].'</div>';
+        $ui .= '</div>';
         $ui .= '</div>';
     }
     $ui .= '</div>';

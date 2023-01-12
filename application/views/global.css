@@ -4072,6 +4072,12 @@ main {
     background-color: transparent;
 }
 
+.coin_frame{
+    border: 3px solid transparent;
+    border-radius: 21px !important;
+    margin: 34px 5px;
+}
+
 .active_bars_1 td { width:100.0% !important; }
 .active_bars_2 td { width:50.00% !important; }
 .active_bars_3 td { width:33.34% !important; }
