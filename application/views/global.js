@@ -1501,7 +1501,7 @@ function load_tab(x__type, auto_load){
             load_coins();
             sort_i_handle_load(x__type);
             $('[data-toggle="tooltip"]').tooltip();
-        }, 1597);
+        }, 2584);
 
 
         $(function () {
@@ -1529,12 +1529,12 @@ function load_tab(x__type, auto_load){
             e_load_search(x__type);
             setTimeout(function () {
                 sort_e_handle_load(x__type);
-            }, 1597);
+            }, 2584);
         }
 
         load_coins();
 
-    }, 1597);
+    }, 2584);
 
 
     
@@ -2323,7 +2323,7 @@ function e_email(){
             //Disappear in a while:
             setTimeout(function () {
                 $('.save_email').html('');
-            }, 1597);
+            }, 2584);
 
         }
     });
@@ -2355,7 +2355,7 @@ function e_phone(){
             //Disappear in a while:
             setTimeout(function () {
                 $('.save_phone').html('');
-            }, 1597);
+            }, 2584);
 
         }
     });
@@ -2385,7 +2385,7 @@ function e_fullname(){
             //Disappear in a while:
             setTimeout(function () {
                 $('.save_name').html('');
-            }, 1597);
+            }, 2584);
 
         }
     });
@@ -2416,7 +2416,7 @@ function e_password(){
             //Disappear in a while:
             setTimeout(function () {
                 $('.save_password').html('');
-            }, 1597);
+            }, 2584);
 
         }
     });
