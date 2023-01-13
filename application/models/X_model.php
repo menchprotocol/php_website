@@ -548,12 +548,12 @@ class X_model extends CI_Model
             }
 
 
-        } elseif($element_id==4737 || $element_id==7355){
+        } elseif($element_id==31004){
 
-            //IDEA TYPE
+            //IDEA PRIVACY
 
             //Delete?
-            if(!in_array($new_e__id, $this->config->item('n___7355'))){
+            if(!in_array($new_e__id, $this->config->item('n___31871'))){
 
                 //Determine what to do after deleted:
                 if($o__id == $focus_id){
@@ -597,18 +597,17 @@ class X_model extends CI_Model
 
             }
 
+            //Update Idea:
+            $status = $this->I_model->update($o__id, array(
+                'i__privacy' => $new_e__id,
+            ), true, $member_e['e__id']);
 
-            //Delete only if Migration request is successful:
-            if(!intval($migrate_s__id) || count($this->I_model->fetch(array(
-                    'i__id' => $migrate_s__id,
-                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
-                )))){
-                //Update Idea:
-                $status = $this->I_model->update($o__id, array(
-                    'i__type' => $new_e__id,
-                ), true, $member_e['e__id']);
-            }
+        } elseif($element_id==4737 || $element_id==7355){
 
+            //IDEA TYPE
+            $status = $this->I_model->update($o__id, array(
+                'i__type' => $new_e__id,
+            ), true, $member_e['e__id']);
 
         }
 
