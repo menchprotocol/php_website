@@ -570,7 +570,7 @@ function view_load_page(x__type) {
 
             if(current_page<=1){
                 window.scrollTo({
-                    top: (top_element.offset().top - 55),
+                    top: (top_element.offset().top - 58),
                     behavior: 'instant',
                 });
             }
@@ -1454,7 +1454,7 @@ function load_tab(x__type, auto_load){
             $('.headline_body_' + x__type).html(data);
             if(auto_load){ // && js_n___14686.includes(x__type)
                 window.scrollTo({
-                    top: ($('.main_item').offset().top - 54),
+                    top: ($('.main_item').offset().top - 58),
                     behavior: 'instant',
                 });
             }
@@ -1472,7 +1472,7 @@ function load_tab(x__type, auto_load){
             $('.headline_body_'+x__type).html(data);
             if(auto_load){ // && js_n___14686.includes(x__type)
                 window.scrollTo({
-                    top: ($('.main_item').offset().top - 54),
+                    top: ($('.main_item').offset().top - 58),
                     behavior: 'instant',
                 });
             }
