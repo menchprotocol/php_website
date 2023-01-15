@@ -381,7 +381,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Parent Source',
             ));
-        } elseif (!isset($_POST['x__type']) || !in_array($_POST['x__type'], $this->config->item('n___14055'))) {
+        } elseif (!isset($_POST['x__type'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source Creation Type',

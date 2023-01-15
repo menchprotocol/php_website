@@ -1342,11 +1342,6 @@ function e_load_search(x__type) {
         return false;
     }
 
-    //Valid Source Creation Type?
-    if(!js_n___14055.includes(x__type)){
-        return false;
-    }
-
     //Load Search:
     $('.new-list-'+x__type + ' .add-input').keypress(function (e) {
 
