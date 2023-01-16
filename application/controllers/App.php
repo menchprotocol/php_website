@@ -77,7 +77,7 @@ class App extends CI_Controller
         if($memory_detected){
 
             $e___6287 = $this->config->item('e___6287'); //APP
-            $title = $e___6287[$app_e__id]['m__title'];
+            $title = $e___6287[$app_e__id]['m__title'].' | Marketplace';
 
             if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
                 //Fetch Most Recent Cache:
