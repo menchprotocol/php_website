@@ -634,7 +634,7 @@ function view_body_i($x__type, $counter, $i__id){
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
 
 
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">'; //list-in-4983
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $e_ref){
             $ui .= view_e_card($e_ref['x__type'], $e_ref, null);
         }

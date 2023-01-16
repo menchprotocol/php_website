@@ -221,8 +221,18 @@ function x_detect_type($string)
      * */
 
     $string = trim($string);
-    $has_space = substr_count($string, ' ');
     $CI =& get_instance();
+
+
+    //Is it a currency?
+    foreach($this->config->item('e___26661') as $x__type_currency => $m_currency) {
+        if (substr($string, 0, 4)==$m_currency['m__message'].' ' && is_numeric(substr($string, 4))) {
+            return array(
+                'status' => 1,
+                'x__type' => $x__type_currency,
+            );
+        }
+    }
 
     if (is_null($string) || !strlen($string)) {
 
@@ -238,12 +248,7 @@ function x_detect_type($string)
             'x__type' => 4319, //Number
         );
 
-    } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
-
-        //It's a URL, see what type (this could fail if duplicate, etc...):
-        return $CI->E_model->url($string);
-
-    } elseif (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//' && !$has_space) {
+    } elseif (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//' && !substr_count($string, ' ')) {
 
         //Relative URL
         return array(
@@ -251,52 +256,37 @@ function x_detect_type($string)
             'x__type' => 14728,
         );
 
-    } elseif (in_array($string, array('true','false'))) {
+    } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
 
-        //Boolean
+        //It's a URL, see what type (this could fail if duplicate, etc...):
+        return $CI->E_model->url($string);
+
+    } elseif (strlen($string)>9 && is_valid_date($string) && !is_numeric($string)) {
+
         return array(
             'status' => 1,
-            'x__type' => 26123,
-        );
-
-    } elseif (strlen($string) > 9 && is_valid_date($string)) {
-
-        //Date/time:
-        return array(
-            'status' => 1,
-            'x__type' => 4318,
+            'x__type' => 4318, //Date/time
         );
 
     } elseif (substr($string, -1)=='%' && is_numeric(substr($string, 0, (strlen($string)-1)))) {
 
-        //Percent:
         return array(
             'status' => 1,
-            'x__type' => 7657,
+            'x__type' => 7657, //Percent
         );
 
-    } elseif (substr($string, 0, 4)=='CAD ' && is_numeric(substr($string, 4))) {
+    } elseif (preg_match('/^[a-f0-9]{32}$/', $string)) {
 
-        //CAD:
         return array(
             'status' => 1,
-            'x__type' => 26092,
+            'x__type' => 32102, //MD5 Hash
         );
 
-    } elseif (substr($string, 0, 4)=='USD ' && is_numeric(substr($string, 4))) {
+    } elseif (filter_var(trim($string), FILTER_VALIDATE_EMAIL)) {
 
-        //USD:
         return array(
             'status' => 1,
-            'x__type' => 26091,
-        );
-
-    } elseif (!$has_space) {
-
-        //Single Word:
-        return array(
-            'status' => 1,
-            'x__type' => 12827,
+            'x__type' => 32097, //Email
         );
 
     } else {
@@ -304,7 +294,7 @@ function x_detect_type($string)
         //Regular text transaction:
         return array(
             'status' => 1,
-            'x__type' => 4255, //Text Transaction
+            'x__type' => 4255, //Text
         );
 
     }
