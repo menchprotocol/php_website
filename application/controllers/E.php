@@ -29,8 +29,6 @@ class E extends CI_Controller
     function e_layout($e__id)
     {
 
-        $member_e = superpower_unlocked();
-
         //Validate source ID and fetch data:
         $es = $this->E_model->fetch(array(
             'e__id' => $e__id,
@@ -39,14 +37,17 @@ class E extends CI_Controller
             return redirect_message(home_url());
         }
 
+        $member_e = superpower_unlocked();
         //Make sure not a private source:
         if(in_array($es[0]['e__privacy'], $this->config->item('n___30956')) && (!$member_e || $member_e['e__id']==$e__id)){
             $member_e = superpower_unlocked(12701, true);
         }
 
+        $e___14874 = $this->config->item('e___14874'); //Mench Cards
+
         //Load views:
         $this->load->view('header', array(
-            'title' => $es[0]['e__title'],
+            'title' => $es[0]['e__title'].' | '.$e___14874[12274]['e__title'],
         ));
         $this->load->view('e_layout', array(
             'e' => $es[0],

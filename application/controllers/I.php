@@ -110,9 +110,11 @@ class I extends CI_Controller {
 
         }
 
+        $e___14874 = $this->config->item('e___14874'); //Mench Cards
+
         //Load views:
         $this->load->view('header', array(
-            'title' => first_line($is[0]['i__title']),
+            'title' => first_line($is[0]['i__title']).' | '.$e___14874[12273]['e__title'],
             'i' => $is[0],
         ));
         $this->load->view('i_layout', array(
