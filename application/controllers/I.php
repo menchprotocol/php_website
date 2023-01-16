@@ -114,7 +114,7 @@ class I extends CI_Controller {
 
         //Load views:
         $this->load->view('header', array(
-            'title' => first_line($is[0]['i__title']).' | '.$e___14874[12273]['e__title'],
+            'title' => first_line($is[0]['i__title']).' | '.$e___14874[12273]['m__title'],
             'i' => $is[0],
         ));
         $this->load->view('i_layout', array(

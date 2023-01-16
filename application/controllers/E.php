@@ -47,7 +47,7 @@ class E extends CI_Controller
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $es[0]['e__title'].' | '.$e___14874[12274]['e__title'],
+            'title' => $es[0]['e__title'].' | '.$e___14874[12274]['m__title'],
         ));
         $this->load->view('e_layout', array(
             'e' => $es[0],
