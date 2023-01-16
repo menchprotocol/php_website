@@ -275,7 +275,7 @@ function x_detect_type($string)
             'x__type' => 7657, //Percent
         );
 
-    } elseif (preg_match('/^[a-f0-9]{32}$/', $string)) {
+    } elseif (preg_match('/^([a-f0-9]{64})$/', $string)) {
 
         return array(
             'status' => 1,
