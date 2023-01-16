@@ -17,7 +17,7 @@ if(!$obj || $obj==12273){
 
     //Update the weights for active ideas
     foreach($this->I_model->fetch(array(
-        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
     )) as $in) {
         $stats['i_scanned']++;
         $stats['i_updated'] += i__spectrum_calculator($in);

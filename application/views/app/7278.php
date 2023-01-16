@@ -30,7 +30,7 @@ $node_size = array(
 
 //Add Ideas:
 $is = $this->I_model->fetch(array(
-    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
 ));
 foreach($is as $in){
 
@@ -46,7 +46,7 @@ foreach($is as $in){
     //Fetch children:
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0) as $next_i){

@@ -71,7 +71,7 @@ class I extends CI_Controller {
 
         $member_e = superpower_unlocked(10939); //Idea Pen?
         if(!$member_e){
-            if(in_array($is[0]['i__type'], $this->config->item('n___7355'))){
+            if(in_array($is[0]['i__privacy'], $this->config->item('n___31871'))){
                 return redirect_message('/'.$i__id);
             } else {
                 return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__id . ' is not published yet.</div>');
@@ -132,7 +132,7 @@ class I extends CI_Controller {
 
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $previous_i__id,
         ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i){
@@ -209,7 +209,7 @@ class I extends CI_Controller {
             //Fetch transaction idea to determine idea type:
             $x_i = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['link_i__id']),
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             ));
             if(count($x_i)==0){
                 //validate Idea:
@@ -359,7 +359,7 @@ class I extends CI_Controller {
 
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ));
         if(!count($is)){
             return view_json(array(

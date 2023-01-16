@@ -728,7 +728,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         //IDEAS
         $join_objects = array('x__right');
         $query_filters = array(
-            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__up' => $e__id,
@@ -749,7 +749,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
             'x__source' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //PUBLIC
         );
 
     } else {
@@ -841,7 +841,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true)
         $join_objects = array('x__left');
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
         );
@@ -853,7 +853,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true)
         $join_objects = array('x__right');
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__type IN (' . join(',', $CI->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i__id,
         );

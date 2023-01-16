@@ -508,7 +508,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 
 function i_unlockable($i){
     $CI =& get_instance();
-    return in_array($i['i__type'], $CI->config->item('n___7355') /* PRIVATE */);
+    return in_array($i['i__privacy'], $CI->config->item('n___31871') /* PRIVATE */);
 }
 
 function i_spots_remaining($i__id){
@@ -1769,7 +1769,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
             if($s__id){
                 $limits['x__right'] = $s__id;
             } else {
-                $limits['i__type IN (' . join(',', $CI->config->item('n___7355')) . ')'] = null; //ACTIVE
+                $limits['i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')'] = null; //ACTIVE
                 $limits['x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
             }
 

@@ -17,7 +17,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
     //Seems like a valid Paypal IPN Call:
     $next_is = $this->I_model->fetch(array(
         'i__id' => $i__id,
-        'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
     ));
 
     if ($top_i__id > 0 && $i__id > 0 && in_array($currency_type, $this->config->item('n___26661')) && $x__source > 0 && count($next_is)) {

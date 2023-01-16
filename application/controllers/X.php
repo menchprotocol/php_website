@@ -147,7 +147,7 @@ class X extends CI_Controller
 
             $is = $this->I_model->fetch(array(
                 'i__id' => $_POST['s__id'],
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             ));
             if(!count($is)){
                 return view_json(array(
@@ -256,7 +256,7 @@ class X extends CI_Controller
                 //idea list:
                 $is_next = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                     'x__left' => $_POST['coin__id'],
                 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
@@ -292,12 +292,12 @@ class X extends CI_Controller
         $member_e = superpower_unlocked();
         $current_is = $this->I_model->fetch(array(
             'i__id' => $current_i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ));
 
         $next_is = $this->I_model->fetch(array(
             'i__id' => $next_i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ));
 
         if(!count($current_is) || !count($next_is)){
@@ -364,7 +364,7 @@ class X extends CI_Controller
             //Make sure they can start this:
             $is = $this->I_model->fetch(array(
                 'i__id' => $i__id,
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             ));
             if(!count($is)){
                 return redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid idea ID</div>', true);
@@ -403,7 +403,7 @@ class X extends CI_Controller
                 //$one_child_hack: Mark next level as done too? Only if Single show:
                 $is_next = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $top_i__id,
                 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
@@ -446,7 +446,7 @@ class X extends CI_Controller
         $i_is_available = i_is_available($i__id, true, false);
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ));
 
         if(!$member_e){
@@ -559,7 +559,7 @@ class X extends CI_Controller
         $member_e = superpower_unlocked();
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ));
 
         if(!$member_e){
@@ -598,7 +598,7 @@ class X extends CI_Controller
         )))){
             //FIND NEXT IDEAS
             foreach($this->X_model->fetch(array(
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__left' => $previous_level_id,
@@ -700,7 +700,7 @@ class X extends CI_Controller
                 'x__source' => $member_e['e__id'],
                 'x__left' => $i__id,
                 'x__right > 0' => null,
-                'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             ), array('x__right')) as $x){
                 return redirect_message('/'.$x['x__right'].'/'.$i__id);
             }
@@ -714,7 +714,7 @@ class X extends CI_Controller
                     'x__source' => $member_e['e__id'],
                     'x__left IN (' . join(',', $recursive_is) . ')' => null,
                     'x__right > 0' => null,
-                    'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
                 ), array('x__right')) as $x){
                     return redirect_message('/'.$x['x__right'].'/'.$i__id);
                 }
@@ -731,14 +731,14 @@ class X extends CI_Controller
 
             return redirect_message( ( $top_i__id > 0 ? '/'.$top_i__id : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea ID ' . $i__id . ' not found</div>');
 
-        } elseif(!in_array($is[0]['i__type'], $this->config->item('n___7355') /* PRIVATE */)){
+        } elseif(!in_array($is[0]['i__privacy'], $this->config->item('n___31871') /* PRIVATE */)){
 
             return redirect_message((superpower_unlocked(10939) ? '/~' . $i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Idea #'.$is[0]['i__id'].' is not published yet.</div>');
 
         }
 
 
-        if($top_i__id > 0 && !in_array($top_is[0]['i__type'], $this->config->item('n___7355') /* PRIVATE */)) {
+        if($top_i__id > 0 && !in_array($top_is[0]['i__privacy'], $this->config->item('n___31871') /* PRIVATE */)) {
             return redirect_message('/'.$i__id);
         }
 
@@ -910,7 +910,7 @@ class X extends CI_Controller
         //Validate Idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ));
         if(count($is)<1){
             return view_json(array(
@@ -1082,7 +1082,7 @@ class X extends CI_Controller
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ));
         if(count($is) < 1){
             return view_json(array(
@@ -1592,7 +1592,7 @@ class X extends CI_Controller
 
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__type IN (' . join(',', $this->config->item('n___7355')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ));
         if (!count($is)) {
             return view_json(array(
