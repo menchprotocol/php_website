@@ -224,80 +224,73 @@ function x_detect_type($string)
     $CI =& get_instance();
 
 
+    if (is_null($string) || !strlen($string)) {
+        return array(
+            'status' => 1,
+            'x__type' => 4230, //Raw
+        );
+    }
+
     //Is it a currency?
     foreach($CI->config->item('e___26661') as $x__type_currency => $m_currency) {
         if (substr($string, 0, 4)==$m_currency['m__message'].' ' && is_numeric(substr($string, 4))) {
             return array(
                 'status' => 1,
-                'x__type' => $x__type_currency,
+                'x__type' => 26661,
             );
         }
     }
 
-    if (is_null($string) || !strlen($string)) {
-
-        return array(
-            'status' => 1,
-            'x__type' => 4230, //Raw
-        );
-
-    } elseif ((strlen(intval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(intval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
-
+    if ((strlen(intval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(intval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
         return array(
             'status' => 1,
             'x__type' => 4319, //Number
         );
+    }
 
-    } elseif (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//' && !substr_count($string, ' ')) {
-
-        //Relative URL
+    if (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//' && !substr_count($string, ' ')) {
         return array(
             'status' => 1,
-            'x__type' => 14728,
+            'x__type' => 14728, //Relative URL
         );
+    }
 
-    } elseif (filter_var($string, FILTER_VALIDATE_URL)) {
+    if (filter_var($string, FILTER_VALIDATE_URL)) {
+        return $CI->E_model->url($string); //See what type of URL (this could fail if duplicate, etc...)
+    }
 
-        //It's a URL, see what type (this could fail if duplicate, etc...):
-        return $CI->E_model->url($string);
-
-    } elseif (strlen($string)>9 && is_valid_date($string) && !is_numeric($string)) {
-
+    if (strlen($string)>9 && is_valid_date($string) && !is_numeric($string)) {
         return array(
             'status' => 1,
             'x__type' => 4318, //Date/time
         );
+    }
 
-    } elseif (substr($string, -1)=='%' && is_numeric(substr($string, 0, (strlen($string)-1)))) {
-
+    if (substr($string, -1)=='%' && is_numeric(substr($string, 0, (strlen($string)-1)))) {
         return array(
             'status' => 1,
             'x__type' => 7657, //Percent
         );
+    }
 
-    } elseif (preg_match('/^([a-f0-9]{64})$/', $string)) {
-
+    if (preg_match('/^([a-f0-9]{64})$/', $string)) {
         return array(
             'status' => 1,
             'x__type' => 32102, //MD5 Hash
         );
+    }
 
-    } elseif (filter_var(trim($string), FILTER_VALIDATE_EMAIL)) {
-
+    if (filter_var(trim($string), FILTER_VALIDATE_EMAIL)) {
         return array(
             'status' => 1,
             'x__type' => 32097, //Email
         );
-
-    } else {
-
-        //Regular text transaction:
-        return array(
-            'status' => 1,
-            'x__type' => 4255, //Text
-        );
-
     }
+
+    return array(
+        'status' => 1,
+        'x__type' => 4255, //Text (Default)
+    );
 }
 
 function current_link(){
