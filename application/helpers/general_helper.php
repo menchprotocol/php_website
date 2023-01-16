@@ -225,7 +225,7 @@ function x_detect_type($string)
 
 
     //Is it a currency?
-    foreach($this->config->item('e___26661') as $x__type_currency => $m_currency) {
+    foreach($CI->config->item('e___26661') as $x__type_currency => $m_currency) {
         if (substr($string, 0, 4)==$m_currency['m__message'].' ' && is_numeric(substr($string, 4))) {
             return array(
                 'status' => 1,
