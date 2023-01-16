@@ -22,6 +22,7 @@ if(count($preg_query)){
 
     $responses = 0;
     $updated = 0;
+    $removed = 0;
 
     echo '<p>Applying against ['.$preg_query[0]['x__message'].'] results in:</p>';
 
@@ -33,18 +34,31 @@ if(count($preg_query)){
         $responses++;
         $new_form = preg_replace($preg_query[0]['x__message'], "", $x['x__message'] );
         if($new_form != $x['x__message']) {
-            $updated++;
-            if(isset($_GET['update'])){
-                $this->X_model->update($x['x__id'], array(
-                    'x__privacy' => 6173,
-                ));
+
+            if(strlen($new_form)){
+                $updated++;
+                if(isset($_GET['update'])){
+                    $this->X_model->update($x['x__id'], array(
+                        'x__message' => $new_form,
+                        'x__type' => e_x__type($new_form),
+                    ));
+                }
                 echo 'Updated! ';
+            } else {
+                $removed++;
+                if(isset($_GET['update'])){
+                    $this->X_model->update($x['x__id'], array(
+                        'x__privacy' => 6173,
+                    ));
+                }
+                echo 'Removed! ';
             }
+
             echo '['.$x['x__message'].'] transforms to ['.$new_form.']<hr />';
         }
     }
 
-    echo $updated.'/'.$responses.' Updated!<hr /><hr /><hr />';
+    echo $updated.'/'.$responses.' Updated & '.$removed.' removed!<hr /><hr /><hr />';
 
 } else {
 
