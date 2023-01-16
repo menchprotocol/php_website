@@ -45,6 +45,7 @@ class App extends CI_Controller
         $member_e = false;
         $is_u_request = isset($_SERVER['SERVER_NAME']);
         $e___6287 = $this->config->item('e___6287'); //APP
+        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
         if($memory_detected && $is_u_request){
             //Needs superpowers?
@@ -77,7 +78,7 @@ class App extends CI_Controller
         if($memory_detected){
 
             $e___6287 = $this->config->item('e___6287'); //APP
-            $title = $e___6287[$app_e__id]['m__title'].' | Marketplace';
+            $title = $e___6287[$app_e__id]['m__title'].' | '.$e___11035[6287]['m__title'];
 
             if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
                 //Fetch Most Recent Cache:
