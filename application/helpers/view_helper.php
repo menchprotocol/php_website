@@ -273,7 +273,7 @@ function view_number($number)
 }
 
 
-function view_x($x, $has_x__reference = false)
+function view_card_x($x, $has_x__reference = false)
 {
 
     $CI =& get_instance();
@@ -301,7 +301,7 @@ function view_x($x, $has_x__reference = false)
             //TRANSACTION
             if(!$has_x__reference){
                 foreach($CI->X_model->fetch(array('x__id' => $x[$e___32088[$e__id]['m__message']])) as $ref_x){
-                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover']. '</span><div class="x-ref hidden x_msg_'.$x['x__id'].'">'.view_x($ref_x, true).'</div><a class="x_msg_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.x_msg_'.$x['x__id'].'\').toggleClass(\'hidden\');"><u>View Referenced Transaction</u></a></div>';
+                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover']. '</span><div class="x-ref hidden x_msg_'.$x['x__id'].'">'.view_card_x($ref_x, true).'</div><a class="x_msg_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.x_msg_'.$x['x__id'].'\').toggleClass(\'hidden\');"><u>View Referenced Transaction</u></a></div>';
                 }
             } else {
                 //Simple Reference to avoid Loop:
@@ -514,7 +514,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
-            $ui .= view_i_card(12273, 0, null, $i, $focus_e, null);
+            $ui .= view_card_i(12273, 0, null, $i, $focus_e, null);
         }
         $ui .= '</div>';
 
@@ -536,7 +536,7 @@ function view_body_e($x__type, $counter, $e__id){
         }
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $e) {
-            $ui .= view_e_card($x__type, $e, null);
+            $ui .= view_card_e($x__type, $e, null);
         }
         $ui .= '</div>';
         if($x__type==11030 && superpower_active(13422, true)){
@@ -547,7 +547,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
         foreach ($list_results as $i) {
-            $ui .= view_i_card($x__type, $i['i__id'], null, $i, $focus_e);
+            $ui .= view_card_i($x__type, $i['i__id'], null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -578,7 +578,7 @@ function view_body_i($x__type, $counter, $i__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $previous_i) {
-            $ui .= view_i_card(11019, 0, null, $previous_i);
+            $ui .= view_card_i(11019, 0, null, $previous_i);
         }
         $ui .= '</div>';
 
@@ -608,7 +608,7 @@ function view_body_i($x__type, $counter, $i__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
         foreach($list_results as $next_i) {
-            $ui .= view_i_card(12273, 0, $is[0], $next_i);
+            $ui .= view_card_i(12273, 0, $is[0], $next_i);
         }
         $ui .= '</div>';
 
@@ -617,7 +617,7 @@ function view_body_i($x__type, $counter, $i__id){
         //DISCOVERIES
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $item){
-            $ui .= view_e_card(6255, $item);
+            $ui .= view_card_e(6255, $item);
         }
         $ui .= '</div>';
 
@@ -636,7 +636,7 @@ function view_body_i($x__type, $counter, $i__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $e_ref){
-            $ui .= view_e_card($e_ref['x__type'], $e_ref, null);
+            $ui .= view_card_e($e_ref['x__type'], $e_ref, null);
         }
         $ui .= '</div>';
 
@@ -981,7 +981,7 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     //Build Body UI:
     $body = '<div class="row">';
     foreach($next_is as $key => $next_i){
-        $body .= view_i_card($x__type, $top_i__id, $i, $next_i, $member_e, ( $member_e ? $CI->X_model->tree_progress($member_e['e__id'], $next_i) : null ), null);
+        $body .= view_card_i($x__type, $top_i__id, $i, $next_i, $member_e, ( $member_e ? $CI->X_model->tree_progress($member_e['e__id'], $next_i) : null ), null);
     }
     $body .= '</div>';
 
@@ -1245,7 +1245,7 @@ function view_i_select_card($i, $x__creator, $previously_selected){
 }
 
 
-function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $tree_progress = null, $extra_class = null){
+function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $tree_progress = null, $extra_class = null){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1719,7 +1719,7 @@ function view_e_line($e)
 
 
 
-function view_e_card($x__type, $e, $extra_class = null)
+function view_card_e($x__type, $e, $extra_class = null)
 {
 
     $CI =& get_instance();
@@ -1730,7 +1730,7 @@ function view_e_card($x__type, $e, $extra_class = null)
     if(!isset($e['e__id']) || !isset($e['e__title'])){
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'view_e_card() Missing core variables',
+            'x__message' => 'view_card_e() Missing core variables',
             'x__metadata' => array(
                 '$x__type' => $x__type,
                 '$e' => $e,
@@ -1771,7 +1771,7 @@ function view_e_card($x__type, $e, $extra_class = null)
 
     //Is Lock/Private?
     $has_hard_lock = in_array($e['e__privacy'], $CI->config->item('n___30956')) && !$superpower_12701 && (!$member_e || !$source_is_e);
-    $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$is_public && !$source_of_e && !$superpower_13422));
+    $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$is_public && !$source_of_e));
     $has_any_lock = $is_cache || (!$superpower_12701 && ($has_soft_lock || $has_hard_lock));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $superpower_13422 && $x__id > 0;
     $show_text_editor = $source_of_e && !$has_any_lock && !$is_cache;
@@ -1789,7 +1789,7 @@ function view_e_card($x__type, $e, $extra_class = null)
                     'x__id' => $x__id,
                 ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="show-on-hover">';
-                    $link_type_ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
+                    $link_type_ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e, false, $e['e__id'], $x__id);
                     $link_type_ui .= '</div></td>';
                 }
                 $link_type_id = $x__type1;
@@ -1813,13 +1813,12 @@ function view_e_card($x__type, $e, $extra_class = null)
                 $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
+            } elseif($x__type_top_bar==6177 && $source_of_e){
 
-            } elseif($x__type_top_bar==6177){
-
-                //Source Status
+                //Source Privacy
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( !in_array($e['e__privacy'], $CI->config->item('n___7357')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_input_dropdown(6177, $e['e__privacy'], null, $source_of_e && $superpower_13422, false, $e['e__id']);
+                $top_bar_ui .= view_input_dropdown(6177, $e['e__privacy'], null, $source_of_e, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31912 && $source_of_e){

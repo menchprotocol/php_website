@@ -12,7 +12,7 @@ echo '<div class="list-group list-grey">';
 foreach($custom_query as $x){
 
 
-    echo view_x($x);
+    echo view_card_x($x);
 
     $x__metadata = unserialize($x['x__metadata']);
     $this->X_model->update($x['x__reference'], array(

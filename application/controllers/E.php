@@ -586,7 +586,7 @@ class E extends CI_Controller
         //Return source:
         return view_json(array(
             'status' => 1,
-            'e_new_echo' => view_e_card($_POST['x__type'], array_merge($focus_e, $ur2), null),
+            'e_new_echo' => view_card_e($_POST['x__type'], array_merge($focus_e, $ur2), null),
             'e_already_linked' => $e_already_linked,
         ));
 

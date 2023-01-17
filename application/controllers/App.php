@@ -252,7 +252,7 @@ class App extends CI_Controller
             $message .= '<div class="list-group list-grey">';
             foreach($x as $x) {
 
-                $message .= view_x($x);
+                $message .= view_card_x($x);
 
                 if($member_e && strlen($x['x__message'])>0 && strlen($_POST['x__message_search'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($x['x__message'], $_POST['x__message_search'])>0){
 
@@ -314,7 +314,7 @@ class App extends CI_Controller
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $app) {
-            $ui .= view_e_card(6287, $app);
+            $ui .= view_card_e(6287, $app);
         }
         $ui .= '</div>';
 

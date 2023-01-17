@@ -22,7 +22,7 @@ echo '<script type="text/javascript"> $(document).ready(function () { setTimeout
 
 //Focus Source:
 echo '<div class="main_item row justify-content">';
-echo view_e_card(4251, $e, null);
+echo view_card_e(4251, $e, null);
 echo '</div>';
 
 
