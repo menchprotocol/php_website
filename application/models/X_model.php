@@ -345,12 +345,12 @@ class X_model extends CI_Model
                         if($key=='x__privacy'){
 
                             $e___6186 = $this->config->item('e___6186'); //Transaction Status
-                            $x__message .= view_db_field($key) . ' updated from [' . $e___6186[$before_data[0][$key]]['m__title'] . '] to [' . $e___6186[$value]['m__title'] . ']'."\n";
+                            $x__message .= view_db_field($key) . '4 updated from [' . $e___6186[$before_data[0][$key]]['m__title'] . '] to [' . $e___6186[$value]['m__title'] . ']'."\n";
 
                         } elseif($key=='x__type'){
 
                             $e___4593 = $this->config->item('e___4593'); //Transaction Types
-                            $x__message .= view_db_field($key) . ' updated from [' . $e___4593[$before_data[0][$key]]['m__title'] . '] to [' . $e___4593[$value]['m__title'] . ']'."\n";
+                            $x__message .= view_db_field($key) . '5 updated from [' . $e___4593[$before_data[0][$key]]['m__title'] . '] to [' . $e___4593[$value]['m__title'] . ']'."\n";
 
                         } elseif(in_array($key, array('x__up', 'x__down'))) {
 
@@ -362,7 +362,7 @@ class X_model extends CI_Model
                                 'e__id' => $value,
                             ));
 
-                            $x__message .= view_db_field($key) . ' updated from [' . $befores[0]['e__title'] . '] to [' . $after_e[0]['e__title'] . ']' . "\n";
+                            $x__message .= view_db_field($key) . '6 updated from [' . $befores[0]['e__title'] . '] to [' . $after_e[0]['e__title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('x__left', 'x__right'))) {
 
@@ -374,11 +374,11 @@ class X_model extends CI_Model
                                 'i__id' => $value,
                             ));
 
-                            $x__message .= view_db_field($key) . ' updated from [' . $before_i[0]['i__title'] . '] to [' . $after_i[0]['i__title'] . ']' . "\n";
+                            $x__message .= view_db_field($key) . '7 updated from [' . $before_i[0]['i__title'] . '] to [' . $after_i[0]['i__title'] . ']' . "\n";
 
                         } elseif(in_array($key, array('x__message', 'x__spectrum'))){
 
-                            $x__message .= view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
+                            $x__message .= view_db_field($key) . '8 updated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
 
                         } else {
 

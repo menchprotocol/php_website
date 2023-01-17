@@ -149,7 +149,7 @@ class I_model extends CI_Model
 
                     $x__type = 10648; //Idea updated Status
                     $e___4737 = $this->config->item('e___4737'); //Idea Status
-                    $x__message = view_db_field($key) . ' updated from [' . $e___4737[$before_data[0][$key]]['m__title'] . '] to [' . $e___4737[$value]['m__title'] . ']';
+                    $x__message = view_db_field($key) . '1 updated from [' . $e___4737[$before_data[0][$key]]['m__title'] . '] to [' . $e___4737[$value]['m__title'] . ']';
                     $x__up = $value;
                     $x__down = $before_data[0][$key];
 
