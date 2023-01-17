@@ -65,11 +65,11 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
     } elseif ($x__type == 4261 /* File URL */) {
 
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-        return '<a href="' . $x__message . '" class="btn btn-12273" target="_blank" class="ignore-click">'.$e___11035[13573]['m__cover'].' '.$e___11035[13573]['m__title'].'</a>';
+        return '<a href="' . $x__message . '" target="_blank" class="ignore-click">'.$e___11035[13573]['m__cover'].' '.$e___11035[13573]['m__title'].'</a>';
 
     } elseif ($x__type==32097 /* Email */) {
 
-        return '<a href=mailto:' . strtolower($x__message) . '" class="btn btn-12273" target="_blank" class="ignore-click">' . strtolower($x__message) . '</a>';
+        return '<a href=mailto:' . strtolower($x__message) . '" target="_blank" class="ignore-click">' . strtolower($x__message) . '</a>';
 
     } elseif ($x__type==32102 /* Hash */) {
 
@@ -77,7 +77,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     } elseif (in_array($x__type, $CI->config->item('n___4537'))) {
 
-        return '<a href="' . $x__message . '" class="btn btn-12273" target="_blank" class="ignore-click">'.$x__message.'</a>';
+        return '<a href="' . $x__message . '" target="_blank" class="ignore-click">'.$x__message.'</a>';
 
     } elseif(strlen($x__message) > 0) {
 
