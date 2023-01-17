@@ -33,11 +33,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     $CI =& get_instance();
 
-    if ($x__type == 4256 /* Generic URL */) {
-
-        return '<div class="block"><a href="' . $x__message . '" target="_blank" class="ignore-click"><span class="url_truncate">' . view_url_clean($x__message) . '</span></a></div>';
-
-    } elseif ($x__type == 26661 /* Currency */) {
+    if ($x__type == 26661 /* Currency */) {
 
         $parts = explode(' ', $x__message, 2);
         return $parts[0].' '.number_format($parts[1], 2);
@@ -73,7 +69,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     } elseif (in_array($x__type, $CI->config->item('n___4537'))) {
 
-        return '<a href="' . $x__message . '" target="_blank" class="ignore-click"><u>'.$x__message.'</u></a>';
+        return '<a href="' . $x__message . '" target="_blank" class="ignore-click"><span class="url_truncate"><u>' . view_url_clean($x__message) . '</u></span></a>';
 
     } elseif ($x__type==32102 /* Hash */) {
 
