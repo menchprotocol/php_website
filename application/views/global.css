@@ -237,6 +237,7 @@ li a {
     border-radius: 0 !important;
 }
 
+.btn.btn-default,
 .btn-large,
 .btn-6255 {
     border-radius: 21px !important;
