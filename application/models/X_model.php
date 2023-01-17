@@ -1047,7 +1047,7 @@ class X_model extends CI_Model
 
                         //SOURCE LINK VISUAL
                         $e_media_count++;
-                        $e_appendix .= '<div class="e-appendix paddingup">' . view_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input, $is_discovery_mode) . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup">' . preview_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input, $is_discovery_mode) . '</div>';
 
                     } elseif($e_profile['x__type'] == 4256 /* URL */) {
 

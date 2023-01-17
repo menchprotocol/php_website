@@ -18,7 +18,7 @@ function view_db_field($field_name){
 }
 
 
-function view_x__message($x__message, $x__type, $full_message = null, $has_discovery_mode = false)
+function preview_x__message($x__message, $x__type, $full_message = null, $has_discovery_mode = false)
 {
 
     /*
@@ -42,6 +42,14 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
         return date("D M j G:i:s T Y", strtotime($x__message));
 
+    } elseif ($x__type==32097 /* Email */) {
+
+        return '<a href="mailto:' . strtolower($x__message) . '" target="_blank" class="ignore-click"><u>' . strtolower($x__message) . '</u></a>';
+
+    } elseif ($x__type==32102 /* Hash */) {
+
+        return '<span style="font-family:monospace; font-size:0.7em;">' . strtolower($x__message) . '</span>';
+
     } elseif ($x__type == 4257 /* Embed Widget URL? */) {
 
         return view_url_embed($x__message, $full_message);
@@ -63,26 +71,25 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
         return '<a href="' . $x__message . '" target="_blank" class="ignore-click"><u>'.$e___11035[13573]['m__cover'].' '.$e___11035[13573]['m__title'].'</u></a>';
 
-    } elseif ($x__type==32097 /* Email */) {
-
-        return '<a href="mailto:' . strtolower($x__message) . '" target="_blank" class="ignore-click"><u>' . strtolower($x__message) . '</u></a>';
-
     } elseif (in_array($x__type, $CI->config->item('n___4537'))) {
 
+        //Other URL
         return '<a href="' . $x__message . '" target="_blank" class="ignore-click"><span class="url_truncate"><u>' . view_url_clean($x__message) . '</u></span></a>';
-
-    } elseif ($x__type==32102 /* Hash */) {
-
-        return '<span style="font-family:monospace; font-size:0.7em;">' . strtolower($x__message) . '</span>';
-
-    } elseif(strlen($x__message) > 0) {
-
-        return nl2br(htmlentities($x__message));
 
     } else {
 
-        //UNKNOWN
-        return false;
+        $this->X_model->create(array(
+            'x__type' => 4246, //Platform Bug Reports
+            'x__message' => 'preview_x__message() Unknown text type',
+            'x__metadata' => array(
+                'x__message' => $x__message,
+                'x__type' => $x__type,
+                'full_message' => $full_message,
+                'has_discovery_mode' => $has_discovery_mode,
+            ),
+        ));
+
+        return 'ERROR: Unknown Type';
 
     }
 }
@@ -1964,7 +1971,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     if ($x__id > 0 && $grant_access) {
         if(!$has_any_lock || $grant_access){
 
-            $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.view_x__message($e['x__message'] , $e['x__type']).'</span>';
+            $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.preview_x__message($e['x__message'] , $e['x__type']).'</span>';
 
         } elseif(($is_featured || $has_x_progress) && strlen($e['x__message'])){
 
