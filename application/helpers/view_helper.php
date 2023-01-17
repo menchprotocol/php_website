@@ -65,19 +65,19 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
     } elseif ($x__type == 4261 /* File URL */) {
 
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-        return '<a href="' . $x__message . '" target="_blank" class="ignore-click">'.$e___11035[13573]['m__cover'].' '.$e___11035[13573]['m__title'].'</a>';
+        return '<a href="' . $x__message . '" target="_blank" class="ignore-click"><u>'.$e___11035[13573]['m__cover'].' '.$e___11035[13573]['m__title'].'</u></a>';
 
     } elseif ($x__type==32097 /* Email */) {
 
-        return '<a href=mailto:' . strtolower($x__message) . '" target="_blank" class="ignore-click">' . strtolower($x__message) . '</a>';
+        return '<a href=mailto:' . strtolower($x__message) . '" target="_blank" class="ignore-click"><u>' . strtolower($x__message) . '</u></a>';
+
+    } elseif (in_array($x__type, $CI->config->item('n___4537'))) {
+
+        return '<a href="' . $x__message . '" target="_blank" class="ignore-click"><u>'.$x__message.'</u></a>';
 
     } elseif ($x__type==32102 /* Hash */) {
 
         return '<span style="font-family:monospace; font-size:0.7em;">' . strtolower($x__message) . '</span>';
-
-    } elseif (in_array($x__type, $CI->config->item('n___4537'))) {
-
-        return '<a href="' . $x__message . '" target="_blank" class="ignore-click">'.$x__message.'</a>';
 
     } elseif(strlen($x__message) > 0) {
 
