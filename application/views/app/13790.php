@@ -104,7 +104,7 @@ if(strlen($_GET['i__id'])){
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
         'x__left IN (' . join(',', array($_GET['i__id'])) . ')' => null, //IDEA LINKS
-    ), array('x__source'), 0, 0, array('x__time' => 'DESC')) as $x){
+    ), array('x__creator'), 0, 0, array('x__time' => 'DESC')) as $x){
 
         if(in_array($x['e__id'], $unique_users_count)){
             continue;
@@ -129,7 +129,7 @@ if(strlen($_GET['i__id'])){
 
         if(isset($_GET['include_i']) && intval($_GET['include_i']) && count($this->X_model->fetch(array(
                 'x__left IN (' . $_GET['include_i'] . ')' => null, //All of these
-                'x__source' => $x['e__id'],
+                'x__creator' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ))) != count(explode(',',$_GET['include_i']))){
@@ -137,7 +137,7 @@ if(strlen($_GET['i__id'])){
         }
         if(isset($_GET['exclude_i']) && intval($_GET['exclude_i']) && count($this->X_model->fetch(array(
                 'x__left IN (' . $_GET['exclude_i'] . ')' => null, //All of these
-                'x__source' => $x['e__id'],
+                'x__creator' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
@@ -168,7 +168,7 @@ if(strlen($_GET['i__id'])){
 
             $discoveries = $this->X_model->fetch(array(
                 'x__left' => $i['i__id'],
-                'x__source' => $x['e__id'],
+                'x__creator' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1);
@@ -237,7 +237,7 @@ if(strlen($_GET['i__id'])){
             $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( isset($_GET['expand']) ? view_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '<span '.$underdot_class.' title="'.$fetch_data[0]['x__message'].'">'.view_cover(12273,$e['e__cover'], '✔️', ' ').'</span>' ) : '<span class="icon-block-xxs">'.view_cover(12273,$e['e__cover'], '✔️', ' ').'</span>' ) : '' );
 
 
-            $body_content .= '<td class="'.( in_array($e['e__id'], $this->config->item('n___28714')) ? 'editable x__source_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__source="'.$x['e__id'].'" x__id="'.$x['x__id'].'">'.$message_clean.'</td>';
+            $body_content .= '<td class="'.( in_array($e['e__id'], $this->config->item('n___28714')) ? 'editable x__creator_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__creator="'.$x['e__id'].'" x__id="'.$x['x__id'].'">'.$message_clean.'</td>';
 
             if(strlen($message_clean)>0){
                 if(!isset($count_totals['e'][$e['e__id']])){
@@ -378,11 +378,11 @@ if(strlen($_GET['i__id'])){
                 var modify_data = {
                     i__id: $(this).attr('i__id'),
                     e__id: $(this).attr('e__id'),
-                    x__source: $(this).attr('x__source'),
+                    x__creator: $(this).attr('x__creator'),
                     x__id: $(this).attr('x__id'),
                 };
 
-                $('.x__source_' + modify_data['e__id'] + '_' + modify_data['x__source']).html('<i class="far fa-yin-yang fa-spin"></i>');
+                $('.x__creator_' + modify_data['e__id'] + '_' + modify_data['x__creator']).html('<i class="far fa-yin-yang fa-spin"></i>');
 
                 //Check email and validate:
                 $.post("/e/e_toggle_e", modify_data, function (data) {
@@ -390,7 +390,7 @@ if(strlen($_GET['i__id'])){
                     if (data.status) {
 
                         //Update source id IF existed previously:
-                        $('.x__source_' + modify_data['e__id'] + '_' + modify_data['x__source']).html(data.message);
+                        $('.x__creator_' + modify_data['e__id'] + '_' + modify_data['x__creator']).html(data.message);
 
                     } else {
                         alert('ERROR:' + data.message);

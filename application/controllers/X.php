@@ -306,7 +306,7 @@ class X extends CI_Controller
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
                 'x__message' => 'complete_next() found non-public ideas for Top ID /'.$top_i__id.'!',
-                'x__source' => ( $member_e ? $member_e['e__id'] : 0 ),
+                'x__creator' => ( $member_e ? $member_e['e__id'] : 0 ),
                 'x__left' => $current_i__id,
                 'x__right' => $next_i__id,
             ));
@@ -318,24 +318,24 @@ class X extends CI_Controller
         if($member_e && in_array($current_is[0]['i__type'], $this->config->item('n___12330')) && !count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__left' => $current_is[0]['i__id'],
             )))){
             $this->X_model->mark_complete($top_i__id, $current_is[0], array(
                 'x__type' => 4559, //DISCOVERY MESSAGES
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
             ));
         }
 
         if($member_e && in_array($next_is[0]['i__type'], $this->config->item('n___12330')) && !count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__left' => $next_is[0]['i__id'],
             )))){
             $this->X_model->mark_complete($top_i__id, $next_is[0], array(
                 'x__type' => 4559, //DISCOVERY MESSAGES
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
             ));
         }
 
@@ -379,7 +379,7 @@ class X extends CI_Controller
 
             //Make sure not previously added to this Member's discoveries:
             $xs = $this->X_model->fetch(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__left' => $i__id,
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -397,7 +397,7 @@ class X extends CI_Controller
                 //New Starting Point:
                 $this->X_model->mark_complete($top_i__id, $is[0], array(
                     'x__type' => 4235, //Get started
-                    'x__source' => $member_e['e__id'],
+                    'x__creator' => $member_e['e__id'],
                 ));
 
                 //$one_child_hack: Mark next level as done too? Only if Single show:
@@ -412,7 +412,7 @@ class X extends CI_Controller
                         if(in_array($single_child['i__type'], $this->config->item('n___12330'))){
                             $this->X_model->mark_complete($top_i__id, $single_child, array(
                                 'x__type' => 4559, //DISCOVERY MESSAGES
-                                'x__source' => $member_e['e__id'],
+                                'x__creator' => $member_e['e__id'],
                             ));
                         }
                     }
@@ -465,7 +465,7 @@ class X extends CI_Controller
         if(!count($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
             'x__left' => $is[0]['i__id'],
         )))){
             //Not yet completed, should we complete?
@@ -473,7 +473,7 @@ class X extends CI_Controller
                 //Yes we can:
                 $this->X_model->mark_complete($top_i__id, $is[0], array(
                     'x__type' => 4559, //DISCOVERY MESSAGES
-                    'x__source' => $member_e['e__id'],
+                    'x__creator' => $member_e['e__id'],
                 ));
             } else {
                 //We can't, so this is the next idea:
@@ -497,7 +497,7 @@ class X extends CI_Controller
 
             //Mark as Complete
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => 14730, //COMPLETED 100%
                 'x__right' => $top_i__id,
                 //TODO Maybe log additional details like total ideas, time, etc...
@@ -650,7 +650,7 @@ class X extends CI_Controller
             )))
         ){
 
-            $x__source = ($member__id > 0 ? $member__id : ($member_e ? $member_e['e__id'] : 0));
+            $x__creator = ($member__id > 0 ? $member__id : ($member_e ? $member_e['e__id'] : 0));
             $es_tag = $this->E_model->fetch(array(
                 'e__id' => $tag__id,
             ));
@@ -659,17 +659,17 @@ class X extends CI_Controller
                 //Add source link:
                 $this->X_model->create(array(
                     'x__type' => e_x__type(),
-                    'x__source' => $x__source,
+                    'x__creator' => $x__creator,
                     'x__up' => $tag__id,
-                    'x__down' => $x__source,
+                    'x__down' => $x__creator,
                 ));
 
                 //Log Reference:
                 $this->X_model->create(array(
                     'x__type' => 29393, //Log Referral
-                    'x__source' => $x__source,
+                    'x__creator' => $x__creator,
                     'x__up' => $tag__id,
-                    'x__down' => $x__source,
+                    'x__down' => $x__creator,
                     'x__left' => $i__id,
                     'x__right' => $top_i__id,
                 ));
@@ -697,7 +697,7 @@ class X extends CI_Controller
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__left' => $i__id,
                 'x__right > 0' => null,
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
@@ -711,7 +711,7 @@ class X extends CI_Controller
                 foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__source' => $member_e['e__id'],
+                    'x__creator' => $member_e['e__id'],
                     'x__left IN (' . join(',', $recursive_is) . ')' => null,
                     'x__right > 0' => null,
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
@@ -770,7 +770,7 @@ class X extends CI_Controller
         if($member_e) {
             //VIEW DISCOVERY
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => 7610, //MEMBER VIEWED DISCOVERY
                 'x__left' => ( $top_i__id > 0 ? $top_is[0]['i__id'] : 0 ),
                 'x__right' => $is[0]['i__id'],
@@ -840,7 +840,7 @@ class X extends CI_Controller
             'x__type' => 26582, //Send Instant Message
             'x__privacy' => 6175, //Drafting until it's sent via Cron Job
             'x__time' => date('Y-m-d H:i:s', strtotime($_POST['message_time'])),
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
             'x__message' => $_POST['message_subject'],
             'x__metadata' => array(
                 'message_subject' => $_POST['message_subject'],
@@ -947,7 +947,7 @@ class X extends CI_Controller
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $is[0]['i__id'],
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
@@ -958,7 +958,7 @@ class X extends CI_Controller
         $new_message = '@'.$cdn_status['cdn_e']['e__id'];
         $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
             'x__type' => 12117,
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
             'x__message' => $new_message,
             'x__up' => $cdn_status['cdn_e']['e__id'],
         ));
@@ -1040,7 +1040,7 @@ class X extends CI_Controller
             //Log Success:
             $invite_x = $this->X_model->create(array(
                 'x__type' => 25990,
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__down' => ( $_POST['coin__type']==12274 ? $_POST['coin__id'] : 0 ),
                 'x__right' => ( $_POST['coin__type']==12273 ? $_POST['coin__id'] : 0 ),
                 'x__message' => $cdn_status['cdn_url'],
@@ -1108,7 +1108,7 @@ class X extends CI_Controller
                 //Log Skip:
                 $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
                     'x__type' => 31022, //Skipped
-                    'x__source' => $member_e['e__id'],
+                    'x__creator' => $member_e['e__id'],
                     'x__message' => $_POST['x_reply'],
                 ));
                 //All good:
@@ -1249,7 +1249,7 @@ class X extends CI_Controller
                 //Log preg match failure
                 $this->X_model->create(array(
                     'x__type' => 30998, //Preg Match Error Message
-                    'x__source' => $member_e['e__id'],
+                    'x__creator' => $member_e['e__id'],
                     'x__message' => $error_message,
                     'x__left' => $_POST['top_i__id'],
                     'x__right' => $_POST['i__id'],
@@ -1271,7 +1271,7 @@ class X extends CI_Controller
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $is[0]['i__id'],
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
@@ -1281,7 +1281,7 @@ class X extends CI_Controller
         //Save new answer:
         $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
             'x__type' => $x__type,
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
             'x__message' => $_POST['x_reply'],
         ));
 
@@ -1522,7 +1522,7 @@ class X extends CI_Controller
         $progress_x = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
-            'x__source' => $e__id,
+            'x__creator' => $e__id,
         ), array(), 0);
 
         if(count($progress_x) > 0){
@@ -1534,7 +1534,7 @@ class X extends CI_Controller
             $clear_all_x = $this->X_model->create(array(
                 'x__message' => $message,
                 'x__type' => 6415,
-                'x__source' => $e__id,
+                'x__creator' => $e__id,
             ));
 
             //Delete all progressions:
@@ -1605,7 +1605,7 @@ class X extends CI_Controller
 
         //Save IDEA:
         $x = $this->X_model->create(array(
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
             'x__up' => $member_e['e__id'],
             'x__left' => $_POST['top_i__id'],
             'x__right' => $_POST['i__id'],

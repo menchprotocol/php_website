@@ -303,7 +303,7 @@ class E extends CI_Controller
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => $x['x__type'],
                 'x__up' => $focus_e['e__id'],
                 'x__down' => $x['x__down'],
@@ -323,7 +323,7 @@ class E extends CI_Controller
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => $x['x__type'],
                 'x__up' => $x['x__up'],
                 'x__down' => $focus_e['e__id'],
@@ -343,7 +343,7 @@ class E extends CI_Controller
             'x__up' => $_POST['e__id'],
         ), array(), 0) as $x){
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => $x['x__type'],
                 'x__up' => $focus_e['e__id'],
                 'x__down' => $x['x__down'],
@@ -519,7 +519,7 @@ class E extends CI_Controller
 
             //Add Reference:
             $ur2 = $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => 4983, //IDEA SOURCES
                 'x__up' => $focus_e['e__id'],
                 'x__right' => $fetch_o[0]['i__id'],
@@ -573,7 +573,7 @@ class E extends CI_Controller
 
             //Create transaction:
             $ur2 = $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => $x__type,
                 'x__message' => $x__message,
                 'x__down' => $x__down,
@@ -638,7 +638,7 @@ class E extends CI_Controller
 
         //Log Transaction:
         $this->X_model->create(array(
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
             'x__type' => 5007, //TOGGLE SUPERPOWER
             'x__up' => $superpower_e__id,
             'x__message' => 'SUPERPOWER '.$toggled_setting, //To be used when member logs in again
@@ -807,7 +807,7 @@ class E extends CI_Controller
             //Add special transaction to monitor unsubscribes:
             if(in_array($_POST['selected_e__id'], $this->config->item('n___29648'))){
                 $this->X_model->create(array(
-                    'x__source' => $member_e['e__id'],
+                    'x__creator' => $member_e['e__id'],
                     'x__type' => 29648, //Communication Downgraded
                     'x__up' => $_POST['focus_id'],
                     'x__down' => $_POST['selected_e__id'],
@@ -864,7 +864,7 @@ class E extends CI_Controller
             $this->X_model->create(array(
                 'x__up' => $_POST['selected_e__id'],
                 'x__down' => $member_e['e__id'],
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => e_x__type(),
             ));
         }
@@ -873,7 +873,7 @@ class E extends CI_Controller
         //Log Account Update transaction type:
         $_POST['account_update_function'] = 'e_radio'; //Add this variable to indicate which My Account function created this transaction
         $this->X_model->create(array(
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
             'x__type' => 6224, //My Account updated
             'x__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Created' ),
             'x__metadata' => $_POST,
@@ -1047,7 +1047,7 @@ class E extends CI_Controller
 
             //Create new transaction:
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__down' => $member_e['e__id'],
                 'x__type' => e_x__type($_POST['e_email']),
                 'x__up' => 3288, //Email
@@ -1073,7 +1073,7 @@ class E extends CI_Controller
             //Log Account Update transaction type:
             $_POST['account_update_function'] = 'e_email'; //Add this variable to indicate which My Account function created this transaction
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => 6224, //My Account updated
                 'x__message' => 'My Account '.$return['message']. ( strlen($_POST['e_email']) > 0 ? ': '.$_POST['e_email'] : ''),
                 'x__metadata' => $_POST,
@@ -1159,7 +1159,7 @@ class E extends CI_Controller
 
             //Create new transaction:
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__down' => $member_e['e__id'],
                 'x__type' => e_x__type($_POST['e_fullname']),
                 'x__up' => 30198, //Full Name
@@ -1185,7 +1185,7 @@ class E extends CI_Controller
             //Log Account Update transaction type:
             $_POST['account_update_function'] = 'e_fullname'; //Add this variable to indicate which My Account function created this transaction
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => 6224, //My Account updated
                 'x__message' => 'My Account '.$return['message']. ( strlen($_POST['e_fullname']) > 0 ? ': '.$_POST['e_fullname'] : ''),
                 'x__metadata' => $_POST,
@@ -1268,7 +1268,7 @@ class E extends CI_Controller
 
             //Create new transaction:
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__down' => $member_e['e__id'],
                 'x__type' => e_x__type($_POST['e_phone']),
                 'x__up' => 4783, //Phone
@@ -1294,7 +1294,7 @@ class E extends CI_Controller
             //Log Account Update transaction type:
             $_POST['account_update_function'] = 'e_phone'; //Add this variable to indicate which My Account function created this transaction
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => 6224, //My Account updated
                 'x__message' => 'My Account '.$return['message']. ( strlen($_POST['e_phone']) > 0 ? ': '.$_POST['e_phone'] : ''),
                 'x__metadata' => $_POST,
@@ -1369,7 +1369,7 @@ class E extends CI_Controller
             $this->X_model->create(array(
                 'x__type' => e_x__type($hashed_password),
                 'x__up' => 3286, //Password
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__down' => $member_e['e__id'],
                 'x__message' => $hashed_password,
             ), true);
@@ -1386,7 +1386,7 @@ class E extends CI_Controller
         if($return['status']){
             $_POST['account_update_function'] = 'e_password'; //Add this variable to indicate which My Account function created this transaction
             $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__type' => 6224, //My Account Updated
                 'x__message' => 'My Account '.$return['message'],
                 'x__metadata' => $_POST,
@@ -1494,7 +1494,7 @@ class E extends CI_Controller
                 'x__type' => e_x__type($hash),
                 'x__message' => $hash,
                 'x__up' => 3286, //Password
-                'x__source' => $member_result['e']['e__id'],
+                'x__creator' => $member_result['e']['e__id'],
                 'x__down' => $member_result['e']['e__id'],
             ));
 
@@ -1648,7 +1648,7 @@ class E extends CI_Controller
         //Log email search attempt:
         $reset_x = $this->X_model->create(array(
             'x__type' => 7563, //Member Signin Magic Email
-            'x__source' => $u_emails[0]['e__id'], //Member making request
+            'x__creator' => $u_emails[0]['e__id'], //Member making request
             'x__message' => $_POST['input_email'],
             'x__left' => intval($_POST['sign_i__id']),
         ));
@@ -1682,7 +1682,7 @@ class E extends CI_Controller
                 'message' => 'You must login to continue...',
             ));
 
-        } elseif(!isset($_POST['x__source']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){
+        } elseif(!isset($_POST['x__creator']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){
 
             return view_json(array(
                 'status' => 0,
@@ -1700,7 +1700,7 @@ class E extends CI_Controller
 
             $already_added = $this->X_model->fetch(array(
                 'x__up' => $_POST['e__id'],
-                'x__down' => $_POST['x__source'],
+                'x__down' => $_POST['x__creator'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ));
@@ -1722,8 +1722,8 @@ class E extends CI_Controller
                 //Does not exist, Add:
                 $this->X_model->create(array(
                     'x__up' => $_POST['e__id'],
-                    'x__down' => $_POST['x__source'],
-                    'x__source' => $member_e['e__id'],
+                    'x__down' => $_POST['x__creator'],
+                    'x__creator' => $member_e['e__id'],
                     'x__type' => e_x__type(),
                 ));
 
@@ -1769,7 +1769,7 @@ class E extends CI_Controller
 
         //Fetch source:
         $es = $this->E_model->fetch(array(
-            'e__id' => $validate_x[0]['x__source'],
+            'e__id' => $validate_x[0]['x__creator'],
         ));
         if(count($es) < 1){
             return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Member not found</div>', true);

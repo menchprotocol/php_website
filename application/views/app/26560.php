@@ -2,14 +2,14 @@
 $superpower_31000 = superpower_active(31000, true);
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
-if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source']) && strlen($_GET['x__source']) > 0){
+if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__creator']) && strlen($_GET['x__creator']) > 0){
 
     //Validate Ticket Input:
     $x = $this->X_model->fetch(array(
         'x__id' => $_GET['x__id'],
-        'x__source' => $_GET['x__source'],
+        'x__creator' => $_GET['x__creator'],
         'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Ticket Type
-    ), array('x__source'));
+    ), array('x__creator'));
 
     if(!count($x)){
 
@@ -34,7 +34,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
             'i__id' => $x[0]['x__left'],
         ));
 
-        $checkin_url = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x[0]['x__id'].'&x__source='.$x[0]['x__source'].'&checkin_32016=1';
+        $checkin_url = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x[0]['x__id'].'&x__creator='.$x[0]['x__creator'].'&checkin_32016=1';
 
         //Display UI:
         echo '<h2 style="text-align: center;">'.$is_top[0]['i__title'].'</h2>';
@@ -67,7 +67,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__source
                     //All good to check-in:
                     $this->X_model->create(array(
                         'x__type' => 32016,
-                        'x__source' => $x[0]['e__id'], //Ticket Buyer
+                        'x__creator' => $x[0]['e__id'], //Ticket Buyer
                         'x__up' => $member_e['e__id'], //Ticket Scanner
                         'x__spectrum' => $quantity, //Tickets Scanned
                         'x__right' => $x[0]['x__right'],

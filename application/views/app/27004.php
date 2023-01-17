@@ -156,19 +156,19 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $i['i__id'],
-        ), array(), 0, 0, array('x__source' => 'ASC')) as $x){
+        ), array(), 0, 0, array('x__creator' => 'ASC')) as $x){
 
             if(isset($_GET['include_e']) && strlen($_GET['include_e']) && !count($this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__up IN (' . $_GET['include_e'] . ')' => null,
-                    'x__down' => $x['x__source'],
+                    'x__down' => $x['x__creator'],
                 )))){
                 continue;
             }
             if(isset($_GET['exclude_e']) && intval($_GET['exclude_e']) && count($this->X_model->fetch(array(
                     'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
-                    'x__down' => $x['x__source'],
+                    'x__down' => $x['x__creator'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
@@ -218,7 +218,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
 
             $item_parts = explode('-',$x__metadata['item_number']);
-            $this_sourced = intval(isset($item_parts[3]) ? $item_parts[3] : $x['x__source'] );
+            $this_sourced = intval(isset($item_parts[3]) ? $item_parts[3] : $x['x__creator'] );
 
             array_push($all_sources, $this_sourced);
 

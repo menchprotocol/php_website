@@ -56,7 +56,7 @@ class App extends CI_Controller
             }
         }
 
-        $x__source = ( $is_u_request ? ( $member_e ? $member_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
+        $x__creator = ( $is_u_request ? ( $member_e ? $member_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
 
 
         //MEMBER REDIRECT?
@@ -107,7 +107,7 @@ class App extends CI_Controller
             //Prep view:
             $raw_app = $this->load->view('app/'.$app_e__id, array(
                 'app_e__id' => $app_e__id,
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'member_e' => $member_e,
                 'is_u_request' => $is_u_request,
                 'memory_detected' => $memory_detected,
@@ -123,7 +123,7 @@ class App extends CI_Controller
 
         if($new_cache){
             $cache_x = $this->X_model->create(array(
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'x__type' => 14599, //Cache App
                 'x__up' => $app_e__id,
                 'x__message' => $ui,
@@ -135,7 +135,7 @@ class App extends CI_Controller
 
         //Log App Load:
         $log_data = array(
-            'x__source' => $x__source,
+            'x__creator' => $x__creator,
             'x__type' => 14067, //APP LOADED
             'x__up' => $app_e__id,
             'x__reference' => $cache_x__id,

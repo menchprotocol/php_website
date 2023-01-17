@@ -746,7 +746,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         //DISCOVERIES
         $join_objects = array('x__left');
         $query_filters = array(
-            'x__source' => $e__id,
+            'x__creator' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //PUBLIC
@@ -862,14 +862,14 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true)
 
         //DISCOVERIES
         $order_columns = array('x__id' => 'DESC');
-        $join_objects = array('x__source');
+        $join_objects = array('x__creator');
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $i__id,
         );
         if(isset($_GET['load__e'])){
-            $query_filters['x__source'] = intval($_GET['load__e']);
+            $query_filters['x__creator'] = intval($_GET['load__e']);
         }
 
     } else {
@@ -1194,7 +1194,7 @@ function view__load__e($e){
 
 
 
-function view_i_select_card($i, $x__source, $previously_selected){
+function view_i_select_card($i, $x__creator, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1339,7 +1339,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
                 foreach($CI->X_model->fetch(array(
                     'x__id' => $x__id,
-                ), array('x__source')) as $linker){
+                ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="show-on-hover">';
                     $link_type_ui .= view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id'], $x__id);
                     $link_type_ui .= '</div></td>';
@@ -1431,7 +1431,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                         $action_buttons .= '<a href="javascript:void();" new-en-id="6182" onclick="update_dropdown(4737, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_4737_'.$i['i__id'].'_'.$x__id.' css__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
                     } elseif($e__id_dropdown==26560 && isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___32014'))){
                         //Ticket Details
-                        $action_buttons .= '<a href="/-26560?x__id='.$i['x__id'].'&x__source='.$i['x__source'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="/-26560?x__id='.$i['x__id'].'&x__creator='.$i['x__creator'].'" class="dropdown-item css__title">'.$anchor.'</a>';
                     } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_active(28727, true)){
                         //Paypal Details
                         $x__metadata = unserialize($i['x__metadata']);
@@ -1511,7 +1511,7 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4231,
             'x__right' => $i['i__id'],
-        ), array('x__source'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
+        ), array('x__creator'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
             $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
         }
 
@@ -1579,15 +1579,15 @@ function view_i_card($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 }
 
-function view_featured_source($x__source, $x){
+function view_featured_source($x__creator, $x){
 
     //See if this member also follows this featured source?
     $CI =& get_instance();
     $member_follows = array();
-    if($x__source>0){
+    if($x__creator>0){
         $member_follows = $CI->X_model->fetch(array(
             'x__up' => $x['e__id'],
-            'x__down' => $x__source,
+            'x__down' => $x__creator,
             'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         ));
@@ -1622,7 +1622,7 @@ function view_featured_source($x__source, $x){
 
     /*
      *
-     * <div '.( $x__source==1 ? 'id="load_map" style="width:100%;height:200px;"' : '' ).'></div><script>
+     * <div '.( $x__creator==1 ? 'id="load_map" style="width:100%;height:200px;"' : '' ).'></div><script>
 
         $(document).ready(function () {
             let map;
@@ -1787,7 +1787,7 @@ function view_e_card($x__type, $e, $extra_class = null)
             if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
                 foreach($CI->X_model->fetch(array(
                     'x__id' => $x__id,
-                ), array('x__source')) as $linker){
+                ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="show-on-hover">';
                     $link_type_ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e && $superpower_13422, false, $e['e__id'], $x__id);
                     $link_type_ui .= '</div></td>';
@@ -1890,7 +1890,7 @@ function view_e_card($x__type, $e, $extra_class = null)
                     } elseif($e__id_dropdown==26560 && isset($e['x__type']) && in_array($e['x__type'], $CI->config->item('n___32014'))){
 
                         //Ticket Details
-                        $action_buttons .= '<a href="/-26560?x__id='.$e['x__id'].'&x__source='.$e['x__source'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="/-26560?x__id='.$e['x__id'].'&x__creator='.$e['x__creator'].'" class="dropdown-item css__title">'.$anchor.'</a>';
 
                     } elseif($e__id_dropdown==6415){
 

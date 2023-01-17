@@ -190,7 +190,7 @@ function htmlentitiesjs(rawStr){
 function apply_all_load(apply_id, coin__id){
 
     x_create({
-        x__source: js_pl_id,
+        x__creator: js_pl_id,
         x__type: 14576, //MODAL VIEWED
         x__up: apply_id,
         x__down: ( coin__type==4997 ? coin__id : 0 ),
@@ -381,7 +381,7 @@ function toggle_headline(x__type){
 
     //Log Transaction:
     x_create({
-        x__source: js_pl_id,
+        x__creator: js_pl_id,
         x__type: action_id,
         x__up: x__type,
         x__down: x__down,
@@ -473,7 +473,7 @@ function toggle_pills(x__type){
 
     //Log Transaction:
     x_create({
-        x__source: js_pl_id,
+        x__creator: js_pl_id,
         x__type: action_id,
         x__up: x__type,
         x__down: x__down,
@@ -930,7 +930,7 @@ $(document).ready(function () {
         var x__type = parseInt($(this).attr('x__type'));
         $('#modal'+x__type).modal('show');
         x_create({
-            x__source: js_pl_id,
+            x__creator: js_pl_id,
             x__type: 14576, //MODAL VIEWED
             x__up: x__type,
         });
@@ -1188,7 +1188,7 @@ function update_cover_mini(coin__type, cover_code, target_css){
 function x_message_load(x__id) {
 
     x_create({
-        x__source: js_pl_id,
+        x__creator: js_pl_id,
         x__type: 14576, //MODAL VIEWED
         x__up: 13571,
         x__reference: x__id,
@@ -1227,7 +1227,7 @@ function x_message_load(x__id) {
 function coin__load(coin__type, coin__id){
 
     x_create({
-        x__source: js_pl_id,
+        x__creator: js_pl_id,
         x__type: 14576, //MODAL VIEWED
         x__up: 14937, //Edit
         x__down: ( coin__type==12274 ? coin__id : 0 ),
@@ -1948,7 +1948,7 @@ jQuery.fn.extend({
 
 function images_modal(x__type){
     x_create({
-        x__source: js_pl_id,
+        x__creator: js_pl_id,
         x__type: 14576, //MODAL VIEWED
         x__up: 14073,
         x__right: fetch_val('#focus_id'),

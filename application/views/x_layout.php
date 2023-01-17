@@ -42,13 +42,13 @@ foreach($is_next as $in_key => $in_value){
 
 
 $i['i__title'] = str_replace('"','',$i['i__title']);
-$x__source = ( $member_e ? $member_e['e__id'] : 0 );
-$top_i__id = ( $i_top && $this->X_model->started_ids($x__source, $i_top['i__id']) ? $i_top['i__id'] : 0 );
+$x__creator = ( $member_e ? $member_e['e__id'] : 0 );
+$top_i__id = ( $i_top && $this->X_model->started_ids($x__creator, $i_top['i__id']) ? $i_top['i__id'] : 0 );
 $one_child_hack = (count($first_child) && count($is_next)==1 && !$top_i__id);
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-    'x__source' => $x__source,
+    'x__creator' => $x__creator,
     'x__left' => $i['i__id'],
 )) : array() );
 $in_my_discoveries = ( $top_i__id && $top_i__id==$i['i__id'] );
@@ -77,7 +77,7 @@ if($is_payment){
         'x__up' => 26562, //Total Due
     ));
 
-    if($x__source>0 && count($total_dues)){
+    if($x__creator>0 && count($total_dues)){
         $detected_x_type = x_detect_type($total_dues[0]['x__message']);
         if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
 
@@ -104,7 +104,7 @@ if($is_payment){
             //Break down amount & currency
             $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
             $unit_price = number_format($currency_parts[1], 2);
-            $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__source)) + doubleval(website_setting(27017, $x__source)) + doubleval(website_setting(30612, $x__source)))/100 ), 2);
+            $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)) + doubleval(website_setting(30612, $x__creator)))/100 ), 2);
             $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view_memory(6404,29651) );
             $spots_remaining = i_spots_remaining($i['i__id']);
             $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
@@ -131,22 +131,22 @@ foreach($this->X_model->fetch(array(
     'x__up > 0' => null,
     'x__up !=' => website_setting(0),
 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
-    $relevant_sources .= view_featured_source($x__source, $x);
+    $relevant_sources .= view_featured_source($x__creator, $x);
 }
 
 
 //Idea Setting Source Types:
 foreach($this->E_model->scissor_e(31826,$i['i__type']) as $e_item) {
-    $relevant_sources .= view_featured_source($x__source, $e_item);
+    $relevant_sources .= view_featured_source($x__creator, $e_item);
 }
 
 
 
 
 //Check for time limits?
-if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
+if($top_i__id && $x__creator && $top_i__id!=$i['i__id']){
 
-    $find_previous = $this->X_model->find_previous($x__source, $top_i__id, $i['i__id']);
+    $find_previous = $this->X_model->find_previous($x__creator, $top_i__id, $i['i__id']);
     if(count($find_previous)){
 
         $nav_list = array();
@@ -174,7 +174,7 @@ if($top_i__id && $x__source && $top_i__id!=$i['i__id']){
                 if(!$i_is_available['status'] || !count($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__source' => $x__source,
+                        'x__creator' => $x__creator,
                         'x__left' => $value['i__id'],
                     )))){
                     unset($query_subset[$key]);
@@ -230,7 +230,7 @@ if($top_i__id){
     $is_this = $this->I_model->fetch(array(
         'i__id' => $top_i__id,
     ));
-    $tree_progress = $this->X_model->tree_progress($x__source, $is_this[0]);
+    $tree_progress = $this->X_model->tree_progress($x__creator, $is_this[0]);
     $top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
     $go_next_url = ( $top_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i['i__id'];
 
@@ -320,13 +320,13 @@ if($top_i__id) {
             if (!count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'x__left' => $i['i__id'],
             )))) {
 
                 array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i, array(
                     'x__type' => 4559, //READ STATEMENT
-                    'x__source' => $x__source,
+                    'x__creator' => $x__creator,
                 )));
 
             }
@@ -347,7 +347,7 @@ if($top_i__id) {
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY IDEA LINK
                     'x__left' => $i['i__id'],
                     'x__right' => $x['i__id'],
-                    'x__source' => $x__source,
+                    'x__creator' => $x__creator,
                 )))) {
                     array_push($x_selects, $x);
                 }
@@ -387,10 +387,10 @@ if($top_i__id) {
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
-                    'x__source' => $x__source,
+                    'x__creator' => $x__creator,
                 )));
 
-                $select_answer .= view_i_select_card($next_i, $x__source, $previously_selected);
+                $select_answer .= view_i_select_card($next_i, $x__creator, $previously_selected);
 
             }
 
@@ -548,7 +548,7 @@ if($top_i__id) {
 
         //Do we have a text response?
         $previous_response = '';
-        if($x__source){
+        if($x__creator){
             //Does this have any append sources?
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -558,7 +558,7 @@ if($top_i__id) {
                 //Does the user have this source with any values?
                 foreach($this->X_model->fetch(array(
                     'x__up' => $append_source['x__up'],
-                    'x__down' => $x__source,
+                    'x__down' => $x__creator,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ), array(), 0, 0) as $profile_appended) {
@@ -711,7 +711,7 @@ if(!$top_i__id){
 
         $control_btn = '';
 
-        if($x__source && in_array($x__type, $this->config->item('n___31125'))){
+        if($x__creator && in_array($x__type, $this->config->item('n___31125'))){
 
             //Action Buttons: Reshare, Save & Watch
             //Find Pending Action Source:
@@ -720,7 +720,7 @@ if(!$top_i__id){
 
                     //Is this action already taken?
                     $action_xs = $this->X_model->fetch(array(
-                        'x__up' => $x__source,
+                        'x__up' => $x__creator,
                         'x__right' => $i['i__id'],
                         'x__type' => $x__type,
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -754,7 +754,7 @@ if(!$top_i__id){
                 $control_btn .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
                 $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable
                 $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i['i__title'].'">';
-                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__source.'">';
+                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__creator.'">';
 
                 $control_btn .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
                 $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';

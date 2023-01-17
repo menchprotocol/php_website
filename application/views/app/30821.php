@@ -14,7 +14,7 @@ foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
         'x__left' => $x['x__left'],
-        'x__source' => $x['x__source'],
+        'x__creator' => $x['x__creator'],
         'x__id != ' => $x['x__id'], //DISCOVERY COIN
     ), array('x__left'), 0) as $other_type){
 

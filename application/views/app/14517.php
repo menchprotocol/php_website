@@ -6,7 +6,7 @@ $i__id = ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 );
     function complete_setup(){
         //Log transaction:
         if(x_create({
-            x__source: js_pl_id,
+            x__creator: js_pl_id,
             x__type: 14517,
             x__left: <?= $i__id ?>,
         })){

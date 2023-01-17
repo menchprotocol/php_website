@@ -51,7 +51,7 @@ class E_model extends CI_Model
             $this->X_model->create(array(
                 'x__type' => e_x__type(),
                 'x__up' => 4430, //Active Member
-                'x__source' => $e['e__id'],
+                'x__creator' => $e['e__id'],
                 'x__down' => $e['e__id'],
             ));
         }
@@ -73,7 +73,7 @@ class E_model extends CI_Model
             $session_data['session_page_count'] = 0;
 
             $this->X_model->create(array(
-                'x__source' => $e['e__id'],
+                'x__creator' => $e['e__id'],
                 'x__type' => ( $is_cookie ? 14032 /* COOKIE SIGN */ : 7564 /* MEMBER SIGN */ ),
             ));
 
@@ -130,7 +130,7 @@ class E_model extends CI_Model
 
                 //Was the latest toggle to de-activate? If not, assume active:
                 $last_advance_settings = $this->X_model->fetch(array(
-                    'x__source' => $e['e__id'],
+                    'x__creator' => $e['e__id'],
                     'x__type' => 5007, //TOGGLE SUPERPOWER
                     'x__up' => $e_profile['e__id'],
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -206,7 +206,7 @@ class E_model extends CI_Model
             $this->X_model->create(array(
                 'x__type' => e_x__type(),
                 'x__up' => 4430, //Active Member
-                'x__source' => $e['e__id'],
+                'x__creator' => $e['e__id'],
                 'x__down' => $e['e__id'],
             ));
             $this->session->set_flashdata('flash_message', '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-user-check"></i></span>Welcome Back! You Have Been Re-Subscribed :)</div>');
@@ -228,7 +228,7 @@ class E_model extends CI_Model
                 'x__message' => $x__message,
             )))){
                 $this->X_model->create(array(
-                    'x__source' => $e__id, //Belongs to this Member
+                    'x__creator' => $e__id, //Belongs to this Member
                     'x__type' => e_x__type($x__message),
                     'x__message' => $x__message,
                     'x__up' => $e_item['e__id'],
@@ -314,7 +314,7 @@ class E_model extends CI_Model
         $this->X_model->create(array(
             'x__up' => 4430, //Active Member
             'x__type' => e_x__type(),
-            'x__source' => $added_e['new_e']['e__id'],
+            'x__creator' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
             'x__website' => $x__website,
         ));
@@ -322,7 +322,7 @@ class E_model extends CI_Model
             'x__type' => e_x__type(trim(strtolower($email))),
             'x__message' => trim(strtolower($email)),
             'x__up' => 3288, //Email
-            'x__source' => $added_e['new_e']['e__id'],
+            'x__creator' => $added_e['new_e']['e__id'],
             'x__down' => $added_e['new_e']['e__id'],
             'x__website' => $x__website,
         ));
@@ -332,7 +332,7 @@ class E_model extends CI_Model
                 'x__up' => 4783, //Phone
                 'x__type' => e_x__type($phone_number),
                 'x__message' => $phone_number,
-                'x__source' => $added_e['new_e']['e__id'],
+                'x__creator' => $added_e['new_e']['e__id'],
                 'x__down' => $added_e['new_e']['e__id'],
                 'x__website' => $x__website,
             ));
@@ -350,7 +350,7 @@ class E_model extends CI_Model
                 'x__up' => 30198, //Full Name
                 'x__type' => e_x__type($full_name),
                 'x__message' => $full_name,
-                'x__source' => $added_e['new_e']['e__id'],
+                'x__creator' => $added_e['new_e']['e__id'],
                 'x__down' => $added_e['new_e']['e__id'],
                 'x__website' => $x__website,
             ));
@@ -379,11 +379,11 @@ class E_model extends CI_Model
     }
 
 
-    function create($add_fields, $external_sync = false, $x__source = 0)
+    function create($add_fields, $external_sync = false, $x__creator = 0)
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('e__title'), $x__source)) {
+        if (detect_missing_columns($add_fields, array('e__title'), $x__creator)) {
             return false;
         }
 
@@ -406,7 +406,7 @@ class E_model extends CI_Model
 
             //Log transaction new source:
             $this->X_model->create(array(
-                'x__source' => ($x__source > 0 ? $x__source : $add_fields['e__id']),
+                'x__creator' => ($x__creator > 0 ? $x__creator : $add_fields['e__id']),
                 'x__down' => $add_fields['e__id'],
                 'x__type' => 4251, //New Source Created
                 'x__message' => $add_fields['e__title'],
@@ -428,10 +428,10 @@ class E_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->X_model->create(array(
-                'x__up' => $x__source,
+                'x__up' => $x__creator,
                 'x__message' => 'create() failed to create a new source',
                 'x__type' => 4246, //Platform Bug Reports
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'x__metadata' => $add_fields,
             ));
             return false;
@@ -543,7 +543,7 @@ class E_model extends CI_Model
         return $flat_items;
     }
 
-    function update($id, $update_columns, $external_sync = false, $x__source = 0, $x__type = 0)
+    function update($id, $update_columns, $external_sync = false, $x__creator = 0, $x__type = 0)
     {
 
         $id = intval($id);
@@ -552,7 +552,7 @@ class E_model extends CI_Model
         }
 
         //Fetch current source filed values so we can compare later on after we've updated it:
-        if($x__source > 0){
+        if($x__creator > 0){
             $before_data = $this->E_model->fetch(array('e__id' => $id));
         }
 
@@ -567,7 +567,7 @@ class E_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $x__source > 0) {
+        if ($affected_rows > 0 && $x__creator > 0) {
 
             if($external_sync){
                 //Sync algolia:
@@ -617,7 +617,7 @@ class E_model extends CI_Model
 
                 //Value has changed, log transaction:
                 $this->X_model->create(array(
-                    'x__source' => ($x__source > 0 ? $x__source : $id),
+                    'x__creator' => ($x__creator > 0 ? $x__creator : $id),
                     'x__type' => $x__type,
                     'x__down' => $id,
                     'x__message' => $x__message,
@@ -637,7 +637,7 @@ class E_model extends CI_Model
             $this->X_model->create(array(
                 'x__down' => $id,
                 'x__type' => 4246, //Platform Bug Reports
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'x__message' => 'update() Failed to update',
                 'x__metadata' => array(
                     'input' => $update_columns,
@@ -650,14 +650,14 @@ class E_model extends CI_Model
     }
 
 
-    function radio_set($e_profile_bucket_id, $set_e_child_id, $x__source)
+    function radio_set($e_profile_bucket_id, $set_e_child_id, $x__creator)
     {
 
         /*
          * Treats an source child group as a drop down menu where:
          *
          *  $e_profile_bucket_id is the parent of the drop down
-         *  $x__source is the member source ID that one of the children of $e_profile_bucket_id should be assigned (like a drop down)
+         *  $x__creator is the member source ID that one of the children of $e_profile_bucket_id should be assigned (like a drop down)
          *  $set_e_child_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
          * This function is helpful to manage things like Member communication levels
@@ -679,7 +679,7 @@ class E_model extends CI_Model
         $previously_assigned = ($set_e_child_id < 1);
         $updated_x__id = 0;
         foreach($this->X_model->fetch(array(
-            'x__down' => $x__source,
+            'x__down' => $x__creator,
             'x__up IN (' . join(',', $children) . ')' => null, //Current children
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), view_memory(6404,11064)) as $x) {
@@ -693,7 +693,7 @@ class E_model extends CI_Model
                 //Do not log update transaction here as we would log it further below:
                 $this->X_model->update($x['x__id'], array(
                     'x__privacy' => 6173, //Transaction Deleted
-                ), $x__source, 6224 /* Member Account Updated */);
+                ), $x__creator, 6224 /* Member Account Updated */);
             }
 
         }
@@ -703,8 +703,8 @@ class E_model extends CI_Model
         if (!$previously_assigned) {
             //Let's go ahead and add desired source as parent:
             $this->X_model->create(array(
-                'x__source' => $x__source,
-                'x__down' => $x__source,
+                'x__creator' => $x__creator,
+                'x__down' => $x__creator,
                 'x__up' => $set_e_child_id,
                 'x__type' => e_x__type(),
                 'x__reference' => $updated_x__id,
@@ -742,7 +742,7 @@ class E_model extends CI_Model
                 $duplicates_removed++;
                 $this->X_model->update($x['x__id'], array(
                     'x__privacy' => 6173,
-                ), $x['x__source'], 29331); //Duplicate Link Removed
+                ), $x['x__creator'], 29331); //Duplicate Link Removed
             } else {
                 //Add it to main list:
                 array_push($current_up, array(
@@ -760,7 +760,7 @@ class E_model extends CI_Model
     }
 
 
-    function remove($e__id, $x__source = 0, $migrate_s__id = 0){
+    function remove($e__id, $x__creator = 0, $migrate_s__id = 0){
 
         //Fetch all SOURCE LINKS:
         $x_adjusted = 0;
@@ -777,7 +777,7 @@ class E_model extends CI_Model
 
                 //Migrate Transactions:
                 foreach($this->X_model->fetch(array( //Idea Transactions
-                    '(x__up = '.$e__id.' OR x__down = '.$e__id.' OR x__source = '.$e__id.')' => null,
+                    '(x__up = '.$e__id.' OR x__down = '.$e__id.' OR x__creator = '.$e__id.')' => null,
                 ), array(), 0) as $x){
 
                     //Make sure not duplicate, if so, delete:
@@ -800,9 +800,9 @@ class E_model extends CI_Model
                         $filters['x__down'] = $migrate_s__id;
                         $update_filter['x__down'] = $migrate_s__id;
                     }
-                    if($x['x__source']==$e__id){
-                        $filters['x__source'] = $migrate_s__id;
-                        $update_filter['x__source'] = $migrate_s__id;
+                    if($x['x__creator']==$e__id){
+                        $filters['x__creator'] = $migrate_s__id;
+                        $update_filter['x__creator'] = $migrate_s__id;
                     }
 
                     if(0 && count($this->X_model->fetch($filters))){
@@ -810,12 +810,12 @@ class E_model extends CI_Model
                         //There is a duplicate of this, no point to migrate! Just Remove:
                         $this->X_model->update($x['x__id'], array(
                             'x__privacy' => 6173,
-                        ), $x__source, 31784 /* Source Link Migrated */);
+                        ), $x__creator, 31784 /* Source Link Migrated */);
 
                     } else {
 
                         //Always Migrate for now...
-                        $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__source, 31784 /* Source Link Migrated */);
+                        $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__creator, 31784 /* Source Link Migrated */);
 
                     }
 
@@ -836,9 +836,9 @@ class E_model extends CI_Model
                         ));
                     }
 
-                    if($x['x__source']==$e__id){
+                    if($x['x__creator']==$e__id){
                         $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__source' => $migrate_s__id,
+                            'x__creator' => $migrate_s__id,
                         ));
                     }
 
@@ -855,12 +855,12 @@ class E_model extends CI_Model
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type !=' => 10673, //Member Transaction Unpublished
-                '(x__down = ' . $e__id . ' OR x__up = ' . $e__id . ' OR x__source = ' . $e__id . ')' => null,
+                '(x__down = ' . $e__id . ' OR x__up = ' . $e__id . ' OR x__creator = ' . $e__id . ')' => null,
             ), array(), 0) as $adjust_tr){
                 //Delete this transaction:
                 $x_adjusted += $this->X_model->update($adjust_tr['x__id'], array(
                     'x__privacy' => 6173, //Transaction Deleted
-                ), $x__source, 10673 /* Member Transaction Unpublished */);
+                ), $x__creator, 10673 /* Member Transaction Unpublished */);
             }
 
         }
@@ -878,7 +878,7 @@ class E_model extends CI_Model
         //Assign to Creator:
         $this->X_model->create(array(
             'x__type' => e_x__type(),
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
             'x__up' => $member_e['e__id'],
             'x__down' => $e__id,
         ));
@@ -889,7 +889,7 @@ class E_model extends CI_Model
             //Add Pending Review:
             $this->X_model->create(array(
                 'x__type' => e_x__type(),
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
             ));
@@ -897,7 +897,7 @@ class E_model extends CI_Model
             //SOURCE PENDING MODERATION TYPE:
             $this->X_model->create(array(
                 'x__type' => 7504, //SOURCE PENDING MODERATION
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
             ));
@@ -906,12 +906,12 @@ class E_model extends CI_Model
 
     }
 
-    function domain($url, $x__source = 0, $page_title = null)
+    function domain($url, $x__creator = 0, $page_title = null)
     {
         /*
          *
          * Either finds/returns existing domains or adds it
-         * to the Domains source if $x__source > 0
+         * to the Domains source if $x__creator > 0
          *
          * */
 
@@ -944,15 +944,15 @@ class E_model extends CI_Model
             $domain_previously_existed = 1;
             $e_domain = $url_x[0];
 
-        } elseif ($x__source) {
+        } elseif ($x__creator) {
 
             //Yes, let's add a new source:
-            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $analyze_domain['url_domain'] ), $x__source);
+            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $analyze_domain['url_domain'] ), $x__creator);
             $e_domain = $added_e['new_e'];
 
             //And transaction source to the domains source:
             $this->X_model->create(array(
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'x__type' => 4256, //Generic URL (Domains are always generic)
                 'x__up' => 1326, //Domain Member
                 'x__down' => $e_domain['e__id'],
@@ -972,7 +972,7 @@ class E_model extends CI_Model
 
     }
 
-    function match_x_privacy($x__source, $query= array()){
+    function match_x_privacy($x__creator, $query= array()){
 
         //STATS
         $stats = array(
@@ -1001,7 +1001,7 @@ class E_model extends CI_Model
                 $stats['missing_creation_fix']++;
 
                 $this->X_model->create(array(
-                    'x__source' => $x__source,
+                    'x__creator' => $x__creator,
                     'x__down' => $e['e__id'],
                     'x__message' => $e['e__title'],
                     'x__type' => $stats['x__type'],
@@ -1044,7 +1044,7 @@ class E_model extends CI_Model
 
 
 
-    function url($url, $x__source = 0, $add_to_child_e__id = 0, $page_title = null)
+    function url($url, $x__creator = 0, $add_to_child_e__id = 0, $page_title = null)
     {
 
         /*
@@ -1053,7 +1053,7 @@ class E_model extends CI_Model
          * Input legend:
          *
          * - $url:                  Input URL
-         * - $x__source:       IF > 0 will save URL (if not previously there) and give credit to this source as the member
+         * - $x__creator:       IF > 0 will save URL (if not previously there) and give credit to this source as the member
          * - $add_to_child_e__id:   IF > 0 Will also add URL to this child if present
          * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable members to edit auto generated title)
          *
@@ -1066,7 +1066,7 @@ class E_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid URL',
             );
-        } elseif ($add_to_child_e__id > 0 && $x__source < 1) {
+        } elseif ($add_to_child_e__id > 0 && $x__creator < 1) {
             return array(
                 'status' => 0,
                 'message' => 'Parent source is required to add a parent URL',
@@ -1167,7 +1167,7 @@ class E_model extends CI_Model
 
 
         //Fetch/Create domain source:
-        $domain_e = $this->E_model->domain($url, $x__source, ( $analyze_domain['url_root'] && $name_was_passed ? $page_title : null ));
+        $domain_e = $this->E_model->domain($url, $x__creator, ( $analyze_domain['url_root'] && $name_was_passed ? $page_title : null ));
         if(!$domain_e['status']){
             //We had an issue:
             return $domain_e;
@@ -1203,7 +1203,7 @@ class E_model extends CI_Model
                 $e_url = $url_x[0];
                 $url_previously_existed = 1;
 
-            } elseif($x__source) {
+            } elseif($x__creator) {
 
                 if(!$page_title){
                     //Assign a generic source name:
@@ -1212,7 +1212,7 @@ class E_model extends CI_Model
                 }
 
                 //Create a new source for this URL ONLY If member source is provided...
-                $added_e = $this->E_model->verify_create($page_title, $x__source);
+                $added_e = $this->E_model->verify_create($page_title, $x__creator);
                 if($added_e['status']){
 
                     //All good:
@@ -1220,7 +1220,7 @@ class E_model extends CI_Model
 
                     //Always transaction URL to its parent domain:
                     $this->X_model->create(array(
-                        'x__source' => $x__source,
+                        'x__creator' => $x__creator,
                         'x__type' => $x__type,
                         'x__up' => $domain_e['e_domain']['e__id'],
                         'x__down' => $e_url['e__id'],
@@ -1239,11 +1239,11 @@ class E_model extends CI_Model
                     $this->X_model->create(array(
                         'x__message' => 'e_url['.$url.'] FAILED to create ['.$page_title.'] with message: '.$added_e['message'],
                         'x__type' => 4246, //Platform Bug Reports
-                        'x__source' => $x__source,
+                        'x__creator' => $x__creator,
                         'x__up' => $domain_e['e_domain']['e__id'],
                         'x__metadata' => array(
                             'url' => $url,
-                            'x__source' => $x__source,
+                            'x__creator' => $x__creator,
                             'add_to_child_e__id' => $add_to_child_e__id,
                             'page_title' => $page_title,
                             'page_title_generic' => $page_title_generic,
@@ -1263,14 +1263,14 @@ class E_model extends CI_Model
         if(!$url_previously_existed && $add_to_child_e__id){
             //Transaction URL to its parent domain?
             $this->X_model->create(array(
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'x__type' => e_x__type(),
                 'x__up' => $e_url['e__id'],
                 'x__down' => $add_to_child_e__id,
             ));
         }
 
-        $url_already_linked = $url_previously_existed && !$x__source && isset($e_url['e__id']);
+        $url_already_linked = $url_previously_existed && !$x__creator && isset($e_url['e__id']);
 
         //Return results:
         return array_merge(
@@ -1291,7 +1291,7 @@ class E_model extends CI_Model
         );
     }
 
-    function mass_update($e__id, $action_e__id, $action_command1, $action_command2, $x__source)
+    function mass_update($e__id, $action_e__id, $action_command1, $action_command2, $x__creator)
     {
 
         //Alert: Has a twin function called i_mass_update()
@@ -1355,7 +1355,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => $action_command1 . $x['e__title'],
-                ), true, $x__source);
+                ), true, $x__creator);
 
                 $applied_success++;
 
@@ -1363,7 +1363,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => $x['e__title'] . $action_command1,
-                ), true, $x__source);
+                ), true, $x__creator);
 
                 $applied_success++;
 
@@ -1392,7 +1392,7 @@ class E_model extends CI_Model
 
                         //Must be added:
                         $this->X_model->create(array(
-                            'x__source' => $x__source,
+                            'x__creator' => $x__creator,
                             'x__up' => $e__up['e__id'],
                             'x__down' => $x['e__id'],
                             'x__type' => e_x__type($e__up['x__message']),
@@ -1420,7 +1420,7 @@ class E_model extends CI_Model
                 if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_e)==0) || ($action_e__id==12928 && view_coins_e(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_coins_e(12273, $x['e__id'],0, false))){
 
                     $add_fields = array(
-                        'x__source' => $x__source,
+                        'x__creator' => $x__creator,
                         'x__type' => e_x__type(),
                         'x__down' => $x['e__id'], //This child source
                         'x__up' => $focus_id,
@@ -1440,7 +1440,7 @@ class E_model extends CI_Model
                         //Since we're migrating we should remove from here:
                         $this->X_model->update($x['x__id'], array(
                             'x__privacy' => 6173, //Transaction Deleted
-                        ), $x__source, 10673 /* Member Transaction Unpublished  */);
+                        ), $x__creator, 10673 /* Member Transaction Unpublished  */);
                     }
 
                 } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_e) > 0){
@@ -1452,7 +1452,7 @@ class E_model extends CI_Model
 
                             $this->X_model->update($delete_tr['x__id'], array(
                                 'x__privacy' => 6173, //Transaction Deleted
-                            ), $x__source, 10673 /* Member Transaction Unpublished  */);
+                            ), $x__creator, 10673 /* Member Transaction Unpublished  */);
 
                             $applied_success++;
                         }
@@ -1463,7 +1463,7 @@ class E_model extends CI_Model
 
                         //Add as a parent because it meets the condition
                         $this->X_model->create(array(
-                            'x__source' => $x__source,
+                            'x__creator' => $x__creator,
                             'x__type' => e_x__type(),
                             'x__down' => $x['e__id'], //This child source
                             'x__up' => $parent_new_e__id,
@@ -1479,7 +1479,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => $action_command1,
-                ), true, $x__source);
+                ), true, $x__creator);
 
                 $applied_success++;
 
@@ -1487,7 +1487,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => $action_command1,
-                ), true, $x__source);
+                ), true, $x__creator);
 
                 $applied_success++;
 
@@ -1495,7 +1495,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => str_ireplace($action_command1, $action_command2, $x['e__title']),
-                ), true, $x__source);
+                ), true, $x__creator);
 
                 $applied_success++;
 
@@ -1503,7 +1503,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => str_replace($action_command1, $action_command2, $x['e__cover']),
-                ), true, $x__source);
+                ), true, $x__creator);
 
                 $applied_success++;
 
@@ -1514,7 +1514,7 @@ class E_model extends CI_Model
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => $new_message,
                     'x__type' => e_x__type($new_message),
-                ), $x__source, 10657 /* SOURCE LINK CONTENT UPDATE  */);
+                ), $x__creator, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                 $applied_success++;
 
@@ -1523,7 +1523,7 @@ class E_model extends CI_Model
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => $action_command1,
                     'x__type' => e_x__type($action_command1),
-                ), $x__source, 10657 /* SOURCE LINK CONTENT UPDATE  */);
+                ), $x__creator, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                 $applied_success++;
 
@@ -1531,13 +1531,13 @@ class E_model extends CI_Model
 
                 //Being deleted? Remove as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('n___7358'))){
-                    $this->E_model->remove($x['e__id'], $x__source);
+                    $this->E_model->remove($x['e__id'], $x__creator);
                 }
 
                 //Update Matching Member Status:
                 $this->E_model->update($x['e__id'], array(
                     'e__privacy' => $action_command2,
-                ), true, $x__source);
+                ), true, $x__creator);
 
                 $applied_success++;
 
@@ -1545,7 +1545,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__privacy' => $action_command2,
-                ), $x__source, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Member Transaction Updated Status */ : 10673 /* Member Transaction Unpublished */ ));
+                ), $x__creator, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Member Transaction Updated Status */ : 10673 /* Member Transaction Unpublished */ ));
 
                 $applied_success++;
 
@@ -1554,7 +1554,7 @@ class E_model extends CI_Model
 
         //Log mass source edit transaction:
         $this->X_model->create(array(
-            'x__source' => $x__source,
+            'x__creator' => $x__creator,
             'x__type' => $action_e__id,
             'x__down' => $e__id,
             'x__metadata' => array(
@@ -1575,7 +1575,7 @@ class E_model extends CI_Model
     }
 
 
-    function verify_create($e__title, $x__source = 0, $e__cover = null){
+    function verify_create($e__title, $x__creator = 0, $e__cover = null){
 
         //Validate Title
         $e__title_validate = e__title_validate($e__title);
@@ -1587,7 +1587,7 @@ class E_model extends CI_Model
         $focus_e = $this->E_model->create(array(
             'e__title' => $e__title_validate['e__title_clean'],
             'e__cover' => $e__cover,
-        ), true, $x__source);
+        ), true, $x__creator);
 
         //Return success:
         return array(

@@ -53,12 +53,12 @@ if(isset($_GET['x__privacy']) && strlen($_GET['x__privacy']) > 0){
     }
 }
 
-if(isset($_GET['x__source']) && strlen($_GET['x__source']) > 0){
-    if (substr_count($_GET['x__source'], ',') > 0) {
+if(isset($_GET['x__creator']) && strlen($_GET['x__creator']) > 0){
+    if (substr_count($_GET['x__creator'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__source IN (' . $_GET['x__source'] . '))'] = null;
-    } elseif (intval($_GET['x__source']) > 0) {
-        $query_filters['x__source'] = $_GET['x__source'];
+        $query_filters['( x__creator IN (' . $_GET['x__creator'] . '))'] = null;
+    } elseif (intval($_GET['x__creator']) > 0) {
+        $query_filters['x__creator'] = $_GET['x__creator'];
     }
 }
 
@@ -121,9 +121,9 @@ if(isset($_GET['any_e__id']) && strlen($_GET['any_e__id']) > 0){
     //We need to look for both parent/child
     if (substr_count($_GET['any_e__id'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__down IN (' . $_GET['any_e__id'] . ') OR x__up IN (' . $_GET['any_e__id'] . ') OR x__source IN (' . $_GET['any_e__id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $query_filters['( x__down IN (' . $_GET['any_e__id'] . ') OR x__up IN (' . $_GET['any_e__id'] . ') OR x__creator IN (' . $_GET['any_e__id'] . ') ' . $parent_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_e__id']) > 0) {
-        $query_filters['( x__down = ' . $_GET['any_e__id'] . ' OR x__up = ' . $_GET['any_e__id'] . ' OR x__source = ' . $_GET['any_e__id'] . $parent_tr_filter . ' )'] = null;
+        $query_filters['( x__down = ' . $_GET['any_e__id'] . ' OR x__up = ' . $_GET['any_e__id'] . ' OR x__creator = ' . $_GET['any_e__id'] . $parent_tr_filter . ' )'] = null;
     }
 }
 
@@ -302,7 +302,7 @@ echo '<span class="mini-header">ANY SOURCE:</span>';
 echo '<input type="text" name="any_e__id" value="' . ((isset($_GET['any_e__id'])) ? $_GET['any_e__id'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="x__source" value="' . ((isset($_GET['x__source'])) ? $_GET['x__source'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="x__creator" value="' . ((isset($_GET['x__creator'])) ? $_GET['x__creator'] : '') . '" class="form-control border"></td>';
 
 echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="x__up" value="' . ((isset($_GET['x__up'])) ? $_GET['x__up'] : '') . '" class="form-control border"></td>';
 
@@ -388,7 +388,7 @@ if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
 
     echo '<select class="form-control border" name="x__type" id="x__type" class="border" style="width: 100% !important;">';
 
-    if(isset($_GET['x__source'])) {
+    if(isset($_GET['x__creator'])) {
 
         //Fetch details for this member:
         $all_x_count = 0;

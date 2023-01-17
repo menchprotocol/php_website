@@ -80,7 +80,7 @@ if(isset($_GET['i__id'])){
 
         $this->X_model->create(array(
             'x__type' => 14436, //Social Sign in
-            'x__source' => ( count($member_emails) ? $member_emails[0]['e__id'] : 0 ),
+            'x__creator' => ( count($member_emails) ? $member_emails[0]['e__id'] : 0 ),
             'x__up' => $signin_method,
             'x__metadata' => array(
                 'auth0_getUser' => $userInfo,

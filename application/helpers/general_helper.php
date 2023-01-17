@@ -21,7 +21,7 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($add_fields, $required_columns, $x__source)
+function detect_missing_columns($add_fields, $required_columns, $x__creator)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
@@ -332,7 +332,7 @@ function e_count_6194($e__id, $specific_id = 0){
     $CI =& get_instance();
     $e___6194 = $CI->config->item('e___6194');
     $query_index = array(
-        4364 => 'SELECT count(x__id) as totals FROM table__x WHERE x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__source=',
+        4364 => 'SELECT count(x__id) as totals FROM table__x WHERE x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__creator=',
         4593 => 'SELECT count(x__id) as totals FROM table__x WHERE x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__type=',
     );
 
@@ -388,7 +388,7 @@ function e__spectrum_calculator($e){
     $CI =& get_instance();
     $count_x = $CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__source='.$e['e__id'].')' => null,
+        '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__creator='.$e['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Should we update?
@@ -442,7 +442,7 @@ function new_member_redirect($e__id, $sign_i__id){
     }
 }
 
-function reset_cache($x__source){
+function reset_cache($x__creator){
     $CI =& get_instance();
     $count = 0;
     foreach($CI->X_model->fetch(array(
@@ -454,7 +454,7 @@ function reset_cache($x__source){
         //Delete email:
         $count += $CI->X_model->update($delete_cahce['x__id'], array(
             'x__privacy' => 6173, //Transaction Removed
-        ), $x__source, 14600 /* Delete Cache */);
+        ), $x__creator, 14600 /* Delete Cache */);
     }
     return $count;
 }
@@ -516,7 +516,7 @@ function i_spots_remaining($i__id){
         );
         if($member_e){
             //Do not count current user to give them option to edit & resubmit:
-            $query_filters['x__source !='] = $member_e['e__id'];
+            $query_filters['x__creator !='] = $member_e['e__id'];
         }
         $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
         $spots_remaining = intval($has_limits[0]['x__message'])-$query[0]['totals'];
@@ -528,7 +528,7 @@ function i_spots_remaining($i__id){
     return $spots_remaining;
 }
 
-function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__down){
+function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__up, $x__down){
 
     $return_i__id = $i__id;
 
@@ -537,8 +537,8 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
 
         $CI =& get_instance();
         $access_blocked = $CI->X_model->create(array(
-            'x__type' => ( $x__source>0 ? 29737 : 30341 ), //Access Blocked
-            'x__source' => $x__source,
+            'x__type' => ( $x__creator>0 ? 29737 : 30341 ), //Access Blocked
+            'x__creator' => $x__creator,
             'x__left' => $i__id,
             'x__up' => $x__up,
             'x__down' => $x__down,
@@ -557,7 +557,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
             foreach($CI->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'x__left' => $x_progress['x__left'],
             ), array(), 0) as $x){
 
@@ -570,14 +570,14 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
                     $CI->X_model->update($x2['x__id'], array(
                         'x__privacy' => 6173, //Transaction Removed
                         'x__reference' => $access_blocked['x__id'],
-                    ), $x__source, 29782 );
+                    ), $x__creator, 29782 );
                 }
 
                 //Delete question discovery so the user can re-select:
                 $CI->X_model->update($x['x__id'], array(
                     'x__privacy' => 6173, //Transaction Removed
                     'x__reference' => $access_blocked['x__id'],
-                ), $x__source, 29782 );
+                ), $x__creator, 29782 );
 
             }
 
@@ -585,7 +585,7 @@ function access_blocked($log_tnx, $log_message, $x__source, $i__id, $x__up, $x__
             $CI->X_model->update($x_progress['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
                 'x__reference' => $access_blocked['x__id'],
-            ), $x__source, 29782 );
+            ), $x__creator, 29782 );
 
             //Guide them back to the top:
             $return_i__id = $x_progress['x__left'];
@@ -612,7 +612,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();
-    $x__source = ( $member_e ? $member_e['e__id'] : 0 );
+    $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
 
     //Any Inclusion Any Requirements?
     $fetch_13865 = $CI->X_model->fetch(array(
@@ -624,21 +624,21 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
     if(count($fetch_13865)){
         //Let's see if they meet any of these PREREQUISITES:
         $meets_inc1_prereq = false;
-        if($x__source > 0){
+        if($x__creator > 0){
             foreach($fetch_13865 as $e_pre){
                 if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__up' => $e_pre['x__up'],
-                        'x__down' => $x__source,
+                        'x__down' => $x__creator,
                     )))){
                     $meets_inc1_prereq = true;
                     break;
                 }
             }
         }
-        if(!$meets_inc1_prereq && $x__source > 0){
-            return access_blocked($log_tnx, "You cannot play this note because you are missing a requirement, make sure you are logged in with the same email address that we sent you the email.",$x__source, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+        if(!$meets_inc1_prereq && $x__creator > 0){
+            return access_blocked($log_tnx, "You cannot play this note because you are missing a requirement, make sure you are logged in with the same email address that we sent you the email.",$x__creator, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
@@ -653,13 +653,13 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
         //There are some requirements, Let's see if they meet all of them:
         $missing_es = '';
         $meets_inc2_prereq = 0;
-        if($x__source > 0){
+        if($x__creator > 0){
             foreach($fetch_27984 as $e_pre){
-                if($x__source && (( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
+                if($x__creator && (( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__up' => $e_pre['x__up'],
-                        'x__down' => $x__source,
+                        'x__down' => $x__creator,
                     ))))){
                     $meets_inc2_prereq++;
                 } else {
@@ -668,9 +668,9 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
                 }
             }
         }
-        if($meets_inc2_prereq < count($fetch_27984) && $x__source > 0){
+        if($meets_inc2_prereq < count($fetch_27984) && $x__creator > 0){
             //Did not meet all requirements:
-            return access_blocked($log_tnx, "You cannot play this note because you are ".( $x__source ? "missing [".$missing_es."]" : "not logged in" ).", make sure you are logged in with the same email address that we sent you the email.",$x__source, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, "You cannot play this note because you are ".( $x__creator ? "missing [".$missing_es."]" : "not logged in" ).", make sure you are logged in with the same email address that we sent you the email.",$x__creator, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
@@ -684,13 +684,13 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
     if(count($fetch_26600)){
         //Let's see if they meet any of these PREREQUISITES:
         $excludes_all = false;
-        if($x__source > 0){
+        if($x__creator > 0){
             foreach($fetch_26600 as $e_pre){
                 if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__up' => $e_pre['x__up'],
-                        'x__down' => $x__source,
+                        'x__down' => $x__creator,
                     )))){
                     //Found an exclusion, so skip this:
                     $excludes_all = false;
@@ -701,8 +701,8 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
             }
         }
 
-        if(!$excludes_all && $x__source > 0){
-            return access_blocked($log_tnx, "You cannot play this note because you belong to [".$e_pre['e__title']."]",$x__source, $i__id, 26600, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+        if(!$excludes_all && $x__creator > 0){
+            return access_blocked($log_tnx, "You cannot play this note because you belong to [".$e_pre['e__title']."]",$x__creator, $i__id, 26600, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
@@ -710,7 +710,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
     //Any Limits on Selection?
     if($check_inventory && !i_spots_remaining($i__id)){
         //Limit is reached, cannot complete this at this time:
-        return access_blocked($log_tnx, "You cannot play this note because there are no spots remaining.", $x__source, $i__id, 26189, 0);
+        return access_blocked($log_tnx, "You cannot play this note because there are no spots remaining.", $x__creator, $i__id, 26189, 0);
     }
     
 
@@ -738,7 +738,7 @@ function redirect_message($url, $message = null, $log_error = false)
         $CI->X_model->create(array(
             'x__message' => $url.' '.stripslashes($message),
             'x__type' => 4246, //Platform Bug Reports
-            'x__source' => ( $member_e ? $member_e['e__id'] : 0 ),
+            'x__creator' => ( $member_e ? $member_e['e__id'] : 0 ),
         ));
     }
 
@@ -935,7 +935,7 @@ function generateQR($url, $width = 150, $height = 150) {
     return $image;
 }
 
-function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local = false, $page_title = null)
+function upload_to_cdn($file_url, $x__creator = 0, $x__metadata = null, $is_local = false, $page_title = null)
 {
 
     /*
@@ -969,7 +969,7 @@ function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local
     if (!($is_local || (isset($fp) && $fp)) || !require_once('application/libraries/aws/aws-autoloader.php')) {
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__source' => $x__source,
+            'x__creator' => $x__creator,
             'x__message' => 'upload_to_cdn() Failed to load AWS S3',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1005,7 +1005,7 @@ function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local
     if (!isset($result['ObjectURL']) || !strlen($result['ObjectURL'])) {
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__source' => $x__source,
+            'x__creator' => $x__creator,
             'x__message' => 'upload_to_cdn() Failed to upload file to CDN',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1026,7 +1026,7 @@ function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local
     //Define new URL:
     $cdn_new_url = trim($result['ObjectURL']);
 
-    if($x__source < 1){
+    if($x__creator < 1){
         //Just return URL:
         return array(
             'status' => 1,
@@ -1035,7 +1035,7 @@ function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local
     }
 
     //Create and transaction new source to CDN and uploader:
-    $url_e = $CI->E_model->url($cdn_new_url, $x__source, 0, $page_title);
+    $url_e = $CI->E_model->url($cdn_new_url, $x__creator, 0, $page_title);
 
     if(isset($url_e['e_url']['e__id']) && $url_e['e_url']['e__id'] > 0){
 
@@ -1050,7 +1050,7 @@ function upload_to_cdn($file_url, $x__source = 0, $x__metadata = null, $is_local
 
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__source' => $x__source,
+            'x__creator' => $x__creator,
             'x__message' => 'upload_to_cdn() Failed to create new source from CDN file',
             'x__metadata' => array(
                 'file_url' => $file_url,
@@ -1332,7 +1332,7 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $CI->X_model->create(array_merge($x_data, array(
         'x__type' => 29399,
         'x__down' => $template_id,
-        'x__source' => $e__id,
+        'x__creator' => $e__id,
         'x__message' => $subject."\n\n".$email_message,
         'x__metadata' => array(
             'to' => $to_emails,
@@ -1411,7 +1411,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
             'x__left IN (' . $i__id . ')' => null, //ACTIVE
-        ), array('x__source'), 0, 0, array('x__id' => 'DESC')));
+        ), array('x__creator'), 0, 0, array('x__id' => 'DESC')));
     }
 
     if(strlen($e__id)){
@@ -1547,7 +1547,7 @@ function source_of_e($e__id, $member_e = array()){
 
         //Member created the source
         || count($CI->X_model->fetch(array(
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
             'x__down' => $e__id,
             'x__type' => 4251, //New Source Created
         )))
@@ -1584,7 +1584,7 @@ function e_of_i($i__id, $member_e = array()){
                 count($CI->X_model->fetch(array( //Member created the idea
                     'x__type' => 4250, //IDEA CREATOR
                     'x__right' => $i__id,
-                    'x__source' => $member_e['e__id'],
+                    'x__creator' => $member_e['e__id'],
                 ))) ||
                 count($CI->X_model->fetch(array( //IDEA SOURCE
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1834,9 +1834,9 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s___weight'] = intval($s['e__spectrum']);
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'alg_e_' . $s['x__source']);
+                array_push($export_row['_tags'], 'alg_e_' . $s['x__creator']);
 
-                if($s['x__source']!=$s['e__id']){
+                if($s['x__creator']!=$s['e__id']){
                     //Also give access to source themselves, in case they can login:
                     array_push($export_row['_tags'], 'alg_e_' . $s['e__id']);
                 }
@@ -1875,8 +1875,8 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 foreach($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___29133')) . ')' => null, //Written Responses
-                    'x__source' => $s['e__id'], //This child source
-                ), array('x__source'), 0, 0, array('x__time' => 'DESC')) as $x){
+                    'x__creator' => $s['e__id'], //This child source
+                ), array('x__creator'), 0, 0, array('x__time' => 'DESC')) as $x){
                     if (strlen($x['x__message']) > 0) {
                         $export_row['s__keywords'] .= $x['x__message'] . ' ';
                     }
@@ -2059,7 +2059,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
 }
 
-function x__metadata_update($x__id, $new_fields, $x__source = 0)
+function x__metadata_update($x__id, $new_fields, $x__creator = 0)
 {
 
     $CI =& get_instance();

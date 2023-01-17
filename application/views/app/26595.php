@@ -11,7 +11,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
     $top_i__id = intval($item_numbers[0]);
     $i__id = intval($item_numbers[1]);
     $currency_type = intval($item_numbers[2]);
-    $x__source = intval($item_numbers[3]);
+    $x__creator = intval($item_numbers[3]);
     $pay_amount = doubleval(($_POST['payment_gross'] > $_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross']));
 
     //Seems like a valid Paypal IPN Call:
@@ -20,7 +20,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
     ));
 
-    if ($top_i__id > 0 && $i__id > 0 && in_array($currency_type, $this->config->item('n___26661')) && $x__source > 0 && count($next_is)) {
+    if ($top_i__id > 0 && $i__id > 0 && in_array($currency_type, $this->config->item('n___26661')) && $x__creator > 0 && count($next_is)) {
 
         if($pay_amount > 0 && $_POST['payment_status']=='Completed'){
 
@@ -30,7 +30,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
             //Log Payment:
             $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
                 'x__type' => 26595,
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'x__up' => $currency_type,
                 'x__metadata' => $_POST,
             ));
@@ -43,7 +43,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
             //Find original payment:
             $original_payment = $this->X_model->fetch(array(
                 'x__type' => 26595,
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'x__left' => $next_is[0]['i__id'],
                 'x__right' => $top_i__id,
                 'x__up' => $currency_type,
@@ -52,7 +52,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
             //Log Refund:
             $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
                 'x__type' => 31967,
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'x__up' => $currency_type,
                 'x__metadata' => $_POST,
                 'x__reference' => ( isset($original_payment[0]['x__id']) ? $original_payment[0]['x__id'] : 0 ),

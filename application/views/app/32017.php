@@ -37,14 +37,14 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Ticket Discoveries
             'x__left' => $ticket_type['i__id'],
-        ), array('x__source'), 0) as $x){
+        ), array('x__creator'), 0) as $x){
 
             $x__metadata = unserialize($x['x__metadata']);
             $this_count = ( (isset($x__metadata['quantity']) && $x__metadata['quantity'] >= 2) ? $x__metadata['quantity'] : 1 );
             $ticket_count += $this_count;
             $ticket_transactions++;
-            $x__source = 1;
-            $qr_link = 'https://'.get_domain('m__message', $x__source).'/-26560?x__id='.$x['x__id'].'&x__source='.$x['x__source'];
+            $x__creator = 1;
+            $qr_link = 'https://'.get_domain('m__message', $x__creator).'/-26560?x__id='.$x['x__id'].'&x__creator='.$x['x__creator'];
 
             $ticket_checked_in = $this->X_model->fetch(array(
                 'x__reference' => $x['x__id'],

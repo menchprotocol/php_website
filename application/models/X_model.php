@@ -18,12 +18,12 @@ class X_model extends CI_Model
     {
 
         //Set some defaults:
-        if (!isset($add_fields['x__source']) || intval($add_fields['x__source']) < 1) {
-            $add_fields['x__source'] = 14068; //GUEST MEMBER
+        if (!isset($add_fields['x__creator']) || intval($add_fields['x__creator']) < 1) {
+            $add_fields['x__creator'] = 14068; //GUEST MEMBER
         }
 
         //Only require transaction type:
-        if (detect_missing_columns($add_fields, array('x__type'), $add_fields['x__source'])) {
+        if (detect_missing_columns($add_fields, array('x__type'), $add_fields['x__creator'])) {
             return false;
         }
 
@@ -31,7 +31,7 @@ class X_model extends CI_Model
             $this->X_model->create(array(
                 'x__message' => 'x->create() failed to create because of invalid transaction type @'.$add_fields['x__type'],
                 'x__type' => 4246, //Platform Bug Reports
-                'x__source' => $add_fields['x__source'],
+                'x__creator' => $add_fields['x__creator'],
                 'x__metadata' => $add_fields,
             ));
             return false;
@@ -51,7 +51,7 @@ class X_model extends CI_Model
 
         //Set some defaults:
         if (!isset($add_fields['x__website']) || $add_fields['x__website']<1) {
-            $add_fields['x__website'] = website_setting(0, $add_fields['x__source']);
+            $add_fields['x__website'] = website_setting(0, $add_fields['x__creator']);
         }
 
 
@@ -88,7 +88,7 @@ class X_model extends CI_Model
             //This should not happen:
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
-                'x__source' => $add_fields['x__source'],
+                'x__creator' => $add_fields['x__creator'],
                 'x__message' => 'create() Failed to create',
                 'x__metadata' => array(
                     'input' => $add_fields,
@@ -125,7 +125,7 @@ class X_model extends CI_Model
             } elseif($add_fields['x__up'] > 0){
                 $e__id = $add_fields['x__up'];
             }
-            $this->E_model->match_x_privacy($add_fields['x__source'], array(
+            $this->E_model->match_x_privacy($add_fields['x__creator'], array(
                 'e__id' => $e__id,
             ));
         }
@@ -137,7 +137,7 @@ class X_model extends CI_Model
             } elseif($add_fields['x__left'] > 0){
                 $i__id = $add_fields['x__left'];
             }
-            $this->I_model->match_x_privacy($add_fields['x__source'], array(
+            $this->I_model->match_x_privacy($add_fields['x__creator'], array(
                 'i__id' => $i__id,
             ));
         }
@@ -153,11 +153,11 @@ class X_model extends CI_Model
             if(count($sub_e__ids) > 0){
 
                 //yes, start drafting email to be sent to them...
-                $u_name = get_domain('m__title', $add_fields['x__source']);
-                if($add_fields['x__source'] > 0){
+                $u_name = get_domain('m__title', $add_fields['x__creator']);
+                if($add_fields['x__creator'] > 0){
                     //Fetch member details:
                     $add_e = $this->E_model->fetch(array(
-                        'e__id' => $add_fields['x__source'],
+                        'e__id' => $add_fields['x__creator'],
                     ));
                     if(count($add_e)){
                         $u_name = $add_e[0]['e__title'];
@@ -209,7 +209,7 @@ class X_model extends CI_Model
 
                 foreach($sub_e__ids as $subscriber_e__id){
                     //Do not inform the member who just took the action:
-                    if($subscriber_e__id!=$add_fields['x__source']){
+                    if($subscriber_e__id!=$add_fields['x__creator']){
                         $this->X_model->send_dm($subscriber_e__id, $subject, $plain_message, array(
                             'x__reference' => $add_fields['x__id'], //Save transaction
                             'x__right' => $add_fields['x__right'],
@@ -247,8 +247,8 @@ class X_model extends CI_Model
             $this->db->join('table__e', 'x__down=e__id','left');
         } elseif (in_array('x__type', $join_objects)) {
             $this->db->join('table__e', 'x__type=e__id','left');
-        } elseif (in_array('x__source', $join_objects)) {
-            $this->db->join('table__e', 'x__source=e__id','left');
+        } elseif (in_array('x__creator', $join_objects)) {
+            $this->db->join('table__e', 'x__creator=e__id','left');
         }
 
         foreach($query_filters as $key => $value) {
@@ -274,7 +274,7 @@ class X_model extends CI_Model
         return $q->result_array();
     }
 
-    function update($id, $update_columns, $x__source = 0, $x__type = 0, $x__message = '')
+    function update($id, $update_columns, $x__creator = 0, $x__type = 0, $x__message = '')
     {
 
         $id = intval($id);
@@ -284,7 +284,7 @@ class X_model extends CI_Model
             $this->X_model->create(array(
                 'x__message' => 'x->update() failed to update because of invalid transaction type @'.$x__type,
                 'x__type' => 4246, //Platform Bug Reports
-                'x__source' => $x__source,
+                'x__creator' => $x__creator,
                 'x__metadata' => $update_columns,
             ));
             return false;
@@ -322,7 +322,7 @@ class X_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:
-        if ($affected_rows > 0 && $x__source > 0 && $x__type > 0) {
+        if ($affected_rows > 0 && $x__creator > 0 && $x__type > 0) {
 
             if(strlen($x__message) == 0){
                 if(in_array($x__type, $this->config->item('n___10593') /* Statement */)){
@@ -406,7 +406,7 @@ class X_model extends CI_Model
                 //Value has changed, log transaction:
                 $this->X_model->create(array(
                     'x__reference' => $id, //Transaction Reference
-                    'x__source' => $x__source,
+                    'x__creator' => $x__creator,
                     'x__type' => $x__type,
                     'x__message' => $x__message,
                     'x__metadata' => array(
@@ -732,7 +732,7 @@ class X_model extends CI_Model
                     //Log transaction:
                     $this->X_model->create(array_merge($x_data, array(
                         'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
-                        'x__source' => $e__id,
+                        'x__creator' => $e__id,
                         'x__message' => $single_message,
                         'x__down' => $template_id,
                         'x__metadata' => array(
@@ -802,7 +802,7 @@ class X_model extends CI_Model
             //Log Error Transaction:
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
-                'x__source' => (isset($member_e['e__id']) ? $member_e['e__id'] : 0),
+                'x__creator' => (isset($member_e['e__id']) ? $member_e['e__id'] : 0),
                 'x__message' => 'message_compile() returned error [' . (isset($msg_validation['message']) ? $msg_validation['message'] : '') . '] for input message [' . $message_input . ']',
                 'x__metadata' => array(
                     'clean_message' => $message_input,
@@ -1169,7 +1169,7 @@ class X_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i_previous['i__id'],
                     'x__right' => $i__id,
-                    'x__source' => $e__id,
+                    'x__creator' => $e__id,
                 )))){
                 continue;
             }
@@ -1226,7 +1226,7 @@ class X_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
-                    'x__source' => $e__id,
+                    'x__creator' => $e__id,
                 )))){
                 continue;
             }
@@ -1236,7 +1236,7 @@ class X_model extends CI_Model
             if($top_completed || !count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__source' => $e__id,
+                    'x__creator' => $e__id,
                     'x__left' => $next_i['i__id'],
                 )))){
                 return intval($next_i['i__id']);
@@ -1289,8 +1289,8 @@ class X_model extends CI_Model
             $add_fields['x__message'] = null;
         }
 
-        $x__source = ( isset($add_fields['x__source']) ? $add_fields['x__source'] : 0);
-        $domain_url = get_domain('m__message', $x__source);
+        $x__creator = ( isset($add_fields['x__creator']) ? $add_fields['x__creator'] : 0);
+        $domain_url = get_domain('m__message', $x__creator);
 
         $search_fields = $add_fields;
 
@@ -1328,7 +1328,7 @@ class X_model extends CI_Model
             if(count($watchers)){
 
                 $es_discoverer = $this->E_model->fetch(array(
-                    'e__id' => $add_fields['x__source'],
+                    'e__id' => $add_fields['x__creator'],
                 ));
                 if(count($es_discoverer)){
 
@@ -1338,7 +1338,7 @@ class X_model extends CI_Model
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                        'x__down' => $add_fields['x__source'],
+                        'x__down' => $add_fields['x__creator'],
                         'x__up' => 4783, //Phone
                     )) as $x_progress){
                         $u_clean_phone = clean_phone($x_progress['x__message']);
@@ -1351,7 +1351,7 @@ class X_model extends CI_Model
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__left' => 15736, //What's your Full Legal Name that Matches your ID
-                        'x__source' => $add_fields['x__source'],
+                        'x__creator' => $add_fields['x__creator'],
                     )) as $x_progress){
                         $u_list_name .= 'Full Name:'."\n".$x_progress['x__message']."\n\n";
                     }
@@ -1390,7 +1390,7 @@ class X_model extends CI_Model
             $is_next_autoscan = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY ANSWERED
-                'x__source' => $add_fields['x__source'],
+                'x__creator' => $add_fields['x__creator'],
                 'x__left' => $i['i__id'],
                 'x__right >' => 0, //With an answer
             ), array('x__right'), 0);
@@ -1434,14 +1434,14 @@ class X_model extends CI_Model
                 !count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__source' => $add_fields['x__source'],
+                    'x__creator' => $add_fields['x__creator'],
                     'x__left' => $next_i['i__id'],
                 )))){
 
                 //Mark as complete:
                 $this->X_model->mark_complete($top_i__id, $next_i, array(
                     'x__type' => 4559, //DISCOVERY MESSAGES
-                    'x__source' => $add_fields['x__source'],
+                    'x__creator' => $add_fields['x__creator'],
                 ));
 
             }
@@ -1471,7 +1471,7 @@ class X_model extends CI_Model
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__left' => $remove_i['x__right'], //IDEA LINKS
-                        'x__source' => $member_e['e__id'],
+                        'x__creator' => $member_e['e__id'],
                     )) as $remove_x){
 
                         //Remove this discovery:
@@ -1507,7 +1507,7 @@ class X_model extends CI_Model
                         //Add as watcher:
                         $this->X_model->create(array(
                             'x__type' => 10573, //WATCHERS
-                            'x__source' => $member_e['e__id'],
+                            'x__creator' => $member_e['e__id'],
                             'x__up' => $member_e['e__id'],
                             'x__right' => $result['new_i__id'],
                         ));
@@ -1593,7 +1593,7 @@ class X_model extends CI_Model
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__up' => $x_tag['x__up'],
-                        'x__down' => $add_fields['x__source'],
+                        'x__down' => $add_fields['x__creator'],
                     ));
 
                     if(count($existing_x)){
@@ -1612,13 +1612,13 @@ class X_model extends CI_Model
                             $this->X_model->update($existing_x[0]['x__id'], array(
                                 'x__message' => $add_fields['x__message'],
                                 'x__type' => $detected_x_type['x__type'],
-                            ), $add_fields['x__source'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
+                            ), $add_fields['x__creator'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                             $this->X_model->create(array(
                                 'x__type' => 12197, //Profile Added
-                                'x__source' => $add_fields['x__source'],
+                                'x__creator' => $add_fields['x__creator'],
                                 'x__up' => $x_tag['x__up'],
-                                'x__down' => $add_fields['x__source'],
+                                'x__down' => $add_fields['x__creator'],
                                 'x__left' => $i['i__id'],
                                 'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
                             ));
@@ -1637,11 +1637,11 @@ class X_model extends CI_Model
                                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                                     'x__up IN (' . join(',', $single_selectable) . ')' => null,
                                     'x__up !=' => $x_tag['x__up'],
-                                    'x__down' => $add_fields['x__source'],
+                                    'x__down' => $add_fields['x__creator'],
                                 )) as $single_selectable_siblings_preset){
                                     $x_deleted += $this->X_model->update($single_selectable_siblings_preset['x__id'], array(
                                         'x__privacy' => 6173, //Transaction Deleted
-                                    ), $add_fields['x__source'], 10673 /* Member Transaction Unpublished */);
+                                    ), $add_fields['x__creator'], 10673 /* Member Transaction Unpublished */);
                                 }
                             }
                         }
@@ -1651,16 +1651,16 @@ class X_model extends CI_Model
                         $this->X_model->create(array(
                             'x__type' => $detected_x_type['x__type'],
                             'x__message' => $add_fields['x__message'],
-                            'x__source' => $add_fields['x__source'],
+                            'x__creator' => $add_fields['x__creator'],
                             'x__up' => $x_tag['x__up'],
-                            'x__down' => $add_fields['x__source'],
+                            'x__down' => $add_fields['x__creator'],
                         ));
 
                         $this->X_model->create(array(
                             'x__type' => 12197, //Profile Added
-                            'x__source' => $add_fields['x__source'],
+                            'x__creator' => $add_fields['x__creator'],
                             'x__up' => $x_tag['x__up'],
-                            'x__down' => $add_fields['x__source'],
+                            'x__down' => $add_fields['x__creator'],
                             'x__left' => $i['i__id'],
                             'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
                         ));
@@ -1669,7 +1669,7 @@ class X_model extends CI_Model
 
                     if($x_added>0 || $x_edited>0 || $x_deleted>0){
                         //See if Session needs to be updated:
-                        if($member_e && $member_e['e__id']==$add_fields['x__source']){
+                        if($member_e && $member_e['e__id']==$add_fields['x__creator']){
                             //Yes, update session:
                             $this->E_model->activate_session($member_e, true);
                         }
@@ -1691,7 +1691,7 @@ class X_model extends CI_Model
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
-                    'x__down' => $add_fields['x__source'],
+                    'x__down' => $add_fields['x__creator'],
                 ));
 
                 if(count($existing_x)){
@@ -1704,7 +1704,7 @@ class X_model extends CI_Model
                     ), $member_e['e__id'], 12197 /* Profile Removed */);
 
                     //See if Session needs to be updated:
-                    if($member_e && $member_e['e__id']==$add_fields['x__source']){
+                    if($member_e && $member_e['e__id']==$add_fields['x__creator']){
                         //Yes, update session:
                         $this->E_model->activate_session($member_e, true);
                     }
@@ -1739,7 +1739,7 @@ class X_model extends CI_Model
         //Count completed:
         $common_completed = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__source' => $e__id, //Belongs to this Member
+            'x__creator' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_child_ids ) . ')' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
@@ -1756,7 +1756,7 @@ class X_model extends CI_Model
         //Now let's check possible expansions:
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
-            'x__source' => $e__id, //Belongs to this Member
+            'x__creator' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_child_ids ) . ')' => null,
             'x__right > 0' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1818,7 +1818,7 @@ class X_model extends CI_Model
             return count($this->X_model->fetch(array(
                 'x__left' => $i__id,
                 'x__right' => $i__id,
-                'x__source' => $e__id,
+                'x__creator' => $e__id,
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
@@ -1829,7 +1829,7 @@ class X_model extends CI_Model
             if($e__id > 0){
                 foreach($this->X_model->fetch(array(
                     'x__left=x__right' => null,
-                    'x__source' => $e__id,
+                    'x__creator' => $e__id,
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )) as $u_in){
@@ -1935,7 +1935,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY ANSWERED
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
             'x__left' => $is[0]['i__id'],
         )) as $x_progress){
 
@@ -1955,7 +1955,7 @@ class X_model extends CI_Model
                 $answers_newly_added++;
                 $this->X_model->create(array(
                     'x__type' => $i_x__type,
-                    'x__source' => $member_e['e__id'],
+                    'x__creator' => $member_e['e__id'],
                     'x__left' => $is[0]['i__id'],
                     'x__right' => $answer_i__id,
                 ));
@@ -1965,7 +1965,7 @@ class X_model extends CI_Model
         //Issue DISCOVERY/IDEA COIN:
         $this->X_model->mark_complete($top_i__id, $is[0], array(
             'x__type' => $x__type,
-            'x__source' => $member_e['e__id'],
+            'x__creator' => $member_e['e__id'],
         ));
 
         //All good, something happened:

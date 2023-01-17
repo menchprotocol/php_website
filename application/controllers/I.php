@@ -89,7 +89,7 @@ class I extends CI_Controller {
             ), array(), 0) as $x){
                 if(!count($this->X_model->fetch(array(
                     'x__up' => $append_e__id,
-                    'x__down' => $x['x__source'],
+                    'x__down' => $x['x__creator'],
                     'x__message' => $x['x__message'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -97,9 +97,9 @@ class I extends CI_Controller {
                     //Add source link:
                     $completed++;
                     $this->X_model->create(array(
-                        'x__source' => ($member_e ? $member_e['e__id'] : $x['x__source']),
+                        'x__creator' => ($member_e ? $member_e['e__id'] : $x['x__creator']),
                         'x__up' => $append_e__id,
-                        'x__down' => $x['x__source'],
+                        'x__down' => $x['x__creator'],
                         'x__message' => $x['x__message'],
                         'x__type' => e_x__type($x['x__message']),
                     ));
@@ -430,7 +430,7 @@ class I extends CI_Controller {
 
             //SAVE this message:
             $x = $this->X_model->create(array(
-                'x__source' => $member_e['e__id'],
+                'x__creator' => $member_e['e__id'],
                 'x__spectrum' => ($count + 1),
                 'x__type' => 4231,
                 'x__right' => $is[0]['i__id'],
