@@ -52,22 +52,22 @@ body {
     text-align: right !important;
 }
 .media-content {
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
     max-width:768px !important;
 }
 .maxwidth {
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
     max-width:768px !important;
     margin: 0 auto !important;
 }
 .x__message video {
     max-width:768px;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 .x__message img, .i_content img, .content-image {
     max-width: 100%;
     max-height: 850px;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
     display: block;
 }
 .inner-content img {
@@ -94,11 +94,11 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 .list-group-item {
     border: 0;
-    border-radius: 0.21px;
+    border-radius: 21px;
     padding:10px 5px 5px;
     margin: 0;
     background-color: transparent;
@@ -177,7 +177,7 @@ li a {
     background-color: #FFFFFF !important;
     margin-top: 0 !important;
     border-top-width: 0 !important;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 .itemsetting.active .css__title {
     color: #000000;
@@ -234,7 +234,10 @@ li a {
 
 .btn {
     font-size: 1em !important;
-    border-radius: 0.21px !important;
+}
+
+.btn-6255 {
+    border-radius: 21px !important;
 }
 
 a.btn, .btn.dropdown-toggle, label.btn {
@@ -256,13 +259,13 @@ a.btn, .btn.dropdown-toggle, label.btn {
 
 
 img.no-frame {
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 
 
 .alert{
     padding:10px !important;
-    border-radius: 0.21px;
+    border-radius: 21px;
     margin:0 0 13px 0 !important;
     border: 0 !important;
 }
@@ -330,7 +333,7 @@ img.no-frame {
     padding: 13px 21px 21px 40px;
 }
 .accordion>.card {
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
     border:0;
 }
 
@@ -675,7 +678,7 @@ label:focus,
 
 .list-group-item-action img {
     max-height: 610px;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 
 .menu_header {
@@ -816,7 +819,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 
 .list-border{
     border: 0;
-    border-radius: 0.21px;
+    border-radius: 21px;
     overflow: hidden;
     margin: 0 5px;
 }
@@ -863,7 +866,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 }
 
 h4 .halfbg {
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 
 
@@ -875,7 +878,7 @@ h4 .halfbg {
 }
 
 .dropdown-menu a {
-    border-radius: 0.21px;
+    border-radius: 21px;
     padding-right: 13px;
 }
 
@@ -901,7 +904,7 @@ h4 .halfbg {
     padding: 5px;
     border:1px solid transparent !important;
     height: 55px;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 .previous_answer{
     display: block;
@@ -911,7 +914,7 @@ h4 .halfbg {
 .nav-pills .nav-x.active, .nav-pills .show>.nav-x {
     color: #fff;
     background-color: #000000;
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 
 .black.active, .black.active i, .grey.active, .grey.active i {
@@ -951,7 +954,7 @@ h4 .halfbg {
 .msg-nav > li > a {
     color: #000000;
     padding: 3px 5px;
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 
 .msg-nav > li .btn {
@@ -1001,7 +1004,7 @@ h4 .halfbg {
 
 textarea.note-textarea{
     border:0;
-    border-radius: 0.21px;
+    border-radius: 21px;
     margin: 0;
     /*background-color: transparent !important;*/
     box-shadow: none;
@@ -1049,7 +1052,7 @@ a.headline {
     width: 100%;
     height: 200px;
     border: 1px solid #999 !important;
-    border-radius: 0.21px;
+    border-radius: 21px;
     margin: 0;
 }
 
@@ -1139,7 +1142,7 @@ a.headline {
 
 
 .modal-content .form-control{
-    border-radius: 0.21px;
+    border-radius: 21px;
     margin-bottom: 5px;
 }
 .platform-navigation .block-x, .platform-navigation .block-menu {
@@ -1207,7 +1210,7 @@ a.headline {
 .x-list {
     padding:15px 0;
     margin-bottom: 13px;
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 .simple-line{
     padding: 5px 0;
@@ -1368,7 +1371,6 @@ label {
     line-height: 100%;
     border: 0;
     padding: 10px;
-    border-radius: 0.21px !important;
 }
 
 .breadcrumb-item .btn{
@@ -1469,7 +1471,7 @@ label {
 
 .nav-pills .nav-link{
     margin: 0 3px;
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 
 
@@ -1584,7 +1586,7 @@ i, .btn .show-max {
     height: auto !important;
     max-width:768px;
     max-height: 768px;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 .icon-block-xs img{
     line-height: 100%;
@@ -1641,7 +1643,7 @@ i, .btn .show-max {
     width: 30px !important;
     height: 30px !important;
     margin:5px 3px 0 5px !important;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
     display: inline-block;
     font-size: 1.5em;
 }
@@ -1736,7 +1738,7 @@ i, .btn .show-max {
 .border-dotted {
     margin-bottom: 0;
     border-bottom: 1px dotted #999 !important;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 
 
@@ -1756,7 +1758,7 @@ i, .btn .show-max {
 .ticket-notice {
     background-color: #fffdb7;
     padding: 10px 0 !important;
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 
 .title-icon{
@@ -1852,8 +1854,7 @@ i, .btn .show-max {
 .list-radio-select .list-group-item.active, .list-radio-select .list-group-item:hover {
     color:#000000 !important;
     background-color: #FFFFFF;
-    border-radius: 0.21px;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 
 .top-icon{
@@ -1906,7 +1907,7 @@ i, .btn .show-max {
 .chat-title span{
     z-index: 99999999;
     padding: 3px;
-    border-radius: 0.21px;
+    border-radius: 21px;
     line-height: 150%;
 }
 .modal-body{
@@ -1958,7 +1959,7 @@ i, .btn .show-max {
 
 
 input.form-control {
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 
 .coin-12273 .cover-content{
@@ -2065,7 +2066,7 @@ input.form-control {
     border-radius: 0 !important;
 }
 .coin_cover.coin-12274{
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 
 .coin_cover.coinface-12274{
@@ -2113,7 +2114,7 @@ input.form-control {
     line-height: 128%;
     font-size: 0.85em;
     display: block;
-    border-radius: 0.21px;
+    border-radius: 21px;
     vertical-align: middle;
 }
 
@@ -2194,7 +2195,7 @@ input.form-control {
 }
 .modal-content{
     border:1px solid transparent;
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 .mass_action_toggle, .e_text_search, .mass_action_item{
     width: 100% !important;
@@ -2207,7 +2208,7 @@ input.form-control {
 }
 .gif-col img{
     width: 100%;
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 .avatar-type-group{
     margin: 20px auto;
@@ -2353,11 +2354,11 @@ input.form-control {
 
 .custom_ui_13884_13886 .white-border {
     border:1px solid #FFFFFF !important;
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 .custom_ui_13884_13885 .white-border {
     border:1px solid #000000 !important;
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 
 .first_btn{
@@ -2399,7 +2400,7 @@ input.form-control {
 
 .fa-gif-wrap{
     border:1px solid transparent;
-    border-radius: 0.21px;
+    border-radius: 21px;
     font-size: 0.8em !important;
     text-transform: uppercase;
     padding: 2px;
@@ -2472,7 +2473,7 @@ textarea {
     width: auto;
     max-width: 100%;
     max-height: 987px;
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 .video_contain {
     position: fixed;
@@ -3064,7 +3065,7 @@ h4.css__title{
 }
 .dropdown_12274,
 .dropdown_11030 {
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 
 .btn.btn-12273,
@@ -3646,7 +3647,7 @@ h4.css__title{
     text-align: center;
 }
 .coin-12274 .cover-content{
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 .coin-12274 .mini-font {
     text-align: center;
@@ -3656,14 +3657,14 @@ h4.css__title{
 }
 
 .doabsolute {
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
 }
 .editor_preview{
     padding:5px 0 !important;
     margin: 0 40px;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
 }
 
 /* .form-control:disabled { background-color: #EFEFEF !important; } */
@@ -3778,7 +3779,7 @@ h4.css__title{
 }
 .filter_table input {
     background-color: #FFF;
-    border-radius: 0.21px;
+    border-radius: 21px;
     color: #000;
 }
 .filter_table td {
@@ -4035,7 +4036,7 @@ main {
 .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
     margin: 0;
     max-width: 100%;
-    border-radius: 0.21px;
+    border-radius: 21px;
 }
 .platform-6255 .coin_cover {
     margin: 0 !important;
@@ -4074,7 +4075,7 @@ main {
 
 .coin_frame{
     border: 5px solid transparent;
-    border-radius: 0.21px !important;
+    border-radius: 21px !important;
     margin: 0;
     padding: 55px 0 89px;
 }
