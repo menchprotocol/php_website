@@ -78,18 +78,7 @@ function preview_x__message($x__message, $x__type, $full_message = null, $has_di
 
     } else {
 
-        $CI->X_model->create(array(
-            'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'preview_x__message() Unknown text type',
-            'x__metadata' => array(
-                'x__message' => $x__message,
-                'x__type' => $x__type,
-                'full_message' => $full_message,
-                'has_discovery_mode' => $has_discovery_mode,
-            ),
-        ));
-
-        return 'ERROR: Unknown Type';
+        return null;
 
     }
 }
