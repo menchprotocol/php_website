@@ -390,7 +390,7 @@ if($top_i__id) {
                     'x__creator' => $x__creator,
                 )));
 
-                $select_answer .= view_i_select_card($next_i, $x__creator, $previously_selected);
+                $select_answer .= view_card_x_select($next_i, $x__creator, $previously_selected);
 
             }
 

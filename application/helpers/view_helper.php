@@ -1194,7 +1194,7 @@ function view__load__e($e){
 
 
 
-function view_i_select_card($i, $x__creator, $previously_selected){
+function view_card_x_select($i, $x__creator, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1464,13 +1464,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         }
     }
 
-    if($top_bar_ui){
-        $ui .= '<table class="coin_coins active_bars_'.$active_bars.'"><tr>';
-        $ui .= $top_bar_ui;
-        $ui .= '</tr></table>';
-    }
-
-
+    $ui .= '<table class="coin_coins active_bars_'.$active_bars.'"><tr>';
+    $ui .= $top_bar_ui;
+    $ui .= '</tr></table>';
 
 
 
@@ -1926,11 +1922,9 @@ function view_card_e($x__type, $e, $extra_class = null)
             }
         }
 
-        if($top_bar_ui){
-            $ui .= '<table class="coin_coins active_bars_'.$active_bars.'"><tr>';
-            $ui .= $top_bar_ui;
-            $ui .= '</tr></table>';
-        }
+        $ui .= '<table class="coin_coins active_bars_'.$active_bars.'"><tr>';
+        $ui .= $top_bar_ui;
+        $ui .= '</tr></table>';
 
 
     }
