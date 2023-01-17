@@ -258,25 +258,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
-    <!-- APP Modal -->
-    <div class="modal fade indifferent" id="modal6287" tabindex="-1" role="dialog" aria-labelledby="modal6287Label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content slim_flat">
-                <div class="modal-header">
-                    <h5 class="modal-title css__title" id="modal6287Label"><?= $e___11035[6287]['m__cover'].' '.$e___11035[6287]['m__title'] ?></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Loads dynamically -->
-                    <i class="far fa-yin-yang fa-spin"></i> Loading...
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
     <!-- EDIT MESSAGE Modal -->
     <div class="modal fade" id="modal13571" tabindex="-1" role="dialog" aria-labelledby="modal13571Label" aria-hidden="true">
         <div class="modal-dialog" role="document">

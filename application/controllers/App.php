@@ -294,36 +294,4 @@ class App extends CI_Controller
 
     }
 
-
-    function load_index(){
-
-        $member_e = superpower_unlocked(12699);
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(12699),
-            ));
-        }
-
-
-        //Show Featured Apps
-        $ui = '<div class="row">';
-        foreach($this->X_model->fetch(array(
-            'x__up' => 30841, //Featured Apps
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC')) as $app) {
-            $ui .= view_card_e(6287, $app);
-        }
-        $ui .= '</div>';
-
-        return view_json(array(
-            'status' => 1,
-            'load_index' => $ui,
-        ));
-
-    }
-
-
 }

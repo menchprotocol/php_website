@@ -934,13 +934,6 @@ $(document).ready(function () {
             x__type: 14576, //MODAL VIEWED
             x__up: x__type,
         });
-        //Log Viewed Transaction
-        if(x__type==6287){
-            //Load App Modal:
-            $.post("/app/load_index", {}, function (data) {
-                $('#modal6287 .modal-body').html(data.status ? data.load_index : data.message );
-            });
-        }
     });
 
 
