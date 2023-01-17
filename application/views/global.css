@@ -481,9 +481,7 @@ img.no-frame {
 }
 
 .breadcrumb {
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-bottom: 8px;
+    margin: -13px 5px 34px;
     width: auto;
 }
 
