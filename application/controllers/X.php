@@ -1094,8 +1094,30 @@ class X extends CI_Controller
         }
 
 
-        $_POST['x_reply'] = trim($_POST['x_reply']);
 
+        //Any Preg Remove?
+        foreach($this->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__right' => $_POST['i__id'],
+            'x__up' => 32103, //Preg Remove
+        )) as $preg_query){
+            $new_form = preg_replace($preg_query[0]['x__message'], "", $_POST['x_reply'] );
+            if($new_form != $_POST['x_reply']) {
+                $_POST['x_reply'] = $new_form;
+                //Log preg removal
+                $this->X_model->create(array(
+                    'x__type' => 32103, //Preg Remove
+                    'x__creator' => $member_e['e__id'],
+                    'x__message' => '['.$_POST['x_reply'].'] Transformed to ['.$new_form.']',
+                    'x__left' => $_POST['top_i__id'],
+                    'x__right' => $_POST['i__id'],
+                ));
+            }
+        }
+
+
+        $_POST['x_reply'] = trim($_POST['x_reply']);
 
         //Trying to Skip?
         if(!strlen($_POST['x_reply'])){
@@ -1263,7 +1285,6 @@ class X extends CI_Controller
 
             }
         }
-
 
 
         //Delete previous answer(s) if any:
